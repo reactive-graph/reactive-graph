@@ -23,10 +23,12 @@ This module provides the core data model of the reactive graph.
 ### The Type System
 
 * Data Types
+* Socket Types
 * Components
 * Entity Types
 * Relation Types
 * Property Types
+* Extensions
 
 ### The Instance
 
