@@ -32,10 +32,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-      - uses: taiki-e/upload-rust-binary-action@v1
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
           override: true
+      - uses: taiki-e/upload-rust-binary-action@v1
+        with:
           bin: inexor-rgf-shared-bidule
           tar: unix
           zip: windows
