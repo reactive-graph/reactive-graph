@@ -1,0 +1,10 @@
+[package]
+name = "inexor-bidule"
+description = "Bidule Patched"
+version = "0.2.1"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2018"
+license = "MIT"
+
+# [dependencies]
+#inexor-graphql-schema = { path = '../inexor-graphql-schema' }
