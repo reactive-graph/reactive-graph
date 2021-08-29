@@ -33,7 +33,8 @@ rust-embed = { version = "5.7.0", features = ["debug-embed", "compression"] }
 num_cpus = "1.13.0"
 strum = { version = "0.20", features = ["derive"] }
 strum_macros = "0.20"
-syn = "=1.0.57"
+#syn = "=1.0.57"
+syn = "1.0.75"
 random-string = "0.1.2"
 futures-await-test = "0.3.0"
 # TODO: necessary?
@@ -44,12 +45,12 @@ actix-web = "3"
 actix-rt = "2.1.0"
 actix-cors = "0.5.4"
 actix-files = "0.5.0"
-async-graphql = "2.5.11"
-async-graphql-actix-web = "2.5.11"
+async-graphql = "2.9.12"
+async-graphql-actix-web = "2.9.12"
 mime = "0.3.16"
 
 inexor-rgf-shared-bidule = { git = "https://github.com/aschaeffer/inexor-rgf-shared-bidule.git" }
-#inexor-ecs-model = { path = "../inexor-ecs-model" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 #inexor-ecs-reactive = { path = "../inexor-ecs-reactive" }
 #inexor-ecs-behaviour = { path = "../inexor-ecs-behaviour" }
 #inexor-ecs-subsystem = { path = "../inexor-ecs-subsystem" }
