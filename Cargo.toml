@@ -48,7 +48,7 @@ async-graphql = "2.5.11"
 async-graphql-actix-web = "2.5.11"
 mime = "0.3.16"
 
-#inexor-bidule = { path = "../inexor-bidule" }
+inexor-rgf-shared-bidule = { git = "https://github.com/aschaeffer/inexor-rgf-shared-bidule.git" }
 #inexor-ecs-model = { path = "../inexor-ecs-model" }
 #inexor-ecs-reactive = { path = "../inexor-ecs-reactive" }
 #inexor-ecs-behaviour = { path = "../inexor-ecs-behaviour" }
