@@ -18,6 +18,8 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 ### About this module
 
+This is the main application which results in the binary.
+
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf/Inexor%20Reactive%20Semantic%20Entity%20Component%20System">](https://github.com/aschaeffer/inexor-rgf/actions?query=workflow%3AInexor%20Reactive%20Semantic%20Entity%20Component%20System)
