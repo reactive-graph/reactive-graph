@@ -1,0 +1,14 @@
+cargo-features = ["edition2021"]
+[package]
+name = "inexor-rgf-subsystem"
+description = "Inexor Reactive Graph Flow - Subsystem"
+version = "0.2.1"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2021"
+license = "MIT"
+[lib]
+crate-type = ["dylib"]
+[profile.dev]
+opt-level = 0
+[profile.release]
+opt-level = 3
