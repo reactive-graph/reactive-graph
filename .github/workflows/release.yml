@@ -39,7 +39,7 @@ jobs:
           override: true
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
-          bin: libinexor-rgf-shared-bidule
+          bin: libinexor_rgf_shared_bidule
           tar: unix
           zip: windows
         env:
