@@ -8,11 +8,14 @@ fn create_relation_type_test() {
     let outbound_type = r_string();
     let inbound_type = r_string();
     let component_name = r_string();
+    let behaviour_name = r_string();
     let property_name = r_string();
     let extension_name = r_string();
     let extension_value = json!("JSON");
     let mut component_names = Vec::new();
     component_names.push(component_name.clone());
+    let mut behaviour_names = Vec::new();
+    behaviour_names.push(behaviour_name.clone());
     let mut property_types = Vec::new();
     let property_type = PropertyType::new(property_name.clone(), DataType::String);
     property_types.push(property_type.clone());
@@ -24,7 +27,7 @@ fn create_relation_type_test() {
         type_name.clone(),
         inbound_type.clone(),
         component_names,
-        Vec::new(),
+        behaviour_names,
         property_types,
         extensions
     );
@@ -38,4 +41,5 @@ fn create_relation_type_test() {
     assert!(relation_type.has_own_property(property_name.clone()));
     assert_eq!(extension_name, relation_type.extensions.get(0).unwrap().name);
     assert_eq!(extension_value, relation_type.extensions.get(0).unwrap().extension);
+    assert!(relation_type.behaves_as(behaviour_name.clone()));
 }
