@@ -9,7 +9,6 @@ use crate::extension::Extension;
 /// type.
 #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
 pub struct PropertyType {
-
     /// The name of the property
     pub name: String,
 
@@ -35,7 +34,11 @@ impl PropertyType {
         }
     }
 
-    pub fn new_with_socket<S: Into<String>>(name: S, data_type: DataType, socket_type: SocketType) -> PropertyType {
+    pub fn new_with_socket<S: Into<String>>(
+        name: S,
+        data_type: DataType,
+        socket_type: SocketType
+    ) -> PropertyType {
         PropertyType {
             name: name.into(),
             data_type,

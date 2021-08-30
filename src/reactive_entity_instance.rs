@@ -1,11 +1,13 @@
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
-use crate::{ReactivePropertyInstance, EntityInstance};
-use indradb::VertexProperties;
 use std::collections::HashMap;
-use uuid::Uuid;
-use serde_json::Value;
 use std::ops::Deref;
 use std::sync::Arc;
+
+use indradb::VertexProperties;
+use serde_json::Value;
+use uuid::Uuid;
+
+use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
+use crate::{EntityInstance, ReactivePropertyInstance};
 
 pub struct ReactiveEntityInstance {
     pub type_name: String,
@@ -15,7 +17,6 @@ pub struct ReactiveEntityInstance {
     pub description: String,
 
     pub properties: HashMap<String, ReactivePropertyInstance>,
-
     // TODO: pub components: Vec<String>
     // TODO: pub fn is_a(component: String) -> bool {}
 }
@@ -32,7 +33,9 @@ impl From<VertexProperties> for ReactiveEntityInstance {
     fn from(properties: VertexProperties) -> Self {
         let type_name = properties.vertex.t.0.clone();
         let id = properties.vertex.id.clone();
-        let properties = properties.props.iter()
+        let properties = properties
+            .props
+            .iter()
             .map(|named_property| {
                 (
                     named_property.name.clone(),
@@ -55,7 +58,9 @@ impl From<VertexProperties> for ReactiveEntityInstance {
 
 impl From<EntityInstance> for ReactiveEntityInstance {
     fn from(instance: EntityInstance) -> Self {
-        let properties = instance.properties.iter()
+        let properties = instance
+            .properties
+            .iter()
             .map(|(name, value)| {
                 (
                     name.clone(),

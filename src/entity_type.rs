@@ -4,13 +4,12 @@ use async_graphql::SimpleObject;
 use indradb::Type;
 use serde::{Deserialize, Serialize};
 
-use crate::PropertyType;
 use crate::extension::Extension;
+use crate::PropertyType;
 
 /// Entity types defines the type of an entity instance.
 #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
 pub struct EntityType {
-
     /// The name of the entity type.
     ///
     /// The name is the unique identifier for entity types.
@@ -52,7 +51,7 @@ impl EntityType {
         components: Vec<String>,
         behaviours: Vec<String>,
         properties: Vec<PropertyType>,
-        extensions: Vec<Extension>
+        extensions: Vec<Extension>,
     ) -> EntityType {
         let name = name.into();
         let group = group.into();
@@ -83,7 +82,11 @@ impl EntityType {
     /// Doesn't respect properties from potential components.
     pub fn has_own_property<S: Into<String>>(&self, property_name: S) -> bool {
         let property_name = property_name.into().clone();
-        !self.properties.iter()
-            .filter(|&p| p.name == property_name).collect::<Vec<_>>().is_empty()
+        !self
+            .properties
+            .iter()
+            .filter(|&p| p.name == property_name)
+            .collect::<Vec<_>>()
+            .is_empty()
     }
 }

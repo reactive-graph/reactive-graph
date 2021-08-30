@@ -1,10 +1,12 @@
+use std::collections::HashMap;
+
+use async_graphql::scalar;
 use indradb::VertexProperties;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::HashMap;
 use uuid::Uuid;
+
 use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
-use async_graphql::scalar;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -14,7 +16,6 @@ use async_graphql::scalar;
 /// properties.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct EntityInstance {
-
     /// The name of the entity type.
     #[serde(alias = "type")]
     pub type_name: String,
@@ -38,7 +39,11 @@ pub struct EntityInstance {
 scalar!(EntityInstance);
 
 impl EntityInstance {
-    pub fn new<S: Into<String>>(type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
+    pub fn new<S: Into<String>>(
+        type_name: S,
+        id: Uuid,
+        properties: HashMap<String, Value>
+    ) -> EntityInstance {
         EntityInstance {
             type_name: type_name.into(),
             id,
@@ -68,27 +73,39 @@ impl From<VertexProperties> for EntityInstance {
 
 impl PropertyInstanceGetter for EntityInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties.get(&property_name.into()).and_then(|v| Some(v.clone()))
+        self.properties
+            .get(&property_name.into())
+            .and_then(|v| Some(v.clone()))
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_str().and_then(|s| Some(s.to_string())))
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_str().and_then(|s| Some(s.to_string())))
     }
 }
 

@@ -1,10 +1,11 @@
-use serde::{Deserialize, Serialize};
 use core::fmt;
 use fmt::Display;
-use std::fmt::Formatter;
-use serde_json::{json, Value};
 use std::collections::HashMap;
+use std::fmt::Formatter;
+
 use async_graphql::Enum;
+use serde::{Deserialize, Serialize};
+use serde_json::{json, Value};
 
 /// Derived from serde_json::Value but without value payload.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Enum, Copy, Eq)]
@@ -52,7 +53,7 @@ impl DataType {
             DataType::String => json!(""),
             DataType::Array => json!(Vec::<Value>::new()),
             DataType::Object => json!(HashMap::<String, Value>::new()),
-            _ => json!("")
+            _ => json!(""),
         }
     }
 }
@@ -66,7 +67,7 @@ impl From<&str> for DataType {
             "array" => Self::Array,
             "object" => Self::Object,
             "any" => Self::Any,
-            _ => Self::String
+            _ => Self::String,
         }
     }
 }

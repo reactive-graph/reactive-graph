@@ -1,10 +1,12 @@
-use serde::{Deserialize, Serialize};
-use uuid::Uuid;
-use crate::{RelationInstance, EntityInstance, ReactiveFlow};
 use std::convert::TryFrom;
 use std::sync::Arc;
+
 // use async_graphql::SimpleObject;
 use async_graphql::scalar;
+use serde::{Deserialize, Serialize};
+use uuid::Uuid;
+
+use crate::{EntityInstance, ReactiveFlow, RelationInstance};
 
 #[derive(Debug)]
 pub struct FlowCreationError;
@@ -73,7 +75,7 @@ impl Flow {
             name,
             description: String::new(),
             entity_instances,
-            relation_instances: Vec::new()
+            relation_instances: Vec::new(),
         }
     }
 }
@@ -90,7 +92,7 @@ impl From<EntityInstance> for Flow {
             name: String::new(),
             description: String::new(),
             entity_instances,
-            relation_instances: Vec::new()
+            relation_instances: Vec::new(),
         }
     }
 }
@@ -107,14 +109,24 @@ impl TryFrom<ReactiveFlow> for Flow {
         let entity_instance: EntityInstance = wrapper.clone().into();
         let mut flow = Flow::from(entity_instance);
         flow.description = wrapper.description.clone();
-        reactive_flow.entity_instances.read().unwrap().iter().for_each(|(_, entity)| {
-            if entity.id != reactive_flow.id {
-                flow.entity_instances.push(entity.clone().into());
-            }
-        });
-        reactive_flow.relation_instances.read().unwrap().iter().for_each(|(_, relation_instance)| {
-            flow.relation_instances.push(relation_instance.clone().into());
-        });
+        reactive_flow
+            .entity_instances
+            .read()
+            .unwrap()
+            .iter()
+            .for_each(|(_, entity)| {
+                if entity.id != reactive_flow.id {
+                    flow.entity_instances.push(entity.clone().into());
+                }
+            });
+        reactive_flow
+            .relation_instances
+            .read()
+            .unwrap()
+            .iter()
+            .for_each(|(_, relation_instance)| {
+                flow.relation_instances.push(relation_instance.clone().into());
+            });
         Ok(flow)
     }
 }
@@ -131,14 +143,24 @@ impl TryFrom<Arc<ReactiveFlow>> for Flow {
         let entity_instance: EntityInstance = wrapper.clone().into();
         let mut flow = Flow::from(entity_instance);
         flow.description = wrapper.description.clone();
-        reactive_flow.entity_instances.read().unwrap().iter().for_each(|(_, entity)| {
-            if entity.id != reactive_flow.id {
-                flow.entity_instances.push(entity.clone().into());
-            }
-        });
-        reactive_flow.relation_instances.read().unwrap().iter().for_each(|(_, relation_instance)| {
-            flow.relation_instances.push(relation_instance.clone().into());
-        });
+        reactive_flow
+            .entity_instances
+            .read()
+            .unwrap()
+            .iter()
+            .for_each(|(_, entity)| {
+                if entity.id != reactive_flow.id {
+                    flow.entity_instances.push(entity.clone().into());
+                }
+            });
+        reactive_flow
+            .relation_instances
+            .read()
+            .unwrap()
+            .iter()
+            .for_each(|(_, relation_instance)| {
+                flow.relation_instances.push(relation_instance.clone().into());
+            });
         Ok(flow)
     }
 }
