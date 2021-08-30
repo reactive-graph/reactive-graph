@@ -1,5 +1,6 @@
 use crate::DataType;
 use serde_json::Value;
+use crate::tests::utils::r_string;
 
 #[test]
 fn data_type_should_be_created_using_static_method_call() {
@@ -21,6 +22,9 @@ fn data_type_should_return_the_correct_default_value() {
     assert!(DataType::Object.default_value().is_object());
     assert!(DataType::Object.default_value().as_object().is_some());
     assert_eq!(empty_map, *DataType::Object.default_value().as_object().unwrap());
+
+    assert!(DataType::Any.default_value().is_string());
+    assert_eq!("", DataType::Any.default_value());
 }
 
 #[test]
@@ -44,6 +48,13 @@ fn data_type_from_str() {
     assert_eq!(DataType::Object, DataType::from("object"));
     assert_eq!(DataType::Object, DataType::from("Object"));
     assert_eq!(DataType::Object, DataType::from("OBJECT"));
+
+    assert_eq!(DataType::Any, DataType::from("any"));
+    assert_eq!(DataType::Any, DataType::from("Any"));
+    assert_eq!(DataType::Any, DataType::from("ANY"));
+
+    // Fallback to String
+    assert_eq!(DataType::String, DataType::from(r_string().as_str()));
 }
 
 #[test]
