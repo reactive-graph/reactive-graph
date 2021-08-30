@@ -1,11 +1,13 @@
-use crate::{ReactivePropertyInstance, ReactiveEntityInstance, RelationInstance};
-use indradb::{EdgeProperties, EdgeKey, Type};
 use std::collections::HashMap;
-use uuid::Uuid;
-use serde_json::Value;
-use std::sync::Arc;
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
 use std::ops::Deref;
+use std::sync::Arc;
+
+use indradb::{EdgeKey, EdgeProperties, Type};
+use serde_json::Value;
+use uuid::Uuid;
+
+use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
+use crate::{ReactiveEntityInstance, ReactivePropertyInstance, RelationInstance};
 
 /// Reactive instance of a relation in the directed property graph.
 ///
@@ -44,7 +46,6 @@ pub struct ReactiveRelationInstance {
 
     /// The reactive properties.
     pub properties: HashMap<String, ReactivePropertyInstance>,
-
     // TODO: pub components: Vec<String>
     // TODO: pub fn is_a(component: String) -> bool {}
 }
@@ -54,10 +55,12 @@ impl ReactiveRelationInstance {
     pub fn from(
         outbound: Arc<ReactiveEntityInstance>,
         inbound: Arc<ReactiveEntityInstance>,
-        properties: EdgeProperties
+        properties: EdgeProperties,
     ) -> ReactiveRelationInstance {
         let type_name = properties.edge.key.t.0.clone();
-        let properties = properties.props.iter()
+        let properties = properties
+            .props
+            .iter()
             .map(|named_property| {
                 (
                     named_property.name.clone(),
@@ -81,17 +84,15 @@ impl ReactiveRelationInstance {
     pub fn from_instance(
         outbound: Arc<ReactiveEntityInstance>,
         inbound: Arc<ReactiveEntityInstance>,
-        instance: RelationInstance
+        instance: RelationInstance,
     ) -> ReactiveRelationInstance {
-        let properties = instance.properties.iter()
+        let properties = instance
+            .properties
+            .iter()
             .map(|(name, value)| {
                 (
                     name.clone(),
-                    ReactivePropertyInstance::new(
-                        Uuid::new_v4(),
-                        name.clone(),
-                        value.clone(),
-                    )
+                    ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value.clone()),
                 )
             })
             .collect();
@@ -100,7 +101,7 @@ impl ReactiveRelationInstance {
             type_name: instance.type_name.clone(),
             inbound,
             description: instance.description.clone(),
-            properties: properties
+            properties,
         }
     }
 
@@ -110,9 +111,10 @@ impl ReactiveRelationInstance {
         outbound: Arc<ReactiveEntityInstance>,
         type_name: S,
         inbound: Arc<ReactiveEntityInstance>,
-        properties: HashMap<String, Value>
+        properties: HashMap<String, Value>,
     ) -> ReactiveRelationInstance {
-        let properties = properties.iter()
+        let properties = properties
+            .iter()
             .map(|(name, value)| {
                 (
                     name.clone(),
@@ -136,7 +138,7 @@ impl ReactiveRelationInstance {
     pub fn get_key(&self) -> Option<EdgeKey> {
         match Type::new(self.type_name.as_str()) {
             Ok(t) => Some(EdgeKey::new(self.outbound.id, t, self.inbound.id)),
-            Err(_err) => None
+            Err(_err) => None,
         }
     }
 
@@ -149,11 +151,13 @@ impl ReactiveRelationInstance {
 
 impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
     fn from(instance: Arc<ReactiveRelationInstance>) -> Self {
-        let properties = instance.properties.iter()
+        let properties = instance
+            .properties
+            .iter()
             .map(|(name, property_instance)| {
                 (
                     name.clone(),
-                    property_instance.value.read().unwrap().deref().clone()
+                    property_instance.value.read().unwrap().deref().clone(),
                 )
             })
             .collect();
@@ -162,34 +166,46 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
             type_name: instance.type_name.clone(),
             inbound_id: instance.inbound.id,
             description: instance.description.clone(),
-            properties
+            properties,
         }
     }
 }
 
 impl PropertyInstanceGetter for ReactiveRelationInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties.get(&property_name.into()).and_then(|p| Some(p.get()))
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| Some(p.get()))
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_string())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_string())
     }
 }
 
@@ -211,6 +227,6 @@ pub trait ReactiveRelationInstanceFactory {
     fn new<S: Into<String>>(
         outbound: Arc<ReactiveEntityInstance>,
         type_name: S,
-        inbound: Arc<ReactiveEntityInstance>
+        inbound: Arc<ReactiveEntityInstance>,
     ) -> Arc<ReactiveRelationInstance>;
 }

@@ -1,14 +1,14 @@
-use serde::{Deserialize, Serialize};
-use std::fmt::{Display, Formatter};
 use core::fmt;
+use std::fmt::{Display, Formatter};
+
 use async_graphql::*;
+use serde::{Deserialize, Serialize};
 
 /// The socket type defines if the property acts as an input or output socket
 /// or is an hidden property
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Enum, Copy, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum SocketType {
-
     /// The property doesn't act as input or output socket.
     None,
 
@@ -16,7 +16,7 @@ pub enum SocketType {
     Input,
 
     /// The property acts as output socket and accepts outgoing connections.
-    Output
+    Output,
 }
 
 impl SocketType {
@@ -31,8 +31,8 @@ impl From<&str> for SocketType {
             "none" => Self::None,
             "input" => Self::Input,
             "output" => Self::Output,
-            _ => Self::None
-        }
+            _ => Self::None,
+        };
     }
 }
 

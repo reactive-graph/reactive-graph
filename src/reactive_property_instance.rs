@@ -1,7 +1,8 @@
+use std::ops::{Deref, DerefMut};
+use std::sync::{Arc, RwLock};
+
 use inexor_rgf_shared_bidule::Stream;
 use serde_json::Value;
-use std::ops::{Deref, DerefMut};
-use std::sync::{RwLock, Arc};
 use uuid::Uuid;
 
 // This is not automatically persisted to graph database (yet)!

@@ -6,10 +6,12 @@ use indradb::{Edge, EdgeKey, EdgeProperties, NamedProperty, Type};
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
-use crate::{ReactiveEntityInstance, ReactivePropertyInstance, ReactiveRelationInstance, RelationInstance};
-use crate::tests::utils::{r_json_string, r_string};
 use crate::tests::utils::create_random_entity_instance::create_random_entity_instance;
+use crate::tests::utils::{r_json_string, r_string};
+use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
+use crate::{
+    ReactiveEntityInstance, ReactivePropertyInstance, ReactiveRelationInstance, RelationInstance,
+};
 
 #[test]
 fn reactive_relation_instance_test() {

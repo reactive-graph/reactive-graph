@@ -1,9 +1,11 @@
-use crate::PropertyType;
+use std::str::FromStr;
+
+use async_graphql::SimpleObject;
 use indradb::Type;
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
-use async_graphql::SimpleObject;
+
 use crate::extension::Extension;
+use crate::PropertyType;
 
 /// A relation type defines the type of an relation instance.
 ///
@@ -11,7 +13,6 @@ use crate::extension::Extension;
 /// Also the relation type defines the properties of the relation instance.
 #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
 pub struct RelationType {
-
     /// The name of the outbound entity type.
     pub outbound_type: String,
 
@@ -66,7 +67,7 @@ impl RelationType {
         components: Vec<String>,
         behaviours: Vec<String>,
         properties: Vec<PropertyType>,
-        extensions: Vec<Extension>
+        extensions: Vec<Extension>,
     ) -> RelationType {
         let t = Type::from_str(type_name.clone().as_str()).unwrap();
         RelationType {
@@ -97,7 +98,11 @@ impl RelationType {
     /// Returns true, if the relation type contains an own property with the given name.
     /// Doesn't respect properties from potential components.
     pub fn has_own_property(&self, property_name: String) -> bool {
-        !self.properties.iter()
-            .filter(|&p| p.name == property_name).collect::<Vec<_>>().is_empty()
+        !self
+            .properties
+            .iter()
+            .filter(|&p| p.name == property_name)
+            .collect::<Vec<_>>()
+            .is_empty()
     }
 }

@@ -1,10 +1,12 @@
-use crate::EntityInstance;
-use uuid::Uuid;
 use std::collections::HashMap;
-use crate::tests::utils::r_string;
-use indradb::{VertexProperties, Vertex, Type, NamedProperty};
 use std::str::FromStr;
+
+use indradb::{NamedProperty, Type, Vertex, VertexProperties};
 use serde_json::json;
+use uuid::Uuid;
+
+use crate::tests::utils::r_string;
+use crate::EntityInstance;
 use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
 
 #[test]
@@ -28,7 +30,10 @@ fn entity_instance_test() {
     assert_eq!(properties.clone(), entity_instance.properties.clone());
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
-    assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
+    assert_eq!(
+        property_value.clone(),
+        entity_instance.get(property_name.clone()).unwrap()
+    );
 }
 
 #[test]
@@ -39,17 +44,16 @@ fn create_entity_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let entity_instance = EntityInstance::new(
-        type_name.clone(),
-        uuid.clone(),
-        properties.clone(),
-    );
+    let entity_instance = EntityInstance::new(type_name.clone(), uuid.clone(), properties.clone());
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(properties.clone(), properties.clone());
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
-    assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
+    assert_eq!(
+        property_value.clone(),
+        entity_instance.get(property_name.clone()).unwrap()
+    );
 }
 
 #[test]
@@ -62,19 +66,28 @@ fn create_entity_instance_from_vertex_properties() {
     let property_value_json = json!(property_value);
     let property = NamedProperty {
         name: property_name.clone(),
-        value: property_value_json
+        value: property_value_json,
     };
-    let properties = vec![
-        property
-    ];
+    let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex { id: uuid, t: t.clone() },
-        props: properties.clone()
+        vertex: Vertex {
+            id: uuid,
+            t: t.clone(),
+        },
+        props: properties.clone(),
     };
     let entity_instance = EntityInstance::from(vertex_properties);
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
-    assert_eq!(property_value.as_str(), entity_instance.properties.get(property_name.as_str()).unwrap().as_str().unwrap());
+    assert_eq!(
+        property_value.as_str(),
+        entity_instance
+            .properties
+            .get(property_name.as_str())
+            .unwrap()
+            .as_str()
+            .unwrap()
+    );
 }
 
 #[test]
@@ -83,12 +96,8 @@ fn entity_instance_typed_getter_test() {
     let type_name = r_string();
     let property_name = r_string();
     let mut properties = HashMap::new();
-    properties.insert(property_name.clone(),  json!(false));
-    let mut i = EntityInstance::new(
-        type_name.clone(),
-        uuid.clone(),
-        properties.clone(),
-    );
+    properties.insert(property_name.clone(), json!(false));
+    let mut i = EntityInstance::new(type_name.clone(), uuid.clone(), properties.clone());
     i.set(property_name.clone(), json!(true));
     assert!(i.as_bool(property_name.clone()).unwrap());
     i.set(property_name.clone(), json!(false));

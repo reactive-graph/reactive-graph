@@ -190,7 +190,11 @@ impl TryFrom<Flow> for ReactiveFlow {
                 }
                 let outbound = outbound.unwrap().clone();
                 let inbound = inbound.unwrap().clone();
-                let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance.clone()));
+                let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(
+                    outbound,
+                    inbound,
+                    relation_instance.clone(),
+                ));
                 relation_instances.insert(edge_key.clone(), reactive_relation_instance);
             }
         }
@@ -204,33 +208,57 @@ impl TryFrom<Flow> for ReactiveFlow {
             entities_removed: RwLock::new(Vec::new()),
             relations_added: RwLock::new(Vec::new()),
             relations_removed: RwLock::new(Vec::new()),
-        })
+        });
     }
 }
 
 impl PropertyInstanceGetter for ReactiveFlow {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).and_then(|p| Some(p.get())))
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| Some(p.get()))
+        })
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_bool()))
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_bool())
+        })
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_u64()))
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_u64())
+        })
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_i64()))
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_i64())
+        })
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_f64()))
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_f64())
+        })
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_string()))
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_string())
+        })
     }
 }
 

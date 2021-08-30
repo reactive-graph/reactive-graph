@@ -5,9 +5,9 @@ use indradb::{NamedProperty, Type, Vertex, VertexProperties};
 use serde_json::json;
 use uuid::Uuid;
 
+use crate::tests::utils::r_string;
 use crate::{EntityInstance, Flow};
 use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
-use crate::tests::utils::r_string;
 
 #[test]
 fn flow_test() {
@@ -22,7 +22,7 @@ fn flow_test() {
         name: flow_name.clone(),
         description: flow_description.to_string(),
         entity_instances: Vec::new(),
-        relation_instances: Vec::new()
+        relation_instances: Vec::new(),
     };
 
     assert_eq!(flow_type_name.clone(), flow.type_name.clone());

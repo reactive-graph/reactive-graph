@@ -1,6 +1,7 @@
-use crate::{EntityType, PropertyType, DataType, Extension};
-use crate::tests::utils::r_string;
 use serde_json::json;
+
+use crate::tests::utils::r_string;
+use crate::{DataType, EntityType, Extension, PropertyType};
 
 #[test]
 fn create_entity_type_test() {
@@ -24,7 +25,10 @@ fn create_entity_type_test() {
     let mut extensions = Vec::new();
     let extension_name = "extension_name";
     let extension_value = json!("extension_value");
-    let extension = Extension{ name: extension_name.to_string(), extension: extension_value.clone()};
+    let extension = Extension {
+        name: extension_name.to_string(),
+        extension: extension_value.clone(),
+    };
     extensions.push(extension);
 
     let entity_type = EntityType::new(
@@ -33,7 +37,7 @@ fn create_entity_type_test() {
         component_names,
         behaviour_names,
         property_types,
-        extensions
+        extensions,
     );
 
     assert_eq!(entity_type_name, entity_type.name);
@@ -50,9 +54,11 @@ fn create_entity_type_test() {
 
     assert_eq!(extension_name, entity_type.extensions.first().unwrap().name);
 
-    assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
+    assert_eq!(
+        extension_value,
+        entity_type.extensions.first().unwrap().extension
+    );
 
     assert!(entity_type.behaves_as(behaviour_name.clone()));
     assert!(!entity_type.behaves_as(r_string()));
-
 }
