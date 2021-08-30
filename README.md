@@ -1,5 +1,9 @@
 # Inexor Reactive Graph Flow
 
+| Project | Module | Sub-Module | Functionality | Tests |
+| --- | --- | --- | --- | --- |
+| Reactive Graph Flow | Core | Model | Complete | 80% |
+
 ### About Inexor
 
 <a href="https://inexor.org/">
