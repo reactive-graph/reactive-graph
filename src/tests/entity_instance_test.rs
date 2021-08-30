@@ -12,7 +12,10 @@ fn entity_instance_test() {
     let uuid = Uuid::new_v4();
     let type_name = r_string();
     let description = r_string();
-    let properties = HashMap::new();
+    let property_name = r_string();
+    let property_value = json!(r_string());
+    let mut properties = HashMap::new();
+    properties.insert(property_name.clone(), property_value.clone());
     let entity_instance = EntityInstance {
         type_name: type_name.clone(),
         id: uuid.clone(),
@@ -23,13 +26,19 @@ fn entity_instance_test() {
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(description.clone(), entity_instance.description.clone());
     assert_eq!(properties.clone(), entity_instance.properties.clone());
+    assert!(entity_instance.get(property_name.clone()).is_some());
+    assert!(entity_instance.get(r_string()).is_none());
+    assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
 fn create_entity_instance_test() {
     let uuid = Uuid::new_v4();
     let type_name = r_string();
-    let properties = HashMap::new();
+    let property_name = r_string();
+    let property_value = json!(r_string());
+    let mut properties = HashMap::new();
+    properties.insert(property_name.clone(), property_value.clone());
     let entity_instance = EntityInstance::new(
         type_name.clone(),
         uuid.clone(),
@@ -38,6 +47,9 @@ fn create_entity_instance_test() {
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(properties.clone(), properties.clone());
+    assert!(entity_instance.get(property_name.clone()).is_some());
+    assert!(entity_instance.get(r_string()).is_none());
+    assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
