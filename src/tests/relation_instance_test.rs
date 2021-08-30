@@ -1,7 +1,7 @@
 use crate::RelationInstance;
 use uuid::Uuid;
 use std::collections::HashMap;
-use crate::tests::utils::r_string;
+use crate::tests::utils::{r_string, r_string_1000, r_string_255};
 use indradb::{Type, NamedProperty, EdgeProperties, Edge, EdgeKey};
 use std::str::FromStr;
 use serde_json::json;
@@ -13,7 +13,10 @@ fn relation_instance_test() {
     let inbound_id = Uuid::new_v4();
     let type_name = r_string();
     let description = r_string();
-    let properties = HashMap::new();
+    let property_name = r_string();
+    let property_value = json!(r_string());
+    let mut properties = HashMap::new();
+    properties.insert(property_name.clone(), property_value.clone());
     let relation_instance = RelationInstance {
         outbound_id,
         type_name: type_name.clone(),
@@ -26,6 +29,33 @@ fn relation_instance_test() {
     assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
     assert_eq!(description.clone(), relation_instance.description.clone());
     assert_eq!(properties.clone(), relation_instance.properties.clone());
+    assert!(relation_instance.get(property_name.clone()).is_some());
+    assert!(relation_instance.get(r_string()).is_none());
+    assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
+}
+
+#[test]
+fn invalid_type_name_test() {
+    let relation_instance = RelationInstance {
+        outbound_id: Uuid::new_v4(),
+        type_name: r_string_1000(),
+        inbound_id: Uuid::new_v4(),
+        description: r_string(),
+        properties: HashMap::new(),
+    };
+    assert!(relation_instance.get_key().is_none());
+}
+
+#[test]
+fn valid_type_name_test() {
+    let relation_instance = RelationInstance {
+        outbound_id: Uuid::new_v4(),
+        type_name: r_string_255(),
+        inbound_id: Uuid::new_v4(),
+        description: r_string(),
+        properties: HashMap::new(),
+    };
+    assert!(relation_instance.get_key().is_some());
 }
 
 #[test]
@@ -33,7 +63,10 @@ fn create_relation_instance_test() {
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
     let type_name = r_string();
-    let properties = HashMap::new();
+    let property_name = r_string();
+    let property_value = json!(r_string());
+    let mut properties = HashMap::new();
+    properties.insert(property_name.clone(), property_value.clone());
     let relation_instance = RelationInstance::new(
         outbound_id,
         type_name.clone(),
@@ -44,6 +77,9 @@ fn create_relation_instance_test() {
     assert_eq!(type_name.clone(), relation_instance.type_name.clone());
     assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
     assert_eq!(properties.clone(), properties.clone());
+    assert!(relation_instance.get(property_name.clone()).is_some());
+    assert!(relation_instance.get(r_string()).is_none());
+    assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
