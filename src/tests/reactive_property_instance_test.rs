@@ -106,7 +106,7 @@ fn create_reactive_property_instance_test() {
 
     let new_property_value = r_string();
     let new_property_value_json = json!(new_property_value);
-    reactive_property_instance.set(new_property_value_json);
+    reactive_property_instance.set_no_propagate(new_property_value_json);
 
     assert_eq!(new_property_value.as_str(), reactive_property_instance.value.read().unwrap().as_str().unwrap());
     assert_eq!(new_property_value.as_str(), reactive_property_instance.get().as_str().unwrap());
