@@ -54,5 +54,6 @@ This module provides the core data model of the reactive graph.
 [<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-model">]()
 [<img src="https://img.shields.io/github/issues/aschaeffer/inexor-rgf-core-model">]()
 [<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-model">]()
+[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-model">]()
 
 [<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-model/main/docs/images/inexor_2.png">]()
