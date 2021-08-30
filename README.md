@@ -2,7 +2,15 @@
 
 ### About Inexor
 
-https://inexor.org/
+<a href="https://inexor.org/">
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-model/main/docs/images/inexor_2.png">
+</a>
+
+* Inexor will be a new first person shooter game which is based on a new octree-based game engine.
+* Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.
+* Inexor will be written from ground up new in C++17 and Rust.
+* You can contribute anything you want: code, content, ideas..
+* Inexor and all its content is 100% open source!
 
 ### About Inexor Reactive Graph Flow
 
@@ -20,29 +28,6 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 This module provides the core data model of the reactive graph.
 
-### The Type System
-
-* Data Types
-* Socket Types
-* Components
-* Entity Types
-* Relation Types
-* Property Types
-* Extensions
-
-### The Instance
-
-* Entity Instances
-* Relation Instances
-* Property Instance Accessors
-* Reactive Entity Instances
-* Reactive Relation Instances
-* Reactive Property Instances
-
-### The Extensions
-
-* Entity Shapes
-
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-model/Inexor%20Reactive%20Semantic%20Entity%20Component%20System">](https://github.com/aschaeffer/inexor-rgf-core-model/actions?query=workflow%3ARust)
@@ -56,4 +41,30 @@ This module provides the core data model of the reactive graph.
 [<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-model">]()
 [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-model">]()
 
-[<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-model/main/docs/images/inexor_2.png">]()
+#### The Type System
+
+* Data Types
+* Socket Types
+* Components
+* Entity Types
+* Relation Types
+* Property Types
+* Extensions
+
+#### The Instance
+
+* Entity Instances
+* Relation Instances
+* Property Instance Accessors
+* Reactive Entity Instances
+* Reactive Relation Instances
+* Reactive Property Instances
+
+#### The Extensions
+
+* Entity Shapes
+
+### Thanks to
+
+* https://github.com/xd009642/tarpaulin
+* https://codecov.io/
