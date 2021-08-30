@@ -42,4 +42,5 @@ fn create_relation_type_test() {
     assert_eq!(extension_name, relation_type.extensions.get(0).unwrap().name);
     assert_eq!(extension_value, relation_type.extensions.get(0).unwrap().extension);
     assert!(relation_type.behaves_as(behaviour_name.clone()));
+    assert!(!relation_type.behaves_as(r_string()));
 }

@@ -12,6 +12,10 @@ fn create_entity_type_test() {
     let mut component_names = Vec::new();
     component_names.push(component_name.clone());
 
+    let behaviour_name = r_string();
+    let mut behaviour_names = Vec::new();
+    behaviour_names.push(behaviour_name.clone());
+
     let mut property_types = Vec::new();
     let property_name = "property_name";
     let property_type = PropertyType::new(property_name, DataType::String);
@@ -23,7 +27,14 @@ fn create_entity_type_test() {
     let extension = Extension{ name: extension_name.to_string(), extension: extension_value.clone()};
     extensions.push(extension);
 
-    let entity_type = EntityType::new(entity_type_name, group, component_names, Vec::new(), property_types, extensions);
+    let entity_type = EntityType::new(
+        entity_type_name,
+        group,
+        component_names,
+        behaviour_names,
+        property_types,
+        extensions
+    );
 
     assert_eq!(entity_type_name, entity_type.name);
 
@@ -40,5 +51,8 @@ fn create_entity_type_test() {
     assert_eq!(extension_name, entity_type.extensions.first().unwrap().name);
 
     assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
+
+    assert!(entity_type.behaves_as(behaviour_name.clone()));
+    assert!(!entity_type.behaves_as(r_string()));
 
 }
