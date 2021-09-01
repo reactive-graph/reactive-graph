@@ -42,7 +42,7 @@ impl EntityInstance {
     pub fn new<S: Into<String>>(
         type_name: S,
         id: Uuid,
-        properties: HashMap<String, Value>
+        properties: HashMap<String, Value>,
     ) -> EntityInstance {
         EntityInstance {
             type_name: type_name.into(),

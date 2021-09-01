@@ -68,7 +68,7 @@ impl From<&str> for DataType {
             "object" => Self::Object,
             "any" => Self::Any,
             _ => Self::String,
-        }
+        };
     }
 }
 

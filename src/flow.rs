@@ -125,7 +125,8 @@ impl TryFrom<ReactiveFlow> for Flow {
             .unwrap()
             .iter()
             .for_each(|(_, relation_instance)| {
-                flow.relation_instances.push(relation_instance.clone().into());
+                flow.relation_instances
+                    .push(relation_instance.clone().into());
             });
         Ok(flow)
     }
@@ -159,7 +160,8 @@ impl TryFrom<Arc<ReactiveFlow>> for Flow {
             .unwrap()
             .iter()
             .for_each(|(_, relation_instance)| {
-                flow.relation_instances.push(relation_instance.clone().into());
+                flow.relation_instances
+                    .push(relation_instance.clone().into());
             });
         Ok(flow)
     }

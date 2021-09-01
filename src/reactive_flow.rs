@@ -1,12 +1,14 @@
-use crate::{ReactiveEntityInstance, ReactiveRelationInstance, Flow};
-use indradb::EdgeKey;
 use std::collections::HashMap;
-use uuid::Uuid;
-use std::sync::{Arc, RwLock};
-use serde_json::Value;
-use crate::{PropertyInstanceSetter, PropertyInstanceGetter};
 use std::convert::TryFrom;
 use std::fmt;
+use std::sync::{Arc, RwLock};
+
+use indradb::EdgeKey;
+use serde_json::Value;
+use uuid::Uuid;
+
+use crate::{Flow, ReactiveEntityInstance, ReactiveRelationInstance};
+use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
 
 #[derive(Debug)]
 pub enum ReactiveFlowConstructionError {
@@ -32,21 +34,24 @@ pub struct ReactiveFlow {
     /// The entity type of the flow.
     pub type_name: String,
 
-    // TODO: flow name
-    // pub name: String,
-
+    /// The flow contains entity instances. The entity instance may also
+    /// be contained in other flows.
     pub entity_instances: RwLock<HashMap<Uuid, Arc<ReactiveEntityInstance>>>,
 
+    /// The flow contains relation instances. The relation instances may also
+    /// be contained in other flows.
     pub relation_instances: RwLock<HashMap<EdgeKey, Arc<ReactiveRelationInstance>>>,
 
-    // pub wrapper: Arc<ReactiveEntityInstance>
-
+    /// List of entities that has been added since creation of the flow.
     pub entities_added: RwLock<Vec<Uuid>>,
 
+    /// List of entities that has been removed since creation of the flow.
     pub entities_removed: RwLock<Vec<Uuid>>,
 
+    /// List of relations that has been added since creation of the flow.
     pub relations_added: RwLock<Vec<EdgeKey>>,
 
+    /// List of relations that has been removed since creation of the flow.
     pub relations_removed: RwLock<Vec<EdgeKey>>,
 }
 
@@ -69,7 +74,10 @@ impl ReactiveFlow {
     }
 
     pub fn has_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) -> bool {
-        self.entity_instances.read().unwrap().contains_key(&entity_instance.id)
+        self.entity_instances
+            .read()
+            .unwrap()
+            .contains_key(&entity_instance.id)
     }
 
     pub fn has_entity_by_id(&self, id: Uuid) -> bool {
@@ -91,8 +99,14 @@ impl ReactiveFlow {
 
     pub fn add_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
         if !self.has_entity_by_id(entity_instance.id) {
-            self.entity_instances.write().unwrap().insert(entity_instance.id, entity_instance.clone());
-            self.entities_added.write().unwrap().push(entity_instance.id);
+            self.entity_instances
+                .write()
+                .unwrap()
+                .insert(entity_instance.id, entity_instance.clone());
+            self.entities_added
+                .write()
+                .unwrap()
+                .push(entity_instance.id);
             // self.entities_removed.write().unwrap().remove(entity_instance.id);
         }
     }
@@ -102,16 +116,23 @@ impl ReactiveFlow {
         self.entities_removed.write().unwrap().push(id);
     }
 
-    pub fn has_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) -> bool{
+    pub fn has_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) -> bool {
         let edge_key = relation_instance.get_key();
         if edge_key.is_some() {
-            return self.relation_instances.read().unwrap().contains_key(&edge_key.unwrap());
+            return self
+                .relation_instances
+                .read()
+                .unwrap()
+                .contains_key(&edge_key.unwrap());
         }
         false
     }
 
     pub fn has_relation_by_key(&self, edge_key: EdgeKey) -> bool {
-        self.relation_instances.read().unwrap().contains_key(&edge_key.clone())
+        self.relation_instances
+            .read()
+            .unwrap()
+            .contains_key(&edge_key.clone())
     }
 
     pub fn get_relation(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
@@ -130,15 +151,24 @@ impl ReactiveFlow {
         if edge_key.is_some() {
             let edge_key = edge_key.unwrap();
             if !self.has_relation_by_key(edge_key.clone()) {
-                self.relation_instances.write().unwrap().insert(edge_key.clone(), relation_instance.clone());
+                self.relation_instances
+                    .write()
+                    .unwrap()
+                    .insert(edge_key.clone(), relation_instance.clone());
                 self.relations_added.write().unwrap().push(edge_key.clone());
             }
         }
     }
 
     pub fn remove_relation(&self, edge_key: EdgeKey) {
-        self.relation_instances.write().unwrap().remove(&edge_key.clone());
-        self.relations_removed.write().unwrap().push(edge_key.clone());
+        self.relation_instances
+            .write()
+            .unwrap()
+            .remove(&edge_key.clone());
+        self.relations_removed
+            .write()
+            .unwrap()
+            .push(edge_key.clone());
     }
 
     pub fn tick(&self) {
@@ -181,12 +211,20 @@ impl TryFrom<Flow> for ReactiveFlow {
                 let outbound = entity_instances.get(&relation_instance.outbound_id);
                 if outbound.is_none() {
                     // outbound entity missing
-                    return Err(ReactiveFlowConstructionError::MissingOutboundEntityInstance(relation_instance.outbound_id).into());
+                    return Err(
+                        ReactiveFlowConstructionError::MissingOutboundEntityInstance(
+                            relation_instance.outbound_id,
+                        )
+                        .into(),
+                    );
                 }
                 let inbound = entity_instances.get(&relation_instance.inbound_id);
                 if inbound.is_none() {
                     // inbound entity missing
-                    return Err(ReactiveFlowConstructionError::MissingInboundEntityInstance(relation_instance.inbound_id).into());
+                    return Err(ReactiveFlowConstructionError::MissingInboundEntityInstance(
+                        relation_instance.inbound_id,
+                    )
+                    .into());
                 }
                 let outbound = outbound.unwrap().clone();
                 let inbound = inbound.unwrap().clone();

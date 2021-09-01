@@ -30,6 +30,17 @@ jobs:
     - name: Generate documentation
       run: cargo doc
 
+  rustfmt:
+    name: Verify code formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
   codecov-tarpaulin:
     name: Generate code coverage
     runs-on: ubuntu-latest

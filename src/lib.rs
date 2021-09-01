@@ -16,22 +16,22 @@ pub use relation_type::*;
 pub use socket_type::*;
 
 pub mod component;
-pub mod extension;
+pub mod data_type;
 pub mod entity_shape;
 pub mod entity_type;
+pub mod extension;
 pub mod property_type;
 pub mod relation_type;
-pub mod data_type;
 pub mod socket_type;
 
 pub mod entity_instance;
-pub mod relation_instance;
 pub mod flow;
+pub mod relation_instance;
 
 pub mod reactive_entity_instance;
+pub mod reactive_flow;
 pub mod reactive_property_instance;
 pub mod reactive_relation_instance;
-pub mod reactive_flow;
 
 pub mod property_instance_accessor;
 

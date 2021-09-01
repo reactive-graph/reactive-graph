@@ -1,8 +1,8 @@
 use async_graphql::*;
 use serde::{Deserialize, Serialize};
 
-use crate::{DataType, SocketType};
 use crate::extension::Extension;
+use crate::{DataType, SocketType};
 
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket
@@ -37,7 +37,7 @@ impl PropertyType {
     pub fn new_with_socket<S: Into<String>>(
         name: S,
         data_type: DataType,
-        socket_type: SocketType
+        socket_type: SocketType,
     ) -> PropertyType {
         PropertyType {
             name: name.into(),

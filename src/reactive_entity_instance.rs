@@ -6,8 +6,8 @@ use indradb::VertexProperties;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
 use crate::{EntityInstance, ReactivePropertyInstance};
+use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
 
 pub struct ReactiveEntityInstance {
     pub type_name: String,
@@ -64,11 +64,7 @@ impl From<EntityInstance> for ReactiveEntityInstance {
             .map(|(name, value)| {
                 (
                     name.clone(),
-                    ReactivePropertyInstance::new(
-                        instance.id.clone(),
-                        name.clone(),
-                        value.clone(),
-                    )
+                    ReactivePropertyInstance::new(instance.id.clone(), name.clone(), value.clone()),
                 )
             })
             .collect();
@@ -76,18 +72,20 @@ impl From<EntityInstance> for ReactiveEntityInstance {
             type_name: instance.type_name.clone(),
             id: instance.id.clone(),
             description: instance.description.clone(),
-            properties
+            properties,
         }
     }
 }
 
 impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
     fn from(instance: Arc<ReactiveEntityInstance>) -> Self {
-        let properties = instance.properties.iter()
+        let properties = instance
+            .properties
+            .iter()
             .map(|(name, property_instance)| {
                 (
                     name.clone(),
-                    property_instance.value.read().unwrap().deref().clone()
+                    property_instance.value.read().unwrap().deref().clone(),
                 )
             })
             .collect();
@@ -95,34 +93,46 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
             type_name: instance.type_name.clone(),
             id: instance.id,
             description: instance.description.clone(),
-            properties
+            properties,
         }
     }
 }
 
 impl PropertyInstanceGetter for ReactiveEntityInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties.get(&property_name.into()).and_then(|p| Some(p.get()))
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| Some(p.get()))
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_string())
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_string())
     }
 }
 
