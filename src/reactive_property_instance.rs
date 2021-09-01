@@ -1,7 +1,7 @@
 use std::ops::{Deref, DerefMut};
 use std::sync::{Arc, RwLock};
 
-use inexor_rgf_shared_bidule::Stream;
+use inexor_rgf_core_bidule::Stream;
 use serde_json::Value;
 use uuid::Uuid;
 
