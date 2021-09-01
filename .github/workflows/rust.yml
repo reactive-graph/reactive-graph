@@ -11,9 +11,7 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Install latest nightly
@@ -31,3 +29,30 @@ jobs:
       run: cargo test --verbose
     - name: Generate documentation
       run: cargo doc
+
+  rustfmt:
+    name: Verify code formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  codecov-tarpaulin:
+    name: Generate code coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+      - uses: actions-rs/tarpaulin@v0.1
+        with:
+          args: --all-features
+      # Note: closed-source code needs to provide a token,
+      # but open source code does not.
+      - name: Upload to codecov.io
+        uses: codecov/codecov-action@v1
