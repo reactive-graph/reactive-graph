@@ -9,7 +9,7 @@ edition = "2021"
 license = "MIT"
 
 [lib]
-crate-type = ["dylib"]
+crate-type = ["lib"]
 
 [profile.dev]
 opt-level = 0
