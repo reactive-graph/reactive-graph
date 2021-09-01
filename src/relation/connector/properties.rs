@@ -32,7 +32,7 @@ impl From<ConnectorProperties> for NamedProperty {
     fn from(p: ConnectorProperties) -> Self {
         NamedProperty {
             name: p.to_string(),
-            value: json!(p.default_value())
+            value: json!(p.default_value()),
         }
     }
 }

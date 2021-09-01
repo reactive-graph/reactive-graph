@@ -1,5 +1,5 @@
-mod expression_test;
 mod connector_test;
+mod expression_test;
 // mod const_value_test;
 // mod flow_test;
 // mod logical_gate_test;

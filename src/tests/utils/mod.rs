@@ -8,7 +8,7 @@ pub mod create_relation_instance_with_properties;
 pub use create_relation_instance_with_properties::*;
 
 use random_string::generate;
-use serde_json::{Value, json};
+use serde_json::{json, Value};
 
 const CHARSET_LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

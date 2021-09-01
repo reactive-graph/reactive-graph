@@ -1,8 +1,11 @@
-use crate::model::{PropertyInstanceGetter, PropertyInstanceSetter, ReactiveRelationInstance, ReactiveEntityInstance};
-use serde_json::{json,Value};
-use std::sync::{Arc};
-use std::collections::HashMap;
+use crate::model::{
+    PropertyInstanceGetter, PropertyInstanceSetter, ReactiveEntityInstance,
+    ReactiveRelationInstance,
+};
 use crate::relation::connector::ConnectorProperties;
+use serde_json::{json, Value};
+use std::collections::HashMap;
+use std::sync::Arc;
 
 // TODO: move into ConnectorProperties
 pub static TYPE_NAME_CONNECTOR: &'static str = "connector";
@@ -32,7 +35,10 @@ pub struct Connector {
 }
 
 impl Connector {
-    pub fn from_relation<'a>(relation: Arc<ReactiveRelationInstance>, f: ConnectorFunction) -> Connector {
+    pub fn from_relation<'a>(
+        relation: Arc<ReactiveRelationInstance>,
+        f: ConnectorFunction,
+    ) -> Connector {
         let mut connector = Connector {
             relation: relation.clone(),
             f,
@@ -50,12 +56,13 @@ impl Connector {
         inbound: Arc<ReactiveEntityInstance>,
         inbound_property_name: String,
     ) -> Connector {
-        let properties = get_connector_relation_properties(outbound_property_name, inbound_property_name);
+        let properties =
+            get_connector_relation_properties(outbound_property_name, inbound_property_name);
         let relation = Arc::new(ReactiveRelationInstance::create_with_properties(
             outbound.clone(),
             TYPE_NAME_CONNECTOR.to_string(),
             inbound.clone(),
-            properties
+            properties,
         ));
         Connector::from_relation(relation, |v| v.clone())
     }
@@ -64,32 +71,63 @@ impl Connector {
     /// TODO: Fail fast
     /// TODO: Return Result
     pub fn connect(&mut self) {
-        let outbound_property_name = self.relation.as_string(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string());
-        let inbound_property_name = self.relation.as_string(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string());
+        let outbound_property_name = self
+            .relation
+            .as_string(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string());
+        let inbound_property_name = self
+            .relation
+            .as_string(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string());
         if outbound_property_name.is_some() && inbound_property_name.is_some() {
             let outbound_property_name = outbound_property_name.unwrap();
             let inbound_property_name = inbound_property_name.unwrap();
-            let outbound_property = self.relation.outbound.properties.get(&outbound_property_name.clone());
-            let inbound_property = self.relation.inbound.properties.get(&inbound_property_name.clone());
+            let outbound_property = self
+                .relation
+                .outbound
+                .properties
+                .get(&outbound_property_name.clone());
+            let inbound_property = self
+                .relation
+                .inbound
+                .properties
+                .get(&inbound_property_name.clone());
             if outbound_property.is_some() && inbound_property.is_some() {
                 let inbound = self.relation.inbound.clone();
                 self.handle_id = inbound_property.unwrap().id.as_u128();
                 // println!("connecting {} {} --> {} {}", self.relation.outbound.id, outbound_property_name.clone(), self.relation.inbound.id, inbound_property_name.clone());
                 let f = self.f;
-                outbound_property.unwrap().stream.read().unwrap().observe_with_handle(move |value: &Value| {
-                    inbound.set(inbound_property_name.clone(), f(value.clone()));
-                }, self.handle_id);
+                outbound_property
+                    .unwrap()
+                    .stream
+                    .read()
+                    .unwrap()
+                    .observe_with_handle(
+                        move |value: &Value| {
+                            inbound.set(inbound_property_name.clone(), f(value.clone()));
+                        },
+                        self.handle_id,
+                    );
             }
         }
     }
 
     /// TODO: Add guard: disconnect only if connected
     pub fn disconnect(&self) {
-        let outbound_property_name = self.relation.as_string(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string());
+        let outbound_property_name = self
+            .relation
+            .as_string(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string());
         if outbound_property_name.is_some() {
-            let outbound_property = self.relation.outbound.properties.get(&outbound_property_name.unwrap().clone());
+            let outbound_property = self
+                .relation
+                .outbound
+                .properties
+                .get(&outbound_property_name.unwrap().clone());
             if outbound_property.is_some() {
-                outbound_property.unwrap().stream.read().unwrap().remove(self.handle_id);
+                outbound_property
+                    .unwrap()
+                    .stream
+                    .read()
+                    .unwrap()
+                    .remove(self.handle_id);
             }
         }
     }
@@ -98,8 +136,15 @@ impl Connector {
     //     format!("{}--{}--{}", type_name, outbound_property_name.as_str(), inbound_property_name.as_str())
     // }
 
-    pub fn type_name(type_name: &str, outbound_property_name: &str, inbound_property_name: &str) -> String {
-        format!("{}--{}--{}", type_name, outbound_property_name, inbound_property_name)
+    pub fn type_name(
+        type_name: &str,
+        outbound_property_name: &str,
+        inbound_property_name: &str,
+    ) -> String {
+        format!(
+            "{}--{}--{}",
+            type_name, outbound_property_name, inbound_property_name
+        )
     }
 }
 
@@ -112,9 +157,18 @@ impl Drop for Connector {
 
 /// The relation instance of type connector contains exactly two properties
 /// which contains the names of the entity properties.
-fn get_connector_relation_properties(outbound_property_name: String, inbound_property_name: String) -> HashMap<String, Value> {
+fn get_connector_relation_properties(
+    outbound_property_name: String,
+    inbound_property_name: String,
+) -> HashMap<String, Value> {
     let mut properties = HashMap::new();
-    properties.insert(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(outbound_property_name));
-    properties.insert(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(inbound_property_name));
+    properties.insert(
+        ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(),
+        json!(outbound_property_name),
+    );
+    properties.insert(
+        ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(),
+        json!(inbound_property_name),
+    );
     properties
 }

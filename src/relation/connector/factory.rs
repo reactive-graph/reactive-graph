@@ -3,9 +3,11 @@
 use std::str::FromStr;
 use std::sync::Arc;
 
-use indradb::{Type, Edge, EdgeProperties, EdgeKey};
+use indradb::{Edge, EdgeKey, EdgeProperties, Type};
 
-use crate::model::{ReactiveRelationInstance, ReactiveRelationInstanceFactory, ReactiveEntityInstance};
+use crate::model::{
+    ReactiveEntityInstance, ReactiveRelationInstance, ReactiveRelationInstanceFactory,
+};
 use crate::relation::connector::ConnectorProperties;
 
 pub struct ConnectorReactiveRelationInstanceFactory {}
@@ -13,20 +15,20 @@ impl ReactiveRelationInstanceFactory for ConnectorReactiveRelationInstanceFactor
     fn new<S: Into<String>>(
         outbound: Arc<ReactiveEntityInstance>,
         type_name: S,
-        inbound: Arc<ReactiveEntityInstance>
+        inbound: Arc<ReactiveEntityInstance>,
     ) -> Arc<ReactiveRelationInstance> {
         let key = EdgeKey::new(
             outbound.id,
             Type::from_str(type_name.into().as_str()).unwrap(),
-            inbound.id
+            inbound.id,
         );
         Arc::new(ReactiveRelationInstance::from(
             outbound.clone(),
             inbound.clone(),
             EdgeProperties::new(
                 Edge::new_with_current_datetime(key),
-                ConnectorProperties::properties()
-            )
+                ConnectorProperties::properties(),
+            ),
         ))
     }
 }

@@ -1,7 +1,7 @@
-pub mod properties;
-pub mod factory;
 pub mod connector;
+pub mod factory;
+pub mod properties;
 
-pub use properties::*;
-pub use factory::*;
 pub use connector::*;
+pub use factory::*;
+pub use properties::*;
