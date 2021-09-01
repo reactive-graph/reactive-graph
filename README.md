@@ -54,3 +54,9 @@ abstracted FRP-driven programming (e.g. video game, GUI, animation, etc.).
 
 Feel free to have a look at the documentation for a better understanding on how everything composes
 and work.
+
+### Thanks to
+
+* https://github.com/phaazon/bidule
+* https://github.com/xd009642/tarpaulin
+* https://codecov.io/
