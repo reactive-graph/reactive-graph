@@ -1,0 +1,33 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "inexor-rgf-core-reactive"
+description = "Inexor - Reactive Graph Flow - Core - Reactive"
+version = "0.2.1"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+indradb-lib = "1"
+log = { version = "0.4", features = ["std", "serde"] }
+serde = { version = "1.0.130", features = [ "derive" ] }
+serde_json = "1.0.67"
+strum = { version = "0.20", features = ["derive"] }
+strum_macros = "0.20"
+uuid = { version = "0.8.2", features = ["serde", "v4"] }
+
+inexor-rgf-core-bidule = { git = "https://github.com/aschaeffer/inexor-rgf-core-bidule.git" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+
+[dev-dependencies]
+random-string = "1.0"
+
+[lib]
+crate-type = ["dylib"]
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
