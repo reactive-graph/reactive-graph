@@ -1,3 +1,6 @@
+#![feature(register_tool)]
+#![register_tool(tarpaulin)]
+
 pub use component::*;
 pub use data_type::*;
 pub use entity_instance::*;
@@ -36,5 +39,5 @@ pub mod reactive_relation_instance;
 pub mod property_instance_accessor;
 
 #[cfg(test)]
-#[cfg_attr(tarpaulin, ignore)]
+#[tarpaulin::ignore]
 pub mod tests;
