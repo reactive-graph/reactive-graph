@@ -2,12 +2,12 @@
 
 | Project | Module | Sub-Module | Functionality | Tests |
 | --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Core | Subsystem | Incomplete | 0% |
+| Reactive Graph Flow | Core | Plugins | Incomplete | 0% |
 
 ### About Inexor
 
 <a href="https://inexor.org/">
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-model/main/docs/images/inexor_2.png">
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-plugins/main/docs/images/inexor_2.png">
 </a>
 
 * Inexor will be a new first person shooter game which is based on a new octree-based game engine.
@@ -34,12 +34,12 @@ This module provides the plugin mechanism of the reactive graph flow. The main a
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-subsystem/Rust">](https://github.com/aschaeffer/inexor-rgf-core-subsystem/actions?query=workflow%3ARust)
-[<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-subsystem">]()
-[<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-subsystem">]()
-[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-subsystem">]()
+[<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-plugins/Rust">](https://github.com/aschaeffer/inexor-rgf-core-plugins/actions?query=workflow%3ARust)
+[<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-plugins">]()
+[<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-plugins">]()
+[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">]()
 
-[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-subsystem">](https://github.com/aschaeffer/inexor-rgf-core-subsystem/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-plugins">](https://github.com/aschaeffer/inexor-rgf-core-plugins/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
 #### The Plugin System
