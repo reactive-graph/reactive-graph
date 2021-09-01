@@ -1,14 +1,18 @@
 cargo-features = ["edition2021"]
+
 [package]
-name = "inexor-rgf-shared-bidule"
-description = "Inexor Reactive Graph Flow - Shared - Bidule (Patched)"
+name = "inexor-rgf-core-bidule"
+description = "Inexor Reactive Graph Flow - Core - Bidule (Patched)"
 version = "0.2.1"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
+
 [lib]
 crate-type = ["dylib"]
+
 [profile.dev]
 opt-level = 0
+
 [profile.release]
 opt-level = 3
