@@ -1,13 +1,7 @@
-use std::collections::HashMap;
-use std::str::FromStr;
-
-use indradb::{NamedProperty, Type, Vertex, VertexProperties};
-use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::r_string;
-use crate::{EntityInstance, Flow};
-use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
+use crate::Flow;
 
 #[test]
 fn flow_test() {
