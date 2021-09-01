@@ -2,7 +2,7 @@
 
 | Project | Module | Sub-Module | Functionality | Tests Coverage |
 | --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Core | Model | Bidule | TODO |
+| Reactive Graph Flow | Core | Model | Bidule | ~ 80% |
 
 ### About Inexor
 
