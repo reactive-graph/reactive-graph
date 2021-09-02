@@ -7,6 +7,30 @@ version = "0.2.1"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
+
+[dependencies]
+async-std = { version = "1.8", features = ["attributes"] }
+async-trait = "0.1"
+crossbeam = "0.8.0"
+indradb-lib = "1"
+log = { version = "0.4", features = ["std", "serde"] }
+query_interface = "0.3.5"
+rust-embed = { version = "5.7.0", features = ["debug-embed", "compression"] }
+serde = { version = "1.0.130", features = [ "derive" ] }
+serde_json = "1.0.67"
+strum = { version = "0.20", features = ["derive"] }
+strum_macros = "0.20"
+uuid = { version = "0.8.2", features = ["serde", "v4"] }
+waiter_di = { version = "1.6.4", features = [ "async" ] }
+
+inexor-rgf-core-bidule = { git = "https://github.com/aschaeffer/inexor-rgf-core-bidule.git" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
+inexor-rgf-core-behaviour = { git = "https://github.com/aschaeffer/inexor-rgf-core-behaviour.git" }
+
+[dev-dependencies]
+random-string = "1.0"
+
 [lib]
 crate-type = ["dylib"]
 [profile.dev]
