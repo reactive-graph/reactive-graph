@@ -1,8 +1,8 @@
 cargo-features = ["edition2021"]
 
 [package]
-name = "inexor-rgf-core-bidule"
-description = "Inexor - Reactive Graph Flow - Core - Bidule (Patched)"
+name = "inexor-rgf-core-frp"
+description = "Inexor - Reactive Graph Flow - Core - FRP (Bidule Patched)"
 version = "0.2.1"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"

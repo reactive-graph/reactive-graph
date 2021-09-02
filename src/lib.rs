@@ -1,10 +1,12 @@
 #![feature(unsized_tuple_coercion)]
+#![feature(register_tool)]
+#![register_tool(tarpaulin)]
 
 /// Fork of bidule
 /// Adds handle_ids for subscribers
-pub mod bidule;
-pub use bidule::*;
+pub mod frp;
+pub use frp::*;
 
 #[cfg(test)]
-#[cfg_attr(tarpaulin, ignore)]
+#[tarpaulin::ignore]
 mod tests;

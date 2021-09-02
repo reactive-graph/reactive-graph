@@ -1,4 +1,4 @@
-use crate::bidule::*;
+use crate::frp::*;
 
 #[test]
 fn frp() {
