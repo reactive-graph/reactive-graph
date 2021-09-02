@@ -15,7 +15,7 @@ serde = { version = "1.0.130", features = [ "derive" ] }
 serde_json = "1.0.67"
 uuid = { version = "0.8.2", features = ["serde", "v4"] }
 
-inexor-rgf-core-bidule = { git = "https://github.com/aschaeffer/inexor-rgf-core-bidule.git" }
+inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 
 [dev-dependencies]
 random-string = "1.0"
