@@ -1,10 +1,10 @@
 use std::sync::Arc;
 
-use inexor_ecs_model as model;
-use model::{Component, EntityType, RelationType};
-use inexor_ecs_model::{ReactiveEntityInstance, ReactiveRelationInstance, Flow};
-use uuid::Uuid;
 use indradb::EdgeKey;
+use inexor_rgf_core_model::{
+    Component, EntityType, Flow, ReactiveEntityInstance, ReactiveRelationInstance, RelationType,
+};
+use uuid::Uuid;
 
 #[derive(Debug)]
 pub struct SubsystemError;
@@ -22,9 +22,13 @@ pub trait Subsystem: Send + Sync {
 
     fn get_relation_type_provider(&self) -> Result<Arc<dyn RelationTypeProvider>, SubsystemError>;
 
-    fn get_entity_behaviour_provider(&self) -> Result<Arc<dyn EntityBehaviourProvider>, SubsystemError>;
+    fn get_entity_behaviour_provider(
+        &self,
+    ) -> Result<Arc<dyn EntityBehaviourProvider>, SubsystemError>;
 
-    fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, SubsystemError>;
+    fn get_relation_behaviour_provider(
+        &self,
+    ) -> Result<Arc<dyn RelationBehaviourProvider>, SubsystemError>;
 
     fn get_flow_provider(&self) -> Result<Arc<dyn FlowProvider>, SubsystemError>;
 }
