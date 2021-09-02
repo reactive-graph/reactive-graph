@@ -1,7 +1,8 @@
 cargo-features = ["edition2021"]
+
 [package]
-name = "inexor-rgf-subsystem"
-description = "Inexor Reactive Graph Flow - Subsystem"
+name = "inexor-rgf-core-plugins"
+description = "Inexor - Reactive Graph Flow - Core - Plugins"
 version = "0.2.1"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
