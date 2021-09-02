@@ -34,12 +34,12 @@ This module provides a very simple FRP library built over functional concepts (s
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-bidule/Rust">](https://github.com/aschaeffer/inexor-rgf-core-bidule/actions?query=workflow%3ARust)
-[<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-bidule">]()
-[<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-bidule">]()
-[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-bidule">]()
+[<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-frp/Rust">](https://github.com/aschaeffer/inexor-rgf-core-frp/actions?query=workflow%3ARust)
+[<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-frp">]()
+[<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-frp">]()
+[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-frp">]()
 
-[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-bidule">](https://github.com/aschaeffer/inexor-rgf-core-model/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-frp">](https://github.com/aschaeffer/inexor-rgf-core-model/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
 # bidule, a Rust FRP crate
