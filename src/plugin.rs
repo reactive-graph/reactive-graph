@@ -62,7 +62,7 @@ pub trait Plugin: Send + Sync {
 #[derive(Copy, Clone)]
 pub struct PluginDeclaration {
     pub rustc_version: &'static str,
-    pub core_version: &'static str,
+    pub inexor_rgf_plugin_version: &'static str,
     pub register: unsafe extern "C" fn(&mut dyn PluginRegistrar),
 }
 
