@@ -3,6 +3,8 @@ pub use entity_behaviour_provider::EntityBehaviourProvider;
 pub use entity_type_provider::EntityTypeProvider;
 pub use flow_provider::FlowProvider;
 pub use plugin::Plugin;
+pub use plugin::PluginDeclaration;
+pub use plugin::PluginError;
 pub use relation_behaviour_provider::RelationBehaviourProvider;
 pub use relation_type_provider::RelationTypeProvider;
 
