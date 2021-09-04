@@ -30,7 +30,8 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 ### About this module
 
-This module provides the plugin mechanism of the reactive graph flow. The main application and all plugins will depend on this.
+This module provides the plugin mechanism of the Inexor Reactive Graph Flow. The
+[main application](https://github.com/aschaeffer/inexor-rgf-application) and all plugins will depend on this.
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
@@ -44,7 +45,7 @@ This module provides the plugin mechanism of the reactive graph flow. The main a
 
 #### The Plugin System
 
-One of the main goals of the Inexor Reactive Flow Graph that is as dynamic and universal as possible in order to create
+One of the main goals of the Inexor Reactive Graph Flow that is as dynamic and universal as possible in order to create
 new games, new maps, new logics. It borrows a lot of modern ideas to archive this goal:
 
 * Flowgraph (like Node Red)
@@ -73,7 +74,7 @@ A plugin is able to define new `Component`s, `Entity Type`s and `Relation Type`s
 Instance`s, `Relation Instance`s and `Flow`s. And it provides new `Entity Behaviour`s and `Relation Behaviour`s. The
 plugins are compiled separately as a dynamically linked library and are loaded at runtime.
 
-As a bonus, the plugin system also enables the Inexor Reactive Flow Graph application to be as small as possible. If the
+As a bonus, the plugin system also enables the Inexor Reactive Graph Flow application to be as small as possible. If the
 core of the application is small it is potentially useful for other use cases like IOT oder control software for
 robotics - the plugins can provide such functionality and some functionalities are the very same (logical gates).
 
@@ -86,7 +87,7 @@ robotics - the plugins can provide such functionality and some functionalities a
 
 TODO: Flow Type: Cause flows contains entity instances and relation instances, we need something like a template for a Flow. Like "Flow Type: Player" which is the template for "Flow Instance: Player 1" and "Flow Instance: Player 2"
 
-#### Plugins can extend the type system of the Reactive Flow Graph
+#### Plugins can extend the type system of the Reactive Graph Flow
 
 * Components can be provided by a plugin
 * Entity Types can be provided by a plugin
