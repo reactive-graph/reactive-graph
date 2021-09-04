@@ -5,6 +5,7 @@ pub use flow_provider::FlowProvider;
 pub use plugin::Plugin;
 pub use plugin::PluginDeclaration;
 pub use plugin::PluginError;
+pub use plugin::PluginRegistrar;
 pub use relation_behaviour_provider::RelationBehaviourProvider;
 pub use relation_type_provider::RelationTypeProvider;
 
