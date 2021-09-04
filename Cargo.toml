@@ -1,14 +1,15 @@
 cargo-features = ["edition2021"]
+
 [package]
-name = "inexor-rgf"
-description = "Inexor Reactive Graph Flow"
+name = "inexor-rgf-application"
+description = "Inexor - Reactive Graph Flow - Application"
 version = "0.2.1"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
 readme = "README.md"
 keywords = ["reactive", "graph", "flow", "entity", "entity system", "entity component system", "graph database"]
-categories = ["game-engine","iot","home-automation"]
+categories = ["game-engine","entity-component-system","iot","home-automation"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -69,7 +70,7 @@ inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core
 #inexor-system-environment = { path = "../inexor-system-environment" }
 
 [[bin]]
-name = "inexor-rgf"
+name = "inexor-rgf-application"
 #required-features = ["frobnicate"]
 
 [features]
