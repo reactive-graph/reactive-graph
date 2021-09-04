@@ -1,0 +1,28 @@
+# Scan this file for changes every 30 seconds
+refresh_rate: 30 seconds
+
+appenders:
+  # An appender named "stdout" that writes to stdout
+  stdout:
+    kind: console
+    encoder:
+      # https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html
+      pattern: "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r"
+
+  file:
+    kind: file
+    path: "log/inexor-ecs.log"
+    encoder:
+      pattern: "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
+
+# Set the default logging level to "warn" and attach the "stdout" appender to the root
+root:
+  level: debug
+  appenders:
+    - stdout
+    - file
+
+loggers:
+  # Raise the maximum log level for events sent to the "app::backend::db" logger to "info"
+  app::backend::db:
+    level: info
