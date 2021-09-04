@@ -16,6 +16,10 @@ pub enum PluginError {
     NoRelationBehaviourProvider,
     NoFlowProvider,
     PluginCreationError,
+    InitializationError,
+    PostInitializationError,
+    PreShutdownError,
+    ShutdownError,
     Other { message: String },
 }
 
@@ -36,11 +40,13 @@ impl<S: ToString> From<S> for PluginError {
 pub trait Plugin: Send + Sync {
     // TODO: Additional metadata
     // fn metadata(&self) -> Result<Arc<dyn PluginMetadata>, PluginError>;
-    fn init(&self);
+    fn init(&self) -> Result<(), PluginError>;
 
-    fn post_init(&self);
+    fn post_init(&self) -> Result<(), PluginError>;
 
-    fn shutdown(&self);
+    fn pre_shutdown(&self) -> Result<(), PluginError>;
+
+    fn shutdown(&self) -> Result<(), PluginError>;
 
     fn get_component_provider(&self) -> Result<Arc<dyn ComponentProvider>, PluginError>;
 
