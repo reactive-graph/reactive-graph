@@ -40,12 +40,12 @@ The following modifications were made:
 * Use Arc instead of Rc for thread safety
 * Added possibility to observe a stream and get a handle in order to be able to remove the observer (observe_with_handle)
 
-[<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
+[<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-frp/Rust">](https://github.com/aschaeffer/inexor-rgf-core-frp/actions?query=workflow%3ARust)
 [<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-frp">]()
 [<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-frp">]()
-[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-frp">]()
+[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-frp">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-frp)
 
 [<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-frp">](https://github.com/aschaeffer/inexor-rgf-core-model/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
