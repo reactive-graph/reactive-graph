@@ -49,11 +49,13 @@ async-graphql = "2.9.12"
 async-graphql-actix-web = "2.9.12"
 mime = "0.3.16"
 
-inexor-rgf-shared-bidule = { git = "https://github.com/aschaeffer/inexor-rgf-shared-bidule.git" }
+inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
-#inexor-ecs-reactive = { path = "../inexor-ecs-reactive" }
-#inexor-ecs-behaviour = { path = "../inexor-ecs-behaviour" }
-#inexor-ecs-subsystem = { path = "../inexor-ecs-subsystem" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
+inexor-rgf-core-behaviour = { git = "https://github.com/aschaeffer/inexor-rgf-core-behaviour.git" }
+inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
+
+# TODO: Remove them (in future they will be dynamically loaded at runtime)
 #inexor-ecs-type-system-base = { path = "../inexor-ecs-type-system/base" }
 #inexor-ecs-type-system-arithmetic = { path = "../inexor-ecs-type-system/arithmetic" }
 #inexor-ecs-type-system-connector = { path = "../inexor-ecs-type-system/connector" }
