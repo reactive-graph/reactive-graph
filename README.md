@@ -30,7 +30,15 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 ### About this module
 
-This module provides a very simple FRP library built over functional concepts (see README below). This is a fork of https://github.com/phaazon/bidule
+This module provides a very simple functional reactive programming (FRP) library built over functional concepts (see
+README below).
+
+This is a fork of https://github.com/phaazon/bidule
+
+The following modifications were made:
+
+* Use Arc instead of Rc for thread safety
+* Added possibility to observe a stream and get a handle in order to be able to remove the observer (observe_with_handle)
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
