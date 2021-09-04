@@ -32,12 +32,12 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 This module provides the plugin mechanism of the reactive graph flow. The main application and all plugins will depend on this.
 
-[<img src="https://img.shields.io/badge/Language-Rust-brightgreen">]()
+[<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-plugins/Rust">](https://github.com/aschaeffer/inexor-rgf-core-plugins/actions?query=workflow%3ARust)
 [<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-plugins">]()
 [<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-plugins">]()
-[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">]()
+[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins)
 
 [<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-plugins">](https://github.com/aschaeffer/inexor-rgf-core-plugins/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
@@ -60,4 +60,3 @@ This module provides the plugin mechanism of the reactive graph flow. The main a
 
 * https://github.com/xd009642/tarpaulin
 * https://codecov.io/
-
