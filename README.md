@@ -61,14 +61,17 @@ Therefore, entity component system is very flexible at runtime:
 * Add new, modify or remove instances (Entity Instance, Relation Instance)
 * Connect or disconnect properties (within Entity Instances or Relation Instances)
 
-So, the data model is as flexible as possible. But the behaviour of the Entity Instances and Relation Instances has to
-be implemented and requires compilation which makes the system looses flexibility. To archive a true dynamic environment
-that is ready to use and can be extended by new behaviour, it is therefore necessary to make that flexibility available
-to code that is not yet written. Therefore, we provide a plugin system.
+So, the data model is as flexible as possible. But the behaviour of `Entity Instance`s and `Relation Instance`s have to
+be implemented in beforehand and requires compilation. For example, you could define a new `Entity Type` named `Random
+Number Generator` but it simply doesn't do anything. In order to bring entities of this type to life, the behaviour of
+the type would have to be implemented (and compiled into the binary).
 
-A plugin is able to define new Components, Entity Types and Relation Types. It is able to construct new Entity
-Instances, Relation Instances and Flows. And it provides new behaviour to Entity Types and Relation Types. The plugins
-are compiled separately as a dynamically linked library and are loaded at runtime.
+To archive a true dynamic environment that can be extended with new behaviour, it is therefore necessary to offer a way
+to add and remove behaviour to code that is not yet written. Therefore, we provide a plugin system.
+
+A plugin is able to define new `Component`s, `Entity Type`s and `Relation Type`s. It is able to construct new `Entity
+Instance`s, `Relation Instance`s and `Flow`s. And it provides new `Entity Behaviour`s and `Relation Behaviour`s. The
+plugins are compiled separately as a dynamically linked library and are loaded at runtime.
 
 As a bonus, the plugin system also enables the Inexor Reactive Flow Graph application to be as small as possible. If the
 core of the application is small it is potentially useful for other use cases like IOT oder control software for
