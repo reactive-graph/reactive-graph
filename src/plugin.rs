@@ -67,5 +67,5 @@ pub struct PluginDeclaration {
 }
 
 pub trait PluginRegistrar {
-    fn register_plugin(&mut self, name: &str, function: Box<dyn Plugin>);
+    fn register_plugin(&mut self, name: &str, plugin: Box<dyn Plugin>);
 }
