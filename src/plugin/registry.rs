@@ -21,23 +21,6 @@ impl PluginRegistry {
         PluginRegistry::default()
     }
 
-    pub fn init(
-        &self,
-        name: &str,
-    ) -> Result<(), PluginError> {
-        let plugin_proxy = self.plugins.get(name);
-        match plugin_proxy {
-            Some(plugin_proxy) => {
-                debug!("Initializing plugin {}", name);
-                plugin_proxy.init()
-            },
-            None => {
-                error!("Failed to initialize plugin {}: Not found", name);
-                return Err(PluginError::InitializationError);
-            },
-        }
-    }
-
     /// Load a plugin library and add all contained functions to the internal
     /// function table.
     ///
@@ -84,6 +67,75 @@ impl PluginRegistry {
             Err(e) => {
                 error!("Failed to load dynamic library: {}", e.to_string());
                 return Err(PluginError::PluginCreationError);
+            }
+        }
+    }
+
+    pub fn init(
+        &self,
+        name: &str,
+    ) -> Result<(), PluginError> {
+        let plugin_proxy = self.plugins.get(name);
+        match plugin_proxy {
+            Some(plugin_proxy) => {
+                debug!("Initializing plugin {}", name);
+                plugin_proxy.init()
+            }
+            None => {
+                error!("Failed to initialize plugin {}: Not found", name);
+                return Err(PluginError::InitializationError);
+            }
+        }
+    }
+
+    pub fn post_init(
+        &self,
+        name: &str,
+    ) -> Result<(), PluginError> {
+        let plugin_proxy = self.plugins.get(name);
+        match plugin_proxy {
+            Some(plugin_proxy) => {
+                debug!("Post-Initializing plugin {}", name);
+                plugin_proxy.post_init()
+            }
+            None => {
+                error!("Failed to initialize plugin {}: Not found", name);
+                return Err(PluginError::PostInitializationError);
+            }
+        }
+    }
+
+
+    pub fn pre_shutdown(
+        &self,
+        name: &str,
+    ) -> Result<(), PluginError> {
+        let plugin_proxy = self.plugins.get(name);
+        match plugin_proxy {
+            Some(plugin_proxy) => {
+                debug!("Initializing plugin {}", name);
+                plugin_proxy.pre_shutdown()
+            }
+            None => {
+                error!("Failed to initialize plugin {}: Not found", name);
+                return Err(PluginError::PreShutdownError);
+            }
+        }
+    }
+
+    pub fn shutdown(
+        &self,
+        name: &str,
+    ) -> Result<(), PluginError> {
+        let plugin_proxy = self.plugins.get(name);
+        match plugin_proxy {
+            Some(plugin_proxy) => {
+                debug!("Initializing plugin {}", name);
+                plugin_proxy.shutdown()
+            }
+            None => {
+                error!("Failed to initialize plugin {}: Not found", name);
+                return Err(PluginError::ShutdownError);
             }
         }
     }

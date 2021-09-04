@@ -12,7 +12,7 @@ fn main() {
     match logger_result {
         Err(error) => {
             println!("Failed to configure logger: {}", error);
-        },
+        }
         _ => {}
     }
 
@@ -24,5 +24,8 @@ fn main() {
             .expect("Failed to load BASE plugin");
 
         registry.init("base");
+        registry.post_init("base");
+        registry.pre_shutdown("base");
+        registry.shutdown("base");
     }
 }

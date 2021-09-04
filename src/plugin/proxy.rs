@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use libloading::Library;
+use log::debug;
 
 use crate::plugins::{ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin, PluginError, RelationBehaviourProvider, RelationTypeProvider};
 
@@ -8,23 +9,27 @@ use crate::plugins::{ComponentProvider, EntityBehaviourProvider, EntityTypeProvi
 /// the library it came from.
 pub struct PluginProxy {
     pub(crate) plugin: Box<Arc<dyn Plugin>>,
-    pub(crate) lib: Arc<Library>
+    pub(crate) lib: Arc<Library>,
 }
 
 impl Plugin for PluginProxy {
     fn init(&self) -> Result<(), PluginError> {
+        debug!("Proxy: init");
         self.plugin.init()
     }
 
     fn post_init(&self) -> Result<(), PluginError> {
+        debug!("Proxy: post_init");
         self.plugin.post_init()
     }
 
     fn pre_shutdown(&self) -> Result<(), PluginError> {
-        self.plugin.shutdown()
+        debug!("Proxy: pre_shutdown");
+        self.plugin.pre_shutdown()
     }
 
     fn shutdown(&self) -> Result<(), PluginError> {
+        debug!("Proxy: shutdown");
         self.plugin.shutdown()
     }
 
