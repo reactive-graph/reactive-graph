@@ -18,6 +18,7 @@ pub enum PluginError {
     NoEntityBehaviourProvider,
     NoRelationBehaviourProvider,
     NoFlowProvider,
+    PluginCreationError,
     Other { message: String },
 }
 
