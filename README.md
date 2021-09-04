@@ -1,8 +1,8 @@
 # Inexor Reactive Graph Flow
 
-| Project | Module | Sub-Module | Functionality | Tests |
+| Project | Module | Sub-Module | Functionality | Test Coverage |
 | --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Core | Plugins | Incomplete | 0% |
+| Reactive Graph Flow | Core | Plugins | Experiment | 0% |
 
 ### About Inexor
 
