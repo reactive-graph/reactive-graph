@@ -99,8 +99,13 @@ impl PluginRegistry for PluginRegistryImpl {
 
     fn load_plugin(&self, name: String, path: String) {
         unsafe {
-            let result = self.load(path);
+            let result = self.load(path.clone());
             if result.is_err() {
+                error!(
+                    "Failed to load plugin {} from {}",
+                    name.clone(),
+                    path.clone()
+                );
                 return;
             }
             let plugin_proxy = self.get(name.clone());
@@ -144,6 +149,11 @@ impl PluginRegistry for PluginRegistryImpl {
                     plugin_proxy.post_init();
                 }
                 None => {
+                    error!(
+                        "Failed to initialize plugin {} from {}",
+                        name.clone(),
+                        path.clone()
+                    );
                     // TODO: Handle error: plugin with name not found
                 }
             }
