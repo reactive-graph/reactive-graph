@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use libloading::Library;
-use log::debug;
 
 use crate::plugins::{
     ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin,
