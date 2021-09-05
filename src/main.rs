@@ -2,10 +2,16 @@
 #![feature(in_band_lifetimes)]
 #![feature(concat_idents)]
 
-use crate::plugin::registry::PluginRegistry;
-pub use inexor_rgf_core_plugins as plugins;
 use std::alloc::System;
 
+use inexor_rgf_core_behaviour as behaviour;
+use inexor_rgf_core_model as model;
+use inexor_rgf_core_plugins as plugins;
+use inexor_rgf_core_reactive as reactive;
+
+use crate::plugin::registry::PluginRegistry;
+
+mod api;
 mod plugin;
 
 #[global_allocator]
@@ -29,7 +35,6 @@ fn main() {
             .load("/home/aschaeffer/CLionProjects/inexor-rgf-plugin-metadata/target/debug/libinexor_rgf_plugin_metadata.so")
             .expect("Failed to load METADATA plugin");
 
-        registry.list();
         registry.init("base");
         registry.init("metadata");
         registry.post_init("base");
