@@ -43,10 +43,5 @@ pub use relation_edge_manager_impl::*;
 pub mod relation_type_manager_impl;
 pub use relation_type_manager_impl::*;
 
-// TODO: Move to plugin inexor-rgf-plugin-system-env
-// pub mod system_constants_initializer_impl;
-// pub use system_constants_initializer_impl::*;
-//
-// TODO: Move to plugin inexor-rgf-plugin-js-engine
-// pub mod js_engine_impl;
-// pub use js_engine_impl::*;
+pub mod plugin_registry_impl;
+pub use plugin_registry_impl::*;

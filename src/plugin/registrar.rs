@@ -5,7 +5,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 pub(crate) struct PluginRegistrar {
-    pub(crate) plugins: HashMap<String, PluginProxy>,
+    pub(crate) plugins: HashMap<String, Arc<PluginProxy>>,
     pub(crate) lib: Arc<Library>,
 }
 
@@ -24,6 +24,6 @@ impl inexor_rgf_core_plugins::PluginRegistrar for PluginRegistrar {
             plugin,
             lib: Arc::clone(&self.lib),
         };
-        self.plugins.insert(name.to_string(), proxy);
+        self.plugins.insert(name.to_string(), Arc::new(proxy));
     }
 }

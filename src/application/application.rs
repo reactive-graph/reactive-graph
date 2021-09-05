@@ -8,40 +8,6 @@ use log::debug;
 use waiter_di::*;
 
 use crate::api::*;
-use crate::plugins::Plugin;
-
-// #[cfg(feature = "arithmetic")]
-// use inexor_ecs_type_system_arithmetic::subsystem::get_arithmetic_subsystem;
-//
-// #[cfg(feature = "base")]
-// use inexor_ecs_type_system_base::subsystem::get_base_subsystem;
-//
-// #[cfg(feature = "connector")]
-// use inexor_ecs_type_system_connector::subsystem::get_connector_subsystem;
-//
-// #[cfg(feature = "inout")]
-// use inexor_ecs_type_system_inout::subsystem::get_inout_subsystem;
-//
-// #[cfg(feature = "logical")]
-// use inexor_ecs_type_system_logical::subsystem::get_logical_subsystem;
-//
-// #[cfg(feature = "mqtt")]
-// use inexor_ecs_type_system_mqtt::subsystem::get_mqtt_subsystem;
-//
-// #[cfg(feature = "numeric")]
-// use inexor_ecs_type_system_numeric::subsystem::get_numeric_subsystem;
-//
-// #[cfg(feature = "system_environment")]
-// use inexor_system_environment::subsystem::get_system_environment_subsystem;
-//
-// #[cfg(feature = "taxonomy")]
-// use inexor_ecs_type_system_taxonomy::subsystem::get_taxonomy_subsystem;
-//
-// #[cfg(feature = "user_interface")]
-// use inexor_ecs_type_system_ui::subsystem::get_user_interface_subsystem;
-//
-// #[cfg(feature = "value")]
-// use inexor_ecs_type_system_value::subsystem::get_value_subsystem;
 
 #[wrapper]
 pub struct RunningState(RwLock<bool>);
@@ -49,45 +15,6 @@ pub struct RunningState(RwLock<bool>);
 #[provides]
 fn create_external_type_dependency() -> RunningState {
     RunningState(RwLock::new(false))
-}
-
-pub struct Plugins {
-    plugins: Vec<Arc<dyn Plugin>>,
-}
-
-#[wrapper]
-pub struct PluginsWrapper(Plugins);
-
-#[provides]
-fn create_plugins() -> PluginsWrapper {
-    PluginsWrapper(Plugins {
-        plugins: vec![
-            // TODO: Migrate to plugins
-            // TODO: Ordering
-            #[cfg(feature = "base")]
-            get_base_subsystem().unwrap(),
-            #[cfg(feature = "connector")]
-            get_connector_subsystem().unwrap(),
-            #[cfg(feature = "value")]
-            get_value_subsystem().unwrap(),
-            #[cfg(feature = "arithmetic")]
-            get_arithmetic_subsystem().unwrap(),
-            #[cfg(feature = "numeric")]
-            get_numeric_subsystem().unwrap(),
-            #[cfg(feature = "logical")]
-            get_logical_subsystem().unwrap(),
-            #[cfg(feature = "inout")]
-            get_inout_subsystem().unwrap(),
-            #[cfg(feature = "mqtt")]
-            get_mqtt_subsystem().unwrap(),
-            #[cfg(feature = "system_environment")]
-            get_system_environment_subsystem().unwrap(),
-            #[cfg(feature = "taxonomy")]
-            get_taxonomy_subsystem().unwrap(),
-            #[cfg(feature = "user_interface")]
-            get_user_interface_subsystem().unwrap(),
-        ],
-    })
 }
 
 #[async_trait]
@@ -133,7 +60,7 @@ pub trait Application: Send + Sync {
 
     fn get_graphql_server(&self) -> Arc<dyn GraphQLServer>;
 
-    // fn get_subsystem(&self) -> Arc<dyn Plugin>;
+    fn get_plugin_registry(&self) -> Arc<dyn PluginRegistry>;
 }
 
 #[module]
@@ -154,11 +81,8 @@ pub struct ApplicationImpl {
     relation_edge_manager: Wrc<dyn RelationEdgeManager>,
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
-
-    // system_constants_initializer: Wrc<dyn SystemConstantsInitializer>,
     graphql_server: Wrc<dyn GraphQLServer>,
-
-    plugins: PluginsWrapper,
+    plugin_registry: Wrc<dyn PluginRegistry>,
 }
 
 #[async_trait]
@@ -168,59 +92,15 @@ impl Application for ApplicationImpl {
         self.component_manager.init();
         self.entity_type_manager.init();
         self.relation_type_manager.init();
-        // TODO: Move the plugin initialization
-        // TODO: Add methods to load and unload plugins
-        for sub_system in self.plugins.0.plugins.iter() {
-            sub_system.init();
-            match sub_system.get_component_provider() {
-                Ok(component_provider) => self.component_manager.add_provider(component_provider),
-                Err(_) => {}
-            }
-            match sub_system.get_entity_type_provider() {
-                Ok(entity_type_provider) => {
-                    self.entity_type_manager.add_provider(entity_type_provider)
-                }
-                Err(_) => {}
-            }
-            match sub_system.get_relation_type_provider() {
-                Ok(relation_type_provider) => self
-                    .relation_type_manager
-                    .add_provider(relation_type_provider),
-                Err(_) => {}
-            }
-            match sub_system.get_entity_behaviour_provider() {
-                Ok(entity_behaviour_provider) => self
-                    .entity_behaviour_manager
-                    .add_provider(entity_behaviour_provider),
-                Err(_) => {}
-            }
-            match sub_system.get_relation_behaviour_provider() {
-                Ok(relation_behaviour_provider) => self
-                    .relation_behaviour_manager
-                    .add_provider(relation_behaviour_provider),
-                Err(_) => {}
-            }
-            match sub_system.get_flow_provider() {
-                Ok(flow_provider) => self.reactive_flow_manager.add_provider(flow_provider),
-                Err(_) => {}
-            }
-            sub_system.post_init();
-        }
+        self.plugin_registry.init();
         self.reactive_flow_manager.init();
         self.graphql_server.init();
-        // TODO: Migrate system_constants_initializer to submodule
-        // self.system_constants_initializer.init();
     }
 
     fn shutdown(&self) {
-        // TODO: Migrate system_constants_initializer to submodule
-        // self.system_constants_initializer.shutdown();
-
         self.graphql_server.shutdown();
         self.reactive_flow_manager.shutdown();
-        for sub_system in self.plugins.0.plugins.iter().rev() {
-            sub_system.shutdown();
-        }
+        self.plugin_registry.unload_plugins();
         self.relation_type_manager.shutdown();
         self.entity_type_manager.shutdown();
         self.component_manager.shutdown();
@@ -349,5 +229,9 @@ impl Application for ApplicationImpl {
 
     fn get_graphql_server(&self) -> Arc<dyn GraphQLServer> {
         self.graphql_server.clone()
+    }
+
+    fn get_plugin_registry(&self) -> Arc<dyn PluginRegistry> {
+        self.plugin_registry.clone()
     }
 }

@@ -34,6 +34,7 @@ syn = "1.0.76"
 futures-await-test = "0.3.0"
 futures = "0.3"
 libloading = "0.7.0"
+toml = "0.5.8"
 
 actix = "0.12"
 actix-web = "3"

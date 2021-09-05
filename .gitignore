@@ -17,3 +17,6 @@ cobertura.xml
 
 # Exclude CLIon / IntelliJ project files
 .idea
+
+# Prevent logs to be commited
+**/*.log

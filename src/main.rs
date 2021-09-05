@@ -11,7 +11,6 @@ use inexor_rgf_core_reactive as reactive;
 
 use crate::application::Application;
 use crate::di::di_container;
-use crate::plugin::registry::PluginRegistry;
 use std::thread;
 use std::time::Duration;
 use waiter_di::{profiles, Provider};
@@ -36,26 +35,6 @@ async fn main() {
             println!("Failed to configure logger: {}", error);
         }
         _ => {}
-    }
-
-    // TODO: Move the plugin registry management to application.rs
-    let mut registry = PluginRegistry::new();
-    unsafe {
-        registry
-            .load("/home/aschaeffer/CLionProjects/inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so")
-            .expect("Failed to load BASE plugin");
-        registry
-            .load("/home/aschaeffer/CLionProjects/inexor-rgf-plugin-metadata/target/debug/libinexor_rgf_plugin_metadata.so")
-            .expect("Failed to load METADATA plugin");
-
-        registry.init("base");
-        registry.init("metadata");
-        registry.post_init("base");
-        registry.post_init("metadata");
-        registry.pre_shutdown("metadata");
-        registry.pre_shutdown("base");
-        registry.shutdown("metadata");
-        registry.shutdown("base");
     }
 
     {

@@ -1,0 +1,9 @@
+[[plugin]]
+name = "base"
+active = true
+path = "/home/aschaeffer/CLionProjects/inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so"
+
+[[plugin]]
+name = "metadata"
+active = false
+path = "/home/aschaeffer/CLionProjects/inexor-rgf-plugin-metadata/target/debug/libinexor_rgf_plugin_metadata.so"
