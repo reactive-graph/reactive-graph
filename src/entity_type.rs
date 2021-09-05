@@ -68,12 +68,12 @@ impl EntityType {
         }
     }
 
-    /// Returns true, if the entity type is a.
+    /// Returns true, if the entity type is a component with the given name.
     pub fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
         self.components.contains(&component_name.into())
     }
 
-    /// Returns true, if the entity type behaves as.
+    /// Returns true, if the entity type behaves as  the behaviour with the given name.
     pub fn behaves_as<S: Into<String>>(&self, behaviour_name: S) -> bool {
         self.behaviours.contains(&behaviour_name.into())
     }

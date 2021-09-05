@@ -85,12 +85,12 @@ impl RelationType {
         }
     }
 
-    /// Returns true, if the relation type is a.
+    /// Returns true, if the relation type is a component with the given name.
     pub fn is_a(&self, component_name: String) -> bool {
         self.components.contains(&component_name)
     }
 
-    /// Returns true, if the relation type behaves as.
+    /// Returns true, if the relation type behaves as the behaviour with the given name.
     pub fn behaves_as(&self, behaviour_name: String) -> bool {
         self.behaviours.contains(&behaviour_name)
     }
