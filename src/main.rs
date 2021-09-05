@@ -1,6 +1,6 @@
+use crate::plugin::registry::PluginRegistry;
 pub use inexor_rgf_core_plugins as plugins;
 use std::alloc::System;
-use crate::plugin::registry::PluginRegistry;
 
 mod plugin;
 

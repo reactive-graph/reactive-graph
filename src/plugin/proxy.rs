@@ -3,7 +3,10 @@ use std::sync::Arc;
 use libloading::Library;
 use log::debug;
 
-use crate::plugins::{ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin, PluginError, RelationBehaviourProvider, RelationTypeProvider};
+use crate::plugins::{
+    ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin,
+    PluginError, RelationBehaviourProvider, RelationTypeProvider,
+};
 
 /// A proxy object which wraps a [`Plugin`] and makes sure it can't outlive
 /// the library it came from.
@@ -45,11 +48,15 @@ impl Plugin for PluginProxy {
         self.plugin.get_relation_type_provider()
     }
 
-    fn get_entity_behaviour_provider(&self) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError> {
+    fn get_entity_behaviour_provider(
+        &self,
+    ) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError> {
         self.plugin.get_entity_behaviour_provider()
     }
 
-    fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError> {
+    fn get_relation_behaviour_provider(
+        &self,
+    ) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError> {
         self.plugin.get_relation_behaviour_provider()
     }
 

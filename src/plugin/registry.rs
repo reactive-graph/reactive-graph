@@ -7,8 +7,8 @@ use log::{debug, error};
 
 use crate::plugin::proxy::PluginProxy;
 use crate::plugin::registrar::PluginRegistrar;
-use crate::plugins::{RUSTC_VERSION, INEXOR_RGF_PLUGIN_VERSION};
 use crate::plugins::{Plugin, PluginDeclaration, PluginError};
+use crate::plugins::{INEXOR_RGF_PLUGIN_VERSION, RUSTC_VERSION};
 
 #[derive(Default)]
 pub struct PluginRegistry {
@@ -42,15 +42,19 @@ impl PluginRegistry {
                     .get::<*mut PluginDeclaration>(b"plugin_declaration\0")?
                     .read();
                 // version checks to prevent accidental ABI incompatibilities
-                if decl.rustc_version != RUSTC_VERSION
-                {
+                if decl.rustc_version != RUSTC_VERSION {
                     error!("Version mismatch: rustc");
-                    return Err(PluginError::Other { message: String::from("Version mismatch: rustc") }.into());
+                    return Err(PluginError::Other {
+                        message: String::from("Version mismatch: rustc"),
+                    }
+                    .into());
                 }
-                if decl.inexor_rgf_plugin_version != INEXOR_RGF_PLUGIN_VERSION
-                {
+                if decl.inexor_rgf_plugin_version != INEXOR_RGF_PLUGIN_VERSION {
                     error!("Version mismatch: inexor_rgf_core_plugins");
-                    return Err(PluginError::Other { message: String::from("Version mismatch: inexor_rgf_core_plugins") }.into());
+                    return Err(PluginError::Other {
+                        message: String::from("Version mismatch: inexor_rgf_core_plugins"),
+                    }
+                    .into());
                 }
 
                 let mut registrar = PluginRegistrar::new(Arc::clone(&library));
@@ -71,10 +75,7 @@ impl PluginRegistry {
         }
     }
 
-    pub fn init(
-        &self,
-        name: &str,
-    ) -> Result<(), PluginError> {
+    pub fn init(&self, name: &str) -> Result<(), PluginError> {
         let plugin_proxy = self.plugins.get(name);
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -88,10 +89,7 @@ impl PluginRegistry {
         }
     }
 
-    pub fn post_init(
-        &self,
-        name: &str,
-    ) -> Result<(), PluginError> {
+    pub fn post_init(&self, name: &str) -> Result<(), PluginError> {
         let plugin_proxy = self.plugins.get(name);
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -105,11 +103,7 @@ impl PluginRegistry {
         }
     }
 
-
-    pub fn pre_shutdown(
-        &self,
-        name: &str,
-    ) -> Result<(), PluginError> {
+    pub fn pre_shutdown(&self, name: &str) -> Result<(), PluginError> {
         let plugin_proxy = self.plugins.get(name);
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -123,10 +117,7 @@ impl PluginRegistry {
         }
     }
 
-    pub fn shutdown(
-        &self,
-        name: &str,
-    ) -> Result<(), PluginError> {
+    pub fn shutdown(&self, name: &str) -> Result<(), PluginError> {
         let plugin_proxy = self.plugins.get(name);
         match plugin_proxy {
             Some(plugin_proxy) => {

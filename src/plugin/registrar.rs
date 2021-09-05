@@ -1,8 +1,8 @@
-use std::collections::HashMap;
-use libloading::Library;
-use std::sync::Arc;
 use crate::plugin::proxy::PluginProxy;
 use crate::plugins::Plugin;
+use libloading::Library;
+use std::collections::HashMap;
+use std::sync::Arc;
 
 pub(crate) struct PluginRegistrar {
     pub(crate) plugins: HashMap<String, PluginProxy>,
