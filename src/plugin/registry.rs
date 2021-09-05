@@ -97,7 +97,7 @@ impl PluginRegistry {
                 plugin_proxy.post_init()
             }
             None => {
-                error!("Failed to initialize plugin {}: Not found", name);
+                error!("Failed to post-initialize plugin {}: Not found", name);
                 return Err(PluginError::PostInitializationError);
             }
         }
@@ -107,11 +107,11 @@ impl PluginRegistry {
         let plugin_proxy = self.plugins.get(name);
         match plugin_proxy {
             Some(plugin_proxy) => {
-                debug!("Initializing plugin {}", name);
+                debug!("Pre-Shutdown plugin {}", name);
                 plugin_proxy.pre_shutdown()
             }
             None => {
-                error!("Failed to initialize plugin {}: Not found", name);
+                error!("Failed to pre-shutdown plugin {}: Not found", name);
                 return Err(PluginError::PreShutdownError);
             }
         }
@@ -121,11 +121,11 @@ impl PluginRegistry {
         let plugin_proxy = self.plugins.get(name);
         match plugin_proxy {
             Some(plugin_proxy) => {
-                debug!("Initializing plugin {}", name);
+                debug!("Shutting down plugin {}", name);
                 plugin_proxy.shutdown()
             }
             None => {
-                error!("Failed to initialize plugin {}: Not found", name);
+                error!("Failed to shutdown plugin {}: Not found", name);
                 return Err(PluginError::ShutdownError);
             }
         }
