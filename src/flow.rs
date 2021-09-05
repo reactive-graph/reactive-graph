@@ -1,8 +1,7 @@
 use std::convert::TryFrom;
 use std::sync::Arc;
 
-// use async_graphql::SimpleObject;
-use async_graphql::scalar;
+use async_graphql::SimpleObject;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
@@ -25,8 +24,7 @@ pub struct FlowCreationError;
 /// It's even possible to connect entity instances from different flows with relation
 /// instances.
 ///
-// TODO: #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
 pub struct Flow {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///
@@ -59,8 +57,6 @@ pub struct Flow {
     #[serde(default = "Vec::new", alias = "relations")]
     pub relation_instances: Vec<RelationInstance>,
 }
-scalar!(Flow);
-// TODO: ---scalar!(Flow);---
 
 impl Flow {
     /// Constructs a new flow from the wrapper entity instance.
