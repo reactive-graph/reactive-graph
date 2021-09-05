@@ -16,7 +16,6 @@ fn main() {
         _ => {}
     }
 
-
     let mut registry = PluginRegistry::new();
     unsafe {
         registry
