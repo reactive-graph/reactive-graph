@@ -17,22 +17,18 @@ pub struct PluginProxy {
 
 impl Plugin for PluginProxy {
     fn init(&self) -> Result<(), PluginError> {
-        debug!("Proxy: init");
         self.plugin.init()
     }
 
     fn post_init(&self) -> Result<(), PluginError> {
-        debug!("Proxy: post_init");
         self.plugin.post_init()
     }
 
     fn pre_shutdown(&self) -> Result<(), PluginError> {
-        debug!("Proxy: pre_shutdown");
         self.plugin.pre_shutdown()
     }
 
     fn shutdown(&self) -> Result<(), PluginError> {
-        debug!("Proxy: shutdown");
         self.plugin.shutdown()
     }
 
