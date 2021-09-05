@@ -46,8 +46,8 @@ actix-web = "3"
 actix-rt = "2.1.0"
 actix-cors = "0.5.4"
 actix-files = "0.5.0"
-async-graphql = "2.9.12"
-async-graphql-actix-web = "2.9.12"
+async-graphql = { version = "2.9.14", features = ["uuid"] }
+async-graphql-actix-web = "2.9.14"
 mime = "0.3.16"
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
