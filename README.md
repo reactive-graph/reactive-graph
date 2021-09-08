@@ -67,8 +67,6 @@ TODO: Entity Manager, ...
 
 ### Sponsors
 
-<a href="https://www.jetbrains.com/?from=github.com/inexorgame">
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/icon_CLion.svg">
-</a>
-
-Special thanks to `JetBrains <https://www.jetbrains.com/?from=github.com/inexorgame>`__ for providing us with CLion licenses!
+| | | |
+| --- | --- | --- |
+| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
