@@ -1,14 +1,29 @@
 [[plugin]]
 name = "inexor-rgf-plugin-base"
 active = true
-path = "/home/aschaeffer/CLionProjects/inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so"
+path = "../inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so"
 
 [[plugin]]
 name = "inexor-rgf-plugin-metadata"
-active = false
-path = "/home/aschaeffer/CLionProjects/inexor-rgf-plugin-metadata/target/debug/libinexor_rgf_plugin_metadata.so"
+active = true
+path = "../inexor-rgf-plugin-metadata/target/debug/libinexor_rgf_plugin_metadata.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-taxonomy"
+active = true
+path = "../inexor-rgf-plugin-taxonomy/target/debug/libinexor_rgf_plugin_taxonomy.so"
 
 [[plugin]]
 name = "inexor-rgf-plugin-mqtt"
-active = false
-path = "/home/aschaeffer/CLionProjects/inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+active = true
+path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-numeric"
+active = true
+path = "../inexor-rgf-plugin-numeric/target/debug/libinexor_rgf_plugin_numeric.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-arithmetic"
+active = true
+path = "../inexor-rgf-plugin-arithmetic/target/debug/libinexor_rgf_plugin_arithmetic.so"
