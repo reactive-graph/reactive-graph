@@ -10,7 +10,7 @@
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/inexor_2.png">
 </a>
 
-* Inexor will be a new first person shooter game which is based on a new octree-based game engine.
+* Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
 * Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.
 * Inexor will be written from ground up new in C++17 and Rust.
 * You can contribute anything you want: code, content, ideas..
