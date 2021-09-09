@@ -27,3 +27,13 @@ path = "../inexor-rgf-plugin-numeric/target/debug/libinexor_rgf_plugin_numeric.s
 name = "inexor-rgf-plugin-arithmetic"
 active = true
 path = "../inexor-rgf-plugin-arithmetic/target/debug/libinexor_rgf_plugin_arithmetic.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-logical"
+active = true
+path = "../inexor-rgf-plugin-logical/target/debug/libinexor_rgf_plugin_logical.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-value"
+active = true
+path = "../inexor-rgf-plugin-value/target/debug/libinexor_rgf_plugin_value.so"
