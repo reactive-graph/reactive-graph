@@ -4,7 +4,6 @@
 
 use std::alloc::System;
 
-use inexor_rgf_core_behaviour as behaviour;
 use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
 use inexor_rgf_core_reactive as reactive;

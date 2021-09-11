@@ -48,7 +48,6 @@ mime = "0.3.16"
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-behaviour = { git = "https://github.com/aschaeffer/inexor-rgf-core-behaviour.git" }
 inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
 
 [[bin]]
