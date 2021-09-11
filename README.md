@@ -2,12 +2,12 @@
 
 | Project | Module | Sub-Module | Functionality | Tests Coverage |
 | --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Core | FRP | Complete | ~ 80% |
+| Reactive Graph Flow | Core | FRP | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-frp">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-frp) |
 
 ### About Inexor
 
 <a href="https://inexor.org/">
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-model/main/docs/images/inexor_2.png">
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-frp/main/docs/images/inexor_2.png">
 </a>
 
 * Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
@@ -47,7 +47,7 @@ The following modifications were made:
 [<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-frp">]()
 [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-frp">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-frp)
 
-[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-frp">](https://github.com/aschaeffer/inexor-rgf-core-model/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-frp">](https://github.com/aschaeffer/inexor-rgf-core-frp/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
 # bidule, a Rust FRP crate
