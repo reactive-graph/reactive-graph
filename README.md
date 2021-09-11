@@ -32,10 +32,6 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 This repository provides the application which results in a binary.
 
-The application is pluggable 
-
-which results in the binary
-
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-application/Rust">](https://github.com/aschaeffer/inexor-rgf-application/actions?query=workflow%3ARust)
@@ -45,6 +41,16 @@ which results in the binary
 
 [<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-application">](https://github.com/aschaeffer/inexor-rgf-application/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
+
+#### Configure Logging
+
+1. Edit `config/logging.yml`
+2. In the section `loggers` add or modify the logger for a specific module
+    ```
+    loggers:
+       inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes:
+       level: info
+    ```
 
 #### Start the application
 

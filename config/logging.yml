@@ -23,6 +23,5 @@ root:
     - file
 
 loggers:
-  # Raise the maximum log level for events sent to the "app::backend::db" logger to "info"
-  app::backend::db:
+  inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes:
     level: info
