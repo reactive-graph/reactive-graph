@@ -9,7 +9,7 @@ edition = "2021"
 license = "MIT"
 readme = "README.md"
 keywords = ["reactive", "graph", "flow", "entity", "entity system", "entity component system", "graph database"]
-categories = ["game-engine","entity-component-system","iot","home-automation"]
+categories = ["game-engine", "entity-component-system", "iot", "home-automation"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -17,16 +17,15 @@ categories = ["game-engine","entity-component-system","iot","home-automation"]
 
 rand = "0.8.0"
 log = { version = "0.4", features = ["std", "serde"] }
-log4rs = { version = "1.0.0", features = ["console_appender", "file_appender"]}
+log4rs = { version = "1.0.0", features = ["console_appender", "file_appender"] }
 uuid = { version = "0.8.2", features = ["serde", "v4"] }
-waiter_di = { version = "1.6.4", features = [ "async" ] }
+waiter_di = { version = "1.6.4", features = ["async"] }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes"] }
 lazy_static = "1.4.0"
-serde = { version = "1.0.130", features = [ "derive" ] }
+serde = { version = "1.0.130", features = ["derive"] }
 serde_json = "1.0.67"
 indradb-lib = "1"
-# TODO: inexor-rgf-plugin-system-env: num_cpus = "1.13.0"
 strum = { version = "0.21.0", features = ["derive"] }
 strum_macros = "0.21.1"
 #syn = "=1.0.57"
@@ -36,13 +35,14 @@ futures = "0.3"
 libloading = "0.7.0"
 toml = "0.5.8"
 
-actix = "0.12"
-actix-web = "3"
+actix = "0.12.0"
+actix-web = { version = "4.0.0-beta.9" }
 actix-rt = "2.2.0"
-actix-cors = "0.5.4"
-actix-files = "0.5.0"
-async-graphql = { version = "2.9.14", features = ["uuid"] }
-async-graphql-actix-web = "2.9.14"
+actix-cors = "0.6.0-beta.2"
+actix-files = "0.6.0-beta.7"
+# async-graphql features: uuid, chrono, url, log
+async-graphql = { version = "2.9.15", features = ["uuid"], git = "https://github.com/aschaeffer/async-graphql.git", branch = "actix-web-v4-beta" }
+async-graphql-actix-web = { version = "2.9.15", git = "https://github.com/aschaeffer/async-graphql.git", branch = "actix-web-v4-beta" }
 mime = "0.3.16"
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }

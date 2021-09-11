@@ -91,8 +91,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_manager = web::Data::new(self.flow_manager.clone());
 
-        let system = actix::System::new();
-        system.run();
+        let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
         let server = HttpServer::new(move || {
             App::new()
@@ -149,7 +148,7 @@ impl GraphQLServer for GraphQLServerImpl {
         if handle.is_ok() {
             let _handle = handle.unwrap();
             // Start the event loop
-            // let _ = system.run();
+            let _ = system.run();
         }
     }
 }
