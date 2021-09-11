@@ -1,4 +1,4 @@
 mod expression_test;
 
-#[tarpaulin::ignore]
+#[tarpaulin::skip]
 pub mod utils;
