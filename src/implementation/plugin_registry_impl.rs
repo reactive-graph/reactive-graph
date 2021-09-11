@@ -80,7 +80,7 @@ impl PluginRegistry for PluginRegistryImpl {
                             }
                         }
                     }
-                    Err(e) => {
+                    Err(_) => {
                         error!(
                             "Failed to load plugin configuration from {}: Invalid TOML:",
                             "./config/plugins.toml"
@@ -88,7 +88,7 @@ impl PluginRegistry for PluginRegistryImpl {
                     }
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 error!(
                     "Failed to load plugin configuration from {}",
                     "./config/plugins.toml"
