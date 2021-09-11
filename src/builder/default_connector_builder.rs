@@ -1,3 +1,7 @@
+// TODO: Move to inexor_rgf_util_connector
+// util -> can be included in plugins
+// connector
+
 use serde_json::json;
 use uuid::Uuid;
 

@@ -1,4 +1,4 @@
-pub use default_connector_builder::*;
+// pub use default_connector_builder::*;
 pub use entity_instance_builder::*;
 pub use entity_type_builder::*;
 pub use entity_vertex_builder::*;
@@ -9,7 +9,7 @@ pub use relation_edge_builder::*;
 pub use relation_instance_builder::*;
 pub use relation_type_builder::*;
 
-pub mod default_connector_builder;
+// pub mod default_connector_builder;
 pub mod entity_instance_builder;
 pub mod entity_type_builder;
 pub mod entity_vertex_builder;
