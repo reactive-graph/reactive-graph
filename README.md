@@ -65,11 +65,17 @@ This repository provides the application which results in a binary.
     path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
     ```
 
+#### Configure HTTP/GraphQL server
+
+1. Edit `config/graphql.toml`
+2. Configure the hostname and port
+
+    ```toml
+    hostname = "localhost"
+    port = 31415
+    ```
+
 #### Start the application
-
-TODO
-
-#### Install and configure plugins
 
 TODO
 

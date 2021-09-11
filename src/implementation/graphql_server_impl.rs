@@ -8,7 +8,8 @@ use async_graphql::{EmptySubscription, Schema};
 use async_graphql_actix_web::{Request, Response};
 use async_std::task;
 use async_trait::async_trait;
-use log::{error, info};
+use log::{debug, error, info};
+use serde::{Deserialize, Serialize};
 use waiter_di::*;
 
 use crate::api::{
@@ -124,9 +125,18 @@ impl GraphQLServer for GraphQLServerImpl {
                 // Main User Interface
                 .service(fs::Files::new("/", "./web/user-interface").index_file("index.html"))
         });
-        let r_server = server.bind("127.0.0.1:31415");
+
+        let graphql_server_config = get_graphql_server_config();
+        debug!(
+            "Starting HTTP/GraphQL server on {}",
+            graphql_server_config.to_string()
+        );
+        let r_server = server.bind(graphql_server_config.to_string()); // "127.0.0.1:31415"
         if r_server.is_err() {
-            error!("Could not start HTTP server: Failed to bind 127.0.0.1:31415");
+            error!(
+                "Could not start HTTP/GraphQL server: Failed to bind {}",
+                graphql_server_config.to_string()
+            );
             return;
         }
         let server = r_server.unwrap().run();
@@ -157,4 +167,49 @@ impl Lifecycle for GraphQLServerImpl {
     fn init(&self) {}
 
     fn shutdown(&self) {}
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct GraphSqlServerConfig {
+    pub hostname: String,
+    pub port: i32,
+}
+
+impl Default for GraphSqlServerConfig {
+    fn default() -> Self {
+        GraphSqlServerConfig {
+            hostname: String::from("localhost"),
+            port: 31415,
+        }
+    }
+}
+
+impl ToString for GraphSqlServerConfig {
+    fn to_string(&self) -> String {
+        String::from(format!("{}:{}", self.hostname, self.port))
+    }
+}
+
+fn get_graphql_server_config() -> GraphSqlServerConfig {
+    let toml_config = std::fs::read_to_string("./config/graphql.toml");
+    match toml_config {
+        Ok(toml_string) => {
+            let graphql_server_config: Result<GraphSqlServerConfig, _> =
+                toml::from_str(&toml_string);
+            if graphql_server_config.is_err() {
+                error!(
+                    "Failed to load graphql configuration from {}: Invalid TOML",
+                    "./config/graphql.toml"
+                );
+            }
+            graphql_server_config.unwrap_or(GraphSqlServerConfig::default())
+        }
+        Err(_) => {
+            error!(
+                "Failed to load graphql configuration from {}: File does not exist",
+                "./config/graphql.toml"
+            );
+            GraphSqlServerConfig::default()
+        }
+    }
 }
