@@ -1,4 +1,4 @@
-use async_graphql::*;
+use async_graphql::scalar;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
