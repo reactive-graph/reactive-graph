@@ -14,9 +14,9 @@ active = true
 path = "../inexor-rgf-plugin-taxonomy/target/debug/libinexor_rgf_plugin_taxonomy.so"
 
 [[plugin]]
-name = "inexor-rgf-plugin-mqtt"
+name = "inexor-rgf-plugin-connector"
 active = true
-path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+path = "../inexor-rgf-plugin-connector/target/debug/libinexor_rgf_plugin_connector.so"
 
 [[plugin]]
 name = "inexor-rgf-plugin-numeric"
@@ -37,3 +37,8 @@ path = "../inexor-rgf-plugin-logical/target/debug/libinexor_rgf_plugin_logical.s
 name = "inexor-rgf-plugin-value"
 active = true
 path = "../inexor-rgf-plugin-value/target/debug/libinexor_rgf_plugin_value.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-mqtt"
+active = true
+path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
