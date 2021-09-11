@@ -59,6 +59,36 @@ TODO
 TODO: Entity Manager, ...
 
 
+#### GraphQL
+
+The most important interface for interaction with the Reactive Graph Flow is GraphQL. The GraphQL interface is useful for
+* Interaction with other instances (C2S, S2C, S2S, P2P)
+  * Because of the use of uuids synchronization is possible
+* User Interfaces
+  * In-game-menu
+  * Server admin UI
+  * Flow-Editor (Create / modify / test flows without being in-game)
+  * Websites (community, clan, content-repositories, ...)
+  * Tools (procedural-texture-editor)
+  * Third-party (export/import from/to third party software)
+
+* As a flow designer I can define components which can be used as building block for entities using a GraphQL interface
+* As a flow designer I can create entities with properties using a GraphQL interface
+* As a flow designer I can create relations with properties using a GraphQL interface
+* As a flow designer I can connect and disconnect two properties which data flows from one to the other using a GraphQL interface
+* As a flow designer I can create flows using a GraphQL interface
+
+#### Using Libraries
+
+The libraries are carefully chosen:
+
+- [Dependency Injection: waiter_di](https://crates.io/crates/waiter_di)
+- [Embedded Graph Database: indradb](https://crates.io/crates/indradb)
+- [FRP / Reactive Streams: bidule](https://crates.io/crates/bidule)
+- [Logging: log4rs](https://crates.io/crates/log4rs)
+- [HTTP Server: actix-web](https://crates.io/crates/actix-web)
+- [GraphQL Server: async-graphql](https://crates.io/crates/async-graphql)
+- [Serialization/Deserialization: serde_json](https://crates.io/crates/serde-json)
 
 ### Thanks to
 
