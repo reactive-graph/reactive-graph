@@ -111,42 +111,45 @@ impl PluginRegistry for PluginRegistryImpl {
             let plugin_proxy = self.get(name.clone());
             match plugin_proxy {
                 Some(plugin_proxy) => {
-                    plugin_proxy.init();
-                    match plugin_proxy.get_component_provider() {
-                        Ok(component_provider) => {
-                            self.component_manager.add_provider(component_provider)
+                    if plugin_proxy.init().is_ok() {
+                        match plugin_proxy.get_component_provider() {
+                            Ok(component_provider) => {
+                                self.component_manager.add_provider(component_provider)
+                            }
+                            Err(_) => {}
                         }
-                        Err(_) => {}
-                    }
-                    match plugin_proxy.get_entity_type_provider() {
-                        Ok(entity_type_provider) => {
-                            self.entity_type_manager.add_provider(entity_type_provider)
+                        match plugin_proxy.get_entity_type_provider() {
+                            Ok(entity_type_provider) => {
+                                self.entity_type_manager.add_provider(entity_type_provider)
+                            }
+                            Err(_) => {}
                         }
-                        Err(_) => {}
+                        match plugin_proxy.get_relation_type_provider() {
+                            Ok(relation_type_provider) => self
+                                .relation_type_manager
+                                .add_provider(relation_type_provider),
+                            Err(_) => {}
+                        }
+                        match plugin_proxy.get_entity_behaviour_provider() {
+                            Ok(entity_behaviour_provider) => self
+                                .entity_behaviour_manager
+                                .add_provider(entity_behaviour_provider),
+                            Err(_) => {}
+                        }
+                        match plugin_proxy.get_relation_behaviour_provider() {
+                            Ok(relation_behaviour_provider) => self
+                                .relation_behaviour_manager
+                                .add_provider(relation_behaviour_provider),
+                            Err(_) => {}
+                        }
+                        match plugin_proxy.get_flow_provider() {
+                            Ok(flow_provider) => {
+                                self.reactive_flow_manager.add_provider(flow_provider)
+                            }
+                            Err(_) => {}
+                        }
+                        plugin_proxy.post_init();
                     }
-                    match plugin_proxy.get_relation_type_provider() {
-                        Ok(relation_type_provider) => self
-                            .relation_type_manager
-                            .add_provider(relation_type_provider),
-                        Err(_) => {}
-                    }
-                    match plugin_proxy.get_entity_behaviour_provider() {
-                        Ok(entity_behaviour_provider) => self
-                            .entity_behaviour_manager
-                            .add_provider(entity_behaviour_provider),
-                        Err(_) => {}
-                    }
-                    match plugin_proxy.get_relation_behaviour_provider() {
-                        Ok(relation_behaviour_provider) => self
-                            .relation_behaviour_manager
-                            .add_provider(relation_behaviour_provider),
-                        Err(_) => {}
-                    }
-                    match plugin_proxy.get_flow_provider() {
-                        Ok(flow_provider) => self.reactive_flow_manager.add_provider(flow_provider),
-                        Err(_) => {}
-                    }
-                    plugin_proxy.post_init();
                 }
                 None => {
                     error!(
