@@ -46,7 +46,7 @@ This repository provides the application which results in a binary.
 
 1. Edit `config/logging.yml`
 2. In the section `loggers` add or modify the logger for a specific module
-    ```
+    ```yaml
     loggers:
        inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes:
        level: info
