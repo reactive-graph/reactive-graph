@@ -52,6 +52,19 @@ This repository provides the application which results in a binary.
        level: info
     ```
 
+#### Configure plugins
+
+1. Edit `config/plugins.toml`
+2. Add a section for the plugin. The name must match the crate name of the plugin. Specify the path to the
+   dynamically linked library. The path can be absolute or relative to the working directory.
+
+    ```toml
+    [[plugin]]
+    name = "inexor-rgf-plugin-mqtt"
+    active = true
+    path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+    ```
+
 #### Start the application
 
 TODO
