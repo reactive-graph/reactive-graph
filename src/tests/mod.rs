@@ -17,5 +17,5 @@ mod reactive_relation_instance_test;
 
 mod reactive_flow_test;
 
-#[tarpaulin::ignore]
+#[tarpaulin::skip]
 pub mod utils;
