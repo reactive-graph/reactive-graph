@@ -12,6 +12,9 @@ pub use relation::*;
 pub mod property;
 pub use property::*;
 
+#[derive(Debug)]
+pub struct BehaviourCreationError;
+
 #[cfg(test)]
 #[tarpaulin::ignore]
 pub mod tests;
