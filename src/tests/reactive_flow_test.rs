@@ -2,7 +2,7 @@ use crate::tests::utils::{
     create_random_entity_instance, create_random_entity_instance_with_type, r_string,
 };
 use crate::{Flow, ReactiveFlow};
-use std::convert::TryInto;
+use std::convert::{TryFrom, TryInto};
 use std::sync::Arc;
 use uuid::Uuid;
 
@@ -43,6 +43,12 @@ fn reactive_flow_test() {
     );
     assert!(reactive_flow.has_entity(second_entity_instance.clone()));
     assert!(reactive_flow.has_entity_by_id(second_entity_instance.id));
+    assert_eq!(2, reactive_flow.entity_instances.read().unwrap().len());
+    let third_entity_instance = Arc::new(create_random_entity_instance(r_string()));
+    reactive_flow.add_entity(third_entity_instance.clone());
+    assert_eq!(3, reactive_flow.entity_instances.read().unwrap().len());
+    reactive_flow.remove_entity(third_entity_instance.id);
+    assert_eq!(2, reactive_flow.entity_instances.read().unwrap().len());
 
     let reactive_flow_2 = ReactiveFlow::from(wrapper_entity_instance.clone());
     assert_eq!(wrapper_entity_instance.id, reactive_flow_2.id);
@@ -65,4 +71,11 @@ fn reactive_flow_test_try_into() {
     let flow: Flow = reactive_flow.try_into().unwrap();
     assert_eq!(wrapper_entity_instance.id, flow.id);
     assert_eq!(wrapper_entity_instance.type_name, flow.type_name);
+
+    let reactive_flow_copy = ReactiveFlow::try_from(flow).unwrap();
+    assert_eq!(wrapper_entity_instance.id, reactive_flow_copy.id);
+    assert_eq!(
+        wrapper_entity_instance.type_name,
+        reactive_flow_copy.type_name
+    );
 }
