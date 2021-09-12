@@ -115,3 +115,9 @@ TODO: Flow Type: Cause flows contains entity instances and relation instances, w
 
 * https://github.com/xd009642/tarpaulin
 * https://codecov.io/
+
+### Sponsors
+
+| | | |
+| --- | --- | --- |
+| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-plugin-flow-editor/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
