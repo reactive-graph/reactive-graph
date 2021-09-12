@@ -89,19 +89,19 @@ TODO: Flow Type: Cause flows contains entity instances and relation instances, w
 
 #### Plugins can extend the type system of the Reactive Graph Flow
 
-* Components can be provided by a plugin
-* Entity Types can be provided by a plugin
-* Relation Types can be provided by a plugin
+* As a developer I can provide a component using a plugin
+* As a developer I can provide an entity type using a plugin
+* As a developer I can provide a relation type using a plugin
 (Future: Flow Types can be provided by a plugin)
 
 #### Plugins can extend the behaviour of entities and relations
 
-* Entity Behaviours can be provided by a plugin
-* Relation Behaviours can be provided by a plugin
+* As a developer I can provide an entity behaviour using a plugin
+* As a developer I can provide a relation behaviour using a plugin
 
 #### Plugins can provide connected functionality or bigger systems by providing flows
 
-* Flows can be provided by a plugin
+* As a developer I can provide a flow using a plugin
 
 #### How to implement a plugin
 
