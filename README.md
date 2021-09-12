@@ -42,6 +42,36 @@ This repository provides the application which results in a binary.
 [<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-application">](https://github.com/aschaeffer/inexor-rgf-application/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
+#### Checkout, compile und run the application
+
+```shell
+rustup update nightly
+git clone https://github.com/aschaeffer/inexor-rgf-application.git
+cd inexor-rgf-application
+cargo build
+cargo run
+```
+
+#### Compile and configure plugins
+
+1. Checkout and build the plugin
+    ```shell
+    cd ..
+    git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
+    cd inexor-rgf-plugin-mqtt
+    cargo build
+    ```
+2. Edit `config/plugins.toml` and add a section for the plugin. The name must match the
+   crate name of the plugin. Specify the path to the dynamically linked library. The path
+   can be either absolute or relative to the working directory of the application.
+
+    ```toml
+    [[plugin]]
+    name = "inexor-rgf-plugin-mqtt"
+    active = true
+    path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+    ```
+
 #### Configure Logging
 
 1. Edit `config/logging.yml`
@@ -50,19 +80,6 @@ This repository provides the application which results in a binary.
     loggers:
        inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes:
        level: info
-    ```
-
-#### Configure plugins
-
-1. Edit `config/plugins.toml`
-2. Add a section for the plugin. The name must match the crate name of the plugin. Specify the path to the
-   dynamically linked library. The path can be absolute or relative to the working directory.
-
-    ```toml
-    [[plugin]]
-    name = "inexor-rgf-plugin-mqtt"
-    active = true
-    path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
     ```
 
 #### Configure HTTP/GraphQL server
@@ -74,15 +91,6 @@ This repository provides the application which results in a binary.
     hostname = "localhost"
     port = 31415
     ```
-
-#### Start the application
-
-TODO
-
-#### Architecture
-
-TODO: Entity Manager, ...
-
 
 #### GraphQL
 
