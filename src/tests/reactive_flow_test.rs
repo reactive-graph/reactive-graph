@@ -1,7 +1,9 @@
 use crate::tests::utils::{
-    create_random_entity_instance, create_random_entity_instance_with_type, r_string,
+    create_random_entity_instance, create_random_entity_instance_with_type,
+    create_random_relation_instance, r_string,
 };
-use crate::{Flow, ReactiveFlow};
+use crate::{Flow, ReactiveFlow, ReactiveRelationInstance};
+use indradb::EdgeProperties;
 use std::convert::{TryFrom, TryInto};
 use std::sync::Arc;
 use uuid::Uuid;
@@ -49,6 +51,27 @@ fn reactive_flow_test() {
     assert_eq!(3, reactive_flow.entity_instances.read().unwrap().len());
     reactive_flow.remove_entity(third_entity_instance.id);
     assert_eq!(2, reactive_flow.entity_instances.read().unwrap().len());
+    let fourth_entity_instance = Arc::new(create_random_entity_instance(r_string()));
+    reactive_flow.add_entity(fourth_entity_instance.clone());
+    assert_eq!(3, reactive_flow.entity_instances.read().unwrap().len());
+
+    let relation_instance = Arc::new(create_random_relation_instance(
+        second_entity_instance.clone(),
+        fourth_entity_instance.clone(),
+        r_string(),
+    ));
+    assert_eq!(0, reactive_flow.relation_instances.read().unwrap().len());
+    reactive_flow.add_relation(relation_instance.clone());
+    assert_eq!(1, reactive_flow.relation_instances.read().unwrap().len());
+    let second_relation_instance = Arc::new(create_random_relation_instance(
+        wrapper_entity_instance.clone(),
+        second_entity_instance.clone(),
+        r_string(),
+    ));
+    reactive_flow.add_relation(second_relation_instance.clone());
+    assert_eq!(2, reactive_flow.relation_instances.read().unwrap().len());
+    reactive_flow.remove_relation(second_relation_instance.get_key().unwrap());
+    assert_eq!(1, reactive_flow.relation_instances.read().unwrap().len());
 
     let reactive_flow_2 = ReactiveFlow::from(wrapper_entity_instance.clone());
     assert_eq!(wrapper_entity_instance.id, reactive_flow_2.id);
@@ -57,8 +80,11 @@ fn reactive_flow_test() {
     let flow: Flow = reactive_flow.clone().try_into().unwrap();
     assert_eq!(reactive_flow.id, flow.id);
     assert_eq!(reactive_flow.type_name, flow.type_name);
-    assert_eq!(2, flow.entity_instances.len());
-    assert_eq!(0, flow.relation_instances.len());
+
+    assert_eq!(3, flow.entity_instances.len());
+    assert_eq!(1, flow.relation_instances.len());
+    let flow_str = serde_json::to_string_pretty(&flow).unwrap_or("Failed".into());
+    println!("{}", flow_str);
 }
 
 #[test]

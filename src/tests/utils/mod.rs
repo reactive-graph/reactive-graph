@@ -2,8 +2,10 @@ use random_string::generate;
 use serde_json::{json, Value};
 
 pub use create_random_entity_instance::*;
+pub use create_random_relation_instance::*;
 
 pub mod create_random_entity_instance;
+pub mod create_random_relation_instance;
 
 const CHARSET_LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
