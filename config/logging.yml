@@ -23,5 +23,19 @@ root:
     - file
 
 loggers:
+  inexor_rgf_application::implementation::entity_vertex_manager_impl:
+    level: info
+  inexor_rgf_application::implementation::entity_behaviour_manager_impl:
+    level: info
+  inexor_rgf_application::implementation::relation_behaviour_manager_impl:
+    level: info
+  inexor_rgf_application::implementation::reactive_flow_manager_impl:
+    level: info
+  inexor_rgf_plugin_connector::behaviour::relation::relation_behaviour_provider:
+    level: debug
+  inexor_rgf_plugin_mqtt::behaviour::relation::relation_behaviour_provider:
+    level: info
   inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes:
+    level: info
+  rumqttc::state:
     level: info
