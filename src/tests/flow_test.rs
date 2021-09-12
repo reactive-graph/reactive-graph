@@ -1,7 +1,7 @@
 use uuid::Uuid;
 
 use crate::tests::utils::create_entity_instance_with_type;
-use crate::tests::utils::{create_random_entity_instance_with_type, r_string};
+use crate::tests::utils::r_string;
 use crate::Flow;
 
 #[test]
