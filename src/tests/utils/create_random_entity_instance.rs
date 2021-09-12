@@ -5,13 +5,16 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::r_string;
-use crate::{ReactiveEntityInstance, EntityInstance};
+use crate::{EntityInstance, ReactiveEntityInstance};
 
 pub fn create_random_entity_instance<S: Into<String>>(property_name: S) -> ReactiveEntityInstance {
     create_random_entity_instance_with_type(r_string(), property_name.into())
 }
 
-pub fn create_random_entity_instance_with_type<S: Into<String>>(type_name: S, property_name: S) -> ReactiveEntityInstance {
+pub fn create_random_entity_instance_with_type<S: Into<String>>(
+    type_name: S,
+    property_name: S,
+) -> ReactiveEntityInstance {
     let uuid = Uuid::new_v4();
     let t = Type::from_str(type_name.into().as_str()).unwrap();
     let property_value = r_string();
@@ -35,7 +38,10 @@ pub fn create_entity_instance<S: Into<String>>(property_name: S) -> EntityInstan
     create_entity_instance_with_type(r_string(), property_name.into())
 }
 
-pub fn create_entity_instance_with_type<S: Into<String>>(type_name: S, property_name: S) -> EntityInstance {
+pub fn create_entity_instance_with_type<S: Into<String>>(
+    type_name: S,
+    property_name: S,
+) -> EntityInstance {
     let uuid = Uuid::new_v4();
     let t = Type::from_str(type_name.into().as_str()).unwrap();
     let property_value = r_string();
