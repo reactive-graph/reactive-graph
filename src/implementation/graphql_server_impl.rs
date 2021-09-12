@@ -131,7 +131,7 @@ impl GraphQLServer for GraphQLServerImpl {
             "Starting HTTP/GraphQL server on {}",
             graphql_server_config.to_string()
         );
-        let r_server = server.bind(graphql_server_config.to_string()); // "127.0.0.1:31415"
+        let r_server = server.bind(graphql_server_config.to_string());
         if r_server.is_err() {
             error!(
                 "Could not start HTTP/GraphQL server: Failed to bind {}",
