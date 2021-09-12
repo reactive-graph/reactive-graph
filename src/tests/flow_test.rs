@@ -1,6 +1,7 @@
 use uuid::Uuid;
 
-use crate::tests::utils::r_string;
+use crate::tests::utils::{r_string, create_random_entity_instance_with_type};
+use crate::tests::utils::create_entity_instance_with_type;
 use crate::Flow;
 
 #[test]
@@ -25,4 +26,23 @@ fn flow_test() {
     assert_eq!(flow_description.clone(), flow.description.clone());
     assert_eq!(0, flow.entity_instances.len());
     assert_eq!(0, flow.relation_instances.len());
+}
+
+#[test]
+fn flow_from_test() {
+    let wrapper_entity_instance = create_entity_instance_with_type("generic_flow", "test");
+    let flow = Flow::from(wrapper_entity_instance.clone());
+    assert_eq!(wrapper_entity_instance.id, flow.id);
+    assert_eq!("generic_flow", flow.type_name);
+    assert_eq!(String::new(), flow.name);
+}
+
+#[test]
+fn flow_from_instance_with_name_test() {
+    let wrapper_entity_instance = create_entity_instance_with_type("generic_flow", "test");
+    let flow_name = r_string();
+    let flow = Flow::from_instance_with_name(wrapper_entity_instance.clone(), flow_name.clone());
+    assert_eq!(wrapper_entity_instance.id, flow.id);
+    assert_eq!("generic_flow", flow.type_name);
+    assert_eq!(flow_name, flow.name);
 }
