@@ -81,6 +81,8 @@ fn reactive_flow_test() {
     assert_eq!(0, reactive_flow.relation_instances.read().unwrap().len());
     reactive_flow.add_relation(relation_instance.clone());
     assert_eq!(1, reactive_flow.relation_instances.read().unwrap().len());
+    assert!(reactive_flow.has_relation(relation_instance.clone()));
+    assert!(reactive_flow.has_relation_by_key(relation_instance.get_key().unwrap()));
     let second_relation_instance = Arc::new(create_random_relation_instance(
         wrapper_entity_instance.clone(),
         second_entity_instance.clone(),
@@ -88,8 +90,20 @@ fn reactive_flow_test() {
     ));
     reactive_flow.add_relation(second_relation_instance.clone());
     assert_eq!(2, reactive_flow.relation_instances.read().unwrap().len());
+    assert!(reactive_flow.has_relation(second_relation_instance.clone()));
+    assert!(reactive_flow.has_relation_by_key(second_relation_instance.get_key().unwrap()));
+    assert_eq!(
+        second_relation_instance.get_key().unwrap(),
+        reactive_flow
+            .get_relation(second_relation_instance.get_key().unwrap())
+            .unwrap()
+            .get_key()
+            .unwrap()
+    );
     reactive_flow.remove_relation(second_relation_instance.get_key().unwrap());
     assert_eq!(1, reactive_flow.relation_instances.read().unwrap().len());
+    assert!(!reactive_flow.has_relation(second_relation_instance.clone()));
+    assert!(!reactive_flow.has_relation_by_key(second_relation_instance.get_key().unwrap()));
 
     let reactive_flow_2 = ReactiveFlow::from(wrapper_entity_instance.clone());
     assert_eq!(wrapper_entity_instance.id, reactive_flow_2.id);
