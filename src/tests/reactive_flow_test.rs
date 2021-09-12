@@ -112,6 +112,17 @@ fn reactive_flow_test_try_into() {
         "test",
     ));
     let reactive_flow = ReactiveFlow::new(wrapper_entity_instance.clone());
+    let second_entity_instance = Arc::new(create_random_entity_instance(r_string()));
+    let third_entity_instance = Arc::new(create_random_entity_instance(r_string()));
+    reactive_flow.add_entity(second_entity_instance.clone());
+    reactive_flow.add_entity(third_entity_instance.clone());
+    let relation_instance = Arc::new(create_random_relation_instance(
+        second_entity_instance.clone(),
+        third_entity_instance.clone(),
+        r_string(),
+    ));
+    reactive_flow.add_relation(relation_instance.clone());
+
     let flow: Flow = reactive_flow.try_into().unwrap();
     assert_eq!(wrapper_entity_instance.id, flow.id);
     assert_eq!(wrapper_entity_instance.type_name, flow.type_name);
