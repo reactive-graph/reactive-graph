@@ -6,6 +6,7 @@ use crate::entity_type_provider::EntityTypeProvider;
 use crate::flow_provider::FlowProvider;
 use crate::relation_behaviour_provider::RelationBehaviourProvider;
 use crate::relation_type_provider::RelationTypeProvider;
+use crate::WebResourceProvider;
 
 #[derive(Debug)]
 pub enum PluginError {
@@ -15,6 +16,7 @@ pub enum PluginError {
     NoEntityBehaviourProvider,
     NoRelationBehaviourProvider,
     NoFlowProvider,
+    NoWebResourceProvider,
     PluginCreationError,
     InitializationError,
     PostInitializationError,
@@ -63,6 +65,8 @@ pub trait Plugin: Send + Sync {
     ) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError>;
 
     fn get_flow_provider(&self) -> Result<Arc<dyn FlowProvider>, PluginError>;
+
+    fn get_web_resource_provider(&self) -> Result<Arc<dyn WebResourceProvider>, PluginError>;
 }
 
 #[derive(Copy, Clone)]

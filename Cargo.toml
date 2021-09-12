@@ -9,6 +9,7 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
+actix-web-static-files = "3"
 async-std = { version = "1.8", features = ["attributes"] }
 async-trait = "0.1"
 crossbeam = "0.8.0"
