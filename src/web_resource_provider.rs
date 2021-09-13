@@ -1,6 +1,8 @@
-use actix_web_static_files::deps::static_files::Resource;
+use actix_web::HttpResponse;
 use std::collections::HashMap;
 
 pub trait WebResourceProvider: Send + Sync {
-    fn get_web_resources(&self) -> HashMap<&'static str, Resource>;
+    fn get_name(&self) -> String;
+
+    fn handle_web_resource(&self, path: String) -> HttpResponse;
 }
