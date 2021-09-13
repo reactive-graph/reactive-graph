@@ -155,7 +155,7 @@ impl PluginRegistry for PluginRegistryImpl {
                                 .add_provider(web_resource_provider),
                             Err(_) => {}
                         }
-                        plugin_proxy.post_init();
+                        let _ = plugin_proxy.post_init();
                     }
                 }
                 None => {
