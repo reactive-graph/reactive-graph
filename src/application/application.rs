@@ -61,6 +61,8 @@ pub trait Application: Send + Sync {
     fn get_graphql_server(&self) -> Arc<dyn GraphQLServer>;
 
     fn get_plugin_registry(&self) -> Arc<dyn PluginRegistry>;
+
+    fn get_web_resource_manager(&self) -> Arc<dyn WebResourceManager>;
 }
 
 #[module]
@@ -83,6 +85,7 @@ pub struct ApplicationImpl {
     relation_type_manager: Wrc<dyn RelationTypeManager>,
     graphql_server: Wrc<dyn GraphQLServer>,
     plugin_registry: Wrc<dyn PluginRegistry>,
+    web_resource_manager: Wrc<dyn WebResourceManager>,
 }
 
 #[async_trait]
@@ -94,11 +97,13 @@ impl Application for ApplicationImpl {
         self.relation_type_manager.init();
         self.plugin_registry.init();
         self.reactive_flow_manager.init();
+        self.web_resource_manager.init();
         self.graphql_server.init();
     }
 
     fn shutdown(&self) {
         self.graphql_server.shutdown();
+        self.web_resource_manager.init();
         self.reactive_flow_manager.shutdown();
         self.plugin_registry.unload_plugins();
         self.relation_type_manager.shutdown();
@@ -233,5 +238,9 @@ impl Application for ApplicationImpl {
 
     fn get_plugin_registry(&self) -> Arc<dyn PluginRegistry> {
         self.plugin_registry.clone()
+    }
+
+    fn get_web_resource_manager(&self) -> Arc<dyn WebResourceManager> {
+        self.web_resource_manager.clone()
     }
 }

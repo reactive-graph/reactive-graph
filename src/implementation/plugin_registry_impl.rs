@@ -9,7 +9,7 @@ use waiter_di::*;
 
 use crate::api::{
     ComponentManager, EntityBehaviourManager, EntityTypeManager, Lifecycle, PluginRegistry,
-    ReactiveFlowManager, RelationBehaviourManager, RelationTypeManager,
+    ReactiveFlowManager, RelationBehaviourManager, RelationTypeManager, WebResourceManager,
 };
 use crate::plugin::config::PluginsConfig;
 use crate::plugin::proxy::PluginProxy;
@@ -42,6 +42,7 @@ pub struct PluginRegistryImpl {
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
     reactive_flow_manager: Wrc<dyn ReactiveFlowManager>,
+    web_resource_manager: Wrc<dyn WebResourceManager>,
 
     pub plugins: PluginProxies,
     pub libraries: PluginLibraries,
@@ -146,6 +147,12 @@ impl PluginRegistry for PluginRegistryImpl {
                             Ok(flow_provider) => {
                                 self.reactive_flow_manager.add_provider(flow_provider)
                             }
+                            Err(_) => {}
+                        }
+                        match plugin_proxy.get_web_resource_provider() {
+                            Ok(web_resource_provider) => self
+                                .web_resource_manager
+                                .add_provider(web_resource_provider),
                             Err(_) => {}
                         }
                         plugin_proxy.post_init();

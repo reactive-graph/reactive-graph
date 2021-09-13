@@ -1,8 +1,8 @@
 use std::sync::mpsc::Receiver;
+use std::sync::Arc;
 
 use actix_cors::Cors;
-use actix_files as fs;
-use actix_web::{post, web, App, HttpServer};
+use actix_web::{post, web, App, HttpResponse, HttpServer};
 use async_graphql::*;
 use async_graphql::{EmptySubscription, Schema};
 use async_graphql_actix_web::{Request, Response};
@@ -14,7 +14,7 @@ use waiter_di::*;
 
 use crate::api::{
     ComponentManager, EntityTypeManager, GraphQLServer, Lifecycle, ReactiveEntityInstanceManager,
-    ReactiveFlowManager, ReactiveRelationInstanceManager, RelationTypeManager,
+    ReactiveFlowManager, ReactiveRelationInstanceManager, RelationTypeManager, WebResourceManager,
 };
 use crate::graphql::{InexorMutation, InexorQuery, InexorSchema};
 
@@ -31,11 +31,37 @@ pub struct GraphQLServerImpl {
     relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
 
     flow_manager: Wrc<dyn ReactiveFlowManager>,
+
+    web_resource_manager: Wrc<dyn WebResourceManager>,
 }
 
 #[post("/graphql")]
 async fn query_graphql(schema: web::Data<InexorSchema>, req: Request) -> Response {
     schema.execute(req.into_inner()).await.into()
+}
+
+#[derive(Deserialize)]
+pub struct WebResourcePathInfo {
+    web_resource_name: String,
+    path: String,
+}
+
+pub async fn handle_web_resource(
+    web_resource_manager: web::Data<Arc<dyn WebResourceManager>>,
+    path: web::Path<WebResourcePathInfo>,
+) -> HttpResponse {
+    let web_resource_name = path.web_resource_name.clone();
+    let path = path.path.clone();
+    debug!("web_resource_name = {}", web_resource_name.as_str());
+    debug!("path = {}", path.as_str());
+    match web_resource_manager.get(web_resource_name.clone()) {
+        Some(web_resource) => web_resource.handle_web_resource(path.clone()),
+        None => HttpResponse::NotFound().body(format!(
+            "404 Not Found: {}: {}",
+            web_resource_name.clone(),
+            path.clone()
+        )),
+    }
 }
 
 #[async_trait]
@@ -91,6 +117,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let entity_instance_manager = web::Data::new(self.entity_instance_manager.clone());
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_manager = web::Data::new(self.flow_manager.clone());
+        let web_resource_manager = web::Data::new(self.web_resource_manager.clone());
 
         let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
@@ -104,6 +131,7 @@ impl GraphQLServer for GraphQLServerImpl {
                 .app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
                 .app_data(flow_manager.clone())
+                .app_data(web_resource_manager.clone())
                 // GraphQL API
                 .service(query_graphql)
                 // REST API
@@ -117,13 +145,11 @@ impl GraphQLServer for GraphQLServerImpl {
                 // TODO: modify instances
                 // TODO: query flows
                 // TODO: modify flows
-                // Flow Designer
+                // Web Resource API
                 .service(
-                    fs::Files::new("/flow-designer", "./web/flow-designer")
-                        .index_file("index.html"),
+                    web::resource("/{web_resource_name}/{path:.*}")
+                        .route(web::get().to(handle_web_resource)),
                 )
-                // Main User Interface
-                .service(fs::Files::new("/", "./web/user-interface").index_file("index.html"))
         });
 
         let graphql_server_config = get_graphql_server_config();

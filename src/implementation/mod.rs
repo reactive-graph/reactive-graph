@@ -45,3 +45,6 @@ pub use relation_type_manager_impl::*;
 
 pub mod plugin_registry_impl;
 pub use plugin_registry_impl::*;
+
+pub mod web_resource_manager_impl;
+pub use web_resource_manager_impl::*;

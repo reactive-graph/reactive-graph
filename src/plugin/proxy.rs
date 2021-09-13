@@ -4,7 +4,7 @@ use libloading::Library;
 
 use crate::plugins::{
     ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin,
-    PluginError, RelationBehaviourProvider, RelationTypeProvider,
+    PluginError, RelationBehaviourProvider, RelationTypeProvider, WebResourceProvider,
 };
 
 /// A proxy object which wraps a [`Plugin`] and makes sure it can't outlive
@@ -57,5 +57,9 @@ impl Plugin for PluginProxy {
 
     fn get_flow_provider(&self) -> Result<Arc<dyn FlowProvider>, PluginError> {
         self.plugin.get_flow_provider()
+    }
+
+    fn get_web_resource_provider(&self) -> Result<Arc<dyn WebResourceProvider>, PluginError> {
+        self.plugin.get_web_resource_provider()
     }
 }
