@@ -7,6 +7,7 @@ use crate::flow_provider::FlowProvider;
 use crate::relation_behaviour_provider::RelationBehaviourProvider;
 use crate::relation_type_provider::RelationTypeProvider;
 use crate::WebResourceProvider;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub enum PluginError {
@@ -33,15 +34,16 @@ impl<S: ToString> From<S> for PluginError {
     }
 }
 
-// pub struct PluginMetadata {
-//     name: String,
-//     description: String,
-//     version: String,
-// }
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct PluginMetadata {
+    pub name: String,
+    pub description: String,
+    pub version: String,
+}
 
 pub trait Plugin: Send + Sync {
-    // TODO: Additional metadata
-    // fn metadata(&self) -> Result<Arc<dyn PluginMetadata>, PluginError>;
+    fn metadata(&self) -> Result<PluginMetadata, PluginError>;
+
     fn init(&self) -> Result<(), PluginError>;
 
     fn post_init(&self) -> Result<(), PluginError>;
