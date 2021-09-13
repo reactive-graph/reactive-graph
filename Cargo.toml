@@ -27,7 +27,6 @@ waiter_di = { version = "1.6.4", features = [ "async" ] }
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
-# inexor-rgf-core-behaviour = { git = "https://github.com/aschaeffer/inexor-rgf-core-behaviour.git" }
 
 [dev-dependencies]
 random-string = "1.0"
