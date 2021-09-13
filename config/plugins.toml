@@ -47,3 +47,8 @@ path = "../inexor-rgf-plugin-value/target/debug/libinexor_rgf_plugin_value.so"
 name = "inexor-rgf-plugin-mqtt"
 active = true
 path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-flow-editor"
+active = true
+path = "../inexor-rgf-plugin-flow-editor/target/debug/libinexor_rgf_plugin_flow_editor.so"
