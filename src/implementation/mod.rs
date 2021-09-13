@@ -1,3 +1,6 @@
+pub mod component_behaviour_manager_impl;
+pub use component_behaviour_manager_impl::*;
+
 pub mod component_manager_impl;
 pub use component_manager_impl::*;
 

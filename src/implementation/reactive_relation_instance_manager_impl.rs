@@ -8,9 +8,10 @@ use uuid::Uuid;
 use waiter_di::*;
 
 use crate::api::{
-    ReactiveEntityInstanceManager, ReactiveRelationInstanceCreationError,
-    ReactiveRelationInstanceImportError, ReactiveRelationInstanceManager, RelationBehaviourManager,
-    RelationEdgeManager, RelationInstanceManager,
+    ComponentBehaviourManager, ReactiveEntityInstanceManager,
+    ReactiveRelationInstanceCreationError, ReactiveRelationInstanceImportError,
+    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationEdgeManager,
+    RelationInstanceManager,
 };
 use crate::model::{ReactiveRelationInstance, RelationInstance};
 
@@ -31,6 +32,8 @@ pub struct ReactiveRelationInstanceManagerImpl {
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
 
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
+
+    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
 
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
 
@@ -180,6 +183,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 .write()
                 .unwrap()
                 .insert(edge_key.unwrap(), reactive_relation_instance.clone());
+            self.component_behaviour_manager
+                .add_behaviours_to_relation(reactive_relation_instance.clone());
             self.relation_behaviour_manager
                 .add_behaviours(reactive_relation_instance.clone());
         }

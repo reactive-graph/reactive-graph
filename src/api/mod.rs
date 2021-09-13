@@ -1,3 +1,4 @@
+pub use component_behaviour_manager::*;
 pub use component_manager::*;
 pub use entity_behaviour_manager::*;
 pub use entity_instance_manager::*;
@@ -19,6 +20,7 @@ pub use relation_instance_manager::*;
 pub use relation_type_manager::*;
 pub use web_resource_manager::*;
 
+pub mod component_behaviour_manager;
 pub mod component_manager;
 pub mod entity_behaviour_manager;
 pub mod entity_instance_manager;

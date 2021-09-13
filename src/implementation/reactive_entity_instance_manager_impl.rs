@@ -7,8 +7,9 @@ use uuid::Uuid;
 use waiter_di::*;
 
 use crate::api::{
-    EntityBehaviourManager, EntityInstanceManager, ReactiveEntityInstanceCreationError,
-    ReactiveEntityInstanceImportError, ReactiveEntityInstanceManager,
+    ComponentBehaviourManager, EntityBehaviourManager, EntityInstanceManager,
+    ReactiveEntityInstanceCreationError, ReactiveEntityInstanceImportError,
+    ReactiveEntityInstanceManager,
 };
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 
@@ -25,6 +26,8 @@ fn create_external_type_dependency() -> ReactiveEntityInstances {
 #[component]
 pub struct ReactiveEntityInstanceManagerImpl {
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
+
+    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
 
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
 
@@ -132,6 +135,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             reactive_entity_instance.id,
             reactive_entity_instance.clone(),
         );
+        self.component_behaviour_manager
+            .add_behaviours_to_entity(reactive_entity_instance.clone());
         self.entity_behaviour_manager
             .add_behaviours(reactive_entity_instance.clone());
     }

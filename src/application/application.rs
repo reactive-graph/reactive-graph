@@ -54,6 +54,8 @@ pub trait Application: Send + Sync {
 
     fn get_reactive_flow_manager(&self) -> Arc<dyn ReactiveFlowManager>;
 
+    fn get_component_behaviour_manager(&self) -> Arc<dyn ComponentBehaviourManager>;
+
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager>;
 
     fn get_relation_behaviour_manager(&self) -> Arc<dyn RelationBehaviourManager>;
@@ -70,6 +72,7 @@ pub struct ApplicationImpl {
     running: RunningState,
 
     graph_database: Wrc<dyn GraphDatabase>,
+    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
     component_manager: Wrc<dyn ComponentManager>,
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
@@ -222,6 +225,10 @@ impl Application for ApplicationImpl {
 
     fn get_reactive_flow_manager(&self) -> Arc<dyn ReactiveFlowManager> {
         self.reactive_flow_manager.clone()
+    }
+
+    fn get_component_behaviour_manager(&self) -> Arc<dyn ComponentBehaviourManager> {
+        self.component_behaviour_manager.clone()
     }
 
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager> {
