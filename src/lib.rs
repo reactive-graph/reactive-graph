@@ -1,3 +1,4 @@
+pub use component_behaviour_provider::ComponentBehaviourProvider;
 pub use component_provider::ComponentProvider;
 pub use entity_behaviour_provider::EntityBehaviourProvider;
 pub use entity_type_provider::EntityTypeProvider;
@@ -13,6 +14,7 @@ pub use web_resource_provider::WebResourceProvider;
 pub static INEXOR_RGF_PLUGIN_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub static RUSTC_VERSION: &str = env!("RUSTC_VERSION");
 
+pub mod component_behaviour_provider;
 pub mod component_provider;
 pub mod entity_behaviour_provider;
 pub mod entity_type_provider;
