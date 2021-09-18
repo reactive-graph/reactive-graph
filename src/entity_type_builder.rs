@@ -113,12 +113,4 @@ impl EntityTypeBuilder {
             self.extensions.to_vec(),
         )
     }
-
-    // pub fn register<'a>(
-    //     &'a mut self,
-    //     entity_type_manager: Arc<dyn EntityTypeManager>,
-    // ) -> EntityType {
-    //     let entity_type = self.build();
-    //     entity_type_manager.register(entity_type.clone())
-    // }
 }
