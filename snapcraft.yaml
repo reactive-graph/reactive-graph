@@ -2,6 +2,7 @@ name: inexor-rgf-application
 version: 0.2.1
 summary: Inexor - Reactive Graph Flow - Application
 description: Inexor - Reactive Graph Flow - Application
+license: MIT
 base: core20
 confinement: devmode
 
