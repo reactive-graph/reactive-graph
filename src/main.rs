@@ -1,6 +1,8 @@
 #![feature(unsized_tuple_coercion)]
 #![feature(in_band_lifetimes)]
 #![feature(concat_idents)]
+#![feature(register_tool)]
+#![register_tool(tarpaulin)]
 
 use std::alloc::System;
 
@@ -53,3 +55,7 @@ async fn main() {
     } // Destruct the application
     thread::sleep(Duration::from_millis(2000));
 }
+
+#[cfg(test)]
+#[tarpaulin::ignore]
+pub mod tests;

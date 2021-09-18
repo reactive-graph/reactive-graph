@@ -19,7 +19,7 @@ rand = "0.8.0"
 log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.0.0", features = ["console_appender", "file_appender"] }
 uuid = { version = "0.8.2", features = ["serde", "v4"] }
-waiter_di = { version = "1.6.4", features = ["async"] }
+waiter_di = { version = "1.6.5", features = ["async"], git = "https://github.com/aschaeffer/waiter.git" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes"] }
 lazy_static = "1.4.0"
@@ -50,6 +50,9 @@ inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-m
 inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
 inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
 inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
+
+[dev-dependencies]
+random-string = "1.0"
 
 [profile.dev]
 opt-level = 0
