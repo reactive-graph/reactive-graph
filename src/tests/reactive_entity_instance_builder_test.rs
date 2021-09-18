@@ -1,5 +1,4 @@
 use crate::model::DataType;
-use crate::model::PropertyType;
 use crate::tests::utils::r_string;
 use crate::{EntityTypeBuilder, ReactiveEntityInstanceBuilder};
 use inexor_rgf_core_model::PropertyInstanceGetter;

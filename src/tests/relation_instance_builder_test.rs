@@ -1,5 +1,5 @@
 use crate::tests::utils::r_string;
-use crate::{RelationInstanceBuilder, RelationTypeBuilder};
+use crate::RelationInstanceBuilder;
 use indradb::{EdgeKey, Type};
 use inexor_rgf_core_model::PropertyInstanceGetter;
 use serde_json::json;

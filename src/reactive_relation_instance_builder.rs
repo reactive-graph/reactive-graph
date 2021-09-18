@@ -12,7 +12,6 @@ pub struct ReactiveRelationInstanceBuilder {
     outbound: Arc<ReactiveEntityInstance>,
     type_name: String,
     inbound: Arc<ReactiveEntityInstance>,
-    // properties: HashMap<String, Value>,
     builder: RelationInstanceBuilder,
 }
 
@@ -29,7 +28,6 @@ impl ReactiveRelationInstanceBuilder {
             outbound,
             type_name: type_name.clone(),
             inbound,
-            // properties: HashMap::new(),
             builder,
         }
     }
@@ -40,7 +38,6 @@ impl ReactiveRelationInstanceBuilder {
         value: Value,
     ) -> &'a mut ReactiveRelationInstanceBuilder {
         self.builder.property(property_name.into(), value);
-        // self.properties.insert(property_name.into(), value);
         self
     }
 

@@ -3,7 +3,6 @@ use crate::{
     EntityTypeBuilder, ReactiveEntityInstanceBuilder, ReactiveRelationInstanceBuilder,
     RelationTypeBuilder,
 };
-use indradb::{EdgeKey, Type};
 use inexor_rgf_core_model::{DataType, PropertyInstanceGetter};
 use serde_json::json;
 use uuid::Uuid;
