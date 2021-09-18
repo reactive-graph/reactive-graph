@@ -1,18 +1,18 @@
 use crate::model::DataType;
 use crate::model::PropertyType;
 use crate::tests::utils::r_string;
-use crate::{EntityInstanceBuilder, EntityTypeBuilder};
+use crate::{EntityTypeBuilder, ReactiveEntityInstanceBuilder};
 use inexor_rgf_core_model::PropertyInstanceGetter;
 use serde_json::json;
 use uuid::Uuid;
 
 #[test]
-fn entity_instance_builder_test() {
+fn reactive_entity_instance_builder_test() {
     let type_name = r_string();
     let id = Uuid::new_v4();
     let property_1_name = r_string();
     let property_1_value = r_string();
-    let entity_instance = EntityInstanceBuilder::new(type_name.clone())
+    let entity_instance = ReactiveEntityInstanceBuilder::new(type_name.clone())
         .id(id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
         .get();
@@ -26,7 +26,7 @@ fn entity_instance_builder_test() {
             .as_str()
             .unwrap()
     );
-    let entity_instance = EntityInstanceBuilder::new(type_name.clone())
+    let entity_instance = ReactiveEntityInstanceBuilder::new(type_name.clone())
         .property(property_1_name.clone(), json!(property_1_value.clone()))
         .get();
     assert_eq!(type_name, entity_instance.type_name);
@@ -42,7 +42,7 @@ fn entity_instance_builder_test() {
 }
 
 #[test]
-fn entity_instance_from_type_test() {
+fn reactive_entity_instance_from_type_test() {
     let type_name = r_string();
     let id = Uuid::new_v4();
     let property_1_name = r_string();
@@ -52,7 +52,7 @@ fn entity_instance_from_type_test() {
         .property(property_1_name.clone(), DataType::String)
         .property(property_2_name.clone(), DataType::String)
         .build();
-    let entity_instance = EntityInstanceBuilder::from(entity_type.clone())
+    let entity_instance = ReactiveEntityInstanceBuilder::from(entity_type.clone())
         .id(id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
         .get();
