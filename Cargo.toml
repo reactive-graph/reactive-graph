@@ -1,4 +1,4 @@
-cargo-features = ["edition2021"]
+cargo-features = ["edition2021", "strip"]
 
 [package]
 name = "inexor-rgf-application"
@@ -49,6 +49,16 @@ inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
 inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+# 12MB -> 7.8MB
+lto = true
+# 7.8MB -> 4.5MB
+strip = "symbols"
 
 [[bin]]
 name = "inexor-rgf-application"
