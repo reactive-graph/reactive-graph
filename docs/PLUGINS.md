@@ -46,6 +46,18 @@ Plugins can provide:
 
 ## Roadmap
 
+### Numeric
+
+| Name | Repository |
+| --- | --- |
+| inexor-rgf-plugin-numeric | https://github.com/aschaeffer/inexor-rgf-plugin-numeric |
+
+The plugin should be extended by initializing entity instances which contains numeric constants (pi, eulers number, ...)
+
+#### Rust Crate / Rust Reference
+
+* Math Constants: https://doc.rust-lang.org/std/f64/consts/index.html
+
 ### Config
 
 | Name | Repository |
@@ -313,6 +325,23 @@ more complex data. But it makes it also necessary to unpack or pack these data i
 * Color Filter
 * Blend Filter
 * Noise Generation
+
+### Noise Generation
+
+| Name | Repository |
+| --- | --- |
+| inexor-rgf-plugin-noise-generation | https://github.com/aschaeffer/inexor-rgf-plugin-noise-generation |
+
+#### Use Cases
+
+* Texture Processing / Procedural Texture Generation
+* Terrain Generation
+* Particle System
+
+#### Rust Crate / Rust Reference
+
+* https://docs.rs/noise/0.7.0/noise/
+* https://github.com/Razaekel/noise-rs
 
 ### Physics 
 
