@@ -1,0 +1,29 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "inexor-rgf-core-builder"
+description = "Inexor - Reactive Graph Flow - Core - Builder"
+version = "0.2.1"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+indradb-lib = "1"
+serde = { version = "1.0.130", features = [ "derive" ] }
+serde_json = "1.0.67"
+uuid = { version = "0.8.2", features = ["serde", "v4"] }
+
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+
+[dev-dependencies]
+random-string = "1.0"
+
+[lib]
+crate-type = ["lib"]
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
