@@ -1,0 +1,26 @@
+name: inexor-rgf-application
+version: 0.2.1
+summary: Inexor - Reactive Graph Flow - Application
+description: Inexor - Reactive Graph Flow - Application
+base: core20
+confinement: devmode
+
+parts:
+  inexor-rgf-application:
+    plugin: rust
+    source: .
+
+  inexor-rgf-plugin-base:
+    plugin: rust
+    source: https://github.com/aschaeffer/inexor-rgf-plugin-base.git
+    override-build: |
+      cargo +nightly build --release
+      mkdir $SNAPCRAFT_PART_INSTALL/plugins
+      cp target/release/lib*.so $SNAPCRAFT_PART_INSTALL/plugins/
+
+apps:
+  inexor-rgf-application:
+    command: bin/inexor-rgf-application
+    environment:
+      INEXOR_RGF_PLUGINS: $SNAP/plugins
+    plugs: [home]
