@@ -343,6 +343,50 @@ more complex data. But it makes it also necessary to unpack or pack these data i
 * https://docs.rs/noise/0.7.0/noise/
 * https://github.com/Razaekel/noise-rs
 
+### Scripting
+
+| Name | Repository |
+| --- | --- |
+| inexor-rgf-plugin-scripting | https://github.com/aschaeffer/inexor-rgf-plugin-scripting |
+
+This plugin provides the possibility to run scripts.
+
+Deno is a simple, modern and secure runtime for JavaScript and TypeScript that uses V8 and is built in Rust.
+
+#### Rust Crate / Rust Reference
+
+* https://deno.land/
+* https://github.com/denoland/rusty_v8
+* https://crates.io/crates/deno_core
+* https://docs.rs/deno_core/0.99.0/deno_core/
+* https://github.com/inexorgame-obsolete/entity-system-inactive/issues/129
+
+#### Entity Types
+
+| Name | Property | Data Type | Socket Type |
+| --- | --- | --- | --- |
+| |
+| Script | filename | string | none |
+| | script | string | output |
+| |
+| ExecuteScript | script | string | input |
+| | input | object | input |
+| | result | object | output |
+| | activation | bool | none |
+
+#### Relation Types
+
+| Source Entity Type | Relation Type Name | Target Entity Type |
+| --- | --- | --- |
+| Script | -- LoadsScript --> | ExecuteScript |
+
+#### Entity Behaviour
+
+| Name | Description |
+| --- | --- |
+| Script | Load the script from `filename` |
+| ExecuteScript | Executes the script if either `activation` or `input` gets triggered. |
+
 ### Physics 
 
 | Name | Repository |
