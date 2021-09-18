@@ -115,13 +115,4 @@ impl RelationTypeBuilder {
             self.extensions.to_vec(),
         )
     }
-
-    // pub fn register<'a>(
-    //     &'a mut self,
-    //     relation_type_manager: Arc<dyn RelationTypeManager>,
-    // ) -> RelationType {
-    //     let relation_type = self.build();
-    //     relation_type_manager.register(relation_type.clone());
-    //     relation_type
-    // }
 }
