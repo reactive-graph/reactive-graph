@@ -1,0 +1,58 @@
+# Packaging
+
+## Linux
+
+### Snap
+
+* https://snapcraft.io/docs/rust-plugin
+* https://snapcraft.io/docs/snap-confinement
+
+#### Configuration Files
+
+* `snapcraft.yaml`
+* `rust-toolchain.toml`
+
+#### Create Package
+
+```shell
+snapcraft
+```
+
+#### Install Package
+
+The snap have to be installed with `--devmode`.
+
+```shell
+sudo snap install --devmode inexor-rgf-application_0.2.1_amd64.snap
+```
+
+#### Package Information
+
+```shell
+snap info --verbose inexor-rgf-application
+```
+
+#### `snapcraft.yaml` Examples
+
+* https://github.com/lenna-project/lenna-cli/blob/7c31c71d1dd060f0c922b3f8b5e87833b5c45600/snapcraft.yaml
+* https://github.com/mimblewimble/packaging/blob/af8f34c3a3055be8907a7a2c98cbf63e23e792e3/snap/snapcraft.yaml
+
+### Debian
+
+(TODO)
+* https://crates.io/crates/cargo-deb
+
+### RPM
+
+(TODO)
+* https://crates.io/crates/cargo-rpm
+
+### Arch
+
+(TODO)
+* https://crates.io/crates/cargo-arch
+
+## Windows MSI
+
+(TODO)
+* https://crates.io/crates/msi
