@@ -1,6 +1,8 @@
 use async_graphql::scalar;
+use inexor_rgf_core_model::PropertyType;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use std::collections::HashMap;
 
 /// The named property stores a value/document as JSON representation.
 ///
@@ -17,3 +19,40 @@ pub struct GraphQLPropertyInstance {
     pub value: Value,
 }
 scalar!(GraphQLPropertyInstance, "Property");
+
+impl GraphQLPropertyInstance {
+    pub fn to_map(properties: Option<Vec<GraphQLPropertyInstance>>) -> HashMap<String, Value> {
+        match properties {
+            Some(properties) => {
+                let mut props = HashMap::new();
+                for property in properties {
+                    props.insert(property.name.clone(), property.value.clone());
+                }
+                props
+            }
+            None => HashMap::new(),
+        }
+    }
+
+    pub fn to_map_with_defaults(
+        properties: Option<Vec<GraphQLPropertyInstance>>,
+        property_types: Vec<PropertyType>,
+    ) -> HashMap<String, Value> {
+        let mut props = HashMap::new();
+        for property_type in property_types {
+            props.insert(
+                property_type.name.clone(),
+                property_type.data_type.default_value(),
+            );
+        }
+        match properties {
+            Some(properties) => {
+                for property in properties {
+                    props.insert(property.name.clone(), property.value.clone());
+                }
+            }
+            None => {}
+        }
+        props
+    }
+}

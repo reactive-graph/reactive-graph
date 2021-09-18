@@ -4,12 +4,13 @@ use async_graphql::*;
 use log::debug;
 
 use crate::api::{
-    ReactiveEntityInstanceManager, ReactiveRelationInstanceManager, RelationTypeManager,
+    ReactiveEntityInstanceManager, ReactiveRelationInstanceCreationError,
+    ReactiveRelationInstanceManager, RelationTypeManager,
 };
-use crate::builder::ReactiveRelationInstanceBuilder;
 use crate::graphql::mutation::GraphQLEdgeKey;
 use crate::graphql::query::{GraphQLPropertyInstance, GraphQLRelationInstance};
 use crate::model::PropertyInstanceSetter;
+use indradb::EdgeKey;
 
 #[derive(Default)]
 pub struct MutationRelationInstances;
@@ -50,7 +51,6 @@ impl MutationRelationInstances {
                 edge_key.type_name.clone()
             )));
         }
-        let relation_type = relation_type.unwrap();
 
         if !entity_instance_manager.has(edge_key.outbound_id) {
             return Err(Error::new(format!(
@@ -66,27 +66,19 @@ impl MutationRelationInstances {
             )));
         }
 
-        let mut relation_instance_builder = ReactiveRelationInstanceBuilder::new(
-            edge_key.outbound_id,
-            edge_key.type_name.clone(),
-            edge_key.inbound_id,
+        let properties = GraphQLPropertyInstance::to_map_with_defaults(
+            properties,
+            relation_type.unwrap().properties,
         );
 
-        // Get the properties pre-initialized with default values
-        relation_instance_builder.set_properties_defaults(relation_type);
-
-        if properties.is_some() {
-            for property in properties.unwrap() {
-                debug!(
-                    "set property {} = {}",
-                    property.name.clone(),
-                    property.value.clone().to_string()
-                );
-                relation_instance_builder.property(property.name.clone(), property.value.clone());
+        let relation_instance = match indradb::Type::new(edge_key.type_name.clone()) {
+            Ok(_) => {
+                let edge_key: EdgeKey = edge_key.into();
+                relation_instance_manager.create(edge_key, properties)
             }
-        }
+            Err(err) => Err(ReactiveRelationInstanceCreationError::ValidationError(err).into()),
+        };
 
-        let relation_instance = relation_instance_builder.create(relation_instance_manager.clone());
         if relation_instance.is_err() {
             return Err(Error::new("Failed to create relation instance"));
         }

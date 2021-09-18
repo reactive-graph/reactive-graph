@@ -68,7 +68,8 @@ impl MutationEntityTypes {
             }
         }
 
-        let entity_type = entity_type_builder.register(entity_type_manager.clone());
+        let entity_type = entity_type_builder.build();
+        entity_type_manager.register(entity_type.clone());
         Ok(entity_type.into())
     }
 

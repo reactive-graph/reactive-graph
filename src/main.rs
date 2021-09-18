@@ -4,9 +4,9 @@
 
 use std::alloc::System;
 
+use inexor_rgf_core_builder as builder;
 use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
-use inexor_rgf_core_reactive as reactive;
 
 use crate::application::Application;
 use crate::di::di_container;
@@ -16,7 +16,6 @@ use waiter_di::{profiles, Provider};
 
 mod api;
 mod application;
-mod builder;
 mod di;
 mod graphql;
 mod implementation;

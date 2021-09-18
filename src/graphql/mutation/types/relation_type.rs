@@ -88,7 +88,8 @@ impl MutationRelationTypes {
             }
         }
 
-        let relation_type = relation_type_builder.register(relation_type_manager.clone());
+        let relation_type = relation_type_builder.build();
+        relation_type_manager.register(relation_type.clone());
         Ok(relation_type.into())
     }
 

@@ -118,13 +118,14 @@ impl GraphQLServer for GraphQLServerImpl {
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_manager = web::Data::new(self.flow_manager.clone());
         let web_resource_manager = web::Data::new(self.web_resource_manager.clone());
+        let schema_data = web::Data::new(schema.clone());
 
         let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
         let server = HttpServer::new(move || {
             App::new()
                 .wrap(Cors::permissive())
-                .data(schema.clone())
+                .app_data(schema_data.clone())
                 .app_data(component_manager.clone())
                 .app_data(entity_type_manager.clone())
                 .app_data(relation_type_manager.clone())

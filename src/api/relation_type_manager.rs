@@ -12,7 +12,7 @@ pub struct RelationTypeImportError;
 #[async_trait]
 pub trait RelationTypeManager: Send + Sync + Lifecycle {
     // TODO: Result
-    fn register(&self, entity_type: RelationType);
+    fn register(&self, relation_type: RelationType);
     fn get_relation_types(&self) -> Vec<RelationType>;
 
     fn has(&self, type_name: String) -> bool;

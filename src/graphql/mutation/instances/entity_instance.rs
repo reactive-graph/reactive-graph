@@ -5,7 +5,6 @@ use log::debug;
 use uuid::Uuid;
 
 use crate::api::{EntityTypeManager, ReactiveEntityInstanceManager};
-use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance};
 use crate::model::PropertyInstanceSetter;
 
@@ -43,28 +42,18 @@ impl MutationEntityInstances {
                 type_name.clone()
             )));
         }
-        let entity_type = entity_type.unwrap();
 
-        // Get the properties pre-initialized with default values
-        let mut entity_instance_builder: ReactiveEntityInstanceBuilder = entity_type.into();
+        let properties = GraphQLPropertyInstance::to_map_with_defaults(
+            properties,
+            entity_type.unwrap().properties,
+        );
 
-        // If no id has been provided, a new id will be generated
-        if id.is_some() {
-            entity_instance_builder.id(id.unwrap());
-        }
-
-        if properties.is_some() {
-            for property in properties.unwrap() {
-                debug!(
-                    "set property {} = {}",
-                    property.name.clone(),
-                    property.value.clone().to_string()
-                );
-                entity_instance_builder.property(property.name.clone(), property.value.clone());
+        let entity_instance = match id {
+            Some(id) => {
+                entity_instance_manager.create_with_id(type_name.clone(), id, properties.clone())
             }
-        }
-
-        let entity_instance = entity_instance_builder.create(entity_instance_manager.clone());
+            None => entity_instance_manager.create(type_name.clone(), properties),
+        };
         if entity_instance.is_err() {
             return Err(Error::new(entity_instance.err().unwrap().to_string()));
         }
