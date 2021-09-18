@@ -266,7 +266,53 @@ more complex data. But it makes it also necessary to unpack or pack these data i
 | --- | --- |
 | inexor-rgf-plugin-sound | https://github.com/aschaeffer/inexor-rgf-plugin-sound |
 
+#### Rust Crate / Rust Reference
+
+* https://github.com/RustAudio/cpal
+* https://github.com/RustAudio/rodio (MP3, WAV, Vorbis, Flac, MP4, AAC)
+
 #### Entity Types
+
+* Sound Source
+* Sound Playback
+* TODO
+
+### Color
+
+| Name | Repository |
+| --- | --- |
+| inexor-rgf-plugin-color | https://github.com/aschaeffer/inexor-rgf-plugin-color |
+
+#### Components
+
+* color_rgb
+* color_rgba
+* color_cmyk
+
+#### Entity Types
+
+* TO_RGB
+* TO_RGBA
+* TO_CMYK
+
+### Texture
+
+| Name | Repository |
+| --- | --- |
+| inexor-rgf-plugin-texture | https://github.com/aschaeffer/inexor-rgf-plugin-texture |
+
+* GLTF Buffer (`data:application/gltf-buffer;base64,`)
+* https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_013_SimpleTexture.md
+
+### Texture Processing
+
+| Name | Repository |
+| --- | --- |
+| inexor-rgf-plugin-texture-processing | https://github.com/aschaeffer/inexor-rgf-plugin-texture-processing |
+
+* Color Filter
+* Blend Filter
+* Noise Generation
 
 ### Physics 
 
