@@ -20,3 +20,5 @@ cobertura.xml
 
 # Prevent logs to be commited
 **/*.log
+
+**/*.snap
