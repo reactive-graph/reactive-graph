@@ -51,21 +51,6 @@ impl EntityInstanceBuilder {
             )
         }
     }
-
-    // pub fn create<'a>(
-    //     &'a mut self,
-    //     entity_instance_manager: Arc<dyn EntityInstanceManager>,
-    // ) -> Result<Uuid, EntityInstanceCreationError> {
-    //     if self.id.is_some() {
-    //         entity_instance_manager.create_with_id(
-    //             self.type_name.clone(),
-    //             self.id.unwrap(),
-    //             self.properties.clone(),
-    //         )
-    //     } else {
-    //         entity_instance_manager.create(self.type_name.clone(), self.properties.clone())
-    //     }
-    // }
 }
 
 impl From<EntityType> for EntityInstanceBuilder {
