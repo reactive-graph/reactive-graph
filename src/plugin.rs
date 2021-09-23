@@ -48,13 +48,15 @@ pub struct PluginMetadata {
 pub trait Plugin: Send + Sync {
     fn metadata(&self) -> Result<PluginMetadata, PluginError>;
 
-    fn init(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginError>;
+    fn init(&self) -> Result<(), PluginError>;
 
     fn post_init(&self) -> Result<(), PluginError>;
 
     fn pre_shutdown(&self) -> Result<(), PluginError>;
 
     fn shutdown(&self) -> Result<(), PluginError>;
+
+    fn set_context(&mut self, context: Arc<dyn PluginContext>) -> Result<(), PluginError>;
 
     fn get_component_provider(&self) -> Result<Arc<dyn ComponentProvider>, PluginError>;
 
