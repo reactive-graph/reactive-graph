@@ -56,7 +56,7 @@ pub trait Plugin: Send + Sync {
 
     fn shutdown(&self) -> Result<(), PluginError>;
 
-    fn set_context(&mut self, context: Arc<dyn PluginContext>) -> Result<(), PluginError>;
+    fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginError>;
 
     fn get_component_provider(&self) -> Result<Arc<dyn ComponentProvider>, PluginError>;
 
