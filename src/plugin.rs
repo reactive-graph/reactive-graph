@@ -1,5 +1,8 @@
 use std::sync::Arc;
 
+use serde::{Deserialize, Serialize};
+
+use crate::plugin_context::PluginContext;
 use crate::ComponentBehaviourProvider;
 use crate::ComponentProvider;
 use crate::EntityBehaviourProvider;
@@ -8,7 +11,6 @@ use crate::FlowProvider;
 use crate::RelationBehaviourProvider;
 use crate::RelationTypeProvider;
 use crate::WebResourceProvider;
-use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub enum PluginError {
@@ -46,7 +48,7 @@ pub struct PluginMetadata {
 pub trait Plugin: Send + Sync {
     fn metadata(&self) -> Result<PluginMetadata, PluginError>;
 
-    fn init(&self) -> Result<(), PluginError>;
+    fn init(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginError>;
 
     fn post_init(&self) -> Result<(), PluginError>;
 

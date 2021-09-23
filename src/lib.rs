@@ -17,10 +17,13 @@ pub static RUSTC_VERSION: &str = env!("RUSTC_VERSION");
 pub mod component_behaviour_provider;
 pub mod component_provider;
 pub mod entity_behaviour_provider;
+pub mod entity_instance_creator;
 pub mod entity_type_provider;
 pub mod flow_provider;
 pub mod plugin;
+pub mod plugin_context;
 pub mod relation_behaviour_provider;
+pub mod relation_instance_creator;
 pub mod relation_type_provider;
 pub mod web_resource_provider;
 

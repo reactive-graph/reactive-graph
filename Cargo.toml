@@ -3,7 +3,7 @@ cargo-features = ["edition2021"]
 [package]
 name = "inexor-rgf-core-plugins"
 description = "Inexor - Reactive Graph Flow - Core - Plugins"
-version = "0.2.1"
+version = "0.3.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
