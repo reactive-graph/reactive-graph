@@ -1,15 +1,15 @@
-use inexor_rgf_core_model::{
-    EntityInstance, ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance,
-};
 use std::sync::Arc;
 
+use inexor_rgf_core_model::{EntityInstance, ReactiveEntityInstance};
+
+#[derive(Debug)]
 pub enum EntityInstanceCreationError {
-    FAILED,
+    Failed,
 }
 
 pub trait EntityInstanceCreator: Send + Sync {
     fn create_entity_instance(
         &self,
         entity_instance: EntityInstance,
-    ) -> Result<ReactiveEntityInstance, EntityInstanceCreationError>;
+    ) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 }
