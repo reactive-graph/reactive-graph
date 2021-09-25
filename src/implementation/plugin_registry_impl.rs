@@ -176,9 +176,11 @@ impl PluginRegistry for PluginRegistryImpl {
                         let relation_type_manager =
                             RelationTypeManagerImpl::new(self.relation_type_manager.clone());
                         let entity_instance_manager = EntityInstanceManagerImpl::new(
+                            self.entity_type_manager.clone(),
                             self.reactive_entity_instance_manager.clone(),
                         );
                         let relation_instance_manager = RelationInstanceManagerImpl::new(
+                            self.relation_type_manager.clone(),
                             self.reactive_relation_instance_manager.clone(),
                         );
                         let flow_manager = FlowManagerImpl::new(self.reactive_flow_manager.clone());
