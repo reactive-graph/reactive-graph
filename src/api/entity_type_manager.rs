@@ -12,12 +12,17 @@ pub struct EntityTypeImportError;
 #[async_trait]
 pub trait EntityTypeManager: Send + Sync + Lifecycle {
     fn register(&self, entity_type: EntityType) -> EntityType;
-    // fn load_static_entity_types(&self);
+
+    /// Returns all entity types.
     fn get_entity_types(&self) -> Vec<EntityType>;
 
+    /// Returns true, if a entity type with the given name exists.
     fn has(&self, name: String) -> bool;
+
+    /// Returns the entity type with the given name or empty.
     fn get(&self, name: String) -> Option<EntityType>;
 
+    /// Creates a new entity type.
     fn create(
         &self,
         name: String,
@@ -27,6 +32,8 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     );
+
+    /// Deletes the entity type with the given name.
     fn delete(&self, name: String);
 
     fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError>;
