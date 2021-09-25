@@ -46,6 +46,10 @@ Plugins can provide:
 
 ## Roadmap
 
+### Plugin Context
+
+-[x] A plugin can create entity/relation instances by itself
+
 ### Numeric
 
 | Name | Repository |
