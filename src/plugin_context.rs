@@ -1,9 +1,12 @@
-use crate::entity_instance_creator::EntityInstanceCreator;
-use crate::relation_instance_creator::RelationInstanceCreator;
+use crate::EntityInstanceManager;
+use crate::FlowManager;
+use crate::RelationInstanceManager;
 use std::sync::Arc;
 
 pub trait PluginContext: Send + Sync {
-    fn get_entity_instance_creator(&self) -> Arc<dyn EntityInstanceCreator>;
+    fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager>;
 
-    fn get_relation_instance_creator(&self) -> Arc<dyn RelationInstanceCreator>;
+    fn get_relation_instance_manager(&self) -> Arc<dyn RelationInstanceManager>;
+
+    fn get_flow_manager(&self) -> Arc<dyn FlowManager>;
 }
