@@ -69,17 +69,13 @@ Plugins can provide:
 | --- | --- |
 | inexor-rgf-plugin-config | https://github.com/aschaeffer/inexor-rgf-plugin-config |
 
-Reads TOML config files from the location defined in property `filename`. The goal is
+- [x] Reads TOML config files from the location defined in property `filename`. The goal is
 that flows which uses an entity of type `ConfigFile` can be configured easily. The
 TOML file defined in the property `filename` gets read from disk and the data structure
 gets stored in the property `value` as an object.
 
-The property `value` is an output socket and can be used for anything you want in your
+- [x] The property `configuration` is an output socket and can be used for anything you want in your
 flow.
-
-The config can be used to allow customization of flows implementing
-* game modes
-* maps
 
 ---
 **Example:**
@@ -93,18 +89,28 @@ The UUIDs of the entity instances have to be stable for the name of a config fil
 This allows to create flows which uses these config files by name.
 ---
 
+#### Use Cases
+
+* Graphic card settings
+* Game server configuration
+* Player configuration
+* Customization of game modes
+* Customization of maps
+* Customization of particle effects
+* Customization of procedural texture generation
+
 #### Entity Types
 
 | Name | Properties | Data Type | Socket Type |
 | --- | --- | --- | --- |
 | ConfigFile | filename | string | none |
-| | value | object | output |
+| | configuration | object | output |
 
 #### Entity Behaviours
 
 | Name | Description |
 | --- | --- |
-| ConfigFileBehaviour | On every change of the property `filename` the configuration file gets loaded. Automatically updates the entity instance if the TOML file has changed on disk.|
+| ConfigFile | On every change of the property `filename` the configuration file gets loaded. Automatically updates the entity instance if the TOML file has changed on disk.|
 
 ### System Environment
 

@@ -44,6 +44,11 @@ active = true
 path = "../inexor-rgf-plugin-comparison/target/debug/libinexor_rgf_plugin_comparison.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-config"
+active = true
+path = "../inexor-rgf-plugin-config/target/debug/libinexor_rgf_plugin_config.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-mqtt"
 active = true
 path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
