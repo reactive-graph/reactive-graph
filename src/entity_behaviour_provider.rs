@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use inexor_rgf_core_model::ReactiveEntityInstance;
+use crate::model::ReactiveEntityInstance;
 use uuid::Uuid;
 
 pub trait EntityBehaviourProvider: Send + Sync {

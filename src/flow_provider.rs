@@ -1,4 +1,4 @@
-use inexor_rgf_core_model::Flow;
+use crate::model::Flow;
 
 pub trait FlowProvider: Send + Sync {
     fn get_flows(&self) -> Vec<Flow>;

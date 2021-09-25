@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
+use crate::model::{ReactiveEntityInstance, ReactiveRelationInstance};
 use indradb::EdgeKey;
-use inexor_rgf_core_model::{ReactiveEntityInstance, ReactiveRelationInstance};
 use uuid::Uuid;
 
 pub trait ComponentBehaviourProvider: Send + Sync {

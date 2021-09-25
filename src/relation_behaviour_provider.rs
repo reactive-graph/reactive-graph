@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
+use crate::model::ReactiveRelationInstance;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::ReactiveRelationInstance;
 
 pub trait RelationBehaviourProvider: Send + Sync {
     /// Possibly adds new behaviour to the given relation instance
