@@ -118,7 +118,7 @@ This allows to create flows which uses these config files by name.
 | --- | --- |
 | inexor-rgf-plugin-system-environment | https://github.com/aschaeffer/inexor-rgf-plugin-system-environment |
 
-The plugin creates entity instances for each environment variable. As environment variables doesn't change
+- [x] The plugin creates entity instances for each environment variable. As environment variables doesn't change
 at runtime this happens only at initialization.
 
 ---
