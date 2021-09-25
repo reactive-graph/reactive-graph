@@ -55,12 +55,16 @@ impl GraphQLEntityInstance {
     async fn properties(
         &self,
         #[graphql(desc = "Filters by property name")] name: Option<String>,
+        #[graphql(desc = "Filters by property names")] names: Option<Vec<String>>,
     ) -> Vec<GraphQLPropertyInstance> {
         self.entity_instance
             .properties
             .iter()
             .filter(|(property_name, _property_instance)| {
                 name.is_none() || name.clone().unwrap() == property_name.deref().clone()
+            })
+            .filter(|(property_name, _property_instance)| {
+                names.is_none() || names.clone().unwrap().contains(&property_name)
             })
             .map(|(property_name, property_instance)| {
                 let value = property_instance.value.read().unwrap().deref().clone();
