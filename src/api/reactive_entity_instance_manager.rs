@@ -81,11 +81,20 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
 
     fn unregister_reactive_instance(&self, id: Uuid);
 
+    // TODO: rename import_from_file
     fn import(
         &self,
         path: String,
     ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError>;
 
+    // TODO: import_from_json_string
+    // Goal: web-ui: upload entity instance as json file
+
     // TODO: return result
+    // TODO: rename export_as_file
     fn export(&self, id: Uuid, path: String);
+
+    // TODO: implement export_as_json_string
+    // Goal: web-ui: download entity instance as json file
+    // fn export_as_json_string(&self, id: Uuid) -> String;
 }

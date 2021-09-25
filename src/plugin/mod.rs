@@ -1,3 +1,20 @@
+pub mod component_manager_impl;
 pub mod config;
+pub mod context;
+pub mod entity_instance_manager_impl;
+pub mod entity_type_manager_impl;
+pub mod flow_manager_impl;
 pub mod proxy;
 pub mod registrar;
+pub mod relation_instance_manager_impl;
+pub mod relation_type_manager_impl;
+
+pub use component_manager_impl::ComponentManagerImpl;
+pub use config::PluginsConfig;
+pub use context::PluginContextImpl;
+pub use entity_instance_manager_impl::EntityInstanceManagerImpl;
+pub use entity_type_manager_impl::EntityTypeManagerImpl;
+pub use flow_manager_impl::FlowManagerImpl;
+pub use proxy::PluginProxy;
+pub use relation_instance_manager_impl::RelationInstanceManagerImpl;
+pub use relation_type_manager_impl::RelationTypeManagerImpl;

@@ -9,12 +9,16 @@ use waiter_di::*;
 
 use crate::api::{
     ComponentBehaviourManager, ComponentManager, EntityBehaviourManager, EntityTypeManager,
-    Lifecycle, PluginRegistry, ReactiveFlowManager, RelationBehaviourManager, RelationTypeManager,
+    Lifecycle, PluginRegistry, ReactiveEntityInstanceManager, ReactiveFlowManager,
+    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationTypeManager,
     WebResourceManager,
 };
-use crate::plugin::config::PluginsConfig;
-use crate::plugin::proxy::PluginProxy;
 use crate::plugin::registrar::PluginRegistrar;
+use crate::plugin::{
+    ComponentManagerImpl, EntityInstanceManagerImpl, EntityTypeManagerImpl, FlowManagerImpl,
+    PluginContextImpl, PluginProxy, PluginsConfig, RelationInstanceManagerImpl,
+    RelationTypeManagerImpl,
+};
 use crate::plugins::{
     Plugin, PluginDeclaration, PluginError, INEXOR_RGF_PLUGIN_VERSION, RUSTC_VERSION,
 };
@@ -43,6 +47,8 @@ pub struct PluginRegistryImpl {
     entity_type_manager: Wrc<dyn EntityTypeManager>,
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+    reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
+    reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
     reactive_flow_manager: Wrc<dyn ReactiveFlowManager>,
     web_resource_manager: Wrc<dyn WebResourceManager>,
 
@@ -163,6 +169,29 @@ impl PluginRegistry for PluginRegistryImpl {
                                 .add_provider(web_resource_provider),
                             Err(_) => {}
                         }
+                        let component_manager =
+                            ComponentManagerImpl::new(self.component_manager.clone());
+                        let entity_type_manager =
+                            EntityTypeManagerImpl::new(self.entity_type_manager.clone());
+                        let relation_type_manager =
+                            RelationTypeManagerImpl::new(self.relation_type_manager.clone());
+                        let entity_instance_manager = EntityInstanceManagerImpl::new(
+                            self.reactive_entity_instance_manager.clone(),
+                        );
+                        let relation_instance_manager = RelationInstanceManagerImpl::new(
+                            self.reactive_relation_instance_manager.clone(),
+                        );
+                        let flow_manager = FlowManagerImpl::new(self.reactive_flow_manager.clone());
+                        let plugin_context = PluginContextImpl::new(
+                            Arc::new(component_manager),
+                            Arc::new(entity_type_manager),
+                            Arc::new(relation_type_manager),
+                            Arc::new(entity_instance_manager),
+                            Arc::new(relation_instance_manager),
+                            Arc::new(flow_manager),
+                        );
+                        let context = Arc::new(plugin_context);
+                        let _ = plugin_proxy.set_context(context);
                         let _ = plugin_proxy.post_init();
                     }
                 }

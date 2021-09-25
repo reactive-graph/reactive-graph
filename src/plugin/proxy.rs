@@ -3,6 +3,7 @@ use std::sync::Arc;
 use libloading::Library;
 
 use crate::plugins::plugin::PluginMetadata;
+use crate::plugins::plugin_context::PluginContext;
 use crate::plugins::{
     ComponentBehaviourProvider, ComponentProvider, EntityBehaviourProvider, EntityTypeProvider,
     FlowProvider, Plugin, PluginError, RelationBehaviourProvider, RelationTypeProvider,
@@ -35,6 +36,10 @@ impl Plugin for PluginProxy {
 
     fn shutdown(&self) -> Result<(), PluginError> {
         self.plugin.shutdown()
+    }
+
+    fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginError> {
+        self.plugin.set_context(context.clone())
     }
 
     fn get_component_provider(&self) -> Result<Arc<dyn ComponentProvider>, PluginError> {
