@@ -56,7 +56,8 @@ Plugins can provide:
 | --- | --- |
 | inexor-rgf-plugin-numeric | https://github.com/aschaeffer/inexor-rgf-plugin-numeric |
 
-The plugin should be extended by initializing entity instances which contains numeric constants (pi, eulers number, ...)
+- [x] Extend the numeric plugin, so that entity instances are created which contains
+      numeric constants (pi, eulers number, ...)
 
 #### Rust Crate / Rust Reference
 
