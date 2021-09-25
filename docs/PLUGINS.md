@@ -71,8 +71,20 @@ The plugin should be extended by initializing entity instances which contains nu
 Reads TOML config files from the location defined in property `filename`. The goal is
 that flows which uses an entity of type `ConfigFile` can be configured easily. The
 TOML file defined in the property `filename` gets read from disk and the data structure
-gets stored in the property `value`.
-The property `value` is an output and can be used for anything you want in your flow.
+gets stored in the property `value` as an object.
+
+The property `value` is an output socket and can be used for anything you want in your
+flow.
+
+The config can be used to allow customization of flows implementing
+* game modes
+* maps
+
+---
+**Example:**
+A flow which controls lights based on a scheduler the cron expressions can be defined
+in a config file.
+---
 
 ---
 **Note:**
