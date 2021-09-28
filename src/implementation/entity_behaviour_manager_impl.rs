@@ -7,7 +7,7 @@ use waiter_di::*;
 use crate::api::EntityBehaviourManager;
 use crate::model::ReactiveEntityInstance;
 use crate::plugins::EntityBehaviourProvider;
-use log::debug;
+use log::trace;
 
 #[wrapper]
 pub struct EntityBehaviourProviders(
@@ -28,12 +28,10 @@ pub struct EntityBehaviourManagerImpl {
 #[provides]
 impl EntityBehaviourManager for EntityBehaviourManagerImpl {
     fn add_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        // TODO: migrate all registries into plugins
-        debug!(
+        trace!(
             "EntityBehaviourManager::add_behaviours {}",
             entity_instance.id
         );
-        // TODO: unit test with multiple behaviours on a single entity
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours(entity_instance.clone())
         }
