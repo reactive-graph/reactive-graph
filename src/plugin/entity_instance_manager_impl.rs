@@ -47,9 +47,12 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
                             .insert(property.name.clone(), property.data_type.default_value());
                     }
                 }
-                let reactive_entity_instance = self
-                    .reactive_entity_instance_manager
-                    .create_reactive_instance(entity_instance);
+                let reactive_entity_instance =
+                    self.reactive_entity_instance_manager.create_with_id(
+                        entity_instance.type_name,
+                        entity_instance.id,
+                        entity_instance.properties,
+                    );
                 match reactive_entity_instance {
                     Ok(reactive_entity_instance) => Ok(reactive_entity_instance),
                     Err(_) => {
