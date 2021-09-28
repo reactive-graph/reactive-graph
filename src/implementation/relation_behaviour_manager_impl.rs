@@ -7,7 +7,7 @@ use crate::api::RelationBehaviourManager;
 use crate::model::ReactiveRelationInstance;
 use crate::plugins::RelationBehaviourProvider;
 use indradb::EdgeKey;
-use log::debug;
+use log::trace;
 
 #[wrapper]
 pub struct RelationBehaviourProviders(
@@ -28,11 +28,10 @@ pub struct RelationBehaviourManagerImpl {
 #[provides]
 impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     fn add_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        debug!(
+        trace!(
             "RelationBehaviourManager::add_behaviours {}",
             relation_instance.get_key().unwrap().t.0.as_str()
         );
-        // TODO: unit test with multiple behaviours on a single relation
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours(relation_instance.clone())
         }
