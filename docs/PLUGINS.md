@@ -134,13 +134,13 @@ This allows to create flows which uses these environment variables by name.
 | EnvVar | name | string | none |
 | | value | string | output |
 
-### Raw Keyboard
+### Input Devices
 
 | Name | Repository |
 | --- | --- |
-| inexor-rgf-plugin-raw-keyboard | https://github.com/aschaeffer/inexor-rgf-plugin-raw-keyboard |
+| inexor-rgf-plugin-input-device | https://github.com/aschaeffer/inexor-rgf-plugin-input-device |
 
-This plugin queries mouse and keyboard inputs on demand without a window.
+This plugin makes input devices available as entities using linux evdev.
 
 #### Use cases
 
@@ -148,26 +148,47 @@ This plugin queries mouse and keyboard inputs on demand without a window.
   * Running basic functions (server list, chat, ...) in background
   * No window have to be open or minimized
 * Home Automation
-  * Use a real keyboard (for example numpad keyboards) as interface to control flows
+  * Use a real keyboard (for example a wireless numpad keyboards) as interface to control flows
 * Robotics
   * Control your robot with keys or a 3d mouse
 
 #### Rust Crate / Rust Reference
 
-https://crates.io/crates/device_query
+* https://github.com/emberian/evdev/ (Linux only)
+* https://www.freedesktop.org/software/libevdev/doc/latest/
 
 #### Entity Types
 
 | Name | Property | Data Type | Socket Type |
 | --- | --- | --- | --- |
-| RawKey | keycode | number | none |
+| InputDevice | name | string | output |
+| | event | object | output |
+| | physical_path | string | output |
+| | driver_version | string | output |
+| | vendor | number | output |
+| | product | number | output |
+| | version | number | output |
+| InputDeviceKey | key | string | none |
+| | keycode | number | none |
 | | keydown | bool | output |
+
+#### Relation Types
+
+| Name | Outbound Entity Type | Inbound Entity Type |
+| --- | --- | --- |
+| KeyEvent | InputDevice | InputDeviceKey |
 
 #### Entity Behaviours
 
 | Name | Description |
 | --- | --- |
-| RawKeyBehaviour | Filters incoming key events by the keycode defined in the property `keycode`. Sets the output property `keydown` to true or false |
+| InputDevice | Streams input events from evdev and sets the entity instance property `event` |
+
+#### Relation Behaviours
+
+| Name | Description |
+| --- | --- |
+| KeyEvent | Propagate input events and filters by event type (key event) and keycode defined by the inbound entity instance |
 
 ### String Operations inexor-rgf-plugins-string
 
