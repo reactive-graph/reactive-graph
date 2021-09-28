@@ -9,7 +9,7 @@ use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::plugins::ComponentBehaviourProvider;
 use indradb::EdgeKey;
-use log::debug;
+use log::trace;
 
 #[wrapper]
 pub struct ComponentBehaviourProviders(
@@ -30,7 +30,7 @@ pub struct ComponentBehaviourManagerImpl {
 #[provides]
 impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
     fn add_behaviours_to_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        debug!(
+        trace!(
             "ComponentBehaviourManager::add_behaviours_to_entity {}",
             entity_instance.id
         );
@@ -40,7 +40,7 @@ impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
     }
 
     fn add_behaviours_to_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        debug!(
+        trace!(
             "ComponentBehaviourManager::add_behaviours_to_relation {}",
             relation_instance.get_key().unwrap().t.0.as_str()
         );
