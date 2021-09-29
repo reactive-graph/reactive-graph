@@ -59,6 +59,11 @@ active = true
 path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-input-device"
+active = true
+path = "../inexor-rgf-plugin-input-device/target/debug/libinexor_rgf_plugin_input_device.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-flow-editor"
 active = true
 path = "../inexor-rgf-plugin-flow-editor/target/debug/libinexor_rgf_plugin_flow_editor.so"
