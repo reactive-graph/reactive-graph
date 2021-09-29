@@ -32,7 +32,6 @@ pub struct EntityTypeManagerImpl {
 #[provides]
 impl EntityTypeManager for EntityTypeManagerImpl {
     fn register(&self, mut entity_type: EntityType) -> EntityType {
-        debug!("Registered entity type {}", entity_type.name);
         // Construct the type
         entity_type.t = Type::new(entity_type.name.clone()).unwrap();
         for component_name in entity_type.components.to_vec() {
@@ -54,6 +53,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .write()
             .unwrap()
             .push(entity_type.clone());
+        debug!("Registered entity type {}", entity_type.name);
         entity_type
     }
 
@@ -148,7 +148,6 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>) {
         for entity_type in entity_type_provider.get_entity_types() {
-            debug!("Registering entity type: {}", entity_type.name);
             self.register(entity_type);
         }
     }
