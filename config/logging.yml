@@ -61,6 +61,11 @@ loggers:
     appenders:
       - file-plugin-mqtt
     additive: false
+  inexor_rgf_plugin_mqtt::provider::relation_type_provider:
+    level: debug
+    appenders:
+      - file-plugin-mqtt
+    additive: false
   inexor_rgf_plugin_mqtt::behaviour::relation::relation_behaviour_provider:
     level: debug
     appenders:
@@ -76,3 +81,43 @@ loggers:
     appenders:
       - file-plugin-mqtt
     additive: false
+  inexor_rgf_plugin_arithmetic::provider::component_provider:
+    level: info
+  inexor_rgf_plugin_arithmetic::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_base::provider::component_provider:
+    level: info
+  inexor_rgf_plugin_base::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_comparison::provider::component_provider:
+    level: info
+  inexor_rgf_plugin_comparison::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_config::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_config::provider::flow_provider:
+    level: info
+  inexor_rgf_plugin_connector::provider::component_provider:
+    level: info
+  inexor_rgf_plugin_connector::provider::relation_type_provider:
+    level: info
+  inexor_rgf_plugin_input_device::provider::entity_type_provider:
+    level: debug
+  inexor_rgf_plugin_input_device::provider::relation_type_provider:
+    level: debug
+  inexor_rgf_plugin_logical::provider::component_provider:
+    level: info
+  inexor_rgf_plugin_logical::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_numeric::plugin:
+    level: info
+  inexor_rgf_plugin_numeric::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_numeric::provider::component_provider:
+    level: info
+  inexor_rgf_plugin_system_environment::plugin:
+    level: info
+  inexor_rgf_plugin_system_environment::provider::entity_type_provider:
+    level: info
+  inexor_rgf_plugin_value::provider::entity_type_provider:
+    level: info
