@@ -140,7 +140,7 @@ This allows to create flows which uses these environment variables by name.
 | --- | --- |
 | inexor-rgf-plugin-input-device | https://github.com/aschaeffer/inexor-rgf-plugin-input-device |
 
-This plugin makes input devices available as entities using linux evdev.
+- [x] This plugin makes input devices (keyboard, mouse, ...) available as entities using linux evdev.
 
 #### Use cases
 
