@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Tarpaulin" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="tarpaulin --verbose --out Xml" />
+    <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <option name="channel" value="NIGHTLY" />
+    <option name="requiredFeatures" value="true" />
+    <option name="allFeatures" value="false" />
+    <option name="emulateTerminal" value="false" />
+    <option name="withSudo" value="false" />
+    <option name="backtrace" value="FULL" />
+    <envs>
+      <env name="CODECOV_TOKEN" value="4e75e741-5658-4cfb-a908-19f6234e675f" />
+    </envs>
+    <option name="isRedirectInput" value="false" />
+    <option name="redirectInputPath" value="" />
+    <method v="2">
+      <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+    </method>
+  </configuration>
+</component>
