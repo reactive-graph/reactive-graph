@@ -27,14 +27,10 @@ fn test_relation_edge_manager() {
     entity_type_manager.register(entity_type.clone());
 
     // Create relation type
-    let relation_type = RelationTypeBuilder::new(
-        outbound_type_name.clone(),
-        relation_type_name.clone(),
-        inbound_type_name.clone(),
-    )
-    .component(String::from("positionable"))
-    .string_property(property_name.clone())
-    .build();
+    let relation_type = RelationTypeBuilder::new(outbound_type_name.clone(), relation_type_name.clone(), inbound_type_name.clone())
+        .component(String::from("positionable"))
+        .string_property(property_name.clone())
+        .build();
     relation_type_manager.register(relation_type.clone());
 
     let outbound_entity = entity_vertex_manager.create(outbound_type_name.clone(), HashMap::new());
@@ -42,11 +38,7 @@ fn test_relation_edge_manager() {
     let inbound_entity = entity_vertex_manager.create(inbound_type_name.clone(), HashMap::new());
     let inbound_id = inbound_entity.unwrap();
 
-    let edge_key = EdgeKey::new(
-        outbound_id,
-        Type::new(relation_type_name.clone()).unwrap(),
-        inbound_id,
-    );
+    let edge_key = EdgeKey::new(outbound_id, Type::new(relation_type_name.clone()).unwrap(), inbound_id);
 
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());

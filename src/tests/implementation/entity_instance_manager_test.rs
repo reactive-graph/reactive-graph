@@ -28,9 +28,7 @@ fn test_entity_instance_manager() {
     assert!(result.is_err());
     assert_eq!(0, transaction.get_vertex_count().unwrap());
 
-    let entity_type = EntityTypeBuilder::new(type_name.clone())
-        .string_property(property_name.clone())
-        .build();
+    let entity_type = EntityTypeBuilder::new(type_name.clone()).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
 
     let entity_instance = EntityInstanceBuilder::new(type_name.clone())
@@ -99,9 +97,7 @@ fn test_entity_instance_manager_import_export() {
 
     let property_name = r_string();
     let property_value = r_json_string();
-    let entity_type = EntityTypeBuilder::new(type_name)
-        .string_property(property_name.clone())
-        .build();
+    let entity_type = EntityTypeBuilder::new(type_name).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
 
     let entity_instance = EntityInstanceBuilder::new(type_name)

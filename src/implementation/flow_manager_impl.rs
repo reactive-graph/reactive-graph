@@ -5,9 +5,7 @@ use async_trait::async_trait;
 use log::error;
 use waiter_di::*;
 
-use crate::api::{
-    EntityInstanceManager, FlowCreationError, FlowImportError, FlowManager, RelationInstanceManager,
-};
+use crate::api::{EntityInstanceManager, FlowCreationError, FlowImportError, FlowManager, RelationInstanceManager};
 use crate::model::Flow;
 
 #[component]
@@ -23,18 +21,14 @@ impl FlowManager for FlowManagerImpl {
     fn create(&self, flow: Flow) -> Result<Flow, FlowCreationError> {
         for entity_instance in flow.entity_instances {
             if !self.entity_instance_manager.has(entity_instance.id) {
-                let _result = self
-                    .entity_instance_manager
-                    .create_from_instance(entity_instance.clone());
+                let _result = self.entity_instance_manager.create_from_instance(entity_instance.clone());
             }
         }
         for relation_instance in flow.relation_instances {
             let edge_key = relation_instance.get_key();
             if edge_key.is_some() {
                 if !self.relation_instance_manager.has(edge_key.unwrap()) {
-                    let _result = self
-                        .relation_instance_manager
-                        .create_from_instance(relation_instance.clone());
+                    let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
                 }
             }
         }
@@ -48,9 +42,7 @@ impl FlowManager for FlowManagerImpl {
                 self.entity_instance_manager.commit(entity_instance.clone());
             } else {
                 // The entity instance has been added
-                let _result = self
-                    .entity_instance_manager
-                    .create_from_instance(entity_instance.clone());
+                let _result = self.entity_instance_manager.create_from_instance(entity_instance.clone());
             }
             // TODO: what happens with removed entity instances?
         }
@@ -59,13 +51,10 @@ impl FlowManager for FlowManagerImpl {
             if edge_key.is_some() {
                 if self.relation_instance_manager.has(edge_key.unwrap()) {
                     // The relation instance has been updated
-                    self.relation_instance_manager
-                        .commit(relation_instance.clone());
+                    self.relation_instance_manager.commit(relation_instance.clone());
                 } else {
                     // The relation instance has been added
-                    let _result = self
-                        .relation_instance_manager
-                        .create_from_instance(relation_instance.clone());
+                    let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
                 }
                 // TODO: what happens with removed relation instances?
             }
@@ -103,21 +92,11 @@ impl FlowManager for FlowManagerImpl {
             Ok(file) => {
                 let result = serde_json::to_writer_pretty(&file, &flow.clone());
                 if result.is_err() {
-                    error!(
-                        "Failed to export flow {} to {}: {}",
-                        flow.id,
-                        path,
-                        result.err().unwrap()
-                    );
+                    error!("Failed to export flow {} to {}: {}", flow.id, path, result.err().unwrap());
                 }
             }
             Err(error) => {
-                error!(
-                    "Failed to export flow {} to {}: {}",
-                    flow.id,
-                    path,
-                    error.to_string()
-                );
+                error!("Failed to export flow {} to {}: {}", flow.id, path, error.to_string());
             }
         }
     }

@@ -5,9 +5,8 @@ use libloading::Library;
 use crate::plugins::plugin::PluginMetadata;
 use crate::plugins::plugin_context::PluginContext;
 use crate::plugins::{
-    ComponentBehaviourProvider, ComponentProvider, EntityBehaviourProvider, EntityTypeProvider,
-    FlowProvider, Plugin, PluginError, RelationBehaviourProvider, RelationTypeProvider,
-    WebResourceProvider,
+    ComponentBehaviourProvider, ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin, PluginError, RelationBehaviourProvider,
+    RelationTypeProvider, WebResourceProvider,
 };
 
 /// A proxy object which wraps a [`Plugin`] and makes sure it can't outlive
@@ -54,21 +53,15 @@ impl Plugin for PluginProxy {
         self.plugin.get_relation_type_provider()
     }
 
-    fn get_component_behaviour_provider(
-        &self,
-    ) -> Result<Arc<dyn ComponentBehaviourProvider>, PluginError> {
+    fn get_component_behaviour_provider(&self) -> Result<Arc<dyn ComponentBehaviourProvider>, PluginError> {
         self.plugin.get_component_behaviour_provider()
     }
 
-    fn get_entity_behaviour_provider(
-        &self,
-    ) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError> {
+    fn get_entity_behaviour_provider(&self) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError> {
         self.plugin.get_entity_behaviour_provider()
     }
 
-    fn get_relation_behaviour_provider(
-        &self,
-    ) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError> {
+    fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError> {
         self.plugin.get_relation_behaviour_provider()
     }
 

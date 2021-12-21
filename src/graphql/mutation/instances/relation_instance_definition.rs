@@ -49,12 +49,7 @@ impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
             properties: relation_instance
                 .properties
                 .iter()
-                .map(|property_instance| {
-                    (
-                        property_instance.name.clone(),
-                        property_instance.value.clone(),
-                    )
-                })
+                .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
                 .collect(),
         }
     }

@@ -23,41 +23,27 @@ impl MutationRelationTypes {
         outbound_type: String,
         #[graphql(desc = "The name of the entity type.")] name: String,
         inbound_type: String,
-        #[graphql(desc = "Adds the given components to the newly created relation type.")]
-        components: Option<Vec<String>>,
+        #[graphql(desc = "Adds the given components to the newly created relation type.")] components: Option<Vec<String>>,
         behaviours: Option<Vec<String>>,
-        #[graphql(
-            desc = "The definitions of properties. These are added additionally to the properties provided by the given components."
-        )]
-        properties: Option<Vec<PropertyTypeDefinition>>,
-        #[graphql(desc = "The extension on the relation type.")] extensions: Option<
-            Vec<GraphQLExtension>,
+        #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
+            Vec<PropertyTypeDefinition>,
         >,
+        #[graphql(desc = "The extension on the relation type.")] extensions: Option<Vec<GraphQLExtension>>,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
         if relation_type_manager.has(name.clone()) {
-            return Err(Error::new(format!(
-                "Relation type {} already exists",
-                name.clone()
-            )));
+            return Err(Error::new(format!("Relation type {} already exists", name.clone())));
         }
         if !entity_type_manager.has(outbound_type.clone()) {
-            return Err(Error::new(format!(
-                "Outbound entity type {} does not exist",
-                outbound_type.clone()
-            )));
+            return Err(Error::new(format!("Outbound entity type {} does not exist", outbound_type.clone())));
         }
         if !entity_type_manager.has(inbound_type.clone()) {
-            return Err(Error::new(format!(
-                "Inbound entity type {} does not exist",
-                inbound_type.clone()
-            )));
+            return Err(Error::new(format!("Inbound entity type {} does not exist", inbound_type.clone())));
         }
 
-        let mut relation_type_builder =
-            RelationTypeBuilder::new(outbound_type.clone(), name.clone(), inbound_type.clone());
+        let mut relation_type_builder = RelationTypeBuilder::new(outbound_type.clone(), name.clone(), inbound_type.clone());
         if components.is_some() {
             for component in components.unwrap() {
                 debug!("Add component {}", component.clone());
@@ -72,12 +58,7 @@ impl MutationRelationTypes {
         }
         if properties.is_some() {
             for property in properties.unwrap() {
-                debug!(
-                    "Add property {} {} {}",
-                    property.name,
-                    property.data_type.to_string(),
-                    property.socket_type.to_string()
-                );
+                debug!("Add property {} {} {}", property.name, property.data_type.to_string(), property.socket_type.to_string());
                 relation_type_builder.property_from(property.clone());
             }
         }

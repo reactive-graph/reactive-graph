@@ -48,28 +48,15 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn get(&self, name: String) -> Option<crate::model::Component> {
-        self.components
-            .0
-            .read()
-            .unwrap()
-            .to_vec()
-            .into_iter()
-            .find(|component| component.name == name)
+        self.components.0.read().unwrap().to_vec().into_iter().find(|component| component.name == name)
     }
 
     fn create(&self, name: String, properties: Vec<PropertyType>) {
-        self.register(crate::model::Component::new(
-            name.clone(),
-            properties.to_vec(),
-        ));
+        self.register(crate::model::Component::new(name.clone(), properties.to_vec()));
     }
 
     fn delete(&self, name: String) {
-        self.components
-            .0
-            .write()
-            .unwrap()
-            .retain(|component| component.name != name);
+        self.components.0.write().unwrap().retain(|component| component.name != name);
     }
 
     fn import(&self, path: String) {
@@ -92,21 +79,11 @@ impl ComponentManager for ComponentManagerImpl {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &o_component.unwrap());
                     if result.is_err() {
-                        error!(
-                            "Failed to export component {} to {}: {}",
-                            name,
-                            path,
-                            result.err().unwrap()
-                        );
+                        error!("Failed to export component {} to {}: {}", name, path, result.err().unwrap());
                     }
                 }
                 Err(error) => {
-                    error!(
-                        "Failed to export component {} to {}: {}",
-                        name,
-                        path,
-                        error.to_string()
-                    );
+                    error!("Failed to export component {} to {}: {}", name, path, error.to_string());
                 }
             }
         }

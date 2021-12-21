@@ -27,11 +27,7 @@ impl From<PropertyTypeDefinition> for PropertyType {
             name: property_type.name,
             data_type: property_type.data_type,
             socket_type: property_type.socket_type,
-            extensions: property_type
-                .extensions
-                .iter()
-                .map(|extension| extension.clone().into())
-                .collect(),
+            extensions: property_type.extensions.iter().map(|extension| extension.clone().into()).collect(),
         }
     }
 }

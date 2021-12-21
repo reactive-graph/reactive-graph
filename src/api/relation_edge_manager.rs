@@ -29,11 +29,7 @@ impl fmt::Display for RelationEdgeCreationError {
             RelationEdgeCreationError::MissingRequiredProperty(property_name) => {
                 write!(f, "Missing required property {}!", property_name.clone())
             }
-            RelationEdgeCreationError::GraphDatabaseError(error) => write!(
-                f,
-                "Failed to create graph database edge: {}",
-                error.to_string()
-            ),
+            RelationEdgeCreationError::GraphDatabaseError(error) => write!(f, "Failed to create graph database edge: {}", error.to_string()),
         }
     }
 }
@@ -61,11 +57,7 @@ pub trait RelationEdgeManager: Send + Sync {
     fn get_properties(&self, edge_key: EdgeKey) -> Option<EdgeProperties>;
 
     /// Creates a new edge with the given edge key and the given properties.
-    fn create(
-        &self,
-        edge_key: EdgeKey,
-        properties: HashMap<String, Value>,
-    ) -> Result<EdgeKey, RelationEdgeCreationError>;
+    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationEdgeCreationError>;
 
     // TODO: return result RelationEdgeUpdateError
     // TODO: rename commit -> "update" or "save"

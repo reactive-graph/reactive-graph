@@ -34,16 +34,10 @@ impl GraphQLPropertyInstance {
         }
     }
 
-    pub fn to_map_with_defaults(
-        properties: Option<Vec<GraphQLPropertyInstance>>,
-        property_types: Vec<PropertyType>,
-    ) -> HashMap<String, Value> {
+    pub fn to_map_with_defaults(properties: Option<Vec<GraphQLPropertyInstance>>, property_types: Vec<PropertyType>) -> HashMap<String, Value> {
         let mut props = HashMap::new();
         for property_type in property_types {
-            props.insert(
-                property_type.name.clone(),
-                property_type.data_type.default_value(),
-            );
+            props.insert(property_type.name.clone(), property_type.data_type.default_value());
         }
         match properties {
             Some(properties) => {

@@ -26,12 +26,10 @@ impl GraphQLEntityInstance {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
         if entity_type_manager.is_ok() {
             let entity_type_manager = entity_type_manager.unwrap();
-            return entity_type_manager
-                .get(self.entity_instance.type_name.clone())
-                .and_then(|entity_type| {
-                    let entity_type: GraphQLEntityType = entity_type.clone().into();
-                    Some(entity_type)
-                });
+            return entity_type_manager.get(self.entity_instance.type_name.clone()).and_then(|entity_type| {
+                let entity_type: GraphQLEntityType = entity_type.clone().into();
+                Some(entity_type)
+            });
         }
         None
     }
@@ -60,12 +58,8 @@ impl GraphQLEntityInstance {
         self.entity_instance
             .properties
             .iter()
-            .filter(|(property_name, _property_instance)| {
-                name.is_none() || name.clone().unwrap() == property_name.deref().clone()
-            })
-            .filter(|(property_name, _property_instance)| {
-                names.is_none() || names.clone().unwrap().contains(&property_name)
-            })
+            .filter(|(property_name, _property_instance)| name.is_none() || name.clone().unwrap() == property_name.deref().clone())
+            .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(&property_name))
             .map(|(property_name, property_instance)| {
                 let value = property_instance.value.read().unwrap().deref().clone();
                 GraphQLPropertyInstance {
@@ -77,21 +71,14 @@ impl GraphQLEntityInstance {
     }
 
     /// List of relation instances which starts at this entity instance.
-    async fn outbound(
-        &self,
-        context: &Context<'_>,
-        #[graphql(desc = "Unimplemented")] type_name: Option<String>,
-    ) -> Vec<GraphQLRelationInstance> {
+    async fn outbound(&self, context: &Context<'_>, #[graphql(desc = "Unimplemented")] type_name: Option<String>) -> Vec<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
         if relation_instance_manager.is_ok() {
             let relation_instance_manager = relation_instance_manager.unwrap();
             return relation_instance_manager
                 .get_by_outbound_entity(self.entity_instance.id)
                 .iter()
-                .filter(|relation_instance| {
-                    type_name.is_none()
-                        || type_name.clone().unwrap() == relation_instance.type_name.clone()
-                })
+                .filter(|relation_instance| type_name.is_none() || type_name.clone().unwrap() == relation_instance.type_name.clone())
                 .map(|relation_instance| relation_instance.clone().into())
                 .collect();
         }
@@ -99,21 +86,14 @@ impl GraphQLEntityInstance {
     }
 
     /// List of relation instances which ends at this entity instance.
-    async fn inbound(
-        &self,
-        context: &Context<'_>,
-        #[graphql(desc = "Unimplemented")] type_name: Option<String>,
-    ) -> Vec<GraphQLRelationInstance> {
+    async fn inbound(&self, context: &Context<'_>, #[graphql(desc = "Unimplemented")] type_name: Option<String>) -> Vec<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
         if relation_instance_manager.is_ok() {
             let relation_instance_manager = relation_instance_manager.unwrap();
             return relation_instance_manager
                 .get_by_inbound_entity(self.entity_instance.id)
                 .iter()
-                .filter(|relation_instance| {
-                    type_name.is_none()
-                        || type_name.clone().unwrap() == relation_instance.type_name.clone()
-                })
+                .filter(|relation_instance| type_name.is_none() || type_name.clone().unwrap() == relation_instance.type_name.clone())
                 .map(|relation_instance| relation_instance.clone().into())
                 .collect();
         }

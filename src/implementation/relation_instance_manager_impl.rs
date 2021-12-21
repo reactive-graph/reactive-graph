@@ -9,10 +9,7 @@ use serde_json::Value;
 use uuid::Uuid;
 use waiter_di::*;
 
-use crate::api::{
-    EntityInstanceManager, RelationEdgeManager, RelationInstanceCreationError,
-    RelationInstanceImportError, RelationInstanceManager,
-};
+use crate::api::{EntityInstanceManager, RelationEdgeManager, RelationInstanceCreationError, RelationInstanceImportError, RelationInstanceManager};
 use crate::model::RelationInstance;
 
 #[component]
@@ -55,45 +52,27 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             .collect()
     }
 
-    fn create(
-        &self,
-        edge_key: EdgeKey,
-        properties: HashMap<String, Value>,
-    ) -> Result<EdgeKey, RelationInstanceCreationError> {
+    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError> {
         if self.relation_edge_manager.has(edge_key.clone()) {
             // Edge already exists!
             return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key.clone()).into());
         }
         if !self.entity_instance_manager.has(edge_key.outbound_id) {
             // Outbound entity does not exist!
-            return Err(
-                RelationInstanceCreationError::MissingOutboundEntityInstance(edge_key.outbound_id)
-                    .into(),
-            );
+            return Err(RelationInstanceCreationError::MissingOutboundEntityInstance(edge_key.outbound_id).into());
         }
         if !self.entity_instance_manager.has(edge_key.inbound_id) {
             // Inbound entity does not exist!
-            return Err(RelationInstanceCreationError::MissingInboundEntityInstance(
-                edge_key.inbound_id,
-            )
-            .into());
+            return Err(RelationInstanceCreationError::MissingInboundEntityInstance(edge_key.inbound_id).into());
         }
-        let result = self
-            .relation_edge_manager
-            .create(edge_key.clone(), properties);
+        let result = self.relation_edge_manager.create(edge_key.clone(), properties);
         if result.is_err() {
-            return Err(RelationInstanceCreationError::RelationEdgeCreationError(
-                result.err().unwrap(),
-            )
-            .into());
+            return Err(RelationInstanceCreationError::RelationEdgeCreationError(result.err().unwrap()).into());
         }
         Ok(result.unwrap())
     }
 
-    fn create_from_instance(
-        &self,
-        relation_instance: RelationInstance,
-    ) -> Result<EdgeKey, RelationInstanceCreationError> {
+    fn create_from_instance(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError> {
         let edge_key = relation_instance.get_key();
         if edge_key.is_none() {
             return Err(RelationInstanceCreationError::InvalidEdgeKey.into());
@@ -104,8 +83,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     fn commit(&self, relation_instance: RelationInstance) {
         let edge_key = relation_instance.get_key();
         if edge_key.is_some() {
-            self.relation_edge_manager
-                .commit(edge_key.unwrap(), relation_instance.properties.clone());
+            self.relation_edge_manager.commit(edge_key.unwrap(), relation_instance.properties.clone());
         }
     }
 
@@ -125,9 +103,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
                 if edge_key.is_some() {
                     let edge_key = edge_key.unwrap();
                     if !self.has(edge_key.clone()) {
-                        let result = self
-                            .relation_edge_manager
-                            .create(edge_key.clone(), relation_instance.properties.clone());
+                        let result = self.relation_edge_manager.create(edge_key.clone(), relation_instance.properties.clone());
                         if result.is_ok() {
                             return Ok(relation_instance);
                         }

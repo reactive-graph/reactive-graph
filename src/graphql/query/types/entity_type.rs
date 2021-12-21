@@ -91,10 +91,7 @@ impl GraphQLEntityType {
             return relation_type_manager
                 .get_relation_types()
                 .iter()
-                .filter(|relation_type| {
-                    relation_type.outbound_type.clone() == "*"
-                        || relation_type.outbound_type.clone() == self.entity_type.name.clone()
-                })
+                .filter(|relation_type| relation_type.outbound_type.clone() == "*" || relation_type.outbound_type.clone() == self.entity_type.name.clone())
                 .map(|relation_type| relation_type.clone().into())
                 .collect();
         }
@@ -109,10 +106,7 @@ impl GraphQLEntityType {
             return relation_type_manager
                 .get_relation_types()
                 .iter()
-                .filter(|relation_type| {
-                    relation_type.inbound_type.clone() == "*"
-                        || relation_type.inbound_type.clone() == self.entity_type.name.clone()
-                })
+                .filter(|relation_type| relation_type.inbound_type.clone() == "*" || relation_type.inbound_type.clone() == self.entity_type.name.clone())
                 .map(|relation_type| relation_type.clone().into())
                 .collect();
         }

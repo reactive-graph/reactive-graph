@@ -13,8 +13,8 @@ use serde::{Deserialize, Serialize};
 use waiter_di::*;
 
 use crate::api::{
-    ComponentManager, EntityTypeManager, GraphQLServer, Lifecycle, ReactiveEntityInstanceManager,
-    ReactiveFlowManager, ReactiveRelationInstanceManager, RelationTypeManager, WebResourceManager,
+    ComponentManager, EntityTypeManager, GraphQLServer, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowManager, ReactiveRelationInstanceManager,
+    RelationTypeManager, WebResourceManager,
 };
 use crate::graphql::{InexorMutation, InexorQuery, InexorSchema};
 
@@ -46,21 +46,14 @@ pub struct WebResourcePathInfo {
     path: String,
 }
 
-pub async fn handle_web_resource(
-    web_resource_manager: web::Data<Arc<dyn WebResourceManager>>,
-    path: web::Path<WebResourcePathInfo>,
-) -> HttpResponse {
+pub async fn handle_web_resource(web_resource_manager: web::Data<Arc<dyn WebResourceManager>>, path: web::Path<WebResourcePathInfo>) -> HttpResponse {
     let web_resource_name = path.web_resource_name.clone();
     let path = path.path.clone();
     debug!("web_resource_name = {}", web_resource_name.as_str());
     debug!("path = {}", path.as_str());
     match web_resource_manager.get(web_resource_name.clone()) {
         Some(web_resource) => web_resource.handle_web_resource(path.clone()),
-        None => HttpResponse::NotFound().body(format!(
-            "404 Not Found: {}: {}",
-            web_resource_name.clone(),
-            path.clone()
-        )),
+        None => HttpResponse::NotFound().body(format!("404 Not Found: {}: {}", web_resource_name.clone(), path.clone())),
     }
 }
 
@@ -92,14 +85,12 @@ impl GraphQLServer for GraphQLServerImpl {
 
     fn query_thread(&self, request: String) {
         let schema = self.get_schema();
-        let _thread = task::Builder::new()
-            .name(String::from("query"))
-            .spawn(async move {
-                info!("query: {}", request.clone());
-                let result = schema.execute(request).await;
-                let json = serde_json::to_string(&result);
-                info!("query result: {}", json.unwrap());
-            });
+        let _thread = task::Builder::new().name(String::from("query")).spawn(async move {
+            info!("query: {}", request.clone());
+            let result = schema.execute(request).await;
+            let json = serde_json::to_string(&result);
+            info!("query result: {}", json.unwrap());
+        });
     }
 
     fn serve(&self, stopper: Receiver<()>) {
@@ -147,23 +138,14 @@ impl GraphQLServer for GraphQLServerImpl {
                 // TODO: query flows
                 // TODO: modify flows
                 // Web Resource API
-                .service(
-                    web::resource("/{web_resource_name}/{path:.*}")
-                        .route(web::get().to(handle_web_resource)),
-                )
+                .service(web::resource("/{web_resource_name}/{path:.*}").route(web::get().to(handle_web_resource)))
         });
 
         let graphql_server_config = get_graphql_server_config();
-        debug!(
-            "Starting HTTP/GraphQL server on {}",
-            graphql_server_config.to_string()
-        );
+        debug!("Starting HTTP/GraphQL server on {}", graphql_server_config.to_string());
         let r_server = server.bind(graphql_server_config.to_string());
         if r_server.is_err() {
-            error!(
-                "Could not start HTTP/GraphQL server: Failed to bind {}",
-                graphql_server_config.to_string()
-            );
+            error!("Could not start HTTP/GraphQL server: Failed to bind {}", graphql_server_config.to_string());
             return;
         }
         let server = r_server.unwrap().run();
@@ -179,9 +161,7 @@ impl GraphQLServer for GraphQLServerImpl {
         });
 
         // This thread runs the GraphQL server
-        let handle = task::Builder::new()
-            .name(String::from("inexor-graphql"))
-            .spawn(server);
+        let handle = task::Builder::new().name(String::from("inexor-graphql")).spawn(server);
         if handle.is_ok() {
             let _handle = handle.unwrap();
             // Start the event loop
@@ -221,21 +201,14 @@ fn get_graphql_server_config() -> GraphSqlServerConfig {
     let toml_config = std::fs::read_to_string("./config/graphql.toml");
     match toml_config {
         Ok(toml_string) => {
-            let graphql_server_config: Result<GraphSqlServerConfig, _> =
-                toml::from_str(&toml_string);
+            let graphql_server_config: Result<GraphSqlServerConfig, _> = toml::from_str(&toml_string);
             if graphql_server_config.is_err() {
-                error!(
-                    "Failed to load graphql configuration from {}: Invalid TOML",
-                    "./config/graphql.toml"
-                );
+                error!("Failed to load graphql configuration from {}: Invalid TOML", "./config/graphql.toml");
             }
             graphql_server_config.unwrap_or(GraphSqlServerConfig::default())
         }
         Err(_) => {
-            error!(
-                "Failed to load graphql configuration from {}: File does not exist",
-                "./config/graphql.toml"
-            );
+            error!("Failed to load graphql configuration from {}: File does not exist", "./config/graphql.toml");
             GraphSqlServerConfig::default()
         }
     }

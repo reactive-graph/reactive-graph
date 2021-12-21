@@ -2,17 +2,12 @@ use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
 
 use async_trait::async_trait;
-use indradb::{
-    Edge, EdgeKey, EdgeProperties, EdgeQueryExt, SpecificEdgeQuery, SpecificVertexQuery,
-    Transaction, VertexQueryExt,
-};
+use indradb::{Edge, EdgeKey, EdgeProperties, EdgeQueryExt, SpecificEdgeQuery, SpecificVertexQuery, Transaction, VertexQueryExt};
 use serde_json::Value;
 use uuid::Uuid;
 use waiter_di::*;
 
-use crate::api::{
-    GraphDatabase, RelationEdgeCreationError, RelationEdgeManager, RelationTypeManager,
-};
+use crate::api::{GraphDatabase, RelationEdgeCreationError, RelationEdgeManager, RelationTypeManager};
 
 // This service operates on the graph database.
 
@@ -96,11 +91,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
         None
     }
 
-    fn create(
-        &self,
-        edge_key: EdgeKey,
-        properties: HashMap<String, Value>,
-    ) -> Result<EdgeKey, RelationEdgeCreationError> {
+    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationEdgeCreationError> {
         let r_transaction = self.graph_database.get_transaction();
         if r_transaction.is_err() {
             return Err(RelationEdgeCreationError::NoTransaction);
@@ -108,23 +99,15 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
         let transaction = r_transaction.unwrap();
 
         let type_name = edge_key.t.0.clone();
-        if !self
-            .relation_type_manager
-            .has_starts_with(type_name.clone())
-        {
+        if !self.relation_type_manager.has_starts_with(type_name.clone()) {
             return Err(RelationEdgeCreationError::RelationTypeMissing(type_name.clone()).into());
         }
-        let relation_type = self
-            .relation_type_manager
-            .get_starts_with(type_name.clone())
-            .unwrap();
+        let relation_type = self.relation_type_manager.get_starts_with(type_name.clone()).unwrap();
 
         let result = transaction.create_edge(&edge_key.clone());
         if result.is_err() {
             // Should not happen when using indradb::InternalMemoryDatastore
-            return Err(
-                RelationEdgeCreationError::GraphDatabaseError(result.err().unwrap()).into(),
-            );
+            return Err(RelationEdgeCreationError::GraphDatabaseError(result.err().unwrap()).into());
         }
         let edge_query = SpecificEdgeQuery::single(edge_key.clone());
         for property_type in relation_type.properties {
@@ -132,20 +115,14 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             let value = properties.get(&*property_name.clone());
             if value.is_none() {
                 // Missing required property
-                return Err(RelationEdgeCreationError::MissingRequiredProperty(
-                    property_name.clone(),
-                )
-                .into());
+                return Err(RelationEdgeCreationError::MissingRequiredProperty(property_name.clone()).into());
             }
             let value = value.unwrap();
             let property_query = edge_query.clone().property(property_name);
             let property_result = transaction.set_edge_properties(property_query, value);
             if property_result.is_err() {
                 // Should not happen when using indradb::InternalMemoryDatastore
-                return Err(RelationEdgeCreationError::GraphDatabaseError(
-                    property_result.err().unwrap(),
-                )
-                .into());
+                return Err(RelationEdgeCreationError::GraphDatabaseError(property_result.err().unwrap()).into());
             }
         }
         return Ok(edge_key.clone());

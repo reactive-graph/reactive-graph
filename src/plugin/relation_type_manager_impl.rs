@@ -9,9 +9,7 @@ pub struct RelationTypeManagerImpl {
 
 impl RelationTypeManagerImpl {
     pub fn new(relation_type_manager: Arc<dyn crate::api::RelationTypeManager>) -> Self {
-        Self {
-            relation_type_manager,
-        }
+        Self { relation_type_manager }
     }
 }
 impl RelationTypeManager for RelationTypeManagerImpl {
@@ -32,8 +30,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     fn get_starts_with(&self, type_name_starts_with: String) -> Option<RelationType> {
-        self.relation_type_manager
-            .get_starts_with(type_name_starts_with)
+        self.relation_type_manager.get_starts_with(type_name_starts_with)
     }
 
     fn create(
@@ -46,15 +43,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) {
-        self.relation_type_manager.create(
-            outbound_type,
-            type_name,
-            inbound_type,
-            components,
-            behaviours,
-            properties,
-            extensions,
-        )
+        self.relation_type_manager
+            .create(outbound_type, type_name, inbound_type, components, behaviours, properties, extensions)
     }
 
     fn delete(&self, type_name: String) {

@@ -9,9 +9,7 @@ pub struct EntityTypeManagerImpl {
 
 impl EntityTypeManagerImpl {
     pub fn new(entity_type_manager: Arc<dyn crate::api::EntityTypeManager>) -> Self {
-        Self {
-            entity_type_manager,
-        }
+        Self { entity_type_manager }
     }
 }
 impl EntityTypeManager for EntityTypeManagerImpl {
@@ -27,17 +25,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.get(name)
     }
 
-    fn create(
-        &self,
-        name: String,
-        group: String,
-        components: Vec<String>,
-        behaviours: Vec<String>,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
-    ) {
-        self.entity_type_manager
-            .create(name, group, components, behaviours, properties, extensions)
+    fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.entity_type_manager.create(name, group, components, behaviours, properties, extensions)
     }
 
     fn delete(&self, name: String) {

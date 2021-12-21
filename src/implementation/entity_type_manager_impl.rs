@@ -37,22 +37,12 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         for component_name in entity_type.components.to_vec() {
             let component = self.component_manager.get(component_name.clone());
             if component.is_some() {
-                entity_type
-                    .properties
-                    .append(&mut component.unwrap().properties);
+                entity_type.properties.append(&mut component.unwrap().properties);
             } else {
-                warn!(
-                    "Entity type {} not fully initialized: No component named {}",
-                    entity_type.name.clone(),
-                    component_name
-                );
+                warn!("Entity type {} not fully initialized: No component named {}", entity_type.name.clone(), component_name);
             }
         }
-        self.entity_types
-            .0
-            .write()
-            .unwrap()
-            .push(entity_type.clone());
+        self.entity_types.0.write().unwrap().push(entity_type.clone());
         debug!("Registered entity type {}", entity_type.name);
         entity_type
     }
@@ -75,15 +65,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .find(|entity_type| entity_type.name == name)
     }
 
-    fn create(
-        &self,
-        name: String,
-        group: String,
-        components: Vec<String>,
-        behaviours: Vec<String>,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
-    ) {
+    fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
         self.register(EntityType::new(
             name.clone(),
             group.clone(),
@@ -96,11 +78,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     /// TODO: first delete the entity instance of this type, then delete the entity type itself.
     fn delete(&self, name: String) {
-        self.entity_types
-            .0
-            .write()
-            .unwrap()
-            .retain(|entity_type| entity_type.name != name);
+        self.entity_types.0.write().unwrap().retain(|entity_type| entity_type.name != name);
     }
 
     fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError> {
@@ -126,21 +104,11 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &o_entity_type.unwrap());
                     if result.is_err() {
-                        error!(
-                            "Failed to export entity type {} to {}: {}",
-                            name,
-                            path,
-                            result.err().unwrap()
-                        );
+                        error!("Failed to export entity type {} to {}: {}", name, path, result.err().unwrap());
                     }
                 }
                 Err(error) => {
-                    error!(
-                        "Failed to export entity type {} to {}: {}",
-                        name,
-                        path,
-                        error.to_string()
-                    );
+                    error!("Failed to export entity type {} to {}: {}", name, path, error.to_string());
                 }
             }
         }

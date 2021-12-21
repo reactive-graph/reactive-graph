@@ -81,17 +81,9 @@ impl Types {
             return relation_type_manager
                 .get_relation_types()
                 .iter()
-                .filter(|relation_type| {
-                    outbound_type.is_none()
-                        || outbound_type.clone().unwrap() == relation_type.outbound_type.clone()
-                })
-                .filter(|relation_type| {
-                    name.is_none() || name.clone().unwrap() == relation_type.type_name.clone()
-                })
-                .filter(|relation_type| {
-                    inbound_type.is_none()
-                        || inbound_type.clone().unwrap() == relation_type.inbound_type.clone()
-                })
+                .filter(|relation_type| outbound_type.is_none() || outbound_type.clone().unwrap() == relation_type.outbound_type.clone())
+                .filter(|relation_type| name.is_none() || name.clone().unwrap() == relation_type.type_name.clone())
+                .filter(|relation_type| inbound_type.is_none() || inbound_type.clone().unwrap() == relation_type.inbound_type.clone())
                 .map(|relation_type| {
                     let relation_type: GraphQLRelationType = relation_type.clone().into();
                     relation_type

@@ -25,11 +25,9 @@ impl fmt::Display for ReactiveEntityInstanceCreationError {
             ReactiveEntityInstanceCreationError::MissingInstance => {
                 write!(f, "The created instance cannot be found")
             }
-            ReactiveEntityInstanceCreationError::EntityInstanceCreationError(error) => write!(
-                f,
-                "Failed to create reactive entity instance: {}",
-                error.to_string()
-            ),
+            ReactiveEntityInstanceCreationError::EntityInstanceCreationError(error) => {
+                write!(f, "Failed to create reactive entity instance: {}", error.to_string())
+            }
         }
     }
 }
@@ -52,11 +50,7 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
 
     // fn get_by_property(&self, property_name: String, value: Value) -> Option<Arc<ReactiveEntityInstance>>;
 
-    fn create(
-        &self,
-        type_name: String,
-        properties: HashMap<String, Value>,
-    ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
+    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
     fn create_with_id(
         &self,
@@ -65,10 +59,7 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
-    fn create_reactive_instance(
-        &self,
-        entity_instance: EntityInstance,
-    ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
+    fn create_reactive_instance(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
     fn register_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>);
 
@@ -82,10 +73,7 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
     fn unregister_reactive_instance(&self, id: Uuid);
 
     // TODO: rename import_from_file
-    fn import(
-        &self,
-        path: String,
-    ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError>;
+    fn import(&self, path: String) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError>;
 
     // TODO: import_from_json_string
     // Goal: web-ui: upload entity instance as json file

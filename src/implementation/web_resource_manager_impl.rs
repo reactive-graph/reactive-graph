@@ -9,9 +9,7 @@ use crate::api::WebResourceManager;
 use crate::plugins::WebResourceProvider;
 
 #[wrapper]
-pub struct WebResourceProviders(
-    RwLock<std::collections::HashMap<String, Arc<dyn WebResourceProvider>>>,
-);
+pub struct WebResourceProviders(RwLock<std::collections::HashMap<String, Arc<dyn WebResourceProvider>>>);
 
 pub struct WebResourceManagerImpl {
     web_resource_providers: WebResourceProviders,
@@ -22,9 +20,7 @@ impl WebResourceManagerImpl {
     #[provides]
     fn new() -> Self {
         Self {
-            web_resource_providers: WebResourceProviders(RwLock::new(
-                std::collections::HashMap::new(),
-            )),
+            web_resource_providers: WebResourceProviders(RwLock::new(std::collections::HashMap::new())),
         }
     }
 }

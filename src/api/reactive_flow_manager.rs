@@ -28,11 +28,7 @@ impl fmt::Display for ReactiveFlowCreationError {
             }
             // ReactiveFlowCreationError::ReactiveEntityInstanceCreationError(error) => write!(f, "Failed to create reactive entity instance: {}", error.to_string()),
             // ReactiveFlowCreationError::ReactiveRelationInstanceCreationError(error) => write!(f, "Failed to create reactive relation instance: {}", error.to_string())
-            ReactiveFlowCreationError::ReactiveFlowConstructionError(error) => write!(
-                f,
-                "Failed to construct reactive flow: {}",
-                error.to_string()
-            ),
+            ReactiveFlowCreationError::ReactiveFlowConstructionError(error) => write!(f, "Failed to construct reactive flow: {}", error.to_string()),
         }
     }
 }

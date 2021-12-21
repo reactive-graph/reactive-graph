@@ -11,9 +11,7 @@ pub struct FlowManagerImpl {
 
 impl FlowManagerImpl {
     pub fn new(reactive_flow_manager: Arc<dyn ReactiveFlowManager>) -> Self {
-        Self {
-            reactive_flow_manager,
-        }
+        Self { reactive_flow_manager }
     }
 }
 impl FlowManager for FlowManagerImpl {

@@ -36,11 +36,9 @@ impl fmt::Display for ReactiveRelationInstanceCreationError {
             ReactiveRelationInstanceCreationError::MissingInstance => {
                 write!(f, "The created instance cannot be found")
             }
-            ReactiveRelationInstanceCreationError::RelationInstanceCreationError(error) => write!(
-                f,
-                "Failed to create reactive relation instance: {}",
-                error.to_string()
-            ),
+            ReactiveRelationInstanceCreationError::RelationInstanceCreationError(error) => {
+                write!(f, "Failed to create reactive relation instance: {}", error.to_string())
+            }
             ReactiveRelationInstanceCreationError::ValidationError(error) => {
                 write!(f, "Validation Error: {}", error.to_string())
             }
@@ -65,25 +63,15 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
     fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given outbound entity instance.
-    fn get_by_outbound_entity(
-        &self,
-        outbound_entity_id: Uuid,
-    ) -> Vec<Arc<ReactiveRelationInstance>>;
+    fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given inbound entity instance.
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Creates a new reactive relation instance.
-    fn create(
-        &self,
-        edge_key: EdgeKey,
-        properties: HashMap<String, Value>,
-    ) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError>;
+    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError>;
 
-    fn create_reactive_instance(
-        &self,
-        relation_instance: RelationInstance,
-    ) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError>;
+    fn create_reactive_instance(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError>;
 
     fn register_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>);
 
@@ -96,10 +84,7 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
 
     fn unregister_reactive_instance(&self, edge_key: EdgeKey);
 
-    fn import(
-        &self,
-        path: String,
-    ) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceImportError>;
+    fn import(&self, path: String) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceImportError>;
 
     // TODO: return result
     fn export(&self, edge_key: EdgeKey, path: String);

@@ -34,17 +34,10 @@ pub struct RelationTypeManagerImpl {
 #[provides]
 impl RelationTypeManager for RelationTypeManagerImpl {
     fn register(&self, mut relation_type: RelationType) {
-        debug!(
-            "Registered relation type {}",
-            relation_type.type_name.clone()
-        );
+        debug!("Registered relation type {}", relation_type.type_name.clone());
         // Construct the type
         relation_type.t = Type::new(relation_type.type_name.clone()).unwrap();
-        if relation_type.outbound_type != "*"
-            && !self
-                .entity_type_manager
-                .has(relation_type.outbound_type.clone())
-        {
+        if relation_type.outbound_type != "*" && !self.entity_type_manager.has(relation_type.outbound_type.clone()) {
             warn!(
                 "Relation type {} not initialized: Outbound entity type does not exist {}",
                 relation_type.type_name.clone(),
@@ -53,11 +46,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             // TODO: Result
             return;
         }
-        if relation_type.inbound_type != "*"
-            && !self
-                .entity_type_manager
-                .has(relation_type.inbound_type.clone())
-        {
+        if relation_type.inbound_type != "*" && !self.entity_type_manager.has(relation_type.inbound_type.clone()) {
             warn!(
                 "Relation type {} not initialized: Inbound entity type does not exist {}",
                 relation_type.type_name.clone(),
@@ -69,9 +58,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         for component_name in relation_type.components.to_vec() {
             let component = self.component_manager.get(component_name.clone());
             if component.is_some() {
-                relation_type
-                    .properties
-                    .append(&mut component.unwrap().properties);
+                relation_type.properties.append(&mut component.unwrap().properties);
             } else {
                 warn!(
                     "Relation type {} not fully initialized: No component named {}",
@@ -119,9 +106,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     .unwrap()
                     .to_vec()
                     .into_iter()
-                    .find(|relation_type| {
-                        type_name_starts_with.starts_with(relation_type.type_name.as_str())
-                    })
+                    .find(|relation_type| type_name_starts_with.starts_with(relation_type.type_name.as_str()))
                     .map(|relation_type| {
                         let mut relation_type = relation_type.clone();
                         relation_type.full_name = type_name_starts_with.clone();
@@ -183,21 +168,11 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &o_relation_type.unwrap());
                     if result.is_err() {
-                        error!(
-                            "Failed to export relation type {} to {}: {}",
-                            type_name,
-                            path,
-                            result.err().unwrap()
-                        );
+                        error!("Failed to export relation type {} to {}: {}", type_name, path, result.err().unwrap());
                     }
                 }
                 Err(error) => {
-                    error!(
-                        "Failed to export relation type {} to {}: {}",
-                        type_name,
-                        path,
-                        error.to_string()
-                    );
+                    error!("Failed to export relation type {} to {}: {}", type_name, path, error.to_string());
                 }
             }
         }

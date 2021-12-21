@@ -1,7 +1,4 @@
-use crate::plugins::{
-    ComponentManager, EntityInstanceManager, EntityTypeManager, FlowManager, PluginContext,
-    RelationInstanceManager, RelationTypeManager,
-};
+use crate::plugins::{ComponentManager, EntityInstanceManager, EntityTypeManager, FlowManager, PluginContext, RelationInstanceManager, RelationTypeManager};
 use std::sync::Arc;
 
 pub struct PluginContextImpl {

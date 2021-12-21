@@ -10,9 +10,7 @@ use crate::plugins::EntityBehaviourProvider;
 use log::trace;
 
 #[wrapper]
-pub struct EntityBehaviourProviders(
-    std::sync::RwLock<Vec<std::sync::Arc<dyn EntityBehaviourProvider>>>,
-);
+pub struct EntityBehaviourProviders(std::sync::RwLock<Vec<std::sync::Arc<dyn EntityBehaviourProvider>>>);
 
 #[waiter_di::provides]
 fn create_behaviour_providers() -> EntityBehaviourProviders {
@@ -28,10 +26,7 @@ pub struct EntityBehaviourManagerImpl {
 #[provides]
 impl EntityBehaviourManager for EntityBehaviourManagerImpl {
     fn add_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!(
-            "EntityBehaviourManager::add_behaviours {}",
-            entity_instance.id
-        );
+        trace!("EntityBehaviourManager::add_behaviours {}", entity_instance.id);
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours(entity_instance.clone())
         }

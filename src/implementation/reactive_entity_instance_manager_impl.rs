@@ -7,16 +7,13 @@ use uuid::Uuid;
 use waiter_di::*;
 
 use crate::api::{
-    ComponentBehaviourManager, EntityBehaviourManager, EntityInstanceManager,
-    ReactiveEntityInstanceCreationError, ReactiveEntityInstanceImportError,
+    ComponentBehaviourManager, EntityBehaviourManager, EntityInstanceManager, ReactiveEntityInstanceCreationError, ReactiveEntityInstanceImportError,
     ReactiveEntityInstanceManager,
 };
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 
 #[wrapper]
-pub struct ReactiveEntityInstances(
-    std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<ReactiveEntityInstance>>>,
-);
+pub struct ReactiveEntityInstances(std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<ReactiveEntityInstance>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveEntityInstances {
@@ -39,13 +36,7 @@ pub struct ReactiveEntityInstanceManagerImpl {
 #[provides]
 impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     fn has(&self, id: Uuid) -> bool {
-        self.entity_instance_manager.has(id)
-            && self
-                .reactive_entity_instances
-                .0
-                .read()
-                .unwrap()
-                .contains_key(&id)
+        self.entity_instance_manager.has(id) && self.reactive_entity_instances.0.read().unwrap().contains_key(&id)
     }
 
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>> {
@@ -62,18 +53,10 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         reader.values().map(|v| v.clone()).collect()
     }
 
-    fn create(
-        &self,
-        type_name: String,
-        properties: HashMap<String, Value>,
-    ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
+    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
         let result = self.entity_instance_manager.create(type_name, properties);
         if result.is_err() {
-            return Err(
-                ReactiveEntityInstanceCreationError::EntityInstanceCreationError(
-                    result.err().unwrap(),
-                ),
-            );
+            return Err(ReactiveEntityInstanceCreationError::EntityInstanceCreationError(result.err().unwrap()));
         }
         let entity_instance = self.entity_instance_manager.get(result.unwrap());
         if entity_instance.is_some() {
@@ -98,15 +81,9 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 return self.create_reactive_instance(entity_instance);
             }
             None => {
-                let result = self
-                    .entity_instance_manager
-                    .create_with_id(type_name, id, properties);
+                let result = self.entity_instance_manager.create_with_id(type_name, id, properties);
                 if result.is_err() {
-                    return Err(
-                        ReactiveEntityInstanceCreationError::EntityInstanceCreationError(
-                            result.err().unwrap(),
-                        ),
-                    );
+                    return Err(ReactiveEntityInstanceCreationError::EntityInstanceCreationError(result.err().unwrap()));
                 }
                 let entity_instance = self.entity_instance_manager.get(id);
                 if entity_instance.is_some() {
@@ -117,10 +94,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         }
     }
 
-    fn create_reactive_instance(
-        &self,
-        entity_instance: EntityInstance,
-    ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
+    fn create_reactive_instance(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
         let reactive_entity_instance = Arc::new(ReactiveEntityInstance::from(entity_instance));
         self.register_reactive_instance(reactive_entity_instance.clone());
         Ok(reactive_entity_instance)
@@ -128,24 +102,20 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn register_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) {
         // TODO: propagate error if create wasn't successful
-        let _result = self
-            .entity_instance_manager
-            .create_from_instance(reactive_entity_instance.clone().into());
-        self.reactive_entity_instances.0.write().unwrap().insert(
-            reactive_entity_instance.id,
-            reactive_entity_instance.clone(),
-        );
-        self.component_behaviour_manager
-            .add_behaviours_to_entity(reactive_entity_instance.clone());
-        self.entity_behaviour_manager
-            .add_behaviours(reactive_entity_instance.clone());
+        let _result = self.entity_instance_manager.create_from_instance(reactive_entity_instance.clone().into());
+        self.reactive_entity_instances
+            .0
+            .write()
+            .unwrap()
+            .insert(reactive_entity_instance.id, reactive_entity_instance.clone());
+        self.component_behaviour_manager.add_behaviours_to_entity(reactive_entity_instance.clone());
+        self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
     }
 
     fn commit(&self, id: Uuid) {
         let reactive_entity_instance = self.get(id);
         if reactive_entity_instance.is_some() {
-            self.entity_instance_manager
-                .commit(reactive_entity_instance.unwrap().into());
+            self.entity_instance_manager.commit(reactive_entity_instance.unwrap().into());
         }
     }
 
@@ -167,10 +137,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         self.reactive_entity_instances.0.write().unwrap().remove(id);
     }
 
-    fn import(
-        &self,
-        path: String,
-    ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {
+    fn import(&self, path: String) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {
         let result = self.entity_instance_manager.import(path.clone());
         if result.is_ok() {
             let entity_instance = self.entity_instance_manager.get(result.unwrap());

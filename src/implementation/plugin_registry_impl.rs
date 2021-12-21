@@ -8,20 +8,15 @@ use log::{debug, error};
 use waiter_di::*;
 
 use crate::api::{
-    ComponentBehaviourManager, ComponentManager, EntityBehaviourManager, EntityTypeManager,
-    Lifecycle, PluginRegistry, ReactiveEntityInstanceManager, ReactiveFlowManager,
-    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationTypeManager,
-    WebResourceManager,
+    ComponentBehaviourManager, ComponentManager, EntityBehaviourManager, EntityTypeManager, Lifecycle, PluginRegistry, ReactiveEntityInstanceManager,
+    ReactiveFlowManager, ReactiveRelationInstanceManager, RelationBehaviourManager, RelationTypeManager, WebResourceManager,
 };
 use crate::plugin::registrar::PluginRegistrar;
 use crate::plugin::{
-    ComponentManagerImpl, EntityInstanceManagerImpl, EntityTypeManagerImpl, FlowManagerImpl,
-    PluginContextImpl, PluginProxy, PluginsConfig, RelationInstanceManagerImpl,
-    RelationTypeManagerImpl,
+    ComponentManagerImpl, EntityInstanceManagerImpl, EntityTypeManagerImpl, FlowManagerImpl, PluginContextImpl, PluginProxy, PluginsConfig,
+    RelationInstanceManagerImpl, RelationTypeManagerImpl,
 };
-use crate::plugins::{
-    Plugin, PluginDeclaration, PluginError, INEXOR_RGF_PLUGIN_VERSION, RUSTC_VERSION,
-};
+use crate::plugins::{Plugin, PluginDeclaration, PluginError, INEXOR_RGF_PLUGIN_VERSION, RUSTC_VERSION};
 
 #[wrapper]
 pub struct PluginProxies(RwLock<HashMap<String, Arc<PluginProxy>>>);
@@ -82,26 +77,17 @@ impl PluginRegistry for PluginRegistryImpl {
                     Ok(plugins_config) => {
                         for plugin_config in plugins_config.plugin.iter() {
                             if plugin_config.active {
-                                self.load_plugin(
-                                    plugin_config.name.clone(),
-                                    plugin_config.path.clone(),
-                                );
+                                self.load_plugin(plugin_config.name.clone(), plugin_config.path.clone());
                             }
                         }
                     }
                     Err(_) => {
-                        error!(
-                            "Failed to load plugin configuration from {}: Invalid TOML:",
-                            "./config/plugins.toml"
-                        );
+                        error!("Failed to load plugin configuration from {}: Invalid TOML:", "./config/plugins.toml");
                     }
                 }
             }
             Err(_) => {
-                error!(
-                    "Failed to load plugin configuration from {}",
-                    "./config/plugins.toml"
-                );
+                error!("Failed to load plugin configuration from {}", "./config/plugins.toml");
             }
         }
     }
@@ -110,11 +96,7 @@ impl PluginRegistry for PluginRegistryImpl {
         unsafe {
             let result = self.load(path.clone());
             if result.is_err() {
-                error!(
-                    "Failed to load plugin {} from {}",
-                    name.clone(),
-                    path.clone()
-                );
+                error!("Failed to load plugin {} from {}", name.clone(), path.clone());
                 return;
             }
             let plugin_proxy = self.get(name.clone());
@@ -122,67 +104,44 @@ impl PluginRegistry for PluginRegistryImpl {
                 Some(plugin_proxy) => {
                     if plugin_proxy.init().is_ok() {
                         match plugin_proxy.get_component_provider() {
-                            Ok(component_provider) => {
-                                self.component_manager.add_provider(component_provider)
-                            }
+                            Ok(component_provider) => self.component_manager.add_provider(component_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_entity_type_provider() {
-                            Ok(entity_type_provider) => {
-                                self.entity_type_manager.add_provider(entity_type_provider)
-                            }
+                            Ok(entity_type_provider) => self.entity_type_manager.add_provider(entity_type_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_relation_type_provider() {
-                            Ok(relation_type_provider) => self
-                                .relation_type_manager
-                                .add_provider(relation_type_provider),
+                            Ok(relation_type_provider) => self.relation_type_manager.add_provider(relation_type_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_component_behaviour_provider() {
-                            Ok(component_behaviour_provider) => self
-                                .component_behaviour_manager
-                                .add_provider(component_behaviour_provider),
+                            Ok(component_behaviour_provider) => self.component_behaviour_manager.add_provider(component_behaviour_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_entity_behaviour_provider() {
-                            Ok(entity_behaviour_provider) => self
-                                .entity_behaviour_manager
-                                .add_provider(entity_behaviour_provider),
+                            Ok(entity_behaviour_provider) => self.entity_behaviour_manager.add_provider(entity_behaviour_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_relation_behaviour_provider() {
-                            Ok(relation_behaviour_provider) => self
-                                .relation_behaviour_manager
-                                .add_provider(relation_behaviour_provider),
+                            Ok(relation_behaviour_provider) => self.relation_behaviour_manager.add_provider(relation_behaviour_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_flow_provider() {
-                            Ok(flow_provider) => {
-                                self.reactive_flow_manager.add_provider(flow_provider)
-                            }
+                            Ok(flow_provider) => self.reactive_flow_manager.add_provider(flow_provider),
                             Err(_) => {}
                         }
                         match plugin_proxy.get_web_resource_provider() {
-                            Ok(web_resource_provider) => self
-                                .web_resource_manager
-                                .add_provider(web_resource_provider),
+                            Ok(web_resource_provider) => self.web_resource_manager.add_provider(web_resource_provider),
                             Err(_) => {}
                         }
-                        let component_manager =
-                            ComponentManagerImpl::new(self.component_manager.clone());
-                        let entity_type_manager =
-                            EntityTypeManagerImpl::new(self.entity_type_manager.clone());
-                        let relation_type_manager =
-                            RelationTypeManagerImpl::new(self.relation_type_manager.clone());
-                        let entity_instance_manager = EntityInstanceManagerImpl::new(
-                            self.entity_type_manager.clone(),
-                            self.reactive_entity_instance_manager.clone(),
-                        );
-                        let relation_instance_manager = RelationInstanceManagerImpl::new(
-                            self.relation_type_manager.clone(),
-                            self.reactive_relation_instance_manager.clone(),
-                        );
+                        let component_manager = ComponentManagerImpl::new(self.component_manager.clone());
+                        let entity_type_manager = EntityTypeManagerImpl::new(self.entity_type_manager.clone());
+                        let relation_type_manager = RelationTypeManagerImpl::new(self.relation_type_manager.clone());
+                        let entity_instance_manager =
+                            EntityInstanceManagerImpl::new(self.entity_type_manager.clone(), self.reactive_entity_instance_manager.clone());
+                        let relation_instance_manager =
+                            RelationInstanceManagerImpl::new(self.relation_type_manager.clone(), self.reactive_relation_instance_manager.clone());
                         let flow_manager = FlowManagerImpl::new(self.reactive_flow_manager.clone());
                         let plugin_context = PluginContextImpl::new(
                             Arc::new(component_manager),
@@ -198,11 +157,7 @@ impl PluginRegistry for PluginRegistryImpl {
                     }
                 }
                 None => {
-                    error!(
-                        "Failed to initialize plugin {} from {}",
-                        name.clone(),
-                        path.clone()
-                    );
+                    error!("Failed to initialize plugin {} from {}", name.clone(), path.clone());
                     // TODO: Handle error: plugin with name not found
                 }
             }
@@ -243,9 +198,7 @@ impl PluginRegistry for PluginRegistryImpl {
             Ok(library) => {
                 let library = Arc::new(library);
                 // Get a pointer to the plugin_declaration symbol.
-                let decl = library
-                    .get::<*mut PluginDeclaration>(b"plugin_declaration\0")?
-                    .read();
+                let decl = library.get::<*mut PluginDeclaration>(b"plugin_declaration\0")?.read();
                 // version checks to prevent accidental ABI incompatibilities
                 if decl.rustc_version != RUSTC_VERSION {
                     error!("Version mismatch: rustc");
@@ -303,10 +256,7 @@ impl PluginRegistry for PluginRegistryImpl {
                 plugin_proxy.post_init()
             }
             None => {
-                error!(
-                    "Failed to post-initialize plugin {}: Not found",
-                    name.clone()
-                );
+                error!("Failed to post-initialize plugin {}: Not found", name.clone());
                 return Err(PluginError::PostInitializationError);
             }
         }

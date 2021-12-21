@@ -37,21 +37,13 @@ impl MutationEntityInstances {
         let entity_type = entity_type_manager.get(type_name.clone());
 
         if entity_type.is_none() {
-            return Err(Error::new(format!(
-                "Entity type {} does not exist",
-                type_name.clone()
-            )));
+            return Err(Error::new(format!("Entity type {} does not exist", type_name.clone())));
         }
 
-        let properties = GraphQLPropertyInstance::to_map_with_defaults(
-            properties,
-            entity_type.unwrap().properties,
-        );
+        let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let entity_instance = match id {
-            Some(id) => {
-                entity_instance_manager.create_with_id(type_name.clone(), id, properties.clone())
-            }
+            Some(id) => entity_instance_manager.create_with_id(type_name.clone(), id, properties.clone()),
             None => entity_instance_manager.create(type_name.clone(), properties),
         };
         if entity_instance.is_err() {
@@ -64,28 +56,16 @@ impl MutationEntityInstances {
     // TODO: clone(id) -> GraphQLEntityInstance
 
     /// Updates the properties of the entity instance with the given id.
-    async fn update(
-        &self,
-        context: &Context<'_>,
-        id: Uuid,
-        properties: Vec<GraphQLPropertyInstance>,
-    ) -> Result<GraphQLEntityInstance> {
+    async fn update(&self, context: &Context<'_>, id: Uuid, properties: Vec<GraphQLPropertyInstance>) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
         let entity_instance = entity_instance_manager.get(id);
         if entity_instance.is_none() {
-            return Err(Error::new(format!(
-                "Entity instance {} does not exist!",
-                id
-            )));
+            return Err(Error::new(format!("Entity instance {} does not exist!", id)));
         }
         let entity_instance = entity_instance.unwrap();
 
         for property in properties {
-            debug!(
-                "set property {} = {}",
-                property.name.clone(),
-                property.value.clone().to_string()
-            );
+            debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
             entity_instance.set_no_propagate(property.name.clone(), property.value.clone());
         }
         // TODO: it's still not a transactional mutation
@@ -105,10 +85,7 @@ impl MutationEntityInstances {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
         let entity_instance = entity_instance_manager.get(id);
         if entity_instance.is_none() {
-            return Err(Error::new(format!(
-                "Entity instance {} does not exist!",
-                id
-            )));
+            return Err(Error::new(format!("Entity instance {} does not exist!", id)));
         }
         let entity_instance = entity_instance.unwrap();
         entity_instance.tick();

@@ -118,8 +118,7 @@ impl Application for ApplicationImpl {
         // This channel allows the main thread to stop the GraphQL server thread
         let (graphql_server_stop_sender, graphql_server_stop_receiver) = mpsc::channel::<()>();
         // This channel allows the GraphQL server thread to tell the main thread that it has been finished
-        let (graphql_server_stopped_sender, graphql_server_stopped_receiver) =
-            mpsc::channel::<()>();
+        let (graphql_server_stopped_sender, graphql_server_stopped_receiver) = mpsc::channel::<()>();
         // Clone GraphQL server and move the reference into the GraphQL server thread
         let graphql_server = self.graphql_server.clone();
         // GraphQL server thread: Create a new thread for the GraphQL server

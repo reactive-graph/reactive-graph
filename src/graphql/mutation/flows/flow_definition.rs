@@ -2,9 +2,7 @@ use async_graphql::*;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::graphql::mutation::{
-    GraphQLEntityInstanceDefinition, GraphQLRelationInstanceDefinition,
-};
+use crate::graphql::mutation::{GraphQLEntityInstanceDefinition, GraphQLRelationInstanceDefinition};
 use crate::model::Flow;
 
 /// Represents a flow with entity instances and relation instances.
@@ -49,11 +47,7 @@ impl From<GraphQLFlowDefinition> for Flow {
             type_name: flow.type_name.clone(),
             name: flow.name.clone(),
             description: flow.description.clone(),
-            entity_instances: flow
-                .entity_instances
-                .iter()
-                .map(|entity_instance| entity_instance.clone().into())
-                .collect(),
+            entity_instances: flow.entity_instances.iter().map(|entity_instance| entity_instance.clone().into()).collect(),
             relation_instances: flow
                 .relation_instances
                 .iter()

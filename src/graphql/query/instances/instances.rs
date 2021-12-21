@@ -27,14 +27,10 @@ impl Instances {
         if entity_instance_manager.is_ok() {
             let entity_instance_manager = entity_instance_manager.unwrap();
             if id.is_some() {
-                let entity_instance =
-                    entity_instance_manager
-                        .get(id.unwrap())
-                        .map(|entity_instance| {
-                            let entity_instance: GraphQLEntityInstance =
-                                entity_instance.clone().into();
-                            entity_instance
-                        });
+                let entity_instance = entity_instance_manager.get(id.unwrap()).map(|entity_instance| {
+                    let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
+                    entity_instance
+                });
                 return if entity_instance.is_some() {
                     vec![entity_instance.unwrap()]
                 } else {
@@ -44,10 +40,7 @@ impl Instances {
             return entity_instance_manager
                 .get_entity_instances()
                 .iter()
-                .filter(|entity_instance| {
-                    entity_type.is_none()
-                        || entity_type.clone().unwrap() == entity_instance.type_name.clone()
-                })
+                .filter(|entity_instance| entity_type.is_none() || entity_type.clone().unwrap() == entity_instance.type_name.clone())
                 .map(|entity_instance| {
                     let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
                     entity_instance
@@ -61,9 +54,7 @@ impl Instances {
         &self,
         context: &Context<'_>,
         outbound_type: Option<String>,
-        #[graphql(desc = "Filters the relation instances by relation type")] relation_type: Option<
-            String,
-        >,
+        #[graphql(desc = "Filters the relation instances by relation type")] relation_type: Option<String>,
         inbound_type: Option<String>,
     ) -> Vec<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
@@ -72,25 +63,17 @@ impl Instances {
             return relation_instance_manager
                 .get_relation_instances()
                 .iter()
+                .filter(|relation_instance| relation_type.is_none() || relation_type.clone().unwrap() == relation_instance.type_name.clone())
                 .filter(|relation_instance| {
-                    relation_type.is_none()
-                        || relation_type.clone().unwrap() == relation_instance.type_name.clone()
+                    // TODO: handle starts with?
+                    outbound_type.is_none() || outbound_type.clone().unwrap() == relation_instance.outbound.clone().type_name.clone()
                 })
                 .filter(|relation_instance| {
                     // TODO: handle starts with?
-                    outbound_type.is_none()
-                        || outbound_type.clone().unwrap()
-                            == relation_instance.outbound.clone().type_name.clone()
-                })
-                .filter(|relation_instance| {
-                    // TODO: handle starts with?
-                    inbound_type.is_none()
-                        || inbound_type.clone().unwrap()
-                            == relation_instance.inbound.clone().type_name.clone()
+                    inbound_type.is_none() || inbound_type.clone().unwrap() == relation_instance.inbound.clone().type_name.clone()
                 })
                 .map(|relation_instance| {
-                    let relation_instance: GraphQLRelationInstance =
-                        relation_instance.clone().into();
+                    let relation_instance: GraphQLRelationInstance = relation_instance.clone().into();
                     relation_instance
                 })
                 .collect();

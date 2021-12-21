@@ -17,10 +17,7 @@ fn test_register_entity_type() {
         group_name.clone(),
         vec![String::from("positionable")],
         vec![],
-        vec![crate::model::PropertyType::new(
-            String::from("x"),
-            DataType::String,
-        )],
+        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
         vec![],
     ));
     assert!(entity_type_manager.has(type_name.clone()));
@@ -80,10 +77,7 @@ fn test_register_entity_type_has_component() {
 
     component_manager.register(crate::model::Component::new(
         component_name.clone(),
-        vec![crate::model::PropertyType::new(
-            String::from("x"),
-            DataType::String,
-        )],
+        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
     ));
 
     let entity_type_name = r_string();
@@ -94,10 +88,7 @@ fn test_register_entity_type_has_component() {
         group_name.clone(),
         vec![component_name.clone()],
         vec![],
-        vec![crate::model::PropertyType::new(
-            String::from("y"),
-            DataType::String,
-        )],
+        vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
         vec![],
     ));
     let entity_type: EntityType = entity_type_manager.get(entity_type_name.clone()).unwrap();
@@ -116,14 +107,7 @@ fn test_register_entity_type_has_property() {
     let entity_type_name = r_string();
     let group_name = r_string();
 
-    entity_type_manager.register(EntityType::new(
-        entity_type_name.clone(),
-        group_name.clone(),
-        vec![],
-        vec![],
-        vec![property_type],
-        vec![],
-    ));
+    entity_type_manager.register(EntityType::new(entity_type_name.clone(), group_name.clone(), vec![], vec![], vec![property_type], vec![]));
     let entity_type: Option<EntityType> = entity_type_manager.get(entity_type_name.clone());
     assert!(entity_type.unwrap().has_own_property(property_name.clone()));
 }

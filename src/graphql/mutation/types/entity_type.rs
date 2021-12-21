@@ -22,21 +22,15 @@ impl MutationEntityTypes {
         #[graphql(desc = "The entity type belongs to this group.")] group: Option<String>,
         components: Option<Vec<String>>,
         behaviours: Option<Vec<String>>,
-        #[graphql(
-            desc = "The definitions of properties. These are added additionally to the properties provided by the given components."
-        )]
-        properties: Option<Vec<PropertyTypeDefinition>>,
-        #[graphql(desc = "The extension on the entity type.")] extensions: Option<
-            Vec<GraphQLExtension>,
+        #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
+            Vec<PropertyTypeDefinition>,
         >,
+        #[graphql(desc = "The extension on the entity type.")] extensions: Option<Vec<GraphQLExtension>>,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
         if entity_type_manager.has(name.clone()) {
-            return Err(Error::new(format!(
-                "Entity type {} already exists",
-                name.clone()
-            )));
+            return Err(Error::new(format!("Entity type {} already exists", name.clone())));
         }
 
         let mut entity_type_builder = EntityTypeBuilder::new(name.clone());

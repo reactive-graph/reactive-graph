@@ -25,10 +25,7 @@ fn test_register_relation_type() {
         inbound_type_name.clone(),
         vec![String::from("named")],
         Vec::new(),
-        vec![crate::model::PropertyType::new(
-            String::from("x"),
-            DataType::String,
-        )],
+        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
         Vec::new(),
     ));
     assert!(relation_type_manager.has(type_name.clone()));
@@ -87,15 +84,7 @@ fn test_get_relation_types() {
     let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
 
-    relation_type_manager.create(
-        outbound_type_name.clone(),
-        r_string(),
-        inbound_type_name.clone(),
-        vec![],
-        vec![],
-        vec![],
-        vec![],
-    );
+    relation_type_manager.create(outbound_type_name.clone(), r_string(), inbound_type_name.clone(), vec![], vec![], vec![], vec![]);
     let relation_types = relation_type_manager.get_relation_types();
     assert_eq!(1, relation_types.len());
     for relation_type in relation_types {
@@ -114,10 +103,7 @@ fn test_register_relation_type_has_component() {
 
     component_manager.register(crate::model::Component::new(
         component_name.clone(),
-        vec![crate::model::PropertyType::new(
-            String::from("x"),
-            DataType::String,
-        )],
+        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
     ));
 
     let relation_type_name = r_string();
@@ -134,15 +120,10 @@ fn test_register_relation_type_has_component() {
         inbound_type_name.clone(),
         vec![component_name.clone()],
         Vec::new(),
-        vec![crate::model::PropertyType::new(
-            String::from("y"),
-            DataType::String,
-        )],
+        vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
         Vec::new(),
     ));
-    let relation_type: RelationType = relation_type_manager
-        .get(relation_type_name.clone())
-        .unwrap();
+    let relation_type: RelationType = relation_type_manager.get(relation_type_name.clone()).unwrap();
     assert!(relation_type.components.contains(&component_name.clone()));
     assert!(relation_type.is_a(component_name.clone()));
 }
@@ -174,9 +155,7 @@ fn test_register_relation_type_has_property() {
         Vec::new(),
     ));
     let relation_type: Option<RelationType> = relation_type_manager.get(relation_type_name.clone());
-    assert!(relation_type
-        .unwrap()
-        .has_own_property(property_name.clone()));
+    assert!(relation_type.unwrap().has_own_property(property_name.clone()));
 }
 
 #[test]

@@ -35,24 +35,12 @@ pub trait EntityInstanceManager: Send + Sync {
     fn get(&self, id: Uuid) -> Option<EntityInstance>;
 
     // TODO: return Result<EntityInstance, EntityInstanceCreationError>
-    fn create(
-        &self,
-        type_name: String,
-        properties: HashMap<String, Value>,
-    ) -> Result<Uuid, EntityInstanceCreationError>;
+    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
 
     // TODO: return Result<EntityInstance, EntityInstanceCreationError>
-    fn create_with_id(
-        &self,
-        type_name: String,
-        id: Uuid,
-        properties: HashMap<String, Value>,
-    ) -> Result<Uuid, EntityInstanceCreationError>;
+    fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
 
-    fn create_from_instance(
-        &self,
-        entity_instance: EntityInstance,
-    ) -> Result<Uuid, EntityInstanceCreationError>;
+    fn create_from_instance(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError>;
 
     // TODO: return result
     fn commit(&self, entity_instance: EntityInstance);

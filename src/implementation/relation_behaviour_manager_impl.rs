@@ -10,9 +10,7 @@ use indradb::EdgeKey;
 use log::trace;
 
 #[wrapper]
-pub struct RelationBehaviourProviders(
-    std::sync::RwLock<Vec<std::sync::Arc<dyn RelationBehaviourProvider>>>,
-);
+pub struct RelationBehaviourProviders(std::sync::RwLock<Vec<std::sync::Arc<dyn RelationBehaviourProvider>>>);
 
 #[waiter_di::provides]
 fn create_relation_behaviour_providers() -> RelationBehaviourProviders {
@@ -28,10 +26,7 @@ pub struct RelationBehaviourManagerImpl {
 #[provides]
 impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     fn add_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        trace!(
-            "RelationBehaviourManager::add_behaviours {}",
-            relation_instance.get_key().unwrap().t.0.as_str()
-        );
+        trace!("RelationBehaviourManager::add_behaviours {}", relation_instance.get_key().unwrap().t.0.as_str());
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours(relation_instance.clone())
         }

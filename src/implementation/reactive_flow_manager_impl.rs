@@ -1,6 +1,6 @@
 use crate::api::{
-    FlowManager, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowCreationError,
-    ReactiveFlowImportError, ReactiveFlowManager, ReactiveRelationInstanceManager,
+    FlowManager, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowCreationError, ReactiveFlowImportError, ReactiveFlowManager,
+    ReactiveRelationInstanceManager,
 };
 use crate::model::{Flow, ReactiveFlow};
 use crate::plugins::FlowProvider;
@@ -12,9 +12,7 @@ use uuid::Uuid;
 use waiter_di::*;
 
 #[wrapper]
-pub struct ReactiveFlows(
-    std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<ReactiveFlow>>>,
-);
+pub struct ReactiveFlows(std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<ReactiveFlow>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveFlows {
@@ -86,9 +84,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn create(&self, flow: Flow) -> Result<Arc<ReactiveFlow>, ReactiveFlowCreationError> {
         let reactive_flow = ReactiveFlow::try_from(flow);
         if reactive_flow.is_err() {
-            return Err(ReactiveFlowCreationError::ReactiveFlowConstructionError(
-                reactive_flow.err().unwrap(),
-            ));
+            return Err(ReactiveFlowCreationError::ReactiveFlowConstructionError(reactive_flow.err().unwrap()));
         }
         let reactive_flow = reactive_flow.unwrap();
         let reactive_flow = Arc::new(reactive_flow);
@@ -107,12 +103,10 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn register_flow_and_reactive_instances(&self, reactive_flow: Arc<ReactiveFlow>) {
         if !self.has(reactive_flow.id) {
             for (_, entity_instance) in reactive_flow.entity_instances.read().unwrap().iter() {
-                self.reactive_entity_instance_manager
-                    .register_reactive_instance(entity_instance.clone());
+                self.reactive_entity_instance_manager.register_reactive_instance(entity_instance.clone());
             }
             for (_, relation_instance) in reactive_flow.relation_instances.read().unwrap().iter() {
-                self.reactive_relation_instance_manager
-                    .register_reactive_instance(relation_instance.clone());
+                self.reactive_relation_instance_manager.register_reactive_instance(relation_instance.clone());
             }
             self.register_flow(reactive_flow.clone());
         }
@@ -126,11 +120,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                     .register_reactive_instance(wrapper_entity_instance.unwrap().clone());
             }
         }
-        self.reactive_flows
-            .0
-            .write()
-            .unwrap()
-            .insert(reactive_flow.id, reactive_flow.clone());
+        self.reactive_flows.0.write().unwrap().insert(reactive_flow.id, reactive_flow.clone());
     }
 
     // TODO: how to detect if the flow has removed an entity? => remove behaviour
@@ -142,15 +132,13 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
             // Unregister removed relations
             for edge_key in reactive_flow.relations_removed.read().unwrap().iter() {
-                self.reactive_relation_instance_manager
-                    .unregister_reactive_instance(edge_key.clone());
+                self.reactive_relation_instance_manager.unregister_reactive_instance(edge_key.clone());
             }
             reactive_flow.relations_removed.write().unwrap().clear();
 
             // Unregister removed entities
             for id in reactive_flow.entities_removed.read().unwrap().iter() {
-                self.reactive_entity_instance_manager
-                    .unregister_reactive_instance(*id);
+                self.reactive_entity_instance_manager.unregister_reactive_instance(*id);
             }
             reactive_flow.entities_removed.write().unwrap().clear();
 
@@ -200,14 +188,12 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         if self.has(id) {
             let reactive_flow = self.get(id).unwrap();
             for (_, entity_instance) in reactive_flow.entity_instances.read().unwrap().iter() {
-                self.reactive_entity_instance_manager
-                    .unregister_reactive_instance(entity_instance.id);
+                self.reactive_entity_instance_manager.unregister_reactive_instance(entity_instance.id);
             }
             for (_, relation_instance) in reactive_flow.relation_instances.read().unwrap().iter() {
                 let edge_key = relation_instance.get_key();
                 if edge_key.is_some() {
-                    self.reactive_relation_instance_manager
-                        .unregister_reactive_instance(edge_key.unwrap());
+                    self.reactive_relation_instance_manager.unregister_reactive_instance(edge_key.unwrap());
                 }
             }
             self.reactive_flows.0.write().unwrap().remove(&id);

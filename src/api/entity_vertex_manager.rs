@@ -24,11 +24,7 @@ impl fmt::Display for EntityVertexCreationError {
             EntityVertexCreationError::EntityTypeMissing(entity_type) => {
                 write!(f, "Entity type {} does not exist!", entity_type.clone())
             }
-            EntityVertexCreationError::GraphDatabaseError(error) => write!(
-                f,
-                "Failed to create graph database vertex: {}",
-                error.to_string()
-            ),
+            EntityVertexCreationError::GraphDatabaseError(error) => write!(f, "Failed to create graph database vertex: {}", error.to_string()),
         }
     }
 }
@@ -46,20 +42,11 @@ pub trait EntityVertexManager: Send + Sync {
     fn get_properties(&self, id: Uuid) -> Option<VertexProperties>;
 
     /// Creates a new vertex with the given type and the given properties.
-    fn create(
-        &self,
-        type_name: String,
-        properties: HashMap<String, Value>,
-    ) -> Result<Uuid, EntityVertexCreationError>;
+    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
 
     /// Creates a new vertex with the given id, the given type and the given properties.
     /// This is useful for importing an entity instance with the fixed id.
-    fn create_with_id(
-        &self,
-        type_name: String,
-        id: Uuid,
-        properties: HashMap<String, Value>,
-    ) -> Result<Uuid, EntityVertexCreationError>;
+    fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
 
     // TODO: return result
     fn commit(&self, id: Uuid, properties: HashMap<String, Value>);

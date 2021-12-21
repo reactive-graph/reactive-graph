@@ -12,9 +12,7 @@ use indradb::EdgeKey;
 use log::trace;
 
 #[wrapper]
-pub struct ComponentBehaviourProviders(
-    std::sync::RwLock<Vec<std::sync::Arc<dyn ComponentBehaviourProvider>>>,
-);
+pub struct ComponentBehaviourProviders(std::sync::RwLock<Vec<std::sync::Arc<dyn ComponentBehaviourProvider>>>);
 
 #[waiter_di::provides]
 fn create_behaviour_providers() -> ComponentBehaviourProviders {
@@ -30,20 +28,14 @@ pub struct ComponentBehaviourManagerImpl {
 #[provides]
 impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
     fn add_behaviours_to_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!(
-            "ComponentBehaviourManager::add_behaviours_to_entity {}",
-            entity_instance.id
-        );
+        trace!("ComponentBehaviourManager::add_behaviours_to_entity {}", entity_instance.id);
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours_to_entity(entity_instance.clone())
         }
     }
 
     fn add_behaviours_to_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        trace!(
-            "ComponentBehaviourManager::add_behaviours_to_relation {}",
-            relation_instance.get_key().unwrap().t.0.as_str()
-        );
+        trace!("ComponentBehaviourManager::add_behaviours_to_relation {}", relation_instance.get_key().unwrap().t.0.as_str());
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours_to_relation(relation_instance.clone())
         }

@@ -31,11 +31,7 @@ impl fmt::Display for RelationInstanceCreationError {
             RelationInstanceCreationError::MissingInboundEntityInstance(id) => {
                 write!(f, "The inbound entity instance {} cannot be found", id)
             }
-            RelationInstanceCreationError::RelationEdgeCreationError(error) => write!(
-                f,
-                "Failed to create relation instance: {}",
-                error.to_string()
-            ),
+            RelationInstanceCreationError::RelationEdgeCreationError(error) => write!(f, "Failed to create relation instance: {}", error.to_string()),
         }
     }
 }
@@ -55,16 +51,9 @@ pub trait RelationInstanceManager: Send + Sync {
 
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<RelationInstance>;
 
-    fn create(
-        &self,
-        edge_key: EdgeKey,
-        properties: HashMap<String, Value>,
-    ) -> Result<EdgeKey, RelationInstanceCreationError>;
+    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError>;
 
-    fn create_from_instance(
-        &self,
-        relation_instance: RelationInstance,
-    ) -> Result<EdgeKey, RelationInstanceCreationError>;
+    fn create_from_instance(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError>;
 
     // TODO: return result
     fn commit(&self, relation_instance: RelationInstance);
