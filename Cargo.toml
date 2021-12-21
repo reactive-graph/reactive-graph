@@ -1,4 +1,4 @@
-cargo-features = ["edition2021", "strip"]
+cargo-features = ["strip"]
 
 [package]
 name = "inexor-rgf-application"
