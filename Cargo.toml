@@ -1,5 +1,3 @@
-cargo-features = ["edition2021"]
-
 [package]
 name = "inexor-rgf-core-frp"
 description = "Inexor - Reactive Graph Flow - Core - FRP (Bidule Patched)"
