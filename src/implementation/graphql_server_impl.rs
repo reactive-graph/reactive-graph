@@ -2,10 +2,9 @@ use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 
 use actix_cors::Cors;
-use actix_web::{post, web, App, HttpResponse, HttpServer};
-use async_graphql::*;
+use actix_web::{post, web, App, HttpResponse, HttpServer, Result};
 use async_graphql::{EmptySubscription, Schema};
-use async_graphql_actix_web::{Request, Response};
+use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse};
 use async_std::task;
 use async_trait::async_trait;
 use log::{debug, error, info};
@@ -36,8 +35,8 @@ pub struct GraphQLServerImpl {
 }
 
 #[post("/graphql")]
-async fn query_graphql(schema: web::Data<InexorSchema>, req: Request) -> Response {
-    schema.execute(req.into_inner()).await.into()
+async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest) -> GraphQLResponse {
+    schema.execute(request.into_inner()).await.into()
 }
 
 #[derive(Deserialize)]
@@ -148,20 +147,22 @@ impl GraphQLServer for GraphQLServerImpl {
             error!("Could not start HTTP/GraphQL server: Failed to bind {}", graphql_server_config.to_string());
             return;
         }
-        let server = r_server.unwrap().run();
+        let server = r_server.unwrap();
+        let server2 = server.run();
+        let handle = server2.handle();
+        let t_handle = handle.clone();
 
         // This thread handles the server stop routine from the main thread
-        let srv = server.clone();
         std::thread::spawn(move || {
             // wait for shutdown signal
             stopper.recv().unwrap();
 
             // stop server gracefully
-            futures::executor::block_on(srv.stop(true))
+            futures::executor::block_on(t_handle.stop(true))
         });
 
         // This thread runs the GraphQL server
-        let handle = task::Builder::new().name(String::from("inexor-graphql")).spawn(server);
+        let handle = task::Builder::new().name(String::from("inexor-graphql")).spawn(server2);
         if handle.is_ok() {
             let _handle = handle.unwrap();
             // Start the event loop
