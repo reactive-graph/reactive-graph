@@ -1,8 +1,8 @@
 # Inexor Reactive Graph Flow
 
-| Project | Module | Sub-Module | Functionality | Test Coverage |
-| --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Core | Plugins | Experiment | 0% |
+| Project | Module | Sub-Module | Functionality | Test Coverage                                                                                                                                      |
+| --- | --- | --- |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Reactive Graph Flow | Core | Plugins | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins) |
 
 ### About Inexor
 
