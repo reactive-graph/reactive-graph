@@ -189,11 +189,11 @@ impl PluginRegistry for PluginRegistryImpl {
     /// a plugin without going through that macro will result in undefined
     /// behaviour.
     unsafe fn load(&self, library_path: String) -> Result<(), PluginError> {
-        debug!("Loading library");
+        debug!("Loading library {}", library_path.as_str());
         // Load the library into memory
         // <P: AsRef<OsStr>>
-        let library_path = OsStr::new(library_path.as_str());
-        let library = Library::new(library_path);
+        let library_path_os = OsStr::new(library_path.as_str());
+        let library = Library::new(library_path_os);
         match library {
             Ok(library) => {
                 let library = Arc::new(library);
@@ -201,14 +201,25 @@ impl PluginRegistry for PluginRegistryImpl {
                 let decl = library.get::<*mut PluginDeclaration>(b"plugin_declaration\0")?.read();
                 // version checks to prevent accidental ABI incompatibilities
                 if decl.rustc_version != RUSTC_VERSION {
-                    error!("Version mismatch: rustc");
+                    error!(
+                        "Cannot load plugin {} because of a compiler version mismatch: rustc {} (expected: {})",
+                        library_path.as_str(),
+                        decl.rustc_version,
+                        RUSTC_VERSION
+                    );
+                    // error!("Plugin {} Version mismatch: rustc {} expected {}", library_path.clone(), decl.rustc_version, RUSTC_VERSION);
                     return Err(PluginError::Other {
                         message: String::from("Version mismatch: rustc"),
                     }
                     .into());
                 }
                 if decl.inexor_rgf_plugin_version != INEXOR_RGF_PLUGIN_VERSION {
-                    error!("Version mismatch: inexor_rgf_core_plugins");
+                    error!(
+                        "Cannot load plugin {} because of an API version mismatch: inexor_rgf_core_plugins {} (expected: {})",
+                        library_path.as_str(),
+                        decl.inexor_rgf_plugin_version,
+                        INEXOR_RGF_PLUGIN_VERSION
+                    );
                     return Err(PluginError::Other {
                         message: String::from("Version mismatch: inexor_rgf_core_plugins"),
                     }
