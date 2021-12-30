@@ -1,5 +1,8 @@
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::Receiver;
 use std::sync::Arc;
+use std::thread;
+use std::time::Duration;
 
 use actix_cors::Cors;
 use actix_web::{post, web, App, HttpResponse, HttpServer, Result};
@@ -138,7 +141,8 @@ impl GraphQLServer for GraphQLServerImpl {
                 // TODO: modify flows
                 // Web Resource API
                 .service(web::resource("/{web_resource_name}/{path:.*}").route(web::get().to(handle_web_resource)))
-        });
+        })
+        .disable_signals();
 
         let graphql_server_config = get_graphql_server_config();
         debug!("Starting HTTP/GraphQL server on {}", graphql_server_config.to_string());
@@ -152,13 +156,21 @@ impl GraphQLServer for GraphQLServerImpl {
         let handle = server2.handle();
         let t_handle = handle.clone();
 
+        let terminate = Arc::new(AtomicBool::new(false));
+        let t_terminate = terminate.clone();
+
         // This thread handles the server stop routine from the main thread
         std::thread::spawn(move || {
             // wait for shutdown signal
             stopper.recv().unwrap();
+            debug!("Received shutdown signal. Stopping GraphQL server thread.");
 
             // stop server gracefully
-            futures::executor::block_on(t_handle.stop(true))
+            futures::executor::block_on(t_handle.stop(true));
+
+            debug!("Successfully stopped GraphQL server thread.");
+            t_terminate.store(true, Ordering::Relaxed);
+            debug!("Stopping actix system.");
         });
 
         // This thread runs the GraphQL server
@@ -166,7 +178,12 @@ impl GraphQLServer for GraphQLServerImpl {
         if handle.is_ok() {
             let _handle = handle.unwrap();
             // Start the event loop
-            let _ = system.run();
+            system.block_on(async {
+                while !terminate.load(Ordering::Relaxed) {
+                    thread::sleep(Duration::from_millis(100));
+                }
+                debug!("Successfully stopped the actix system.");
+            });
         }
     }
 }

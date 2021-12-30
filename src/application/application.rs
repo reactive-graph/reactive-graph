@@ -1,10 +1,11 @@
 use std::ops::Deref;
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc, RwLock};
 use std::thread;
 use std::time::Duration;
 
 use async_trait::async_trait;
-use log::debug;
+use log::{debug, info};
 use waiter_di::*;
 
 use crate::api::*;
@@ -115,6 +116,8 @@ impl Application for ApplicationImpl {
     }
 
     async fn run(&mut self) {
+        // Signal handling
+        let terminate = Arc::new(AtomicBool::new(false));
         // This channel allows the main thread to stop the GraphQL server thread
         let (graphql_server_stop_sender, graphql_server_stop_receiver) = mpsc::channel::<()>();
         // This channel allows the GraphQL server thread to tell the main thread that it has been finished
@@ -129,6 +132,7 @@ impl Application for ApplicationImpl {
             .spawn(move || {
                 // Run the GraphQL server
                 graphql_server.serve(graphql_server_stop_receiver);
+                debug!("Successfully stopped GraphQL Server.");
                 // Tell the main thread, that the GraphQL server thread has finished
                 let result = graphql_server_stopped_sender.send(());
                 if result.is_ok() {
@@ -143,8 +147,11 @@ impl Application for ApplicationImpl {
         {
             let running = self.running.0.read().unwrap();
 
+            let _r_sigint = signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate));
+            let _r_sigterm = signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate));
+
             let mut stopping = false;
-            while *running && !stopping {
+            while *running && !stopping && !terminate.load(Ordering::Relaxed) {
                 thread::sleep(Duration::from_millis(100)); // from_millis(1)
                 let r = graphql_server_stopped_receiver.try_recv();
                 if r.is_ok() {
@@ -155,6 +162,7 @@ impl Application for ApplicationImpl {
         } // Drop "running"
 
         // Stop GraphQL server thread, if it is still running
+        debug!("Stopping the GraphQL server thread");
         let graphql_server_stop_result = graphql_server_stop_sender.send(());
         if graphql_server_stop_result.is_ok() {
             graphql_server_stop_result.unwrap();
@@ -164,6 +172,7 @@ impl Application for ApplicationImpl {
         if thread_handle.is_ok() {
             let _joined = thread_handle.unwrap().join();
         }
+        info!("Bye.");
     }
 
     // TODO: remove the shared thread mechanics
