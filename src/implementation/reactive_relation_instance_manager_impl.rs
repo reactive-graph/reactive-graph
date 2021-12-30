@@ -131,6 +131,18 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         }
     }
 
+    fn register_or_merge_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>) -> Arc<ReactiveRelationInstance> {
+        let edge_key = reactive_relation_instance.get_key().unwrap();
+        if !self.has(edge_key.clone()) {
+            // No instance exists with the given edge key
+            self.register_reactive_instance(reactive_relation_instance.clone());
+            reactive_relation_instance
+        } else {
+            // Instance with the given edge key exists. Don't register but return the existing reactive instance instead
+            self.get(edge_key.clone()).unwrap()
+        }
+    }
+
     fn commit(&self, edge_key: EdgeKey) {
         let reactive_relation_instance = self.get(edge_key.clone());
         if reactive_relation_instance.is_some() {

@@ -112,6 +112,17 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
     }
 
+    fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance> {
+        if !self.has(reactive_entity_instance.id) {
+            // No instance exists with the given uuid: register as new instance and return it
+            self.register_reactive_instance(reactive_entity_instance.clone());
+            reactive_entity_instance
+        } else {
+            // Instance with the given uuid exists: don't register but return the existing instance instead
+            self.get(reactive_entity_instance.id).unwrap()
+        }
+    }
+
     fn commit(&self, id: Uuid) {
         let reactive_entity_instance = self.get(id);
         if reactive_entity_instance.is_some() {

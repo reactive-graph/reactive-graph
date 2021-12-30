@@ -75,6 +75,8 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
 
     fn register_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>);
 
+    fn register_or_merge_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>) -> Arc<ReactiveRelationInstance>;
+
     // TODO: fn commit(&self, relation_instance: RelationInstance);
     // TODO: return result
     fn commit(&self, edge_key: EdgeKey);

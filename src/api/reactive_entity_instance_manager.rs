@@ -63,6 +63,8 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
 
     fn register_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>);
 
+    fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance>;
+
     // TODO: return result
     fn commit(&self, id: Uuid);
 
