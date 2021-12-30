@@ -35,10 +35,11 @@ libloading = "0.7"
 toml = "0.5"
 
 actix = "0.12"
-actix-web = { version = "4.0.0-beta.15" }
+actix-web = { version = "=4.0.0-beta.15" }
 actix-rt = "2.5.0"
 actix-cors = "0.6.0-beta.7"
 actix-files = "0.6.0-beta.10"
+actix-http = "=3.0.0-beta.16"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "3.0", features = ["uuid"] }
 async-graphql-actix-web = { version = "3.0" }
