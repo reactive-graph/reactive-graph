@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
 use waiter_di::*;
@@ -10,11 +10,11 @@ use indradb::EdgeKey;
 use log::trace;
 
 #[wrapper]
-pub struct RelationBehaviourProviders(std::sync::RwLock<Vec<std::sync::Arc<dyn RelationBehaviourProvider>>>);
+pub struct RelationBehaviourProviders(RwLock<Vec<Arc<dyn RelationBehaviourProvider>>>);
 
 #[waiter_di::provides]
 fn create_relation_behaviour_providers() -> RelationBehaviourProviders {
-    RelationBehaviourProviders(std::sync::RwLock::new(Vec::new()))
+    RelationBehaviourProviders(RwLock::new(Vec::new()))
 }
 
 #[component]

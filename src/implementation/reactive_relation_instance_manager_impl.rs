@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
 use indradb::EdgeKey;
@@ -14,11 +14,11 @@ use crate::api::{
 use crate::model::{ReactiveRelationInstance, RelationInstance};
 
 #[wrapper]
-pub struct ReactiveRelationInstances(std::sync::RwLock<std::collections::HashMap<EdgeKey, std::sync::Arc<ReactiveRelationInstance>>>);
+pub struct ReactiveRelationInstances(RwLock<HashMap<EdgeKey, Arc<ReactiveRelationInstance>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveRelationInstances {
-    ReactiveRelationInstances(std::sync::RwLock::new(std::collections::HashMap::new()))
+    ReactiveRelationInstances(RwLock::new(HashMap::new()))
 }
 
 #[component]

@@ -10,24 +10,24 @@ use inexor_rgf_core_model::{reactive_relation_instance, ReactiveEntityInstance, 
 use log::{debug, error};
 use std::collections::HashMap;
 use std::convert::{TryFrom, TryInto};
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 use uuid::Uuid;
 use waiter_di::*;
 
 #[wrapper]
-pub struct ReactiveFlows(std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<ReactiveFlow>>>);
+pub struct ReactiveFlows(RwLock<HashMap<Uuid, Arc<ReactiveFlow>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveFlows {
-    ReactiveFlows(std::sync::RwLock::new(std::collections::HashMap::new()))
+    ReactiveFlows(RwLock::new(HashMap::new()))
 }
 
 #[wrapper]
-pub struct FlowProviders(std::sync::RwLock<Vec<std::sync::Arc<dyn FlowProvider>>>);
+pub struct FlowProviders(RwLock<Vec<Arc<dyn FlowProvider>>>);
 
 #[waiter_di::provides]
 fn create_flow_providers() -> FlowProviders {
-    FlowProviders(std::sync::RwLock::new(Vec::new()))
+    FlowProviders(RwLock::new(Vec::new()))
 }
 
 #[component]

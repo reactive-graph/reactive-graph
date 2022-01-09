@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
 use uuid::Uuid;
@@ -12,11 +12,11 @@ use indradb::EdgeKey;
 use log::trace;
 
 #[wrapper]
-pub struct ComponentBehaviourProviders(std::sync::RwLock<Vec<std::sync::Arc<dyn ComponentBehaviourProvider>>>);
+pub struct ComponentBehaviourProviders(RwLock<Vec<Arc<dyn ComponentBehaviourProvider>>>);
 
 #[waiter_di::provides]
 fn create_behaviour_providers() -> ComponentBehaviourProviders {
-    ComponentBehaviourProviders(std::sync::RwLock::new(Vec::new()))
+    ComponentBehaviourProviders(RwLock::new(Vec::new()))
 }
 
 #[component]
