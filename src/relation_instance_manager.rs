@@ -26,6 +26,12 @@ pub trait RelationInstanceManager: Send + Sync {
     /// Returns all reactive relation instances of the given inbound entity instance.
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
 
+    /// Returns all reactive relation instances.
+    fn get_all(&self) -> Vec<Arc<ReactiveRelationInstance>>;
+
+    /// Returns all edge keys.
+    fn get_keys(&self) -> Vec<EdgeKey>;
+
     /// Creates a new reactive relation instance.
     fn create(
         &self,

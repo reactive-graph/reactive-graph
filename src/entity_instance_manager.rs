@@ -15,6 +15,12 @@ pub trait EntityInstanceManager: Send + Sync {
     /// Returns the reactive entity instance with the given UUID or None.
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>>;
 
+    /// Returns all reactive entity instances.
+    fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>>;
+
+    /// Returns all ids.
+    fn get_ids(&self) -> Vec<Uuid>;
+
     /// Creates a new reactive entity instance.
     fn create(
         &self,
