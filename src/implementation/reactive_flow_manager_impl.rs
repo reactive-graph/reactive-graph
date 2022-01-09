@@ -8,18 +8,18 @@ use async_trait::async_trait;
 use indradb::EdgeKey;
 use inexor_rgf_core_model::{ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance};
 use log::{debug, error};
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::convert::{TryFrom, TryInto};
 use std::sync::{Arc, RwLock};
 use uuid::Uuid;
 use waiter_di::*;
 
 #[wrapper]
-pub struct ReactiveFlows(RwLock<HashMap<Uuid, Arc<ReactiveFlow>>>);
+pub struct ReactiveFlows(RwLock<BTreeMap<Uuid, Arc<ReactiveFlow>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveFlows {
-    ReactiveFlows(RwLock::new(HashMap::new()))
+    ReactiveFlows(RwLock::new(BTreeMap::new()))
 }
 
 #[wrapper]

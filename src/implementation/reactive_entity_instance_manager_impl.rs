@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
@@ -13,11 +13,11 @@ use crate::api::{
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 
 #[wrapper]
-pub struct ReactiveEntityInstances(RwLock<HashMap<Uuid, Arc<ReactiveEntityInstance>>>);
+pub struct ReactiveEntityInstances(RwLock<BTreeMap<Uuid, Arc<ReactiveEntityInstance>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveEntityInstances {
-    ReactiveEntityInstances(RwLock::new(HashMap::new()))
+    ReactiveEntityInstances(RwLock::new(BTreeMap::new()))
 }
 
 #[component]
