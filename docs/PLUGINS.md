@@ -215,12 +215,65 @@ This allows to create flows which uses these environment variables by name.
 
 #### Entity Types / Behaviours
 
-| Name | Component | Description |
-| --- | --- | --- |
-| Trim | StringOperation | Removes whitespace at the beginning and end of a string |
-| Uppercase |
-| Lowercase |
-| ... |
+| Name       | Component        | Description                                             |
+|------------|------------------|---------------------------------------------------------|
+| Trim       | StringOperation  | Removes whitespace at the beginning and end of a string |
+| TrimStart  | StringOperation  | Removes whitespace at the beginning of a string         |
+| TrimEnd    | StringOperation  | Removes whitespace at the end of a string               |
+| Uppercase  | StringOperation  |                                                         |
+| Lowercase  | StringOperation  |                                                         |
+| StartsWith | StringComparison |                                                         |
+| EndsWith   | StringComparison |                                                         |
+| Contains   | StringComparison |                                                         |
+| ...        |                  |                                                         |
+| Split      |                  | lhs (str), rhs (str) -> result (array of str)           |
+| Join       |                  | lhs (arr of str) -> result (str)                        |
+| Replace    |                  | lhs (str), search (str), replace (str) -> result (str)  |
+| Chars      |                  | lhs (str) -> result (array of str)                      |
+| Len        |                  | lhs (str) -> result (i64)                               |
+| Lines      |                  | lhs (str) -> result (array of str)                      |
+
+### JSON Objects and JSON Arrays
+
+| Name                   | Repository                                           |
+|------------------------|------------------------------------------------------|
+| inexor-rgf-plugin-json | https://github.com/aschaeffer/inexor-rgf-plugin-json |
+
+This plugin adds functionality to operate with complex data structures. Properties of entity instances or
+relation instances can have different data types. It's possible to store even complex data using the data
+types array and object. This is handy if you receive data from an MQTT endpoint or if you want to represent
+more complex data. But it makes it also necessary to unpack or pack these data in order to operate with it.
+
+#### Entity Types
+
+| Name                 | Property          | Data Type   | Socket Type |
+|----------------------|-------------------|-------------|-------------|
+|                      |
+| ArrayPush            | array             | array       | input       |
+|                      | to_be_added_value | any         | input       |
+|                      | result            | array       | output      |
+|                      |
+| ArrayPop             | array             | array       | input       |
+|                      | result            | array       | output      |
+|                      | removed_value     | any         | input       |
+|                      |
+| ArrayGetByIndex      | array             | array       | input       |
+|                      | index             | number      | output      |
+|                      | result            | any         | output      |
+|                      |
+| ObjectSetProperty    | object            | object      | input       |
+|                      | property_name     | string      | input       |
+|                      | property_value    | any         | input       |
+|                      | result            | object      | output      |
+|                      |
+| ObjectRemoveProperty | object            | object      | input       |
+|                      | property_name     | string      | input       |
+|                      | result            | object      | output      |
+|                      | removed_value     | any         | output      |
+|                      |
+| ObjectGetProperty    | object            | object      | input       |
+|                      | property_name     | string      | input       |
+|                      | result            | any         | output      |
 
 ### Generators and Random Numbers
 
