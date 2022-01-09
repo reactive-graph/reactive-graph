@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
 use serde_json::Value;
@@ -13,11 +13,11 @@ use crate::api::{
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 
 #[wrapper]
-pub struct ReactiveEntityInstances(std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<ReactiveEntityInstance>>>);
+pub struct ReactiveEntityInstances(RwLock<HashMap<Uuid, Arc<ReactiveEntityInstance>>>);
 
 #[provides]
 fn create_external_type_dependency() -> ReactiveEntityInstances {
-    ReactiveEntityInstances(std::sync::RwLock::new(std::collections::HashMap::new()))
+    ReactiveEntityInstances(RwLock::new(HashMap::new()))
 }
 
 #[component]
