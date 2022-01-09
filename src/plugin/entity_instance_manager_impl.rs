@@ -27,6 +27,14 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         self.reactive_entity_instance_manager.get(id)
     }
 
+    fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>> {
+        self.reactive_entity_instance_manager.get_entity_instances()
+    }
+
+    fn get_ids(&self) -> Vec<Uuid> {
+        self.reactive_entity_instance_manager.get_ids()
+    }
+
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError> {
         let entity_type = self.entity_type_manager.get(entity_instance.type_name.clone());
         match entity_type {

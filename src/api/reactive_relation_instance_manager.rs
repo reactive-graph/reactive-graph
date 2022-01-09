@@ -59,17 +59,17 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
     /// outbound entity and ends at the given inbound entity.
     fn get(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>>;
 
-    // TODO: Rename to: "get_all"
-    fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>>;
-
-    /// Returns all edge keys.
-    fn get_keys(&self) -> Vec<EdgeKey>;
-
     /// Returns all reactive relation instances of the given outbound entity instance.
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given inbound entity instance.
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
+
+    // TODO: Rename to: "get_all"
+    fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>>;
+
+    /// Returns all edge keys.
+    fn get_keys(&self) -> Vec<EdgeKey>;
 
     /// Creates a new reactive relation instance.
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError>;

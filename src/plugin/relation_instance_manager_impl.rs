@@ -35,6 +35,14 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         self.reactive_relation_instance_manager.get_by_inbound_entity(inbound_entity_id)
     }
 
+    fn get_all(&self) -> Vec<Arc<ReactiveRelationInstance>> {
+        self.reactive_relation_instance_manager.get_relation_instances()
+    }
+
+    fn get_keys(&self) -> Vec<EdgeKey> {
+        self.reactive_relation_instance_manager.get_keys()
+    }
+
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError> {
         let relation_type = self.relation_type_manager.get_starts_with(relation_instance.type_name.clone());
         match relation_type {

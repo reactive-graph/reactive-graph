@@ -52,16 +52,6 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         None
     }
 
-    fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>> {
-        let reader = self.reactive_relation_instances.0.read().unwrap();
-        reader.values().map(|v| v.clone()).collect()
-    }
-
-    fn get_keys(&self) -> Vec<EdgeKey> {
-        let reader = self.reactive_relation_instances.0.read().unwrap();
-        reader.keys().map(|edge_key| edge_key.clone()).collect()
-    }
-
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
         self.relation_edge_manager
@@ -78,6 +68,16 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             .iter()
             .filter_map(|edge| reader.get(&edge.key.clone()).and_then(|relation_instance| Some(relation_instance.clone())))
             .collect()
+    }
+
+    fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>> {
+        let reader = self.reactive_relation_instances.0.read().unwrap();
+        reader.values().map(|v| v.clone()).collect()
+    }
+
+    fn get_keys(&self) -> Vec<EdgeKey> {
+        let reader = self.reactive_relation_instances.0.read().unwrap();
+        reader.keys().map(|edge_key| edge_key.clone()).collect()
     }
 
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError> {
