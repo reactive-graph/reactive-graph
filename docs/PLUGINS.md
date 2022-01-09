@@ -52,8 +52,8 @@ Plugins can provide:
 
 ### Numeric
 
-| Name | Repository |
-| --- | --- |
+| Name                      | Repository                                              |
+|---------------------------|---------------------------------------------------------|
 | inexor-rgf-plugin-numeric | https://github.com/aschaeffer/inexor-rgf-plugin-numeric |
 
 - [x] Extend the numeric plugin, so that entity instances are created which contains
@@ -65,8 +65,8 @@ Plugins can provide:
 
 ### Config
 
-| Name | Repository |
-| --- | --- |
+| Name                     | Repository                                             |
+|--------------------------|--------------------------------------------------------|
 | inexor-rgf-plugin-config | https://github.com/aschaeffer/inexor-rgf-plugin-config |
 
 - [x] Reads TOML config files from the location defined in property `filename`. The goal is
@@ -101,21 +101,21 @@ This allows to create flows which uses these config files by name.
 
 #### Entity Types
 
-| Name | Properties | Data Type | Socket Type |
-| --- | --- | --- | --- |
-| ConfigFile | filename | string | none |
-| | configuration | object | output |
+| Name       | Properties    | Data Type | Socket Type |
+|------------|---------------|-----------|-------------|
+| ConfigFile | filename      | string    | none        |
+|            | configuration | object    | output      |
 
 #### Entity Behaviours
 
-| Name | Description |
-| --- | --- |
-| ConfigFile | On every change of the property `filename` the configuration file gets loaded. Automatically updates the entity instance if the TOML file has changed on disk.|
+| Name       | Description                                                                                                                                                    |
+|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ConfigFile | On every change of the property `filename` the configuration file gets loaded. Automatically updates the entity instance if the TOML file has changed on disk. |
 
 ### System Environment
 
-| Name | Repository |
-| --- | --- |
+| Name                                 | Repository                                                         |
+|--------------------------------------|--------------------------------------------------------------------|
 | inexor-rgf-plugin-system-environment | https://github.com/aschaeffer/inexor-rgf-plugin-system-environment |
 
 - [x] The plugin creates entity instances for each environment variable. As environment variables doesn't change
@@ -129,15 +129,15 @@ This allows to create flows which uses these environment variables by name.
 
 #### Entity Types
 
-| Name | Properties | Data Type | Socket Type
-| --- | --- | --- | --- |
-| EnvVar | name | string | none |
-| | value | string | output |
+| Name   | Properties | Data Type | Socket Type |
+|--------|------------|-----------|-------------|
+| EnvVar | name       | string    | none        |
+|        | value      | string    | output      |
 
 ### Input Devices
 
-| Name | Repository |
-| --- | --- |
+| Name                           | Repository                                                   |
+|--------------------------------|--------------------------------------------------------------|
 | inexor-rgf-plugin-input-device | https://github.com/aschaeffer/inexor-rgf-plugin-input-device |
 
 - [x] This plugin makes input devices (keyboard, mouse, ...) available as entities using linux evdev.
@@ -159,41 +159,41 @@ This allows to create flows which uses these environment variables by name.
 
 #### Entity Types
 
-| Name | Property | Data Type | Socket Type |
-| --- | --- | --- | --- |
-| InputDevice | name | string | output |
-| | event | object | output |
-| | physical_path | string | output |
-| | driver_version | string | output |
-| | vendor | number | output |
-| | product | number | output |
-| | version | number | output |
-| InputDeviceKey | key | string | none |
-| | keycode | number | none |
-| | keydown | bool | output |
+| Name           | Property       | Data Type | Socket Type |
+|----------------|----------------|-----------|-------------|
+| InputDevice    | name           | string    | output      |
+|                | event          | object    | output      |
+|                | physical_path  | string    | output      |
+|                | driver_version | string    | output      |
+|                | vendor         | number    | output      |
+|                | product        | number    | output      |
+|                | version        | number    | output      |
+| InputDeviceKey | key            | string    | none        |
+|                | keycode        | number    | none        |
+|                | keydown        | bool      | output      |
 
 #### Relation Types
 
-| Name | Outbound Entity Type | Inbound Entity Type |
-| --- | --- | --- |
-| KeyEvent | InputDevice | InputDeviceKey |
+| Name     | Outbound Entity Type | Inbound Entity Type |
+|----------|----------------------|---------------------|
+| KeyEvent | InputDevice          | InputDeviceKey      |
 
 #### Entity Behaviours
 
-| Name | Description |
-| --- | --- |
+| Name        | Description                                                                   |
+|-------------|-------------------------------------------------------------------------------|
 | InputDevice | Streams input events from evdev and sets the entity instance property `event` |
 
 #### Relation Behaviours
 
-| Name | Description |
-| --- | --- |
+| Name     | Description                                                                                                     |
+|----------|-----------------------------------------------------------------------------------------------------------------|
 | KeyEvent | Propagate input events and filters by event type (key event) and keycode defined by the inbound entity instance |
 
 ### String Operations inexor-rgf-plugins-string
 
-| Name | Repository |
-| --- | --- |
+| Name                     | Repository                                             |
+|--------------------------|--------------------------------------------------------|
 | inexor-rgf-plugin-string | https://github.com/aschaeffer/inexor-rgf-plugin-string |
 
 #### Rust Crate / Rust Reference
@@ -202,13 +202,16 @@ This allows to create flows which uses these environment variables by name.
 
 #### Component
 
-| Name | Property | Data Type | Socket Type |
-| --- | --- | --- | --- |
-| StringOperation | lhs | string | input |
-|  | result | string | output |
-| StringGate | lhs | string | input |
-|  | rhs | string | input |
-|  | result | string | output |
+| Name             | Property | Data Type | Socket Type |
+|------------------|----------|-----------|-------------|
+| StringOperation  | lhs      | string    | input       |
+|                  | result   | string    | output      |
+| StringGate       | lhs      | string    | input       |
+|                  | rhs      | string    | input       |
+|                  | result   | string    | output      |
+| StringComparison | lhs      | string    | input       |
+|                  | rhs      | string    | input       |
+|                  | result   | bool      | output      |
 
 #### Entity Types / Behaviours
 
@@ -221,8 +224,8 @@ This allows to create flows which uses these environment variables by name.
 
 ### Generators and Random Numbers
 
-| Name | Repository |
-| --- | --- |
+| Name                         | Repository                                                 |
+|------------------------------|------------------------------------------------------------|
 | inexor-rgf-plugin-generators | https://github.com/aschaeffer/inexor-rgf-plugin-generators |
 
 Time-based generators and random number generators are very useful.
@@ -242,18 +245,18 @@ Time-based generators and random number generators are very useful.
 
 #### Entity Types
 
-| Name | Properties | Behaviours | Description |
-| --- | --- | --- | --- |
-| Metronom | millis (number)<br>result (bool) | MetronomBehaviour | Every X millis the boolean result toggles |
-| Counter | millis (number)<br>step (number)<br>count (number) | EpochTimestampBehaviour | Every X millis the output property `count` gets increased by the value of the input property `step`1 |
-| EpochTimestamp | timestamp | EpochTimestampBehaviour | Every second the output property `timestamp` gets updated. |
-| RandomNumber | min (number)<br>max (number)<br>activation (any)<br>random (number) | RandomNumberBehaviour | Each time the property `activation` changes a new random number gets generated and stored in the output property `random` |
-| PseudoRandomNumber | seed (any)<br>random (number) | RandomNumberBehaviour | Each time the property `activation` changes a new random number gets generated and stored in the output property `random` |
+| Name               | Properties                                                          | Behaviours              | Description                                                                                                               |
+|--------------------|---------------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Metronom           | millis (number)<br>result (bool)                                    | MetronomBehaviour       | Every X millis the boolean result toggles                                                                                 |
+| Counter            | millis (number)<br>step (number)<br>count (number)                  | EpochTimestampBehaviour | Every X millis the output property `count` gets increased by the value of the input property `step`1                      |
+| EpochTimestamp     | timestamp                                                           | EpochTimestampBehaviour | Every second the output property `timestamp` gets updated.                                                                |
+| RandomNumber       | min (number)<br>max (number)<br>activation (any)<br>random (number) | RandomNumberBehaviour   | Each time the property `activation` changes a new random number gets generated and stored in the output property `random` |
+| PseudoRandomNumber | seed (any)<br>random (number)                                       | RandomNumberBehaviour   | Each time the property `activation` changes a new random number gets generated and stored in the output property `random` |
 
 ### Scheduler and Timer
 
-| Name | Repository |
-| --- | --- |
+| Name                        | Repository                                                |
+|-----------------------------|-----------------------------------------------------------|
 | inexor-rgf-plugin-scheduler | https://github.com/aschaeffer/inexor-rgf-plugin-scheduler |
 
 This plugin provides a scheduler which starts tasks on a regular basis.
@@ -266,61 +269,28 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 #### Entity Types
 
-| Name | Properties | Behaviours | Description |
-| --- | --- | --- | --- |
+| Name            | Properties                               | Behaviours                                                     | Description |
+|-----------------|------------------------------------------|----------------------------------------------------------------| --- |
 | Cron Expression | expression (string)<br>activation (bool) | A cron based scheduler propagates the activation output (true) |
 
-### Math Expression
+### ---Math Expression---
 
-| Name | Repository |
-| --- | --- |
+| Name                              | Repository                                                      |
+|-----------------------------------|-----------------------------------------------------------------|
 | inexor-rgf-plugin-math-expression | https://github.com/aschaeffer/inexor-rgf-plugin-math-expression |
 
 #### Entity Types
 
-| Name | Properties | Behaviours | Description |
-| --- | --- | --- | --- |
+| Name       | Properties                                                   | Behaviours          | Description                                                                                |
+|------------|--------------------------------------------------------------|---------------------|--------------------------------------------------------------------------------------------|
 | Expression | expression (string)<br>variables (object)<br>result (number> | ExpressionBehaviour | A mathematical expression gets evaluated each time the input property `variables` changes. |
 
-### JSON Objects and JSON Arrays
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-json | https://github.com/aschaeffer/inexor-rgf-plugin-json |
+### Audio
 
-This plugin adds functionality to operate with complex data structures. Properties of entity instances or
-relation instances can have different data types. It's possible to store even complex data using the data
-types array and object. This is handy if you receive data from an MQTT endpoint or if you want to represent
-more complex data. But it makes it also necessary to unpack or pack these data in order to operate with it.
-
-#### Entity Types
-
-| Name | Property | Data Type | Socket Type |
-| --- | --- | --- | --- |
-| |
-| ArrayPush | array | array | input |
-| | value | any | input |
-| | result | array | output |
-| |
-| ArrayPop | array | array | input |
-| | result | array | output |
-| | value | any | input |
-| |
-| ObjectInsert | object | object | input |
-| | property | string | input |
-| | value | any | input |
-| | result | object | output |
-| |
-| ObjectRemove | object | object | input |
-| | property | string | input |
-| | result | object | output |
-| | value | any | output |
-
-### Sound
-
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-sound | https://github.com/aschaeffer/inexor-rgf-plugin-sound |
+| Name                    | Repository                                            |
+|-------------------------|-------------------------------------------------------|
+| inexor-rgf-plugin-audio | https://github.com/aschaeffer/inexor-rgf-plugin-sound |
 
 #### Rust Crate / Rust Reference
 
@@ -335,9 +305,9 @@ more complex data. But it makes it also necessary to unpack or pack these data i
 
 ### Color
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-color | https://github.com/aschaeffer/inexor-rgf-plugin-color |
+| Name                       | Repository                                                 |
+|----------------------------|------------------------------------------------------------|
+| inexor-rgf-plugin-graphics | https://github.com/aschaeffer/inexor-rgf-plugin-graphics   |
 
 #### Components
 
@@ -389,9 +359,9 @@ more complex data. But it makes it also necessary to unpack or pack these data i
 
 ### Scripting
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-scripting | https://github.com/aschaeffer/inexor-rgf-plugin-scripting |
+| Name                    | Repository                                           |
+|-------------------------|------------------------------------------------------|
+| inexor-rgf-plugin-wasm  | https://github.com/aschaeffer/inexor-rgf-plugin-wasm |
 
 This plugin provides the possibility to run scripts.
 
