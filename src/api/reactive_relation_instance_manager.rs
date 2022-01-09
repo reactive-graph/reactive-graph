@@ -62,6 +62,9 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
     // TODO: Rename to: "get_all"
     fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>>;
 
+    /// Returns all edge keys.
+    fn get_keys(&self) -> Vec<EdgeKey>;
+
     /// Returns all reactive relation instances of the given outbound entity instance.
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
 

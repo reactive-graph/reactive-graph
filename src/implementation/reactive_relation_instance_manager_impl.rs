@@ -57,6 +57,11 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         reader.values().map(|v| v.clone()).collect()
     }
 
+    fn get_keys(&self) -> Vec<EdgeKey> {
+        let reader = self.reactive_relation_instances.0.read().unwrap();
+        reader.keys().map(|edge_key| edge_key.clone()).collect()
+    }
+
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
         self.relation_edge_manager
