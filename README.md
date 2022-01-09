@@ -130,12 +130,12 @@ The libraries are carefully chosen:
 
 ### Sponsors
 
-| | | |
-| --- | --- | --- |
+|                                                                                                                                                                                                                            |           |                                                                   |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------|
 | <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
 
 ### Libraries
 
-| | Library | Description |
-| --- | --- | --- |
+|                                                                                                                                                                                                                                 | Library | Description                                                                                                                                                                                                                                                                      |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <a href="https://github.com/indradb/indradb?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/indradb.png"></a> | IndraDB | The heart of the graph is the embedded graph database IndraDB:<ul><li>Graph Database<ul><li>Typed Graph</li><li>Directed Graph</li><li>Property Graph</li></ul></li><li>In Memory Storage</li><li>Embeddable<ul><li>Easier to create fully featured binaries</li></ul></li></ul> |
