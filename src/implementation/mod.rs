@@ -15,6 +15,7 @@ pub use relation_behaviour_manager_impl::*;
 pub use relation_edge_manager_impl::*;
 pub use relation_instance_manager_impl::*;
 pub use relation_type_manager_impl::*;
+pub use shutdown_manager_impl::*;
 pub use web_resource_manager_impl::*;
 
 pub mod component_behaviour_manager_impl;
@@ -34,4 +35,5 @@ pub mod relation_behaviour_manager_impl;
 pub mod relation_edge_manager_impl;
 pub mod relation_instance_manager_impl;
 pub mod relation_type_manager_impl;
+pub mod shutdown_manager_impl;
 pub mod web_resource_manager_impl;

@@ -17,6 +17,7 @@ pub use relation_behaviour_manager::*;
 pub use relation_edge_manager::*;
 pub use relation_instance_manager::*;
 pub use relation_type_manager::*;
+pub use shutdown_manager::*;
 pub use web_resource_manager::*;
 
 pub mod component_behaviour_manager;
@@ -38,4 +39,5 @@ pub mod relation_behaviour_manager;
 pub mod relation_edge_manager;
 pub mod relation_instance_manager;
 pub mod relation_type_manager;
+pub mod shutdown_manager;
 pub mod web_resource_manager;
