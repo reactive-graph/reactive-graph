@@ -1,8 +1,8 @@
 # Inexor Reactive Graph Flow
 
-| Project | Module | Sub-Module | Functionality | Tests |
-| --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Application | | <img src="https://img.shields.io/badge/state-refactoring-yellow"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-application">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-application) |
+| Project             | Module      | Sub-Module | Functionality                                                     | Tests                                                                                                                                                |
+|---------------------|-------------|------------|-------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Reactive Graph Flow | Application |            | <img src="https://img.shields.io/badge/state-refactoring-yellow"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-application">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-application) |
 
 ### About Inexor
 
