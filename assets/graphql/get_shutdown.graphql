@@ -1,0 +1,13 @@
+query {
+  instances {
+    entities(entityType: "shutdown") {
+      id,
+      type {name},
+      properties(
+        names: [
+          "shutdown"
+        ]
+      )
+    }
+  }
+}

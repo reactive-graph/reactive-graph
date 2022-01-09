@@ -1,0 +1,11 @@
+{
+  "name": "InexorReactiveGraphFlow@localhost",
+  "extensions": {
+    "endpoints": {
+      "InexorReactiveGraphFlow@localhost": {
+        "url": "http://localhost:31415/graphql",
+        "introspect": true
+      }
+    }
+  }
+}

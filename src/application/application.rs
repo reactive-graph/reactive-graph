@@ -31,6 +31,8 @@ pub trait Application: Send + Sync {
 
     fn is_running(&self) -> bool;
 
+    fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager>;
+
     fn get_graph_database(&self) -> Arc<dyn GraphDatabase>;
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
@@ -72,6 +74,7 @@ pub trait Application: Send + Sync {
 pub struct ApplicationImpl {
     running: RunningState,
 
+    shutdown_manager: Wrc<dyn ShutdownManager>,
     graph_database: Wrc<dyn GraphDatabase>,
     component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
     component_manager: Wrc<dyn ComponentManager>,
@@ -103,9 +106,11 @@ impl Application for ApplicationImpl {
         self.reactive_flow_manager.init();
         self.web_resource_manager.init();
         self.graphql_server.init();
+        self.shutdown_manager.init();
     }
 
     fn shutdown(&self) {
+        self.shutdown_manager.shutdown();
         self.graphql_server.shutdown();
         self.web_resource_manager.init();
         self.reactive_flow_manager.shutdown();
@@ -158,6 +163,9 @@ impl Application for ApplicationImpl {
                     debug!("Stopping the main thread");
                     stopping = true;
                 }
+                if self.shutdown_manager.is_shutdown() {
+                    stopping = true;
+                }
             }
         } // Drop "running"
 
@@ -185,6 +193,10 @@ impl Application for ApplicationImpl {
 
     fn is_running(&self) -> bool {
         *self.running.0.read().unwrap().deref()
+    }
+
+    fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager> {
+        self.shutdown_manager.clone()
     }
 
     fn get_graph_database(&self) -> Arc<dyn GraphDatabase> {
