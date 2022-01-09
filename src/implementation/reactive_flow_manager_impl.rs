@@ -6,7 +6,7 @@ use crate::model::{Flow, ReactiveFlow};
 use crate::plugins::FlowProvider;
 use async_trait::async_trait;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::{reactive_relation_instance, ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance};
+use inexor_rgf_core_model::{ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance};
 use log::{debug, error};
 use std::collections::HashMap;
 use std::convert::{TryFrom, TryInto};
