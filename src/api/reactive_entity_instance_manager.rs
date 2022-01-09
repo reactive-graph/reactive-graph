@@ -44,6 +44,9 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>>;
 
     fn get_entity_instances(&self) -> Vec<Arc<ReactiveEntityInstance>>;
+
+    fn get_ids(&self) -> Vec<Uuid>;
+
     // fn get_all(&self) -> Option<Arc<ReactiveEntityInstance>>;
 
     // fn get_by_type(&self, type_name: String) -> Option<Arc<ReactiveEntityInstance>>;
