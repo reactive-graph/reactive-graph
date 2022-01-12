@@ -2,6 +2,7 @@
 name = "inexor-rgf-plugin-base"
 active = true
 path = "../inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so"
+# path = "..\\inexor-rgf-plugin-base\\target\\debug\\inexor_rgf_plugin_base.dll"
 
 [[plugin]]
 name = "inexor-rgf-plugin-metadata"
