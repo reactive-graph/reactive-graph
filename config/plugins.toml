@@ -45,6 +45,21 @@ active = true
 path = "../inexor-rgf-plugin-comparison/target/debug/libinexor_rgf_plugin_comparison.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-string"
+active = true
+path = "../inexor-rgf-plugin-string/target/debug/libinexor_rgf_plugin_string.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-json"
+active = true
+path = "../inexor-rgf-plugin-json/target/debug/libinexor_rgf_plugin_json.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-random"
+active = true
+path = "../inexor-rgf-plugin-random/target/debug/libinexor_rgf_plugin_random.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-config"
 active = true
 path = "../inexor-rgf-plugin-config/target/debug/libinexor_rgf_plugin_config.so"
@@ -60,9 +75,49 @@ active = true
 path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-http"
+active = true
+path = "../inexor-rgf-plugin-http/target/debug/libinexor_rgf_plugin_http.so"
+
+# Linux only (Windows lacks evdev)
+[[plugin]]
 name = "inexor-rgf-plugin-input-device"
 active = true
 path = "../inexor-rgf-plugin-input-device/target/debug/libinexor_rgf_plugin_input_device.so"
+
+# Use with caution!
+[[plugin]]
+name = "inexor-rgf-plugin-system-command"
+active = false
+path = "../inexor-rgf-plugin-system-command/target/debug/libinexor_rgf_plugin_system_command.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-wasm"
+active = false
+path = "../inexor-rgf-plugin-wasm/target/debug/libinexor_rgf_plugin_wasm.so"
+
+# Desktop only
+[[plugin]]
+name = "inexor-rgf-plugin-notification"
+active = false
+path = "../inexor-rgf-plugin-notification/target/debug/libinexor_rgf_plugin_notification.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-flow-manager"
+active = true
+path = "../inexor-rgf-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so"
+
+# Linux only
+[[plugin]]
+name = "inexor-rgf-plugin-fuse"
+active = false
+path = "../inexor-rgf-plugin-fuse/target/debug/libinexor_rgf_plugin_fuse.so"
+
+# Linux only + Desktop only
+[[plugin]]
+name = "inexor-rgf-plugin-free-desktop"
+active = false
+path = "../inexor-rgf-plugin-free-desktop/target/debug/libinexor_rgf_plugin_free_desktop.so"
 
 [[plugin]]
 name = "inexor-rgf-plugin-flow-editor"
