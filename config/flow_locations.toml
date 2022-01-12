@@ -1,0 +1,4 @@
+[[location]]
+name = "My personal flows"
+active = true
+path = "~/.inexor/flows"
