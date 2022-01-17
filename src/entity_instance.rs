@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use async_graphql::scalar;
 use indradb::VertexProperties;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
+use serde_json::{Map, Value};
 use uuid::Uuid;
 
 use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
@@ -106,6 +106,18 @@ impl PropertyInstanceGetter for EntityInstance {
         self.properties
             .get(&property_name.into())
             .and_then(|p| p.as_str().and_then(|s| Some(s.to_string())))
+    }
+
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>> {
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_array())
+    }
+
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>> {
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_object())
     }
 }
 

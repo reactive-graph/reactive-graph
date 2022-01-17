@@ -4,7 +4,7 @@ use std::fmt;
 use std::sync::{Arc, RwLock};
 
 use indradb::EdgeKey;
-use serde_json::Value;
+use serde_json::{Map, Value};
 use uuid::Uuid;
 
 use crate::{Flow, ReactiveEntityInstance, ReactiveRelationInstance};
@@ -296,6 +296,22 @@ impl PropertyInstanceGetter for ReactiveFlow {
             e.properties
                 .get(&property_name.into())
                 .and_then(|p| p.as_string())
+        })
+    }
+
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>> {
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_array().clone())
+        })
+    }
+
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>> {
+        self.get_entity(self.id).and_then(|e| {
+            e.properties
+                .get(&property_name.into())
+                .and_then(|p| p.as_object())
         })
     }
 }

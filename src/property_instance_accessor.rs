@@ -1,4 +1,4 @@
-use serde_json::Value;
+use serde_json::{Map, Value};
 
 pub trait PropertyInstanceGetter {
     /// Returns the json value of the given property by name
@@ -18,11 +18,33 @@ pub trait PropertyInstanceGetter {
 
     /// Returns the string value of the given property by name
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String>;
+
+    /// Returns the string value of the given property by name
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>>;
+
+    /// Returns the string value of the given property by name
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>>;
+
+    // TODO: integrate with other non-primitive types
+    // as_byte_array (string BASE64 -> Vec<u8>)
+    // as_date (string ISO8601 -> chrono::Date)
+    // as_date_time (string ISO8601 -> chrono::DateTime)
+    // as_time (string ISO8601 -> chrono::naive::NaiveTime)
+    // as_uuid (string uuid -> Uuid)
 }
 
 pub trait MutablePropertyInstanceSetter: PropertyInstanceGetter {
     /// Sets the value of the given property by name
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value);
+
+    // TODO: Typed setters
+    // set_bool(property_name, value)
+    // set_number(property_name, value)
+    // set_byte_array(property_name, u8[] -> string BASE64)
+    // set_date(property_name, chrono::Date -> string ISO8601)
+    // set_date_time(property_name, chrono::Date -> string ISO8601)
+    // as_time(property_name, chrono::naive::NaiveTime -> string ISO8601)
+    // as_uuid(property_name, Uuid -> string uuid)
 }
 
 pub trait PropertyInstanceSetter: PropertyInstanceGetter {

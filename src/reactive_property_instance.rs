@@ -2,7 +2,7 @@ use std::ops::{Deref, DerefMut};
 use std::sync::{Arc, RwLock};
 
 use inexor_rgf_core_frp::Stream;
-use serde_json::Value;
+use serde_json::{Map, Value};
 use uuid::Uuid;
 
 // This is not automatically persisted to graph database (yet)!
@@ -77,15 +77,13 @@ impl ReactivePropertyInstance {
         self.get().as_str().and_then(|s| Some(String::from(s)))
     }
 
-    // TODO: Add method as_array()
-    // pub fn as_array(&self) -> Option<&Vec<Value>> {
-    //     self.get().as_array()
-    // }
+    pub fn as_array(&self) -> Option<&Vec<Value>> {
+        self.get().as_array()
+    }
 
-    // TODO: Add method as_object()
-    // pub fn as_object(&self) -> Option<&Map<String, Value>> {
-    //     self.get().as_object()
-    // }
+    pub fn as_object(&self) -> Option<&Map<String, Value>> {
+        self.get().as_object()
+    }
 }
 
 impl PartialEq for ReactivePropertyInstance {

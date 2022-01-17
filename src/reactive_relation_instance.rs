@@ -3,7 +3,7 @@ use std::ops::Deref;
 use std::sync::Arc;
 
 use indradb::{EdgeKey, EdgeProperties, Type};
-use serde_json::Value;
+use serde_json::{Map, Value};
 use uuid::Uuid;
 
 use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
@@ -206,6 +206,18 @@ impl PropertyInstanceGetter for ReactiveRelationInstance {
         self.properties
             .get(&property_name.into())
             .and_then(|p| p.as_string())
+    }
+
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>> {
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_array())
+    }
+
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>> {
+        self.properties
+            .get(&property_name.into())
+            .and_then(|p| p.as_object())
     }
 }
 
