@@ -9,6 +9,9 @@ pub struct PropertyTypeDefinition {
     /// The name of the property
     pub name: String,
 
+    /// The description of the property
+    pub description: String,
+
     /// The data type of the property
     pub data_type: DataType,
 
@@ -25,6 +28,7 @@ impl From<PropertyTypeDefinition> for PropertyType {
     fn from(property_type: PropertyTypeDefinition) -> Self {
         PropertyType {
             name: property_type.name,
+            description: property_type.description,
             data_type: property_type.data_type,
             socket_type: property_type.socket_type,
             extensions: property_type.extensions.iter().map(|extension| extension.clone().into()).collect(),
