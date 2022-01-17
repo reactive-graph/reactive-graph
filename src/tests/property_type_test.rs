@@ -7,6 +7,7 @@ fn property_type_test() {
 
     let property_type = PropertyType {
         name: property_name.clone(),
+        description: String::new(),
         data_type: DataType::String,
         socket_type: SocketType::None,
         extensions: Vec::new(),
@@ -22,6 +23,7 @@ fn property_type_serde_test() {
 
     let property_type = PropertyType {
         name: property_name.clone(),
+        description: String::new(),
         data_type: DataType::String,
         socket_type: SocketType::None,
         extensions: Vec::new(),
