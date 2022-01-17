@@ -15,6 +15,7 @@ pub struct Component {
     pub description: String,
 
     /// The properties which are applied on entity instances.
+    #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
 }
 
@@ -25,6 +26,15 @@ impl Component {
             name,
             description: String::new(),
             properties,
+        }
+    }
+
+    /// Constructs an component with the given name but without properties
+    pub fn new_without_properties(name: String) -> Component {
+        Component {
+            name,
+            description: String::new(),
+            properties: Vec::new(),
         }
     }
 
