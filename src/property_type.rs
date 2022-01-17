@@ -12,6 +12,10 @@ pub struct PropertyType {
     /// The name of the property
     pub name: String,
 
+    /// The description of the property.
+    #[serde(default = "String::new")]
+    pub description: String,
+
     /// The data type of the property
     pub data_type: DataType,
 
@@ -28,6 +32,7 @@ impl PropertyType {
     pub fn new<S: Into<String>>(name: S, data_type: DataType) -> PropertyType {
         PropertyType {
             name: name.into(),
+            description: String::new(),
             data_type,
             socket_type: SocketType::None,
             extensions: Vec::new(),
@@ -41,6 +46,7 @@ impl PropertyType {
     ) -> PropertyType {
         PropertyType {
             name: name.into(),
+            description: String::new(),
             data_type,
             socket_type,
             extensions: Vec::new(),
@@ -50,6 +56,7 @@ impl PropertyType {
     pub fn input<S: Into<String>>(name: S, data_type: DataType) -> PropertyType {
         PropertyType {
             name: name.into(),
+            description: String::new(),
             data_type,
             socket_type: SocketType::Input,
             extensions: Vec::new(),
@@ -59,6 +66,7 @@ impl PropertyType {
     pub fn output<S: Into<String>>(name: S, data_type: DataType) -> PropertyType {
         PropertyType {
             name: name.into(),
+            description: String::new(),
             data_type,
             socket_type: SocketType::Output,
             extensions: Vec::new(),
