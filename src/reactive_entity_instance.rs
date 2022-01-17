@@ -135,13 +135,13 @@ impl PropertyInstanceGetter for ReactiveEntityInstance {
             .and_then(|p| p.as_string())
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>> {
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
         self.properties
             .get(&property_name.into())
             .and_then(|p| p.as_array())
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>> {
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
         self.properties
             .get(&property_name.into())
             .and_then(|p| p.as_object())

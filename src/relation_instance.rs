@@ -128,16 +128,17 @@ impl PropertyInstanceGetter for RelationInstance {
             .and_then(|p| p.as_str().and_then(|s| Some(s.to_string())))
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>> {
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
         self.properties
             .get(&property_name.into())
-            .and_then(|p| p.as_array())
+            .and_then(|p| p.as_array().map(Vec::clone))
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>> {
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
         self.properties
             .get(&property_name.into())
             .and_then(|p| p.as_object())
+            .map(Map::clone)
     }
 }
 

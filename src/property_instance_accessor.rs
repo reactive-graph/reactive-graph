@@ -20,10 +20,10 @@ pub trait PropertyInstanceGetter {
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String>;
 
     /// Returns the string value of the given property by name
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>>;
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>>;
 
     /// Returns the string value of the given property by name
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>>;
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>>;
 
     // TODO: integrate with other non-primitive types
     // as_byte_array (string BASE64 -> Vec<u8>)

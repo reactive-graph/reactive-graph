@@ -77,12 +77,12 @@ impl ReactivePropertyInstance {
         self.get().as_str().and_then(|s| Some(String::from(s)))
     }
 
-    pub fn as_array(&self) -> Option<&Vec<Value>> {
-        self.get().as_array()
+    pub fn as_array(&self) -> Option<Vec<Value>> {
+        self.get().as_array().map(Vec::clone)
     }
 
-    pub fn as_object(&self) -> Option<&Map<String, Value>> {
-        self.get().as_object()
+    pub fn as_object(&self) -> Option<Map<String, Value>> {
+        self.get().as_object().map(Map::clone)
     }
 }
 

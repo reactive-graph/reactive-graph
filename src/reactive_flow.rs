@@ -299,15 +299,15 @@ impl PropertyInstanceGetter for ReactiveFlow {
         })
     }
 
-    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<&Vec<Value>> {
+    fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
         self.get_entity(self.id).and_then(|e| {
             e.properties
                 .get(&property_name.into())
-                .and_then(|p| p.as_array().clone())
+                .and_then(|p| p.as_array().map(|vec| vec.clone()))
         })
     }
 
-    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<&Map<String, Value>> {
+    fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
         self.get_entity(self.id).and_then(|e| {
             e.properties
                 .get(&property_name.into())
