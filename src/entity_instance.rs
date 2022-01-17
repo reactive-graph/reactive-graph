@@ -47,7 +47,7 @@ impl EntityInstance {
         EntityInstance {
             type_name: type_name.into(),
             id,
-            description: String::from(""),
+            description: String::new(),
             properties,
         }
     }

@@ -57,7 +57,7 @@ impl RelationInstance {
             outbound_id,
             type_name,
             inbound_id,
-            description: String::from(""),
+            description: String::new(),
             properties,
         }
     }
