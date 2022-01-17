@@ -23,6 +23,12 @@ impl SocketType {
     pub fn none() -> Self {
         SocketType::None
     }
+    pub fn input() -> Self {
+        SocketType::Input
+    }
+    pub fn output() -> Self {
+        SocketType::Output
+    }
 }
 
 impl From<&str> for SocketType {
