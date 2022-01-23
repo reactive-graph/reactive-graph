@@ -1,6 +1,6 @@
-use crate::model::ReactiveEntityInstance;
 use crate::tests::utils::r_string;
 use indradb::{NamedProperty, Type, Vertex, VertexProperties};
+use inexor_rgf_core_model::ReactiveEntityInstance;
 use serde_json::json;
 use std::str::FromStr;
 use uuid::Uuid;
