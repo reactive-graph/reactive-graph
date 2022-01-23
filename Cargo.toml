@@ -1,7 +1,7 @@
 [package]
 name = "inexor-rgf-core-reactive"
 description = "Inexor - Reactive Graph Flow - Core - Reactive"
-version = "0.2.1"
+version = "0.4.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
@@ -15,7 +15,7 @@ strum = { version = "0.23", features = ["derive"] }
 strum_macros = "0.23"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git", branch = "feature/smaller-dependency-tree" }
 
 [dev-dependencies]
 random-string = "1.0"
