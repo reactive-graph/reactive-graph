@@ -1,8 +1,6 @@
 #![feature(register_tool)]
 #![register_tool(tarpaulin)]
 
-use inexor_rgf_core_model as model;
-
 pub mod entity;
 pub use entity::*;
 
