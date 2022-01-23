@@ -11,11 +11,11 @@ pub struct Component {
     /// The name of the component.
     pub name: String,
 
-    /// Textual description of the entity type.
+    /// Textual description of the component.
     #[serde(default = "String::new")]
     pub description: String,
 
-    /// The properties which are applied on entity instances.
+    /// The properties which are applied on entity or relation instances.
     #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
 }
