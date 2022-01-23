@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_graphql::*;
 
 use crate::api::{ComponentManager, EntityTypeManager, RelationTypeManager};
-use crate::graphql::query::{GraphQLEntityType, GraphQLRelationType};
+use crate::graphql::query::{GraphQLComponent, GraphQLEntityType, GraphQLRelationType};
 
 #[derive(Default)]
 pub struct Types;
@@ -18,7 +18,7 @@ impl Types {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Filters by the name of the components")] name: Option<String>,
-    ) -> Vec<crate::model::Component> {
+    ) -> Vec<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>();
         if component_manager.is_ok() {
             let component_manager = component_manager.unwrap();
@@ -26,11 +26,11 @@ impl Types {
                 // TODO: entity_type_manager.search("*query*");
                 let component = component_manager.get(name.unwrap());
                 if component.is_some() {
-                    return vec![component.unwrap()];
+                    return vec![component.unwrap().into()];
                 }
                 return Vec::new();
             }
-            return component_manager.get_components();
+            return component_manager.get_components().into_iter().map(|component| component.into()).collect();
         }
         Vec::new()
     }

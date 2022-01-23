@@ -1,8 +1,8 @@
 use async_graphql::*;
 use serde::{Deserialize, Serialize};
 
-use crate::graphql::query::GraphQLExtension;
-use crate::model::{DataType, PropertyType, SocketType};
+use crate::graphql::query::{GraphQLDataType, GraphQLExtension, GraphQLSocketType};
+use crate::model::PropertyType;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 pub struct PropertyTypeDefinition {
@@ -13,11 +13,11 @@ pub struct PropertyTypeDefinition {
     pub description: String,
 
     /// The data type of the property
-    pub data_type: DataType,
+    pub data_type: GraphQLDataType,
 
     /// Specifies which type of socket
-    #[serde(default = "SocketType::none")]
-    pub socket_type: SocketType,
+    #[serde(default = "GraphQLSocketType::none")]
+    pub socket_type: GraphQLSocketType,
 
     /// Property specific extensions
     #[serde(default = "Vec::new")]
@@ -29,8 +29,8 @@ impl From<PropertyTypeDefinition> for PropertyType {
         PropertyType {
             name: property_type.name,
             description: property_type.description,
-            data_type: property_type.data_type,
-            socket_type: property_type.socket_type,
+            data_type: property_type.data_type.into(),
+            socket_type: property_type.socket_type.into(),
             extensions: property_type.extensions.iter().map(|extension| extension.clone().into()).collect(),
         }
     }

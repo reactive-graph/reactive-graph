@@ -4,6 +4,7 @@ use async_graphql::*;
 
 use crate::api::ComponentManager;
 use crate::graphql::mutation::PropertyTypeDefinition;
+use crate::graphql::query::GraphQLComponent;
 
 #[derive(Default)]
 pub struct MutationComponents;
@@ -12,7 +13,7 @@ pub struct MutationComponents;
 #[Object]
 impl MutationComponents {
     /// Creates a new component with the given name and properties.
-    async fn create(&self, context: &Context<'_>, name: String, properties: Option<Vec<PropertyTypeDefinition>>) -> Result<crate::model::Component> {
+    async fn create(&self, context: &Context<'_>, name: String, properties: Option<Vec<PropertyTypeDefinition>>) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let property_types;
         if properties.is_some() {
@@ -22,7 +23,7 @@ impl MutationComponents {
         }
         let component = crate::model::Component::new(name, property_types);
         component_manager.register(component.clone());
-        Ok(component)
+        Ok(component.into())
     }
 
     // TODO: add property

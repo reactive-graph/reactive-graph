@@ -3,8 +3,8 @@ use std::sync::Arc;
 use async_graphql::*;
 
 use crate::api::{ComponentManager, RelationTypeManager};
-use crate::graphql::query::GraphQLRelationType;
-use crate::model::{Component, EntityType, Extension, PropertyType};
+use crate::graphql::query::{GraphQLComponent, GraphQLExtension, GraphQLPropertyType, GraphQLRelationType};
+use crate::model::EntityType;
 
 pub struct GraphQLEntityType {
     entity_type: EntityType,
@@ -31,7 +31,7 @@ impl GraphQLEntityType {
     }
 
     /// The components of the entity type.
-    async fn components(&self, context: &Context<'_>) -> Vec<Component> {
+    async fn components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>();
         if component_manager.is_ok() {
             let component_manager = component_manager.unwrap();
@@ -39,6 +39,7 @@ impl GraphQLEntityType {
                 .components
                 .iter()
                 .filter_map(|component| component_manager.get(component.clone()))
+                .map(|component| component.into())
                 .collect()
         } else {
             Vec::new()
@@ -52,7 +53,7 @@ impl GraphQLEntityType {
 
     /// The properties / property types which are defined by the entity type or
     /// by one of the components.
-    async fn properties(&self, name: Option<String>) -> Vec<PropertyType> {
+    async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
         if name.is_some() {
             let name = name.unwrap();
             return self
@@ -62,13 +63,19 @@ impl GraphQLEntityType {
                 .iter()
                 .filter(|property_type| property_type.name == name.clone())
                 .cloned()
+                .map(|property_type| property_type.into())
                 .collect();
         }
-        self.entity_type.properties.to_vec()
+        self.entity_type
+            .properties
+            .to_vec()
+            .into_iter()
+            .map(|property_type| property_type.into())
+            .collect()
     }
 
     /// The extensions which are defined by the entity type.
-    async fn extensions(&self, name: Option<String>) -> Vec<Extension> {
+    async fn extensions(&self, name: Option<String>) -> Vec<GraphQLExtension> {
         if name.is_some() {
             let name = name.unwrap();
             return self
@@ -78,9 +85,10 @@ impl GraphQLEntityType {
                 .iter()
                 .filter(|extension| extension.name == name.clone())
                 .cloned()
+                .map(|extension| extension.into())
                 .collect();
         }
-        self.entity_type.extensions.to_vec()
+        self.entity_type.extensions.to_vec().into_iter().map(|extension| extension.into()).collect()
     }
 
     /// List of relation types which has this entity type as outbound.

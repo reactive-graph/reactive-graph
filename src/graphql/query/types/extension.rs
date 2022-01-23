@@ -22,3 +22,12 @@ impl From<GraphQLExtension> for Extension {
         }
     }
 }
+
+impl From<Extension> for GraphQLExtension {
+    fn from(extension: Extension) -> Self {
+        GraphQLExtension {
+            name: extension.name.clone(),
+            extension: extension.extension.clone(),
+        }
+    }
+}
