@@ -1,11 +1,12 @@
-use async_graphql::SimpleObject;
+// use async_graphql::SimpleObject;
 use serde::{Deserialize, Serialize};
 
 use crate::PropertyType;
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
-#[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
+/// #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Component {
     /// The name of the component.
     pub name: String,

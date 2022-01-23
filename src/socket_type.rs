@@ -1,12 +1,13 @@
 use core::fmt;
 use std::fmt::{Display, Formatter};
 
-use async_graphql::*;
+// use async_graphql::*;
 use serde::{Deserialize, Serialize};
 
 /// The socket type defines if the property acts as an input or output socket
 /// or is an hidden property
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Enum, Copy, Eq)]
+// #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Enum, Copy, Eq)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Copy, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum SocketType {
     /// The property doesn't act as input or output socket.

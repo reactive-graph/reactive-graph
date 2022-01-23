@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use async_graphql::SimpleObject;
+// use async_graphql::SimpleObject;
 use indradb::Type;
 use serde::{Deserialize, Serialize};
 
@@ -11,7 +11,8 @@ use crate::PropertyType;
 ///
 /// The relation type defines the entity types of the outbound and inbound entity instances.
 /// Also the relation type defines the properties of the relation instance.
-#[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
+// #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RelationType {
     /// The name of the outbound entity type.
     pub outbound_type: String,
@@ -20,7 +21,7 @@ pub struct RelationType {
     ///
     /// The name is the unique identifier for relation types.
     #[serde(alias = "name")]
-    #[graphql(name = "name")]
+    // #[graphql(name = "name")]
     pub type_name: String,
 
     /// The full type name of the relation type.
@@ -55,7 +56,7 @@ pub struct RelationType {
     pub extensions: Vec<Extension>,
 
     #[serde(skip)]
-    #[graphql(skip)]
+    // #[graphql(skip)]
     pub t: Type,
 }
 

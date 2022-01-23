@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 
-use async_graphql::scalar;
+// use async_graphql::scalar;
 use indradb::{EdgeKey, EdgeProperties, Type};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
@@ -44,7 +44,7 @@ pub struct RelationInstance {
     #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 }
-scalar!(RelationInstance);
+// scalar!(RelationInstance);
 
 impl RelationInstance {
     pub fn new(

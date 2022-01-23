@@ -1,4 +1,4 @@
-use async_graphql::scalar;
+// use async_graphql::scalar;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
@@ -11,4 +11,4 @@ pub struct Extension {
     /// The extension as JSON representation.
     pub extension: Value,
 }
-scalar!(Extension);
+// scalar!(Extension);
