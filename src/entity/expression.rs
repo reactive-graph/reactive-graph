@@ -38,9 +38,9 @@ pub struct ExpressionResult<T, LHS, RHS> {
     /// Textual representation of the operator, for example "&&" for an AND-operator
     pub symbol: String,
 
-    // The expression
+    /// The expression
     pub expression: Expression<LHS, RHS>,
 
-    // The calculated result
+    /// The calculated result
     pub result: T,
 }
