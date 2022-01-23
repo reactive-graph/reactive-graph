@@ -10,21 +10,15 @@ license = "MIT"
 actix-http = { version = "3.0.0-beta.15" }
 actix-web = { version = "4.0.0-beta.14" }
 async-std = { version = "1.8", features = ["attributes"] }
-async-trait = "0.1"
-# crossbeam = "0.8"
 indradb-lib = "1"
-log = { version = "0.4", features = ["std", "serde"] }
 query_interface = "0.3"
 serde = { version = "1.0", features = [ "derive" ] }
 serde_json = "1.0"
-strum = { version = "0.23", features = ["derive"] }
-strum_macros = "0.23"
 uuid = { version = "0.8", features = ["serde", "v4"] }
-waiter_di = { version = "1.6", features = [ "async" ], git = "https://github.com/aschaeffer/waiter.git" }
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git", branch = "feature/smaller-dependency-tree" }
-inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git", branch = "feature/smaller-dependency-tree" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
 
 [dev-dependencies]
 random-string = "1.0"
