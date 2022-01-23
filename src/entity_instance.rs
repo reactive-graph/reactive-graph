@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-// use async_graphql::scalar;
 use indradb::VertexProperties;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
@@ -36,7 +35,6 @@ pub struct EntityInstance {
     #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 }
-// scalar!(EntityInstance);
 
 impl EntityInstance {
     pub fn new<S: Into<String>>(

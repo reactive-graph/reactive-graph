@@ -1,4 +1,3 @@
-// use async_graphql::*;
 use serde::{Deserialize, Serialize};
 
 use crate::extension::Extension;
@@ -7,7 +6,6 @@ use crate::{DataType, SocketType};
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket
 /// type.
-// #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PropertyType {
     /// The name of the property

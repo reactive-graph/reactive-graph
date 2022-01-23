@@ -1,6 +1,5 @@
 use std::str::FromStr;
 
-// use async_graphql::SimpleObject;
 use indradb::Type;
 use serde::{Deserialize, Serialize};
 
@@ -8,7 +7,6 @@ use crate::extension::Extension;
 use crate::PropertyType;
 
 /// Entity types defines the type of an entity instance.
-// #[derive(Serialize, Deserialize, Clone, Debug, SimpleObject)]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct EntityType {
     /// The name of the entity type.
@@ -41,7 +39,6 @@ pub struct EntityType {
     pub extensions: Vec<Extension>,
 
     #[serde(skip)]
-    // #[graphql(skip)]
     pub t: Type,
 }
 

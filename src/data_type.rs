@@ -3,12 +3,10 @@ use fmt::Display;
 use std::collections::HashMap;
 use std::fmt::Formatter;
 
-// use async_graphql::Enum;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 
 /// Derived from serde_json::Value but without value payload.
-// #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Enum, Copy, Eq)]
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Copy, Eq)]
 #[serde(rename_all = "lowercase")]
 pub enum DataType {
