@@ -47,10 +47,10 @@ async-graphql-actix-web = { version = "3.0" }
 mime = "0.3"
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
-inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
-inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git", branch = "feature/smaller-dependency-tree" }
+inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git", branch = "feature/smaller-dependency-tree" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git", branch = "feature/smaller-dependency-tree" }
+inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git", branch = "feature/smaller-dependency-tree" }
 
 [dev-dependencies]
 random-string = "1.0"
