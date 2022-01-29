@@ -26,7 +26,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
         if r_transaction.is_ok() {
             let transaction = r_transaction.unwrap();
             let edges = transaction.get_edges(SpecificEdgeQuery::single(edge_key));
-            return edges.unwrap().len() > 0;
+            return edges.unwrap().is_empty();
         }
         false
     }
@@ -81,7 +81,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             let result = transaction.get_all_edge_properties(SpecificEdgeQuery::single(edge_key));
             if result.is_ok() {
                 let edge_properties = result.unwrap();
-                if edge_properties.len() > 0 {
+                if edge_properties.is_empty() {
                     // == 1 ?
                     let edge_properties = edge_properties[0].clone();
                     return Some(edge_properties);
