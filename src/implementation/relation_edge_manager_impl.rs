@@ -40,28 +40,18 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Edge> {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let vertex_query = SpecificVertexQuery::single(outbound_entity_id);
-            let edge_query = vertex_query.outbound(1000);
-            let edges = transaction.get_edges(edge_query);
-            if edges.is_ok() {
-                return edges.unwrap();
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(edges) = transaction.get_edges(SpecificVertexQuery::single(outbound_entity_id).outbound(1000)) {
+                return edges;
             }
         }
         Vec::new()
     }
 
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<Edge> {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let vertex_query = SpecificVertexQuery::single(inbound_entity_id);
-            let edge_query = vertex_query.inbound(1000);
-            let edges = transaction.get_edges(edge_query);
-            if edges.is_ok() {
-                return edges.unwrap();
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(edges) = transaction.get_edges(SpecificVertexQuery::single(inbound_entity_id).inbound(1000)) {
+                return edges;
             }
         }
         Vec::new()
