@@ -34,16 +34,16 @@ impl MutationRelationTypes {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
         if relation_type_manager.has(name.clone()) {
-            return Err(Error::new(format!("Relation type {} already exists", name.clone())));
+            return Err(Error::new(format!("Relation type {} already exists", name)));
         }
         if !entity_type_manager.has(outbound_type.clone()) {
-            return Err(Error::new(format!("Outbound entity type {} does not exist", outbound_type.clone())));
+            return Err(Error::new(format!("Outbound entity type {} does not exist", outbound_type)));
         }
         if !entity_type_manager.has(inbound_type.clone()) {
-            return Err(Error::new(format!("Inbound entity type {} does not exist", inbound_type.clone())));
+            return Err(Error::new(format!("Inbound entity type {} does not exist", inbound_type)));
         }
 
-        let mut relation_type_builder = RelationTypeBuilder::new(outbound_type.clone(), name.clone(), inbound_type.clone());
+        let mut relation_type_builder = RelationTypeBuilder::new(outbound_type, name, inbound_type);
         if components.is_some() {
             for component in components.unwrap() {
                 debug!("Add component {}", component.clone());
