@@ -70,7 +70,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         reader.find(label.as_str()).and_then(|result| match self.get(*result.0) {
             Some(instance) => {
                 let params: HashMap<String, String> = result.1.into_iter().map(|(a, b)| (String::from(a), String::from(b))).collect();
-                Some((instance.clone(), params))
+                Some((instance, params))
             }
             None => None,
         })
@@ -189,7 +189,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {
-        let result = self.entity_instance_manager.import(path.clone());
+        let result = self.entity_instance_manager.import(path);
         if result.is_ok() {
             let entity_instance = self.entity_instance_manager.get(result.unwrap());
             if entity_instance.is_some() {
