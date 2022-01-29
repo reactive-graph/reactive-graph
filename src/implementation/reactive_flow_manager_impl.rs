@@ -225,7 +225,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                 return Ok(reactive_flow);
             }
         }
-        Err(ReactiveFlowImportError.into())
+        Err(ReactiveFlowImportError)
     }
 
     fn export(&self, id: Uuid, path: String) {
