@@ -44,15 +44,15 @@ impl InexorSubscription {
                         let mut stream = EntityPropertyInstanceStream::new(entity_instance.clone(), property_name.clone());
 
                         let id = entity_instance.id;
-                        let property_name = property_name.clone();
                         Ok(async_stream::stream! {
                             loop {
                                 match stream.next().await {
                                     Some(v) => {
                                         futures_timer::Delay::new(Duration::from_millis(10)).await;
+                                        // TODO: Use model instead of handcrafted json! GraphQLPropertyValueChanged
                                         yield json!({
                                             "id": id,
-                                            "property_name": property_name.clone(),
+                                            "property_name": property_name,
                                             "value": v.clone()
                                         });
                                     }
@@ -82,7 +82,7 @@ impl InexorSubscription {
                     if !relation_instance.properties.contains_key(&property_name) {
                         return Err("Error: property by name not found".into());
                     }
-                    let mut stream = RelationPropertyInstanceStream::new(relation_instance.clone(), property_name.clone());
+                    let mut stream = RelationPropertyInstanceStream::new(relation_instance, property_name.clone());
 
                     // let id = relation_instance.id;
                     let property_name = property_name.clone();
