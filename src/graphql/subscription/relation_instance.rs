@@ -48,7 +48,7 @@ impl Stream for RelationPropertyInstanceStream {
     type Item = Value;
 
     fn poll_next(self: Pin<&mut Self>, _context: &mut std::task::Context<'_>) -> Poll<Option<Self::Item>> {
-        return match self.receiver.try_recv() {
+        match self.receiver.try_recv() {
             Ok(value) => {
                 std::thread::sleep(Duration::from_millis(10));
                 Poll::Ready(Some(value))
@@ -57,7 +57,7 @@ impl Stream for RelationPropertyInstanceStream {
                 std::thread::sleep(Duration::from_millis(100));
                 Poll::Ready(None)
             }
-        };
+        }
     }
 }
 
