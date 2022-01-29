@@ -92,7 +92,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         let reactive_flow = reactive_flow.unwrap();
         let reactive_flow = Arc::new(reactive_flow);
         self.register_flow_and_reactive_instances(reactive_flow.clone());
-        return Ok(reactive_flow.clone());
+        return Ok(reactive_flow);
 
         // let reactive_flow = ReactiveFlow::try_from(flow);
         // if reactive_flow.is_ok() {
@@ -170,7 +170,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             let wrapper_entity_instance = reactive_flow.get_entity(reactive_flow.id);
             if wrapper_entity_instance.is_some() {
                 self.reactive_entity_instance_manager
-                    .register_reactive_instance(wrapper_entity_instance.unwrap().clone());
+                    .register_reactive_instance(wrapper_entity_instance.unwrap());
             }
         }
         self.reactive_flows.0.write().unwrap().insert(reactive_flow.id, reactive_flow.clone());
@@ -230,7 +230,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             //     }
             // }
 
-            let flow = Flow::try_from(reactive_flow.clone());
+            let flow = Flow::try_from(reactive_flow);
             if flow.is_ok() {
                 self.flow_manager.commit(flow.unwrap());
             }
@@ -254,12 +254,12 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Arc<ReactiveFlow>, ReactiveFlowImportError> {
-        let flow = self.flow_manager.import(path.clone());
+        let flow = self.flow_manager.import(path);
         if flow.is_ok() {
             let flow = flow.unwrap();
-            let reactive_flow = self.create(flow.clone());
+            let reactive_flow = self.create(flow);
             if reactive_flow.is_ok() {
-                return Ok(reactive_flow.unwrap().clone());
+                return Ok(reactive_flow.unwrap());
             }
         }
         Err(ReactiveFlowImportError.into())
@@ -268,7 +268,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn export(&self, id: Uuid, path: String) {
         if self.has(id) {
             self.commit(id);
-            let flow = Flow::try_from(self.get(id).unwrap().clone());
+            let flow = Flow::try_from(self.get(id).unwrap());
             if flow.is_ok() {
                 self.flow_manager.export(flow.unwrap(), path);
             }
