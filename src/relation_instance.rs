@@ -85,20 +85,16 @@ impl RelationInstance {
 
 impl From<EdgeProperties> for RelationInstance {
     fn from(properties: EdgeProperties) -> Self {
-        let outbound_id = properties.edge.key.outbound_id.clone();
-        let type_name = properties.edge.key.t.0.clone();
-        let inbound_id = properties.edge.key.inbound_id.clone();
-        let properties: HashMap<String, Value> = properties
-            .props
-            .iter()
-            .map(|p| (p.name.clone(), p.value.clone()))
-            .collect();
         RelationInstance {
-            outbound_id,
-            type_name,
-            inbound_id,
+            outbound_id: properties.edge.key.outbound_id,
+            type_name: properties.edge.key.t.0.clone(),
+            inbound_id: properties.edge.key.inbound_id,
             description: String::new(),
-            properties,
+            properties: properties
+                .props
+                .iter()
+                .map(|p| (p.name.clone(), p.value.clone()))
+                .collect(),
         }
     }
 }
