@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::ops::Index;
 use std::str::FromStr;
 
 use indradb::{NamedProperty, Type, Vertex, VertexProperties};
@@ -57,6 +58,16 @@ fn create_entity_instance_test() {
 }
 
 #[test]
+fn create_entity_instance_without_properties_test() {
+    let uuid = Uuid::new_v4();
+    let type_name = r_string();
+    let entity_instance = EntityInstance::new_without_properties(type_name.clone(), uuid.clone());
+    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
+    assert_eq!(uuid.clone(), entity_instance.id.clone());
+    assert!(entity_instance.get(r_string()).is_none());
+}
+
+#[test]
 fn create_entity_instance_from_vertex_properties() {
     let uuid = Uuid::new_v4();
     let type_name = r_string();
@@ -111,4 +122,29 @@ fn entity_instance_typed_getter_test() {
     let s = r_string();
     i.set(property_name.clone(), json!(s.clone()));
     assert_eq!(s, i.as_string(property_name.clone()).unwrap());
+    let a = json!([1, 2, 3]);
+    i.set(property_name.clone(), a.clone());
+    assert_eq!(
+        json!(1),
+        i.as_array(property_name.clone()).unwrap().index(0).clone()
+    );
+    assert_eq!(
+        json!(2),
+        i.as_array(property_name.clone()).unwrap().index(1).clone()
+    );
+    assert_eq!(
+        json!(3),
+        i.as_array(property_name.clone()).unwrap().index(2).clone()
+    );
+    let o = json!({
+        "k": "v"
+    });
+    i.set(property_name.clone(), o.clone());
+    assert_eq!(
+        json!("v"),
+        i.as_object(property_name.clone())
+            .unwrap()
+            .index("k")
+            .clone()
+    );
 }

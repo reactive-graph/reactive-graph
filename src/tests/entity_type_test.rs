@@ -30,6 +30,8 @@ fn create_entity_type_test() {
         extension: extension_value.clone(),
     };
     extensions.push(extension);
+    let extension = Extension::new("other_extension", extension_value.clone());
+    extensions.push(extension);
 
     let entity_type = EntityType::new(
         entity_type_name,

@@ -5,7 +5,6 @@ use inexor_rgf_core_frp::Stream;
 use serde_json::{Map, Value};
 use uuid::Uuid;
 
-// This is not automatically persisted to graph database (yet)!
 pub struct ReactivePropertyInstance {
     /// Vertex uuid
     pub id: Uuid,
@@ -21,10 +20,10 @@ pub struct ReactivePropertyInstance {
 }
 
 impl ReactivePropertyInstance {
-    pub fn new(id: Uuid, name: String, value: Value) -> ReactivePropertyInstance {
+    pub fn new<S: Into<String>>(id: Uuid, name: S, value: Value) -> ReactivePropertyInstance {
         ReactivePropertyInstance {
             id,
-            name,
+            name: name.into(),
             stream: Arc::new(RwLock::new(Stream::new())),
             value: RwLock::new(value),
         }

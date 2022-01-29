@@ -45,6 +45,7 @@ pub struct RelationInstance {
 }
 
 impl RelationInstance {
+    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
     pub fn new(
         outbound_id: Uuid,
         type_name: String,
@@ -57,6 +58,21 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties,
+        }
+    }
+
+    /// Constructs a new relation instance with the given outbound_id, type, inbound_id but without properties
+    pub fn new_without_properties<S: Into<String>>(
+        outbound_id: Uuid,
+        type_name: S,
+        inbound_id: Uuid,
+    ) -> RelationInstance {
+        RelationInstance {
+            outbound_id,
+            type_name: type_name.into(),
+            inbound_id,
+            description: String::new(),
+            properties: HashMap::new(),
         }
     }
 

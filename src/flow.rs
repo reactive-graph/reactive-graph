@@ -59,7 +59,10 @@ pub struct Flow {
 
 impl Flow {
     /// Constructs a new flow from the wrapper entity instance.
-    pub fn from_instance_with_name(wrapper_entity_instance: EntityInstance, name: String) -> Flow {
+    pub fn from_instance_with_name<S: Into<String>>(
+        wrapper_entity_instance: EntityInstance,
+        name: S,
+    ) -> Flow {
         let id = wrapper_entity_instance.id;
         let type_name = wrapper_entity_instance.type_name.clone();
         let mut entity_instances: Vec<EntityInstance> = Vec::new();
@@ -67,7 +70,7 @@ impl Flow {
         Flow {
             id,
             type_name,
-            name,
+            name: name.into(),
             description: String::new(),
             entity_instances,
             relation_instances: Vec::new(),

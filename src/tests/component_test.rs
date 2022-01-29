@@ -54,6 +54,13 @@ fn create_component_test() {
 }
 
 #[test]
+fn create_component_without_properties_test() {
+    let component_name = r_string();
+    let component = Component::new_without_properties(component_name.clone());
+    assert_eq!(component_name, component.name);
+}
+
+#[test]
 fn component_has_property_test() {
     let component_name = r_string();
     let mut property_types = Vec::new();

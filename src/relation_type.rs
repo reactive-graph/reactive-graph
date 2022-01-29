@@ -57,21 +57,22 @@ pub struct RelationType {
 }
 
 impl RelationType {
-    pub fn new(
-        outbound_type: String,
-        type_name: String,
-        inbound_type: String,
+    pub fn new<S: Into<String>>(
+        outbound_type: S,
+        type_name: S,
+        inbound_type: S,
         components: Vec<String>,
         behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> RelationType {
+        let type_name = type_name.into();
         let t = Type::from_str(type_name.clone().as_str()).unwrap();
         RelationType {
-            outbound_type,
+            outbound_type: outbound_type.into(),
             full_name: type_name.clone(),
             type_name,
-            inbound_type,
+            inbound_type: inbound_type.into(),
             group: String::new(),
             description: String::new(),
             components,
@@ -83,18 +84,19 @@ impl RelationType {
     }
 
     /// Returns true, if the relation type is a component with the given name.
-    pub fn is_a(&self, component_name: String) -> bool {
-        self.components.contains(&component_name)
+    pub fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
+        self.components.contains(&component_name.into())
     }
 
     /// Returns true, if the relation type behaves as the behaviour with the given name.
-    pub fn behaves_as(&self, behaviour_name: String) -> bool {
-        self.behaviours.contains(&behaviour_name)
+    pub fn behaves_as<S: Into<String>>(&self, behaviour_name: S) -> bool {
+        self.behaviours.contains(&behaviour_name.into())
     }
 
     /// Returns true, if the relation type contains an own property with the given name.
     /// Doesn't respect properties from potential components.
-    pub fn has_own_property(&self, property_name: String) -> bool {
+    pub fn has_own_property<S: Into<String>>(&self, property_name: S) -> bool {
+        let property_name = property_name.into().clone();
         !self
             .properties
             .iter()

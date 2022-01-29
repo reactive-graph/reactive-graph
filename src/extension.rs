@@ -10,3 +10,12 @@ pub struct Extension {
     /// The extension as JSON representation.
     pub extension: Value,
 }
+
+impl Extension {
+    pub fn new<S: Into<String>>(name: S, extension: Value) -> Extension {
+        Extension {
+            name: name.into(),
+            extension,
+        }
+    }
+}

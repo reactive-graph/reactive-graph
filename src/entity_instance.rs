@@ -37,6 +37,7 @@ pub struct EntityInstance {
 }
 
 impl EntityInstance {
+    /// Constructs a new entity instance with the given type, id and properties
     pub fn new<S: Into<String>>(
         type_name: S,
         id: Uuid,
@@ -47,6 +48,16 @@ impl EntityInstance {
             id,
             description: String::new(),
             properties,
+        }
+    }
+
+    /// Constructs a new entity instance with the given type and id but without properties
+    pub fn new_without_properties<S: Into<String>>(type_name: S, id: Uuid) -> EntityInstance {
+        EntityInstance {
+            type_name: type_name.into(),
+            id,
+            description: String::new(),
+            properties: HashMap::new(),
         }
     }
 }

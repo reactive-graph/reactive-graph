@@ -20,18 +20,18 @@ pub struct Component {
 
 impl Component {
     /// Constructs a new component with the given name and properties
-    pub fn new(name: String, properties: Vec<PropertyType>) -> Component {
+    pub fn new<S: Into<String>>(name: S, properties: Vec<PropertyType>) -> Component {
         Component {
-            name,
+            name: name.into(),
             description: String::new(),
             properties,
         }
     }
 
     /// Constructs an component with the given name but without properties
-    pub fn new_without_properties(name: String) -> Component {
+    pub fn new_without_properties<S: Into<String>>(name: S) -> Component {
         Component {
-            name,
+            name: name.into(),
             description: String::new(),
             properties: Vec::new(),
         }
