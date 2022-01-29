@@ -31,15 +31,9 @@ impl EntityVertexManager for EntityVertexManagerImpl {
     }
 
     fn get(&self, id: Uuid) -> Option<Vertex> {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let vertices = transaction.get_vertices(SpecificVertexQuery::single(id));
-            if vertices.is_ok() {
-                let vertices = vertices.unwrap();
-                if !vertices.is_empty() {
-                    return Some(vertices.first().unwrap().clone());
-                }
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(vertices) = transaction.get_vertices(SpecificVertexQuery::single(id)) {
+                return vertices.first().cloned();
             }
         }
         None
