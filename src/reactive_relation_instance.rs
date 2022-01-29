@@ -100,7 +100,7 @@ impl ReactiveRelationInstance {
             outbound,
             type_name: instance.type_name.clone(),
             inbound,
-            description: instance.description.clone(),
+            description: instance.description,
             properties,
         }
     }
