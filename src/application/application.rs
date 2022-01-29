@@ -168,10 +168,7 @@ impl Application for ApplicationImpl {
 
         // Stop GraphQL server thread, if it is still running
         debug!("Stopping the GraphQL server thread");
-        let graphql_server_stop_result = graphql_server_stop_sender.send(());
-        if graphql_server_stop_result.is_ok() {
-            graphql_server_stop_result.unwrap();
-        }
+        let _graphql_server_stop_result = graphql_server_stop_sender.send(());
 
         // Be sure that the GraphQL server thread is gone
         if thread_handle.is_ok() {
