@@ -78,7 +78,7 @@ impl GraphQLRelationInstance {
             .properties
             .iter()
             .filter(|(property_name, _property_instance)| name.is_none() || name.clone().unwrap() == property_name.deref().clone())
-            .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(&property_name))
+            .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(property_name))
             .map(|(name, property_instance)| {
                 let value = property_instance.value.read().unwrap().deref().clone();
                 GraphQLPropertyInstance { name: name.clone(), value }
