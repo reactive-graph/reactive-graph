@@ -131,7 +131,7 @@ impl PropertyInstanceGetter for RelationInstance {
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
         self.properties
             .get(&property_name.into())
-            .and_then(|p| p.as_str().and_then(|s| Some(s.to_string())))
+            .and_then(|p| p.as_str().map(|s| s.to_string()))
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
