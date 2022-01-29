@@ -60,13 +60,10 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn import(&self, path: String) {
-        let file = File::open(path);
-        if file.is_ok() {
-            let file = file.unwrap();
+        if let Ok(file) = File::open(path) {
             let reader = BufReader::new(file);
-            let component = serde_json::from_reader(reader);
-            if component.is_ok() {
-                self.register(component.unwrap());
+            if let Ok(component) = serde_json::from_reader(reader) {
+                self.register(component);
             }
         }
     }
