@@ -71,7 +71,7 @@ impl EntityVertexManager for EntityVertexManagerImpl {
         let transaction = r_transaction.unwrap();
 
         if !self.entity_type_manager.has(type_name.clone()) {
-            return Err(EntityVertexCreationError::EntityTypeMissing(type_name.clone()));
+            return Err(EntityVertexCreationError::EntityTypeMissing(type_name));
         }
         let entity_type = self.entity_type_manager.get(type_name).unwrap();
 
@@ -106,9 +106,9 @@ impl EntityVertexManager for EntityVertexManagerImpl {
         let transaction = r_transaction.unwrap();
 
         if !self.entity_type_manager.has(type_name.clone()) {
-            return Err(EntityVertexCreationError::EntityTypeMissing(type_name.clone()).into());
+            return Err(EntityVertexCreationError::EntityTypeMissing(type_name).into());
         }
-        let entity_type = self.entity_type_manager.get(type_name.clone()).unwrap();
+        let entity_type = self.entity_type_manager.get(type_name).unwrap();
 
         let result = transaction.create_vertex(&Vertex::with_id(id, entity_type.t));
         if result.is_err() {
