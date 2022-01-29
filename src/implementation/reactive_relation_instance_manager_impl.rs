@@ -45,11 +45,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
 
     fn get(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
-        let instance = reader.get(&edge_key);
-        if instance.is_some() {
-            return Some(instance.unwrap().clone());
-        }
-        None
+        reader.get(&edge_key).cloned()
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>> {
