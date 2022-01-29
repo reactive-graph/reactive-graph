@@ -169,10 +169,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
             // Register added entities
             for id in reactive_flow.entities_added.read().unwrap().iter() {
-                let entity_instance = reactive_flow.get_entity(*id);
-                if entity_instance.is_some() {
-                    self.reactive_entity_instance_manager
-                        .register_reactive_instance(entity_instance.unwrap().clone());
+                if let Some(entity_instance) = reactive_flow.get_entity(*id) {
+                    self.reactive_entity_instance_manager.register_reactive_instance(entity_instance.clone());
                 }
             }
             reactive_flow.entities_added.write().unwrap().clear();
