@@ -26,10 +26,9 @@ impl GraphQLEntityInstance {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
         if entity_type_manager.is_ok() {
             let entity_type_manager = entity_type_manager.unwrap();
-            return entity_type_manager.get(self.entity_instance.type_name.clone()).and_then(|entity_type| {
-                let entity_type: GraphQLEntityType = entity_type.into();
-                Some(entity_type)
-            });
+            return entity_type_manager
+                .get(self.entity_instance.type_name.clone())
+                .map(|entity_type| entity_type.into());
         }
         None
     }
