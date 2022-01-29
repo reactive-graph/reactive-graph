@@ -139,10 +139,7 @@ impl Application for ApplicationImpl {
                 graphql_server.serve(graphql_server_stop_receiver);
                 debug!("Successfully stopped GraphQL Server.");
                 // Tell the main thread, that the GraphQL server thread has finished
-                let result = graphql_server_stopped_sender.send(());
-                if result.is_ok() {
-                    result.unwrap();
-                }
+                let _result = graphql_server_stopped_sender.send(());
             });
 
         {
