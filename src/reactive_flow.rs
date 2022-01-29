@@ -182,7 +182,7 @@ impl TryFrom<Flow> for ReactiveFlow {
             }
         }
         if wrapper.is_none() {
-            return Err(ReactiveFlowConstructionError::MissingWrapperInstance.into());
+            return Err(ReactiveFlowConstructionError::MissingWrapperInstance);
         }
         let mut relation_instances = HashMap::new();
         for relation_instance in flow.relation_instances {
@@ -193,8 +193,7 @@ impl TryFrom<Flow> for ReactiveFlow {
                     return Err(
                         ReactiveFlowConstructionError::MissingOutboundEntityInstance(
                             relation_instance.outbound_id,
-                        )
-                        .into(),
+                        ),
                     );
                 }
                 let inbound = entity_instances.get(&relation_instance.inbound_id);
@@ -202,8 +201,7 @@ impl TryFrom<Flow> for ReactiveFlow {
                     // inbound entity missing
                     return Err(ReactiveFlowConstructionError::MissingInboundEntityInstance(
                         relation_instance.inbound_id,
-                    )
-                    .into());
+                    ));
                 }
                 let outbound = outbound.unwrap().clone();
                 let inbound = inbound.unwrap().clone();
