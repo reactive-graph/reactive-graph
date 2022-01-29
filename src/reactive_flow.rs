@@ -132,13 +132,7 @@ impl ReactiveFlow {
 
     pub fn get_relation(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
         let reader = self.relation_instances.read().unwrap();
-        let instance = reader.get(&edge_key);
-        if instance.is_some() {
-            let reactive_relation_instance = instance.unwrap();
-            let reactive_relation_instance = reactive_relation_instance.clone();
-            return Some(reactive_relation_instance);
-        }
-        None
+        reader.get(&edge_key).cloned()
     }
 
     pub fn add_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
