@@ -65,8 +65,8 @@ pub async fn handle_web_resource(web_resource_manager: web::Data<Arc<dyn WebReso
     debug!("web_resource_name = {}", web_resource_name.as_str());
     debug!("path = {}", path.as_str());
     match web_resource_manager.get(web_resource_name.clone()) {
-        Some(web_resource) => web_resource.handle_web_resource(path.clone()),
-        None => HttpResponse::NotFound().body(format!("404 Not Found: {}: {}", web_resource_name.clone(), path.clone())),
+        Some(web_resource) => web_resource.handle_web_resource(path),
+        None => HttpResponse::NotFound().body(format!("404 Not Found: {}: {}", web_resource_name, path)),
     }
 }
 
