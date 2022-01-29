@@ -90,13 +90,13 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                     .reactive_entity_instance_manager
                     .register_or_merge_reactive_instance(entity_instance.clone());
                 // Replace the entity instance with the actual registered instance instead
-                replaced_entity_instances.insert(uuid.clone(), entity_instance);
+                replaced_entity_instances.insert(*uuid, entity_instance);
             }
 
             // Step 2: Replace the entity instances of the flow with the actual registered entity instances
             entity_instances.clear();
             for (uuid, entity_instance) in replaced_entity_instances.iter() {
-                entity_instances.insert(uuid.clone(), entity_instance.clone());
+                entity_instances.insert(*uuid, entity_instance.clone());
             }
 
             // Step 3: Recreate the reactive relation instances
