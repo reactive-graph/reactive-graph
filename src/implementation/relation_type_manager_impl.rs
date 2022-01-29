@@ -146,9 +146,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<RelationType, RelationTypeImportError> {
-        let file = File::open(path);
-        if file.is_ok() {
-            let file = file.unwrap();
+        if let Ok(file) = File::open(path) {
             let reader = BufReader::new(file);
             let relation_type = serde_json::from_reader(reader);
             if relation_type.is_ok() {
