@@ -29,7 +29,7 @@ impl Instances {
             let entity_instance_manager = entity_instance_manager.unwrap();
             if id.is_some() {
                 let entity_instance = entity_instance_manager.get(id.unwrap()).map(|entity_instance| {
-                    let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
+                    let entity_instance: GraphQLEntityInstance = entity_instance.into();
                     entity_instance
                 });
                 return if entity_instance.is_some() {
@@ -40,7 +40,7 @@ impl Instances {
             }
             if label.is_some() {
                 let entity_instance = entity_instance_manager.get_by_label(label.unwrap()).map(|entity_instance| {
-                    let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
+                    let entity_instance: GraphQLEntityInstance = entity_instance.into();
                     entity_instance
                 });
                 return if entity_instance.is_some() {

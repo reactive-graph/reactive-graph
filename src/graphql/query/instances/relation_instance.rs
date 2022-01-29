@@ -42,8 +42,8 @@ impl GraphQLRelationInstance {
             // information (outbound+inbound property names) in order to allow multiple connectors
             // between the two entity instances
             if let Some(relation_type) = relation_type_manager.get_starts_with(type_name.clone()) {
-                let mut relation_type = relation_type.clone();
-                relation_type.full_name = type_name.clone();
+                let mut relation_type = relation_type;
+                relation_type.full_name = type_name;
                 return Some(relation_type.into());
             }
         }
@@ -81,10 +81,7 @@ impl GraphQLRelationInstance {
             .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(&property_name))
             .map(|(name, property_instance)| {
                 let value = property_instance.value.read().unwrap().deref().clone();
-                GraphQLPropertyInstance {
-                    name: name.clone(),
-                    value: value.clone(),
-                }
+                GraphQLPropertyInstance { name: name.clone(), value }
             })
             .collect()
     }
