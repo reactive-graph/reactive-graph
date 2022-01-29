@@ -30,7 +30,7 @@ impl FlowManager for FlowManagerImpl {
                 let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
             }
         }
-        Err(FlowCreationError.into())
+        Err(FlowCreationError)
     }
 
     fn commit(&self, flow: Flow) {
