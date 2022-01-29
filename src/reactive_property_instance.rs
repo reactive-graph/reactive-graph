@@ -41,7 +41,7 @@ impl ReactivePropertyInstance {
 
     pub fn set_no_propagate(&self, value: Value) {
         let mut writer = self.value.write().unwrap();
-        *writer.deref_mut() = value.clone();
+        *writer.deref_mut() = value;
     }
 
     /// Send a value down the stream, but does not change the current value
