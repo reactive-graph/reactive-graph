@@ -136,9 +136,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn commit(&self, edge_key: EdgeKey) {
-        let reactive_relation_instance = self.get(edge_key);
-        if reactive_relation_instance.is_some() {
-            self.relation_instance_manager.commit(reactive_relation_instance.unwrap().into());
+        if let Some(reactive_relation_instance) = self.get(edge_key) {
+            self.relation_instance_manager.commit(reactive_relation_instance.into());
         }
     }
 
