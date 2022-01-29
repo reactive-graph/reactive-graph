@@ -19,18 +19,18 @@ pub struct FlowManagerImpl {
 #[provides]
 impl FlowManager for FlowManagerImpl {
     fn create(&self, flow: Flow) -> Result<Flow, FlowCreationError> {
-        for entity_instance in flow.entity_instances {
+        for entity_instance in flow.entity_instances.iter() {
             if !self.entity_instance_manager.has(entity_instance.id) {
-                let _result = self.entity_instance_manager.create_from_instance(entity_instance.clone());
+                let _id = self.entity_instance_manager.create_from_instance(entity_instance.clone())?;
             }
         }
-        for relation_instance in flow.relation_instances {
+        for relation_instance in flow.relation_instances.iter() {
             let edge_key = relation_instance.get_key();
             if edge_key.is_some() && !self.relation_instance_manager.has(edge_key.unwrap()) {
-                let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
+                let _id = self.relation_instance_manager.create_from_instance(relation_instance.clone())?;
             }
         }
-        Err(FlowCreationError)
+        Ok(flow)
     }
 
     fn commit(&self, flow: Flow) {
@@ -45,9 +45,8 @@ impl FlowManager for FlowManagerImpl {
             // TODO: what happens with removed entity instances?
         }
         for relation_instance in flow.relation_instances {
-            let edge_key = relation_instance.get_key();
-            if edge_key.is_some() {
-                if self.relation_instance_manager.has(edge_key.unwrap()) {
+            if let Some(edge_key) = relation_instance.get_key() {
+                if self.relation_instance_manager.has(edge_key) {
                     // The relation instance has been updated
                     self.relation_instance_manager.commit(relation_instance.clone());
                 } else {
@@ -62,9 +61,8 @@ impl FlowManager for FlowManagerImpl {
     fn delete(&self, flow: Flow) {
         // Reverse order: first relations then entities
         for relation_instance in flow.relation_instances {
-            let edge_key = relation_instance.get_key();
-            if edge_key.is_some() {
-                self.relation_instance_manager.delete(edge_key.unwrap());
+            if let Some(edge_key) = relation_instance.get_key() {
+                self.relation_instance_manager.delete(edge_key);
             }
         }
         for entity_instance in flow.entity_instances {
@@ -73,15 +71,10 @@ impl FlowManager for FlowManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Flow, FlowImportError> {
-        let file = File::open(path);
-        if file.is_ok() {
-            let reader = BufReader::new(file.unwrap());
-            let flow = serde_json::from_reader(reader);
-            if flow.is_ok() {
-                let _result = self.create(flow.unwrap());
-            }
-        }
-        Err(FlowImportError.into())
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        let flow = serde_json::from_reader(reader)?;
+        self.create(flow).map_err(|e| e.into())
     }
 
     fn export(&self, flow: Flow, path: String) {
