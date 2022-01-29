@@ -52,7 +52,7 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn create(&self, name: String, properties: Vec<PropertyType>) {
-        self.register(crate::model::Component::new(name.clone(), properties.to_vec()));
+        self.register(crate::model::Component::new(name, properties.to_vec()));
     }
 
     fn delete(&self, name: String) {
