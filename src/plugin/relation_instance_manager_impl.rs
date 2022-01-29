@@ -49,9 +49,8 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             Some(relation_type) => {
                 let edge_key = relation_instance.get_key().unwrap();
                 if self.reactive_relation_instance_manager.has(edge_key.clone()) {
-                    let reactive_relation_instance = self.reactive_relation_instance_manager.get(edge_key);
-                    if reactive_relation_instance.is_some() {
-                        return Ok(reactive_relation_instance.unwrap());
+                    if let Some(reactive_relation_instance) = self.reactive_relation_instance_manager.get(edge_key) {
+                        return Ok(reactive_relation_instance);
                     }
                 }
                 let mut relation_instance = relation_instance;
