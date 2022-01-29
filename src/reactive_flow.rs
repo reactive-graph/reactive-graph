@@ -277,7 +277,7 @@ impl PropertyInstanceGetter for ReactiveFlow {
         self.get_entity(self.id).and_then(|e| {
             e.properties
                 .get(&property_name.into())
-                .and_then(|p| p.as_array().map(|vec| vec.clone()))
+                .and_then(|p| p.as_array())
         })
     }
 
