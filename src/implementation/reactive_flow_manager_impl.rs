@@ -52,11 +52,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveFlow>> {
         let reader = self.reactive_flows.0.read().unwrap();
-        let instance = reader.get(&id);
-        if instance.is_some() {
-            return Some(instance.unwrap().clone());
-        }
-        None
+        reader.get(&id).cloned()
     }
 
     fn get_all(&self) -> Vec<Arc<ReactiveFlow>> {
