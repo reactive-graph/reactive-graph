@@ -1,2 +1,12 @@
 hostname = "localhost"
 port = 31415
+
+# Timeout for graceful workers shutdown in seconds.
+# After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the
+# timeout are force dropped.
+# By default shutdown timeout sets to 30 seconds.
+shutdown_timeout = 3
+
+# Set number of workers to start.
+# The default worker count is the number of physical CPU cores available.
+workers = 16

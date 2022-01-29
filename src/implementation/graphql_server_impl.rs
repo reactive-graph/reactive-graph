@@ -5,12 +5,12 @@ use std::thread;
 use std::time::Duration;
 
 use actix_cors::Cors;
-use actix_web::{post, web, App, HttpResponse, HttpServer, Result};
-use async_graphql::{EmptySubscription, Schema};
-use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse};
+use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpServer, Result};
+use async_graphql::Schema;
+use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse, GraphQLSubscription};
 use async_std::task;
 use async_trait::async_trait;
-use log::{debug, error, info};
+use log::{debug, error, info, warn};
 use serde::{Deserialize, Serialize};
 use waiter_di::*;
 
@@ -18,7 +18,7 @@ use crate::api::{
     ComponentManager, EntityTypeManager, GraphQLServer, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowManager, ReactiveRelationInstanceManager,
     RelationTypeManager, WebResourceManager,
 };
-use crate::graphql::{InexorMutation, InexorQuery, InexorSchema};
+use crate::graphql::{InexorMutation, InexorQuery, InexorSchema, InexorSubscription};
 
 #[component]
 pub struct GraphQLServerImpl {
@@ -42,6 +42,17 @@ async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest)
     schema.execute(request.into_inner()).await.into()
 }
 
+async fn subscription_websocket(schema: web::Data<InexorSchema>, request: HttpRequest, payload: web::Payload) -> Result<HttpResponse> {
+    // let mut data = Data::default();
+    // if let Some(token) = get_token_from_headers(request.headers()) {
+    //     data.insert(token);
+    // }
+    GraphQLSubscription::new(Schema::clone(&*schema))
+        // .with_data(data)
+        // .on_connection_init(on_connection_init)
+        .start(&request, payload)
+}
+
 #[derive(Deserialize)]
 pub struct WebResourcePathInfo {
     web_resource_name: String,
@@ -63,7 +74,7 @@ pub async fn handle_web_resource(web_resource_manager: web::Data<Arc<dyn WebReso
 #[provides]
 impl GraphQLServer for GraphQLServerImpl {
     fn get_schema(&self) -> InexorSchema {
-        Schema::build(InexorQuery, InexorMutation, EmptySubscription)
+        Schema::build(InexorQuery, InexorMutation, InexorSubscription)
             .data(self.component_manager.clone())
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())
@@ -115,7 +126,9 @@ impl GraphQLServer for GraphQLServerImpl {
 
         let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
-        let server = HttpServer::new(move || {
+        let graphql_server_config = get_graphql_server_config();
+
+        let mut http_server = HttpServer::new(move || {
             App::new()
                 .wrap(Cors::permissive())
                 .app_data(schema_data.clone())
@@ -128,6 +141,12 @@ impl GraphQLServer for GraphQLServerImpl {
                 .app_data(web_resource_manager.clone())
                 // GraphQL API
                 .service(query_graphql)
+                .service(
+                    web::resource("/graphql")
+                        .guard(guard::Get())
+                        .guard(guard::Header("upgrade", "websocket"))
+                        .to(subscription_websocket),
+                )
                 // REST API
                 .service(crate::rest::types::components::get_components)
                 .service(crate::rest::types::entities::get_entity_types)
@@ -144,17 +163,24 @@ impl GraphQLServer for GraphQLServerImpl {
         })
         .disable_signals();
 
-        let graphql_server_config = get_graphql_server_config();
+        if graphql_server_config.shutdown_timeout.is_some() {
+            http_server = http_server.shutdown_timeout(graphql_server_config.shutdown_timeout.unwrap());
+        }
+
+        if graphql_server_config.workers.is_some() {
+            http_server = http_server.workers(graphql_server_config.workers.unwrap());
+        }
+
         debug!("Starting HTTP/GraphQL server on {}", graphql_server_config.to_string());
-        let r_server = server.bind(graphql_server_config.to_string());
-        if r_server.is_err() {
+        let r_http_server = http_server.bind(graphql_server_config.to_string());
+        if r_http_server.is_err() {
             error!("Could not start HTTP/GraphQL server: Failed to bind {}", graphql_server_config.to_string());
             return;
         }
-        let server = r_server.unwrap();
-        let server2 = server.run();
-        let handle = server2.handle();
-        let t_handle = handle.clone();
+        let http_server = r_http_server.unwrap();
+        let server = http_server.run();
+        let server_handle = server.handle();
+        let t_server_handle = server_handle.clone();
 
         let terminate = Arc::new(AtomicBool::new(false));
         let t_terminate = terminate.clone();
@@ -166,7 +192,7 @@ impl GraphQLServer for GraphQLServerImpl {
             debug!("Received shutdown signal. Stopping GraphQL server thread.");
 
             // stop server gracefully
-            futures::executor::block_on(t_handle.stop(true));
+            futures::executor::block_on(t_server_handle.stop(true));
 
             debug!("Successfully stopped GraphQL server thread.");
             t_terminate.store(true, Ordering::Relaxed);
@@ -174,16 +200,19 @@ impl GraphQLServer for GraphQLServerImpl {
         });
 
         // This thread runs the GraphQL server
-        let handle = task::Builder::new().name(String::from("inexor-graphql")).spawn(server2);
-        if handle.is_ok() {
-            let _handle = handle.unwrap();
-            // Start the event loop
-            system.block_on(async {
-                while !terminate.load(Ordering::Relaxed) {
-                    thread::sleep(Duration::from_millis(100));
-                }
-                debug!("Successfully stopped the actix system.");
-            });
+        match task::Builder::new().name(String::from("inexor-graphql")).spawn(server) {
+            Ok(_join_handle) => {
+                // Start the event loop
+                system.block_on(async {
+                    while !terminate.load(Ordering::Relaxed) {
+                        thread::sleep(Duration::from_millis(100));
+                    }
+                    debug!("Successfully stopped the actix system.");
+                });
+            }
+            Err(e) => {
+                warn!("Failed to run actix system: {}", e);
+            }
         }
     }
 }
@@ -198,6 +227,8 @@ impl Lifecycle for GraphQLServerImpl {
 pub struct GraphSqlServerConfig {
     pub hostname: String,
     pub port: i32,
+    pub shutdown_timeout: Option<u64>,
+    pub workers: Option<usize>,
 }
 
 impl Default for GraphSqlServerConfig {
@@ -205,6 +236,8 @@ impl Default for GraphSqlServerConfig {
         GraphSqlServerConfig {
             hostname: String::from("localhost"),
             port: 31415,
+            shutdown_timeout: None,
+            workers: None,
         }
     }
 }

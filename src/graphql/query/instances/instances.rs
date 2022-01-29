@@ -21,6 +21,7 @@ impl Instances {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Returns only the entity instance with the given id.")] id: Option<Uuid>,
+        #[graphql(desc = "Returns the entity instance with the given label.")] label: Option<String>,
         #[graphql(desc = "Filters the entity instances by type.")] entity_type: Option<String>,
     ) -> Vec<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>();
@@ -28,6 +29,17 @@ impl Instances {
             let entity_instance_manager = entity_instance_manager.unwrap();
             if id.is_some() {
                 let entity_instance = entity_instance_manager.get(id.unwrap()).map(|entity_instance| {
+                    let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
+                    entity_instance
+                });
+                return if entity_instance.is_some() {
+                    vec![entity_instance.unwrap()]
+                } else {
+                    Vec::new()
+                };
+            }
+            if label.is_some() {
+                let entity_instance = entity_instance_manager.get_by_label(label.unwrap()).map(|entity_instance| {
                     let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
                     entity_instance
                 });
