@@ -92,7 +92,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let json = serde_json::to_string(&result);
         match json {
             Ok(result) => Ok(result),
-            Err(err) => Err(err.into()),
+            Err(err) => Err(err),
         }
     }
 
