@@ -17,7 +17,7 @@ impl fmt::Display for EntityInstanceCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
             EntityInstanceCreationError::EntityVertexCreationError(error) => {
-                write!(f, "Failed to create entity instance: {}", error.to_string())
+                write!(f, "Failed to create entity instance: {}", error)
             }
         }
     }
