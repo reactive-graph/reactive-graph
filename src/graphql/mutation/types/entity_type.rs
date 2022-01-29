@@ -30,10 +30,10 @@ impl MutationEntityTypes {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
         if entity_type_manager.has(name.clone()) {
-            return Err(Error::new(format!("Entity type {} already exists", name.clone())));
+            return Err(Error::new(format!("Entity type {} already exists", name)));
         }
 
-        let mut entity_type_builder = EntityTypeBuilder::new(name.clone());
+        let mut entity_type_builder = EntityTypeBuilder::new(name);
         if group.is_some() {
             entity_type_builder.group(group.unwrap());
         }
