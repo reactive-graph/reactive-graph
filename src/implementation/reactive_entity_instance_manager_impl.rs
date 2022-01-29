@@ -74,12 +74,12 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn get_entity_instances(&self) -> Vec<Arc<ReactiveEntityInstance>> {
         let reader = self.reactive_entity_instances.0.read().unwrap();
-        reader.values().map(|v| v.clone()).collect()
+        reader.values().cloned().collect()
     }
 
     fn get_ids(&self) -> Vec<Uuid> {
         let reader = self.reactive_entity_instances.0.read().unwrap();
-        reader.keys().map(|id| id.clone()).collect()
+        reader.keys().cloned().collect()
     }
 
     fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
