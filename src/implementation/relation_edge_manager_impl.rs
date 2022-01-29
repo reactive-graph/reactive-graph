@@ -24,7 +24,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
     fn has(&self, edge_key: EdgeKey) -> bool {
         if let Ok(transaction) = self.graph_database.get_transaction() {
             if let Ok(edges) = transaction.get_edges(SpecificEdgeQuery::single(edge_key)) {
-                return edges.is_empty();
+                return !edges.is_empty();
             }
         }
         false
