@@ -76,16 +76,12 @@ impl Flow {
 
 impl From<EntityInstance> for Flow {
     fn from(wrapper_entity_instance: EntityInstance) -> Flow {
-        let id = wrapper_entity_instance.id;
-        let type_name = wrapper_entity_instance.type_name.clone();
-        let mut entity_instances: Vec<EntityInstance> = Vec::new();
-        entity_instances.push(wrapper_entity_instance);
         Flow {
-            id,
-            type_name,
+            id: wrapper_entity_instance.id,
+            type_name: wrapper_entity_instance.type_name.clone(),
             name: String::new(),
             description: String::new(),
-            entity_instances,
+            entity_instances: vec![wrapper_entity_instance],
             relation_instances: Vec::new(),
         }
     }
