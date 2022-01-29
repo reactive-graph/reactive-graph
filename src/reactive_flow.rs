@@ -127,7 +127,7 @@ impl ReactiveFlow {
         self.relation_instances
             .read()
             .unwrap()
-            .contains_key(&edge_key.clone())
+            .contains_key(&edge_key)
     }
 
     pub fn get_relation(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
