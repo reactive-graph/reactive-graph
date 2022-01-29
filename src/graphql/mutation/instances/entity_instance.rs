@@ -37,14 +37,14 @@ impl MutationEntityInstances {
         let entity_type = entity_type_manager.get(type_name.clone());
 
         if entity_type.is_none() {
-            return Err(Error::new(format!("Entity type {} does not exist", type_name.clone())));
+            return Err(Error::new(format!("Entity type {} does not exist", type_name)));
         }
 
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let entity_instance = match id {
-            Some(id) => entity_instance_manager.create_with_id(type_name.clone(), id, properties.clone()),
-            None => entity_instance_manager.create(type_name.clone(), properties),
+            Some(id) => entity_instance_manager.create_with_id(type_name, id, properties),
+            None => entity_instance_manager.create(type_name, properties),
         };
         if entity_instance.is_err() {
             return Err(Error::new(entity_instance.err().unwrap().to_string()));
@@ -70,7 +70,7 @@ impl MutationEntityInstances {
         }
         // TODO: it's still not a transactional mutation
         entity_instance.tick();
-        Ok(entity_instance.clone().into())
+        Ok(entity_instance.into())
     }
 
     /// Manually tick the entity instance. This means for each property of the entity instance
@@ -89,7 +89,7 @@ impl MutationEntityInstances {
         }
         let entity_instance = entity_instance.unwrap();
         entity_instance.tick();
-        Ok(entity_instance.clone().into())
+        Ok(entity_instance.into())
     }
 
     /// Deletes an entity instance.
