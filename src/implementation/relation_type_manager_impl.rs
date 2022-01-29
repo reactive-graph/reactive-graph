@@ -151,19 +151,14 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     fn export(&self, type_name: String, path: String) {
-        let o_relation_type = self.get(type_name.clone());
-        if o_relation_type.is_some() {
-            let r_file = File::create(path.clone());
-            match r_file {
+        if let Some(relation_type) = self.get(type_name.clone()) {
+            match File::create(path.clone()) {
                 Ok(file) => {
-                    let result = serde_json::to_writer_pretty(&file, &o_relation_type.unwrap());
-                    if result.is_err() {
-                        error!("Failed to export relation type {} to {}: {}", type_name, path, result.err().unwrap());
+                    if let Err(error) = serde_json::to_writer_pretty(&file, &relation_type) {
+                        error!("Failed to export relation type {} to {}: {}", type_name, path, error);
                     }
                 }
-                Err(error) => {
-                    error!("Failed to export relation type {} to {}: {}", type_name, path, error.to_string());
-                }
+                Err(error) => error!("Failed to export relation type {} to {}: {}", type_name, path, error.to_string()),
             }
         }
     }
