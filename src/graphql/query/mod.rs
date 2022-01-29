@@ -38,7 +38,7 @@ impl InexorQuery {
             let flow_manager = flow_manager.unwrap();
             if id.is_some() {
                 let flow = flow_manager.get(id.unwrap()).map(|flow| {
-                    let flow = flow.clone().into();
+                    let flow = flow.into();
                     flow
                 });
                 return if flow.is_some() { vec![flow.unwrap()] } else { Vec::new() };
