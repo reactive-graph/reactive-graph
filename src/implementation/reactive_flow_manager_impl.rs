@@ -220,12 +220,9 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Arc<ReactiveFlow>, ReactiveFlowImportError> {
-        let flow = self.flow_manager.import(path);
-        if flow.is_ok() {
-            let flow = flow.unwrap();
-            let reactive_flow = self.create(flow);
-            if reactive_flow.is_ok() {
-                return Ok(reactive_flow.unwrap());
+        if let Ok(flow) = self.flow_manager.import(path) {
+            if let Ok(reactive_flow) = self.create(flow) {
+                return Ok(reactive_flow);
             }
         }
         Err(ReactiveFlowImportError.into())
