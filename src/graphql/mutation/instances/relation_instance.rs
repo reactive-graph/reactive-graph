@@ -42,7 +42,7 @@ impl MutationRelationInstances {
 
         let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
         if relation_type.is_none() {
-            return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name.clone())));
+            return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name)));
         }
 
         if !entity_instance_manager.has(edge_key.outbound_id) {
@@ -88,7 +88,7 @@ impl MutationRelationInstances {
 
         let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
         if relation_type.is_none() {
-            return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name.clone())));
+            return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name)));
         }
 
         let relation_instance = relation_instance_manager.get(edge_key.clone().into());
@@ -103,7 +103,7 @@ impl MutationRelationInstances {
         }
         // TODO: it's still not a transactional mutation
         relation_instance.tick();
-        Ok(relation_instance.clone().into())
+        Ok(relation_instance.into())
     }
 
     /// Manually tick the relation instance. This means for each property of the entity instance
@@ -122,7 +122,7 @@ impl MutationRelationInstances {
         }
         let relation_instance = relation_instance.unwrap();
         relation_instance.tick();
-        Ok(relation_instance.clone().into())
+        Ok(relation_instance.into())
     }
 
     /// Deletes an relation instance.
@@ -143,7 +143,7 @@ impl MutationRelationInstances {
 
         let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
         if relation_type.is_none() {
-            return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name.clone())));
+            return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name)));
         }
 
         Ok(relation_instance_manager.delete(edge_key.into()))
