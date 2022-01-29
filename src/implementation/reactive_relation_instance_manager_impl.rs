@@ -81,10 +81,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         if result.is_err() {
             return Err(ReactiveRelationInstanceCreationError::RelationInstanceCreationError(result.err().unwrap()));
         }
-        let edge_key = result.unwrap();
-        let relation_instance = self.relation_instance_manager.get(edge_key);
-        if relation_instance.is_some() {
-            return self.create_reactive_instance(relation_instance.unwrap());
+        if let Some(relation_instance) = self.relation_instance_manager.get(result.unwrap()) {
+            return self.create_reactive_instance(relation_instance);
         }
         Err(ReactiveRelationInstanceCreationError::MissingInstance)
     }
