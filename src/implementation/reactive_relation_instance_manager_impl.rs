@@ -9,7 +9,7 @@ use waiter_di::*;
 
 use crate::api::{
     ComponentBehaviourManager, ReactiveEntityInstanceManager, ReactiveRelationInstanceCreationError, ReactiveRelationInstanceImportError,
-    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationEdgeManager, RelationInstanceImportError, RelationInstanceManager,
+    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationEdgeManager, RelationInstanceManager,
 };
 use crate::model::{ReactiveRelationInstance, RelationInstance};
 
