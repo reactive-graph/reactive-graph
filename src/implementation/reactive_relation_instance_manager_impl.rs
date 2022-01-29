@@ -112,13 +112,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         let inbound = inbound.unwrap();
         let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance));
         self.register_reactive_instance(reactive_relation_instance.clone());
-        return Ok(reactive_relation_instance);
-
-        // if outbound.is_some() && inbound.is_some() {
-        // }
-        // if edge_key.is_some() {
-        // }
-        // Err(ReactiveRelationInstanceCreationError.into())
+        Ok(reactive_relation_instance)
     }
 
     fn register_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>) {
