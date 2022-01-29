@@ -40,17 +40,9 @@ impl EntityVertexManager for EntityVertexManagerImpl {
     }
 
     fn get_properties(&self, id: Uuid) -> Option<VertexProperties> {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let result = transaction.get_all_vertex_properties(SpecificVertexQuery::single(id));
-            if result.is_ok() {
-                let vertex_properties = result.unwrap();
-                if vertex_properties.len() > 0 {
-                    // == 1 ?
-                    let vertex_properties = vertex_properties[0].clone();
-                    return Some(vertex_properties);
-                }
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(vertex_properties) = transaction.get_all_vertex_properties(SpecificVertexQuery::single(id)) {
+                return vertex_properties.first().cloned();
             }
         }
         None
