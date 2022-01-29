@@ -211,9 +211,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                 self.reactive_entity_instance_manager.unregister_reactive_instance(entity_instance.id);
             }
             for (_, relation_instance) in reactive_flow.relation_instances.read().unwrap().iter() {
-                let edge_key = relation_instance.get_key();
-                if edge_key.is_some() {
-                    self.reactive_relation_instance_manager.unregister_reactive_instance(edge_key.unwrap());
+                if let Some(edge_key) = relation_instance.get_key() {
+                    self.reactive_relation_instance_manager.unregister_reactive_instance(edge_key);
                 }
             }
             self.reactive_flows.0.write().unwrap().remove(&id);
