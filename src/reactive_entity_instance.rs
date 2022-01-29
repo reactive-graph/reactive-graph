@@ -31,16 +31,15 @@ impl ReactiveEntityInstance {
 
 impl From<VertexProperties> for ReactiveEntityInstance {
     fn from(properties: VertexProperties) -> Self {
-        let type_name = properties.vertex.t.0.clone();
-        let id = properties.vertex.id.clone();
-        let properties = properties
+        let id = properties.vertex.id;
+        let instance_properties = properties
             .props
             .iter()
             .map(|named_property| {
                 (
                     named_property.name.clone(),
                     ReactivePropertyInstance::new(
-                        id.clone(),
+                        id,
                         named_property.name.clone(),
                         named_property.value.clone(),
                     ),
@@ -48,10 +47,10 @@ impl From<VertexProperties> for ReactiveEntityInstance {
             })
             .collect();
         ReactiveEntityInstance {
-            type_name,
+            type_name: properties.vertex.t.0,
             id,
             description: String::new(),
-            properties,
+            properties: instance_properties,
         }
     }
 }
@@ -64,14 +63,14 @@ impl From<EntityInstance> for ReactiveEntityInstance {
             .map(|(name, value)| {
                 (
                     name.clone(),
-                    ReactivePropertyInstance::new(instance.id.clone(), name.clone(), value.clone()),
+                    ReactivePropertyInstance::new(instance.id, name.clone(), value.clone()),
                 )
             })
             .collect();
         ReactiveEntityInstance {
             type_name: instance.type_name.clone(),
-            id: instance.id.clone(),
-            description: instance.description.clone(),
+            id: instance.id,
+            description: instance.description,
             properties,
         }
     }
@@ -100,9 +99,7 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
 
 impl PropertyInstanceGetter for ReactiveEntityInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| Some(p.get()))
+        self.properties.get(&property_name.into()).map(|p| p.get())
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
@@ -165,6 +162,7 @@ impl PropertyInstanceSetter for ReactiveEntityInstance {
     // TODO: Set values transactional: first set all values internally, then send all affected streams
 }
 
+// TODO: remove ReactiveEntityInstanceFactory
 pub trait ReactiveEntityInstanceFactory {
     fn new<S: Into<String>>(type_name: S) -> Arc<ReactiveEntityInstance>;
 }
