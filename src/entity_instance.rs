@@ -131,6 +131,6 @@ impl PropertyInstanceGetter for EntityInstance {
 impl MutablePropertyInstanceSetter for EntityInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
         let property_value = self.properties.get_mut(&property_name.into()).unwrap();
-        *property_value = value.clone()
+        *property_value = value
     }
 }
