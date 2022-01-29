@@ -77,14 +77,14 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
 
         let type_name = edge_key.t.0.clone();
         if !self.relation_type_manager.has_starts_with(type_name.clone()) {
-            return Err(RelationEdgeCreationError::RelationTypeMissing(type_name).into());
+            return Err(RelationEdgeCreationError::RelationTypeMissing(type_name));
         }
         let relation_type = self.relation_type_manager.get_starts_with(type_name).unwrap();
 
         let result = transaction.create_edge(&edge_key);
         if result.is_err() {
             // Should not happen when using indradb::InternalMemoryDatastore
-            return Err(RelationEdgeCreationError::GraphDatabaseError(result.err().unwrap()).into());
+            return Err(RelationEdgeCreationError::GraphDatabaseError(result.err().unwrap()));
         }
         let edge_query = SpecificEdgeQuery::single(edge_key.clone());
         for property_type in relation_type.properties {
@@ -92,14 +92,14 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             let value = properties.get(&*property_name.clone());
             if value.is_none() {
                 // Missing required property
-                return Err(RelationEdgeCreationError::MissingRequiredProperty(property_name).into());
+                return Err(RelationEdgeCreationError::MissingRequiredProperty(property_name));
             }
             let value = value.unwrap();
             let property_query = edge_query.clone().property(property_name);
             let property_result = transaction.set_edge_properties(property_query, value);
             if property_result.is_err() {
                 // Should not happen when using indradb::InternalMemoryDatastore
-                return Err(RelationEdgeCreationError::GraphDatabaseError(property_result.err().unwrap()).into());
+                return Err(RelationEdgeCreationError::GraphDatabaseError(property_result.err().unwrap()));
             }
         }
         Ok(edge_key)
