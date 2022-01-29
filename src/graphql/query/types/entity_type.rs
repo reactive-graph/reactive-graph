@@ -66,12 +66,7 @@ impl GraphQLEntityType {
                 .map(|property_type| property_type.into())
                 .collect();
         }
-        self.entity_type
-            .properties
-            .to_vec()
-            .into_iter()
-            .map(|property_type| property_type.into())
-            .collect()
+        self.entity_type.properties.iter().cloned().map(|property_type| property_type.into()).collect()
     }
 
     /// The extensions which are defined by the entity type.
@@ -88,7 +83,7 @@ impl GraphQLEntityType {
                 .map(|extension| extension.into())
                 .collect();
         }
-        self.entity_type.extensions.to_vec().into_iter().map(|extension| extension.into()).collect()
+        self.entity_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 
     /// List of relation types which has this entity type as outbound.
