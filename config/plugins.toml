@@ -125,6 +125,11 @@ active = false
 path = "../inexor-rgf-plugin-free-desktop/target/debug/libinexor_rgf_plugin_free_desktop.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-tray"
+active = false
+path = "../inexor-rgf-plugin-tray/target/debug/libinexor_rgf_plugin_tray.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-flow-editor"
 active = true
 path = "../inexor-rgf-plugin-flow-editor/target/debug/libinexor_rgf_plugin_flow_editor.so"
