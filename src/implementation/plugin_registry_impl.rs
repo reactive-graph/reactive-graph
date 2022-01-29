@@ -103,37 +103,29 @@ impl PluginRegistry for PluginRegistryImpl {
             match plugin_proxy {
                 Some(plugin_proxy) => {
                     if plugin_proxy.init().is_ok() {
-                        match plugin_proxy.get_component_provider() {
-                            Ok(component_provider) => self.component_manager.add_provider(component_provider),
-                            Err(_) => {}
+                        if let Ok(component_provider) = plugin_proxy.get_component_provider() {
+                            self.component_manager.add_provider(component_provider);
                         }
-                        match plugin_proxy.get_entity_type_provider() {
-                            Ok(entity_type_provider) => self.entity_type_manager.add_provider(entity_type_provider),
-                            Err(_) => {}
+                        if let Ok(entity_type_provider) = plugin_proxy.get_entity_type_provider() {
+                            self.entity_type_manager.add_provider(entity_type_provider);
                         }
-                        match plugin_proxy.get_relation_type_provider() {
-                            Ok(relation_type_provider) => self.relation_type_manager.add_provider(relation_type_provider),
-                            Err(_) => {}
+                        if let Ok(relation_type_provider) = plugin_proxy.get_relation_type_provider() {
+                            self.relation_type_manager.add_provider(relation_type_provider);
                         }
-                        match plugin_proxy.get_component_behaviour_provider() {
-                            Ok(component_behaviour_provider) => self.component_behaviour_manager.add_provider(component_behaviour_provider),
-                            Err(_) => {}
+                        if let Ok(component_behaviour_provider) = plugin_proxy.get_component_behaviour_provider() {
+                            self.component_behaviour_manager.add_provider(component_behaviour_provider);
                         }
-                        match plugin_proxy.get_entity_behaviour_provider() {
-                            Ok(entity_behaviour_provider) => self.entity_behaviour_manager.add_provider(entity_behaviour_provider),
-                            Err(_) => {}
+                        if let Ok(entity_behaviour_provider) = plugin_proxy.get_entity_behaviour_provider() {
+                            self.entity_behaviour_manager.add_provider(entity_behaviour_provider);
                         }
-                        match plugin_proxy.get_relation_behaviour_provider() {
-                            Ok(relation_behaviour_provider) => self.relation_behaviour_manager.add_provider(relation_behaviour_provider),
-                            Err(_) => {}
+                        if let Ok(relation_behaviour_provider) = plugin_proxy.get_relation_behaviour_provider() {
+                            self.relation_behaviour_manager.add_provider(relation_behaviour_provider);
                         }
-                        match plugin_proxy.get_flow_provider() {
-                            Ok(flow_provider) => self.reactive_flow_manager.add_provider(flow_provider),
-                            Err(_) => {}
+                        if let Ok(flow_provider) = plugin_proxy.get_flow_provider() {
+                            self.reactive_flow_manager.add_provider(flow_provider);
                         }
-                        match plugin_proxy.get_web_resource_provider() {
-                            Ok(web_resource_provider) => self.web_resource_manager.add_provider(web_resource_provider),
-                            Err(_) => {}
+                        if let Ok(web_resource_provider) = plugin_proxy.get_web_resource_provider() {
+                            self.web_resource_manager.add_provider(web_resource_provider);
                         }
                         let component_manager = ComponentManagerImpl::new(self.component_manager.clone());
                         let entity_type_manager = EntityTypeManagerImpl::new(self.entity_type_manager.clone());
