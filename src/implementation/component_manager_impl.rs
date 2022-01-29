@@ -69,19 +69,14 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn export(&self, name: String, path: String) {
-        let o_component = self.get(name.clone());
-        if o_component.is_some() {
-            let r_file = File::create(path.clone());
-            match r_file {
+        if let Some(component) = self.get(name.clone()) {
+            match File::create(path.clone()) {
                 Ok(file) => {
-                    let result = serde_json::to_writer_pretty(&file, &o_component.unwrap());
-                    if result.is_err() {
-                        error!("Failed to export component {} to {}: {}", name, path, result.err().unwrap());
+                    if let Err(error) = serde_json::to_writer_pretty(&file, &component) {
+                        error!("Failed to export component {} to {}: {}", name, path, error);
                     }
                 }
-                Err(error) => {
-                    error!("Failed to export component {} to {}: {}", name, path, error.to_string());
-                }
+                Err(error) => error!("Failed to export component {} to {}: {}", name, path, error.to_string()),
             }
         }
     }
