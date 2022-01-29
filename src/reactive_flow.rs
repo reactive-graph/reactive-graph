@@ -229,11 +229,8 @@ impl TryFrom<Flow> for ReactiveFlow {
 
 impl PropertyInstanceGetter for ReactiveFlow {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| Some(p.get()))
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).map(|p| p.get()))
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
