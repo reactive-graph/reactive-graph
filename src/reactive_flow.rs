@@ -113,13 +113,12 @@ impl ReactiveFlow {
     }
 
     pub fn has_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) -> bool {
-        let edge_key = relation_instance.get_key();
-        if edge_key.is_some() {
+        if let Some(edge_key) = relation_instance.get_key() {
             return self
                 .relation_instances
                 .read()
                 .unwrap()
-                .contains_key(&edge_key.unwrap());
+                .contains_key(&edge_key);
         }
         false
     }
