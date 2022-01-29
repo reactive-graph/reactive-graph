@@ -86,11 +86,7 @@ impl ReactiveFlow {
 
     pub fn get_entity(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>> {
         let reader = self.entity_instances.read().unwrap();
-        let instance = reader.get(&id);
-        if instance.is_some() {
-            return Some(instance.unwrap().clone());
-        }
-        None
+        reader.get(&id).cloned()
     }
 
     pub fn get_wrapper_entity_instance(&self) -> Option<Arc<ReactiveEntityInstance>> {
