@@ -93,7 +93,7 @@ impl TryFrom<ReactiveFlow> for Flow {
     fn try_from(reactive_flow: ReactiveFlow) -> Result<Self, FlowCreationError> {
         let wrapper = reactive_flow.get_entity(reactive_flow.id);
         if wrapper.is_none() {
-            return Err(FlowCreationError.into());
+            return Err(FlowCreationError);
         }
         let wrapper = wrapper.unwrap();
         let entity_instance: EntityInstance = wrapper.clone().into();
@@ -128,7 +128,7 @@ impl TryFrom<Arc<ReactiveFlow>> for Flow {
     fn try_from(reactive_flow: Arc<ReactiveFlow>) -> Result<Self, FlowCreationError> {
         let wrapper = reactive_flow.get_entity(reactive_flow.id);
         if wrapper.is_none() {
-            return Err(FlowCreationError.into());
+            return Err(FlowCreationError);
         }
         let wrapper = wrapper.unwrap();
         let entity_instance: EntityInstance = wrapper.clone().into();
