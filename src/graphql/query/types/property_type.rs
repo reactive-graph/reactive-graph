@@ -45,8 +45,8 @@ impl GraphQLPropertyType {
         }
         self.property_type
             .extensions
-            .to_vec()
-            .into_iter()
+            .iter()
+            .cloned()
             .map(|property_type| property_type.into())
             .collect()
     }
