@@ -104,9 +104,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn export(&self, edge_key: EdgeKey, path: String) {
-        let relation_instance = self.get(edge_key);
-        if relation_instance.is_some() {
-            let relation_instance = relation_instance.unwrap();
+        if let Some(relation_instance) = self.get(edge_key) {
             let r_file = File::create(path.clone());
             match r_file {
                 Ok(file) => {
