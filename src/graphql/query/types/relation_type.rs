@@ -119,8 +119,8 @@ impl GraphQLRelationType {
         }
         self.relation_type
             .properties
-            .to_vec()
-            .into_iter()
+            .iter()
+            .cloned()
             .map(|property_type| property_type.into())
             .collect()
     }
@@ -139,7 +139,7 @@ impl GraphQLRelationType {
                 .map(|extension| extension.into())
                 .collect();
         }
-        self.relation_type.extensions.to_vec().into_iter().map(|extension| extension.into()).collect()
+        self.relation_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 }
 
