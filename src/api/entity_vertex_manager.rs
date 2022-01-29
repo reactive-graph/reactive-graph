@@ -16,7 +16,7 @@ pub enum EntityVertexCreationError {
 
 impl fmt::Display for EntityVertexCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match &self {
             EntityVertexCreationError::NoTransaction => write!(f, "No transaction"),
             EntityVertexCreationError::UuidTaken(id) => {
                 write!(f, "The UUID {} has been already taken!", id)
