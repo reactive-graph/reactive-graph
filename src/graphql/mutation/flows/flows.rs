@@ -101,7 +101,7 @@ impl MutationFlows {
 
         let entity_type = entity_type_manager.get(type_name.clone());
         if entity_type.is_none() {
-            return Err(FlowMutationError::MissingEntityType(type_name.clone()).into());
+            return Err(FlowMutationError::MissingEntityType(type_name).into());
         }
 
         if flow_id.is_some() {
@@ -117,8 +117,8 @@ impl MutationFlows {
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let wrapper_entity_instance = match flow_id {
-            Some(id) => entity_instance_manager.create_with_id(type_name.clone(), id, properties.clone()),
-            None => entity_instance_manager.create(type_name.clone(), properties),
+            Some(id) => entity_instance_manager.create_with_id(type_name, id, properties),
+            None => entity_instance_manager.create(type_name, properties),
         };
 
         if wrapper_entity_instance.is_err() {
@@ -129,7 +129,7 @@ impl MutationFlows {
         let flow: Arc<ReactiveFlow> = Arc::new(wrapper_entity_instance.into());
         flow_manager.register_flow(flow.clone());
 
-        Ok(flow.clone().into())
+        Ok(flow.into())
     }
 
     /// Manually ticks all entity instances and relation instances of this flow. This means, for
@@ -173,19 +173,19 @@ impl MutationFlows {
 
         let entity_type = entity_type_manager.get(type_name.clone());
         if entity_type.is_none() {
-            return Err(FlowMutationError::MissingEntityType(type_name.clone()).into());
+            return Err(FlowMutationError::MissingEntityType(type_name).into());
         }
 
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let entity_instance = match entity_id {
-            Some(id) => entity_instance_manager.create_with_id(type_name.clone(), id, properties),
-            None => entity_instance_manager.create(type_name.clone(), properties),
+            Some(id) => entity_instance_manager.create_with_id(type_name, id, properties),
+            None => entity_instance_manager.create(type_name, properties),
         };
         if entity_instance.is_err() {
             return Err(FlowMutationError::EntityInstanceCreationError().into());
         }
-        flow.add_entity(entity_instance.unwrap().clone());
+        flow.add_entity(entity_instance.unwrap());
         Ok(flow.into())
     }
 
@@ -206,7 +206,7 @@ impl MutationFlows {
         }
         let entity_instance = entity_instance.unwrap();
 
-        flow.add_entity(entity_instance.clone());
+        flow.add_entity(entity_instance);
         // No commit necessary _> The entity_instance is registered in the reactive_entity_instance_manager
 
         Ok(flow.into())
@@ -255,7 +255,7 @@ impl MutationFlows {
 
         let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
         if relation_type.is_none() {
-            return Err(FlowMutationError::MissingRelationType(edge_key.type_name.clone()).into());
+            return Err(FlowMutationError::MissingRelationType(edge_key.type_name).into());
         }
 
         let flow = flow_manager.get(flow_id);
@@ -291,7 +291,7 @@ impl MutationFlows {
         let relation_instance = relation_instance.unwrap();
 
         // Add relation to flow
-        flow.add_relation(relation_instance.clone());
+        flow.add_relation(relation_instance);
 
         Ok(flow.into())
     }
@@ -310,11 +310,11 @@ impl MutationFlows {
         let edge_key: EdgeKey = edge_key.into();
         let relation_instance = relation_instance_manager.get(edge_key.clone());
         if relation_instance.is_none() {
-            return Err(FlowMutationError::MissingRelationInstance(edge_key.clone()).into());
+            return Err(FlowMutationError::MissingRelationInstance(edge_key).into());
         }
         let relation_instance = relation_instance.unwrap();
 
-        flow.add_relation(relation_instance.clone());
+        flow.add_relation(relation_instance);
 
         Ok(flow.into())
     }
@@ -332,10 +332,10 @@ impl MutationFlows {
         let edge_key: EdgeKey = edge_key.into();
 
         if !flow.has_relation_by_key(edge_key.clone()) {
-            return Err(FlowMutationError::FlowDoesNotContainRelationInstance(edge_key.clone()).into());
+            return Err(FlowMutationError::FlowDoesNotContainRelationInstance(edge_key).into());
         }
 
-        flow.remove_relation(edge_key.clone());
+        flow.remove_relation(edge_key);
         // The relation is removed from flow, but not yet deleted
         // TODO: How to handle this? It may be that a relation is used in multiple flows?
         // Orphaned instances / Do not delete instances used in other flows?
