@@ -57,26 +57,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
     fn get_all(&self) -> Vec<Arc<ReactiveFlow>> {
         let reader = self.reactive_flows.0.read().unwrap();
-        reader
-            .values()
-            .into_iter()
-            .map(|reactive_flow| {
-                reactive_flow.clone()
-                // let reactive_flow = reactive_flow.clone();
-                // let result: Result<Flow, FlowCreationError> = reactive_flow.try_into();
-                // if result.is_ok() {
-                //     return Some(result.unwrap());
-                // }
-                // None
-                // let r = reactive_flow.try_into();
-                // if r
-                // let result = reactive_flow.clone().try_into();
-                // // TODO: unchecked unwrap -> f
-                // let flow = result.unwrap();
-                // // let flow: Flow = reactive_flow.into();
-                // flow
-            })
-            .collect()
+        reader.values().into_iter().cloned().collect()
     }
 
     // fn create(&self, type_name: String, properties: HashMap<String, Value, RandomState>) -> Result<Arc<ReactiveFlow>, ReactiveFlowCreationError> {
