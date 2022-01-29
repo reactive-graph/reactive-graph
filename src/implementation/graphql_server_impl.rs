@@ -256,7 +256,7 @@ fn get_graphql_server_config() -> GraphSqlServerConfig {
             if graphql_server_config.is_err() {
                 error!("Failed to load graphql configuration from {}: Invalid TOML", "./config/graphql.toml");
             }
-            graphql_server_config.unwrap_or(GraphSqlServerConfig::default())
+            graphql_server_config.unwrap_or_default()
         }
         Err(_) => {
             error!("Failed to load graphql configuration from {}: File does not exist", "./config/graphql.toml");
