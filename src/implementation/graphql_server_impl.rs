@@ -244,7 +244,7 @@ impl Default for GraphSqlServerConfig {
 
 impl ToString for GraphSqlServerConfig {
     fn to_string(&self) -> String {
-        String::from(format!("{}:{}", self.hostname, self.port))
+        format!("{}:{}", self.hostname, self.port)
     }
 }
 
