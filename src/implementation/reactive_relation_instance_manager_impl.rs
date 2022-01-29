@@ -110,15 +110,14 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn register_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>) {
-        let edge_key = reactive_relation_instance.get_key();
-        if edge_key.is_some() {
+        if let Some(edge_key) = reactive_relation_instance.get_key() {
             // TODO: propagate error if create wasn't successful
             let _result = self.relation_instance_manager.create_from_instance(reactive_relation_instance.clone().into());
             self.reactive_relation_instances
                 .0
                 .write()
                 .unwrap()
-                .insert(edge_key.unwrap(), reactive_relation_instance.clone());
+                .insert(edge_key, reactive_relation_instance.clone());
             self.component_behaviour_manager.add_behaviours_to_relation(reactive_relation_instance.clone());
             self.relation_behaviour_manager.add_behaviours(reactive_relation_instance);
         }
