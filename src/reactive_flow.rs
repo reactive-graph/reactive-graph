@@ -19,7 +19,7 @@ pub enum ReactiveFlowConstructionError {
 
 impl fmt::Display for ReactiveFlowConstructionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match *self {
             ReactiveFlowConstructionError::MissingWrapperInstance => write!(f, "Missing the wrapper entity instance. Check if an entity instance exists with the same id as the flow id"),
             ReactiveFlowConstructionError::MissingOutboundEntityInstance(id) => write!(f, "The outbound entity instance {} cannot be found", id),
             ReactiveFlowConstructionError::MissingInboundEntityInstance(id) => write!(f, "The inbound entity instance {} cannot be found", id),
