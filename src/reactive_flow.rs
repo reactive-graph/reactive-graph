@@ -148,14 +148,8 @@ impl ReactiveFlow {
     }
 
     pub fn remove_relation(&self, edge_key: EdgeKey) {
-        self.relation_instances
-            .write()
-            .unwrap()
-            .remove(&edge_key.clone());
-        self.relations_removed
-            .write()
-            .unwrap()
-            .push(edge_key.clone());
+        self.relation_instances.write().unwrap().remove(&edge_key);
+        self.relations_removed.write().unwrap().push(edge_key);
     }
 
     pub fn tick(&self) {
@@ -168,7 +162,7 @@ impl ReactiveFlow {
 
 impl From<Arc<ReactiveEntityInstance>> for ReactiveFlow {
     fn from(wrapper_entity_instance: Arc<ReactiveEntityInstance>) -> Self {
-        ReactiveFlow::new(wrapper_entity_instance.clone())
+        ReactiveFlow::new(wrapper_entity_instance)
     }
 }
 
