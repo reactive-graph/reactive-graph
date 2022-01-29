@@ -217,7 +217,7 @@ impl TryFrom<Flow> for ReactiveFlow {
         }
         Ok(ReactiveFlow {
             id: flow_id,
-            type_name: flow.type_name.clone(),
+            type_name: flow.type_name,
             entity_instances: RwLock::new(entity_instances),
             relation_instances: RwLock::new(relation_instances),
             // wrapper: wrapper.unwrap(),
