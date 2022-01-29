@@ -88,7 +88,7 @@ impl FlowManager for FlowManagerImpl {
         let r_file = File::create(path.clone());
         match r_file {
             Ok(file) => {
-                let result = serde_json::to_writer_pretty(&file, &flow.clone());
+                let result = serde_json::to_writer_pretty(&file, &flow);
                 if result.is_err() {
                     error!("Failed to export flow {} to {}: {}", flow.id, path, result.err().unwrap());
                 }
