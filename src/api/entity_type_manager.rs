@@ -7,7 +7,22 @@ use crate::model::{EntityType, Extension, PropertyType};
 use crate::plugins::EntityTypeProvider;
 
 #[derive(Debug)]
-pub struct EntityTypeImportError;
+pub enum EntityTypeImportError {
+    Io(std::io::Error),
+    Deserialization(serde_json::Error),
+}
+
+impl From<std::io::Error> for EntityTypeImportError {
+    fn from(e: std::io::Error) -> Self {
+        EntityTypeImportError::Io(e)
+    }
+}
+
+impl From<serde_json::Error> for EntityTypeImportError {
+    fn from(e: serde_json::Error) -> Self {
+        EntityTypeImportError::Deserialization(e)
+    }
+}
 
 #[async_trait]
 pub trait EntityTypeManager: Send + Sync + Lifecycle {

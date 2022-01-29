@@ -82,34 +82,23 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError> {
-        let file = File::open(path);
-        if file.is_ok() {
-            let file = file.unwrap();
-            let reader = BufReader::new(file);
-            let entity_type = serde_json::from_reader(reader);
-            if entity_type.is_ok() {
-                let entity_type: EntityType = entity_type.unwrap();
-                self.register(entity_type.clone());
-                return Ok(entity_type);
-            }
-        }
-        Err(EntityTypeImportError.into())
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        let entity_type: EntityType = serde_json::from_reader(reader)?;
+        self.register(entity_type.clone());
+        Ok(entity_type)
     }
 
     fn export(&self, name: String, path: String) {
-        let o_entity_type = self.get(name.clone());
-        if o_entity_type.is_some() {
-            let r_file = File::create(path.clone());
-            match r_file {
+        if let Some(entity_type) = self.get(name.clone()) {
+            match File::create(path.clone()) {
                 Ok(file) => {
-                    let result = serde_json::to_writer_pretty(&file, &o_entity_type.unwrap());
+                    let result = serde_json::to_writer_pretty(&file, &entity_type);
                     if result.is_err() {
                         error!("Failed to export entity type {} to {}: {}", name, path, result.err().unwrap());
                     }
                 }
-                Err(error) => {
-                    error!("Failed to export entity type {} to {}: {}", name, path, error.to_string());
-                }
+                Err(error) => error!("Failed to export entity type {} to {}: {}", name, path, error.to_string()),
             }
         }
     }
