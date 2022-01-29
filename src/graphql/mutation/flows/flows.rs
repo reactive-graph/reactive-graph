@@ -281,7 +281,7 @@ impl MutationFlows {
                 let edge_key: EdgeKey = edge_key.into();
                 relation_instance_manager.create(edge_key, properties)
             }
-            Err(err) => Err(ReactiveRelationInstanceCreationError::ValidationError(err).into()),
+            Err(err) => Err(ReactiveRelationInstanceCreationError::ValidationError(err)),
         };
 
         if relation_instance.is_err() {
