@@ -198,8 +198,7 @@ impl PluginRegistry for PluginRegistryImpl {
                     // error!("Plugin {} Version mismatch: rustc {} expected {}", library_path.clone(), decl.rustc_version, RUSTC_VERSION);
                     return Err(PluginError::Other {
                         message: String::from("Version mismatch: rustc"),
-                    }
-                    .into());
+                    });
                 }
                 if decl.inexor_rgf_plugin_version != INEXOR_RGF_PLUGIN_VERSION {
                     error!(
@@ -210,8 +209,7 @@ impl PluginRegistry for PluginRegistryImpl {
                     );
                     return Err(PluginError::Other {
                         message: String::from("Version mismatch: inexor_rgf_core_plugins"),
-                    }
-                    .into());
+                    });
                 }
 
                 let mut registrar = PluginRegistrar::new(Arc::clone(&library));
