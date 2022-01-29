@@ -173,9 +173,7 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
 
 impl PropertyInstanceGetter for ReactiveRelationInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| Some(p.get()))
+        self.properties.get(&property_name.into()).map(|p| p.get())
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
