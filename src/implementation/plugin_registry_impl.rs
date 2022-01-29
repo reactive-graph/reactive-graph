@@ -60,11 +60,7 @@ impl PluginRegistry for PluginRegistryImpl {
 
     fn get(&self, name: String) -> Option<Arc<PluginProxy>> {
         let reader = self.plugins.0.read().unwrap();
-        let plugin_proxy = reader.get(&name);
-        if plugin_proxy.is_some() {
-            return Some(plugin_proxy.unwrap().clone());
-        }
-        None
+        reader.get(&name).cloned()
     }
 
     fn load_plugins(&self) {
