@@ -31,15 +31,9 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
     }
 
     fn get(&self, edge_key: EdgeKey) -> Option<Edge> {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let edges = transaction.get_edges(SpecificEdgeQuery::single(edge_key));
-            if edges.is_ok() {
-                let edges = edges.unwrap();
-                if !edges.is_empty() {
-                    return Some(edges.first().unwrap().clone());
-                }
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(edges) = transaction.get_edges(SpecificEdgeQuery::single(edge_key)) {
+                return edges.first().cloned();
             }
         }
         None
