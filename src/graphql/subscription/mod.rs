@@ -84,8 +84,6 @@ impl InexorSubscription {
                     }
                     let mut stream = RelationPropertyInstanceStream::new(relation_instance, property_name.clone());
 
-                    // let id = relation_instance.id;
-                    let property_name = property_name.clone();
                     Ok(async_stream::stream! {
                         loop {
                             match stream.next().await {
