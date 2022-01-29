@@ -63,14 +63,10 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
                 let reactive_relation_instance = self.reactive_relation_instance_manager.create_reactive_instance(relation_instance);
                 match reactive_relation_instance {
                     Ok(reactive_relation_instance) => Ok(reactive_relation_instance),
-                    Err(_) => {
-                        return Err(RelationInstanceCreationError::Failed);
-                    }
+                    Err(_) => Err(RelationInstanceCreationError::Failed),
                 }
             }
-            None => {
-                return Err(RelationInstanceCreationError::Failed);
-            }
+            None => Err(RelationInstanceCreationError::Failed),
         }
     }
 
