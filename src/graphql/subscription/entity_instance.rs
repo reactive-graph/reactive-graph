@@ -18,7 +18,7 @@ pub struct EntityPropertyInstanceStream {
 
 impl EntityPropertyInstanceStream {
     pub fn new(entity_instance: Arc<ReactiveEntityInstance>, property_name: String) -> EntityPropertyInstanceStream {
-        debug!("Opened subscription entity({})[{}]", entity_instance.id, property_name.clone());
+        debug!("Opened subscription entity({})[{}]", entity_instance.id, property_name);
         let mut rng = rand::thread_rng();
         let handle_id = rng.gen::<u128>();
         let property_instance = entity_instance.properties.get(&property_name).unwrap();
@@ -33,7 +33,7 @@ impl EntityPropertyInstanceStream {
             entity_instance,
             property_name,
             handle_id,
-            receiver: receiver.clone(),
+            receiver,
         }
     }
 }
@@ -45,7 +45,7 @@ impl Stream for EntityPropertyInstanceStream {
         return match self.receiver.try_recv() {
             Ok(value) => {
                 std::thread::sleep(Duration::from_millis(10));
-                Poll::Ready(Some(value.clone()))
+                Poll::Ready(Some(value))
             }
             Err(_) => {
                 std::thread::sleep(Duration::from_millis(100));
