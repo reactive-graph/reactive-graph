@@ -82,9 +82,7 @@ impl From<VertexProperties> for EntityInstance {
 
 impl PropertyInstanceGetter for EntityInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|v| Some(v.clone()))
+        self.properties.get(&property_name.into()).cloned()
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
