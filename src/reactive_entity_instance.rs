@@ -161,23 +161,3 @@ impl PropertyInstanceSetter for ReactiveEntityInstance {
     // TODO: fn set(&self, Map<String, Value>
     // TODO: Set values transactional: first set all values internally, then send all affected streams
 }
-
-// TODO: remove ReactiveEntityInstanceFactory
-pub trait ReactiveEntityInstanceFactory {
-    fn new<S: Into<String>>(type_name: S) -> Arc<ReactiveEntityInstance>;
-}
-
-// impl PartialEq for ReactiveEntityInstance {
-//     fn eq(&self, other: &Self) -> bool {
-//         self.properties.key
-//         self.properties.into_iter().filter()
-//         self.value.read().unwrap().deref() == other.value.read().unwrap().deref()
-//     }
-// }
-
-// TODO: Operators
-// ei_1 += ei_2
-// All properties which exists in both entities are added
-// -> ei_1.get("x") += ei_2.get("x")
-// -> ei_1.get("y") += ei_2.get("y")
-// -> ei_1.get("z") += ei_2.get("z")
