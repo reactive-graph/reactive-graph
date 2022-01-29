@@ -42,11 +42,8 @@ impl GraphQLFlow {
             return None;
         }
         let entity_type_manager = entity_type_manager.unwrap();
-        let entity_type = entity_type_manager.get(self.flow.type_name.clone());
-        if entity_type.is_none() {
-            return None;
-        }
-        Some(entity_type.unwrap().into())
+        let entity_type = entity_type_manager.get(self.flow.type_name.clone())?;
+        Some(entity_type.into())
     }
 
     /// The entity instance which is the wrapper for this flow.
