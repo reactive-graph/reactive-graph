@@ -53,7 +53,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         self.relation_edge_manager
             .get_by_outbound_entity(outbound_entity_id)
             .iter()
-            .filter_map(|edge| reader.get(&edge.key.clone()).and_then(|relation_instance| Some(relation_instance.clone())))
+            .filter_map(|edge| reader.get(&edge.key.clone()).cloned())
             .collect()
     }
 
@@ -62,7 +62,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         self.relation_edge_manager
             .get_by_inbound_entity(inbound_entity_id)
             .iter()
-            .filter_map(|edge| reader.get(&edge.key.clone()).and_then(|relation_instance| Some(relation_instance.clone())))
+            .filter_map(|edge| reader.get(&edge.key.clone()).cloned())
             .collect()
     }
 
