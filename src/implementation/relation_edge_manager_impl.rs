@@ -106,16 +106,9 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
     }
 
     fn commit(&self, edge_key: EdgeKey, properties: HashMap<String, Value, RandomState>) {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let q = SpecificEdgeQuery::single(edge_key);
+        if let Ok(transaction) = self.graph_database.get_transaction() {
             for (property_name, value) in properties {
-                let property_query = q.clone().property(property_name);
-                let _property_result = transaction.set_edge_properties(property_query, &value);
-                // if !property_result.is_ok() {
-                //     return Err(EntityVertexCreationError.into());
-                // }
+                let _property_result = transaction.set_edge_properties(SpecificEdgeQuery::single(edge_key.clone()).clone().property(property_name), &value);
             }
         }
     }
