@@ -55,19 +55,19 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError> {
         if self.relation_edge_manager.has(edge_key.clone()) {
             // Edge already exists!
-            return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key).into());
+            return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key));
         }
         if !self.entity_instance_manager.has(edge_key.outbound_id) {
             // Outbound entity does not exist!
-            return Err(RelationInstanceCreationError::MissingOutboundEntityInstance(edge_key.outbound_id).into());
+            return Err(RelationInstanceCreationError::MissingOutboundEntityInstance(edge_key.outbound_id));
         }
         if !self.entity_instance_manager.has(edge_key.inbound_id) {
             // Inbound entity does not exist!
-            return Err(RelationInstanceCreationError::MissingInboundEntityInstance(edge_key.inbound_id).into());
+            return Err(RelationInstanceCreationError::MissingInboundEntityInstance(edge_key.inbound_id));
         }
         let result = self.relation_edge_manager.create(edge_key, properties);
         if result.is_err() {
-            return Err(RelationInstanceCreationError::RelationEdgeCreationError(result.err().unwrap()).into());
+            return Err(RelationInstanceCreationError::RelationEdgeCreationError(result.err().unwrap()));
         }
         Ok(result.unwrap())
     }
@@ -75,7 +75,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     fn create_from_instance(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError> {
         let edge_key = relation_instance.get_key();
         if edge_key.is_none() {
-            return Err(RelationInstanceCreationError::InvalidEdgeKey.into());
+            return Err(RelationInstanceCreationError::InvalidEdgeKey);
         }
         self.create(edge_key.unwrap(), relation_instance.properties)
     }
@@ -113,7 +113,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             }
             // TODO: Err(RelationInstanceDeserializationError.into())
         }
-        Err(RelationInstanceImportError.into())
+        Err(RelationInstanceImportError)
     }
 
     fn export(&self, edge_key: EdgeKey, path: String) {
