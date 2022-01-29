@@ -111,7 +111,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         match entity_instance {
             Some(entity_instance) => {
                 // TODO: update properties first?
-                return self.create_reactive_instance(entity_instance);
+                self.create_reactive_instance(entity_instance)
             }
             None => {
                 let result = self.entity_instance_manager.create_with_id(type_name, id, properties);
@@ -122,7 +122,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 if entity_instance.is_some() {
                     return self.create_reactive_instance(entity_instance.unwrap());
                 }
-                return Err(ReactiveEntityInstanceCreationError::MissingInstance.into());
+                Err(ReactiveEntityInstanceCreationError::MissingInstance.into())
             }
         }
     }
