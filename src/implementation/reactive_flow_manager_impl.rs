@@ -88,7 +88,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
         let reactive_flow = reactive_flow.unwrap();
         let reactive_flow = Arc::new(reactive_flow);
         self.register_flow_and_reactive_instances(reactive_flow.clone());
-        return Ok(reactive_flow);
+        Ok(reactive_flow)
 
         // let reactive_flow = ReactiveFlow::try_from(flow);
         // if reactive_flow.is_ok() {
