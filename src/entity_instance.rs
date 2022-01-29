@@ -65,7 +65,7 @@ impl EntityInstance {
 impl From<VertexProperties> for EntityInstance {
     fn from(properties: VertexProperties) -> Self {
         let type_name = properties.vertex.t.0.clone();
-        let id = properties.vertex.id.clone();
+        let id = properties.vertex.id;
         let properties: HashMap<String, Value> = properties
             .props
             .iter()
