@@ -51,7 +51,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     fn create_from_instance(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError> {
         let result = self
             .entity_vertex_manager
-            .create_with_id(entity_instance.type_name.clone(), entity_instance.id, entity_instance.properties.clone());
+            .create_with_id(entity_instance.type_name.clone(), entity_instance.id, entity_instance.properties);
         if result.is_err() {
             return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
         }
@@ -59,7 +59,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn commit(&self, entity_instance: EntityInstance) {
-        self.entity_vertex_manager.commit(entity_instance.id, entity_instance.properties.clone());
+        self.entity_vertex_manager.commit(entity_instance.id, entity_instance.properties);
     }
 
     fn delete(&self, id: Uuid) {
