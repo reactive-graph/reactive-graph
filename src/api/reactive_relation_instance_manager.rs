@@ -37,10 +37,10 @@ impl fmt::Display for ReactiveRelationInstanceCreationError {
                 write!(f, "The created instance cannot be found")
             }
             ReactiveRelationInstanceCreationError::RelationInstanceCreationError(error) => {
-                write!(f, "Failed to create reactive relation instance: {}", error.to_string())
+                write!(f, "Failed to create reactive relation instance: {}", error)
             }
             ReactiveRelationInstanceCreationError::ValidationError(error) => {
-                write!(f, "Validation Error: {}", error.to_string())
+                write!(f, "Validation Error: {}", error)
             }
         }
     }

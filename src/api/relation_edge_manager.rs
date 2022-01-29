@@ -29,7 +29,7 @@ impl fmt::Display for RelationEdgeCreationError {
             RelationEdgeCreationError::MissingRequiredProperty(property_name) => {
                 write!(f, "Missing required property {}!", property_name.clone())
             }
-            RelationEdgeCreationError::GraphDatabaseError(error) => write!(f, "Failed to create graph database edge: {}", error.to_string()),
+            RelationEdgeCreationError::GraphDatabaseError(error) => write!(f, "Failed to create graph database edge: {}", error),
         }
     }
 }

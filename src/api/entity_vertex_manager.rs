@@ -24,7 +24,7 @@ impl fmt::Display for EntityVertexCreationError {
             EntityVertexCreationError::EntityTypeMissing(entity_type) => {
                 write!(f, "Entity type {} does not exist!", entity_type.clone())
             }
-            EntityVertexCreationError::GraphDatabaseError(error) => write!(f, "Failed to create graph database vertex: {}", error.to_string()),
+            EntityVertexCreationError::GraphDatabaseError(error) => write!(f, "Failed to create graph database vertex: {}", error),
         }
     }
 }

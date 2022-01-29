@@ -31,7 +31,7 @@ impl fmt::Display for RelationInstanceCreationError {
             RelationInstanceCreationError::MissingInboundEntityInstance(id) => {
                 write!(f, "The inbound entity instance {} cannot be found", id)
             }
-            RelationInstanceCreationError::RelationEdgeCreationError(error) => write!(f, "Failed to create relation instance: {}", error.to_string()),
+            RelationInstanceCreationError::RelationEdgeCreationError(error) => write!(f, "Failed to create relation instance: {}", error),
         }
     }
 }

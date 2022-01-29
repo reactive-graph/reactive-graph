@@ -26,7 +26,7 @@ impl fmt::Display for ReactiveEntityInstanceCreationError {
                 write!(f, "The created instance cannot be found")
             }
             ReactiveEntityInstanceCreationError::EntityInstanceCreationError(error) => {
-                write!(f, "Failed to create reactive entity instance: {}", error.to_string())
+                write!(f, "Failed to create reactive entity instance: {}", error)
             }
         }
     }

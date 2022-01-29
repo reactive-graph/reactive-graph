@@ -93,7 +93,7 @@ impl MutationRelationInstances {
 
         let relation_instance = relation_instance_manager.get(edge_key.clone().into());
         if relation_instance.is_none() {
-            return Err(Error::new(format!("Relation instance {} does not exist!", edge_key.to_string())));
+            return Err(Error::new(format!("Relation instance {} does not exist!", edge_key)));
         }
         let relation_instance = relation_instance.unwrap();
 
