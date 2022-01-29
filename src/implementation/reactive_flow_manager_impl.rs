@@ -231,9 +231,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn export(&self, id: Uuid, path: String) {
         if self.has(id) {
             self.commit(id);
-            let flow = Flow::try_from(self.get(id).unwrap());
-            if flow.is_ok() {
-                self.flow_manager.export(flow.unwrap(), path);
+            if let Ok(flow) = Flow::try_from(self.get(id).unwrap()) {
+                self.flow_manager.export(flow, path);
             }
         }
     }
