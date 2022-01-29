@@ -2,6 +2,8 @@ use std::collections::{BTreeMap, HashMap};
 use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
+use inexor_rgf_core_model::PropertyInstanceGetter;
+use path_tree::PathTree;
 use serde_json::Value;
 use uuid::Uuid;
 use waiter_di::*;
@@ -15,9 +17,17 @@ use crate::model::{EntityInstance, ReactiveEntityInstance};
 #[wrapper]
 pub struct ReactiveEntityInstances(RwLock<BTreeMap<Uuid, Arc<ReactiveEntityInstance>>>);
 
+#[wrapper]
+pub struct LabelPathTree(RwLock<PathTree<Uuid>>);
+
 #[provides]
-fn create_external_type_dependency() -> ReactiveEntityInstances {
+fn create_reactive_entity_instances_storage() -> ReactiveEntityInstances {
     ReactiveEntityInstances(RwLock::new(BTreeMap::new()))
+}
+
+#[provides]
+fn create_label_path_tree() -> LabelPathTree {
+    LabelPathTree(RwLock::new(PathTree::<Uuid>::new()))
 }
 
 #[component]
@@ -29,6 +39,8 @@ pub struct ReactiveEntityInstanceManagerImpl {
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
 
     reactive_entity_instances: ReactiveEntityInstances,
+
+    label_path_tree: LabelPathTree,
     // TODO: Type Cache
 }
 
@@ -46,6 +58,22 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             return Some(instance.unwrap().clone());
         }
         None
+    }
+
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
+        let reader = self.label_path_tree.0.read().unwrap();
+        reader.find(label.as_str()).and_then(|result| self.get(*result.0).clone())
+    }
+
+    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
+        let reader = self.label_path_tree.0.read().unwrap();
+        reader.find(label.as_str()).and_then(|result| match self.get(*result.0) {
+            Some(instance) => {
+                let params: HashMap<String, String> = result.1.into_iter().map(|(a, b)| (String::from(a), String::from(b))).collect();
+                Some((instance.clone(), params))
+            }
+            None => None,
+        })
     }
 
     fn get_entity_instances(&self) -> Vec<Arc<ReactiveEntityInstance>> {
@@ -115,6 +143,13 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             .insert(reactive_entity_instance.id, reactive_entity_instance.clone());
         self.component_behaviour_manager.add_behaviours_to_entity(reactive_entity_instance.clone());
         self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
+        if let Some(value) = reactive_entity_instance.get("label") {
+            if !value.is_string() {
+                return;
+            }
+            let mut writer = self.label_path_tree.0.write().unwrap();
+            writer.insert(value.as_str().unwrap(), reactive_entity_instance.id);
+        }
     }
 
     fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance> {

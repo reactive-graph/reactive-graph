@@ -43,8 +43,18 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
     /// Returns the reactive entity instance with the given UUID or None.
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>>;
 
+    /// Returns the reactive entity instance that matches the given label or None.
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>>;
+
+    /// Returns the reactive entity instance and the matched path parameters that matches the given label or None.
+    /// /org/inexor/local/users/:user_id
+    /// /org/inexor/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
+    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)>;
+
+    /// Returns all registered reactive entity instances.
     fn get_entity_instances(&self) -> Vec<Arc<ReactiveEntityInstance>>;
 
+    /// Returns the ids of all registered reactive entity instances.
     fn get_ids(&self) -> Vec<Uuid>;
 
     // fn get_all(&self) -> Option<Arc<ReactiveEntityInstance>>;
@@ -53,8 +63,12 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
 
     // fn get_by_property(&self, property_name: String, value: Value) -> Option<Arc<ReactiveEntityInstance>>;
 
+    /// Creates a new reactive entity instance of the given type. The reactive instance will be
+    /// initialized with the given properties and values. A random id will be generated.
     fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
+    /// Creates a new reactive entity instance of the given type, with the given id and initialized
+    /// with the given properties and values.
     fn create_with_id(
         &self,
         type_name: String,
@@ -62,10 +76,16 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
+    /// Creates a reactive entity instance from the given non-reactive entity instance. The
+    /// reactive entity instance will be registered.
     fn create_reactive_instance(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
+    /// Registers a reactive entity instance.
     fn register_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>);
 
+    /// Registers a reactive entity instance if and only if the given instance doesn't exist.
+    /// 
+    /// No properties are merged if the given entity instance already exists.
     fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance>;
 
     // TODO: return result
@@ -75,6 +95,9 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
 
     // TODO: fn delete_and_delete_relations(&self, id: Uuid);
 
+    /// Unregisters the reactive entity instance. Also removes all behaviours. If there are any
+    /// references to the reactive entity instance, their reactive streams still work but the
+    /// applied behaviours are gone.
     fn unregister_reactive_instance(&self, id: Uuid);
 
     // TODO: rename import_from_file
