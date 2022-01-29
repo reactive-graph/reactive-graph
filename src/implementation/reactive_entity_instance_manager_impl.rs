@@ -87,9 +87,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         if result.is_err() {
             return Err(ReactiveEntityInstanceCreationError::EntityInstanceCreationError(result.err().unwrap()));
         }
-        let entity_instance = self.entity_instance_manager.get(result.unwrap());
-        if entity_instance.is_some() {
-            return self.create_reactive_instance(entity_instance.unwrap());
+        if let Some(entity_instance) = self.entity_instance_manager.get(result.unwrap()) {
+            return self.create_reactive_instance(entity_instance);
         }
         Err(ReactiveEntityInstanceCreationError::MissingInstance)
     }
@@ -114,9 +113,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 if result.is_err() {
                     return Err(ReactiveEntityInstanceCreationError::EntityInstanceCreationError(result.err().unwrap()));
                 }
-                let entity_instance = self.entity_instance_manager.get(id);
-                if entity_instance.is_some() {
-                    return self.create_reactive_instance(entity_instance.unwrap());
+                if let Some(entity_instance) = self.entity_instance_manager.get(id) {
+                    return self.create_reactive_instance(entity_instance);
                 }
                 Err(ReactiveEntityInstanceCreationError::MissingInstance)
             }
@@ -160,9 +158,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     fn commit(&self, id: Uuid) {
-        let reactive_entity_instance = self.get(id);
-        if reactive_entity_instance.is_some() {
-            self.entity_instance_manager.commit(reactive_entity_instance.unwrap().into());
+        if let Some(reactive_entity_instance) = self.get(id) {
+            self.entity_instance_manager.commit(reactive_entity_instance.into());
         }
     }
 
