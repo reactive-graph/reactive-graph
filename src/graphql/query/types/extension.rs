@@ -18,7 +18,7 @@ impl From<GraphQLExtension> for Extension {
     fn from(extension: GraphQLExtension) -> Self {
         Extension {
             name: extension.name.clone(),
-            extension: extension.extension.clone(),
+            extension: extension.extension,
         }
     }
 }
@@ -27,7 +27,7 @@ impl From<Extension> for GraphQLExtension {
     fn from(extension: Extension) -> Self {
         GraphQLExtension {
             name: extension.name.clone(),
-            extension: extension.extension.clone(),
+            extension: extension.extension,
         }
     }
 }
