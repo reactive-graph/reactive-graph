@@ -117,25 +117,16 @@ impl EntityVertexManager for EntityVertexManagerImpl {
     }
 
     fn commit(&self, id: Uuid, properties: HashMap<String, Value>) {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let q = SpecificVertexQuery::single(id);
+        if let Ok(transaction) = self.graph_database.get_transaction() {
             for (property_name, value) in properties {
-                let property_query = q.clone().property(property_name);
-                let _property_result = transaction.set_vertex_properties(property_query, &value);
-                // if !property_result.is_ok() {
-                //     return Err(EntityVertexCreationError.into());
-                // }
+                let _property_result = transaction.set_vertex_properties(SpecificVertexQuery::single(id).property(property_name), &value);
             }
         }
     }
 
     fn delete(&self, id: Uuid) {
         if self.has(id) {
-            let r_transaction = self.graph_database.get_transaction();
-            if r_transaction.is_ok() {
-                let transaction = r_transaction.unwrap();
+            if let Ok(transaction) = self.graph_database.get_transaction() {
                 let _result = transaction.delete_vertices(SpecificVertexQuery::single(id));
             }
         }
