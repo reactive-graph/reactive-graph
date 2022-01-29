@@ -22,7 +22,7 @@ pub enum ReactiveRelationInstanceCreationError {
 
 impl fmt::Display for ReactiveRelationInstanceCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match &self {
             // ReactiveRelationInstanceCreationError::UuidTaken(id) => write!(f, "The UUID {} has been already taken!", id),
             ReactiveRelationInstanceCreationError::InvalidEdgeKey => {
                 write!(f, "The edge key is invalid")

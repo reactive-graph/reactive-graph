@@ -20,7 +20,7 @@ pub enum RelationInstanceCreationError {
 
 impl fmt::Display for RelationInstanceCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match &self {
             RelationInstanceCreationError::InvalidEdgeKey => write!(f, "The edge key is invalid"),
             RelationInstanceCreationError::EdgeAlreadyExists(edge_key) => {
                 write!(f, "The edge already exists: {:?}", edge_key)

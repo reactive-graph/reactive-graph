@@ -18,7 +18,7 @@ pub enum ReactiveEntityInstanceCreationError {
 
 impl fmt::Display for ReactiveEntityInstanceCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match &self {
             ReactiveEntityInstanceCreationError::UuidTaken(id) => {
                 write!(f, "The UUID {} has been already taken!", id)
             }
@@ -84,7 +84,7 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
     fn register_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>);
 
     /// Registers a reactive entity instance if and only if the given instance doesn't exist.
-    /// 
+    ///
     /// No properties are merged if the given entity instance already exists.
     fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance>;
 

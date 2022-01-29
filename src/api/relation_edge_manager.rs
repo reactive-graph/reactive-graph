@@ -20,7 +20,7 @@ pub enum RelationEdgeCreationError {
 
 impl fmt::Display for RelationEdgeCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match &self {
             RelationEdgeCreationError::NoTransaction => write!(f, "No transaction"),
             // RelationEdgeCreationError::UuidTaken(id) => write!(f, "The UUID {} has been already taken!", id),
             RelationEdgeCreationError::RelationTypeMissing(relation_type) => {
