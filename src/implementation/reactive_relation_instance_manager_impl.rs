@@ -90,22 +90,22 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         if relation_instance.is_some() {
             return self.create_reactive_instance(relation_instance.unwrap());
         }
-        Err(ReactiveRelationInstanceCreationError::MissingInstance.into())
+        Err(ReactiveRelationInstanceCreationError::MissingInstance)
     }
 
     fn create_reactive_instance(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError> {
         let edge_key = relation_instance.get_key();
         if edge_key.is_none() {
-            return Err(ReactiveRelationInstanceCreationError::InvalidEdgeKey.into());
+            return Err(ReactiveRelationInstanceCreationError::InvalidEdgeKey);
         }
 
         let outbound = self.reactive_entity_instance_manager.get(relation_instance.outbound_id);
         if outbound.is_none() {
-            return Err(ReactiveRelationInstanceCreationError::MissingOutboundEntityInstance(relation_instance.outbound_id).into());
+            return Err(ReactiveRelationInstanceCreationError::MissingOutboundEntityInstance(relation_instance.outbound_id));
         }
         let inbound = self.reactive_entity_instance_manager.get(relation_instance.inbound_id);
         if outbound.is_none() {
-            return Err(ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(relation_instance.inbound_id).into());
+            return Err(ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(relation_instance.inbound_id));
         }
 
         let outbound = outbound.unwrap();
@@ -176,7 +176,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 return Ok(result.unwrap());
             }
         }
-        Err(ReactiveRelationInstanceImportError.into())
+        Err(ReactiveRelationInstanceImportError)
     }
 
     fn export(&self, edge_key: EdgeKey, path: String) {
