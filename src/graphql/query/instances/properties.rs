@@ -39,13 +39,10 @@ impl GraphQLPropertyInstance {
         for property_type in property_types {
             props.insert(property_type.name.clone(), property_type.data_type.default_value());
         }
-        match properties {
-            Some(properties) => {
-                for property in properties {
-                    props.insert(property.name.clone(), property.value.clone());
-                }
+        if let Some(properties) = properties {
+            for property in properties {
+                props.insert(property.name.clone(), property.value.clone());
             }
-            None => {}
         }
         props
     }
