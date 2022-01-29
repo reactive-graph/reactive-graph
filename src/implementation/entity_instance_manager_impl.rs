@@ -37,7 +37,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         if result.is_err() {
             return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
         }
-        return Ok(result.unwrap());
+        Ok(result.unwrap())
     }
 
     fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value, RandomState>) -> Result<Uuid, EntityInstanceCreationError> {
@@ -45,7 +45,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         if result.is_err() {
             return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
         }
-        return Ok(result.unwrap());
+        Ok(result.unwrap())
     }
 
     fn create_from_instance(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError> {
