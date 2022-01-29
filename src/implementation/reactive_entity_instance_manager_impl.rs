@@ -91,7 +91,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         if entity_instance.is_some() {
             return self.create_reactive_instance(entity_instance.unwrap());
         }
-        Err(ReactiveEntityInstanceCreationError::MissingInstance.into())
+        Err(ReactiveEntityInstanceCreationError::MissingInstance)
     }
 
     fn create_with_id(
@@ -101,7 +101,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
         if self.has(id) {
-            return Err(ReactiveEntityInstanceCreationError::UuidTaken(id).into());
+            return Err(ReactiveEntityInstanceCreationError::UuidTaken(id));
         }
         let entity_instance = self.entity_instance_manager.get(id);
         match entity_instance {
@@ -118,7 +118,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 if entity_instance.is_some() {
                     return self.create_reactive_instance(entity_instance.unwrap());
                 }
-                Err(ReactiveEntityInstanceCreationError::MissingInstance.into())
+                Err(ReactiveEntityInstanceCreationError::MissingInstance)
             }
         }
     }
@@ -196,7 +196,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 }
             }
         }
-        Err(ReactiveEntityInstanceImportError.into())
+        Err(ReactiveEntityInstanceImportError)
     }
 
     fn export(&self, id: Uuid, path: String) {
