@@ -146,16 +146,11 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<RelationType, RelationTypeImportError> {
-        if let Ok(file) = File::open(path) {
-            let reader = BufReader::new(file);
-            let relation_type = serde_json::from_reader(reader);
-            if relation_type.is_ok() {
-                let relation_type: RelationType = relation_type.unwrap();
-                self.register(relation_type.clone());
-                return Ok(relation_type);
-            }
-        }
-        Err(RelationTypeImportError.into())
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        let relation_type: RelationType = serde_json::from_reader(reader)?;
+        self.register(relation_type.clone());
+        Ok(relation_type)
     }
 
     fn export(&self, type_name: String, path: String) {

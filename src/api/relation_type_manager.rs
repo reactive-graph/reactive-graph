@@ -7,7 +7,22 @@ use crate::model::{Extension, PropertyType, RelationType};
 use crate::plugins::RelationTypeProvider;
 
 #[derive(Debug)]
-pub struct RelationTypeImportError;
+pub enum RelationTypeImportError {
+    Io(std::io::Error),
+    Deserialize(serde_json::Error),
+}
+
+impl From<std::io::Error> for RelationTypeImportError {
+    fn from(e: std::io::Error) -> Self {
+        RelationTypeImportError::Io(e)
+    }
+}
+
+impl From<serde_json::Error> for RelationTypeImportError {
+    fn from(e: serde_json::Error) -> Self {
+        RelationTypeImportError::Deserialize(e)
+    }
+}
 
 #[async_trait]
 pub trait RelationTypeManager: Send + Sync + Lifecycle {
