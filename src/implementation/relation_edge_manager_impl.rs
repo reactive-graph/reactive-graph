@@ -102,7 +102,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
                 return Err(RelationEdgeCreationError::GraphDatabaseError(property_result.err().unwrap()).into());
             }
         }
-        return Ok(edge_key);
+        Ok(edge_key)
     }
 
     fn commit(&self, edge_key: EdgeKey, properties: HashMap<String, Value, RandomState>) {
