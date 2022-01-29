@@ -86,7 +86,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn export(&self, id: Uuid, path: String) {
-        let o_entity_instance = self.get(id.clone());
+        let o_entity_instance = self.get(id);
         if o_entity_instance.is_some() {
             let r_file = File::create(path.clone());
             match r_file {
