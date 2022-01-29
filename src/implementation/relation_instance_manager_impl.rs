@@ -87,28 +87,20 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<RelationInstance, RelationInstanceImportError> {
-        let file = File::open(path);
-        if file.is_ok() {
-            let file = file.unwrap();
-            let reader = BufReader::new(file);
-            let relation_instance = serde_json::from_reader(reader);
-            if relation_instance.is_ok() {
-                let relation_instance: RelationInstance = relation_instance.unwrap();
-                let edge_key = relation_instance.get_key();
-                if edge_key.is_some() {
-                    let edge_key = edge_key.unwrap();
-                    if !self.has(edge_key.clone()) {
-                        let result = self.relation_edge_manager.create(edge_key, relation_instance.properties.clone());
-                        if result.is_ok() {
-                            return Ok(relation_instance);
-                        }
-                    }
-                }
-                // TODO: Err(RelationInstanceExistsError.into())
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        let relation_instance: RelationInstance = serde_json::from_reader(reader)?;
+        if let Some(edge_key) = relation_instance.get_key() {
+            if self.has(edge_key.clone()) {
+                return Err(RelationInstanceImportError::RelationAlreadyExists(edge_key));
             }
-            // TODO: Err(RelationInstanceDeserializationError.into())
+            self.relation_edge_manager
+                .create(edge_key, relation_instance.properties.clone())
+                .map(|_| relation_instance)
+                .map_err(RelationInstanceImportError::RelationEdgeCreation)
+        } else {
+            Err(RelationInstanceImportError::InvalidEdgeKey)
         }
-        Err(RelationInstanceImportError)
     }
 
     fn export(&self, edge_key: EdgeKey, path: String) {
