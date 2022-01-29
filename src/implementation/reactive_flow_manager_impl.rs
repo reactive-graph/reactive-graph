@@ -144,10 +144,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
     fn register_flow(&self, reactive_flow: Arc<ReactiveFlow>) {
         if !self.reactive_entity_instance_manager.has(reactive_flow.id) {
-            let wrapper_entity_instance = reactive_flow.get_entity(reactive_flow.id);
-            if wrapper_entity_instance.is_some() {
-                self.reactive_entity_instance_manager
-                    .register_reactive_instance(wrapper_entity_instance.unwrap());
+            if let Some(wrapper_entity_instance) = reactive_flow.get_entity(reactive_flow.id) {
+                self.reactive_entity_instance_manager.register_reactive_instance(wrapper_entity_instance);
             }
         }
         self.reactive_flows.0.write().unwrap().insert(reactive_flow.id, reactive_flow.clone());
@@ -156,10 +154,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     // TODO: how to detect if the flow has removed an entity? => remove behaviour
     // TODO: how to detect if the flow has removed an relation? => remove behaviour
     fn commit(&self, id: Uuid) {
-        let reactive_flow = self.get(id);
-        if reactive_flow.is_some() {
-            let reactive_flow = reactive_flow.unwrap();
-
+        if let Some(reactive_flow) = self.get(id) {
             // Unregister removed relations
             for edge_key in reactive_flow.relations_removed.read().unwrap().iter() {
                 self.reactive_relation_instance_manager.unregister_reactive_instance(edge_key.clone());
