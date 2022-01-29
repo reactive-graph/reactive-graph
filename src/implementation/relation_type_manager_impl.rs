@@ -55,16 +55,14 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             // TODO: Result
             return;
         }
-        for component_name in relation_type.components.to_vec() {
-            let component = self.component_manager.get(component_name.clone());
-            if component.is_some() {
-                relation_type.properties.append(&mut component.unwrap().properties);
-            } else {
-                warn!(
+        for component_name in relation_type.components.iter() {
+            match self.component_manager.get(component_name.clone()) {
+                Some(component) => relation_type.properties.append(&mut component.properties.to_vec()),
+                None => warn!(
                     "Relation type {} not fully initialized: No component named {}",
                     relation_type.type_name.clone(),
                     component_name
-                );
+                ),
             }
         }
 
