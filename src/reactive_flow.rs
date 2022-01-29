@@ -90,7 +90,7 @@ impl ReactiveFlow {
     }
 
     pub fn get_wrapper_entity_instance(&self) -> Option<Arc<ReactiveEntityInstance>> {
-        return self.get_entity(self.id);
+        self.get_entity(self.id)
     }
 
     pub fn add_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
@@ -232,7 +232,7 @@ impl TryFrom<Flow> for ReactiveFlow {
                 relation_instances.insert(edge_key.clone(), reactive_relation_instance);
             }
         }
-        return Ok(ReactiveFlow {
+        Ok(ReactiveFlow {
             id: flow_id,
             type_name: flow.type_name.clone(),
             entity_instances: RwLock::new(entity_instances),
@@ -242,7 +242,7 @@ impl TryFrom<Flow> for ReactiveFlow {
             entities_removed: RwLock::new(Vec::new()),
             relations_added: RwLock::new(Vec::new()),
             relations_removed: RwLock::new(Vec::new()),
-        });
+        })
     }
 }
 
