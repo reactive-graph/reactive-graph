@@ -232,11 +232,3 @@ impl PropertyInstanceSetter for ReactiveRelationInstance {
         }
     }
 }
-
-pub trait ReactiveRelationInstanceFactory {
-    fn new<S: Into<String>>(
-        outbound: Arc<ReactiveEntityInstance>,
-        type_name: S,
-        inbound: Arc<ReactiveEntityInstance>,
-    ) -> Arc<ReactiveRelationInstance>;
-}
