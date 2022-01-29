@@ -87,9 +87,9 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             .0
             .read()
             .unwrap()
-            .to_vec()
-            .into_iter()
+            .iter()
             .find(|relation_type| relation_type.type_name == type_name)
+            .cloned()
     }
 
     fn get_starts_with(&self, type_name_starts_with: String) -> Option<RelationType> {
@@ -102,11 +102,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     .0
                     .read()
                     .unwrap()
-                    .to_vec()
-                    .into_iter()
+                    .iter()
                     .find(|relation_type| type_name_starts_with.starts_with(relation_type.type_name.as_str()))
                     .map(|relation_type| {
-                        let mut relation_type = relation_type;
+                        let mut relation_type = relation_type.clone();
                         relation_type.full_name = type_name_starts_with.clone();
                         relation_type
                     })
