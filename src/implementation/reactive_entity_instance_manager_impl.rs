@@ -53,11 +53,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>> {
         let reader = self.reactive_entity_instances.0.read().unwrap();
-        let instance = reader.get(&id);
-        if instance.is_some() {
-            return Some(instance.unwrap().clone());
-        }
-        None
+        reader.get(&id).cloned()
     }
 
     fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
