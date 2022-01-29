@@ -73,7 +73,7 @@ impl ReactivePropertyInstance {
     }
 
     pub fn as_string(&self) -> Option<String> {
-        self.get().as_str().and_then(|s| Some(String::from(s)))
+        self.get().as_str().map(String::from)
     }
 
     pub fn as_array(&self) -> Option<Vec<Value>> {
