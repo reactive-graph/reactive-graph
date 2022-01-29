@@ -25,11 +25,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn get(&self, id: Uuid) -> Option<EntityInstance> {
-        let properties = self.entity_vertex_manager.get_properties(id);
-        if properties.is_some() {
-            return Some(EntityInstance::from(properties.unwrap()));
-        }
-        None
+        self.entity_vertex_manager.get_properties(id).map(EntityInstance::from)
     }
 
     fn create(&self, type_name: String, properties: HashMap<String, Value, RandomState>) -> Result<Uuid, EntityInstanceCreationError> {
