@@ -55,6 +55,11 @@ active = true
 path = "../inexor-rgf-plugin-json/target/debug/libinexor_rgf_plugin_json.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-binary"
+active = true
+path = "../inexor-rgf-plugin-binary/target/debug/libinexor_rgf_plugin_binary.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-random"
 active = true
 path = "../inexor-rgf-plugin-random/target/debug/libinexor_rgf_plugin_random.so"
