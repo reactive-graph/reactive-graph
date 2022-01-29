@@ -68,12 +68,12 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
 
     fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
-        reader.values().map(|v| v.clone()).collect()
+        reader.values().cloned().collect()
     }
 
     fn get_keys(&self) -> Vec<EdgeKey> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
-        reader.keys().map(|edge_key| edge_key.clone()).collect()
+        reader.keys().cloned().collect()
     }
 
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError> {
