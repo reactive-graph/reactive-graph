@@ -29,12 +29,8 @@ static ALLOCATOR: System = System;
 
 #[async_std::main]
 async fn main() {
-    let logger_result = log4rs::init_file("config/logging.yml", Default::default());
-    match logger_result {
-        Err(error) => {
-            println!("Failed to configure logger: {}", error);
-        }
-        _ => {}
+    if let Err(error) = log4rs::init_file("config/logging.yml", Default::default()) {
+        println!("Failed to configure logger: {}", error);
     }
 
     {
