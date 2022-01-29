@@ -77,11 +77,9 @@ impl RelationInstance {
     }
 
     pub fn get_key(&self) -> Option<EdgeKey> {
-        let t = Type::from_str(self.type_name.as_str());
-        if t.is_ok() {
-            return Some(EdgeKey::new(self.outbound_id, t.unwrap(), self.inbound_id));
-        }
-        None
+        Type::from_str(self.type_name.as_str())
+            .map(|t| EdgeKey::new(self.outbound_id, t, self.inbound_id))
+            .ok()
     }
 }
 
