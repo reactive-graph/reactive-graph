@@ -91,7 +91,7 @@ impl EntityVertexManager for EntityVertexManagerImpl {
         let transaction = r_transaction.unwrap();
 
         if !self.entity_type_manager.has(type_name.clone()) {
-            return Err(EntityVertexCreationError::EntityTypeMissing(type_name).into());
+            return Err(EntityVertexCreationError::EntityTypeMissing(type_name));
         }
         let entity_type = self.entity_type_manager.get(type_name).unwrap();
 
