@@ -182,18 +182,16 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {
-        let result = self.entity_instance_manager.import(path);
-        if result.is_ok() {
-            let entity_instance = self.entity_instance_manager.get(result.unwrap());
-            if entity_instance.is_some() {
-                let result = self.create_reactive_instance(entity_instance.unwrap());
-                if result.is_ok() {
-                    let reactive_entity_instance = result.unwrap();
-                    return Ok(reactive_entity_instance);
-                }
-            }
+        match self.entity_instance_manager.import(path) {
+            Ok(uuid) => match self.entity_instance_manager.get(uuid) {
+                Some(entity_instance) => match self.create_reactive_instance(entity_instance) {
+                    Ok(reactive_entity_instance) => Ok(reactive_entity_instance),
+                    Err(error) => Err(ReactiveEntityInstanceImportError::ReactiveEntityInstanceCreation(error)),
+                },
+                None => Err(ReactiveEntityInstanceImportError::MissingEntityInstance(uuid)),
+            },
+            Err(error) => Err(ReactiveEntityInstanceImportError::EntityInstanceImport(error)),
         }
-        Err(ReactiveEntityInstanceImportError)
     }
 
     fn export(&self, id: Uuid, path: String) {

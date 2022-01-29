@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::EntityInstanceCreationError;
+use crate::api::{EntityInstanceCreationError, EntityInstanceImportError};
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 
 #[derive(Debug)]
@@ -33,7 +33,11 @@ impl fmt::Display for ReactiveEntityInstanceCreationError {
 }
 
 #[derive(Debug)]
-pub struct ReactiveEntityInstanceImportError;
+pub enum ReactiveEntityInstanceImportError {
+    EntityInstanceImport(EntityInstanceImportError),
+    MissingEntityInstance(Uuid),
+    ReactiveEntityInstanceCreation(ReactiveEntityInstanceCreationError),
+}
 
 #[async_trait]
 pub trait ReactiveEntityInstanceManager: Send + Sync {
