@@ -23,7 +23,7 @@ impl RelationPropertyInstanceStream {
             relation_instance.inbound.id,
             relation_instance.type_name.clone(),
             relation_instance.outbound.id,
-            property_name.clone()
+            property_name
         );
         let mut rng = rand::thread_rng();
         let handle_id = rng.gen::<u128>();
@@ -39,7 +39,7 @@ impl RelationPropertyInstanceStream {
             relation_instance,
             property_name,
             handle_id,
-            receiver: receiver.clone(),
+            receiver,
         }
     }
 }
@@ -51,7 +51,7 @@ impl Stream for RelationPropertyInstanceStream {
         return match self.receiver.try_recv() {
             Ok(value) => {
                 std::thread::sleep(Duration::from_millis(10));
-                Poll::Ready(Some(value.clone()))
+                Poll::Ready(Some(value))
             }
             Err(_) => {
                 std::thread::sleep(Duration::from_millis(100));
