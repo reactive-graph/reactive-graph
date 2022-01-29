@@ -100,11 +100,11 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
 
         let type_name = edge_key.t.0.clone();
         if !self.relation_type_manager.has_starts_with(type_name.clone()) {
-            return Err(RelationEdgeCreationError::RelationTypeMissing(type_name.clone()).into());
+            return Err(RelationEdgeCreationError::RelationTypeMissing(type_name).into());
         }
-        let relation_type = self.relation_type_manager.get_starts_with(type_name.clone()).unwrap();
+        let relation_type = self.relation_type_manager.get_starts_with(type_name).unwrap();
 
-        let result = transaction.create_edge(&edge_key.clone());
+        let result = transaction.create_edge(&edge_key);
         if result.is_err() {
             // Should not happen when using indradb::InternalMemoryDatastore
             return Err(RelationEdgeCreationError::GraphDatabaseError(result.err().unwrap()).into());
@@ -115,7 +115,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             let value = properties.get(&*property_name.clone());
             if value.is_none() {
                 // Missing required property
-                return Err(RelationEdgeCreationError::MissingRequiredProperty(property_name.clone()).into());
+                return Err(RelationEdgeCreationError::MissingRequiredProperty(property_name).into());
             }
             let value = value.unwrap();
             let property_query = edge_query.clone().property(property_name);
@@ -125,7 +125,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
                 return Err(RelationEdgeCreationError::GraphDatabaseError(property_result.err().unwrap()).into());
             }
         }
-        return Ok(edge_key.clone());
+        return Ok(edge_key);
     }
 
     fn commit(&self, edge_key: EdgeKey, properties: HashMap<String, Value, RandomState>) {

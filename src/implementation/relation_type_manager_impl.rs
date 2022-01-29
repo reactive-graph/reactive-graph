@@ -108,7 +108,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     .into_iter()
                     .find(|relation_type| type_name_starts_with.starts_with(relation_type.type_name.as_str()))
                     .map(|relation_type| {
-                        let mut relation_type = relation_type.clone();
+                        let mut relation_type = relation_type;
                         relation_type.full_name = type_name_starts_with.clone();
                         relation_type
                     })
@@ -127,9 +127,9 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         extensions: Vec<Extension>,
     ) {
         self.register(RelationType::new(
-            outbound_type.clone(),
-            type_name.clone(),
-            inbound_type.clone(),
+            outbound_type,
+            type_name,
+            inbound_type,
             components.to_vec(),
             behaviours.to_vec(),
             properties.to_vec(),
@@ -154,7 +154,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             if relation_type.is_ok() {
                 let relation_type: RelationType = relation_type.unwrap();
                 self.register(relation_type.clone());
-                return Ok(relation_type.clone());
+                return Ok(relation_type);
             }
         }
         Err(RelationTypeImportError.into())

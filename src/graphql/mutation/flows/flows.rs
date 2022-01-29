@@ -33,7 +33,7 @@ pub enum FlowMutationError {
 
 impl fmt::Display for FlowMutationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.clone() {
+        match &self {
             FlowMutationError::MissingFlow(id) => write!(f, "The flow {} does not exist!", id),
             FlowMutationError::FlowAlreadyExists(id) => {
                 write!(f, "Can't create flow: The flow {} already exist!", id)

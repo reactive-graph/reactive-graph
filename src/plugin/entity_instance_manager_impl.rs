@@ -39,7 +39,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         let entity_type = self.entity_type_manager.get(entity_instance.type_name.clone());
         match entity_type {
             Some(entity_type) => {
-                let mut entity_instance = entity_instance.clone();
+                let mut entity_instance = entity_instance;
                 for property in entity_type.properties.iter() {
                     if !entity_instance.properties.contains_key(&property.name) {
                         entity_instance.properties.insert(property.name.clone(), property.data_type.default_value());

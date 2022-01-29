@@ -55,7 +55,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError> {
         if self.relation_edge_manager.has(edge_key.clone()) {
             // Edge already exists!
-            return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key.clone()).into());
+            return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key).into());
         }
         if !self.entity_instance_manager.has(edge_key.outbound_id) {
             // Outbound entity does not exist!
@@ -65,7 +65,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             // Inbound entity does not exist!
             return Err(RelationInstanceCreationError::MissingInboundEntityInstance(edge_key.inbound_id).into());
         }
-        let result = self.relation_edge_manager.create(edge_key.clone(), properties);
+        let result = self.relation_edge_manager.create(edge_key, properties);
         if result.is_err() {
             return Err(RelationInstanceCreationError::RelationEdgeCreationError(result.err().unwrap()).into());
         }
@@ -77,13 +77,13 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         if edge_key.is_none() {
             return Err(RelationInstanceCreationError::InvalidEdgeKey.into());
         }
-        self.create(edge_key.unwrap(), relation_instance.properties.clone())
+        self.create(edge_key.unwrap(), relation_instance.properties)
     }
 
     fn commit(&self, relation_instance: RelationInstance) {
         let edge_key = relation_instance.get_key();
         if edge_key.is_some() {
-            self.relation_edge_manager.commit(edge_key.unwrap(), relation_instance.properties.clone());
+            self.relation_edge_manager.commit(edge_key.unwrap(), relation_instance.properties);
         }
     }
 
@@ -103,7 +103,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
                 if edge_key.is_some() {
                     let edge_key = edge_key.unwrap();
                     if !self.has(edge_key.clone()) {
-                        let result = self.relation_edge_manager.create(edge_key.clone(), relation_instance.properties.clone());
+                        let result = self.relation_edge_manager.create(edge_key, relation_instance.properties.clone());
                         if result.is_ok() {
                             return Ok(relation_instance);
                         }
@@ -117,13 +117,13 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn export(&self, edge_key: EdgeKey, path: String) {
-        let relation_instance = self.get(edge_key.clone());
+        let relation_instance = self.get(edge_key);
         if relation_instance.is_some() {
             let relation_instance = relation_instance.unwrap();
             let r_file = File::create(path.clone());
             match r_file {
                 Ok(file) => {
-                    let result = serde_json::to_writer_pretty(&file, &relation_instance.clone());
+                    let result = serde_json::to_writer_pretty(&file, &relation_instance);
                     if result.is_err() {
                         // TODO: implement Display trait for RelationInstance
                         error!(

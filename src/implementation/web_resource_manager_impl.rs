@@ -53,12 +53,8 @@ impl WebResourceManager for WebResourceManagerImpl {
 
     fn add_provider(&self, web_resource_provider: Arc<dyn WebResourceProvider>) {
         let name: String = web_resource_provider.get_name();
-        debug!("Registering web resource provider: {}", name.clone());
-        self.web_resource_providers
-            .0
-            .write()
-            .unwrap()
-            .insert(name.clone(), web_resource_provider.clone());
+        debug!("Registering web resource provider: {}", name);
+        self.web_resource_providers.0.write().unwrap().insert(name, web_resource_provider.clone());
     }
 }
 
