@@ -29,5 +29,6 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
     fn import(&self, path: String);
     fn export(&self, name: String, path: String);
 
+    /// Registers a component provider.
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>);
 }
