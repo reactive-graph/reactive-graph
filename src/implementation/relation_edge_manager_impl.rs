@@ -22,11 +22,10 @@ pub struct RelationEdgeManagerImpl {
 #[provides]
 impl RelationEdgeManager for RelationEdgeManagerImpl {
     fn has(&self, edge_key: EdgeKey) -> bool {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let edges = transaction.get_edges(SpecificEdgeQuery::single(edge_key));
-            return edges.unwrap().is_empty();
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(edges) = transaction.get_edges(SpecificEdgeQuery::single(edge_key)) {
+                return edges.is_empty();
+            }
         }
         false
     }
