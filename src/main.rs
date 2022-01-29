@@ -3,6 +3,7 @@
 #![feature(concat_idents)]
 #![feature(register_tool)]
 #![register_tool(tarpaulin)]
+#![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 
 use std::alloc::System;
 
