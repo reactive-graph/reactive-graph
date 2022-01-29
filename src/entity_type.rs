@@ -79,12 +79,7 @@ impl EntityType {
     /// Returns true, if the entity type contains an own property with the given name.
     /// Doesn't respect properties from potential components.
     pub fn has_own_property<S: Into<String>>(&self, property_name: S) -> bool {
-        let property_name = property_name.into().clone();
-        !self
-            .properties
-            .iter()
-            .filter(|&p| p.name == property_name)
-            .collect::<Vec<_>>()
-            .is_empty()
+        let property_name = property_name.into();
+        self.properties.iter().any(|p| p.name == property_name)
     }
 }
