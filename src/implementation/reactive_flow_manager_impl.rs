@@ -18,7 +18,7 @@ use waiter_di::*;
 pub struct ReactiveFlows(RwLock<BTreeMap<Uuid, Arc<ReactiveFlow>>>);
 
 #[provides]
-fn create_external_type_dependency() -> ReactiveFlows {
+fn create_reactive_flow_storage() -> ReactiveFlows {
     ReactiveFlows(RwLock::new(BTreeMap::new()))
 }
 
