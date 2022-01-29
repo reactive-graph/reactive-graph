@@ -198,9 +198,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             //     }
             // }
 
-            let flow = Flow::try_from(reactive_flow);
-            if flow.is_ok() {
-                self.flow_manager.commit(flow.unwrap());
+            if let Ok(flow) = Flow::try_from(reactive_flow) {
+                self.flow_manager.commit(flow);
             }
         }
     }
