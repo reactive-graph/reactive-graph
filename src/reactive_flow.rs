@@ -186,9 +186,7 @@ impl TryFrom<Flow> for ReactiveFlow {
         }
         let mut relation_instances = HashMap::new();
         for relation_instance in flow.relation_instances {
-            let edge_key = relation_instance.get_key();
-            if edge_key.is_some() {
-                let edge_key = edge_key.unwrap();
+            if let Some(edge_key) = relation_instance.get_key() {
                 let outbound = entity_instances.get(&relation_instance.outbound_id);
                 if outbound.is_none() {
                     // outbound entity missing
