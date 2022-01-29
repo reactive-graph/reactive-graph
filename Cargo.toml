@@ -31,16 +31,19 @@ strum_macros = "0.23"
 syn = "1.0"
 futures-await-test = "0.3.0"
 futures = "0.3"
+futures-util = "0.3"
+futures-timer = "3.0"
 libloading = "0.7"
 signal-hook = "0.3.13"
 toml = "0.5"
+crossbeam = "0.8"
 
 actix = "0.12"
-actix-web = { version = "4.0.0-beta.20" }
+actix-web = { version = "4.0.0-beta.21", features = ["openssl"] }
 actix-rt = "2.6.0"
 actix-cors = "0.6.0-beta.8"
-actix-files = "0.6.0-beta.14"
-actix-http = "=3.0.0-beta.18"
+actix-files = "0.6.0-beta.15"
+actix-http = "3.0.0-beta.19"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "3.0", features = ["uuid"] }
 async-graphql-actix-web = { version = "3.0" }
