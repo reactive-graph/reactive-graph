@@ -115,11 +115,8 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
 
     fn delete(&self, edge_key: EdgeKey) -> bool {
         if self.has(edge_key.clone()) {
-            let r_transaction = self.graph_database.get_transaction();
-            if r_transaction.is_ok() {
-                let transaction = r_transaction.unwrap();
-                let result = transaction.delete_edges(SpecificEdgeQuery::single(edge_key));
-                return result.is_ok();
+            if let Ok(transaction) = self.graph_database.get_transaction() {
+                return transaction.delete_edges(SpecificEdgeQuery::single(edge_key)).is_ok();
             }
         }
         false
