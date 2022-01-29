@@ -232,7 +232,7 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             Err(e) => {
                 error!("Failed to load dynamic library: {}", e.to_string());
-                return Err(PluginError::PluginCreationError);
+                Err(PluginError::PluginCreationError)
             }
         }
     }
@@ -246,7 +246,7 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to initialize plugin {}: Not found", name);
-                return Err(PluginError::InitializationError);
+                Err(PluginError::InitializationError)
             }
         }
     }
@@ -260,7 +260,7 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to post-initialize plugin {}: Not found", name);
-                return Err(PluginError::PostInitializationError);
+                Err(PluginError::PostInitializationError)
             }
         }
     }
@@ -274,7 +274,7 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to pre-shutdown plugin {}: Not found", name);
-                return Err(PluginError::PreShutdownError);
+                Err(PluginError::PreShutdownError)
             }
         }
     }
@@ -288,7 +288,7 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to shutdown plugin {}: Not found", name);
-                return Err(PluginError::ShutdownError);
+                Err(PluginError::ShutdownError)
             }
         }
     }
