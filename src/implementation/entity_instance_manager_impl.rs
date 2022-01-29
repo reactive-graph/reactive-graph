@@ -82,7 +82,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
             }
             // TODO: Err(EntityInstanceDeserializationError.into())
         }
-        Err(EntityInstanceImportError.into())
+        Err(EntityInstanceImportError)
     }
 
     fn export(&self, id: Uuid, path: String) {
