@@ -62,7 +62,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
         let reader = self.label_path_tree.0.read().unwrap();
-        reader.find(label.as_str()).and_then(|result| self.get(*result.0).clone())
+        reader.find(label.as_str()).and_then(|result| self.get(*result.0))
     }
 
     fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
