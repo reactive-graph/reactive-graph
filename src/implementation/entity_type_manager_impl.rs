@@ -67,8 +67,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
         self.register(EntityType::new(
-            name.clone(),
-            group.clone(),
+            name,
+            group,
             components.to_vec(),
             behaviours.to_vec(),
             properties.to_vec(),
@@ -90,7 +90,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             if entity_type.is_ok() {
                 let entity_type: EntityType = entity_type.unwrap();
                 self.register(entity_type.clone());
-                return Ok(entity_type.clone());
+                return Ok(entity_type);
             }
         }
         Err(EntityTypeImportError.into())
