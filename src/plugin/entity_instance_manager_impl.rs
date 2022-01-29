@@ -50,15 +50,10 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
                         .create_with_id(entity_instance.type_name, entity_instance.id, entity_instance.properties);
                 match reactive_entity_instance {
                     Ok(reactive_entity_instance) => Ok(reactive_entity_instance),
-                    Err(_) => {
-                        return Err(EntityInstanceCreationError::Failed);
-                    }
+                    Err(_) => Err(EntityInstanceCreationError::Failed),
                 }
             }
-            None => {
-                // error!("Unknown entity type ");
-                return Err(EntityInstanceCreationError::Failed);
-            }
+            None => Err(EntityInstanceCreationError::Failed),
         }
     }
 
