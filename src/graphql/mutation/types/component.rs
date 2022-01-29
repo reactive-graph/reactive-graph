@@ -15,12 +15,10 @@ impl MutationComponents {
     /// Creates a new component with the given name and properties.
     async fn create(&self, context: &Context<'_>, name: String, properties: Option<Vec<PropertyTypeDefinition>>) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
-        let property_types;
-        if properties.is_some() {
-            property_types = properties.unwrap().iter().map(|property| property.clone().into()).collect();
-        } else {
-            property_types = Vec::new();
-        }
+        let property_types = match properties {
+            Some(properties) => properties.iter().map(|property| property.clone().into()).collect(),
+            None => Vec::new(),
+        };
         let component = crate::model::Component::new(name, property_types);
         component_manager.register(component.clone());
         Ok(component.into())
