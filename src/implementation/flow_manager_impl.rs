@@ -26,10 +26,8 @@ impl FlowManager for FlowManagerImpl {
         }
         for relation_instance in flow.relation_instances {
             let edge_key = relation_instance.get_key();
-            if edge_key.is_some() {
-                if !self.relation_instance_manager.has(edge_key.unwrap()) {
-                    let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
-                }
+            if edge_key.is_some() && !self.relation_instance_manager.has(edge_key.unwrap()) {
+                let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
             }
         }
         Err(FlowCreationError.into())
