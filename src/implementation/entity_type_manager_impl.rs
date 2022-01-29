@@ -34,12 +34,10 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     fn register(&self, mut entity_type: EntityType) -> EntityType {
         // Construct the type
         entity_type.t = Type::new(entity_type.name.clone()).unwrap();
-        for component_name in entity_type.components.to_vec() {
-            let component = self.component_manager.get(component_name.clone());
-            if component.is_some() {
-                entity_type.properties.append(&mut component.unwrap().properties);
-            } else {
-                warn!("Entity type {} not fully initialized: No component named {}", entity_type.name.clone(), component_name);
+        for component_name in entity_type.components.iter() {
+            match self.component_manager.get(component_name.clone()) {
+                Some(component) => entity_type.properties.append(&mut component.clone().properties),
+                None => warn!("Entity type {} not fully initialized: No component named {}", entity_type.name.clone(), component_name),
             }
         }
         self.entity_types.0.write().unwrap().push(entity_type.clone());
@@ -56,13 +54,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 
     fn get(&self, name: String) -> Option<EntityType> {
-        self.entity_types
-            .0
-            .read()
-            .unwrap()
-            .to_vec()
-            .into_iter()
-            .find(|entity_type| entity_type.name == name)
+        self.entity_types.0.read().unwrap().iter().find(|entity_type| entity_type.name == name).cloned()
     }
 
     fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
