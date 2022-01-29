@@ -25,7 +25,7 @@ fn create_external_type_dependency() -> ReactiveFlows {
 #[wrapper]
 pub struct FlowProviders(RwLock<Vec<Arc<dyn FlowProvider>>>);
 
-#[waiter_di::provides]
+#[provides]
 fn create_flow_providers() -> FlowProviders {
     FlowProviders(RwLock::new(Vec::new()))
 }
