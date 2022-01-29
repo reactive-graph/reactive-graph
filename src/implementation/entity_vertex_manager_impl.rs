@@ -22,11 +22,10 @@ pub struct EntityVertexManagerImpl {
 #[provides]
 impl EntityVertexManager for EntityVertexManagerImpl {
     fn has(&self, id: Uuid) -> bool {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let vertices = transaction.get_vertices(SpecificVertexQuery::single(id));
-            return vertices.unwrap().len() > 0;
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(vertices) = transaction.get_vertices(SpecificVertexQuery::single(id)) {
+                return !vertices.is_empty();
+            }
         }
         false
     }
