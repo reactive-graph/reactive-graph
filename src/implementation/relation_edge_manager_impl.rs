@@ -58,16 +58,10 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
     }
 
     fn get_properties(&self, edge_key: EdgeKey) -> Option<EdgeProperties> {
-        let r_transaction = self.graph_database.get_transaction();
-        if r_transaction.is_ok() {
-            let transaction = r_transaction.unwrap();
-            let result = transaction.get_all_edge_properties(SpecificEdgeQuery::single(edge_key));
-            if result.is_ok() {
-                let edge_properties = result.unwrap();
-                if edge_properties.is_empty() {
-                    // == 1 ?
-                    let edge_properties = edge_properties[0].clone();
-                    return Some(edge_properties);
+        if let Ok(transaction) = self.graph_database.get_transaction() {
+            if let Ok(edge_properties) = transaction.get_all_edge_properties(SpecificEdgeQuery::single(edge_key)) {
+                if !edge_properties.is_empty() {
+                    return Some(edge_properties[0].clone());
                 }
             }
         }
