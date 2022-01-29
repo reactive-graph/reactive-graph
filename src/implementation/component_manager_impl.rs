@@ -48,7 +48,7 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn get(&self, name: String) -> Option<crate::model::Component> {
-        self.components.0.read().unwrap().to_vec().into_iter().find(|component| component.name == name)
+        self.components.0.read().unwrap().iter().find(|component| component.name == name).cloned()
     }
 
     fn create(&self, name: String, properties: Vec<PropertyType>) {
