@@ -77,9 +77,8 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn commit(&self, relation_instance: RelationInstance) {
-        let edge_key = relation_instance.get_key();
-        if edge_key.is_some() {
-            self.relation_edge_manager.commit(edge_key.unwrap(), relation_instance.properties);
+        if let Some(edge_key) = relation_instance.get_key() {
+            self.relation_edge_manager.commit(edge_key, relation_instance.properties);
         }
     }
 
