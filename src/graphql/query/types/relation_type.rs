@@ -29,9 +29,7 @@ impl GraphQLRelationType {
                     .collect();
             }
             if let Some(entity_type) = entity_type_manager.get(self.relation_type.outbound_type.clone()) {
-                let mut outbound_types = Vec::new();
-                outbound_types.push(entity_type.into());
-                return outbound_types;
+                return vec![entity_type.into()];
             }
         }
         Vec::new()
@@ -67,9 +65,7 @@ impl GraphQLRelationType {
                     .collect();
             }
             if let Some(entity_type) = entity_type_manager.get(self.relation_type.inbound_type.clone()) {
-                let mut inbound_types = Vec::new();
-                inbound_types.push(entity_type.into());
-                return inbound_types;
+                return vec![entity_type.into()];
             }
         }
         Vec::new()
