@@ -27,11 +27,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn get(&self, edge_key: EdgeKey) -> Option<RelationInstance> {
-        let properties = self.relation_edge_manager.get_properties(edge_key);
-        if properties.is_some() {
-            return Some(RelationInstance::from(properties.unwrap()));
-        }
-        None
+        self.relation_edge_manager.get_properties(edge_key).map(RelationInstance::from)
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<RelationInstance> {
