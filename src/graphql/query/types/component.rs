@@ -34,12 +34,7 @@ impl GraphQLComponent {
                 .map(|property_type| property_type.into())
                 .collect();
         }
-        self.component
-            .properties
-            .to_vec()
-            .into_iter()
-            .map(|property_type| property_type.into())
-            .collect()
+        self.component.properties.iter().cloned().map(|property_type| property_type.into()).collect()
     }
 }
 
