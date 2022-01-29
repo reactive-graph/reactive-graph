@@ -76,7 +76,7 @@ impl EntityVertexManager for EntityVertexManagerImpl {
             }
         }
         debug!("Created vertex {}", id);
-        return Ok(id);
+        Ok(id)
     }
 
     fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError> {
@@ -113,7 +113,7 @@ impl EntityVertexManager for EntityVertexManagerImpl {
             }
         }
         debug!("Created vertex with id {}", id);
-        return Ok(id);
+        Ok(id)
     }
 
     fn commit(&self, id: Uuid, properties: HashMap<String, Value>) {
