@@ -96,7 +96,7 @@ impl PluginRegistry for PluginRegistryImpl {
         unsafe {
             let result = self.load(path.clone());
             if result.is_err() {
-                error!("Failed to load plugin {} from {}", name.clone(), path.clone());
+                error!("Failed to load plugin {} from {}", name, path);
                 return;
             }
             let plugin_proxy = self.get(name.clone());
@@ -157,7 +157,7 @@ impl PluginRegistry for PluginRegistryImpl {
                     }
                 }
                 None => {
-                    error!("Failed to initialize plugin {} from {}", name.clone(), path.clone());
+                    error!("Failed to initialize plugin {} from {}", name, path);
                     // TODO: Handle error: plugin with name not found
                 }
             }
@@ -249,11 +249,11 @@ impl PluginRegistry for PluginRegistryImpl {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
-                debug!("Initializing plugin {}", name.clone());
+                debug!("Initializing plugin {}", name);
                 plugin_proxy.init()
             }
             None => {
-                error!("Failed to initialize plugin {}: Not found", name.clone());
+                error!("Failed to initialize plugin {}: Not found", name);
                 return Err(PluginError::InitializationError);
             }
         }
@@ -263,11 +263,11 @@ impl PluginRegistry for PluginRegistryImpl {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
-                debug!("Post-Initializing plugin {}", name.clone());
+                debug!("Post-Initializing plugin {}", name);
                 plugin_proxy.post_init()
             }
             None => {
-                error!("Failed to post-initialize plugin {}: Not found", name.clone());
+                error!("Failed to post-initialize plugin {}: Not found", name);
                 return Err(PluginError::PostInitializationError);
             }
         }
@@ -277,11 +277,11 @@ impl PluginRegistry for PluginRegistryImpl {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
-                debug!("Pre-Shutdown plugin {}", name.clone());
+                debug!("Pre-Shutdown plugin {}", name);
                 plugin_proxy.pre_shutdown()
             }
             None => {
-                error!("Failed to pre-shutdown plugin {}: Not found", name.clone());
+                error!("Failed to pre-shutdown plugin {}: Not found", name);
                 return Err(PluginError::PreShutdownError);
             }
         }
@@ -291,11 +291,11 @@ impl PluginRegistry for PluginRegistryImpl {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
-                debug!("Shutting down plugin {}", name.clone());
+                debug!("Shutting down plugin {}", name);
                 plugin_proxy.shutdown()
             }
             None => {
-                error!("Failed to shutdown plugin {}: Not found", name.clone());
+                error!("Failed to shutdown plugin {}: Not found", name);
                 return Err(PluginError::ShutdownError);
             }
         }
