@@ -34,21 +34,7 @@ impl WebResourceManager for WebResourceManagerImpl {
     }
 
     fn get(&self, web_resource_name: String) -> Option<Arc<dyn WebResourceProvider>> {
-        self.web_resource_providers
-            .0
-            .read()
-            .unwrap()
-            .get(web_resource_name.as_str())
-            .map(|web_resource_provider| web_resource_provider.clone())
-        // let x =
-        // match x {
-        //     Some(web_resource_provider) => Some(web_resource_provider.clone()),
-        //     None => None
-        // }
-
-        // .to_vec()
-        // .into_iter()
-        // .find(|web_resource| web_resource.name == web_resource_name)
+        self.web_resource_providers.0.read().unwrap().get(web_resource_name.as_str()).cloned()
     }
 
     fn add_provider(&self, web_resource_provider: Arc<dyn WebResourceProvider>) {
