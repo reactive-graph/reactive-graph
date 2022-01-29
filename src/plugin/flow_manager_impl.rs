@@ -27,9 +27,7 @@ impl FlowManager for FlowManagerImpl {
         let reactive_flow = self.reactive_flow_manager.create(flow);
         match reactive_flow {
             Ok(reactive_flow) => Ok(reactive_flow),
-            Err(_) => {
-                return Err(FlowCreationError::Failed);
-            }
+            Err(_) => Err(FlowCreationError::Failed),
         }
     }
 
