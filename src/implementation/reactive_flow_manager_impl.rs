@@ -177,10 +177,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
             // Register added relations
             for edge_key in reactive_flow.relations_added.read().unwrap().iter() {
-                let relation_instance = reactive_flow.get_relation(edge_key.clone());
-                if relation_instance.is_some() {
-                    self.reactive_relation_instance_manager
-                        .register_reactive_instance(relation_instance.unwrap().clone());
+                if let Some(relation_instance) = reactive_flow.get_relation(edge_key.clone()) {
+                    self.reactive_relation_instance_manager.register_reactive_instance(relation_instance.clone());
                 }
             }
             reactive_flow.relations_added.write().unwrap().clear();
