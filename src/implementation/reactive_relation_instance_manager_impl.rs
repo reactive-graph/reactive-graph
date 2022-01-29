@@ -9,7 +9,7 @@ use waiter_di::*;
 
 use crate::api::{
     ComponentBehaviourManager, ReactiveEntityInstanceManager, ReactiveRelationInstanceCreationError, ReactiveRelationInstanceImportError,
-    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationEdgeManager, RelationInstanceManager,
+    ReactiveRelationInstanceManager, RelationBehaviourManager, RelationEdgeManager, RelationInstanceImportError, RelationInstanceManager,
 };
 use crate::model::{ReactiveRelationInstance, RelationInstance};
 
@@ -154,15 +154,13 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceImportError> {
-        let result = self.relation_instance_manager.import(path);
-        if result.is_ok() {
-            let relation_instance = result.unwrap();
-            let result = self.create_reactive_instance(relation_instance);
-            if result.is_ok() {
-                return Ok(result.unwrap());
-            }
+        match self.relation_instance_manager.import(path) {
+            Ok(relation_instance) => match self.create_reactive_instance(relation_instance) {
+                Ok(reactive_relation_instance) => Ok(reactive_relation_instance),
+                Err(error) => Err(ReactiveRelationInstanceImportError::ReactiveRelationInstanceCreation(error)),
+            },
+            Err(error) => Err(ReactiveRelationInstanceImportError::RelationInstanceImport(error)),
         }
-        Err(ReactiveRelationInstanceImportError)
     }
 
     fn export(&self, edge_key: EdgeKey, path: String) {

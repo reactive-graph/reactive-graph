@@ -7,7 +7,7 @@ use indradb::{EdgeKey, ValidationError};
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::RelationInstanceCreationError;
+use crate::api::{RelationInstanceCreationError, RelationInstanceImportError};
 use crate::model::{ReactiveRelationInstance, RelationInstance};
 
 #[derive(Debug)]
@@ -47,7 +47,10 @@ impl fmt::Display for ReactiveRelationInstanceCreationError {
 }
 
 #[derive(Debug)]
-pub struct ReactiveRelationInstanceImportError;
+pub enum ReactiveRelationInstanceImportError {
+    RelationInstanceImport(RelationInstanceImportError),
+    ReactiveRelationInstanceCreation(ReactiveRelationInstanceCreationError),
+}
 
 #[async_trait]
 pub trait ReactiveRelationInstanceManager: Send + Sync {
