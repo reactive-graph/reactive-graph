@@ -24,7 +24,30 @@ impl fmt::Display for EntityInstanceCreationError {
 }
 
 #[derive(Debug)]
-pub struct EntityInstanceImportError;
+pub enum EntityInstanceImportError {
+    Io(std::io::Error),
+    Deserialization(serde_json::Error),
+    EntityAlreadyExists(Uuid),
+    VertexCreation(EntityVertexCreationError),
+}
+
+impl From<std::io::Error> for EntityInstanceImportError {
+    fn from(e: std::io::Error) -> Self {
+        EntityInstanceImportError::Io(e)
+    }
+}
+
+impl From<serde_json::Error> for EntityInstanceImportError {
+    fn from(e: serde_json::Error) -> Self {
+        EntityInstanceImportError::Deserialization(e)
+    }
+}
+
+impl From<EntityVertexCreationError> for EntityInstanceImportError {
+    fn from(e: EntityVertexCreationError) -> Self {
+        EntityInstanceImportError::VertexCreation(e)
+    }
+}
 
 #[async_trait]
 pub trait EntityInstanceManager: Send + Sync {

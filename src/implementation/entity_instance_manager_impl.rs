@@ -9,7 +9,7 @@ use serde_json::Value;
 use uuid::Uuid;
 use waiter_di::*;
 
-use crate::api::{EntityInstanceCreationError, EntityInstanceImportError, EntityInstanceManager, EntityVertexManager};
+use crate::api::{EntityInstanceCreationError, EntityInstanceImportError, EntityInstanceManager, EntityVertexCreationError, EntityVertexManager};
 use crate::model::EntityInstance;
 
 #[component]
@@ -63,42 +63,26 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn import(&self, path: String) -> Result<Uuid, EntityInstanceImportError> {
-        let file = File::open(path);
-        if file.is_ok() {
-            let file = file.unwrap();
-            let reader = BufReader::new(file);
-            let entity_instance = serde_json::from_reader(reader);
-            if entity_instance.is_ok() {
-                let entity_instance: EntityInstance = entity_instance.unwrap();
-                if !self.has(entity_instance.id) {
-                    let result = self
-                        .entity_vertex_manager
-                        .create_with_id(entity_instance.type_name, entity_instance.id, entity_instance.properties);
-                    if result.is_ok() {
-                        return Ok(entity_instance.id);
-                    }
-                }
-                // TODO: Err(EntityInstanceExistsError.into())
-            }
-            // TODO: Err(EntityInstanceDeserializationError.into())
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        let entity_instance: EntityInstance = serde_json::from_reader(reader)?;
+        if self.has(entity_instance.id) {
+            return Err(EntityInstanceImportError::EntityAlreadyExists(entity_instance.id));
         }
-        Err(EntityInstanceImportError)
+        self.entity_vertex_manager
+            .create_with_id(entity_instance.type_name, entity_instance.id, entity_instance.properties)
+            .map_err(EntityVertexCreationError::into)
     }
 
     fn export(&self, id: Uuid, path: String) {
-        let o_entity_instance = self.get(id);
-        if o_entity_instance.is_some() {
-            let r_file = File::create(path.clone());
-            match r_file {
+        if let Some(entity_instance) = self.get(id) {
+            match File::create(path.clone()) {
                 Ok(file) => {
-                    let result = serde_json::to_writer_pretty(&file, &o_entity_instance.unwrap());
-                    if result.is_err() {
-                        error!("Failed to export entity instance {} to {}: {}", id, path, result.err().unwrap());
+                    if let Err(error) = serde_json::to_writer_pretty(&file, &entity_instance) {
+                        error!("Failed to export entity instance {} to {}: {}", id, path, error);
                     }
                 }
-                Err(error) => {
-                    error!("Failed to export entity instance {} to {}: {}", id, path, error.to_string());
-                }
+                Err(error) => error!("Failed to export entity instance {} to {}: {}", id, path, error.to_string()),
             }
         }
     }
