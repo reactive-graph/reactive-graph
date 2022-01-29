@@ -53,7 +53,7 @@ impl GraphQLFlow {
     async fn wrapper(&self) -> Option<GraphQLEntityInstance> {
         self.flow
             .get_wrapper_entity_instance()
-            .and_then(|wrapper_entity_instance| Some(wrapper_entity_instance.clone().into()))
+            .and_then(|wrapper_entity_instance| Some(wrapper_entity_instance.into()))
     }
 
     /// The entity instances contained by this flow.
