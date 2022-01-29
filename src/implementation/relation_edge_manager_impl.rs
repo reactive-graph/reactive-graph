@@ -126,10 +126,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             if r_transaction.is_ok() {
                 let transaction = r_transaction.unwrap();
                 let result = transaction.delete_edges(SpecificEdgeQuery::single(edge_key));
-                return match result {
-                    Ok(_) => true,
-                    Err(_) => false,
-                };
+                return result.is_ok();
             }
         }
         false
