@@ -40,12 +40,12 @@ pub struct ReactiveRelationInstanceManagerImpl {
 #[provides]
 impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     fn has(&self, edge_key: EdgeKey) -> bool {
-        self.relation_instance_manager.has(edge_key.clone()) && self.reactive_relation_instances.0.read().unwrap().contains_key(&edge_key.clone())
+        self.relation_instance_manager.has(edge_key.clone()) && self.reactive_relation_instances.0.read().unwrap().contains_key(&edge_key)
     }
 
     fn get(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
-        let instance = reader.get(&edge_key.clone());
+        let instance = reader.get(&edge_key);
         if instance.is_some() {
             return Some(instance.unwrap().clone());
         }
@@ -81,12 +81,12 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceCreationError> {
-        let result = self.relation_instance_manager.create(edge_key.clone(), properties);
+        let result = self.relation_instance_manager.create(edge_key, properties);
         if result.is_err() {
             return Err(ReactiveRelationInstanceCreationError::RelationInstanceCreationError(result.err().unwrap()));
         }
         let edge_key = result.unwrap();
-        let relation_instance = self.relation_instance_manager.get(edge_key.clone());
+        let relation_instance = self.relation_instance_manager.get(edge_key);
         if relation_instance.is_some() {
             return self.create_reactive_instance(relation_instance.unwrap());
         }
@@ -110,9 +110,9 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
 
         let outbound = outbound.unwrap();
         let inbound = inbound.unwrap();
-        let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound.clone(), inbound.clone(), relation_instance));
+        let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance));
         self.register_reactive_instance(reactive_relation_instance.clone());
-        return Ok(reactive_relation_instance.clone());
+        return Ok(reactive_relation_instance);
 
         // if outbound.is_some() && inbound.is_some() {
         // }
@@ -132,7 +132,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 .unwrap()
                 .insert(edge_key.unwrap(), reactive_relation_instance.clone());
             self.component_behaviour_manager.add_behaviours_to_relation(reactive_relation_instance.clone());
-            self.relation_behaviour_manager.add_behaviours(reactive_relation_instance.clone());
+            self.relation_behaviour_manager.add_behaviours(reactive_relation_instance);
         }
     }
 
@@ -144,12 +144,12 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             reactive_relation_instance
         } else {
             // Instance with the given edge key exists. Don't register but return the existing reactive instance instead
-            self.get(edge_key.clone()).unwrap()
+            self.get(edge_key).unwrap()
         }
     }
 
     fn commit(&self, edge_key: EdgeKey) {
-        let reactive_relation_instance = self.get(edge_key.clone());
+        let reactive_relation_instance = self.get(edge_key);
         if reactive_relation_instance.is_some() {
             self.relation_instance_manager.commit(reactive_relation_instance.unwrap().into());
         }
@@ -159,16 +159,16 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         if self.has(edge_key.clone()) {
             self.unregister_reactive_instance(edge_key.clone());
         }
-        self.relation_instance_manager.delete(edge_key.clone())
+        self.relation_instance_manager.delete(edge_key)
     }
 
     fn unregister_reactive_instance(&self, edge_key: EdgeKey) {
         self.relation_behaviour_manager.remove_behaviours_by_key(edge_key.clone());
-        self.reactive_relation_instances.0.write().unwrap().remove(&edge_key.clone());
+        self.reactive_relation_instances.0.write().unwrap().remove(&edge_key);
     }
 
     fn import(&self, path: String) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceImportError> {
-        let result = self.relation_instance_manager.import(path.clone());
+        let result = self.relation_instance_manager.import(path);
         if result.is_ok() {
             let relation_instance = result.unwrap();
             let result = self.create_reactive_instance(relation_instance);
@@ -182,7 +182,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     fn export(&self, edge_key: EdgeKey, path: String) {
         if self.has(edge_key.clone()) {
             self.commit(edge_key.clone());
-            self.relation_instance_manager.export(edge_key.clone(), path);
+            self.relation_instance_manager.export(edge_key, path);
         }
     }
 }
