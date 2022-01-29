@@ -51,7 +51,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         if result.is_err() {
             return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
         }
-        return Ok(result.unwrap());
+        Ok(result.unwrap())
     }
 
     fn commit(&self, entity_instance: EntityInstance) {
