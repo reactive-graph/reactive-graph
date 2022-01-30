@@ -1,24 +1,24 @@
 [package]
 name = "inexor-rgf-core-plugins"
 description = "Inexor - Reactive Graph Flow - Core - Plugins"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
 
 [dependencies]
-actix-http = { version = "3.0.0-beta.15" }
-actix-web = { version = "4.0.0-beta.14" }
-async-std = { version = "1.8", features = ["attributes"] }
-indradb-lib = "1"
+actix-http = { version = "3.0.0-beta.19" }
+actix-web = { version = "4.0.0-beta.21" }
+async-std = { version = "1.10", features = ["attributes"] }
+indradb-lib = "3"
 query_interface = "0.3"
 serde = { version = "1.0", features = [ "derive" ] }
 serde_json = "1.0"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
-inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git", branch = "feature/upgrade_indradb_v3" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git", branch = "feature/upgrade_indradb_v3" }
 
 [dev-dependencies]
 random-string = "1.0"
