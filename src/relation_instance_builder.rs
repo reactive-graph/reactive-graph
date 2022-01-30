@@ -52,7 +52,7 @@ impl From<EdgeKey> for RelationInstanceBuilder {
     fn from(edge_key: EdgeKey) -> Self {
         RelationInstanceBuilder {
             outbound_id: edge_key.outbound_id,
-            type_name: edge_key.t.0.clone(),
+            type_name: edge_key.t.to_string(),
             inbound_id: edge_key.inbound_id,
             properties: HashMap::new(),
         }

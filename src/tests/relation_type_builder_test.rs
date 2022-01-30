@@ -40,7 +40,7 @@ fn relation_type_builder_test() {
     assert_eq!(outbound_type, relation_type.outbound_type.clone());
     assert_eq!(inbound_type, relation_type.inbound_type.clone());
     assert_eq!(type_name, relation_type.type_name);
-    assert_eq!(type_name, relation_type.t.0);
+    assert_eq!(type_name, relation_type.t.to_string());
     assert!(relation_type.is_a(component_1_name.clone()));
     assert!(relation_type.is_a(component_2_name.clone()));
     assert!(!relation_type.is_a(r_string()));

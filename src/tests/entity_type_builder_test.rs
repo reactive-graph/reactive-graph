@@ -34,7 +34,7 @@ fn entity_type_builder_test() {
         .extension(extension_2_name.clone(), json!(true))
         .build();
     assert_eq!(type_name, entity_type.name);
-    assert_eq!(type_name, entity_type.t.0);
+    assert_eq!(type_name, entity_type.t.to_string());
     assert_eq!(group_name.clone(), entity_type.group);
     assert!(entity_type.is_a(component_1_name.clone()));
     assert!(entity_type.is_a(component_2_name.clone()));

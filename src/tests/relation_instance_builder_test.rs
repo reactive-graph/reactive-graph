@@ -1,6 +1,6 @@
 use crate::tests::utils::r_string;
 use crate::RelationInstanceBuilder;
-use indradb::{EdgeKey, Type};
+use indradb::{EdgeKey, Identifier};
 use inexor_rgf_core_model::PropertyInstanceGetter;
 use serde_json::json;
 use uuid::Uuid;
@@ -35,7 +35,7 @@ fn relation_instance_from_edge_key_test() {
     let inbound_id = Uuid::new_v4();
     let property_1_name = r_string();
     let property_1_value = r_string();
-    let t = Type(type_name.clone());
+    let t = Identifier::new(&type_name).unwrap();
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
     let relation_instance = RelationInstanceBuilder::from(edge_key.clone())
         .property(property_1_name.clone(), json!(property_1_value.clone()))
