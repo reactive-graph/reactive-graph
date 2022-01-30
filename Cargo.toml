@@ -17,8 +17,8 @@ serde_json = "1.0"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git", branch = "feature/upgrade_indradb_v3" }
-inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git", branch = "feature/upgrade_indradb_v3" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
 
 [dev-dependencies]
 random-string = "1.0"
