@@ -11,8 +11,6 @@ pub struct RelationEdgeKeyInvalid;
 
 #[derive(Debug)]
 pub enum RelationEdgeCreationError {
-    NoTransaction,
-    // UuidTaken(Uuid),
     RelationTypeMissing(String),
     MissingRequiredProperty(String),
     GraphDatabaseError(indradb::Error),
@@ -21,8 +19,6 @@ pub enum RelationEdgeCreationError {
 impl fmt::Display for RelationEdgeCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
-            RelationEdgeCreationError::NoTransaction => write!(f, "No transaction"),
-            // RelationEdgeCreationError::UuidTaken(id) => write!(f, "The UUID {} has been already taken!", id),
             RelationEdgeCreationError::RelationTypeMissing(relation_type) => {
                 write!(f, "Relation type {} does not exist!", relation_type.clone())
             }

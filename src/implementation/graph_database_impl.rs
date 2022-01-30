@@ -1,15 +1,16 @@
 use async_trait::async_trait;
-use indradb::{Datastore, MemoryDatastore};
+use indradb::MemoryDatastore;
+use std::sync::Arc;
 use waiter_di::*;
 
 use crate::api::GraphDatabase;
 
 #[wrapper]
-pub struct InexorDatastore(MemoryDatastore);
+pub struct InexorDatastore(Arc<MemoryDatastore>);
 
 #[provides]
 fn create_external_type_dependency() -> InexorDatastore {
-    InexorDatastore(MemoryDatastore::default())
+    InexorDatastore(Arc::new(MemoryDatastore::default()))
 }
 
 #[component]
@@ -20,7 +21,7 @@ pub struct GraphDatabaseImpl {
 #[async_trait]
 #[provides]
 impl GraphDatabase for GraphDatabaseImpl {
-    fn get_transaction(&self) -> indradb::Result<indradb::MemoryTransaction> {
-        self.datastore.0.transaction()
+    fn get_datastore(&self) -> Arc<MemoryDatastore> {
+        self.datastore.0.clone()
     }
 }

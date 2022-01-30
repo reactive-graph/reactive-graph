@@ -3,7 +3,7 @@ use std::str::FromStr;
 
 use async_graphql::*;
 use indradb::EdgeKey;
-use indradb::Type;
+use indradb::Identifier;
 use uuid::Uuid;
 
 /// The primary key of an edge consists of the outbound id, the
@@ -28,7 +28,7 @@ impl fmt::Display for GraphQLEdgeKey {
 
 impl From<GraphQLEdgeKey> for EdgeKey {
     fn from(edge_key: GraphQLEdgeKey) -> Self {
-        let t = Type::from_str(edge_key.type_name.as_str()).unwrap();
+        let t = Identifier::from_str(edge_key.type_name.as_str()).unwrap();
         EdgeKey {
             outbound_id: edge_key.outbound_id,
             t,

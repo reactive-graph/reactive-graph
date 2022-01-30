@@ -26,7 +26,7 @@ pub struct RelationBehaviourManagerImpl {
 #[provides]
 impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     fn add_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        trace!("RelationBehaviourManager::add_behaviours {}", relation_instance.get_key().unwrap().t.0.as_str());
+        trace!("RelationBehaviourManager::add_behaviours {}", relation_instance.get_key().unwrap().t.to_string());
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours(relation_instance.clone())
         }

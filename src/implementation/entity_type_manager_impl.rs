@@ -3,7 +3,7 @@ use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
-use indradb::Type;
+use indradb::Identifier;
 use log::{debug, error, warn};
 use waiter_di::*;
 
@@ -33,7 +33,7 @@ pub struct EntityTypeManagerImpl {
 impl EntityTypeManager for EntityTypeManagerImpl {
     fn register(&self, mut entity_type: EntityType) -> EntityType {
         // Construct the type
-        entity_type.t = Type::new(entity_type.name.clone()).unwrap();
+        entity_type.t = Identifier::new(entity_type.name.clone()).unwrap();
         for component_name in entity_type.components.iter() {
             match self.component_manager.get(component_name.clone()) {
                 Some(component) => entity_type.properties.append(&mut component.clone().properties),

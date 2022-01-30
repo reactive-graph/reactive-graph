@@ -276,7 +276,7 @@ impl MutationFlows {
 
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, relation_type.unwrap().properties);
 
-        let relation_instance = match indradb::Type::new(edge_key.type_name.clone()) {
+        let relation_instance = match indradb::Identifier::new(edge_key.type_name.clone()) {
             Ok(_) => {
                 let edge_key: EdgeKey = edge_key.into();
                 relation_instance_manager.create(edge_key, properties)

@@ -3,7 +3,7 @@ cargo-features = ["strip"]
 [package]
 name = "inexor-rgf-application"
 description = "Inexor - Reactive Graph Flow - Application"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
@@ -25,7 +25,7 @@ async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 lazy_static = "1.4.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-indradb-lib = "1"
+indradb-lib = "3"
 strum = { version = "0.23", features = ["derive"] }
 strum_macros = "0.23"
 syn = "1.0"
@@ -51,10 +51,10 @@ mime = "0.3"
 path-tree = "0.2"
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
-inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
-inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
+inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git", branch = "feature/upgrade_indradb_v3" }
+inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git", branch = "feature/upgrade_indradb_v3" }
+inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git", branch = "feature/upgrade_indradb_v3" }
+inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git", branch = "feature/upgrade_indradb_v3" }
 
 [dev-dependencies]
 random-string = "1.0"

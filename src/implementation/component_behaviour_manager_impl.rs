@@ -35,7 +35,7 @@ impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
     }
 
     fn add_behaviours_to_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        trace!("ComponentBehaviourManager::add_behaviours_to_relation {}", relation_instance.get_key().unwrap().t.0.as_str());
+        trace!("ComponentBehaviourManager::add_behaviours_to_relation {}", relation_instance.get_key().unwrap().t.to_string());
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours_to_relation(relation_instance.clone())
         }

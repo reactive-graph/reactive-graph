@@ -8,7 +8,6 @@ use uuid::Uuid;
 
 #[derive(Debug)]
 pub enum EntityVertexCreationError {
-    NoTransaction,
     UuidTaken(Uuid),
     EntityTypeMissing(String),
     GraphDatabaseError(indradb::Error),
@@ -17,7 +16,6 @@ pub enum EntityVertexCreationError {
 impl fmt::Display for EntityVertexCreationError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
-            EntityVertexCreationError::NoTransaction => write!(f, "No transaction"),
             EntityVertexCreationError::UuidTaken(id) => {
                 write!(f, "The UUID {} has been already taken!", id)
             }

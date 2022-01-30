@@ -3,7 +3,7 @@ use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
-use indradb::Type;
+use indradb::Identifier;
 use log::{debug, error, warn};
 use waiter_di::*;
 
@@ -36,7 +36,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     fn register(&self, mut relation_type: RelationType) {
         debug!("Registered relation type {}", relation_type.type_name.clone());
         // Construct the type
-        relation_type.t = Type::new(relation_type.type_name.clone()).unwrap();
+        relation_type.t = Identifier::new(relation_type.type_name.clone()).unwrap();
         if relation_type.outbound_type != "*" && !self.entity_type_manager.has(relation_type.outbound_type.clone()) {
             warn!(
                 "Relation type {} not initialized: Outbound entity type does not exist {}",
