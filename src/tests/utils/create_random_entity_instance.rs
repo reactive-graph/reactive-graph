@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use indradb::{NamedProperty, Type, Vertex, VertexProperties};
+use indradb::{Identifier, NamedProperty, Vertex, VertexProperties};
 use serde_json::json;
 use uuid::Uuid;
 
@@ -16,11 +16,11 @@ pub fn create_random_entity_instance_with_type<S: Into<String>>(
     property_name: S,
 ) -> ReactiveEntityInstance {
     let uuid = Uuid::new_v4();
-    let t = Type::from_str(type_name.into().as_str()).unwrap();
+    let t = Identifier::from_str(type_name.into().as_str()).unwrap();
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: property_name.into().clone(),
+        name: Identifier::new(property_name).unwrap(),
         value: property_value_json,
     };
     let properties = vec![property];
@@ -43,11 +43,11 @@ pub fn create_entity_instance_with_type<S: Into<String>>(
     property_name: S,
 ) -> EntityInstance {
     let uuid = Uuid::new_v4();
-    let t = Type::from_str(type_name.into().as_str()).unwrap();
+    let t = Identifier::from_str(type_name.into().as_str()).unwrap();
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: property_name.into().clone(),
+        name: Identifier::new(property_name).unwrap(),
         value: property_value_json,
     };
     let properties = vec![property];

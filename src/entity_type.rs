@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use indradb::Type;
+use indradb::Identifier;
 use serde::{Deserialize, Serialize};
 
 use crate::extension::Extension;
@@ -39,7 +39,7 @@ pub struct EntityType {
     pub extensions: Vec<Extension>,
 
     #[serde(skip)]
-    pub t: Type,
+    pub t: Identifier,
 }
 
 impl EntityType {
@@ -53,7 +53,7 @@ impl EntityType {
     ) -> EntityType {
         let name = name.into();
         let group = group.into();
-        let t = Type::from_str(name.as_str()).unwrap();
+        let t = Identifier::from_str(name.as_str()).unwrap();
         EntityType {
             name,
             group,

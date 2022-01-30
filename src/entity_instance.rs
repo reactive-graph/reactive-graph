@@ -64,12 +64,13 @@ impl EntityInstance {
 
 impl From<VertexProperties> for EntityInstance {
     fn from(properties: VertexProperties) -> Self {
-        let type_name = properties.vertex.t.0.clone();
+        let type_name = properties.vertex.t.to_string();
+        // let type_name = properties.vertex.t.0.clone();
         let id = properties.vertex.id;
         let properties: HashMap<String, Value> = properties
             .props
             .iter()
-            .map(|p| (p.name.clone(), p.value.clone()))
+            .map(|p| (p.name.to_string(), p.value.clone()))
             .collect();
         EntityInstance {
             type_name,

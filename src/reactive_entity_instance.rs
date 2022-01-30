@@ -37,17 +37,17 @@ impl From<VertexProperties> for ReactiveEntityInstance {
             .iter()
             .map(|named_property| {
                 (
-                    named_property.name.clone(),
+                    named_property.name.to_string(),
                     ReactivePropertyInstance::new(
                         id,
-                        named_property.name.clone(),
+                        named_property.name.to_string(),
                         named_property.value.clone(),
                     ),
                 )
             })
             .collect();
         ReactiveEntityInstance {
-            type_name: properties.vertex.t.0,
+            type_name: properties.vertex.t.to_string(),
             id,
             description: String::new(),
             properties: instance_properties,

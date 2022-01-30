@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 
-use indradb::{EdgeKey, EdgeProperties, Type};
+use indradb::{EdgeKey, EdgeProperties, Identifier};
 use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 use uuid::Uuid;
@@ -77,7 +77,7 @@ impl RelationInstance {
     }
 
     pub fn get_key(&self) -> Option<EdgeKey> {
-        Type::from_str(self.type_name.as_str())
+        Identifier::from_str(self.type_name.as_str())
             .map(|t| EdgeKey::new(self.outbound_id, t, self.inbound_id))
             .ok()
     }
@@ -87,13 +87,13 @@ impl From<EdgeProperties> for RelationInstance {
     fn from(properties: EdgeProperties) -> Self {
         RelationInstance {
             outbound_id: properties.edge.key.outbound_id,
-            type_name: properties.edge.key.t.0.clone(),
+            type_name: properties.edge.key.t.to_string(),
             inbound_id: properties.edge.key.inbound_id,
             description: String::new(),
             properties: properties
                 .props
                 .iter()
-                .map(|p| (p.name.clone(), p.value.clone()))
+                .map(|p| (p.name.to_string(), p.value.clone()))
                 .collect(),
         }
     }

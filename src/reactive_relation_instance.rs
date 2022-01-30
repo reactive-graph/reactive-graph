@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::ops::Deref;
 use std::sync::Arc;
 
-use indradb::{EdgeKey, EdgeProperties, Type};
+use indradb::{EdgeKey, EdgeProperties, Identifier};
 use serde_json::{Map, Value};
 use uuid::Uuid;
 
@@ -57,16 +57,16 @@ impl ReactiveRelationInstance {
         inbound: Arc<ReactiveEntityInstance>,
         properties: EdgeProperties,
     ) -> ReactiveRelationInstance {
-        let type_name = properties.edge.key.t.0.clone();
+        let type_name = properties.edge.key.t.to_string();
         let properties = properties
             .props
             .iter()
             .map(|named_property| {
                 (
-                    named_property.name.clone(),
+                    named_property.name.to_string(),
                     ReactivePropertyInstance::new(
                         Uuid::new_v4(), // or generate a combined uuid from "outbound_id + type + inbound_id"
-                        named_property.name.clone(),
+                        named_property.name.to_string(),
                         named_property.value.clone(),
                     ),
                 )
@@ -136,10 +136,9 @@ impl ReactiveRelationInstance {
     }
 
     pub fn get_key(&self) -> Option<EdgeKey> {
-        match Type::new(self.type_name.as_str()) {
-            Ok(t) => Some(EdgeKey::new(self.outbound.id, t, self.inbound.id)),
-            Err(_err) => None,
-        }
+        Identifier::new(self.type_name.as_str())
+            .map(|t| EdgeKey::new(self.outbound.id, t, self.inbound.id))
+            .ok()
     }
 
     pub fn tick(&self) {

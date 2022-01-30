@@ -1,6 +1,6 @@
 use crate::tests::utils::r_string;
 use crate::{ReactiveEntityInstance, ReactiveRelationInstance};
-use indradb::{Edge, EdgeKey, EdgeProperties, NamedProperty, Type};
+use indradb::{Edge, EdgeKey, EdgeProperties, Identifier, NamedProperty};
 use serde_json::json;
 use std::collections::HashMap;
 use std::str::FromStr;
@@ -12,11 +12,11 @@ pub fn create_random_relation_instance(
     property_name: String,
 ) -> ReactiveRelationInstance {
     let type_name = r_string();
-    let t = Type::from_str(type_name.as_str()).unwrap();
+    let t = Identifier::from_str(type_name.as_str()).unwrap();
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: property_name.clone(),
+        name: Identifier::new(property_name).unwrap(),
         value: property_value_json,
     };
     let properties = vec![property];

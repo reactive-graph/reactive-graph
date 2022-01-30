@@ -1,13 +1,13 @@
 [package]
 name = "inexor-rgf-core-model"
 description = "Inexor - Reactive Graph Flow - Core - Model"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
 
 [dependencies]
-indradb-lib = "1"
+indradb-lib = "3"
 serde = { version = "1.0", features = [ "derive" ] }
 serde_json = "1.0"
 uuid = { version = "0.8", features = ["serde", "v4"] }

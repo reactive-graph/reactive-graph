@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use indradb::Type;
+use indradb::Identifier;
 use serde::{Deserialize, Serialize};
 
 use crate::extension::Extension;
@@ -53,7 +53,7 @@ pub struct RelationType {
     pub extensions: Vec<Extension>,
 
     #[serde(skip)]
-    pub t: Type,
+    pub t: Identifier,
 }
 
 impl RelationType {
@@ -67,7 +67,7 @@ impl RelationType {
         extensions: Vec<Extension>,
     ) -> RelationType {
         let type_name = type_name.into();
-        let t = Type::from_str(type_name.as_str()).unwrap();
+        let t = Identifier::from_str(type_name.as_str()).unwrap();
         RelationType {
             outbound_type: outbound_type.into(),
             full_name: type_name.clone(),

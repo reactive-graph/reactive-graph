@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::ops::Index;
 use std::str::FromStr;
 
-use indradb::{NamedProperty, Type, Vertex, VertexProperties};
+use indradb::{Identifier, NamedProperty, Vertex, VertexProperties};
 use serde_json::json;
 use uuid::Uuid;
 
@@ -71,12 +71,12 @@ fn create_entity_instance_without_properties_test() {
 fn create_entity_instance_from_vertex_properties() {
     let uuid = Uuid::new_v4();
     let type_name = r_string();
-    let t = Type::from_str(type_name.as_str()).unwrap();
+    let t = Identifier::from_str(type_name.as_str()).unwrap();
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: property_name.clone(),
+        name: Identifier::from_str(&property_name).unwrap(),
         value: property_value_json,
     };
     let properties = vec![property];

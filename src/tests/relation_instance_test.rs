@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 
-use indradb::{Edge, EdgeKey, EdgeProperties, NamedProperty, Type};
+use indradb::{Edge, EdgeKey, EdgeProperties, Identifier, NamedProperty};
 use serde_json::json;
 use uuid::Uuid;
 
@@ -95,12 +95,12 @@ fn create_relation_instance_from_edge_properties() {
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
     let type_name = r_string();
-    let t = Type::from_str(type_name.as_str()).unwrap();
+    let t = Identifier::from_str(type_name.as_str()).unwrap();
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: property_name.clone(),
+        name: Identifier::new(&property_name).unwrap(),
         value: property_value_json,
     };
     let properties = vec![property];
@@ -172,7 +172,7 @@ fn relation_instance_get_key_test() {
     assert_eq!(
         EdgeKey::new(
             outbound_id,
-            Type::new(type_name.clone()).unwrap(),
+            Identifier::new(type_name.clone()).unwrap(),
             inbound_id
         ),
         edge_key.unwrap()
