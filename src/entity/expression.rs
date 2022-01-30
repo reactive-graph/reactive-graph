@@ -24,10 +24,12 @@ impl<LHS: Clone, RHS: Clone> Expression<LHS, RHS> {
         Expression { lhs, rhs }
     }
 
+    #[must_use]
     pub fn lhs(&self, lhs: LHS) -> Self {
         Expression::new(lhs, self.rhs.clone())
     }
 
+    #[must_use]
     pub fn rhs(&self, rhs: RHS) -> Self {
         Expression::new(self.lhs.clone(), rhs)
     }
