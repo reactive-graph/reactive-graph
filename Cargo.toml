@@ -15,40 +15,39 @@ categories = ["game-engine", "entity-component-system", "iot", "home-automation"
 
 [dependencies]
 
-rand = "0.8"
-log = { version = "0.4", features = ["std", "serde"] }
-log4rs = { version = "1.0", features = ["console_appender", "file_appender"] }
-uuid = { version = "0.8", features = ["serde", "v4"] }
-waiter_di = { version = "1.6", features = ["async"], git = "https://github.com/aschaeffer/waiter.git" }
-async-trait = "0.1"
-async-std = { version = "1.10", features = ["attributes", "tokio1"] }
-lazy_static = "1.4.0"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-indradb-lib = "3"
-strum = { version = "0.23", features = ["derive"] }
-strum_macros = "0.23"
-syn = "1.0"
-futures-await-test = "0.3.0"
-futures = "0.3"
-futures-util = "0.3"
-futures-timer = "3.0"
-libloading = "0.7"
-signal-hook = "0.3.13"
-toml = "0.5"
-crossbeam = "0.8"
-
 actix = "0.12"
-actix-web = { version = "4.0.0-beta.21", features = ["openssl"] }
-actix-rt = "2.6.0"
 actix-cors = "0.6.0-beta.8"
 actix-files = "0.6.0-beta.15"
 actix-http = "3.0.0-beta.19"
+actix-rt = "2.6.0"
+actix-web = { version = "4.0.0-beta.21" } #, features = ["openssl"]
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "3.0", features = ["uuid"] }
 async-graphql-actix-web = { version = "3.0" }
+async-trait = "0.1"
+async-std = { version = "1.10", features = ["attributes", "tokio1"] }
+crossbeam = "0.8"
+indradb-lib = "3"
+lazy_static = "1.4.0"
+libloading = "0.7"
+log = { version = "0.4", features = ["std", "serde"] }
+log4rs = { version = "1.0", features = ["console_appender", "file_appender"] }
 mime = "0.3"
 path-tree = "0.2"
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+strum = { version = "0.23", features = ["derive"] }
+strum_macros = "0.23"
+syn = "1.0"
+futures = "0.3"
+futures-await-test = "0.3.0"
+futures-timer = "3.0"
+futures-util = "0.3"
+signal-hook = "0.3.13"
+toml = "0.5"
+waiter_di = { version = "1.6", features = ["async"], git = "https://github.com/aschaeffer/waiter.git" }
+uuid = { version = "0.8", features = ["serde", "v4"] }
 
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
