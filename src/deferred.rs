@@ -1,19 +1,21 @@
-use crate::deferred::DeferredValue::{WaitingForValue, Initialized};
+use crate::deferred::DeferredValue::{Initialized, WaitingForValue};
 use std::ops::Deref;
 use std::sync::Mutex;
 
 pub struct Deferred<T> {
-    value: Mutex<DeferredValue<T>>
+    value: Mutex<DeferredValue<T>>,
 }
 
 pub enum DeferredValue<T> {
     Initialized(T),
-    WaitingForValue
+    WaitingForValue,
 }
 
 impl<T> Deferred<T> {
     pub fn new() -> Self {
-        Self { value: Mutex::new(WaitingForValue) }
+        Self {
+            value: Mutex::new(WaitingForValue),
+        }
     }
     pub fn init(&self, value: T) {
         *self.value.lock().unwrap() = Initialized(value);

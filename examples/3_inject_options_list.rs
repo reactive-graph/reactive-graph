@@ -75,11 +75,7 @@ impl Comp {
         self.config.get_str("prop").unwrap();
         println!(
             "Comp, {}, {}, {}, {:?}, {}",
-            self.int_prop,
-            self.float_prop,
-            self.str_prop,
-            self.bool_prop,
-            self.config_object.i32_prop
+            self.int_prop, self.float_prop, self.str_prop, self.bool_prop, self.config_object.i32_prop
         );
     }
 }

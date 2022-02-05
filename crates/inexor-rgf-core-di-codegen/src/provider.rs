@@ -29,26 +29,16 @@ pub(crate) fn generate_component_provider_impl_struct(component: ItemStruct) -> 
     )
 }
 
-pub(crate) fn generate_component_provider_impl_fn(
-    provides: ProvidesAttr,
-    factory: ItemFn,
-    force_type: TokenStream2,
-) -> Result<TokenStream, Error> {
+pub(crate) fn generate_component_provider_impl_fn(provides: ProvidesAttr, factory: ItemFn, force_type: TokenStream2) -> Result<TokenStream, Error> {
     let comp_name = if force_type.is_empty() {
         let ret_value = if let ReturnType::Type(_, type_) = &factory.sig.output {
             if let Type::Path(type_path) = type_.deref() {
                 type_path.path.segments.to_token_stream()
             } else {
-                return Err(Error::new(
-                    factory.span(),
-                    "Unsupported return type for factory function",
-                ));
+                return Err(Error::new(factory.span(), "Unsupported return type for factory function"));
             }
         } else {
-            return Err(Error::new(
-                factory.span(),
-                "Return type must be specified for factory function",
-            ));
+            return Err(Error::new(factory.span(), "Return type must be specified for factory function"));
         };
         ret_value
     } else {
@@ -88,13 +78,7 @@ pub(crate) fn generate_component_provider_impl_fn(
             .generics
             .params
             .iter()
-            .filter(|p| {
-                if let GenericParam::Lifetime(_) = p {
-                    true
-                } else {
-                    false
-                }
-            })
+            .filter(|p| if let GenericParam::Lifetime(_) = p { true } else { false })
             .collect(),
         provides.profiles,
         create_component_code,
@@ -152,29 +136,16 @@ pub fn generate_component_provider_impl(
     return TokenStream::from(result);
 }
 
-pub(crate) fn generate_interface_provider_impl(
-    provides: ProvidesAttr,
-    impl_block: ItemImpl,
-) -> TokenStream {
+pub(crate) fn generate_interface_provider_impl(provides: ProvidesAttr, impl_block: ItemImpl) -> TokenStream {
     let interface = match impl_block.trait_ {
         Some((_, interface, _)) => interface,
-        None => {
-            return TokenStream::from(
-                Error::new(
-                    impl_block.span(),
-                    "#[provides] can be used only on impl blocks for traits",
-                )
-                .to_compile_error(),
-            )
-        }
+        None => return TokenStream::from(Error::new(impl_block.span(), "#[provides] can be used only on impl blocks for traits").to_compile_error()),
     };
 
     let comp_name = if let Type::Path(comp_path) = *impl_block.self_ty {
         comp_path.path.segments.first().unwrap().ident.clone()
     } else {
-        return TokenStream::from(
-            Error::new(impl_block.self_ty.span(), "Failed to create provider").to_compile_error(),
-        );
+        return TokenStream::from(Error::new(impl_block.self_ty.span(), "Failed to create provider").to_compile_error());
     };
 
     let provider_body = quote::quote! {{

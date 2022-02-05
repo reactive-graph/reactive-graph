@@ -20,9 +20,7 @@ struct HashMapUserRepository {
 impl HashMapUserRepository {
     #[provides]
     fn new() -> Self {
-        HashMapUserRepository {
-            users: HashMap::new(),
-        }
+        HashMapUserRepository { users: HashMap::new() }
     }
 }
 

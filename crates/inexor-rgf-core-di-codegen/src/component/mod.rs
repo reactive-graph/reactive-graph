@@ -1,7 +1,5 @@
 use crate::attr_parser::parse_provides_attr;
-use crate::component::injector::{
-    BoxInjector, ConfigInjector, DeferredInjector, Injector, PropInjector, WrcInjector,
-};
+use crate::component::injector::{BoxInjector, ConfigInjector, DeferredInjector, Injector, PropInjector, WrcInjector};
 use crate::component::type_to_inject::TypeToInject;
 use crate::provider::generate_component_provider_impl_fn;
 use proc_macro::TokenStream;
@@ -9,10 +7,7 @@ use proc_macro2::{Span, TokenStream as TokenStream2};
 use quote;
 use quote::ToTokens;
 use syn::spanned::Spanned;
-use syn::{
-    Error, Expr, Field, Fields, GenericArgument, Ident, ImplItem, ItemFn, ItemImpl, ItemStruct,
-    PathArguments, Type,
-};
+use syn::{Error, Expr, Field, Fields, GenericArgument, Ident, ImplItem, ItemFn, ItemImpl, ItemStruct, PathArguments, Type};
 
 pub(crate) mod injector;
 pub(crate) mod type_to_inject;
@@ -31,44 +26,28 @@ pub(crate) fn generate_component_for_impl(comp_impl: ItemImpl) -> Result<TokenSt
                     let provides = if provides_attr.tokens.is_empty() {
                         parse_provides_attr(TokenStream::new())?
                     } else {
-                        parse_provides_attr(
-                            provides_attr.parse_args::<Expr>()?.to_token_stream().into(),
-                        )?
+                        parse_provides_attr(provides_attr.parse_args::<Expr>()?.to_token_stream().into())?
                     };
 
                     let mut fn_tokens = method.sig.to_token_stream();
                     fn_tokens.extend(method.block.to_token_stream());
                     let item_fn = syn::parse::<ItemFn>(fn_tokens.into())?;
 
-                    return generate_component_provider_impl_fn(
-                        provides,
-                        item_fn,
-                        comp_impl.self_ty.to_token_stream().into(),
-                    );
+                    return generate_component_provider_impl_fn(provides, item_fn, comp_impl.self_ty.to_token_stream().into());
                 }
             }
             _ => {}
         }
     }
-    Err(Error::new(
-        comp_impl.span(),
-        "Constructor with #[provides] attribute is not found",
-    ))
+    Err(Error::new(comp_impl.span(), "Constructor with #[provides] attribute is not found"))
 }
 
 pub(crate) fn generate_component_for_struct(component: ItemStruct) -> Result<TokenStream, Error> {
     let comp_name = &component.ident;
     let comp_generics = &component.generics;
 
-    let dependencies_code = generate_dependencies_create_code(
-        component
-            .fields
-            .iter()
-            .map(|f| TypeToInject::from_field(f))
-            .collect::<Result<Vec<_>, _>>()?,
-    );
-    let deferred_dependencies_code =
-        generate_deferred_dependencies_code(component.fields.iter().collect())?;
+    let dependencies_code = generate_dependencies_create_code(component.fields.iter().map(|f| TypeToInject::from_field(f)).collect::<Result<Vec<_>, _>>()?);
+    let deferred_dependencies_code = generate_deferred_dependencies_code(component.fields.iter().collect())?;
 
     let (factory_code, deferred_inject_code) = match component.fields {
         Fields::Named(fields) => (
@@ -79,10 +58,7 @@ pub(crate) fn generate_component_for_struct(component: ItemStruct) -> Result<Tok
             generate_inject_dependencies_tuple(fields.unnamed.len()),
             generate_inject_deferred(fields.unnamed.iter().collect(), true),
         ),
-        Fields::Unit => (
-            generate_inject_dependencies_tuple(0),
-            generate_inject_deferred(vec![], true),
-        ),
+        Fields::Unit => (generate_inject_dependencies_tuple(0), generate_inject_deferred(vec![], true)),
     };
 
     let result = quote::quote! {
@@ -102,9 +78,7 @@ pub(crate) fn generate_component_for_struct(component: ItemStruct) -> Result<Tok
 }
 
 pub(crate) fn generate_inject_dependencies_tuple(dep_number: usize) -> TokenStream2 {
-    let dependencies: Vec<Ident> = (0..dep_number)
-        .map(|i| Ident::new(format!("dep_{}", i).as_str(), Span::call_site()))
-        .collect();
+    let dependencies: Vec<Ident> = (0..dep_number).map(|i| Ident::new(format!("dep_{}", i).as_str(), Span::call_site())).collect();
 
     return quote::quote! {
         (#(#dependencies),*)
@@ -131,8 +105,7 @@ fn generate_inject_deferred(fields: Vec<&Field>, is_tuple: bool) -> TokenStream2
             if let Type::Path(path_type) = &f.ty {
                 let ptr_type = path_type.path.to_token_stream().to_string();
 
-                return ptr_type.starts_with("inexor_rgf_core_di :: Deferred <")
-                    || ptr_type.starts_with("Deferred <");
+                return ptr_type.starts_with("inexor_rgf_core_di :: Deferred <") || ptr_type.starts_with("Deferred <");
             }
             return false;
         })
@@ -155,11 +128,7 @@ fn generate_inject_deferred(fields: Vec<&Field>, is_tuple: bool) -> TokenStream2
 }
 
 pub(crate) fn generate_dependencies_create_code(args: Vec<TypeToInject>) -> TokenStream2 {
-    let dep_code_list: Vec<TokenStream2> = args
-        .into_iter()
-        .enumerate()
-        .map(|(i, arg)| generate_dependency_create_code(arg, i))
-        .collect();
+    let dep_code_list: Vec<TokenStream2> = args.into_iter().enumerate().map(|(i, arg)| generate_dependency_create_code(arg, i)).collect();
 
     return quote::quote! {
         #(#dep_code_list)*
@@ -179,12 +148,8 @@ fn generate_dependency_create_code(to_inject: TypeToInject, pos: usize) -> Token
 
     let inject_code = injectors
         .iter()
-        .find_map(|injector| {
-            injector.generate_inject_code(&to_inject, &Ident::new("container", Span::call_site()))
-        })
-        .unwrap_or_else(
-            || quote::quote! { inexor_rgf_core_di::Provider::<#type_path>::create(container) },
-        );
+        .find_map(|injector| injector.generate_inject_code(&to_inject, &Ident::new("container", Span::call_site())))
+        .unwrap_or_else(|| quote::quote! { inexor_rgf_core_di::Provider::<#type_path>::create(container) });
 
     quote::quote! {
         let #dep_var_name = #inject_code;
@@ -201,24 +166,16 @@ fn generate_deferred_dependencies_code(fields: Vec<&Field>) -> Result<TokenStrea
 
                 let mut generic_args = None;
                 if ptr_type.starts_with("inexor_rgf_core_di :: Deferred <") {
-                    if let PathArguments::AngleBracketed(typ) =
-                        &path_type.path.segments[1].arguments
-                    {
+                    if let PathArguments::AngleBracketed(typ) = &path_type.path.segments[1].arguments {
                         generic_args = Some(&typ.args);
                     }
                 } else if ptr_type.starts_with("Deferred <") {
-                    if let PathArguments::AngleBracketed(typ) =
-                        &path_type.path.segments[0].arguments
-                    {
+                    if let PathArguments::AngleBracketed(typ) = &path_type.path.segments[0].arguments {
                         generic_args = Some(&typ.args);
                     }
                 }
                 if generic_args.is_some() {
-                    if let GenericArgument::Type(typ) = generic_args
-                        .unwrap()
-                        .first()
-                        .expect("Expected <type> arg for Deferred type")
-                    {
+                    if let GenericArgument::Type(typ) = generic_args.unwrap().first().expect("Expected <type> arg for Deferred type") {
                         return (i, Some(typ));
                     }
                 }
@@ -227,10 +184,7 @@ fn generate_deferred_dependencies_code(fields: Vec<&Field>) -> Result<TokenStrea
         })
         .filter(|(_, opt_arg)| opt_arg.is_some())
         .map(|(i, opt_arg)| (i, opt_arg.unwrap()))
-        .map(|(i, t)| {
-            TypeToInject::from_type(t)
-                .map(|to_inject| generate_dependency_create_code(to_inject, i))
-        })
+        .map(|(i, t)| TypeToInject::from_type(t).map(|to_inject| generate_dependency_create_code(to_inject, i)))
         .collect::<Result<Vec<_>, Error>>()?;
 
     return Ok(quote::quote! {

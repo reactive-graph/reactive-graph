@@ -54,9 +54,7 @@ impl<P> Container<P> {
                 .expect(format!("Failed to read {} config file", profile).as_str());
         }
 
-        config
-            .merge(Environment::new())
-            .expect("Failed to load environment");
+        config.merge(Environment::new()).expect("Failed to load environment");
 
         // config.merge(parse_args())
         //     .expect("Failed to parse args");
@@ -80,9 +78,7 @@ fn parse_profile() -> String {
         .merge(File::with_name("config/default").required(false))
         .expect("Failed to read default config file");
 
-    let profile_arg = args()
-        .position(|arg| arg.as_str() == "--profile")
-        .and_then(|arg_pos| args().nth(arg_pos + 1));
+    let profile_arg = args().position(|arg| arg.as_str() == "--profile").and_then(|arg_pos| args().nth(arg_pos + 1));
 
     let parsed_profile = profile_arg
         .or(env::var("PROFILE").ok())
@@ -122,8 +118,5 @@ pub fn parse_args() -> Config {
 pub fn profile_name<T>() -> String {
     let profile_type_name = type_name::<T>().to_lowercase();
 
-    Regex::new(r".*::")
-        .unwrap()
-        .replace(profile_type_name.as_str(), "")
-        .to_string()
+    Regex::new(r".*::").unwrap().replace(profile_type_name.as_str(), "").to_string()
 }
