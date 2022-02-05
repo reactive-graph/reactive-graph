@@ -11,10 +11,7 @@ pub fn create_random_entity_instance<S: Into<String>>(property_name: S) -> React
     create_random_entity_instance_with_type(r_string(), property_name.into())
 }
 
-pub fn create_random_entity_instance_with_type<S: Into<String>>(
-    type_name: S,
-    property_name: S,
-) -> ReactiveEntityInstance {
+pub fn create_random_entity_instance_with_type<S: Into<String>>(type_name: S, property_name: S) -> ReactiveEntityInstance {
     let uuid = Uuid::new_v4();
     let t = Identifier::from_str(type_name.into().as_str()).unwrap();
     let property_value = r_string();
@@ -25,10 +22,7 @@ pub fn create_random_entity_instance_with_type<S: Into<String>>(
     };
     let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex {
-            id: uuid,
-            t: t.clone(),
-        },
+        vertex: Vertex { id: uuid, t: t.clone() },
         props: properties.clone(),
     };
     ReactiveEntityInstance::from(vertex_properties)
@@ -38,10 +32,7 @@ pub fn create_entity_instance<S: Into<String>>(property_name: S) -> EntityInstan
     create_entity_instance_with_type(r_string(), property_name.into())
 }
 
-pub fn create_entity_instance_with_type<S: Into<String>>(
-    type_name: S,
-    property_name: S,
-) -> EntityInstance {
+pub fn create_entity_instance_with_type<S: Into<String>>(type_name: S, property_name: S) -> EntityInstance {
     let uuid = Uuid::new_v4();
     let t = Identifier::from_str(type_name.into().as_str()).unwrap();
     let property_value = r_string();
@@ -52,10 +43,7 @@ pub fn create_entity_instance_with_type<S: Into<String>>(
     };
     let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex {
-            id: uuid,
-            t: t.clone(),
-        },
+        vertex: Vertex { id: uuid, t: t.clone() },
         props: properties.clone(),
     };
     EntityInstance::from(vertex_properties)

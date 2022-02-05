@@ -38,11 +38,7 @@ pub struct EntityInstance {
 
 impl EntityInstance {
     /// Constructs a new entity instance with the given type, id and properties
-    pub fn new<S: Into<String>>(
-        type_name: S,
-        id: Uuid,
-        properties: HashMap<String, Value>,
-    ) -> EntityInstance {
+    pub fn new<S: Into<String>>(type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
         EntityInstance {
             type_name: type_name.into(),
             id,
@@ -67,11 +63,7 @@ impl From<VertexProperties> for EntityInstance {
         let type_name = properties.vertex.t.to_string();
         // let type_name = properties.vertex.t.0.clone();
         let id = properties.vertex.id;
-        let properties: HashMap<String, Value> = properties
-            .props
-            .iter()
-            .map(|p| (p.name.to_string(), p.value.clone()))
-            .collect();
+        let properties: HashMap<String, Value> = properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect();
         EntityInstance {
             type_name,
             id,
@@ -87,45 +79,31 @@ impl PropertyInstanceGetter for EntityInstance {
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_bool())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_u64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_i64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_f64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_str().map(|s| s.to_string()))
+        self.properties.get(&property_name.into()).and_then(|p| p.as_str().map(|s| s.to_string()))
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_array().map(Vec::clone))
+        self.properties.get(&property_name.into()).and_then(|p| p.as_array().map(Vec::clone))
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_object().map(Map::clone))
+        self.properties.get(&property_name.into()).and_then(|p| p.as_object().map(Map::clone))
     }
 }
 

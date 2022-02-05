@@ -21,11 +21,7 @@ fn reactive_entity_instance_test() {
     let mut properties = HashMap::new();
     properties.insert(
         property_name.clone(),
-        ReactivePropertyInstance::new(
-            Uuid::new_v4(),
-            property_name.clone(),
-            property_value.clone(),
-        ),
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), property_value.clone()),
     );
 
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
@@ -34,30 +30,16 @@ fn reactive_entity_instance_test() {
         description: description.clone(),
         properties,
     });
-    assert_eq!(
-        type_name.clone(),
-        reactive_entity_instance.type_name.clone()
-    );
+    assert_eq!(type_name.clone(), reactive_entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), reactive_entity_instance.id.clone());
-    assert_eq!(
-        description.clone(),
-        reactive_entity_instance.description.clone()
-    );
+    assert_eq!(description.clone(), reactive_entity_instance.description.clone());
 
     let entity_instance: EntityInstance = reactive_entity_instance.into();
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(description.clone(), entity_instance.description.clone());
-    assert!(entity_instance
-        .properties
-        .contains_key(property_name.as_str()));
-    assert_eq!(
-        property_value,
-        *entity_instance
-            .properties
-            .get(property_name.as_str())
-            .unwrap()
-    );
+    assert!(entity_instance.properties.contains_key(property_name.as_str()));
+    assert_eq!(property_value, *entity_instance.properties.get(property_name.as_str()).unwrap());
 }
 
 #[test]
@@ -74,40 +56,20 @@ fn reactive_entity_instance_from_vertex_properties_test() {
     };
     let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex {
-            id: uuid,
-            t: t.clone(),
-        },
+        vertex: Vertex { id: uuid, t: t.clone() },
         props: properties.clone(),
     };
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance::from(vertex_properties));
-    assert_eq!(
-        type_name.clone(),
-        reactive_entity_instance.type_name.clone()
-    );
+    assert_eq!(type_name.clone(), reactive_entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), reactive_entity_instance.id.clone());
-    assert_eq!(
-        property_name.clone(),
-        reactive_entity_instance.properties[&property_name.clone()].name
-    );
-    assert_eq!(
-        property_value.clone(),
-        reactive_entity_instance.properties[&property_name.clone()].get()
-    );
+    assert_eq!(property_name.clone(), reactive_entity_instance.properties[&property_name.clone()].name);
+    assert_eq!(property_value.clone(), reactive_entity_instance.properties[&property_name.clone()].get());
 
     let entity_instance: EntityInstance = reactive_entity_instance.into();
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
-    assert!(entity_instance
-        .properties
-        .contains_key(property_name.as_str()));
-    assert_eq!(
-        property_value_json,
-        *entity_instance
-            .properties
-            .get(property_name.as_str())
-            .unwrap()
-    );
+    assert!(entity_instance.properties.contains_key(property_name.as_str()));
+    assert_eq!(property_value_json, *entity_instance.properties.get(property_name.as_str()).unwrap());
 }
 
 #[test]

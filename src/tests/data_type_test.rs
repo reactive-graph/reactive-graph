@@ -18,17 +18,11 @@ fn data_type_should_return_the_correct_default_value() {
     let empty_vec: Vec<Value> = Vec::new();
     assert!(DataType::Array.default_value().is_array());
     assert!(DataType::Array.default_value().as_array().is_some());
-    assert_eq!(
-        empty_vec,
-        *DataType::Array.default_value().as_array().unwrap()
-    );
+    assert_eq!(empty_vec, *DataType::Array.default_value().as_array().unwrap());
     let empty_map = serde_json::Map::new();
     assert!(DataType::Object.default_value().is_object());
     assert!(DataType::Object.default_value().as_object().is_some());
-    assert_eq!(
-        empty_map,
-        *DataType::Object.default_value().as_object().unwrap()
-    );
+    assert_eq!(empty_map, *DataType::Object.default_value().as_object().unwrap());
 
     assert!(DataType::Any.default_value().is_string());
     assert_eq!("", DataType::Any.default_value());

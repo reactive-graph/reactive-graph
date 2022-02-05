@@ -35,20 +35,9 @@ fn create_component_test() {
     property_types.push(property_type.clone());
     let component = Component::new(component_name.clone(), property_types.clone());
     assert_eq!(component_name, component.name);
-    assert_eq!(
-        property_name.clone(),
-        component.properties.first().unwrap().name
-    );
-    assert_eq!(
-        property_type.data_type,
-        component.properties.first().unwrap().data_type
-    );
-    assert!(!component
-        .properties
-        .iter()
-        .filter(|&p| p.name == property_name)
-        .collect::<Vec<_>>()
-        .is_empty());
+    assert_eq!(property_name.clone(), component.properties.first().unwrap().name);
+    assert_eq!(property_type.data_type, component.properties.first().unwrap().data_type);
+    assert!(!component.properties.iter().filter(|&p| p.name == property_name).collect::<Vec<_>>().is_empty());
     assert!(component.has_property(property_name.clone()));
     assert!(!component.has_property(r_string()));
 }

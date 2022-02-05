@@ -33,14 +33,7 @@ fn create_entity_type_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension);
 
-    let entity_type = EntityType::new(
-        entity_type_name,
-        group,
-        component_names,
-        behaviour_names,
-        property_types,
-        extensions,
-    );
+    let entity_type = EntityType::new(entity_type_name, group, component_names, behaviour_names, property_types, extensions);
 
     assert_eq!(entity_type_name, entity_type.name);
 
@@ -56,10 +49,7 @@ fn create_entity_type_test() {
 
     assert_eq!(extension_name, entity_type.extensions.first().unwrap().name);
 
-    assert_eq!(
-        extension_value,
-        entity_type.extensions.first().unwrap().extension
-    );
+    assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
 
     assert!(entity_type.behaves_as(behaviour_name.clone()));
     assert!(!entity_type.behaves_as(r_string()));

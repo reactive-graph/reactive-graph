@@ -46,12 +46,7 @@ pub struct RelationInstance {
 
 impl RelationInstance {
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new(
-        outbound_id: Uuid,
-        type_name: String,
-        inbound_id: Uuid,
-        properties: HashMap<String, Value>,
-    ) -> RelationInstance {
+    pub fn new(outbound_id: Uuid, type_name: String, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
         RelationInstance {
             outbound_id,
             type_name,
@@ -62,11 +57,7 @@ impl RelationInstance {
     }
 
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id but without properties
-    pub fn new_without_properties<S: Into<String>>(
-        outbound_id: Uuid,
-        type_name: S,
-        inbound_id: Uuid,
-    ) -> RelationInstance {
+    pub fn new_without_properties<S: Into<String>>(outbound_id: Uuid, type_name: S, inbound_id: Uuid) -> RelationInstance {
         RelationInstance {
             outbound_id,
             type_name: type_name.into(),
@@ -90,11 +81,7 @@ impl From<EdgeProperties> for RelationInstance {
             type_name: properties.edge.key.t.to_string(),
             inbound_id: properties.edge.key.inbound_id,
             description: String::new(),
-            properties: properties
-                .props
-                .iter()
-                .map(|p| (p.name.to_string(), p.value.clone()))
-                .collect(),
+            properties: properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect(),
         }
     }
 }
@@ -105,46 +92,31 @@ impl PropertyInstanceGetter for RelationInstance {
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_bool())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_u64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_i64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_f64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_str().map(|s| s.to_string()))
+        self.properties.get(&property_name.into()).and_then(|p| p.as_str().map(|s| s.to_string()))
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_array().map(Vec::clone))
+        self.properties.get(&property_name.into()).and_then(|p| p.as_array().map(Vec::clone))
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_object())
-            .map(Map::clone)
+        self.properties.get(&property_name.into()).and_then(|p| p.as_object()).map(Map::clone)
     }
 }
 

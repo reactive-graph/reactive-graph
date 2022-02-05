@@ -23,10 +23,7 @@ pub fn create_random_relation_instance(
     let outbound_id = outbound_entity.id;
     let inbound_id = inbound_entity.id;
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
-    let edge_properties = EdgeProperties::new(
-        Edge::new_with_current_datetime(edge_key),
-        properties.clone(),
-    );
+    let edge_properties = EdgeProperties::new(Edge::new_with_current_datetime(edge_key), properties.clone());
     let outbound_entity = outbound_entity.clone();
     let inbound_entity = outbound_entity.clone();
     ReactiveRelationInstance::from(outbound_entity, inbound_entity, edge_properties)
@@ -39,10 +36,5 @@ pub fn create_random_relation_instance_with_properties(
 ) -> ReactiveRelationInstance {
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(r_string()));
-    ReactiveRelationInstance::create_with_properties(
-        outbound_entity.clone(),
-        r_string(),
-        inbound_entity.clone(),
-        properties,
-    )
+    ReactiveRelationInstance::create_with_properties(outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
 }

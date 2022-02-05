@@ -18,7 +18,7 @@ pub struct PropertyType {
     /// The data type of the property
     pub data_type: DataType,
 
-    /// Specifies which type of socket
+    /// Specifies which type of socketf
     #[serde(default = "SocketType::none")]
     pub socket_type: SocketType,
 
@@ -38,11 +38,7 @@ impl PropertyType {
         }
     }
 
-    pub fn new_with_socket<S: Into<String>>(
-        name: S,
-        data_type: DataType,
-        socket_type: SocketType,
-    ) -> PropertyType {
+    pub fn new_with_socket<S: Into<String>>(name: S, data_type: DataType, socket_type: SocketType) -> PropertyType {
         PropertyType {
             name: name.into(),
             description: String::new(),

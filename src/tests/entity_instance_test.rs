@@ -31,10 +31,7 @@ fn entity_instance_test() {
     assert_eq!(properties.clone(), entity_instance.properties.clone());
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
-    assert_eq!(
-        property_value.clone(),
-        entity_instance.get(property_name.clone()).unwrap()
-    );
+    assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
@@ -51,10 +48,7 @@ fn create_entity_instance_test() {
     assert_eq!(properties.clone(), properties.clone());
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
-    assert_eq!(
-        property_value.clone(),
-        entity_instance.get(property_name.clone()).unwrap()
-    );
+    assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
@@ -81,24 +75,13 @@ fn create_entity_instance_from_vertex_properties() {
     };
     let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex {
-            id: uuid,
-            t: t.clone(),
-        },
+        vertex: Vertex { id: uuid, t: t.clone() },
         props: properties.clone(),
     };
     let entity_instance = EntityInstance::from(vertex_properties);
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
-    assert_eq!(
-        property_value.as_str(),
-        entity_instance
-            .properties
-            .get(property_name.as_str())
-            .unwrap()
-            .as_str()
-            .unwrap()
-    );
+    assert_eq!(property_value.as_str(), entity_instance.properties.get(property_name.as_str()).unwrap().as_str().unwrap());
 }
 
 #[test]
@@ -124,27 +107,12 @@ fn entity_instance_typed_getter_test() {
     assert_eq!(s, i.as_string(property_name.clone()).unwrap());
     let a = json!([1, 2, 3]);
     i.set(property_name.clone(), a.clone());
-    assert_eq!(
-        json!(1),
-        i.as_array(property_name.clone()).unwrap().index(0).clone()
-    );
-    assert_eq!(
-        json!(2),
-        i.as_array(property_name.clone()).unwrap().index(1).clone()
-    );
-    assert_eq!(
-        json!(3),
-        i.as_array(property_name.clone()).unwrap().index(2).clone()
-    );
+    assert_eq!(json!(1), i.as_array(property_name.clone()).unwrap().index(0).clone());
+    assert_eq!(json!(2), i.as_array(property_name.clone()).unwrap().index(1).clone());
+    assert_eq!(json!(3), i.as_array(property_name.clone()).unwrap().index(2).clone());
     let o = json!({
         "k": "v"
     });
     i.set(property_name.clone(), o.clone());
-    assert_eq!(
-        json!("v"),
-        i.as_object(property_name.clone())
-            .unwrap()
-            .index("k")
-            .clone()
-    );
+    assert_eq!(json!("v"), i.as_object(property_name.clone()).unwrap().index("k").clone());
 }

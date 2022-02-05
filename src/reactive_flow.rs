@@ -20,7 +20,9 @@ pub enum ReactiveFlowConstructionError {
 impl fmt::Display for ReactiveFlowConstructionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
-            ReactiveFlowConstructionError::MissingWrapperInstance => write!(f, "Missing the wrapper entity instance. Check if an entity instance exists with the same id as the flow id"),
+            ReactiveFlowConstructionError::MissingWrapperInstance => {
+                write!(f, "Missing the wrapper entity instance. Check if an entity instance exists with the same id as the flow id")
+            }
             ReactiveFlowConstructionError::MissingOutboundEntityInstance(id) => write!(f, "The outbound entity instance {} cannot be found", id),
             ReactiveFlowConstructionError::MissingInboundEntityInstance(id) => write!(f, "The inbound entity instance {} cannot be found", id),
         }
@@ -74,10 +76,7 @@ impl ReactiveFlow {
     }
 
     pub fn has_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) -> bool {
-        self.entity_instances
-            .read()
-            .unwrap()
-            .contains_key(&entity_instance.id)
+        self.entity_instances.read().unwrap().contains_key(&entity_instance.id)
     }
 
     pub fn has_entity_by_id(&self, id: Uuid) -> bool {
@@ -95,14 +94,8 @@ impl ReactiveFlow {
 
     pub fn add_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
         if !self.has_entity_by_id(entity_instance.id) {
-            self.entity_instances
-                .write()
-                .unwrap()
-                .insert(entity_instance.id, entity_instance.clone());
-            self.entities_added
-                .write()
-                .unwrap()
-                .push(entity_instance.id);
+            self.entity_instances.write().unwrap().insert(entity_instance.id, entity_instance.clone());
+            self.entities_added.write().unwrap().push(entity_instance.id);
             // self.entities_removed.write().unwrap().remove(entity_instance.id);
         }
     }
@@ -114,20 +107,13 @@ impl ReactiveFlow {
 
     pub fn has_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) -> bool {
         if let Some(edge_key) = relation_instance.get_key() {
-            return self
-                .relation_instances
-                .read()
-                .unwrap()
-                .contains_key(&edge_key);
+            return self.relation_instances.read().unwrap().contains_key(&edge_key);
         }
         false
     }
 
     pub fn has_relation_by_key(&self, edge_key: EdgeKey) -> bool {
-        self.relation_instances
-            .read()
-            .unwrap()
-            .contains_key(&edge_key)
+        self.relation_instances.read().unwrap().contains_key(&edge_key)
     }
 
     pub fn get_relation(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
@@ -138,10 +124,7 @@ impl ReactiveFlow {
     pub fn add_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
         if let Some(edge_key) = relation_instance.get_key() {
             if !self.has_relation_by_key(edge_key.clone()) {
-                self.relation_instances
-                    .write()
-                    .unwrap()
-                    .insert(edge_key.clone(), relation_instance.clone());
+                self.relation_instances.write().unwrap().insert(edge_key.clone(), relation_instance.clone());
                 self.relations_added.write().unwrap().push(edge_key);
             }
         }
@@ -190,26 +173,16 @@ impl TryFrom<Flow> for ReactiveFlow {
                 let outbound = entity_instances.get(&relation_instance.outbound_id);
                 if outbound.is_none() {
                     // outbound entity missing
-                    return Err(
-                        ReactiveFlowConstructionError::MissingOutboundEntityInstance(
-                            relation_instance.outbound_id,
-                        ),
-                    );
+                    return Err(ReactiveFlowConstructionError::MissingOutboundEntityInstance(relation_instance.outbound_id));
                 }
                 let inbound = entity_instances.get(&relation_instance.inbound_id);
                 if inbound.is_none() {
                     // inbound entity missing
-                    return Err(ReactiveFlowConstructionError::MissingInboundEntityInstance(
-                        relation_instance.inbound_id,
-                    ));
+                    return Err(ReactiveFlowConstructionError::MissingInboundEntityInstance(relation_instance.inbound_id));
                 }
                 let outbound = outbound.unwrap().clone();
                 let inbound = inbound.unwrap().clone();
-                let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(
-                    outbound,
-                    inbound,
-                    relation_instance.clone(),
-                ));
+                let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance.clone()));
                 relation_instances.insert(edge_key.clone(), reactive_relation_instance);
             }
         }
@@ -229,64 +202,42 @@ impl TryFrom<Flow> for ReactiveFlow {
 
 impl PropertyInstanceGetter for ReactiveFlow {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.get_entity(self.id)
-            .and_then(|e| e.properties.get(&property_name.into()).map(|p| p.get()))
+        self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).map(|p| p.get()))
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_bool())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_bool()))
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_u64())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_u64()))
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_i64())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_i64()))
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_f64())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_f64()))
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_string())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_string()))
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_array())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_array()))
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.get_entity(self.id).and_then(|e| {
-            e.properties
-                .get(&property_name.into())
-                .and_then(|p| p.as_object())
-        })
+        self.get_entity(self.id)
+            .and_then(|e| e.properties.get(&property_name.into()).and_then(|p| p.as_object()))
     }
 }
 

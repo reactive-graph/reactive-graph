@@ -59,10 +59,7 @@ pub struct Flow {
 
 impl Flow {
     /// Constructs a new flow from the wrapper entity instance.
-    pub fn from_instance_with_name<S: Into<String>>(
-        wrapper_entity_instance: EntityInstance,
-        name: S,
-    ) -> Flow {
+    pub fn from_instance_with_name<S: Into<String>>(wrapper_entity_instance: EntityInstance, name: S) -> Flow {
         Flow {
             id: wrapper_entity_instance.id,
             type_name: wrapper_entity_instance.type_name.clone(),
@@ -99,25 +96,14 @@ impl TryFrom<ReactiveFlow> for Flow {
         let entity_instance: EntityInstance = wrapper.clone().into();
         let mut flow = Flow::from(entity_instance);
         flow.description = wrapper.description.clone();
-        reactive_flow
-            .entity_instances
-            .read()
-            .unwrap()
-            .iter()
-            .for_each(|(_, entity)| {
-                if entity.id != reactive_flow.id {
-                    flow.entity_instances.push(entity.clone().into());
-                }
-            });
-        reactive_flow
-            .relation_instances
-            .read()
-            .unwrap()
-            .iter()
-            .for_each(|(_, relation_instance)| {
-                flow.relation_instances
-                    .push(relation_instance.clone().into());
-            });
+        reactive_flow.entity_instances.read().unwrap().iter().for_each(|(_, entity)| {
+            if entity.id != reactive_flow.id {
+                flow.entity_instances.push(entity.clone().into());
+            }
+        });
+        reactive_flow.relation_instances.read().unwrap().iter().for_each(|(_, relation_instance)| {
+            flow.relation_instances.push(relation_instance.clone().into());
+        });
         Ok(flow)
     }
 }
@@ -134,25 +120,14 @@ impl TryFrom<Arc<ReactiveFlow>> for Flow {
         let entity_instance: EntityInstance = wrapper.clone().into();
         let mut flow = Flow::from(entity_instance);
         flow.description = wrapper.description.clone();
-        reactive_flow
-            .entity_instances
-            .read()
-            .unwrap()
-            .iter()
-            .for_each(|(_, entity)| {
-                if entity.id != reactive_flow.id {
-                    flow.entity_instances.push(entity.clone().into());
-                }
-            });
-        reactive_flow
-            .relation_instances
-            .read()
-            .unwrap()
-            .iter()
-            .for_each(|(_, relation_instance)| {
-                flow.relation_instances
-                    .push(relation_instance.clone().into());
-            });
+        reactive_flow.entity_instances.read().unwrap().iter().for_each(|(_, entity)| {
+            if entity.id != reactive_flow.id {
+                flow.entity_instances.push(entity.clone().into());
+            }
+        });
+        reactive_flow.relation_instances.read().unwrap().iter().for_each(|(_, relation_instance)| {
+            flow.relation_instances.push(relation_instance.clone().into());
+        });
         Ok(flow)
     }
 }

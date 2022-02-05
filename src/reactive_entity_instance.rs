@@ -38,11 +38,7 @@ impl From<VertexProperties> for ReactiveEntityInstance {
             .map(|named_property| {
                 (
                     named_property.name.to_string(),
-                    ReactivePropertyInstance::new(
-                        id,
-                        named_property.name.to_string(),
-                        named_property.value.clone(),
-                    ),
+                    ReactivePropertyInstance::new(id, named_property.name.to_string(), named_property.value.clone()),
                 )
             })
             .collect();
@@ -60,12 +56,7 @@ impl From<EntityInstance> for ReactiveEntityInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, value)| {
-                (
-                    name.clone(),
-                    ReactivePropertyInstance::new(instance.id, name.clone(), value.clone()),
-                )
-            })
+            .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(instance.id, name.clone(), value.clone())))
             .collect();
         ReactiveEntityInstance {
             type_name: instance.type_name.clone(),
@@ -81,12 +72,7 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, property_instance)| {
-                (
-                    name.clone(),
-                    property_instance.value.read().unwrap().deref().clone(),
-                )
-            })
+            .map(|(name, property_instance)| (name.clone(), property_instance.value.read().unwrap().deref().clone()))
             .collect();
         EntityInstance {
             type_name: instance.type_name.clone(),
@@ -103,45 +89,31 @@ impl PropertyInstanceGetter for ReactiveEntityInstance {
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_bool())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_u64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_i64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_f64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_string())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_string())
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_array())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_array())
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_object())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_object())
     }
 }
 

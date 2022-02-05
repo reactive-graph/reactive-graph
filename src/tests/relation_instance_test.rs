@@ -33,10 +33,7 @@ fn relation_instance_test() {
     assert_eq!(properties.clone(), relation_instance.properties.clone());
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
-    assert_eq!(
-        property_value.clone(),
-        relation_instance.get(property_name.clone()).unwrap()
-    );
+    assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
@@ -72,22 +69,14 @@ fn create_relation_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let relation_instance = RelationInstance::new(
-        outbound_id,
-        type_name.clone(),
-        inbound_id,
-        properties.clone(),
-    );
+    let relation_instance = RelationInstance::new(outbound_id, type_name.clone(), inbound_id, properties.clone());
     assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
     assert_eq!(type_name.clone(), relation_instance.type_name.clone());
     assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
     assert_eq!(properties.clone(), properties.clone());
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
-    assert_eq!(
-        property_value.clone(),
-        relation_instance.get(property_name.clone()).unwrap()
-    );
+    assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
 }
 
 #[test]
@@ -105,23 +94,12 @@ fn create_relation_instance_from_edge_properties() {
     };
     let properties = vec![property];
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
-    let edge_properties = EdgeProperties::new(
-        Edge::new_with_current_datetime(edge_key),
-        properties.clone(),
-    );
+    let edge_properties = EdgeProperties::new(Edge::new_with_current_datetime(edge_key), properties.clone());
     let relation_instance = RelationInstance::from(edge_properties);
     assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
     assert_eq!(type_name.clone(), relation_instance.type_name.clone());
     assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
-    assert_eq!(
-        property_value.as_str(),
-        relation_instance
-            .properties
-            .get(property_name.as_str())
-            .unwrap()
-            .as_str()
-            .unwrap()
-    );
+    assert_eq!(property_value.as_str(), relation_instance.properties.get(property_name.as_str()).unwrap().as_str().unwrap());
 }
 
 #[test]
@@ -132,12 +110,7 @@ fn relation_instance_typed_getter_test() {
     let property_name = r_string();
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(false));
-    let mut i = RelationInstance::new(
-        outbound_id,
-        type_name.clone(),
-        inbound_id,
-        properties.clone(),
-    );
+    let mut i = RelationInstance::new(outbound_id, type_name.clone(), inbound_id, properties.clone());
     i.set(property_name.clone(), json!(true));
     assert!(i.as_bool(property_name.clone()).unwrap());
     i.set(property_name.clone(), json!(false));
@@ -169,12 +142,5 @@ fn relation_instance_get_key_test() {
     };
     let edge_key = relation_instance.get_key();
     assert!(edge_key.is_some());
-    assert_eq!(
-        EdgeKey::new(
-            outbound_id,
-            Identifier::new(type_name.clone()).unwrap(),
-            inbound_id
-        ),
-        edge_key.unwrap()
-    );
+    assert_eq!(EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), inbound_id), edge_key.unwrap());
 }

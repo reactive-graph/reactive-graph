@@ -52,11 +52,7 @@ pub struct ReactiveRelationInstance {
 
 impl ReactiveRelationInstance {
     // TODO: rename to "from_properties"
-    pub fn from(
-        outbound: Arc<ReactiveEntityInstance>,
-        inbound: Arc<ReactiveEntityInstance>,
-        properties: EdgeProperties,
-    ) -> ReactiveRelationInstance {
+    pub fn from(outbound: Arc<ReactiveEntityInstance>, inbound: Arc<ReactiveEntityInstance>, properties: EdgeProperties) -> ReactiveRelationInstance {
         let type_name = properties.edge.key.t.to_string();
         let properties = properties
             .props
@@ -81,20 +77,11 @@ impl ReactiveRelationInstance {
         }
     }
 
-    pub fn from_instance(
-        outbound: Arc<ReactiveEntityInstance>,
-        inbound: Arc<ReactiveEntityInstance>,
-        instance: RelationInstance,
-    ) -> ReactiveRelationInstance {
+    pub fn from_instance(outbound: Arc<ReactiveEntityInstance>, inbound: Arc<ReactiveEntityInstance>, instance: RelationInstance) -> ReactiveRelationInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, value)| {
-                (
-                    name.clone(),
-                    ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value.clone()),
-                )
-            })
+            .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value.clone())))
             .collect();
         ReactiveRelationInstance {
             outbound,
@@ -153,12 +140,7 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, property_instance)| {
-                (
-                    name.clone(),
-                    property_instance.value.read().unwrap().deref().clone(),
-                )
-            })
+            .map(|(name, property_instance)| (name.clone(), property_instance.value.read().unwrap().deref().clone()))
             .collect();
         RelationInstance {
             outbound_id: instance.outbound.id,
@@ -176,45 +158,31 @@ impl PropertyInstanceGetter for ReactiveRelationInstance {
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_bool())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_u64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_i64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_f64())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_string())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_string())
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_array())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_array())
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties
-            .get(&property_name.into())
-            .and_then(|p| p.as_object())
+        self.properties.get(&property_name.into()).and_then(|p| p.as_object())
     }
 }
 

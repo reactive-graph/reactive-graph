@@ -13,9 +13,6 @@ pub struct Extension {
 
 impl Extension {
     pub fn new<S: Into<String>>(name: S, extension: Value) -> Extension {
-        Extension {
-            name: name.into(),
-            extension,
-        }
+        Extension { name: name.into(), extension }
     }
 }
