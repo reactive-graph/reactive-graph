@@ -27,13 +27,13 @@ jobs:
     - name: Run tests
       run: cargo test --release --verbose
 
-  rustfmt:
-    name: Verify code formatting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: hecrj/setup-rust-action@v1
-        with:
-          rust-version: nightly
-          components: rustfmt
-      - run: cargo fmt --all -- --check
+#  rustfmt:
+#    name: Verify code formatting
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - uses: hecrj/setup-rust-action@v1
+#        with:
+#          rust-version: nightly
+#          components: rustfmt
+#      - run: cargo fmt --all -- --check
