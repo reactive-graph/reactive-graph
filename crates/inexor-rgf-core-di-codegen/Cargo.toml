@@ -1,7 +1,7 @@
 [package]
-name = "waiter_codegen"
-description = "Macro for Waiter DI"
-version = "1.6.5"
+name = "inexor-rgf-core-di-codegen"
+description = "Inexor - Reactive Graph Flow - Dependency Injection - Macro"
+version = "2.0.0"
 authors = [
     "dmitryb.dev@gmail.com",
     "Andreas Schaeffer <hanack@nooblounge.net>"
@@ -9,7 +9,7 @@ authors = [
 edition = "2021"
 license = "MIT"
 readme = "../../README.md"
-repository = "https://github.com/dmitryb-dev/waiter"
+repository = "https://github.com/aschaeffer/inexor-rgf-core-di"
 
 [dependencies]
 quote = "1.0"

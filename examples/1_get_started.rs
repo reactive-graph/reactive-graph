@@ -1,10 +1,10 @@
 extern crate config;
+extern crate inexor_rgf_core_di;
 extern crate serde;
-extern crate waiter_di;
 
 use std::rc::Rc;
 
-use waiter_di::*;
+use inexor_rgf_core_di::*;
 
 trait Interface: Send {
     fn demo(&self);
@@ -22,8 +22,9 @@ impl Interface for InterfaceImpl {
 
 #[component]
 struct SomeComp {
-    #[prop("i32_prop")] prop: i32,
-    interface: Rc<dyn Interface>
+    #[prop("i32_prop")]
+    prop: i32,
+    interface: Rc<dyn Interface>,
 }
 
 fn main() {

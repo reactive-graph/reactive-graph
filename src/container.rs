@@ -15,8 +15,8 @@ pub mod profiles {
 }
 
 pub trait Component {
-    fn __waiter_create<P>(container: &mut Container<P>) -> Self;
-    fn __waiter_inject_deferred<P>(container: &mut Container<P>, component: &Self);
+    fn __inexor_rgf_core_di_create<P>(container: &mut Container<P>) -> Self;
+    fn __inexor_rgf_core_di_inject_deferred<P>(container: &mut Container<P>, component: &Self);
 }
 
 pub trait Provider<T: ?Sized> {

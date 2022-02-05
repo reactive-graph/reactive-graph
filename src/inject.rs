@@ -3,11 +3,11 @@ macro_rules! inject {
     ($comp:path: $($profile:path),*) => {
         {
             $(
-                if profile_name::<$profile>().eq(&waiter_di::APP_PROFILE.as_str()) {
-                    waiter_di::Provider::<$comp>::create(&mut waiter_di::Container::<$profile>::new())
+                if profile_name::<$profile>().eq(&inexor_rgf_core_di::APP_PROFILE.as_str()) {
+                    inexor_rgf_core_di::Provider::<$comp>::create(&mut inexor_rgf_core_di::Container::<$profile>::new())
                 } else
             )*
-            { waiter_di::Provider::<$comp>::create(&mut waiter_di::Container::<waiter_di::profiles::Default>::new()) }
+            { inexor_rgf_core_di::Provider::<$comp>::create(&mut inexor_rgf_core_di::Container::<inexor_rgf_core_di::profiles::Default>::new()) }
         }
     }
 }
@@ -22,5 +22,5 @@ macro_rules! wrap {
                 return &self.0;
             }
         }
-    }
+    };
 }
