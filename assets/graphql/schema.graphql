@@ -1,0 +1,679 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"""
+
+A component defines a set of properties to be applied to entity
+types and relation types.
+"""
+type Component {
+  "Textual description of the entity type."
+  description: String!
+  "The name of the component."
+  name: String!
+  "The properties which are applied on entity instances."
+  properties: [PropertyType!]!
+}
+
+"""
+
+Entity instances represents an typed objects which contains properties.
+
+The entity type defines the properties (name, data type and socket type).
+
+In contrast to the entity type the entity instance stores values in it's
+properties.
+"""
+type EntityInstance {
+  "The description of the entity instance."
+  description: String!
+  "The unique identifier of the entity instance."
+  id: UUID!
+  "List of relation instances which ends at this entity instance."
+  inbound(
+    "Unimplemented"
+    typeName: String
+  ): [RelationInstance!]!
+  "List of relation instances which starts at this entity instance."
+  outbound(
+    "Unimplemented"
+    typeName: String
+  ): [RelationInstance!]!
+  """
+
+  The properties of then entity instance.
+
+  Each property is represented by it's name (String) and it's value. The value is
+  a representation of a JSON. Therefore the value can be boolean, number, string,
+  array or an object. For more information about the data types please look at
+  https://docs.serde.rs/serde_json/value/enum.Value.html
+  """
+  properties(
+    "Filters by property name"
+    name: String,
+    "Filters by property names"
+    names: [String!]
+  ): [Property!]!
+  "The entity type of the entity instance."
+  type: EntityType
+}
+
+"Entity types defines the type of an entity instance."
+type EntityType {
+  "The behaviours."
+  behaviours: [String!]!
+  "The components of the entity type."
+  components: [Component!]!
+  "Textual description of the entity type."
+  description: String!
+  "The extensions which are defined by the entity type."
+  extensions(name: String): [Extension!]!
+  "The entity type belongs to the given group of entity types."
+  group: String!
+  "List of relation types which has this entity type as inbound."
+  inboundRelations: [RelationType!]!
+  """
+
+  The name of the entity type.
+
+  The name is the unique identifier for entity types.
+  """
+  name: String!
+  "List of relation types which has this entity type as outbound."
+  outboundRelations: [RelationType!]!
+  """
+
+  The properties / property types which are defined by the entity type or
+  by one of the components.
+  """
+  properties(name: String): [PropertyType!]!
+}
+
+"""
+
+A flow is a container for entity instances and relation instances.
+
+A flow is strictly associated with a wrapper entity instance. The properties
+of the wrapper entity instance are the properties of the flow.
+
+Additionally, flows can be nested -  from the perspective of the outer flow
+the inner flow acts like an entity instance. The wrapper entity instance of
+the inner flow is the interface which can be accessed by the outer flow.
+
+Entity instances and relation instances can be shared with multiple flows.
+
+It's even possible to connect entity instances from different flows with relation
+instances.
+"""
+type Flow {
+  "The entity instances contained by this flow."
+  entities: [EntityInstance!]!
+  """
+
+  The id of the flow corresponds to the id of the wrapper entity instance
+
+  This means the vector of entity instances must contain an instance with
+  the id of the flow.
+  """
+  id: UUID!
+  "The relation instances contained by this flow."
+  relations: [RelationInstance!]!
+  "The (entity-) type of the flow."
+  type: EntityType
+  "The entity instance which is the wrapper for this flow."
+  wrapper: EntityInstance
+}
+
+"Search for instances"
+type Instances {
+  """
+
+  Search for entity instances.
+
+  If an id is given, the entity instance with the given id will be returned.
+
+  If an entity type is given, only entity instances of the given type are returned.
+  """
+  entities(
+    "Filters the entity instances by type."
+    entityType: String,
+    "Returns only the entity instance with the given id."
+    id: UUID
+  ): [EntityInstance!]!
+  relations(
+    inboundType: String,
+    outboundType: String,
+    "Filters the relation instances by relation type"
+    relationType: String
+  ): [RelationInstance!]!
+}
+
+"Mutations for the type system, the instances and the flows."
+type Mutation {
+  "Mutations for flows and their contained instances."
+  flows: MutationFlows!
+  "Mutations for instances (entity instances, relation instances)."
+  instances: MutationInstances!
+  "Mutations for types (components, entity types, relation types)."
+  types: MutationTypes!
+}
+
+"Mutations for components"
+type MutationComponents {
+  "Creates a new component with the given name and properties."
+  create(name: String!, properties: [PropertyTypeDefinition!]): Component!
+  delete(name: String!): Boolean!
+}
+
+"Mutation of entity instances."
+type MutationEntityInstances {
+  """
+
+  Creates a new entity instance of the given type.
+
+  The entity type must exist.
+
+  Optionally, an UUID can be specified. If no UUID is specified one will be generated
+  randomly.
+
+  The given properties consists of a list of pairs of property name and property value.
+  If properties are not provided, default values will be used depending on the data type
+  of the property.
+  """
+  create(id: UUID, properties: [Property!], typeName: String!): EntityInstance!
+  """
+
+  Deletes an entity instance.
+
+  TODO: Check if the entity instance is part of relation instances.
+  TODO: delete_relations: Option<bool>
+  """
+  delete(id: UUID!): Boolean!
+  """
+
+  Manually tick the entity instance. This means for each property of the entity instance
+  the corresponding reactive stream will be activated with it's last value.
+
+  This leads to a recalculation if the entity instance is controlled by an behaviour which
+  consumes the reactive streams.
+
+  Furthermore this leads to a new value propagation if the output property is connected
+  to other properties.
+  """
+  tick(id: UUID!): EntityInstance!
+  "Updates the properties of the entity instance with the given id."
+  update(id: UUID!, properties: [Property!]!): EntityInstance!
+}
+
+"Mutations for entity types"
+type MutationEntityTypes {
+  "Creates a new entity type with the given name and components and properties."
+  create(
+    behaviours: [String!],
+    components: [String!],
+    "The extension on the entity type."
+    extensions: [Extension!],
+    "The entity type belongs to this group."
+    group: String,
+    "The name of the entity type."
+    name: String!,
+    "The definitions of properties. These are added additionally to the properties provided by the given components."
+    properties: [PropertyTypeDefinition!]
+  ): EntityType!
+  "Deletes the entity type with the given name."
+  delete(name: String!): Boolean!
+}
+
+"Mutations for flows and their contained instances."
+type MutationFlows {
+  "Adds an existing entity instance by id to the given flow by id"
+  addEntity(entityId: UUID!, flowId: UUID!): Flow!
+  "Adds an existing relation instance by edge_key to the given flow by id"
+  addRelation(edgeKey: GraphQLEdgeKey!, flowId: UUID!): Flow!
+  """
+
+  Manually ticks all entity instances and relation instances of this flow. This means, for
+  each property of each entity instance and relation instance the corresponding reactive
+  stream will be activated with it's last value.
+
+  This leads to a recalculation if the instance is controlled by an behaviour which
+  consumes the reactive streams.
+
+  In case of entity instances, it furthermore leads to a new value propagation if the output
+  property is connected to other properties.
+  """
+  commit(id: UUID!): Flow!
+  """
+
+  Creates a new flow and a corresponding wrapper entity instance.
+
+  The given entity type must exist. It provides the properties for the wrapper entity instance
+  and therefore defines which properties of the flow are the inputs and outputs.
+
+  Optionally, an UUID can be specified.
+
+  Optionally, the initial values of the properties can be specified. Specified properties
+  which are not provided by the given entity type are lacking of a definition (data type,
+  socket type).
+  """
+  create(flowId: UUID, properties: [Property!], type: String!): Flow!
+  "Creates a new entity instance and adds the entity instance to the given flow by id."
+  createEntity(entityId: UUID, flowId: UUID!, properties: [Property!], type: String!): Flow!
+  "Creates a new relation instance and adds the relation instance to the given flow by id."
+  createRelation(edgeKey: GraphQLEdgeKey!, flowId: UUID!, properties: [Property!]): Flow!
+  """
+
+  Imports the given flow. Creates entity instances and relation instances which are contained
+  in the given flow.
+  """
+  import(flow: GraphQLFlowDefinition!): Flow!
+  "Removes an entity instance from flow."
+  removeEntity(entityId: UUID!, flowId: UUID!): Flow!
+  "Removes an existing relation instance by edge_key from the given flow by id"
+  removeRelation(edgeKey: GraphQLEdgeKey!, flowId: UUID!): Flow!
+}
+
+"Mutations on instances."
+type MutationInstances {
+  "Mutations on entity instances."
+  entities: MutationEntityInstances!
+  "Mutations on relation instances."
+  relations: MutationRelationInstances!
+}
+
+"Mutation of relation instances."
+type MutationRelationInstances {
+  """
+
+  Creates a new relation instance with the given edge_key.
+
+  The edge key is the primary key of a relation instance and consists of the id of the
+  outbound entity instance, the name of the relation type and the id of the inbound
+  entity instance.
+
+  The relation type must exist and the given type name is matched by a prefix search.
+  For example a given type name "default_connector--property_name--property_name" will match
+  as relation type "default_connector".
+
+  Furthermore the outbound and the inbound entity instance must exist.
+
+  The given properties consists of a list of pairs of property name and property value.
+  If properties are not provided, default values will be used depending on the data type
+  of the property.
+  """
+  create(edgeKey: GraphQLEdgeKey!, properties: [Property!]): RelationInstance!
+  "Deletes an relation instance."
+  delete(edgeKey: GraphQLEdgeKey!): Boolean!
+  """
+
+  Manually tick the relation instance. This means for each property of the entity instance
+  the corresponding reactive stream will be activated with it's last value.
+
+  This leads to a recalculation if the relation instance is controlled by an behaviour which
+  consumes the reactive streams.
+
+  In case of the default_connector it does NOT lead to a new value propagation, because the
+  reactive streams are not consumed by the default_connector behaviour.
+  """
+  tick(edgeKey: GraphQLEdgeKey!): RelationInstance!
+  "Updates the properties of the given relation instance by edge key."
+  update(edgeKey: GraphQLEdgeKey!, properties: [Property!]!): RelationInstance!
+}
+
+"Mutations for relation types"
+type MutationRelationTypes {
+  """
+
+  Creates a new relation type with the given name and components and properties.
+
+  The outbound entity type and the inbound entity type must be specified.
+  """
+  create(
+    behaviours: [String!],
+    "Adds the given components to the newly created relation type."
+    components: [String!],
+    "The extension on the relation type."
+    extensions: [Extension!],
+    inboundType: String!,
+    "The name of the entity type."
+    name: String!,
+    outboundType: String!,
+    "The definitions of properties. These are added additionally to the properties provided by the given components."
+    properties: [PropertyTypeDefinition!]
+  ): RelationType!
+  "Deletes the relation type with the given name."
+  delete(name: String!): Boolean!
+}
+
+"Mutations for types (components, entity types, relation types)."
+type MutationTypes {
+  "Mutations for components"
+  components: MutationComponents!
+  "Mutations for entity types"
+  entities: MutationEntityTypes!
+  "Mutations for relation types"
+  relations: MutationRelationTypes!
+}
+
+"""
+
+Definition of a property. The definition contains
+the name of the property, the data type and the socket
+type.
+"""
+type PropertyType {
+  "The data type of the property"
+  dataType: DataType!
+  "The description of the property."
+  description: String!
+  "Property specific extensions"
+  extensions: [Extension!]!
+  "The name of the property"
+  name: String!
+  "Specifies which type of socket"
+  socketType: SocketType!
+}
+
+"Search queries for the type system, the instances and the flows."
+type Query {
+  "Search for flows and their contained instances."
+  flows(id: UUID): [Flow!]!
+  "Search for instances (entity instances, relation instances)."
+  instances: Instances!
+  "Search for types (components, entity types, relation types)."
+  types: Types!
+}
+
+type RelationInstance {
+  "Textual description of the relation instance."
+  description: String!
+  """
+
+  The inbound entity instance.
+
+  You can use this in order to navigate from the inbound entity instance to the outbound
+  entity instance or vice versa.
+  """
+  inbound: EntityInstance!
+  """
+
+  The outbound entity instance.
+
+  You can use this in order to navigate from the outbound entity instance to the inbound
+  entity instance or vice versa.
+  """
+  outbound: EntityInstance!
+  """
+
+  The properties of then relation instance.
+
+  Each property is represented by it's name (String) and it's value. The value is
+  a representation of a JSON. Therefore the value can be boolean, number, string,
+  array or an object. For more information about the data types please look at
+  https://docs.serde.rs/serde_json/value/enum.Value.html
+  """
+  properties(
+    "Filters by property name."
+    name: String,
+    "Filters by property names"
+    names: [String!]
+  ): [Property!]!
+  "The relation type."
+  type: RelationType
+}
+
+"""
+
+A relation type defines the type of an relation instance.
+
+The relation type defines the entity types of the outbound and inbound entity instances.
+Also the relation type defines the properties of the relation instance.
+"""
+type RelationType {
+  "The behaviours."
+  behaviours: [String!]!
+  "The relation type composes it's properties by these components."
+  components: [Component!]!
+  "Textual description of the relation type."
+  description: String!
+  "The extensions which are defined by the relation type."
+  extensions(name: String): [Extension!]!
+  """
+
+  The full name of the relation type.
+
+  Returns "default_connector__property_name__property_name" (with type suffix).
+  """
+  fullName: String!
+  "The relation type belongs to the given group of relation types."
+  group: String!
+  "The inbound entity type."
+  inboundTypes: [EntityType!]!
+  """
+
+  The name of the relation type.
+
+  The name is the unique identifier for relation types.
+
+  Returns "default_connector" for "default_connector__property_name__property_name"
+  (without type suffix).
+  """
+  name: String!
+  "The outbound entity type."
+  outboundTypes: [EntityType!]!
+  """
+
+  The properties / property types which are defined by the relation type or
+  by one of the components.
+  """
+  properties(name: String): [PropertyType!]!
+}
+
+"Search for types"
+type Types {
+  """
+
+  Search for components
+
+  Optionally the list of components can be filtered by name.
+  """
+  components(
+    "Filters by the name of the components"
+    name: String
+  ): [Component!]!
+  """
+
+  Search for entity types.
+
+  Optionally the list of entity types can be filtered by name.
+  """
+  entities(
+    "Filters by the name of the entity type"
+    name: String
+  ): [EntityType!]!
+  "Search for relation types."
+  relations(
+    "Filters by inbound entity type"
+    inboundType: String,
+    "Filters by the name of the relation type"
+    name: String,
+    "Filters by outbound entity type"
+    outboundType: String
+  ): [RelationType!]!
+}
+
+"Derived from serde_json::Value but without value payload."
+enum DataType {
+  "Represents any type (relations)."
+  ANY
+  "Represents a JSON array."
+  ARRAY
+  "Represents a JSON boolean."
+  BOOL
+  "Represents a JSON null value."
+  NULL
+  "Represents a JSON number, whether integer or floating point."
+  NUMBER
+  "Represents a JSON object."
+  OBJECT
+  "Represents a JSON string."
+  STRING
+}
+
+"""
+
+The socket type defines if the property acts as an input or output socket
+or is an hidden property
+"""
+enum SocketType {
+  "The property acts as input socket and accepts incoming connections."
+  INPUT
+  "The property doesn't act as input or output socket."
+  NONE
+  "The property acts as output socket and accepts outgoing connections."
+  OUTPUT
+}
+
+scalar Extension
+
+scalar Property
+
+"""
+
+A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as Strings
+within GraphQL. UUIDs are used to assign unique identifiers to entities without requiring a central
+allocating authority.
+
+# References
+
+* [Wikipedia: Universally Unique Identifier](http://en.wikipedia.org/wiki/Universally_unique_identifier)
+* [RFC4122: A Universally Unique IDentifier (UUID) URN Namespace](http://tools.ietf.org/html/rfc4122)
+"""
+scalar UUID
+
+"""
+
+The primary key of an edge consists of the outbound id, the
+type name and the inbound id.
+"""
+input GraphQLEdgeKey {
+  "The id of the inbound entity instance."
+  inboundId: UUID!
+  "The id of the outbound entity instance."
+  outboundId: UUID!
+  "The name of the relation type."
+  typeName: String!
+}
+
+"""
+
+Entity instances represents an typed object which contains properties.
+
+The entity type defines the properties (name, data type and socket type).
+
+In contrast to the entity type the entity instance stores values in it's
+properties.
+"""
+input GraphQLEntityInstanceDefinition {
+  "The description of the entity instance."
+  description: String!
+  "The unique identifier of the entity instance."
+  id: UUID!
+  """
+
+  The properties of then entity instance.
+
+  Each property is represented by it's name (String) and it's value. The value is
+  a representation of a JSON. Therefore the value can be boolean, number, string,
+  array or an object. For more information about the data types please look at
+  https://docs.serde.rs/serde_json/value/enum.Value.html
+  """
+  properties: [Property!]!
+  "The name of the entity type."
+  type: String!
+}
+
+"""
+
+Represents a flow with entity instances and relation instances.
+
+The entity type of the flow and the entity types of each provided entity instance must exist.
+The relation types of each provided relation instance must exist.
+"""
+input GraphQLFlowDefinition {
+  "Textual description of the flow."
+  description: String!
+  """
+
+  The entity instances which are contained in this flow.
+
+  It can't have a default because the wrapper entity instance must be
+  present in the list of entities.
+  """
+  entityInstances: [GraphQLEntityInstanceDefinition!]!
+  """
+
+  The id of the flow corresponds to the id of the wrapper entity instance
+
+  This means the vector of entity instances must contain an instance with
+  the id of the flow.
+  """
+  id: UUID!
+  "The name of the flow."
+  name: String!
+  "The relation instances which are contained in this flow."
+  relationInstances: [GraphQLRelationInstanceDefinition!]!
+  "The name of the entity type."
+  type: String!
+}
+
+"""
+
+Relation instances are edges from an outbound entity instance to an
+inbound entity instance.
+
+The relation instance is of a relation type. The relation type defines
+the entity types of the outbound entity instance and the inbound entity
+instance. Furthermore the relation type defines which properties
+(name, data type, socket type) a relation instance have to have.
+
+In constrast to the relation type, the relation instance stores values/
+documents in it's properties.
+"""
+input GraphQLRelationInstanceDefinition {
+  "Textual description of the relation instance."
+  description: String!
+  "The id of the inbound vertex."
+  inboundId: UUID!
+  "The id of the outbound vertex."
+  outboundId: UUID!
+  """
+
+  The properties of then relation instance.
+
+  Each property is represented by it's name (String) and it's value. The value is
+  a representation of a JSON. Therefore the value can be boolean, number, string,
+  array or an object. For more information about the data types please look at
+  https://docs.serde.rs/serde_json/value/enum.Value.html
+  """
+  properties: [Property!]!
+  "The name of the relation type"
+  type: String!
+}
+
+input PropertyTypeDefinition {
+  "The data type of the property"
+  dataType: DataType!
+  "The description of the property"
+  description: String!
+  "Property specific extensions"
+  extensions: [Extension!]!
+  "The name of the property"
+  name: String!
+  "Specifies which type of socket"
+  socketType: SocketType!
+}
