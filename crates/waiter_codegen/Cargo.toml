@@ -1,21 +1,21 @@
 [package]
 name = "waiter_codegen"
-version = "1.6.5"
-edition = "2018"
 description = "Macro for Waiter DI"
-repository = "https://github.com/dmitryb-dev/waiter"
+version = "1.6.5"
+authors = [
+    "dmitryb.dev@gmail.com",
+    "Andreas Schaeffer <hanack@nooblounge.net>"
+]
+edition = "2021"
 license = "MIT"
 readme = "../../README.md"
-authors = [ "dmitryb.dev@gmail.com" ]
+repository = "https://github.com/dmitryb-dev/waiter"
 
 [dependencies]
-quote = "1.0.7"
-regex = "1.3.9"
-proc-macro2 = "1.0.24"
-
-[dependencies.syn]
-version = "1.0.48"
-features = [ "full" ]
+quote = "1.0"
+regex = "1.5"
+proc-macro2 = "1.0"
+syn = { version = "1.0", features = [ "full" ] }
 
 [lib]
 proc-macro = true
