@@ -4,7 +4,6 @@
 pub use component::*;
 pub use data_type::*;
 pub use entity_instance::*;
-pub use entity_shape::*;
 pub use entity_type::*;
 pub use extension::*;
 pub use flow::*;
@@ -20,7 +19,6 @@ pub use socket_type::*;
 
 pub mod component;
 pub mod data_type;
-pub mod entity_shape;
 pub mod entity_type;
 pub mod extension;
 pub mod property_type;
