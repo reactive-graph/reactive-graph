@@ -361,19 +361,6 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 |-----------------|------------------------------------------|----------------------------------------------------------------| --- |
 | Cron Expression | expression (string)<br>activation (bool) | A cron based scheduler propagates the activation output (true) |
 
-### ---Math Expression---
-
-| Name                              | Repository                                                      |
-|-----------------------------------|-----------------------------------------------------------------|
-| inexor-rgf-plugin-math-expression | https://github.com/aschaeffer/inexor-rgf-plugin-math-expression |
-
-#### Entity Types
-
-| Name       | Properties                                                   | Behaviours          | Description                                                                                |
-|------------|--------------------------------------------------------------|---------------------|--------------------------------------------------------------------------------------------|
-| Expression | expression (string)<br>variables (object)<br>result (number> | ExpressionBehaviour | A mathematical expression gets evaluated each time the input property `variables` changes. |
-
-
 ### Audio
 
 | Name                    | Repository                                            |
