@@ -22,10 +22,7 @@ pub trait EntityInstanceManager: Send + Sync {
     fn get_ids(&self) -> Vec<Uuid>;
 
     /// Creates a new reactive entity instance.
-    fn create(
-        &self,
-        entity_instance: EntityInstance,
-    ) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
+    fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 
     /// Deletes the reactive entity instance with the given id.
     fn delete(&self, id: Uuid);

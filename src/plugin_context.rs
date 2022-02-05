@@ -1,7 +1,4 @@
-use crate::{
-    ComponentManager, EntityInstanceManager, EntityTypeManager, FlowManager,
-    RelationInstanceManager, RelationTypeManager,
-};
+use crate::{ComponentManager, EntityInstanceManager, EntityTypeManager, FlowManager, RelationInstanceManager, RelationTypeManager};
 use std::sync::Arc;
 
 pub trait PluginContext: Send + Sync {

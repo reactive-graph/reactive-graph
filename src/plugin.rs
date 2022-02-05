@@ -32,9 +32,7 @@ pub enum PluginError {
 
 impl<S: ToString> From<S> for PluginError {
     fn from(other: S) -> PluginError {
-        PluginError::Other {
-            message: other.to_string(),
-        }
+        PluginError::Other { message: other.to_string() }
     }
 }
 
@@ -64,17 +62,11 @@ pub trait Plugin: Send + Sync {
 
     fn get_relation_type_provider(&self) -> Result<Arc<dyn RelationTypeProvider>, PluginError>;
 
-    fn get_component_behaviour_provider(
-        &self,
-    ) -> Result<Arc<dyn ComponentBehaviourProvider>, PluginError>;
+    fn get_component_behaviour_provider(&self) -> Result<Arc<dyn ComponentBehaviourProvider>, PluginError>;
 
-    fn get_entity_behaviour_provider(
-        &self,
-    ) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError>;
+    fn get_entity_behaviour_provider(&self) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError>;
 
-    fn get_relation_behaviour_provider(
-        &self,
-    ) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError>;
+    fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError>;
 
     fn get_flow_provider(&self) -> Result<Arc<dyn FlowProvider>, PluginError>;
 
