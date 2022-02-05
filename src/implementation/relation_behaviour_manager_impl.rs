@@ -1,7 +1,7 @@
 use std::sync::{Arc, RwLock};
 
+use crate::di::*;
 use async_trait::async_trait;
-use waiter_di::*;
 
 use crate::api::RelationBehaviourManager;
 use crate::model::ReactiveRelationInstance;
@@ -12,7 +12,7 @@ use log::trace;
 #[wrapper]
 pub struct RelationBehaviourProviders(RwLock<Vec<Arc<dyn RelationBehaviourProvider>>>);
 
-#[waiter_di::provides]
+#[provides]
 fn create_relation_behaviour_providers() -> RelationBehaviourProviders {
     RelationBehaviourProviders(RwLock::new(Vec::new()))
 }

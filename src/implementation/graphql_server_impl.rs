@@ -4,6 +4,7 @@ use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
+use crate::di::*;
 use actix_cors::Cors;
 use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpServer, Result};
 use async_graphql::Schema;
@@ -12,7 +13,6 @@ use async_std::task;
 use async_trait::async_trait;
 use log::{debug, error, info, warn};
 use serde::{Deserialize, Serialize};
-use waiter_di::*;
 
 use crate::api::{
     ComponentManager, EntityTypeManager, GraphQLServer, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowManager, ReactiveRelationInstanceManager,
@@ -249,6 +249,7 @@ impl ToString for GraphSqlServerConfig {
 }
 
 fn get_graphql_server_config() -> GraphSqlServerConfig {
+    // TODO: resolve config file from CONFIG_LOCATION(s)
     let toml_config = std::fs::read_to_string("./config/graphql.toml");
     match toml_config {
         Ok(toml_string) => {

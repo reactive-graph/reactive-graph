@@ -28,7 +28,7 @@ impl InexorSubscription {
     ) -> Result<impl Stream<Item = Value>> {
         match context.data::<Arc<dyn ReactiveEntityInstanceManager>>() {
             Ok(entity_instance_manager) => {
-                let mut entity_instance;
+                let entity_instance;
                 if id.is_some() {
                     entity_instance = entity_instance_manager.get(id.unwrap());
                 } else if label.is_some() {

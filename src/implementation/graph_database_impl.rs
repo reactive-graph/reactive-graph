@@ -1,7 +1,7 @@
+use crate::di::*;
 use async_trait::async_trait;
 use indradb::MemoryDatastore;
 use std::sync::Arc;
-use waiter_di::*;
 
 use crate::api::GraphDatabase;
 

@@ -2,6 +2,7 @@ use crate::api::{
     FlowManager, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowCreationError, ReactiveFlowImportError, ReactiveFlowManager,
     ReactiveRelationInstanceManager,
 };
+use crate::di::*;
 use crate::model::{Flow, ReactiveFlow};
 use crate::plugins::FlowProvider;
 use async_trait::async_trait;
@@ -12,7 +13,6 @@ use std::collections::{BTreeMap, HashMap};
 use std::convert::{TryFrom, TryInto};
 use std::sync::{Arc, RwLock};
 use uuid::Uuid;
-use waiter_di::*;
 
 #[wrapper]
 pub struct ReactiveFlows(RwLock<BTreeMap<Uuid, Arc<ReactiveFlow>>>);

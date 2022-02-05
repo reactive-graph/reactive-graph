@@ -1,11 +1,11 @@
 use std::collections::{BTreeMap, HashMap};
 use std::sync::{Arc, RwLock};
 
+use crate::di::*;
 use async_trait::async_trait;
 use indradb::EdgeKey;
 use serde_json::Value;
 use uuid::Uuid;
-use waiter_di::*;
 
 use crate::api::{
     ComponentBehaviourManager, ReactiveEntityInstanceManager, ReactiveRelationInstanceCreationError, ReactiveRelationInstanceImportError,

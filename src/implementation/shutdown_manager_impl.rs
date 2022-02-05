@@ -2,9 +2,9 @@ use std::ops::Deref;
 use std::sync::{Arc, RwLock};
 
 use crate::builder::ReactiveEntityInstanceBuilder;
+use crate::di::*;
 use async_trait::async_trait;
 use serde_json::json;
-use waiter_di::*;
 
 use crate::api::{Lifecycle, ReactiveEntityInstanceManager, UUID_SHUTDOWN};
 use crate::api::{ShutdownManager, SHUTDOWN};

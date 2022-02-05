@@ -3,7 +3,7 @@ cargo-features = ["strip"]
 [package]
 name = "inexor-rgf-application"
 description = "Inexor - Reactive Graph Flow - Application"
-version = "0.5.0"
+version = "0.5.1"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
@@ -46,9 +46,9 @@ futures-timer = "3.0"
 futures-util = "0.3"
 signal-hook = "0.3.13"
 toml = "0.5"
-waiter_di = { version = "1.6", features = ["async"], git = "https://github.com/aschaeffer/waiter.git" }
 uuid = { version = "0.8", features = ["serde", "v4"] }
 
+inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://github.com/aschaeffer/inexor-rgf-core-di.git" }
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }

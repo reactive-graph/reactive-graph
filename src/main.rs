@@ -8,18 +8,17 @@
 use std::alloc::System;
 
 use inexor_rgf_core_builder as builder;
+use inexor_rgf_core_di as di;
 use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
 
 use crate::application::Application;
-use crate::di::di_container;
+use crate::di::{profiles, Container, Provider};
 use std::thread;
 use std::time::Duration;
-use waiter_di::{profiles, Provider};
 
 mod api;
 mod application;
-mod di;
 mod graphql;
 mod implementation;
 mod plugin;
@@ -35,7 +34,7 @@ async fn main() {
     }
 
     {
-        let mut container = di_container::get::<profiles::Default>();
+        let mut container = di_container_get::<profiles::Default>();
         let container = &mut container;
         let mut application = Provider::<dyn Application>::create(container);
 
@@ -51,6 +50,10 @@ async fn main() {
         application.shutdown();
     } // Destruct the application
     thread::sleep(Duration::from_millis(2000));
+}
+
+pub fn di_container_get<T>() -> Container<T> {
+    Container::<T>::new()
 }
 
 #[cfg(test)]

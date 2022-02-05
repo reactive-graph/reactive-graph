@@ -1,9 +1,9 @@
 use std::fs::File;
 use std::io::BufReader;
 
+use crate::di::*;
 use async_trait::async_trait;
 use log::error;
-use waiter_di::*;
 
 use crate::api::{EntityInstanceManager, FlowCreationError, FlowImportError, FlowManager, RelationInstanceManager};
 use crate::model::Flow;

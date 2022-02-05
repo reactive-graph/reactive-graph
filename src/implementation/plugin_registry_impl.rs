@@ -2,10 +2,10 @@ use std::collections::HashMap;
 use std::ffi::OsStr;
 use std::sync::{Arc, RwLock};
 
+use crate::di::*;
 use async_trait::async_trait;
 use libloading::Library;
 use log::{debug, error};
-use waiter_di::*;
 
 use crate::api::{
     ComponentBehaviourManager, ComponentManager, EntityBehaviourManager, EntityTypeManager, Lifecycle, PluginRegistry, ReactiveEntityInstanceManager,

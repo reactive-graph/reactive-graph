@@ -4,9 +4,9 @@ use std::sync::{mpsc, Arc, RwLock};
 use std::thread;
 use std::time::Duration;
 
+use crate::di::{module, provides, wrapper, Component, Wrc};
 use async_trait::async_trait;
 use log::{debug, info};
-use waiter_di::*;
 
 use crate::api::*;
 

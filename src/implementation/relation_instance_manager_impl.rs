@@ -2,12 +2,12 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufReader;
 
+use crate::di::*;
 use async_trait::async_trait;
 use indradb::EdgeKey;
 use log::error;
 use serde_json::Value;
 use uuid::Uuid;
-use waiter_di::*;
 
 use crate::api::{EntityInstanceManager, RelationEdgeManager, RelationInstanceCreationError, RelationInstanceImportError, RelationInstanceManager};
 use crate::model::RelationInstance;

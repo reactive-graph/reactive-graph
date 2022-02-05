@@ -3,11 +3,11 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufReader;
 
+use crate::di::{component, provides, Component, Wrc};
 use async_trait::async_trait;
 use log::error;
 use serde_json::Value;
 use uuid::Uuid;
-use waiter_di::*;
 
 use crate::api::{EntityInstanceCreationError, EntityInstanceImportError, EntityInstanceManager, EntityVertexCreationError, EntityVertexManager};
 use crate::model::EntityInstance;

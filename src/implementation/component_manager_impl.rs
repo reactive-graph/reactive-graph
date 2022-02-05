@@ -2,9 +2,9 @@ use std::fs::File;
 use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
+use crate::di::{component, provides, wrapper};
 use async_trait::async_trait;
 use log::{debug, error};
-use waiter_di::{component, provides, wrapper};
 
 use crate::api::ComponentManager;
 use crate::api::Lifecycle;

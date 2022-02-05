@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
+use crate::di::*;
 use async_trait::async_trait;
 use indradb::{Datastore, Identifier, SpecificVertexQuery, Vertex, VertexProperties, VertexQueryExt};
 use log::debug;
 use serde_json::Value;
 use uuid::Uuid;
-use waiter_di::*;
 
 use crate::api::{EntityTypeManager, EntityVertexCreationError, EntityVertexManager, GraphDatabase};
 

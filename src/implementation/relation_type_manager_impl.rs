@@ -2,10 +2,10 @@ use std::fs::File;
 use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
+use crate::di::*;
 use async_trait::async_trait;
 use indradb::Identifier;
 use log::{debug, error, warn};
-use waiter_di::*;
 
 use crate::api::ComponentManager;
 use crate::api::RelationTypeManager;

@@ -1,8 +1,8 @@
 use std::sync::{Arc, RwLock};
 
+use crate::di::{component, provides, wrapper, Component};
 use async_trait::async_trait;
 use uuid::Uuid;
-use waiter_di::*;
 
 use crate::api::ComponentBehaviourManager;
 use crate::model::ReactiveEntityInstance;
@@ -14,7 +14,7 @@ use log::trace;
 #[wrapper]
 pub struct ComponentBehaviourProviders(RwLock<Vec<Arc<dyn ComponentBehaviourProvider>>>);
 
-#[waiter_di::provides]
+#[provides]
 fn create_behaviour_providers() -> ComponentBehaviourProviders {
     ComponentBehaviourProviders(RwLock::new(Vec::new()))
 }

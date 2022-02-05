@@ -1,11 +1,11 @@
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
 
+use crate::di::*;
 use async_trait::async_trait;
 use indradb::{Datastore, Edge, EdgeKey, EdgeProperties, EdgeQueryExt, Identifier, SpecificEdgeQuery, SpecificVertexQuery, VertexQueryExt};
 use serde_json::Value;
 use uuid::Uuid;
-use waiter_di::*;
 
 use crate::api::{GraphDatabase, RelationEdgeCreationError, RelationEdgeManager, RelationTypeManager};
 
