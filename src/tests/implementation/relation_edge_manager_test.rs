@@ -3,7 +3,7 @@ use serde_json::json;
 use crate::builder::{EntityTypeBuilder, RelationTypeBuilder};
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
-use indradb::{EdgeKey, Type};
+use indradb::{EdgeKey, Identifier};
 use std::collections::HashMap;
 
 #[test]
@@ -38,7 +38,7 @@ fn test_relation_edge_manager() {
     let inbound_entity = entity_vertex_manager.create(inbound_type_name.clone(), HashMap::new());
     let inbound_id = inbound_entity.unwrap();
 
-    let edge_key = EdgeKey::new(outbound_id, Type::new(relation_type_name.clone()).unwrap(), inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, Identifier::new(relation_type_name.clone()).unwrap(), inbound_id);
 
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
@@ -58,12 +58,12 @@ fn test_relation_edge_manager() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(edge_key, properties.edge.key);
-    assert_eq!(relation_type_name.clone(), properties.edge.key.t.0);
+    assert_eq!(relation_type_name.clone(), properties.edge.key.t.to_string());
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());
     let property = property.unwrap();
-    assert_eq!(property_name.clone(), property.name);
+    assert_eq!(property_name.clone(), property.name.to_string());
     assert_eq!(property_value.clone(), property.value);
 
     // Delete edge

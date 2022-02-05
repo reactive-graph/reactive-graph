@@ -1,9 +1,9 @@
-use indradb::Transaction;
 use uuid::Uuid;
 
 use crate::builder::{EntityInstanceBuilder, EntityTypeBuilder};
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::{r_json_string, r_string};
+use indradb::Datastore;
 use std::env;
 
 #[test]
@@ -12,13 +12,13 @@ fn test_entity_instance_manager() {
     let entity_type_manager = application.get_entity_type_manager();
     let entity_instance_manager = application.get_entity_instance_manager();
     let graph_database = application.get_graph_database();
-    let transaction = graph_database.get_transaction().unwrap();
+    let datastore = graph_database.get_datastore();
 
     let type_name = r_string();
     let property_name = r_string();
     let property_value = r_json_string();
 
-    assert_eq!(0, transaction.get_vertex_count().unwrap());
+    assert_eq!(0, datastore.get_vertex_count().unwrap());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
     let entity_instance = EntityInstanceBuilder::new(type_name.clone())
@@ -26,7 +26,7 @@ fn test_entity_instance_manager() {
         .get();
     let result = entity_instance_manager.create_from_instance(entity_instance);
     assert!(result.is_err());
-    assert_eq!(0, transaction.get_vertex_count().unwrap());
+    assert_eq!(0, datastore.get_vertex_count().unwrap());
 
     let entity_type = EntityTypeBuilder::new(type_name.clone()).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
@@ -36,7 +36,7 @@ fn test_entity_instance_manager() {
         .get();
     let result = entity_instance_manager.create_from_instance(entity_instance);
     assert!(result.is_ok());
-    assert_eq!(1, transaction.get_vertex_count().unwrap());
+    assert_eq!(1, datastore.get_vertex_count().unwrap());
     let uuid = result.unwrap();
 
     // Check if has returns false for a non-existent uuid
@@ -62,7 +62,7 @@ fn test_entity_instance_manager() {
         .get();
     let result = entity_instance_manager.create_from_instance(entity_instance.clone());
     assert!(result.is_err());
-    assert_eq!(1, transaction.get_vertex_count().unwrap());
+    assert_eq!(1, datastore.get_vertex_count().unwrap());
 
     // Check if we can create an another entity with a different uuid
     let another_uuid = Uuid::new_v4();
@@ -74,12 +74,12 @@ fn test_entity_instance_manager() {
     assert!(result.is_ok());
     assert!(entity_instance_manager.has(another_uuid));
     assert!(entity_instance_manager.get(another_uuid).is_some());
-    assert_eq!(2, transaction.get_vertex_count().unwrap());
+    assert_eq!(2, datastore.get_vertex_count().unwrap());
 
     entity_instance_manager.delete(another_uuid);
     assert!(!entity_instance_manager.has(another_uuid));
     assert!(entity_instance_manager.get(another_uuid).is_none());
-    assert_eq!(1, transaction.get_vertex_count().unwrap());
+    assert_eq!(1, datastore.get_vertex_count().unwrap());
 }
 
 #[test]

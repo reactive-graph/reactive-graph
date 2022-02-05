@@ -5,7 +5,7 @@ use uuid::Uuid;
 use crate::builder::{EntityInstanceBuilder, EntityTypeBuilder, RelationInstanceBuilder, RelationTypeBuilder};
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::{r_json_string, r_string};
-use indradb::{EdgeKey, Type};
+use indradb::{EdgeKey, Identifier};
 
 #[test]
 fn test_relation_instance_manager() {
@@ -23,7 +23,7 @@ fn test_relation_instance_manager() {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let edge_key = EdgeKey::new(outbound_id, Type::new(type_name.clone()).unwrap(), inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), inbound_id);
 
     let entity_type = EntityTypeBuilder::new(outbound_type.clone()).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
@@ -78,12 +78,12 @@ fn test_relation_instance_manager() {
     assert!(result.is_ok());
     let actual_edge_key = result.unwrap();
     assert_eq!(outbound_id, actual_edge_key.outbound_id);
-    assert_eq!(type_name.clone(), actual_edge_key.t.0);
+    assert_eq!(type_name.clone(), actual_edge_key.t.to_string());
     assert_eq!(inbound_id, actual_edge_key.inbound_id);
 
     // Check if has returns false for a non-existent uuid
-    let wrong_outbound_id_edge_key = EdgeKey::new(Uuid::new_v4(), Type::new(type_name.clone()).unwrap(), inbound_id);
-    let wrong_inbound_id_edge_key = EdgeKey::new(outbound_id, Type::new(type_name.clone()).unwrap(), Uuid::new_v4());
+    let wrong_outbound_id_edge_key = EdgeKey::new(Uuid::new_v4(), Identifier::new(type_name.clone()).unwrap(), inbound_id);
+    let wrong_inbound_id_edge_key = EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), Uuid::new_v4());
     // let wrong_outbound_id_edge_key = EdgeKey::new(outbound_id, Type::new(type_name.clone()).unwrap(), inbound_id);
 
     assert!(!relation_instance_manager.has(wrong_outbound_id_edge_key.clone()));
@@ -137,7 +137,7 @@ fn test_relation_instance_manager_import_export() {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let edge_key = EdgeKey::new(outbound_id, Type::new(type_name.clone()).unwrap(), inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), inbound_id);
 
     let entity_type = EntityTypeBuilder::new(outbound_type.clone()).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
@@ -174,7 +174,7 @@ fn test_relation_instance_manager_import_export() {
 
     let actual_edge_key = result.unwrap();
     assert_eq!(outbound_id, actual_edge_key.outbound_id);
-    assert_eq!(type_name.clone(), actual_edge_key.t.0);
+    assert_eq!(type_name.clone(), actual_edge_key.t.to_string());
     assert_eq!(inbound_id, actual_edge_key.inbound_id);
 
     relation_instance_manager.export(edge_key.clone(), path.clone());

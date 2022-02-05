@@ -1,7 +1,7 @@
 use crate::builder::EntityTypeBuilder;
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
-use indradb::Transaction;
+use indradb::Datastore;
 use serde_json::json;
 use std::collections::HashMap;
 use uuid::Uuid;
@@ -12,13 +12,13 @@ fn test_entity_vertex_manager() {
     let entity_type_manager = application.get_entity_type_manager();
     let entity_vertex_manager = application.get_entity_vertex_manager();
     let graph_database = application.get_graph_database();
-    let transaction = graph_database.get_transaction().unwrap();
+    let datastore = graph_database.get_datastore();
 
     let type_name = r_string();
     let property_name = r_string();
     let property_value = json!(r_string());
 
-    assert_eq!(0, transaction.get_vertex_count().unwrap());
+    assert_eq!(0, datastore.get_vertex_count().unwrap());
 
     // Create entity type
     let entity_type = EntityTypeBuilder::new(type_name.clone())
@@ -32,7 +32,7 @@ fn test_entity_vertex_manager() {
     let result = entity_vertex_manager.create(type_name.clone(), properties);
 
     assert!(result.is_ok());
-    assert_eq!(1, transaction.get_vertex_count().unwrap());
+    assert_eq!(1, datastore.get_vertex_count().unwrap());
 
     // Check if entity vertex with the given uuid exists
     let uuid = result.unwrap();
@@ -46,12 +46,12 @@ fn test_entity_vertex_manager() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(uuid, properties.vertex.id);
-    assert_eq!(type_name.clone(), properties.vertex.t.0);
+    assert_eq!(type_name.clone(), properties.vertex.t.to_string());
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());
     let property = property.unwrap();
-    assert_eq!(property_name.clone(), property.name);
+    assert_eq!(property_name.clone(), property.name.to_string());
     assert_eq!(property_value.clone(), property.value);
     // Delete vertex
     entity_vertex_manager.delete(uuid);
@@ -99,12 +99,12 @@ fn test_entity_vertex_manager_with_id() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(vertex_uuid, properties.vertex.id);
-    assert_eq!(type_name.clone(), properties.vertex.t.0);
+    assert_eq!(type_name.clone(), properties.vertex.t.to_string());
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());
     let property = property.unwrap();
-    assert_eq!(property_name.clone(), property.name);
+    assert_eq!(property_name.clone(), property.name.to_string());
     assert_eq!(property_value.clone(), property.value);
     // Delete vertex
     entity_vertex_manager.delete(vertex_uuid);
