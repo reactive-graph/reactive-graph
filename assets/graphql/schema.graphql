@@ -3,20 +3,17 @@
 schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
 }
 
-"""
-
-A component defines a set of properties to be applied to entity
-types and relation types.
-"""
+"Entity types defines the type of an entity instance."
 type Component {
-  "Textual description of the entity type."
+  "Textual description of the component."
   description: String!
   "The name of the component."
   name: String!
-  "The properties which are applied on entity instances."
-  properties: [PropertyType!]!
+  "The properties which are applied on entity or relation instances."
+  properties(name: String): [PropertyType!]!
 }
 
 """
@@ -142,7 +139,9 @@ type Instances {
     "Filters the entity instances by type."
     entityType: String,
     "Returns only the entity instance with the given id."
-    id: UUID
+    id: UUID,
+    "Returns the entity instance with the given label."
+    label: String
   ): [EntityInstance!]!
   relations(
     inboundType: String,
@@ -359,23 +358,16 @@ type MutationTypes {
   relations: MutationRelationTypes!
 }
 
-"""
-
-Definition of a property. The definition contains
-the name of the property, the data type and the socket
-type.
-"""
+"Entity types defines the type of an entity instance."
 type PropertyType {
-  "The data type of the property"
-  dataType: DataType!
-  "The description of the property."
+  dataType: GraphQLDataType!
+  "Textual description of the component."
   description: String!
-  "Property specific extensions"
-  extensions: [Extension!]!
-  "The name of the property"
+  "The extensions which are defined by the entity type."
+  extensions(name: String): [Extension!]!
+  "The name of the component."
   name: String!
-  "Specifies which type of socket"
-  socketType: SocketType!
+  socketType: GraphQLSocketType!
 }
 
 "Search queries for the type system, the instances and the flows."
@@ -473,6 +465,23 @@ type RelationType {
   properties(name: String): [PropertyType!]!
 }
 
+"Subscriptions for the reactive property instances."
+type Subscription {
+  entity(
+    "The uuid of the entity instance"
+    id: UUID,
+    "The label of the entity instance"
+    label: String,
+    "The name of the property"
+    propertyName: String!
+  ): JSON!
+  relation(
+    edgeKey: GraphQLEdgeKey!,
+    "The name of the property"
+    propertyName: String!
+  ): JSON!
+}
+
 "Search for types"
 type Types {
   """
@@ -506,8 +515,7 @@ type Types {
   ): [RelationType!]!
 }
 
-"Derived from serde_json::Value but without value payload."
-enum DataType {
+enum GraphQLDataType {
   "Represents any type (relations)."
   ANY
   "Represents a JSON array."
@@ -524,12 +532,7 @@ enum DataType {
   STRING
 }
 
-"""
-
-The socket type defines if the property acts as an input or output socket
-or is an hidden property
-"""
-enum SocketType {
+enum GraphQLSocketType {
   "The property acts as input socket and accepts incoming connections."
   INPUT
   "The property doesn't act as input or output socket."
@@ -539,6 +542,9 @@ enum SocketType {
 }
 
 scalar Extension
+
+"A scalar that can represent any JSON value."
+scalar JSON
 
 scalar Property
 
@@ -667,7 +673,7 @@ input GraphQLRelationInstanceDefinition {
 
 input PropertyTypeDefinition {
   "The data type of the property"
-  dataType: DataType!
+  dataType: GraphQLDataType!
   "The description of the property"
   description: String!
   "Property specific extensions"
@@ -675,5 +681,5 @@ input PropertyTypeDefinition {
   "The name of the property"
   name: String!
   "Specifies which type of socket"
-  socketType: SocketType!
+  socketType: GraphQLSocketType!
 }
