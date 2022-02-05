@@ -1,3 +1,5 @@
+cargo-features = ["strip"]
+
 [package]
 name = "inexor-rgf-core-builder"
 description = "Inexor - Reactive Graph Flow - Core - Builder"
@@ -25,3 +27,9 @@ opt-level = 0
 
 [profile.release]
 opt-level = 3
+# 12MB -> 7.8MB
+lto = true
+# 7.8MB -> 4.5MB
+strip = "symbols"
+# 4.5MB -> 3.7MB
+# opt-level = "z"
