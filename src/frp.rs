@@ -191,9 +191,10 @@
 //! ```
 
 use std::cell::RefCell;
+use std::ops::Deref;
 // use std::rc::{Rc, Weak};
 use std::sync::mpsc::{channel, Receiver};
-use std::sync::{Arc, Weak};
+use std::sync::{Arc, RwLock, Weak};
 
 /// The subscriber stores the handle_id and the closure.
 type Subscriber<'a, Sig> = (u128, dyn FnMut(&Sig) + 'a);
@@ -235,7 +236,7 @@ pub enum Either<A, B> {
 /// [`Stream::map`], [`Stream::filter_map`], [`Stream::filter`], [`Stream::fold`],
 /// [`Stream::merge`], [`Stream::zip`], etc.
 pub struct Stream<'a, Sig> {
-    subscribers: DependentStreams<'a, Sig>,
+    subscribers: RwLock<DependentStreams<'a, Sig>>,
 }
 
 /// TODO: This solves many problems, but is it really OK?
@@ -250,27 +251,31 @@ where
     /// Create a new stream.
     pub fn new() -> Self {
         let subscribers = DependentStreams::Own(Arc::new(RefCell::new(Vec::new())));
-        Stream { subscribers }
+        Stream {
+            subscribers: RwLock::new(subscribers),
+        }
     }
 
     /// Create a new version of this stream by behaving the same way as the input reference (if it’s
     /// an owned pointer, it clones ownership; if it’s a weak pointer, it clone the weak pointer).
     fn new_same(&self) -> Self {
-        let subscribers = match self.subscribers {
+        let guard = self.subscribers.read().unwrap();
+        let subscribers = RwLock::new(match guard.deref() {
             DependentStreams::Own(ref rc) => DependentStreams::Own(rc.clone()),
             DependentStreams::Weak(ref weak) => DependentStreams::Weak(weak.clone()),
-        };
+        });
 
         Stream { subscribers }
     }
 
     /// Create new, non-owning version of this stream.
     fn new_weak(&self) -> Self {
-        let subscribers = match self.subscribers {
+        let guard = self.subscribers.read().unwrap();
+        let subscribers = RwLock::new(match guard.deref() {
             // DependentStreams::Own(ref rc) => DependentStreams::Weak(Rc::downgrade(rc)),
             DependentStreams::Own(ref rc) => DependentStreams::Weak(Arc::downgrade(rc)),
             DependentStreams::Weak(ref weak) => DependentStreams::Weak(weak.clone()),
-        };
+        });
 
         Stream { subscribers }
     }
@@ -282,13 +287,16 @@ where
     where
         F: 'a + FnMut(&Sig),
     {
-        match self.subscribers {
+        let guard = self.subscribers.write().unwrap();
+        match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                subscribers.borrow_mut().push(Box::new((0, subscriber)))
+                let mut subscribers = subscribers.borrow_mut();
+                subscribers.push(Box::new((0, subscriber)))
             }
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    subscribers.borrow_mut().push(Box::new((0, subscriber)));
+                    let mut subscribers = subscribers.borrow_mut();
+                    subscribers.push(Box::new((0, subscriber)));
                 }
             }
         }
@@ -301,15 +309,16 @@ where
     where
         F: 'a + FnMut(&Sig),
     {
-        match self.subscribers {
-            DependentStreams::Own(ref subscribers) => subscribers
-                .borrow_mut()
-                .push(Box::new((handle_id, subscriber))),
+        let guard = self.subscribers.write().unwrap();
+        match guard.deref() {
+            DependentStreams::Own(ref subscribers) => {
+                let mut subscribers = subscribers.borrow_mut();
+                subscribers.push(Box::new((handle_id, subscriber)));
+            }
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    subscribers
-                        .borrow_mut()
-                        .push(Box::new((handle_id, subscriber)));
+                    let mut subscribers = subscribers.borrow_mut();
+                    subscribers.push(Box::new((handle_id, subscriber)));
                 }
             }
         }
@@ -317,14 +326,17 @@ where
 
     /// Removes an subscriber.
     pub fn remove(&self, handle_id: u128) {
-        match self.subscribers {
+        let guard = self.subscribers.write().unwrap();
+        match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                subscribers.borrow_mut().retain(|sub| sub.0 != handle_id)
+                let mut subscribers = subscribers.borrow_mut();
+                subscribers.retain(|sub| sub.0 != handle_id)
             }
 
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    subscribers.borrow_mut().retain(|sub| sub.0 != handle_id)
+                    let mut subscribers = subscribers.borrow_mut();
+                    subscribers.retain(|sub| sub.0 != handle_id)
                 }
             }
         }
@@ -332,7 +344,8 @@ where
 
     /// Send a signal down the stream.
     pub fn send(&self, signal: &Sig) {
-        match self.subscribers {
+        let guard = self.subscribers.read().unwrap();
+        match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
                 // for sub in subscribers.borrow_mut().iter_mut() {
                 //   sub.1(signal);
