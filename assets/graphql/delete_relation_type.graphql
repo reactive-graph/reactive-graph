@@ -1,6 +1,6 @@
 mutation {
   types {
-    entities {
+    relations {
       delete(name: "relationtype1")
     }
   }
