@@ -57,18 +57,21 @@ pub trait EntityInstanceManager: Send + Sync {
     /// Returns the entity instance with the given UUID or None.
     fn get(&self, id: Uuid) -> Option<EntityInstance>;
 
-    // TODO: return Result<EntityInstance, EntityInstanceCreationError>
+    /// Creates an entity instance of the given type and initialize the properties with the given
+    /// values.
     fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
 
-    // TODO: return Result<EntityInstance, EntityInstanceCreationError>
+    /// Creates an entity instance of the given type with the given id and initialize the properties
+    /// with the given values.
     fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
 
+    /// The given entity instance gets created in the graph database.
     fn create_from_instance(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError>;
 
-    // TODO: return result
+    /// Updates given entity instance in the graph database.
     fn commit(&self, entity_instance: EntityInstance);
 
-    // TODO: return result
+    /// Deletes the entity instance with the given id.
     fn delete(&self, id: Uuid);
 
     fn import(&self, path: String) -> Result<Uuid, EntityInstanceImportError>;
