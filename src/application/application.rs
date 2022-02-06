@@ -177,7 +177,6 @@ impl Application for ApplicationImpl {
         info!("Bye.");
     }
 
-    // TODO: remove the shared thread mechanics
     fn stop(&self) {
         {
             let mut running = self.running.0.write().unwrap();
