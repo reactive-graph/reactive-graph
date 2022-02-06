@@ -46,10 +46,8 @@ pub trait EntityVertexManager: Send + Sync {
     /// This is useful for importing an entity instance with the fixed id.
     fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
 
-    // TODO: return result
     fn commit(&self, id: Uuid, properties: HashMap<String, Value>);
 
     /// Deletes the vertex with the given id.
-    // TODO: return result
     fn delete(&self, id: Uuid);
 }
