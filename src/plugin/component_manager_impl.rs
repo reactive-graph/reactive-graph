@@ -25,6 +25,10 @@ impl ComponentManager for ComponentManagerImpl {
         self.component_manager.get(name)
     }
 
+    fn find(&self, search: String) -> Vec<Component> {
+        self.component_manager.find(search)
+    }
+
     fn create(&self, name: String, properties: Vec<PropertyType>) {
         self.component_manager.create(name, properties)
     }
