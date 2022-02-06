@@ -63,8 +63,12 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     /// Deletes the relation type with the given name.
     fn delete(&self, type_name: String);
 
+    /// Imports a relation type from a JSON file located at the given path.
     fn import(&self, path: String) -> Result<RelationType, RelationTypeImportError>;
+
+    /// Exports the relation type with the given name to a JSON file located at the given path.
     fn export(&self, type_name: String, path: String);
 
+    /// Registers a relation type provider.
     fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>);
 }

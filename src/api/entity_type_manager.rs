@@ -46,8 +46,12 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     /// Deletes the entity type with the given name.
     fn delete(&self, name: String);
 
+    /// Imports an entity type from a JSON file file located at the given path.
     fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError>;
+
+    /// Exports the entity type with the given name to a JSON file located at the given path.
     fn export(&self, name: String, path: String);
 
+    /// Registers an entity type provider.
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>);
 }
