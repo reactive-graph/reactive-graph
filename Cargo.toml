@@ -3,7 +3,7 @@ cargo-features = ["strip"]
 [package]
 name = "inexor-rgf-application"
 description = "Inexor - Reactive Graph Flow - Application"
-version = "0.5.1"
+version = "0.6.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
@@ -55,7 +55,7 @@ inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
 # inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
+inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git", branch = "feature/plugin-api-extensions" }
 
 [dev-dependencies]
 random-string = "1.0"
