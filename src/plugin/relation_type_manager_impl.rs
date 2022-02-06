@@ -33,6 +33,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.get_starts_with(type_name_starts_with)
     }
 
+    fn find(&self, search: String) -> Vec<RelationType> {
+        self.relation_type_manager.find(search)
+    }
+
     fn create(
         &self,
         outbound_type: String,
