@@ -6,6 +6,7 @@ use crate::di::*;
 use async_trait::async_trait;
 use indradb::Identifier;
 use log::{debug, error, warn};
+use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
 use crate::api::RelationTypeManager;
@@ -111,6 +112,18 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     })
             }
         }
+    }
+
+    fn find(&self, search: String) -> Vec<RelationType> {
+        let matcher = WildMatch::new(search.as_str());
+        self.relation_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .filter(|relation_type| matcher.matches(relation_type.type_name.as_str()))
+            .cloned()
+            .collect()
     }
 
     fn create(

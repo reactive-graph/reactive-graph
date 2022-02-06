@@ -44,6 +44,9 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     /// Returns the relation type whose name starts with the given name.
     fn get_starts_with(&self, type_name_starts_with: String) -> Option<RelationType>;
 
+    /// Returns all relation types whose names matches the given search string.
+    fn find(&self, search: String) -> Vec<RelationType>;
+
     /// Creates a new relation type.
     // TODO: Result
     fn create(

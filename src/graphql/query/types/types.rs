@@ -18,17 +18,20 @@ impl Types {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Filters by the name of the components")] name: Option<String>,
+        #[graphql(desc = "Searches by the name of the components. Allowed wildcards are: ? and *")] search: Option<String>,
     ) -> Vec<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>();
         if component_manager.is_ok() {
             let component_manager = component_manager.unwrap();
             if name.is_some() {
-                // TODO: entity_type_manager.search("*query*");
                 let component = component_manager.get(name.unwrap());
                 if component.is_some() {
                     return vec![component.unwrap().into()];
                 }
                 return Vec::new();
+            }
+            if search.is_some() {
+                return component_manager.find(search.unwrap()).into_iter().map(|component| component.into()).collect();
             }
             return component_manager.get_components().into_iter().map(|component| component.into()).collect();
         }
@@ -42,18 +45,25 @@ impl Types {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Filters by the name of the entity type")] name: Option<String>,
+        #[graphql(desc = "Searches by the name of the entity types. Allowed wildcards are: ? and *")] search: Option<String>,
     ) -> Vec<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
         if entity_type_manager.is_ok() {
             let entity_type_manager = entity_type_manager.unwrap();
             if name.is_some() {
-                // TODO: entity_type_manager.search("*query*");
                 let entity_type = entity_type_manager.get(name.unwrap());
                 if entity_type.is_some() {
                     let entity_type: GraphQLEntityType = entity_type.unwrap().into();
                     return vec![entity_type];
                 }
                 return Vec::new();
+            }
+            if search.is_some() {
+                return entity_type_manager
+                    .find(search.unwrap())
+                    .into_iter()
+                    .map(|entity_type| entity_type.into())
+                    .collect();
             }
             return entity_type_manager
                 .get_entity_types()
@@ -73,11 +83,24 @@ impl Types {
         context: &Context<'_>,
         #[graphql(desc = "Filters by outbound entity type")] outbound_type: Option<String>,
         #[graphql(desc = "Filters by the name of the relation type")] name: Option<String>,
+        #[graphql(desc = "Searches by the name of the relation types. Allowed wildcards are: ? and *")] search: Option<String>,
         #[graphql(desc = "Filters by inbound entity type")] inbound_type: Option<String>,
     ) -> Vec<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>();
         if relation_type_manager.is_ok() {
             let relation_type_manager = relation_type_manager.unwrap();
+            if search.is_some() {
+                return relation_type_manager
+                    .find(search.unwrap())
+                    .iter()
+                    .filter(|relation_type| outbound_type.is_none() || outbound_type.clone().unwrap() == relation_type.outbound_type.clone())
+                    .filter(|relation_type| inbound_type.is_none() || inbound_type.clone().unwrap() == relation_type.inbound_type.clone())
+                    .map(|relation_type| {
+                        let relation_type: GraphQLRelationType = relation_type.clone().into();
+                        relation_type
+                    })
+                    .collect();
+            }
             return relation_type_manager
                 .get_relation_types()
                 .iter()

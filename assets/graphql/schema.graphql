@@ -498,7 +498,9 @@ type Types {
   """
   components(
     "Filters by the name of the components"
-    name: String
+    name: String,
+    "Searches by the name of the components. Allowed wildcards are: ? and *"
+    search: String
   ): [Component!]!
   """
 
@@ -508,7 +510,9 @@ type Types {
   """
   entities(
     "Filters by the name of the entity type"
-    name: String
+    name: String,
+    "Searches by the name of the entity types. Allowed wildcards are: ? and *"
+    search: String
   ): [EntityType!]!
   "Search for relation types."
   relations(
@@ -517,7 +521,9 @@ type Types {
     "Filters by the name of the relation type"
     name: String,
     "Filters by outbound entity type"
-    outboundType: String
+    outboundType: String,
+    "Searches by the name of the relation types. Allowed wildcards are: ? and *"
+    search: String
   ): [RelationType!]!
 }
 

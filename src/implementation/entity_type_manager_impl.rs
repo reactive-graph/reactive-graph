@@ -6,6 +6,7 @@ use crate::di::*;
 use async_trait::async_trait;
 use indradb::Identifier;
 use log::{debug, error, warn};
+use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
@@ -55,6 +56,18 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     fn get(&self, name: String) -> Option<EntityType> {
         self.entity_types.0.read().unwrap().iter().find(|entity_type| entity_type.name == name).cloned()
+    }
+
+    fn find(&self, search: String) -> Vec<EntityType> {
+        let matcher = WildMatch::new(search.as_str());
+        self.entity_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .filter(|entity_type| matcher.matches(entity_type.name.as_str()))
+            .cloned()
+            .collect()
     }
 
     fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {

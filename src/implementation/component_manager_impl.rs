@@ -3,8 +3,10 @@ use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
 use crate::di::{component, provides, wrapper};
+use crate::model::Component;
 use async_trait::async_trait;
 use log::{debug, error};
+use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
 use crate::api::Lifecycle;
@@ -49,6 +51,18 @@ impl ComponentManager for ComponentManagerImpl {
 
     fn get(&self, name: String) -> Option<crate::model::Component> {
         self.components.0.read().unwrap().iter().find(|component| component.name == name).cloned()
+    }
+
+    fn find(&self, search: String) -> Vec<Component> {
+        let matcher = WildMatch::new(search.as_str());
+        self.components
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .filter(|component| matcher.matches(component.name.as_str()))
+            .cloned()
+            .collect()
     }
 
     fn create(&self, name: String, properties: Vec<PropertyType>) {
