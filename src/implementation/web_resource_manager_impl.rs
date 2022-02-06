@@ -29,18 +29,18 @@ impl WebResourceManagerImpl {
 #[async_trait]
 #[provides]
 impl WebResourceManager for WebResourceManagerImpl {
-    fn has(&self, web_resource_name: String) -> bool {
-        self.get(web_resource_name).is_some()
+    fn has(&self, base_path: String) -> bool {
+        self.get(base_path).is_some()
     }
 
-    fn get(&self, web_resource_name: String) -> Option<Arc<dyn WebResourceProvider>> {
-        self.web_resource_providers.0.read().unwrap().get(web_resource_name.as_str()).cloned()
+    fn get(&self, base_path: String) -> Option<Arc<dyn WebResourceProvider>> {
+        self.web_resource_providers.0.read().unwrap().get(base_path.as_str()).cloned()
     }
 
     fn add_provider(&self, web_resource_provider: Arc<dyn WebResourceProvider>) {
-        let name: String = web_resource_provider.get_name();
-        debug!("Registering web resource provider: {}", name);
-        self.web_resource_providers.0.write().unwrap().insert(name, web_resource_provider.clone());
+        let base_path: String = web_resource_provider.get_base_path();
+        debug!("Registering web resource provider with base path: {}", base_path);
+        self.web_resource_providers.0.write().unwrap().insert(base_path, web_resource_provider.clone());
     }
 }
 

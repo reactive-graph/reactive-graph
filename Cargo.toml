@@ -31,6 +31,7 @@ futures = "0.3"
 #futures-await-test = "0.3.0"
 futures-timer = "3.0"
 futures-util = "0.3"
+http = "0.2"
 indradb-lib = "3"
 lazy_static = "1.4.0"
 libloading = "0.7"
@@ -55,7 +56,7 @@ inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
 # inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git", branch = "feature/plugin-api-extensions" }
+inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
 
 [dev-dependencies]
 random-string = "1.0"

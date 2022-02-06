@@ -6,11 +6,15 @@ use std::time::Duration;
 
 use crate::di::*;
 use actix_cors::Cors;
-use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpServer, Result};
+use actix_http::body::BoxBody;
+use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpResponseBuilder, HttpServer, Result};
 use async_graphql::Schema;
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse, GraphQLSubscription};
 use async_std::task;
 use async_trait::async_trait;
+use http::header::CONTENT_TYPE;
+use http::{Request, Response};
+use inexor_rgf_core_plugins::HttpBody;
 use log::{debug, error, info, warn};
 use serde::{Deserialize, Serialize};
 
@@ -55,19 +59,58 @@ async fn subscription_websocket(schema: web::Data<InexorSchema>, request: HttpRe
 
 #[derive(Deserialize)]
 pub struct WebResourcePathInfo {
-    web_resource_name: String,
+    web_resource_base_path: String,
     path: String,
 }
 
-pub async fn handle_web_resource(web_resource_manager: web::Data<Arc<dyn WebResourceManager>>, path: web::Path<WebResourcePathInfo>) -> HttpResponse {
-    let web_resource_name = path.web_resource_name.clone();
-    let path = path.path.clone();
-    debug!("web_resource_name = {}", web_resource_name.as_str());
+pub async fn handle_web_resource(
+    web_resource_manager: web::Data<Arc<dyn WebResourceManager>>,
+    path_info: web::Path<WebResourcePathInfo>,
+    request: HttpRequest,
+) -> HttpResponse {
+    let base_path = path_info.web_resource_base_path.clone();
+    let path = path_info.path.clone();
+    let uri = request.uri().clone();
+    debug!("base_path = {}", base_path.as_str());
     debug!("path = {}", path.as_str());
-    match web_resource_manager.get(web_resource_name.clone()) {
-        Some(web_resource) => web_resource.handle_web_resource(path),
-        None => HttpResponse::NotFound().body(format!("404 Not Found: {}: {}", web_resource_name, path)),
+    let http_request = convert_request(request);
+    match web_resource_manager.get(base_path.clone()) {
+        Some(web_resource) => match web_resource.handle_web_resource(path, http_request) {
+            Ok(response) => convert_response(response),
+            Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
+        },
+        None => HttpResponse::NotFound().body(format!("404 Not Found: {}", uri)),
     }
+}
+
+fn convert_request(request: HttpRequest) -> Request<HttpBody> {
+    let mut request_builder = http::request::Builder::new()
+        .uri(request.uri())
+        .method(request.method())
+        .version(request.version());
+    if let Some(headers_map) = request_builder.headers_mut() {
+        request.headers().into_iter().for_each(|(header_name, header_value)| {
+            headers_map.insert(header_name, header_value.clone());
+        });
+    }
+    let http_request = request_builder.body(HttpBody::None).unwrap();
+    http_request
+}
+
+fn convert_response(response: Response<HttpBody>) -> HttpResponse {
+    let mut response_builder = HttpResponseBuilder::new(response.status());
+    if let Some(header) = response.headers().get(CONTENT_TYPE) {
+        response_builder.content_type(header);
+    }
+    response.headers().into_iter().for_each(|header| {
+        response_builder.append_header(header);
+    });
+    response_builder.body(match response.into_body() {
+        HttpBody::None => BoxBody::new(()),
+        HttpBody::Binary(bytes) => BoxBody::new(bytes),
+        HttpBody::Json(value) => BoxBody::new(serde_json::to_string(&value).unwrap_or(String::default())),
+        HttpBody::PlainText(content) => BoxBody::new(content.clone()),
+    })
 }
 
 #[async_trait]
@@ -159,7 +202,7 @@ impl GraphQLServer for GraphQLServerImpl {
                 // TODO: query flows
                 // TODO: modify flows
                 // Web Resource API
-                .service(web::resource("/{web_resource_name}/{path:.*}").route(web::get().to(handle_web_resource)))
+                .service(web::resource("/{web_resource_base_path}/{path:.*}").route(web::get().to(handle_web_resource)))
         })
         .disable_signals();
 
