@@ -38,4 +38,10 @@ pub trait RelationTypeManager: Send + Sync {
 
     /// Deletes the relation type with the given name.
     fn delete(&self, type_name: String);
+
+    /// Imports a relation type from a JSON file located at the given path.
+    fn import(&self, path: String);
+
+    /// Exports the relation type with the given name to a JSON file located at the given path.
+    fn export(&self, type_name: String, path: String);
 }

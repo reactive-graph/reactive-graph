@@ -23,4 +23,10 @@ pub trait ComponentManager: Send + Sync {
 
     /// Deletes the component with the given name.
     fn delete(&self, name: String);
+
+    /// Imports a component from a JSON file located at the given path.
+    fn import(&self, path: String);
+
+    /// Exports the component with the given name to a JSON file located at the given path.
+    fn export(&self, name: String, path: String);
 }
