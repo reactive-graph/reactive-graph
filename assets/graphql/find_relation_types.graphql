@@ -2,6 +2,7 @@ query {
   types {
     relations(search: "relationtype?") {
       name
+      fullName
       description
       outboundTypes {
         name
