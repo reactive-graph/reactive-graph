@@ -15,6 +15,9 @@ pub trait ComponentManager: Send + Sync {
     /// Returns the component with the given name or empty.
     fn get(&self, name: String) -> Option<Component>;
 
+    /// Returns all components whose names matches the given search string.
+    fn find(&self, search: String) -> Vec<Component>;
+
     /// Creates a new component with the given name and the given properties.
     fn create(&self, name: String, properties: Vec<PropertyType>);
 

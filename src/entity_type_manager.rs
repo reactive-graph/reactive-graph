@@ -15,6 +15,9 @@ pub trait EntityTypeManager: Send + Sync {
     /// Returns the entity type with the given name or empty.
     fn get(&self, name: String) -> Option<EntityType>;
 
+    /// Returns all entity types whose names matches the given search string.
+    fn find(&self, search: String) -> Vec<EntityType>;
+
     /// Creates a new entity type.
     fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
 
