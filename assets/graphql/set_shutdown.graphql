@@ -6,7 +6,7 @@ mutation {
         properties: [
           {
             name: "shutdown",
-            value: true
+            value: 5
           }
         ]
       ) {

@@ -1,10 +1,12 @@
 use std::ops::Deref;
 use std::sync::{Arc, RwLock};
+use std::time;
 
 use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::di::*;
 use async_trait::async_trait;
 use serde_json::json;
+use tokio::task;
 
 use crate::api::{Lifecycle, ReactiveEntityInstanceManager, UUID_SHUTDOWN};
 use crate::api::{ShutdownManager, SHUTDOWN};
@@ -48,12 +50,18 @@ impl Lifecycle for ShutdownManagerImpl {
         self.reactive_entity_instance_manager.register_reactive_instance(entity_instance.clone());
         entity_instance.properties.get(SHUTDOWN).unwrap().stream.read().unwrap().observe_with_handle(
             move |v| {
-                if !v.is_boolean() {
-                    return;
-                }
-                if v.as_bool().unwrap() {
+                if v.is_boolean() && v.as_bool().unwrap() {
                     let mut guard = shutdown_state.write().unwrap();
                     *guard = true;
+                }
+                if v.is_number() {
+                    let shutdown_in_seconds = time::Duration::from_secs(v.as_u64().unwrap());
+                    let shutdown_state_deferred = shutdown_state.clone();
+                    task::spawn(async move {
+                        tokio::time::sleep(shutdown_in_seconds).await;
+                        let mut guard = shutdown_state_deferred.write().unwrap();
+                        *guard = true;
+                    });
                 }
             },
             UUID_SHUTDOWN.as_u128(),
