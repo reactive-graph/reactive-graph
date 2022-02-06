@@ -1,0 +1,26 @@
+mutation {
+  types {
+    components {
+      create(
+        name: "test2",
+        properties: [
+          {
+            name: "second"
+            description: "Second Property"
+            dataType: ANY
+            socketType: NONE
+            extensions: []
+          }
+        ]
+      ) {
+        name
+        description
+        properties {
+          name
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+query {
+  types {
+    components(search: "test?") {
+      name
+      description
+      properties {
+        name
+        dataType
+        socketType
+      }
+    }
+  }
+}

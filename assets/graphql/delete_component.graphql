@@ -1,0 +1,7 @@
+mutation {
+  types {
+    components {
+      delete(name: "test1")
+    }
+  }
+}
