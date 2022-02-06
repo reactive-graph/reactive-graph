@@ -1,8 +1,8 @@
 # Inexor Reactive Graph Flow
 
-| Project | Module | Sub-Module | Functionality | Test Coverage                                                                                                                                      |
-| --- | --- | --- |---------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Core | Plugins | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins) |
+| Project             | Module | Sub-Module | Functionality                                                        | Test Coverage                                                                                                                                          |
+|---------------------|--------|------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Reactive Graph Flow | Core   | Plugins    | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins) |
 
 ### About Inexor
 
@@ -31,7 +31,8 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 ### About this module
 
 This module provides the plugin mechanism of the Inexor Reactive Graph Flow. The
-[main application](https://github.com/aschaeffer/inexor-rgf-application) and all plugins will depend on this.
+[main application](https://github.com/aschaeffer/inexor-rgf-application) and all
+plugins will depend on this.
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
@@ -78,12 +79,12 @@ As a bonus, the plugin system also enables the Inexor Reactive Graph Flow applic
 core of the application is small it is potentially useful for other use cases like IOT oder control software for
 robotics - the plugins can provide such functionality and some functionalities are the very same (logical gates).
 
-| Definition  | Description |
-| --- | --- |
-| Component | Building block for the behaviour of an entity type or an relation type. Defines properties. |
-| Entity Type, Relation Type | Defines components to be used by the entity type or the relation type. Defines more properties. |
-| Entity Behaviour, Relation Behaviour | The implementation of a specific behaviour of an entity or a relation of a specific type. |
-| Flow | The flow contains entity instances and relation instances and provides connected functionality. A flow is not flat. It can contain other flows. Therefore it's possible to reuse flows for different scenarios. |
+| Definition                           | Description                                                                                                                                                                                                     |
+|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Component                            | Building block for the behaviour of an entity type or an relation type. Defines properties.                                                                                                                     |
+| Entity Type, Relation Type           | Defines components to be used by the entity type or the relation type. Defines more properties.                                                                                                                 |
+| Entity Behaviour, Relation Behaviour | The implementation of a specific behaviour of an entity or a relation of a specific type.                                                                                                                       |
+| Flow                                 | The flow contains entity instances and relation instances and provides connected functionality. A flow is not flat. It can contain other flows. Therefore it's possible to reuse flows for different scenarios. |
 
 TODO: Flow Type: Cause flows contains entity instances and relation instances, we need something like a template for a Flow. Like "Flow Type: Player" which is the template for "Flow Instance: Player 1" and "Flow Instance: Player 2"
 
@@ -118,6 +119,6 @@ TODO: Flow Type: Cause flows contains entity instances and relation instances, w
 
 ### Sponsors
 
-| | | |
-| --- | --- | --- |
-| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-plugin-flow-editor/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
+|                                                                                                                                                                                                                             |           |                                                                    |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------------|
+| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-plugins/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses!  |
