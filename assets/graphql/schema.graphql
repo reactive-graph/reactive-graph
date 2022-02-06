@@ -205,7 +205,13 @@ type MutationEntityInstances {
   """
   tick(id: UUID!): EntityInstance!
   "Updates the properties of the entity instance with the given id."
-  update(id: UUID!, properties: [Property!]!): EntityInstance!
+  update(
+    "Updates the entity instance with the given id."
+    id: UUID,
+    "Updates the entity instance with the given label."
+    label: String,
+    properties: [Property!]!
+  ): EntityInstance!
 }
 
 "Mutations for entity types"

@@ -41,6 +41,7 @@ impl Lifecycle for ShutdownManagerImpl {
     fn init(&self) {
         let entity_instance = ReactiveEntityInstanceBuilder::new(SHUTDOWN)
             .id(UUID_SHUTDOWN)
+            .property("label", json!("/org/inexor/system/shutdown"))
             .property(SHUTDOWN, json!(false))
             .get();
         let shutdown_state = self.shutdown_state.0.clone();

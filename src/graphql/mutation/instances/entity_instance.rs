@@ -56,11 +56,24 @@ impl MutationEntityInstances {
     // TODO: clone(id) -> GraphQLEntityInstance
 
     /// Updates the properties of the entity instance with the given id.
-    async fn update(&self, context: &Context<'_>, id: Uuid, properties: Vec<GraphQLPropertyInstance>) -> Result<GraphQLEntityInstance> {
+    async fn update(
+        &self,
+        context: &Context<'_>,
+        #[graphql(desc = "Updates the entity instance with the given id.")] id: Option<Uuid>,
+        #[graphql(desc = "Updates the entity instance with the given label.")] label: Option<String>,
+        properties: Vec<GraphQLPropertyInstance>,
+    ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
-        let entity_instance = entity_instance_manager.get(id);
+        let entity_instance;
+        if id.is_some() {
+            entity_instance = entity_instance_manager.get(id.unwrap());
+        } else if label.is_some() {
+            entity_instance = entity_instance_manager.get_by_label(label.unwrap());
+        } else {
+            return Err("Either id or label must be given!".into());
+        }
         if entity_instance.is_none() {
-            return Err(Error::new(format!("Entity instance {} does not exist!", id)));
+            return Err("Entity instance not found!".into());
         }
         let entity_instance = entity_instance.unwrap();
 
