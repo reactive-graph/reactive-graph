@@ -82,62 +82,64 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
     fn register_flow_and_reactive_instances(&self, reactive_flow: Arc<ReactiveFlow>) {
         if !self.has(reactive_flow.id) {
-            // Step 1: Register all entity instances (if not already registered by uuid)
-            let mut entity_instances = reactive_flow.entity_instances.write().unwrap();
-            let mut replaced_entity_instances = HashMap::<Uuid, Arc<ReactiveEntityInstance>>::new();
-            for (uuid, entity_instance) in entity_instances.iter() {
-                let entity_instance = self
-                    .reactive_entity_instance_manager
-                    .register_or_merge_reactive_instance(entity_instance.clone());
-                // Replace the entity instance with the actual registered instance instead
-                replaced_entity_instances.insert(*uuid, entity_instance);
-            }
+            {
+                // Step 1: Register all entity instances (if not already registered by uuid)
+                let mut entity_instances = reactive_flow.entity_instances.write().unwrap();
+                let mut replaced_entity_instances = HashMap::<Uuid, Arc<ReactiveEntityInstance>>::new();
+                for (uuid, entity_instance) in entity_instances.iter() {
+                    let entity_instance = self
+                        .reactive_entity_instance_manager
+                        .register_or_merge_reactive_instance(entity_instance.clone());
+                    // Replace the entity instance with the actual registered instance instead
+                    replaced_entity_instances.insert(*uuid, entity_instance);
+                }
 
-            // Step 2: Replace the entity instances of the flow with the actual registered entity instances
-            entity_instances.clear();
-            for (uuid, entity_instance) in replaced_entity_instances.iter() {
-                entity_instances.insert(*uuid, entity_instance.clone());
-            }
+                // Step 2: Replace the entity instances of the flow with the actual registered entity instances
+                entity_instances.clear();
+                for (uuid, entity_instance) in replaced_entity_instances.iter() {
+                    entity_instances.insert(*uuid, entity_instance.clone());
+                }
 
-            // Step 3: Recreate the reactive relation instances
-            // Because the entity instances might have been replaced by the actual registered entity instances
-            let mut relation_instances = reactive_flow.relation_instances.write().unwrap();
-            let mut replaced_relation_instances = HashMap::<EdgeKey, Arc<ReactiveRelationInstance>>::new();
-            for (edge_key, relation_instance) in relation_instances.iter() {
-                let inbound_id = relation_instance.inbound.id;
-                let outbound_id = relation_instance.outbound.id;
+                // Step 3: Recreate the reactive relation instances
+                // Because the entity instances might have been replaced by the actual registered entity instances
+                let mut relation_instances = reactive_flow.relation_instances.write().unwrap();
+                let mut replaced_relation_instances = HashMap::<EdgeKey, Arc<ReactiveRelationInstance>>::new();
+                for (edge_key, relation_instance) in relation_instances.iter() {
+                    let inbound_id = relation_instance.inbound.id;
+                    let outbound_id = relation_instance.outbound.id;
 
-                let recreated_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(
-                    entity_instances.get(&outbound_id).unwrap().clone(),
-                    entity_instances.get(&inbound_id).unwrap().clone(),
-                    RelationInstance::from(relation_instance.clone()),
-                ));
-                replaced_relation_instances.insert(edge_key.clone(), recreated_relation_instance);
-                // relation_instance.inbound = entity_instances.get(&inbound_id).unwrap().clone();
-                // relation_instance.outbound = entity_instances.get(&outbound_id).unwrap().clone();
-            }
+                    let recreated_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(
+                        entity_instances.get(&outbound_id).unwrap().clone(),
+                        entity_instances.get(&inbound_id).unwrap().clone(),
+                        RelationInstance::from(relation_instance.clone()),
+                    ));
+                    replaced_relation_instances.insert(edge_key.clone(), recreated_relation_instance);
+                    // relation_instance.inbound = entity_instances.get(&inbound_id).unwrap().clone();
+                    // relation_instance.outbound = entity_instances.get(&outbound_id).unwrap().clone();
+                }
 
-            // Step 4: Replace the relation instances of the flow with the recreated relation instances
-            relation_instances.clear();
-            for (edge_key, relation_instance) in replaced_relation_instances.iter() {
-                relation_instances.insert(edge_key.clone(), relation_instance.clone());
-            }
+                // Step 4: Replace the relation instances of the flow with the recreated relation instances
+                relation_instances.clear();
+                for (edge_key, relation_instance) in replaced_relation_instances.iter() {
+                    relation_instances.insert(edge_key.clone(), relation_instance.clone());
+                }
 
-            // Step 5: Register all (recreated) relation instances (if not already registered by edge_key)
-            let mut replaced_relation_instances = HashMap::<EdgeKey, Arc<ReactiveRelationInstance>>::new();
-            for (edge_key, relation_instance) in relation_instances.iter() {
-                let relation_instance = self
-                    .reactive_relation_instance_manager
-                    .register_or_merge_reactive_instance(relation_instance.clone());
-                // Replace the relation instance with the actual registered instance
-                replaced_relation_instances.insert(edge_key.clone(), relation_instance);
-            }
+                // Step 5: Register all (recreated) relation instances (if not already registered by edge_key)
+                let mut replaced_relation_instances = HashMap::<EdgeKey, Arc<ReactiveRelationInstance>>::new();
+                for (edge_key, relation_instance) in relation_instances.iter() {
+                    let relation_instance = self
+                        .reactive_relation_instance_manager
+                        .register_or_merge_reactive_instance(relation_instance.clone());
+                    // Replace the relation instance with the actual registered instance
+                    replaced_relation_instances.insert(edge_key.clone(), relation_instance);
+                }
 
-            // Step 6: Replace the relation instances of the flow with the actual registered relation instances
-            relation_instances.clear();
-            for (edge_key, relation_instance) in replaced_relation_instances.iter() {
-                relation_instances.insert(edge_key.clone(), relation_instance.clone());
-            }
+                // Step 6: Replace the relation instances of the flow with the actual registered relation instances
+                relation_instances.clear();
+                for (edge_key, relation_instance) in replaced_relation_instances.iter() {
+                    relation_instances.insert(edge_key.clone(), relation_instance.clone());
+                }
+            } // Drop rwlock
             self.register_flow(reactive_flow.clone());
         }
     }
