@@ -1,7 +1,7 @@
 mutation {
   types {
     components {
-      delete(name: "test1")
+      delete(name: "component1")
     }
   }
 }

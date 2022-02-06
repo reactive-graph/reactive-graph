@@ -1,0 +1,40 @@
+mutation {
+  types {
+    relations {
+      create(
+        name: "relationtype1"
+        outboundType: "entitytype1"
+        inboundType: "entitytype2"
+        components: [
+          "component1"
+        ]
+        properties: [
+          {
+            name: "fifth"
+            description: "Fifth Property"
+            dataType: ANY
+            socketType: NONE
+            extensions: []
+          }
+        ]
+      ) {
+        name
+        description
+        outboundTypes {
+          name
+        }
+        inboundTypes {
+          name
+        }
+        components {
+          name
+        }
+        properties {
+          name
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}

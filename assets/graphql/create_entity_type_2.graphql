@@ -1,12 +1,16 @@
 mutation {
   types {
-    components {
+    entities {
       create(
-        name: "component1",
+        name: "entitytype2"
+        components: [
+          "component1"
+          "component2"
+        ]
         properties: [
           {
-            name: "first"
-            description: "First Property"
+            name: "fourth"
+            description: "Fourth Property"
             dataType: ANY
             socketType: NONE
             extensions: []
@@ -15,6 +19,9 @@ mutation {
       ) {
         name
         description
+        components {
+          name
+        }
         properties {
           name
           dataType

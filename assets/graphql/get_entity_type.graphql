@@ -1,8 +1,11 @@
 query {
   types {
-    components(search: "test?") {
+    entities(name: "entitytype1") {
       name
       description
+      components {
+        name
+      }
       properties {
         name
         dataType

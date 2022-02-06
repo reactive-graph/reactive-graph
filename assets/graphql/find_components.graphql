@@ -1,6 +1,6 @@
 query {
   types {
-    components(name: "component1") {
+    components(search: "component?") {
       name
       description
       properties {
