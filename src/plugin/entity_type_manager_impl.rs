@@ -36,4 +36,12 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     fn delete(&self, name: String) {
         self.entity_type_manager.delete(name)
     }
+
+    fn import(&self, path: String) {
+        let _result = self.entity_type_manager.import(path);
+    }
+
+    fn export(&self, name: String, path: String) {
+        self.entity_type_manager.export(name, path)
+    }
 }

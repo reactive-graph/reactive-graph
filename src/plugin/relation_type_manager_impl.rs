@@ -54,4 +54,12 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     fn delete(&self, type_name: String) {
         self.relation_type_manager.delete(type_name)
     }
+
+    fn import(&self, path: String) {
+        let _result = self.relation_type_manager.import(path);
+    }
+
+    fn export(&self, type_name: String, path: String) {
+        self.relation_type_manager.export(type_name, path)
+    }
 }

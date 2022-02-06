@@ -36,4 +36,12 @@ impl ComponentManager for ComponentManagerImpl {
     fn delete(&self, name: String) {
         self.component_manager.delete(name)
     }
+
+    fn import(&self, path: String) {
+        self.component_manager.import(path)
+    }
+
+    fn export(&self, name: String, path: String) {
+        self.component_manager.export(name, path)
+    }
 }
