@@ -113,15 +113,15 @@ The most important interface for interaction with the Reactive Graph Flow is Gra
 
 ##### Queries
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/graphql/mutations.png">
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/queries.png">
 
 ##### Mutations
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/graphql/mutations.png">
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/mutations.png">
 
 ##### Subscriptions
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/graphql/mutations.png">
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/subscriptions.png">
 
 #### Using Libraries
 
