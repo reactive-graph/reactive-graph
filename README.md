@@ -111,6 +111,18 @@ The most important interface for interaction with the Reactive Graph Flow is Gra
 * As a flow designer I can connect and disconnect two properties which data flows from one to the other using a GraphQL interface
 * As a flow designer I can create flows using a GraphQL interface
 
+##### Queries
+
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/graphql/mutations.png">
+
+##### Mutations
+
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/graphql/mutations.png">
+
+##### Subscriptions
+
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/graphql/mutations.png">
+
 #### Using Libraries
 
 The libraries are carefully chosen:
