@@ -123,6 +123,10 @@ The most important interface for interaction with the Reactive Graph Flow is Gra
 
 <img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/subscriptions.png">
 
+#### Flow Editor
+
+<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/flows/flow-editor.png">
+
 #### Using Libraries
 
 The libraries are carefully chosen:
