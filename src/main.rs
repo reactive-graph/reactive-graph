@@ -29,7 +29,7 @@ static ALLOCATOR: System = System;
 
 #[async_std::main]
 async fn main() {
-    if let Err(error) = log4rs::init_file("config/logging.yml", Default::default()) {
+    if let Err(error) = log4rs::init_file("config/logging.toml", Default::default()) {
         println!("Failed to configure logger: {}", error);
     }
 
