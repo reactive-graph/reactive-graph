@@ -7,7 +7,7 @@ pub struct GraphQLComponent {
     component: Component,
 }
 
-/// Entity types defines the type of an entity instance.
+/// Components are composable parts which can be used by types (entity type, relation type).
 #[Object(name = "Component")]
 impl GraphQLComponent {
     /// The name of the component.

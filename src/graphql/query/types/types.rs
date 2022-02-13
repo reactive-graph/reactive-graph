@@ -8,7 +8,7 @@ use crate::graphql::query::{GraphQLComponent, GraphQLEntityType, GraphQLRelation
 #[derive(Default)]
 pub struct Types;
 
-/// Search for types
+/// Search for types (components, entity types or relation types)
 #[Object]
 impl Types {
     /// Search for components

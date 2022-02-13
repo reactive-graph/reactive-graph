@@ -15,7 +15,7 @@ use crate::model::ReactiveRelationInstance;
 /// instance. Furthermore the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
-/// In constrast to the relation type, the relation instance stores values/
+/// In contrast to the relation type, the relation instance stores values/
 /// documents in it's properties.
 pub struct GraphQLRelationInstance {
     relation_instance: Arc<ReactiveRelationInstance>,

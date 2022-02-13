@@ -2,6 +2,8 @@ use async_graphql::*;
 use serde::{Deserialize, Serialize};
 use strum::Display;
 
+/// The socket type defines if the property acts as an input or output socket
+/// or is an hidden property
 #[derive(Enum, Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq, Display)]
 #[serde(rename_all = "lowercase")]
 #[graphql(remote = "inexor_rgf_core_model::SocketType")]

@@ -2,6 +2,9 @@ use async_graphql::*;
 use serde::{Deserialize, Serialize};
 use strum::Display;
 
+/// The data types of a value.
+///
+/// Derived from serde_json::Value but without value payload.
 #[derive(Enum, Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq, Display)]
 #[serde(rename_all = "lowercase")]
 #[graphql(remote = "inexor_rgf_core_model::DataType")]

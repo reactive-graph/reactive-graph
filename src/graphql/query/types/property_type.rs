@@ -8,7 +8,10 @@ pub struct GraphQLPropertyType {
     property_type: PropertyType,
 }
 
-/// Entity types defines the type of an entity instance.
+/// Property types defines the type of a property instance.
+/// The property type defines the name, the data type and
+/// the socket type of a property. A property type does not
+/// contain any value.
 #[Object(name = "PropertyType")]
 impl GraphQLPropertyType {
     /// The name of the component.
@@ -21,10 +24,12 @@ impl GraphQLPropertyType {
         self.property_type.description.clone()
     }
 
+    /// The data type of the property instances.
     async fn data_type(&self) -> GraphQLDataType {
         self.property_type.data_type.into()
     }
 
+    /// The socket type of the property instances.
     async fn socket_type(&self) -> GraphQLSocketType {
         self.property_type.socket_type.into()
     }

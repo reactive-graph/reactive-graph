@@ -10,7 +10,7 @@ pub struct GraphQLEntityType {
     entity_type: EntityType,
 }
 
-/// Entity types defines the type of an entity instance.
+/// Entity types defines the type of entity instance.
 #[Object(name = "EntityType")]
 impl GraphQLEntityType {
     /// The name of the entity type.

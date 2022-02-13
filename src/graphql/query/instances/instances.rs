@@ -62,6 +62,12 @@ impl Instances {
         Vec::new()
     }
 
+    /// Search for relations instances.
+    ///
+    /// Relation instances can be searched by relation type name, the entity type of the outbound
+    /// entity instance, the entity type of the inbound entity instance, the id of the outbound
+    /// entity instance or the id of the inbound entity instance. All of these filters can be
+    /// combined.
     async fn relations(
         &self,
         context: &Context<'_>,
