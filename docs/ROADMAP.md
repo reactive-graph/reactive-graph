@@ -53,17 +53,3 @@ Create a library which can be reused for frontend applications.
 ## Inexor Reactive Graph Flow Editor
 
 - [ ] Uses @inexor/reactive-graph-flow-client
-
-## Application / Core Entity System
-
-### Components
-
-* ComponentManager
-  * Query Entity Types by Component
-  * Query Relation Types by Component
-* Allow adding components to entity instances and relation instances after initial construction
-  * Add properties (if not already present)
-  * Add component behaviours
-* Allow removing components from entity instances and relation instances
-  * Remove component behaviours
-  * Do not remove properties
