@@ -133,3 +133,13 @@ path = "../inexor-rgf-plugin-tray/target/debug/libinexor_rgf_plugin_tray.so"
 name = "inexor-rgf-plugin-flow-editor"
 active = true
 path = "../inexor-rgf-plugin-flow-editor/target/debug/libinexor_rgf_plugin_flow_editor.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-image-processing"
+active = false
+path = "../inexor-rgf-plugin-image-processing/target/debug/libinexor_rgf_plugin_image_processing.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-asset"
+active = true
+path = "../inexor-rgf-plugin-asset/target/debug/libinexor_rgf_plugin_asset.so"
