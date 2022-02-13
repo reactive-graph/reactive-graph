@@ -7,7 +7,7 @@ use strum::Display;
 /// Derived from serde_json::Value but without value payload.
 #[derive(Enum, Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq, Display)]
 #[serde(rename_all = "lowercase")]
-#[graphql(remote = "inexor_rgf_core_model::DataType")]
+#[graphql(name = "DataType", remote = "inexor_rgf_core_model::DataType")]
 pub enum GraphQLDataType {
     /// Represents a JSON null value.
     Null,

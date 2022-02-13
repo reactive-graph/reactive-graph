@@ -5,6 +5,7 @@ use crate::graphql::query::{GraphQLDataType, GraphQLExtension, GraphQLSocketType
 use crate::model::PropertyType;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[graphql(name = "PropertyTypeDefinition")]
 pub struct PropertyTypeDefinition {
     /// The name of the property
     pub name: String,

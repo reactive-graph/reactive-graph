@@ -2,21 +2,26 @@ mutation {
   instances {
     entities {
       update(
-        label: "/org/inexor/system/shutdown",
+        label: "/org/inexor/system/shutdown"
         properties: [
           {
-            name: "shutdown",
+            name: "shutdown"
             value: 5
           }
         ]
       ) {
-        id,
-        type {name},
+        id
+        type {
+          name
+        }
         properties(
           names: [
-            "shutdown",
+            "shutdown"
           ]
-        )
+        ) {
+          name
+          value
+        }
       }
     }
   }

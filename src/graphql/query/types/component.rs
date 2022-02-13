@@ -1,6 +1,8 @@
+use crate::api::{EntityTypeManager, RelationTypeManager};
 use async_graphql::*;
+use std::sync::Arc;
 
-use crate::graphql::query::GraphQLPropertyType;
+use crate::graphql::query::{GraphQLEntityType, GraphQLPropertyType, GraphQLRelationType};
 use crate::model::Component;
 
 pub struct GraphQLComponent {
@@ -35,6 +37,34 @@ impl GraphQLComponent {
                 .collect();
         }
         self.component.properties.iter().cloned().map(|property_type| property_type.into()).collect()
+    }
+
+    /// Query which entity types are using this component
+    async fn entity_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
+        if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
+            return entity_type_manager
+                .get_entity_types()
+                .iter()
+                .filter(|entity_type| entity_type.is_a(self.component.name.clone()))
+                .cloned()
+                .map(|entity_type| entity_type.into())
+                .collect();
+        }
+        Vec::new()
+    }
+
+    /// Query which relation types are using this component
+    async fn relation_types(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
+        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
+            return relation_type_manager
+                .get_relation_types()
+                .iter()
+                .filter(|relation_type| relation_type.is_a(self.component.name.clone()))
+                .cloned()
+                .map(|relation_type| relation_type.into())
+                .collect();
+        }
+        Vec::new()
     }
 }
 

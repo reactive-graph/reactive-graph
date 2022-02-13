@@ -1,0 +1,53 @@
+# This example shows how to query the relations of type default_connector
+# which are inbound into a specific entity instance which is identified by
+# an id.
+# In this case two input_device_keys are connected to an AND gate.
+query findIncomingConnectorsForEntityInstance {
+  instances {
+    relations(
+      type: "default_connector"
+      inboundId: "b969b749-7521-4563-8e11-8fa653a1ffd8"
+    ) {
+      type {
+        name
+        fullName
+      }
+      outbound {
+        id
+        type {
+          name
+        }
+        properties(names: [ "key_down" ]) {
+          name
+          value
+          type {
+            dataType
+            socketType
+          }
+        }
+      }
+      inbound {
+        id
+        type {
+          name
+        }
+        properties(names: [ "lhs", "rhs", "result" ]) {
+          name
+          value
+          type {
+            dataType
+            socketType
+          }
+        }
+      }
+      properties {
+        name
+        value
+        type {
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+query {
+  instances {
+    entities(type: "shutdown") {
+      id
+      type {name}
+      label
+      properties(
+        names: [
+          "label"
+          "shutdown"
+        ]
+      ) {
+        name
+        value
+        type {
+          socketType
+          dataType
+          description
+          extensions
+        }
+      }
+    }
+  }
+}

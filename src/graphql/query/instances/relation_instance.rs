@@ -7,6 +7,10 @@ use crate::api::RelationTypeManager;
 use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance, GraphQLRelationType};
 use crate::model::ReactiveRelationInstance;
 
+pub struct GraphQLRelationInstance {
+    relation_instance: Arc<ReactiveRelationInstance>,
+}
+
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
 ///
@@ -17,10 +21,6 @@ use crate::model::ReactiveRelationInstance;
 ///
 /// In contrast to the relation type, the relation instance stores values/
 /// documents in it's properties.
-pub struct GraphQLRelationInstance {
-    relation_instance: Arc<ReactiveRelationInstance>,
-}
-
 #[Object(name = "RelationInstance")]
 impl GraphQLRelationInstance {
     /// The outbound entity instance.
@@ -81,7 +81,7 @@ impl GraphQLRelationInstance {
             .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(property_name))
             .map(|(name, property_instance)| {
                 let value = property_instance.value.read().unwrap().deref().clone();
-                GraphQLPropertyInstance { name: name.clone(), value }
+                GraphQLPropertyInstance::new_relation_property(self.relation_instance.type_name.clone(), name.clone(), value)
             })
             .collect()
     }

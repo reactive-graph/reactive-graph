@@ -31,19 +31,23 @@ impl InexorQuery {
     }
 
     /// Search for flows and their contained instances.
-    // TODO: Add query filters (flow_type)
-    async fn flows(&self, context: &Context<'_>, id: Option<Uuid>) -> Vec<GraphQLFlow> {
-        let flow_manager = context.data::<Arc<dyn ReactiveFlowManager>>();
-        if flow_manager.is_ok() {
-            let flow_manager = flow_manager.unwrap();
+    async fn flows(
+        &self,
+        context: &Context<'_>,
+        #[graphql(desc = "Filters by the id of the flow")] id: Option<Uuid>,
+        #[graphql(name = "type", desc = "Filters by the flow type")] flow_type: Option<String>,
+    ) -> Vec<GraphQLFlow> {
+        if let Ok(flow_manager) = context.data::<Arc<dyn ReactiveFlowManager>>() {
             if id.is_some() {
-                let flow = flow_manager.get(id.unwrap()).map(|flow| flow.into());
-                return if flow.is_some() { vec![flow.unwrap()] } else { Vec::new() };
+                return match flow_manager.get(id.unwrap()).map(|flow| flow.into()) {
+                    Some(flow) => vec![flow],
+                    None => Vec::new(),
+                };
             }
             return flow_manager
                 .get_all()
                 .iter()
-                // TODO: Add query filters
+                .filter(|flow| flow_type.is_none() || flow_type.clone().unwrap() == flow.type_name)
                 .map(|flow| {
                     let flow: GraphQLFlow = flow.clone().into();
                     flow

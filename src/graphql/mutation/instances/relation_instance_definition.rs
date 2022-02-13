@@ -16,6 +16,7 @@ use crate::model::RelationInstance;
 /// In constrast to the relation type, the relation instance stores values/
 /// documents in it's properties.
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[graphql(name = "RelationInstanceDefinition")]
 pub struct GraphQLRelationInstanceDefinition {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,

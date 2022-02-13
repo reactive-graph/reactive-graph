@@ -10,6 +10,7 @@ use crate::model::Flow;
 /// The entity type of the flow and the entity types of each provided entity instance must exist.
 /// The relation types of each provided relation instance must exist.
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[graphql(name = "FlowDefinition")]
 pub struct GraphQLFlowDefinition {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///

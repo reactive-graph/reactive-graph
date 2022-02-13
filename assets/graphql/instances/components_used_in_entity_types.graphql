@@ -1,0 +1,10 @@
+query {
+  types {
+    components {
+      name
+      entityTypes {
+        name
+      }
+    }
+  }
+}

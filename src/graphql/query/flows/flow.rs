@@ -1,3 +1,4 @@
+use std::ops::Deref;
 use std::sync::Arc;
 
 use async_graphql::*;
@@ -32,6 +33,17 @@ impl GraphQLFlow {
     /// the id of the flow.
     async fn id(&self) -> Uuid {
         self.flow.id
+    }
+
+    /// The label of the entity instance if available.
+    async fn label(&self) -> Option<String> {
+        self.flow
+            .get_wrapper_entity_instance()
+            .unwrap()
+            .properties
+            .iter()
+            .find(|(property_name, _property_instance)| "label" == property_name.as_str())
+            .and_then(|(_property_name, property_instance)| property_instance.value.read().unwrap().deref().clone().as_str().map(String::from))
     }
 
     /// The (entity-) type of the flow.

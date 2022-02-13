@@ -9,7 +9,14 @@ mutation {
             description: "First Property"
             dataType: ANY
             socketType: NONE
-            extensions: []
+            extensions: [
+              {
+                name: "sorted"
+                extension: {
+                  sortProperty: "first"
+                }
+              }
+            ]
           }
         ]
       ) {
@@ -19,6 +26,10 @@ mutation {
           name
           dataType
           socketType
+          extensions {
+            name
+            extension
+          }
         }
       }
     }

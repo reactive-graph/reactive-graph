@@ -38,6 +38,15 @@ impl GraphQLEntityInstance {
         self.entity_instance.id
     }
 
+    /// The label of the entity instance if available.
+    async fn label(&self) -> Option<String> {
+        self.entity_instance
+            .properties
+            .iter()
+            .find(|(property_name, _property_instance)| "label" == property_name.as_str())
+            .and_then(|(_property_name, property_instance)| property_instance.value.read().unwrap().deref().clone().as_str().map(String::from))
+    }
+
     /// The description of the entity instance.
     async fn description(&self) -> String {
         self.entity_instance.description.clone()
@@ -61,10 +70,7 @@ impl GraphQLEntityInstance {
             .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(property_name))
             .map(|(property_name, property_instance)| {
                 let value = property_instance.value.read().unwrap().deref().clone();
-                GraphQLPropertyInstance {
-                    name: property_name.clone(),
-                    value,
-                }
+                GraphQLPropertyInstance::new_entity_property(self.entity_instance.type_name.clone(), property_name.clone(), value)
             })
             .collect()
     }

@@ -1,10 +1,11 @@
 use std::sync::Arc;
 
 use async_graphql::*;
+use inexor_rgf_core_model::PropertyInstanceGetter;
 use log::debug;
 use uuid::Uuid;
 
-use crate::api::{EntityTypeManager, ReactiveEntityInstanceManager};
+use crate::api::{EntityTypeManager, ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
 use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance};
 use crate::model::PropertyInstanceSetter;
 
@@ -27,8 +28,8 @@ impl MutationEntityInstances {
     async fn create(
         &self,
         context: &Context<'_>,
-        type_name: String,
-        id: Option<Uuid>,
+        #[graphql(name = "type", desc = "The entity type.")] type_name: String,
+        #[graphql(desc = "The id of the entity instance. If none is given a random uuid will be generated.")] id: Option<Uuid>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
@@ -104,11 +105,22 @@ impl MutationEntityInstances {
     }
 
     /// Deletes an entity instance.
-    ///
-    /// TODO: Check if the entity instance is part of relation instances.
-    /// TODO: delete_relations: Option<bool>
-    async fn delete(&self, context: &Context<'_>, id: Uuid) -> Result<bool> {
+    async fn delete(
+        &self,
+        context: &Context<'_>,
+        #[graphql(desc = "The id of the entity instance")] id: Uuid,
+        #[graphql(desc = "If true, all relations to and from the entity instance will be deleted as well")] delete_relations: Option<bool>,
+    ) -> Result<bool> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        if delete_relations.is_some() && delete_relations.unwrap() {
+            let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+            relation_instance_manager.get_by_inbound_entity(id).iter().for_each(|r| {
+                relation_instance_manager.delete(r.get_key().unwrap());
+            });
+            relation_instance_manager.get_by_outbound_entity(id).iter().for_each(|r| {
+                relation_instance_manager.delete(r.get_key().unwrap());
+            });
+        }
         entity_instance_manager.delete(id);
         Ok(true)
     }

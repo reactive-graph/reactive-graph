@@ -12,6 +12,7 @@ use crate::model::EntityInstance;
 /// In contrast to the entity type the entity instance stores values in it's
 /// properties.
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[graphql(name = "EntityInstanceDefinition")]
 pub struct GraphQLEntityInstanceDefinition {
     /// The name of the entity type.
     #[graphql(name = "type")]

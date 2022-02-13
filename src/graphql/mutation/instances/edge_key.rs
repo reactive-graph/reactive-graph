@@ -9,6 +9,7 @@ use uuid::Uuid;
 /// The primary key of an edge consists of the outbound id, the
 /// type name and the inbound id.
 #[derive(Debug, Clone, InputObject)]
+#[graphql(name = "EdgeKeyDefinition")]
 pub struct GraphQLEdgeKey {
     /// The id of the outbound entity instance.
     pub outbound_id: Uuid,

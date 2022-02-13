@@ -1,15 +1,16 @@
 query {
   types {
-    entities(name: "entitytype1") {
+    components(name: "component1") {
       name
       description
-      components {
-        name
-      }
       properties {
         name
         dataType
         socketType
+        extensions {
+          name
+          extension
+        }
       }
     }
   }

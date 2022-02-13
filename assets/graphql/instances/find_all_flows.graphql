@@ -1,0 +1,12 @@
+query findAllFlows {
+  flows {
+    id
+    label
+    entities {
+      properties {
+        name
+        value
+      }
+    }
+  }
+}
