@@ -32,6 +32,7 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 This repository provides the application which results in a binary.
 
+[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://aschaeffer.github.io/inexor-rgf-application/)
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-application/Rust">](https://github.com/aschaeffer/inexor-rgf-application/actions?query=workflow%3ARust)
