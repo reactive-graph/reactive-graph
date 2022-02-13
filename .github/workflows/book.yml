@@ -26,6 +26,8 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      - run: cd docs/inexor-rgf
+
       - run: mdbook build
 
       - name: Deploy
@@ -33,4 +35,4 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/inexor-rgf/book
+          publish_dir: ./book
