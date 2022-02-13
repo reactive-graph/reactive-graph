@@ -31,7 +31,6 @@ categories = [
 
 actix = "0.12"
 actix-cors = "0.6.0-beta.8"
-#actix-files = "0.6.0-beta.15"
 actix-http = "3.0.0-beta.19"
 actix-rt = "2.6.0"
 actix-web = { version = "4.0.0-beta.21" } #, features = ["openssl"]
@@ -58,7 +57,6 @@ serde_json = "1.0"
 signal-hook = "0.3.13"
 strum = { version = "0.23", features = ["derive"] }
 strum_macros = "0.23"
-#syn = "1.0"
 tokio = { version = "1", features =  ["time"] }
 toml = "0.5"
 uuid = { version = "0.8", features = ["serde", "v4"] }
@@ -68,7 +66,6 @@ inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://git
 inexor-rgf-core-frp = { git = "https://github.com/aschaeffer/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
 inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
-# inexor-rgf-core-reactive = { git = "https://github.com/aschaeffer/inexor-rgf-core-reactive.git" }
 inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core-plugins.git" }
 
 [dev-dependencies]
