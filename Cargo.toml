@@ -42,7 +42,6 @@ async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 crossbeam = "0.8"
 futures = "0.3"
-#futures-await-test = "0.3.0"
 futures-timer = "3.0"
 futures-util = "0.3"
 http = "0.2"
@@ -74,6 +73,7 @@ inexor-rgf-core-plugins = { git = "https://github.com/aschaeffer/inexor-rgf-core
 
 [dev-dependencies]
 random-string = "1.0"
+futures-await-test = "0.3"
 
 [profile.dev]
 opt-level = 0
