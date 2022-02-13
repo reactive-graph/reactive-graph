@@ -8,8 +8,22 @@ authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
 readme = "README.md"
-keywords = ["reactive", "graph", "flow", "entity", "entity system", "entity component system", "graph database"]
-categories = ["game-engine", "entity-component-system", "iot", "home-automation"]
+keywords = [
+    "reactive",
+    "graph",
+    "flow",
+    "entity",
+    "entity system",
+    "entity component system",
+    "graph database"
+]
+categories = [
+    "desktop-automation",
+    "entity-component-system",
+    "game-engine",
+    "home-automation",
+    "iot"
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
