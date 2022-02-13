@@ -74,12 +74,13 @@ cargo run
 
 #### Configure Logging
 
-1. Edit `config/logging.yml`
+1. Edit `config/logging.toml`
 2. In the section `loggers` add or modify the logger for a specific module
-    ```yaml
-    loggers:
-       inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes:
-       level: info
+    ```toml
+[loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
+level = "debug"
+appenders = [ "file-plugin-mqtt" ]
+additive = false
     ```
 
 #### Configure HTTP/GraphQL server
