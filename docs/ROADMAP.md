@@ -31,25 +31,3 @@
 * For server applications a persistent datastore would be interesting
   * IndraDB datastore for Neo4J
   * Example: https://github.com/indradb/postgres
-
-## Inexor Frontend
-
-Create a library which can be reused for frontend applications.
-
-* Inexor Graph Library
-  * TypeScript
-  * Public NPM Package @inexor/reactive-graph-flow-client
-  * Consumes the GraphQL API
-  * Models for types
-    * Component
-    * Entity Type
-    * Relation Type
-  * Models for instances
-    * Entity Instance
-    * Relation Instance
-    * Flow
-  * Queries
-
-## Inexor Reactive Graph Flow Editor
-
-- [ ] Uses @inexor/reactive-graph-flow-client
