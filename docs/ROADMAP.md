@@ -67,21 +67,3 @@ Create a library which can be reused for frontend applications.
 * Allow removing components from entity instances and relation instances
   * Remove component behaviours
   * Do not remove properties
-
-### Behaviour Management
-
-* Remove field behaviours from EntityType and RelationType
-* Add field behaviours to EntityInstance and RelationInstance (reflects the effectively applied behaviours)
-* Each behaviour should add itself to the field behaviours if applied on a EntityInstance or RelationInstance
-* Each behaviour should remove itself from the field behaviours if applied on a EntityInstance or RelationInstance
-* (Query instances by behaviour)
-* ComponentBehaviourManager
-  * add_behaviours_to_entity: Iterate through the components of an EntityInstance and call add_behaviours_to_entity with component
-  * add_behaviours_to_relation: Iterate through the components of an EntityInstance and call add_behaviours_to_relation with component
-  * remove_behaviours_from_entity: Iterate through the components of an EntityInstance and call remove_behaviours_from_entity with component
-  * remove_behaviours_from_relation: Iterate through the components of an EntityInstance and call remove_behaviours_from_relation with component
-* ComponentBehaviourProvider
-  * fn add_behaviours_to_entity(&self, entity_instance: Arc<ReactiveEntityInstance>, component: Component);
-  * fn add_behaviours_to_relation(&self, relation_instance: Arc<ReactiveRelationInstance>, component: Component);
-  * fn remove_behaviours_from_entity(&self, entity_instance: Arc<ReactiveEntityInstance>, component: Component);
-  * fn remove_behaviours_from_relation(&self, relation_instance: Arc<ReactiveRelationInstance>, component: Component);
