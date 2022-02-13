@@ -24,9 +24,6 @@ impl MutationComponents {
         Ok(component.into())
     }
 
-    // TODO: add property
-    // TODO: remove property
-
     async fn delete(&self, context: &Context<'_>, name: String) -> Result<bool> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         component_manager.delete(name);

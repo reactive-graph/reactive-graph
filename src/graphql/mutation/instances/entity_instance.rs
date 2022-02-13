@@ -53,8 +53,6 @@ impl MutationEntityInstances {
         Ok(entity_instance.into())
     }
 
-    // TODO: clone(id) -> GraphQLEntityInstance
-
     /// Updates the properties of the entity instance with the given id.
     async fn update(
         &self,

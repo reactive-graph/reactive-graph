@@ -70,8 +70,6 @@ impl MutationRelationInstances {
         Ok(relation_instance.into())
     }
 
-    // TODO: clone(id) -> GraphQLRelationInstance
-
     /// Updates the properties of the given relation instance by edge key.
     async fn update(&self, context: &Context<'_>, edge_key: GraphQLEdgeKey, properties: Vec<GraphQLPropertyInstance>) -> Result<GraphQLRelationInstance> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
