@@ -22,3 +22,5 @@ cobertura.xml
 **/*.log
 
 *.snap
+
+docs/inexor-rgf/book/
