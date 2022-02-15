@@ -6,3 +6,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Inexor Reactive Graph Flow"
+
+[preprocessor.graphviz]
+command = "mdbook-graphviz"
+output-to-file = false # defaults to false, change to true to create SVG files instead of rendering them inline

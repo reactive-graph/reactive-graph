@@ -2,11 +2,19 @@
 
 ## Install build tools (rust and rustup)
 
+### Linux / Raspberry Pi / MacOS
+
 ```shell
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
+### Windows
+
+Please follow the instructions for [Installing rustup on Windows](https://rust-lang.github.io/rustup/installation/other.html)
+
 ## Install nightly toolchain
+
+Once you have rustup up and running, please install the `nightly` toolchain.
 
 ```shell
 rustup update nightly
@@ -20,12 +28,14 @@ git clone https://github.com/aschaeffer/inexor-rgf-application.git
 
 ## Build the application
 
+Build in development mode:
+
 ```shell
 cd inexor-rgf-application
 cargo build
 ```
 
-Build in release mode:
+Build in release mode (takes longer, smaller binaries):
 
 ```shell
 cd inexor-rgf-application
@@ -38,6 +48,12 @@ cargo build --release
 cargo run
 ```
 
+or:
+
+```shell
+cargo run --release
+```
+
 ## Build plugins
 
 ### Checkout and build the plugin
@@ -46,8 +62,14 @@ cargo run
  cd ..
  git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
  cd inexor-rgf-plugin-mqtt
+ ```
+
+Build in development mode:
+
+ ```shell
  cargo build
  ```
+
 Build in release mode:
 
 ```shell
@@ -70,3 +92,5 @@ path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 * Use either a relative or absolute path
 * The filename of the library is different on windows (inexor_rgf_plugin_mqtt.dll)
 * Release builds are located in `target/release` instead of `target/debug`
+
+Please consult the documentation for [configuring plugins](./Configuration_Plugins.md)
