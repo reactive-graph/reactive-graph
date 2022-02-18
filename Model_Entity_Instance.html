@@ -134,7 +134,49 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="entity-instance"><a class="header" href="#entity-instance">Entity Instance</a></h1>
+                        <h1 id="model-entity-instance"><a class="header" href="#model-entity-instance">Model: Entity Instance</a></h1>
+<p>An entity instance is an object with characteristics that is of a specific entity type. An entity instance contains a
+<a href="./Model_Property_Instance.html">property instance</a> for each property type defined either in the entity type or in one of
+the entity type's components.</p>
+<p>In contrast to entity types, property instances are contained and each property instance contains a data stream and its
+last value.</p>
+<h2 id="uuids"><a class="header" href="#uuids">UUIDs</a></h2>
+<p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
+synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
+also on the server and on clients connected to it.</p>
+<h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
+<p>Labels are also unique, but optional. While UUIDs are hard to remember, labels are easier to remember. This allows
+entity instances to be addressed using labels, for example in GraphQL queries.</p>
+<p>If you compare the query with and without a label, you will find that the query is easier to understand thanks to the
+label and transports significantly more information about what is actually happening.</p>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(label: &quot;/org/inexor/input/any_device/key/key_f7&quot;) {
+      properties(name: &quot;key_down&quot;) {
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(id: &quot;c7ec76e0-40e8-587e-bc89-e9cd31fa75a0&quot;) {
+      properties(name: &quot;key_down&quot;) {
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
+<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<tr><td>Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The type of the entity instance</td></tr>
+<tr><td>ID</td><td>UUID</td><td>The unique identifier of the entity instance</td></tr>
+<tr><td>Label</td><td>String (optional)</td><td>The label of the entity instance</td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
+<tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties of the entity instance</td></tr>
+</tbody></table>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
 <ul>
 <li><a href="./GraphQL_API_Entity_Instances.html">GraphQL Queries and Mutations</a></li>

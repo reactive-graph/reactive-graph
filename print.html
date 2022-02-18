@@ -470,7 +470,7 @@ The properties of all components are merged.</p>
 <ul>
 <li><a href="./GraphQL_API_Components.html">GraphQL Queries and Mutations</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="entity-type"><a class="header" href="#entity-type">Entity Type</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-entity-type"><a class="header" href="#model-entity-type">Model: Entity Type</a></h1>
 <p>An entity type defines the characteristics that are common to all entity instances. In particular, an entity type
 defines which components it is combined from. Additional properties can also be defined.</p>
 <h2 id="data-model-1"><a class="header" href="#data-model-1">Data Model</a></h2>
@@ -486,7 +486,25 @@ defines which components it is combined from. Additional properties can also be 
 <ul>
 <li><a href="./GraphQL_API_Entity_Types.html">GraphQL Queries and Mutations</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="relation-type"><a class="header" href="#relation-type">Relation Type</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-relation-type"><a class="header" href="#model-relation-type">Model: Relation Type</a></h1>
+<p>A relation type defines the characteristics that are common to all relation instances. In particular, a relation type
+defines the entity type of the outgoing entity instance and the entity type of the inbound entity instance.</p>
+<p>Like entity types, it is also defined which components make up the relation type and which additional properties it
+contains.</p>
+<p>As with entity types, extensions to the relation type can be defined, such as the appearance of edges in a graph or the
+appearance of a connector of this type in the flow editor.</p>
+<h2 id="data-model-2"><a class="header" href="#data-model-2">Data Model</a></h2>
+<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<tr><td>Outbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the outbound entity instance</td></tr>
+<tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
+<tr><td>Full Name</td><td>String</td><td>The full name of the relation type</td></tr>
+<tr><td>Inbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the inbound entity instance</td></tr>
+<tr><td>Group</td><td>String</td><td>The group of the relation type</td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
+<tr><td>Components</td><td>Vec&lt;<a href="./Model_Component.html">Component</a>&gt;</td><td>The components which composes the relation type. These provides additional properties</td></tr>
+<tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on relation instances</td></tr>
+<tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td></tr>
+</tbody></table>
 <h2 id="graphql-2"><a class="header" href="#graphql-2">GraphQL</a></h2>
 <ul>
 <li><a href="./GraphQL_API_Relation_Types.html">GraphQL Queries and Mutations</a></li>
@@ -494,7 +512,7 @@ defines which components it is combined from. Additional properties can also be 
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model-property-type"><a class="header" href="#model-property-type">Model: Property Type</a></h1>
 <p>Components, entity types and relation types define which properties they contain. The so-called property types define
 the name, the data type and whether the property is an input or an output.</p>
-<h2 id="data-model-2"><a class="header" href="#data-model-2">Data Model</a></h2>
+<h2 id="data-model-3"><a class="header" href="#data-model-3">Data Model</a></h2>
 <table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td><td>name</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the property</td><td></td></tr>
@@ -641,18 +659,60 @@ activated, the extension is present but not used.</p>
 <ul>
 <li><a href="./GraphQL_API_Extension.html">GraphQL Queries and Mutations</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="entity-instance"><a class="header" href="#entity-instance">Entity Instance</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-entity-instance"><a class="header" href="#model-entity-instance">Model: Entity Instance</a></h1>
+<p>An entity instance is an object with characteristics that is of a specific entity type. An entity instance contains a
+<a href="./Model_Property_Instance.html">property instance</a> for each property type defined either in the entity type or in one of
+the entity type's components.</p>
+<p>In contrast to entity types, property instances are contained and each property instance contains a data stream and its
+last value.</p>
+<h2 id="uuids"><a class="header" href="#uuids">UUIDs</a></h2>
+<p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
+synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
+also on the server and on clients connected to it.</p>
+<h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
+<p>Labels are also unique, but optional. While UUIDs are hard to remember, labels are easier to remember. This allows
+entity instances to be addressed using labels, for example in GraphQL queries.</p>
+<p>If you compare the query with and without a label, you will find that the query is easier to understand thanks to the
+label and transports significantly more information about what is actually happening.</p>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(label: &quot;/org/inexor/input/any_device/key/key_f7&quot;) {
+      properties(name: &quot;key_down&quot;) {
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(id: &quot;c7ec76e0-40e8-587e-bc89-e9cd31fa75a0&quot;) {
+      properties(name: &quot;key_down&quot;) {
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="data-model-4"><a class="header" href="#data-model-4">Data Model</a></h2>
+<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<tr><td>Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The type of the entity instance</td></tr>
+<tr><td>ID</td><td>UUID</td><td>The unique identifier of the entity instance</td></tr>
+<tr><td>Label</td><td>String (optional)</td><td>The label of the entity instance</td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
+<tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties of the entity instance</td></tr>
+</tbody></table>
 <h2 id="graphql-4"><a class="header" href="#graphql-4">GraphQL</a></h2>
 <ul>
 <li><a href="./GraphQL_API_Entity_Instances.html">GraphQL Queries and Mutations</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="relation-instance"><a class="header" href="#relation-instance">Relation Instance</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-relation-instance"><a class="header" href="#model-relation-instance">Model: Relation Instance</a></h1>
 <h2 id="graphql-5"><a class="header" href="#graphql-5">GraphQL</a></h2>
 <ul>
 <li><a href="./GraphQL_API_Relation_Instances.html">GraphQL Queries and Mutations</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="property-instance"><a class="header" href="#property-instance">Property Instance</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="flow"><a class="header" href="#flow">Flow</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-property-instance"><a class="header" href="#model-property-instance">Model: Property Instance</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="model-flow"><a class="header" href="#model-flow">Model: Flow</a></h1>
 <h2 id="what-is-a-flow-1"><a class="header" href="#what-is-a-flow-1">What is a flow?</a></h2>
 <h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
 <h2 id="wrapper-entity-instance"><a class="header" href="#wrapper-entity-instance">Wrapper Entity Instance</a></h2>
@@ -663,14 +723,38 @@ activated, the extension is present but not used.</p>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api"><a class="header" href="#graphql-api">GraphQL API</a></h1>
 <p>GraphQL is the most important interface for interaction with the Reactive Graph Flow.</p>
+<h2 id="what-is-graphql"><a class="header" href="#what-is-graphql">What is GraphQL?</a></h2>
+<p>GraphQL stands for &quot;Graph Query Language&quot;. It is a query language with which data present in graphs can be efficiently
+queried and selectively modified.</p>
+<h2 id="why-do-we-use-graphql"><a class="header" href="#why-do-we-use-graphql">Why do we use GraphQL?</a></h2>
+<p>As already described, Inexor uses a graph to hold the highly interconnected data of the Entity Component System. A query
+language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
+to its entity type. It is best described by the three graphics that show the possibilities available through the GraphQL
+interface.</p>
+<p>GraphQL was chosen as the query language because it is independent of a specific programming language and because it can
+be used across technologies.</p>
+<p>GraphQL also supports subscribing to change to data. This is also the case, for example, in the reactive property
+instances. It is possible to subscribe to a property of an entity instance via GraphQL and get changes to this property
+in real time.</p>
+<p>Other advantages of GraphQL are type safety and the fact that semantics can be mapped better.</p>
+<h3 id="queries"><a class="header" href="#queries">Queries</a></h3>
+<p><img src="images/queries.png" alt="GraphQL Queries" /></p>
+<h3 id="mutations"><a class="header" href="#mutations">Mutations</a></h3>
+<p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
+<h3 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h3>
+<p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
+<h2 id="graphql-endpoint"><a class="header" href="#graphql-endpoint">GraphQL Endpoint</a></h2>
 <p>The GraphQL endpoint can be reached at <code>http://hostname/31415/graphql</code> or <code>ws://hostname/31415/graphql</code>.</p>
 <p>The GraphQL schema is well documented.</p>
-<h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
-<p><img src="images/queries.png" alt="GraphQL Queries" /></p>
-<h2 id="mutations"><a class="header" href="#mutations">Mutations</a></h2>
-<p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
-<h2 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h2>
-<p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
+<h3 id="schema-introspection"><a class="header" href="#schema-introspection">Schema Introspection</a></h3>
+<p>The GraphQL Server allows introspection and returns a GraphQL schema including documentation. With this it is possible
+to validate queries and mutations and some tools can use the schema to provide autocompletion for creating queries.</p>
+<h2 id="graphql-tools"><a class="header" href="#graphql-tools">GraphQL Tools</a></h2>
+<ul>
+<li><a href="https://altair.sirmuel.design/">Altair</a></li>
+<li><a href="https://apis.guru/graphql-voyager/">GraphQL Voyager</a></li>
+<li>https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="components"><a class="header" href="#components">Components</a></h1>
 <h2 id="get-component-by-name"><a class="header" href="#get-component-by-name">Get Component by Name</a></h2>
 <pre><code class="language-graphql">query {

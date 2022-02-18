@@ -134,7 +134,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="relation-type"><a class="header" href="#relation-type">Relation Type</a></h1>
+                        <h1 id="model-relation-type"><a class="header" href="#model-relation-type">Model: Relation Type</a></h1>
+<p>A relation type defines the characteristics that are common to all relation instances. In particular, a relation type
+defines the entity type of the outgoing entity instance and the entity type of the inbound entity instance.</p>
+<p>Like entity types, it is also defined which components make up the relation type and which additional properties it
+contains.</p>
+<p>As with entity types, extensions to the relation type can be defined, such as the appearance of edges in a graph or the
+appearance of a connector of this type in the flow editor.</p>
+<h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
+<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<tr><td>Outbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the outbound entity instance</td></tr>
+<tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
+<tr><td>Full Name</td><td>String</td><td>The full name of the relation type</td></tr>
+<tr><td>Inbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the inbound entity instance</td></tr>
+<tr><td>Group</td><td>String</td><td>The group of the relation type</td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
+<tr><td>Components</td><td>Vec&lt;<a href="./Model_Component.html">Component</a>&gt;</td><td>The components which composes the relation type. These provides additional properties</td></tr>
+<tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on relation instances</td></tr>
+<tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td></tr>
+</tbody></table>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
 <ul>
 <li><a href="./GraphQL_API_Relation_Types.html">GraphQL Queries and Mutations</a></li>

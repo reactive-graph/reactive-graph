@@ -136,14 +136,38 @@
                     <main>
                         <h1 id="graphql-api"><a class="header" href="#graphql-api">GraphQL API</a></h1>
 <p>GraphQL is the most important interface for interaction with the Reactive Graph Flow.</p>
+<h2 id="what-is-graphql"><a class="header" href="#what-is-graphql">What is GraphQL?</a></h2>
+<p>GraphQL stands for &quot;Graph Query Language&quot;. It is a query language with which data present in graphs can be efficiently
+queried and selectively modified.</p>
+<h2 id="why-do-we-use-graphql"><a class="header" href="#why-do-we-use-graphql">Why do we use GraphQL?</a></h2>
+<p>As already described, Inexor uses a graph to hold the highly interconnected data of the Entity Component System. A query
+language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
+to its entity type. It is best described by the three graphics that show the possibilities available through the GraphQL
+interface.</p>
+<p>GraphQL was chosen as the query language because it is independent of a specific programming language and because it can
+be used across technologies.</p>
+<p>GraphQL also supports subscribing to change to data. This is also the case, for example, in the reactive property
+instances. It is possible to subscribe to a property of an entity instance via GraphQL and get changes to this property
+in real time.</p>
+<p>Other advantages of GraphQL are type safety and the fact that semantics can be mapped better.</p>
+<h3 id="queries"><a class="header" href="#queries">Queries</a></h3>
+<p><img src="images/queries.png" alt="GraphQL Queries" /></p>
+<h3 id="mutations"><a class="header" href="#mutations">Mutations</a></h3>
+<p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
+<h3 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h3>
+<p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
+<h2 id="graphql-endpoint"><a class="header" href="#graphql-endpoint">GraphQL Endpoint</a></h2>
 <p>The GraphQL endpoint can be reached at <code>http://hostname/31415/graphql</code> or <code>ws://hostname/31415/graphql</code>.</p>
 <p>The GraphQL schema is well documented.</p>
-<h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
-<p><img src="images/queries.png" alt="GraphQL Queries" /></p>
-<h2 id="mutations"><a class="header" href="#mutations">Mutations</a></h2>
-<p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
-<h2 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h2>
-<p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
+<h3 id="schema-introspection"><a class="header" href="#schema-introspection">Schema Introspection</a></h3>
+<p>The GraphQL Server allows introspection and returns a GraphQL schema including documentation. With this it is possible
+to validate queries and mutations and some tools can use the schema to provide autocompletion for creating queries.</p>
+<h2 id="graphql-tools"><a class="header" href="#graphql-tools">GraphQL Tools</a></h2>
+<ul>
+<li><a href="https://altair.sirmuel.design/">Altair</a></li>
+<li><a href="https://apis.guru/graphql-voyager/">GraphQL Voyager</a></li>
+<li>https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/</li>
+</ul>
 
                     </main>
 
