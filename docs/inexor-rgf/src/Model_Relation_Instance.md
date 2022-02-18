@@ -1,4 +1,4 @@
-# Relation Instance
+# Model: Relation Instance
 
 ## GraphQL
 

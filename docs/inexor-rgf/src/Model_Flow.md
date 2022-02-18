@@ -1,4 +1,4 @@
-# Flow
+# Model: Flow
 
 ## What is a flow?
 

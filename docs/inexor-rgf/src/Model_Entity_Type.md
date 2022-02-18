@@ -1,4 +1,4 @@
-# Entity Type
+# Model: Entity Type
 
 An entity type defines the characteristics that are common to all entity instances. In particular, an entity type
 defines which components it is combined from. Additional properties can also be defined.
