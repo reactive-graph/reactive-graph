@@ -19,8 +19,6 @@
   - [ ] Inexor - Reactive Graph Flow - Flow Editor
     * Flow Editor lets you create reactive flows
     * diagram.js
-* Subscriptions
-  * https://async-graphql.github.io/async-graphql/en/subscription.html
 * For server applications a persistent datastore would be interesting
   * IndraDB datastore for Neo4J
   * Example: https://github.com/indradb/postgres
