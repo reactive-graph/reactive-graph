@@ -104,7 +104,9 @@ h6:target::before {
 }
 
 table {
-    margin: 0 auto;
+    /* margin: 0 auto; */
+    margin: 0;
+    width: 100%;
     border-collapse: collapse;
 }
 table td {
