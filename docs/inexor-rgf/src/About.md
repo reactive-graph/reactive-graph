@@ -100,6 +100,7 @@ It is interesting that this behavior also works for relations. For example, conn
 streams. It is interesting that connectors connect the data stream from a property instance of the outgoing entity
 instance with the data stream from a property instance of the incoming entity instance.
 
+
 ```mermaid
 graph TD;
     subgraph key_ctrl ["Entity Instance (Input Key)"]

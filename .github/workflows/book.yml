@@ -29,7 +29,7 @@ jobs:
       - name: Install preprocessors mdbook-mermaid
         uses: actions-rs/install@v0.1
         with:
-          create: mdbook-mermaid
+          crate: mdbook-mermaid
           version: latest
           use-tool-cache: true
 
