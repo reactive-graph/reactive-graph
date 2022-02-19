@@ -1,11 +1,12 @@
 # Component Provider
 
-Plugins can implement the trait `ComponentProvider` in order to register components during startup of the 
+Plugins can implement the trait `ComponentProvider` in order to register components during initialization of the
+plugin.
 
 ## Trait `ComponentProvider`
 
 ```rust
-impl ComponentProvider for ComparisonComponentProviderImpl {
+impl ComponentProvider for ExampleComponentProviderImpl {
     fn get_components(&self) -> Vec<Component> {
         // Return a vector of components
     }

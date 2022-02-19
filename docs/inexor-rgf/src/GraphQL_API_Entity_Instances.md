@@ -39,7 +39,7 @@ query {
 query {
   instances {
     entities(type: "player", label: "/org/inexor/game/players/Hanack") {
-      inbound(typeName: "look_at") {
+      inbound(type: "look_at") {
         outbound {
           properties(name: "position") {
             value
