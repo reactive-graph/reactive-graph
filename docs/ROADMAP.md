@@ -25,9 +25,6 @@
 * Search by properties
 * Subscriptions
   * https://async-graphql.github.io/async-graphql/en/subscription.html
-* High-Level GraphQL
-  * Dynamically generate queries and mutations for entity types
-  * Dynamically generate queries and mutations for relation types
 * For server applications a persistent datastore would be interesting
   * IndraDB datastore for Neo4J
   * Example: https://github.com/indradb/postgres
