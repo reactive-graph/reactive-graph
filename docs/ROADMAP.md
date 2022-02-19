@@ -19,7 +19,6 @@
   - [ ] Inexor - Reactive Graph Flow - Flow Editor
     * Flow Editor lets you create reactive flows
     * diagram.js
-* Search by properties
 * Subscriptions
   * https://async-graphql.github.io/async-graphql/en/subscription.html
 * For server applications a persistent datastore would be interesting
