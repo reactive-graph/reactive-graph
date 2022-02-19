@@ -10,3 +10,11 @@ title = "Inexor Reactive Graph Flow"
 [preprocessor.graphviz]
 command = "mdbook-graphviz"
 output-to-file = false # defaults to false, change to true to create SVG files instead of rendering them inline
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
+
+[output]
+
+[output.html]
+additional-js = ["mermaid.min.js", "mermaid-init.js"]

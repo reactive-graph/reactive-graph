@@ -15,6 +15,14 @@
 A graph organizes highly interconnected data. The state of an Entity Component System can be ideally represented with
 the help of the graph. Inexor is the first game engine to introduce a graph as a basis.
 
+```mermaid
+graph TD;
+    A(Entity A)==>|Relation A|B(Entity B);
+    A(Entity A)==>|Relation B|C(Entity C);
+    B(Entity B)==>|Relation C|D(Entity D);
+    C(Entity C)==>|Relation D|D(Entity D);
+```
+
 ### Why do we need a graph?
 
 The main benefits of a graph are:
@@ -54,17 +62,14 @@ is linked to the stream of another property instance and you change the value of
 of the second property instance will automatically change as well. Data is thus propagated from one station to the next,
 triggering a cascade of propagations. 
 
-```dot process
-digraph structs {
-    node [shape=record];
-    node1 [style=rounded, label="<f0> property 1|<f1> property 2|<f2> property 3"];
-    node2 [style=rounded, label="<f0> property 1|<f1> property 2|<f2> property 3"];
-    node3 [style=rounded, label="<f0> property 1|<f1> property 2|<f2> property 3"];
-    node1:f1 -> node2:f0;
-    node1:f2 -> node2:f1;
-    node2:f0 -> node3:f1;
-    node2:f0 -> node3:f2;
-}
+```mermaid
+graph TD;
+    A(Property Instance 1)-->B(Property Instance 2);
+    A-->C(Property Instance 3);
+    B-->D(Property Instance 4);
+    C-->D;
+    D-->E(Property Instance 5);
+    B-->F(Property Instance 6);
 ```
 
 In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your own data
@@ -95,16 +100,36 @@ It is interesting that this behavior also works for relations. For example, conn
 streams. It is interesting that connectors connect the data stream from a property instance of the outgoing entity
 instance with the data stream from a property instance of the incoming entity instance.
 
-```dot process
-digraph structs {
-    node [shape=record];
-    node1 [style=rounded, label="<f0> lhs|<f1> rhs"];
-    node2 [style=rounded, label="<f0> combinator function"];
-    node3 [style=rounded, label="<f0> result"];
-    node1:f0 -> node2:f0;
-    node1:f1 -> node2:f0;
-    node2:f0 -> node3:f0;
-}
+```mermaid
+graph TD;
+    subgraph key_ctrl ["Entity Instance (Input Key)"]
+    direction RL
+    CTRL_KEY(Property key_name=CTRL);
+    CTRL_KD(Output Property key_down);
+    end
+
+    subgraph key_f10 ["Entity Instance (Input Key)"]
+    F10_KEY(Property key_name=F10);
+    F10_KD(Output Property key_down);
+    end
+
+    CTRL_KD(Property key_down)--->|connector|LHS;
+    F10_KD(Property key_down)-->|connector|RHS;
+
+    subgraph logicalgate ["Entity Instance (Logical Gate)"]
+    LHS(Input Property LHS)o-->ZIP;
+    RHS(Input Property RHS)o-->ZIP;
+    ZIP(Zipped stream of LHS and RHS)-->COMBINATOR;
+    COMBINATOR(Combinator Function AND)-->RESULT;
+    RESULT(Output Property Result);
+    end
+
+    RESULT(Output Property Result)-->|connector|CMD_EXIT(Input Property trigger);
+
+    subgraph system_command_exit ["Entity Instance (System Command)"]
+    CMD_COMMAND(Property Command);
+    CMD_EXIT(Input Property trigger)
+    end
 ```
 
 For example the `AND-Gate` accepts inputs at the properties `lhs` and `rhs`. Both streams are
