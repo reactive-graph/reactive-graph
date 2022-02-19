@@ -1,4 +1,4 @@
-# 1.1 Design Goals
+# Design Goals
 
 This chapter describes what the application's design goals are and aren't.
 

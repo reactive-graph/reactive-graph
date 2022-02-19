@@ -26,16 +26,59 @@ This becomes even more relevant when there can be multiple distinct relationship
 be a member of a team and he can be the team captain at the same time. The first type of relationship has already been
 described, the second has the name "is_captain_of".
 
+### ER Diagram
+
 ```mermaid
-classDiagram
-    class X {
-    }
+erDiagram
+    Relation-Type
+    Entity-Type
+    Extension
+    Component
+    Property-Type
+    Relation-Type ||--}o Component : composes
+    Relation-Type o{--|| Entity-Type : outbound
+    Relation-Type o{--|| Entity-Type : inbound
+    Entity-Type ||--}o Component : composes
+    Relation-Type ||--}o Property-Type : defines
+    Entity-Type ||--}o Property-Type : defines
+    Relation-Type ||--}o Property-Type : defines
+    Component ||--}o Property-Type : defines
+    Relation-Type ||--}o Extension : has
+    Entity-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
 ```
 
-* Components
-* Entity Types
-* Relation Types
-* Property Types
+### Example: Relation Type
+
+```mermaid
+graph LR
+    E1(Entity Type<br>Teleporter)
+    E2(Entity Type<br>Teledestination)
+    R1(Relation Type<br>Teleports_To)
+    E1--->|outbound|R1
+    R1--->|inbound|E2
+```
+
+### Example: Relation Types & Entity Types
+
+```mermaid
+graph TB
+    P(Player)
+    C(Camera)
+    F(Flag)
+    T(Team)
+    B(Base)
+    S(Playerstart)
+    C--->|looks_at|P
+    C--->|looks_at|F
+    C--->|looks_at|B
+    P--->|is_member_of|T
+    P--->|frags|P
+    T--->|is_located_at|B
+    T--->|owns|F
+    B--->|provides|S
+    P--->|has_spawned_at|S
+```
 
 ## Instance System
 
@@ -54,3 +97,58 @@ The following table shows that an instance and the corresponding type:
 | Entity Type   | Entity Instance   |
 | Relation Type | Relation Instance |
 | Entity Type   | Flow              |
+
+
+```mermaid
+erDiagram
+    Relation-Type
+    Relation-Instance
+    Entity-Type
+    Entity-Instance
+    Flow
+    Relation-Instance o{--|| Relation-Type : is_a
+    Entity-Instance o{--|| Entity-Type : is_a
+    Flow o{--|| Entity-Type : is_a
+```
+
+### Example: Relation Instances & Entity Instances
+
+```mermaid
+graph TB
+    P1(Player 1)
+    P2(Player 2)
+    C1(Camera 1)
+    C2(Camera 2)
+    F1(Flag 1)
+    F2(Flag 2)
+    F3(Flag 3)
+    F4(Flag 4)
+    T1(Team Good)
+    T2(Team Evil)
+    B1(Base Good)
+    B2(Base Evil)
+    ST11(Playerstart Good 1)
+    ST12(Playerstart Good 2)
+    ST21(Playerstart Evil 1)
+    ST22(Playerstart Evil 2)
+    C1--->|looks_at|P1
+    C2--->|looks_at|F2
+    P1--->|is_member_of|T1
+    P2--->|is_member_of|T2
+    P1--->|fragged|P2
+    P2--->|fragged|P1
+    T1--->|is_located_at|B1
+    T2--->|is_located_at|B2
+    T1--->|owns|F1
+    T1--->|owns|F2
+    T2--->|owns|F3
+    T2--->|owns|F4
+    B1--->|provides|ST11
+    B1--->|provides|ST12
+    B2--->|provides|ST21
+    B2--->|provides|ST22
+    P1--->|has_spawned_at|ST11
+    P2--->|has_spawned_at|ST22
+    P1--->|stole|F3
+    P2--->|stole|F2
+```

@@ -8,11 +8,11 @@ The property type defines the name, data type and socket type of the property in
 
 ## Data Model
 
-| Field      | DataType                                  | Description               |
-|------------|-------------------------------------------|---------------------------|
-| Name       | String                                    | The name of the property  |
-| Value      | JSON                                      | The value of the property |
-| Type       | [Property Type](./Model_Property_Type.md) | The type of the property  |
+| Field      | DataType                                                          | Description               |
+|------------|-------------------------------------------------------------------|---------------------------|
+| Name       | String                                                            | The name of the property  |
+| Value      | [Value](https://docs.serde.rs/serde_json/value/enum.Value.html)   | The value of the property |
+| Type       | [Property Type](./Model_Property_Type.md)                         | The type of the property  |
 
 ## Graph
 
