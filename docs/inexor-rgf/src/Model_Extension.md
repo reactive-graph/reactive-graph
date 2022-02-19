@@ -125,4 +125,6 @@ activated, the extension is present but not used.
 
 ## GraphQL
 
+```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Extension.md)
+```

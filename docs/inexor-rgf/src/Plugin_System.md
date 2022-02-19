@@ -1,6 +1,18 @@
 # 5. Plugin System
 
-TODO: Introduction
+The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
+the core as small as possible. The core of the application is described in the next section. Plugins, on the other hand,
+contain the functionalities.
+
+The aim of the plugin system is also that you don't have to restart the core application completely just because a small
+part has changed. It should be sufficient to restart the modified plugin.
+
+Also, if a plugin stops working, or if the plugin's configuration is changed, restarting the plugin might avoid
+restarting the core application.
+
+In addition, the file size of the binary file is reduced since only its libraries are compiled in the core application.
+
+In addition, only what is actually used is loaded. Plugins that are not required for the application can be deactivated.
 
 ## Trait `Plugin`
 

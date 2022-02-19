@@ -1,8 +1,13 @@
 # Inexor Reactive Graph Flow
 
+![Inexor](images/inexor.png)
+
+
 - [About](./About.md)
   - [Design Goals](./About_Design_Goals.md)
   - [Roadmap](./About_Roadmap.md)
+  - [Changelog](./About_Changelog.md)
+  - [License](./Development_License.md)
 - [Installation](./Installation.md)
 - [Configuration](./Configuration.md)
   - [Logging](./Configuration_Logging.md)
@@ -45,6 +50,9 @@
   - [Connector](./Plugins_Connector.md)
   - [Input Device](./Plugins_Input_Device.md)
   - [JSON](./Plugins_JSON.md)
+  - [String](./Plugins_String.md)
+  - [System Command](./Plugins_System_Command.md)
+  - [System Environment](./Plugins_System_Environment.md)
 - [Development](./Development.md)
   - [Supported Platforms](./Development_Supported_Platforms.md)
   - [Build](./Development_Build.md)
@@ -53,4 +61,6 @@
   - [Binaries](./Development_Binaries.md)
   - [Packaging](./Development_Packaging.md)
   - [Documentation](./Development_Documentation.md)
-  - [License](./Development_License.md)
+  - [Code of Conduct](./Development_Code_of_Conduct.md)
+
+[admonish](./Internal_Admonish.md)

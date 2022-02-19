@@ -25,4 +25,6 @@ appearance of a connector of this type in the flow editor.
 
 ## GraphQL
 
+```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Relation_Types.md)
+```

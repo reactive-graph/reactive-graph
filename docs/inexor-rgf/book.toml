@@ -14,7 +14,11 @@ output-to-file = false # defaults to false, change to true to create SVG files i
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
 
+[preprocessor.admonish]
+command = "mdbook-admonish"
+
 [output]
 
 [output.html]
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
+additional-css = ["inexor-rgf-book.css", "././mdbook-admonish.css"]

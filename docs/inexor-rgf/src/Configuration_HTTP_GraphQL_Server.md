@@ -11,6 +11,11 @@ hostname = "localhost"
 port = 31415
 ```
 
+```admonish tip "Hostname"
+If you bind on localhost the GraphQL server is not reachable from outside. Use the hostname or ip which is
+reachable from outside.
+```
+
 ## Shutdown timeout
 
 The following setting Timeout for graceful worker shutdown in seconds.
@@ -20,6 +25,10 @@ still alive after the timeout are force dropped. By default, shutdown timeout is
 
 ```toml
 shutdown_timeout = 3
+```
+
+```admonish tip "Development"
+If you have to restart often during development, set this to a low value.
 ```
 
 ## Number of workers

@@ -4,12 +4,18 @@ For now please follow the [Build Instructions](./Development_Build.md).
 
 ## Linux
 
-> TODO
+```admonish warning "TODO"
+Describe how to install Inexor Reactive Graph Flow on linux
+```
 
 ## Raspberry Pi
 
-> TODO
+```admonish warning "TODO"
+Describe how to install Inexor Reactive Graph Flow on a raspberry pi
+```
 
 ## Windows
 
-> TODO
+```admonish warning "TODO"
+Describe how to install Inexor Reactive Graph Flow on windows
+```

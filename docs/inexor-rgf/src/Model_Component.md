@@ -24,8 +24,10 @@ The properties of all components are merged.
 | Name        | String                                          | The name of the component                                         | labeled                                                                                            |
 | Description | String                                          | Textual description of the component                              | The label is an hierarchical path with static segments, named parameters and catch-all parameters. | 
 | Properties  | Vec<[Property Type](./Model_Property_Type.md)>  | The properties which are applied on entity or relation instances. |                                                                                                    |
-| 
+|
 
 ## GraphQL
 
+```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Components.md)
+```

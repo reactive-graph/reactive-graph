@@ -16,7 +16,9 @@ kind = "console"
 pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r"
 ```
 
+```admonish tip "Documentation of the date format library"
 [Date Formatting Syntax](https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html)
+```
 
 ### File
 
@@ -43,13 +45,15 @@ appenders = [ "stdout", "file-application" ]
 
 ## Per Log levels
 
-[How to configure the loggers](https://docs.rs/log4rs/1.0.0/log4rs/)
-
 Set the log level for a specific module:
 
 ```toml
 [loggers."inexor_rgf_application::implementation::component_manager_impl"]
 level = "info"
+```
+
+```admonish tip "Documentation of the logging library"
+[How to configure the loggers](https://docs.rs/log4rs/1.0.0/log4rs/)
 ```
 
 ## Additive

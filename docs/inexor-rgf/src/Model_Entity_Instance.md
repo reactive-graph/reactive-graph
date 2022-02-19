@@ -13,6 +13,7 @@ Entity instances can be uniquely identified via a UUID. This is particularly imp
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.
 
+
 ## Labels
 
 Labels are also unique, but optional. While UUIDs are hard to remember, labels are easier to remember. This allows
@@ -20,6 +21,10 @@ entity instances to be addressed using labels, for example in GraphQL queries.
 
 If you compare the query with and without a label, you will find that the query is easier to understand thanks to the
 label and transports significantly more information about what is actually happening.
+
+```admonish info
+Labels are optional
+```
 
 ```graphql
 query {
@@ -57,4 +62,6 @@ query {
 
 ## GraphQL
 
+```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Entity_Instances.md)
+```

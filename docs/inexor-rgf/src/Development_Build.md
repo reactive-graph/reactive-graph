@@ -89,8 +89,10 @@ active = true
 path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 ```
 
-* Use either a relative or absolute path
-* The filename of the library is different on windows (inexor_rgf_plugin_mqtt.dll)
-* Release builds are located in `target/release` instead of `target/debug`
+```admonish tip "Configure plugins"
+Release builds are located in `target/release` instead of `target/debug`
+```
 
+```admonish info "Configure plugins"
 Please consult the documentation for [configuring plugins](./Configuration_Plugins.md)
+```

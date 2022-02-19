@@ -17,10 +17,10 @@ the help of the graph. Inexor is the first game engine to introduce a graph as a
 
 ```mermaid
 graph TD;
-    A(Entity A)==>|Relation A|B(Entity B);
-    A(Entity A)==>|Relation B|C(Entity C);
-    B(Entity B)==>|Relation C|D(Entity D);
-    C(Entity C)==>|Relation D|D(Entity D);
+    A(Entity A)===>|Relation A|B(Entity B);
+    A(Entity A)===>|Relation B|C(Entity C);
+    B(Entity B)===>|Relation C|D(Entity D);
+    C(Entity C)===>|Relation D|D(Entity D);
 ```
 
 ### Why do we need a graph?
@@ -110,12 +110,12 @@ graph TD;
     end
 
     subgraph key_f10 ["Entity Instance (Input Key)"]
-    F10_KEY(Property key_name=F10);
     F10_KD(Output Property key_down);
+    F10_KEY(Property key_name=F10);
     end
 
     CTRL_KD(Property key_down)--->|connector|LHS;
-    F10_KD(Property key_down)-->|connector|RHS;
+    F10_KD(Property key_down)--->|connector|RHS;
 
     subgraph logicalgate ["Entity Instance (Logical Gate)"]
     LHS(Input Property LHS)o-->ZIP;
@@ -167,3 +167,33 @@ Flows are also useful for making maps more interactive. With the help of flows a
 door opens in a map when you press switch 1 and switch 2. Or you determine the color of your own team's base based on
 the current score. Or you control particle emitters, depending on how many players are near the emitter. The
 possibilities for this are endless and want to be used!
+
+```mermaid
+flowchart LR
+    subgraph flow ["Flow"]
+        direction LR
+        subgraph key_ctrl ["Entity Instance (Input Key)"]
+            CTRL_KD(Output Property key_down);
+        end
+    
+        subgraph key_f10 ["Entity Instance (Input Key)"]
+            F10_KD(Output Property key_down);
+        end
+    
+        CTRL_KD-->|connector|LHS;
+        F10_KD-->|connector|RHS;
+    
+        subgraph logicalgate ["Entity Instance (Logical Gate)"]
+            LHS(Input Property LHS)-.->RESULT;
+            RHS(Input Property RHS)-.->RESULT;
+            RESULT(Output Property Result);
+        end
+    
+        RESULT(Output Property Result)-->|connector|CMD_EXIT(Input Property trigger);
+    
+        subgraph system_command_exit ["Entity Instance (System Command)"]
+            CMD_COMMAND(Property Command);
+            CMD_EXIT(Input Property trigger)
+        end
+    end
+```

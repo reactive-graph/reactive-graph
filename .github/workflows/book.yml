@@ -26,10 +26,17 @@ jobs:
         with:
           mdbook-version: 'latest'
 
-      - name: Install preprocessors mdbook-mermaid
+      - name: Install preprocessor mdbook-mermaid
         uses: actions-rs/install@v0.1
         with:
           crate: mdbook-mermaid
+          version: latest
+          use-tool-cache: true
+
+      - name: Install preprocessor mdbook-admonish
+        uses: actions-rs/install@v0.1
+        with:
+          crate: mdbook-admonish
           version: latest
           use-tool-cache: true
 

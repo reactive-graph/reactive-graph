@@ -14,6 +14,18 @@ defines which components it is combined from. Additional properties can also be 
 | Properties  | Vec<[Property Type](./Model_Property_Type.md)> | The additional properties on entity instances                                       |               |
 | Extensions  | Vec<[Extension](./Model_Extension.md)>         | A list of extensions which contains additional information                          |               |
 
+## x
+
+```mermaid
+classDiagram
+    class PingUploader {
+        <<interface>>
+        +Upload() UploadResult
+    }
+```
+
 ## GraphQL
 
+```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Entity_Types.md)
+```

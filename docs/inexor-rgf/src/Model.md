@@ -26,7 +26,11 @@ This becomes even more relevant when there can be multiple distinct relationship
 be a member of a team and he can be the team captain at the same time. The first type of relationship has already been
 described, the second has the name "is_captain_of".
 
-Das Typensystem besteht aus:
+```mermaid
+classDiagram
+    class X {
+    }
+```
 
 * Components
 * Entity Types
