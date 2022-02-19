@@ -137,6 +137,77 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="relation-instances"><a class="header" href="#relation-instances">Relation Instances</a></h1>
+<h2 id="get-pairs-of-outbound--inbound-entity-instances-of-all-relations-of-a-specific-type"><a class="header" href="#get-pairs-of-outbound--inbound-entity-instances-of-all-relations-of-a-specific-type">Get pairs of outbound + inbound entity instances of all relations of a specific type</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    relations(type: &quot;looks_at&quot;) {
+      outbound {
+        id
+      }
+      inbound {
+        id
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-all-inbound-relation-instances-of-an-entity-instance"><a class="header" href="#get-all-inbound-relation-instances-of-an-entity-instance">Get all inbound relation instances of an entity instance</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(id: &quot;uuid&quot;) {
+      inbound {
+        type {
+          name
+        }
+        properties {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-the-entity-instances-which-are-inbound-relations-to-an-entity-instance"><a class="header" href="#get-the-entity-instances-which-are-inbound-relations-to-an-entity-instance">Get the entity instances which are inbound relations to an entity instance</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(type: &quot;player&quot;) {
+      inbound {
+        outbound {
+          id
+          type {
+            name
+          }
+          properties {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-the-entity-instances-which-are-outbound-relations-to-an-entity-instance"><a class="header" href="#get-the-entity-instances-which-are-outbound-relations-to-an-entity-instance">Get the entity instances which are outbound relations to an entity instance</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(type: &quot;player&quot;) {
+      outbound {
+        inbound {
+          id
+          type {
+            name
+          }
+          properties {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
 
                     </main>
 

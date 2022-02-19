@@ -137,6 +137,35 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
+<h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    entities(name: &quot;example_entity&quot;) {
+      name
+      properties {
+        extensions {
+          name
+          extension
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="query-extension-by-name"><a class="header" href="#query-extension-by-name">Query extension by name</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    entities(name: &quot;example_entity&quot;) {
+      name
+      properties {
+        extensions(name: &quot;flow_editor_palette&quot;) {
+          extension
+        }
+      }
+    }
+  }
+}
+</code></pre>
 
                     </main>
 

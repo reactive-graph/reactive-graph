@@ -304,7 +304,7 @@ possibilities for this are endless and want to be used!</p>
         end
     end
 </pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="11-design-goals"><a class="header" href="#11-design-goals">1.1 Design Goals</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="design-goals"><a class="header" href="#design-goals">Design Goals</a></h1>
 <p>This chapter describes what the application's design goals are and aren't.</p>
 <h2 id="plugin-system"><a class="header" href="#plugin-system">Plugin System</a></h2>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -379,7 +379,7 @@ core application via the plugin API. Type system and reactive instance system ar
 <li>Graphics-Rendering</li>
 <li>Octree-Editor</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="12-roadmap"><a class="header" href="#12-roadmap">1.2 Roadmap</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
 <p>See <a href="https://github.com/aschaeffer/inexor-rgf-application/milestones">Milestones</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
 <p>All notable changes to this project will be documented in this file.</p>
@@ -545,6 +545,11 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 </div>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<ul>
+<li><a href="./Configuration_Logging.html">Configure Logging</a></li>
+<li><a href="./Configuration_HTTP_GraphQL_Server.html">Configure HTTP / GraphQL Server</a></li>
+<li><a href="./Configuration_Plugins.html">Configure Plugins</a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-logging"><a class="header" href="#configure-logging">Configure Logging</a></h1>
 <p>Edit <code>config/logging.toml</code></p>
 <h2 id="appender"><a class="header" href="#appender">Appender</a></h2>
@@ -765,16 +770,51 @@ from the entity type team to the entity type relation. Note the direction of the
 <p>This becomes even more relevant when there can be multiple distinct relationships between two entity types. A player can
 be a member of a team and he can be the team captain at the same time. The first type of relationship has already been
 described, the second has the name &quot;is_captain_of&quot;.</p>
-<pre class="mermaid">classDiagram
-    class X {
-    }
+<h3 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h3>
+<pre class="mermaid">erDiagram
+    Relation-Type
+    Entity-Type
+    Extension
+    Component
+    Property-Type
+    Relation-Type ||--}o Component : composes
+    Relation-Type o{--|| Entity-Type : outbound
+    Relation-Type o{--|| Entity-Type : inbound
+    Entity-Type ||--}o Component : composes
+    Relation-Type ||--}o Property-Type : defines
+    Entity-Type ||--}o Property-Type : defines
+    Relation-Type ||--}o Property-Type : defines
+    Component ||--}o Property-Type : defines
+    Relation-Type ||--}o Extension : has
+    Entity-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
 </pre>
-<ul>
-<li>Components</li>
-<li>Entity Types</li>
-<li>Relation Types</li>
-<li>Property Types</li>
-</ul>
+<h3 id="example-relation-type"><a class="header" href="#example-relation-type">Example: Relation Type</a></h3>
+<pre class="mermaid">graph LR
+    E1(Entity Type&lt;br&gt;Teleporter)
+    E2(Entity Type&lt;br&gt;Teledestination)
+    R1(Relation Type&lt;br&gt;Teleports_To)
+    E1---&gt;|outbound|R1
+    R1---&gt;|inbound|E2
+</pre>
+<h3 id="example-relation-types--entity-types"><a class="header" href="#example-relation-types--entity-types">Example: Relation Types &amp; Entity Types</a></h3>
+<pre class="mermaid">graph TB
+    P(Player)
+    C(Camera)
+    F(Flag)
+    T(Team)
+    B(Base)
+    S(Playerstart)
+    C---&gt;|looks_at|P
+    C---&gt;|looks_at|F
+    C---&gt;|looks_at|B
+    P---&gt;|is_member_of|T
+    P---&gt;|frags|P
+    T---&gt;|is_located_at|B
+    T---&gt;|owns|F
+    B---&gt;|provides|S
+    P---&gt;|has_spawned_at|S
+</pre>
 <h2 id="instance-system"><a class="header" href="#instance-system">Instance System</a></h2>
 <p>Having described the type system, this section describes the instance system.</p>
 <p>The type system describes what could exist.</p>
@@ -787,6 +827,55 @@ there are two instances of the same type.</p>
 <tr><td>Relation Type</td><td>Relation Instance</td></tr>
 <tr><td>Entity Type</td><td>Flow</td></tr>
 </tbody></table>
+<pre class="mermaid">erDiagram
+    Relation-Type
+    Relation-Instance
+    Entity-Type
+    Entity-Instance
+    Flow
+    Relation-Instance o{--|| Relation-Type : is_a
+    Entity-Instance o{--|| Entity-Type : is_a
+    Flow o{--|| Entity-Type : is_a
+</pre>
+<h3 id="example-relation-instances--entity-instances"><a class="header" href="#example-relation-instances--entity-instances">Example: Relation Instances &amp; Entity Instances</a></h3>
+<pre class="mermaid">graph TB
+    P1(Player 1)
+    P2(Player 2)
+    C1(Camera 1)
+    C2(Camera 2)
+    F1(Flag 1)
+    F2(Flag 2)
+    F3(Flag 3)
+    F4(Flag 4)
+    T1(Team Good)
+    T2(Team Evil)
+    B1(Base Good)
+    B2(Base Evil)
+    ST11(Playerstart Good 1)
+    ST12(Playerstart Good 2)
+    ST21(Playerstart Evil 1)
+    ST22(Playerstart Evil 2)
+    C1---&gt;|looks_at|P1
+    C2---&gt;|looks_at|F2
+    P1---&gt;|is_member_of|T1
+    P2---&gt;|is_member_of|T2
+    P1---&gt;|fragged|P2
+    P2---&gt;|fragged|P1
+    T1---&gt;|is_located_at|B1
+    T2---&gt;|is_located_at|B2
+    T1---&gt;|owns|F1
+    T1---&gt;|owns|F2
+    T2---&gt;|owns|F3
+    T2---&gt;|owns|F4
+    B1---&gt;|provides|ST11
+    B1---&gt;|provides|ST12
+    B2---&gt;|provides|ST21
+    B2---&gt;|provides|ST22
+    P1---&gt;|has_spawned_at|ST11
+    P2---&gt;|has_spawned_at|ST22
+    P1---&gt;|stole|F3
+    P2---&gt;|stole|F2
+</pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model-component"><a class="header" href="#model-component">Model: Component</a></h1>
 <p>A component is a reusable building block for entity types and relation types. A component semantically represents an
 aspect of one or more entity types or relation types.</p>
@@ -807,7 +896,7 @@ The properties of all components are merged.</p>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The properties which are applied on entity or relation instances.</td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
-<h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
+<h2 id="er-diagram-1"><a class="header" href="#er-diagram-1">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Component {
         string name
@@ -853,7 +942,7 @@ defines which components it is combined from. Additional properties can also be 
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on entity instances</td><td></td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
 </tbody></table>
-<h2 id="er-diagram-1"><a class="header" href="#er-diagram-1">ER Diagram</a></h2>
+<h2 id="er-diagram-2"><a class="header" href="#er-diagram-2">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
         string name
@@ -936,7 +1025,7 @@ appearance of a connector of this type in the flow editor.</p>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Type)===&gt;|&quot;Relation Type&quot;|B(Inbound Entity Type);
 </pre>
-<h2 id="er-diagram-2"><a class="header" href="#er-diagram-2">ER Diagram</a></h2>
+<h2 id="er-diagram-3"><a class="header" href="#er-diagram-3">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Relation-Type {
         string name
@@ -1005,7 +1094,7 @@ the name, the data type and whether the property is an input or an output.</p>
 <tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td></td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>The extensions contains additional information about the property type</td><td></td></tr>
 </tbody></table>
-<h2 id="er-diagram-3"><a class="header" href="#er-diagram-3">ER Diagram</a></h2>
+<h2 id="er-diagram-4"><a class="header" href="#er-diagram-4">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Property-Type {
         string name
@@ -1066,7 +1155,7 @@ activated, the extension is present but not used.</p>
 <tr><td>Name</td><td>String</td><td>The name of the extension</td></tr>
 <tr><td>Extension</td><td>JSON</td><td>The extension as schema-less JSON.</td></tr>
 </tbody></table>
-<h2 id="er-diagram-4"><a class="header" href="#er-diagram-4">ER Diagram</a></h2>
+<h2 id="er-diagram-5"><a class="header" href="#er-diagram-5">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Extension {
         string name
@@ -1252,7 +1341,7 @@ label and transports significantly more information about what is actually happe
     EI===&gt;|&quot;Relation Instance&quot;|O2(Entity Instance);
     EI===&gt;|&quot;Relation Instance&quot;|O3(Entity Instance);
 </pre>
-<h2 id="er-diagram-5"><a class="header" href="#er-diagram-5">ER Diagram</a></h2>
+<h2 id="er-diagram-6"><a class="header" href="#er-diagram-6">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
         string name
@@ -1329,7 +1418,7 @@ defines which entity type the outbound entity type and which entity type the inb
 <pre class="mermaid">graph LR;
     A(Outbound Entity Instance)===&gt;|&quot;Relation Instance&quot;|B(Inbound Entity Instance);
 </pre>
-<h2 id="er-diagram-6"><a class="header" href="#er-diagram-6">ER Diagram</a></h2>
+<h2 id="er-diagram-7"><a class="header" href="#er-diagram-7">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
         string name
@@ -1398,7 +1487,7 @@ instances).</p>
 <h2 id="data-model-7"><a class="header" href="#data-model-7">Data Model</a></h2>
 <table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td></tr>
-<tr><td>Value</td><td>JSON</td><td>The value of the property</td></tr>
+<tr><td>Value</td><td><a href="https://docs.serde.rs/serde_json/value/enum.Value.html">Value</a></td><td>The value of the property</td></tr>
 <tr><td>Type</td><td><a href="./Model_Property_Type.html">Property Type</a></td><td>The type of the property</td></tr>
 </tbody></table>
 <h2 id="graph-4"><a class="header" href="#graph-4">Graph</a></h2>
@@ -1410,7 +1499,7 @@ instances).</p>
     EI(Entity Instance)---&gt;PI2;
     EI(Entity Instance)---&gt;PI3;
 </pre>
-<h2 id="er-diagram-7"><a class="header" href="#er-diagram-7">ER Diagram</a></h2>
+<h2 id="er-diagram-8"><a class="header" href="#er-diagram-8">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Property-Type {
         string name
@@ -1727,11 +1816,369 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
+<h2 id="get-relation-type-by-name"><a class="header" href="#get-relation-type-by-name">Get Relation Type by Name</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    relations(name: &quot;example_relation&quot;) {
+      name
+      fullName
+      description
+      outboundTypes {
+        name
+      }
+      inboundTypes {
+        name
+      }
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+          extension
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="find-relation-type"><a class="header" href="#find-relation-type">Find Relation Type</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    relations(search: &quot;example_relation?&quot;) {
+      name
+      fullName
+      description
+      outboundTypes {
+        name
+      }
+      inboundTypes {
+        name
+      }
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="create-relation-type"><a class="header" href="#create-relation-type">Create Relation Type</a></h2>
+<pre><code class="language-graphql">mutation {
+  types {
+    relations {
+      create(
+        name: &quot;example_relation&quot;
+        outboundType: &quot;entitytype1&quot;
+        inboundType: &quot;entitytype2&quot;
+        components: [
+          &quot;component1&quot;
+        ]
+        properties: [
+          {
+            name: &quot;example_property&quot;
+            description: &quot;Example Property&quot;
+            dataType: NUMBER
+            socketType: INPUT
+            extensions: []
+          }
+        ]
+      ) {
+        name
+        description
+        outboundTypes {
+          name
+        }
+        inboundTypes {
+          name
+        }
+        components {
+          name
+        }
+        properties {
+          name
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="delete-relation-type"><a class="header" href="#delete-relation-type">Delete Relation Type</a></h2>
+<pre><code class="language-graphql">mutation {
+  types {
+    relations {
+      delete(name: &quot;example_relation&quot;)
+    }
+  }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
+<h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    entities(name: &quot;example_entity&quot;) {
+      name
+      properties {
+        extensions {
+          name
+          extension
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="query-extension-by-name"><a class="header" href="#query-extension-by-name">Query extension by name</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    entities(name: &quot;example_entity&quot;) {
+      name
+      properties {
+        extensions(name: &quot;flow_editor_palette&quot;) {
+          extension
+        }
+      }
+    }
+  }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="entity-instances"><a class="header" href="#entity-instances">Entity Instances</a></h1>
+<h2 id="query-an-entity-instance-by-id"><a class="header" href="#query-an-entity-instance-by-id">Query an entity instance by id</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(id: &quot;0-0-0-0&quot;) {
+      id
+      type {
+        name
+      }
+      properties {
+        name
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="query-a-property-instance-by-name-of-an-entity-instance-by-label"><a class="header" href="#query-a-property-instance-by-name-of-an-entity-instance-by-label">Query a property instance by name of an entity instance by label</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(label: &quot;/org/inexor/input/any_device/key_f10&quot;) {
+      properties(name: &quot;key_down&quot;) {
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="query-the-positions-of-all-cameras-that-are-looking-at-a-player"><a class="header" href="#query-the-positions-of-all-cameras-that-are-looking-at-a-player">Query the positions of all cameras that are looking at a player</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(type: &quot;player&quot;, label: &quot;/org/inexor/game/players/Hanack&quot;) {
+      inbound(typeName: &quot;look_at&quot;) {
+        outbound {
+          properties(name: &quot;position&quot;) {
+            value
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-instances"><a class="header" href="#relation-instances">Relation Instances</a></h1>
+<h2 id="get-pairs-of-outbound--inbound-entity-instances-of-all-relations-of-a-specific-type"><a class="header" href="#get-pairs-of-outbound--inbound-entity-instances-of-all-relations-of-a-specific-type">Get pairs of outbound + inbound entity instances of all relations of a specific type</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    relations(type: &quot;looks_at&quot;) {
+      outbound {
+        id
+      }
+      inbound {
+        id
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-all-inbound-relation-instances-of-an-entity-instance"><a class="header" href="#get-all-inbound-relation-instances-of-an-entity-instance">Get all inbound relation instances of an entity instance</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(id: &quot;uuid&quot;) {
+      inbound {
+        type {
+          name
+        }
+        properties {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-the-entity-instances-which-are-inbound-relations-to-an-entity-instance"><a class="header" href="#get-the-entity-instances-which-are-inbound-relations-to-an-entity-instance">Get the entity instances which are inbound relations to an entity instance</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(type: &quot;player&quot;) {
+      inbound {
+        outbound {
+          id
+          type {
+            name
+          }
+          properties {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-the-entity-instances-which-are-outbound-relations-to-an-entity-instance"><a class="header" href="#get-the-entity-instances-which-are-outbound-relations-to-an-entity-instance">Get the entity instances which are outbound relations to an entity instance</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(type: &quot;player&quot;) {
+      outbound {
+        inbound {
+          id
+          type {
+            name
+          }
+          properties {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flows"><a class="header" href="#flows">Flows</a></h1>
+<h2 id="get-all-flow-ids"><a class="header" href="#get-all-flow-ids">Get all flow ids</a></h2>
+<pre><code class="language-graphql">query {
+  flows {
+    id
+  }
+}
+</code></pre>
+<h2 id="get-all-flows-of-a-particular-entity-type"><a class="header" href="#get-all-flows-of-a-particular-entity-type">Get all flows of a particular entity type</a></h2>
+<pre><code class="language-graphql">query {
+  flows(type: &quot;generic_flow&quot;) {
+    id
+  }
+}
+</code></pre>
+<h2 id="get-the-label-of-a-flows-by-id"><a class="header" href="#get-the-label-of-a-flows-by-id">Get the label of a flows by id</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    label
+  }
+}
+</code></pre>
+<h2 id="get-the-id-of-a-flows-by-label"><a class="header" href="#get-the-id-of-a-flows-by-label">Get the id of a flows by label</a></h2>
+<pre><code class="language-graphql">query {
+  flows(label: &quot;/org/inexor/flows/game-servers&quot;) {
+    id
+  }
+}
+</code></pre>
+<h2 id="get-the-entity-instance-which-are-contained-by-a-flow"><a class="header" href="#get-the-entity-instance-which-are-contained-by-a-flow">Get the entity instance which are contained by a flow</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    entities {
+      id
+    }
+  }
+}
+</code></pre>
+<h2 id="get-the-relation-instances-which-are-contained-by-a-flow"><a class="header" href="#get-the-relation-instances-which-are-contained-by-a-flow">Get the relation instances which are contained by a flow</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    relations {
+      outbound {
+        id
+      }
+      type {
+        name
+      }
+      inbound {
+        id
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-all-entity-instances-and-all-relation-instances-of-a-flow"><a class="header" href="#get-all-entity-instances-and-all-relation-instances-of-a-flow">Get all entity instances and all relation instances of a flow</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    type {
+      name
+    }
+    label
+    entities {
+      id
+      label
+      type {
+        name
+      }
+      properties {
+        name
+        value
+      }
+    }
+    relations {
+      type {
+        name
+      }
+      outbound {
+        id
+      }
+      inbound {
+        id
+      }
+      properties {
+        name
+        value
+      }
+    }
+  }
+    
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="property-instance-subscriptions"><a class="header" href="#property-instance-subscriptions">Property Instance Subscriptions</a></h1>
+<h2 id="subscribe-changes-of-the-key-right-ctrl"><a class="header" href="#subscribe-changes-of-the-key-right-ctrl">Subscribe changes of the key <code>right-ctrl</code></a></h2>
+<pre><code class="language-graphql">subscription keyDownRightCtrl {
+  entity(
+    label: &quot;/org/inexor/input/any_device/key/key_rightctrl&quot;,
+    propertyName: &quot;key_down&quot;
+  ) {
+    name
+    value
+    type {
+      name
+      dataType
+      socketType
+      extensions {
+        name
+        extension
+      }
+    }
+  }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
 the core as small as possible. The core of the application is described in the next section. Plugins, on the other hand,

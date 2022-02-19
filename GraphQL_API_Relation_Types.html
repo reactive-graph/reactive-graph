@@ -137,6 +137,111 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
+<h2 id="get-relation-type-by-name"><a class="header" href="#get-relation-type-by-name">Get Relation Type by Name</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    relations(name: &quot;example_relation&quot;) {
+      name
+      fullName
+      description
+      outboundTypes {
+        name
+      }
+      inboundTypes {
+        name
+      }
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+          extension
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="find-relation-type"><a class="header" href="#find-relation-type">Find Relation Type</a></h2>
+<pre><code class="language-graphql">query {
+  types {
+    relations(search: &quot;example_relation?&quot;) {
+      name
+      fullName
+      description
+      outboundTypes {
+        name
+      }
+      inboundTypes {
+        name
+      }
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="create-relation-type"><a class="header" href="#create-relation-type">Create Relation Type</a></h2>
+<pre><code class="language-graphql">mutation {
+  types {
+    relations {
+      create(
+        name: &quot;example_relation&quot;
+        outboundType: &quot;entitytype1&quot;
+        inboundType: &quot;entitytype2&quot;
+        components: [
+          &quot;component1&quot;
+        ]
+        properties: [
+          {
+            name: &quot;example_property&quot;
+            description: &quot;Example Property&quot;
+            dataType: NUMBER
+            socketType: INPUT
+            extensions: []
+          }
+        ]
+      ) {
+        name
+        description
+        outboundTypes {
+          name
+        }
+        inboundTypes {
+          name
+        }
+        components {
+          name
+        }
+        properties {
+          name
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="delete-relation-type"><a class="header" href="#delete-relation-type">Delete Relation Type</a></h2>
+<pre><code class="language-graphql">mutation {
+  types {
+    relations {
+      delete(name: &quot;example_relation&quot;)
+    }
+  }
+}
+</code></pre>
 
                     </main>
 

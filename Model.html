@@ -155,16 +155,51 @@ from the entity type team to the entity type relation. Note the direction of the
 <p>This becomes even more relevant when there can be multiple distinct relationships between two entity types. A player can
 be a member of a team and he can be the team captain at the same time. The first type of relationship has already been
 described, the second has the name &quot;is_captain_of&quot;.</p>
-<pre class="mermaid">classDiagram
-    class X {
-    }
+<h3 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h3>
+<pre class="mermaid">erDiagram
+    Relation-Type
+    Entity-Type
+    Extension
+    Component
+    Property-Type
+    Relation-Type ||--}o Component : composes
+    Relation-Type o{--|| Entity-Type : outbound
+    Relation-Type o{--|| Entity-Type : inbound
+    Entity-Type ||--}o Component : composes
+    Relation-Type ||--}o Property-Type : defines
+    Entity-Type ||--}o Property-Type : defines
+    Relation-Type ||--}o Property-Type : defines
+    Component ||--}o Property-Type : defines
+    Relation-Type ||--}o Extension : has
+    Entity-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
 </pre>
-<ul>
-<li>Components</li>
-<li>Entity Types</li>
-<li>Relation Types</li>
-<li>Property Types</li>
-</ul>
+<h3 id="example-relation-type"><a class="header" href="#example-relation-type">Example: Relation Type</a></h3>
+<pre class="mermaid">graph LR
+    E1(Entity Type&lt;br&gt;Teleporter)
+    E2(Entity Type&lt;br&gt;Teledestination)
+    R1(Relation Type&lt;br&gt;Teleports_To)
+    E1---&gt;|outbound|R1
+    R1---&gt;|inbound|E2
+</pre>
+<h3 id="example-relation-types--entity-types"><a class="header" href="#example-relation-types--entity-types">Example: Relation Types &amp; Entity Types</a></h3>
+<pre class="mermaid">graph TB
+    P(Player)
+    C(Camera)
+    F(Flag)
+    T(Team)
+    B(Base)
+    S(Playerstart)
+    C---&gt;|looks_at|P
+    C---&gt;|looks_at|F
+    C---&gt;|looks_at|B
+    P---&gt;|is_member_of|T
+    P---&gt;|frags|P
+    T---&gt;|is_located_at|B
+    T---&gt;|owns|F
+    B---&gt;|provides|S
+    P---&gt;|has_spawned_at|S
+</pre>
 <h2 id="instance-system"><a class="header" href="#instance-system">Instance System</a></h2>
 <p>Having described the type system, this section describes the instance system.</p>
 <p>The type system describes what could exist.</p>
@@ -177,6 +212,55 @@ there are two instances of the same type.</p>
 <tr><td>Relation Type</td><td>Relation Instance</td></tr>
 <tr><td>Entity Type</td><td>Flow</td></tr>
 </tbody></table>
+<pre class="mermaid">erDiagram
+    Relation-Type
+    Relation-Instance
+    Entity-Type
+    Entity-Instance
+    Flow
+    Relation-Instance o{--|| Relation-Type : is_a
+    Entity-Instance o{--|| Entity-Type : is_a
+    Flow o{--|| Entity-Type : is_a
+</pre>
+<h3 id="example-relation-instances--entity-instances"><a class="header" href="#example-relation-instances--entity-instances">Example: Relation Instances &amp; Entity Instances</a></h3>
+<pre class="mermaid">graph TB
+    P1(Player 1)
+    P2(Player 2)
+    C1(Camera 1)
+    C2(Camera 2)
+    F1(Flag 1)
+    F2(Flag 2)
+    F3(Flag 3)
+    F4(Flag 4)
+    T1(Team Good)
+    T2(Team Evil)
+    B1(Base Good)
+    B2(Base Evil)
+    ST11(Playerstart Good 1)
+    ST12(Playerstart Good 2)
+    ST21(Playerstart Evil 1)
+    ST22(Playerstart Evil 2)
+    C1---&gt;|looks_at|P1
+    C2---&gt;|looks_at|F2
+    P1---&gt;|is_member_of|T1
+    P2---&gt;|is_member_of|T2
+    P1---&gt;|fragged|P2
+    P2---&gt;|fragged|P1
+    T1---&gt;|is_located_at|B1
+    T2---&gt;|is_located_at|B2
+    T1---&gt;|owns|F1
+    T1---&gt;|owns|F2
+    T2---&gt;|owns|F3
+    T2---&gt;|owns|F4
+    B1---&gt;|provides|ST11
+    B1---&gt;|provides|ST12
+    B2---&gt;|provides|ST21
+    B2---&gt;|provides|ST22
+    P1---&gt;|has_spawned_at|ST11
+    P2---&gt;|has_spawned_at|ST22
+    P1---&gt;|stole|F3
+    P2---&gt;|stole|F2
+</pre>
 
                     </main>
 

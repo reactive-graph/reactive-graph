@@ -137,6 +137,97 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="flows"><a class="header" href="#flows">Flows</a></h1>
+<h2 id="get-all-flow-ids"><a class="header" href="#get-all-flow-ids">Get all flow ids</a></h2>
+<pre><code class="language-graphql">query {
+  flows {
+    id
+  }
+}
+</code></pre>
+<h2 id="get-all-flows-of-a-particular-entity-type"><a class="header" href="#get-all-flows-of-a-particular-entity-type">Get all flows of a particular entity type</a></h2>
+<pre><code class="language-graphql">query {
+  flows(type: &quot;generic_flow&quot;) {
+    id
+  }
+}
+</code></pre>
+<h2 id="get-the-label-of-a-flows-by-id"><a class="header" href="#get-the-label-of-a-flows-by-id">Get the label of a flows by id</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    label
+  }
+}
+</code></pre>
+<h2 id="get-the-id-of-a-flows-by-label"><a class="header" href="#get-the-id-of-a-flows-by-label">Get the id of a flows by label</a></h2>
+<pre><code class="language-graphql">query {
+  flows(label: &quot;/org/inexor/flows/game-servers&quot;) {
+    id
+  }
+}
+</code></pre>
+<h2 id="get-the-entity-instance-which-are-contained-by-a-flow"><a class="header" href="#get-the-entity-instance-which-are-contained-by-a-flow">Get the entity instance which are contained by a flow</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    entities {
+      id
+    }
+  }
+}
+</code></pre>
+<h2 id="get-the-relation-instances-which-are-contained-by-a-flow"><a class="header" href="#get-the-relation-instances-which-are-contained-by-a-flow">Get the relation instances which are contained by a flow</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    relations {
+      outbound {
+        id
+      }
+      type {
+        name
+      }
+      inbound {
+        id
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="get-all-entity-instances-and-all-relation-instances-of-a-flow"><a class="header" href="#get-all-entity-instances-and-all-relation-instances-of-a-flow">Get all entity instances and all relation instances of a flow</a></h2>
+<pre><code class="language-graphql">query {
+  flows(id: &quot;uuid&quot;) {
+    type {
+      name
+    }
+    label
+    entities {
+      id
+      label
+      type {
+        name
+      }
+      properties {
+        name
+        value
+      }
+    }
+    relations {
+      type {
+        name
+      }
+      outbound {
+        id
+      }
+      inbound {
+        id
+      }
+      properties {
+        name
+        value
+      }
+    }
+  }
+    
+}
+</code></pre>
 
                     </main>
 

@@ -137,6 +137,48 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="entity-instances"><a class="header" href="#entity-instances">Entity Instances</a></h1>
+<h2 id="query-an-entity-instance-by-id"><a class="header" href="#query-an-entity-instance-by-id">Query an entity instance by id</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(id: &quot;0-0-0-0&quot;) {
+      id
+      type {
+        name
+      }
+      properties {
+        name
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="query-a-property-instance-by-name-of-an-entity-instance-by-label"><a class="header" href="#query-a-property-instance-by-name-of-an-entity-instance-by-label">Query a property instance by name of an entity instance by label</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(label: &quot;/org/inexor/input/any_device/key_f10&quot;) {
+      properties(name: &quot;key_down&quot;) {
+        value
+      }
+    }
+  }
+}
+</code></pre>
+<h2 id="query-the-positions-of-all-cameras-that-are-looking-at-a-player"><a class="header" href="#query-the-positions-of-all-cameras-that-are-looking-at-a-player">Query the positions of all cameras that are looking at a player</a></h2>
+<pre><code class="language-graphql">query {
+  instances {
+    entities(type: &quot;player&quot;, label: &quot;/org/inexor/game/players/Hanack&quot;) {
+      inbound(typeName: &quot;look_at&quot;) {
+        outbound {
+          properties(name: &quot;position&quot;) {
+            value
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre>
 
                     </main>
 
