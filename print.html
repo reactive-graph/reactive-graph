@@ -148,6 +148,12 @@
 <h3 id="what-is-a-graph"><a class="header" href="#what-is-a-graph">What is a Graph?</a></h3>
 <p>A graph organizes highly interconnected data. The state of an Entity Component System can be ideally represented with
 the help of the graph. Inexor is the first game engine to introduce a graph as a basis.</p>
+<pre class="mermaid">graph TD;
+    A(Entity A)==&gt;|Relation A|B(Entity B);
+    A(Entity A)==&gt;|Relation B|C(Entity C);
+    B(Entity B)==&gt;|Relation C|D(Entity D);
+    C(Entity C)==&gt;|Relation D|D(Entity D);
+</pre>
 <h3 id="why-do-we-need-a-graph"><a class="header" href="#why-do-we-need-a-graph">Why do we need a graph?</a></h3>
 <p>The main benefits of a graph are:</p>
 <ul>
@@ -180,17 +186,14 @@ stream of this property instance. Data streams are linked together. For example,
 is linked to the stream of another property instance and you change the value of the first property instance, the value
 of the second property instance will automatically change as well. Data is thus propagated from one station to the next,
 triggering a cascade of propagations. </p>
-<pre><code class="language-dot process">digraph structs {
-    node [shape=record];
-    node1 [style=rounded, label=&quot;&lt;f0&gt; property 1|&lt;f1&gt; property 2|&lt;f2&gt; property 3&quot;];
-    node2 [style=rounded, label=&quot;&lt;f0&gt; property 1|&lt;f1&gt; property 2|&lt;f2&gt; property 3&quot;];
-    node3 [style=rounded, label=&quot;&lt;f0&gt; property 1|&lt;f1&gt; property 2|&lt;f2&gt; property 3&quot;];
-    node1:f1 -&gt; node2:f0;
-    node1:f2 -&gt; node2:f1;
-    node2:f0 -&gt; node3:f1;
-    node2:f0 -&gt; node3:f2;
-}
-</code></pre>
+<pre class="mermaid">graph TD;
+    A(Property Instance 1)--&gt;B(Property Instance 2);
+    A--&gt;C(Property Instance 3);
+    B--&gt;D(Property Instance 4);
+    C--&gt;D;
+    D--&gt;E(Property Instance 5);
+    B--&gt;F(Property Instance 6);
+</pre>
 <p>In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your own data
 stream and caching it. This allows subsequent querying of the value of a property instance.</p>
 <p>Remember this basic concept:</p>
@@ -212,16 +215,36 @@ another and thus depict behavior.</p>
 <p>It is interesting that this behavior also works for relations. For example, connectors are also implemented behaviors of
 streams. It is interesting that connectors connect the data stream from a property instance of the outgoing entity
 instance with the data stream from a property instance of the incoming entity instance.</p>
-<pre><code class="language-dot process">digraph structs {
-    node [shape=record];
-    node1 [style=rounded, label=&quot;&lt;f0&gt; lhs|&lt;f1&gt; rhs&quot;];
-    node2 [style=rounded, label=&quot;&lt;f0&gt; combinator function&quot;];
-    node3 [style=rounded, label=&quot;&lt;f0&gt; result&quot;];
-    node1:f0 -&gt; node2:f0;
-    node1:f1 -&gt; node2:f0;
-    node2:f0 -&gt; node3:f0;
-}
-</code></pre>
+<pre class="mermaid">graph TD;
+    subgraph key_ctrl [&quot;Entity Instance (Input Key)&quot;]
+    direction RL
+    CTRL_KEY(Property key_name=CTRL);
+    CTRL_KD(Output Property key_down);
+    end
+
+    subgraph key_f10 [&quot;Entity Instance (Input Key)&quot;]
+    F10_KEY(Property key_name=F10);
+    F10_KD(Output Property key_down);
+    end
+
+    CTRL_KD(Property key_down)---&gt;|connector|LHS;
+    F10_KD(Property key_down)--&gt;|connector|RHS;
+
+    subgraph logicalgate [&quot;Entity Instance (Logical Gate)&quot;]
+    LHS(Input Property LHS)o--&gt;ZIP;
+    RHS(Input Property RHS)o--&gt;ZIP;
+    ZIP(Zipped stream of LHS and RHS)--&gt;COMBINATOR;
+    COMBINATOR(Combinator Function AND)--&gt;RESULT;
+    RESULT(Output Property Result);
+    end
+
+    RESULT(Output Property Result)--&gt;|connector|CMD_EXIT(Input Property trigger);
+
+    subgraph system_command_exit [&quot;Entity Instance (System Command)&quot;]
+    CMD_COMMAND(Property Command);
+    CMD_EXIT(Input Property trigger)
+    end
+</pre>
 <p>For example the <code>AND-Gate</code> accepts inputs at the properties <code>lhs</code> and <code>rhs</code>. Both streams are
 subscribed and zipped. The zipped stream is calculated with a function - in this case the
 AND-Operator. This results in another (invisible) stream which is connected with the property
@@ -2316,6 +2339,8 @@ SOFTWARE.</p>
         <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
+        <script type="text/javascript" src="mermaid.min.js"></script>
+        <script type="text/javascript" src="mermaid-init.js"></script>
         <script type="text/javascript">
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
