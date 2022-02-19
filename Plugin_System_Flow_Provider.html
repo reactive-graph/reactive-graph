@@ -137,6 +137,25 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="flow-provider"><a class="header" href="#flow-provider">Flow Provider</a></h1>
+<p>Plugins can implement the trait <code>FlowProvider</code> in order to create a flow during initialization of the
+plugin.</p>
+<h2 id="trait-flowprovider"><a class="header" href="#trait-flowprovider">Trait <code>FlowProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl FlowProvider for ExampleFlowProviderProviderImpl {
+    fn get_flows(&amp;self) -&gt; Vec&lt;Flow&gt; {
+        // Return a vector of flows
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="use-cases"><a class="header" href="#use-cases">Use cases</a></h2>
+<ul>
+<li>Read <code>Flow</code>s from external JSON-file from a specific location</li>
+<li>Build JSON-file into plugin binary using RustEmbed</li>
+<li>Programmatically create <code>Flow</code>s</li>
+</ul>
 
                     </main>
 

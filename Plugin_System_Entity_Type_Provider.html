@@ -137,6 +137,25 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="entity-type-provider"><a class="header" href="#entity-type-provider">Entity Type Provider</a></h1>
+<p>Plugins can implement the trait <code>EntityTypeProvider</code> in order to register entity types during initialization of the
+plugin.</p>
+<h2 id="trait-entitytypeprovider"><a class="header" href="#trait-entitytypeprovider">Trait <code>EntityTypeProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl EntityTypeProvider for ExampleEntityTypeProviderProviderImpl {
+    fn get_entity_types(&amp;self) -&gt; Vec&lt;EntityType&gt; {
+        // Return a vector of entity types
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="use-cases"><a class="header" href="#use-cases">Use cases</a></h2>
+<ul>
+<li>Read <code>EntityType</code>s from external JSON-file from a specific location</li>
+<li>Build JSON-file into plugin binary using RustEmbed</li>
+<li>Programmatically create <code>EntityType</code>s</li>
+</ul>
 
                     </main>
 

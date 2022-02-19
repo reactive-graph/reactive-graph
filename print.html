@@ -1983,7 +1983,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <pre><code class="language-graphql">query {
   instances {
     entities(type: &quot;player&quot;, label: &quot;/org/inexor/game/players/Hanack&quot;) {
-      inbound(typeName: &quot;look_at&quot;) {
+      inbound(type: &quot;look_at&quot;) {
         outbound {
           properties(name: &quot;position&quot;) {
             value
@@ -2384,12 +2384,13 @@ which is called during initialization:</p>
 <li><code>WebResourceProvider</code></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="component-provider"><a class="header" href="#component-provider">Component Provider</a></h1>
-<p>Plugins can implement the trait <code>ComponentProvider</code> in order to register components during startup of the </p>
+<p>Plugins can implement the trait <code>ComponentProvider</code> in order to register components during initialization of the
+plugin.</p>
 <h2 id="trait-componentprovider"><a class="header" href="#trait-componentprovider">Trait <code>ComponentProvider</code></a></h2>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>impl ComponentProvider for ComparisonComponentProviderImpl {
+</span>impl ComponentProvider for ExampleComponentProviderImpl {
     fn get_components(&amp;self) -&gt; Vec&lt;Component&gt; {
         // Return a vector of components
     }
@@ -2403,12 +2404,196 @@ which is called during initialization:</p>
 <li>Programmatically create <code>Component</code>s</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="entity-type-provider"><a class="header" href="#entity-type-provider">Entity Type Provider</a></h1>
+<p>Plugins can implement the trait <code>EntityTypeProvider</code> in order to register entity types during initialization of the
+plugin.</p>
+<h2 id="trait-entitytypeprovider"><a class="header" href="#trait-entitytypeprovider">Trait <code>EntityTypeProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl EntityTypeProvider for ExampleEntityTypeProviderProviderImpl {
+    fn get_entity_types(&amp;self) -&gt; Vec&lt;EntityType&gt; {
+        // Return a vector of entity types
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="use-cases-1"><a class="header" href="#use-cases-1">Use cases</a></h2>
+<ul>
+<li>Read <code>EntityType</code>s from external JSON-file from a specific location</li>
+<li>Build JSON-file into plugin binary using RustEmbed</li>
+<li>Programmatically create <code>EntityType</code>s</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-type-provider"><a class="header" href="#relation-type-provider">Relation Type Provider</a></h1>
+<p>Plugins can implement the trait <code>RelationTypeProvider</code> in order to register relation types during initialization of the
+plugin.</p>
+<h2 id="trait-relationtypeprovider"><a class="header" href="#trait-relationtypeprovider">Trait <code>RelationTypeProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl RelationTypeProvider for ExampleRelationTypeProviderProviderImpl {
+    fn get_relation_types(&amp;self) -&gt; Vec&lt;RelationType&gt; {
+        // Return a vector of relation types
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="use-cases-2"><a class="header" href="#use-cases-2">Use cases</a></h2>
+<ul>
+<li>Read <code>RelationType</code>s from external JSON-file from a specific location</li>
+<li>Build JSON-file into plugin binary using RustEmbed</li>
+<li>Programmatically create <code>RelationType</code>s</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-provider"><a class="header" href="#flow-provider">Flow Provider</a></h1>
+<p>Plugins can implement the trait <code>FlowProvider</code> in order to create a flow during initialization of the
+plugin.</p>
+<h2 id="trait-flowprovider"><a class="header" href="#trait-flowprovider">Trait <code>FlowProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl FlowProvider for ExampleFlowProviderProviderImpl {
+    fn get_flows(&amp;self) -&gt; Vec&lt;Flow&gt; {
+        // Return a vector of flows
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="use-cases-3"><a class="header" href="#use-cases-3">Use cases</a></h2>
+<ul>
+<li>Read <code>Flow</code>s from external JSON-file from a specific location</li>
+<li>Build JSON-file into plugin binary using RustEmbed</li>
+<li>Programmatically create <code>Flow</code>s</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="component-behaviour-provider"><a class="header" href="#component-behaviour-provider">Component Behaviour Provider</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="entity-behaviour-provider"><a class="header" href="#entity-behaviour-provider">Entity Behaviour Provider</a></h1>
+<h2 id="trait-entitybehaviourprovider"><a class="header" href="#trait-entitybehaviourprovider">Trait <code>EntityBehaviourProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const EXAMPLE: &amp;'static str = &quot;example&quot;;
+
+#[wrapper]
+pub struct ExampleStorage(std::sync::RwLock&lt;std::collections::HashMap&lt;Uuid, std::sync::Arc&lt;Example&gt;&gt;&gt;);
+
+#[provides]
+fn create_example_storage() -&gt; ExampleStorage {
+    ExampleStorage(std::sync::RwLock::new(std::collections::HashMap::new()))
+}
+
+#[async_trait]
+pub trait ExampleEntityBehaviourProvider: EntityBehaviourProvider + Send + Sync {
+    fn create_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;);
+
+    fn remove_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;);
+
+    fn remove_by_id(&amp;self, id: Uuid);
+}
+
+pub struct ExampleEntityBehaviourProviderImpl {
+    example_behaviours: ExampleStorage,
+}
+
+interfaces!(ExampleEntityBehaviourProviderImpl: dyn EntityBehaviourProvider);
+
+#[component]
+impl ExampleEntityBehaviourProviderImpl {
+    #[provides]
+    fn new() -&gt; Self {
+        Self {
+            example_behaviours: create_example_storage(),
+        }
+    }
+}
+
+#[async_trait]
+#[provides]
+impl ExampleEntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
+    fn create_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+        let id = entity_instance.id;
+        let example_behaviour = Example::new(entity_instance);
+        if example_behaviour.is_ok() {
+            let example_behaviour = Arc::new(example_behaviour.unwrap());
+            self.example_behaviours.0.write().unwrap().insert(id, example_behaviour);
+            debug!(&quot;Added behaviour {} to entity instance {}&quot;, EXAMPLE, id);
+        }
+    }
+
+    fn remove_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+        self.example_behaviours.0.write().unwrap().remove(&amp;entity_instance.id);
+        debug!(&quot;Removed behaviour {} from entity instance {}&quot;, EXAMPLE, entity_instance.id);
+    }
+
+    fn remove_by_id(&amp;self, id: Uuid) {
+        if self.example_behaviours.0.write().unwrap().contains_key(&amp;id) {
+            self.example_behaviours.0.write().unwrap().remove(&amp;id);
+            debug!(&quot;Removed behaviour {} from entity instance {}&quot;, EXAMPLE, id);
+        }
+    }
+}
+
+impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
+    fn add_behaviours(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+        match entity_instance.clone().type_name.as_str() {
+            EXAMPLE =&gt; self.create_example(entity_instance),
+            _ =&gt; {}
+        }
+    }
+
+    fn remove_behaviours(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+        match entity_instance.clone().type_name.as_str() {
+            EXAMPLE =&gt; self.remove_example(entity_instance),
+            _ =&gt; {}
+        }
+    }
+
+    fn remove_behaviours_by_id(&amp;self, id: Uuid) {
+        self.remove_by_id(id);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-behaviour-provider"><a class="header" href="#relation-behaviour-provider">Relation Behaviour Provider</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="web-resource-provider"><a class="header" href="#web-resource-provider">Web Resource Provider</a></h1>
+<p>Plugins can implement the trait <code>WebResourceProvider</code> in order to register handlers for endpoints.</p>
+<h2 id="use-cases-4"><a class="header" href="#use-cases-4">Use Cases</a></h2>
+<ul>
+<li>Deliver static files &amp; web applications</li>
+<li>Provide REST endpoints</li>
+</ul>
+<h2 id="trait-webresourceprovider"><a class="header" href="#trait-webresourceprovider">Trait <code>WebResourceProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl WebResourceProvider for ExampleWebResourceProviderImpl {
+    fn get_base_path(&amp;self) -&gt; String {
+        String::from(&quot;example&quot;)
+    }
+
+    fn handle_web_resource(
+        &amp;self,
+        path: String,
+        _request: Request&lt;HttpBody&gt;,
+    ) -&gt; Result&lt;Response&lt;HttpBody&gt;&gt; {
+        let asset = FlowEditorWebResourceAsset::get(path.as_ref());
+        match asset {
+            Some(asset) =&gt; {
+                let body: HttpBody = match asset.data {
+                    Cow::Borrowed(bytes) =&gt; HttpBody::Binary(bytes.to_vec()),
+                    Cow::Owned(bytes) =&gt; HttpBody::Binary(bytes.to_vec()),
+                };
+                let mime_type = from_path(path.as_str()).first_or_octet_stream();
+                Response::builder()
+                    .status(StatusCode::OK)
+                    .header(CONTENT_TYPE, mime_type.to_string())
+                    .body(body)
+            }
+            None =&gt; Response::builder()
+                .status(StatusCode::NOT_FOUND)
+                .body(HttpBody::None),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
@@ -2629,7 +2814,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-input-device"><a class="header" href="#plugin-input-device">Plugin: Input Device</a></h1>
 <p>This plugin makes input devices (keyboard, mouse, gamepad, remote control...) available as entities using linux evdev.</p>
-<h2 id="use-cases-1"><a class="header" href="#use-cases-1">Use cases</a></h2>
+<h2 id="use-cases-5"><a class="header" href="#use-cases-5">Use cases</a></h2>
 <ul>
 <li>Global Hotkeys
 <ul>

@@ -137,6 +137,47 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="web-resource-provider"><a class="header" href="#web-resource-provider">Web Resource Provider</a></h1>
+<p>Plugins can implement the trait <code>WebResourceProvider</code> in order to register handlers for endpoints.</p>
+<h2 id="use-cases"><a class="header" href="#use-cases">Use Cases</a></h2>
+<ul>
+<li>Deliver static files &amp; web applications</li>
+<li>Provide REST endpoints</li>
+</ul>
+<h2 id="trait-webresourceprovider"><a class="header" href="#trait-webresourceprovider">Trait <code>WebResourceProvider</code></a></h2>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl WebResourceProvider for ExampleWebResourceProviderImpl {
+    fn get_base_path(&amp;self) -&gt; String {
+        String::from(&quot;example&quot;)
+    }
+
+    fn handle_web_resource(
+        &amp;self,
+        path: String,
+        _request: Request&lt;HttpBody&gt;,
+    ) -&gt; Result&lt;Response&lt;HttpBody&gt;&gt; {
+        let asset = FlowEditorWebResourceAsset::get(path.as_ref());
+        match asset {
+            Some(asset) =&gt; {
+                let body: HttpBody = match asset.data {
+                    Cow::Borrowed(bytes) =&gt; HttpBody::Binary(bytes.to_vec()),
+                    Cow::Owned(bytes) =&gt; HttpBody::Binary(bytes.to_vec()),
+                };
+                let mime_type = from_path(path.as_str()).first_or_octet_stream();
+                Response::builder()
+                    .status(StatusCode::OK)
+                    .header(CONTENT_TYPE, mime_type.to_string())
+                    .body(body)
+            }
+            None =&gt; Response::builder()
+                .status(StatusCode::NOT_FOUND)
+                .body(HttpBody::None),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
 
                     </main>
 

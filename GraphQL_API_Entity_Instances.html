@@ -168,7 +168,7 @@
 <pre><code class="language-graphql">query {
   instances {
     entities(type: &quot;player&quot;, label: &quot;/org/inexor/game/players/Hanack&quot;) {
-      inbound(typeName: &quot;look_at&quot;) {
+      inbound(type: &quot;look_at&quot;) {
         outbound {
           properties(name: &quot;position&quot;) {
             value
