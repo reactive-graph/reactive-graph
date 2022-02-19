@@ -26,6 +26,13 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      - name: Install preprocessors mdbook-mermaid
+        uses: actions-rs/install@v0.1
+        with:
+          create: mdbook-mermaid
+          version: latest
+          use-tool-cache: true
+
       - name: Build Book
         working-directory: ./docs/inexor-rgf
         run: mdbook build
