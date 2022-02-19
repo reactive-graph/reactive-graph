@@ -14,14 +14,51 @@ defines which components it is combined from. Additional properties can also be 
 | Properties  | Vec<[Property Type](./Model_Property_Type.md)> | The additional properties on entity instances                                       |               |
 | Extensions  | Vec<[Extension](./Model_Extension.md)>         | A list of extensions which contains additional information                          |               |
 
-## x
+## ER Diagram
 
 ```mermaid
-classDiagram
-    class PingUploader {
-        <<interface>>
-        +Upload() UploadResult
+erDiagram
+    Entity-Type {
+        string name
+        string group
+        string description
     }
+    Entity-Instance {
+        string id
+        string label
+        string description
+    }
+    Extension {
+        string name
+        JSON extension
+    }
+    Component {
+        string name
+        string description
+    }
+    Property-Type {
+        string name
+        string description
+        enum DataType
+        enum SocketType
+    }
+    Relation-Type {
+        string name
+        string fullname
+        string group
+        string description
+    }
+    Entity-Type o{--}o Component : composes
+    Entity-Type ||--}o Property-Type : defines
+    Relation-Type ||--}o Property-Type : defines
+    Component ||--}o Property-Type : defines
+    Entity-Type ||--}o Relation-Type : outbound
+    Entity-Type ||--}o Relation-Type : inbound
+    Relation-Type o{--}o Component : composes
+    Entity-Type ||--}o Extension : has
+    Relation-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
+    Entity-Instance ||--}o Entity-Type : is-a
 ```
 
 ## GraphQL

@@ -26,6 +26,28 @@ The properties of all components are merged.
 | Properties  | Vec<[Property Type](./Model_Property_Type.md)>  | The properties which are applied on entity or relation instances. |                                                                                                    |
 |
 
+## ER Diagram
+
+```mermaid
+erDiagram
+    Component {
+        string name
+        string description
+    }
+    Property-Type {
+        string name
+        string description
+    }
+    Extension {
+        string name
+        JSON extension
+    }
+    Component ||--}o Property-Type : defines
+    Property-Type ||--}o Extension : has
+    Entity-Type o{--}o Component : composes
+    Relation-Type o{--}o Component : composes
+```
+
 ## GraphQL
 
 ```admonish tip "GraphQL"

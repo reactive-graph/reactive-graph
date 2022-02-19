@@ -13,6 +13,25 @@ the name, the data type and whether the property is an input or an output.
 | SocketType  | SocketType                             | The socket type                                                        |         |
 | Extensions  | Vec<[Extension](./Model_Extension.md)> | The extensions contains additional information about the property type |         |
 
+## ER Diagram
+
+```mermaid
+erDiagram
+    Property-Type {
+        string name
+        string description
+        enum DataType
+        enum SocketType
+    }
+    Extension {
+        string name
+        JSON extension
+    }
+    Property-Type ||--}o Extension : has
+    Component ||--}o Property-Type : defines
+    Entity-Type ||--}o Property-Type : defines
+    Relation-Type ||--}o Property-Type : defines
+```
 
 ## Enum Data Type
 

@@ -16,6 +16,26 @@ shows that an extension can potentially contain very complex data structures and
 covers a case that is not relevant in all cases. For example, if the "Flow Editor" plugin is not installed or not
 activated, the extension is present but not used.
 
+## Data Model
+
+| Field     | DataType | Description                        |
+|-----------|----------|------------------------------------|
+| Name      | String   | The name of the extension          |
+| Extension | JSON     | The extension as schema-less JSON. |
+
+## ER Diagram
+
+```mermaid
+erDiagram
+    Extension {
+        string name
+        JSON extension
+    }
+    Entity-Type ||--}o Extension : has
+    Relation-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
+```
+
 ## List of known extensions
 
 | Extension            | Description                                                            |

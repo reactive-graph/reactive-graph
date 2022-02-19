@@ -84,7 +84,7 @@ mutation {
 }
 ```
 
-### Delete Component
+## Delete Component
 
 ```graphql
 mutation {
@@ -96,7 +96,7 @@ mutation {
 }
 ```
 
-### Navigate from Component to Entity Types
+## Navigate from Component to Entity Types
 
 ```graphql
 query {
@@ -110,7 +110,7 @@ query {
 }
 ```
 
-### Navigate from Component to Relation Types
+## Navigate from Component to Relation Types
 
 ```graphql
 query {

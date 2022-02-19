@@ -18,6 +18,12 @@ In addition, the file size of the binary file is reduced since only its librarie
 
 In addition, only what is actually used is loaded. Plugins that are not required for the application can be deactivated.
 
+```admonish info "Quick-Links"
+* [Plugins Configuration](./Configuration_Plugins.md)
+* [Plugin System](./Plugin_System.md)
+* [Building Plugins](./Development_Build.md#build-plugins)
+```
+
 ## Core Application
 
 The core application consists of a few central building blocks. As already mentioned in the introduction, this includes
@@ -45,6 +51,12 @@ In addition, there are cross-sectional functionalities such as lifecycle managem
 For configurations, TOML should be used as the configuration format wherever possible.
 
 The application should be able to be adapted to the application by means of configuration.
+
+```admonish info "Quick-Links"
+* [GraphQL API](./GraphQL_API.md)
+* [Plugin API](./Plugin_System.md)
+* [Data Model](./Model.md)
+```
 
 ## Core Application Non-Goals
 

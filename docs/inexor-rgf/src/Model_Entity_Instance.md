@@ -60,6 +60,68 @@ query {
 | Description | String                                                 | Textual description of the entity type       |
 | Properties  | Vec<[Property Instance](./Model_Property_Instance.md)> | The properties of the entity instance        |
 
+## Graph
+
+```mermaid
+graph LR;
+    EI(Entity Instance);
+    I1(Entity Instance)===>|"Relation Instance"|EI;
+    I2(Entity Instance)===>|"Relation Instance"|EI;
+    I3(Entity Instance)===>|"Relation Instance"|EI;
+    EI===>|"Relation Instance"|O1(Entity Instance);
+    EI===>|"Relation Instance"|O2(Entity Instance);
+    EI===>|"Relation Instance"|O3(Entity Instance);
+```
+
+## ER Diagram
+
+```mermaid
+erDiagram
+    Entity-Type {
+        string name
+        string group
+        string description
+    }
+    Entity-Instance {
+        string id
+        string label
+        string description
+    }
+    Relation-Type {
+        string name
+        string fullname
+        string group
+        string description
+    }
+    Relation-Instance {
+        string name
+        string fullname
+        string group
+        string description
+    }
+    Property-Type {
+        string name
+        string description
+        enum DataType
+        enum SocketType
+    }
+    Property-Instance {
+        string name
+        JSON value
+    }
+    Entity-Instance ||--}o Property-Instance : stores
+    Entity-Instance o{--}o Relation-Instance : outbound
+    Entity-Instance o{--}o Relation-Instance : inbound
+    Relation-Instance ||--}o Property-Instance : stores
+    Relation-Instance o{--|| Relation-Type : is-a
+    Property-Instance o{--|| Property-Type : is-a
+    Entity-Instance o{--|| Entity-Type : is-a
+    Entity-Type ||--}o Property-Type : defines
+    Relation-Type ||--}o Property-Type : defines
+    Entity-Type ||--}o Relation-Type : outbound
+    Entity-Type ||--}o Relation-Type : inbound
+```
+
 ## GraphQL
 
 ```admonish tip "GraphQL"
