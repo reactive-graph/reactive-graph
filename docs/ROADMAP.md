@@ -19,9 +19,6 @@
   - [ ] Inexor - Reactive Graph Flow - Flow Editor
     * Flow Editor lets you create reactive flows
     * diagram.js
-* GraphQL Components
-  * Navigate (back) from component to entity type
-  * Navigate (back) from component to relation type
 * Search by properties
 * Subscriptions
   * https://async-graphql.github.io/async-graphql/en/subscription.html
