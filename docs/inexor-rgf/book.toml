@@ -21,4 +21,4 @@ command = "mdbook-admonish"
 
 [output.html]
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
-additional-css = ["inexor-rgf-book.css", "././mdbook-admonish.css"]
+additional-css = ["././inexor-rgf-book.css", "././mdbook-admonish.css"]

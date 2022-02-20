@@ -1,8 +1,5 @@
 # Inexor Reactive Graph Flow
 
-![Inexor](images/inexor.png)
-
-
 - [About](./About.md)
   - [Design Goals](./About_Design_Goals.md)
   - [Roadmap](./About_Roadmap.md)
@@ -61,5 +58,3 @@
   - [Binaries](./Development_Binaries.md)
   - [Packaging](./Development_Packaging.md)
   - [Documentation](./Development_Documentation.md)
-
-[admonish](./Internal_Admonish.md)
