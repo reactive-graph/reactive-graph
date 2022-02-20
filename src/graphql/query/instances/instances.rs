@@ -4,7 +4,7 @@ use async_graphql::*;
 use uuid::Uuid;
 
 use crate::api::{ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
-use crate::graphql::query::{GraphQLEntityInstance, GraphQLRelationInstance};
+use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance, GraphQLRelationInstance};
 
 #[derive(Default)]
 pub struct Instances;
@@ -23,6 +23,7 @@ impl Instances {
         #[graphql(desc = "Returns only the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Returns the entity instance with the given label.")] label: Option<String>,
         #[graphql(name = "type", desc = "Filters the entity instances by type.")] entity_type: Option<String>,
+        #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Vec<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>();
         if entity_instance_manager.is_ok() {
@@ -53,6 +54,17 @@ impl Instances {
                 .get_entity_instances()
                 .iter()
                 .filter(|entity_instance| entity_type.is_none() || entity_type.clone().unwrap() == entity_instance.type_name.clone())
+                .filter(|entity_instance| {
+                    property_query.is_none() || {
+                        let property_query = property_query.clone().unwrap();
+                        property_query
+                            .iter()
+                            .all(|property_query| match entity_instance.properties.get(property_query.name.as_str()) {
+                                Some(property_instance) => property_query.value == property_instance.get(),
+                                None => true,
+                            })
+                    }
+                })
                 .map(|entity_instance| {
                     let entity_instance: GraphQLEntityInstance = entity_instance.clone().into();
                     entity_instance
@@ -76,6 +88,7 @@ impl Instances {
         #[graphql(desc = "Filters the relation instances by the entity type of the inbound entity instance")] inbound_type: Option<String>,
         #[graphql(desc = "Filters the relation instances by the id of the outbound entity instance")] outbound_id: Option<Uuid>,
         #[graphql(desc = "Filters the relation instances by the id of the inbound entity instance")] inbound_id: Option<Uuid>,
+        #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Vec<GraphQLRelationInstance> {
         if let Ok(relation_instance_manager) = context.data::<Arc<dyn ReactiveRelationInstanceManager>>() {
             return relation_instance_manager
@@ -89,6 +102,17 @@ impl Instances {
                 .filter(|relation_instance| inbound_type.is_none() || inbound_type.clone().unwrap() == relation_instance.inbound.clone().type_name.clone())
                 .filter(|relation_instance| outbound_id.is_none() || outbound_id.unwrap() == relation_instance.outbound.id)
                 .filter(|relation_instance| inbound_id.is_none() || inbound_id.unwrap() == relation_instance.inbound.id)
+                .filter(|relation_instance| {
+                    property_query.is_none() || {
+                        let property_query = property_query.clone().unwrap();
+                        property_query
+                            .iter()
+                            .all(|property_query| match relation_instance.properties.get(property_query.name.as_str()) {
+                                Some(property_instance) => property_query.value == property_instance.get(),
+                                None => true,
+                            })
+                    }
+                })
                 .map(|relation_instance| {
                     let relation_instance: GraphQLRelationInstance = relation_instance.clone().into();
                     relation_instance

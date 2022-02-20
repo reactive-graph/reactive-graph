@@ -162,6 +162,8 @@ type Instances {
     id: UUID,
     "Returns the entity instance with the given label."
     label: String,
+    "Query by properties."
+    properties: [PropertyInstanceDefinition!],
     "Filters the entity instances by type."
     type: String
   ): [EntityInstance!]!
@@ -183,6 +185,8 @@ type Instances {
     outboundId: UUID,
     "Filters the relation instances by the entity type of the outbound entity instance"
     outboundType: String,
+    "Query by properties."
+    properties: [PropertyInstanceDefinition!],
     "Filters the relation instances by relation type"
     type: String
   ): [RelationInstance!]!

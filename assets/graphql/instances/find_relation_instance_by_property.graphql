@@ -1,0 +1,26 @@
+query findRelationInstanceByProperty {
+  instances {
+    keys: relations(
+      type: "default_connector",
+      properties: [
+        {
+          name: "outbound_property_name"
+          value: "key_down"
+        }
+      ]
+    ) {
+      type {
+        name
+        fullName
+      }
+      properties {
+        name
+        value
+        type {
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}

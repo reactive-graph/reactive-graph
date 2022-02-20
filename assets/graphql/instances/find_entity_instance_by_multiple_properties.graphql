@@ -1,0 +1,31 @@
+query findEntityInstanceByMultipleProperties {
+  instances {
+    keys: entities(
+      type: "input_device_key",
+      properties: [
+        {
+          name: "key_code"
+          value: 74
+        },
+        {
+          name: "name",
+          value: "any-device-KEY_KPMINUS"
+        }
+      ]
+    ) {
+      id
+      label
+      properties(
+        names: [
+          "name"
+          "key"
+          "key_code"
+          "key_down"
+        ]
+      ) {
+        name
+        value
+      }
+    }
+  }
+}
