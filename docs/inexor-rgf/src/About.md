@@ -68,12 +68,12 @@ triggering a cascade of propagations.
 
 ```mermaid
 graph TD;
-    A(Property Instance 1)-->B(Property Instance 2);
-    A-->C(Property Instance 3);
-    B-->D(Property Instance 4);
-    C-->D;
-    D-->E(Property Instance 5);
-    B-->F(Property Instance 6);
+    A(Property Instance 1)-->|stream|B(Property Instance 2);
+    A-->|stream|C(Property Instance 3);
+    B-->|stream|D(Property Instance 4);
+    C-->|stream|D;
+    D-->|stream|E(Property Instance 5);
+    B-->|stream|F(Property Instance 6);
 ```
 
 In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your own data
