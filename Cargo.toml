@@ -3,7 +3,7 @@ cargo-features = ["strip"]
 [package]
 name = "inexor-rgf-core-builder"
 description = "Inexor - Reactive Graph Flow - Core - Builder"
-version = "0.5.0"
+version = "0.6.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
