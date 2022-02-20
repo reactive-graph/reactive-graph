@@ -191,12 +191,12 @@ is linked to the stream of another property instance and you change the value of
 of the second property instance will automatically change as well. Data is thus propagated from one station to the next,
 triggering a cascade of propagations. </p>
 <pre class="mermaid">graph TD;
-    A(Property Instance 1)--&gt;|stream|B(Property Instance 2);
-    A--&gt;|stream|C(Property Instance 3);
-    B--&gt;|stream|D(Property Instance 4);
-    C--&gt;|stream|D;
-    D--&gt;|stream|E(Property Instance 5);
-    B--&gt;|stream|F(Property Instance 6);
+    A(Property Instance 1)--&gt;B(Property Instance 2);
+    A--&gt;C(Property Instance 3);
+    B--&gt;D(Property Instance 4);
+    C--&gt;D;
+    D--&gt;E(Property Instance 5);
+    B--&gt;F(Property Instance 6);
 </pre>
 <p>In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your own data
 stream and caching it. This allows subsequent querying of the value of a property instance.</p>
