@@ -1,0 +1,29 @@
+query {
+  types {
+    relations {
+      name
+      fullName
+      description
+      outboundTypes {
+        name
+      }
+      inboundTypes {
+        name
+      }
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+        }
+      }
+      extensions {
+        name
+      }
+    }
+  }
+}

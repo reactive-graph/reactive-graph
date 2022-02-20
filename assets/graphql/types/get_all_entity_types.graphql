@@ -1,0 +1,22 @@
+query {
+  types {
+    entities {
+      name
+      description
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+        }
+      }
+      extensions {
+        name
+      }
+    }
+  }
+}

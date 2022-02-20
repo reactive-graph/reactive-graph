@@ -12,6 +12,8 @@ type Component {
   description: String!
   "Query which entity types are using this component"
   entityTypes: [EntityType!]!
+  "The extensions which are defined by the component."
+  extensions(name: String): [Extension!]!
   "The name of the component."
   name: String!
   "The properties which are applied on entity or relation instances."
