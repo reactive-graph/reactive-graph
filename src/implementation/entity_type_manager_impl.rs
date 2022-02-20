@@ -2,7 +2,8 @@ use std::fs::File;
 use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
-use crate::di::*;
+use crate::builder::EntityTypeBuilder;
+use crate::di::{component, provides, wrapper, Component, Wrc};
 use async_trait::async_trait;
 use indradb::Identifier;
 use log::{debug, error, warn};
@@ -15,18 +16,30 @@ use crate::model::{EntityType, Extension, PropertyType};
 use crate::plugins::EntityTypeProvider;
 
 #[wrapper]
-pub struct EntityTypes(RwLock<std::vec::Vec<EntityType>>);
+pub struct EntityTypesStorage(RwLock<Vec<EntityType>>);
 
 #[provides]
-fn create_external_type_dependency() -> EntityTypes {
-    EntityTypes(RwLock::new(std::vec::Vec::new()))
+fn create_entity_types_storage() -> EntityTypesStorage {
+    EntityTypesStorage(RwLock::new(Vec::new()))
 }
 
 #[component]
 pub struct EntityTypeManagerImpl {
     component_manager: Wrc<dyn ComponentManager>,
 
-    entity_types: EntityTypes,
+    entity_types: EntityTypesStorage,
+}
+
+impl EntityTypeManagerImpl {
+    pub(crate) fn create_base_entity_types(&self) {
+        self.register(
+            EntityTypeBuilder::new("generic_flow")
+                .group("flow")
+                .description("Generic flow without inputs and outputs")
+                .component("labeled")
+                .build(),
+        );
+    }
 }
 
 #[async_trait]
@@ -116,7 +129,9 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 }
 
 impl Lifecycle for EntityTypeManagerImpl {
-    fn init(&self) {}
+    fn init(&self) {
+        self.create_base_entity_types();
+    }
 
     fn shutdown(&self) {
         // TODO: remove?

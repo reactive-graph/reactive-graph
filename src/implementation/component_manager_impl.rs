@@ -2,8 +2,9 @@ use std::fs::File;
 use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
-use crate::di::{component, provides, wrapper};
-use crate::model::Component;
+use crate::builder::ComponentBuilder;
+use crate::di::{component, provides, wrapper, Component};
+use crate::model::DataType;
 use async_trait::async_trait;
 use log::{debug, error};
 use wildmatch::WildMatch;
@@ -14,19 +15,32 @@ use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
 
 #[wrapper]
-pub struct Components(RwLock<std::vec::Vec<crate::model::Component>>);
+pub struct ComponentsStorage(RwLock<Vec<crate::model::Component>>);
 
-pub struct ComponentManagerImpl {
-    components: Components,
+#[provides]
+fn create_components_storage() -> ComponentsStorage {
+    ComponentsStorage(RwLock::new(Vec::new()))
 }
 
 #[component]
+pub struct ComponentManagerImpl {
+    components: ComponentsStorage,
+}
+
 impl ComponentManagerImpl {
-    #[provides]
-    fn new() -> Self {
-        Self {
-            components: Components(RwLock::new(std::vec::Vec::new())),
-        }
+    pub(crate) fn create_base_components(&self) {
+        self.register(
+            ComponentBuilder::new("labeled")
+                .description("The label is an hierarchical path with static segments, named parameters and catch-all parameters.")
+                .property("label", DataType::String)
+                .build(),
+        );
+        self.register(
+            ComponentBuilder::new("event")
+                .description("This components spawns events.")
+                .output_property("event", DataType::Any)
+                .build(),
+        );
     }
 }
 
@@ -53,7 +67,7 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.0.read().unwrap().iter().find(|component| component.name == name).cloned()
     }
 
-    fn find(&self, search: String) -> Vec<Component> {
+    fn find(&self, search: String) -> Vec<crate::model::Component> {
         let matcher = WildMatch::new(search.as_str());
         self.components
             .0
@@ -105,11 +119,7 @@ impl ComponentManager for ComponentManagerImpl {
 
 impl Lifecycle for ComponentManagerImpl {
     fn init(&self) {
-        // let mut components = Vec::new();
-        // for component in components {
-        //     debug!("Registering component: {}", component.name);
-        //     self.register(component);
-        // }
+        self.create_base_components();
     }
 
     fn shutdown(&self) {
