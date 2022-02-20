@@ -21,6 +21,11 @@ impl ComponentBuilder {
         }
     }
 
+    pub fn description<S: Into<String>>(&mut self, description: S) -> &mut ComponentBuilder {
+        self.description = description.into();
+        self
+    }
+
     pub fn property<S: Into<String>>(
         &mut self,
         property_name: S,
@@ -28,6 +33,26 @@ impl ComponentBuilder {
     ) -> &mut ComponentBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), data_type));
+        self
+    }
+
+    pub fn input_property<S: Into<String>>(
+        &mut self,
+        property_name: S,
+        data_type: DataType,
+    ) -> &mut ComponentBuilder {
+        self.properties
+            .push(PropertyType::input(property_name.into(), data_type));
+        self
+    }
+
+    pub fn output_property<S: Into<String>>(
+        &mut self,
+        property_name: S,
+        data_type: DataType,
+    ) -> &mut ComponentBuilder {
+        self.properties
+            .push(PropertyType::output(property_name.into(), data_type));
         self
     }
 
@@ -70,10 +95,11 @@ impl ComponentBuilder {
     }
 
     pub fn build(&mut self) -> Component {
-        Component::new_with_extensions(
-            self.name.clone(),
-            self.properties.to_vec(),
-            self.extensions.to_vec(),
-        )
+        Component {
+            name: self.name.clone(),
+            description: self.description.clone(),
+            properties: self.properties.to_vec(),
+            extensions: self.extensions.to_vec(),
+        }
     }
 }

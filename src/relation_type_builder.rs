@@ -7,6 +7,8 @@ pub struct RelationTypeBuilder {
     outbound_type: String,
     type_name: String,
     inbound_type: String,
+    group: String,
+    description: String,
     components: Vec<String>,
     behaviours: Vec<String>,
     properties: Vec<PropertyType>,
@@ -24,11 +26,23 @@ impl RelationTypeBuilder {
             outbound_type: outbound_type.into(),
             type_name: type_name.into(),
             inbound_type: inbound_type.into(),
+            group: String::new(),
+            description: String::new(),
             components: Vec::new(),
             behaviours: Vec::new(),
             properties: Vec::new(),
             extensions: Vec::new(),
         }
+    }
+
+    pub fn group<S: Into<String>>(&mut self, group: S) -> &mut RelationTypeBuilder {
+        self.group = group.into();
+        self
+    }
+
+    pub fn description<S: Into<String>>(&mut self, description: S) -> &mut RelationTypeBuilder {
+        self.description = description.into();
+        self
     }
 
     pub fn component<S: Into<String>>(&mut self, component_name: S) -> &mut RelationTypeBuilder {
@@ -48,6 +62,26 @@ impl RelationTypeBuilder {
     ) -> &mut RelationTypeBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), data_type));
+        self
+    }
+
+    pub fn input_property<S: Into<String>>(
+        &mut self,
+        property_name: S,
+        data_type: DataType,
+    ) -> &mut RelationTypeBuilder {
+        self.properties
+            .push(PropertyType::input(property_name.into(), data_type));
+        self
+    }
+
+    pub fn output_property<S: Into<String>>(
+        &mut self,
+        property_name: S,
+        data_type: DataType,
+    ) -> &mut RelationTypeBuilder {
+        self.properties
+            .push(PropertyType::output(property_name.into(), data_type));
         self
     }
 

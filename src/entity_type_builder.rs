@@ -6,6 +6,7 @@ use crate::model::{DataType, EntityType, Extension, PropertyType};
 pub struct EntityTypeBuilder {
     type_name: String,
     group: String,
+    description: String,
     components: Vec<String>,
     behaviours: Vec<String>,
     properties: Vec<PropertyType>,
@@ -18,6 +19,7 @@ impl EntityTypeBuilder {
         EntityTypeBuilder {
             type_name: type_name.into(),
             group: String::new(),
+            description: String::new(),
             components: Vec::new(),
             behaviours: Vec::new(),
             properties: Vec::new(),
@@ -27,6 +29,11 @@ impl EntityTypeBuilder {
 
     pub fn group<S: Into<String>>(&mut self, group: S) -> &mut EntityTypeBuilder {
         self.group = group.into();
+        self
+    }
+
+    pub fn description<S: Into<String>>(&mut self, description: S) -> &mut EntityTypeBuilder {
+        self.description = description.into();
         self
     }
 
@@ -47,6 +54,26 @@ impl EntityTypeBuilder {
     ) -> &mut EntityTypeBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), data_type));
+        self
+    }
+
+    pub fn input_property<S: Into<String>>(
+        &mut self,
+        property_name: S,
+        data_type: DataType,
+    ) -> &mut EntityTypeBuilder {
+        self.properties
+            .push(PropertyType::input(property_name.into(), data_type));
+        self
+    }
+
+    pub fn output_property<S: Into<String>>(
+        &mut self,
+        property_name: S,
+        data_type: DataType,
+    ) -> &mut EntityTypeBuilder {
+        self.properties
+            .push(PropertyType::output(property_name.into(), data_type));
         self
     }
 
