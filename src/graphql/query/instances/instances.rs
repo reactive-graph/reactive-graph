@@ -1,7 +1,6 @@
 use std::sync::Arc;
 
 use async_graphql::*;
-use inexor_rgf_core_model::ReactivePropertyInstance;
 use uuid::Uuid;
 
 use crate::api::{ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
