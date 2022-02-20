@@ -44,6 +44,9 @@ pub trait ReactiveFlowManager: Send + Sync + Lifecycle {
     /// Returns the flow with the given UUID or None.
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveFlow>>;
 
+    /// Returns the flow that matches the given label or None.
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlow>>;
+
     /// Returns all reactive flows.
     fn get_all(&self) -> Vec<Arc<ReactiveFlow>>;
 

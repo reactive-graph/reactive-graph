@@ -52,6 +52,25 @@ query {
 }
 ```
 
+## Get the properties of the wrapper entity instance of a flow
+
+```graphql
+query {
+  flows(id: "uuid") {
+    wrapper {
+      properties {
+        name
+        value
+        type {
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}
+```
+
 ## Get the relation instances which are contained by a flow
 
 ```graphql

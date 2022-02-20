@@ -1,0 +1,12 @@
+query getFlowById {
+  flows(id: "4faf3dad-3be5-45c7-b73e-96e5855b4c7d") {
+    id
+    label
+    wrapper {
+      properties {
+        name
+        value
+      }
+    }
+  }
+}

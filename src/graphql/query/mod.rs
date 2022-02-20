@@ -35,6 +35,7 @@ impl InexorQuery {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Filters by the id of the flow")] id: Option<Uuid>,
+        #[graphql(desc = "Filters by the label of the flow")] label: Option<String>,
         #[graphql(name = "type", desc = "Filters by the flow type")] flow_type: Option<String>,
     ) -> Vec<GraphQLFlow> {
         if let Ok(flow_manager) = context.data::<Arc<dyn ReactiveFlowManager>>() {
@@ -43,6 +44,13 @@ impl InexorQuery {
                     Some(flow) => vec![flow],
                     None => Vec::new(),
                 };
+            }
+            if label.is_some() {
+                let flow = flow_manager.get_by_label(label.unwrap()).map(|flow| {
+                    let flow: GraphQLFlow = flow.clone().into();
+                    flow
+                });
+                return if flow.is_some() { vec![flow.unwrap()] } else { Vec::new() };
             }
             return flow_manager
                 .get_all()

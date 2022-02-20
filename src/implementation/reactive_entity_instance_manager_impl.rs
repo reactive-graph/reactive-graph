@@ -137,6 +137,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             .insert(reactive_entity_instance.id, reactive_entity_instance.clone());
         self.component_behaviour_manager.add_behaviours_to_entity(reactive_entity_instance.clone());
         self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
+        // Register label
         if let Some(value) = reactive_entity_instance.get("label") {
             if !value.is_string() {
                 return;
@@ -170,6 +171,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             // TODO: check for relations
             self.unregister_reactive_instance(id);
         }
+        // TODO: remove label
         self.entity_instance_manager.delete(id);
     }
 

@@ -6,7 +6,7 @@ schema {
   subscription: Subscription
 }
 
-"Entity types defines the type of an entity instance."
+"Components are composable parts which can be used by types (entity type, relation type)."
 type Component {
   "Textual description of the component."
   description: String!
@@ -36,15 +36,15 @@ type EntityInstance {
   id: UUID!
   "List of relation instances which ends at this entity instance."
   inbound(
-    "Unimplemented"
-    typeName: String
+    "The inbound relation type"
+    type: String
   ): [RelationInstance!]!
   "The label of the entity instance if available."
   label: String
   "List of relation instances which starts at this entity instance."
   outbound(
-    "Unimplemented"
-    typeName: String
+    "The outbound relation type"
+    type: String
   ): [RelationInstance!]!
   """
 
@@ -65,7 +65,7 @@ type EntityInstance {
   type: EntityType
 }
 
-"Entity types defines the type of an entity instance."
+"Entity types defines the type of entity instance."
 type EntityType {
   "The behaviours."
   behaviours: [String!]!
@@ -96,8 +96,17 @@ type EntityType {
   properties(name: String): [PropertyType!]!
 }
 
+"""
+
+An extension provides named but schema-less additional information.
+Entity types, relation types and property types can provide additional
+meta data. For example an extension named "shape" provides information
+about the look and feel in the flow editor.
+"""
 type Extension {
+  "The additional information as JSON representation (schema-less)."
   extension: JSON!
+  "The name of the extension."
   name: String!
 }
 
@@ -214,7 +223,7 @@ type MutationEntityInstances {
   create(
     "The id of the entity instance. If none is given a random uuid will be generated."
     id: UUID,
-    properties: [GraphQLPropertyInstance!],
+    properties: [PropertyInstanceDefinition!],
     "The entity type."
     type: String!
   ): EntityInstance!
@@ -243,7 +252,7 @@ type MutationEntityInstances {
     id: UUID,
     "Updates the entity instance with the given label."
     label: String,
-    properties: [GraphQLPropertyInstance!]!
+    properties: [PropertyInstanceDefinition!]!
   ): EntityInstance!
 }
 
@@ -254,7 +263,7 @@ type MutationEntityTypes {
     behaviours: [String!],
     components: [String!],
     "The extension on the entity type."
-    extensions: [GraphQLExtension!],
+    extensions: [ExtensionDefinition!],
     "The entity type belongs to this group."
     group: String,
     "The name of the entity type."
@@ -271,7 +280,7 @@ type MutationFlows {
   "Adds an existing entity instance by id to the given flow by id"
   addEntity(entityId: UUID!, flowId: UUID!): Flow!
   "Adds an existing relation instance by edge_key to the given flow by id"
-  addRelation(edgeKey: GraphQLEdgeKey!, flowId: UUID!): Flow!
+  addRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!): Flow!
   """
 
   Manually ticks all entity instances and relation instances of this flow. This means, for
@@ -298,21 +307,21 @@ type MutationFlows {
   which are not provided by the given entity type are lacking of a definition (data type,
   socket type).
   """
-  create(flowId: UUID, properties: [GraphQLPropertyInstance!], type: String!): Flow!
+  create(flowId: UUID, properties: [PropertyInstanceDefinition!], type: String!): Flow!
   "Creates a new entity instance and adds the entity instance to the given flow by id."
-  createEntity(entityId: UUID, flowId: UUID!, properties: [GraphQLPropertyInstance!], type: String!): Flow!
+  createEntity(entityId: UUID, flowId: UUID!, properties: [PropertyInstanceDefinition!], type: String!): Flow!
   "Creates a new relation instance and adds the relation instance to the given flow by id."
-  createRelation(edgeKey: GraphQLEdgeKey!, flowId: UUID!, properties: [GraphQLPropertyInstance!]): Flow!
+  createRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!, properties: [PropertyInstanceDefinition!]): Flow!
   """
 
   Imports the given flow. Creates entity instances and relation instances which are contained
   in the given flow.
   """
-  import(flow: GraphQLFlowDefinition!): Flow!
+  import(flow: FlowDefinition!): Flow!
   "Removes an entity instance from flow."
   removeEntity(entityId: UUID!, flowId: UUID!): Flow!
   "Removes an existing relation instance by edge_key from the given flow by id"
-  removeRelation(edgeKey: GraphQLEdgeKey!, flowId: UUID!): Flow!
+  removeRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!): Flow!
 }
 
 "Mutations on instances."
@@ -343,9 +352,9 @@ type MutationRelationInstances {
   If properties are not provided, default values will be used depending on the data type
   of the property.
   """
-  create(edgeKey: GraphQLEdgeKey!, properties: [GraphQLPropertyInstance!]): RelationInstance!
+  create(edgeKey: EdgeKeyDefinition!, properties: [PropertyInstanceDefinition!]): RelationInstance!
   "Deletes an relation instance."
-  delete(edgeKey: GraphQLEdgeKey!): Boolean!
+  delete(edgeKey: EdgeKeyDefinition!): Boolean!
   """
 
   Manually tick the relation instance. This means for each property of the entity instance
@@ -357,9 +366,9 @@ type MutationRelationInstances {
   In case of the default_connector it does NOT lead to a new value propagation, because the
   reactive streams are not consumed by the default_connector behaviour.
   """
-  tick(edgeKey: GraphQLEdgeKey!): RelationInstance!
+  tick(edgeKey: EdgeKeyDefinition!): RelationInstance!
   "Updates the properties of the given relation instance by edge key."
-  update(edgeKey: GraphQLEdgeKey!, properties: [GraphQLPropertyInstance!]!): RelationInstance!
+  update(edgeKey: EdgeKeyDefinition!, properties: [PropertyInstanceDefinition!]!): RelationInstance!
 }
 
 "Mutations for relation types"
@@ -375,7 +384,7 @@ type MutationRelationTypes {
     "Adds the given components to the newly created relation type."
     components: [String!],
     "The extension on the relation type."
-    extensions: [GraphQLExtension!],
+    extensions: [ExtensionDefinition!],
     inboundType: String!,
     "The name of the entity type."
     name: String!,
@@ -407,13 +416,23 @@ number, string, array or an object. For more information about the data types
 please look at https://docs.serde.rs/serde_json/value/enum.Value.html
 """
 type PropertyInstance {
+  "The name of the property."
   name: String!
+  "The type of the property."
   type: PropertyType
+  "The value of the property as JSON representation."
   value: JSON!
 }
 
-"Entity types defines the type of an entity instance."
+"""
+
+Property types defines the type of a property instance.
+The property type defines the name, the data type and
+the socket type of a property. A property type does not
+contain any value.
+"""
 type PropertyType {
+  "The data type of the property instances."
   dataType: DataType!
   "Textual description of the component."
   description: String!
@@ -421,6 +440,7 @@ type PropertyType {
   extensions(name: String): [Extension!]!
   "The name of the component."
   name: String!
+  "The socket type of the property instances."
   socketType: SocketType!
 }
 
@@ -430,6 +450,8 @@ type Query {
   flows(
     "Filters by the id of the flow"
     id: UUID,
+    "Filters by the label of the flow"
+    label: String,
     "Filters by the flow type"
     type: String
   ): [Flow!]!
@@ -548,7 +570,7 @@ type Subscription {
     propertyName: String!
   ): PropertyInstance!
   relation(
-    edgeKey: GraphQLEdgeKey!,
+    edgeKey: EdgeKeyDefinition!,
     "The name of the property"
     propertyName: String!
   ): PropertyInstance!
@@ -651,7 +673,7 @@ scalar UUID
 The primary key of an edge consists of the outbound id, the
 type name and the inbound id.
 """
-input GraphQLEdgeKey {
+input EdgeKeyDefinition {
   "The id of the inbound entity instance."
   inboundId: UUID!
   "The id of the outbound entity instance."
@@ -669,7 +691,7 @@ The entity type defines the properties (name, data type and socket type).
 In contrast to the entity type the entity instance stores values in it's
 properties.
 """
-input GraphQLEntityInstanceDefinition {
+input EntityInstanceDefinition {
   "The description of the entity instance."
   description: String!
   "The unique identifier of the entity instance."
@@ -683,12 +705,12 @@ input GraphQLEntityInstanceDefinition {
   array or an object. For more information about the data types please look at
   https://docs.serde.rs/serde_json/value/enum.Value.html
   """
-  properties: [GraphQLPropertyInstance!]!
+  properties: [PropertyInstanceDefinition!]!
   "The name of the entity type."
   type: String!
 }
 
-input GraphQLExtension {
+input ExtensionDefinition {
   "The extension as JSON representation."
   extension: JSON!
   "The name of the extension."
@@ -702,7 +724,7 @@ Represents a flow with entity instances and relation instances.
 The entity type of the flow and the entity types of each provided entity instance must exist.
 The relation types of each provided relation instance must exist.
 """
-input GraphQLFlowDefinition {
+input FlowDefinition {
   "Textual description of the flow."
   description: String!
   """
@@ -712,7 +734,7 @@ input GraphQLFlowDefinition {
   It can't have a default because the wrapper entity instance must be
   present in the list of entities.
   """
-  entityInstances: [GraphQLEntityInstanceDefinition!]!
+  entityInstances: [EntityInstanceDefinition!]!
   """
 
   The id of the flow corresponds to the id of the wrapper entity instance
@@ -724,16 +746,29 @@ input GraphQLFlowDefinition {
   "The name of the flow."
   name: String!
   "The relation instances which are contained in this flow."
-  relationInstances: [GraphQLRelationInstanceDefinition!]!
+  relationInstances: [RelationInstanceDefinition!]!
   "The name of the entity type."
   type: String!
 }
 
-input GraphQLPropertyInstance {
+input PropertyInstanceDefinition {
   "The name of the property."
   name: String!
   "The value of the property as JSON representation."
   value: JSON!
+}
+
+input PropertyTypeDefinition {
+  "The data type of the property"
+  dataType: DataType!
+  "The description of the property"
+  description: String!
+  "Property specific extensions"
+  extensions: [ExtensionDefinition!]!
+  "The name of the property"
+  name: String!
+  "Specifies which type of socket"
+  socketType: SocketType!
 }
 
 """
@@ -749,7 +784,7 @@ instance. Furthermore the relation type defines which properties
 In constrast to the relation type, the relation instance stores values/
 documents in it's properties.
 """
-input GraphQLRelationInstanceDefinition {
+input RelationInstanceDefinition {
   "Textual description of the relation instance."
   description: String!
   "The id of the inbound vertex."
@@ -765,20 +800,7 @@ input GraphQLRelationInstanceDefinition {
   array or an object. For more information about the data types please look at
   https://docs.serde.rs/serde_json/value/enum.Value.html
   """
-  properties: [GraphQLPropertyInstance!]!
+  properties: [PropertyInstanceDefinition!]!
   "The name of the relation type"
   type: String!
-}
-
-input PropertyTypeDefinition {
-  "The data type of the property"
-  dataType: DataType!
-  "The description of the property"
-  description: String!
-  "Property specific extensions"
-  extensions: [GraphQLExtension!]!
-  "The name of the property"
-  name: String!
-  "Specifies which type of socket"
-  socketType: SocketType!
 }

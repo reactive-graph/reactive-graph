@@ -7,8 +7,9 @@ use crate::model::{Flow, ReactiveFlow};
 use crate::plugins::FlowProvider;
 use async_trait::async_trait;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::{ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance};
+use inexor_rgf_core_model::{PropertyInstanceGetter, ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance};
 use log::{debug, error};
+use path_tree::PathTree;
 use std::collections::{BTreeMap, HashMap};
 use std::convert::{TryFrom, TryInto};
 use std::sync::{Arc, RwLock};
@@ -30,6 +31,14 @@ fn create_flow_providers() -> FlowProviders {
     FlowProviders(RwLock::new(Vec::new()))
 }
 
+#[wrapper]
+pub struct LabelPathTree(RwLock<PathTree<Uuid>>);
+
+#[provides]
+fn create_label_path_tree() -> LabelPathTree {
+    LabelPathTree(RwLock::new(PathTree::<Uuid>::new()))
+}
+
 #[component]
 pub struct ReactiveFlowManagerImpl {
     flow_manager: Wrc<dyn FlowManager>,
@@ -41,6 +50,8 @@ pub struct ReactiveFlowManagerImpl {
     reactive_flows: ReactiveFlows,
 
     flow_providers: FlowProviders,
+
+    label_path_tree: LabelPathTree,
 }
 
 #[async_trait]
@@ -53,6 +64,11 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveFlow>> {
         let reader = self.reactive_flows.0.read().unwrap();
         reader.get(&id).cloned()
+    }
+
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlow>> {
+        let reader = self.label_path_tree.0.read().unwrap();
+        reader.find(label.as_str()).and_then(|result| self.get(*result.0))
     }
 
     fn get_all(&self) -> Vec<Arc<ReactiveFlow>> {
@@ -151,6 +167,13 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             }
         }
         self.reactive_flows.0.write().unwrap().insert(reactive_flow.id, reactive_flow.clone());
+        // Register label
+        if let Some(value) = reactive_flow.get("label") {
+            if let Some(label) = value.as_str() {
+                let mut writer = self.label_path_tree.0.write().unwrap();
+                writer.insert(label, reactive_flow.id);
+            }
+        }
     }
 
     // TODO: how to detect if the flow has removed an entity? => remove behaviour
@@ -218,6 +241,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                 }
             }
             self.reactive_flows.0.write().unwrap().remove(&id);
+            // TODO: remove label
         }
     }
 
