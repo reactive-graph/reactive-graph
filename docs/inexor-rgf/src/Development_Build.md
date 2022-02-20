@@ -89,7 +89,7 @@ active = true
 path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 ```
 
-```admonish tip "Configure plugins"
+```admonish tip "Artifact Location"
 Release builds are located in `target/release` instead of `target/debug`
 ```
 
