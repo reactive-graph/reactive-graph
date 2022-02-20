@@ -27,6 +27,10 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         self.reactive_entity_instance_manager.get(id)
     }
 
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
+        self.reactive_entity_instance_manager.get_by_label(label)
+    }
+
     fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>> {
         self.reactive_entity_instance_manager.get_entity_instances()
     }

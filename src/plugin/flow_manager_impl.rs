@@ -23,6 +23,10 @@ impl FlowManager for FlowManagerImpl {
         self.reactive_flow_manager.get(id)
     }
 
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlow>> {
+        self.reactive_flow_manager.get_by_label(label)
+    }
+
     fn create(&self, flow: Flow) -> Result<Arc<ReactiveFlow>, FlowCreationError> {
         let reactive_flow = self.reactive_flow_manager.create(flow);
         match reactive_flow {
