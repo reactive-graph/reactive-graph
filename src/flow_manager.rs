@@ -14,6 +14,9 @@ pub trait FlowManager: Send + Sync {
     /// Returns the flow with the given UUID or None.
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveFlow>>;
 
+    /// Returns the flow with the given label or None.
+    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlow>>;
+
     /// Creates a new reactive flow from the given flow description.
     ///
     /// The wrapper entity instance will be created as well as entity and
