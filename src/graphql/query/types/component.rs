@@ -2,7 +2,7 @@ use crate::api::{EntityTypeManager, RelationTypeManager};
 use async_graphql::*;
 use std::sync::Arc;
 
-use crate::graphql::query::{GraphQLEntityType, GraphQLPropertyType, GraphQLRelationType};
+use crate::graphql::query::{GraphQLEntityType, GraphQLExtension, GraphQLPropertyType, GraphQLRelationType};
 use crate::model::Component;
 
 pub struct GraphQLComponent {
@@ -37,6 +37,23 @@ impl GraphQLComponent {
                 .collect();
         }
         self.component.properties.iter().cloned().map(|property_type| property_type.into()).collect()
+    }
+
+    /// The extensions which are defined by the component.
+    async fn extensions(&self, name: Option<String>) -> Vec<GraphQLExtension> {
+        if name.is_some() {
+            let name = name.unwrap();
+            return self
+                .component
+                .extensions
+                .to_vec()
+                .iter()
+                .filter(|extension| extension.name == name.clone())
+                .cloned()
+                .map(|extension| extension.into())
+                .collect();
+        }
+        self.component.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 
     /// Query which entity types are using this component
