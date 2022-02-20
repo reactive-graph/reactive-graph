@@ -13,6 +13,7 @@ use crate::plugins::{
 /// the library it came from.
 pub struct PluginProxy {
     pub(crate) plugin: Box<Arc<dyn Plugin>>,
+    #[allow(dead_code)]
     pub(crate) lib: Arc<Library>,
 }
 
