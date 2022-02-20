@@ -1,3 +1,14 @@
 .float-left {
     float: left;
 }
+
+.sidebar {
+    background: url("images/inexor.png") var(--sidebar-bg) no-repeat;
+    background-size: 150px;
+    background-position-x: center;
+}
+
+.sidebar .chapter {
+    margin-top: 175px;
+    background-color: var(--sidebar-bg);
+}
