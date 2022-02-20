@@ -47,9 +47,9 @@ fn relation_type_builder_test() {
     assert!(relation_type.behaves_as(behaviour_1_name.clone()));
     assert!(relation_type.behaves_as(behaviour_2_name.clone()));
     assert!(!relation_type.behaves_as(r_string()));
-    // assert!(relation_type.has_extension(extension_1_name.clone()));
-    // assert!(relation_type.has_extension(extension_2_name.clone()));
-    // assert!(!relation_type.has_extension(r_string()));
+    assert!(relation_type.has_own_extension(extension_1_name.clone()));
+    assert!(relation_type.has_own_extension(extension_2_name.clone()));
+    assert!(!relation_type.has_own_extension(r_string()));
     assert!(relation_type.has_own_property(property_1_name.clone()));
     assert!(relation_type.has_own_property(property_2_name.clone()));
     assert!(relation_type.has_own_property(property_3_name.clone()));

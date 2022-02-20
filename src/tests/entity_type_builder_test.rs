@@ -42,9 +42,9 @@ fn entity_type_builder_test() {
     assert!(entity_type.behaves_as(behaviour_1_name.clone()));
     assert!(entity_type.behaves_as(behaviour_2_name.clone()));
     assert!(!entity_type.behaves_as(r_string()));
-    // assert!(entity_type.has_extension(extension_1_name.clone()));
-    // assert!(entity_type.has_extension(extension_2_name.clone()));
-    // assert!(!entity_type.has_extension(r_string()));
+    assert!(entity_type.has_own_extension(extension_1_name.clone()));
+    assert!(entity_type.has_own_extension(extension_2_name.clone()));
+    assert!(!entity_type.has_own_extension(r_string()));
     assert!(entity_type.has_own_property(property_1_name.clone()));
     assert!(entity_type.has_own_property(property_2_name.clone()));
     assert!(entity_type.has_own_property(property_3_name.clone()));
