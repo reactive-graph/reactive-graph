@@ -22,16 +22,16 @@ impl EntityInstanceBuilder {
         }
     }
 
-    pub fn id<'a>(&'a mut self, id: Uuid) -> &'a mut EntityInstanceBuilder {
+    pub fn id(&mut self, id: Uuid) -> &mut EntityInstanceBuilder {
         self.id = Some(id);
         self
     }
 
-    pub fn property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn property<S: Into<String>>(
+        &mut self,
         property_name: S,
         value: Value,
-    ) -> &'a mut EntityInstanceBuilder {
+    ) -> &mut EntityInstanceBuilder {
         self.properties.insert(property_name.into(), value);
         self
     }

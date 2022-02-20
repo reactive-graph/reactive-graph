@@ -15,34 +15,33 @@ pub struct FlowBuilder {
 #[allow(dead_code)]
 impl FlowBuilder {
     pub fn new(wrapper_entity_instance: EntityInstance) -> FlowBuilder {
-        let mut entity_instances = Vec::new();
-        entity_instances.push(wrapper_entity_instance.clone());
+        let entity_instances = vec![wrapper_entity_instance.clone()];
         FlowBuilder {
             id: wrapper_entity_instance.id,
             name: String::from(""),
             description: String::from(""),
-            wrapper: wrapper_entity_instance.clone(),
+            wrapper: wrapper_entity_instance,
             entity_instances,
             relation_instances: Vec::new(),
         }
     }
 
-    pub fn name<'a, S: Into<String>>(&'a mut self, name: S) -> &'a mut FlowBuilder {
+    pub fn name<S: Into<String>>(&mut self, name: S) -> &mut FlowBuilder {
         self.name = name.into();
         self
     }
 
-    pub fn description<'a, S: Into<String>>(&'a mut self, description: S) -> &'a mut FlowBuilder {
+    pub fn description<S: Into<String>>(&mut self, description: S) -> &mut FlowBuilder {
         self.description = description.into();
         self
     }
 
-    pub fn entity<'a>(&'a mut self, entity_instance: EntityInstance) -> &'a mut FlowBuilder {
+    pub fn entity(&mut self, entity_instance: EntityInstance) -> &mut FlowBuilder {
         self.entity_instances.push(entity_instance);
         self
     }
 
-    pub fn relation<'a>(&'a mut self, relation_instance: RelationInstance) -> &'a mut FlowBuilder {
+    pub fn relation(&mut self, relation_instance: RelationInstance) -> &mut FlowBuilder {
         self.relation_instances.push(relation_instance);
         self
     }

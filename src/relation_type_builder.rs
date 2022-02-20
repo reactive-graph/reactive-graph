@@ -31,72 +31,63 @@ impl RelationTypeBuilder {
         }
     }
 
-    pub fn component<'a, S: Into<String>>(
-        &'a mut self,
-        component_name: S,
-    ) -> &'a mut RelationTypeBuilder {
+    pub fn component<S: Into<String>>(&mut self, component_name: S) -> &mut RelationTypeBuilder {
         self.components.push(component_name.into());
         self
     }
 
-    pub fn behaviour<'a, S: Into<String>>(
-        &'a mut self,
-        behaviour_name: S,
-    ) -> &'a mut RelationTypeBuilder {
+    pub fn behaviour<S: Into<String>>(&mut self, behaviour_name: S) -> &mut RelationTypeBuilder {
         self.behaviours.push(behaviour_name.into());
         self
     }
 
-    pub fn property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn property<S: Into<String>>(
+        &mut self,
         property_name: S,
         data_type: DataType,
-    ) -> &'a mut RelationTypeBuilder {
+    ) -> &mut RelationTypeBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), data_type));
         self
     }
 
-    pub fn property_from<'a, S: Into<PropertyType>>(
-        &'a mut self,
+    pub fn property_from<S: Into<PropertyType>>(
+        &mut self,
         property_type: S,
-    ) -> &'a mut RelationTypeBuilder {
+    ) -> &mut RelationTypeBuilder {
         self.properties.push(property_type.into());
         self
     }
 
-    pub fn string_property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn string_property<S: Into<String>>(
+        &mut self,
         property_name: S,
-    ) -> &'a mut RelationTypeBuilder {
+    ) -> &mut RelationTypeBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), DataType::String));
         self
     }
 
-    pub fn bool_property<'a, S: Into<String>>(
-        &'a mut self,
-        property_name: S,
-    ) -> &'a mut RelationTypeBuilder {
+    pub fn bool_property<S: Into<String>>(&mut self, property_name: S) -> &mut RelationTypeBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), DataType::Bool));
         self
     }
 
-    pub fn number_property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn number_property<S: Into<String>>(
+        &mut self,
         property_name: S,
-    ) -> &'a mut RelationTypeBuilder {
+    ) -> &mut RelationTypeBuilder {
         self.properties
             .push(PropertyType::new(property_name.into(), DataType::Number));
         self
     }
 
-    pub fn extension<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn extension<S: Into<String>>(
+        &mut self,
         name: S,
         extension: Value,
-    ) -> &'a mut RelationTypeBuilder {
+    ) -> &mut RelationTypeBuilder {
         self.extensions.push(Extension {
             name: name.into(),
             extension,
@@ -104,7 +95,7 @@ impl RelationTypeBuilder {
         self
     }
 
-    pub fn build<'a>(&'a mut self) -> RelationType {
+    pub fn build(&mut self) -> RelationType {
         RelationType::new(
             self.outbound_type.clone(),
             self.type_name.clone(),

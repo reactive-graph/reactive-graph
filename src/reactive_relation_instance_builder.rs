@@ -26,25 +26,25 @@ impl ReactiveRelationInstanceBuilder {
         let builder = RelationInstanceBuilder::new(outbound.id, type_name.clone(), inbound.id);
         ReactiveRelationInstanceBuilder {
             outbound,
-            type_name: type_name.clone(),
+            type_name,
             inbound,
             builder,
         }
     }
 
-    pub fn property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn property<S: Into<String>>(
+        &mut self,
         property_name: S,
         value: Value,
-    ) -> &'a mut ReactiveRelationInstanceBuilder {
+    ) -> &mut ReactiveRelationInstanceBuilder {
         self.builder.property(property_name.into(), value);
         self
     }
 
-    pub fn set_properties_defaults<'a>(
-        &'a mut self,
+    pub fn set_properties_defaults(
+        &mut self,
         relation_type: RelationType,
-    ) -> &'a mut ReactiveRelationInstanceBuilder {
+    ) -> &mut ReactiveRelationInstanceBuilder {
         for property_type in relation_type.properties {
             self.property(
                 property_type.name.clone(),

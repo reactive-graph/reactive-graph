@@ -29,11 +29,11 @@ impl RelationInstanceBuilder {
         }
     }
 
-    pub fn property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn property<S: Into<String>>(
+        &mut self,
         property_name: S,
         value: Value,
-    ) -> &'a mut RelationInstanceBuilder {
+    ) -> &mut RelationInstanceBuilder {
         self.properties.insert(property_name.into(), value);
         self
     }

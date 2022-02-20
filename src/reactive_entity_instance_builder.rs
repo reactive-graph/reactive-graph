@@ -19,20 +19,20 @@ impl ReactiveEntityInstanceBuilder {
         let type_name: String = type_name.into();
         ReactiveEntityInstanceBuilder {
             type_name: type_name.clone(),
-            builder: EntityInstanceBuilder::new(type_name.clone()),
+            builder: EntityInstanceBuilder::new(type_name),
         }
     }
 
-    pub fn id<'a>(&'a mut self, id: Uuid) -> &'a mut ReactiveEntityInstanceBuilder {
+    pub fn id(&mut self, id: Uuid) -> &mut ReactiveEntityInstanceBuilder {
         self.builder.id(id);
         self
     }
 
-    pub fn property<'a, S: Into<String>>(
-        &'a mut self,
+    pub fn property<S: Into<String>>(
+        &mut self,
         property_name: S,
         value: Value,
-    ) -> &'a mut ReactiveEntityInstanceBuilder {
+    ) -> &mut ReactiveEntityInstanceBuilder {
         self.builder.property(property_name.into(), value);
         self
     }
