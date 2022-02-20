@@ -1,6 +1,7 @@
 #![feature(register_tool)]
 #![register_tool(tarpaulin)]
 
+pub use component_builder::*;
 pub use entity_instance_builder::*;
 pub use entity_type_builder::*;
 pub use flow_builder::*;
@@ -9,6 +10,7 @@ pub use reactive_relation_instance_builder::*;
 pub use relation_instance_builder::*;
 pub use relation_type_builder::*;
 
+pub mod component_builder;
 pub mod entity_instance_builder;
 pub mod entity_type_builder;
 pub mod flow_builder;

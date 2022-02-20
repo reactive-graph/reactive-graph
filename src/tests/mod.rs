@@ -1,3 +1,4 @@
+mod component_builder_test;
 mod entity_instance_builder_test;
 mod entity_type_builder_test;
 mod flow_builder_test;
