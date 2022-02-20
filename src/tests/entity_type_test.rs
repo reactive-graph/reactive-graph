@@ -47,9 +47,11 @@ fn create_entity_type_test() {
 
     assert!(entity_type.has_own_property(property_name));
 
-    assert_eq!(extension_name, entity_type.extensions.first().unwrap().name);
+    assert_eq!(extension_name.clone(), entity_type.extensions.first().unwrap().name);
 
     assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
+    assert!(entity_type.has_own_extension(extension_name));
+    assert!(!entity_type.has_own_extension(r_string()));
 
     assert!(entity_type.behaves_as(behaviour_name.clone()));
     assert!(!entity_type.behaves_as(r_string()));

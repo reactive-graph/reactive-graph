@@ -82,4 +82,10 @@ impl EntityType {
         let property_name = property_name.into();
         self.properties.iter().any(|p| p.name == property_name)
     }
+
+    /// Returns true, if the entity type contains an extension with the given name.
+    pub fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
+        let extension_name = extension_name.into();
+        self.extensions.iter().any(|extension| extension.name == extension_name)
+    }
 }
