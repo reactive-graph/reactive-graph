@@ -76,7 +76,11 @@ impl GraphQLEntityInstance {
     }
 
     /// List of relation instances which starts at this entity instance.
-    async fn outbound(&self, context: &Context<'_>, #[graphql(desc = "Unimplemented")] type_name: Option<String>) -> Vec<GraphQLRelationInstance> {
+    async fn outbound(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type", desc = "The outbound relation type")] type_name: Option<String>,
+    ) -> Vec<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
         if relation_instance_manager.is_ok() {
             let relation_instance_manager = relation_instance_manager.unwrap();
@@ -91,7 +95,11 @@ impl GraphQLEntityInstance {
     }
 
     /// List of relation instances which ends at this entity instance.
-    async fn inbound(&self, context: &Context<'_>, #[graphql(desc = "Unimplemented")] type_name: Option<String>) -> Vec<GraphQLRelationInstance> {
+    async fn inbound(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type", desc = "The inbound relation type")] type_name: Option<String>,
+    ) -> Vec<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
         if relation_instance_manager.is_ok() {
             let relation_instance_manager = relation_instance_manager.unwrap();
