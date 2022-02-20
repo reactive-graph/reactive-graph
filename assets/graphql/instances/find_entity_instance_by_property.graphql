@@ -1,7 +1,7 @@
 query findEntityInstanceByProperty {
   instances {
     keys: entities(
-      type: "input_device_key",
+      #type: "input_device_key",
       properties: [
         {
           name: "key_code"

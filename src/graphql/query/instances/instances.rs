@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use async_graphql::*;
+use inexor_rgf_core_model::ReactivePropertyInstance;
 use uuid::Uuid;
 
 use crate::api::{ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
@@ -57,11 +58,17 @@ impl Instances {
                 .filter(|entity_instance| {
                     property_query.is_none() || {
                         let property_query = property_query.clone().unwrap();
+                        if property_query.is_empty() {
+                            return true;
+                        }
+                        if entity_instance.properties.is_empty() {
+                            return false;
+                        }
                         property_query
                             .iter()
                             .all(|property_query| match entity_instance.properties.get(property_query.name.as_str()) {
                                 Some(property_instance) => property_query.value == property_instance.get(),
-                                None => true,
+                                None => false,
                             })
                     }
                 })
@@ -105,11 +112,17 @@ impl Instances {
                 .filter(|relation_instance| {
                     property_query.is_none() || {
                         let property_query = property_query.clone().unwrap();
+                        if property_query.is_empty() {
+                            return true;
+                        }
+                        if relation_instance.properties.is_empty() {
+                            return false;
+                        }
                         property_query
                             .iter()
                             .all(|property_query| match relation_instance.properties.get(property_query.name.as_str()) {
                                 Some(property_instance) => property_query.value == property_instance.get(),
-                                None => true,
+                                None => false,
                             })
                     }
                 })
