@@ -13,6 +13,11 @@ Entity instances can be uniquely identified via a UUID. This is particularly imp
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.
 
+```admonish info UUIDs
+* UUIDs are unique and unique across distributed systems
+* UUIDs can be represented as string and as a 128 bit unsigned integer
+```
+
 
 ## Labels
 
