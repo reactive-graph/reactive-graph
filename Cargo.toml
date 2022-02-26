@@ -28,10 +28,10 @@ categories = [
 [dependencies]
 
 actix = "0.12"
-actix-cors = "0.6.0-beta.8"
-actix-http = "3.0.0-beta.19"
-actix-rt = "2.6.0"
-actix-web = { version = "4.0.0-beta.21" } #, features = ["openssl"]
+actix-cors = "0.6"
+actix-http = "3.0"
+actix-rt = "2.6"
+actix-web = { version = "4.0" } #, features = ["openssl"]
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "3.0", features = ["uuid"] }
 async-graphql-actix-web = { version = "3.0" }
