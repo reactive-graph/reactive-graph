@@ -19,7 +19,7 @@ pub trait EntityTypeManager: Send + Sync {
     fn find(&self, search: String) -> Vec<EntityType>;
 
     /// Creates a new entity type.
-    fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
+    fn create(&self, name: String, group: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
 
     /// Deletes the entity type with the given name.
     fn delete(&self, name: String);

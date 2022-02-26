@@ -25,14 +25,12 @@ pub trait RelationTypeManager: Send + Sync {
     fn find(&self, search: String) -> Vec<RelationType>;
 
     /// Creates a new relation type.
-    #[allow(clippy::too_many_arguments)]
     fn create(
         &self,
         outbound_type: String,
         type_name: String,
         inbound_type: String,
         components: Vec<String>,
-        behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     );
