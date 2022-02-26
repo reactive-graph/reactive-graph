@@ -8,6 +8,10 @@
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
 
+```admonish info "Rustup"
+[rustup](https://rustup.rs/) is an installer for the systems programming language Rust.
+```
+
 ### Windows
 
 Please follow the instructions for [Installing rustup on Windows](https://rust-lang.github.io/rustup/installation/other.html)
@@ -40,6 +44,12 @@ Build in release mode (takes longer, smaller binaries):
 ```shell
 cd inexor-rgf-application
 cargo build --release
+```
+
+```admonish info "Cargo"
+[Cargo](https://doc.rust-lang.org/cargo/index.html) is the Rust package manager. Cargo downloads your Rust package's
+dependencies, compiles your packages, makes distributable packages, and uploads them to [crates.io](https://crates.io),
+the Rust community’s package registry.
 ```
 
 ## Run the application
