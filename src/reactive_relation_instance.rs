@@ -1,13 +1,18 @@
 use std::collections::HashMap;
-use std::ops::Deref;
 use std::sync::Arc;
 
+use dashmap::DashMap;
+use dashmap::DashSet;
 use indradb::{EdgeKey, EdgeProperties, Identifier};
-use serde_json::{Map, Value};
+use serde_json::Map;
+use serde_json::Value;
 use uuid::Uuid;
 
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
-use crate::{ReactiveEntityInstance, ReactivePropertyInstance, RelationInstance};
+use crate::PropertyInstanceGetter;
+use crate::PropertyInstanceSetter;
+use crate::ReactiveEntityInstance;
+use crate::ReactivePropertyInstance;
+use crate::RelationInstance;
 
 /// Reactive instance of a relation in the directed property graph.
 ///
@@ -45,9 +50,13 @@ pub struct ReactiveRelationInstance {
     pub description: String,
 
     /// The reactive properties.
-    pub properties: HashMap<String, ReactivePropertyInstance>,
-    // TODO: pub components: Vec<String>
-    // TODO: pub fn is_a(component: String) -> bool {}
+    pub properties: DashMap<String, ReactivePropertyInstance>,
+
+    /// The names of the components which are applied on this relation instance.
+    pub components: DashSet<String>,
+
+    /// The names of the behaviours which are applied on this relation instance.
+    pub behaviours: DashSet<String>,
 }
 
 impl ReactiveRelationInstance {
@@ -74,6 +83,8 @@ impl ReactiveRelationInstance {
             inbound,
             description: String::new(),
             properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
         }
     }
 
@@ -89,6 +100,8 @@ impl ReactiveRelationInstance {
             inbound,
             description: instance.description,
             properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
         }
     }
 
@@ -119,6 +132,8 @@ impl ReactiveRelationInstance {
             inbound,
             description: String::new(),
             properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
         }
     }
 
@@ -129,9 +144,43 @@ impl ReactiveRelationInstance {
     }
 
     pub fn tick(&self) {
-        for (_, property_instance) in self.properties.iter() {
+        for property_instance in &self.properties {
             property_instance.tick();
         }
+    }
+
+    pub fn add_property<S: Into<String>>(&self, name: S, value: Value) {
+        let name = name.into();
+        if !self.properties.contains_key(name.as_str()) {
+            let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value);
+            self.properties.insert(name, property_instance);
+        }
+    }
+
+    pub fn add_component<S: Into<String>>(&self, component: S) {
+        self.components.insert(component.into());
+    }
+
+    pub fn remove_component<S: Into<String>>(&self, component: S) {
+        self.components.remove(component.into().as_str());
+    }
+
+    /// Returns true, if the relation instance is composed with the given component.
+    pub fn is_a<S: Into<String>>(&self, component: S) -> bool {
+        self.components.contains(component.into().as_str())
+    }
+
+    pub fn add_behaviour<S: Into<String>>(&self, behaviour: S) {
+        self.behaviours.insert(behaviour.into());
+    }
+
+    pub fn remove_behaviour<S: Into<String>>(&self, behaviour: S) {
+        self.behaviours.remove(behaviour.into().as_str());
+    }
+
+    /// Returns true, if the relation instance behaves as the given behaviour.
+    pub fn behaves_as<S: Into<String>>(&self, behaviour: S) -> bool {
+        self.behaviours.contains(behaviour.into().as_str())
     }
 }
 
@@ -140,7 +189,7 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, property_instance)| (name.clone(), property_instance.value.read().unwrap().deref().clone()))
+            .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
         RelationInstance {
             outbound_id: instance.outbound.id,

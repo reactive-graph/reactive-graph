@@ -40,10 +40,6 @@ pub struct RelationType {
     #[serde(default = "Vec::new")]
     pub components: Vec<String>,
 
-    /// The names of the behaviours to be applied on the relation instances.
-    #[serde(default = "Vec::new")]
-    pub behaviours: Vec<String>,
-
     /// The properties which are defined by the relation type.
     #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
@@ -57,12 +53,14 @@ pub struct RelationType {
 }
 
 impl RelationType {
+    #[allow(clippy::too_many_arguments)]
     pub fn new<S: Into<String>>(
         outbound_type: S,
         type_name: S,
         inbound_type: S,
+        group: S,
+        description: S,
         components: Vec<String>,
-        behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> RelationType {
@@ -73,10 +71,9 @@ impl RelationType {
             full_name: type_name.clone(),
             type_name,
             inbound_type: inbound_type.into(),
-            group: String::new(),
-            description: String::new(),
+            group: group.into(),
+            description: description.into(),
             components,
-            behaviours,
             properties,
             extensions,
             t,
@@ -86,11 +83,6 @@ impl RelationType {
     /// Returns true, if the relation type is a component with the given name.
     pub fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
         self.components.contains(&component_name.into())
-    }
-
-    /// Returns true, if the relation type behaves as the behaviour with the given name.
-    pub fn behaves_as<S: Into<String>>(&self, behaviour_name: S) -> bool {
-        self.behaviours.contains(&behaviour_name.into())
     }
 
     /// Returns true, if the relation type contains an own property with the given name.

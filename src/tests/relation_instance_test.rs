@@ -1,13 +1,18 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 
-use indradb::{Edge, EdgeKey, EdgeProperties, Identifier, NamedProperty};
+use indradb::Edge;
+use indradb::EdgeKey;
+use indradb::EdgeProperties;
+use indradb::Identifier;
+use indradb::NamedProperty;
 use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::{r_string, r_string_1000, r_string_255};
+use crate::MutablePropertyInstanceSetter;
+use crate::PropertyInstanceGetter;
 use crate::RelationInstance;
-use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
 
 #[test]
 fn relation_instance_test() {

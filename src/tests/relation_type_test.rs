@@ -1,13 +1,20 @@
 use serde_json::json;
 
 use crate::tests::utils::r_string;
-use crate::{DataType, Extension, PropertyType, RelationType};
+use crate::DataType;
+use crate::Extension;
+use crate::PropertyType;
+use crate::RelationType;
 
 #[test]
 fn create_relation_type_test() {
     let type_name = r_string();
     let outbound_type = r_string();
     let inbound_type = r_string();
+
+    let group = "group_name";
+    let description = "Lorem ipsum";
+
     let component_name = r_string();
     let behaviour_name = r_string();
     let property_name = r_string();
@@ -30,8 +37,9 @@ fn create_relation_type_test() {
         outbound_type.clone(),
         type_name.clone(),
         inbound_type.clone(),
+        group.into(),
+        description.into(),
         component_names,
-        behaviour_names,
         property_types,
         extensions,
     );
@@ -39,14 +47,14 @@ fn create_relation_type_test() {
     assert_eq!(type_name, relation_type.type_name);
     assert_eq!(outbound_type, relation_type.outbound_type);
     assert_eq!(inbound_type, relation_type.inbound_type);
+    assert_eq!(group, relation_type.group);
+    assert_eq!(description, relation_type.description);
     assert_eq!(component_name, *relation_type.components.first().unwrap());
     assert!(relation_type.is_a(component_name.clone()));
     assert_eq!(property_name, *relation_type.properties.first().unwrap().name);
     assert!(relation_type.has_own_property(property_name.clone()));
     assert_eq!(extension_name.clone(), relation_type.extensions.get(0).unwrap().name);
     assert_eq!(extension_value, relation_type.extensions.get(0).unwrap().extension);
-    assert!(relation_type.behaves_as(behaviour_name.clone()));
-    assert!(!relation_type.behaves_as(r_string()));
     assert!(relation_type.has_own_extension(extension_name));
     assert!(!relation_type.has_own_extension(r_string()));
 }

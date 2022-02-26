@@ -2,14 +2,24 @@ use std::collections::HashMap;
 use std::str::FromStr;
 use std::sync::Arc;
 
-use indradb::{Edge, EdgeKey, EdgeProperties, Identifier, NamedProperty};
+use dashmap::DashMap;
+use dashmap::DashSet;
+use indradb::Edge;
+use indradb::EdgeKey;
+use indradb::EdgeProperties;
+use indradb::Identifier;
+use indradb::NamedProperty;
 use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::create_random_entity_instance::create_random_entity_instance;
 use crate::tests::utils::{r_json_string, r_string};
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
-use crate::{ReactiveEntityInstance, ReactivePropertyInstance, ReactiveRelationInstance, RelationInstance};
+use crate::PropertyInstanceGetter;
+use crate::PropertyInstanceSetter;
+use crate::ReactiveEntityInstance;
+use crate::ReactivePropertyInstance;
+use crate::ReactiveRelationInstance;
+use crate::RelationInstance;
 
 #[test]
 fn reactive_relation_instance_test() {
@@ -20,11 +30,21 @@ fn reactive_relation_instance_test() {
     let outbound_entity = Arc::new(create_random_entity_instance(property_name.clone()));
     let inbound_entity = Arc::new(create_random_entity_instance(property_name.clone()));
 
-    let mut properties = HashMap::new();
+    let properties = DashMap::new();
     properties.insert(
         property_name.clone(),
         ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), property_value.clone()),
     );
+
+    let component_name = r_string();
+    let component_name_2 = r_string();
+    let components = DashSet::new();
+    components.insert(component_name.clone());
+
+    let behaviour_name = r_string();
+    let behaviour_name_2 = r_string();
+    let behaviours = DashSet::new();
+    behaviours.insert(behaviour_name.clone());
 
     let reactive_relation_instance = Arc::new(ReactiveRelationInstance {
         outbound: outbound_entity.clone(),
@@ -32,11 +52,29 @@ fn reactive_relation_instance_test() {
         inbound: inbound_entity.clone(),
         description: relation_description.clone(),
         properties,
+        components,
+        behaviours,
     });
     assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name.clone());
     assert_eq!(outbound_entity.id, reactive_relation_instance.outbound.id);
     assert_eq!(inbound_entity.id, reactive_relation_instance.inbound.id);
     assert_eq!(relation_description.clone(), reactive_relation_instance.description.clone());
+
+    assert!(reactive_relation_instance.is_a(component_name.clone()));
+    assert!(!reactive_relation_instance.is_a(component_name_2.clone()));
+    assert!(!reactive_relation_instance.is_a(r_string()));
+    reactive_relation_instance.add_component(component_name_2.clone());
+    assert!(reactive_relation_instance.is_a(component_name_2.clone()));
+    reactive_relation_instance.remove_component(component_name.clone());
+    assert!(!reactive_relation_instance.is_a(component_name.clone()));
+
+    assert!(reactive_relation_instance.behaves_as(behaviour_name.clone()));
+    assert!(!reactive_relation_instance.behaves_as(behaviour_name_2.clone()));
+    assert!(!reactive_relation_instance.behaves_as(r_string()));
+    reactive_relation_instance.add_behaviour(behaviour_name_2.clone());
+    assert!(reactive_relation_instance.behaves_as(behaviour_name_2.clone()));
+    reactive_relation_instance.remove_behaviour(behaviour_name.clone());
+    assert!(!reactive_relation_instance.behaves_as(behaviour_name.clone()));
 
     let relation_instance: RelationInstance = reactive_relation_instance.into();
     assert_eq!(outbound_entity.id, relation_instance.outbound_id);
@@ -56,7 +94,9 @@ fn reactive_relation_instance_from_edge_properties_test() {
         type_name: outbound_type_name.clone(),
         id: outbound_id.clone(),
         description: outbound_description.clone(),
-        properties: HashMap::new(),
+        properties: DashMap::new(),
+        components: DashSet::new(),
+        behaviours: DashSet::new(),
     });
 
     let inbound_id = Uuid::new_v4();
@@ -66,7 +106,9 @@ fn reactive_relation_instance_from_edge_properties_test() {
         type_name: inbound_type_name.clone(),
         id: inbound_id.clone(),
         description: inbound_description.clone(),
-        properties: HashMap::new(),
+        properties: DashMap::new(),
+        components: DashSet::new(),
+        behaviours: DashSet::new(),
     });
 
     let relation_type_name = r_string();
@@ -76,7 +118,9 @@ fn reactive_relation_instance_from_edge_properties_test() {
         type_name: relation_type_name.clone(),
         inbound: inbound_entity.clone(), // Arc::clone -> Reference Counted
         description: relation_description.clone(),
-        properties: HashMap::new(),
+        properties: DashMap::new(),
+        components: DashSet::new(),
+        behaviours: DashSet::new(),
     });
 
     assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name.clone());

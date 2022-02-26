@@ -1,9 +1,15 @@
-use crate::tests::utils::{create_random_entity_instance, create_random_entity_instance_with_type, create_random_relation_instance, r_string};
-use crate::{Flow, PropertyInstanceGetter, PropertyInstanceSetter, ReactiveFlow};
-use serde_json::json;
-use std::convert::{TryFrom, TryInto};
+use std::convert::TryFrom;
+use std::convert::TryInto;
 use std::sync::Arc;
+
+use serde_json::json;
 use uuid::Uuid;
+
+use crate::tests::utils::{create_random_entity_instance, create_random_entity_instance_with_type, create_random_relation_instance, r_string};
+use crate::Flow;
+use crate::PropertyInstanceGetter;
+use crate::PropertyInstanceSetter;
+use crate::ReactiveFlow;
 
 #[test]
 fn reactive_flow_test() {

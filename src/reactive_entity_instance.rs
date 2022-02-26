@@ -1,13 +1,16 @@
-use std::collections::HashMap;
-use std::ops::Deref;
 use std::sync::Arc;
 
+use dashmap::DashMap;
+use dashmap::DashSet;
 use indradb::VertexProperties;
-use serde_json::{Map, Value};
+use serde_json::Map;
+use serde_json::Value;
 use uuid::Uuid;
 
-use crate::{EntityInstance, ReactivePropertyInstance};
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
+use crate::EntityInstance;
+use crate::PropertyInstanceGetter;
+use crate::PropertyInstanceSetter;
+use crate::ReactivePropertyInstance;
 
 pub struct ReactiveEntityInstance {
     pub type_name: String,
@@ -16,16 +19,54 @@ pub struct ReactiveEntityInstance {
 
     pub description: String,
 
-    pub properties: HashMap<String, ReactivePropertyInstance>,
-    // TODO: pub components: Vec<String>
-    // TODO: pub fn is_a(component: String) -> bool {}
+    pub properties: DashMap<String, ReactivePropertyInstance>,
+
+    /// The names of the components which are applied on this entity instance.
+    pub components: DashSet<String>,
+
+    /// The names of the behaviours which are applied on this entity instance.
+    pub behaviours: DashSet<String>,
 }
 
 impl ReactiveEntityInstance {
     pub fn tick(&self) {
-        for (_, property_instance) in self.properties.iter() {
+        for property_instance in &self.properties {
             property_instance.tick();
         }
+    }
+
+    pub fn add_property<S: Into<String>>(&self, name: S, value: Value) {
+        let name = name.into();
+        if !self.properties.contains_key(name.as_str()) {
+            let property_instance = ReactivePropertyInstance::new(self.id, name.clone(), value);
+            self.properties.insert(name, property_instance);
+        }
+    }
+
+    pub fn add_component<S: Into<String>>(&self, component: S) {
+        self.components.insert(component.into());
+    }
+
+    pub fn remove_component<S: Into<String>>(&self, component: S) {
+        self.components.remove(component.into().as_str());
+    }
+
+    /// Returns true, if the entity instance is composed with the given component.
+    pub fn is_a<S: Into<String>>(&self, component: S) -> bool {
+        self.components.contains(component.into().as_str())
+    }
+
+    pub fn add_behaviour<S: Into<String>>(&self, behaviour: S) {
+        self.behaviours.insert(behaviour.into());
+    }
+
+    pub fn remove_behaviour<S: Into<String>>(&self, behaviour: S) {
+        self.behaviours.remove(behaviour.into().as_str());
+    }
+
+    /// Returns true, if the entity instance behaves as the given behaviour.
+    pub fn behaves_as<S: Into<String>>(&self, behaviour: S) -> bool {
+        self.behaviours.contains(behaviour.into().as_str())
     }
 }
 
@@ -47,6 +88,8 @@ impl From<VertexProperties> for ReactiveEntityInstance {
             id,
             description: String::new(),
             properties: instance_properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
         }
     }
 }
@@ -63,6 +106,8 @@ impl From<EntityInstance> for ReactiveEntityInstance {
             id: instance.id,
             description: instance.description,
             properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
         }
     }
 }
@@ -72,7 +117,7 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, property_instance)| (name.clone(), property_instance.value.read().unwrap().deref().clone()))
+            .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
         EntityInstance {
             type_name: instance.type_name.clone(),

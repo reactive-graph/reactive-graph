@@ -26,10 +26,6 @@ pub struct EntityType {
     #[serde(default = "Vec::new")]
     pub components: Vec<String>,
 
-    /// The names of the behaviours to be applied on the entity instances.
-    #[serde(default = "Vec::new")]
-    pub behaviours: Vec<String>,
-
     /// The properties which are defined by the entity type.
     #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
@@ -46,20 +42,18 @@ impl EntityType {
     pub fn new<S: Into<String>>(
         name: S,
         group: S,
+        description: S,
         components: Vec<String>,
-        behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> EntityType {
         let name = name.into();
-        let group = group.into();
         let t = Identifier::from_str(name.as_str()).unwrap();
         EntityType {
             name,
-            group,
-            description: String::new(),
+            group: group.into(),
+            description: description.into(),
             components,
-            behaviours,
             properties,
             extensions,
             t,
@@ -69,11 +63,6 @@ impl EntityType {
     /// Returns true, if the entity type is a component with the given name.
     pub fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
         self.components.contains(&component_name.into())
-    }
-
-    /// Returns true, if the entity type behaves as  the behaviour with the given name.
-    pub fn behaves_as<S: Into<String>>(&self, behaviour_name: S) -> bool {
-        self.behaviours.contains(&behaviour_name.into())
     }
 
     /// Returns true, if the entity type contains an own property with the given name.
