@@ -2,9 +2,12 @@
 name = "inexor-rgf-core-frp"
 description = "Inexor - Reactive Graph Flow - Core - FRP (Bidule Patched)"
 version = "0.2.1"
-authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+authors = [
+    "Dimitri Sabadie <dimitri.sabadie@gmail.com>",
+    "Andreas Schaeffer <hanack@nooblounge.net",
+]
 edition = "2021"
-license = "MIT"
+license = "BSD-3-Clause"
 
 [lib]
 crate-type = ["lib"]
