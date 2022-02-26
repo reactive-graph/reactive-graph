@@ -105,31 +105,31 @@ instance with the data stream from a property instance of the incoming entity in
 graph TD;
     subgraph key_ctrl ["Entity Instance (Input Key)"]
     direction RL
-    CTRL_KEY(Property key_name=CTRL);
-    CTRL_KD(Output Property key_down);
+    CTRL_KEY(Property<br><br>key_name=CTRL);
+    CTRL_KD(Output Property<br><br>key_down);
     end
 
     subgraph key_f10 ["Entity Instance (Input Key)"]
-    F10_KD(Output Property key_down);
-    F10_KEY(Property key_name=F10);
+    F10_KD(Output Property<br><br>key_down);
+    F10_KEY(Property<br><br>key_name=F10);
     end
 
-    CTRL_KD(Property key_down)--->|connector|LHS;
-    F10_KD(Property key_down)--->|connector|RHS;
+    CTRL_KD--->|connector|LHS;
+    F10_KD--->|connector|RHS;
 
     subgraph logicalgate ["Entity Instance (Logical Gate)"]
-    LHS(Input Property LHS)o-->ZIP;
-    RHS(Input Property RHS)o-->ZIP;
+    LHS(Input Property<br><br>LHS)o-->ZIP;
+    RHS(Input Property<br><br>RHS)o-->ZIP;
     ZIP(Zipped stream of LHS and RHS)-->COMBINATOR;
-    COMBINATOR(Combinator Function AND)-->RESULT;
-    RESULT(Output Property Result);
+    COMBINATOR(Combinator Function<br><br>AND)-->RESULT;
+    RESULT(Output Property<br><br>Result);
     end
 
-    RESULT(Output Property Result)-->|connector|CMD_EXIT(Input Property trigger);
+    RESULT--->|connector|CMD_EXIT;
 
     subgraph system_command_exit ["Entity Instance (System Command)"]
-    CMD_COMMAND(Property Command);
-    CMD_EXIT(Input Property trigger)
+    CMD_COMMAND(Property<br><br>Command);
+    CMD_EXIT(Input Property<br><br>trigger)
     end
 ```
 
@@ -173,27 +173,27 @@ flowchart LR
     subgraph flow ["Flow"]
         direction LR
         subgraph key_ctrl ["Entity Instance (Input Key)"]
-            CTRL_KD(Output Property key_down);
+            CTRL_KD(Output Property<br><br>key_down);
         end
     
         subgraph key_f10 ["Entity Instance (Input Key)"]
-            F10_KD(Output Property key_down);
+            F10_KD(Output Property<br><br>key_down);
         end
     
         CTRL_KD-->|connector|LHS;
         F10_KD-->|connector|RHS;
     
         subgraph logicalgate ["Entity Instance (Logical Gate)"]
-            LHS(Input Property LHS)-.->RESULT;
-            RHS(Input Property RHS)-.->RESULT;
-            RESULT(Output Property Result);
+            LHS(Input Property<br><br>LHS)-.->RESULT;
+            RHS(Input Property<br><br>RHS)-.->RESULT;
+            RESULT(Output Property<br><br>Result);
         end
     
-        RESULT(Output Property Result)-->|connector|CMD_EXIT(Input Property trigger);
+        RESULT-->|connector|CMD_EXIT(Input Property trigger);
     
         subgraph system_command_exit ["Entity Instance (System Command)"]
-            CMD_COMMAND(Property Command);
-            CMD_EXIT(Input Property trigger)
+            CMD_COMMAND(Property<br><br>Command);
+            CMD_EXIT(Input Property<br><br>trigger)
         end
     end
 ```
