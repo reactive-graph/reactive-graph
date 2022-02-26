@@ -13,6 +13,8 @@ defines which entity type the outbound entity type and which entity type the inb
 | Inbound     | [EntityInstance](./Model_Entity_Instance.md)           | The inbound entity instance                  |
 | Description | String                                                 | Textual description of the relation instance |
 | Properties  | Vec<[Property Instance](./Model_Property_Instance.md)> | The properties                               |
+| Components  | Vec<String>                                            | The currently applied components             |
+| Behaviours  | Vec<String>                                            | The currently applied behaviours             |
 
 ## Graph
 

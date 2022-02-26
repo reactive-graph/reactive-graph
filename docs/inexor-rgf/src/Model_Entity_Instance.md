@@ -64,6 +64,8 @@ query {
 | Label       | String (optional)                                      | The label of the entity instance             |
 | Description | String                                                 | Textual description of the entity type       |
 | Properties  | Vec<[Property Instance](./Model_Property_Instance.md)> | The properties of the entity instance        |
+| Components  | Vec<String>                                            | The currently applied components             |
+| Behaviours  | Vec<String>                                            | The currently applied behaviours             |
 
 ## Graph
 
