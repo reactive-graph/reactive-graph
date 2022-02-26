@@ -8,7 +8,6 @@ pub struct EntityTypeBuilder {
     group: String,
     description: String,
     components: Vec<String>,
-    behaviours: Vec<String>,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
 }
@@ -21,7 +20,6 @@ impl EntityTypeBuilder {
             group: String::new(),
             description: String::new(),
             components: Vec::new(),
-            behaviours: Vec::new(),
             properties: Vec::new(),
             extensions: Vec::new(),
         }
@@ -39,11 +37,6 @@ impl EntityTypeBuilder {
 
     pub fn component<S: Into<String>>(&mut self, component_name: S) -> &mut EntityTypeBuilder {
         self.components.push(component_name.into());
-        self
-    }
-
-    pub fn behaviour<S: Into<String>>(&mut self, behaviour_name: S) -> &mut EntityTypeBuilder {
-        self.behaviours.push(behaviour_name.into());
         self
     }
 
@@ -119,8 +112,8 @@ impl EntityTypeBuilder {
         EntityType::new(
             self.type_name.clone(),
             self.group.clone(),
+            self.description.clone(),
             self.components.to_vec(),
-            self.behaviours.to_vec(),
             self.properties.to_vec(),
             self.extensions.to_vec(),
         )

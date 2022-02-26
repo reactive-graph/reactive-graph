@@ -14,8 +14,6 @@ fn relation_type_builder_test() {
     let description = r_string();
     let component_1_name = r_string();
     let component_2_name = r_string();
-    let behaviour_1_name = r_string();
-    let behaviour_2_name = r_string();
     let extension_1_name = r_string();
     let extension_2_name = r_string();
     let property_1_name = r_string();
@@ -41,8 +39,6 @@ fn relation_type_builder_test() {
     .output_property(property_7_name.clone(), DataType::Bool)
     .component(component_1_name.clone())
     .component(component_2_name.clone())
-    .behaviour(behaviour_1_name.clone())
-    .behaviour(behaviour_2_name.clone())
     .extension(extension_1_name.clone(), json!(true))
     .extension(extension_2_name.clone(), json!(true))
     .build();
@@ -55,9 +51,6 @@ fn relation_type_builder_test() {
     assert!(relation_type.is_a(component_1_name.clone()));
     assert!(relation_type.is_a(component_2_name.clone()));
     assert!(!relation_type.is_a(r_string()));
-    assert!(relation_type.behaves_as(behaviour_1_name.clone()));
-    assert!(relation_type.behaves_as(behaviour_2_name.clone()));
-    assert!(!relation_type.behaves_as(r_string()));
     assert!(relation_type.has_own_extension(extension_1_name.clone()));
     assert!(relation_type.has_own_extension(extension_2_name.clone()));
     assert!(!relation_type.has_own_extension(r_string()));

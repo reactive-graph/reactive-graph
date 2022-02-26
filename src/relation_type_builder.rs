@@ -10,7 +10,6 @@ pub struct RelationTypeBuilder {
     group: String,
     description: String,
     components: Vec<String>,
-    behaviours: Vec<String>,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
 }
@@ -29,7 +28,6 @@ impl RelationTypeBuilder {
             group: String::new(),
             description: String::new(),
             components: Vec::new(),
-            behaviours: Vec::new(),
             properties: Vec::new(),
             extensions: Vec::new(),
         }
@@ -47,11 +45,6 @@ impl RelationTypeBuilder {
 
     pub fn component<S: Into<String>>(&mut self, component_name: S) -> &mut RelationTypeBuilder {
         self.components.push(component_name.into());
-        self
-    }
-
-    pub fn behaviour<S: Into<String>>(&mut self, behaviour_name: S) -> &mut RelationTypeBuilder {
-        self.behaviours.push(behaviour_name.into());
         self
     }
 
@@ -134,8 +127,9 @@ impl RelationTypeBuilder {
             self.outbound_type.clone(),
             self.type_name.clone(),
             self.inbound_type.clone(),
+            self.group.clone(),
+            self.description.clone(),
             self.components.to_vec(),
-            self.behaviours.to_vec(),
             self.properties.to_vec(),
             self.extensions.to_vec(),
         )
