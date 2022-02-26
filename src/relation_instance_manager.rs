@@ -32,6 +32,12 @@ pub trait RelationInstanceManager: Send + Sync {
     /// Creates a new reactive relation instance.
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;
 
+    /// Adds the component with the given name to the relation instance with the given edge key.
+    fn add_component(&self, edge_key: EdgeKey, component_name: String);
+
+    /// Removes the component with the given name from the relation instance with the given edge key.
+    fn remove_component(&self, edge_key: EdgeKey, component_name: String);
+
     /// Deletes the reactive relation instance with the given key.
     fn delete(&self, edge_key: EdgeKey) -> bool;
 }

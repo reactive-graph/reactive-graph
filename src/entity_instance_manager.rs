@@ -27,6 +27,12 @@ pub trait EntityInstanceManager: Send + Sync {
     /// Creates a new reactive entity instance.
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 
+    /// Adds the component with the given name to the entity instance with the given id.
+    fn add_component(&self, id: Uuid, component: String);
+
+    /// Removes the component with the given name from the entity instance with the given id.
+    fn remove_component(&self, id: Uuid, component: String);
+
     /// Deletes the reactive entity instance with the given id.
     fn delete(&self, id: Uuid);
 }
