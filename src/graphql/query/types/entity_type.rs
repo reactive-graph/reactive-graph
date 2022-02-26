@@ -46,11 +46,6 @@ impl GraphQLEntityType {
         }
     }
 
-    /// The behaviours.
-    async fn behaviours(&self) -> Vec<String> {
-        self.entity_type.behaviours.to_vec()
-    }
-
     /// The properties / property types which are defined by the entity type or
     /// by one of the components.
     async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {

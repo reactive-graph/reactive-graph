@@ -97,11 +97,6 @@ impl GraphQLRelationType {
         }
     }
 
-    /// The behaviours.
-    async fn behaviours(&self) -> Vec<String> {
-        self.relation_type.behaviours.to_vec()
-    }
-
     /// The properties / property types which are defined by the relation type or
     /// by one of the components.
     async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {

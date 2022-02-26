@@ -21,7 +21,8 @@ impl EntityPropertyInstanceStream {
         debug!("Opened subscription entity({})[{}]", entity_instance.id, property_name);
         let mut rng = rand::thread_rng();
         let handle_id = rng.gen::<u128>();
-        let property_instance = entity_instance.properties.get(&property_name).unwrap();
+        let entity_instance2 = entity_instance.clone();
+        let property_instance = entity_instance2.properties.get(&property_name).unwrap();
         let (sender, receiver) = crossbeam::channel::unbounded();
         property_instance.stream.read().unwrap().observe_with_handle(
             move |value: &Value| {

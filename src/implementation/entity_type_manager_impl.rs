@@ -9,9 +9,9 @@ use indradb::Identifier;
 use log::{debug, error, warn};
 use wildmatch::WildMatch;
 
-use crate::api::ComponentManager;
-use crate::api::EntityTypeManager;
+use crate::api::{ComponentManager, SystemEventManager};
 use crate::api::{EntityTypeImportError, Lifecycle};
+use crate::api::{EntityTypeManager, SystemEvent};
 use crate::model::{EntityType, Extension, PropertyType};
 use crate::plugins::EntityTypeProvider;
 
@@ -25,6 +25,8 @@ fn create_entity_types_storage() -> EntityTypesStorage {
 
 #[component]
 pub struct EntityTypeManagerImpl {
+    event_manager: Wrc<dyn SystemEventManager>,
+
     component_manager: Wrc<dyn ComponentManager>,
 
     entity_types: EntityTypesStorage,
@@ -37,6 +39,14 @@ impl EntityTypeManagerImpl {
                 .group("flow")
                 .description("Generic flow without inputs and outputs")
                 .component("labeled")
+                .build(),
+        );
+        self.register(
+            EntityTypeBuilder::new("system_event")
+                .group("events")
+                .description("Events of the type system")
+                .component("labeled")
+                .component("event")
                 .build(),
         );
     }
@@ -56,6 +66,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         }
         self.entity_types.0.write().unwrap().push(entity_type.clone());
         debug!("Registered entity type {}", entity_type.name);
+        self.event_manager.emit_event(SystemEvent::EntityTypeCreated(entity_type.name.clone()));
         entity_type
     }
 
@@ -83,20 +94,15 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .collect()
     }
 
-    fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.register(EntityType::new(
-            name,
-            group,
-            components.to_vec(),
-            behaviours.to_vec(),
-            properties.to_vec(),
-            extensions.to_vec(),
-        ));
+    fn create(&self, name: String, group: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.register(EntityType::new(name, group, String::new(), components.to_vec(), properties.to_vec(), extensions.to_vec()));
     }
 
     /// TODO: first delete the entity instance of this type, then delete the entity type itself.
     fn delete(&self, name: String) {
+        let event = SystemEvent::EntityTypeDeleted(name.clone());
         self.entity_types.0.write().unwrap().retain(|entity_type| entity_type.name != name);
+        self.event_manager.emit_event(event);
     }
 
     fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError> {
@@ -132,6 +138,10 @@ impl Lifecycle for EntityTypeManagerImpl {
     fn init(&self) {
         self.create_base_entity_types();
     }
+
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         // TODO: remove?

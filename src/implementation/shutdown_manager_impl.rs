@@ -68,6 +68,10 @@ impl Lifecycle for ShutdownManagerImpl {
         );
     }
 
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
+
     fn shutdown(&self) {
         // Disconnect entity instance
         self.reactive_entity_instance_manager

@@ -1,0 +1,15 @@
+query getSystemEventComponentDeleted {
+  instances {
+    systemEventComponentDeleted: entities(
+      type: "system_event",
+      label: "/org/inexor/event/type/component/deleted"
+    ) {
+      id
+      label
+      properties(name: "event") {
+        name
+        value
+      }
+    }
+  }
+}

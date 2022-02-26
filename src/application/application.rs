@@ -14,7 +14,7 @@ use crate::api::*;
 pub struct RunningState(RwLock<bool>);
 
 #[provides]
-fn create_external_type_dependency() -> RunningState {
+fn create_running_state_wrapper() -> RunningState {
     RunningState(RwLock::new(false))
 }
 
@@ -23,6 +23,10 @@ pub trait Application: Send + Sync {
     //  + Lifecycle
     fn init(&self);
 
+    fn post_init(&self);
+
+    fn pre_shutdown(&self);
+
     fn shutdown(&self);
 
     async fn run(&mut self);
@@ -30,6 +34,8 @@ pub trait Application: Send + Sync {
     fn stop(&self);
 
     fn is_running(&self) -> bool;
+
+    fn get_event_manager(&self) -> Arc<dyn SystemEventManager>;
 
     fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager>;
 
@@ -74,6 +80,7 @@ pub trait Application: Send + Sync {
 pub struct ApplicationImpl {
     running: RunningState,
 
+    event_manager: Wrc<dyn SystemEventManager>,
     shutdown_manager: Wrc<dyn ShutdownManager>,
     graph_database: Wrc<dyn GraphDatabase>,
     component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
@@ -107,14 +114,44 @@ impl Application for ApplicationImpl {
         self.web_resource_manager.init();
         self.graphql_server.init();
         self.shutdown_manager.init();
+        self.event_manager.init();
+        self.reactive_entity_instance_manager.init();
+    }
+
+    fn post_init(&self) {
+        self.component_manager.post_init();
+        self.entity_type_manager.post_init();
+        self.relation_type_manager.post_init();
+        self.plugin_registry.post_init();
+        self.reactive_flow_manager.post_init();
+        self.web_resource_manager.post_init();
+        self.graphql_server.post_init();
+        self.shutdown_manager.post_init();
+        self.event_manager.post_init();
+        self.reactive_entity_instance_manager.post_init(); // after event_manager!
+    }
+
+    fn pre_shutdown(&self) {
+        self.reactive_entity_instance_manager.pre_shutdown();
+        self.event_manager.pre_shutdown();
+        self.shutdown_manager.pre_shutdown();
+        self.graphql_server.pre_shutdown();
+        self.web_resource_manager.pre_shutdown();
+        self.reactive_flow_manager.pre_shutdown();
+        self.plugin_registry.pre_shutdown();
+        self.relation_type_manager.pre_shutdown();
+        self.entity_type_manager.pre_shutdown();
+        self.component_manager.pre_shutdown();
     }
 
     fn shutdown(&self) {
+        self.reactive_entity_instance_manager.shutdown();
+        self.event_manager.shutdown();
         self.shutdown_manager.shutdown();
         self.graphql_server.shutdown();
-        self.web_resource_manager.init();
+        self.web_resource_manager.shutdown();
         self.reactive_flow_manager.shutdown();
-        self.plugin_registry.unload_plugins();
+        self.plugin_registry.shutdown();
         self.relation_type_manager.shutdown();
         self.entity_type_manager.shutdown();
         self.component_manager.shutdown();
@@ -186,6 +223,10 @@ impl Application for ApplicationImpl {
 
     fn is_running(&self) -> bool {
         *self.running.0.read().unwrap().deref()
+    }
+
+    fn get_event_manager(&self) -> Arc<dyn SystemEventManager> {
+        self.event_manager.clone()
     }
 
     fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager> {

@@ -83,6 +83,12 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
 
     fn register_or_merge_reactive_instance(&self, reactive_relation_instance: Arc<ReactiveRelationInstance>) -> Arc<ReactiveRelationInstance>;
 
+    /// Adds the component with the given name to the relation instance with the given edge key.
+    fn add_component(&self, edge_key: EdgeKey, component: String);
+
+    /// Removes the component with the given name from the relation instance with the given edge key.
+    fn remove_component(&self, edge_key: EdgeKey, component: String);
+
     // TODO: fn commit(&self, relation_instance: RelationInstance);
     // TODO: return result
     fn commit(&self, edge_key: EdgeKey);

@@ -1,0 +1,14 @@
+query getAllSystemEvents {
+  instances {
+    systemEvents: entities(
+      type: "system_event"
+    ) {
+      id
+      label
+      properties(name: "event") {
+        name
+        value
+      }
+    }
+  }
+}

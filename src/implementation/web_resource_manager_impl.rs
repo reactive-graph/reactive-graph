@@ -47,6 +47,10 @@ impl WebResourceManager for WebResourceManagerImpl {
 impl Lifecycle for WebResourceManagerImpl {
     fn init(&self) {}
 
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
+
     fn shutdown(&self) {
         // TODO: remove?
         self.web_resource_providers.0.write().unwrap().clear();

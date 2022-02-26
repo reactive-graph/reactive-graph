@@ -61,6 +61,14 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         }
     }
 
+    fn add_component(&self, id: Uuid, component: String) {
+        self.reactive_entity_instance_manager.add_component(id, component);
+    }
+
+    fn remove_component(&self, id: Uuid, component: String) {
+        self.reactive_entity_instance_manager.remove_component(id, component);
+    }
+
     fn delete(&self, id: Uuid) {
         self.reactive_entity_instance_manager.delete(id);
     }

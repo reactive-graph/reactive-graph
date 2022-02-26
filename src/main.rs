@@ -3,6 +3,8 @@
 #![feature(concat_idents)]
 #![feature(register_tool)]
 #![feature(derive_default_enum)]
+#![feature(termination_trait_lib)]
+#![feature(test)]
 #![register_tool(tarpaulin)]
 #![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 
@@ -40,6 +42,7 @@ async fn main() {
         let mut application = Provider::<dyn Application>::create(container);
 
         application.init();
+        application.post_init();
         application.run().await;
 
         // let main = async_std::future::ready(application.run);
@@ -48,6 +51,7 @@ async fn main() {
         // main.await;
         // let futures = vec![main, server];
         // join!(futures).await;
+        application.pre_shutdown();
         application.shutdown();
     } // Destruct the application
     thread::sleep(Duration::from_millis(2000));

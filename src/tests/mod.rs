@@ -1,5 +1,5 @@
 mod implementation;
-mod utils;
+pub(crate) mod utils;
 
 #[test]
 fn all_tests() {}

@@ -1,18 +1,27 @@
 use std::collections::{BTreeMap, HashMap};
 use std::sync::{Arc, RwLock};
 
-use crate::di::*;
 use async_trait::async_trait;
-use inexor_rgf_core_model::PropertyInstanceGetter;
 use path_tree::PathTree;
+use serde_json::json;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::{
-    ComponentBehaviourManager, EntityBehaviourManager, EntityInstanceManager, ReactiveEntityInstanceCreationError, ReactiveEntityInstanceImportError,
-    ReactiveEntityInstanceManager,
-};
-use crate::model::{EntityInstance, ReactiveEntityInstance};
+use crate::api::ComponentBehaviourManager;
+use crate::api::ComponentManager;
+use crate::api::EntityBehaviourManager;
+use crate::api::EntityInstanceManager;
+use crate::api::SystemEventManager;
+use crate::api::Lifecycle;
+use crate::api::ReactiveEntityInstanceCreationError;
+use crate::api::ReactiveEntityInstanceImportError;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::SystemEvent;
+use crate::di::*;
+use crate::model::EntityInstance;
+use crate::model::PropertyInstanceGetter;
+use crate::model::ReactiveEntityInstance;
+use crate::model::ReactivePropertyInstance;
 
 #[wrapper]
 pub struct ReactiveEntityInstances(RwLock<BTreeMap<Uuid, Arc<ReactiveEntityInstance>>>);
@@ -32,6 +41,10 @@ fn create_label_path_tree() -> LabelPathTree {
 
 #[component]
 pub struct ReactiveEntityInstanceManagerImpl {
+    event_manager: Wrc<dyn SystemEventManager>,
+
+    component_manager: Wrc<dyn ComponentManager>,
+
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
 
     component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
@@ -135,6 +148,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             .write()
             .unwrap()
             .insert(reactive_entity_instance.id, reactive_entity_instance.clone());
+        // TODO: List of applied components is empty
         self.component_behaviour_manager.add_behaviours_to_entity(reactive_entity_instance.clone());
         self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
         // Register label
@@ -145,6 +159,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             let mut writer = self.label_path_tree.0.write().unwrap();
             writer.insert(value.as_str().unwrap(), reactive_entity_instance.id);
         }
+        self.event_manager.emit_event(SystemEvent::EntityInstanceCreated(reactive_entity_instance.id))
     }
 
     fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance> {
@@ -155,6 +170,39 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         } else {
             // Instance with the given uuid exists: don't register but return the existing instance instead
             self.get(reactive_entity_instance.id).unwrap()
+        }
+    }
+
+    fn add_component(&self, id: Uuid, component_name: String) {
+        if let Some(component) = self.component_manager.get(component_name.clone()) {
+            if let Some(reactive_entity_instance) = self.get(id) {
+                // Add component
+                reactive_entity_instance.add_component(component_name);
+                // Add component properties which doesn't exist yet
+                for property in component.properties.iter() {
+                    let property_name = property.name.clone();
+                    if !reactive_entity_instance.properties.contains_key(property_name.as_str()) {
+                        let property_instance = ReactivePropertyInstance::new(reactive_entity_instance.id, property_name.clone(), json!(0));
+                        reactive_entity_instance.properties.insert(property_name, property_instance);
+                    }
+                }
+                // Add component behaviours
+                self.component_behaviour_manager
+                    .add_behaviours_to_entity_component(reactive_entity_instance, component);
+            }
+        }
+    }
+
+    fn remove_component(&self, id: Uuid, component_name: String) {
+        if let Some(component) = self.component_manager.get(component_name.clone()) {
+            if let Some(reactive_entity_instance) = self.get(id) {
+                // Remove component
+                reactive_entity_instance.remove_component(component_name);
+                // We do not remove properties because we cannot asure that the removal is intended
+                // Remove component behaviours
+                self.component_behaviour_manager
+                    .remove_behaviours_from_entity_component(reactive_entity_instance, component);
+            }
         }
     }
 
@@ -173,12 +221,20 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         }
         // TODO: remove label
         self.entity_instance_manager.delete(id);
+        self.event_manager.emit_event(SystemEvent::EntityInstanceDeleted(id))
     }
 
     // TODO: fn delete_and_delete_relations(&self, id: Uuid) {}
 
     fn unregister_reactive_instance(&self, id: Uuid) {
-        self.entity_behaviour_manager.remove_behaviours_by_id(id);
+        match self.get(id) {
+            Some(entity_instance) => {
+                self.entity_behaviour_manager.remove_behaviours(entity_instance);
+            }
+            None => {
+                self.entity_behaviour_manager.remove_behaviours_by_id(id);
+            }
+        }
         let id = &id;
         self.reactive_entity_instances.0.write().unwrap().remove(id);
     }
@@ -202,4 +258,22 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             self.entity_instance_manager.export(id, path);
         }
     }
+}
+
+impl Lifecycle for ReactiveEntityInstanceManagerImpl {
+    fn init(&self) {}
+
+    fn post_init(&self) {
+        for event_instance in self.event_manager.get_system_event_instances() {
+            self.register_reactive_instance(event_instance);
+        }
+    }
+
+    fn pre_shutdown(&self) {
+        for event_instance in self.event_manager.get_system_event_instances() {
+            self.unregister_reactive_instance(event_instance.id);
+        }
+    }
+
+    fn shutdown(&self) {}
 }

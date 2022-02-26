@@ -24,7 +24,6 @@ impl MutationRelationTypes {
         #[graphql(desc = "The name of the entity type.")] name: String,
         inbound_type: String,
         #[graphql(desc = "Adds the given components to the newly created relation type.")] components: Option<Vec<String>>,
-        behaviours: Option<Vec<String>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,
         >,
@@ -48,12 +47,6 @@ impl MutationRelationTypes {
             for component in components.unwrap() {
                 debug!("Add component {}", component.clone());
                 relation_type_builder.component(component.clone());
-            }
-        }
-        if behaviours.is_some() {
-            for behaviour in behaviours.unwrap() {
-                debug!("Add behaviour {}", behaviour.clone());
-                relation_type_builder.behaviour(behaviour.clone());
             }
         }
         if properties.is_some() {

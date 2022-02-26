@@ -1,0 +1,10 @@
+subscription getSystemEventComponentCreated {
+  entity(label: "/org/inexor/event/type/component/created", propertyName: "event") {
+    name
+    value
+    type {
+      dataType
+      socketType
+    }
+  }
+}

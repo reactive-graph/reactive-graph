@@ -1,4 +1,3 @@
-use std::ops::Deref;
 use std::sync::Arc;
 
 use async_graphql::*;
@@ -77,13 +76,28 @@ impl GraphQLRelationInstance {
         self.relation_instance
             .properties
             .iter()
-            .filter(|(property_name, _property_instance)| name.is_none() || name.clone().unwrap() == property_name.deref().clone())
-            .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(property_name))
-            .map(|(name, property_instance)| {
-                let value = property_instance.value.read().unwrap().deref().clone();
-                GraphQLPropertyInstance::new_relation_property(self.relation_instance.type_name.clone(), name.clone(), value)
+            .filter(|property_instance| name.is_none() || name.clone().unwrap() == property_instance.key().as_str())
+            .filter(|property_instance| names.is_none() || names.clone().unwrap().contains(property_instance.key()))
+            .map(|property_instance| {
+                GraphQLPropertyInstance::new_relation_property(
+                    self.relation_instance.type_name.clone(),
+                    property_instance.key().clone(),
+                    property_instance.get(),
+                )
             })
             .collect()
+    }
+
+    /// List of components which have been actually applied on the relation instance including
+    /// components which have been added after creation.
+    async fn components(&self) -> Vec<String> {
+        self.relation_instance.components.iter().map(|p| p.key().clone()).collect()
+    }
+
+    /// List of behaviours which have been actually applied on the relation instance including
+    /// behaviours which have been applied after creation.
+    async fn behaviours(&self) -> Vec<String> {
+        self.relation_instance.behaviours.iter().map(|p| p.key().clone()).collect()
     }
 }
 

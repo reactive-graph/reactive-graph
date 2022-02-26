@@ -27,7 +27,8 @@ impl RelationPropertyInstanceStream {
         );
         let mut rng = rand::thread_rng();
         let handle_id = rng.gen::<u128>();
-        let property_instance = relation_instance.properties.get(&property_name).unwrap();
+        let relation_instance2 = relation_instance.clone();
+        let property_instance = relation_instance2.properties.get(&property_name).unwrap();
         let (sender, receiver) = crossbeam::channel::unbounded();
         property_instance.stream.read().unwrap().observe_with_handle(
             move |value: &Value| {

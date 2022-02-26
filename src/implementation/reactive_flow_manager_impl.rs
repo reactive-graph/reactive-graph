@@ -1,19 +1,33 @@
-use crate::api::{
-    FlowManager, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowCreationError, ReactiveFlowImportError, ReactiveFlowManager,
-    ReactiveRelationInstanceManager,
-};
-use crate::di::*;
-use crate::model::{Flow, ReactiveFlow};
-use crate::plugins::FlowProvider;
+use std::collections::BTreeMap;
+use std::collections::HashMap;
+use std::convert::TryFrom;
+use std::convert::TryInto;
+use std::sync::Arc;
+use std::sync::RwLock;
+
 use async_trait::async_trait;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::{PropertyInstanceGetter, ReactiveEntityInstance, ReactiveRelationInstance, RelationInstance};
 use log::{debug, error};
 use path_tree::PathTree;
-use std::collections::{BTreeMap, HashMap};
-use std::convert::{TryFrom, TryInto};
-use std::sync::{Arc, RwLock};
 use uuid::Uuid;
+
+use crate::api::SystemEventManager;
+use crate::api::FlowManager;
+use crate::api::Lifecycle;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveFlowCreationError;
+use crate::api::ReactiveFlowImportError;
+use crate::api::ReactiveFlowManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::api::SystemEvent;
+use crate::di::*;
+use crate::model::Flow;
+use crate::model::PropertyInstanceGetter;
+use crate::model::ReactiveEntityInstance;
+use crate::model::ReactiveFlow;
+use crate::model::ReactiveRelationInstance;
+use crate::model::RelationInstance;
+use crate::plugins::FlowProvider;
 
 #[wrapper]
 pub struct ReactiveFlows(RwLock<BTreeMap<Uuid, Arc<ReactiveFlow>>>);
@@ -41,6 +55,8 @@ fn create_label_path_tree() -> LabelPathTree {
 
 #[component]
 pub struct ReactiveFlowManagerImpl {
+    event_manager: Wrc<dyn SystemEventManager>,
+
     flow_manager: Wrc<dyn FlowManager>,
 
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
@@ -174,6 +190,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                 writer.insert(label, reactive_flow.id);
             }
         }
+        self.event_manager.emit_event(SystemEvent::FlowCreated(reactive_flow.id))
     }
 
     // TODO: how to detect if the flow has removed an entity? => remove behaviour
@@ -242,6 +259,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             }
             self.reactive_flows.0.write().unwrap().remove(&id);
             // TODO: remove label
+            self.event_manager.emit_event(SystemEvent::FlowDeleted(id))
         }
     }
 
@@ -295,6 +313,10 @@ impl Lifecycle for ReactiveFlowManagerImpl {
             }
         }
     }
+
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         // self.reactive_flows.0.write().unwrap().clear();

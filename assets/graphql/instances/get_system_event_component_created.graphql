@@ -1,0 +1,15 @@
+query getSystemEventComponentCreated {
+  instances {
+    systemEventComponentCreated: entities(
+      type: "system_event",
+      label: "/org/inexor/event/type/component/created"
+    ) {
+      id
+      label
+      properties(name: "event") {
+        name
+        value
+      }
+    }
+  }
+}

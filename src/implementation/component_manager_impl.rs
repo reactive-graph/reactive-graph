@@ -3,14 +3,15 @@ use std::io::BufReader;
 use std::sync::{Arc, RwLock};
 
 use crate::builder::ComponentBuilder;
-use crate::di::{component, provides, wrapper, Component};
+use crate::di::{component, provides, wrapper, Component, Wrc};
 use crate::model::DataType;
 use async_trait::async_trait;
 use log::{debug, error};
 use wildmatch::WildMatch;
 
-use crate::api::ComponentManager;
+use crate::api::SystemEventManager;
 use crate::api::Lifecycle;
+use crate::api::{ComponentManager, SystemEvent};
 use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
 
@@ -24,6 +25,8 @@ fn create_components_storage() -> ComponentsStorage {
 
 #[component]
 pub struct ComponentManagerImpl {
+    event_manager: Wrc<dyn SystemEventManager>,
+
     components: ComponentsStorage,
 }
 
@@ -49,8 +52,10 @@ impl ComponentManagerImpl {
 impl ComponentManager for ComponentManagerImpl {
     fn register(&self, component: crate::model::Component) {
         if !self.has(component.name.clone()) {
-            debug!("Registered component {}", component.name);
+            let name = component.name.clone();
+            debug!("Registered component {}", name.clone());
             self.components.0.write().unwrap().push(component);
+            self.event_manager.emit_event(SystemEvent::ComponentCreated(name));
         }
     }
 
@@ -84,7 +89,9 @@ impl ComponentManager for ComponentManagerImpl {
     }
 
     fn delete(&self, name: String) {
+        let event = SystemEvent::ComponentDeleted(name.clone());
         self.components.0.write().unwrap().retain(|component| component.name != name);
+        self.event_manager.emit_event(event);
     }
 
     fn import(&self, path: String) {
@@ -121,6 +128,10 @@ impl Lifecycle for ComponentManagerImpl {
     fn init(&self) {
         self.create_base_components();
     }
+
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         // TODO: remove?

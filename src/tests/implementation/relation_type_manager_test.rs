@@ -23,8 +23,9 @@ fn test_register_relation_type() {
         outbound_type_name.clone(),
         type_name.clone(),
         inbound_type_name.clone(),
+        String::new(),
+        String::new(),
         vec![String::from("named")],
-        Vec::new(),
         vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
         Vec::new(),
     ));
@@ -53,7 +54,6 @@ fn test_create_and_delete_relation_type() {
         type_name.clone(),
         inbound_type_name.clone(),
         vec![String::from("positionable")],
-        Vec::new(),
         vec![PropertyType::new(String::from("x"), DataType::String)],
         Vec::new(),
     );
@@ -84,7 +84,7 @@ fn test_get_relation_types() {
     let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
 
-    relation_type_manager.create(outbound_type_name.clone(), r_string(), inbound_type_name.clone(), vec![], vec![], vec![], vec![]);
+    relation_type_manager.create(outbound_type_name.clone(), r_string(), inbound_type_name.clone(), vec![], vec![], vec![]);
     let relation_types = relation_type_manager.get_relation_types();
     assert_eq!(1, relation_types.len());
     for relation_type in relation_types {
@@ -118,8 +118,9 @@ fn test_register_relation_type_has_component() {
         outbound_type_name.clone(),
         relation_type_name.clone(),
         inbound_type_name.clone(),
+        String::new(),
+        String::new(),
         vec![component_name.clone()],
-        Vec::new(),
         vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
         Vec::new(),
     ));
@@ -149,7 +150,8 @@ fn test_register_relation_type_has_property() {
         outbound_type_name.clone(),
         relation_type_name.clone(),
         inbound_type_name.clone(),
-        Vec::new(),
+        String::new(),
+        String::new(),
         Vec::new(),
         vec![property_type],
         Vec::new(),
@@ -181,7 +183,6 @@ fn test_export_import_relation_type() {
         type_name.clone(),
         inbound_type_name.clone(),
         vec![String::from("positionable")],
-        Vec::new(),
         vec![PropertyType::new(String::from("x"), DataType::String)],
         Vec::new(),
     );

@@ -55,7 +55,6 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
         type_name: String,
         inbound_type: String,
         components: Vec<String>,
-        behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     );

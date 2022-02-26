@@ -23,6 +23,8 @@ impl Instances {
         #[graphql(desc = "Returns only the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Returns the entity instance with the given label.")] label: Option<String>,
         #[graphql(name = "type", desc = "Filters the entity instances by type.")] entity_type: Option<String>,
+        #[graphql(desc = "Filters the entity instances by applied components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "Filters the entity instances by applied behaviours.")] behaviours: Option<Vec<String>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Vec<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>();
@@ -54,6 +56,18 @@ impl Instances {
                 .get_entity_instances()
                 .iter()
                 .filter(|entity_instance| entity_type.is_none() || entity_type.clone().unwrap() == entity_instance.type_name.clone())
+                .filter(|entity_instance| {
+                    components.is_none() || {
+                        let components = components.clone().unwrap();
+                        components.iter().all(|component| entity_instance.is_a(component))
+                    }
+                })
+                .filter(|entity_instance| {
+                    behaviours.is_none() || {
+                        let behaviours = behaviours.clone().unwrap();
+                        behaviours.iter().all(|behaviour| entity_instance.behaves_as(behaviour))
+                    }
+                })
                 .filter(|entity_instance| {
                     property_query.is_none() || {
                         let property_query = property_query.clone().unwrap();
@@ -94,6 +108,8 @@ impl Instances {
         #[graphql(desc = "Filters the relation instances by the entity type of the inbound entity instance")] inbound_type: Option<String>,
         #[graphql(desc = "Filters the relation instances by the id of the outbound entity instance")] outbound_id: Option<Uuid>,
         #[graphql(desc = "Filters the relation instances by the id of the inbound entity instance")] inbound_id: Option<Uuid>,
+        #[graphql(desc = "Filters the relation instances by applied components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "Filters the relation instances by applied behaviours.")] behaviours: Option<Vec<String>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Vec<GraphQLRelationInstance> {
         if let Ok(relation_instance_manager) = context.data::<Arc<dyn ReactiveRelationInstanceManager>>() {
@@ -108,6 +124,18 @@ impl Instances {
                 .filter(|relation_instance| inbound_type.is_none() || inbound_type.clone().unwrap() == relation_instance.inbound.clone().type_name.clone())
                 .filter(|relation_instance| outbound_id.is_none() || outbound_id.unwrap() == relation_instance.outbound.id)
                 .filter(|relation_instance| inbound_id.is_none() || inbound_id.unwrap() == relation_instance.inbound.id)
+                .filter(|relation_instance| {
+                    components.is_none() || {
+                        let components = components.clone().unwrap();
+                        components.iter().all(|component| relation_instance.is_a(component))
+                    }
+                })
+                .filter(|relation_instance| {
+                    behaviours.is_none() || {
+                        let behaviours = behaviours.clone().unwrap();
+                        behaviours.iter().all(|behaviour| relation_instance.behaves_as(behaviour))
+                    }
+                })
                 .filter(|relation_instance| {
                     property_query.is_none() || {
                         let property_query = property_query.clone().unwrap();

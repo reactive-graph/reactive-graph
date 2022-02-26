@@ -293,6 +293,10 @@ impl Lifecycle for PluginRegistryImpl {
         self.load_plugins();
     }
 
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
+
     fn shutdown(&self) {
         self.unload_plugins();
     }

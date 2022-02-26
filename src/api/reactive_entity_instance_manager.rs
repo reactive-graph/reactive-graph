@@ -6,7 +6,7 @@ use async_trait::async_trait;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::{EntityInstanceCreationError, EntityInstanceImportError};
+use crate::api::{EntityInstanceCreationError, EntityInstanceImportError, Lifecycle};
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 
 #[derive(Debug)]
@@ -40,7 +40,7 @@ pub enum ReactiveEntityInstanceImportError {
 }
 
 #[async_trait]
-pub trait ReactiveEntityInstanceManager: Send + Sync {
+pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     /// Returns true, if an entity instance exists with the given UUID.
     fn has(&self, id: Uuid) -> bool;
 
@@ -91,6 +91,12 @@ pub trait ReactiveEntityInstanceManager: Send + Sync {
     ///
     /// No properties are merged if the given entity instance already exists.
     fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance>;
+
+    /// Adds the component with the given name to the entity instance with the given id.
+    fn add_component(&self, id: Uuid, component: String);
+
+    /// Removes the component with the given name from the entity instance with the given id.
+    fn remove_component(&self, id: Uuid, component: String);
 
     // TODO: return result
     fn commit(&self, id: Uuid);

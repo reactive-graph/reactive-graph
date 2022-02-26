@@ -21,7 +21,6 @@ impl MutationEntityTypes {
         #[graphql(desc = "The name of the entity type.")] name: String,
         #[graphql(desc = "The entity type belongs to this group.")] group: Option<String>,
         components: Option<Vec<String>>,
-        behaviours: Option<Vec<String>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,
         >,
@@ -41,12 +40,6 @@ impl MutationEntityTypes {
             let components = components.unwrap();
             for component in components {
                 entity_type_builder.component(component.clone());
-            }
-        }
-        if behaviours.is_some() {
-            let behaviours = behaviours.unwrap();
-            for behaviour in behaviours {
-                entity_type_builder.behaviour(behaviour.clone());
             }
         }
         if properties.is_some() {

@@ -9,7 +9,7 @@ use crate::api::GraphDatabase;
 pub struct InexorDatastore(Arc<MemoryDatastore>);
 
 #[provides]
-fn create_external_type_dependency() -> InexorDatastore {
+fn create_datastore() -> InexorDatastore {
     InexorDatastore(Arc::new(MemoryDatastore::default()))
 }
 

@@ -11,12 +11,13 @@ fn test_register_entity_type() {
 
     let type_name = r_string();
     let group_name = r_string();
+    let description = r_string();
 
     entity_type_manager.register(crate::model::EntityType::new(
         type_name.clone(),
         group_name.clone(),
+        description.clone(),
         vec![String::from("positionable")],
-        vec![],
         vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
         vec![],
     ));
@@ -38,7 +39,6 @@ fn test_create_and_delete_entity_type() {
         type_name.clone(),
         group.clone(),
         vec![String::from("positionable")],
-        vec![],
         vec![PropertyType::new(String::from("x"), DataType::String)],
         vec![],
     );
@@ -59,7 +59,7 @@ fn test_create_and_delete_entity_type() {
 fn test_get_entity_types() {
     let application = init_application();
     let entity_type_manager = application.get_entity_type_manager();
-    entity_type_manager.create(r_string(), r_string(), vec![], vec![], vec![], vec![]);
+    entity_type_manager.create(r_string(), r_string(), vec![], vec![], vec![]);
     let entity_types = entity_type_manager.get_entity_types();
     assert_eq!(1, entity_types.len());
     for entity_type in entity_types {
@@ -82,12 +82,13 @@ fn test_register_entity_type_has_component() {
 
     let entity_type_name = r_string();
     let group_name = r_string();
+    let description = r_string();
 
     entity_type_manager.register(crate::model::EntityType::new(
         entity_type_name.clone(),
         group_name.clone(),
+        description.clone(),
         vec![component_name.clone()],
-        vec![],
         vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
         vec![],
     ));
@@ -107,7 +108,14 @@ fn test_register_entity_type_has_property() {
     let entity_type_name = r_string();
     let group_name = r_string();
 
-    entity_type_manager.register(EntityType::new(entity_type_name.clone(), group_name.clone(), vec![], vec![], vec![property_type], vec![]));
+    entity_type_manager.register(EntityType::new(
+        entity_type_name.clone(),
+        group_name.clone(),
+        String::new(),
+        vec![],
+        vec![property_type],
+        vec![],
+    ));
     let entity_type: Option<EntityType> = entity_type_manager.get(entity_type_name.clone());
     assert!(entity_type.unwrap().has_own_property(property_name.clone()));
 }
@@ -128,7 +136,6 @@ fn test_export_import_entity_type() {
         type_name.clone(),
         group.clone(),
         vec![String::from("positionable")],
-        vec![],
         vec![PropertyType::new(String::from("x"), DataType::String)],
         vec![],
     );

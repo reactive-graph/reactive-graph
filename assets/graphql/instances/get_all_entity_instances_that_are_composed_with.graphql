@@ -1,0 +1,15 @@
+query getAllEntityInstancesThatAreComposedWith {
+  instances {
+    composedWith: entities(components: "labeled") {
+      id
+      label
+      components
+      behaviours
+      properties(name: "label") {
+        name
+        value
+      }
+      behaviours
+    }
+  }
+}

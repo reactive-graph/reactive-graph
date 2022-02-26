@@ -29,8 +29,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.find(search)
     }
 
-    fn create(&self, name: String, group: String, components: Vec<String>, behaviours: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.entity_type_manager.create(name, group, components, behaviours, properties, extensions)
+    fn create(&self, name: String, group: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.entity_type_manager.create(name, group, components, properties, extensions)
     }
 
     fn delete(&self, name: String) {

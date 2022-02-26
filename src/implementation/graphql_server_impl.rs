@@ -263,6 +263,10 @@ impl GraphQLServer for GraphQLServerImpl {
 impl Lifecycle for GraphQLServerImpl {
     fn init(&self) {}
 
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
+
     fn shutdown(&self) {}
 }
 

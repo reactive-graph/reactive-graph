@@ -59,7 +59,9 @@ impl MutationEntityInstances {
         context: &Context<'_>,
         #[graphql(desc = "Updates the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Updates the entity instance with the given label.")] label: Option<String>,
-        properties: Vec<GraphQLPropertyInstance>,
+        #[graphql(desc = "Updates the entity instance with the given label.")] add_components: Option<Vec<String>>,
+        #[graphql(desc = "Updates the entity instance with the given label.")] remove_components: Option<Vec<String>>,
+        #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
         let entity_instance;
@@ -75,9 +77,21 @@ impl MutationEntityInstances {
         }
         let entity_instance = entity_instance.unwrap();
 
-        for property in properties {
-            debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
-            entity_instance.set_no_propagate(property.name.clone(), property.value.clone());
+        if let Some(components) = add_components {
+            for component in components {
+                entity_instance_manager.add_component(entity_instance.id, component.clone());
+            }
+        }
+        if let Some(components) = remove_components {
+            for component in components {
+                entity_instance_manager.remove_component(entity_instance.id, component.clone());
+            }
+        }
+        if let Some(properties) = properties {
+            for property in properties {
+                debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
+                entity_instance.set_no_propagate(property.name.clone(), property.value.clone());
+            }
         }
         // TODO: it's still not a transactional mutation
         entity_instance.tick();

@@ -1,4 +1,3 @@
-use std::ops::Deref;
 use std::sync::Arc;
 
 use async_graphql::*;
@@ -42,9 +41,8 @@ impl GraphQLEntityInstance {
     async fn label(&self) -> Option<String> {
         self.entity_instance
             .properties
-            .iter()
-            .find(|(property_name, _property_instance)| "label" == property_name.as_str())
-            .and_then(|(_property_name, property_instance)| property_instance.value.read().unwrap().deref().clone().as_str().map(String::from))
+            .get("label")
+            .and_then(|property_instance| property_instance.as_string())
     }
 
     /// The description of the entity instance.
@@ -66,13 +64,24 @@ impl GraphQLEntityInstance {
         self.entity_instance
             .properties
             .iter()
-            .filter(|(property_name, _property_instance)| name.is_none() || name.clone().unwrap() == property_name.deref().clone())
-            .filter(|(property_name, _property_instance)| names.is_none() || names.clone().unwrap().contains(property_name))
-            .map(|(property_name, property_instance)| {
-                let value = property_instance.value.read().unwrap().deref().clone();
-                GraphQLPropertyInstance::new_entity_property(self.entity_instance.type_name.clone(), property_name.clone(), value)
+            .filter(|property_instance| name.is_none() || name.clone().unwrap().as_str() == property_instance.key().as_str())
+            .filter(|property_instance| names.is_none() || names.clone().unwrap().contains(property_instance.key()))
+            .map(|property_instance| {
+                GraphQLPropertyInstance::new_entity_property(self.entity_instance.type_name.clone(), property_instance.key().clone(), property_instance.get())
             })
             .collect()
+    }
+
+    /// List of components which have been actually applied on the entity instance including
+    /// components which have been added after creation.
+    async fn components(&self) -> Vec<String> {
+        self.entity_instance.components.iter().map(|p| p.key().clone()).collect()
+    }
+
+    /// List of behaviours which have been actually applied on the entity instance including
+    /// behaviours which have been applied after creation.
+    async fn behaviours(&self) -> Vec<String> {
+        self.entity_instance.behaviours.iter().map(|p| p.key().clone()).collect()
     }
 
     /// List of relation instances which starts at this entity instance.

@@ -9,21 +9,29 @@ use log::{debug, error, warn};
 use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
+use crate::api::EntityTypeManager;
+use crate::api::Lifecycle;
+use crate::api::RelationTypeImportError;
 use crate::api::RelationTypeManager;
-use crate::api::{EntityTypeManager, Lifecycle, RelationTypeImportError};
-use crate::model::{Extension, PropertyType, RelationType};
+use crate::api::SystemEvent;
+use crate::api::SystemEventManager;
+use crate::model::Extension;
+use crate::model::PropertyType;
+use crate::model::RelationType;
 use crate::plugins::RelationTypeProvider;
 
 #[wrapper]
 pub struct RelationTypes(RwLock<std::vec::Vec<RelationType>>);
 
 #[provides]
-fn create_external_type_dependency() -> RelationTypes {
+fn create_relation_type_storage() -> RelationTypes {
     RelationTypes(RwLock::new(std::vec::Vec::new()))
 }
 
 #[component]
 pub struct RelationTypeManagerImpl {
+    event_manager: Wrc<dyn SystemEventManager>,
+
     component_manager: Wrc<dyn ComponentManager>,
 
     entity_type_manager: Wrc<dyn EntityTypeManager>,
@@ -67,7 +75,9 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             }
         }
 
+        let event = SystemEvent::RelationTypeCreated(relation_type.type_name.clone());
         self.relation_types.0.write().unwrap().push(relation_type);
+        self.event_manager.emit_event(event);
         // TODO: Result
     }
 
@@ -132,7 +142,6 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         type_name: String,
         inbound_type: String,
         components: Vec<String>,
-        behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) {
@@ -140,19 +149,22 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             outbound_type,
             type_name,
             inbound_type,
+            String::new(),
+            String::new(),
             components.to_vec(),
-            behaviours.to_vec(),
             properties.to_vec(),
             extensions.to_vec(),
         ));
     }
 
     fn delete(&self, type_name: String) {
+        let event = SystemEvent::RelationTypeDeleted(type_name.clone());
         self.relation_types
             .0
             .write()
             .unwrap()
             .retain(|relation_type| relation_type.type_name != type_name);
+        self.event_manager.emit_event(event);
     }
 
     fn import(&self, path: String) -> Result<RelationType, RelationTypeImportError> {
@@ -186,6 +198,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
 
 impl Lifecycle for RelationTypeManagerImpl {
     fn init(&self) {}
+
+    fn post_init(&self) {}
+
+    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         // TODO: remove?

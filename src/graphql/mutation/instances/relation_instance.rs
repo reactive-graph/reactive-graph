@@ -71,7 +71,14 @@ impl MutationRelationInstances {
     }
 
     /// Updates the properties of the given relation instance by edge key.
-    async fn update(&self, context: &Context<'_>, edge_key: GraphQLEdgeKey, properties: Vec<GraphQLPropertyInstance>) -> Result<GraphQLRelationInstance> {
+    async fn update(
+        &self,
+        context: &Context<'_>,
+        edge_key: GraphQLEdgeKey,
+        #[graphql(desc = "Adds the components with the given name")] add_components: Option<Vec<String>>,
+        #[graphql(desc = "Removes the components with the given name")] remove_components: Option<Vec<String>>,
+        #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
+    ) -> Result<GraphQLRelationInstance> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
@@ -95,9 +102,21 @@ impl MutationRelationInstances {
         }
         let relation_instance = relation_instance.unwrap();
 
-        for property in properties {
-            debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
-            relation_instance.set_no_propagate(property.name.clone(), property.value.clone());
+        if let Some(components) = add_components {
+            for component in components {
+                relation_instance_manager.add_component(edge_key.clone().into(), component.clone());
+            }
+        }
+        if let Some(components) = remove_components {
+            for component in components {
+                relation_instance_manager.remove_component(edge_key.clone().into(), component.clone());
+            }
+        }
+        if let Some(properties) = properties {
+            for property in properties {
+                debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
+                relation_instance.set_no_propagate(property.name.clone(), property.value.clone());
+            }
         }
         // TODO: it's still not a transactional mutation
         relation_instance.tick();

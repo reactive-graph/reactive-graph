@@ -1,0 +1,14 @@
+query getAllEntityInstancesThatBehavesAs {
+  instances {
+    behavesAs: entities(behaviours: "debug_value") {
+      id
+      label
+      components
+      behaviours
+      properties(name: "event") {
+        name
+        value
+      }
+    }
+  }
+}

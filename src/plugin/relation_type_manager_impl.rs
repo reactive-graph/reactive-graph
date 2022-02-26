@@ -43,12 +43,11 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         type_name: String,
         inbound_type: String,
         components: Vec<String>,
-        behaviours: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) {
         self.relation_type_manager
-            .create(outbound_type, type_name, inbound_type, components, behaviours, properties, extensions)
+            .create(outbound_type, type_name, inbound_type, components, properties, extensions)
     }
 
     fn delete(&self, type_name: String) {
