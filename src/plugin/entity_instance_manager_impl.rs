@@ -2,6 +2,7 @@ use crate::api::{EntityTypeManager, ReactiveEntityInstanceManager};
 use crate::model::{EntityInstance, ReactiveEntityInstance};
 use crate::plugins::entity_instance_manager::EntityInstanceCreationError;
 use crate::plugins::EntityInstanceManager;
+use std::collections::HashMap;
 use std::sync::Arc;
 use uuid::Uuid;
 
@@ -29,6 +30,10 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
 
     fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
         self.reactive_entity_instance_manager.get_by_label(label)
+    }
+
+    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
+        self.reactive_entity_instance_manager.get_by_label_with_params(label)
     }
 
     fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>> {
