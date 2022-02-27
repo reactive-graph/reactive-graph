@@ -11,7 +11,6 @@ use log::{debug, error};
 use path_tree::PathTree;
 use uuid::Uuid;
 
-use crate::api::SystemEventManager;
 use crate::api::FlowManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceManager;
@@ -20,6 +19,7 @@ use crate::api::ReactiveFlowImportError;
 use crate::api::ReactiveFlowManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::SystemEvent;
+use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::model::Flow;
 use crate::model::PropertyInstanceGetter;
@@ -172,7 +172,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                     relation_instances.insert(edge_key.clone(), relation_instance.clone());
                 }
             } // Drop rwlock
-            self.register_flow(reactive_flow.clone());
+            self.register_flow(reactive_flow);
         }
     }
 
