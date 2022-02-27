@@ -208,8 +208,8 @@ impl Application for ApplicationImpl {
         let _graphql_server_stop_result = graphql_server_stop_sender.send(());
 
         // Be sure that the GraphQL server thread is gone
-        if thread_handle.is_ok() {
-            let _joined = thread_handle.unwrap().join();
+        if let Ok(thread_handle) = thread_handle {
+            let _joined = thread_handle.join();
         }
         info!("Bye.");
     }
