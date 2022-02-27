@@ -196,11 +196,6 @@ impl GraphQLServer for GraphQLServerImpl {
                 .service(crate::rest::types::entities::get_entity_type)
                 .service(crate::rest::types::relations::get_relation_types)
                 .service(crate::rest::types::relations::get_relation_type)
-                // TODO: query instances
-                // TODO: modify types
-                // TODO: modify instances
-                // TODO: query flows
-                // TODO: modify flows
                 // Web Resource API
                 .service(web::resource("/{web_resource_base_path}/{path:.*}").route(web::get().to(handle_web_resource)))
         })
