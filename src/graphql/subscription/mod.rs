@@ -45,7 +45,7 @@ impl InexorSubscription {
                             return Err("Error: property by name not found".into());
                         }
                         let type_name = entity_instance.type_name.clone();
-                        let mut stream = EntityPropertyInstanceStream::new(entity_instance.clone(), property_name.clone());
+                        let mut stream = EntityPropertyInstanceStream::new(entity_instance, property_name.clone());
 
                         Ok(async_stream::stream! {
                             loop {
