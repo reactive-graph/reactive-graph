@@ -114,8 +114,7 @@ fn convert_request(request: HttpRequest) -> Request<HttpBody> {
             headers_map.insert(header_name, header_value.clone());
         });
     }
-    let http_request = request_builder.body(HttpBody::None).unwrap();
-    http_request
+    request_builder.body(HttpBody::None).unwrap()
 }
 
 fn convert_response(response: Response<HttpBody>) -> HttpResponse {
@@ -129,8 +128,8 @@ fn convert_response(response: Response<HttpBody>) -> HttpResponse {
     response_builder.body(match response.into_body() {
         HttpBody::None => BoxBody::new(()),
         HttpBody::Binary(bytes) => BoxBody::new(bytes),
-        HttpBody::Json(value) => BoxBody::new(serde_json::to_string(&value).unwrap_or(String::default())),
-        HttpBody::PlainText(content) => BoxBody::new(content.clone()),
+        HttpBody::Json(value) => BoxBody::new(serde_json::to_string(&value).unwrap_or_default()),
+        HttpBody::PlainText(content) => BoxBody::new(content),
     })
 }
 
@@ -186,7 +185,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_manager = web::Data::new(self.flow_manager.clone());
         let web_resource_manager = web::Data::new(self.web_resource_manager.clone());
-        let schema_data = web::Data::new(schema.clone());
+        let schema_data = web::Data::new(schema);
 
         let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
