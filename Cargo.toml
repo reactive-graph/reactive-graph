@@ -31,7 +31,7 @@ actix = "0.12"
 actix-cors = "0.6"
 actix-http = "3.0"
 actix-rt = "2.6"
-actix-web = { version = "4.0" } #, features = ["openssl"]
+actix-web = { version = "4.0", features = ["rustls"] }
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "3.0", features = ["uuid"] }
 async-graphql-actix-web = { version = "3.0" }
@@ -50,6 +50,8 @@ log4rs = { version = "1.0", features = ["console_appender", "file_appender", "to
 mime = "0.3"
 path-tree = "0.2"
 rand = "0.8"
+rustls = "0.20"
+rustls-pemfile = "0.3"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 signal-hook = "0.3.13"

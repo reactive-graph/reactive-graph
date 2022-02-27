@@ -1,3 +1,5 @@
+use std::fs::File;
+use std::io::BufReader;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
 use std::sync::mpsc::Receiver;
@@ -21,6 +23,11 @@ use log::debug;
 use log::error;
 use log::info;
 use log::warn;
+use rustls::Certificate;
+use rustls::PrivateKey;
+use rustls::ServerConfig;
+use rustls_pemfile::certs;
+use rustls_pemfile::pkcs8_private_keys;
 use serde::Deserialize;
 
 use crate::api::ComponentManager;
@@ -229,8 +236,26 @@ impl GraphQLServer for GraphQLServerImpl {
             http_server = http_server.workers(graphql_server_config.workers.unwrap());
         }
 
-        debug!("Starting HTTP/GraphQL server on {}", graphql_server_config.to_string());
-        let r_http_server = http_server.bind(graphql_server_config.to_string());
+        let r_http_server = if graphql_server_config.secure.unwrap_or(false) {
+            let cert_file = &mut BufReader::new(File::open("./keys/cert.pem").unwrap());
+            let key_file = &mut BufReader::new(File::open("./keys/key.pem").unwrap());
+            let cert_chain = certs(cert_file).unwrap().into_iter().map(Certificate).collect();
+            let mut keys: Vec<PrivateKey> = pkcs8_private_keys(key_file).unwrap().into_iter().map(PrivateKey).collect();
+            if keys.is_empty() {
+                error!("Could not locate PKCS 8 private keys.");
+            }
+            let tls_config = ServerConfig::builder()
+                .with_safe_defaults()
+                .with_no_client_auth()
+                .with_single_cert(cert_chain, keys.remove(0))
+                .unwrap();
+            debug!("Starting HTTP/GraphQL server on https://{}", graphql_server_config.to_string());
+            http_server.bind_rustls(graphql_server_config.to_string(), tls_config)
+        } else {
+            debug!("Starting HTTP/GraphQL server on http://{}", graphql_server_config.to_string());
+            http_server.bind(graphql_server_config.to_string())
+        };
+
         if r_http_server.is_err() {
             error!("Could not start HTTP/GraphQL server: Failed to bind {}", graphql_server_config.to_string());
             return;

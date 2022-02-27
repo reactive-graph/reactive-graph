@@ -5,6 +5,10 @@
       "InexorReactiveGraphFlow@localhost": {
         "url": "http://localhost:31415/graphql",
         "introspect": true
+      },
+      "InexorReactiveGraphFlow@https": {
+        "url": "https://localhost:31415/graphql",
+        "introspect": true
       }
     }
   },

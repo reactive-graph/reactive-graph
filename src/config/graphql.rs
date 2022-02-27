@@ -6,6 +6,7 @@ use serde::Serialize;
 pub struct GraphSqlServerConfig {
     pub hostname: String,
     pub port: i32,
+    pub secure: Option<bool>,
     pub shutdown_timeout: Option<u64>,
     pub workers: Option<usize>,
     pub default_base_path: Option<String>,
@@ -16,6 +17,7 @@ impl Default for GraphSqlServerConfig {
         GraphSqlServerConfig {
             hostname: String::from("localhost"),
             port: 31415,
+            secure: None,
             shutdown_timeout: None,
             workers: None,
             default_base_path: None,
