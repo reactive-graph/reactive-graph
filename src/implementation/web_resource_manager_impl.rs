@@ -13,6 +13,7 @@ use crate::plugins::WebResourceProvider;
 pub struct WebResourceProviders(RwLock<HashMap<String, Arc<dyn WebResourceProvider>>>);
 
 pub struct WebResourceManagerImpl {
+    default_base_path: RwLock<Option<String>>,
     web_resource_providers: WebResourceProviders,
 }
 
@@ -21,6 +22,7 @@ impl WebResourceManagerImpl {
     #[provides]
     fn new() -> Self {
         Self {
+            default_base_path: RwLock::new(None),
             web_resource_providers: WebResourceProviders(RwLock::new(HashMap::new())),
         }
     }
@@ -37,6 +39,15 @@ impl WebResourceManager for WebResourceManagerImpl {
         self.web_resource_providers.0.read().unwrap().get(base_path.as_str()).cloned()
     }
 
+    fn get_default(&self) -> Option<Arc<dyn WebResourceProvider>> {
+        self.get_default_base_path()
+            .and_then(|default_base_path| self.web_resource_providers.0.read().unwrap().get(default_base_path.as_str()).cloned())
+    }
+
+    fn get_default_base_path(&self) -> Option<String> {
+        self.default_base_path.read().unwrap().clone()
+    }
+
     fn add_provider(&self, web_resource_provider: Arc<dyn WebResourceProvider>) {
         let base_path: String = web_resource_provider.get_base_path();
         debug!("Registering web resource provider with base path: {}", base_path);
@@ -45,7 +56,13 @@ impl WebResourceManager for WebResourceManagerImpl {
 }
 
 impl Lifecycle for WebResourceManagerImpl {
-    fn init(&self) {}
+    fn init(&self) {
+        let graphql_server_config = crate::config::graphql::get_graphql_server_config();
+        if let Some(default_base_path) = graphql_server_config.default_base_path {
+            let mut writer = self.default_base_path.write().unwrap();
+            writer.replace(default_base_path);
+        }
+    }
 
     fn post_init(&self) {}
 

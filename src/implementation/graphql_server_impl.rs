@@ -1,28 +1,43 @@
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering;
 use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
-use crate::di::*;
 use actix_cors::Cors;
 use actix_http::body::BoxBody;
 use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpResponseBuilder, HttpServer, Result};
 use async_graphql::Schema;
-use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse, GraphQLSubscription};
+use async_graphql_actix_web::GraphQLRequest;
+use async_graphql_actix_web::GraphQLResponse;
+use async_graphql_actix_web::GraphQLSubscription;
 use async_std::task;
 use async_trait::async_trait;
 use http::header::CONTENT_TYPE;
-use http::{Request, Response};
-use inexor_rgf_core_plugins::HttpBody;
-use log::{debug, error, info, warn};
-use serde::{Deserialize, Serialize};
+use http::Request;
+use http::Response;
+use log::debug;
+use log::error;
+use log::info;
+use log::warn;
+use serde::Deserialize;
 
-use crate::api::{
-    ComponentManager, EntityTypeManager, GraphQLServer, Lifecycle, ReactiveEntityInstanceManager, ReactiveFlowManager, ReactiveRelationInstanceManager,
-    RelationTypeManager, WebResourceManager,
-};
-use crate::graphql::{InexorMutation, InexorQuery, InexorSchema, InexorSubscription};
+use crate::api::ComponentManager;
+use crate::api::EntityTypeManager;
+use crate::api::GraphQLServer;
+use crate::api::Lifecycle;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveFlowManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationTypeManager;
+use crate::api::WebResourceManager;
+use crate::di::*;
+use crate::graphql::InexorMutation;
+use crate::graphql::InexorQuery;
+use crate::graphql::InexorSchema;
+use crate::graphql::InexorSubscription;
+use crate::plugins::HttpBody;
 
 #[component]
 pub struct GraphQLServerImpl {
@@ -79,7 +94,13 @@ pub async fn handle_web_resource(
             Ok(response) => convert_response(response),
             Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
         },
-        None => HttpResponse::NotFound().body(format!("404 Not Found: {}", uri)),
+        None => match web_resource_manager.get_default() {
+            Some(web_resource) => match web_resource.handle_web_resource(format!("{}/{}", base_path, path), http_request) {
+                Ok(response) => convert_response(response),
+                Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
+            },
+            None => HttpResponse::NotFound().body(format!("404 Not Found: {}", uri)),
+        },
     }
 }
 
@@ -169,7 +190,7 @@ impl GraphQLServer for GraphQLServerImpl {
 
         let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
-        let graphql_server_config = get_graphql_server_config();
+        let graphql_server_config = crate::config::graphql::get_graphql_server_config();
 
         let mut http_server = HttpServer::new(move || {
             App::new()
@@ -263,47 +284,4 @@ impl Lifecycle for GraphQLServerImpl {
     fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {}
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-pub struct GraphSqlServerConfig {
-    pub hostname: String,
-    pub port: i32,
-    pub shutdown_timeout: Option<u64>,
-    pub workers: Option<usize>,
-}
-
-impl Default for GraphSqlServerConfig {
-    fn default() -> Self {
-        GraphSqlServerConfig {
-            hostname: String::from("localhost"),
-            port: 31415,
-            shutdown_timeout: None,
-            workers: None,
-        }
-    }
-}
-
-impl ToString for GraphSqlServerConfig {
-    fn to_string(&self) -> String {
-        format!("{}:{}", self.hostname, self.port)
-    }
-}
-
-fn get_graphql_server_config() -> GraphSqlServerConfig {
-    // TODO: resolve config file from CONFIG_LOCATION(s)
-    let toml_config = std::fs::read_to_string("./config/graphql.toml");
-    match toml_config {
-        Ok(toml_string) => {
-            let graphql_server_config: Result<GraphSqlServerConfig, _> = toml::from_str(&toml_string);
-            if graphql_server_config.is_err() {
-                error!("Failed to load graphql configuration from {}: Invalid TOML", "./config/graphql.toml");
-            }
-            graphql_server_config.unwrap_or_default()
-        }
-        Err(_) => {
-            error!("Failed to load graphql configuration from {}: File does not exist", "./config/graphql.toml");
-            GraphSqlServerConfig::default()
-        }
-    }
 }

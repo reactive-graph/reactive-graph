@@ -10,3 +10,6 @@ shutdown_timeout = 3
 # Set number of workers to start.
 # The default worker count is the number of physical CPU cores available.
 workers = 16
+
+# Web resource provider which is the base
+#default_base_path = "binary"

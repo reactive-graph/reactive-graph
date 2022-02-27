@@ -22,6 +22,7 @@ use std::time::Duration;
 
 mod api;
 mod application;
+mod config;
 mod graphql;
 mod implementation;
 mod plugin;
