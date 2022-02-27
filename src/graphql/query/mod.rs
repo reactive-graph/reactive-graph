@@ -47,7 +47,7 @@ impl InexorQuery {
             }
             if label.is_some() {
                 let flow = flow_manager.get_by_label(label.unwrap()).map(|flow| {
-                    let flow: GraphQLFlow = flow.clone().into();
+                    let flow: GraphQLFlow = flow.into();
                     flow
                 });
                 return if flow.is_some() { vec![flow.unwrap()] } else { Vec::new() };
