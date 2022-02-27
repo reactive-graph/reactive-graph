@@ -142,37 +142,52 @@
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">[Unreleased]</a></h2>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>Documentation: Added initial documentation as book (using mdBook)</li>
 <li>GraphQL: Navigate from components to entity types and to relation types</li>
 <li>GraphQL: Navigate from a property instance to the property type</li>
 <li>GraphQL: Shortcut labels</li>
 <li>GraphQL: Filter flows by flow type</li>
-</ul>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
-<ul>
-<li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
-<li>Make extensions a separate type (used in components, entity types and relation types)</li>
-<li>GraphQL: Rename type_name to type</li>
-<li>GraphQL: Stream property instances in subscriptions instead of handcrafted JSONs</li>
-<li>Documentation: Convert code of conduct to markdown</li>
-<li>Documentation: Moved changelog into book</li>
-</ul>
-<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
-<h2 id="050---2021-01-20"><a class="header" href="#050---2021-01-20">[0.5.0] - 2021-01-20</a></h2>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
-<ul>
-<li>Extended plugin API (find, import &amp; export)</li>
-<li>Search for type names with wildcards</li>
+<li>GraphQL: Get flow by label</li>
+<li>GraphQL: Search instances by property value</li>
+<li>GraphQL: Added method to add/remove component to/from an existing instances</li>
+<li>GraphQL: Added filters for instances for applied components/behaviours</li>
+<li>Model: Components can have extensions</li>
+<li>Core: Provide required components and entity types in the application core</li>
+<li>Core: Event System for Type System and Instance System</li>
 </ul>
 <h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
+<li>GraphQL: Rename type_name to type</li>
+<li>GraphQL: Stream property instances in subscriptions instead of handcrafted JSONs</li>
+<li>GraphQL: Simplified label resolver</li>
+<li>GraphQL: Removed behaviour resolver from types</li>
+<li>Model: Make extensions a separate type (used in components, entity types and relation types)</li>
+<li>Model: Removed behaviours from types</li>
+<li>Model: Added list of applied components and behaviours to reactive instances</li>
+<li>Documentation: Convert code of conduct and changelog to markdown</li>
+<li>Documentation: Added code of conduct and changelog to book</li>
+</ul>
+<h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
+<h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<ul>
+<li>Plugin API: Added find, import &amp; export methods for all managers</li>
+<li>Core: Search for type names with wildcards</li>
+</ul>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
 </ul>
-<h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
+<h3 id="removed-2"><a class="header" href="#removed-2">Removed</a></h3>
 <ul>
-<li>Removed dependencies for faster builds and smaller binaries (#8): <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
+<li>Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
 </ul>
 
                     </main>

@@ -376,37 +376,52 @@ core application via the plugin API. Type system and reactive instance system ar
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">[Unreleased]</a></h2>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>Documentation: Added initial documentation as book (using mdBook)</li>
 <li>GraphQL: Navigate from components to entity types and to relation types</li>
 <li>GraphQL: Navigate from a property instance to the property type</li>
 <li>GraphQL: Shortcut labels</li>
 <li>GraphQL: Filter flows by flow type</li>
-</ul>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
-<ul>
-<li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
-<li>Make extensions a separate type (used in components, entity types and relation types)</li>
-<li>GraphQL: Rename type_name to type</li>
-<li>GraphQL: Stream property instances in subscriptions instead of handcrafted JSONs</li>
-<li>Documentation: Convert code of conduct to markdown</li>
-<li>Documentation: Moved changelog into book</li>
-</ul>
-<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
-<h2 id="050---2021-01-20"><a class="header" href="#050---2021-01-20">[0.5.0] - 2021-01-20</a></h2>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
-<ul>
-<li>Extended plugin API (find, import &amp; export)</li>
-<li>Search for type names with wildcards</li>
+<li>GraphQL: Get flow by label</li>
+<li>GraphQL: Search instances by property value</li>
+<li>GraphQL: Added method to add/remove component to/from an existing instances</li>
+<li>GraphQL: Added filters for instances for applied components/behaviours</li>
+<li>Model: Components can have extensions</li>
+<li>Core: Provide required components and entity types in the application core</li>
+<li>Core: Event System for Type System and Instance System</li>
 </ul>
 <h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
+<li>GraphQL: Rename type_name to type</li>
+<li>GraphQL: Stream property instances in subscriptions instead of handcrafted JSONs</li>
+<li>GraphQL: Simplified label resolver</li>
+<li>GraphQL: Removed behaviour resolver from types</li>
+<li>Model: Make extensions a separate type (used in components, entity types and relation types)</li>
+<li>Model: Removed behaviours from types</li>
+<li>Model: Added list of applied components and behaviours to reactive instances</li>
+<li>Documentation: Convert code of conduct and changelog to markdown</li>
+<li>Documentation: Added code of conduct and changelog to book</li>
+</ul>
+<h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
+<h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<ul>
+<li>Plugin API: Added find, import &amp; export methods for all managers</li>
+<li>Core: Search for type names with wildcards</li>
+</ul>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
 </ul>
-<h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
+<h3 id="removed-2"><a class="header" href="#removed-2">Removed</a></h3>
 <ul>
-<li>Removed dependencies for faster builds and smaller binaries (#8): <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
+<li>Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mit-license"><a class="header" href="#mit-license">MIT License</a></h1>
 <p>Copyright (c) 2021 by the Inexor Collective</p>
@@ -1207,6 +1222,17 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
+<div class="admonition info">
+<div class="admonition-title">
+<p>Error parsing JSON string: expected value at line 1 column 1</p>
+</div>
+<div>
+<ul>
+<li>UUIDs are unique and unique across distributed systems</li>
+<li>UUIDs can be represented as string and as a 128 bit unsigned integer</li>
+</ul>
+</div>
+</div>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
 <p>Labels are also unique, but optional. While UUIDs are hard to remember, labels are easier to remember. This allows
 entity instances to be addressed using labels, for example in GraphQL queries.</p>
@@ -1247,6 +1273,8 @@ label and transports significantly more information about what is actually happe
 <tr><td>Label</td><td>String (optional)</td><td>The label of the entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties of the entity instance</td></tr>
+<tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
+<tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
 <h2 id="graph-2"><a class="header" href="#graph-2">Graph</a></h2>
 <pre class="mermaid">graph LR;
@@ -1326,6 +1354,8 @@ defines which entity type the outbound entity type and which entity type the inb
 <tr><td>Inbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The inbound entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the relation instance</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties</td></tr>
+<tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
+<tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
 <h2 id="graph-3"><a class="header" href="#graph-3">Graph</a></h2>
 <pre class="mermaid">graph LR;
@@ -2555,22 +2585,30 @@ REFUGNO9zL0NglAAxPEfdLTs4BZM4DIO4C7OwQg2JoQ9LE1exdlYvBBeZ7jq
 ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
 vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </code></pre>
+<h2 id="components-2"><a class="header" href="#components-2">Components</a></h2>
+<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<tr><td>binary_data</td><td>data_url</td><td>string</td><td>none</td><td>Data-URL, BASE64 encoded</td></tr>
+</tbody></table>
 <h2 id="entity-types-2"><a class="header" href="#entity-types-2">Entity Types</a></h2>
 <p>Feed the streams with binary data from files.</p>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
-<tr><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>LoadBinary</td><td>filename</td><td>string</td><td>input</td><td>The filename to load the binary data from</td></tr>
-<tr><td></td><td>data</td><td>string</td><td>output</td><td>Data-URL, BASE64 encoded</td></tr>
-<tr><td>SaveBinary</td><td>filename</td><td>string</td><td>input</td><td>The filename to store the binary data into</td></tr>
-<tr><td></td><td>data</td><td>string</td><td>input</td><td>Data-URL, BASE64 encoded</td></tr>
+<table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>LoadBinary</td><td></td><td>filename</td><td>string</td><td>input</td><td>The filename to load the binary data from</td></tr>
+<tr><td></td><td>binary_data</td><td>data_url</td><td>string</td><td>output</td><td>Data-URL, BASE64 encoded</td></tr>
+<tr><td>SaveBinary</td><td></td><td>filename</td><td>string</td><td>input</td><td>The filename to store the binary data into</td></tr>
+<tr><td></td><td>binary_data</td><td>data_url</td><td>string</td><td>input</td><td>Data-URL, BASE64 encoded</td></tr>
 </tbody></table>
 <h2 id="web-resources"><a class="header" href="#web-resources">Web Resources</a></h2>
-<p>Download and upload binary resources via HTTP.</p>
-<table><thead><tr><th>HTTP Method</th><th>Resource Pattern</th><th>HTTP Header(s)</th><th>Description</th></tr></thead><tbody>
-<tr><td>GET</td><td>/entities/{uuid}/properties/{name}</td><td>Accept: image/png</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
-<tr><td>POST</td><td>/entities/{uuid}/properties/{name}</td><td>Content-Type: image/png</td><td>Converts the binary data into a Data-URL and stores it into the given property</td></tr>
+<p>Download binary resources via HTTP.</p>
+<table><thead><tr><th>HTTP Method</th><th>Resource Pattern</th><th>Description</th></tr></thead><tbody>
+<tr><td>GET</td><td>/binary/entities/{uuid}/{property_name}</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
+<tr><td>GET</td><td>/binary//entities/label/*label</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
 </tbody></table>
-<p>Alternative using GraphQL: A web application encodes the binary data to BASE64 and create a Data-URL. Then it sends a mutation query for the given property.</p>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<table><thead><tr><th>Request</th><th>Entity Instance</th><th>Property Name</th></tr></thead><tbody>
+<tr><td><code>GET /binary/entity/dce4bd25-7b25-4a6a-8567-5429a2b3a101/data_url</code></td><td>id=<code>dce4bd25-7b25-4a6a-8567-5429a2b3a101</code></td><td><code>data_url</code></td></tr>
+<tr><td><code>GET /binary/entity/label/org/inexor/logo/data_url</code></td><td>label=<code>/org/inexor/logo/{:property}</code></td><td><code>data_url</code></td></tr>
+</tbody></table>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
 <table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
 <tr><td>inexor-rgf-plugin-binary</td><td>https://github.com/aschaeffer/inexor-rgf-plugin-binary</td></tr>
@@ -2580,7 +2618,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
-<h4 id="components-2"><a class="header" href="#components-2">Components</a></h4>
+<h4 id="components-3"><a class="header" href="#components-3">Components</a></h4>
 <table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>comparison_gate</td><td>lhs</td><td>any</td><td>input</td></tr>
 <tr><td></td><td>rhs</td><td>any</td><td>input</td></tr>
@@ -2706,7 +2744,7 @@ the names of the output property and the input property.</p>
 effect (yet). You have to remove the old connector and recreate a new connector.</li>
 </ol>
 <hr />
-<h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
+<h2 id="components-4"><a class="header" href="#components-4">Components</a></h2>
 <table><thead><tr><th>Name</th><th>Description</th><th>Property</th><th>DataType</th></tr></thead><tbody>
 <tr><td>connector</td><td>Connects two properties</td><td>outbound_property_name</td><td>string</td></tr>
 <tr><td></td><td></td><td>inbound_property_name</td><td>string</td></tr>
@@ -3534,7 +3572,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td>inexor-rgf-plugin-json</td><td>https://github.com/aschaeffer/inexor-rgf-plugin-json</td></tr>
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-string"><a class="header" href="#plugin-string">Plugin: String</a></h1>
-<h2 id="components-4"><a class="header" href="#components-4">Components</a></h2>
+<h2 id="components-5"><a class="header" href="#components-5">Components</a></h2>
 <table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>StringOperation</td><td>lhs</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>string</td><td>output</td></tr>
@@ -4112,6 +4150,14 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 <h3 id="linux--raspberry-pi--macos"><a class="header" href="#linux--raspberry-pi--macos">Linux / Raspberry Pi / MacOS</a></h3>
 <pre><code class="language-shell">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
+<div class="admonition info">
+<div class="admonition-title">
+<p>Rustup</p>
+</div>
+<div>
+<p><a href="https://rustup.rs/">rustup</a> is an installer for the systems programming language Rust.</p>
+</div>
+</div>
 <h3 id="windows-2"><a class="header" href="#windows-2">Windows</a></h3>
 <p>Please follow the instructions for <a href="https://rust-lang.github.io/rustup/installation/other.html">Installing rustup on Windows</a></p>
 <h2 id="install-nightly-toolchain"><a class="header" href="#install-nightly-toolchain">Install nightly toolchain</a></h2>
@@ -4130,6 +4176,16 @@ cargo build
 <pre><code class="language-shell">cd inexor-rgf-application
 cargo build --release
 </code></pre>
+<div class="admonition info">
+<div class="admonition-title">
+<p>Cargo</p>
+</div>
+<div>
+<p><a href="https://doc.rust-lang.org/cargo/index.html">Cargo</a> is the Rust package manager. Cargo downloads your Rust package's
+dependencies, compiles your packages, makes distributable packages, and uploads them to <a href="https://crates.io">crates.io</a>,
+the Rust community’s package registry.</p>
+</div>
+</div>
 <h2 id="run-the-application"><a class="header" href="#run-the-application">Run the application</a></h2>
 <pre><code class="language-shell">cargo run
 </code></pre>

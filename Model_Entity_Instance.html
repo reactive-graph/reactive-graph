@@ -146,6 +146,17 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
+<div class="admonition info">
+<div class="admonition-title">
+<p>Error parsing JSON string: expected value at line 1 column 1</p>
+</div>
+<div>
+<ul>
+<li>UUIDs are unique and unique across distributed systems</li>
+<li>UUIDs can be represented as string and as a 128 bit unsigned integer</li>
+</ul>
+</div>
+</div>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
 <p>Labels are also unique, but optional. While UUIDs are hard to remember, labels are easier to remember. This allows
 entity instances to be addressed using labels, for example in GraphQL queries.</p>
@@ -186,6 +197,8 @@ label and transports significantly more information about what is actually happe
 <tr><td>Label</td><td>String (optional)</td><td>The label of the entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties of the entity instance</td></tr>
+<tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
+<tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
 <h2 id="graph"><a class="header" href="#graph">Graph</a></h2>
 <pre class="mermaid">graph LR;
