@@ -9,8 +9,8 @@ use async_trait::async_trait;
 use log::{debug, error};
 use wildmatch::WildMatch;
 
-use crate::api::SystemEventManager;
 use crate::api::Lifecycle;
+use crate::api::SystemEventManager;
 use crate::api::{ComponentManager, SystemEvent};
 use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
@@ -53,7 +53,7 @@ impl ComponentManager for ComponentManagerImpl {
     fn register(&self, component: crate::model::Component) {
         if !self.has(component.name.clone()) {
             let name = component.name.clone();
-            debug!("Registered component {}", name.clone());
+            debug!("Registered component {}", name);
             self.components.0.write().unwrap().push(component);
             self.event_manager.emit_event(SystemEvent::ComponentCreated(name));
         }
