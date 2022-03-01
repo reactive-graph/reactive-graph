@@ -1,5 +1,4 @@
 #![feature(unsized_tuple_coercion)]
-#![feature(in_band_lifetimes)]
 #![feature(concat_idents)]
 #![feature(register_tool)]
 #![feature(derive_default_enum)]
