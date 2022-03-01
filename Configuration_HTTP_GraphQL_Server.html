@@ -154,6 +154,10 @@ port = 31415
 reachable from outside.</p>
 </div>
 </div>
+<h2 id="secure-connections-httpswss"><a class="header" href="#secure-connections-httpswss">Secure connections (HTTPS/WSS)</a></h2>
+<p>Enable HTTPS/WSS:</p>
+<pre><code class="language-toml">secure = true
+</code></pre>
 <h2 id="shutdown-timeout"><a class="header" href="#shutdown-timeout">Shutdown timeout</a></h2>
 <p>The following setting Timeout for graceful worker shutdown in seconds.</p>
 <p>After receiving a stop signal, workers have this much time to finish serving requests. Workers
@@ -173,6 +177,25 @@ still alive after the timeout are force dropped. By default, shutdown timeout is
 number of physical CPU cores available.</p>
 <pre><code class="language-toml">workers = 16
 </code></pre>
+<h2 id="web-resource-provider-which-is-the-base"><a class="header" href="#web-resource-provider-which-is-the-base">Web resource provider which is the base</a></h2>
+<p>Plugins can provide web resources using a web resource provider. The URLs are prefixed with the name
+of the web resource provider. For example, the plugin <code>binary</code> provides a <code>WebResourceProvider</code> with
+the base path <code>binary</code>. Therefore, the URL starts with <code>http(s)://hostname:31415/binary/</code>. </p>
+<p>The <code>default_base_path</code> defines which web resource provider is the default by its base path. This
+means that the URL <code>https://hostname:31415/entities/uuid/property_name</code> will be handled by the
+WebResourceProvider binary and is doing the same as
+<code>https://hostname:31415/binary/entities/uuid/property_name</code>.</p>
+<pre><code class="language-toml">default_base_path = &quot;binary&quot;
+</code></pre>
+<div class="admonition tip">
+<div class="admonition-title">
+<p>Default Base Path</p>
+</div>
+<div>
+<p>In particular, this is very useful for web applications which shall handle the root URL:
+https://hostname:31415/</p>
+</div>
+</div>
 
                     </main>
 
