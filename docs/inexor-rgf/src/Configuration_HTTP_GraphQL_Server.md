@@ -48,11 +48,12 @@ number of physical CPU cores available.
 workers = 16
 ```
 
-## Web resource provider which is the base
+## Default web resource provider
 
-Plugins can provide web resources using a web resource provider. The URLs are prefixed with the name
-of the web resource provider. For example, the plugin `binary` provides a `WebResourceProvider` with
-the base path `binary`. Therefore, the URL starts with `http(s)://hostname:31415/binary/`. 
+Plugins can provide web resources using a [WebResourceProvider](./Plugin_System_Web_Resource_Provider.md).
+The URLs are prefixed with the base path of the web resource provider. For example, the plugin
+`binary` provides a `WebResourceProvider` with the base path `binary`. Therefore, the URL starts
+with `http(s)://hostname:31415/binary/`.
 
 The `default_base_path` defines which web resource provider is the default by its base path. This
 means that the URL `https://hostname:31415/entities/uuid/property_name` will be handled by the
