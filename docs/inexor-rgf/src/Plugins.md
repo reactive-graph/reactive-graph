@@ -10,6 +10,7 @@
 | [Config](./Plugins_Config.md)                                             | Load configuration files                   |
 | [Connector](./Plugins_Connector.md)                                       | Provides property connectors               |
 | [GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md) | Visualization of the GraphQL schema        |
+| [HTTP](./Plugins_HTTP.md)                                                 | HTTP and JSONRPC                           |
 | [Input Device](./Plugins_Input_Device.md)                                 | Input device handling                      |
 | [JSON](./Plugins_JSON.md)                                                 | Handles JSON arrays and objects            |
 | [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
