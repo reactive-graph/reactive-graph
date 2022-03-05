@@ -36,6 +36,6 @@ This plugin provides arithmetic gates and operations.
 
 ## Repository
 
-| Name                         | Repository                                                 |
-|------------------------------|------------------------------------------------------------|
-| inexor-rgf-plugin-arithmetic | https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic |
+| Name                         | Repository                                                                                                               |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-arithmetic | [https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic](https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic) |

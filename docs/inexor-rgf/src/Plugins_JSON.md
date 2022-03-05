@@ -46,6 +46,6 @@ makes it also necessary to unpack or pack these data in order to operate with it
 
 ## Repository
 
-| Name                   | Repository                                           |
-|------------------------|------------------------------------------------------|
-| inexor-rgf-plugin-json | https://github.com/aschaeffer/inexor-rgf-plugin-json |
+| Name                   | Repository                                                                                                   |
+|------------------------|--------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-json | [https://github.com/aschaeffer/inexor-rgf-plugin-json](https://github.com/aschaeffer/inexor-rgf-plugin-json) |

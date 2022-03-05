@@ -33,9 +33,9 @@ With this plugin it's possible to integrate external services into your home aut
 
 ## Repository
 
-| Name                   | Repository                                           |
-|------------------------|------------------------------------------------------|
-| inexor-rgf-plugin-http | https://github.com/aschaeffer/inexor-rgf-plugin-http |
+| Name                   | Repository                                                                                                   |
+|------------------------|--------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-http | [https://github.com/aschaeffer/inexor-rgf-plugin-http](https://github.com/aschaeffer/inexor-rgf-plugin-http) |
 
 ## Usage
 

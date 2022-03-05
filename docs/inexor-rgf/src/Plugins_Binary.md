@@ -65,9 +65,9 @@ Download binary resources via HTTP.
 
 ## Repository
 
-| Name                     | Repository                                             |
-|--------------------------|--------------------------------------------------------|
-| inexor-rgf-plugin-binary | https://github.com/aschaeffer/inexor-rgf-plugin-binary |
+| Name                     | Repository                                                                                                       |
+|--------------------------|------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-binary | [https://github.com/aschaeffer/inexor-rgf-plugin-binary](https://github.com/aschaeffer/inexor-rgf-plugin-binary) |
 
 ## Resources
 

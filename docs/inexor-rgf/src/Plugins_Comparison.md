@@ -29,6 +29,6 @@
 
 ## Repository
 
-| Name                         | Repository                                                 |
-|------------------------------|------------------------------------------------------------|
-| inexor-rgf-plugin-comparison | https://github.com/aschaeffer/inexor-rgf-plugin-comparison |
+| Name                         | Repository                                                                                                               |
+|------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-comparison | [https://github.com/aschaeffer/inexor-rgf-plugin-comparison](https://github.com/aschaeffer/inexor-rgf-plugin-comparison) |

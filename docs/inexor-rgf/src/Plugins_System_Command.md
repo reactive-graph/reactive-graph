@@ -145,6 +145,6 @@ mutation {
 
 ## Repository
 
-| Name                             | Repository                                                     |
-|----------------------------------|----------------------------------------------------------------|
-| inexor-rgf-plugin-system-command | https://github.com/aschaeffer/inexor-rgf-plugin-system-command |
+| Name                             | Repository                                                                                                                       |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-system-command | [https://github.com/aschaeffer/inexor-rgf-plugin-system-command](https://github.com/aschaeffer/inexor-rgf-plugin-system-command) |

@@ -25,9 +25,9 @@ Generate random numbers
 
 ## Repository
 
-| Name                     | Repository                                             |
-|--------------------------|--------------------------------------------------------|
-| inexor-rgf-plugin-random | https://github.com/aschaeffer/inexor-rgf-plugin-random |
+| Name                     | Repository                                                                                                       |
+|--------------------------|------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-random | [https://github.com/aschaeffer/inexor-rgf-plugin-random](https://github.com/aschaeffer/inexor-rgf-plugin-random) |
 
 ## Usage
 

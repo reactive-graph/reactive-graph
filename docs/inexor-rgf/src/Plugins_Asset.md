@@ -10,6 +10,6 @@
 
 ## Repository
 
-| Name                    | Repository                                            |
-|-------------------------|-------------------------------------------------------|
-| inexor-rgf-plugin-asset | https://github.com/aschaeffer/inexor-rgf-plugin-asset |
+| Name                    | Repository                                                                                                     |
+|-------------------------|----------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-asset | [https://github.com/aschaeffer/inexor-rgf-plugin-asset](https://github.com/aschaeffer/inexor-rgf-plugin-asset) |
