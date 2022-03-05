@@ -96,11 +96,6 @@ name = "inexor-rgf-plugin-system-command"
 active = false
 path = "../inexor-rgf-plugin-system-command/target/debug/libinexor_rgf_plugin_system_command.so"
 
-[[plugin]]
-name = "inexor-rgf-plugin-wasm"
-active = false
-path = "../inexor-rgf-plugin-wasm/target/debug/libinexor_rgf_plugin_wasm.so"
-
 # Desktop only
 [[plugin]]
 name = "inexor-rgf-plugin-notification"
@@ -111,12 +106,6 @@ path = "../inexor-rgf-plugin-notification/target/debug/libinexor_rgf_plugin_noti
 name = "inexor-rgf-plugin-flow-manager"
 active = true
 path = "../inexor-rgf-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so"
-
-# Linux only
-[[plugin]]
-name = "inexor-rgf-plugin-fuse"
-active = false
-path = "../inexor-rgf-plugin-fuse/target/debug/libinexor_rgf_plugin_fuse.so"
 
 # Linux only + Desktop only
 [[plugin]]
@@ -129,10 +118,29 @@ name = "inexor-rgf-plugin-tray"
 active = false
 path = "../inexor-rgf-plugin-tray/target/debug/libinexor_rgf_plugin_tray.so"
 
+### Plugins in development
+
+
+[[plugin]]
+name = "inexor-rgf-plugin-graphql-schema-visualization"
+active = true
+path = "../inexor-rgf-plugin-graphql-schema-visualization/target/debug/libinexor_rgf_plugin_graphql_schema_visualization.so"
+
 [[plugin]]
 name = "inexor-rgf-plugin-flow-editor"
-active = true
+active = false
 path = "../inexor-rgf-plugin-flow-editor/target/debug/libinexor_rgf_plugin_flow_editor.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-wasm"
+active = false
+path = "../inexor-rgf-plugin-wasm/target/debug/libinexor_rgf_plugin_wasm.so"
+
+# Linux only
+[[plugin]]
+name = "inexor-rgf-plugin-fuse"
+active = false
+path = "../inexor-rgf-plugin-fuse/target/debug/libinexor_rgf_plugin_fuse.so"
 
 [[plugin]]
 name = "inexor-rgf-plugin-image-processing"
@@ -141,5 +149,5 @@ path = "../inexor-rgf-plugin-image-processing/target/debug/libinexor_rgf_plugin_
 
 [[plugin]]
 name = "inexor-rgf-plugin-asset"
-active = true
+active = false
 path = "../inexor-rgf-plugin-asset/target/debug/libinexor_rgf_plugin_asset.so"
