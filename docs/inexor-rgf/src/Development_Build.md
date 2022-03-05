@@ -64,6 +64,30 @@ or:
 cargo run --release
 ```
 
+## Checkout new version and rebuild
+
+1. Fetch the latest version from git:
+    ```shell
+    git pull
+    ```
+2. (Optional) If you want a completely clean build 
+    ```shell
+    cargo clean
+    ```
+3. Update dependencies    
+    ```shell
+    cargo update
+    ```
+4. Build the application
+    ```shell
+    cargo build
+    ```
+5. Repeat this for all plugins
+
+```admonish warning "Plugin API version must match"
+The application and the plugins must be compiled with the same version of the Plugin API!
+```
+
 ## Build plugins
 
 ### Checkout and build the plugin
