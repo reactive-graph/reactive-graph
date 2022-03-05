@@ -47,6 +47,7 @@
   - [Comparison](./Plugins_Comparison.md)
   - [Config](./Plugins_Config.md)
   - [Connector](./Plugins_Connector.md)
+  - [GraphQL Client](./Plugins_GraphQL_Client.md)
   - [GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md)
   - [HTTP](./Plugins_HTTP.md)
   - [Input Device](./Plugins_Input_Device.md)

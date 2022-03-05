@@ -9,6 +9,7 @@
 | [Comparison](./Plugins_Comparison.md)                                     | Provides comparison gates                  |
 | [Config](./Plugins_Config.md)                                             | Load configuration files                   |
 | [Connector](./Plugins_Connector.md)                                       | Provides property connectors               |
+| [GraphQL Client](./Plugins_GraphQL_Client.md)                             | GraphQL client                             |
 | [GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md) | Visualization of the GraphQL schema        |
 | [HTTP](./Plugins_HTTP.md)                                                 | HTTP and JSONRPC                           |
 | [Input Device](./Plugins_Input_Device.md)                                 | Input device handling                      |
