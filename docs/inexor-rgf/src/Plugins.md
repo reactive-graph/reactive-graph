@@ -1,1 +1,18 @@
 # Plugins
+
+| Name                                                                      | Description                                |
+|---------------------------------------------------------------------------|--------------------------------------------|
+| [Arithmetic](./Plugins_Arithmetic.md)                                     | Provides arithmetic gates and operations   |
+| [Asset](./Plugins_Asset.md)                                               | Download and update assets                 |
+| [Base](./Plugins_Base.md)                                                 | Provides basic components and entity types |
+| [Binary](./Plugins_Binary.md)                                             | Handles binary data                        |
+| [Comparison](./Plugins_Comparison.md)                                     | Provides comparison gates                  |
+| [Config](./Plugins_Config.md)                                             | Load configuration files                   |
+| [Connector](./Plugins_Connector.md)                                       | Provides property connectors               |
+| [GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md) | Visualization of the GraphQL schema        |
+| [Input Device](./Plugins_Input_Device.md)                                 | Input device handling                      |
+| [JSON](./Plugins_JSON.md)                                                 | Handles JSON arrays and objects            |
+| [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
+| [String](./Plugins_String.md)                                             | Provides string operations                 |
+| [System Command](./Plugins_System_Command.md)                             | Executes OS commands                       |
+| [System Environment](./Plugins_System_Environment.md)                     | Provides environment variables             |
