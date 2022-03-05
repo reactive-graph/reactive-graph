@@ -27,13 +27,28 @@ Other advantages of GraphQL are type safety and the fact that semantics can be m
 
 ![GraphQL Queries](images/queries.png)
 
+```admonish tip "GraphQL Schema Visualization"
+Explore the GraphQL queries using the [Plugin GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md):
+[https://hostname:31415/graphql-schema-visualization/query](https://hostname:31415/graphql-schema-visualization/query)
+```
+
 ### Mutations
 
 ![GraphQL Mutations](images/mutations.png)
 
+```admonish tip "GraphQL Schema Visualization"
+Explore the GraphQL mutations using the [Plugin GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md)
+[https://hostname:31415/graphql-schema-visualization/mutation](https://hostname:31415/graphql-schema-visualization/mutation)
+```
+
 ### Subscriptions
 
 ![GraphQL Subscriptions](images/subscriptions.png)
+
+```admonish tip "GraphQL Schema Visualization"
+Explore the GraphQL subscriptions using the [Plugin GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md):
+[https://hostname:31415/graphql-schema-visualization/subscription](https://hostname:31415/graphql-schema-visualization/subscription)
+```
 
 ## GraphQL Endpoint
 
