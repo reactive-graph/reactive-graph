@@ -13,6 +13,7 @@
 | [Input Device](./Plugins_Input_Device.md)                                 | Input device handling                      |
 | [JSON](./Plugins_JSON.md)                                                 | Handles JSON arrays and objects            |
 | [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
+| [Notification](./Plugins_Notification.md)                                 | Create desktop notifications               |
 | [String](./Plugins_String.md)                                             | Provides string operations                 |
 | [System Command](./Plugins_System_Command.md)                             | Executes OS commands                       |
 | [System Environment](./Plugins_System_Environment.md)                     | Provides environment variables             |

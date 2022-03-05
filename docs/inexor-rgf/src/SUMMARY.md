@@ -51,6 +51,7 @@
   - [Input Device](./Plugins_Input_Device.md)
   - [JSON](./Plugins_JSON.md)
   - [Logical](./Plugins_Logical.md)
+  - [Notification](./Plugins_Notification.md)
   - [String](./Plugins_String.md)
   - [System Command](./Plugins_System_Command.md)
   - [System Environment](./Plugins_System_Environment.md)
