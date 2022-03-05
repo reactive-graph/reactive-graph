@@ -1,5 +1,7 @@
 # Plugin Base
 
+Basic components and entity types.
+
 ## Components
 
 | Name        | Properties   | DataType | SocketType | Description                                                                                                                             |
@@ -25,3 +27,17 @@
 | Name           | Properties | DataType | SocketType | Description                                                                                                                             |
 |----------------|------------|----------|------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | Generic Flow   |            |
+
+## Platform Compatibility
+
+| Platform | Compatibility |
+|----------|---------------|
+| Linux    | ✓             |
+| MacOS    | ✓             |
+| Windows  | ✓             |
+
+## Repository
+
+| Name                   | Repository                                           |
+|------------------------|------------------------------------------------------|
+| inexor-rgf-plugin-base | https://github.com/aschaeffer/inexor-rgf-plugin-base |

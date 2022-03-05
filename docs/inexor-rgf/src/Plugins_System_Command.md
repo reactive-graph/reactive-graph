@@ -145,6 +145,6 @@ mutation {
 
 ## Repository
 
-| Project             | Module | Sub-Module     | Functionality                                                        | Tests                                                                                                                                                                  |
-|---------------------|--------|----------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Plugin | System Command | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-plugin-input-device">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-plugin-system-command) |
+| Name                             | Repository                                                     |
+|----------------------------------|----------------------------------------------------------------|
+| inexor-rgf-plugin-system-command | https://github.com/aschaeffer/inexor-rgf-plugin-system-command |

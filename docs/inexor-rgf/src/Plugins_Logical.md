@@ -64,6 +64,6 @@ This plugin provides logical gates and operations.
 
 ## Repository
 
-| Project             | Module | Sub-Module | Functionality                                                        | Tests                                                                                                                                                      |
-|---------------------|--------|------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Plugin | Logical    | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-plugin-logical">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-plugin-logical) |
+| Name                      | Repository                                              |
+|---------------------------|---------------------------------------------------------|
+| inexor-rgf-plugin-logical | https://github.com/aschaeffer/inexor-rgf-plugin-logical |

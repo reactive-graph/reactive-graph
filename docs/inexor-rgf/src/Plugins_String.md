@@ -37,6 +37,15 @@
 
 * https://doc.rust-lang.org/std/string/struct.String.html
 
+
+## Platform Compatibility
+
+| Platform | Compatibility |
+|----------|---------------|
+| Linux    | ✓             |
+| MacOS    | ✓             |
+| Windows  | ✓             |
+
 ## Repository
 
 | Name                     | Repository                                             |

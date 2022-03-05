@@ -36,6 +36,6 @@ This plugin provides arithmetic gates and operations.
 
 ## Repository
 
-| Project             | Module | Sub-Module | Functionality                                                        | Tests                                                                                                                                                            |
-|---------------------|--------|------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Plugin | Arithmetic | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-plugin-arithmetic">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-plugin-arithmetic) |
+| Name                         | Repository                                                 |
+|------------------------------|------------------------------------------------------------|
+| inexor-rgf-plugin-arithmetic | https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic |

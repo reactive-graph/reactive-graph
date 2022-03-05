@@ -1,6 +1,6 @@
 # Plugin Comparison
 
-#### Components
+## Components
 
 | Name            | Property | Data Type | Socket Type |
 |-----------------|----------|-----------|-------------|
@@ -8,7 +8,7 @@
 |                 | rhs      | any       | input       |
 |                 | result   | bool      | output      |
 
-#### Entity Types
+## Entity Types
 
 | Name                   | Components      | Description                                          |
 |------------------------|-----------------|------------------------------------------------------|
@@ -18,3 +18,17 @@
 | lower_than             | comparison_gate | Returns true, if lhs is lower than rhs               |
 | lower_than_or_equals   | comparison_gate | Returns true, if lhs is lower than or equal to rhs   |
 | not_equals             | comparison_gate | Returns true, if lhs and rhs are not equal           |
+
+## Platform Compatibility
+
+| Platform | Compatibility |
+|----------|---------------|
+| Linux    | ✓             |
+| MacOS    | ✓             |
+| Windows  | ✓             |
+
+## Repository
+
+| Name                         | Repository                                                 |
+|------------------------------|------------------------------------------------------------|
+| inexor-rgf-plugin-comparison | https://github.com/aschaeffer/inexor-rgf-plugin-comparison |

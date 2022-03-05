@@ -123,6 +123,14 @@ This allows you to address a key/led/... event on a specific device or the key/l
 * https://github.com/emberian/evdev/ (Linux only)
 * https://www.freedesktop.org/software/libevdev/doc/latest/
 
+## Platform Compatibility
+
+| Platform | Compatibility |
+|----------|---------------|
+| Linux    | ✓             |
+| MacOS    | x             |
+| Windows  | x             |
+
 ## Repository
 
 | Name                           | Repository                                                   |

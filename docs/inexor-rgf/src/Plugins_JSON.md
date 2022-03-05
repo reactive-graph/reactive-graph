@@ -36,6 +36,14 @@ makes it also necessary to unpack or pack these data in order to operate with it
 |                      | property_name     | string      | input       |
 |                      | result            | any         | output      |
 
+## Platform Compatibility
+
+| Platform | Compatibility |
+|----------|---------------|
+| Linux    | ✓             |
+| MacOS    | ✓             |
+| Windows  | ✓             |
+
 ## Repository
 
 | Name                   | Repository                                           |

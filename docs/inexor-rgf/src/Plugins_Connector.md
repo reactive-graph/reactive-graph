@@ -67,3 +67,9 @@ On destruction of the connector, the stream will be removed.
 | Linux    | ✓             |
 | MacOS    | ✓             |
 | Windows  | ✓             |
+
+## Repository
+
+| Name                        | Repository                                                |
+|-----------------------------|-----------------------------------------------------------|
+| inexor-rgf-plugin-connector | https://github.com/aschaeffer/inexor-rgf-plugin-connector |
