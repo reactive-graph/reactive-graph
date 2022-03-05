@@ -118,13 +118,19 @@ name = "inexor-rgf-plugin-tray"
 active = false
 path = "../inexor-rgf-plugin-tray/target/debug/libinexor_rgf_plugin_tray.so"
 
-### Plugins in development
-
-
 [[plugin]]
 name = "inexor-rgf-plugin-graphql-schema-visualization"
 active = true
 path = "../inexor-rgf-plugin-graphql-schema-visualization/target/debug/libinexor_rgf_plugin_graphql_schema_visualization.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-graphql-client"
+active = true
+path = "../inexor-rgf-plugin-graphql-client/target/debug/libinexor_rgf_plugin_graphql_client.so"
+
+
+### Plugins in development
+
 
 [[plugin]]
 name = "inexor-rgf-plugin-flow-editor"
