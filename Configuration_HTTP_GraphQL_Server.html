@@ -196,6 +196,21 @@ WebResourceProvider binary and is doing the same as
 https://hostname:31415/</p>
 </div>
 </div>
+<h2 id="logging"><a class="header" href="#logging">Logging</a></h2>
+<p>You can enable or disable logging of HTTP/GraphQL requests and specify the log format. If no
+format is specified the default log format is used.</p>
+<pre><code class="language-toml">[logging]
+enabled = true
+format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot; %T&quot;
+</code></pre>
+<div class="admonition tip">
+<div class="admonition-title">
+<p>List of Log Format Variables</p>
+</div>
+<div>
+<p>https://docs.rs/actix-web/latest/actix_web/middleware/struct.Logger.html#format</p>
+</div>
+</div>
 
                     </main>
 
