@@ -10,6 +10,7 @@ use std::time::Duration;
 use actix_cors::Cors;
 use actix_http::body::BoxBody;
 use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpResponseBuilder, HttpServer, Result};
+use actix_web_extras::middleware::Condition;
 use async_graphql::Schema;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
@@ -39,6 +40,7 @@ use crate::api::ReactiveFlowManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::WebResourceManager;
+use crate::config::get_logger_middleware;
 use crate::di::*;
 use crate::graphql::InexorMutation;
 use crate::graphql::InexorQuery;
@@ -201,6 +203,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let mut http_server = HttpServer::new(move || {
             App::new()
                 .wrap(Cors::permissive())
+                .wrap(Condition::from_option(get_logger_middleware()))
                 .app_data(schema_data.clone())
                 .app_data(component_manager.clone())
                 .app_data(entity_type_manager.clone())

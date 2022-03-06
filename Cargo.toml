@@ -32,6 +32,7 @@ actix-cors = "0.6"
 actix-http = "3.0"
 actix-rt = "2.6"
 actix-web = { version = "4.0", features = ["rustls"] }
+actix-web-extras = "0.1"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "3.0", features = ["uuid"] }
 async-graphql-actix-web = { version = "3.0" }

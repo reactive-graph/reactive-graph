@@ -68,3 +68,18 @@ default_base_path = "binary"
 In particular, this is very useful for web applications which shall handle the root URL:
 https://hostname:31415/
 ```
+
+## Logging
+
+You can enable or disable logging of HTTP/GraphQL requests and specify the log format. If no
+format is specified the default log format is used.
+
+```toml
+[logging]
+enabled = true
+format = "%a \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\" %T"
+```
+
+```admonish tip "List of Log Format Variables"
+https://docs.rs/actix-web/latest/actix_web/middleware/struct.Logger.html#format
+```
