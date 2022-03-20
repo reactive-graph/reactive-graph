@@ -4,16 +4,30 @@ Generate random numbers
 
 ## Entity Types
 
-| Name                     | Property | Data Type | Socket Type | Note      |
-|--------------------------|----------|-----------|-------------|-----------|
-|                          |
-| RandomNumber             | trigger  | bool      | input       |           |
-|                          | result   | number    | output      |           |
-|                          |
-| RandomIntegerWithinRange | trigger  | bool      | input       |           |
-|                          | low      | number    | output      | Inclusive |
-|                          | high     | number    | output      | Exclusive |
-|                          | result   | number    | output      |           |
+| Name                        | Property | Data Type | Socket Type | Note                                        |
+|-----------------------------|----------|-----------|-------------|---------------------------------------------|
+|                             |
+| pseudo_random_number        | trigger  | bool      | input       |                                             |
+|                             | seed     | number    | input       | fixed, u64                                  |
+|                             | result   | number    | output      |                                             |
+|                             |
+| random_bool                 | trigger  | bool      | input       |                                             |
+|                             | result   | bool      | output      |                                             |
+|                             |
+| random_number               | trigger  | bool      | input       |                                             |
+|                             | result   | number    | output      |                                             |
+|                             |
+| random_integer_within_range | trigger  | bool      | input       |                                             |
+|                             | low      | number    | input       | Inclusive                                   |
+|                             | high     | number    | input       | Exclusive                                   |
+|                             | result   | number    | output      |                                             |
+|                             |
+| random_string               | trigger  | bool      | input       |                                             |
+|                             | length   | number    | input       |                                             |
+|                             | result   | string    | output      |                                             |
+|                             |
+| random_uuid                 | trigger  | bool      | input       |                                             |
+|                             | result   | string    | output      | The generated UUID as string representation |
 
 ## Platform Compatibility
 
