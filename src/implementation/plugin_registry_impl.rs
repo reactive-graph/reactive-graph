@@ -157,14 +157,20 @@ impl PluginRegistry for PluginRegistryImpl {
         // TODO: Also implement an reloading mechanism (that is safe)
         // TODO: Also implement an deploy mechanism (dropping a dynamically linked library into a specific folder -> load plugin automatically)
         // TODO: Also implement a file watcher (when the library file has been overwritten -> unload old version, load new reload library)
-        // // Shutdown all plugins
-        // for plugin in self.plugins.0.plugins.iter().rev() {
-        //     plugin.pre_shutdown();
-        // }
-        // // TODO: Reverse: remove providers
-        // for plugin in self.plugins.0.plugins.iter().rev() {
-        //     plugin.shutdown();
-        // }
+        // Shutdown all plugins
+        let reader = self.plugins.0.read().unwrap();
+        // TODO: correct (reverse) order
+        for (name, plugin) in reader.iter() {
+            if let Err(err) = plugin.pre_shutdown() {
+                error!("Failed to shutdown plugin {}: {:?}", name, err);
+            }
+        }
+        // TODO: correct (reverse) order
+        for (name, plugin) in reader.iter() {
+            if let Err(err) = plugin.shutdown() {
+                error!("Failed to shutdown plugin {}: {:?}", name, err);
+            }
+        }
     }
 
     /// Load a plugin library and add all contained functions to the internal
