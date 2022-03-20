@@ -25,6 +25,11 @@ active = true
 path = "../inexor-rgf-plugin-connector/target/debug/libinexor_rgf_plugin_connector.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-logical"
+active = true
+path = "../inexor-rgf-plugin-logical/target/debug/libinexor_rgf_plugin_logical.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-numeric"
 active = true
 path = "../inexor-rgf-plugin-numeric/target/debug/libinexor_rgf_plugin_numeric.so"
@@ -33,11 +38,6 @@ path = "../inexor-rgf-plugin-numeric/target/debug/libinexor_rgf_plugin_numeric.s
 name = "inexor-rgf-plugin-arithmetic"
 active = true
 path = "../inexor-rgf-plugin-arithmetic/target/debug/libinexor_rgf_plugin_arithmetic.so"
-
-[[plugin]]
-name = "inexor-rgf-plugin-logical"
-active = true
-path = "../inexor-rgf-plugin-logical/target/debug/libinexor_rgf_plugin_logical.so"
 
 [[plugin]]
 name = "inexor-rgf-plugin-comparison"
