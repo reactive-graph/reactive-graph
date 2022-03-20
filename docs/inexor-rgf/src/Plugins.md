@@ -17,6 +17,7 @@
 | [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
 | [Notification](./Plugins_Notification.md)                                 | Create desktop notifications               |
 | [Random](./Plugins_Random.md)                                             | Generate random numbers                    |
+| [Scheduler](./Plugins_Scheduler.md)                                       | Timers and scheduled jobs                  |
 | [String](./Plugins_String.md)                                             | Provides string operations                 |
 | [System Command](./Plugins_System_Command.md)                             | Executes OS commands                       |
 | [System Environment](./Plugins_System_Environment.md)                     | Provides environment variables             |
