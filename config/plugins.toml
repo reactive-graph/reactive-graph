@@ -128,6 +128,11 @@ name = "inexor-rgf-plugin-graphql-client"
 active = true
 path = "../inexor-rgf-plugin-graphql-client/target/debug/libinexor_rgf_plugin_graphql_client.so"
 
+[[plugin]]
+name = "inexor-rgf-plugin-scheduler"
+active = true
+path = "../inexor-rgf-plugin-scheduler/target/debug/libinexor_rgf_plugin_scheduler.so"
+
 
 ### Plugins in development
 
