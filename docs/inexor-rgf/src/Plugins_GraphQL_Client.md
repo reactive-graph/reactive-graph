@@ -20,8 +20,9 @@ Btw: You can also use Altair as standalone application or as firefox addon.
 | MacOS    | ✓             |
 | Windows  | ✓             |
 
-## Repository
+## Repositories
 
 | Name                             | Repository                                                                                                                       |
 |----------------------------------|----------------------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-graphql-client | [https://github.com/aschaeffer/inexor-rgf-plugin-graphql-client](https://github.com/aschaeffer/inexor-rgf-plugin-graphql-client) |
+| Altair GraphQL Client            | [https://github.com/altair-graphql/altair](https://github.com/altair-graphql/altair)                                             |
