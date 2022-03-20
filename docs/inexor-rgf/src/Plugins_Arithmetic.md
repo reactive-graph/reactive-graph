@@ -6,25 +6,55 @@ This plugin provides arithmetic gates and operations.
 
 | Name                 | Properties | DataType | SocketType | Description |
 |----------------------|------------|----------|------------|-------------|
+|                      |
+| arithmetic_operation | lhs        | number   | input      |             |
+|                      | result     | number   | output     |             |
+|                      |
 | arithmetic_gate      | lhs        | number   | input      |             |
 |                      | rhs        | number   | input      |             |
-|                      | result     | number   | output     |             |
-| arithmetic_operation | lhs        | number   | input      |             |
 |                      | result     | number   | output     |             |
 
 ## Entity Types
 
-| Name       | Components           | Description               |
-|------------|----------------------|---------------------------|
-| add        | arithmetic_gate      | Addition                  |
-| decrement  | arithmetic_operation | Decrements the input by 1 |
-| div        | arithmetic_gate      | Division                  |
-| increment  | arithmetic_operation | Increments the input by 1 |
-| max        | arithmetic_gate      | Max value                 |
-| min        | arithmetic_gate      | Min value                 |
-| mod        | arithmetic_gate      | Modulo                    |
-| mul        | arithmetic_gate      | Multiplication            |
-| sub        | arithmetic_gate      | Subtraction               |
+| Name      | Components           | Properties | DataType | SocketType | Description                                       |
+|-----------|----------------------|------------|----------|------------|---------------------------------------------------|
+||
+| add       | arithmetic_gate      | lhs        | number   | input      | Addition                                          |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+||
+| counter   | action               | trigger    | bool     | input      | If triggered, the result will be incremented by 1 |
+|           | action               | result     | number   | output     |                                                   |
+||
+| decrement | arithmetic_operation | lhs        | number   | input      | Decrements the input by 1                         |
+|           | arithmetic_operation | result     | number   | output     |                                                   |
+||
+| div       | arithmetic_gate      | lhs        | number   | input      | Division                                          |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+||
+| increment | arithmetic_operation | lhs        | number   | input      | Increments the input by 1                         |
+|           | arithmetic_operation | result     | number   | output     |                                                   |
+||
+| max       | arithmetic_gate      | lhs        | number   | input      | Max value                                         |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+||
+| min       | arithmetic_gate      | lhs        | number   | input      | Min value                                         |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+||
+| mod       | arithmetic_gate      | lhs        | number   | input      | Modulo                                            |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+||
+| mul       | arithmetic_gate      | lhs        | number   | input      | Multiplication                                    |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+||
+| sub       | arithmetic_gate      | lhs        | number   | input      | Subtraction                                       |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
 
 ## Platform Compatibility
 
@@ -39,3 +69,113 @@ This plugin provides arithmetic gates and operations.
 | Name                         | Repository                                                                                                               |
 |------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-arithmetic | [https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic](https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic) |
+
+## Usage
+
+### GraphQL: Create a counter
+
+```graphql
+mutation {
+  instances {
+    entities {
+      create(
+        type: "counter",
+        id: "93419a15-ee61-449e-b942-1d6bc5230218",
+        properties: [
+          {
+            name: "trigger",
+            value: false
+          },
+          {
+            name: "result",
+            value: 0
+          }
+        ]
+      ) {
+        id
+        type {
+          name
+        }
+        properties(
+          names: [
+            "result"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+```
+
+### GraphQL: Increase counter
+
+```graphql
+mutation {
+  instances {
+    entities {
+      update(
+        id: "93419a15-ee61-449e-b942-1d6bc5230218",
+        properties: [
+          {
+            name: "trigger",
+            value: true
+          }
+        ]
+      ) {
+        id
+        type {
+          name
+        }
+        properties(
+          names: [
+            "result"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+```
+
+### GraphQL: Reset counter
+
+```graphql
+mutation {
+  instances {
+    entities {
+      update(
+        id: "93419a15-ee61-449e-b942-1d6bc5230218",
+        properties: [
+          {
+            name: "trigger",
+            value: false
+          },
+          {
+            name: "result",
+            value: 0
+          }
+        ]
+      ) {
+        id
+        type {
+          name
+        }
+        properties(
+          names: [
+            "result"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+```
