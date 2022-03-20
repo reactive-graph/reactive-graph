@@ -111,6 +111,29 @@ pub async fn handle_web_resource(
     }
 }
 
+#[derive(Deserialize)]
+pub struct RootPathInfo {
+    path: String,
+}
+
+pub async fn handle_root_web_resource(
+    web_resource_manager: web::Data<Arc<dyn WebResourceManager>>,
+    path_info: web::Path<RootPathInfo>,
+    request: HttpRequest,
+) -> HttpResponse {
+    let path = path_info.path.clone();
+    let uri = request.uri().clone();
+    debug!("path: {} uri: {}", path, uri);
+    let http_request = convert_request(request);
+    match web_resource_manager.get_default() {
+        Some(web_resource) => match web_resource.handle_web_resource(path, http_request) {
+            Ok(response) => convert_response(response),
+            Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
+        },
+        None => HttpResponse::NotFound().body(format!("404 Not Found: {}", uri)),
+    }
+}
+
 fn convert_request(request: HttpRequest) -> Request<HttpBody> {
     let mut request_builder = http::request::Builder::new()
         .uri(request.uri())
@@ -226,6 +249,7 @@ impl GraphQLServer for GraphQLServerImpl {
                 .service(crate::rest::types::relations::get_relation_type)
                 // Web Resource API
                 .service(web::resource("/{web_resource_base_path}/{path:.*}").route(web::get().to(handle_web_resource)))
+                .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)))
         })
         .disable_signals();
 
