@@ -53,6 +53,7 @@
   - [Input Device](./Plugins_Input_Device.md)
   - [JSON](./Plugins_JSON.md)
   - [Logical](./Plugins_Logical.md)
+  - [Meta Data](./Plugins_Meta_Data.md)
   - [Notification](./Plugins_Notification.md)
   - [Numeric](./Plugins_Numeric.md)
   - [Random](./Plugins_Random.md)

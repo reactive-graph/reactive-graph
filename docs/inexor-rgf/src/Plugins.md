@@ -15,6 +15,7 @@
 | [Input Device](./Plugins_Input_Device.md)                                 | Input device handling                      |
 | [JSON](./Plugins_JSON.md)                                                 | Handles JSON arrays and objects            |
 | [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
+| [Meta Data](./Plugins_Meta_Data.md)                                       | Meta Data                                  |
 | [Notification](./Plugins_Notification.md)                                 | Create desktop notifications               |
 | [Numeric](./Plugins_Numeric.md)                                           | Numeric operations                         |
 | [Random](./Plugins_Random.md)                                             | Generate random numbers                    |
