@@ -162,3 +162,8 @@ path = "../inexor-rgf-plugin-image-processing/target/debug/libinexor_rgf_plugin_
 name = "inexor-rgf-plugin-asset"
 active = false
 path = "../inexor-rgf-plugin-asset/target/debug/libinexor_rgf_plugin_asset.so"
+
+[[plugin]]
+name = "inexor-rgf-plugin-test-suite"
+active = false
+path = "../inexor-rgf-plugin-test-suite/target/debug/libinexor_rgf_plugin_test_suite.so"
