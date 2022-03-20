@@ -73,3 +73,47 @@ On destruction of the connector, the stream will be removed.
 | Name                        | Repository                                                                                                             |
 |-----------------------------|------------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-connector | [https://github.com/aschaeffer/inexor-rgf-plugin-connector](https://github.com/aschaeffer/inexor-rgf-plugin-connector) |
+
+## Usage
+
+### GraphQL: Create a new connector
+
+```graphql
+mutation {
+  instances {
+    relations {
+      createConnector: create(
+        edgeKey: {
+          outboundId: "dc82735e-28ec-4c24-aedb-d968b73b288f",
+          typeName: "default_connector--value--value"
+          inboundId: "4cf8e6d8-f92e-4ffa-9610-ec0635f55e08",
+        },
+        properties: [
+          {
+            name: "outbound_property_name",
+            value: "value"
+          },
+          {
+            name: "inbound_property_name",
+            value: "value"
+          }
+        ]
+      ) {
+        type {
+          name
+          fullName
+        },
+        properties(
+          names: [
+            "outbound_property_name",
+            "inbound_property_name"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}
+```
