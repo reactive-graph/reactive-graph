@@ -23,3 +23,4 @@
 | [String](./Plugins_String.md)                                             | Provides string operations                 |
 | [System Command](./Plugins_System_Command.md)                             | Executes OS commands                       |
 | [System Environment](./Plugins_System_Environment.md)                     | Provides environment variables             |
+| [Taxonomy](./Plugins_Taxonomy.md)                                         | Taxonomy                                   |

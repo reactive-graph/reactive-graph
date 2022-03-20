@@ -22,3 +22,17 @@ This plugin provides generic components for meta data.
 |              | dc_relation    | string   | none       |
 |              | dc_rights      | string   | none       |
 |              | dc_source      | string   | none       |
+
+## Platform Compatibility
+
+| Platform | Compatibility |
+|----------|---------------|
+| Linux    | ✓             |
+| MacOS    | ✓             |
+| Windows  | ✓             |
+
+## Repositories
+
+| Name                       | Repository                                                                                                            |
+|----------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-metadata | [https://github.com/aschaeffer/inexor-rgf-plugin-metadata](https://github.com/aschaeffer/inexor-rgf-plugin-metadata)  |

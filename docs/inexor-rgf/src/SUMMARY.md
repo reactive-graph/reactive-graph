@@ -61,6 +61,7 @@
   - [String](./Plugins_String.md)
   - [System Command](./Plugins_System_Command.md)
   - [System Environment](./Plugins_System_Environment.md)
+  - [Taxonomy](./Plugins_Taxonomy.md)
 - [Events](./Events.md)
   - [System Events](./Events_System.md)
   - [Shutdown](./Events_Shutdown.md)
