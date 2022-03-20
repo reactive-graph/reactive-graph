@@ -44,6 +44,9 @@ level = "debug"
 appenders = [ "stdout", "file-application" ]
 
 # How to configure the loggers: https://docs.rs/log4rs/1.0.0/log4rs/
+[loggers."h2::codec"]
+level = "info"
+
 [loggers."inexor_rgf_application::implementation::component_manager_impl"]
 level = "info"
 
