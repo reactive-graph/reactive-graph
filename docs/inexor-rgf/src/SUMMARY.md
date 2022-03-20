@@ -54,6 +54,7 @@
   - [JSON](./Plugins_JSON.md)
   - [Logical](./Plugins_Logical.md)
   - [Notification](./Plugins_Notification.md)
+  - [Numeric](./Plugins_Numeric.md)
   - [Random](./Plugins_Random.md)
   - [Scheduler](./Plugins_Scheduler.md)
   - [String](./Plugins_String.md)

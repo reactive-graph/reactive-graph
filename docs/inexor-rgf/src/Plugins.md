@@ -16,6 +16,7 @@
 | [JSON](./Plugins_JSON.md)                                                 | Handles JSON arrays and objects            |
 | [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
 | [Notification](./Plugins_Notification.md)                                 | Create desktop notifications               |
+| [Numeric](./Plugins_Numeric.md)                                           | Numeric operations                         |
 | [Random](./Plugins_Random.md)                                             | Generate random numbers                    |
 | [Scheduler](./Plugins_Scheduler.md)                                       | Timers and scheduled jobs                  |
 | [String](./Plugins_String.md)                                             | Provides string operations                 |
