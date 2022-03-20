@@ -15,7 +15,9 @@ shutdown_timeout = 3
 workers = 16
 
 # Web resource provider which is the base
-#default_base_path = "binary"
+# default_base_path = "graphql-client"
+# default_base_path = "graphql-schema-visualization"
+# default_base_path = "playground"
 
 [logging]
 
