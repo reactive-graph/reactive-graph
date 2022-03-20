@@ -95,8 +95,6 @@ pub async fn handle_web_resource(
     let base_path = path_info.web_resource_base_path.clone();
     let path = path_info.path.clone();
     let uri = request.uri().clone();
-    debug!("base_path = {}", base_path.as_str());
-    debug!("path = {}", path.as_str());
     let http_request = convert_request(request);
     match web_resource_manager.get(base_path.clone()) {
         Some(web_resource) => match web_resource.handle_web_resource(path, http_request) {
