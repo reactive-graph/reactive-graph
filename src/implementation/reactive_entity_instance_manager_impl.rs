@@ -11,6 +11,7 @@ use crate::api::ComponentBehaviourManager;
 use crate::api::ComponentManager;
 use crate::api::EntityBehaviourManager;
 use crate::api::EntityInstanceManager;
+use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceCreationError;
 use crate::api::ReactiveEntityInstanceImportError;
@@ -44,6 +45,8 @@ pub struct ReactiveEntityInstanceManagerImpl {
     event_manager: Wrc<dyn SystemEventManager>,
 
     component_manager: Wrc<dyn ComponentManager>,
+
+    entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
 
@@ -148,8 +151,19 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             .write()
             .unwrap()
             .insert(reactive_entity_instance.id, reactive_entity_instance.clone());
-        // TODO: List of applied components is empty
+        // Apply all components that are predefined in the entity type
+        if let Some(components) = self
+            .entity_type_manager
+            .get(reactive_entity_instance.type_name.clone())
+            .map(|entity_type| entity_type.components)
+        {
+            components.iter().for_each(|component| {
+                reactive_entity_instance.components.insert(component.clone());
+            });
+        }
+        // Add component behaviours
         self.component_behaviour_manager.add_behaviours_to_entity(reactive_entity_instance.clone());
+        // Add entity behaviours
         self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
         // Register label
         if let Some(value) = reactive_entity_instance.get("label") {

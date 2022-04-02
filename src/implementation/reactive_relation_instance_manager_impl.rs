@@ -18,6 +18,7 @@ use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationBehaviourManager;
 use crate::api::RelationEdgeManager;
 use crate::api::RelationInstanceManager;
+use crate::api::RelationTypeManager;
 use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
@@ -38,6 +39,8 @@ pub struct ReactiveRelationInstanceManagerImpl {
     event_manager: Wrc<dyn SystemEventManager>,
 
     component_manager: Wrc<dyn ComponentManager>,
+
+    relation_type_manager: Wrc<dyn RelationTypeManager>,
 
     relation_edge_manager: Wrc<dyn RelationEdgeManager>,
 
@@ -134,8 +137,19 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 .write()
                 .unwrap()
                 .insert(edge_key.clone(), reactive_relation_instance.clone());
-            // TODO: List of applied components is empty
+            // Apply all components that are predefined in the entity type
+            if let Some(components) = self
+                .relation_type_manager
+                .get(reactive_relation_instance.type_name.clone())
+                .map(|entity_type| entity_type.components)
+            {
+                components.iter().for_each(|component| {
+                    reactive_relation_instance.components.insert(component.clone());
+                });
+            }
+            // Add component behaviours
             self.component_behaviour_manager.add_behaviours_to_relation(reactive_relation_instance.clone());
+            // Add relation behaviours
             self.relation_behaviour_manager.add_behaviours(reactive_relation_instance);
             self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(edge_key))
         }
