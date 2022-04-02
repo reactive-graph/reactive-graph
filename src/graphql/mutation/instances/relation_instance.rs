@@ -34,6 +34,7 @@ impl MutationRelationInstances {
         &self,
         context: &Context<'_>,
         edge_key: GraphQLEdgeKey,
+        #[graphql(desc = "Creates the relation instance with the given components.")] components: Option<Vec<String>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLRelationInstance> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
@@ -57,7 +58,7 @@ impl MutationRelationInstances {
 
         let relation_instance = match indradb::Identifier::new(edge_key.type_name.clone()) {
             Ok(_) => {
-                let edge_key: EdgeKey = edge_key.into();
+                let edge_key: EdgeKey = edge_key.clone().into();
                 relation_instance_manager.create(edge_key, properties)
             }
             Err(err) => Err(ReactiveRelationInstanceCreationError::ValidationError(err)),
@@ -67,6 +68,12 @@ impl MutationRelationInstances {
             return Err(Error::new("Failed to create relation instance"));
         }
         let relation_instance = relation_instance.unwrap();
+        let edge_key: EdgeKey = edge_key.into();
+        if let Some(components) = components {
+            for component in components {
+                relation_instance_manager.add_component(edge_key.clone(), component.clone());
+            }
+        }
         Ok(relation_instance.into())
     }
 

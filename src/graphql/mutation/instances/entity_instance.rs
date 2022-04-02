@@ -29,6 +29,7 @@ impl MutationEntityInstances {
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The entity type.")] type_name: String,
         #[graphql(desc = "The id of the entity instance. If none is given a random uuid will be generated.")] id: Option<Uuid>,
+        #[graphql(desc = "Creates the entity instance with the given components.")] components: Option<Vec<String>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
@@ -50,6 +51,11 @@ impl MutationEntityInstances {
             return Err(Error::new(entity_instance.err().unwrap().to_string()));
         }
         let entity_instance = entity_instance.unwrap();
+        if let Some(components) = components {
+            for component in components {
+                entity_instance_manager.add_component(entity_instance.id, component.clone());
+            }
+        }
         Ok(entity_instance.into())
     }
 
