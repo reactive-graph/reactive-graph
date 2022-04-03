@@ -245,6 +245,8 @@ type MutationEntityInstances {
   of the property.
   """
   create(
+    "Creates the entity instance with the given components."
+    components: [String!],
     "The id of the entity instance. If none is given a random uuid will be generated."
     id: UUID,
     properties: [PropertyInstanceDefinition!],
@@ -380,7 +382,12 @@ type MutationRelationInstances {
   If properties are not provided, default values will be used depending on the data type
   of the property.
   """
-  create(edgeKey: EdgeKeyDefinition!, properties: [PropertyInstanceDefinition!]): RelationInstance!
+  create(
+    "Creates the relation instance with the given components."
+    components: [String!],
+    edgeKey: EdgeKeyDefinition!,
+    properties: [PropertyInstanceDefinition!]
+  ): RelationInstance!
   "Deletes an relation instance."
   delete(edgeKey: EdgeKeyDefinition!): Boolean!
   """
