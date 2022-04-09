@@ -50,6 +50,11 @@ active = true
 path = "../inexor-rgf-plugin-string/target/debug/libinexor_rgf_plugin_string.so"
 
 [[plugin]]
+name = "inexor-rgf-plugin-file"
+active = true
+path = "../inexor-rgf-plugin-file/target/debug/libinexor_rgf_plugin_file.so"
+
+[[plugin]]
 name = "inexor-rgf-plugin-json"
 active = true
 path = "../inexor-rgf-plugin-json/target/debug/libinexor_rgf_plugin_json.so"
