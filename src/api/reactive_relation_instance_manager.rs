@@ -13,10 +13,13 @@ use crate::model::{ReactiveRelationInstance, RelationInstance};
 #[derive(Debug)]
 pub enum ReactiveRelationInstanceCreationError {
     InvalidEdgeKey,
+    OutboundEntityIsNotOfType(String),
+    InboundEntityIsNotOfType(String),
     MissingOutboundEntityInstance(Uuid),
     MissingInboundEntityInstance(Uuid),
     MissingInstance,
     RelationInstanceCreationError(RelationInstanceCreationError),
+    UnknownRelationType(String),
     ValidationError(ValidationError),
 }
 
@@ -26,6 +29,12 @@ impl fmt::Display for ReactiveRelationInstanceCreationError {
             // ReactiveRelationInstanceCreationError::UuidTaken(id) => write!(f, "The UUID {} has been already taken!", id),
             ReactiveRelationInstanceCreationError::InvalidEdgeKey => {
                 write!(f, "The edge key is invalid")
+            }
+            ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(type_name) => {
+                write!(f, "Unknown relation type: {type_name}")
+            }
+            ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(type_name) => {
+                write!(f, "Unknown relation type: {type_name}")
             }
             ReactiveRelationInstanceCreationError::MissingOutboundEntityInstance(id) => {
                 write!(f, "The outbound entity instance {} cannot be found", id)
@@ -38,6 +47,9 @@ impl fmt::Display for ReactiveRelationInstanceCreationError {
             }
             ReactiveRelationInstanceCreationError::RelationInstanceCreationError(error) => {
                 write!(f, "Failed to create reactive relation instance: {}", error)
+            }
+            ReactiveRelationInstanceCreationError::UnknownRelationType(type_name) => {
+                write!(f, "Unknown relation type: {type_name}")
             }
             ReactiveRelationInstanceCreationError::ValidationError(error) => {
                 write!(f, "Validation Error: {}", error)

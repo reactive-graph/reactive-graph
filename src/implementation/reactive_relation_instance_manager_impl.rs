@@ -25,6 +25,7 @@ use crate::di::*;
 use crate::model::ReactivePropertyInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
+use crate::model::RelationType;
 
 #[wrapper]
 pub struct ReactiveRelationInstances(RwLock<BTreeMap<EdgeKey, Arc<ReactiveRelationInstance>>>);
@@ -112,17 +113,27 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             return Err(ReactiveRelationInstanceCreationError::InvalidEdgeKey);
         }
 
-        let outbound = self.reactive_entity_instance_manager.get(relation_instance.outbound_id);
-        if outbound.is_none() {
-            return Err(ReactiveRelationInstanceCreationError::MissingOutboundEntityInstance(relation_instance.outbound_id));
-        }
-        let inbound = self.reactive_entity_instance_manager.get(relation_instance.inbound_id);
-        if outbound.is_none() {
-            return Err(ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(relation_instance.inbound_id));
+        let outbound = self
+            .reactive_entity_instance_manager
+            .get(relation_instance.outbound_id)
+            .ok_or(ReactiveRelationInstanceCreationError::MissingOutboundEntityInstance(relation_instance.outbound_id))?;
+        let inbound = self
+            .reactive_entity_instance_manager
+            .get(relation_instance.inbound_id)
+            .ok_or(ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(relation_instance.inbound_id))?;
+        let relation_type = self
+            .relation_type_manager
+            .get(relation_instance.type_name.clone())
+            .ok_or(ReactiveRelationInstanceCreationError::UnknownRelationType(relation_instance.type_name.clone()))?;
+
+        if !outbound.type_name.eq(&relation_type.outbound_type) && !outbound.components.contains(&relation_type.outbound_type) {
+            return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(relation_type.outbound_type.clone()));
         }
 
-        let outbound = outbound.unwrap();
-        let inbound = inbound.unwrap();
+        if !inbound.type_name.eq(&relation_type.inbound_type) && !inbound.components.contains(&relation_type.inbound_type) {
+            return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(relation_type.inbound_type.clone()));
+        }
+
         let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance));
         self.register_reactive_instance(reactive_relation_instance.clone());
         Ok(reactive_relation_instance)
@@ -137,7 +148,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 .write()
                 .unwrap()
                 .insert(edge_key.clone(), reactive_relation_instance.clone());
-            // Apply all components that are predefined in the entity type
+            // Apply all components that are predefined in the relation type
             if let Some(components) = self
                 .relation_type_manager
                 .get(reactive_relation_instance.type_name.clone())
