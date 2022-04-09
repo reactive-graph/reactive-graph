@@ -25,7 +25,6 @@ use crate::di::*;
 use crate::model::ReactivePropertyInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
-use crate::model::RelationType;
 
 #[wrapper]
 pub struct ReactiveRelationInstances(RwLock<BTreeMap<EdgeKey, Arc<ReactiveRelationInstance>>>);
