@@ -83,6 +83,34 @@ impl GraphQLComponent {
         }
         Vec::new()
     }
+
+    /// Query which relation types are using this component as outbound type
+    async fn outbound_of(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
+        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
+            return relation_type_manager
+                .get_relation_types()
+                .iter()
+                .filter(|relation_type| relation_type.outbound_type.eq(&self.component.name))
+                .cloned()
+                .map(|relation_type| relation_type.into())
+                .collect();
+        }
+        Vec::new()
+    }
+
+    /// Query which relation types are using this component as inbound type
+    async fn inbound_of(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
+        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
+            return relation_type_manager
+                .get_relation_types()
+                .iter()
+                .filter(|relation_type| relation_type.inbound_type.eq(&self.component.name))
+                .cloned()
+                .map(|relation_type| relation_type.into())
+                .collect();
+        }
+        Vec::new()
+    }
 }
 
 impl From<Component> for GraphQLComponent {

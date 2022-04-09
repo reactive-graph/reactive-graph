@@ -589,7 +589,9 @@ type RelationType {
   fullName: String!
   "The relation type belongs to the given group of relation types."
   group: String!
-  "The inbound entity type."
+  "The inbound components."
+  inboundComponents: [Component!]!
+  "The inbound entity type(s)."
   inboundTypes: [EntityType!]!
   """
 
@@ -601,7 +603,9 @@ type RelationType {
   (without type suffix).
   """
   name: String!
-  "The outbound entity type."
+  "The outbound components."
+  outboundComponents: [Component!]!
+  "The outbound entity type(s)."
   outboundTypes: [EntityType!]!
   """
 

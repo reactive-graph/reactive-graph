@@ -16,7 +16,7 @@ pub struct GraphQLRelationType {
 /// Also the relation type defines the properties of the relation instance.
 #[Object(name = "RelationType")]
 impl GraphQLRelationType {
-    /// The outbound entity type.
+    /// The outbound entity type(s).
     async fn outbound_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
         if entity_type_manager.is_ok() {
@@ -33,6 +33,20 @@ impl GraphQLRelationType {
             }
         }
         Vec::new()
+    }
+
+    /// The outbound components.
+    async fn outbound_components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
+        match context.data::<Arc<dyn ComponentManager>>() {
+            Ok(component_manager) => {
+                if let Some(component) = component_manager.get(self.relation_type.outbound_type.clone()) {
+                    vec![component.into()]
+                } else {
+                    Vec::new()
+                }
+            }
+            Err(_) => Vec::new(),
+        }
     }
 
     /// The name of the relation type.
@@ -52,7 +66,7 @@ impl GraphQLRelationType {
         self.relation_type.full_name.clone()
     }
 
-    /// The inbound entity type.
+    /// The inbound entity type(s).
     async fn inbound_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
         if entity_type_manager.is_ok() {
@@ -69,6 +83,20 @@ impl GraphQLRelationType {
             }
         }
         Vec::new()
+    }
+
+    /// The inbound components.
+    async fn inbound_components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
+        match context.data::<Arc<dyn ComponentManager>>() {
+            Ok(component_manager) => {
+                if let Some(component) = component_manager.get(self.relation_type.inbound_type.clone()) {
+                    vec![component.into()]
+                } else {
+                    Vec::new()
+                }
+            }
+            Err(_) => Vec::new(),
+        }
     }
 
     /// The relation type belongs to the given group of relation types.
