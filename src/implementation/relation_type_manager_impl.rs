@@ -46,18 +46,24 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         debug!("Registered relation type {}", relation_type.type_name.clone());
         // Construct the type
         relation_type.t = Identifier::new(relation_type.type_name.clone()).unwrap();
-        if relation_type.outbound_type != "*" && !self.entity_type_manager.has(relation_type.outbound_type.clone()) {
+        if relation_type.outbound_type != "*"
+            && !self.entity_type_manager.has(relation_type.outbound_type.clone())
+            && !self.component_manager.has(relation_type.outbound_type.clone())
+        {
             warn!(
-                "Relation type {} not initialized: Outbound entity type does not exist {}",
+                "Relation type {} not initialized: Outbound entity type or component does not exist {}",
                 relation_type.type_name.clone(),
                 relation_type.outbound_type.clone()
             );
             // TODO: Result
             return;
         }
-        if relation_type.inbound_type != "*" && !self.entity_type_manager.has(relation_type.inbound_type.clone()) {
+        if relation_type.inbound_type != "*"
+            && !self.entity_type_manager.has(relation_type.inbound_type.clone())
+            && !self.component_manager.has(relation_type.outbound_type.clone())
+        {
             warn!(
-                "Relation type {} not initialized: Inbound entity type does not exist {}",
+                "Relation type {} not initialized: Inbound entity type or component does not exist {}",
                 relation_type.type_name.clone(),
                 relation_type.inbound_type.clone()
             );
