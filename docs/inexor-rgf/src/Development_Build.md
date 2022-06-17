@@ -130,3 +130,13 @@ Release builds are located in `target/release` instead of `target/debug`
 ```admonish info "Configure plugins"
 Please consult the documentation for [configuring plugins](./Configuration_Plugins.md)
 ```
+
+### Plugin Compatibility
+
+```log
+17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../inexor-rgf-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
+```
+
+```admonish warning "Rust Compiler"
+The plugins have to be compiled by the same rust compiler.
+```
