@@ -8,7 +8,7 @@
       },
       "InexorReactiveGraphFlow@https": {
         "url": "https://localhost:31415/graphql",
-        "introspect": true
+        "introspect": false
       }
     }
   },
