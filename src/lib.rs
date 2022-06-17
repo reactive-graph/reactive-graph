@@ -1,5 +1,4 @@
 #![feature(register_tool)]
-#![feature(termination_trait_lib)]
 #![feature(test)]
 #![register_tool(tarpaulin)]
 
