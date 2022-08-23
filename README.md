@@ -7,7 +7,7 @@
 ### About Inexor
 
 <a href="https://inexor.org/">
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-plugins/main/docs/images/inexor_2.png">
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-core-plugins/main/docs/images/inexor_2.png">
 </a>
 
 * Inexor will be a new first person shooter game which is based on a new octree-based game engine.
@@ -31,17 +31,17 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 ### About this module
 
 This module provides the plugin mechanism of the Inexor Reactive Graph Flow. The
-[main application](https://github.com/aschaeffer/inexor-rgf-application) and all
+[main application](https://github.com/inexorgame/inexor-rgf-application) and all
 plugins will depend on this.
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-core-plugins/Rust">](https://github.com/aschaeffer/inexor-rgf-core-plugins/actions?query=workflow%3ARust)
-[<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-core-plugins">]()
-[<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-core-plugins">]()
+[<img src="https://img.shields.io/github/workflow/status/inexorgame/inexor-rgf-core-plugins/Rust">](https://github.com/inexorgame/inexor-rgf-core-plugins/actions?query=workflow%3ARust)
+[<img src="https://img.shields.io/github/last-commit/inexorgame/inexor-rgf-core-plugins">]()
+[<img src="https://img.shields.io/github/languages/code-size/inexorgame/inexor-rgf-core-plugins">]()
 [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins)
 
-[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-core-plugins">](https://github.com/aschaeffer/inexor-rgf-core-plugins/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-core-plugins">](https://github.com/inexorgame/inexor-rgf-core-plugins/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
 #### The Plugin System
@@ -121,4 +121,4 @@ TODO: Flow Type: Cause flows contains entity instances and relation instances, w
 
 |                                                                                                                                                                                                                             |           |                                                                    |
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|--------------------------------------------------------------------|
-| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-core-plugins/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses!  |
+| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-core-plugins/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses!  |
