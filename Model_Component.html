@@ -149,12 +149,13 @@ each have a position. But here, too, they have little in common. And yet they ha
 <p>A player has a name and a position, i.e. an entity type (just like a relation type) can consist of several components.
 The properties of all components are merged.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the component</td><td>labeled</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the component</td><td>The label is an hierarchical path with static segments, named parameters and catch-all parameters.</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The properties which are applied on entity or relation instances.</td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Component {
@@ -175,9 +176,10 @@ The properties of all components are merged.</p>
     Relation-Type o{--}o Component : composes
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>

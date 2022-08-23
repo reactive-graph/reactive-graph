@@ -139,8 +139,7 @@
 <p>Plugins can implement the trait <code>RelationTypeProvider</code> in order to register relation types during initialization of the
 plugin.</p>
 <h2 id="trait-relationtypeprovider"><a class="header" href="#trait-relationtypeprovider">Trait <code>RelationTypeProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl RelationTypeProvider for ExampleRelationTypeProviderProviderImpl {
     fn get_relation_types(&amp;self) -&gt; Vec&lt;RelationType&gt; {

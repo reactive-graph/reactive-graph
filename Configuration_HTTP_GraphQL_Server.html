@@ -144,9 +144,10 @@
 <pre><code class="language-toml">hostname = &quot;localhost&quot;
 port = 31415
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-hostname" class="admonition tip">
 <div class="admonition-title">
 <p>Hostname</p>
+<p><a class="admonition-anchor-link" href="#admonition-hostname"></a></p>
 </div>
 <div>
 <p>If you bind on localhost the GraphQL server is not reachable from outside. Use the hostname or ip which is
@@ -163,9 +164,10 @@ reachable from outside.</p>
 still alive after the timeout are force dropped. By default, shutdown timeout is set to 30 seconds.</p>
 <pre><code class="language-toml">shutdown_timeout = 3
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-development" class="admonition tip">
 <div class="admonition-title">
 <p>Development</p>
+<p><a class="admonition-anchor-link" href="#admonition-development"></a></p>
 </div>
 <div>
 <p>If you have to restart often during development, set this to a low value.</p>
@@ -187,9 +189,10 @@ WebResourceProvider binary and is doing the same as
 <code>https://hostname:31415/binary/entities/uuid/property_name</code>.</p>
 <pre><code class="language-toml">default_base_path = &quot;binary&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-default-base-path" class="admonition tip">
 <div class="admonition-title">
 <p>Default Base Path</p>
+<p><a class="admonition-anchor-link" href="#admonition-default-base-path"></a></p>
 </div>
 <div>
 <p>In particular, this is very useful for web applications which shall handle the root URL:
@@ -203,9 +206,10 @@ format is specified the default log format is used.</p>
 enabled = true
 format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot; %T&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-list-of-log-format-variables" class="admonition tip">
 <div class="admonition-title">
 <p>List of Log Format Variables</p>
+<p><a class="admonition-anchor-link" href="#admonition-list-of-log-format-variables"></a></p>
 </div>
 <div>
 <p>https://docs.rs/actix-web/latest/actix_web/middleware/struct.Logger.html#format</p>

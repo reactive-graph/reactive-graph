@@ -139,8 +139,7 @@
 <p>Plugins can implement the trait <code>EntityTypeProvider</code> in order to register entity types during initialization of the
 plugin.</p>
 <h2 id="trait-entitytypeprovider"><a class="header" href="#trait-entitytypeprovider">Trait <code>EntityTypeProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl EntityTypeProvider for ExampleEntityTypeProviderProviderImpl {
     fn get_entity_types(&amp;self) -&gt; Vec&lt;EntityType&gt; {

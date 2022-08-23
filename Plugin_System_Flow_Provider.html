@@ -139,8 +139,7 @@
 <p>Plugins can implement the trait <code>FlowProvider</code> in order to create a flow during initialization of the
 plugin.</p>
 <h2 id="trait-flowprovider"><a class="header" href="#trait-flowprovider">Trait <code>FlowProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl FlowProvider for ExampleFlowProviderProviderImpl {
     fn get_flows(&amp;self) -&gt; Vec&lt;Flow&gt; {

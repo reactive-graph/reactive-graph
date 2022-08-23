@@ -139,8 +139,7 @@
 <p>Plugins can implement the trait <code>ComponentProvider</code> in order to register components during initialization of the
 plugin.</p>
 <h2 id="trait-componentprovider"><a class="header" href="#trait-componentprovider">Trait <code>ComponentProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl ComponentProvider for ExampleComponentProviderImpl {
     fn get_components(&amp;self) -&gt; Vec&lt;Component&gt; {

@@ -139,12 +139,13 @@
 <p>System events are events that are emitted by the system itself.  There is no other way to get this information than
 through these events.</p>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
-<table><thead><tr><th>Entity Type</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Entity Type</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>System Event</td><td>event</td><td>event</td><td>Any</td><td>Output</td></tr>
 <tr><td></td><td>labeled</td><td>label</td><td>String</td><td>None</td></tr>
 </tbody></table>
+</div>
 <h2 id="types-of-events"><a class="header" href="#types-of-events">Types of Events</a></h2>
-<table><thead><tr><th>Label</th><th>Description</th><th>Payload</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Label</th><th>Description</th><th>Payload</th></tr></thead><tbody>
 <tr><td><code>/org/inexor/events/type/component/created</code></td><td>Triggered if a component has been created</td><td>Name of the created component</td></tr>
 <tr><td><code>/org/inexor/events/type/component/deleted</code></td><td>Triggered if a component has been deleted</td><td>Name of the deleted component</td></tr>
 <tr><td><code>/org/inexor/events/type/entity/created</code></td><td>Triggered if an entity type has been created</td><td>Name of the created entity type</td></tr>
@@ -158,9 +159,10 @@ through these events.</p>
 <tr><td><code>/org/inexor/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
 <tr><td><code>/org/inexor/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
 </tbody></table>
-<div class="admonition tip">
+</div><div id="admonition-label" class="admonition tip">
 <div class="admonition-title">
 <p>Label</p>
+<p><a class="admonition-anchor-link" href="#admonition-label"></a></p>
 </div>
 <div>
 <p>Subscribing to these events is easily possible with a label.</p>
@@ -168,9 +170,10 @@ through these events.</p>
 </div>
 <h2 id="graphql-subscription"><a class="header" href="#graphql-subscription">GraphQL Subscription</a></h2>
 <p>It is possible to subscribe to these events via GraphQL subscription.</p>
-<div class="admonition tip">
+<div id="admonition-transform-and-zip-multiple-events" class="admonition tip">
 <div class="admonition-title">
 <p>Transform and Zip Multiple Events</p>
+<p><a class="admonition-anchor-link" href="#admonition-transform-and-zip-multiple-events"></a></p>
 </div>
 <div>
 <p>Instead of subscribing multiple events directly you can zip multiple events and subscribe to the result.</p>

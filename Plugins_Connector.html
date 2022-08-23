@@ -159,12 +159,13 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </ol>
 <hr />
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Description</th><th>Property</th><th>DataType</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th><th>Property</th><th>DataType</th></tr></thead><tbody>
 <tr><td>connector</td><td>Connects two properties</td><td>outbound_property_name</td><td>string</td></tr>
 <tr><td></td><td></td><td>inbound_property_name</td><td>string</td></tr>
 </tbody></table>
+</div>
 <h2 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
 <tr><td>debug_connector</td><td>connector</td><td>This connector logs the value before propagation (log level debug)</td></tr>
 <tr><td>default_connector</td><td>connector</td><td>This is the default connector type, which simply does nothing than propagate the value</td></tr>
 <tr><td>parse_float_connector</td><td>connector</td><td>This connector parses a string value and propagates a float value</td></tr>
@@ -172,23 +173,27 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 <tr><td>to_string_connector</td><td>connector</td><td>This connector converts the value of any type to string before propagation</td></tr>
 <tr><td>trace_connector</td><td>connector</td><td>This connector logs the value before propagation (log level trace)</td></tr>
 </tbody></table>
+</div>
 <h3 id="future-more-useful-connectors"><a class="header" href="#future-more-useful-connectors">Future: More (useful) connectors</a></h3>
-<table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
 <tr><td>str_split_connector</td><td>connector</td><td>A string is split into tokens. Propagates an JSON array of string tokens</td></tr>
 <tr><td>str_join_connector</td><td>connector</td><td>Joins an array of strings and propagates the resulting string</td></tr>
 <tr><td>increment_connector</td><td>connector</td><td>Propagates the incremented number</td></tr>
 <tr><td>decrement_connector</td><td>connector</td><td>Propagates the decremented number</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-connector</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-connector">https://github.com/aschaeffer/inexor-rgf-plugin-connector</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-connector</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-connector">https://github.com/inexorgame/inexor-rgf-plugin-connector</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
 <pre><code class="language-graphql">mutation {

@@ -146,8 +146,7 @@ restarting the core application.</p>
 <p>In addition, the file size of the binary file is reduced since only its libraries are compiled in the core application.</p>
 <p>In addition, only what is actually used is loaded. Plugins that are not required for the application can be deactivated.</p>
 <h2 id="trait-plugin"><a class="header" href="#trait-plugin">Trait <code>Plugin</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
 
@@ -196,8 +195,7 @@ restarting the core application.</p>
 <li>The description of the plugin (use environment variable <code>CARGO_PKG_DESCRIPTION</code>)</li>
 <li>The version of the plugin (use environment variable <code>CARGO_PKG_VERSION</code>)</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn metadata(&amp;self) -&gt; Result&lt;PluginMetadata, PluginError&gt; {
@@ -214,8 +212,7 @@ restarting the core application.</p>
 <p>The plugin trait provides methods to do initialization and shutdown before and after setting up and shutting down
 providers.</p>
 <p>TODO: Lifecycle Image</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn init(&amp;self) -&gt; Result&lt;(), PluginError&gt; {
@@ -241,8 +238,7 @@ providers.</p>
 <span class="boring">}
 </span></code></pre></pre>
 <h2 id="trait-plugincontext"><a class="header" href="#trait-plugincontext">Trait <code>PluginContext</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub trait PluginContext: Send + Sync {
     /// Returns the component manager.
@@ -268,8 +264,7 @@ providers.</p>
 <h3 id="make-use-of-the-plugin-context"><a class="header" href="#make-use-of-the-plugin-context">Make use of the plugin context</a></h3>
 <p>The plugin have to store a reference to the plugin context. Therefore, you have to implement the method <code>set_context</code>
 which is called during initialization:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn set_context(&amp;self, context: Arc&lt;dyn PluginContext&gt;) -&gt; Result&lt;(), PluginError&gt; {
@@ -286,8 +281,7 @@ which is called during initialization:</p>
 <li>Create the entity instance using a builder (non-reactive)</li>
 <li>Create/register the entity instance using <code>create</code> returns a reactive entity instance</li>
 </ol>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl TestManager {
     fn create_entity(&amp;self) {
@@ -303,8 +297,7 @@ which is called during initialization:</p>
 </span></code></pre></pre>
 <h3 id="implement-or-ignore-providers"><a class="header" href="#implement-or-ignore-providers">Implement or ignore providers</a></h3>
 <p>If your plugin provide components you have to return a reference of the <code>ComponentProvider</code>:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn get_component_provider(&amp;self) -&gt; Result&lt;Arc&lt;dyn ComponentProvider&gt;, PluginError&gt; {
@@ -319,8 +312,7 @@ which is called during initialization:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>If your plugin doesn't provide components:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn get_component_provider(&amp;self) -&gt; Result&lt;Arc&lt;dyn ComponentProvider&gt;, PluginError&gt; {

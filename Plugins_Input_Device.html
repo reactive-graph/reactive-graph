@@ -207,15 +207,16 @@ UUID (by device name and key/led/... id) or a stable human-readable label.</p>
 </code></pre>
 <h3 id="specific-device-and-any-device"><a class="header" href="#specific-device-and-any-device">&quot;Specific Device&quot; and &quot;Any Device&quot;</a></h3>
 <p>Each event is forwarded twice:</p>
-<table><thead><tr><th>Device</th><th>Event</th><th>Entity Instance Label</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Device</th><th>Event</th><th>Entity Instance Label</th></tr></thead><tbody>
 <tr><td>keyboard1</td><td>key_f7</td><td><ul><li>/org/inexor/input/keyboard1/key/key_f7</li><li>/org/inexor/input/any_device/key/key_f7</li></ul></td></tr>
 <tr><td>keyboard2</td><td>key_f7</td><td><ul><li>/org/inexor/input/keyboard1/key/key_f7</li><li>/org/inexor/input/any_device/key/key_f7</li></ul></td></tr>
 </tbody></table>
+</div>
 <p>This allows you to address a key/led/... event on a specific device or the key/led/... event on all devices.</p>
 <h2 id="type-system"><a class="header" href="#type-system">Type System</a></h2>
 <p><img src="images/input_device_type_system.png" alt="Inexor" /></p>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>InputDevice</td><td>name</td><td>string</td><td>output</td></tr>
 <tr><td></td><td>event</td><td>object</td><td>output</td></tr>
 <tr><td></td><td>physical_path</td><td>string</td><td>output</td></tr>
@@ -239,47 +240,53 @@ UUID (by device name and key/led/... id) or a stable human-readable label.</p>
 <tr><td></td><td>switch_type</td><td>number</td><td>none</td></tr>
 <tr><td></td><td>state</td><td>number</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h2>
-<table><thead><tr><th>Name</th><th>Outbound Entity Type</th><th>Inbound Entity Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Outbound Entity Type</th><th>Inbound Entity Type</th></tr></thead><tbody>
 <tr><td>KeyEvent</td><td>InputDevice</td><td>InputDeviceKey</td></tr>
 <tr><td>LedEvent</td><td>InputDevice</td><td>InputDeviceLed</td></tr>
 <tr><td>RelativeAxisEvent</td><td>InputDevice</td><td>InputDeviceRelativeAxis</td></tr>
 <tr><td>AbsoluteAxisEvent</td><td>InputDevice</td><td>InputDeviceAbsoluteAxis</td></tr>
 <tr><td>SwitchEvent</td><td>InputDevice</td><td>InputDeviceSwitch</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-behaviours"><a class="header" href="#entity-behaviours">Entity Behaviours</a></h2>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>InputDevice</td><td>Streams input events from evdev and sets the entity instance property <code>event</code></td></tr>
 </tbody></table>
+</div>
 <h4 id="relation-behaviours"><a class="header" href="#relation-behaviours">Relation Behaviours</a></h4>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>KeyEvent</td><td>Propagates input events and filters by event type (key event) and key code defined by the inbound entity instance</td></tr>
 <tr><td>LedEvent</td><td>Propagates input events and filters by event type (led event) and led type defined by the inbound entity instance</td></tr>
 <tr><td>RelativeAxisEvent</td><td>Propagates input events and filters by event type (relative axis event) and relative axis type defined by the inbound entity instance</td></tr>
 <tr><td>AbsoluteAxisEvent</td><td>Propagates input events and filters by event type (absolute axis event) and absolute axis type defined by the inbound entity instance</td></tr>
 <tr><td>SwitchEvent</td><td>Propagates input events and filters by event type (switch event) and switch type defined by the inbound entity instance</td></tr>
 </tbody></table>
+</div>
 <h2 id="rust-crate--rust-reference"><a class="header" href="#rust-crate--rust-reference">Rust Crate / Rust Reference</a></h2>
 <ul>
 <li>https://github.com/emberian/evdev/ (Linux only)</li>
 <li>https://www.freedesktop.org/software/libevdev/doc/latest/</li>
 </ul>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>x</td></tr>
 <tr><td>Windows</td><td>x</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-input-device</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-input-device">https://github.com/aschaeffer/inexor-rgf-plugin-input-device</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-input-device</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-input-device">https://github.com/inexorgame/inexor-rgf-plugin-input-device</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="appendix-input-device-types"><a class="header" href="#appendix-input-device-types">Appendix: Input Device Types</a></h2>
 <h3 id="keys"><a class="header" href="#keys">Keys</a></h3>
 <p>A key changed state. A key, or button, is usually a momentary switch (in the circuit sense). It has two states: down,
 or up. There are events for when keys are pressed (become down) and released (become up). There are also “key repeats”,
 where multiple events are sent while a key is down.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>KEY_RESERVED</td><td></td></tr>
 <tr><td>KEY_ESC</td><td></td></tr>
 <tr><td>KEY_1</td><td></td></tr>
@@ -800,9 +807,10 @@ where multiple events are sent while a key is down.</p>
 <tr><td>BTN_TRIGGER_HAPPY39</td><td></td></tr>
 <tr><td>BTN_TRIGGER_HAPPY40</td><td></td></tr>
 </tbody></table>
+</div>
 <h4 id="leds"><a class="header" href="#leds">LEDs</a></h4>
 <p>An LED was toggled.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>LED_NUML</td><td></td></tr>
 <tr><td>LED_CAPSL</td><td></td></tr>
 <tr><td>LED_SCROLLL</td><td></td></tr>
@@ -815,10 +823,11 @@ where multiple events are sent while a key is down.</p>
 <tr><td>LED_MAIL</td><td>Message waiting</td></tr>
 <tr><td>LED_CHARGING</td><td>External power connected</td></tr>
 </tbody></table>
+</div>
 <h3 id="relative-axes"><a class="header" href="#relative-axes">Relative Axes</a></h3>
 <p>Movement on a relative axis. There is no absolute coordinate frame, just the fact that there was a change of a
 certain amount of units. Used for things like mouse movement or scroll wheels.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>REL_X</td><td></td></tr>
 <tr><td>REL_Y</td><td></td></tr>
 <tr><td>REL_Z</td><td></td></tr>
@@ -833,9 +842,10 @@ certain amount of units. Used for things like mouse movement or scroll wheels.</
 <tr><td>REL_WHEEL_HI_RES</td><td></td></tr>
 <tr><td>REL_HWHEEL_HI_RES</td><td></td></tr>
 </tbody></table>
+</div>
 <h3 id="absolute-axes"><a class="header" href="#absolute-axes">Absolute Axes</a></h3>
 <p>Movement on an absolute axis. Used for things such as touch events and joysticks.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>ABS_X</td><td></td></tr>
 <tr><td>ABS_Y</td><td></td></tr>
 <tr><td>ABS_Z</td><td></td></tr>
@@ -878,10 +888,11 @@ certain amount of units. Used for things like mouse movement or scroll wheels.</
 <tr><td>ABS_MT_TOOL_X</td><td>Center X tool position</td></tr>
 <tr><td>ABS_MT_TOOL_Y</td><td>Center Y tool position</td></tr>
 </tbody></table>
+</div>
 <h3 id="switches"><a class="header" href="#switches">Switches</a></h3>
 <p>Change in a switch value. Switches are boolean conditions and usually correspond to a toggle switch of some kind
 in hardware.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>SW_LID</td><td>set = lid shut</td></tr>
 <tr><td>SW_TABLET_MODE</td><td>set = tablet mode</td></tr>
 <tr><td>SW_HEADPHONE_INSERT</td><td>set = inserted</td></tr>
@@ -900,6 +911,7 @@ in hardware.</p>
 <tr><td>SW_PEN_INSERTED</td><td>set = pen inserted</td></tr>
 <tr><td>SW_MACHINE_COVER</td><td>set = cover closed</td></tr>
 </tbody></table>
+</div>
 <h2 id="appendix-shared-keys"><a class="header" href="#appendix-shared-keys">Appendix: Shared Keys</a></h2>
 <p><img src="images/input_device_two_keyboards_shared_keys.png" alt="Inexor" /></p>
 <p><img src="images/input_device_two_keyboards_shared_leds.png" alt="Inexor" /></p>

@@ -140,7 +140,7 @@
 entity instance. The relation instance has a type, the relation type. The <a href="./Model_Relation_Type.html">relation type</a>
 defines which entity type the outbound entity type and which entity type the inbound entity type must have.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The outbound entity instance</td></tr>
 <tr><td>Type</td><td><a href="./Model_Relation_Type.html">RelationType</a></td><td>The relation type</td></tr>
 <tr><td>Inbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The inbound entity instance</td></tr>
@@ -149,6 +149,7 @@ defines which entity type the outbound entity type and which entity type the inb
 <tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
 <tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph"><a class="header" href="#graph">Graph</a></h2>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Instance)===&gt;|&quot;Relation Instance&quot;|B(Inbound Entity Instance);
@@ -200,9 +201,10 @@ defines which entity type the outbound entity type and which entity type the inb
     Entity-Type ||--}o Relation-Type : inbound
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>

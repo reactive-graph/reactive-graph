@@ -139,7 +139,7 @@
 <p>An entity type defines the characteristics that are common to all entity instances. In particular, an entity type
 defines which components it is combined from. Additional properties can also be defined.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the entity type</td><td>player</td></tr>
 <tr><td>Group</td><td>String</td><td>The group of the entity type</td><td>logical_gates</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td><td></td></tr>
@@ -147,6 +147,7 @@ defines which components it is combined from. Additional properties can also be 
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on entity instances</td><td></td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
@@ -192,9 +193,10 @@ defines which components it is combined from. Additional properties can also be 
     Entity-Instance ||--}o Entity-Type : is-a
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>

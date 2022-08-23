@@ -145,15 +145,19 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
-<div class="admonition info">
+<div id="admonition-error-rendering-admonishment" class="admonition bug">
 <div class="admonition-title">
-<p>Error parsing JSON string: expected value at line 1 column 1</p>
+<p>Error rendering admonishment</p>
+<p><a class="admonition-anchor-link" href="#admonition-error-rendering-admonishment"></a></p>
 </div>
 <div>
-<ul>
-<li>UUIDs are unique and unique across distributed systems</li>
-<li>UUIDs can be represented as string and as a 128 bit unsigned integer</li>
-</ul>
+<p>Failed with: TOML parsing error: expected an equals, found an identifier at line 1 column 6</p>
+<p>Original markdown input:</p>
+<pre><code>```admonish info UUIDs
+* UUIDs are unique and unique across distributed systems
+* UUIDs can be represented as string and as a 128 bit unsigned integer
+```
+</code></pre>
 </div>
 </div>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
@@ -161,9 +165,10 @@ also on the server and on clients connected to it.</p>
 entity instances to be addressed using labels, for example in GraphQL queries.</p>
 <p>If you compare the query with and without a label, you will find that the query is easier to understand thanks to the
 label and transports significantly more information about what is actually happening.</p>
-<div class="admonition info">
+<div id="admonition-info" class="admonition info">
 <div class="admonition-title">
 <p>Info</p>
+<p><a class="admonition-anchor-link" href="#admonition-info"></a></p>
 </div>
 <div>
 <p>Labels are optional</p>
@@ -190,7 +195,7 @@ label and transports significantly more information about what is actually happe
 }
 </code></pre>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The type of the entity instance</td></tr>
 <tr><td>ID</td><td>UUID</td><td>The unique identifier of the entity instance</td></tr>
 <tr><td>Label</td><td>String (optional)</td><td>The label of the entity instance</td></tr>
@@ -199,6 +204,7 @@ label and transports significantly more information about what is actually happe
 <tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
 <tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph"><a class="header" href="#graph">Graph</a></h2>
 <pre class="mermaid">graph LR;
     EI(Entity Instance);
@@ -256,9 +262,10 @@ label and transports significantly more information about what is actually happe
     Entity-Type ||--}o Relation-Type : inbound
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>

@@ -140,9 +140,10 @@
 <h3 id="linux--raspberry-pi--macos"><a class="header" href="#linux--raspberry-pi--macos">Linux / Raspberry Pi / MacOS</a></h3>
 <pre><code class="language-shell">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
-<div class="admonition info">
+<div id="admonition-rustup" class="admonition info">
 <div class="admonition-title">
 <p>Rustup</p>
+<p><a class="admonition-anchor-link" href="#admonition-rustup"></a></p>
 </div>
 <div>
 <p><a href="https://rustup.rs/">rustup</a> is an installer for the systems programming language Rust.</p>
@@ -155,7 +156,7 @@
 <pre><code class="language-shell">rustup update nightly
 </code></pre>
 <h2 id="clone-the-repository"><a class="header" href="#clone-the-repository">Clone the repository</a></h2>
-<pre><code class="language-shell">git clone https://github.com/aschaeffer/inexor-rgf-application.git
+<pre><code class="language-shell">git clone https://github.com/inexorgame/inexor-rgf-application.git
 </code></pre>
 <h2 id="build-the-application"><a class="header" href="#build-the-application">Build the application</a></h2>
 <p>Build in development mode:</p>
@@ -166,9 +167,10 @@ cargo build
 <pre><code class="language-shell">cd inexor-rgf-application
 cargo build --release
 </code></pre>
-<div class="admonition info">
+<div id="admonition-cargo" class="admonition info">
 <div class="admonition-title">
 <p>Cargo</p>
+<p><a class="admonition-anchor-link" href="#admonition-cargo"></a></p>
 </div>
 <div>
 <p><a href="https://doc.rust-lang.org/cargo/index.html">Cargo</a> is the Rust package manager. Cargo downloads your Rust package's
@@ -202,9 +204,10 @@ the Rust community’s package registry.</p>
 </li>
 <li>Repeat this for all plugins</li>
 </ol>
-<div class="admonition warning">
+<div id="admonition-plugin-api-version-must-match" class="admonition warning">
 <div class="admonition-title">
 <p>Plugin API version must match</p>
+<p><a class="admonition-anchor-link" href="#admonition-plugin-api-version-must-match"></a></p>
 </div>
 <div>
 <p>The application and the plugins must be compiled with the same version of the Plugin API!</p>
@@ -213,7 +216,7 @@ the Rust community’s package registry.</p>
 <h2 id="build-plugins"><a class="header" href="#build-plugins">Build plugins</a></h2>
 <h3 id="checkout-and-build-the-plugin"><a class="header" href="#checkout-and-build-the-plugin">Checkout and build the plugin</a></h3>
 <pre><code class="language-shell">cd ..
-git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
+git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
 cd inexor-rgf-plugin-mqtt
 </code></pre>
 <p>Build in development mode:</p>
@@ -231,20 +234,34 @@ name = &quot;inexor-rgf-plugin-mqtt&quot;
 active = true
 path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-artifact-location" class="admonition tip">
 <div class="admonition-title">
 <p>Artifact Location</p>
+<p><a class="admonition-anchor-link" href="#admonition-artifact-location"></a></p>
 </div>
 <div>
 <p>Release builds are located in <code>target/release</code> instead of <code>target/debug</code></p>
 </div>
 </div>
-<div class="admonition info">
+<div id="admonition-configure-plugins" class="admonition info">
 <div class="admonition-title">
 <p>Configure plugins</p>
+<p><a class="admonition-anchor-link" href="#admonition-configure-plugins"></a></p>
 </div>
 <div>
 <p>Please consult the documentation for <a href="./Configuration_Plugins.html">configuring plugins</a></p>
+</div>
+</div>
+<h3 id="plugin-compatibility"><a class="header" href="#plugin-compatibility">Plugin Compatibility</a></h3>
+<pre><code class="language-log">17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../inexor-rgf-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
+</code></pre>
+<div id="admonition-rust-compiler" class="admonition warning">
+<div class="admonition-title">
+<p>Rust Compiler</p>
+<p><a class="admonition-anchor-link" href="#admonition-rust-compiler"></a></p>
+</div>
+<div>
+<p>The plugins have to be compiled by the same rust compiler.</p>
 </div>
 </div>
 

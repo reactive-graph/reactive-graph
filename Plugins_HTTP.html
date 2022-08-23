@@ -139,7 +139,7 @@
 <p>This plugin provides a reactive http client integration. Using entities of type <code>http</code> requests via HTTP can be made.</p>
 <p>With this plugin it's possible to integrate external services into your home automation.</p>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>http</td><td>url</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>method</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>request_headers</td><td>object</td><td>input</td></tr>
@@ -155,23 +155,27 @@
 <tr><td></td><td>result</td><td>object</td><td>output</td></tr>
 <tr><td></td><td>error</td><td>object</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-http</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-http">https://github.com/aschaeffer/inexor-rgf-plugin-http</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-http</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-http">https://github.com/inexorgame/inexor-rgf-plugin-http</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <h3 id="graphql"><a class="header" href="#graphql">GraphQL</a></h3>
 <h4 id="create-http-request"><a class="header" href="#create-http-request">Create HTTP Request</a></h4>
 <p>First create an entity instance of type <code>http</code> and specify the URL and the method. </p>
-<div class="admonition tip">
+<div id="admonition-how-to-execute-the-http-request" class="admonition tip">
 <div class="admonition-title">
 <p>How to execute the HTTP Request</p>
+<p><a class="admonition-anchor-link" href="#admonition-how-to-execute-the-http-request"></a></p>
 </div>
 <div>
 <p>By creating the entity instance no request will be made. The next example explains how to execute the request.</p>

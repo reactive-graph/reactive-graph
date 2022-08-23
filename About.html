@@ -166,11 +166,12 @@ the help of the graph. Inexor is the first game engine to introduce a graph as a
 </ul>
 <h3 id="what-type-of-graph-does-inexor-implement"><a class="header" href="#what-type-of-graph-does-inexor-implement">What type of graph does Inexor implement?</a></h3>
 <p>Internally, Inexor is an in-memory graph database with the following characteristics:</p>
-<table><thead><tr><th>Characteristics</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Characteristics</th><th>Description</th></tr></thead><tbody>
 <tr><td>Directed Graph</td><td>Each relation points from one entity to another entity</td></tr>
 <tr><td>Typed Graph</td><td><ul><li>Node: Each entity instance is of an entity type</li><li>Edge: Each relation instance is of a relation type</li></ul></td></tr>
 <tr><td>Property Graph</td><td><ul><li>Entities have properties</li><li>Relations have properties</li></ul></td></tr>
 </tbody></table>
+</div>
 <p>In addition, Inexor takes up concepts from entity component systems. Types, i.e. entity types and relation types, are
 assembled using components. The type system itself is flat and supports composition rather than inheritance. Components
 can be added or removed from instances, i.e. entity instances or relation instances.</p>
@@ -255,10 +256,11 @@ instances and of relation instances. A behaviour can be added to entity instance
 from entity/relation instances.</p>
 <p>In the Reactive Graph Flow there are <code>ComponentBehaviour</code>s, <code>EntityBehaviours</code> and
 <code>RelationBehaviours</code>.</p>
-<table><thead><tr><th>Type</th><th>Behaviour</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Behaviour</th></tr></thead><tbody>
 <tr><td>Entity Type &quot;and&quot;</td><td>Entity Behaviour <code>Logical Gate</code> with AND-combinator</td></tr>
 <tr><td>Relation Type &quot;default_connector&quot;</td><td>Relation Behaviour <code>Default Connector</code></td></tr>
 </tbody></table>
+</div>
 <p>Behaviours are provided by <a href="./Plugin_System.html">plugins</a>.</p>
 <h2 id="what-is-a-flow"><a class="header" href="#what-is-a-flow">What is a flow?</a></h2>
 <p>Control flows can be implemented based on the graph, the data streams and the behavior-driven design. It is important

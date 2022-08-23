@@ -151,39 +151,45 @@ ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
 vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </code></pre>
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>binary_data</td><td>data_url</td><td>string</td><td>none</td><td>Data-URL, BASE64 encoded</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
 <p>Feed the streams with binary data from files.</p>
-<table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>LoadBinary</td><td></td><td>filename</td><td>string</td><td>input</td><td>The filename to load the binary data from</td></tr>
 <tr><td></td><td>binary_data</td><td>data_url</td><td>string</td><td>output</td><td>Data-URL, BASE64 encoded</td></tr>
 <tr><td>SaveBinary</td><td></td><td>filename</td><td>string</td><td>input</td><td>The filename to store the binary data into</td></tr>
 <tr><td></td><td>binary_data</td><td>data_url</td><td>string</td><td>input</td><td>Data-URL, BASE64 encoded</td></tr>
 </tbody></table>
+</div>
 <h2 id="web-resources"><a class="header" href="#web-resources">Web Resources</a></h2>
 <p>Download binary resources via HTTP.</p>
-<table><thead><tr><th>HTTP Method</th><th>Resource Pattern</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>HTTP Method</th><th>Resource Pattern</th><th>Description</th></tr></thead><tbody>
 <tr><td>GET</td><td>/binary/entities/{uuid}/{property_name}</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
 <tr><td>GET</td><td>/binary//entities/label/*label</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
 </tbody></table>
+</div>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
-<table><thead><tr><th>Request</th><th>Entity Instance</th><th>Property Name</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Request</th><th>Entity Instance</th><th>Property Name</th></tr></thead><tbody>
 <tr><td><code>GET /binary/entity/dce4bd25-7b25-4a6a-8567-5429a2b3a101/data_url</code></td><td>id=<code>dce4bd25-7b25-4a6a-8567-5429a2b3a101</code></td><td><code>data_url</code></td></tr>
 <tr><td><code>GET /binary/entity/label/org/inexor/logo/data_url</code></td><td>label=<code>/org/inexor/logo/{:property}</code></td><td><code>data_url</code></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-binary</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-binary">https://github.com/aschaeffer/inexor-rgf-plugin-binary</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-binary</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-binary">https://github.com/inexorgame/inexor-rgf-plugin-binary</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <ul>
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>

@@ -142,16 +142,17 @@ control a headless Raspberry Pi Zero.</p>
 <p>A system command is executed by triggering (i.e. changing) the spawn property. Please see the GraphQL example.</p>
 <p>When a program runs, it writes to stdout and stderr. These outputs are available in the corresponding properties after
 the program has ended.</p>
-<div class="admonition warning">
+<div id="admonition-a-word-about-safety" class="admonition warning">
 <div class="admonition-title">
 <p>A word about safety</p>
+<p><a class="admonition-anchor-link" href="#admonition-a-word-about-safety"></a></p>
 </div>
 <div>
 <p>Only activate the plugin if you know what you are doing. Do not run the Reactive Graph Flow as root user, because the system command will be executed as the same user! The GraphQL endpoint should also be specially protected.</p>
 </div>
 </div>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>SystemCommand</td><td>name</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>current_dir</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>command</td><td>string</td><td>none</td></tr>
@@ -160,6 +161,7 @@ the program has ended.</p>
 <tr><td></td><td>stdout</td><td>string</td><td>output</td></tr>
 <tr><td></td><td>stderr</td><td>string</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <h3 id="graphql-create-system-command-list-current-directory"><a class="header" href="#graphql-create-system-command-list-current-directory">GraphQL: Create System Command &quot;List Current Directory&quot;</a></h3>
 <p>The system command is only generated but not yet executed.</p>
@@ -261,16 +263,17 @@ command is to be executed without arguments, an empty array can be passed.</p>
 }
 </code></pre>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-system-command</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-system-command">https://github.com/aschaeffer/inexor-rgf-plugin-system-command</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-system-command</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-system-command">https://github.com/inexorgame/inexor-rgf-plugin-system-command</a></td></tr>
 </tbody></table>
-
+</div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

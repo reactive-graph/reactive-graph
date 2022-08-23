@@ -167,11 +167,12 @@ the help of the graph. Inexor is the first game engine to introduce a graph as a
 </ul>
 <h3 id="what-type-of-graph-does-inexor-implement"><a class="header" href="#what-type-of-graph-does-inexor-implement">What type of graph does Inexor implement?</a></h3>
 <p>Internally, Inexor is an in-memory graph database with the following characteristics:</p>
-<table><thead><tr><th>Characteristics</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Characteristics</th><th>Description</th></tr></thead><tbody>
 <tr><td>Directed Graph</td><td>Each relation points from one entity to another entity</td></tr>
 <tr><td>Typed Graph</td><td><ul><li>Node: Each entity instance is of an entity type</li><li>Edge: Each relation instance is of a relation type</li></ul></td></tr>
 <tr><td>Property Graph</td><td><ul><li>Entities have properties</li><li>Relations have properties</li></ul></td></tr>
 </tbody></table>
+</div>
 <p>In addition, Inexor takes up concepts from entity component systems. Types, i.e. entity types and relation types, are
 assembled using components. The type system itself is flat and supports composition rather than inheritance. Components
 can be added or removed from instances, i.e. entity instances or relation instances.</p>
@@ -256,10 +257,11 @@ instances and of relation instances. A behaviour can be added to entity instance
 from entity/relation instances.</p>
 <p>In the Reactive Graph Flow there are <code>ComponentBehaviour</code>s, <code>EntityBehaviours</code> and
 <code>RelationBehaviours</code>.</p>
-<table><thead><tr><th>Type</th><th>Behaviour</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Behaviour</th></tr></thead><tbody>
 <tr><td>Entity Type &quot;and&quot;</td><td>Entity Behaviour <code>Logical Gate</code> with AND-combinator</td></tr>
 <tr><td>Relation Type &quot;default_connector&quot;</td><td>Relation Behaviour <code>Default Connector</code></td></tr>
 </tbody></table>
+</div>
 <p>Behaviours are provided by <a href="./Plugin_System.html">plugins</a>.</p>
 <h2 id="what-is-a-flow"><a class="header" href="#what-is-a-flow">What is a flow?</a></h2>
 <p>Control flows can be implemented based on the graph, the data streams and the behavior-driven design. It is important
@@ -312,9 +314,10 @@ part has changed. It should be sufficient to restart the modified plugin.</p>
 restarting the core application.</p>
 <p>In addition, the file size of the binary file is reduced since only its libraries are compiled in the core application.</p>
 <p>In addition, only what is actually used is loaded. Plugins that are not required for the application can be deactivated.</p>
-<div class="admonition info">
+<div id="admonition-quick-links" class="admonition info">
 <div class="admonition-title">
 <p>Quick-Links</p>
+<p><a class="admonition-anchor-link" href="About_Design_Goals.html#admonition-quick-links"></a></p>
 </div>
 <div>
 <ul>
@@ -341,9 +344,10 @@ core application via the plugin API. Type system and reactive instance system ar
 <p>In addition, there are cross-sectional functionalities such as lifecycle management, logging and configuration.</p>
 <p>For configurations, TOML should be used as the configuration format wherever possible.</p>
 <p>The application should be able to be adapted to the application by means of configuration.</p>
-<div class="admonition info">
+<div id="admonition-quick-links-1" class="admonition info">
 <div class="admonition-title">
 <p>Quick-Links</p>
+<p><a class="admonition-anchor-link" href="About_Design_Goals.html#admonition-quick-links-1"></a></p>
 </div>
 <div>
 <ul>
@@ -368,7 +372,7 @@ core application via the plugin API. Type system and reactive instance system ar
 <li>Octree-Editor</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
-<p>See <a href="https://github.com/aschaeffer/inexor-rgf-application/milestones">Milestones</a></p>
+<p>See <a href="https://github.com/inexorgame/inexor-rgf-application/milestones">Milestones</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
@@ -423,7 +427,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mit-license"><a class="header" href="#mit-license">MIT License</a></h1>
-<p>Copyright (c) 2021 by the Inexor Collective</p>
+<p>Copyright (c) 2011-2022 The Inexor Collective.</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the &quot;Software&quot;), to deal
 in the Software without restriction, including without limitation the rights
@@ -491,9 +495,10 @@ Further details of specific enforcement policies may be posted separately.</p>
 <p>Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
 members of the project's leadership.</p>
-<div class="admonition info">
+<div id="admonition-attribution" class="admonition info">
 <div class="admonition-title">
 <p>Attribution</p>
+<p><a class="admonition-anchor-link" href="Development_Code_of_Conduct.html#admonition-attribution"></a></p>
 </div>
 <div>
 <p>This Code of Conduct is adapted from the <a href="https://www.contributor-covenant.org">Contributor Covenant</a>, version 1.4,
@@ -505,27 +510,30 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 <div style="break-before: page; page-break-before: always;"></div><h1 id="2-installation"><a class="header" href="#2-installation">2. Installation</a></h1>
 <p>For now please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
-<div class="admonition warning">
+<div id="admonition-todo" class="admonition warning">
 <div class="admonition-title">
 <p>TODO</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-todo"></a></p>
 </div>
 <div>
 <p>Describe how to install Inexor Reactive Graph Flow on linux</p>
 </div>
 </div>
 <h2 id="raspberry-pi"><a class="header" href="#raspberry-pi">Raspberry Pi</a></h2>
-<div class="admonition warning">
+<div id="admonition-todo-1" class="admonition warning">
 <div class="admonition-title">
 <p>TODO</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-todo-1"></a></p>
 </div>
 <div>
 <p>Describe how to install Inexor Reactive Graph Flow on a raspberry pi</p>
 </div>
 </div>
 <h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
-<div class="admonition warning">
+<div id="admonition-todo-2" class="admonition warning">
 <div class="admonition-title">
 <p>TODO</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-todo-2"></a></p>
 </div>
 <div>
 <p>Describe how to install Inexor Reactive Graph Flow on windows</p>
@@ -548,9 +556,10 @@ kind = &quot;console&quot;
 [appenders.stdout.encoder]
 pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-documentation-of-the-date-format-library" class="admonition tip">
 <div class="admonition-title">
 <p>Documentation of the date format library</p>
+<p><a class="admonition-anchor-link" href="Configuration_Logging.html#admonition-documentation-of-the-date-format-library"></a></p>
 </div>
 <div>
 <p><a href="https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html">Date Formatting Syntax</a></p>
@@ -576,9 +585,10 @@ appenders = [ &quot;stdout&quot;, &quot;file-application&quot; ]
 <pre><code class="language-toml">[loggers.&quot;inexor_rgf_application::implementation::component_manager_impl&quot;]
 level = &quot;info&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-documentation-of-the-logging-library" class="admonition tip">
 <div class="admonition-title">
 <p>Documentation of the logging library</p>
+<p><a class="admonition-anchor-link" href="Configuration_Logging.html#admonition-documentation-of-the-logging-library"></a></p>
 </div>
 <div>
 <p><a href="https://docs.rs/log4rs/1.0.0/log4rs/">How to configure the loggers</a></p>
@@ -601,9 +611,10 @@ additive = false
 <pre><code class="language-toml">hostname = &quot;localhost&quot;
 port = 31415
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-hostname" class="admonition tip">
 <div class="admonition-title">
 <p>Hostname</p>
+<p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-hostname"></a></p>
 </div>
 <div>
 <p>If you bind on localhost the GraphQL server is not reachable from outside. Use the hostname or ip which is
@@ -620,9 +631,10 @@ reachable from outside.</p>
 still alive after the timeout are force dropped. By default, shutdown timeout is set to 30 seconds.</p>
 <pre><code class="language-toml">shutdown_timeout = 3
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-development" class="admonition tip">
 <div class="admonition-title">
 <p>Development</p>
+<p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-development"></a></p>
 </div>
 <div>
 <p>If you have to restart often during development, set this to a low value.</p>
@@ -644,9 +656,10 @@ WebResourceProvider binary and is doing the same as
 <code>https://hostname:31415/binary/entities/uuid/property_name</code>.</p>
 <pre><code class="language-toml">default_base_path = &quot;binary&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-default-base-path" class="admonition tip">
 <div class="admonition-title">
 <p>Default Base Path</p>
+<p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-default-base-path"></a></p>
 </div>
 <div>
 <p>In particular, this is very useful for web applications which shall handle the root URL:
@@ -660,9 +673,10 @@ format is specified the default log format is used.</p>
 enabled = true
 format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot; %T&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-list-of-log-format-variables" class="admonition tip">
 <div class="admonition-title">
 <p>List of Log Format Variables</p>
+<p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-list-of-log-format-variables"></a></p>
 </div>
 <div>
 <p>https://docs.rs/actix-web/latest/actix_web/middleware/struct.Logger.html#format</p>
@@ -670,26 +684,29 @@ format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-plugins"><a class="header" href="#configure-plugins">Configure Plugins</a></h1>
 <p>Edit <code>config/plugins.toml</code></p>
-<div class="admonition bug">
+<div id="admonition-order-of-initialization" class="admonition bug">
 <div class="admonition-title">
 <p>Order of initialization</p>
+<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-order-of-initialization"></a></p>
 </div>
 <div>
 <p>The plugins are initialized in the order of definition!</p>
 </div>
 </div>
-<div class="admonition tip">
+<div id="admonition-deactive-plugins" class="admonition tip">
 <div class="admonition-title">
 <p>Deactive plugins</p>
+<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-deactive-plugins"></a></p>
 </div>
 <div>
 <p>You can activate or deactivate plugins with the setting <code>active</code>. Remember that some plugins depend on
 other plugins.</p>
 </div>
 </div>
-<div class="admonition tip">
+<div id="admonition-path" class="admonition tip">
 <div class="admonition-title">
 <p>Path</p>
+<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-path"></a></p>
 </div>
 <div>
 <p>The path can be either relative to the working directory or absolute.</p>
@@ -706,9 +723,10 @@ name = &quot;inexor-rgf-plugin-mqtt&quot;
 active = true
 path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-please-note" class="admonition tip">
 <div class="admonition-title">
 <p>Please note</p>
+<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-please-note"></a></p>
 </div>
 <div>
 <ul>
@@ -729,9 +747,10 @@ name = &quot;inexor-rgf-plugin-mqtt&quot;
 active = true
 path = &quot;..\\inexor-rgf-plugin-mqtt\\target/debug\\inexor_rgf_plugin_mqtt.dll&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-please-note-1" class="admonition tip">
 <div class="admonition-title">
 <p>Please note</p>
+<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-please-note-1"></a></p>
 </div>
 <div>
 <ul>
@@ -812,12 +831,12 @@ described, the second has the name &quot;is_captain_of&quot;.</p>
 of instances of a type. For example, there is the player named &quot;peter&quot; and the player named &quot;penacka&quot;. In this case
 there are two instances of the same type.</p>
 <p>The following table shows that an instance and the corresponding type:</p>
-<table><thead><tr><th>Type</th><th>Instance</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Type</th><th>Instance</th></tr></thead><tbody>
 <tr><td>Entity Type</td><td>Entity Instance</td></tr>
 <tr><td>Relation Type</td><td>Relation Instance</td></tr>
 <tr><td>Entity Type</td><td>Flow</td></tr>
 </tbody></table>
-<pre class="mermaid">erDiagram
+</div><pre class="mermaid">erDiagram
     Relation-Type
     Relation-Instance
     Entity-Type
@@ -880,12 +899,13 @@ each have a position. But here, too, they have little in common. And yet they ha
 <p>A player has a name and a position, i.e. an entity type (just like a relation type) can consist of several components.
 The properties of all components are merged.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the component</td><td>labeled</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the component</td><td>The label is an hierarchical path with static segments, named parameters and catch-all parameters.</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The properties which are applied on entity or relation instances.</td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram-1"><a class="header" href="#er-diagram-1">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Component {
@@ -906,9 +926,10 @@ The properties of all components are merged.</p>
     Relation-Type o{--}o Component : composes
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Component.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -920,7 +941,7 @@ The properties of all components are merged.</p>
 <p>An entity type defines the characteristics that are common to all entity instances. In particular, an entity type
 defines which components it is combined from. Additional properties can also be defined.</p>
 <h2 id="data-model-1"><a class="header" href="#data-model-1">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the entity type</td><td>player</td></tr>
 <tr><td>Group</td><td>String</td><td>The group of the entity type</td><td>logical_gates</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td><td></td></tr>
@@ -928,6 +949,7 @@ defines which components it is combined from. Additional properties can also be 
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on entity instances</td><td></td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram-2"><a class="header" href="#er-diagram-2">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
@@ -973,9 +995,10 @@ defines which components it is combined from. Additional properties can also be 
     Entity-Instance ||--}o Entity-Type : is-a
 </pre>
 <h2 id="graphql-1"><a class="header" href="#graphql-1">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Entity_Type.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -992,7 +1015,7 @@ additional <a href="./Model_Property_Type.html">properties</a> it contains.</p>
 <p>As with entity types, extensions to the relation type can be defined, such as the appearance of edges in a graph or the
 appearance of a connector of this type in the flow editor.</p>
 <h2 id="data-model-2"><a class="header" href="#data-model-2">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the outbound entity instance</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
 <tr><td>Full Name</td><td>String</td><td>The full name of the relation type</td></tr>
@@ -1003,6 +1026,7 @@ appearance of a connector of this type in the flow editor.</p>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on relation instances</td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph-1"><a class="header" href="#graph-1">Graph</a></h2>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Type)===&gt;|&quot;Relation Type&quot;|B(Inbound Entity Type);
@@ -1051,9 +1075,10 @@ appearance of a connector of this type in the flow editor.</p>
     Relation-Instance o{--|| Relation-Type : is-a
 </pre>
 <h2 id="graphql-2"><a class="header" href="#graphql-2">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Relation_Type.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -1065,13 +1090,14 @@ appearance of a connector of this type in the flow editor.</p>
 <p>Components, entity types and relation types define which properties they contain. The so-called property types define
 the name, the data type and whether the property is an input or an output.</p>
 <h2 id="data-model-3"><a class="header" href="#data-model-3">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td><td>name</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the property</td><td></td></tr>
 <tr><td>DataType</td><td>DataType</td><td>The data type of the property</td><td></td></tr>
 <tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td></td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>The extensions contains additional information about the property type</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram-4"><a class="header" href="#er-diagram-4">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Property-Type {
@@ -1091,7 +1117,7 @@ the name, the data type and whether the property is an input or an output.</p>
 </pre>
 <h2 id="enum-data-type"><a class="header" href="#enum-data-type">Enum Data Type</a></h2>
 <p>A property has a data type. This is derived from serde_json::Value and maps JSON values or documents.</p>
-<table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
 <tr><td>Null</td><td>Represents a JSON null value</td></tr>
 <tr><td>Bool</td><td>Represents a JSON boolean</td></tr>
 <tr><td>Number</td><td>Represents a JSON number, whether integer or floating point</td></tr>
@@ -1100,15 +1126,17 @@ the name, the data type and whether the property is an input or an output.</p>
 <tr><td>Object</td><td>Represents a JSON object.</td></tr>
 <tr><td>Any</td><td>Represents any type (relations)</td></tr>
 </tbody></table>
+</div>
 <h2 id="enum-socket-type"><a class="header" href="#enum-socket-type">Enum Socket Type</a></h2>
 <p>The socket type determines whether a property serves as an input or an output. It is also possible that a property is
 neither an input nor an output. Caution: At runtime, it is not prevented if an input is used as an output or an output
 is used as an input.</p>
-<table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
 <tr><td>None</td><td>The property doesn't act as input or output socket</td></tr>
 <tr><td>Input</td><td>The property acts as input socket and accepts incoming connections</td></tr>
 <tr><td>Output</td><td>The property acts as output socket and accepts outgoing connections</td></tr>
 </tbody></table>
+</div>
 <h2 id="where-is-the-value"><a class="header" href="#where-is-the-value">Where is the value???</a></h2>
 <p>A property type only contains the definition of a property, but no data, since it is a type.</p>
 <p>When an entity instance or a relation instance is created, the property types are used to create
@@ -1129,10 +1157,11 @@ shows that an extension can potentially contain very complex data structures and
 covers a case that is not relevant in all cases. For example, if the &quot;Flow Editor&quot; plugin is not installed or not
 activated, the extension is present but not used.</p>
 <h2 id="data-model-4"><a class="header" href="#data-model-4">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the extension</td></tr>
 <tr><td>Extension</td><td>JSON</td><td>The extension as schema-less JSON.</td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram-5"><a class="header" href="#er-diagram-5">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Extension {
@@ -1144,13 +1173,14 @@ activated, the extension is present but not used.</p>
     Property-Type ||--}o Extension : has
 </pre>
 <h2 id="list-of-known-extensions"><a class="header" href="#list-of-known-extensions">List of known extensions</a></h2>
-<table><thead><tr><th>Extension</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Extension</th><th>Description</th></tr></thead><tbody>
 <tr><td>dublin-core</td><td>Meta data</td></tr>
 <tr><td>flow_editor_palette</td><td>An entry for the palette of the flow editor</td></tr>
 <tr><td>flow_editor_shape</td><td>Definition of the shape of an entity instance in the flow editor</td></tr>
 <tr><td>type_graph_shape</td><td>Definition of the shape of an entity type in the type graph</td></tr>
 <tr><td>instance_graph_shape</td><td>Definition of the shape of an entity instance of in the instance graph</td></tr>
 </tbody></table>
+</div>
 <h2 id="extension-dublin_core"><a class="header" href="#extension-dublin_core">Extension <code>dublin_core</code></a></h2>
 <pre><code class="language-json">    {
       &quot;name&quot;: &quot;dublin-core&quot;,
@@ -1240,9 +1270,10 @@ activated, the extension is present but not used.</p>
 }
 </code></pre>
 <h2 id="graphql-3"><a class="header" href="#graphql-3">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Extension.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -1260,15 +1291,19 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
-<div class="admonition info">
+<div id="admonition-error-rendering-admonishment" class="admonition bug">
 <div class="admonition-title">
-<p>Error parsing JSON string: expected value at line 1 column 1</p>
+<p>Error rendering admonishment</p>
+<p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-error-rendering-admonishment"></a></p>
 </div>
 <div>
-<ul>
-<li>UUIDs are unique and unique across distributed systems</li>
-<li>UUIDs can be represented as string and as a 128 bit unsigned integer</li>
-</ul>
+<p>Failed with: TOML parsing error: expected an equals, found an identifier at line 1 column 6</p>
+<p>Original markdown input:</p>
+<pre><code>```admonish info UUIDs
+* UUIDs are unique and unique across distributed systems
+* UUIDs can be represented as string and as a 128 bit unsigned integer
+```
+</code></pre>
 </div>
 </div>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
@@ -1276,9 +1311,10 @@ also on the server and on clients connected to it.</p>
 entity instances to be addressed using labels, for example in GraphQL queries.</p>
 <p>If you compare the query with and without a label, you will find that the query is easier to understand thanks to the
 label and transports significantly more information about what is actually happening.</p>
-<div class="admonition info">
+<div id="admonition-info" class="admonition info">
 <div class="admonition-title">
 <p>Info</p>
+<p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-info"></a></p>
 </div>
 <div>
 <p>Labels are optional</p>
@@ -1305,7 +1341,7 @@ label and transports significantly more information about what is actually happe
 }
 </code></pre>
 <h2 id="data-model-5"><a class="header" href="#data-model-5">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The type of the entity instance</td></tr>
 <tr><td>ID</td><td>UUID</td><td>The unique identifier of the entity instance</td></tr>
 <tr><td>Label</td><td>String (optional)</td><td>The label of the entity instance</td></tr>
@@ -1314,6 +1350,7 @@ label and transports significantly more information about what is actually happe
 <tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
 <tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph-2"><a class="header" href="#graph-2">Graph</a></h2>
 <pre class="mermaid">graph LR;
     EI(Entity Instance);
@@ -1371,9 +1408,10 @@ label and transports significantly more information about what is actually happe
     Entity-Type ||--}o Relation-Type : inbound
 </pre>
 <h2 id="graphql-4"><a class="header" href="#graphql-4">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -1386,7 +1424,7 @@ label and transports significantly more information about what is actually happe
 entity instance. The relation instance has a type, the relation type. The <a href="./Model_Relation_Type.html">relation type</a>
 defines which entity type the outbound entity type and which entity type the inbound entity type must have.</p>
 <h2 id="data-model-6"><a class="header" href="#data-model-6">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The outbound entity instance</td></tr>
 <tr><td>Type</td><td><a href="./Model_Relation_Type.html">RelationType</a></td><td>The relation type</td></tr>
 <tr><td>Inbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The inbound entity instance</td></tr>
@@ -1395,6 +1433,7 @@ defines which entity type the outbound entity type and which entity type the inb
 <tr><td>Components</td><td>Vec<String></td><td>The currently applied components</td></tr>
 <tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph-3"><a class="header" href="#graph-3">Graph</a></h2>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Instance)===&gt;|&quot;Relation Instance&quot;|B(Inbound Entity Instance);
@@ -1446,9 +1485,10 @@ defines which entity type the outbound entity type and which entity type the inb
     Entity-Type ||--}o Relation-Type : inbound
 </pre>
 <h2 id="graphql-5"><a class="header" href="#graphql-5">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -1462,11 +1502,12 @@ connected to each other (both within an instance and to data streams from proper
 instances).</p>
 <p>The property type defines the name, data type and socket type of the property instance.</p>
 <h2 id="data-model-7"><a class="header" href="#data-model-7">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td></tr>
 <tr><td>Value</td><td><a href="https://docs.serde.rs/serde_json/value/enum.Value.html">Value</a></td><td>The value of the property</td></tr>
 <tr><td>Type</td><td><a href="./Model_Property_Type.html">Property Type</a></td><td>The type of the property</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph-4"><a class="header" href="#graph-4">Graph</a></h2>
 <pre class="mermaid">graph TD;
     PI1(Property Instance);
@@ -1553,9 +1594,10 @@ instance can be used in multiple flows.</p>
     end
 </pre>
 <h2 id="graphql-6"><a class="header" href="#graphql-6">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Flow.html#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>
@@ -1581,9 +1623,10 @@ in real time.</p>
 <p>Other advantages of GraphQL are type safety and the fact that semantics can be mapped better.</p>
 <h3 id="queries"><a class="header" href="#queries">Queries</a></h3>
 <p><img src="images/queries.png" alt="GraphQL Queries" /></p>
-<div class="admonition tip">
+<div id="admonition-graphql-schema-visualization" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
+<p><a class="admonition-anchor-link" href="GraphQL_API.html#admonition-graphql-schema-visualization"></a></p>
 </div>
 <div>
 <p>Explore the GraphQL queries using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>:
@@ -1592,9 +1635,10 @@ in real time.</p>
 </div>
 <h3 id="mutations"><a class="header" href="#mutations">Mutations</a></h3>
 <p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
-<div class="admonition tip">
+<div id="admonition-graphql-schema-visualization-1" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
+<p><a class="admonition-anchor-link" href="GraphQL_API.html#admonition-graphql-schema-visualization-1"></a></p>
 </div>
 <div>
 <p>Explore the GraphQL mutations using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>
@@ -1603,9 +1647,10 @@ in real time.</p>
 </div>
 <h3 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h3>
 <p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
-<div class="admonition tip">
+<div id="admonition-graphql-schema-visualization-2" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
+<p><a class="admonition-anchor-link" href="GraphQL_API.html#admonition-graphql-schema-visualization-2"></a></p>
 </div>
 <div>
 <p>Explore the GraphQL subscriptions using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>:
@@ -2175,9 +2220,10 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="property-instance-subscriptions"><a class="header" href="#property-instance-subscriptions">Property Instance Subscriptions</a></h1>
-<div class="admonition tip">
+<div id="admonition-graphql-schema-visualization" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
+<p><a class="admonition-anchor-link" href="GraphQL_API_Property_Instance_Subscriptions.html#admonition-graphql-schema-visualization"></a></p>
 </div>
 <div>
 <p>Explore the subscriptions using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>
@@ -2215,8 +2261,7 @@ restarting the core application.</p>
 <p>In addition, the file size of the binary file is reduced since only its libraries are compiled in the core application.</p>
 <p>In addition, only what is actually used is loaded. Plugins that are not required for the application can be deactivated.</p>
 <h2 id="trait-plugin"><a class="header" href="#trait-plugin">Trait <code>Plugin</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
 
@@ -2265,8 +2310,7 @@ restarting the core application.</p>
 <li>The description of the plugin (use environment variable <code>CARGO_PKG_DESCRIPTION</code>)</li>
 <li>The version of the plugin (use environment variable <code>CARGO_PKG_VERSION</code>)</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn metadata(&amp;self) -&gt; Result&lt;PluginMetadata, PluginError&gt; {
@@ -2283,8 +2327,7 @@ restarting the core application.</p>
 <p>The plugin trait provides methods to do initialization and shutdown before and after setting up and shutting down
 providers.</p>
 <p>TODO: Lifecycle Image</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn init(&amp;self) -&gt; Result&lt;(), PluginError&gt; {
@@ -2310,8 +2353,7 @@ providers.</p>
 <span class="boring">}
 </span></code></pre></pre>
 <h2 id="trait-plugincontext"><a class="header" href="#trait-plugincontext">Trait <code>PluginContext</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>pub trait PluginContext: Send + Sync {
     /// Returns the component manager.
@@ -2337,8 +2379,7 @@ providers.</p>
 <h3 id="make-use-of-the-plugin-context"><a class="header" href="#make-use-of-the-plugin-context">Make use of the plugin context</a></h3>
 <p>The plugin have to store a reference to the plugin context. Therefore, you have to implement the method <code>set_context</code>
 which is called during initialization:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn set_context(&amp;self, context: Arc&lt;dyn PluginContext&gt;) -&gt; Result&lt;(), PluginError&gt; {
@@ -2355,8 +2396,7 @@ which is called during initialization:</p>
 <li>Create the entity instance using a builder (non-reactive)</li>
 <li>Create/register the entity instance using <code>create</code> returns a reactive entity instance</li>
 </ol>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl TestManager {
     fn create_entity(&amp;self) {
@@ -2372,8 +2412,7 @@ which is called during initialization:</p>
 </span></code></pre></pre>
 <h3 id="implement-or-ignore-providers"><a class="header" href="#implement-or-ignore-providers">Implement or ignore providers</a></h3>
 <p>If your plugin provide components you have to return a reference of the <code>ComponentProvider</code>:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn get_component_provider(&amp;self) -&gt; Result&lt;Arc&lt;dyn ComponentProvider&gt;, PluginError&gt; {
@@ -2388,8 +2427,7 @@ which is called during initialization:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>If your plugin doesn't provide components:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl Plugin for ComparisonPluginImpl {
     fn get_component_provider(&amp;self) -&gt; Result&lt;Arc&lt;dyn ComponentProvider&gt;, PluginError&gt; {
@@ -2412,8 +2450,7 @@ which is called during initialization:</p>
 <p>Plugins can implement the trait <code>ComponentProvider</code> in order to register components during initialization of the
 plugin.</p>
 <h2 id="trait-componentprovider"><a class="header" href="#trait-componentprovider">Trait <code>ComponentProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl ComponentProvider for ExampleComponentProviderImpl {
     fn get_components(&amp;self) -&gt; Vec&lt;Component&gt; {
@@ -2432,8 +2469,7 @@ plugin.</p>
 <p>Plugins can implement the trait <code>EntityTypeProvider</code> in order to register entity types during initialization of the
 plugin.</p>
 <h2 id="trait-entitytypeprovider"><a class="header" href="#trait-entitytypeprovider">Trait <code>EntityTypeProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl EntityTypeProvider for ExampleEntityTypeProviderProviderImpl {
     fn get_entity_types(&amp;self) -&gt; Vec&lt;EntityType&gt; {
@@ -2452,8 +2488,7 @@ plugin.</p>
 <p>Plugins can implement the trait <code>RelationTypeProvider</code> in order to register relation types during initialization of the
 plugin.</p>
 <h2 id="trait-relationtypeprovider"><a class="header" href="#trait-relationtypeprovider">Trait <code>RelationTypeProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl RelationTypeProvider for ExampleRelationTypeProviderProviderImpl {
     fn get_relation_types(&amp;self) -&gt; Vec&lt;RelationType&gt; {
@@ -2472,8 +2507,7 @@ plugin.</p>
 <p>Plugins can implement the trait <code>FlowProvider</code> in order to create a flow during initialization of the
 plugin.</p>
 <h2 id="trait-flowprovider"><a class="header" href="#trait-flowprovider">Trait <code>FlowProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl FlowProvider for ExampleFlowProviderProviderImpl {
     fn get_flows(&amp;self) -&gt; Vec&lt;Flow&gt; {
@@ -2491,8 +2525,7 @@ plugin.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="component-behaviour-provider"><a class="header" href="#component-behaviour-provider">Component Behaviour Provider</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="entity-behaviour-provider"><a class="header" href="#entity-behaviour-provider">Entity Behaviour Provider</a></h1>
 <h2 id="trait-entitybehaviourprovider"><a class="header" href="#trait-entitybehaviourprovider">Trait <code>EntityBehaviourProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const EXAMPLE: &amp;'static str = &quot;example&quot;;
 
@@ -2585,8 +2618,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 <li>Provide REST endpoints</li>
 </ul>
 <h2 id="trait-webresourceprovider"><a class="header" href="#trait-webresourceprovider">Trait <code>WebResourceProvider</code></a></h2>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl WebResourceProvider for ExampleWebResourceProviderImpl {
     fn get_base_path(&amp;self) -&gt; String {
@@ -2620,7 +2652,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 <span class="boring">}
 </span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td><a href="./Plugins_Arithmetic.html">Arithmetic</a></td><td>Provides arithmetic gates and operations</td></tr>
 <tr><td><a href="./Plugins_Asset.html">Asset</a></td><td>Download and update assets</td></tr>
 <tr><td><a href="./Plugins_Base.html">Base</a></td><td>Provides basic components and entity types</td></tr>
@@ -2644,10 +2676,10 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 <tr><td><a href="./Plugins_System_Environment.html">System Environment</a></td><td>Provides environment variables</td></tr>
 <tr><td><a href="./Plugins_Taxonomy.html">Taxonomy</a></td><td>Taxonomy</td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-arithmetic"><a class="header" href="#plugin-arithmetic">Plugin Arithmetic</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-arithmetic"><a class="header" href="#plugin-arithmetic">Plugin Arithmetic</a></h1>
 <p>This plugin provides arithmetic gates and operations.</p>
 <h2 id="components-1"><a class="header" href="#components-1">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>arithmetic_operation</td><td>lhs</td><td>number</td><td>input</td><td></td></tr>
 <tr><td></td><td>result</td><td>number</td><td>output</td><td></td></tr>
@@ -2656,8 +2688,9 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 <tr><td></td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
 <tr><td></td><td>result</td><td>number</td><td>output</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-1"><a class="header" href="#entity-types-1">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>add</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Addition</td></tr>
 <tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
@@ -2696,16 +2729,19 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 <tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
 <tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-arithmetic</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic">https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-arithmetic</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-arithmetic">https://github.com/inexorgame/inexor-rgf-plugin-arithmetic</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <h3 id="graphql-create-a-counter"><a class="header" href="#graphql-create-a-counter">GraphQL: Create a counter</a></h3>
 <pre><code class="language-graphql">mutation {
@@ -2808,19 +2844,20 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-1"><a class="header" href="#repository-1">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-asset</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-asset">https://github.com/aschaeffer/inexor-rgf-plugin-asset</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-asset</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-asset">https://github.com/inexorgame/inexor-rgf-plugin-asset</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
 <h2 id="components-2"><a class="header" href="#components-2">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td>named</td><td>name</td><td>string</td><td>None</td><td></td></tr>
 <tr><td>describable</td><td>description</td><td>string</td><td>None</td><td></td></tr>
 <tr><td>flow_2d</td><td>f2dx</td><td>number</td><td>None</td><td></td></tr>
@@ -2837,21 +2874,24 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 <tr><td></td><td>attribution</td><td>string</td><td>None</td><td>Title, author, source and license. Best practices for attribution: https://wiki.creativecommons.org/wiki/best_practices_for_attribution</td></tr>
 <tr><td>versioned</td><td>version</td><td>string</td><td>None</td><td>The version number. Use semantic versioning. See: https://semver.org/</td></tr>
 </tbody></table>
+</div>
 <h4 id="entity-types-2"><a class="header" href="#entity-types-2">Entity Types</a></h4>
-<table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Generic Flow</td><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-2"><a class="header" href="#platform-compatibility-2">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-2"><a class="header" href="#repository-2">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-base</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-base">https://github.com/aschaeffer/inexor-rgf-plugin-base</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-base</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-base">https://github.com/inexorgame/inexor-rgf-plugin-base</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-binary"><a class="header" href="#plugin-binary">Plugin Binary</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-binary"><a class="header" href="#plugin-binary">Plugin Binary</a></h1>
 <p>This plugin provides two entity types for loading binary data from a file into a property as
 a Data-URL with BASE64 encoding and for storing da property which contains a Data-URL with
 BASE64 encoding into a file.</p>
@@ -2867,52 +2907,59 @@ ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
 vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </code></pre>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
 <tr><td>binary_data</td><td>data_url</td><td>string</td><td>none</td><td>Data-URL, BASE64 encoded</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-3"><a class="header" href="#entity-types-3">Entity Types</a></h2>
 <p>Feed the streams with binary data from files.</p>
-<table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>LoadBinary</td><td></td><td>filename</td><td>string</td><td>input</td><td>The filename to load the binary data from</td></tr>
 <tr><td></td><td>binary_data</td><td>data_url</td><td>string</td><td>output</td><td>Data-URL, BASE64 encoded</td></tr>
 <tr><td>SaveBinary</td><td></td><td>filename</td><td>string</td><td>input</td><td>The filename to store the binary data into</td></tr>
 <tr><td></td><td>binary_data</td><td>data_url</td><td>string</td><td>input</td><td>Data-URL, BASE64 encoded</td></tr>
 </tbody></table>
+</div>
 <h2 id="web-resources"><a class="header" href="#web-resources">Web Resources</a></h2>
 <p>Download binary resources via HTTP.</p>
-<table><thead><tr><th>HTTP Method</th><th>Resource Pattern</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>HTTP Method</th><th>Resource Pattern</th><th>Description</th></tr></thead><tbody>
 <tr><td>GET</td><td>/binary/entities/{uuid}/{property_name}</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
 <tr><td>GET</td><td>/binary//entities/label/*label</td><td>Converts the Data-URL into a binary data and returns it as web resource</td></tr>
 </tbody></table>
+</div>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
-<table><thead><tr><th>Request</th><th>Entity Instance</th><th>Property Name</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Request</th><th>Entity Instance</th><th>Property Name</th></tr></thead><tbody>
 <tr><td><code>GET /binary/entity/dce4bd25-7b25-4a6a-8567-5429a2b3a101/data_url</code></td><td>id=<code>dce4bd25-7b25-4a6a-8567-5429a2b3a101</code></td><td><code>data_url</code></td></tr>
 <tr><td><code>GET /binary/entity/label/org/inexor/logo/data_url</code></td><td>label=<code>/org/inexor/logo/{:property}</code></td><td><code>data_url</code></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-3"><a class="header" href="#platform-compatibility-3">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-3"><a class="header" href="#repository-3">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-binary</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-binary">https://github.com/aschaeffer/inexor-rgf-plugin-binary</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-binary</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-binary">https://github.com/inexorgame/inexor-rgf-plugin-binary</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <ul>
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-4"><a class="header" href="#components-4">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>comparison_gate</td><td>lhs</td><td>any</td><td>input</td></tr>
 <tr><td></td><td>rhs</td><td>any</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>bool</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-4"><a class="header" href="#entity-types-4">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
 <tr><td>equals</td><td>comparison_gate</td><td>Returns true, if lhs and rhs are equal</td></tr>
 <tr><td>greater_than</td><td>comparison_gate</td><td>Returns true, if lhs is greater than rhs</td></tr>
 <tr><td>greater_than_or_equals</td><td>comparison_gate</td><td>Returns true, if lhs is greater than or equal to rhs</td></tr>
@@ -2920,33 +2967,38 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <tr><td>lower_than_or_equals</td><td>comparison_gate</td><td>Returns true, if lhs is lower than or equal to rhs</td></tr>
 <tr><td>not_equals</td><td>comparison_gate</td><td>Returns true, if lhs and rhs are not equal</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-4"><a class="header" href="#platform-compatibility-4">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-4"><a class="header" href="#repository-4">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-comparison</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-comparison">https://github.com/aschaeffer/inexor-rgf-plugin-comparison</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-comparison</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-comparison">https://github.com/inexorgame/inexor-rgf-plugin-comparison</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
 <h2 id="entity-types-5"><a class="header" href="#entity-types-5">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>config_file</td><td>filename</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>configuration</td><td>object</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-5"><a class="header" href="#platform-compatibility-5">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-5"><a class="header" href="#repository-5">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-config</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-config">https://github.com/aschaeffer/inexor-rgf-plugin-config</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-config</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-config">https://github.com/inexorgame/inexor-rgf-plugin-config</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-graphql"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
 <pre><code class="language-graphql">mutation {
@@ -3046,12 +3098,13 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </ol>
 <hr />
 <h2 id="components-5"><a class="header" href="#components-5">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Description</th><th>Property</th><th>DataType</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th><th>Property</th><th>DataType</th></tr></thead><tbody>
 <tr><td>connector</td><td>Connects two properties</td><td>outbound_property_name</td><td>string</td></tr>
 <tr><td></td><td></td><td>inbound_property_name</td><td>string</td></tr>
 </tbody></table>
+</div>
 <h2 id="relation-types-1"><a class="header" href="#relation-types-1">Relation Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
 <tr><td>debug_connector</td><td>connector</td><td>This connector logs the value before propagation (log level debug)</td></tr>
 <tr><td>default_connector</td><td>connector</td><td>This is the default connector type, which simply does nothing than propagate the value</td></tr>
 <tr><td>parse_float_connector</td><td>connector</td><td>This connector parses a string value and propagates a float value</td></tr>
@@ -3059,23 +3112,27 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 <tr><td>to_string_connector</td><td>connector</td><td>This connector converts the value of any type to string before propagation</td></tr>
 <tr><td>trace_connector</td><td>connector</td><td>This connector logs the value before propagation (log level trace)</td></tr>
 </tbody></table>
+</div>
 <h3 id="future-more-useful-connectors"><a class="header" href="#future-more-useful-connectors">Future: More (useful) connectors</a></h3>
-<table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
 <tr><td>str_split_connector</td><td>connector</td><td>A string is split into tokens. Propagates an JSON array of string tokens</td></tr>
 <tr><td>str_join_connector</td><td>connector</td><td>Joins an array of strings and propagates the resulting string</td></tr>
 <tr><td>increment_connector</td><td>connector</td><td>Propagates the incremented number</td></tr>
 <tr><td>decrement_connector</td><td>connector</td><td>Propagates the decremented number</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-6"><a class="header" href="#platform-compatibility-6">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-6"><a class="header" href="#repository-6">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-connector</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-connector">https://github.com/aschaeffer/inexor-rgf-plugin-connector</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-connector</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-connector">https://github.com/inexorgame/inexor-rgf-plugin-connector</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
 <pre><code class="language-graphql">mutation {
@@ -3119,9 +3176,10 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-graphql-client"><a class="header" href="#plugin-graphql-client">Plugin GraphQL Client</a></h1>
 <p>This plugin provides a web based GraphQL client.</p>
 <p>http://hostname:31415/graphql-client/index.html</p>
-<div class="admonition tip">
+<div id="admonition-altair" class="admonition tip">
 <div class="admonition-title">
 <p>Altair</p>
+<p><a class="admonition-anchor-link" href="Plugins_GraphQL_Client.html#admonition-altair"></a></p>
 </div>
 <div>
 <p>This plugin uses <a href="https://altair.sirmuel.design/">Altair</a>.</p>
@@ -3132,38 +3190,41 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </div>
 </div>
 <h2 id="platform-compatibility-7"><a class="header" href="#platform-compatibility-7">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repositories"><a class="header" href="#repositories">Repositories</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-graphql-client</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-graphql-client">https://github.com/aschaeffer/inexor-rgf-plugin-graphql-client</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-graphql-client</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-graphql-client">https://github.com/inexorgame/inexor-rgf-plugin-graphql-client</a></td></tr>
 <tr><td>Altair GraphQL Client</td><td><a href="https://github.com/altair-graphql/altair">https://github.com/altair-graphql/altair</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-graphql-schema-visualization"><a class="header" href="#plugin-graphql-schema-visualization">Plugin GraphQL Schema Visualization</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-graphql-schema-visualization"><a class="header" href="#plugin-graphql-schema-visualization">Plugin GraphQL Schema Visualization</a></h1>
 <p>This plugin represents the GraphQL API as an interactive graph.</p>
-<table><thead><tr><th>Root</th><th>URL</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Root</th><th>URL</th></tr></thead><tbody>
 <tr><td>Queries</td><td>http://hostname:31415/graphql-schema-visualization/query</td></tr>
 <tr><td>Mutations</td><td>http://hostname:31415/graphql-schema-visualization/mutation</td></tr>
 <tr><td>Subscriptions</td><td>http://hostname:31415/graphql-schema-visualization/subscription</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-8"><a class="header" href="#platform-compatibility-8">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-7"><a class="header" href="#repository-7">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-graphql-schema-visualization</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-graphql-schema-visualization">https://github.com/aschaeffer/inexor-rgf-plugin-graphql-schema-visualization</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-graphql-schema-visualization</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-graphql-schema-visualization">https://github.com/inexorgame/inexor-rgf-plugin-graphql-schema-visualization</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-http"><a class="header" href="#plugin-http">Plugin: HTTP</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-http"><a class="header" href="#plugin-http">Plugin: HTTP</a></h1>
 <p>This plugin provides a reactive http client integration. Using entities of type <code>http</code> requests via HTTP can be made.</p>
 <p>With this plugin it's possible to integrate external services into your home automation.</p>
 <h2 id="entity-types-6"><a class="header" href="#entity-types-6">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>http</td><td>url</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>method</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>request_headers</td><td>object</td><td>input</td></tr>
@@ -3179,23 +3240,27 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 <tr><td></td><td>result</td><td>object</td><td>output</td></tr>
 <tr><td></td><td>error</td><td>object</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-9"><a class="header" href="#platform-compatibility-9">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-8"><a class="header" href="#repository-8">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-http</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-http">https://github.com/aschaeffer/inexor-rgf-plugin-http</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-http</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-http">https://github.com/inexorgame/inexor-rgf-plugin-http</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
 <h3 id="graphql-7"><a class="header" href="#graphql-7">GraphQL</a></h3>
 <h4 id="create-http-request"><a class="header" href="#create-http-request">Create HTTP Request</a></h4>
 <p>First create an entity instance of type <code>http</code> and specify the URL and the method. </p>
-<div class="admonition tip">
+<div id="admonition-how-to-execute-the-http-request" class="admonition tip">
 <div class="admonition-title">
 <p>How to execute the HTTP Request</p>
+<p><a class="admonition-anchor-link" href="Plugins_HTTP.html#admonition-how-to-execute-the-http-request"></a></p>
 </div>
 <div>
 <p>By creating the entity instance no request will be made. The next example explains how to execute the request.</p>
@@ -3371,15 +3436,16 @@ UUID (by device name and key/led/... id) or a stable human-readable label.</p>
 </code></pre>
 <h3 id="specific-device-and-any-device"><a class="header" href="#specific-device-and-any-device">&quot;Specific Device&quot; and &quot;Any Device&quot;</a></h3>
 <p>Each event is forwarded twice:</p>
-<table><thead><tr><th>Device</th><th>Event</th><th>Entity Instance Label</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Device</th><th>Event</th><th>Entity Instance Label</th></tr></thead><tbody>
 <tr><td>keyboard1</td><td>key_f7</td><td><ul><li>/org/inexor/input/keyboard1/key/key_f7</li><li>/org/inexor/input/any_device/key/key_f7</li></ul></td></tr>
 <tr><td>keyboard2</td><td>key_f7</td><td><ul><li>/org/inexor/input/keyboard1/key/key_f7</li><li>/org/inexor/input/any_device/key/key_f7</li></ul></td></tr>
 </tbody></table>
+</div>
 <p>This allows you to address a key/led/... event on a specific device or the key/led/... event on all devices.</p>
 <h2 id="type-system-1"><a class="header" href="#type-system-1">Type System</a></h2>
 <p><img src="images/input_device_type_system.png" alt="Inexor" /></p>
 <h2 id="entity-types-7"><a class="header" href="#entity-types-7">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>InputDevice</td><td>name</td><td>string</td><td>output</td></tr>
 <tr><td></td><td>event</td><td>object</td><td>output</td></tr>
 <tr><td></td><td>physical_path</td><td>string</td><td>output</td></tr>
@@ -3403,47 +3469,53 @@ UUID (by device name and key/led/... id) or a stable human-readable label.</p>
 <tr><td></td><td>switch_type</td><td>number</td><td>none</td></tr>
 <tr><td></td><td>state</td><td>number</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="relation-types-2"><a class="header" href="#relation-types-2">Relation Types</a></h2>
-<table><thead><tr><th>Name</th><th>Outbound Entity Type</th><th>Inbound Entity Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Outbound Entity Type</th><th>Inbound Entity Type</th></tr></thead><tbody>
 <tr><td>KeyEvent</td><td>InputDevice</td><td>InputDeviceKey</td></tr>
 <tr><td>LedEvent</td><td>InputDevice</td><td>InputDeviceLed</td></tr>
 <tr><td>RelativeAxisEvent</td><td>InputDevice</td><td>InputDeviceRelativeAxis</td></tr>
 <tr><td>AbsoluteAxisEvent</td><td>InputDevice</td><td>InputDeviceAbsoluteAxis</td></tr>
 <tr><td>SwitchEvent</td><td>InputDevice</td><td>InputDeviceSwitch</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-behaviours"><a class="header" href="#entity-behaviours">Entity Behaviours</a></h2>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>InputDevice</td><td>Streams input events from evdev and sets the entity instance property <code>event</code></td></tr>
 </tbody></table>
+</div>
 <h4 id="relation-behaviours"><a class="header" href="#relation-behaviours">Relation Behaviours</a></h4>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>KeyEvent</td><td>Propagates input events and filters by event type (key event) and key code defined by the inbound entity instance</td></tr>
 <tr><td>LedEvent</td><td>Propagates input events and filters by event type (led event) and led type defined by the inbound entity instance</td></tr>
 <tr><td>RelativeAxisEvent</td><td>Propagates input events and filters by event type (relative axis event) and relative axis type defined by the inbound entity instance</td></tr>
 <tr><td>AbsoluteAxisEvent</td><td>Propagates input events and filters by event type (absolute axis event) and absolute axis type defined by the inbound entity instance</td></tr>
 <tr><td>SwitchEvent</td><td>Propagates input events and filters by event type (switch event) and switch type defined by the inbound entity instance</td></tr>
 </tbody></table>
+</div>
 <h2 id="rust-crate--rust-reference"><a class="header" href="#rust-crate--rust-reference">Rust Crate / Rust Reference</a></h2>
 <ul>
 <li>https://github.com/emberian/evdev/ (Linux only)</li>
 <li>https://www.freedesktop.org/software/libevdev/doc/latest/</li>
 </ul>
 <h2 id="platform-compatibility-10"><a class="header" href="#platform-compatibility-10">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>x</td></tr>
 <tr><td>Windows</td><td>x</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-9"><a class="header" href="#repository-9">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-input-device</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-input-device">https://github.com/aschaeffer/inexor-rgf-plugin-input-device</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-input-device</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-input-device">https://github.com/inexorgame/inexor-rgf-plugin-input-device</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="appendix-input-device-types"><a class="header" href="#appendix-input-device-types">Appendix: Input Device Types</a></h2>
 <h3 id="keys"><a class="header" href="#keys">Keys</a></h3>
 <p>A key changed state. A key, or button, is usually a momentary switch (in the circuit sense). It has two states: down,
 or up. There are events for when keys are pressed (become down) and released (become up). There are also “key repeats”,
 where multiple events are sent while a key is down.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>KEY_RESERVED</td><td></td></tr>
 <tr><td>KEY_ESC</td><td></td></tr>
 <tr><td>KEY_1</td><td></td></tr>
@@ -3964,9 +4036,10 @@ where multiple events are sent while a key is down.</p>
 <tr><td>BTN_TRIGGER_HAPPY39</td><td></td></tr>
 <tr><td>BTN_TRIGGER_HAPPY40</td><td></td></tr>
 </tbody></table>
+</div>
 <h4 id="leds"><a class="header" href="#leds">LEDs</a></h4>
 <p>An LED was toggled.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>LED_NUML</td><td></td></tr>
 <tr><td>LED_CAPSL</td><td></td></tr>
 <tr><td>LED_SCROLLL</td><td></td></tr>
@@ -3979,10 +4052,11 @@ where multiple events are sent while a key is down.</p>
 <tr><td>LED_MAIL</td><td>Message waiting</td></tr>
 <tr><td>LED_CHARGING</td><td>External power connected</td></tr>
 </tbody></table>
+</div>
 <h3 id="relative-axes"><a class="header" href="#relative-axes">Relative Axes</a></h3>
 <p>Movement on a relative axis. There is no absolute coordinate frame, just the fact that there was a change of a
 certain amount of units. Used for things like mouse movement or scroll wheels.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>REL_X</td><td></td></tr>
 <tr><td>REL_Y</td><td></td></tr>
 <tr><td>REL_Z</td><td></td></tr>
@@ -3997,9 +4071,10 @@ certain amount of units. Used for things like mouse movement or scroll wheels.</
 <tr><td>REL_WHEEL_HI_RES</td><td></td></tr>
 <tr><td>REL_HWHEEL_HI_RES</td><td></td></tr>
 </tbody></table>
+</div>
 <h3 id="absolute-axes"><a class="header" href="#absolute-axes">Absolute Axes</a></h3>
 <p>Movement on an absolute axis. Used for things such as touch events and joysticks.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>ABS_X</td><td></td></tr>
 <tr><td>ABS_Y</td><td></td></tr>
 <tr><td>ABS_Z</td><td></td></tr>
@@ -4042,10 +4117,11 @@ certain amount of units. Used for things like mouse movement or scroll wheels.</
 <tr><td>ABS_MT_TOOL_X</td><td>Center X tool position</td></tr>
 <tr><td>ABS_MT_TOOL_Y</td><td>Center Y tool position</td></tr>
 </tbody></table>
+</div>
 <h3 id="switches"><a class="header" href="#switches">Switches</a></h3>
 <p>Change in a switch value. Switches are boolean conditions and usually correspond to a toggle switch of some kind
 in hardware.</p>
-<table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td>SW_LID</td><td>set = lid shut</td></tr>
 <tr><td>SW_TABLET_MODE</td><td>set = tablet mode</td></tr>
 <tr><td>SW_HEADPHONE_INSERT</td><td>set = inserted</td></tr>
@@ -4064,6 +4140,7 @@ in hardware.</p>
 <tr><td>SW_PEN_INSERTED</td><td>set = pen inserted</td></tr>
 <tr><td>SW_MACHINE_COVER</td><td>set = cover closed</td></tr>
 </tbody></table>
+</div>
 <h2 id="appendix-shared-keys"><a class="header" href="#appendix-shared-keys">Appendix: Shared Keys</a></h2>
 <p><img src="images/input_device_two_keyboards_shared_keys.png" alt="Inexor" /></p>
 <p><img src="images/input_device_two_keyboards_shared_leds.png" alt="Inexor" /></p>
@@ -4073,7 +4150,7 @@ instances can have different data types. It's possible to store even complex dat
 object. This is handy if you receive data from an MQTT endpoint or if you want to represent  more complex data. But it
 makes it also necessary to unpack or pack these data in order to operate with it.</p>
 <h4 id="entity-types-8"><a class="header" href="#entity-types-8">Entity Types</a></h4>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td>ArrayPush</td><td>array</td><td>array</td><td>input</td></tr>
 <tr><td></td><td>to_be_added_value</td><td>any</td><td>input</td></tr>
@@ -4101,20 +4178,22 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td></td><td>property_name</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>any</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-11"><a class="header" href="#platform-compatibility-11">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-10"><a class="header" href="#repository-10">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-json</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-json">https://github.com/aschaeffer/inexor-rgf-plugin-json</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-json</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-json">https://github.com/inexorgame/inexor-rgf-plugin-json</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
 <h2 id="components-6"><a class="header" href="#components-6">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>condition</td><td>condition</td><td>bool</td><td>input</td><td>Accepts a boolean condition and returns an result</td></tr>
 <tr><td></td><td>result</td><td>any</td><td>output</td><td>The datatype may be overridden by the concrete entity type</td></tr>
@@ -4131,8 +4210,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td>logical_operation</td><td>lhs</td><td>bool</td><td>input</td><td></td></tr>
 <tr><td></td><td>result</td><td>bool</td><td>output</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-9"><a class="header" href="#entity-types-9">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td>not</td><td>logical_operation</td><td>lhs</td><td>bool</td><td>input</td><td>NOT-Operation</td></tr>
 <tr><td></td><td>logical_operation</td><td>result</td><td>bool</td><td>output</td><td></td></tr>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
@@ -4172,20 +4252,22 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td></td><td></td><td>payload</td><td>any</td><td>input</td><td></td></tr>
 <tr><td></td><td>action</td><td>result</td><td>any</td><td>output</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-12"><a class="header" href="#platform-compatibility-12">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-11"><a class="header" href="#repository-11">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-logical</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-logical">https://github.com/aschaeffer/inexor-rgf-plugin-logical</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-logical</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-logical">https://github.com/inexorgame/inexor-rgf-plugin-logical</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
 <h2 id="components-7"><a class="header" href="#components-7">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td>dublin_core</td><td>dc_language</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>dc_title</td><td>string</td><td>none</td></tr>
@@ -4203,20 +4285,22 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td></td><td>dc_rights</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>dc_source</td><td>string</td><td>none</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-13"><a class="header" href="#platform-compatibility-13">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repositories-1"><a class="header" href="#repositories-1">Repositories</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-metadata</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-metadata">https://github.com/aschaeffer/inexor-rgf-plugin-metadata</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-metadata</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-metadata">https://github.com/inexorgame/inexor-rgf-plugin-metadata</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
 <h2 id="entity-types-10"><a class="header" href="#entity-types-10">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>DesktopNotification</td><td>show</td><td>bool</td><td>input</td></tr>
 <tr><td></td><td>app_name</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>summary</td><td>string</td><td>input</td></tr>
@@ -4224,16 +4308,19 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td></td><td>icon</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>timeout</td><td>number</td><td>input</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-14"><a class="header" href="#platform-compatibility-14">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th><th>Notes</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th><th>Notes</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td><td>https://github.com/hoodie/notify-rust#linuxbsd-support</td></tr>
 <tr><td>MacOS</td><td>✓</td><td>https://github.com/hoodie/notify-rust#macos-support</td></tr>
 <tr><td>Windows</td><td>✓</td><td>https://github.com/hoodie/notify-rust#windows-support</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-12"><a class="header" href="#repository-12">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-notification</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-notification">https://github.com/aschaeffer/inexor-rgf-plugin-notification</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-notification</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-notification">https://github.com/inexorgame/inexor-rgf-plugin-notification</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
 <h4 id="create-desktop-notification"><a class="header" href="#create-desktop-notification">Create Desktop Notification</a></h4>
@@ -4331,7 +4418,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-numeric"><a class="header" href="#plugin-numeric">Plugin: Numeric</a></h1>
 <p>Numeric operations</p>
 <h2 id="components-8"><a class="header" href="#components-8">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td>numeric_operation</td><td>lhs</td><td>number</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>number</td><td>output</td></tr>
@@ -4340,8 +4427,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td></td><td>rhs</td><td>number</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>number</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-11"><a class="header" href="#entity-types-11">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Description</th></tr></thead><tbody>
 <tr><td>abs</td><td>numeric_operation</td><td>Computes the absolute value</td></tr>
 <tr><td>acos</td><td>numeric_operation</td><td>Computes the arccosine of a number</td></tr>
 <tr><td>acosh</td><td>numeric_operation</td><td>Inverse hyperbolic cosine function</td></tr>
@@ -4376,20 +4464,22 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td>to_radians</td><td>numeric_operation</td><td>Converts degrees to radians</td></tr>
 <tr><td>trunc</td><td>numeric_operation</td><td>Returns the integer part of a number</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-15"><a class="header" href="#platform-compatibility-15">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-13"><a class="header" href="#repository-13">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-numeric</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-numeric">https://github.com/aschaeffer/inexor-rgf-plugin-numeric</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-numeric</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-numeric">https://github.com/inexorgame/inexor-rgf-plugin-numeric</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers</p>
 <h2 id="entity-types-12"><a class="header" href="#entity-types-12">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Note</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Note</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>pseudo_random_number</td><td>trigger</td><td>bool</td><td>input</td><td></td></tr>
 <tr><td></td><td>seed</td><td>number</td><td>input</td><td>fixed, u64</td></tr>
@@ -4413,16 +4503,19 @@ makes it also necessary to unpack or pack these data in order to operate with it
 <tr><td>random_uuid</td><td>trigger</td><td>bool</td><td>input</td><td></td></tr>
 <tr><td></td><td>result</td><td>string</td><td>output</td><td>The generated UUID as string representation</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-16"><a class="header" href="#platform-compatibility-16">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-14"><a class="header" href="#repository-14">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-random</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-random">https://github.com/aschaeffer/inexor-rgf-plugin-random</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-random</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-random">https://github.com/inexorgame/inexor-rgf-plugin-random</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
 <h3 id="graphql-9"><a class="header" href="#graphql-9">GraphQL</a></h3>
 <h3 id="create-random-number-generator"><a class="header" href="#create-random-number-generator">Create random number generator</a></h3>
@@ -4495,18 +4588,20 @@ on day 5 through 10 of the month.</p>
 would execute at 6am on Sunday and Saturday.</p>
 <p>Note that the year may be omitted.</p>
 <h4 id="examples-1"><a class="header" href="#examples-1">Examples</a></h4>
-<table><thead><tr><th>Cron Expression</th><th>sec</th><th>min</th><th>hour</th><th>day  of month</th><th>month</th><th>day of week</th><th>year</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Cron Expression</th><th>sec</th><th>min</th><th>hour</th><th>day  of month</th><th>month</th><th>day of week</th><th>year</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>* * * * * * *</code></td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>Runs every second</td></tr>
 <tr><td><code>0 2,14,26 * * * *</code></td><td>0</td><td>2,14,26</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td>Run once per hour but only on day 5 through 10 of the month</td></tr>
 <tr><td><code>0 0 * 5-10 * *</code></td><td>0</td><td>0</td><td>*</td><td>5-10</td><td>*</td><td>*</td><td></td><td>Run at 6am on Sunday and Saturday</td></tr>
 </tbody></table>
+</div>
 <h2 id="timers"><a class="header" href="#timers">Timers</a></h2>
 <p>A <code>timer</code> triggers after a given duration. The duration can be specified either as a number in
 milliseconds or as a string in <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration Format</a>.</p>
 <h3 id="iso-8601-duration-format"><a class="header" href="#iso-8601-duration-format">ISO 8601 Duration Format</a></h3>
-<div class="admonition info">
+<div id="admonition-what-is-the-iso-8601-duration-format" class="admonition info">
 <div class="admonition-title">
 <p>What is the ISO 8601 Duration Format?</p>
+<p><a class="admonition-anchor-link" href="Plugins_Scheduler.html#admonition-what-is-the-iso-8601-duration-format"></a></p>
 </div>
 <div>
 <p>Durations define the amount of intervening time in a time interval and are represented by the format
@@ -4519,7 +4614,7 @@ and time elements and are not replaced.</p>
 </div>
 </div>
 <h4 id="designators"><a class="header" href="#designators">Designators</a></h4>
-<table><thead><tr><th>Designator</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Designator</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>P</code></td><td><code>P</code> is the duration designator (for period) placed at the start of the duration representation.</td></tr>
 <tr><td><code>Y</code></td><td><code>Y</code> is the year designator that follows the value for the number of years.</td></tr>
 <tr><td><code>M</code></td><td><code>M</code> is the month designator that follows the value for the number of months.</td></tr>
@@ -4530,16 +4625,18 @@ and time elements and are not replaced.</p>
 <tr><td><code>M</code></td><td><code>M</code> is the minute designator that follows the value for the number of minutes.</td></tr>
 <tr><td><code>S</code></td><td><code>S</code> is the second designator that follows the value for the number of seconds.</td></tr>
 </tbody></table>
+</div>
 <h4 id="examples-2"><a class="header" href="#examples-2">Examples</a></h4>
-<table><thead><tr><th>Duration</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Duration</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>PT10S</code></td><td>Represents a duration of ten seconds.</td></tr>
 <tr><td><code>PT1M30S</code></td><td>Represents a duration of one minute and thirty seconds.</td></tr>
 <tr><td><code>PT1H</code></td><td>Represents a duration of one hour.</td></tr>
 <tr><td><code>P1DT12H</code></td><td>Represents a duration of one day and twelve hours.</td></tr>
 <tr><td><code>P3Y6M4DT12H30M5S</code></td><td>Represents a duration of three years, six months, four days, twelve hours, thirty minutes, and five seconds.</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-13"><a class="header" href="#entity-types-13">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>scheduled_job</td><td></td><td>schedule</td><td>string</td><td>input</td><td>Cron Expression</td></tr>
 <tr><td></td><td>generator</td><td>trigger</td><td>bool</td><td>output</td><td></td></tr>
@@ -4547,19 +4644,22 @@ and time elements and are not replaced.</p>
 <tr><td>timer</td><td></td><td>duration</td><td>number<br>or<br>string</td><td>input</td><td>Duration in milliseconds or as ISO8601 Duration Format</td></tr>
 <tr><td></td><td>generator</td><td>trigger</td><td>bool</td><td>output</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-17"><a class="header" href="#platform-compatibility-17">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repositories-2"><a class="header" href="#repositories-2">Repositories</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-scheduler</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-scheduler">https://github.com/aschaeffer/inexor-rgf-plugin-scheduler</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-scheduler</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-scheduler">https://github.com/inexorgame/inexor-rgf-plugin-scheduler</a></td></tr>
 <tr><td>tokio-cron-scheduler</td><td><a href="https://github.com/mvniekerk/tokio-cron-scheduler">https://github.com/mvniekerk/tokio-cron-scheduler</a></td></tr>
 <tr><td>cron expression parser</td><td><a href="https://github.com/zslayton/cron">https://github.com/zslayton/cron</a></td></tr>
 <tr><td>ISO8601 duration parser</td><td><a href="https://github.com/PoiScript/iso8601-duration">https://github.com/PoiScript/iso8601-duration</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
 <pre><code class="language-graphql">mutation {
@@ -4626,7 +4726,7 @@ and time elements and are not replaced.</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-string"><a class="header" href="#plugin-string">Plugin: String</a></h1>
 <h2 id="components-9"><a class="header" href="#components-9">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>StringOperation</td><td>lhs</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>string</td><td>output</td></tr>
 <tr><td>StringGate</td><td>lhs</td><td>string</td><td>input</td></tr>
@@ -4636,8 +4736,9 @@ and time elements and are not replaced.</p>
 <tr><td></td><td>rhs</td><td>string</td><td>input</td></tr>
 <tr><td></td><td>result</td><td>bool</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types--behaviours"><a class="header" href="#entity-types--behaviours">Entity Types / Behaviours</a></h2>
-<table><thead><tr><th>Name</th><th>Component</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Component</th><th>Description</th></tr></thead><tbody>
 <tr><td>Trim</td><td>StringOperation</td><td>Removes whitespace at the beginning and end of a string</td></tr>
 <tr><td>TrimStart</td><td>StringOperation</td><td>Removes whitespace at the beginning of a string</td></tr>
 <tr><td>TrimEnd</td><td>StringOperation</td><td>Removes whitespace at the end of a string</td></tr>
@@ -4654,37 +4755,40 @@ and time elements and are not replaced.</p>
 <tr><td>Len</td><td></td><td>lhs (str) -&gt; result (i64)</td></tr>
 <tr><td>Lines</td><td></td><td>lhs (str) -&gt; result (array of str)</td></tr>
 </tbody></table>
+</div>
 <h2 id="rust-crate--rust-reference-1"><a class="header" href="#rust-crate--rust-reference-1">Rust Crate / Rust Reference</a></h2>
 <ul>
 <li>https://doc.rust-lang.org/std/string/struct.String.html</li>
 </ul>
 <h2 id="platform-compatibility-18"><a class="header" href="#platform-compatibility-18">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-15"><a class="header" href="#repository-15">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-string</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-string">https://github.com/aschaeffer/inexor-rgf-plugin-string</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-string</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-string">https://github.com/inexorgame/inexor-rgf-plugin-string</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
 control a headless Raspberry Pi Zero.</p>
 <p>It can be configured in which directory the system command is executed.</p>
 <p>A system command is executed by triggering (i.e. changing) the spawn property. Please see the GraphQL example.</p>
 <p>When a program runs, it writes to stdout and stderr. These outputs are available in the corresponding properties after
 the program has ended.</p>
-<div class="admonition warning">
+<div id="admonition-a-word-about-safety" class="admonition warning">
 <div class="admonition-title">
 <p>A word about safety</p>
+<p><a class="admonition-anchor-link" href="Plugins_System_Command.html#admonition-a-word-about-safety"></a></p>
 </div>
 <div>
 <p>Only activate the plugin if you know what you are doing. Do not run the Reactive Graph Flow as root user, because the system command will be executed as the same user! The GraphQL endpoint should also be specially protected.</p>
 </div>
 </div>
 <h2 id="entity-types-14"><a class="header" href="#entity-types-14">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>SystemCommand</td><td>name</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>current_dir</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>command</td><td>string</td><td>none</td></tr>
@@ -4693,6 +4797,7 @@ the program has ended.</p>
 <tr><td></td><td>stdout</td><td>string</td><td>output</td></tr>
 <tr><td></td><td>stderr</td><td>string</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
 <h3 id="graphql-create-system-command-list-current-directory"><a class="header" href="#graphql-create-system-command-list-current-directory">GraphQL: Create System Command &quot;List Current Directory&quot;</a></h3>
 <p>The system command is only generated but not yet executed.</p>
@@ -4794,22 +4899,24 @@ command is to be executed without arguments, an empty array can be passed.</p>
 }
 </code></pre>
 <h2 id="platform-compatibility-19"><a class="header" href="#platform-compatibility-19">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-16"><a class="header" href="#repository-16">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-system-command</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-system-command">https://github.com/aschaeffer/inexor-rgf-plugin-system-command</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-system-command</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-system-command">https://github.com/inexorgame/inexor-rgf-plugin-system-command</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-environment"><a class="header" href="#plugin-system-environment">Plugin: System Environment</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-environment"><a class="header" href="#plugin-system-environment">Plugin: System Environment</a></h1>
 <p>The plugin creates entity instances for each environment variable. As environment variables doesn't change at runtime
 this happens only at initialization.</p>
 <h2 id="uuids-1"><a class="header" href="#uuids-1">UUIDs</a></h2>
-<div class="admonition info">
+<div id="admonition-info" class="admonition info">
 <div class="admonition-title">
 <p>Info</p>
+<p><a class="admonition-anchor-link" href="Plugins_System_Environment.html#admonition-info"></a></p>
 </div>
 <div>
 <p>The UUIDs of the entity instances are stable.</p>
@@ -4817,16 +4924,18 @@ this happens only at initialization.</p>
 </div>
 <h2 id="labels-1"><a class="header" href="#labels-1">Labels</a></h2>
 <p>Each entity instance which represents a system environment variable has a label.</p>
-<table><thead><tr><th>System Env</th><th>Label</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>System Env</th><th>Label</th></tr></thead><tbody>
 <tr><td><code>$HOME</code></td><td><code>/org/inexor/system/env/home</code></td></tr>
 <tr><td><code>$PATH</code></td><td><code>/org/inexor/system/env/path</code></td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-15"><a class="header" href="#entity-types-15">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>EnvVar</td><td>name</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>label</td><td>string</td><td>none</td></tr>
 <tr><td></td><td>value</td><td>string</td><td>output</td></tr>
 </tbody></table>
+</div>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-query-system-environment-variable-by-label"><a class="header" href="#graphql-query-system-environment-variable-by-label">GraphQL: Query System Environment Variable by Label</a></h3>
 <pre><code class="language-graphql">query findSystemEnvHome {
@@ -4860,24 +4969,26 @@ this happens only at initialization.</p>
 }
 </code></pre>
 <h2 id="platform-compatibility-20"><a class="header" href="#platform-compatibility-20">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repository-17"><a class="header" href="#repository-17">Repository</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-system-environment</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-system-environment">https://github.com/aschaeffer/inexor-rgf-plugin-system-environment</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-system-environment</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-system-environment">https://github.com/inexorgame/inexor-rgf-plugin-system-environment</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic taxonomy system with categories and tags.</p>
 <h2 id="components-10"><a class="header" href="#components-10">Components</a></h2>
-<table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>weighted</td><td>weight</td><td>number</td><td>none</td><td>The weight of a relation between two entity instances</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types-16"><a class="header" href="#entity-types-16">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>category</td><td>named</td><td>name</td><td>string</td><td>none</td><td>The name of the category</td></tr>
 <tr><td></td><td>describable</td><td>description</td><td>string</td><td>none</td><td>The description of the category</td></tr>
@@ -4885,41 +4996,45 @@ this happens only at initialization.</p>
 <tr><td>tag</td><td>named</td><td>name</td><td>string</td><td>none</td><td>The tag name</td></tr>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="relation-types-3"><a class="header" href="#relation-types-3">Relation Types</a></h2>
-<table><thead><tr><th>Name</th><th>Description</th><th>Components</th><th>Source Entity Type</th><th>Target Entity Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th><th>Components</th><th>Source Entity Type</th><th>Target Entity Type</th></tr></thead><tbody>
 <tr><td>categorized_as</td><td></td><td></td><td>*</td><td>category</td></tr>
 <tr><td>has_subcategory</td><td></td><td></td><td>category</td><td>category</td></tr>
 <tr><td>tagged_with</td><td></td><td>weighted</td><td>*</td><td>tag</td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility-21"><a class="header" href="#platform-compatibility-21">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repositories-3"><a class="header" href="#repositories-3">Repositories</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-taxonomy</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-taxonomy">https://github.com/aschaeffer/inexor-rgf-plugin-taxonomy</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-taxonomy</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-taxonomy">https://github.com/inexorgame/inexor-rgf-plugin-taxonomy</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="events"><a class="header" href="#events">Events</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="events"><a class="header" href="#events">Events</a></h1>
 <p>Events are (of course!) represented as reactive entity instances that have a component <code>event</code>. Since Inexor is already
 a reactive system it wouldn't make sense to implement another event system. So, basically the events are conventions
 rather than implementation.</p>
 <h2 id="component"><a class="header" href="#component">Component</a></h2>
 <p>Entity types or relation types can be composed with the component <code>event</code> in order to have an property <code>event</code>. </p>
-<table><thead><tr><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>Event</td><td>event</td><td>Any</td><td>Output</td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="events-system-events"><a class="header" href="#events-system-events">Events: System Events</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="events-system-events"><a class="header" href="#events-system-events">Events: System Events</a></h1>
 <p>System events are events that are emitted by the system itself.  There is no other way to get this information than
 through these events.</p>
 <h2 id="entity-types-17"><a class="header" href="#entity-types-17">Entity Types</a></h2>
-<table><thead><tr><th>Entity Type</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Entity Type</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>System Event</td><td>event</td><td>event</td><td>Any</td><td>Output</td></tr>
 <tr><td></td><td>labeled</td><td>label</td><td>String</td><td>None</td></tr>
 </tbody></table>
+</div>
 <h2 id="types-of-events"><a class="header" href="#types-of-events">Types of Events</a></h2>
-<table><thead><tr><th>Label</th><th>Description</th><th>Payload</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Label</th><th>Description</th><th>Payload</th></tr></thead><tbody>
 <tr><td><code>/org/inexor/events/type/component/created</code></td><td>Triggered if a component has been created</td><td>Name of the created component</td></tr>
 <tr><td><code>/org/inexor/events/type/component/deleted</code></td><td>Triggered if a component has been deleted</td><td>Name of the deleted component</td></tr>
 <tr><td><code>/org/inexor/events/type/entity/created</code></td><td>Triggered if an entity type has been created</td><td>Name of the created entity type</td></tr>
@@ -4933,9 +5048,10 @@ through these events.</p>
 <tr><td><code>/org/inexor/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
 <tr><td><code>/org/inexor/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
 </tbody></table>
-<div class="admonition tip">
+</div><div id="admonition-label" class="admonition tip">
 <div class="admonition-title">
 <p>Label</p>
+<p><a class="admonition-anchor-link" href="Events_System.html#admonition-label"></a></p>
 </div>
 <div>
 <p>Subscribing to these events is easily possible with a label.</p>
@@ -4943,9 +5059,10 @@ through these events.</p>
 </div>
 <h2 id="graphql-subscription"><a class="header" href="#graphql-subscription">GraphQL Subscription</a></h2>
 <p>It is possible to subscribe to these events via GraphQL subscription.</p>
-<div class="admonition tip">
+<div id="admonition-transform-and-zip-multiple-events" class="admonition tip">
 <div class="admonition-title">
 <p>Transform and Zip Multiple Events</p>
+<p><a class="admonition-anchor-link" href="Events_System.html#admonition-transform-and-zip-multiple-events"></a></p>
 </div>
 <div>
 <p>Instead of subscribing multiple events directly you can zip multiple events and subscribe to the result.</p>
@@ -5001,10 +5118,11 @@ through these events.</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="events-shutdown"><a class="header" href="#events-shutdown">Events: Shutdown</a></h1>
 <h2 id="shutting-down"><a class="header" href="#shutting-down">Shutting down</a></h2>
-<table><thead><tr><th>Property</th><th>Value</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Property</th><th>Value</th><th>Description</th></tr></thead><tbody>
 <tr><td>shutdown</td><td><code>true</code></td><td>Boolean: Shutdown immediately</td></tr>
 <tr><td>shutdown</td><td><code>5</code></td><td>Numeric: Shutdown in <code>5</code> seconds</td></tr>
 </tbody></table>
+</div>
 <h2 id="graphql-10"><a class="header" href="#graphql-10">GraphQL</a></h2>
 <pre><code class="language-graphql">mutation {
   instances {
@@ -5038,22 +5156,22 @@ through these events.</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="builders"><a class="header" href="#builders">Builders</a></h1>
 <p>The builder pattern is useful when you would otherwise require many constructors or where construction has side effects.</p>
-<div class="admonition tip">
+<div id="admonition-cargotoml" class="admonition tip">
 <div class="admonition-title">
 <p>Cargo.toml</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-cargotoml"></a></p>
 </div>
 <div>
 <p>Don't forget to include the dependency:</p>
 <blockquote>
 <p>[dependencies]<br>
-inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf-core-builder.git&quot; }</p>
+inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf-core-builder.git&quot; }</p>
 </blockquote>
 </div>
 </div>
 <h2 id="component-builder"><a class="header" href="#component-builder">Component Builder</a></h2>
 <p>Constructs a new component programmatically.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_component() -&gt; Component {
     ComponentBuilder::new(&quot;test&quot;)
@@ -5076,9 +5194,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-register-component" class="admonition tip">
 <div class="admonition-title">
 <p>Register Component</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-register-component"></a></p>
 </div>
 <div>
 <p>The component is not yet registered.</p>
@@ -5087,8 +5206,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 </div>
 <h2 id="entity-type-builder"><a class="header" href="#entity-type-builder">Entity Type Builder</a></h2>
 <p>Constructs a new entity type programmatically.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_entity_type() -&gt; EntityType {
     EntityTypeBuilder::new(&quot;Test&quot;)
@@ -5109,9 +5227,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-register-entity-type" class="admonition tip">
 <div class="admonition-title">
 <p>Register Entity Type</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-register-entity-type"></a></p>
 </div>
 <div>
 <p>The entity type is not yet registered.</p>
@@ -5120,8 +5239,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 </div>
 <h2 id="relation-type-builder"><a class="header" href="#relation-type-builder">Relation Type Builder</a></h2>
 <p>Constructs a new relation type programmatically.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_relation_type() -&gt; RelationType {
     RelationTypeBuilder::new(
@@ -5150,9 +5268,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-register-relation-type" class="admonition tip">
 <div class="admonition-title">
 <p>Register Relation Type</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-register-relation-type"></a></p>
 </div>
 <div>
 <p>The relation type is not yet registered.</p>
@@ -5161,8 +5280,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 </div>
 <h2 id="entity-instance-builder"><a class="header" href="#entity-instance-builder">Entity Instance Builder</a></h2>
 <p>Constructs a new entity instance programmatically. This is the non-reactive variant.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_entity_instance(type_name: String) -&gt; EntityInstance {
     EntityInstanceBuilder::new(type_name)
@@ -5179,9 +5297,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-create-reactive-entity-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Create Reactive Entity Instance</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-create-reactive-entity-instance"></a></p>
 </div>
 <div>
 <p>The entity instance is non-reactive and not yet registered.</p>
@@ -5190,9 +5309,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="relation-instance-builder"><a class="header" href="#relation-instance-builder">Relation Instance Builder</a></h2>
 <p>Constructs a new relation instance programmatically. This is the non-reactive variant.</p>
-<div class="admonition tip">
+<div id="admonition-create-reactive-relation-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Create Reactive Relation Instance</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-create-reactive-relation-instance"></a></p>
 </div>
 <div>
 <p>The relation instance is non-reactive and not yet registered.</p>
@@ -5201,9 +5321,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="reactive-entity-instance-builder"><a class="header" href="#reactive-entity-instance-builder">Reactive Entity Instance Builder</a></h2>
 <p>Constructs a new reactive entity instance programmatically.</p>
-<div class="admonition tip">
+<div id="admonition-register-reactive-entity-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Register Reactive Entity Instance</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-register-reactive-entity-instance"></a></p>
 </div>
 <div>
 <p>The reactive entity instance is fully functional, but not yet registered.</p>
@@ -5212,9 +5333,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="reactive-relation-instance-builder"><a class="header" href="#reactive-relation-instance-builder">Reactive Relation Instance Builder</a></h2>
 <p>Constructs a new reactive relation instance programmatically.</p>
-<div class="admonition tip">
+<div id="admonition-register-reactive-relation-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Register Reactive Relation Instance</p>
+<p><a class="admonition-anchor-link" href="Builders.html#admonition-register-reactive-relation-instance"></a></p>
 </div>
 <div>
 <p>The reactive relation instance is fully functional, but not yet registered.</p>
@@ -5241,9 +5363,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 <h3 id="linux--raspberry-pi--macos"><a class="header" href="#linux--raspberry-pi--macos">Linux / Raspberry Pi / MacOS</a></h3>
 <pre><code class="language-shell">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
-<div class="admonition info">
+<div id="admonition-rustup" class="admonition info">
 <div class="admonition-title">
 <p>Rustup</p>
+<p><a class="admonition-anchor-link" href="Development_Build.html#admonition-rustup"></a></p>
 </div>
 <div>
 <p><a href="https://rustup.rs/">rustup</a> is an installer for the systems programming language Rust.</p>
@@ -5256,7 +5379,7 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 <pre><code class="language-shell">rustup update nightly
 </code></pre>
 <h2 id="clone-the-repository"><a class="header" href="#clone-the-repository">Clone the repository</a></h2>
-<pre><code class="language-shell">git clone https://github.com/aschaeffer/inexor-rgf-application.git
+<pre><code class="language-shell">git clone https://github.com/inexorgame/inexor-rgf-application.git
 </code></pre>
 <h2 id="build-the-application"><a class="header" href="#build-the-application">Build the application</a></h2>
 <p>Build in development mode:</p>
@@ -5267,9 +5390,10 @@ cargo build
 <pre><code class="language-shell">cd inexor-rgf-application
 cargo build --release
 </code></pre>
-<div class="admonition info">
+<div id="admonition-cargo" class="admonition info">
 <div class="admonition-title">
 <p>Cargo</p>
+<p><a class="admonition-anchor-link" href="Development_Build.html#admonition-cargo"></a></p>
 </div>
 <div>
 <p><a href="https://doc.rust-lang.org/cargo/index.html">Cargo</a> is the Rust package manager. Cargo downloads your Rust package's
@@ -5303,9 +5427,10 @@ the Rust community’s package registry.</p>
 </li>
 <li>Repeat this for all plugins</li>
 </ol>
-<div class="admonition warning">
+<div id="admonition-plugin-api-version-must-match" class="admonition warning">
 <div class="admonition-title">
 <p>Plugin API version must match</p>
+<p><a class="admonition-anchor-link" href="Development_Build.html#admonition-plugin-api-version-must-match"></a></p>
 </div>
 <div>
 <p>The application and the plugins must be compiled with the same version of the Plugin API!</p>
@@ -5314,7 +5439,7 @@ the Rust community’s package registry.</p>
 <h2 id="build-plugins"><a class="header" href="#build-plugins">Build plugins</a></h2>
 <h3 id="checkout-and-build-the-plugin"><a class="header" href="#checkout-and-build-the-plugin">Checkout and build the plugin</a></h3>
 <pre><code class="language-shell">cd ..
-git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
+git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
 cd inexor-rgf-plugin-mqtt
 </code></pre>
 <p>Build in development mode:</p>
@@ -5332,20 +5457,34 @@ name = &quot;inexor-rgf-plugin-mqtt&quot;
 active = true
 path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so&quot;
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-artifact-location" class="admonition tip">
 <div class="admonition-title">
 <p>Artifact Location</p>
+<p><a class="admonition-anchor-link" href="Development_Build.html#admonition-artifact-location"></a></p>
 </div>
 <div>
 <p>Release builds are located in <code>target/release</code> instead of <code>target/debug</code></p>
 </div>
 </div>
-<div class="admonition info">
+<div id="admonition-configure-plugins" class="admonition info">
 <div class="admonition-title">
 <p>Configure plugins</p>
+<p><a class="admonition-anchor-link" href="Development_Build.html#admonition-configure-plugins"></a></p>
 </div>
 <div>
 <p>Please consult the documentation for <a href="./Configuration_Plugins.html">configuring plugins</a></p>
+</div>
+</div>
+<h3 id="plugin-compatibility"><a class="header" href="#plugin-compatibility">Plugin Compatibility</a></h3>
+<pre><code class="language-log">17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../inexor-rgf-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
+</code></pre>
+<div id="admonition-rust-compiler" class="admonition warning">
+<div class="admonition-title">
+<p>Rust Compiler</p>
+<p><a class="admonition-anchor-link" href="Development_Build.html#admonition-rust-compiler"></a></p>
+</div>
+<div>
+<p>The plugins have to be compiled by the same rust compiler.</p>
 </div>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development--code-formatting"><a class="header" href="#development--code-formatting">Development / Code Formatting</a></h1>
@@ -5367,9 +5506,10 @@ cargo build
 <pre><code class="language-shell"># Build binary with release profile
 cargo build --release
 </code></pre>
-<div class="admonition tip">
+<div id="admonition-release-profiles" class="admonition tip">
 <div class="admonition-title">
 <p>Release Profiles</p>
+<p><a class="admonition-anchor-link" href="Development_Binaries.html#admonition-release-profiles"></a></p>
 </div>
 <div>
 <p>For more information about release profiles, please refer to:</p>
@@ -5378,9 +5518,10 @@ cargo build --release
 </ul>
 </div>
 </div>
-<div class="admonition tip">
+<div id="admonition-optimization-levels" class="admonition tip">
 <div class="admonition-title">
 <p>Optimization Levels</p>
+<p><a class="admonition-anchor-link" href="Development_Binaries.html#admonition-optimization-levels"></a></p>
 </div>
 <div>
 <p>For more information about rust compiler optimization levels, please have a look at</p>
@@ -5389,9 +5530,10 @@ cargo build --release
 </ul>
 </div>
 </div>
-<div class="admonition tip">
+<div id="admonition-strip-symbols" class="admonition tip">
 <div class="admonition-title">
 <p>Strip Symbols</p>
+<p><a class="admonition-anchor-link" href="Development_Binaries.html#admonition-strip-symbols"></a></p>
 </div>
 <div>
 <p>For more information about strip symbols, please see</p>

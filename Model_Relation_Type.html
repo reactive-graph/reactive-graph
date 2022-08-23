@@ -144,7 +144,7 @@ additional <a href="./Model_Property_Type.html">properties</a> it contains.</p>
 <p>As with entity types, extensions to the relation type can be defined, such as the appearance of edges in a graph or the
 appearance of a connector of this type in the flow editor.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the outbound entity instance</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
 <tr><td>Full Name</td><td>String</td><td>The full name of the relation type</td></tr>
@@ -155,6 +155,7 @@ appearance of a connector of this type in the flow editor.</p>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on relation instances</td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td></tr>
 </tbody></table>
+</div>
 <h2 id="graph"><a class="header" href="#graph">Graph</a></h2>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Type)===&gt;|&quot;Relation Type&quot;|B(Inbound Entity Type);
@@ -203,9 +204,10 @@ appearance of a connector of this type in the flow editor.</p>
     Relation-Instance o{--|| Relation-Type : is-a
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>

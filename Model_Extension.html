@@ -150,10 +150,11 @@ shows that an extension can potentially contain very complex data structures and
 covers a case that is not relevant in all cases. For example, if the &quot;Flow Editor&quot; plugin is not installed or not
 activated, the extension is present but not used.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the extension</td></tr>
 <tr><td>Extension</td><td>JSON</td><td>The extension as schema-less JSON.</td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Extension {
@@ -165,13 +166,14 @@ activated, the extension is present but not used.</p>
     Property-Type ||--}o Extension : has
 </pre>
 <h2 id="list-of-known-extensions"><a class="header" href="#list-of-known-extensions">List of known extensions</a></h2>
-<table><thead><tr><th>Extension</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Extension</th><th>Description</th></tr></thead><tbody>
 <tr><td>dublin-core</td><td>Meta data</td></tr>
 <tr><td>flow_editor_palette</td><td>An entry for the palette of the flow editor</td></tr>
 <tr><td>flow_editor_shape</td><td>Definition of the shape of an entity instance in the flow editor</td></tr>
 <tr><td>type_graph_shape</td><td>Definition of the shape of an entity type in the type graph</td></tr>
 <tr><td>instance_graph_shape</td><td>Definition of the shape of an entity instance of in the instance graph</td></tr>
 </tbody></table>
+</div>
 <h2 id="extension-dublin_core"><a class="header" href="#extension-dublin_core">Extension <code>dublin_core</code></a></h2>
 <pre><code class="language-json">    {
       &quot;name&quot;: &quot;dublin-core&quot;,
@@ -261,9 +263,10 @@ activated, the extension is present but not used.</p>
 }
 </code></pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div class="admonition tip">
+<div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
 </div>
 <div>
 <ul>

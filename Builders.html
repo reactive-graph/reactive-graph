@@ -137,22 +137,22 @@
                     <main>
                         <h1 id="builders"><a class="header" href="#builders">Builders</a></h1>
 <p>The builder pattern is useful when you would otherwise require many constructors or where construction has side effects.</p>
-<div class="admonition tip">
+<div id="admonition-cargotoml" class="admonition tip">
 <div class="admonition-title">
 <p>Cargo.toml</p>
+<p><a class="admonition-anchor-link" href="#admonition-cargotoml"></a></p>
 </div>
 <div>
 <p>Don't forget to include the dependency:</p>
 <blockquote>
 <p>[dependencies]<br>
-inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf-core-builder.git&quot; }</p>
+inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf-core-builder.git&quot; }</p>
 </blockquote>
 </div>
 </div>
 <h2 id="component-builder"><a class="header" href="#component-builder">Component Builder</a></h2>
 <p>Constructs a new component programmatically.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_component() -&gt; Component {
     ComponentBuilder::new(&quot;test&quot;)
@@ -175,9 +175,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-register-component" class="admonition tip">
 <div class="admonition-title">
 <p>Register Component</p>
+<p><a class="admonition-anchor-link" href="#admonition-register-component"></a></p>
 </div>
 <div>
 <p>The component is not yet registered.</p>
@@ -186,8 +187,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 </div>
 <h2 id="entity-type-builder"><a class="header" href="#entity-type-builder">Entity Type Builder</a></h2>
 <p>Constructs a new entity type programmatically.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_entity_type() -&gt; EntityType {
     EntityTypeBuilder::new(&quot;Test&quot;)
@@ -208,9 +208,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-register-entity-type" class="admonition tip">
 <div class="admonition-title">
 <p>Register Entity Type</p>
+<p><a class="admonition-anchor-link" href="#admonition-register-entity-type"></a></p>
 </div>
 <div>
 <p>The entity type is not yet registered.</p>
@@ -219,8 +220,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 </div>
 <h2 id="relation-type-builder"><a class="header" href="#relation-type-builder">Relation Type Builder</a></h2>
 <p>Constructs a new relation type programmatically.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_relation_type() -&gt; RelationType {
     RelationTypeBuilder::new(
@@ -249,9 +249,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-register-relation-type" class="admonition tip">
 <div class="admonition-title">
 <p>Register Relation Type</p>
+<p><a class="admonition-anchor-link" href="#admonition-register-relation-type"></a></p>
 </div>
 <div>
 <p>The relation type is not yet registered.</p>
@@ -260,8 +261,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/aschaeffer/inexor-rgf
 </div>
 <h2 id="entity-instance-builder"><a class="header" href="#entity-instance-builder">Entity Instance Builder</a></h2>
 <p>Constructs a new entity instance programmatically. This is the non-reactive variant.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_entity_instance(type_name: String) -&gt; EntityInstance {
     EntityInstanceBuilder::new(type_name)
@@ -278,9 +278,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 }
 <span class="boring">}
 </span></code></pre></pre>
-<div class="admonition tip">
+<div id="admonition-create-reactive-entity-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Create Reactive Entity Instance</p>
+<p><a class="admonition-anchor-link" href="#admonition-create-reactive-entity-instance"></a></p>
 </div>
 <div>
 <p>The entity instance is non-reactive and not yet registered.</p>
@@ -289,9 +290,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="relation-instance-builder"><a class="header" href="#relation-instance-builder">Relation Instance Builder</a></h2>
 <p>Constructs a new relation instance programmatically. This is the non-reactive variant.</p>
-<div class="admonition tip">
+<div id="admonition-create-reactive-relation-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Create Reactive Relation Instance</p>
+<p><a class="admonition-anchor-link" href="#admonition-create-reactive-relation-instance"></a></p>
 </div>
 <div>
 <p>The relation instance is non-reactive and not yet registered.</p>
@@ -300,9 +302,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="reactive-entity-instance-builder"><a class="header" href="#reactive-entity-instance-builder">Reactive Entity Instance Builder</a></h2>
 <p>Constructs a new reactive entity instance programmatically.</p>
-<div class="admonition tip">
+<div id="admonition-register-reactive-entity-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Register Reactive Entity Instance</p>
+<p><a class="admonition-anchor-link" href="#admonition-register-reactive-entity-instance"></a></p>
 </div>
 <div>
 <p>The reactive entity instance is fully functional, but not yet registered.</p>
@@ -311,9 +314,10 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="reactive-relation-instance-builder"><a class="header" href="#reactive-relation-instance-builder">Reactive Relation Instance Builder</a></h2>
 <p>Constructs a new reactive relation instance programmatically.</p>
-<div class="admonition tip">
+<div id="admonition-register-reactive-relation-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Register Reactive Relation Instance</p>
+<p><a class="admonition-anchor-link" href="#admonition-register-reactive-relation-instance"></a></p>
 </div>
 <div>
 <p>The reactive relation instance is fully functional, but not yet registered.</p>

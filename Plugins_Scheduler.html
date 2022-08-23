@@ -148,18 +148,20 @@ on day 5 through 10 of the month.</p>
 would execute at 6am on Sunday and Saturday.</p>
 <p>Note that the year may be omitted.</p>
 <h4 id="examples"><a class="header" href="#examples">Examples</a></h4>
-<table><thead><tr><th>Cron Expression</th><th>sec</th><th>min</th><th>hour</th><th>day  of month</th><th>month</th><th>day of week</th><th>year</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Cron Expression</th><th>sec</th><th>min</th><th>hour</th><th>day  of month</th><th>month</th><th>day of week</th><th>year</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>* * * * * * *</code></td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>*</td><td>Runs every second</td></tr>
 <tr><td><code>0 2,14,26 * * * *</code></td><td>0</td><td>2,14,26</td><td>*</td><td>*</td><td>*</td><td>*</td><td></td><td>Run once per hour but only on day 5 through 10 of the month</td></tr>
 <tr><td><code>0 0 * 5-10 * *</code></td><td>0</td><td>0</td><td>*</td><td>5-10</td><td>*</td><td>*</td><td></td><td>Run at 6am on Sunday and Saturday</td></tr>
 </tbody></table>
+</div>
 <h2 id="timers"><a class="header" href="#timers">Timers</a></h2>
 <p>A <code>timer</code> triggers after a given duration. The duration can be specified either as a number in
 milliseconds or as a string in <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration Format</a>.</p>
 <h3 id="iso-8601-duration-format"><a class="header" href="#iso-8601-duration-format">ISO 8601 Duration Format</a></h3>
-<div class="admonition info">
+<div id="admonition-what-is-the-iso-8601-duration-format" class="admonition info">
 <div class="admonition-title">
 <p>What is the ISO 8601 Duration Format?</p>
+<p><a class="admonition-anchor-link" href="#admonition-what-is-the-iso-8601-duration-format"></a></p>
 </div>
 <div>
 <p>Durations define the amount of intervening time in a time interval and are represented by the format
@@ -172,7 +174,7 @@ and time elements and are not replaced.</p>
 </div>
 </div>
 <h4 id="designators"><a class="header" href="#designators">Designators</a></h4>
-<table><thead><tr><th>Designator</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Designator</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>P</code></td><td><code>P</code> is the duration designator (for period) placed at the start of the duration representation.</td></tr>
 <tr><td><code>Y</code></td><td><code>Y</code> is the year designator that follows the value for the number of years.</td></tr>
 <tr><td><code>M</code></td><td><code>M</code> is the month designator that follows the value for the number of months.</td></tr>
@@ -183,16 +185,18 @@ and time elements and are not replaced.</p>
 <tr><td><code>M</code></td><td><code>M</code> is the minute designator that follows the value for the number of minutes.</td></tr>
 <tr><td><code>S</code></td><td><code>S</code> is the second designator that follows the value for the number of seconds.</td></tr>
 </tbody></table>
+</div>
 <h4 id="examples-1"><a class="header" href="#examples-1">Examples</a></h4>
-<table><thead><tr><th>Duration</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Duration</th><th>Description</th></tr></thead><tbody>
 <tr><td><code>PT10S</code></td><td>Represents a duration of ten seconds.</td></tr>
 <tr><td><code>PT1M30S</code></td><td>Represents a duration of one minute and thirty seconds.</td></tr>
 <tr><td><code>PT1H</code></td><td>Represents a duration of one hour.</td></tr>
 <tr><td><code>P1DT12H</code></td><td>Represents a duration of one day and twelve hours.</td></tr>
 <tr><td><code>P3Y6M4DT12H30M5S</code></td><td>Represents a duration of three years, six months, four days, twelve hours, thirty minutes, and five seconds.</td></tr>
 </tbody></table>
+</div>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
-<table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th><th>Description</th></tr></thead><tbody>
 <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>scheduled_job</td><td></td><td>schedule</td><td>string</td><td>input</td><td>Cron Expression</td></tr>
 <tr><td></td><td>generator</td><td>trigger</td><td>bool</td><td>output</td><td></td></tr>
@@ -200,19 +204,22 @@ and time elements and are not replaced.</p>
 <tr><td>timer</td><td></td><td>duration</td><td>number<br>or<br>string</td><td>input</td><td>Duration in milliseconds or as ISO8601 Duration Format</td></tr>
 <tr><td></td><td>generator</td><td>trigger</td><td>bool</td><td>output</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
-<table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td>✓</td></tr>
 <tr><td>MacOS</td><td>✓</td></tr>
 <tr><td>Windows</td><td>✓</td></tr>
 </tbody></table>
+</div>
 <h2 id="repositories"><a class="header" href="#repositories">Repositories</a></h2>
-<table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-scheduler</td><td><a href="https://github.com/aschaeffer/inexor-rgf-plugin-scheduler">https://github.com/aschaeffer/inexor-rgf-plugin-scheduler</a></td></tr>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
+<tr><td>inexor-rgf-plugin-scheduler</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugin-scheduler">https://github.com/inexorgame/inexor-rgf-plugin-scheduler</a></td></tr>
 <tr><td>tokio-cron-scheduler</td><td><a href="https://github.com/mvniekerk/tokio-cron-scheduler">https://github.com/mvniekerk/tokio-cron-scheduler</a></td></tr>
 <tr><td>cron expression parser</td><td><a href="https://github.com/zslayton/cron">https://github.com/zslayton/cron</a></td></tr>
 <tr><td>ISO8601 duration parser</td><td><a href="https://github.com/PoiScript/iso8601-duration">https://github.com/PoiScript/iso8601-duration</a></td></tr>
 </tbody></table>
+</div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
 <pre><code class="language-graphql">mutation {

@@ -139,13 +139,14 @@
 <p>Components, entity types and relation types define which properties they contain. The so-called property types define
 the name, the data type and whether the property is an input or an output.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
-<table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td><td>name</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the property</td><td></td></tr>
 <tr><td>DataType</td><td>DataType</td><td>The data type of the property</td><td></td></tr>
 <tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td></td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>The extensions contains additional information about the property type</td><td></td></tr>
 </tbody></table>
+</div>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Property-Type {
@@ -165,7 +166,7 @@ the name, the data type and whether the property is an input or an output.</p>
 </pre>
 <h2 id="enum-data-type"><a class="header" href="#enum-data-type">Enum Data Type</a></h2>
 <p>A property has a data type. This is derived from serde_json::Value and maps JSON values or documents.</p>
-<table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
 <tr><td>Null</td><td>Represents a JSON null value</td></tr>
 <tr><td>Bool</td><td>Represents a JSON boolean</td></tr>
 <tr><td>Number</td><td>Represents a JSON number, whether integer or floating point</td></tr>
@@ -174,15 +175,17 @@ the name, the data type and whether the property is an input or an output.</p>
 <tr><td>Object</td><td>Represents a JSON object.</td></tr>
 <tr><td>Any</td><td>Represents any type (relations)</td></tr>
 </tbody></table>
+</div>
 <h2 id="enum-socket-type"><a class="header" href="#enum-socket-type">Enum Socket Type</a></h2>
 <p>The socket type determines whether a property serves as an input or an output. It is also possible that a property is
 neither an input nor an output. Caution: At runtime, it is not prevented if an input is used as an output or an output
 is used as an input.</p>
-<table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
 <tr><td>None</td><td>The property doesn't act as input or output socket</td></tr>
 <tr><td>Input</td><td>The property acts as input socket and accepts incoming connections</td></tr>
 <tr><td>Output</td><td>The property acts as output socket and accepts outgoing connections</td></tr>
 </tbody></table>
+</div>
 <h2 id="where-is-the-value"><a class="header" href="#where-is-the-value">Where is the value???</a></h2>
 <p>A property type only contains the definition of a property, but no data, since it is a type.</p>
 <p>When an entity instance or a relation instance is created, the property types are used to create
