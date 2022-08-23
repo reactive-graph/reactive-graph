@@ -16,7 +16,7 @@ uuid = { version = "1.1", features = ["serde", "v4"] }
 
 [dev-dependencies]
 random-string = "1.0"
-inexor-rgf-core-model = { git = "https://github.com/aschaeffer/inexor-rgf-core-model.git" }
+inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
 
 [lib]
 crate-type = ["lib"]
