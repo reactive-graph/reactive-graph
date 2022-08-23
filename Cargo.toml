@@ -15,7 +15,7 @@ keywords = [
     "di",
     "ioc"
 ]
-repository = "https://github.com/aschaeffer/inexor-rgf-core-di"
+repository = "https://github.com/inexorgame/inexor-rgf-core-di"
 
 [workspace]
 members = [ "crates/*" ]

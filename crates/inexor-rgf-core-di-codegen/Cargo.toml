@@ -9,7 +9,7 @@ authors = [
 edition = "2021"
 license = "MIT"
 readme = "../../README.md"
-repository = "https://github.com/aschaeffer/inexor-rgf-core-di"
+repository = "https://github.com/inexorgame/inexor-rgf-core-di"
 
 [dependencies]
 quote = "1.0"
