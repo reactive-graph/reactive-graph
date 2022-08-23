@@ -12,4 +12,4 @@
 
 | Name                    | Repository                                                                                                     |
 |-------------------------|----------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-asset | [https://github.com/aschaeffer/inexor-rgf-plugin-asset](https://github.com/aschaeffer/inexor-rgf-plugin-asset) |
+| inexor-rgf-plugin-asset | [https://github.com/inexorgame/inexor-rgf-plugin-asset](https://github.com/inexorgame/inexor-rgf-plugin-asset) |

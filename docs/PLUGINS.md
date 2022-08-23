@@ -29,7 +29,7 @@ Plugins can provide:
 1. Checkout and build the plugin
     ```shell
     cd ..
-    git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
+    git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
     cd inexor-rgf-plugin-mqtt
     cargo build (or cargo build --release)
     ```
@@ -54,7 +54,7 @@ Plugins can provide:
 
 | Name                        | Repository                                                |
 |-----------------------------|-----------------------------------------------------------|
-| inexor-rgf-plugin-scheduler | https://github.com/aschaeffer/inexor-rgf-plugin-scheduler |
+| inexor-rgf-plugin-scheduler | https://github.com/inexorgame/inexor-rgf-plugin-scheduler |
 
 This plugin provides a scheduler which starts tasks on a regular basis.
 
@@ -91,7 +91,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 | Name                       | Repository                                                 |
 |----------------------------|------------------------------------------------------------|
-| inexor-rgf-plugin-graphics | https://github.com/aschaeffer/inexor-rgf-plugin-graphics   |
+| inexor-rgf-plugin-graphics | https://github.com/inexorgame/inexor-rgf-plugin-graphics   |
 
 #### Components
 
@@ -109,7 +109,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 | Name | Repository |
 | --- | --- |
-| inexor-rgf-plugin-texture | https://github.com/aschaeffer/inexor-rgf-plugin-texture |
+| inexor-rgf-plugin-texture | https://github.com/inexorgame/inexor-rgf-plugin-texture |
 
 * GLTF Buffer (`data:application/gltf-buffer;base64,`)
 * https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_013_SimpleTexture.md
@@ -118,7 +118,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 | Name | Repository |
 | --- | --- |
-| inexor-rgf-plugin-texture-processing | https://github.com/aschaeffer/inexor-rgf-plugin-texture-processing |
+| inexor-rgf-plugin-texture-processing | https://github.com/inexorgame/inexor-rgf-plugin-texture-processing |
 
 * Color Filter
 * Blend Filter
@@ -128,7 +128,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 | Name | Repository |
 | --- | --- |
-| inexor-rgf-plugin-noise-generation | https://github.com/aschaeffer/inexor-rgf-plugin-noise-generation |
+| inexor-rgf-plugin-noise-generation | https://github.com/inexorgame/inexor-rgf-plugin-noise-generation |
 
 #### Use Cases
 
@@ -145,7 +145,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 | Name                    | Repository                                           |
 |-------------------------|------------------------------------------------------|
-| inexor-rgf-plugin-wasm  | https://github.com/aschaeffer/inexor-rgf-plugin-wasm |
+| inexor-rgf-plugin-wasm  | https://github.com/inexorgame/inexor-rgf-plugin-wasm |
 
 This plugin provides the possibility to run scripts.
 
@@ -189,7 +189,7 @@ Deno is a simple, modern and secure runtime for JavaScript and TypeScript that u
 
 | Name | Repository |
 | --- | --- |
-| inexor-rgf-plugins-physics | https://github.com/aschaeffer/inexor-rgf-plugin-physics |
+| inexor-rgf-plugins-physics | https://github.com/inexorgame/inexor-rgf-plugin-physics |
 
 #### Components
 

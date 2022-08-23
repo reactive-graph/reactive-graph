@@ -41,7 +41,7 @@ Generate random numbers
 
 | Name                     | Repository                                                                                                       |
 |--------------------------|------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-random | [https://github.com/aschaeffer/inexor-rgf-plugin-random](https://github.com/aschaeffer/inexor-rgf-plugin-random) |
+| inexor-rgf-plugin-random | [https://github.com/inexorgame/inexor-rgf-plugin-random](https://github.com/inexorgame/inexor-rgf-plugin-random) |
 
 ## Usage
 

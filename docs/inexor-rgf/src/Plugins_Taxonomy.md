@@ -40,4 +40,4 @@ This plugin provides a generic taxonomy system with categories and tags.
 
 | Name                       | Repository                                                                                                            |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-taxonomy | [https://github.com/aschaeffer/inexor-rgf-plugin-taxonomy](https://github.com/aschaeffer/inexor-rgf-plugin-taxonomy)  |
+| inexor-rgf-plugin-taxonomy | [https://github.com/inexorgame/inexor-rgf-plugin-taxonomy](https://github.com/inexorgame/inexor-rgf-plugin-taxonomy)  |

@@ -25,7 +25,7 @@ Create desktop notifications.
 
 | Name                           | Repository                                                                                                                   |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-notification | [https://github.com/aschaeffer/inexor-rgf-plugin-notification](https://github.com/aschaeffer/inexor-rgf-plugin-notification) |
+| inexor-rgf-plugin-notification | [https://github.com/inexorgame/inexor-rgf-plugin-notification](https://github.com/inexorgame/inexor-rgf-plugin-notification) |
 
 ## Usage
 

@@ -20,4 +20,4 @@ This plugin represents the GraphQL API as an interactive graph.
 
 | Name                                           | Repository                                                                                                                                                   |
 |------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-graphql-schema-visualization | [https://github.com/aschaeffer/inexor-rgf-plugin-graphql-schema-visualization](https://github.com/aschaeffer/inexor-rgf-plugin-graphql-schema-visualization) |
+| inexor-rgf-plugin-graphql-schema-visualization | [https://github.com/inexorgame/inexor-rgf-plugin-graphql-schema-visualization](https://github.com/inexorgame/inexor-rgf-plugin-graphql-schema-visualization) |

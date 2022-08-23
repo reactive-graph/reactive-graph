@@ -21,7 +21,7 @@ Read configuration files (TOML) into an entity instance.
 
 | Name                     | Repository                                                                                                       |
 |--------------------------|------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-config | [https://github.com/aschaeffer/inexor-rgf-plugin-config](https://github.com/aschaeffer/inexor-rgf-plugin-config) |
+| inexor-rgf-plugin-config | [https://github.com/inexorgame/inexor-rgf-plugin-config](https://github.com/inexorgame/inexor-rgf-plugin-config) |
 
 ## Usage (GraphQL)
 

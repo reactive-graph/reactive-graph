@@ -64,4 +64,4 @@ Numeric operations
 
 | Name                      | Repository                                                                                                         |
 |---------------------------|--------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-numeric | [https://github.com/aschaeffer/inexor-rgf-plugin-numeric](https://github.com/aschaeffer/inexor-rgf-plugin-numeric) |
+| inexor-rgf-plugin-numeric | [https://github.com/inexorgame/inexor-rgf-plugin-numeric](https://github.com/inexorgame/inexor-rgf-plugin-numeric) |

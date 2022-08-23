@@ -40,4 +40,4 @@ Basic components and entity types.
 
 | Name                   | Repository                                                                                                   |
 |------------------------|--------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-base | [https://github.com/aschaeffer/inexor-rgf-plugin-base](https://github.com/aschaeffer/inexor-rgf-plugin-base) |
+| inexor-rgf-plugin-base | [https://github.com/inexorgame/inexor-rgf-plugin-base](https://github.com/inexorgame/inexor-rgf-plugin-base) |

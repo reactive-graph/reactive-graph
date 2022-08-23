@@ -77,4 +77,4 @@ This plugin provides logical gates and operations.
 
 | Name                      | Repository                                                                                                         |
 |---------------------------|--------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-logical | [https://github.com/aschaeffer/inexor-rgf-plugin-logical](https://github.com/aschaeffer/inexor-rgf-plugin-logical) |
+| inexor-rgf-plugin-logical | [https://github.com/inexorgame/inexor-rgf-plugin-logical](https://github.com/inexorgame/inexor-rgf-plugin-logical) |

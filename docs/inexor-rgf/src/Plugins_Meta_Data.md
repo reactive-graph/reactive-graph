@@ -35,4 +35,4 @@ This plugin provides generic components for meta data.
 
 | Name                       | Repository                                                                                                            |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-metadata | [https://github.com/aschaeffer/inexor-rgf-plugin-metadata](https://github.com/aschaeffer/inexor-rgf-plugin-metadata)  |
+| inexor-rgf-plugin-metadata | [https://github.com/inexorgame/inexor-rgf-plugin-metadata](https://github.com/inexorgame/inexor-rgf-plugin-metadata)  |

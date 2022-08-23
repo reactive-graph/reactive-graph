@@ -5,7 +5,7 @@ The builder pattern is useful when you would otherwise require many constructors
 ```admonish tip "Cargo.toml"
 Don't forget to include the dependency:
 > [dependencies]<br>
-> inexor-rgf-core-builder = { git = "https://github.com/aschaeffer/inexor-rgf-core-builder.git" }
+> inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
 ```
 
 ## Component Builder

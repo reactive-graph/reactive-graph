@@ -27,7 +27,7 @@ rustup update nightly
 ## Clone the repository
 
 ```shell
-git clone https://github.com/aschaeffer/inexor-rgf-application.git
+git clone https://github.com/inexorgame/inexor-rgf-application.git
 ```
 
 ## Build the application
@@ -94,7 +94,7 @@ The application and the plugins must be compiled with the same version of the Pl
 
  ```shell
  cd ..
- git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
+ git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
  cd inexor-rgf-plugin-mqtt
  ```
 

@@ -13,7 +13,7 @@ parts:
 
   inexor-rgf-plugin-base:
     plugin: rust
-    source: https://github.com/aschaeffer/inexor-rgf-plugin-base.git
+    source: https://github.com/inexorgame/inexor-rgf-plugin-base.git
     override-build: |
       cargo +nightly build --release
       mkdir $SNAPCRAFT_PART_INSTALL/plugins

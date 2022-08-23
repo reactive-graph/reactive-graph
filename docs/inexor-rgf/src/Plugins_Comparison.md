@@ -31,4 +31,4 @@
 
 | Name                         | Repository                                                                                                               |
 |------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-comparison | [https://github.com/aschaeffer/inexor-rgf-plugin-comparison](https://github.com/aschaeffer/inexor-rgf-plugin-comparison) |
+| inexor-rgf-plugin-comparison | [https://github.com/inexorgame/inexor-rgf-plugin-comparison](https://github.com/inexorgame/inexor-rgf-plugin-comparison) |

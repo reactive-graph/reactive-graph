@@ -72,7 +72,7 @@ On destruction of the connector, the stream will be removed.
 
 | Name                        | Repository                                                                                                             |
 |-----------------------------|------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-connector | [https://github.com/aschaeffer/inexor-rgf-plugin-connector](https://github.com/aschaeffer/inexor-rgf-plugin-connector) |
+| inexor-rgf-plugin-connector | [https://github.com/inexorgame/inexor-rgf-plugin-connector](https://github.com/inexorgame/inexor-rgf-plugin-connector) |
 
 ## Usage
 

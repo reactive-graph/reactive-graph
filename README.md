@@ -7,7 +7,7 @@
 ### About Inexor
 
 <a href="https://inexor.org/">
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/inexor_2.png">
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/inexor_2.png">
 </a>
 
 * Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
@@ -32,22 +32,22 @@ The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph dat
 
 This repository provides the application which results in a binary.
 
-[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://aschaeffer.github.io/inexor-rgf-application/)
+[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/)
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/workflow/status/aschaeffer/inexor-rgf-application/Rust">](https://github.com/aschaeffer/inexor-rgf-application/actions?query=workflow%3ARust)
-[<img src="https://img.shields.io/github/last-commit/aschaeffer/inexor-rgf-application">]()
-[<img src="https://img.shields.io/github/languages/code-size/aschaeffer/inexor-rgf-application">]()
+[<img src="https://img.shields.io/github/workflow/status/inexorgame/inexor-rgf-application/Rust">](https://github.com/inexorgame/inexor-rgf-application/actions?query=workflow%3ARust)
+[<img src="https://img.shields.io/github/last-commit/inexorgame/inexor-rgf-application">]()
+[<img src="https://img.shields.io/github/languages/code-size/inexorgame/inexor-rgf-application">]()
 [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-application">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-application)
 
-[<img src="https://img.shields.io/github/license/aschaeffer/inexor-rgf-application">](https://github.com/aschaeffer/inexor-rgf-application/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
 #### Checkout, compile und run the application
 
 ```shell
 rustup update nightly
-git clone https://github.com/aschaeffer/inexor-rgf-application.git
+git clone https://github.com/inexorgame/inexor-rgf-application.git
 cd inexor-rgf-application
 cargo build
 cargo run
@@ -58,7 +58,7 @@ cargo run
 1. Checkout and build the plugin
     ```shell
     cd ..
-    git clone https://github.com/aschaeffer/inexor-rgf-plugin-mqtt.git
+    git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
     cd inexor-rgf-plugin-mqtt
     cargo build
     ```
@@ -115,19 +115,19 @@ The most important interface for interaction with the Reactive Graph Flow is Gra
 
 ##### Queries
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/queries.png">
+<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/queries.png">
 
 ##### Mutations
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/mutations.png">
+<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/mutations.png">
 
 ##### Subscriptions
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/graphql/subscriptions.png">
+<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/subscriptions.png">
 
 #### Flow Editor
 
-<img src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/flows/flow-editor.png">
+<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/flows/flow-editor.png">
 
 #### Using Libraries
 
@@ -150,10 +150,10 @@ The libraries are carefully chosen:
 
 |                                                                                                                                                                                                                            |           |                                                                   |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------|
-| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
+| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
 
 ### Libraries
 
 |                                                                                                                                                                                                                                 | Library | Description                                                                                                                                                                                                                                                                      |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <a href="https://github.com/indradb/indradb?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/aschaeffer/inexor-rgf-application/main/docs/images/indradb.png"></a> | IndraDB | The heart of the graph is the embedded graph database IndraDB:<ul><li>Graph Database<ul><li>Typed Graph</li><li>Directed Graph</li><li>Property Graph</li></ul></li><li>In Memory Storage</li><li>Embeddable<ul><li>Easier to create fully featured binaries</li></ul></li></ul> |
+| <a href="https://github.com/indradb/indradb?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/indradb.png"></a> | IndraDB | The heart of the graph is the embedded graph database IndraDB:<ul><li>Graph Database<ul><li>Typed Graph</li><li>Directed Graph</li><li>Property Graph</li></ul></li><li>In Memory Storage</li><li>Embeddable<ul><li>Easier to create fully featured binaries</li></ul></li></ul> |

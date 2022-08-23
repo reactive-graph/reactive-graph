@@ -68,7 +68,7 @@ This plugin provides arithmetic gates and operations.
 
 | Name                         | Repository                                                                                                               |
 |------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-arithmetic | [https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic](https://github.com/aschaeffer/inexor-rgf-plugin-arithmetic) |
+| inexor-rgf-plugin-arithmetic | [https://github.com/inexorgame/inexor-rgf-plugin-arithmetic](https://github.com/inexorgame/inexor-rgf-plugin-arithmetic) |
 
 ## Usage
 

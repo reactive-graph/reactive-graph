@@ -77,4 +77,4 @@ query getSystemEnvironmentVariables {
 
 | Name                                 | Repository                                                                                                                               |
 |--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-system-environment | [https://github.com/aschaeffer/inexor-rgf-plugin-system-environment](https://github.com/aschaeffer/inexor-rgf-plugin-system-environment) |
+| inexor-rgf-plugin-system-environment | [https://github.com/inexorgame/inexor-rgf-plugin-system-environment](https://github.com/inexorgame/inexor-rgf-plugin-system-environment) |

@@ -50,4 +50,4 @@
 
 | Name                     | Repository                                                                                                       |
 |--------------------------|------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-string | [https://github.com/aschaeffer/inexor-rgf-plugin-string](https://github.com/aschaeffer/inexor-rgf-plugin-string) |
+| inexor-rgf-plugin-string | [https://github.com/inexorgame/inexor-rgf-plugin-string](https://github.com/inexorgame/inexor-rgf-plugin-string) |
