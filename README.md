@@ -1,8 +1,8 @@
 # Inexor Reactive Graph Flow
 
-| Project | Module | Sub-Module | Functionality | Test Coverage |
-| --- | --- | --- | --- | --- |
-| Reactive Graph Flow | Core | Model | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-model">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-model) |
+| Project             | Module | Sub-Module | Functionality                                                        | Test Coverage                                                                                                                                      |
+|---------------------|--------|------------|----------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Reactive Graph Flow | Core   | Model      | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-core-model">](https://app.codecov.io/gh/inexorgame/inexor-rgf-core-model) |
 
 ### About Inexor
 
@@ -72,6 +72,6 @@ This module provides the core data model of the reactive graph.
 
 ### Sponsors
 
-| | | |
-| --- | --- | --- |
+|                                                                                                                                                                                                                           |           |                                                                   |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------|
 | <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-core-model/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
