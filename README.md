@@ -2,7 +2,7 @@
 
 | Project             | Module | Sub-Module | Functionality                                                        | Tests Coverage                                                                                                                                 |
 |---------------------|--------|------------|----------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Core   | FRP        | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-core-frp">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-frp) |
+| Reactive Graph Flow | Core   | FRP        | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-core-frp">](https://app.codecov.io/gh/inexorgame/inexor-rgf-core-frp) |
 
 ### About Inexor
 
