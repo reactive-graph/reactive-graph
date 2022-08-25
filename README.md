@@ -2,7 +2,7 @@
 
 | Project             | Module      | Sub-Module | Functionality                                                     | Tests                                                                                                                                                |
 |---------------------|-------------|------------|-------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Application |            | <img src="https://img.shields.io/badge/state-refactoring-yellow"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-application">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-application) |
+| Reactive Graph Flow | Application |            | <img src="https://img.shields.io/badge/state-refactoring-yellow"> | [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application) |
 
 ### About Inexor
 
@@ -38,7 +38,7 @@ This repository provides the application which results in a binary.
 [<img src="https://img.shields.io/github/workflow/status/inexorgame/inexor-rgf-application/Rust">](https://github.com/inexorgame/inexor-rgf-application/actions?query=workflow%3ARust)
 [<img src="https://img.shields.io/github/last-commit/inexorgame/inexor-rgf-application">]()
 [<img src="https://img.shields.io/github/languages/code-size/inexorgame/inexor-rgf-application">]()
-[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-application">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-application)
+[<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
 
 [<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
