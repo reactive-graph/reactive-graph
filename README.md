@@ -2,7 +2,7 @@
 
 | Project             | Module | Sub-Module | Functionality                                                        | Test Coverage                                                                                                                                          |
 |---------------------|--------|------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Core   | Plugins    | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins) |
+| Reactive Graph Flow | Core   | Plugins    | <img src="https://img.shields.io/badge/state-completed-brightgreen"> | [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-core-plugins">](https://app.codecov.io/gh/inexorgame/inexor-rgf-core-plugins) |
 
 ### About Inexor
 
@@ -39,7 +39,7 @@ plugins will depend on this.
 [<img src="https://img.shields.io/github/workflow/status/inexorgame/inexor-rgf-core-plugins/Rust">](https://github.com/inexorgame/inexor-rgf-core-plugins/actions?query=workflow%3ARust)
 [<img src="https://img.shields.io/github/last-commit/inexorgame/inexor-rgf-core-plugins">]()
 [<img src="https://img.shields.io/github/languages/code-size/inexorgame/inexor-rgf-core-plugins">]()
-[<img src="https://img.shields.io/codecov/c/github/aschaeffer/inexor-rgf-core-plugins">](https://app.codecov.io/gh/aschaeffer/inexor-rgf-core-plugins)
+[<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-core-plugins">](https://app.codecov.io/gh/inexorgame/inexor-rgf-core-plugins)
 
 [<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-core-plugins">](https://github.com/inexorgame/inexor-rgf-core-plugins/blob/main/LICENSE)
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
