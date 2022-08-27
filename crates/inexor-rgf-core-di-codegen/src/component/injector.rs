@@ -189,9 +189,9 @@ struct AsCastPropExtractor;
 impl PropExtractor for AsCastPropExtractor {
     fn generate_extract_method(&self, type_name: String) -> Option<TokenStream2> {
         match type_name.as_str() {
-            "i64" => Some(quote::quote! { get_int }),
+            "i64" | "i32" => Some(quote::quote! { get_int }),
             "f64" | "f32" => Some(quote::quote! { get_float }),
-            "String" => Some(quote::quote! { get_str }),
+            "String" => Some(quote::quote! { get_string }),
             "bool" => Some(quote::quote! { get_bool }),
             _ => None,
         }

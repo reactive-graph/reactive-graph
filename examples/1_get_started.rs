@@ -33,4 +33,5 @@ fn main() {
     let component = Provider::<SomeComp>::get(&mut container);
 
     component.interface.demo();
+    println!("prop {}", component.prop);
 }

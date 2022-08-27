@@ -1,5 +1,8 @@
 use crate::{RcAny, Wrc};
-use config::{Config, Environment, File};
+use config::Config;
+use config::Environment;
+use config::File;
+use config::FileFormat;
 use lazy_static::lazy_static;
 use regex::Regex;
 use std::any::{type_name, TypeId};
@@ -42,25 +45,15 @@ pub struct Container<P> {
 
 impl<P> Container<P> {
     pub fn new() -> Container<P> {
-        let mut config = Config::new();
-        config
-            .merge(File::with_name("config/default").required(false))
-            .expect("Failed to read default config file");
-
+        let mut builder = Config::builder().add_source(File::new("config/default", FileFormat::Toml).required(false));
         let profile = profile_name::<P>();
         if profile.ne(&"default".to_string()) {
-            config
-                .merge(File::with_name(&format!("config/{}", profile)).required(false))
-                .expect(format!("Failed to read {} config file", profile).as_str());
+            builder = builder.add_source(File::with_name(&format!("config/{}", profile)).required(false));
         }
-
-        config.merge(Environment::new()).expect("Failed to load environment");
-
-        // config.merge(parse_args())
-        //     .expect("Failed to parse args");
+        builder = builder.add_source(Environment::with_prefix("INEXOR"));
 
         Container {
-            config,
+            config: builder.build().expect("Failed to read default config file"),
             profile: PhantomData::<P>,
             components: HashMap::new(),
         }
@@ -72,17 +65,14 @@ lazy_static! {
 }
 
 fn parse_profile() -> String {
-    let mut config = Config::new();
-
-    config
-        .merge(File::with_name("config/default").required(false))
-        .expect("Failed to read default config file");
+    let builder = Config::builder().add_source(File::with_name("config/default").required(false));
 
     let profile_arg = args().position(|arg| arg.as_str() == "--profile").and_then(|arg_pos| args().nth(arg_pos + 1));
 
+    let config = builder.build().expect("Failed to parse profile");
     let parsed_profile = profile_arg
         .or(env::var("PROFILE").ok())
-        .or(config.get_str("profile").ok())
+        .or(config.get_string("profile").ok())
         .unwrap_or("default".to_string());
 
     log::info!("Using profile: {}", parsed_profile);
@@ -91,7 +81,7 @@ fn parse_profile() -> String {
 }
 
 pub fn parse_args() -> Config {
-    let mut config = Config::new();
+    let mut builder = Config::builder();
 
     let mut args = args().peekable();
     loop {
@@ -101,10 +91,10 @@ pub fn parse_args() -> Config {
             if arg.starts_with("--") {
                 let value = args.peek();
                 if value.is_none() || value.unwrap().starts_with("--") {
-                    config.set(&arg[2..], true).unwrap();
+                    builder = builder.set_override(&arg[2..], true).expect("Failed to parse arg");
                 } else {
                     let arg = args.next().unwrap();
-                    config.set(&arg[2..], args.next().unwrap()).unwrap();
+                    builder = builder.set_override(&arg[2..], args.next().unwrap()).expect("Failed to parse arg");
                 }
             }
         } else {
@@ -112,7 +102,7 @@ pub fn parse_args() -> Config {
         }
     }
 
-    config
+    builder.build().expect("Failed to parse args")
 }
 
 pub fn profile_name<T>() -> String {
