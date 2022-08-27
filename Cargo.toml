@@ -50,7 +50,7 @@ libloading = "0.7"
 log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.0", features = ["console_appender", "file_appender", "toml_format"] }
 mime = "0.3"
-path-tree = "0.2"
+path-tree = "0.4"
 rand = "0.8"
 rustls = "0.20"
 rustls-pemfile = "0.3"
