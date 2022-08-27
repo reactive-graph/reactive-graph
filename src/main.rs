@@ -13,7 +13,9 @@ use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
 
 use crate::application::Application;
-use crate::di::{profiles, Container, Provider};
+use crate::di::profiles;
+use crate::di::Container;
+use crate::di::Provider;
 use std::thread;
 use std::time::Duration;
 
