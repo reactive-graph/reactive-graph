@@ -9,6 +9,8 @@ use crate::api::Lifecycle;
 use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::api::SystemEventTypes;
+use crate::api::SYSTEM_EVENT_PROPERTY_EVENT;
+use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::di::*;
 use crate::model::PropertyInstanceSetter;
@@ -31,66 +33,25 @@ pub struct SystemEventManagerImpl {
 #[provides]
 impl SystemEventManager for SystemEventManagerImpl {
     fn emit_event(&self, event: SystemEvent) {
-        let writer = self.system_event_instances.0.write().unwrap();
-        match event {
-            SystemEvent::ComponentCreated(name) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::ComponentCreated).cloned() {
-                    entity_instance.set("event", json!(name));
+        if let Some(entity_instance) = self.get_system_event_instance((&event).into()) {
+            match event {
+                SystemEvent::ComponentCreated(name)
+                | SystemEvent::ComponentDeleted(name)
+                | SystemEvent::EntityTypeCreated(name)
+                | SystemEvent::EntityTypeDeleted(name)
+                | SystemEvent::RelationTypeCreated(name)
+                | SystemEvent::RelationTypeDeleted(name) => {
+                    entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(name));
+                    // Also emit event that the type system has been changed
+                    self.emit_event(SystemEvent::TypeSystemChanged);
                 }
-            }
-            SystemEvent::ComponentDeleted(name) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::ComponentDeleted).cloned() {
-                    entity_instance.set("event", json!(name));
-                }
-            }
-            SystemEvent::EntityTypeCreated(name) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::EntityTypeCreated).cloned() {
-                    entity_instance.set("event", json!(name));
-                }
-            }
-            SystemEvent::EntityTypeDeleted(name) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::EntityTypeDeleted).cloned() {
-                    entity_instance.set("event", json!(name));
-                }
-            }
-            SystemEvent::RelationTypeCreated(name) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::RelationTypeCreated).cloned() {
-                    entity_instance.set("event", json!(name));
-                }
-            }
-            SystemEvent::RelationTypeDeleted(name) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::RelationTypeDeleted).cloned() {
-                    entity_instance.set("event", json!(name));
-                }
-            }
-            SystemEvent::EntityInstanceCreated(id) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::EntityInstanceCreated).cloned() {
-                    entity_instance.set("event", json!(id));
-                }
-            }
-            SystemEvent::EntityInstanceDeleted(id) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::EntityInstanceDeleted).cloned() {
-                    entity_instance.set("event", json!(id));
-                }
-            }
-            SystemEvent::RelationInstanceCreated(edge_key) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::RelationInstanceCreated).cloned() {
-                    entity_instance.set("event", json!(edge_key));
-                }
-            }
-            SystemEvent::RelationInstanceDeleted(edge_key) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::RelationInstanceDeleted).cloned() {
-                    entity_instance.set("event", json!(edge_key));
-                }
-            }
-            SystemEvent::FlowCreated(id) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::FlowCreated).cloned() {
-                    entity_instance.set("event", json!(id));
-                }
-            }
-            SystemEvent::FlowDeleted(id) => {
-                if let Some(entity_instance) = writer.get(&SystemEventTypes::FlowDeleted).cloned() {
-                    entity_instance.set("event", json!(id));
+                SystemEvent::TypeSystemChanged => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(true)),
+                SystemEvent::EntityInstanceCreated(id)
+                | SystemEvent::EntityInstanceDeleted(id)
+                | SystemEvent::FlowCreated(id)
+                | SystemEvent::FlowDeleted(id) => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(id)),
+                SystemEvent::RelationInstanceCreated(edge_key) | SystemEvent::RelationInstanceDeleted(edge_key) => {
+                    entity_instance.set("event", json!(edge_key))
                 }
             }
         }
@@ -99,6 +60,11 @@ impl SystemEventManager for SystemEventManagerImpl {
     fn get_system_event_instances(&self) -> Vec<Arc<ReactiveEntityInstance>> {
         let reader = self.system_event_instances.0.read().unwrap();
         reader.values().cloned().collect()
+    }
+
+    fn get_system_event_instance(&self, event_type: SystemEventTypes) -> Option<Arc<ReactiveEntityInstance>> {
+        let reader = self.system_event_instances.0.read().unwrap();
+        reader.get(&event_type).cloned()
     }
 }
 
@@ -129,6 +95,7 @@ impl SystemEventManagerImpl {
             SystemEventTypes::RelationTypeDeleted,
             self.create_system_event_instance("/org/inexor/event/type/relation/deleted"),
         );
+        writer.insert(SystemEventTypes::TypeSystemChanged, self.create_system_event_instance("/org/inexor/event/type/changed"));
         writer.insert(
             SystemEventTypes::EntityInstanceCreated,
             self.create_system_event_instance("/org/inexor/event/instance/entity/created"),
@@ -151,8 +118,8 @@ impl SystemEventManagerImpl {
 
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> Arc<ReactiveEntityInstance> {
         ReactiveEntityInstanceBuilder::new("system_event")
-            .property("label", json!(label.into()))
-            .property("event", json!(false))
+            .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
+            .property(SYSTEM_EVENT_PROPERTY_EVENT, json!(false))
             .get()
     }
 
