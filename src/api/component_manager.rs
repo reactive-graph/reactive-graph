@@ -9,6 +9,7 @@ use crate::plugins::ComponentProvider;
 
 #[async_trait]
 pub trait ComponentManager: Send + Sync + Lifecycle {
+    /// Registers the given component
     fn register(&self, component: Component);
 
     /// Returns all components
