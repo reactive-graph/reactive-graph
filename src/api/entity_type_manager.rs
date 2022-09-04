@@ -54,4 +54,7 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
 
     /// Registers an entity type provider.
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>);
+
+    /// Returns the entity type categories.
+    fn get_entity_type_categories(&self) -> Vec<String>;
 }
