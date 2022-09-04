@@ -132,6 +132,19 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             self.register(entity_type);
         }
     }
+
+    fn get_entity_type_categories(&self) -> Vec<String> {
+        self.get_entity_types()
+            .iter()
+            .filter_map(|entity_type| {
+                entity_type
+                    .extensions
+                    .iter()
+                    .find(|extension| extension.name == "entity_type_category".to_string())
+                    .map(|extension| extension.name.clone())
+            })
+            .collect()
+    }
 }
 
 impl Lifecycle for EntityTypeManagerImpl {
