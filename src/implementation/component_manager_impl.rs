@@ -125,6 +125,19 @@ impl ComponentManager for ComponentManagerImpl {
             self.register(component);
         }
     }
+
+    fn get_component_categories(&self) -> Vec<String> {
+        self.get_components()
+            .iter()
+            .filter_map(|component| {
+                component
+                    .extensions
+                    .iter()
+                    .find(|extension| extension.name == "component_category".to_string())
+                    .map(|extension| extension.name.clone())
+            })
+            .collect()
+    }
 }
 
 impl Lifecycle for ComponentManagerImpl {
