@@ -1,18 +1,26 @@
 use std::fs::File;
 use std::io::BufReader;
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use std::sync::RwLock;
 
 use crate::builder::EntityTypeBuilder;
 use crate::di::{component, provides, wrapper, Component, Wrc};
 use async_trait::async_trait;
 use indradb::Identifier;
-use log::{debug, error, warn};
+use log::debug;
+use log::error;
+use log::warn;
 use wildmatch::WildMatch;
 
-use crate::api::{ComponentManager, SystemEventManager};
-use crate::api::{EntityTypeImportError, Lifecycle};
-use crate::api::{EntityTypeManager, SystemEvent};
-use crate::model::{EntityType, Extension, PropertyType};
+use crate::api::ComponentManager;
+use crate::api::EntityTypeImportError;
+use crate::api::EntityTypeManager;
+use crate::api::Lifecycle;
+use crate::api::SystemEvent;
+use crate::api::SystemEventManager;
+use crate::model::EntityType;
+use crate::model::Extension;
+use crate::model::PropertyType;
 use crate::plugins::EntityTypeProvider;
 
 #[wrapper]
