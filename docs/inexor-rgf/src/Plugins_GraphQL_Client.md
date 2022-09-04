@@ -2,7 +2,10 @@
 
 This plugin provides a web based GraphQL client.
 
-http://hostname:31415/graphql-client/index.html
+| URL                                                                                                       | API                                         |
+|-----------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| [http://hostname:31415/graphql-client/graph](http://hostname:31415/graphql-client/graph)                  | [GraphQL API](./GraphQL_API.md)             |
+| [http://hostname:31415/graphql-client/dynamic-graph](http://hostname:31415/graphql-client/dynamic-graph)  | [Dynamic Graph API](./Dynamic_Graph_API.md) |
 
 ```admonish tip "Altair"
 This plugin uses [Altair](https://altair.sirmuel.design/).
@@ -15,10 +18,10 @@ Btw: You can also use Altair as standalone application or as firefox addon.
 ## Platform Compatibility
 
 | Platform | Compatibility |
-|----------|---------------|
-| Linux    | ✓             |
-| MacOS    | ✓             |
-| Windows  | ✓             |
+|----------|:-------------:|
+| Linux    |       ✓       |
+| MacOS    |       ✓       |
+| Windows  |       ✓       |
 
 ## Repositories
 

@@ -26,10 +26,10 @@ With this plugin it's possible to integrate external services into your home aut
 ## Platform Compatibility
 
 | Platform | Compatibility |
-|----------|---------------|
-| Linux    | ✓             |
-| MacOS    | ✓             |
-| Windows  | ✓             |
+|----------|:-------------:|
+| Linux    |       ✓       |
+| MacOS    |       ✓       |
+| Windows  |       ✓       |
 
 ## Repository
 

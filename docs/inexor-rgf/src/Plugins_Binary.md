@@ -58,10 +58,10 @@ Download binary resources via HTTP.
 ## Platform Compatibility
 
 | Platform | Compatibility |
-|----------|---------------|
-| Linux    | ✓             |
-| MacOS    | ✓             |
-| Windows  | ✓             |
+|----------|:-------------:|
+| Linux    |       ✓       |
+| MacOS    |       ✓       |
+| Windows  |       ✓       |
 
 ## Repository
 

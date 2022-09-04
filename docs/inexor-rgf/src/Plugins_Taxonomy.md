@@ -31,10 +31,10 @@ This plugin provides a generic taxonomy system with categories and tags.
 ## Platform Compatibility
 
 | Platform | Compatibility |
-|----------|---------------|
-| Linux    | ✓             |
-| MacOS    | ✓             |
-| Windows  | ✓             |
+|----------|:-------------:|
+| Linux    |       ✓       |
+| MacOS    |       ✓       |
+| Windows  |       ✓       |
 
 ## Repositories
 

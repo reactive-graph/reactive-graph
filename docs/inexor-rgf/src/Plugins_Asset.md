@@ -3,10 +3,10 @@
 ## Platform Compatibility
 
 | Platform | Compatibility |
-|----------|---------------|
-| Linux    | ✓             |
-| MacOS    | ✓             |
-| Windows  | ✓             |
+|----------|:-------------:|
+| Linux    |       ✓       |
+| MacOS    |       ✓       |
+| Windows  |       ✓       |
 
 ## Repository
 

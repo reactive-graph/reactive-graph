@@ -126,10 +126,10 @@ This allows you to address a key/led/... event on a specific device or the key/l
 ## Platform Compatibility
 
 | Platform | Compatibility |
-|----------|---------------|
-| Linux    | ✓             |
-| MacOS    | x             |
-| Windows  | x             |
+|----------|:-------------:|
+| Linux    |       ✓       |
+| MacOS    |       x       |
+| Windows  |       x       |
 
 ## Repository
 

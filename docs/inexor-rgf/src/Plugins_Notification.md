@@ -16,10 +16,10 @@ Create desktop notifications.
 ## Platform Compatibility
 
 | Platform | Compatibility | Notes                                                  |
-|----------|---------------|--------------------------------------------------------|
-| Linux    | ✓             | https://github.com/hoodie/notify-rust#linuxbsd-support |
-| MacOS    | ✓             | https://github.com/hoodie/notify-rust#macos-support    |
-| Windows  | ✓             | https://github.com/hoodie/notify-rust#windows-support  |
+|----------|:-------------:|--------------------------------------------------------|
+| Linux    |       ✓       | https://github.com/hoodie/notify-rust#linuxbsd-support |
+| MacOS    |       ✓       | https://github.com/hoodie/notify-rust#macos-support    |
+| Windows  |       ✓       | https://github.com/hoodie/notify-rust#windows-support  |
 
 ## Repository
 
