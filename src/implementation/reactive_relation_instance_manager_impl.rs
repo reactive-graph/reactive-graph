@@ -122,15 +122,27 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             .ok_or(ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(relation_instance.inbound_id))?;
         let relation_type = self
             .relation_type_manager
-            .get(relation_instance.type_name.clone())
+            .get_starts_with(relation_instance.type_name.clone())
             .ok_or(ReactiveRelationInstanceCreationError::UnknownRelationType(relation_instance.type_name.clone()))?;
 
-        if !outbound.type_name.eq(&relation_type.outbound_type) && !outbound.components.contains(&relation_type.outbound_type) {
-            return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(relation_type.outbound_type.clone()));
+        if !relation_type.outbound_type.eq("*")
+            && !outbound.type_name.eq(&relation_type.outbound_type)
+            && !outbound.components.contains(&relation_type.outbound_type)
+        {
+            return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(
+                outbound.type_name.clone(),
+                relation_type.outbound_type.clone(),
+            ));
         }
 
-        if !inbound.type_name.eq(&relation_type.inbound_type) && !inbound.components.contains(&relation_type.inbound_type) {
-            return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(relation_type.inbound_type.clone()));
+        if !relation_type.inbound_type.eq("*")
+            && !inbound.type_name.eq(&relation_type.inbound_type)
+            && !inbound.components.contains(&relation_type.inbound_type)
+        {
+            return Err(ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(
+                inbound.type_name.clone(),
+                relation_type.inbound_type.clone(),
+            ));
         }
 
         let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance));

@@ -13,8 +13,8 @@ use crate::model::{ReactiveRelationInstance, RelationInstance};
 #[derive(Debug)]
 pub enum ReactiveRelationInstanceCreationError {
     InvalidEdgeKey,
-    OutboundEntityIsNotOfType(String),
-    InboundEntityIsNotOfType(String),
+    OutboundEntityIsNotOfType(String, String),
+    InboundEntityIsNotOfType(String, String),
     MissingOutboundEntityInstance(Uuid),
     MissingInboundEntityInstance(Uuid),
     MissingInstance,
@@ -30,17 +30,17 @@ impl fmt::Display for ReactiveRelationInstanceCreationError {
             ReactiveRelationInstanceCreationError::InvalidEdgeKey => {
                 write!(f, "The edge key is invalid")
             }
-            ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(type_name) => {
-                write!(f, "Unknown relation type: {type_name}")
+            ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(expected_type_name, actual_type_name) => {
+                write!(f, "Unknown relation type: {actual_type_name} (expected: {expected_type_name})")
             }
-            ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(type_name) => {
-                write!(f, "Unknown relation type: {type_name}")
+            ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(expected_type_name, actual_type_name) => {
+                write!(f, "Unknown relation type: {actual_type_name} (expected: {expected_type_name})")
             }
             ReactiveRelationInstanceCreationError::MissingOutboundEntityInstance(id) => {
-                write!(f, "The outbound entity instance {} cannot be found", id)
+                write!(f, "The outbound entity instance {id} cannot be found")
             }
             ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(id) => {
-                write!(f, "The inbound entity instance {} cannot be found", id)
+                write!(f, "The inbound entity instance {id} cannot be found")
             }
             ReactiveRelationInstanceCreationError::MissingInstance => {
                 write!(f, "The created instance cannot be found")
