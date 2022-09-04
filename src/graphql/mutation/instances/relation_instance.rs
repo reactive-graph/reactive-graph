@@ -65,7 +65,7 @@ impl MutationRelationInstances {
         };
 
         if relation_instance.is_err() {
-            return Err(Error::new("Failed to create relation instance"));
+            return Err(Error::new(format!("Failed to create relation instance: {:?}", relation_instance.err().unwrap())));
         }
         let relation_instance = relation_instance.unwrap();
         let edge_key: EdgeKey = edge_key.into();
