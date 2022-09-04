@@ -1,0 +1,2510 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+}
+
+"Computes the absolute value"
+type Abs {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Computes the arccosine of a number"
+type Acos {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Inverse hyperbolic cosine function"
+type Acosh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Adds two integer numbers"
+type Add {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"AND"
+type And {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"Array Contains"
+type ArrayContains {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  search: JSON
+}
+
+"Array Get By Index"
+type ArrayGetByIndex {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  index: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+}
+
+"Array Length"
+type ArrayLength {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  length: JSON
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Array Pop"
+type ArrayPop {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  value: JSON
+}
+
+"Array Push"
+type ArrayPush {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  value: JSON
+}
+
+"Array Reverse"
+type ArrayReverse {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+}
+
+"Value of type array"
+type ArrayValue {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  value: JSON
+}
+
+"Computes the arcsine of a number"
+type Asin {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Inverse hyperbolic sine function"
+type Asinh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Asset"
+type Asset {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The entity or relation has a description."
+  describable: cDescribable
+  dublin_core: cDublinCore
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity is licensed."
+  licensed: cLicensed
+  "The entity or relation has a name."
+  named: cNamed
+  path: JSON
+  "The entity is versioned."
+  versioned: cVersioned
+}
+
+"Asset Collection"
+type AssetCollection {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  trigger: JSON
+}
+
+"Asset repository"
+type AssetRepository {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  path: JSON
+  source_url: JSON
+  trigger: JSON
+}
+
+"Computes the arctangent of a number"
+type Atan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Computes the four quadrant arctangent in radians"
+type Atan2 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_gate: cNumericGate
+}
+
+"Inverse hyperbolic tangent function"
+type Atanh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Category"
+type Category {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Returns the cube root of a number"
+type Cbrt {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns the smallest integer greater than or equal to a number"
+type Ceil {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"A simple comment"
+type Comment {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Concat"
+type Concat {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_gate: cStringGate
+}
+
+"Loads a configuration file"
+type ConfigFile {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "Loads a configuration file"
+  config_file: cConfigFile
+  "Represents a file in the file system"
+  file: cFile
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Contains"
+type Contains {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_comparison: cStringComparison
+}
+
+"Computes the cosine of a number (in radians)"
+type Cos {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Hyperbolic cosine function"
+type Cosh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"If triggered the counter will be increased"
+type Counter {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Decrements a number"
+type Decrement {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with one input and one result"
+  arithmetic_operation: cArithmeticOperation
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Divides two integer numbers"
+type Div {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Ends With"
+type EndsWith {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_comparison: cStringComparison
+}
+
+"Checks if lhs is equal to rhs"
+type Equals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Returns e^(input), (the exponential function)"
+type Exp {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns 2^(input)"
+type Exp2 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns the largest integer less than or equal to a number"
+type Floor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns the fractional part of a number"
+type Fract {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Generic flow without inputs and outputs"
+type GenericFlow {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+}
+
+"Checks if lhs is greater than rhs"
+type GreaterThan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Checks if lhs is greater than or equal to rhs"
+type GreaterThanOrEquals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Sends HTTP request to a given URL"
+type Http {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "Sends HTTP request to a given URL"
+  http: cHttp
+}
+
+"Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
+type Hypot {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_gate: cNumericGate
+}
+
+"Each time it's triggered, either the then-payload or the else-payload gets propagated"
+type IfThenElse {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Depending on the given condition outputs a result"
+  condition: cCondition
+  "If the condition is false, the else_payload gets propagated"
+  else_payload: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "If the condition is true, the then_payload gets propagated"
+  then_payload: JSON
+}
+
+"Increments a number"
+type Increment {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with one input and one result"
+  arithmetic_operation: cArithmeticOperation
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Sends JSON-RPC request to a given URL"
+type JsonRpc {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "Sends JSON-RPC request to a given URL"
+  json_rpc: cJsonRpc
+}
+
+"Returns the natural logarithm of the number"
+type Ln {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Loads binary data"
+type LoadBinaryData {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  binary_data: cBinaryData
+  "Represents a file in the file system"
+  file: cFile
+  "Loads binary data"
+  load_binary_data: cLoadBinaryData
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Loads a JSON file"
+type LoadJson {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "Represents a file in the file system"
+  file: cFile
+  "Loads a JSON file"
+  load_json: cLoadJson
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Returns the logarithm of the number with respect to an arbitrary base"
+type Log {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_gate: cNumericGate
+}
+
+"Returns the base 10 logarithm of the number"
+type Log10 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns the base 2 logarithm of the number"
+type Log2 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Checks if lhs is lower than rhs"
+type LowerThan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Checks if lhs is lower than or equal to rhs"
+type LowerThanOrEquals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Lowercase"
+type Lowercase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+}
+
+"Returns the maximum value of two inputs"
+type Max {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Returns the minimum value of two inputs"
+type Min {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Modulo"
+type Mod {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"MQTT Broker"
+type MqttBroker {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  hostname: JSON
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  port: JSON
+  received_package: JSON
+  send_package: JSON
+}
+
+"Publishes to a MQTT endpoint"
+type MqttPublisher {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  mqtt_endpoint: cMqttEndpoint
+}
+
+"Subscribes to a MQTT endpoint"
+type MqttSubscriber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  mqtt_endpoint: cMqttEndpoint
+}
+
+"Multiply two integer numbers"
+type Mul {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"NAND"
+type Nand {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"NOR"
+type Nor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"NOT"
+type Not {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"Checks if lhs not equal to rhs"
+type NotEquals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Value of type numeric"
+type NumericValue {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  value: JSON
+}
+
+"Object Get Property"
+type ObjectGetProperty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  property_name: JSON
+  result: JSON
+}
+
+"Object Keys"
+type ObjectKeys {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  keys: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+}
+
+"Object Remove Property"
+type ObjectRemoveProperty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  property_name: JSON
+  result: JSON
+}
+
+"Object Set Property"
+type ObjectSetProperty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  property_name: JSON
+  result: JSON
+  value: JSON
+}
+
+"Value of type object"
+type ObjectValue {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  value: JSON
+}
+
+"OR"
+type Or {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"Raises a number to a power"
+type Pow {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_gate: cNumericGate
+}
+
+"Pseudo Random Number"
+type PseudoRandomNumber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  seed: JSON
+}
+
+type Query {
+  "Computes the absolute value"
+  abs: [Abs]
+  "Computes the arccosine of a number"
+  acos: [Acos]
+  "Inverse hyperbolic cosine function"
+  acosh: [Acosh]
+  "Adds two integer numbers"
+  add: [Add]
+  "AND"
+  and: [And]
+  "Array Contains"
+  array_contains: [ArrayContains]
+  "Array Get By Index"
+  array_get_by_index: [ArrayGetByIndex]
+  "Array Length"
+  array_length: [ArrayLength]
+  "Array Pop"
+  array_pop: [ArrayPop]
+  "Array Push"
+  array_push: [ArrayPush]
+  "Array Reverse"
+  array_reverse: [ArrayReverse]
+  "Value of type array"
+  array_value: [ArrayValue]
+  "Computes the arcsine of a number"
+  asin: [Asin]
+  "Inverse hyperbolic sine function"
+  asinh: [Asinh]
+  "Asset"
+  asset: [Asset]
+  "Asset Collection"
+  asset_collection: [AssetCollection]
+  "Asset repository"
+  asset_repository: [AssetRepository]
+  "Computes the arctangent of a number"
+  atan: [Atan]
+  "Computes the four quadrant arctangent in radians"
+  atan2: [Atan2]
+  "Inverse hyperbolic tangent function"
+  atanh: [Atanh]
+  "Category"
+  category: [Category]
+  "Returns the cube root of a number"
+  cbrt: [Cbrt]
+  "Returns the smallest integer greater than or equal to a number"
+  ceil: [Ceil]
+  "A simple comment"
+  comment: [Comment]
+  "Concat"
+  concat: [Concat]
+  "Loads a configuration file"
+  config_file: [ConfigFile]
+  "Contains"
+  contains: [Contains]
+  "Computes the cosine of a number (in radians)"
+  cos: [Cos]
+  "Hyperbolic cosine function"
+  cosh: [Cosh]
+  "If triggered the counter will be increased"
+  counter: [Counter]
+  "Decrements a number"
+  decrement: [Decrement]
+  "Divides two integer numbers"
+  div: [Div]
+  "Ends With"
+  ends_with: [EndsWith]
+  "Checks if lhs is equal to rhs"
+  equals: [Equals]
+  "Returns e^(input), (the exponential function)"
+  exp: [Exp]
+  "Returns 2^(input)"
+  exp2: [Exp2]
+  "Returns the largest integer less than or equal to a number"
+  floor: [Floor]
+  "Returns the fractional part of a number"
+  fract: [Fract]
+  "Generic flow without inputs and outputs"
+  generic_flow: [GenericFlow]
+  "Checks if lhs is greater than rhs"
+  greater_than: [GreaterThan]
+  "Checks if lhs is greater than or equal to rhs"
+  greater_than_or_equals: [GreaterThanOrEquals]
+  "Sends HTTP request to a given URL"
+  http: [Http]
+  "Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
+  hypot: [Hypot]
+  "Each time it's triggered, either the then-payload or the else-payload gets propagated"
+  if_then_else: [IfThenElse]
+  "Increments a number"
+  increment: [Increment]
+  "Sends JSON-RPC request to a given URL"
+  json_rpc: [JsonRpc]
+  "Returns the natural logarithm of the number"
+  ln: [Ln]
+  "Loads binary data"
+  load_binary_data: [LoadBinaryData]
+  "Loads a JSON file"
+  load_json: [LoadJson]
+  "Returns the logarithm of the number with respect to an arbitrary base"
+  log: [Log]
+  "Returns the base 10 logarithm of the number"
+  log10: [Log10]
+  "Returns the base 2 logarithm of the number"
+  log2: [Log2]
+  "Checks if lhs is lower than rhs"
+  lower_than: [LowerThan]
+  "Checks if lhs is lower than or equal to rhs"
+  lower_than_or_equals: [LowerThanOrEquals]
+  "Lowercase"
+  lowercase: [Lowercase]
+  "Returns the maximum value of two inputs"
+  max: [Max]
+  "Returns the minimum value of two inputs"
+  min: [Min]
+  "Modulo"
+  mod: [Mod]
+  "MQTT Broker"
+  mqtt_broker: [MqttBroker]
+  "Publishes to a MQTT endpoint"
+  mqtt_publisher: [MqttPublisher]
+  "Subscribes to a MQTT endpoint"
+  mqtt_subscriber: [MqttSubscriber]
+  "Multiply two integer numbers"
+  mul: [Mul]
+  "NAND"
+  nand: [Nand]
+  "NOR"
+  nor: [Nor]
+  "NOT"
+  not: [Not]
+  "Checks if lhs not equal to rhs"
+  not_equals: [NotEquals]
+  "Value of type numeric"
+  numeric_value: [NumericValue]
+  "Object Get Property"
+  object_get_property: [ObjectGetProperty]
+  "Object Keys"
+  object_keys: [ObjectKeys]
+  "Object Remove Property"
+  object_remove_property: [ObjectRemoveProperty]
+  "Object Set Property"
+  object_set_property: [ObjectSetProperty]
+  "Value of type object"
+  object_value: [ObjectValue]
+  "OR"
+  or: [Or]
+  "Raises a number to a power"
+  pow: [Pow]
+  "Pseudo Random Number"
+  pseudo_random_number: [PseudoRandomNumber]
+  "Random Bool"
+  random_bool: [RandomBool]
+  "Random Integer Within Range"
+  random_integer_within_range: [RandomIntegerWithinRange]
+  "Random Number"
+  random_number: [RandomNumber]
+  "Random String"
+  random_string: [RandomString]
+  "Random UUID"
+  random_uuid: [RandomUuid]
+  "Takes the reciprocal (inverse) of a number, 1/x"
+  recip: [Recip]
+  "Returns the nearest integer to a number. Round half-way cases away from 0.0"
+  round: [Round]
+  "Saves binary data"
+  save_binary_data: [SaveBinaryData]
+  "Saves an object as JSON file"
+  save_json: [SaveJson]
+  shutdown: [Shutdown]
+  "Returns a number that represents the sign of the input"
+  signum: [Signum]
+  "Computes the sine of a number (in radians)"
+  sin: [Sin]
+  "Hyperbolic sine function"
+  sinh: [Sinh]
+  "Returns the square root of a number"
+  sqrt: [Sqrt]
+  "Starts With"
+  starts_with: [StartsWith]
+  "Value of type string"
+  string_value: [StringValue]
+  "Subtract an integer number from another number"
+  sub: [Sub]
+  "Executes a system command"
+  system_command: [SystemCommand]
+  "System Environment Variable"
+  system_env: [SystemEnv]
+  "Events of the type system"
+  system_event: [SystemEvent]
+  "Tag Name"
+  tag: [Tag]
+  "Computes the tangent of a number (in radians)"
+  tan: [Tan]
+  "Hyperbolic tangent function"
+  tanh: [Tanh]
+  "Converts radians to degrees"
+  to_degrees: [ToDegrees]
+  "Converts degrees to radians"
+  to_radians: [ToRadians]
+  "If triggered the state will toggled"
+  toggle: [Toggle]
+  "Tray"
+  tray: [Tray]
+  "Tray Menu Item"
+  tray_menu_item: [TrayMenuItem]
+  "If triggered the payload will be copied to the output"
+  trigger: [Trigger]
+  "Trim"
+  trim: [Trim]
+  "Trim  End"
+  trim_end: [TrimEnd]
+  "Trim  Start"
+  trim_start: [TrimStart]
+  "Returns the integer part of a number"
+  trunc: [Trunc]
+  "Uppercase"
+  uppercase: [Uppercase]
+  "Value of any type"
+  value: [Value]
+  "XNOR"
+  xnor: [Xnor]
+  "XOR"
+  xor: [Xor]
+}
+
+"Random Bool"
+type RandomBool {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Random Integer Within Range"
+type RandomIntegerWithinRange {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  high: JSON
+  low: JSON
+}
+
+"Random Number"
+type RandomNumber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Random String"
+type RandomString {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  length: JSON
+}
+
+"Random UUID"
+type RandomUuid {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Takes the reciprocal (inverse) of a number, 1/x"
+type Recip {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns the nearest integer to a number. Round half-way cases away from 0.0"
+type Round {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Saves binary data"
+type SaveBinaryData {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  binary_data: cBinaryData
+  "Represents a file in the file system"
+  file: cFile
+  "The entity or relation has a name."
+  named: cNamed
+  "Saves binary data"
+  save_binary_data: cSaveBinaryData
+}
+
+"Saves an object as JSON file"
+type SaveJson {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "Represents a file in the file system"
+  file: cFile
+  "The entity or relation has a name."
+  named: cNamed
+  "Saves an object as JSON file"
+  save_json: cSaveJson
+}
+
+type Shutdown {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+}
+
+"Returns a number that represents the sign of the input"
+type Signum {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Computes the sine of a number (in radians)"
+type Sin {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Hyperbolic sine function"
+type Sinh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Returns the square root of a number"
+type Sqrt {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Starts With"
+type StartsWith {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_comparison: cStringComparison
+}
+
+"Value of type string"
+type StringValue {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  value: JSON
+}
+
+"Subtract an integer number from another number"
+type Sub {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Executes a system command"
+type SystemCommand {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The entity or relation has a name."
+  named: cNamed
+  "Executes a system command"
+  system_command: cSystemCommand
+}
+
+"System Environment Variable"
+type SystemEnv {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "The entity or relation has a name."
+  named: cNamed
+  value: JSON
+}
+
+"Events of the type system"
+type SystemEvent {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "This components spawns events."
+  event: cEvent
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+}
+
+"Tag Name"
+type Tag {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"Computes the tangent of a number (in radians)"
+type Tan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Hyperbolic tangent function"
+type Tanh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Converts radians to degrees"
+type ToDegrees {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Converts degrees to radians"
+type ToRadians {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"If triggered the state will toggled"
+type Toggle {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+}
+
+"Tray"
+type Tray {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  icon: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  title: JSON
+}
+
+"Tray Menu Item"
+type TrayMenuItem {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "A generator sends a trigger"
+  generator: cGenerator
+  "The entity or relation has a name."
+  named: cNamed
+  "Tray Menu Item"
+  tray_menu_item: cTrayMenuItem
+}
+
+"If triggered the payload will be copied to the output"
+type Trigger {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  payload: JSON
+}
+
+"Trim"
+type Trim {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+}
+
+"Trim  End"
+type TrimEnd {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+}
+
+"Trim  Start"
+type TrimStart {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+}
+
+"Returns the integer part of a number"
+type Trunc {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  numeric_operation: cNumericOperation
+}
+
+"Uppercase"
+type Uppercase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+}
+
+"Value of any type"
+type Value {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  value: JSON
+}
+
+"XNOR"
+type Xnor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"XOR"
+type Xor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The type is always entity_type"
+  _type: TypeType
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+}
+
+"An action can be triggered"
+type cAction {
+  "The type is always component"
+  _type: TypeType
+  "The result"
+  result: JSON
+  "On receiving a boolean trigger the action will be executed"
+  trigger: JSON
+}
+
+"Arithmetic operation with two inputs and one result"
+type cArithmeticGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Arithmetic operation with one input and one result"
+type cArithmeticOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+type cBinaryData {
+  "The type is always component"
+  _type: TypeType
+  data_url: JSON
+}
+
+type cColor {
+  "The type is always component"
+  _type: TypeType
+  "Alpha-Channel"
+  color_a: JSON
+  "Blue Channel"
+  color_b: JSON
+  "Green Channel"
+  color_g: JSON
+  "Red"
+  color_r: JSON
+}
+
+type cComparisonGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Depending on the given condition outputs a result"
+type cCondition {
+  "The type is always component"
+  _type: TypeType
+  "A boolean condition"
+  condition: JSON
+  "The result"
+  result: JSON
+}
+
+"Loads a configuration file"
+type cConfigFile {
+  "The type is always component"
+  _type: TypeType
+  result: JSON
+}
+
+type cConnector {
+  "The type is always component"
+  _type: TypeType
+  inbound_property_name: JSON
+  outbound_property_name: JSON
+}
+
+"Crosshair Asset"
+type cCrosshairAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cDebugValue {
+  "The type is always component"
+  _type: TypeType
+}
+
+"The entity or relation has a description."
+type cDescribable {
+  "The type is always component"
+  _type: TypeType
+  "The description of an entity or a relation"
+  description: JSON
+}
+
+type cDublinCore {
+  "The type is always component"
+  _type: TypeType
+  "An entity responsible for making contributions to the resource."
+  dc_contributor: JSON
+  "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant"
+  dc_coverage: JSON
+  "An entity primarily responsible for making the resource"
+  dc_creator: JSON
+  "A point or period of time associated with an event in the lifecycle of the resource"
+  dc_date: JSON
+  "An account of the resource"
+  dc_description: JSON
+  "The file format, physical medium, or dimensions of the resource"
+  dc_format: JSON
+  "An unambiguous reference to the resource within a given context"
+  dc_identifier: JSON
+  "A language of the resource"
+  dc_language: JSON
+  "An entity responsible for making the resource available"
+  dc_publisher: JSON
+  "A related resource"
+  dc_relation: JSON
+  "Information about rights held in and over the resource"
+  dc_rights: JSON
+  "A related resource from which the described resource is derived"
+  dc_source: JSON
+  "The topic of the resource"
+  dc_subject: JSON
+  "A name given to the resource"
+  dc_title: JSON
+  "The nature or genre of the resource"
+  dc_type: JSON
+}
+
+"This components spawns events."
+type cEvent {
+  "The type is always component"
+  _type: TypeType
+  event: JSON
+}
+
+"Represents a file in the file system"
+type cFile {
+  "The type is always component"
+  _type: TypeType
+  "The filename"
+  filename: JSON
+}
+
+"The position (x,y) of the entity or relation on a two dimensional flow."
+type cFlow2D {
+  "The type is always component"
+  _type: TypeType
+  "The height in a 2D flow"
+  f2dh: JSON
+  "The width in a 2D flow"
+  f2dw: JSON
+  "The X position in a 2D flow"
+  f2dx: JSON
+  "The Y position in a 2D flow"
+  f2dy: JSON
+}
+
+"The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+type cFlow3D {
+  "The type is always component"
+  _type: TypeType
+  "The depth (z-axis) in a 3D flow"
+  f3dd: JSON
+  "The height (y-axis) in a 3D flow"
+  f3dh: JSON
+  "The width (x-axis) in a 3D flow"
+  f3dw: JSON
+  "The X position in a 3D flow"
+  f3dx: JSON
+  "The Y position in a 3D flow"
+  f3dy: JSON
+  "The Z position in a 3D flow"
+  f3dz: JSON
+}
+
+"Font Asset"
+type cFontAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Triggers if the file with the given filename has been changed"
+type cFsNotify {
+  "The type is always component"
+  _type: TypeType
+  "The filename"
+  filename: JSON
+  "Triggers if the file with the given filename has been changed"
+  trigger: JSON
+}
+
+"A generator sends a trigger"
+type cGenerator {
+  "The type is always component"
+  _type: TypeType
+  "Sends a boolean trigger"
+  trigger: JSON
+}
+
+"Sends HTTP request to a given URL"
+type cHttp {
+  "The type is always component"
+  _type: TypeType
+  method: JSON
+  payload: JSON
+  request_headers: JSON
+  response_headers: JSON
+  result: JSON
+  status: JSON
+  url: JSON
+}
+
+"Icon Asset"
+type cIconAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cId3 {
+  "The type is always component"
+  _type: TypeType
+  id3_talb: JSON
+}
+
+"Image Asset"
+type cImageAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Sends JSON-RPC request to a given URL"
+type cJsonRpc {
+  "The type is always component"
+  _type: TypeType
+  error: JSON
+  json_rpc_version: JSON
+  method: JSON
+  params: JSON
+  result: JSON
+  url: JSON
+}
+
+"The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+type cLabeled {
+  "The type is always component"
+  _type: TypeType
+  label: JSON
+}
+
+"The entity is licensed."
+type cLicensed {
+  "The type is always component"
+  _type: TypeType
+  "Title, author, source and license. Best practices for attribution: https://wiki.creativecommons.org/wiki/best_practices_for_attribution"
+  attribution: JSON
+  "The SPDX license identifier. See: https://spdx.org/licenses/"
+  license: JSON
+}
+
+"Loads binary data"
+type cLoadBinaryData {
+  "The type is always component"
+  _type: TypeType
+  data_url: JSON
+}
+
+"Loads a JSON file"
+type cLoadJson {
+  "The type is always component"
+  _type: TypeType
+  result: JSON
+}
+
+"Executes a logical operation on the inputs lhs and rhs and outputs the result"
+type cLogicalGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Executes a logical operation on the input lhs and outputs the result"
+type cLogicalOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+"Model Asset"
+type cModelAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cMqttEndpoint {
+  "The type is always component"
+  _type: TypeType
+  payload: JSON
+}
+
+type cMqttTopic {
+  "The type is always component"
+  _type: TypeType
+  mode: JSON
+  topic: JSON
+}
+
+"The entity or relation has a name."
+type cNamed {
+  "The type is always component"
+  _type: TypeType
+  "The name of an entity or a relation"
+  name: JSON
+}
+
+type cNumericGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+type cNumericOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+"The relations between two entities are ordered using a ordinal number associated with sibling relations"
+type cOrdered {
+  "The type is always component"
+  _type: TypeType
+  "The relation ordinal number associated with sibling relations"
+  order: JSON
+}
+
+"Saves binary data"
+type cSaveBinaryData {
+  "The type is always component"
+  _type: TypeType
+  data_url: JSON
+}
+
+"Saves an object as JSON file"
+type cSaveJson {
+  "The type is always component"
+  _type: TypeType
+  payload: JSON
+}
+
+"Skybox Asset"
+type cSkyboxAsset {
+  "The type is always component"
+  _type: TypeType
+  "The filename of the texture on the back side"
+  back_side: JSON
+  "The filename of the texture on the down side"
+  down_side: JSON
+  "The filename of the texture on the front side"
+  front_side: JSON
+  "The filename of the texture on the left side"
+  left_side: JSON
+  "The filename of the texture on the right side"
+  right_side: JSON
+  "The filename of the texture on the upper side"
+  upper_side: JSON
+}
+
+"Sound Effect Asset"
+type cSoundEffectAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Sound Track Asset"
+type cSoundTrackAsset {
+  "The type is always component"
+  _type: TypeType
+  "The filenames of the tracks"
+  tracks: JSON
+}
+
+type cStringComparison {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+type cStringGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+type cStringOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+"Executes a system command"
+type cSystemCommand {
+  "The type is always component"
+  _type: TypeType
+  command: JSON
+  current_dir: JSON
+  parameters: JSON
+  stderr: JSON
+  stdin: JSON
+  stdout: JSON
+}
+
+"Texture Asset"
+type cTextureAsset {
+  "The type is always component"
+  _type: TypeType
+  "The depth map"
+  depth_map: JSON
+  "The glow map"
+  glow_map: JSON
+  "The normal map"
+  normal_map: JSON
+  "The primary texture"
+  primary_texture: JSON
+  "The specularity map"
+  specularity_map: JSON
+}
+
+"Tray Menu Item"
+type cTrayMenuItem {
+  "The type is always component"
+  _type: TypeType
+  title: JSON
+}
+
+"The entity is versioned."
+type cVersioned {
+  "The type is always component"
+  _type: TypeType
+  "The version number. Use semantic versioning. See: https://semver.org/"
+  version: JSON
+}
+
+type cWeighted {
+  "The type is always component"
+  _type: TypeType
+  weight: JSON
+}
+
+enum TypeType {
+  COMPONENT
+  ENTITY_TYPE
+}
+
+scalar JSON
+
+scalar UUID
