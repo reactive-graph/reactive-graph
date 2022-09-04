@@ -29,7 +29,7 @@ Other advantages of GraphQL are type safety and the fact that semantics can be m
 
 ```admonish tip "GraphQL Schema Visualization"
 Explore the GraphQL queries using the [Plugin GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md):
-[https://hostname:31415/graphql-schema-visualization/query](https://hostname:31415/graphql-schema-visualization/query)
+[https://hostname:31415/graphql-schema-visualization/graph/query](https://hostname:31415/graphql-schema-visualization/graph/query)
 ```
 
 ### Mutations
@@ -38,7 +38,7 @@ Explore the GraphQL queries using the [Plugin GraphQL Schema Visualization](./Pl
 
 ```admonish tip "GraphQL Schema Visualization"
 Explore the GraphQL mutations using the [Plugin GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md)
-[https://hostname:31415/graphql-schema-visualization/mutation](https://hostname:31415/graphql-schema-visualization/mutation)
+[https://hostname:31415/graphql-schema-visualization/graph/mutation](https://hostname:31415/graphql-schema-visualization/graph/mutation)
 ```
 
 ### Subscriptions
@@ -47,7 +47,7 @@ Explore the GraphQL mutations using the [Plugin GraphQL Schema Visualization](./
 
 ```admonish tip "GraphQL Schema Visualization"
 Explore the GraphQL subscriptions using the [Plugin GraphQL Schema Visualization](./Plugins_GraphQL_Schema_Visualization.md):
-[https://hostname:31415/graphql-schema-visualization/subscription](https://hostname:31415/graphql-schema-visualization/subscription)
+[https://hostname:31415/graphql-schema-visualization/graph/subscription](https://hostname:31415/graphql-schema-visualization/graph/subscription)
 ```
 
 ## GraphQL Endpoint
@@ -65,4 +65,4 @@ to validate queries and mutations and some tools can use the schema to provide a
 
 * [Altair](https://altair.sirmuel.design/)
 * [GraphQL Voyager](https://apis.guru/graphql-voyager/)
-* https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/
+* [Firefox Addon GraphQL Developer Tools](https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/)

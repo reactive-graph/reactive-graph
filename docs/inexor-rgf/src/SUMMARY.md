@@ -30,6 +30,7 @@
   - [Relation Instances](./GraphQL_API_Relation_Instances.md)
   - [Flows](./GraphQL_API_Flows.md)
   - [Property Instance Subscriptions](./GraphQL_API_Property_Instance_Subscriptions.md)
+- [Dynamic Graph API](./Dynamic_Graph_API.md)
 - [Plugin System](./Plugin_System.md)
   - [Component Provider](./Plugin_System_Component_Provider.md)
   - [Entity Type Provider](./Plugin_System_Entity_Type_Provider.md)
