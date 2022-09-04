@@ -11,9 +11,10 @@ use log::debug;
 use log::error;
 use wildmatch::WildMatch;
 
+use crate::api::ComponentManager;
 use crate::api::Lifecycle;
+use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
-use crate::api::{ComponentManager, SystemEvent};
 use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
 
