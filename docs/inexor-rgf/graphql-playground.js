@@ -21,16 +21,9 @@ window.GraphQLExample = function (id, name, href) {
   description.classList.add('graphql-playground-description')
   description.classList.add('admonition')
   description.classList.add('info')
-  // const descriptionTitle = document.createElement('div')
-  // descriptionTitle.classList.add('admonition-title')
-  // descriptionTitle.innerHTML = `<p>${name}</p>`
-  // description.append(descriptionTitle)
   const descriptionInner = document.createElement('div')
   descriptionInner.innerHTML = `<p>${container.innerHTML}</p>`
   description.append(descriptionInner)
-  // const descriptionTitle = document.createElement('div')
-  // descriptionTitle.classList.add('admonition info')
-  // description.append(descriptionTitle)
   header.append(heading, description)
   const playgroundContainer = document.createElement('graphql-playground-container')
   playgroundContainer.id = `${id}-playground`
@@ -56,10 +49,7 @@ window.GraphQLExample = function (id, name, href) {
                 endpoint,
                 query
               }
-            ],
-            settings: {
-              'editor.theme': 'dark'
-            }
+            ]
           }
         )
       };
@@ -73,14 +63,3 @@ window.addEventListener('load', function () {
     window.GraphQLExample(playground.id, playground.title, playground.getAttribute("href"))
   }
 })
-
-
-// <div id = "admonition-quick-links" className = "admonition info">
-//   <div className = "admonition-title">
-//     <p> Quick - Links </p>
-//     <p><a className="admonition-anchor-link" href="#admonition-quick-links"></a></p>
-//   </div>
-//   <div>
-//     <p>Creates a new component with one property named <code className="hljs">first</code>, which has one extension name <code className="hljs">sorted</code></p>
-//   </div>
-// </div>
