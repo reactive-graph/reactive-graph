@@ -1,7 +1,5 @@
 # Dynamic Graph API
 
-Motivation: Warum noch eine zweite API, wenn man über die eine alles machen kann?
-
 ### Advantages
 
 1. It is easier to query or modify because you operate on real types not abstract types
@@ -35,7 +33,7 @@ The GraphQL schema documentation is automatically generated using the documentat
 The GraphQL Server allows introspection and returns a GraphQL schema including documentation. With this it is possible
 to validate queries and mutations and some tools can use the schema to provide autocompletion for creating queries.
 
-```admonish tip "Schema Regneration"
+```admonish tip "Schema Regeneration"
 The GraphQL schema is regenerated each time a [Component](./Model_Component.md), an
 [Entity Type](./Model_Entity_Type.md) or a [Relation Type](./Model_Relation_Type.md) is added or removed.
 ```
