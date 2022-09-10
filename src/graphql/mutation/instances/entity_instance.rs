@@ -48,7 +48,7 @@ impl MutationEntityInstances {
             None => entity_instance_manager.create(type_name, properties),
         };
         if entity_instance.is_err() {
-            return Err(Error::new(entity_instance.err().unwrap().to_string()));
+            return Err(Error::new(format!("Failed to create entity instance: {}", entity_instance.err().unwrap().to_string())));
         }
         let entity_instance = entity_instance.unwrap();
         if let Some(components) = components {
