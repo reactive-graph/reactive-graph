@@ -14,8 +14,12 @@ type Component {
   entityTypes: [EntityType!]!
   "The extensions which are defined by the component."
   extensions(name: String): [Extension!]!
+  "Query which relation types are using this component as inbound type"
+  inboundOf: [RelationType!]!
   "The name of the component."
   name: String!
+  "Query which relation types are using this component as outbound type"
+  outboundOf: [RelationType!]!
   "The properties which are applied on entity or relation instances."
   properties(name: String): [PropertyType!]!
   "Query which relation types are using this component"
@@ -713,9 +717,9 @@ scalar JSON
 
 """
 
-A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as Strings
-within GraphQL. UUIDs are used to assign unique identifiers to entities without requiring a central
-allocating authority.
+A UUID is a unique 128-bit number, stored as 16 octets. UUIDs are parsed as
+Strings within GraphQL. UUIDs are used to assign unique identifiers to
+entities without requiring a central allocating authority.
 
 # References
 
