@@ -38,7 +38,7 @@ impl MutationEntityInstances {
         let entity_type = entity_type_manager.get(type_name.clone());
 
         if entity_type.is_none() {
-            return Err(Error::new(format!("Entity type {} does not exist", type_name)));
+            return Err(Error::new(format!("Entity type {type_name} does not exist")));
         }
 
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
