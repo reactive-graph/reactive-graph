@@ -21,5 +21,5 @@ assets_version = "2.0.0" # do not edit: managed by `mdbook-admonish install`
 [output]
 
 [output.html]
-additional-js = ["mermaid.min.js", "mermaid-init.js"]
-additional-css = ["././inexor-rgf-book.css", "././mdbook-admonish.css"]
+additional-js = ["mermaid.min.js", "mermaid-init.js", "graphql-playground-react-middleware.js", "graphql-playground.js"]
+additional-css = ["././inexor-rgf-book.css", "././mdbook-admonish.css", "graphql-playground.css"]

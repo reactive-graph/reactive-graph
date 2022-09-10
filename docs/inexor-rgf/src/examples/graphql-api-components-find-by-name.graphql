@@ -1,0 +1,13 @@
+query {
+  types {
+    components(search: "*flow*") {
+      name
+      description
+      properties {
+        name
+        dataType
+        socketType
+      }
+    }
+  }
+}
