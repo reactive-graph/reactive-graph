@@ -45,67 +45,18 @@ Generate random numbers
 
 ## Usage
 
-### GraphQL
+<graphql-playground
+  id="plugin-random-example-random-number-generator"
+  title="Create random number generator"
+  href="/examples/plugin-random-create-random-number-generator.graphql">
+This example creates an entity which is a random number generator.
+</graphql-playground>
 
-### Create random number generator
-
-```graphql
-mutation {
-  instances {
-    entities {
-      create(
-        type: "random_number",
-        id: "24f1e42f-1072-4c39-a239-774af89286c6",
-        properties: [
-        ]
-      ) {
-        id
-        type {
-          name
-        }
-        properties(
-          names: [
-            "result"
-          ]
-        ) {
-          name
-          value
-        }
-      }
-    }
-  }
-}
-```
-
-### Generate random number
-
-```graphql
-mutation {
-  instances {
-    entities {
-      update(
-        id: "24f1e42f-1072-4c39-a239-774af89286c6",
-        properties: [
-          {
-            name: "trigger",
-            value: true
-          }
-        ]
-      ) {
-        id
-        type {
-          name
-        }
-        properties(
-          names: [
-            "result"
-          ]
-        ) {
-          name
-          value
-        }
-      }
-    }
-  }
-}
-```
+<graphql-playground
+  id="plugin-random-example-generate-random-number"
+  title="Generate random number"
+  href="/examples/plugin-random-generate-random-number.graphql">
+This example uses the `random_number` generator to generate random numbers.<br>
+Please run the example above first.<br>
+Note that the property `trigger` is activated.
+</graphql-playground>

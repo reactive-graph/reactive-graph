@@ -1,0 +1,18 @@
+query {
+  types {
+    components(name: "component1") {
+      name
+      description
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+          extension
+        }
+      }
+      # extensions ...
+    }
+  }
+}
