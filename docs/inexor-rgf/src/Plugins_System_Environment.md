@@ -26,45 +26,6 @@ Each entity instance which represents a system environment variable has a label.
 |        | label      | string    | none        |
 |        | value      | string    | output      |
 
-## Usage
-
-### GraphQL: Query System Environment Variable by Label
-
-```graphql
-query findSystemEnvHome {
-  instances {
-    entities(label: "/org/inexor/system/env/home") {
-      id
-      label
-      type {
-        name
-      }
-      properties(names: ["name", "value"]) {
-        name
-        value
-      }
-    }
-  }
-}
-```
-
-### GraphQL: Query all system environment variables
-
-```graphql
-query getSystemEnvironmentVariables {
-  instances {
-    entities(type: "system_env") {
-      id
-      type { name }
-      properties(names: ["name", "value"]) {
-        name
-        value
-      }
-    }
-  }
-}
-```
-
 ## Platform Compatibility
 
 | Platform | Compatibility |
@@ -78,3 +39,19 @@ query getSystemEnvironmentVariables {
 | Name                                 | Repository                                                                                                                               |
 |--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-system-environment | [https://github.com/inexorgame/inexor-rgf-plugin-system-environment](https://github.com/inexorgame/inexor-rgf-plugin-system-environment) |
+
+## Usage
+
+<graphql-playground
+  id="plugin-system-environment-find-env-var-home"
+  title="Find environment variable HOME"
+  href="/examples/plugin-system-environment-find-env-var-home.graphql">
+This example shows how to query the system environment variable `HOME` by label.
+</graphql-playground>
+
+<graphql-playground
+  id="plugin-system-environment-get-all-env-vars"
+  title="Find environment variable HOME"
+  href="/examples/plugin-system-environment-get-all-env-vars.graphql">
+This example shows how to get all system environment variables.
+</graphql-playground>
