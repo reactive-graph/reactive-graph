@@ -72,110 +72,23 @@ This plugin provides arithmetic gates and operations.
 
 ## Usage
 
-### GraphQL: Create a counter
+<graphql-playground
+  id="plugin-arithmetic-create-counter"
+  title="Create counter"
+  href="/examples/plugin-arithmetic-create-counter.graphql">
+This example shows how to create a counter.
+</graphql-playground>
 
-```graphql
-mutation {
-  instances {
-    entities {
-      create(
-        type: "counter",
-        id: "93419a15-ee61-449e-b942-1d6bc5230218",
-        properties: [
-          {
-            name: "trigger",
-            value: false
-          },
-          {
-            name: "result",
-            value: 0
-          }
-        ]
-      ) {
-        id
-        type {
-          name
-        }
-        properties(
-          names: [
-            "result"
-          ]
-        ) {
-          name
-          value
-        }
-      }
-    }
-  }
-}
-```
+<graphql-playground
+  id="plugin-arithmetic-increase-counter"
+  title="Increase counter"
+  href="/examples/plugin-arithmetic-increase-counter.graphql">
+This example shows how to increase a counter.
+</graphql-playground>
 
-### GraphQL: Increase counter
-
-```graphql
-mutation {
-  instances {
-    entities {
-      update(
-        id: "93419a15-ee61-449e-b942-1d6bc5230218",
-        properties: [
-          {
-            name: "trigger",
-            value: true
-          }
-        ]
-      ) {
-        id
-        type {
-          name
-        }
-        properties(
-          names: [
-            "result"
-          ]
-        ) {
-          name
-          value
-        }
-      }
-    }
-  }
-}
-```
-
-### GraphQL: Reset counter
-
-```graphql
-mutation {
-  instances {
-    entities {
-      update(
-        id: "93419a15-ee61-449e-b942-1d6bc5230218",
-        properties: [
-          {
-            name: "trigger",
-            value: false
-          },
-          {
-            name: "result",
-            value: 0
-          }
-        ]
-      ) {
-        id
-        type {
-          name
-        }
-        properties(
-          names: [
-            "result"
-          ]
-        ) {
-          name
-          value
-        }
-      }
-    }
-  }
-}
-```
+<graphql-playground
+  id="plugin-arithmetic-reset-counter"
+  title="Reset counter"
+  href="/examples/plugin-arithmetic-reset-counter.graphql">
+This example shows how to reset a counter.
+</graphql-playground>
