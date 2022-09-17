@@ -17,27 +17,13 @@ fn entity_instance_builder_test() {
         .get();
     assert_eq!(type_name, entity_instance.type_name);
     assert_eq!(id, entity_instance.id);
-    assert_eq!(
-        property_1_value.clone().as_str(),
-        entity_instance
-            .get(property_1_name.clone())
-            .unwrap()
-            .as_str()
-            .unwrap()
-    );
+    assert_eq!(property_1_value.clone().as_str(), entity_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
     let entity_instance = EntityInstanceBuilder::new(type_name.clone())
         .property(property_1_name.clone(), json!(property_1_value.clone()))
         .get();
     assert_eq!(type_name, entity_instance.type_name);
     assert_ne!(id, entity_instance.id);
-    assert_eq!(
-        property_1_value.clone().as_str(),
-        entity_instance
-            .get(property_1_name.clone())
-            .unwrap()
-            .as_str()
-            .unwrap()
-    );
+    assert_eq!(property_1_value.clone().as_str(), entity_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
 }
 
 #[test]
@@ -57,21 +43,10 @@ fn entity_instance_from_type_test() {
         .get();
     assert_eq!(type_name, entity_instance.type_name);
     assert_eq!(id, entity_instance.id);
-    assert_eq!(
-        property_1_value.clone().as_str(),
-        entity_instance
-            .get(property_1_name.clone())
-            .unwrap()
-            .as_str()
-            .unwrap()
-    );
+    assert_eq!(property_1_value.clone().as_str(), entity_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
     // Should return the default value of the data type
     assert_eq!(
         DataType::String.default_value().as_str().unwrap(),
-        entity_instance
-            .get(property_2_name.clone())
-            .unwrap()
-            .as_str()
-            .unwrap()
+        entity_instance.get(property_2_name.clone()).unwrap().as_str().unwrap()
     );
 }

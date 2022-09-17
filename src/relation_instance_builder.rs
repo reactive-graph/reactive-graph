@@ -16,11 +16,7 @@ pub struct RelationInstanceBuilder {
 
 #[allow(dead_code)]
 impl RelationInstanceBuilder {
-    pub fn new<S: Into<String>>(
-        outbound_id: Uuid,
-        type_name: S,
-        inbound_id: Uuid,
-    ) -> RelationInstanceBuilder {
+    pub fn new<S: Into<String>>(outbound_id: Uuid, type_name: S, inbound_id: Uuid) -> RelationInstanceBuilder {
         RelationInstanceBuilder {
             outbound_id,
             type_name: type_name.into(),
@@ -29,22 +25,13 @@ impl RelationInstanceBuilder {
         }
     }
 
-    pub fn property<S: Into<String>>(
-        &mut self,
-        property_name: S,
-        value: Value,
-    ) -> &mut RelationInstanceBuilder {
+    pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut RelationInstanceBuilder {
         self.properties.insert(property_name.into(), value);
         self
     }
 
     pub fn get(&mut self) -> RelationInstance {
-        RelationInstance::new(
-            self.outbound_id,
-            self.type_name.clone(),
-            self.inbound_id,
-            self.properties.clone(),
-        )
+        RelationInstance::new(self.outbound_id, self.type_name.clone(), self.inbound_id, self.properties.clone())
     }
 }
 

@@ -8,7 +8,7 @@ use serde_json::json;
 #[test]
 fn entity_type_builder_test() {
     let type_name = r_string();
-    let group = r_string();
+    let namespace = r_string();
     let description = r_string();
     let component_1_name = r_string();
     let component_2_name = r_string();
@@ -22,7 +22,7 @@ fn entity_type_builder_test() {
     let property_6_name = r_string();
     let property_7_name = r_string();
     let entity_type = EntityTypeBuilder::new(type_name.clone())
-        .group(group.clone())
+        .namespace(namespace.clone())
         .description(description.clone())
         .property(property_1_name.clone(), DataType::String)
         .property_from(PropertyType::new(property_2_name.clone(), DataType::Bool))
@@ -38,7 +38,7 @@ fn entity_type_builder_test() {
         .build();
     assert_eq!(type_name, entity_type.name);
     assert_eq!(type_name, entity_type.t.to_string());
-    assert_eq!(group, entity_type.group);
+    assert_eq!(namespace, entity_type.namespace);
     // TODO: assert_eq!(description, entity_type.description);
     assert!(entity_type.is_a(component_1_name.clone()));
     assert!(entity_type.is_a(component_2_name.clone()));
@@ -56,20 +56,10 @@ fn entity_type_builder_test() {
     assert!(!entity_type.has_own_property(r_string()));
     assert_eq!(
         SocketType::Input,
-        entity_type
-            .properties
-            .iter()
-            .find(|p| p.name == property_6_name.clone())
-            .unwrap()
-            .socket_type
+        entity_type.properties.iter().find(|p| p.name == property_6_name.clone()).unwrap().socket_type
     );
     assert_eq!(
         SocketType::Output,
-        entity_type
-            .properties
-            .iter()
-            .find(|p| p.name == property_7_name.clone())
-            .unwrap()
-            .socket_type
+        entity_type.properties.iter().find(|p| p.name == property_7_name.clone()).unwrap().socket_type
     );
 }

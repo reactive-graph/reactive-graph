@@ -1,5 +1,5 @@
 use crate::tests::utils::r_string;
-use crate::{EntityInstanceBuilder, FlowBuilder, RelationInstanceBuilder};
+use crate::{EntityInstanceBuilder, FlowInstanceBuilder, RelationInstanceBuilder};
 use serde_json::json;
 use uuid::Uuid;
 
@@ -31,26 +31,11 @@ fn flow_builder_test() {
         .get();
 
     let rel_type_name = r_string();
-    let relation_instance_1 = RelationInstanceBuilder::new(
-        entity_instance_1.id,
-        rel_type_name.clone(),
-        entity_instance_2.id,
-    )
-    .get();
-    let relation_instance_2 = RelationInstanceBuilder::new(
-        entity_instance_1.id,
-        rel_type_name.clone(),
-        entity_instance_3.id,
-    )
-    .get();
-    let relation_instance_3 = RelationInstanceBuilder::new(
-        entity_instance_2.id,
-        rel_type_name.clone(),
-        entity_instance_3.id,
-    )
-    .get();
+    let relation_instance_1 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_2.id).get();
+    let relation_instance_2 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_3.id).get();
+    let relation_instance_3 = RelationInstanceBuilder::new(entity_instance_2.id, rel_type_name.clone(), entity_instance_3.id).get();
 
-    let flow = FlowBuilder::new(entity_instance_1.clone())
+    let flow_instance = FlowInstanceBuilder::new(entity_instance_1.clone())
         .name(name.clone())
         .description(description.clone())
         .entity(entity_instance_2.clone())
@@ -59,10 +44,10 @@ fn flow_builder_test() {
         .relation(relation_instance_2.clone())
         .relation(relation_instance_3.clone())
         .get();
-    assert_eq!(id, flow.id);
-    assert_eq!(name, flow.name);
-    assert_eq!(description, flow.description);
-    assert_eq!(type_name_1, flow.type_name);
-    assert_eq!(3, flow.entity_instances.len());
-    assert_eq!(3, flow.relation_instances.len());
+    assert_eq!(id, flow_instance.id);
+    assert_eq!(name, flow_instance.name);
+    assert_eq!(description, flow_instance.description);
+    assert_eq!(type_name_1, flow_instance.type_name);
+    assert_eq!(3, flow_instance.entity_instances.len());
+    assert_eq!(3, flow_instance.relation_instances.len());
 }

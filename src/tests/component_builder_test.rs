@@ -45,20 +45,10 @@ fn component_builder_test() {
     assert!(!component.has_property(r_string()));
     assert_eq!(
         SocketType::Input,
-        component
-            .properties
-            .iter()
-            .find(|p| p.name == property_6_name.clone())
-            .unwrap()
-            .socket_type
+        component.properties.iter().find(|p| p.name == property_6_name.clone()).unwrap().socket_type
     );
     assert_eq!(
         SocketType::Output,
-        component
-            .properties
-            .iter()
-            .find(|p| p.name == property_7_name.clone())
-            .unwrap()
-            .socket_type
+        component.properties.iter().find(|p| p.name == property_7_name.clone()).unwrap().socket_type
     );
 }

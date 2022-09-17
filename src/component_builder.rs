@@ -26,71 +26,43 @@ impl ComponentBuilder {
         self
     }
 
-    pub fn property<S: Into<String>>(
-        &mut self,
-        property_name: S,
-        data_type: DataType,
-    ) -> &mut ComponentBuilder {
-        self.properties
-            .push(PropertyType::new(property_name.into(), data_type));
+    pub fn property<S: Into<String>>(&mut self, property_name: S, data_type: DataType) -> &mut ComponentBuilder {
+        self.properties.push(PropertyType::new(property_name.into(), data_type));
         self
     }
 
-    pub fn input_property<S: Into<String>>(
-        &mut self,
-        property_name: S,
-        data_type: DataType,
-    ) -> &mut ComponentBuilder {
-        self.properties
-            .push(PropertyType::input(property_name.into(), data_type));
+    pub fn input_property<S: Into<String>>(&mut self, property_name: S, data_type: DataType) -> &mut ComponentBuilder {
+        self.properties.push(PropertyType::input(property_name.into(), data_type));
         self
     }
 
-    pub fn output_property<S: Into<String>>(
-        &mut self,
-        property_name: S,
-        data_type: DataType,
-    ) -> &mut ComponentBuilder {
-        self.properties
-            .push(PropertyType::output(property_name.into(), data_type));
+    pub fn output_property<S: Into<String>>(&mut self, property_name: S, data_type: DataType) -> &mut ComponentBuilder {
+        self.properties.push(PropertyType::output(property_name.into(), data_type));
         self
     }
 
-    pub fn property_from<S: Into<PropertyType>>(
-        &mut self,
-        property_type: S,
-    ) -> &mut ComponentBuilder {
+    pub fn property_from<S: Into<PropertyType>>(&mut self, property_type: S) -> &mut ComponentBuilder {
         self.properties.push(property_type.into());
         self
     }
 
     pub fn string_property<S: Into<String>>(&mut self, property_name: S) -> &mut ComponentBuilder {
-        self.properties
-            .push(PropertyType::new(property_name.into(), DataType::String));
+        self.properties.push(PropertyType::new(property_name.into(), DataType::String));
         self
     }
 
     pub fn bool_property<S: Into<String>>(&mut self, property_name: S) -> &mut ComponentBuilder {
-        self.properties
-            .push(PropertyType::new(property_name.into(), DataType::Bool));
+        self.properties.push(PropertyType::new(property_name.into(), DataType::Bool));
         self
     }
 
     pub fn number_property<S: Into<String>>(&mut self, property_name: S) -> &mut ComponentBuilder {
-        self.properties
-            .push(PropertyType::new(property_name.into(), DataType::Number));
+        self.properties.push(PropertyType::new(property_name.into(), DataType::Number));
         self
     }
 
-    pub fn extension<S: Into<String>>(
-        &mut self,
-        name: S,
-        extension: Value,
-    ) -> &mut ComponentBuilder {
-        self.extensions.push(Extension {
-            name: name.into(),
-            extension,
-        });
+    pub fn extension<S: Into<String>>(&mut self, name: S, extension: Value) -> &mut ComponentBuilder {
+        self.extensions.push(Extension { name: name.into(), extension });
         self
     }
 
