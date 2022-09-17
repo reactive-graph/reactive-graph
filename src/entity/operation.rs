@@ -9,3 +9,7 @@ pub trait Operation: Disconnectable {
 
     fn result(&self) -> Value;
 }
+
+pub trait BehaviourType {
+    fn type_name(&self) -> String;
+}
