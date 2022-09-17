@@ -1,5 +1,11 @@
-use crate::{ComponentManager, EntityInstanceManager, EntityTypeManager, FlowManager, RelationInstanceManager, RelationTypeManager};
 use std::sync::Arc;
+
+use crate::ComponentManager;
+use crate::EntityInstanceManager;
+use crate::EntityTypeManager;
+use crate::FlowInstanceManager;
+use crate::RelationInstanceManager;
+use crate::RelationTypeManager;
 
 pub trait PluginContext: Send + Sync {
     /// Returns the component manager.
@@ -17,6 +23,6 @@ pub trait PluginContext: Send + Sync {
     /// Returns the relation instance manager.
     fn get_relation_instance_manager(&self) -> Arc<dyn RelationInstanceManager>;
 
-    /// Returns the flow manager.
-    fn get_flow_manager(&self) -> Arc<dyn FlowManager>;
+    /// Returns the flow instance manager.
+    fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager>;
 }

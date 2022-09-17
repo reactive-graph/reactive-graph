@@ -1,4 +1,6 @@
-use crate::model::{Extension, PropertyType, RelationType};
+use crate::model::Extension;
+use crate::model::PropertyType;
+use crate::model::RelationType;
 
 #[derive(Debug)]
 pub enum RelationTypeCreationError {

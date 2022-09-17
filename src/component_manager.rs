@@ -1,4 +1,5 @@
-use crate::model::{Component, PropertyType};
+use crate::model::Component;
+use crate::model::PropertyType;
 
 #[derive(Debug)]
 pub enum ComponentCreationError {

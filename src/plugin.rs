@@ -1,13 +1,14 @@
 use std::sync::Arc;
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
 use crate::plugin_context::PluginContext;
 use crate::ComponentBehaviourProvider;
 use crate::ComponentProvider;
 use crate::EntityBehaviourProvider;
 use crate::EntityTypeProvider;
-use crate::FlowProvider;
+use crate::FlowInstanceProvider;
 use crate::RelationBehaviourProvider;
 use crate::RelationTypeProvider;
 use crate::WebResourceProvider;
@@ -20,7 +21,7 @@ pub enum PluginError {
     NoComponentBehaviourProvider,
     NoEntityBehaviourProvider,
     NoRelationBehaviourProvider,
-    NoFlowProvider,
+    NoFlowInstanceProvider,
     NoWebResourceProvider,
     PluginCreationError,
     InitializationError,
@@ -68,7 +69,7 @@ pub trait Plugin: Send + Sync {
 
     fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError>;
 
-    fn get_flow_provider(&self) -> Result<Arc<dyn FlowProvider>, PluginError>;
+    fn get_flow_instance_provider(&self) -> Result<Arc<dyn FlowInstanceProvider>, PluginError>;
 
     fn get_web_resource_provider(&self) -> Result<Arc<dyn WebResourceProvider>, PluginError>;
 }

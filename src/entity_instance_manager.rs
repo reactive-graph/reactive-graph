@@ -1,8 +1,10 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use crate::model::{EntityInstance, ReactiveEntityInstance};
 use uuid::Uuid;
+
+use crate::model::EntityInstance;
+use crate::model::ReactiveEntityInstance;
 
 #[derive(Debug)]
 pub enum EntityInstanceCreationError {

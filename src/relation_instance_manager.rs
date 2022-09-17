@@ -1,7 +1,10 @@
-use crate::model::{ReactiveRelationInstance, RelationInstance};
-use indradb::EdgeKey;
 use std::sync::Arc;
+
+use indradb::EdgeKey;
 use uuid::Uuid;
+
+use crate::model::ReactiveRelationInstance;
+use crate::model::RelationInstance;
 
 #[derive(Debug)]
 pub enum RelationInstanceCreationError {

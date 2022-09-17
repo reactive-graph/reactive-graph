@@ -1,5 +1,7 @@
 use crate::HttpBody;
-use http::{Request, Response, Result};
+use http::Request;
+use http::Response;
+use http::Result;
 
 pub trait WebResourceProvider: Send + Sync {
     /// The base path segment.
