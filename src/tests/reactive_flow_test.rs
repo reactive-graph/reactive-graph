@@ -1,17 +1,16 @@
 // TODO: move unit test to plugin
 
-
 use std::sync::Arc;
 
 use serde_json::json;
 
 use crate::behaviour::{AndGate, DefaultConnector, EntityBehaviour, RelationBehaviour};
-use crate::builder::{EntityInstanceBuilder, EntityTypeBuilder, DefaultConnectorBuilder, FlowBuilder};
-use std::convert::{TryFrom, TryInto};
+use crate::builder::{DefaultConnectorBuilder, EntityInstanceBuilder, EntityTypeBuilder, FlowInstanceBuilder};
 use crate::reactive::LogicalGateProperties;
-use uuid::Uuid;
 use indradb::{EdgeKey, Type};
+use std::convert::{TryFrom, TryInto};
 use std::str::FromStr;
+use uuid::Uuid;
 
 const LHS: LogicalGateProperties = LogicalGateProperties::LHS;
 const RHS: LogicalGateProperties = LogicalGateProperties::RHS;
@@ -19,7 +18,7 @@ const BIT_3: &'static str = "bit_3";
 const RESULT: LogicalGateProperties = LogicalGateProperties::RESULT;
 
 #[test]
-fn reactive_flow_test () {
+fn reactive_flow_test() {
     let e_wrapper = EntityInstanceBuilder::new("and_3".to_string())
         .property(LHS.to_string(), json!(false))
         .property(RHS.to_string(), json!(false))
@@ -43,7 +42,7 @@ fn reactive_flow_test () {
     let c_and1_result_1_and2_bit_2 = DefaultConnector::from_relation_instance(r_and1_result_1_and2_bit_2.clone()).unwrap();
     let c_and2_result_1_wrapper_result_1 = DefaultConnector::from_relation_instance(r_and2_result_1_wrapper_result_1.clone()).unwrap();
 
-    let flow = ReactiveFlow::new(wrapper.clone());
+    let flow = ReactiveFlowInstance::new(wrapper.clone());
     flow.add_entity(and1.entity.clone());
     flow.add_entity(and2.entity.clone());
     flow.add_relation(c_wrapper_bit_1_and1_bit_1.relation.clone());
@@ -83,11 +82,10 @@ fn reactive_flow_test () {
     assert_eq!(false, wrapper.as_bool(RESULT.to_string()).unwrap());
     wrapper.set(BIT_3.to_string(), json!(true));
     assert_eq!(true, wrapper.as_bool(RESULT.to_string()).unwrap());
-
 }
 
 #[test]
-fn reactive_flow_from_flow_test () {
+fn reactive_flow_from_flow_test() {
     let t_and = EntityTypeBuilder::new("and".to_string())
         .property(LHS.to_string(), DataType::Bool)
         .property(RHS.to_string(), DataType::Bool)
@@ -101,9 +99,7 @@ fn reactive_flow_from_flow_test () {
         .property(RESULT.to_string(), DataType::Bool)
         .build();
 
-    let e_wrapper = EntityInstanceBuilder::from(t_and3.clone())
-        .property(BIT_3.to_string(), json!(false))
-        .get();
+    let e_wrapper = EntityInstanceBuilder::from(t_and3.clone()).property(BIT_3.to_string(), json!(false)).get();
     let e_and1 = EntityInstanceBuilder::from(t_and.clone()).get();
     let e_and2 = EntityInstanceBuilder::from(t_and.clone()).get();
     let r_wrapper_bit_1_and1_bit_1 = DefaultConnectorBuilder::new()
@@ -127,8 +123,7 @@ fn reactive_flow_from_flow_test () {
         .inbound(e_wrapper.clone(), RESULT.to_string())
         .get();
 
-
-    let flow = FlowBuilder::new(e_wrapper.clone())
+    let flow = FlowInstanceBuilder::new(e_wrapper.clone())
         .name("AND-3".to_string())
         .entity(e_and1.clone())
         .entity(e_and2.clone())
@@ -140,7 +135,7 @@ fn reactive_flow_from_flow_test () {
         .get();
     // println!("{}", serde_json::to_string_pretty(&flow.clone()).unwrap());
 
-    let reactive_flow = ReactiveFlow::try_from(flow.clone());
+    let reactive_flow = ReactiveFlowInstance::try_from(flow.clone());
     assert!(reactive_flow.is_ok());
     let reactive_flow = Arc::new(reactive_flow.unwrap());
 
@@ -210,7 +205,6 @@ fn reactive_flow_from_flow_test () {
     let b_and1 = b_and1.unwrap();
     assert!(Arc::ptr_eq(&re_and1, &b_and1.entity));
 
-
     let b_and2 = AndGate::from_entity_instance(re_and2.clone()).ok();
     assert!(b_and2.is_some());
     let b_and2 = b_and2.unwrap();
@@ -252,11 +246,10 @@ fn reactive_flow_from_flow_test () {
     assert_eq!(true, b_and2.entity.as_bool(LHS.to_string()).unwrap());
     assert_eq!(true, b_and2.entity.as_bool(RESULT.to_string()).unwrap());
     assert_eq!(true, reactive_flow.as_bool(RESULT.to_string()).unwrap());
-
 }
 
 #[test]
-fn reactive_flow_from_flow_compact_test () {
+fn reactive_flow_from_flow_compact_test() {
     let t_and = EntityTypeBuilder::new("and".to_string())
         .property(LHS.to_string(), DataType::Bool)
         .property(RHS.to_string(), DataType::Bool)
@@ -270,9 +263,7 @@ fn reactive_flow_from_flow_compact_test () {
         .property(RESULT.to_string(), DataType::Bool)
         .build();
 
-    let e_wrapper = EntityInstanceBuilder::from(t_and3.clone())
-        .property(BIT_3.to_string(), json!(false))
-        .get();
+    let e_wrapper = EntityInstanceBuilder::from(t_and3.clone()).property(BIT_3.to_string(), json!(false)).get();
     let e_and1 = EntityInstanceBuilder::from(t_and.clone()).get();
     let e_and2 = EntityInstanceBuilder::from(t_and.clone()).get();
     let r_wrapper_bit_1_and1_bit_1 = DefaultConnectorBuilder::new()
@@ -296,8 +287,7 @@ fn reactive_flow_from_flow_compact_test () {
         .inbound(e_wrapper.clone(), RESULT.to_string())
         .get();
 
-
-    let flow = FlowBuilder::new(e_wrapper.clone())
+    let flow = FlowInstanceBuilder::new(e_wrapper.clone())
         .name("AND-3".to_string())
         .entity(e_and1.clone())
         .entity(e_and2.clone())
@@ -308,7 +298,7 @@ fn reactive_flow_from_flow_compact_test () {
         .relation(r_and2_result_1_wrapper_result_1.clone())
         .get();
 
-    let reactive_flow = ReactiveFlow::try_from(flow.clone());
+    let reactive_flow = ReactiveFlowInstance::try_from(flow.clone());
     assert!(reactive_flow.is_ok());
     let reactive_flow = reactive_flow.unwrap();
 
@@ -319,11 +309,16 @@ fn reactive_flow_from_flow_compact_test () {
     let _b_and2 = AndGate::from_entity_instance(reactive_flow.get_entity(e_and2.id).unwrap()).unwrap();
 
     // Create the relation behaviours
-    let _b_wrapper_bit_1_and1_bit_1 = DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_wrapper_bit_1_and1_bit_1.get_key().unwrap()).unwrap()).unwrap();
-    let _b_wrapper_bit_2_and1_bit_2 = DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_wrapper_bit_2_and1_bit_2.get_key().unwrap()).unwrap()).unwrap();
-    let _b_wrapper_bit_3_and2_bit_1 = DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_wrapper_bit_3_and2_bit_1.get_key().unwrap()).unwrap()).unwrap();
-    let _b_and1_result_1_and2_bit_2 = DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_and1_result_1_and2_bit_2.get_key().unwrap()).unwrap()).unwrap();
-    let _b_and2_result_1_wrapper_result_1 = DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_and2_result_1_wrapper_result_1.get_key().unwrap()).unwrap()).unwrap();
+    let _b_wrapper_bit_1_and1_bit_1 =
+        DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_wrapper_bit_1_and1_bit_1.get_key().unwrap()).unwrap()).unwrap();
+    let _b_wrapper_bit_2_and1_bit_2 =
+        DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_wrapper_bit_2_and1_bit_2.get_key().unwrap()).unwrap()).unwrap();
+    let _b_wrapper_bit_3_and2_bit_1 =
+        DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_wrapper_bit_3_and2_bit_1.get_key().unwrap()).unwrap()).unwrap();
+    let _b_and1_result_1_and2_bit_2 =
+        DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_and1_result_1_and2_bit_2.get_key().unwrap()).unwrap()).unwrap();
+    let _b_and2_result_1_wrapper_result_1 =
+        DefaultConnector::from_relation_instance(reactive_flow.get_relation(r_and2_result_1_wrapper_result_1.get_key().unwrap()).unwrap()).unwrap();
 
     // From "outside" we only see the "wrapper", but we can also inspect the inner of the flow
     reactive_flow.set(LHS.to_string(), json!(true));
@@ -335,5 +330,4 @@ fn reactive_flow_from_flow_compact_test () {
     reactive_flow.set(BIT_3.to_string(), json!(true));
     assert_eq!(true, reactive_flow.as_bool(BIT_3.to_string()).unwrap());
     assert_eq!(true, reactive_flow.as_bool(RESULT.to_string()).unwrap());
-
 }

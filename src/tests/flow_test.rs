@@ -3,14 +3,13 @@
 // TODO: Mock the ConnectorProperties ?
 // TODO: Mock the LogicalGateProperties ?
 
-
-use serde_json::json;
-use crate::builder::{EntityInstanceBuilder, RelationInstanceBuilder, FlowBuilder, EntityTypeBuilder, DefaultConnectorBuilder};
+use crate::builder::{DefaultConnectorBuilder, EntityInstanceBuilder, EntityTypeBuilder, FlowInstanceBuilder, RelationInstanceBuilder};
 use crate::connector::Connector;
-use crate::relation::connector::ConnectorProperties;
 use crate::entity::logical_gate::LogicalGateProperties;
-use crate::tests::utils::r_string;
 use crate::model::{DataType, Flow};
+use crate::relation::connector::ConnectorProperties;
+use crate::tests::utils::r_string;
+use serde_json::json;
 
 const LHS: LogicalGateProperties = LogicalGateProperties::LHS;
 const RHS: LogicalGateProperties = LogicalGateProperties::RHS;
@@ -20,7 +19,6 @@ const DEFAULT_CONNECTOR_TYPE_NAME: &str = "default_connector";
 
 #[test]
 fn flow_test() {
-
     // AND-3: Wraps two AND-Gates
     //
     // The flow wrapper entity has 3 input-bits and 1 output-bit.
@@ -63,70 +61,35 @@ fn flow_test() {
         .property(RESULT.to_string(), json!(false))
         .get();
 
-    let r_wrapper_bit_1_and1_bit_1 = RelationInstanceBuilder::new(
-        e_wrapper.id,
-        Connector::type_name(
-            DEFAULT_CONNECTOR_TYPE_NAME,
-            LHS.as_ref(),
-            LHS.as_ref()
-        ),
-        e_and1.id
-    )
-        .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(LHS.as_ref()))
-        .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(LHS.as_ref()))
-        .get();
+    let r_wrapper_bit_1_and1_bit_1 =
+        RelationInstanceBuilder::new(e_wrapper.id, Connector::type_name(DEFAULT_CONNECTOR_TYPE_NAME, LHS.as_ref(), LHS.as_ref()), e_and1.id)
+            .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(LHS.as_ref()))
+            .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(LHS.as_ref()))
+            .get();
 
-    let r_wrapper_bit_2_and1_bit_2 = RelationInstanceBuilder::new(
-        e_wrapper.id,
-        Connector::type_name(
-            DEFAULT_CONNECTOR_TYPE_NAME,
-            RHS.as_ref(),
-            RHS.as_ref()
-        ),
-        e_and1.id
-    )
-        .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(RHS.as_ref()))
-        .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(RHS.as_ref()))
-        .get();
+    let r_wrapper_bit_2_and1_bit_2 =
+        RelationInstanceBuilder::new(e_wrapper.id, Connector::type_name(DEFAULT_CONNECTOR_TYPE_NAME, RHS.as_ref(), RHS.as_ref()), e_and1.id)
+            .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(RHS.as_ref()))
+            .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(RHS.as_ref()))
+            .get();
 
-    let r_wrapper_bit_3_and2_bit_1 = RelationInstanceBuilder::new(
-        e_wrapper.id,
-        Connector::type_name(
-            DEFAULT_CONNECTOR_TYPE_NAME,
-            "bit_3",
-            LHS.as_ref()
-        ),
-        e_and2.id
-    )
-        .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!("bit_3"))
-        .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(LHS.as_ref()))
-        .get();
+    let r_wrapper_bit_3_and2_bit_1 =
+        RelationInstanceBuilder::new(e_wrapper.id, Connector::type_name(DEFAULT_CONNECTOR_TYPE_NAME, "bit_3", LHS.as_ref()), e_and2.id)
+            .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!("bit_3"))
+            .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(LHS.as_ref()))
+            .get();
 
-    let r_and1_result_1_and2_bit_2 = RelationInstanceBuilder::new(
-        e_and1.id,
-        Connector::type_name(
-            DEFAULT_CONNECTOR_TYPE_NAME,
-            RESULT.as_ref(),
-            RHS.as_ref()
-        ),
-        e_and2.id
-    )
-        .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(RESULT.as_ref()))
-        .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(RHS.as_ref()))
-        .get();
+    let r_and1_result_1_and2_bit_2 =
+        RelationInstanceBuilder::new(e_and1.id, Connector::type_name(DEFAULT_CONNECTOR_TYPE_NAME, RESULT.as_ref(), RHS.as_ref()), e_and2.id)
+            .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(RESULT.as_ref()))
+            .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(RHS.as_ref()))
+            .get();
 
-    let r_and2_result_1_wrapper_result_1 = RelationInstanceBuilder::new(
-        e_and2.id,
-        Connector::type_name(
-            DEFAULT_CONNECTOR_TYPE_NAME,
-            RESULT.as_ref(),
-            RESULT.as_ref()
-        ),
-        e_wrapper.id
-    )
-        .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(RESULT.as_ref()))
-        .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(RESULT.as_ref()))
-        .get();
+    let r_and2_result_1_wrapper_result_1 =
+        RelationInstanceBuilder::new(e_and2.id, Connector::type_name(DEFAULT_CONNECTOR_TYPE_NAME, RESULT.as_ref(), RESULT.as_ref()), e_wrapper.id)
+            .property(ConnectorProperties::OUTBOUND_PROPERTY_NAME.to_string(), json!(RESULT.as_ref()))
+            .property(ConnectorProperties::INBOUND_PROPERTY_NAME.to_string(), json!(RESULT.as_ref()))
+            .get();
 
     let mut flow = Flow::from(e_wrapper.clone());
     flow.entity_instances.push(e_and1.clone());
@@ -142,16 +105,13 @@ fn flow_test() {
 
 #[test]
 fn flow_builder_test() {
-
     let t_and = EntityTypeBuilder::new("and".to_string())
         .property(LHS.to_string(), DataType::Bool)
         .property(RHS.to_string(), DataType::Bool)
         .property(RESULT.to_string(), DataType::Bool)
         .build();
 
-    let e_wrapper = EntityInstanceBuilder::from(t_and.clone())
-        .property("bit_3".to_string(), json!(false))
-        .get();
+    let e_wrapper = EntityInstanceBuilder::from(t_and.clone()).property("bit_3".to_string(), json!(false)).get();
     let e_and1 = EntityInstanceBuilder::from(t_and.clone()).get();
     let e_and2 = EntityInstanceBuilder::from(t_and.clone()).get();
     let r_wrapper_bit_1_and1_bit_1 = DefaultConnectorBuilder::new()
@@ -175,7 +135,7 @@ fn flow_builder_test() {
         .inbound(e_wrapper.clone(), RESULT.to_string())
         .get();
 
-    let _flow = FlowBuilder::new(e_wrapper.clone())
+    let _flow = FlowInstanceBuilder::new(e_wrapper.clone())
         .name("AND-3".to_string())
         .entity(e_and1.clone())
         .entity(e_and2.clone())
@@ -197,9 +157,7 @@ fn flow_from_instance_with_name_test() {
         .property(RESULT.to_string(), DataType::Bool)
         .build();
 
-    let e_wrapper = EntityInstanceBuilder::from(t_and.clone())
-        .property("bit_3".to_string(), json!(false))
-        .get();
+    let e_wrapper = EntityInstanceBuilder::from(t_and.clone()).property("bit_3".to_string(), json!(false)).get();
 
     let flow_name = r_string();
     let flow = Flow::from_instance_with_name(e_wrapper.clone(), flow_name.clone());
