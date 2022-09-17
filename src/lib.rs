@@ -7,11 +7,11 @@ pub use data_type::*;
 pub use entity_instance::*;
 pub use entity_type::*;
 pub use extension::*;
-pub use flow::*;
+pub use flow_instance::*;
 pub use property_instance_accessor::*;
 pub use property_type::*;
 pub use reactive_entity_instance::*;
-pub use reactive_flow::*;
+pub use reactive_flow_instance::*;
 pub use reactive_property_instance::*;
 pub use reactive_relation_instance::*;
 pub use relation_instance::*;
@@ -27,11 +27,11 @@ pub mod relation_type;
 pub mod socket_type;
 
 pub mod entity_instance;
-pub mod flow;
+pub mod flow_instance;
 pub mod relation_instance;
 
 pub mod reactive_entity_instance;
-pub mod reactive_flow;
+pub mod reactive_flow_instance;
 pub mod reactive_property_instance;
 pub mod reactive_relation_instance;
 

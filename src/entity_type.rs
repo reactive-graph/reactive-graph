@@ -14,9 +14,9 @@ pub struct EntityType {
     /// The name is the unique identifier for entity types.
     pub name: String,
 
-    /// The entity type belongs to the given group of entity types.
+    /// The namespace the entity type belongs to.
     #[serde(default = "String::new")]
-    pub group: String,
+    pub namespace: String,
 
     /// Textual description of the entity type.
     #[serde(default = "String::new")]
@@ -41,7 +41,7 @@ pub struct EntityType {
 impl EntityType {
     pub fn new<S: Into<String>>(
         name: S,
-        group: S,
+        namespace: S,
         description: S,
         components: Vec<String>,
         properties: Vec<PropertyType>,
@@ -51,7 +51,7 @@ impl EntityType {
         let t = Identifier::from_str(name.as_str()).unwrap();
         EntityType {
             name,
-            group: group.into(),
+            namespace: namespace.into(),
             description: description.into(),
             components,
             properties,

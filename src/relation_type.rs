@@ -28,9 +28,9 @@ pub struct RelationType {
     /// The name of the inbound entity type.
     pub inbound_type: String,
 
-    /// The relation type belongs to the given group of relation types.
+    /// The namespace the relation type belongs to.
     #[serde(default = "String::new")]
-    pub group: String,
+    pub namespace: String,
 
     /// Textual description of the relation type.
     #[serde(default = "String::new")]
@@ -58,7 +58,7 @@ impl RelationType {
         outbound_type: S,
         type_name: S,
         inbound_type: S,
-        group: S,
+        namespace: S,
         description: S,
         components: Vec<String>,
         properties: Vec<PropertyType>,
@@ -71,7 +71,7 @@ impl RelationType {
             full_name: type_name.clone(),
             type_name,
             inbound_type: inbound_type.into(),
-            group: group.into(),
+            namespace: namespace.into(),
             description: description.into(),
             components,
             properties,

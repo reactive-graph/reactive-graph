@@ -1,5 +1,8 @@
 use crate::tests::utils::r_string;
-use crate::{Component, DataType, Extension, PropertyType};
+use crate::Component;
+use crate::DataType;
+use crate::Extension;
+use crate::PropertyType;
 use serde_json::json;
 
 #[test]

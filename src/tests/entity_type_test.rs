@@ -7,7 +7,7 @@ use crate::{DataType, EntityType, Extension, PropertyType};
 fn create_entity_type_test() {
     let entity_type_name = "entity_type_name";
 
-    let group = "group_name";
+    let namespace = "namespace";
     let description = "Lorem ipsum";
 
     let component_name = r_string();
@@ -30,11 +30,11 @@ fn create_entity_type_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension);
 
-    let entity_type = EntityType::new(entity_type_name, group, description, component_names, property_types, extensions);
+    let entity_type = EntityType::new(entity_type_name, namespace, description, component_names, property_types, extensions);
 
     assert_eq!(entity_type_name, entity_type.name);
 
-    assert_eq!(group, entity_type.group);
+    assert_eq!(namespace, entity_type.namespace);
 
     assert_eq!(description, entity_type.description);
 

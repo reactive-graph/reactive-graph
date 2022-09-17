@@ -12,7 +12,7 @@ fn create_relation_type_test() {
     let outbound_type = r_string();
     let inbound_type = r_string();
 
-    let group = "group_name";
+    let namespace = "namespace";
     let description = "Lorem ipsum";
 
     let component_name = r_string();
@@ -37,7 +37,7 @@ fn create_relation_type_test() {
         outbound_type.clone(),
         type_name.clone(),
         inbound_type.clone(),
-        group.into(),
+        namespace.into(),
         description.into(),
         component_names,
         property_types,
@@ -47,7 +47,7 @@ fn create_relation_type_test() {
     assert_eq!(type_name, relation_type.type_name);
     assert_eq!(outbound_type, relation_type.outbound_type);
     assert_eq!(inbound_type, relation_type.inbound_type);
-    assert_eq!(group, relation_type.group);
+    assert_eq!(namespace, relation_type.namespace);
     assert_eq!(description, relation_type.description);
     assert_eq!(component_name, *relation_type.components.first().unwrap());
     assert!(relation_type.is_a(component_name.clone()));

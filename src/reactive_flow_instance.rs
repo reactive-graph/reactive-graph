@@ -7,29 +7,29 @@ use indradb::EdgeKey;
 use serde_json::{Map, Value};
 use uuid::Uuid;
 
-use crate::{Flow, ReactiveEntityInstance, ReactiveRelationInstance};
+use crate::{FlowInstance, ReactiveEntityInstance, ReactiveRelationInstance};
 use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
 
 #[derive(Debug)]
-pub enum ReactiveFlowConstructionError {
+pub enum ReactiveFlowInstanceConstructionError {
     MissingWrapperInstance,
     MissingOutboundEntityInstance(Uuid),
     MissingInboundEntityInstance(Uuid),
 }
 
-impl fmt::Display for ReactiveFlowConstructionError {
+impl fmt::Display for ReactiveFlowInstanceConstructionError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
-            ReactiveFlowConstructionError::MissingWrapperInstance => {
+            ReactiveFlowInstanceConstructionError::MissingWrapperInstance => {
                 write!(f, "Missing the wrapper entity instance. Check if an entity instance exists with the same id as the flow id")
             }
-            ReactiveFlowConstructionError::MissingOutboundEntityInstance(id) => write!(f, "The outbound entity instance {} cannot be found", id),
-            ReactiveFlowConstructionError::MissingInboundEntityInstance(id) => write!(f, "The inbound entity instance {} cannot be found", id),
+            ReactiveFlowInstanceConstructionError::MissingOutboundEntityInstance(id) => write!(f, "The outbound entity instance {} cannot be found", id),
+            ReactiveFlowInstanceConstructionError::MissingInboundEntityInstance(id) => write!(f, "The inbound entity instance {} cannot be found", id),
         }
     }
 }
 
-pub struct ReactiveFlow {
+pub struct ReactiveFlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance.
     pub id: Uuid,
 
@@ -57,12 +57,12 @@ pub struct ReactiveFlow {
     pub relations_removed: RwLock<Vec<EdgeKey>>,
 }
 
-impl ReactiveFlow {
-    pub fn new(wrapper_entity_instance: Arc<ReactiveEntityInstance>) -> ReactiveFlow {
+impl ReactiveFlowInstance {
+    pub fn new(wrapper_entity_instance: Arc<ReactiveEntityInstance>) -> ReactiveFlowInstance {
         let type_name = wrapper_entity_instance.type_name.clone();
         let mut entity_instances = HashMap::new();
         entity_instances.insert(wrapper_entity_instance.id, wrapper_entity_instance.clone());
-        ReactiveFlow {
+        ReactiveFlowInstance {
             id: wrapper_entity_instance.id,
             type_name,
             entity_instances: RwLock::new(entity_instances),
@@ -143,16 +143,16 @@ impl ReactiveFlow {
     }
 }
 
-impl From<Arc<ReactiveEntityInstance>> for ReactiveFlow {
+impl From<Arc<ReactiveEntityInstance>> for ReactiveFlowInstance {
     fn from(wrapper_entity_instance: Arc<ReactiveEntityInstance>) -> Self {
-        ReactiveFlow::new(wrapper_entity_instance)
+        ReactiveFlowInstance::new(wrapper_entity_instance)
     }
 }
 
-impl TryFrom<Flow> for ReactiveFlow {
-    type Error = ReactiveFlowConstructionError;
+impl TryFrom<FlowInstance> for ReactiveFlowInstance {
+    type Error = ReactiveFlowInstanceConstructionError;
 
-    fn try_from(flow: Flow) -> Result<Self, ReactiveFlowConstructionError> {
+    fn try_from(flow: FlowInstance) -> Result<Self, ReactiveFlowInstanceConstructionError> {
         let flow_id = flow.id;
         let mut entity_instances = HashMap::new();
         let mut wrapper = None;
@@ -165,7 +165,7 @@ impl TryFrom<Flow> for ReactiveFlow {
             }
         }
         if wrapper.is_none() {
-            return Err(ReactiveFlowConstructionError::MissingWrapperInstance);
+            return Err(ReactiveFlowInstanceConstructionError::MissingWrapperInstance);
         }
         let mut relation_instances = HashMap::new();
         for relation_instance in flow.relation_instances {
@@ -173,12 +173,12 @@ impl TryFrom<Flow> for ReactiveFlow {
                 let outbound = entity_instances.get(&relation_instance.outbound_id);
                 if outbound.is_none() {
                     // outbound entity missing
-                    return Err(ReactiveFlowConstructionError::MissingOutboundEntityInstance(relation_instance.outbound_id));
+                    return Err(ReactiveFlowInstanceConstructionError::MissingOutboundEntityInstance(relation_instance.outbound_id));
                 }
                 let inbound = entity_instances.get(&relation_instance.inbound_id);
                 if inbound.is_none() {
                     // inbound entity missing
-                    return Err(ReactiveFlowConstructionError::MissingInboundEntityInstance(relation_instance.inbound_id));
+                    return Err(ReactiveFlowInstanceConstructionError::MissingInboundEntityInstance(relation_instance.inbound_id));
                 }
                 let outbound = outbound.unwrap().clone();
                 let inbound = inbound.unwrap().clone();
@@ -186,7 +186,7 @@ impl TryFrom<Flow> for ReactiveFlow {
                 relation_instances.insert(edge_key.clone(), reactive_relation_instance);
             }
         }
-        Ok(ReactiveFlow {
+        Ok(ReactiveFlowInstance {
             id: flow_id,
             type_name: flow.type_name,
             entity_instances: RwLock::new(entity_instances),
@@ -200,7 +200,7 @@ impl TryFrom<Flow> for ReactiveFlow {
     }
 }
 
-impl PropertyInstanceGetter for ReactiveFlow {
+impl PropertyInstanceGetter for ReactiveFlowInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
         self.get_entity(self.id).and_then(|e| e.properties.get(&property_name.into()).map(|p| p.get()))
     }
@@ -241,7 +241,7 @@ impl PropertyInstanceGetter for ReactiveFlow {
     }
 }
 
-impl PropertyInstanceSetter for ReactiveFlow {
+impl PropertyInstanceSetter for ReactiveFlowInstance {
     fn set<S: Into<String>>(&self, property_name: S, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
             if let Some(instance) = instance.properties.get(&property_name.into()) {

@@ -50,6 +50,7 @@ This module provides the core data model of the reactive graph.
 * Entity Types
 * Relation Types
 * Property Types
+* Flow Types
 * Extensions
 
 #### The Instance
@@ -57,9 +58,14 @@ This module provides the core data model of the reactive graph.
 * Entity Instances
 * Relation Instances
 * Property Instance Accessors
+* Flow Instances
+
+#### The Reactive Instances
+
 * Reactive Entity Instances
 * Reactive Relation Instances
 * Reactive Property Instances
+* Reactive Flow Instances
 
 #### The Extensions
 
