@@ -2,10 +2,7 @@ use crate::entity::Expression;
 
 #[test]
 fn expression_test() {
-    let expression = Expression {
-        lhs: false,
-        rhs: false,
-    };
+    let expression = Expression { lhs: false, rhs: false };
     assert_eq!(expression.lhs, false);
     assert_eq!(expression.rhs, false);
     let expression = expression.lhs(true);
