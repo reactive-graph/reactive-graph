@@ -1,7 +1,9 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
 use crate::extension::Extension;
-use crate::{DataType, SocketType};
+use crate::DataType;
+use crate::SocketType;
 
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket

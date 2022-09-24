@@ -1,12 +1,17 @@
 use std::collections::HashMap;
 use std::str::FromStr;
 
-use indradb::{EdgeKey, EdgeProperties, Identifier};
-use serde::{Deserialize, Serialize};
-use serde_json::{Map, Value};
+use indradb::EdgeKey;
+use indradb::EdgeProperties;
+use indradb::Identifier;
+use serde::Deserialize;
+use serde::Serialize;
+use serde_json::Map;
+use serde_json::Value;
 use uuid::Uuid;
 
-use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
+use crate::MutablePropertyInstanceSetter;
+use crate::PropertyInstanceGetter;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.

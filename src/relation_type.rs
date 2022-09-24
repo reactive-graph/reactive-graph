@@ -1,7 +1,8 @@
 use std::str::FromStr;
 
 use indradb::Identifier;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
 use crate::extension::Extension;
 use crate::PropertyType;

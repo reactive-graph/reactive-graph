@@ -7,8 +7,11 @@ use indradb::EdgeKey;
 use serde_json::{Map, Value};
 use uuid::Uuid;
 
-use crate::{FlowInstance, ReactiveEntityInstance, ReactiveRelationInstance};
-use crate::{PropertyInstanceGetter, PropertyInstanceSetter};
+use crate::FlowInstance;
+use crate::PropertyInstanceGetter;
+use crate::PropertyInstanceSetter;
+use crate::ReactiveEntityInstance;
+use crate::ReactiveRelationInstance;
 
 #[derive(Debug)]
 pub enum ReactiveFlowInstanceConstructionError {

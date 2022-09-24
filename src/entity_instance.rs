@@ -1,11 +1,14 @@
 use std::collections::HashMap;
 
 use indradb::VertexProperties;
-use serde::{Deserialize, Serialize};
-use serde_json::{Map, Value};
+use serde::Deserialize;
+use serde::Serialize;
+use serde_json::Map;
+use serde_json::Value;
 use uuid::Uuid;
 
-use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
+use crate::MutablePropertyInstanceSetter;
+use crate::PropertyInstanceGetter;
 
 /// Entity instances represents an typed object which contains properties.
 ///
