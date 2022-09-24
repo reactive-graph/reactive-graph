@@ -51,10 +51,10 @@ pub struct RelationInstance {
 
 impl RelationInstance {
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new(outbound_id: Uuid, type_name: String, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
+    pub fn new<S: Into<String>>(outbound_id: Uuid, type_name: S, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
         RelationInstance {
             outbound_id,
-            type_name,
+            type_name: type_name.into(),
             inbound_id,
             description: String::new(),
             properties,
