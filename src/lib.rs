@@ -3,6 +3,7 @@
 #![register_tool(tarpaulin)]
 
 pub use component::*;
+pub use component_container::*;
 pub use data_type::*;
 pub use entity_instance::*;
 pub use entity_type::*;
@@ -10,21 +11,28 @@ pub use extension::*;
 pub use flow_instance::*;
 pub use property_instance_accessor::*;
 pub use property_type::*;
+pub use reactive_behaviour_container::*;
 pub use reactive_entity_instance::*;
 pub use reactive_flow_instance::*;
+pub use reactive_property_container::*;
 pub use reactive_property_instance::*;
 pub use reactive_relation_instance::*;
 pub use relation_instance::*;
 pub use relation_type::*;
 pub use socket_type::*;
+pub use type_container::*;
 
 pub mod component;
+pub mod component_container;
 pub mod data_type;
 pub mod entity_type;
 pub mod extension;
 pub mod property_type;
+pub mod reactive_behaviour_container;
+pub mod reactive_property_container;
 pub mod relation_type;
 pub mod socket_type;
+pub mod type_container;
 
 pub mod entity_instance;
 pub mod flow_instance;
