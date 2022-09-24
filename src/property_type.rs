@@ -20,7 +20,7 @@ pub struct PropertyType {
     /// The data type of the property
     pub data_type: DataType,
 
-    /// Specifies which type of socketf
+    /// Specifies the type of socket - either input socket or output socket or none
     #[serde(default = "SocketType::none")]
     pub socket_type: SocketType,
 
@@ -67,6 +67,16 @@ impl PropertyType {
             data_type,
             socket_type: SocketType::Output,
             extensions: Vec::new(),
+        }
+    }
+
+    pub fn new_with_all<S: Into<String>>(name: S, description: S, data_type: DataType, socket_type: SocketType, extensions: Vec<Extension>) -> PropertyType {
+        PropertyType {
+            name: name.into(),
+            description: description.into(),
+            data_type,
+            socket_type,
+            extensions,
         }
     }
 }
