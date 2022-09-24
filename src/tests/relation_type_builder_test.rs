@@ -25,6 +25,8 @@ fn relation_type_builder_test() {
     let property_5_name = r_string();
     let property_6_name = r_string();
     let property_7_name = r_string();
+    let property_8_name = r_string();
+    let property_9_name = r_string();
     let relation_type = RelationTypeBuilder::new(outbound_type.clone(), type_name.clone(), inbound_type.clone())
         .namespace(namespace.clone())
         .description(description.clone())
@@ -33,8 +35,10 @@ fn relation_type_builder_test() {
         .string_property(property_3_name.clone())
         .bool_property(property_4_name.clone())
         .number_property(property_5_name.clone())
-        .input_property(property_6_name.clone(), DataType::Bool)
-        .output_property(property_7_name.clone(), DataType::Bool)
+        .array_property(property_6_name.clone())
+        .object_property(property_7_name.clone())
+        .input_property(property_8_name.clone(), DataType::Bool)
+        .output_property(property_9_name.clone(), DataType::Bool)
         .component(component_1_name.clone())
         .component(component_2_name.clone())
         .extension(extension_1_name.clone(), json!(true))
@@ -59,13 +63,15 @@ fn relation_type_builder_test() {
     assert!(relation_type.has_own_property(property_5_name.clone()));
     assert!(relation_type.has_own_property(property_6_name.clone()));
     assert!(relation_type.has_own_property(property_7_name.clone()));
+    assert!(relation_type.has_own_property(property_8_name.clone()));
+    assert!(relation_type.has_own_property(property_9_name.clone()));
     assert!(!relation_type.has_own_property(r_string()));
     assert_eq!(
         SocketType::Input,
-        relation_type.properties.iter().find(|p| p.name == property_6_name.clone()).unwrap().socket_type
+        relation_type.properties.iter().find(|p| p.name == property_8_name.clone()).unwrap().socket_type
     );
     assert_eq!(
         SocketType::Output,
-        relation_type.properties.iter().find(|p| p.name == property_7_name.clone()).unwrap().socket_type
+        relation_type.properties.iter().find(|p| p.name == property_9_name.clone()).unwrap().socket_type
     );
 }

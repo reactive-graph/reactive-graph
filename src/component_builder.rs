@@ -64,6 +64,16 @@ impl ComponentBuilder {
         self
     }
 
+    pub fn array_property<S: Into<String>>(&mut self, property_name: S) -> &mut ComponentBuilder {
+        self.properties.push(PropertyType::new(property_name.into(), DataType::Array));
+        self
+    }
+
+    pub fn object_property<S: Into<String>>(&mut self, property_name: S) -> &mut ComponentBuilder {
+        self.properties.push(PropertyType::new(property_name.into(), DataType::Object));
+        self
+    }
+
     pub fn extension<S: Into<String>>(&mut self, name: S, extension: Value) -> &mut ComponentBuilder {
         self.extensions.push(Extension { name: name.into(), extension });
         self

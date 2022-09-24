@@ -23,6 +23,8 @@ fn entity_type_builder_test() {
     let property_5_name = r_string();
     let property_6_name = r_string();
     let property_7_name = r_string();
+    let property_8_name = r_string();
+    let property_9_name = r_string();
     let entity_type = EntityTypeBuilder::new(type_name.clone())
         .namespace(namespace.clone())
         .description(description.clone())
@@ -31,8 +33,10 @@ fn entity_type_builder_test() {
         .string_property(property_3_name.clone())
         .bool_property(property_4_name.clone())
         .number_property(property_5_name.clone())
-        .input_property(property_6_name.clone(), DataType::Bool)
-        .output_property(property_7_name.clone(), DataType::Bool)
+        .array_property(property_6_name.clone())
+        .object_property(property_7_name.clone())
+        .input_property(property_8_name.clone(), DataType::Bool)
+        .output_property(property_9_name.clone(), DataType::Bool)
         .component(component_1_name.clone())
         .component(component_2_name.clone())
         .extension(extension_1_name.clone(), json!(true))
@@ -41,7 +45,7 @@ fn entity_type_builder_test() {
     assert_eq!(type_name, entity_type.name);
     assert_eq!(type_name, entity_type.t.to_string());
     assert_eq!(namespace, entity_type.namespace);
-    // TODO: assert_eq!(description, entity_type.description);
+    assert_eq!(description, entity_type.description);
     assert!(entity_type.is_a(component_1_name.clone()));
     assert!(entity_type.is_a(component_2_name.clone()));
     assert!(!entity_type.is_a(r_string()));
@@ -55,13 +59,15 @@ fn entity_type_builder_test() {
     assert!(entity_type.has_own_property(property_5_name.clone()));
     assert!(entity_type.has_own_property(property_6_name.clone()));
     assert!(entity_type.has_own_property(property_7_name.clone()));
+    assert!(entity_type.has_own_property(property_8_name.clone()));
+    assert!(entity_type.has_own_property(property_9_name.clone()));
     assert!(!entity_type.has_own_property(r_string()));
     assert_eq!(
         SocketType::Input,
-        entity_type.properties.iter().find(|p| p.name == property_6_name.clone()).unwrap().socket_type
+        entity_type.properties.iter().find(|p| p.name == property_8_name.clone()).unwrap().socket_type
     );
     assert_eq!(
         SocketType::Output,
-        entity_type.properties.iter().find(|p| p.name == property_7_name.clone()).unwrap().socket_type
+        entity_type.properties.iter().find(|p| p.name == property_9_name.clone()).unwrap().socket_type
     );
 }

@@ -18,6 +18,8 @@ fn component_builder_test() {
     let property_5_name = r_string();
     let property_6_name = r_string();
     let property_7_name = r_string();
+    let property_8_name = r_string();
+    let property_9_name = r_string();
     let component = ComponentBuilder::new(name.clone())
         .description(description.clone())
         .property(property_1_name.clone(), DataType::String)
@@ -25,8 +27,10 @@ fn component_builder_test() {
         .string_property(property_3_name.clone())
         .bool_property(property_4_name.clone())
         .number_property(property_5_name.clone())
-        .input_property(property_6_name.clone(), DataType::Bool)
-        .output_property(property_7_name.clone(), DataType::Bool)
+        .array_property(property_6_name.clone())
+        .object_property(property_7_name.clone())
+        .input_property(property_8_name.clone(), DataType::Bool)
+        .output_property(property_9_name.clone(), DataType::Bool)
         .extension(extension_1_name.clone(), json!(true))
         .extension(extension_2_name.clone(), json!(true))
         .build();
@@ -42,13 +46,15 @@ fn component_builder_test() {
     assert!(component.has_property(property_5_name.clone()));
     assert!(component.has_property(property_6_name.clone()));
     assert!(component.has_property(property_7_name.clone()));
+    assert!(component.has_property(property_8_name.clone()));
+    assert!(component.has_property(property_9_name.clone()));
     assert!(!component.has_property(r_string()));
     assert_eq!(
         SocketType::Input,
-        component.properties.iter().find(|p| p.name == property_6_name.clone()).unwrap().socket_type
+        component.properties.iter().find(|p| p.name == property_8_name.clone()).unwrap().socket_type
     );
     assert_eq!(
         SocketType::Output,
-        component.properties.iter().find(|p| p.name == property_7_name.clone()).unwrap().socket_type
+        component.properties.iter().find(|p| p.name == property_9_name.clone()).unwrap().socket_type
     );
 }
