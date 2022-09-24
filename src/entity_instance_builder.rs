@@ -3,7 +3,8 @@ use std::collections::HashMap;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::model::{EntityInstance, EntityType};
+use crate::model::EntityInstance;
+use crate::model::EntityType;
 
 #[allow(dead_code)]
 pub struct EntityInstanceBuilder {

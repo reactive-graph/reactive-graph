@@ -1,9 +1,11 @@
-use crate::tests::utils::r_string;
-use crate::RelationInstanceBuilder;
-use indradb::{EdgeKey, Identifier};
-use inexor_rgf_core_model::PropertyInstanceGetter;
+use indradb::EdgeKey;
+use indradb::Identifier;
 use serde_json::json;
 use uuid::Uuid;
+
+use crate::model::PropertyInstanceGetter;
+use crate::tests::utils::r_string;
+use crate::RelationInstanceBuilder;
 
 #[test]
 fn relation_instance_builder_test() {

@@ -1,9 +1,11 @@
+use serde_json::json;
+
 use crate::model::DataType;
 use crate::model::PropertyType;
 use crate::model::SocketType;
+use crate::model::TypeContainer;
 use crate::tests::utils::r_string;
 use crate::RelationTypeBuilder;
-use serde_json::json;
 
 #[test]
 fn relation_type_builder_test() {

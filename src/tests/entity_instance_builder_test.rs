@@ -1,9 +1,11 @@
-use crate::model::DataType;
-use crate::tests::utils::r_string;
-use crate::{EntityInstanceBuilder, EntityTypeBuilder};
-use inexor_rgf_core_model::PropertyInstanceGetter;
 use serde_json::json;
 use uuid::Uuid;
+
+use crate::model::DataType;
+use crate::model::PropertyInstanceGetter;
+use crate::tests::utils::r_string;
+use crate::EntityInstanceBuilder;
+use crate::EntityTypeBuilder;
 
 #[test]
 fn entity_instance_builder_test() {

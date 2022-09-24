@@ -1,7 +1,10 @@
-use crate::tests::utils::r_string;
-use crate::{EntityInstanceBuilder, FlowInstanceBuilder, RelationInstanceBuilder};
 use serde_json::json;
 use uuid::Uuid;
+
+use crate::tests::utils::r_string;
+use crate::EntityInstanceBuilder;
+use crate::FlowInstanceBuilder;
+use crate::RelationInstanceBuilder;
 
 #[test]
 fn flow_builder_test() {

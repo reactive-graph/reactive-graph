@@ -1,6 +1,9 @@
 use serde_json::Value;
 
-use crate::model::{Component, DataType, Extension, PropertyType};
+use crate::model::Component;
+use crate::model::DataType;
+use crate::model::Extension;
+use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct ComponentBuilder {

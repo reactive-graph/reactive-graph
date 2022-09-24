@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use serde_json::Value;
 
+use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationType;
 use crate::RelationInstanceBuilder;
-use inexor_rgf_core_model::ReactiveEntityInstance;
 
 #[allow(dead_code)]
 pub struct ReactiveRelationInstanceBuilder {

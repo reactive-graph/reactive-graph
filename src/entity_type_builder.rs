@@ -1,6 +1,9 @@
 use serde_json::Value;
 
-use crate::model::{DataType, EntityType, Extension, PropertyType};
+use crate::model::DataType;
+use crate::model::EntityType;
+use crate::model::Extension;
+use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct EntityTypeBuilder {

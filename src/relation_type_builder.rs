@@ -1,6 +1,9 @@
 use serde_json::Value;
 
-use crate::model::{DataType, Extension, PropertyType, RelationType};
+use crate::model::DataType;
+use crate::model::Extension;
+use crate::model::PropertyType;
+use crate::model::RelationType;
 
 #[allow(dead_code)]
 pub struct RelationTypeBuilder {

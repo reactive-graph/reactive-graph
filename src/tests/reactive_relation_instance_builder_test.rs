@@ -1,8 +1,13 @@
-use crate::tests::utils::r_string;
-use crate::{EntityTypeBuilder, ReactiveEntityInstanceBuilder, ReactiveRelationInstanceBuilder, RelationTypeBuilder};
-use inexor_rgf_core_model::{DataType, PropertyInstanceGetter};
 use serde_json::json;
 use uuid::Uuid;
+
+use crate::model::DataType;
+use crate::model::PropertyInstanceGetter;
+use crate::tests::utils::r_string;
+use crate::EntityTypeBuilder;
+use crate::ReactiveEntityInstanceBuilder;
+use crate::ReactiveRelationInstanceBuilder;
+use crate::RelationTypeBuilder;
 
 #[test]
 fn reactive_relation_instance_builder_test() {
