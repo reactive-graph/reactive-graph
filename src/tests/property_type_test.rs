@@ -75,3 +75,14 @@ fn property_type_output_socket_test() {
     assert_eq!(DataType::String, property_type.data_type);
     assert_eq!(SocketType::Output, property_type.socket_type);
 }
+
+#[test]
+fn property_type_new_with_all_test() {
+    let property_name = r_string();
+    let description = r_string();
+    let property_type = PropertyType::new_with_all(property_name.clone(), description.clone(), DataType::String, SocketType::Input, Vec::new());
+    assert_eq!(property_name.clone(), property_type.name);
+    assert_eq!(description.clone(), property_type.description);
+    assert_eq!(DataType::String, property_type.data_type);
+    assert_eq!(SocketType::Input, property_type.socket_type);
+}
