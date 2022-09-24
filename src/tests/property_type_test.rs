@@ -1,5 +1,7 @@
 use crate::tests::utils::r_string;
-use crate::{DataType, PropertyType, SocketType};
+use crate::DataType;
+use crate::PropertyType;
+use crate::SocketType;
 
 #[test]
 fn property_type_test() {

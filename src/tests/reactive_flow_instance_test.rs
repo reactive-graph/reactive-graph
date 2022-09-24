@@ -5,7 +5,10 @@ use std::sync::Arc;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::tests::utils::{create_random_entity_instance, create_random_entity_instance_with_type, create_random_relation_instance, r_string};
+use crate::tests::utils::create_random_entity_instance;
+use crate::tests::utils::create_random_entity_instance_with_type;
+use crate::tests::utils::create_random_relation_instance;
+use crate::tests::utils::r_string;
 use crate::FlowInstance;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;

@@ -1,7 +1,11 @@
 use serde_json::json;
 
 use crate::tests::utils::r_string;
-use crate::{DataType, EntityType, Extension, PropertyType, TypeContainer};
+use crate::DataType;
+use crate::EntityType;
+use crate::Extension;
+use crate::PropertyType;
+use crate::TypeContainer;
 
 #[test]
 fn create_entity_type_test() {

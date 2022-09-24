@@ -9,7 +9,9 @@ use indradb::NamedProperty;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::tests::utils::{r_string, r_string_1000, r_string_255};
+use crate::tests::utils::r_string;
+use crate::tests::utils::r_string_1000;
+use crate::tests::utils::r_string_255;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 use crate::RelationInstance;

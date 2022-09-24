@@ -14,7 +14,9 @@ use indradb::VertexProperties;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::tests::utils::{create_random_entity_instance, r_json_string, r_string};
+use crate::tests::utils::create_random_entity_instance;
+use crate::tests::utils::r_json_string;
+use crate::tests::utils::r_string;
 use crate::ComponentContainer;
 use crate::EntityInstance;
 use crate::PropertyInstanceGetter;

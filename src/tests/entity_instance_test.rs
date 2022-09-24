@@ -2,13 +2,17 @@ use std::collections::HashMap;
 use std::ops::Index;
 use std::str::FromStr;
 
-use indradb::{Identifier, NamedProperty, Vertex, VertexProperties};
+use indradb::Identifier;
+use indradb::NamedProperty;
+use indradb::Vertex;
+use indradb::VertexProperties;
 use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::r_string;
 use crate::EntityInstance;
-use crate::{MutablePropertyInstanceSetter, PropertyInstanceGetter};
+use crate::MutablePropertyInstanceSetter;
+use crate::PropertyInstanceGetter;
 
 #[test]
 fn entity_instance_test() {
