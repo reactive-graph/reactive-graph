@@ -3,6 +3,7 @@ mod socket_type_test;
 
 mod component_test;
 mod entity_type_test;
+mod flow_type_test;
 mod property_type_test;
 mod relation_type_test;
 
