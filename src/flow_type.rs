@@ -51,6 +51,7 @@ pub struct FlowType {
 }
 
 impl FlowType {
+    #[allow(clippy::too_many_arguments)]
     pub fn new<S: Into<String>>(
         type_name: S,
         name: S,
