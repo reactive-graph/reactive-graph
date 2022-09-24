@@ -12,9 +12,9 @@ use crate::RelationInstance;
 #[derive(Debug)]
 pub struct FlowInstanceCreationError;
 
-/// A flow is a container for entity instances and relation instances.
+/// A flow instance is a container for entity instances and relation instances.
 ///
-/// A flow is strictly associated with a wrapper entity instance. The properties
+/// A flow instance is strictly associated with a wrapper entity instance. The properties
 /// of the wrapper entity instance are the properties of the flow.
 ///
 /// Additionally, flows can be nested -  from the perspective of the outer flow
@@ -34,34 +34,34 @@ pub struct FlowInstance {
     /// the id of the flow.
     pub id: Uuid,
 
-    /// The entity type of the flow.
+    /// The entity type of the flow instance.
     #[serde(alias = "type")]
     pub type_name: String,
 
-    /// The name of the flow.
+    /// The name of the flow instance.
     #[serde(default = "String::new")]
     pub name: String,
 
-    /// Textual description of the flow.
+    /// Textual description of the flow instance.
     #[serde(default = "String::new")]
     pub description: String,
 
-    /// The entity instances which are contained in this flow.
+    /// The entity instances which are contained in this flow instance.
     ///
     /// It can't have a default because the wrapper entity instance must be
     /// present in the list of entities.
     #[serde(alias = "entities")]
     pub entity_instances: Vec<EntityInstance>,
 
-    /// The relation instances which are contained in this flow.
+    /// The relation instances which are contained in this flow instance.
     ///
-    /// By default, no relation instances are contained in this flow.
+    /// By default, no relation instances are contained in this flow instance.
     #[serde(default = "Vec::new", alias = "relations")]
     pub relation_instances: Vec<RelationInstance>,
 }
 
 impl FlowInstance {
-    /// Constructs a new flow from the wrapper entity instance.
+    /// Constructs a new flow instance from the wrapper entity instance.
     pub fn from_instance_with_name<S: Into<String>>(wrapper_entity_instance: EntityInstance, name: S) -> FlowInstance {
         FlowInstance {
             id: wrapper_entity_instance.id,
