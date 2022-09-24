@@ -85,6 +85,18 @@ fn create_relation_instance_test() {
 }
 
 #[test]
+fn create_relation_instance_without_properties_test() {
+    let outbound_id = Uuid::new_v4();
+    let inbound_id = Uuid::new_v4();
+    let type_name = r_string();
+    let relation_instance = RelationInstance::new_without_properties(outbound_id, type_name.clone(), inbound_id);
+    assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
+    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
+    assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
+    assert_eq!(0, relation_instance.properties.len());
+}
+
+#[test]
 fn create_relation_instance_from_edge_properties() {
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
