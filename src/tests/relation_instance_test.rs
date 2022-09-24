@@ -141,6 +141,10 @@ fn relation_instance_typed_getter_test() {
     let s = r_string();
     i.set(property_name.clone(), json!(s.clone()));
     assert_eq!(s, i.as_string(property_name.clone()).unwrap());
+    i.set(property_name.clone(), json!([]));
+    assert_eq!(0, i.as_array(property_name.clone()).unwrap().len());
+    i.set(property_name.clone(), json!({}));
+    assert_eq!(0, i.as_object(property_name.clone()).unwrap().len());
 }
 
 #[test]
