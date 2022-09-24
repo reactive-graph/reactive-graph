@@ -78,7 +78,7 @@ fn create_relation_instance_test() {
     assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
     assert_eq!(type_name.clone(), relation_instance.type_name.clone());
     assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
-    assert_eq!(properties.clone(), properties.clone());
+    assert_eq!(properties.clone(), relation_instance.properties.clone());
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
