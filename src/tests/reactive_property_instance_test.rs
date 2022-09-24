@@ -1,6 +1,7 @@
 extern crate test;
 
 use std::ops::DerefMut;
+use std::ops::Index;
 use std::process::Termination;
 use std::sync::atomic::AtomicU64;
 use std::sync::atomic::Ordering;
@@ -155,11 +156,17 @@ fn reactive_property_instance_typed_getter_test() {
     let s = json!(rand_str.clone());
     assert_eq!(rand_str.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), s).as_string().unwrap());
 
-    // TODO: unit test as_array
-    // let array = json!(["an", "array"]);
+    let a = json!([1, 2, 3]);
+    let i = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), a);
+    assert_eq!(json!(1), i.as_array().unwrap().index(0).clone());
+    assert_eq!(json!(2), i.as_array().unwrap().index(1).clone());
+    assert_eq!(json!(3), i.as_array().unwrap().index(2).clone());
 
-    // TODO: unit test as_object
-    // let v = json!({ "a": "some string", "b": false });
+    let o = json!({
+        "k": "v"
+    });
+    let i = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), o);
+    assert_eq!(json!("v"), i.as_object().unwrap().index("k").clone());
 }
 
 #[test]
