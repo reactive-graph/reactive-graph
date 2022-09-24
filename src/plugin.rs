@@ -1,40 +1,72 @@
 use std::sync::Arc;
 
+use crate::ComponentBehaviourProviderError;
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::plugin_context::PluginContext;
 use crate::ComponentBehaviourProvider;
 use crate::ComponentProvider;
+use crate::ComponentProviderError;
 use crate::EntityBehaviourProvider;
+use crate::EntityBehaviourProviderError;
 use crate::EntityTypeProvider;
+use crate::EntityTypeProviderError;
 use crate::FlowInstanceProvider;
+use crate::FlowInstanceProviderError;
+use crate::FlowTypeProvider;
+use crate::FlowTypeProviderError;
+use crate::PluginContext;
+use crate::PluginContextInitializationError;
 use crate::RelationBehaviourProvider;
+use crate::RelationBehaviourProviderError;
 use crate::RelationTypeProvider;
+use crate::RelationTypeProviderError;
 use crate::WebResourceProvider;
+use crate::WebResourceProviderError;
 
 #[derive(Debug)]
-pub enum PluginError {
-    NoComponentProvider,
-    NoEntityTypeProvider,
-    NoRelationTypeProvider,
-    NoComponentBehaviourProvider,
-    NoEntityBehaviourProvider,
-    NoRelationBehaviourProvider,
-    NoFlowInstanceProvider,
-    NoWebResourceProvider,
-    PluginCreationError,
-    InitializationError,
-    PostInitializationError,
-    PreShutdownError,
-    ShutdownError,
-    Other { message: String },
+pub enum PluginLoadingError {
+    LoadingDynamicLibraryFailed,
+    CompilerVersionMismatch,
+    PluginApiVersionMismatch,
+    PluginContainerInitializationError,
+    PluginDeclarationError { message: String },
 }
 
-impl<S: ToString> From<S> for PluginError {
-    fn from(other: S) -> PluginError {
-        PluginError::Other { message: other.to_string() }
+impl<S: ToString> From<S> for PluginLoadingError {
+    fn from(other: S) -> PluginLoadingError {
+        PluginLoadingError::PluginDeclarationError { message: other.to_string() }
     }
+}
+
+#[derive(Debug)]
+pub enum PluginUnloadingError {
+    UnloadingFailed,
+}
+
+#[derive(Debug)]
+pub enum PluginMetadataError {
+    InvalidMetadataError,
+}
+
+#[derive(Debug)]
+pub enum PluginInitializationError {
+    InitializationFailed,
+}
+
+#[derive(Debug)]
+pub enum PluginPostInitializationError {
+    PostInitializationFailed,
+}
+
+#[derive(Debug)]
+pub enum PluginPreShutdownError {
+    PreShutdownFailed,
+}
+
+#[derive(Debug)]
+pub enum PluginShutdownError {
+    ShutdownFailed,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -42,36 +74,193 @@ pub struct PluginMetadata {
     pub name: String,
     pub description: String,
     pub version: String,
+    pub depends_on: Vec<String>,
+}
+
+#[macro_export]
+macro_rules! plugin_metadata {
+    ($( $dependency:expr ),*) => {{
+        let mut depends_on = Vec::new();
+        $(
+            depends_on.push(String::from($dependency));
+        )*
+        Ok(PluginMetadata {
+            name: env!("CARGO_PKG_NAME").into(),
+            description: env!("CARGO_PKG_DESCRIPTION").into(),
+            version: env!("CARGO_PKG_VERSION").into(),
+            depends_on,
+        })
+    }};
+}
+
+#[macro_export]
+macro_rules! component_provider {
+    ($component_provider:expr) => {{
+        let component_provider = $component_provider.clone();
+        let component_provider: Result<Arc<dyn ComponentProvider>, _> = <dyn query_interface::Object>::query_arc(component_provider);
+        if component_provider.is_err() {
+            return Err(ComponentProviderError::InitializationError);
+        }
+        Ok(component_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! entity_type_provider {
+    ($entity_type_provider:expr) => {{
+        let entity_type_provider = $entity_type_provider.clone();
+        let entity_type_provider: Result<Arc<dyn EntityTypeProvider>, _> = <dyn query_interface::Object>::query_arc(entity_type_provider);
+        if entity_type_provider.is_err() {
+            return Err(EntityTypeProviderError::InitializationError);
+        }
+        Ok(entity_type_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! relation_type_provider {
+    ($relation_type_provider:expr) => {{
+        let relation_type_provider = $relation_type_provider.clone();
+        let relation_type_provider: Result<Arc<dyn RelationTypeProvider>, _> = <dyn query_interface::Object>::query_arc(relation_type_provider);
+        if relation_type_provider.is_err() {
+            return Err(RelationTypeProviderError::InitializationError);
+        }
+        Ok(relation_type_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! flow_type_provider {
+    ($flow_type_provider:expr) => {{
+        let flow_type_provider = $flow_type_provider.clone();
+        let flow_type_provider: Result<Arc<dyn FlowTypeProvider>, _> = <dyn query_interface::Object>::query_arc(flow_type_provider);
+        if flow_type_provider.is_err() {
+            return Err(FlowTypeProviderError::InitializationError);
+        }
+        Ok(flow_type_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! component_behaviour_provider {
+    ($component_behaviour_provider:expr) => {{
+        let component_behaviour_provider = $component_behaviour_provider.clone();
+        let component_behaviour_provider: Result<Arc<dyn ComponentBehaviourProvider>, _> =
+            <dyn query_interface::Object>::query_arc(component_behaviour_provider);
+        if component_behaviour_provider.is_err() {
+            return Err(ComponentBehaviourProviderError::InitializationError);
+        }
+        Ok(component_behaviour_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! entity_behaviour_provider {
+    ($entity_behaviour_provider:expr) => {{
+        let entity_behaviour_provider = $entity_behaviour_provider.clone();
+        let entity_behaviour_provider: Result<Arc<dyn EntityBehaviourProvider>, _> = <dyn query_interface::Object>::query_arc(entity_behaviour_provider);
+        if entity_behaviour_provider.is_err() {
+            return Err(EntityBehaviourProviderError::InitializationError);
+        }
+        Ok(entity_behaviour_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! relation_behaviour_provider {
+    ($relation_behaviour_provider:expr) => {{
+        let relation_behaviour_provider = $relation_behaviour_provider.clone();
+        let relation_behaviour_provider: Result<Arc<dyn RelationBehaviourProvider>, _> = <dyn query_interface::Object>::query_arc(relation_behaviour_provider);
+        if relation_behaviour_provider.is_err() {
+            return Err(RelationBehaviourProviderError::InitializationError);
+        }
+        Ok(relation_behaviour_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! flow_instance_provider {
+    ($flow_instance_provider:expr) => {{
+        let flow_instance_provider = $flow_instance_provider.clone();
+        let flow_instance_provider: Result<Arc<dyn FlowInstanceProvider>, _> = <dyn query_interface::Object>::query_arc(flow_instance_provider);
+        if flow_instance_provider.is_err() {
+            return Err(FlowInstanceProviderError::InitializationError);
+        }
+        Ok(flow_instance_provider.ok())
+    }};
+}
+
+#[macro_export]
+macro_rules! web_resource_provider {
+    ($web_resource_provider:expr) => {{
+        let web_resource_provider = $web_resource_provider.clone();
+        let web_resource_provider: Result<Arc<dyn WebResourceProvider>, _> = <dyn query_interface::Object>::query_arc(web_resource_provider);
+        if web_resource_provider.is_err() {
+            return Err(WebResourceProviderError::InitializationError);
+        }
+        Ok(web_resource_provider.ok())
+    }};
 }
 
 pub trait Plugin: Send + Sync {
-    fn metadata(&self) -> Result<PluginMetadata, PluginError>;
+    fn metadata(&self) -> Result<PluginMetadata, PluginMetadataError>;
 
-    fn init(&self) -> Result<(), PluginError>;
+    fn init(&self) -> Result<(), PluginInitializationError> {
+        Ok(())
+    }
 
-    fn post_init(&self) -> Result<(), PluginError>;
+    fn post_init(&self) -> Result<(), PluginPostInitializationError> {
+        Ok(())
+    }
 
-    fn pre_shutdown(&self) -> Result<(), PluginError>;
+    fn pre_shutdown(&self) -> Result<(), PluginPreShutdownError> {
+        Ok(())
+    }
 
-    fn shutdown(&self) -> Result<(), PluginError>;
+    fn shutdown(&self) -> Result<(), PluginShutdownError> {
+        Ok(())
+    }
 
-    fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginError>;
+    #[allow(unused_variables)]
+    fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginContextInitializationError> {
+        Ok(())
+    }
 
-    fn get_component_provider(&self) -> Result<Arc<dyn ComponentProvider>, PluginError>;
+    fn get_component_provider(&self) -> Result<Option<Arc<dyn ComponentProvider>>, ComponentProviderError> {
+        Ok(None)
+    }
 
-    fn get_entity_type_provider(&self) -> Result<Arc<dyn EntityTypeProvider>, PluginError>;
+    fn get_entity_type_provider(&self) -> Result<Option<Arc<dyn EntityTypeProvider>>, EntityTypeProviderError> {
+        Ok(None)
+    }
 
-    fn get_relation_type_provider(&self) -> Result<Arc<dyn RelationTypeProvider>, PluginError>;
+    fn get_relation_type_provider(&self) -> Result<Option<Arc<dyn RelationTypeProvider>>, RelationTypeProviderError> {
+        Ok(None)
+    }
 
-    fn get_component_behaviour_provider(&self) -> Result<Arc<dyn ComponentBehaviourProvider>, PluginError>;
+    fn get_flow_type_provider(&self) -> Result<Option<Arc<dyn FlowTypeProvider>>, FlowTypeProviderError> {
+        Ok(None)
+    }
 
-    fn get_entity_behaviour_provider(&self) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError>;
+    fn get_component_behaviour_provider(&self) -> Result<Option<Arc<dyn ComponentBehaviourProvider>>, ComponentBehaviourProviderError> {
+        Ok(None)
+    }
 
-    fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError>;
+    fn get_entity_behaviour_provider(&self) -> Result<Option<Arc<dyn EntityBehaviourProvider>>, EntityBehaviourProviderError> {
+        Ok(None)
+    }
 
-    fn get_flow_instance_provider(&self) -> Result<Arc<dyn FlowInstanceProvider>, PluginError>;
+    fn get_relation_behaviour_provider(&self) -> Result<Option<Arc<dyn RelationBehaviourProvider>>, RelationBehaviourProviderError> {
+        Ok(None)
+    }
 
-    fn get_web_resource_provider(&self) -> Result<Arc<dyn WebResourceProvider>, PluginError>;
+    fn get_flow_instance_provider(&self) -> Result<Option<Arc<dyn FlowInstanceProvider>>, FlowInstanceProviderError> {
+        Ok(None)
+    }
+
+    fn get_web_resource_provider(&self) -> Result<Option<Arc<dyn WebResourceProvider>>, WebResourceProviderError> {
+        Ok(None)
+    }
 }
 
 #[derive(Copy, Clone)]

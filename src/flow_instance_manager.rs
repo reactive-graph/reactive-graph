@@ -1,7 +1,14 @@
 use crate::model::FlowInstance;
 use crate::model::ReactiveFlowInstance;
+use serde_json::Value;
+use std::collections::HashMap;
 use std::sync::Arc;
 use uuid::Uuid;
+
+#[derive(Debug)]
+pub enum FlowInstanceManagerError {
+    InitializationError,
+}
 
 #[derive(Debug)]
 pub enum FlowInstanceCreationError {
@@ -27,5 +34,22 @@ pub trait FlowInstanceManager: Send + Sync {
     /// and the ReactiveRelationInstanceManager.
     fn create(&self, flow_instance: FlowInstance) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError>;
 
+    /// Create a new reactive flow instance from the flow type by the given name.
+    ///
+    /// It's possible to individualize the flow instance with templating using the given variables.
+    ///
+    /// The wrapper entity instance will be created as well as entity and
+    /// relation instances.
+    ///
+    /// All reactive instances will be registered in the ReactiveEntityInstanceManager
+    /// and the ReactiveRelationInstanceManager.
+    fn create_from_type(
+        &self,
+        name: String,
+        variables: HashMap<String, Value>,
+        properties: HashMap<String, Value>,
+    ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError>;
+
+    /// Deletes the flow instance with the given id.
     fn delete(&self, id: Uuid);
 }

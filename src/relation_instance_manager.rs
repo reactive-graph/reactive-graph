@@ -7,6 +7,11 @@ use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
 
 #[derive(Debug)]
+pub enum RelationInstanceManagerError {
+    InitializationError,
+}
+
+#[derive(Debug)]
 pub enum RelationInstanceCreationError {
     Failed,
 }

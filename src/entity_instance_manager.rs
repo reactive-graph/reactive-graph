@@ -7,6 +7,11 @@ use crate::model::EntityInstance;
 use crate::model::ReactiveEntityInstance;
 
 #[derive(Debug)]
+pub enum EntityInstanceManagerError {
+    InitializationError,
+}
+
+#[derive(Debug)]
 pub enum EntityInstanceCreationError {
     Failed,
 }

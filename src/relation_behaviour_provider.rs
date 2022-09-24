@@ -4,6 +4,11 @@ use indradb::EdgeKey;
 
 use crate::model::ReactiveRelationInstance;
 
+#[derive(Debug)]
+pub enum RelationBehaviourProviderError {
+    InitializationError,
+}
+
 pub trait RelationBehaviourProvider: Send + Sync {
     /// Possibly adds new behaviour to the given relation instance
     fn add_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>);

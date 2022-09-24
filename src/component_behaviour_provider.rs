@@ -6,6 +6,11 @@ use crate::model::ReactiveRelationInstance;
 use indradb::EdgeKey;
 use uuid::Uuid;
 
+#[derive(Debug)]
+pub enum ComponentBehaviourProviderError {
+    InitializationError,
+}
+
 pub trait ComponentBehaviourProvider: Send + Sync {
     /// Possibly adds new behaviour to the given entity instance
     #[allow(unused_variables)]
