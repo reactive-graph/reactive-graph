@@ -15,9 +15,11 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::{create_random_entity_instance, r_json_string, r_string};
+use crate::ComponentContainer;
 use crate::EntityInstance;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
+use crate::ReactiveBehaviourContainer;
 use crate::ReactiveEntityInstance;
 use crate::ReactivePropertyInstance;
 

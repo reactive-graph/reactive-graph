@@ -3,6 +3,8 @@ use std::convert::TryFrom;
 use std::fmt;
 use std::sync::{Arc, RwLock};
 
+use crate::ReactivePropertyContainer;
+
 use indradb::EdgeKey;
 use serde_json::{Map, Value};
 use uuid::Uuid;

@@ -8,9 +8,12 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::ComponentContainer;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
+use crate::ReactiveBehaviourContainer;
 use crate::ReactiveEntityInstance;
+use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::RelationInstance;
 
@@ -142,44 +145,48 @@ impl ReactiveRelationInstance {
             .map(|t| EdgeKey::new(self.outbound.id, t, self.inbound.id))
             .ok()
     }
+}
 
-    pub fn tick(&self) {
+impl ReactivePropertyContainer for ReactiveRelationInstance {
+    fn tick(&self) {
         for property_instance in &self.properties {
             property_instance.tick();
         }
     }
 
-    pub fn add_property<S: Into<String>>(&self, name: S, value: Value) {
+    fn add_property<S: Into<String>>(&self, name: S, value: Value) {
         let name = name.into();
         if !self.properties.contains_key(name.as_str()) {
             let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value);
             self.properties.insert(name, property_instance);
         }
     }
+}
 
-    pub fn add_component<S: Into<String>>(&self, component: S) {
+impl ComponentContainer for ReactiveRelationInstance {
+    fn add_component<S: Into<String>>(&self, component: S) {
         self.components.insert(component.into());
     }
 
-    pub fn remove_component<S: Into<String>>(&self, component: S) {
+    fn remove_component<S: Into<String>>(&self, component: S) {
         self.components.remove(component.into().as_str());
     }
 
-    /// Returns true, if the relation instance is composed with the given component.
-    pub fn is_a<S: Into<String>>(&self, component: S) -> bool {
+    fn is_a<S: Into<String>>(&self, component: S) -> bool {
         self.components.contains(component.into().as_str())
     }
+}
 
-    pub fn add_behaviour<S: Into<String>>(&self, behaviour: S) {
+impl ReactiveBehaviourContainer for ReactiveRelationInstance {
+    fn add_behaviour<S: Into<String>>(&self, behaviour: S) {
         self.behaviours.insert(behaviour.into());
     }
 
-    pub fn remove_behaviour<S: Into<String>>(&self, behaviour: S) {
+    fn remove_behaviour<S: Into<String>>(&self, behaviour: S) {
         self.behaviours.remove(behaviour.into().as_str());
     }
 
-    /// Returns true, if the relation instance behaves as the given behaviour.
-    pub fn behaves_as<S: Into<String>>(&self, behaviour: S) -> bool {
+    fn behaves_as<S: Into<String>>(&self, behaviour: S) -> bool {
         self.behaviours.contains(behaviour.into().as_str())
     }
 }

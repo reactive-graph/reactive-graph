@@ -5,6 +5,7 @@ use crate::DataType;
 use crate::Extension;
 use crate::PropertyType;
 use crate::RelationType;
+use crate::TypeContainer;
 
 #[test]
 fn create_relation_type_test() {
