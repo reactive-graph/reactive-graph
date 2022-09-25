@@ -68,7 +68,7 @@ impl MutationFlowTypes {
         flow_type_manager.register(flow_type.clone());
         Ok(flow_type.into())
     }
-    
+
     /// Deletes the flow type with the given name.
     async fn delete(&self, context: &Context<'_>, name: String) -> Result<bool> {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager>>()?;
