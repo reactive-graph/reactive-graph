@@ -96,8 +96,7 @@ The following table shows that an instance and the corresponding type:
 |---------------|-------------------|
 | Entity Type   | Entity Instance   |
 | Relation Type | Relation Instance |
-| Entity Type   | Flow              |
-
+| Entity Type   | Flow Instance     |
 
 ```mermaid
 erDiagram
@@ -105,10 +104,10 @@ erDiagram
     Relation-Instance
     Entity-Type
     Entity-Instance
-    Flow
+    Flow-Instance
     Relation-Instance o{--|| Relation-Type : is_a
     Entity-Instance o{--|| Entity-Type : is_a
-    Flow o{--|| Entity-Type : is_a
+    Flow-Instance o{--|| Entity-Type : is_a
 ```
 
 ### Example: Relation Instances & Entity Instances
