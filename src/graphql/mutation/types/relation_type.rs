@@ -32,13 +32,13 @@ impl MutationRelationTypes {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
-        if relation_type_manager.has(name.clone()) {
+        if relation_type_manager.has(&name) {
             return Err(Error::new(format!("Relation type {} already exists", name)));
         }
-        if !entity_type_manager.has(outbound_type.clone()) {
+        if !entity_type_manager.has(&outbound_type) {
             return Err(Error::new(format!("Outbound entity type {} does not exist", outbound_type)));
         }
-        if !entity_type_manager.has(inbound_type.clone()) {
+        if !entity_type_manager.has(&inbound_type) {
             return Err(Error::new(format!("Inbound entity type {} does not exist", inbound_type)));
         }
 
@@ -100,7 +100,7 @@ impl MutationRelationTypes {
     /// Deletes the relation type with the given name.
     async fn delete(&self, context: &Context<'_>, name: String) -> Result<bool> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
-        relation_type_manager.delete(name);
+        relation_type_manager.delete(name.as_str());
         Ok(true)
     }
 }

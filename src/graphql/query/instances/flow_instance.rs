@@ -5,10 +5,10 @@ use uuid::Uuid;
 
 use crate::api::EntityTypeManager;
 use crate::graphql::query::{GraphQLEntityInstance, GraphQLEntityType, GraphQLRelationInstance};
-use crate::model::ReactiveFlow;
+use crate::model::ReactiveFlowInstance;
 
-pub struct GraphQLFlow {
-    flow: Arc<ReactiveFlow>,
+pub struct GraphQLFlowInstance {
+    flow_instance: Arc<ReactiveFlowInstance>,
 }
 
 /// A flow is a container for entity instances and relation instances.
@@ -24,19 +24,19 @@ pub struct GraphQLFlow {
 ///
 /// It's even possible to connect entity instances from different flows with relation
 /// instances.
-#[Object(name = "Flow")]
-impl GraphQLFlow {
+#[Object(name = "FlowInstance")]
+impl GraphQLFlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///
     /// This means the vector of entity instances must contain an instance with
     /// the id of the flow.
     async fn id(&self) -> Uuid {
-        self.flow.id
+        self.flow_instance.id
     }
 
     /// The label of the entity instance if available.
     async fn label(&self) -> Option<String> {
-        self.flow
+        self.flow_instance
             .get_wrapper_entity_instance()
             .unwrap()
             .properties
@@ -52,18 +52,18 @@ impl GraphQLFlow {
             return None;
         }
         let entity_type_manager = entity_type_manager.unwrap();
-        let entity_type = entity_type_manager.get(self.flow.type_name.clone())?;
+        let entity_type = entity_type_manager.get(&self.flow_instance.type_name)?;
         Some(entity_type.into())
     }
 
     /// The entity instance which is the wrapper for this flow.
     async fn wrapper(&self) -> Option<GraphQLEntityInstance> {
-        self.flow.get_wrapper_entity_instance().map(|e| e.into())
+        self.flow_instance.get_wrapper_entity_instance().map(|e| e.into())
     }
 
     /// The entity instances contained by this flow.
     async fn entities(&self) -> Vec<GraphQLEntityInstance> {
-        let reader = self.flow.entity_instances.read().unwrap();
+        let reader = self.flow_instance.entity_instances.read().unwrap();
         reader
             .iter()
             .map(|(_, entity_instance)| {
@@ -75,7 +75,7 @@ impl GraphQLFlow {
 
     /// The relation instances contained by this flow.
     async fn relations(&self) -> Vec<GraphQLRelationInstance> {
-        let reader = self.flow.relation_instances.read().unwrap();
+        let reader = self.flow_instance.relation_instances.read().unwrap();
         reader
             .iter()
             .map(|(_, relation_instance)| {
@@ -86,8 +86,8 @@ impl GraphQLFlow {
     }
 }
 
-impl From<Arc<ReactiveFlow>> for GraphQLFlow {
-    fn from(flow: Arc<ReactiveFlow>) -> Self {
-        GraphQLFlow { flow }
+impl From<Arc<ReactiveFlowInstance>> for GraphQLFlowInstance {
+    fn from(flow: Arc<ReactiveFlowInstance>) -> Self {
+        GraphQLFlowInstance { flow_instance: flow }
     }
 }

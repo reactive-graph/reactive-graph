@@ -83,6 +83,9 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
     // TODO: Rename to: "get_all"
     fn get_relation_instances(&self) -> Vec<Arc<ReactiveRelationInstance>>;
 
+    /// Returns the count of registered reactive relation instances.
+    fn count_relation_instances(&self) -> usize;
+
     /// Returns all edge keys.
     fn get_keys(&self) -> Vec<EdgeKey>;
 

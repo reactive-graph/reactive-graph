@@ -3,15 +3,15 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::graphql::mutation::{GraphQLEntityInstanceDefinition, GraphQLRelationInstanceDefinition};
-use crate::model::Flow;
+use crate::model::FlowInstance;
 
 /// Represents a flow with entity instances and relation instances.
 ///
 /// The entity type of the flow and the entity types of each provided entity instance must exist.
 /// The relation types of each provided relation instance must exist.
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
-#[graphql(name = "FlowDefinition")]
-pub struct GraphQLFlowDefinition {
+#[graphql(name = "FlowInstanceDefinition")]
+pub struct GraphQLFlowInstanceDefinition {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///
     /// This means the vector of entity instances must contain an instance with
@@ -41,9 +41,9 @@ pub struct GraphQLFlowDefinition {
     pub relation_instances: Vec<GraphQLRelationInstanceDefinition>,
 }
 
-impl From<GraphQLFlowDefinition> for Flow {
-    fn from(flow: GraphQLFlowDefinition) -> Self {
-        Flow {
+impl From<GraphQLFlowInstanceDefinition> for FlowInstance {
+    fn from(flow: GraphQLFlowInstanceDefinition) -> Self {
+        FlowInstance {
             id: flow.id,
             type_name: flow.type_name.clone(),
             name: flow.name.clone(),

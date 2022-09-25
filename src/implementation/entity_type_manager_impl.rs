@@ -44,14 +44,14 @@ impl EntityTypeManagerImpl {
     pub(crate) fn create_base_entity_types(&self) {
         self.register(
             EntityTypeBuilder::new("generic_flow")
-                .group("flow")
+                .namespace("flow")
                 .description("Generic flow without inputs and outputs")
                 .component("labeled")
                 .build(),
         );
         self.register(
             EntityTypeBuilder::new("system_event")
-                .group("events")
+                .namespace("events")
                 .description("Events of the type system")
                 .component("labeled")
                 .component("event")
@@ -67,7 +67,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         // Construct the type
         entity_type.t = Identifier::new(entity_type.name.clone()).unwrap();
         for component_name in entity_type.components.iter() {
-            match self.component_manager.get(component_name.clone()) {
+            match self.component_manager.get(&component_name) {
                 Some(component) => entity_type.properties.append(&mut component.clone().properties),
                 None => warn!("Entity type {} not fully initialized: No component named {}", entity_type.name.clone(), component_name),
             }
@@ -82,16 +82,22 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.0.read().unwrap().to_vec()
     }
 
-    fn has(&self, name: String) -> bool {
+    fn has(&self, name: &str) -> bool {
         self.get(name).is_some()
     }
 
-    fn get(&self, name: String) -> Option<EntityType> {
-        self.entity_types.0.read().unwrap().iter().find(|entity_type| entity_type.name == name).cloned()
+    fn get(&self, name: &str) -> Option<EntityType> {
+        self.entity_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .find(|entity_type| &entity_type.name == name)
+            .cloned()
     }
 
-    fn find(&self, search: String) -> Vec<EntityType> {
-        let matcher = WildMatch::new(search.as_str());
+    fn find(&self, search: &str) -> Vec<EntityType> {
+        let matcher = WildMatch::new(search);
         self.entity_types
             .0
             .read()
@@ -102,18 +108,22 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .collect()
     }
 
-    fn create(&self, name: String, group: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.register(EntityType::new(name, group, String::new(), components.to_vec(), properties.to_vec(), extensions.to_vec()));
+    fn count(&self) -> usize {
+        self.entity_types.0.read().unwrap().len()
+    }
+
+    fn create(&self, name: String, namespace: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.register(EntityType::new(name, namespace, String::new(), components.to_vec(), properties.to_vec(), extensions.to_vec()));
     }
 
     /// TODO: first delete the entity instance of this type, then delete the entity type itself.
-    fn delete(&self, name: String) {
-        let event = SystemEvent::EntityTypeDeleted(name.clone());
+    fn delete(&self, name: &str) {
+        let event = SystemEvent::EntityTypeDeleted(name.to_string());
         self.entity_types.0.write().unwrap().retain(|entity_type| entity_type.name != name);
         self.event_manager.emit_event(event);
     }
 
-    fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError> {
+    fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let entity_type: EntityType = serde_json::from_reader(reader)?;
@@ -121,9 +131,9 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         Ok(entity_type)
     }
 
-    fn export(&self, name: String, path: String) {
-        if let Some(entity_type) = self.get(name.clone()) {
-            match File::create(path.clone()) {
+    fn export(&self, name: &str, path: &str) {
+        if let Some(entity_type) = self.get(&name) {
+            match File::create(path) {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &entity_type);
                     if result.is_err() {
@@ -159,10 +169,6 @@ impl Lifecycle for EntityTypeManagerImpl {
     fn init(&self) {
         self.create_base_entity_types();
     }
-
-    fn post_init(&self) {}
-
-    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         // TODO: remove?

@@ -6,7 +6,8 @@ use log::debug;
 use crate::api::EntityTypeManager;
 use crate::builder::EntityTypeBuilder;
 use crate::graphql::mutation::PropertyTypeDefinition;
-use crate::graphql::query::{GraphQLEntityType, GraphQLExtension};
+use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLExtension;
 
 #[derive(Default)]
 pub struct MutationEntityTypes;
@@ -19,7 +20,7 @@ impl MutationEntityTypes {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "The name of the entity type.")] name: String,
-        #[graphql(desc = "The entity type belongs to this group.")] group: Option<String>,
+        #[graphql(desc = "The namespace the entity type belongs to.")] namespace: Option<String>,
         components: Option<Vec<String>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,
@@ -28,13 +29,13 @@ impl MutationEntityTypes {
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
-        if entity_type_manager.has(name.clone()) {
+        if entity_type_manager.has(&name) {
             return Err(Error::new(format!("Entity type {} already exists", name)));
         }
 
         let mut entity_type_builder = EntityTypeBuilder::new(name);
-        if group.is_some() {
-            entity_type_builder.group(group.unwrap());
+        if namespace.is_some() {
+            entity_type_builder.namespace(namespace.unwrap());
         }
         if components.is_some() {
             let components = components.unwrap();
@@ -70,7 +71,7 @@ impl MutationEntityTypes {
     /// Deletes the entity type with the given name.
     async fn delete(&self, context: &Context<'_>, name: String) -> Result<bool> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
-        entity_type_manager.delete(name);
+        entity_type_manager.delete(name.as_str());
         Ok(true)
     }
 }

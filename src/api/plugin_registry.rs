@@ -1,10 +1,14 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_core_plugins::PluginError;
 
 use crate::api::Lifecycle;
 use crate::plugin::proxy::PluginProxy;
+use crate::plugins::PluginInitializationError;
+use crate::plugins::PluginLoadingError;
+use crate::plugins::PluginPostInitializationError;
+use crate::plugins::PluginPreShutdownError;
+use crate::plugins::PluginShutdownError;
 
 #[async_trait]
 pub trait PluginRegistry: Send + Sync + Lifecycle {
@@ -18,14 +22,14 @@ pub trait PluginRegistry: Send + Sync + Lifecycle {
 
     fn unload_plugins(&self);
 
-    unsafe fn load(&self, library_path: String) -> Result<(), PluginError>;
+    unsafe fn load(&self, library_path: String) -> Result<(), PluginLoadingError>;
     // unsafe fn unload<P: AsRef<OsStr>>(&mut self, library_path: P) -> Result<(), PluginError>;
 
-    fn plugin_init(&self, name: String) -> Result<(), PluginError>;
+    fn plugin_init(&self, name: String) -> Result<(), PluginInitializationError>;
 
-    fn plugin_post_init(&self, name: String) -> Result<(), PluginError>;
+    fn plugin_post_init(&self, name: String) -> Result<(), PluginPostInitializationError>;
 
-    fn plugin_pre_shutdown(&self, name: String) -> Result<(), PluginError>;
+    fn plugin_pre_shutdown(&self, name: String) -> Result<(), PluginPreShutdownError>;
 
-    fn plugin_shutdown(&self, name: String) -> Result<(), PluginError>;
+    fn plugin_shutdown(&self, name: String) -> Result<(), PluginShutdownError>;
 }

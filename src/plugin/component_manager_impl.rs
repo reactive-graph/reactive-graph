@@ -1,7 +1,8 @@
-use crate::model::{Component, PropertyType};
-use crate::plugins::component_manager::ComponentCreationError;
-use crate::plugins::ComponentManager;
 use std::sync::Arc;
+
+use crate::model::Component;
+use crate::model::PropertyType;
+use crate::plugins::ComponentManager;
 
 pub struct ComponentManagerImpl {
     component_manager: Arc<dyn crate::api::ComponentManager>,
@@ -17,31 +18,35 @@ impl ComponentManager for ComponentManagerImpl {
         self.component_manager.get_components()
     }
 
-    fn has(&self, name: String) -> bool {
+    fn has(&self, name: &str) -> bool {
         self.component_manager.has(name)
     }
 
-    fn get(&self, name: String) -> Option<Component> {
+    fn get(&self, name: &str) -> Option<Component> {
         self.component_manager.get(name)
     }
 
-    fn find(&self, search: String) -> Vec<Component> {
+    fn find(&self, search: &str) -> Vec<Component> {
         self.component_manager.find(search)
     }
 
-    fn create(&self, name: String, properties: Vec<PropertyType>) {
+    fn count(&self) -> usize {
+        self.component_manager.count()
+    }
+
+    fn create(&self, name: &str, properties: Vec<PropertyType>) {
         self.component_manager.create(name, properties)
     }
 
-    fn delete(&self, name: String) {
+    fn delete(&self, name: &str) {
         self.component_manager.delete(name)
     }
 
-    fn import(&self, path: String) {
+    fn import(&self, path: &str) {
         self.component_manager.import(path)
     }
 
-    fn export(&self, name: String, path: String) {
+    fn export(&self, name: &str, path: &str) {
         self.component_manager.export(name, path)
     }
 }

@@ -8,6 +8,7 @@ use crate::graphql::mutation::GraphQLEdgeKey;
 use crate::graphql::query::{GraphQLPropertyInstance, GraphQLRelationInstance};
 use crate::model::PropertyInstanceSetter;
 use indradb::EdgeKey;
+use inexor_rgf_core_model::ReactivePropertyContainer;
 
 #[derive(Default)]
 pub struct MutationRelationInstances;
@@ -41,7 +42,7 @@ impl MutationRelationInstances {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
 
-        let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
+        let relation_type = relation_type_manager.get_starts_with(&edge_key.type_name);
         if relation_type.is_none() {
             return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name)));
         }
@@ -98,7 +99,7 @@ impl MutationRelationInstances {
             return Err(Error::new(format!("Inbound entity {} does not exist!", edge_key.inbound_id)));
         }
 
-        let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
+        let relation_type = relation_type_manager.get_starts_with(&edge_key.type_name);
         if relation_type.is_none() {
             return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name)));
         }
@@ -120,13 +121,21 @@ impl MutationRelationInstances {
             }
         }
         if let Some(properties) = properties {
-            for property in properties {
+            // fill all values first without propagation
+            for property in properties.clone() {
                 debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
                 relation_instance.set_no_propagate(property.name.clone(), property.value.clone());
             }
+            // tick every property that has been changed before, this is still not transactional
+            for property in properties {
+                debug!("tick property {} = {}", property.name.clone(), property.value.clone().to_string());
+                if let Some(property_instance) = relation_instance.properties.get(property.name.as_str()) {
+                    property_instance.tick();
+                }
+            }
         }
         // TODO: it's still not a transactional mutation
-        relation_instance.tick();
+        // relation_instance.tick();
         Ok(relation_instance.into())
     }
 
@@ -165,7 +174,7 @@ impl MutationRelationInstances {
             return Err(Error::new(format!("Inbound entity {} does not exist!", edge_key.inbound_id)));
         }
 
-        let relation_type = relation_type_manager.get_starts_with(edge_key.type_name.clone());
+        let relation_type = relation_type_manager.get_starts_with(&edge_key.type_name);
         if relation_type.is_none() {
             return Err(Error::new(format!("Relation type {} does not exist!", edge_key.type_name)));
         }

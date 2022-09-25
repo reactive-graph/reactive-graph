@@ -54,7 +54,7 @@ impl ComponentManagerImpl {
 #[provides]
 impl ComponentManager for ComponentManagerImpl {
     fn register(&self, component: crate::model::Component) {
-        if !self.has(component.name.clone()) {
+        if !self.has(&component.name) {
             let name = component.name.clone();
             debug!("Registered component {}", name);
             self.components.0.write().unwrap().push(component);
@@ -67,16 +67,16 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.0.read().unwrap().to_vec()
     }
 
-    fn has(&self, name: String) -> bool {
+    fn has(&self, name: &str) -> bool {
         self.get(name).is_some()
     }
 
-    fn get(&self, name: String) -> Option<crate::model::Component> {
+    fn get(&self, name: &str) -> Option<crate::model::Component> {
         self.components.0.read().unwrap().iter().find(|component| component.name == name).cloned()
     }
 
-    fn find(&self, search: String) -> Vec<crate::model::Component> {
-        let matcher = WildMatch::new(search.as_str());
+    fn find(&self, search: &str) -> Vec<crate::model::Component> {
+        let matcher = WildMatch::new(search);
         self.components
             .0
             .read()
@@ -87,17 +87,21 @@ impl ComponentManager for ComponentManagerImpl {
             .collect()
     }
 
-    fn create(&self, name: String, properties: Vec<PropertyType>) {
+    fn count(&self) -> usize {
+        self.components.0.read().unwrap().len()
+    }
+
+    fn create(&self, name: &str, properties: Vec<PropertyType>) {
         self.register(crate::model::Component::new(name, properties.to_vec()));
     }
 
-    fn delete(&self, name: String) {
-        let event = SystemEvent::ComponentDeleted(name.clone());
+    fn delete(&self, name: &str) {
+        let event = SystemEvent::ComponentDeleted(name.to_string());
         self.components.0.write().unwrap().retain(|component| component.name != name);
         self.event_manager.emit_event(event);
     }
 
-    fn import(&self, path: String) {
+    fn import(&self, path: &str) {
         if let Ok(file) = File::open(path) {
             let reader = BufReader::new(file);
             if let Ok(component) = serde_json::from_reader(reader) {
@@ -106,8 +110,8 @@ impl ComponentManager for ComponentManagerImpl {
         }
     }
 
-    fn export(&self, name: String, path: String) {
-        if let Some(component) = self.get(name.clone()) {
+    fn export(&self, name: &str, path: &str) {
+        if let Some(component) = self.get(&name) {
             match File::create(path.clone()) {
                 Ok(file) => {
                     if let Err(error) = serde_json::to_writer_pretty(&file, &component) {
@@ -144,10 +148,6 @@ impl Lifecycle for ComponentManagerImpl {
     fn init(&self) {
         self.create_base_components();
     }
-
-    fn post_init(&self) {}
-
-    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         // TODO: remove?

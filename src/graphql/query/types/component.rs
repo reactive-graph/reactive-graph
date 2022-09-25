@@ -1,4 +1,5 @@
 use crate::api::{EntityTypeManager, RelationTypeManager};
+use crate::model::TypeContainer;
 use async_graphql::*;
 use std::sync::Arc;
 

@@ -4,9 +4,13 @@ use async_graphql::*;
 use log::debug;
 use uuid::Uuid;
 
-use crate::api::{EntityTypeManager, ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
-use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance};
+use crate::api::EntityTypeManager;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::query::GraphQLEntityInstance;
+use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::PropertyInstanceSetter;
+use crate::model::ReactivePropertyContainer;
 
 #[derive(Default)]
 pub struct MutationEntityInstances;
@@ -35,7 +39,7 @@ impl MutationEntityInstances {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
-        let entity_type = entity_type_manager.get(type_name.clone());
+        let entity_type = entity_type_manager.get(&type_name);
 
         if entity_type.is_none() {
             return Err(Error::new(format!("Entity type {type_name} does not exist")));
@@ -94,13 +98,21 @@ impl MutationEntityInstances {
             }
         }
         if let Some(properties) = properties {
-            for property in properties {
+            // fill all values first without propagation
+            for property in properties.clone() {
                 debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
                 entity_instance.set_no_propagate(property.name.clone(), property.value.clone());
             }
+            // tick every property that has been changed before, this is still not transactional
+            for property in properties {
+                debug!("tick property {} = {}", property.name.clone(), property.value.clone().to_string());
+                if let Some(property_instance) = entity_instance.properties.get(property.name.as_str()) {
+                    property_instance.tick();
+                }
+            }
         }
         // TODO: it's still not a transactional mutation
-        entity_instance.tick();
+        // entity_instance.tick();
         Ok(entity_instance.into())
     }
 

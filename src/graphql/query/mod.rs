@@ -1,17 +1,17 @@
 use std::sync::Arc;
 
 use async_graphql::*;
+use log::error;
+use log::info;
 use uuid::Uuid;
 
-pub use flows::*;
 pub use instances::*;
 pub use types::*;
 
-use crate::api::ReactiveFlowManager;
+use crate::api::DynamicGraph;
 use crate::graphql::query::Instances;
 use crate::graphql::query::Types;
 
-pub mod flows;
 pub mod instances;
 pub mod types;
 
@@ -30,38 +30,18 @@ impl InexorQuery {
         Instances::default()
     }
 
-    /// Search for flows and their contained instances.
-    async fn flows(
-        &self,
-        context: &Context<'_>,
-        #[graphql(desc = "Filters by the id of the flow")] id: Option<Uuid>,
-        #[graphql(desc = "Filters by the label of the flow")] label: Option<String>,
-        #[graphql(name = "type", desc = "Filters by the flow type")] flow_type: Option<String>,
-    ) -> Vec<GraphQLFlow> {
-        if let Ok(flow_manager) = context.data::<Arc<dyn ReactiveFlowManager>>() {
-            if id.is_some() {
-                return match flow_manager.get(id.unwrap()).map(|flow| flow.into()) {
-                    Some(flow) => vec![flow],
-                    None => Vec::new(),
-                };
-            }
-            if label.is_some() {
-                let flow = flow_manager.get_by_label(label.unwrap()).map(|flow| {
-                    let flow: GraphQLFlow = flow.into();
-                    flow
-                });
-                return if flow.is_some() { vec![flow.unwrap()] } else { Vec::new() };
-            }
-            return flow_manager
-                .get_all()
-                .iter()
-                .filter(|flow| flow_type.is_none() || flow_type.clone().unwrap() == flow.type_name)
-                .map(|flow| {
-                    let flow: GraphQLFlow = flow.clone().into();
-                    flow
-                })
-                .collect();
+    async fn random_uuid(&self, _context: &Context<'_>) -> String {
+        Uuid::new_v4().to_string()
+    }
+
+    async fn dynamic_graph(&self, context: &Context<'_>) -> String {
+        let dynamic_graph = context.data::<Arc<dyn DynamicGraph>>();
+        if dynamic_graph.is_err() {
+            error!("error: {:?}", dynamic_graph.err().unwrap());
+            return "{}".to_owned();
         }
-        Vec::new()
+        let sdl = dynamic_graph.unwrap().create_sdl();
+        info!("Schema\n\n{}\n\n", sdl.to_string());
+        sdl.to_string()
     }
 }

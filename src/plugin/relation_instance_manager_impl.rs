@@ -44,7 +44,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError> {
-        let relation_type = self.relation_type_manager.get_starts_with(relation_instance.type_name.clone());
+        let relation_type = self.relation_type_manager.get_starts_with(&relation_instance.type_name);
         match relation_type {
             Some(relation_type) => {
                 let edge_key = relation_instance.get_key().unwrap();

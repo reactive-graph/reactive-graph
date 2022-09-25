@@ -72,10 +72,10 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
 
     fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationEdgeCreationError> {
         let type_name = edge_key.t.to_string();
-        if !self.relation_type_manager.has_starts_with(type_name.clone()) {
+        if !self.relation_type_manager.has_starts_with(&type_name) {
             return Err(RelationEdgeCreationError::RelationTypeMissing(type_name));
         }
-        let relation_type = self.relation_type_manager.get_starts_with(type_name).unwrap();
+        let relation_type = self.relation_type_manager.get_starts_with(&type_name).unwrap();
 
         let datastore = self.graph_database.get_datastore();
         let result = datastore.create_edge(&edge_key);

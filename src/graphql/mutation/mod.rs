@@ -1,10 +1,8 @@
 use async_graphql::*;
 
-pub use flows::*;
 pub use instances::*;
 pub use types::*;
 
-pub mod flows;
 pub mod instances;
 pub mod types;
 
@@ -21,10 +19,5 @@ impl InexorMutation {
     /// Mutations for instances (entity instances, relation instances).
     async fn instances(&self) -> MutationInstances {
         MutationInstances::default()
-    }
-
-    /// Mutations for flows and their contained instances.
-    async fn flows(&self) -> MutationFlows {
-        MutationFlows::default()
     }
 }

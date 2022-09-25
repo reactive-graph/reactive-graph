@@ -1,3 +1,11 @@
+use inexor_rgf_core_plugins::plugin::{
+    PluginInitializationError, PluginMetadataError, PluginPostInitializationError, PluginPreShutdownError, PluginShutdownError,
+};
+use inexor_rgf_core_plugins::{
+    ComponentBehaviourProviderError, ComponentProviderError, EntityBehaviourProviderError, EntityTypeProviderError, FlowInstanceProviderError,
+    FlowTypeProvider, FlowTypeProviderError, PluginContextInitializationError, RelationBehaviourProviderError, RelationTypeProviderError,
+    WebResourceProviderError,
+};
 use std::sync::Arc;
 
 use libloading::Library;
@@ -5,7 +13,7 @@ use libloading::Library;
 use crate::plugins::plugin::PluginMetadata;
 use crate::plugins::plugin_context::PluginContext;
 use crate::plugins::{
-    ComponentBehaviourProvider, ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowProvider, Plugin, PluginError, RelationBehaviourProvider,
+    ComponentBehaviourProvider, ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowInstanceProvider, Plugin, RelationBehaviourProvider,
     RelationTypeProvider, WebResourceProvider,
 };
 
@@ -18,59 +26,63 @@ pub struct PluginProxy {
 }
 
 impl Plugin for PluginProxy {
-    fn metadata(&self) -> Result<PluginMetadata, PluginError> {
+    fn metadata(&self) -> Result<PluginMetadata, PluginMetadataError> {
         self.plugin.metadata()
     }
 
-    fn init(&self) -> Result<(), PluginError> {
+    fn init(&self) -> Result<(), PluginInitializationError> {
         self.plugin.init()
     }
 
-    fn post_init(&self) -> Result<(), PluginError> {
+    fn post_init(&self) -> Result<(), PluginPostInitializationError> {
         self.plugin.post_init()
     }
 
-    fn pre_shutdown(&self) -> Result<(), PluginError> {
+    fn pre_shutdown(&self) -> Result<(), PluginPreShutdownError> {
         self.plugin.pre_shutdown()
     }
 
-    fn shutdown(&self) -> Result<(), PluginError> {
+    fn shutdown(&self) -> Result<(), PluginShutdownError> {
         self.plugin.shutdown()
     }
 
-    fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginError> {
+    fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginContextInitializationError> {
         self.plugin.set_context(context.clone())
     }
 
-    fn get_component_provider(&self) -> Result<Arc<dyn ComponentProvider>, PluginError> {
+    fn get_component_provider(&self) -> Result<Option<Arc<dyn ComponentProvider>>, ComponentProviderError> {
         self.plugin.get_component_provider()
     }
 
-    fn get_entity_type_provider(&self) -> Result<Arc<dyn EntityTypeProvider>, PluginError> {
+    fn get_entity_type_provider(&self) -> Result<Option<Arc<dyn EntityTypeProvider>>, EntityTypeProviderError> {
         self.plugin.get_entity_type_provider()
     }
 
-    fn get_relation_type_provider(&self) -> Result<Arc<dyn RelationTypeProvider>, PluginError> {
+    fn get_relation_type_provider(&self) -> Result<Option<Arc<dyn RelationTypeProvider>>, RelationTypeProviderError> {
         self.plugin.get_relation_type_provider()
     }
 
-    fn get_component_behaviour_provider(&self) -> Result<Arc<dyn ComponentBehaviourProvider>, PluginError> {
+    fn get_flow_type_provider(&self) -> Result<Option<Arc<dyn FlowTypeProvider>>, FlowTypeProviderError> {
+        self.plugin.get_flow_type_provider()
+    }
+
+    fn get_component_behaviour_provider(&self) -> Result<Option<Arc<dyn ComponentBehaviourProvider>>, ComponentBehaviourProviderError> {
         self.plugin.get_component_behaviour_provider()
     }
 
-    fn get_entity_behaviour_provider(&self) -> Result<Arc<dyn EntityBehaviourProvider>, PluginError> {
+    fn get_entity_behaviour_provider(&self) -> Result<Option<Arc<dyn EntityBehaviourProvider>>, EntityBehaviourProviderError> {
         self.plugin.get_entity_behaviour_provider()
     }
 
-    fn get_relation_behaviour_provider(&self) -> Result<Arc<dyn RelationBehaviourProvider>, PluginError> {
+    fn get_relation_behaviour_provider(&self) -> Result<Option<Arc<dyn RelationBehaviourProvider>>, RelationBehaviourProviderError> {
         self.plugin.get_relation_behaviour_provider()
     }
 
-    fn get_flow_provider(&self) -> Result<Arc<dyn FlowProvider>, PluginError> {
-        self.plugin.get_flow_provider()
+    fn get_flow_instance_provider(&self) -> Result<Option<Arc<dyn FlowInstanceProvider>>, FlowInstanceProviderError> {
+        self.plugin.get_flow_instance_provider()
     }
 
-    fn get_web_resource_provider(&self) -> Result<Arc<dyn WebResourceProvider>, PluginError> {
+    fn get_web_resource_provider(&self) -> Result<Option<Arc<dyn WebResourceProvider>>, WebResourceProviderError> {
         self.plugin.get_web_resource_provider()
     }
 }

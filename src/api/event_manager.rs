@@ -18,6 +18,8 @@ pub enum SystemEventTypes {
     EntityTypeDeleted,
     RelationTypeCreated,
     RelationTypeDeleted,
+    FlowTypeCreated,
+    FlowTypeDeleted,
 
     /// The type system has changed
     TypeSystemChanged,
@@ -26,8 +28,8 @@ pub enum SystemEventTypes {
     EntityInstanceDeleted,
     RelationInstanceCreated,
     RelationInstanceDeleted,
-    FlowCreated,
-    FlowDeleted,
+    FlowInstanceCreated,
+    FlowInstanceDeleted,
 }
 
 pub enum SystemEvent {
@@ -37,13 +39,15 @@ pub enum SystemEvent {
     EntityTypeDeleted(String),
     RelationTypeCreated(String),
     RelationTypeDeleted(String),
+    FlowTypeCreated(String),
+    FlowTypeDeleted(String),
     TypeSystemChanged,
     EntityInstanceCreated(Uuid),
     EntityInstanceDeleted(Uuid),
     RelationInstanceCreated(EdgeKey),
     RelationInstanceDeleted(EdgeKey),
-    FlowCreated(Uuid),
-    FlowDeleted(Uuid),
+    FlowInstanceCreated(Uuid),
+    FlowInstanceDeleted(Uuid),
 }
 
 impl From<&SystemEvent> for SystemEventTypes {
@@ -55,13 +59,15 @@ impl From<&SystemEvent> for SystemEventTypes {
             SystemEvent::EntityTypeDeleted(_) => SystemEventTypes::EntityTypeDeleted,
             SystemEvent::RelationTypeCreated(_) => SystemEventTypes::RelationTypeCreated,
             SystemEvent::RelationTypeDeleted(_) => SystemEventTypes::RelationTypeDeleted,
+            SystemEvent::FlowTypeCreated(_) => SystemEventTypes::FlowTypeCreated,
+            SystemEvent::FlowTypeDeleted(_) => SystemEventTypes::FlowTypeDeleted,
             SystemEvent::TypeSystemChanged => SystemEventTypes::TypeSystemChanged,
             SystemEvent::EntityInstanceCreated(_) => SystemEventTypes::EntityInstanceCreated,
             SystemEvent::EntityInstanceDeleted(_) => SystemEventTypes::EntityInstanceDeleted,
             SystemEvent::RelationInstanceCreated(_) => SystemEventTypes::RelationInstanceCreated,
             SystemEvent::RelationInstanceDeleted(_) => SystemEventTypes::RelationInstanceDeleted,
-            SystemEvent::FlowCreated(_) => SystemEventTypes::FlowCreated,
-            SystemEvent::FlowDeleted(_) => SystemEventTypes::FlowDeleted,
+            SystemEvent::FlowInstanceCreated(_) => SystemEventTypes::FlowInstanceCreated,
+            SystemEvent::FlowInstanceDeleted(_) => SystemEventTypes::FlowInstanceDeleted,
         }
     }
 }

@@ -47,10 +47,10 @@ impl EntityVertexManager for EntityVertexManagerImpl {
     }
 
     fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError> {
-        if !self.entity_type_manager.has(type_name.clone()) {
+        if !self.entity_type_manager.has(&type_name) {
             return Err(EntityVertexCreationError::EntityTypeMissing(type_name));
         }
-        let entity_type = self.entity_type_manager.get(type_name).unwrap();
+        let entity_type = self.entity_type_manager.get(&type_name).unwrap();
 
         // TODO: check if the given properties are suitable for the entity type
         let result = self.graph_database.get_datastore().create_vertex_from_type(entity_type.t);
@@ -77,10 +77,10 @@ impl EntityVertexManager for EntityVertexManagerImpl {
             return Err(EntityVertexCreationError::UuidTaken(id));
         }
 
-        if !self.entity_type_manager.has(type_name.clone()) {
+        if !self.entity_type_manager.has(&type_name) {
             return Err(EntityVertexCreationError::EntityTypeMissing(type_name));
         }
-        let entity_type = self.entity_type_manager.get(type_name).unwrap();
+        let entity_type = self.entity_type_manager.get(&type_name).unwrap();
 
         let result = self.graph_database.get_datastore().create_vertex(&Vertex::with_id(id, entity_type.t));
         if result.is_err() {
