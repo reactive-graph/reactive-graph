@@ -5,6 +5,7 @@ use crate::EntityInstanceManager;
 use crate::EntityTypeManager;
 use crate::FlowInstanceManager;
 use crate::FlowTypeManager;
+use crate::GraphQLQueryService;
 use crate::RelationInstanceManager;
 use crate::RelationTypeManager;
 
@@ -34,4 +35,7 @@ pub trait PluginContext: Send + Sync {
 
     /// Returns the flow instance manager.
     fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager>;
+
+    /// Returns the GraphQL query service.
+    fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService>;
 }
