@@ -14,6 +14,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.7.0] - 2022-09-25
+
+### Added
+
+- Flow Types: Replicate and instantiate flows multiple times (like flow templates)
+- Dynamic Graph: A second GraphQL api make the access to the instance system more intuitive
+- Plugins: Avoid boilerplate using plugin macros
+- Plugins: Metadata about the plugin
+- Plugins: Dependency information
+- Plugins: Expose GraphQL query service to plugins
+
+### Changed
+
+- Plugin: Dedicated error messages for the plugin API
+- Plugin: Default trait implementations for the plugin API to reduce boilerplate
+- Plugin: Return option none if a plugin doesn't use certain functionality
+
+### Removed
+
 ## [0.6.0] - 2022-02-26
 
 ### Added
