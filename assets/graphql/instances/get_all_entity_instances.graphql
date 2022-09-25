@@ -1,0 +1,28 @@
+query getAllMqttBrokers {
+  instances {
+    entities (type: "mqtt_broker") {
+      id
+      label
+      components
+      behaviours
+      type {
+        components {
+          name
+        }
+      }
+      outbound {
+        inbound {
+          id
+          label
+          type {
+            name
+          }
+          properties {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+}

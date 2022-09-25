@@ -48,7 +48,7 @@ erDiagram
     Relation-Instance {
         string name
         string fullname
-        string group
+        string namespace
         string description
     }
     Property-Type ||--}o Property-Instance : is-a

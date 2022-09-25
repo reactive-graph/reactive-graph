@@ -1,0 +1,12 @@
+{
+  "id": "dynamic_graph",
+  "title": "Dynamic Graph",
+  "description": "Test",
+  "endpoint": "http://localhost:31415/dynamic_graph",
+  "tabs": [
+    {
+      "name": "Test",
+      "url": "/examples/dynamic-graph/dynamic-graph-test.graphql"
+    }
+  ]
+}

@@ -4,23 +4,23 @@ This plugin provides logical gates and operations.
 
 ## Components
 
-| Name              | Properties | DataType | SocketType | Description                                                |
-|-------------------|------------|----------|------------|------------------------------------------------------------|
-|                   |
-| condition         | condition  | bool     | input      | Accepts a boolean condition and returns an result          |
-|                   | result     | any      | output     | The datatype may be overridden by the concrete entity type |
-|                   |
-| action            | trigger    | bool     | input      | Triggers an action on `true`                               |
-|                   | result     | any      | output     | The datatype may be overridden by the concrete entity type |
-|                   |
-| generator         | trigger    | bool     | input      | Produces triggers (signals boolean `true`)                 |
-|                   |
-| logical_gate      | lhs        | bool     | input      |                                                            |
-|                   | rhs        | bool     | input      |                                                            |
-|                   | result     | bool     | output     |                                                            |
-|                   |
-| logical_operation | lhs        | bool     | input      |                                                            |
-|                   | result     | bool     | output     |                                                            |
+| Name                                                       | Properties | DataType | SocketType | Description                                                                |
+|------------------------------------------------------------|------------|----------|------------|----------------------------------------------------------------------------|
+|                                                            |
+| condition                                                  | condition  | bool     | input      | Accepts a boolean condition and returns an result                          |
+|                                                            | result     | any      | output     | The datatype may be overridden by the concrete entity type                 |
+|                                                            |
+| [action](./Reactive_Graph_Patterns_Generator_Action.md)    | trigger    | bool     | input      | Triggers an action when receiving a boolean `true` on the trigger property |
+|                                                            | result     | any      | output     | The datatype may be overridden by the concrete entity type                 |
+|                                                            |
+| [generator](./Reactive_Graph_Patterns_Generator_Action.md) | trigger    | bool     | output     | Produces triggers (sends boolean `true` signals)                           |
+|                                                            |
+| logical_gate                                               | lhs        | bool     | input      |                                                                            |
+|                                                            | rhs        | bool     | input      |                                                                            |
+|                                                            | result     | bool     | output     |                                                                            |
+|                                                            |
+| logical_operation                                          | lhs        | bool     | input      |                                                                            |
+|                                                            | result     | bool     | output     |                                                                            |
 
 ## Entity Types
 

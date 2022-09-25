@@ -49,3 +49,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 | Name                   | Repository                                                                                                   |
 |------------------------|--------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-json | [https://github.com/inexorgame/inexor-rgf-plugin-json](https://github.com/inexorgame/inexor-rgf-plugin-json) |
+
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugin-json/plugin-json.json") }}

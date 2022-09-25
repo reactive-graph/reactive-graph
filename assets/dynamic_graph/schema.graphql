@@ -10,13 +10,17 @@ type Abs {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Computes the arccosine of a number"
@@ -25,13 +29,17 @@ type Acos {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Inverse hyperbolic cosine function"
@@ -40,13 +48,17 @@ type Acosh {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Adds two integer numbers"
@@ -55,14 +67,18 @@ type Add {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "AND"
@@ -71,14 +87,18 @@ type And {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Array Contains"
@@ -87,9 +107,11 @@ type ArrayContains {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -98,6 +120,8 @@ type ArrayContains {
   named: cNamed
   result: JSON
   search: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Array Get By Index"
@@ -106,9 +130,11 @@ type ArrayGetByIndex {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -117,6 +143,8 @@ type ArrayGetByIndex {
   "The entity or relation has a name."
   named: cNamed
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Array Length"
@@ -125,9 +153,11 @@ type ArrayLength {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -135,6 +165,8 @@ type ArrayLength {
   length: JSON
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Array Pop"
@@ -143,9 +175,11 @@ type ArrayPop {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -153,6 +187,8 @@ type ArrayPop {
   "The entity or relation has a name."
   named: cNamed
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -162,9 +198,11 @@ type ArrayPush {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -172,6 +210,8 @@ type ArrayPush {
   "The entity or relation has a name."
   named: cNamed
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -181,9 +221,11 @@ type ArrayReverse {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -191,6 +233,8 @@ type ArrayReverse {
   "The entity or relation has a name."
   named: cNamed
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Value of type array"
@@ -199,14 +243,18 @@ type ArrayValue {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -216,13 +264,17 @@ type Asin {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Inverse hyperbolic sine function"
@@ -231,13 +283,17 @@ type Asinh {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Asset"
@@ -246,8 +302,10 @@ type Asset {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The entity or relation has a description."
   describable: cDescribable
   dublin_core: cDublinCore
@@ -260,6 +318,8 @@ type Asset {
   "The entity or relation has a name."
   named: cNamed
   path: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   "The entity is versioned."
   versioned: cVersioned
 }
@@ -270,8 +330,10 @@ type AssetCollection {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The entity or relation has a description."
   describable: cDescribable
   "The position (x,y) of the entity or relation on a two dimensional flow."
@@ -280,6 +342,8 @@ type AssetCollection {
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   trigger: JSON
 }
 
@@ -289,8 +353,10 @@ type AssetRepository {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The entity or relation has a description."
   describable: cDescribable
   "The position (x,y) of the entity or relation on a two dimensional flow."
@@ -301,6 +367,8 @@ type AssetRepository {
   named: cNamed
   path: JSON
   source_url: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   trigger: JSON
 }
 
@@ -310,13 +378,17 @@ type Atan {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Computes the four quadrant arctangent in radians"
@@ -325,13 +397,17 @@ type Atan2 {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Inverse hyperbolic tangent function"
@@ -340,23 +416,44 @@ type Atanh {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
-"Category"
+"The outbound entity is categorized as the inbound category"
+type CategorizedAs {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The category which categorizes an entity"
+  category: Category
+  weighted: cWeighted
+}
+
+"A category is a fundamental and distinct class to which entities or concepts belong"
 type Category {
   "The unique identifier of the entity instance"
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorizes: [CategorizedAs]
+  "The outbound category has the inbound entity as sub category"
+  child_categories: [HasSubcategory]
   "The entity or relation has a description."
   describable: cDescribable
   "The position (x,y) of the entity or relation on a two dimensional flow."
@@ -365,6 +462,10 @@ type Category {
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound category has the inbound entity as sub category"
+  parent_categories: [HasSubcategory]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the cube root of a number"
@@ -373,13 +474,17 @@ type Cbrt {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the smallest integer greater than or equal to a number"
@@ -388,13 +493,17 @@ type Ceil {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "A simple comment"
@@ -403,8 +512,10 @@ type Comment {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The entity or relation has a description."
   describable: cDescribable
   "The position (x,y) of the entity or relation on a two dimensional flow."
@@ -413,6 +524,8 @@ type Comment {
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Concat"
@@ -421,13 +534,17 @@ type Concat {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Loads a configuration file"
@@ -436,16 +553,20 @@ type ConfigFile {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Loads a configuration file"
   config_file: cConfigFile
   "Represents a file in the file system"
   file: cFile
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Contains"
@@ -454,13 +575,17 @@ type Contains {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_comparison: cStringComparison
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Computes the cosine of a number (in radians)"
@@ -469,13 +594,17 @@ type Cos {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Hyperbolic cosine function"
@@ -484,13 +613,17 @@ type Cosh {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "If triggered the counter will be increased"
@@ -499,14 +632,30 @@ type Counter {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property with a other property and logs changes to the debug logger"
+type DebugConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
 }
 
 "Decrements a number"
@@ -515,14 +664,30 @@ type Decrement {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with one input and one result"
   arithmetic_operation: cArithmeticOperation
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property of an entity instance with a other property of another entity instance"
+type DefaultConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
 }
 
 "Divides two integer numbers"
@@ -531,14 +696,18 @@ type Div {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Ends With"
@@ -547,13 +716,17 @@ type EndsWith {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_comparison: cStringComparison
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Checks if lhs is equal to rhs"
@@ -562,13 +735,17 @@ type Equals {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   comparison_gate: cComparisonGate
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns e^(input), (the exponential function)"
@@ -577,13 +754,17 @@ type Exp {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns 2^(input)"
@@ -592,13 +773,17 @@ type Exp2 {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the largest integer less than or equal to a number"
@@ -607,13 +792,17 @@ type Floor {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the fractional part of a number"
@@ -622,13 +811,17 @@ type Fract {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Generic flow without inputs and outputs"
@@ -637,10 +830,14 @@ type GenericFlow {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
   labeled: cLabeled
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Checks if lhs is greater than rhs"
@@ -649,13 +846,17 @@ type GreaterThan {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   comparison_gate: cComparisonGate
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Checks if lhs is greater than or equal to rhs"
@@ -664,13 +865,32 @@ type GreaterThanOrEquals {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   comparison_gate: cComparisonGate
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"The outbound category has the inbound entity as sub category"
+type HasSubcategory {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The child category"
+  child_category: Category
+  "The parent category"
+  parent_category: Category
+  weighted: cWeighted
 }
 
 "Sends HTTP request to a given URL"
@@ -679,12 +899,16 @@ type Http {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Sends HTTP request to a given URL"
   http: cHttp
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
@@ -693,13 +917,17 @@ type Hypot {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Each time it's triggered, either the then-payload or the else-payload gets propagated"
@@ -708,8 +936,10 @@ type IfThenElse {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Depending on the given condition outputs a result"
   condition: cCondition
   "If the condition is false, the else_payload gets propagated"
@@ -718,6 +948,8 @@ type IfThenElse {
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   "If the condition is true, the then_payload gets propagated"
   then_payload: JSON
 }
@@ -728,14 +960,18 @@ type Increment {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with one input and one result"
   arithmetic_operation: cArithmeticOperation
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Sends JSON-RPC request to a given URL"
@@ -744,12 +980,16 @@ type JsonRpc {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Sends JSON-RPC request to a given URL"
   json_rpc: cJsonRpc
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the natural logarithm of the number"
@@ -758,13 +998,17 @@ type Ln {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Loads binary data"
@@ -773,17 +1017,21 @@ type LoadBinaryData {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
   binary_data: cBinaryData
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Represents a file in the file system"
   file: cFile
   "Loads binary data"
   load_binary_data: cLoadBinaryData
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Loads a JSON file"
@@ -792,16 +1040,20 @@ type LoadJson {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Represents a file in the file system"
   file: cFile
   "Loads a JSON file"
   load_json: cLoadJson
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the logarithm of the number with respect to an arbitrary base"
@@ -810,13 +1062,17 @@ type Log {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the base 10 logarithm of the number"
@@ -825,13 +1081,17 @@ type Log10 {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the base 2 logarithm of the number"
@@ -840,13 +1100,17 @@ type Log2 {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Checks if lhs is lower than rhs"
@@ -855,13 +1119,17 @@ type LowerThan {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   comparison_gate: cComparisonGate
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Checks if lhs is lower than or equal to rhs"
@@ -870,13 +1138,17 @@ type LowerThanOrEquals {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   comparison_gate: cComparisonGate
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Lowercase"
@@ -885,13 +1157,17 @@ type Lowercase {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the maximum value of two inputs"
@@ -900,14 +1176,18 @@ type Max {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the minimum value of two inputs"
@@ -916,14 +1196,18 @@ type Min {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Modulo"
@@ -932,14 +1216,18 @@ type Mod {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "MQTT Broker"
@@ -948,8 +1236,10 @@ type MqttBroker {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -957,9 +1247,15 @@ type MqttBroker {
   hostname: JSON
   "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
   labeled: cLabeled
+  "Publishes packages on a topic"
+  mqtt_publishes: [MqttPublishes]
+  "Receives and extracts packages from a topic"
+  mqtt_subscribes: [MqttSubscribes]
   port: JSON
   received_package: JSON
   send_package: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Publishes to a MQTT endpoint"
@@ -968,8 +1264,10 @@ type MqttPublisher {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -977,6 +1275,27 @@ type MqttPublisher {
   "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
   labeled: cLabeled
   mqtt_endpoint: cMqttEndpoint
+  "Publishes packages on a topic"
+  mqtt_publishes: [MqttPublishes]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Publishes packages on a topic"
+type MqttPublishes {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "MQTT Broker"
+  mqtt_broker: MqttBroker
+  "Publishes to a MQTT endpoint"
+  mqtt_publisher: MqttPublisher
+  mqtt_topic: cMqttTopic
 }
 
 "Subscribes to a MQTT endpoint"
@@ -985,8 +1304,10 @@ type MqttSubscriber {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -994,6 +1315,27 @@ type MqttSubscriber {
   "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
   labeled: cLabeled
   mqtt_endpoint: cMqttEndpoint
+  "Receives and extracts packages from a topic"
+  mqtt_subscribes: [MqttSubscribes]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Receives and extracts packages from a topic"
+type MqttSubscribes {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "MQTT Broker"
+  mqtt_broker: MqttBroker
+  "Subscribes to a MQTT endpoint"
+  mqtt_subscriber: MqttSubscriber
+  mqtt_topic: cMqttTopic
 }
 
 "Multiply two integer numbers"
@@ -1002,14 +1344,18 @@ type Mul {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "NAND"
@@ -1018,14 +1364,18 @@ type Nand {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "NOR"
@@ -1034,14 +1384,18 @@ type Nor {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "NOT"
@@ -1050,14 +1404,18 @@ type Not {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Checks if lhs not equal to rhs"
@@ -1066,13 +1424,17 @@ type NotEquals {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   comparison_gate: cComparisonGate
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Value of type numeric"
@@ -1081,14 +1443,18 @@ type NumericValue {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -1098,8 +1464,10 @@ type ObjectGetProperty {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -1109,6 +1477,8 @@ type ObjectGetProperty {
   object: JSON
   property_name: JSON
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Object Keys"
@@ -1117,8 +1487,10 @@ type ObjectKeys {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -1127,6 +1499,8 @@ type ObjectKeys {
   "The entity or relation has a name."
   named: cNamed
   object: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Object Remove Property"
@@ -1135,8 +1509,10 @@ type ObjectRemoveProperty {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -1146,6 +1522,8 @@ type ObjectRemoveProperty {
   object: JSON
   property_name: JSON
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Object Set Property"
@@ -1154,8 +1532,10 @@ type ObjectSetProperty {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -1165,6 +1545,8 @@ type ObjectSetProperty {
   object: JSON
   property_name: JSON
   result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -1174,14 +1556,18 @@ type ObjectValue {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -1191,14 +1577,42 @@ type Or {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects an string property of an entity instance with a number property of another entity instance. Outgoing string point values gets converted to floating point numbers if possible"
+type ParseFloatConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Connects an string property of an entity instance with a number property of another entity instance. Outgoing string values gets converted to integer numbers if possible"
+type ParseIntConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
 }
 
 "Raises a number to a power"
@@ -1207,13 +1621,17 @@ type Pow {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Pseudo Random Number"
@@ -1222,15 +1640,19 @@ type PseudoRandomNumber {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   seed: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 type Query {
@@ -1274,7 +1696,9 @@ type Query {
   atan2: [Atan2]
   "Inverse hyperbolic tangent function"
   atanh: [Atanh]
-  "Category"
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "A category is a fundamental and distinct class to which entities or concepts belong"
   category: [Category]
   "Returns the cube root of a number"
   cbrt: [Cbrt]
@@ -1294,8 +1718,12 @@ type Query {
   cosh: [Cosh]
   "If triggered the counter will be increased"
   counter: [Counter]
+  "Connects a property with a other property and logs changes to the debug logger"
+  debug_connector: [DebugConnector]
   "Decrements a number"
   decrement: [Decrement]
+  "Connects a property of an entity instance with a other property of another entity instance"
+  default_connector: [DefaultConnector]
   "Divides two integer numbers"
   div: [Div]
   "Ends With"
@@ -1316,6 +1744,8 @@ type Query {
   greater_than: [GreaterThan]
   "Checks if lhs is greater than or equal to rhs"
   greater_than_or_equals: [GreaterThanOrEquals]
+  "The outbound category has the inbound entity as sub category"
+  has_subcategory: [HasSubcategory]
   "Sends HTTP request to a given URL"
   http: [Http]
   "Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
@@ -1354,8 +1784,12 @@ type Query {
   mqtt_broker: [MqttBroker]
   "Publishes to a MQTT endpoint"
   mqtt_publisher: [MqttPublisher]
+  "Publishes packages on a topic"
+  mqtt_publishes: [MqttPublishes]
   "Subscribes to a MQTT endpoint"
   mqtt_subscriber: [MqttSubscriber]
+  "Receives and extracts packages from a topic"
+  mqtt_subscribes: [MqttSubscribes]
   "Multiply two integer numbers"
   mul: [Mul]
   "NAND"
@@ -1380,6 +1814,10 @@ type Query {
   object_value: [ObjectValue]
   "OR"
   or: [Or]
+  "Connects an string property of an entity instance with a number property of another entity instance. Outgoing string point values gets converted to floating point numbers if possible"
+  parse_float_connector: [ParseFloatConnector]
+  "Connects an string property of an entity instance with a number property of another entity instance. Outgoing string values gets converted to integer numbers if possible"
+  parse_int_connector: [ParseIntConnector]
   "Raises a number to a power"
   pow: [Pow]
   "Pseudo Random Number"
@@ -1423,8 +1861,10 @@ type Query {
   system_env: [SystemEnv]
   "Events of the type system"
   system_event: [SystemEvent]
-  "Tag Name"
+  "A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
   tag: [Tag]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   "Computes the tangent of a number (in radians)"
   tan: [Tan]
   "Hyperbolic tangent function"
@@ -1433,10 +1873,16 @@ type Query {
   to_degrees: [ToDegrees]
   "Converts degrees to radians"
   to_radians: [ToRadians]
+  "Connects an number property of an entity instance with a string property of another entity instance. Outgoing integer values gets converted to string"
+  to_string_connector: [ToStringConnector]
   "If triggered the state will toggled"
   toggle: [Toggle]
+  "Connects a property with a other property and logs changes to the trace logger"
+  trace_connector: [TraceConnector]
   "Tray"
   tray: [Tray]
+  "Tray has menu item"
+  tray_has_menu_item: [TrayHasMenuItem]
   "Tray Menu Item"
   tray_menu_item: [TrayMenuItem]
   "If triggered the payload will be copied to the output"
@@ -1465,14 +1911,18 @@ type RandomBool {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Random Integer Within Range"
@@ -1481,16 +1931,20 @@ type RandomIntegerWithinRange {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   high: JSON
   low: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Random Number"
@@ -1499,14 +1953,18 @@ type RandomNumber {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Random String"
@@ -1515,15 +1973,19 @@ type RandomString {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   length: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Random UUID"
@@ -1532,14 +1994,18 @@ type RandomUuid {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Takes the reciprocal (inverse) of a number, 1/x"
@@ -1548,13 +2014,17 @@ type Recip {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the nearest integer to a number. Round half-way cases away from 0.0"
@@ -1563,13 +2033,17 @@ type Round {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Saves binary data"
@@ -1578,17 +2052,21 @@ type SaveBinaryData {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
   binary_data: cBinaryData
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Represents a file in the file system"
   file: cFile
   "The entity or relation has a name."
   named: cNamed
   "Saves binary data"
   save_binary_data: cSaveBinaryData
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Saves an object as JSON file"
@@ -1597,16 +2075,20 @@ type SaveJson {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "Represents a file in the file system"
   file: cFile
   "The entity or relation has a name."
   named: cNamed
   "Saves an object as JSON file"
   save_json: cSaveJson
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 type Shutdown {
@@ -1614,8 +2096,12 @@ type Shutdown {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns a number that represents the sign of the input"
@@ -1624,13 +2110,17 @@ type Signum {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Computes the sine of a number (in radians)"
@@ -1639,13 +2129,17 @@ type Sin {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Hyperbolic sine function"
@@ -1654,13 +2148,17 @@ type Sinh {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the square root of a number"
@@ -1669,13 +2167,17 @@ type Sqrt {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Starts With"
@@ -1684,13 +2186,17 @@ type StartsWith {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_comparison: cStringComparison
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Value of type string"
@@ -1699,14 +2205,18 @@ type StringValue {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -1716,14 +2226,18 @@ type Sub {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "Arithmetic operation with two inputs and one result"
   arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Executes a system command"
@@ -1732,14 +2246,18 @@ type SystemCommand {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The entity or relation has a name."
   named: cNamed
   "Executes a system command"
   system_command: cSystemCommand
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "System Environment Variable"
@@ -1748,8 +2266,10 @@ type SystemEnv {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
@@ -1758,6 +2278,8 @@ type SystemEnv {
   labeled: cLabeled
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -1767,28 +2289,49 @@ type SystemEvent {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "This components spawns events."
   event: cEvent
   "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
   labeled: cLabeled
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
-"Tag Name"
+"A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
 type Tag {
   "The unique identifier of the entity instance"
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  inbound_tagged_with: [TaggedWith]
   "The entity or relation has a name."
   named: cNamed
+}
+
+"The outbound entity is tagged with the inbound tag"
+type TaggedWith {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The tag which is applied to the entity"
+  tag: Tag
+  weighted: cWeighted
 }
 
 "Computes the tangent of a number (in radians)"
@@ -1797,13 +2340,17 @@ type Tan {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Hyperbolic tangent function"
@@ -1812,13 +2359,17 @@ type Tanh {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Converts radians to degrees"
@@ -1827,13 +2378,17 @@ type ToDegrees {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Converts degrees to radians"
@@ -1842,13 +2397,29 @@ type ToRadians {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects an number property of an entity instance with a string property of another entity instance. Outgoing integer values gets converted to string"
+type ToStringConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
 }
 
 "If triggered the state will toggled"
@@ -1857,14 +2428,30 @@ type Toggle {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property with a other property and logs changes to the trace logger"
+type TraceConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
 }
 
 "Tray"
@@ -1873,12 +2460,32 @@ type Tray {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   icon: JSON
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   title: JSON
+  "Tray has menu item"
+  tray_has_menu_item: [TrayHasMenuItem]
+}
+
+"Tray has menu item"
+type TrayHasMenuItem {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Tray"
+  tray: Tray
+  "Tray Menu Item"
+  tray_menu_item: TrayMenuItem
 }
 
 "Tray Menu Item"
@@ -1887,12 +2494,20 @@ type TrayMenuItem {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "A generator sends a trigger"
   generator: cGenerator
+  "Tray has menu item"
+  inbound_tray_has_menu_item: [TrayHasMenuItem]
   "The entity or relation has a name."
   named: cNamed
+  "Tray has menu item"
+  outbound_tray_has_menu_item: [TrayHasMenuItem]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   "Tray Menu Item"
   tray_menu_item: cTrayMenuItem
 }
@@ -1903,15 +2518,19 @@ type Trigger {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
   "An action can be triggered"
   action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   payload: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Trim"
@@ -1920,13 +2539,17 @@ type Trim {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Trim  End"
@@ -1935,13 +2558,17 @@ type TrimEnd {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Trim  Start"
@@ -1950,13 +2577,17 @@ type TrimStart {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Returns the integer part of a number"
@@ -1965,13 +2596,17 @@ type Trunc {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Uppercase"
@@ -1980,13 +2615,17 @@ type Uppercase {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "Value of any type"
@@ -1995,14 +2634,18 @@ type Value {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "The entity or relation has a name."
   named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
   value: JSON
 }
 
@@ -2012,14 +2655,18 @@ type Xnor {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "XOR"
@@ -2028,14 +2675,18 @@ type Xor {
   _id: UUID
   "The label of the entity instance"
   _label: String
-  "The type is always entity_type"
+  "The meta type is always entity_type"
   _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
   "The position (x,y) of the entity or relation on a two dimensional flow."
   flow_2d: cFlow2D
   "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
   flow_3d: cFlow3D
   "Executes a logical operation on the inputs lhs and rhs and outputs the result"
   logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
 }
 
 "An action can be triggered"
@@ -2092,6 +2743,13 @@ type cComparisonGate {
   rhs: JSON
 }
 
+type cComponent1 {
+  "The type is always component"
+  _type: TypeType
+  "First Property"
+  first: JSON
+}
+
 "Depending on the given condition outputs a result"
 type cCondition {
   "The type is always component"
@@ -2109,10 +2767,13 @@ type cConfigFile {
   result: JSON
 }
 
+"Connects a property of an entity instance with a other property of another entity instance"
 type cConnector {
   "The type is always component"
   _type: TypeType
+  "The name of the inbound property"
   inbound_property_name: JSON
+  "The name of the outbound property"
   outbound_property_name: JSON
 }
 
@@ -2503,6 +3164,7 @@ type cWeighted {
 enum TypeType {
   COMPONENT
   ENTITY_TYPE
+  RELATION_TYPE
 }
 
 scalar JSON

@@ -72,3 +72,7 @@ Download binary resources via HTTP.
 ## Resources
 
 * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs
+
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugin-binary/plugin-binary.json") }}

@@ -65,3 +65,7 @@ Numeric operations
 | Name                      | Repository                                                                                                         |
 |---------------------------|--------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-numeric | [https://github.com/inexorgame/inexor-rgf-plugin-numeric](https://github.com/inexorgame/inexor-rgf-plugin-numeric) |
+
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugin-numeric/plugin-numeric.json") }}

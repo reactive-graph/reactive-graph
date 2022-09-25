@@ -1,0 +1,34 @@
+mutation {
+  types {
+    entities {
+      create(
+        name: "example2",
+        components: [
+          "component1",
+          "component2",
+          "component3"
+        ]
+        properties: [
+          {
+            name: "example"
+            description: "Example Input Property"
+            dataType: STRING
+            socketType: INPUT
+            extensions: []
+          }
+        ]
+      ) {
+        name
+        description
+        components {
+          name
+        }
+        properties {
+          name
+          dataType
+          socketType
+        }
+      }
+    }
+  }
+}

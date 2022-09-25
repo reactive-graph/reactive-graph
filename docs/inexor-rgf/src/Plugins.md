@@ -15,7 +15,7 @@
 | [Input Device](./Plugins_Input_Device.md)                                 | Input device handling                      |
 | [JSON](./Plugins_JSON.md)                                                 | Handles JSON arrays and objects            |
 | [Logical](./Plugins_Logical.md)                                           | Provides logical operations                |
-| [Meta Data](./Plugins_Meta_Data.md)                                       | Meta Data                                  |
+| [Meta Data](./Plugins_Meta_Data.md)                                       | Meta Data - Dublin Core, EXIF              |
 | [Notification](./Plugins_Notification.md)                                 | Create desktop notifications               |
 | [Numeric](./Plugins_Numeric.md)                                           | Numeric operations                         |
 | [Random](./Plugins_Random.md)                                             | Generate random numbers                    |
@@ -23,4 +23,5 @@
 | [String](./Plugins_String.md)                                             | Provides string operations                 |
 | [System Command](./Plugins_System_Command.md)                             | Executes OS commands                       |
 | [System Environment](./Plugins_System_Environment.md)                     | Provides environment variables             |
-| [Taxonomy](./Plugins_Taxonomy.md)                                         | Taxonomy                                   |
+| [Taxonomy](./Plugins_Taxonomy.md)                                         | Taxonomy - categories and tags             |
+| [Value](./Plugins_Value.md)                                               | Values and state management                |

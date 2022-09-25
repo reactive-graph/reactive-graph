@@ -32,3 +32,7 @@
 | Name                         | Repository                                                                                                               |
 |------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-comparison | [https://github.com/inexorgame/inexor-rgf-plugin-comparison](https://github.com/inexorgame/inexor-rgf-plugin-comparison) |
+
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugin-comparison/plugin-comparison.json") }}

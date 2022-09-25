@@ -1,0 +1,11 @@
+{
+  "id": "plugin-string",
+  "title": "String",
+  "description": "TODO",
+  "tabs": [
+    {
+      "name": "Add Binary",
+      "url": "/examples/graphql/plugin-string/plugin-string-create.graphql"
+    }
+  ]
+}
