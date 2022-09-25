@@ -40,7 +40,7 @@ impl GraphQLRelationInstance {
             // starts_with because the relation type name of the default_connector contains extra
             // information (outbound+inbound property names) in order to allow multiple connectors
             // between the two entity instances
-            if let Some(relation_type) = relation_type_manager.get_starts_with(type_name.clone()) {
+            if let Some(relation_type) = relation_type_manager.get_starts_with(&type_name) {
                 let mut relation_type = relation_type;
                 relation_type.full_name = type_name;
                 return Some(relation_type.into());

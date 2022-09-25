@@ -1,22 +1,49 @@
 use std::collections::HashMap;
 use std::ffi::OsStr;
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use std::sync::RwLock;
 
-use crate::di::*;
+use crate::plugins::plugin::PluginInitializationError;
+use crate::plugins::plugin::PluginPostInitializationError;
+use crate::plugins::plugin::PluginPreShutdownError;
+use crate::plugins::plugin::PluginShutdownError;
+use crate::plugins::PluginLoadingError;
 use async_trait::async_trait;
 use libloading::Library;
-use log::{debug, error};
+use log::error;
+use log::{debug, info};
 
-use crate::api::{
-    ComponentBehaviourManager, ComponentManager, EntityBehaviourManager, EntityTypeManager, Lifecycle, PluginRegistry, ReactiveEntityInstanceManager,
-    ReactiveFlowManager, ReactiveRelationInstanceManager, RelationBehaviourManager, RelationTypeManager, WebResourceManager,
-};
+use crate::api::ComponentBehaviourManager;
+use crate::api::ComponentManager;
+use crate::api::EntityBehaviourManager;
+use crate::api::EntityTypeManager;
+use crate::api::FlowTypeManager;
+use crate::api::GraphQLQueryService;
+use crate::api::Lifecycle;
+use crate::api::PluginRegistry;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveFlowInstanceManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationBehaviourManager;
+use crate::api::RelationTypeManager;
+use crate::api::WebResourceManager;
+use crate::di::*;
 use crate::plugin::registrar::PluginRegistrar;
-use crate::plugin::{
-    ComponentManagerImpl, EntityInstanceManagerImpl, EntityTypeManagerImpl, FlowManagerImpl, PluginContextImpl, PluginProxy, PluginsConfig,
-    RelationInstanceManagerImpl, RelationTypeManagerImpl,
-};
-use crate::plugins::{Plugin, PluginDeclaration, PluginError, INEXOR_RGF_PLUGIN_VERSION, RUSTC_VERSION};
+use crate::plugin::ComponentManagerImpl;
+use crate::plugin::EntityInstanceManagerImpl;
+use crate::plugin::EntityTypeManagerImpl;
+use crate::plugin::FlowInstanceManagerImpl;
+use crate::plugin::FlowTypeManagerImpl;
+use crate::plugin::GraphQLQueryServiceImpl;
+use crate::plugin::PluginContextImpl;
+use crate::plugin::PluginProxy;
+use crate::plugin::PluginsConfig;
+use crate::plugin::RelationInstanceManagerImpl;
+use crate::plugin::RelationTypeManagerImpl;
+use crate::plugins::Plugin;
+use crate::plugins::PluginDeclaration;
+use crate::plugins::INEXOR_RGF_PLUGIN_VERSION;
+use crate::plugins::RUSTC_VERSION;
 
 #[wrapper]
 pub struct PluginProxies(RwLock<HashMap<String, Arc<PluginProxy>>>);
@@ -40,11 +67,13 @@ pub struct PluginRegistryImpl {
     component_manager: Wrc<dyn ComponentManager>,
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
+    flow_type_manager: Wrc<dyn FlowTypeManager>,
+    graphql_query_service: Wrc<dyn GraphQLQueryService>,
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
     reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
-    reactive_flow_manager: Wrc<dyn ReactiveFlowManager>,
+    reactive_flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
     web_resource_manager: Wrc<dyn WebResourceManager>,
 
     pub plugins: PluginProxies,
@@ -98,46 +127,62 @@ impl PluginRegistry for PluginRegistryImpl {
             let plugin_proxy = self.get(name.clone());
             match plugin_proxy {
                 Some(plugin_proxy) => {
+                    if let Ok(metadata) = plugin_proxy.metadata() {
+                        info!(
+                            "Loading plugin\n    name       : {}\n    version    : {}\n    description: {}\n    depends on : {}",
+                            metadata.name,
+                            metadata.version,
+                            metadata.description,
+                            metadata.depends_on.join(",")
+                        );
+                    }
                     if plugin_proxy.init().is_ok() {
-                        if let Ok(component_provider) = plugin_proxy.get_component_provider() {
+                        if let Ok(Some(component_provider)) = plugin_proxy.get_component_provider() {
                             self.component_manager.add_provider(component_provider);
                         }
-                        if let Ok(entity_type_provider) = plugin_proxy.get_entity_type_provider() {
+                        if let Ok(Some(entity_type_provider)) = plugin_proxy.get_entity_type_provider() {
                             self.entity_type_manager.add_provider(entity_type_provider);
                         }
-                        if let Ok(relation_type_provider) = plugin_proxy.get_relation_type_provider() {
+                        if let Ok(Some(relation_type_provider)) = plugin_proxy.get_relation_type_provider() {
                             self.relation_type_manager.add_provider(relation_type_provider);
                         }
-                        if let Ok(component_behaviour_provider) = plugin_proxy.get_component_behaviour_provider() {
+                        if let Ok(Some(flow_type_provider)) = plugin_proxy.get_flow_type_provider() {
+                            self.flow_type_manager.add_provider(flow_type_provider);
+                        }
+                        if let Ok(Some(component_behaviour_provider)) = plugin_proxy.get_component_behaviour_provider() {
                             self.component_behaviour_manager.add_provider(component_behaviour_provider);
                         }
-                        if let Ok(entity_behaviour_provider) = plugin_proxy.get_entity_behaviour_provider() {
+                        if let Ok(Some(entity_behaviour_provider)) = plugin_proxy.get_entity_behaviour_provider() {
                             self.entity_behaviour_manager.add_provider(entity_behaviour_provider);
                         }
-                        if let Ok(relation_behaviour_provider) = plugin_proxy.get_relation_behaviour_provider() {
+                        if let Ok(Some(relation_behaviour_provider)) = plugin_proxy.get_relation_behaviour_provider() {
                             self.relation_behaviour_manager.add_provider(relation_behaviour_provider);
                         }
-                        if let Ok(flow_provider) = plugin_proxy.get_flow_provider() {
-                            self.reactive_flow_manager.add_provider(flow_provider);
+                        if let Ok(Some(flow_instance_provider)) = plugin_proxy.get_flow_instance_provider() {
+                            self.reactive_flow_instance_manager.add_provider(flow_instance_provider);
                         }
-                        if let Ok(web_resource_provider) = plugin_proxy.get_web_resource_provider() {
+                        if let Ok(Some(web_resource_provider)) = plugin_proxy.get_web_resource_provider() {
                             self.web_resource_manager.add_provider(web_resource_provider);
                         }
                         let component_manager = ComponentManagerImpl::new(self.component_manager.clone());
                         let entity_type_manager = EntityTypeManagerImpl::new(self.entity_type_manager.clone());
                         let relation_type_manager = RelationTypeManagerImpl::new(self.relation_type_manager.clone());
+                        let flow_type_manager = FlowTypeManagerImpl::new(self.flow_type_manager.clone());
                         let entity_instance_manager =
                             EntityInstanceManagerImpl::new(self.entity_type_manager.clone(), self.reactive_entity_instance_manager.clone());
                         let relation_instance_manager =
                             RelationInstanceManagerImpl::new(self.relation_type_manager.clone(), self.reactive_relation_instance_manager.clone());
-                        let flow_manager = FlowManagerImpl::new(self.reactive_flow_manager.clone());
+                        let flow_instance_manager = FlowInstanceManagerImpl::new(self.reactive_flow_instance_manager.clone());
+                        let graphql_query_service = GraphQLQueryServiceImpl::new(self.graphql_query_service.clone());
                         let plugin_context = PluginContextImpl::new(
                             Arc::new(component_manager),
                             Arc::new(entity_type_manager),
                             Arc::new(relation_type_manager),
+                            Arc::new(flow_type_manager),
                             Arc::new(entity_instance_manager),
                             Arc::new(relation_instance_manager),
-                            Arc::new(flow_manager),
+                            Arc::new(flow_instance_manager),
+                            Arc::new(graphql_query_service),
                         );
                         let context = Arc::new(plugin_context);
                         let _ = plugin_proxy.set_context(context);
@@ -182,7 +227,7 @@ impl PluginRegistry for PluginRegistryImpl {
     /// [`plugins_core::plugin_declaration!()`] macro. Trying manually implement
     /// a plugin without going through that macro will result in undefined
     /// behaviour.
-    unsafe fn load(&self, library_path: String) -> Result<(), PluginError> {
+    unsafe fn load(&self, library_path: String) -> Result<(), PluginLoadingError> {
         debug!("Loading library {}", library_path.as_str());
         // Load the library into memory
         // <P: AsRef<OsStr>>
@@ -202,9 +247,7 @@ impl PluginRegistry for PluginRegistryImpl {
                         RUSTC_VERSION
                     );
                     // error!("Plugin {} Version mismatch: rustc {} expected {}", library_path.clone(), decl.rustc_version, RUSTC_VERSION);
-                    return Err(PluginError::Other {
-                        message: String::from("Version mismatch: rustc"),
-                    });
+                    return Err(PluginLoadingError::CompilerVersionMismatch);
                 }
                 if decl.inexor_rgf_plugin_version != INEXOR_RGF_PLUGIN_VERSION {
                     error!(
@@ -213,9 +256,7 @@ impl PluginRegistry for PluginRegistryImpl {
                         decl.inexor_rgf_plugin_version,
                         INEXOR_RGF_PLUGIN_VERSION
                     );
-                    return Err(PluginError::Other {
-                        message: String::from("Version mismatch: inexor_rgf_core_plugins"),
-                    });
+                    return Err(PluginLoadingError::PluginApiVersionMismatch);
                 }
 
                 let mut registrar = PluginRegistrar::new(Arc::clone(&library));
@@ -232,12 +273,12 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             Err(e) => {
                 error!("Failed to load dynamic library: {}", e.to_string());
-                Err(PluginError::PluginCreationError)
+                Err(PluginLoadingError::LoadingDynamicLibraryFailed)
             }
         }
     }
 
-    fn plugin_init(&self, name: String) -> Result<(), PluginError> {
+    fn plugin_init(&self, name: String) -> Result<(), PluginInitializationError> {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -246,12 +287,12 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to initialize plugin {}: Not found", name);
-                Err(PluginError::InitializationError)
+                Err(PluginInitializationError::InitializationFailed)
             }
         }
     }
 
-    fn plugin_post_init(&self, name: String) -> Result<(), PluginError> {
+    fn plugin_post_init(&self, name: String) -> Result<(), PluginPostInitializationError> {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -260,12 +301,12 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to post-initialize plugin {}: Not found", name);
-                Err(PluginError::PostInitializationError)
+                Err(PluginPostInitializationError::PostInitializationFailed)
             }
         }
     }
 
-    fn plugin_pre_shutdown(&self, name: String) -> Result<(), PluginError> {
+    fn plugin_pre_shutdown(&self, name: String) -> Result<(), PluginPreShutdownError> {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -274,12 +315,12 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to pre-shutdown plugin {}: Not found", name);
-                Err(PluginError::PreShutdownError)
+                Err(PluginPreShutdownError::PreShutdownFailed)
             }
         }
     }
 
-    fn plugin_shutdown(&self, name: String) -> Result<(), PluginError> {
+    fn plugin_shutdown(&self, name: String) -> Result<(), PluginShutdownError> {
         let plugin_proxy = self.get(name.clone());
         match plugin_proxy {
             Some(plugin_proxy) => {
@@ -288,7 +329,7 @@ impl PluginRegistry for PluginRegistryImpl {
             }
             None => {
                 error!("Failed to shutdown plugin {}: Not found", name);
-                Err(PluginError::ShutdownError)
+                Err(PluginShutdownError::ShutdownFailed)
             }
         }
     }
@@ -296,12 +337,9 @@ impl PluginRegistry for PluginRegistryImpl {
 
 impl Lifecycle for PluginRegistryImpl {
     fn init(&self) {
+        // TODO: Build dependency tree
         self.load_plugins();
     }
-
-    fn post_init(&self) {}
-
-    fn pre_shutdown(&self) {}
 
     fn shutdown(&self) {
         self.unload_plugins();

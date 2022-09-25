@@ -40,7 +40,9 @@ impl SystemEventManager for SystemEventManagerImpl {
                 | SystemEvent::EntityTypeCreated(name)
                 | SystemEvent::EntityTypeDeleted(name)
                 | SystemEvent::RelationTypeCreated(name)
-                | SystemEvent::RelationTypeDeleted(name) => {
+                | SystemEvent::RelationTypeDeleted(name)
+                | SystemEvent::FlowTypeCreated(name)
+                | SystemEvent::FlowTypeDeleted(name) => {
                     entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(name));
                     // Also emit event that the type system has been changed
                     self.emit_event(SystemEvent::TypeSystemChanged);
@@ -48,8 +50,8 @@ impl SystemEventManager for SystemEventManagerImpl {
                 SystemEvent::TypeSystemChanged => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(true)),
                 SystemEvent::EntityInstanceCreated(id)
                 | SystemEvent::EntityInstanceDeleted(id)
-                | SystemEvent::FlowCreated(id)
-                | SystemEvent::FlowDeleted(id) => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(id)),
+                | SystemEvent::FlowInstanceCreated(id)
+                | SystemEvent::FlowInstanceDeleted(id) => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(id)),
                 SystemEvent::RelationInstanceCreated(edge_key) | SystemEvent::RelationInstanceDeleted(edge_key) => {
                     entity_instance.set("event", json!(edge_key))
                 }
@@ -112,8 +114,14 @@ impl SystemEventManagerImpl {
             SystemEventTypes::RelationInstanceDeleted,
             self.create_system_event_instance("/org/inexor/event/instance/relation/deleted"),
         );
-        writer.insert(SystemEventTypes::FlowCreated, self.create_system_event_instance("/org/inexor/event/flow/created"));
-        writer.insert(SystemEventTypes::FlowDeleted, self.create_system_event_instance("/org/inexor/event/flow/deleted"));
+        writer.insert(
+            SystemEventTypes::FlowInstanceCreated,
+            self.create_system_event_instance("/org/inexor/event/instance/flow/created"),
+        );
+        writer.insert(
+            SystemEventTypes::FlowInstanceDeleted,
+            self.create_system_event_instance("/org/inexor/event/instance/flow/deleted"),
+        );
     }
 
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> Arc<ReactiveEntityInstance> {
@@ -129,8 +137,6 @@ impl SystemEventManagerImpl {
 }
 
 impl Lifecycle for SystemEventManagerImpl {
-    fn init(&self) {}
-
     fn post_init(&self) {
         self.create_system_event_instances();
     }
@@ -138,6 +144,4 @@ impl Lifecycle for SystemEventManagerImpl {
     fn pre_shutdown(&self) {
         self.delete_system_event_instances();
     }
-
-    fn shutdown(&self) {}
 }

@@ -1,13 +1,24 @@
-use crate::plugins::{ComponentManager, EntityInstanceManager, EntityTypeManager, FlowManager, PluginContext, RelationInstanceManager, RelationTypeManager};
 use std::sync::Arc;
+
+use crate::plugins::ComponentManager;
+use crate::plugins::EntityInstanceManager;
+use crate::plugins::EntityTypeManager;
+use crate::plugins::FlowInstanceManager;
+use crate::plugins::FlowTypeManager;
+use crate::plugins::GraphQLQueryService;
+use crate::plugins::PluginContext;
+use crate::plugins::RelationInstanceManager;
+use crate::plugins::RelationTypeManager;
 
 pub struct PluginContextImpl {
     component_manager: Arc<dyn ComponentManager>,
     entity_type_manager: Arc<dyn EntityTypeManager>,
     relation_type_manager: Arc<dyn RelationTypeManager>,
+    flow_type_manager: Arc<dyn FlowTypeManager>,
     entity_instance_manager: Arc<dyn EntityInstanceManager>,
     relation_instance_manager: Arc<dyn RelationInstanceManager>,
-    flow_manager: Arc<dyn FlowManager>,
+    flow_instance_manager: Arc<dyn FlowInstanceManager>,
+    graphql_query_service: Arc<dyn GraphQLQueryService>,
 }
 
 impl PluginContextImpl {
@@ -15,17 +26,21 @@ impl PluginContextImpl {
         component_manager: Arc<dyn ComponentManager>,
         entity_type_manager: Arc<dyn EntityTypeManager>,
         relation_type_manager: Arc<dyn RelationTypeManager>,
+        flow_type_manager: Arc<dyn FlowTypeManager>,
         entity_instance_manager: Arc<dyn EntityInstanceManager>,
         relation_instance_manager: Arc<dyn RelationInstanceManager>,
-        flow_manager: Arc<dyn FlowManager>,
+        flow_instance_manager: Arc<dyn FlowInstanceManager>,
+        graphql_query_service: Arc<dyn GraphQLQueryService>,
     ) -> Self {
         PluginContextImpl {
             component_manager,
             entity_type_manager,
             relation_type_manager,
+            flow_type_manager,
             entity_instance_manager,
             relation_instance_manager,
-            flow_manager,
+            flow_instance_manager,
+            graphql_query_service,
         }
     }
 }
@@ -43,6 +58,10 @@ impl PluginContext for PluginContextImpl {
         self.relation_type_manager.clone()
     }
 
+    fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager> {
+        self.flow_type_manager.clone()
+    }
+
     fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager> {
         self.entity_instance_manager.clone()
     }
@@ -51,7 +70,11 @@ impl PluginContext for PluginContextImpl {
         self.relation_instance_manager.clone()
     }
 
-    fn get_flow_manager(&self) -> Arc<dyn FlowManager> {
-        self.flow_manager.clone()
+    fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager> {
+        self.flow_instance_manager.clone()
+    }
+
+    fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {
+        self.graphql_query_service.clone()
     }
 }

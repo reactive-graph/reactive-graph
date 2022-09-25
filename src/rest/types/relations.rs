@@ -15,7 +15,7 @@ pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn Relatio
 #[get("/types/relations/{name}")]
 pub async fn get_relation_type(name: web::Path<(String,)>, relation_type_manager: web::Data<Arc<dyn RelationTypeManager>>) -> HttpResponse {
     let name = name.into_inner().0;
-    let relation_type = relation_type_manager.get(name.clone());
+    let relation_type = relation_type_manager.get(&name);
     if relation_type.is_some() {
         HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(relation_type)
     } else {

@@ -1,10 +1,14 @@
-use crate::api::{EntityTypeManager, ReactiveEntityInstanceManager};
-use crate::model::{EntityInstance, ReactiveEntityInstance};
-use crate::plugins::entity_instance_manager::EntityInstanceCreationError;
-use crate::plugins::EntityInstanceManager;
 use std::collections::HashMap;
 use std::sync::Arc;
+
 use uuid::Uuid;
+
+use crate::api::EntityTypeManager;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::model::EntityInstance;
+use crate::model::ReactiveEntityInstance;
+use crate::plugins::entity_instance_manager::EntityInstanceCreationError;
+use crate::plugins::EntityInstanceManager;
 
 pub struct EntityInstanceManagerImpl {
     entity_type_manager: Arc<dyn EntityTypeManager>,
@@ -45,7 +49,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError> {
-        let entity_type = self.entity_type_manager.get(entity_instance.type_name.clone());
+        let entity_type = self.entity_type_manager.get(&entity_instance.type_name);
         match entity_type {
             Some(entity_type) => {
                 let mut entity_instance = entity_instance;

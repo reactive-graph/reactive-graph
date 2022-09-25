@@ -2,8 +2,12 @@ use std::sync::Arc;
 
 use async_graphql::*;
 
-use crate::api::{ComponentManager, RelationTypeManager};
-use crate::graphql::query::{GraphQLComponent, GraphQLExtension, GraphQLPropertyType, GraphQLRelationType};
+use crate::api::ComponentManager;
+use crate::api::RelationTypeManager;
+use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLPropertyType;
+use crate::graphql::query::GraphQLRelationType;
 use crate::model::EntityType;
 
 pub struct GraphQLEntityType {
@@ -20,9 +24,9 @@ impl GraphQLEntityType {
         self.entity_type.name.clone()
     }
 
-    /// The entity type belongs to the given group of entity types.
-    async fn group(&self) -> String {
-        self.entity_type.group.clone()
+    /// The namespace the entity type belongs to.
+    async fn namespace(&self) -> String {
+        self.entity_type.namespace.clone()
     }
 
     /// Textual description of the entity type.
@@ -38,7 +42,7 @@ impl GraphQLEntityType {
             self.entity_type
                 .components
                 .iter()
-                .filter_map(|component| component_manager.get(component.clone()))
+                .filter_map(|component_name| component_manager.get(&component_name))
                 .map(|component| component.into())
                 .collect()
         } else {

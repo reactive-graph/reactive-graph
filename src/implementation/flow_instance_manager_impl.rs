@@ -1,15 +1,19 @@
 use std::fs::File;
 use std::io::BufReader;
 
-use crate::di::*;
 use async_trait::async_trait;
 use log::error;
 
-use crate::api::{EntityInstanceManager, FlowCreationError, FlowImportError, FlowManager, RelationInstanceManager};
-use crate::model::Flow;
+use crate::api::EntityInstanceManager;
+use crate::api::FlowInstanceCreationError;
+use crate::api::FlowInstanceImportError;
+use crate::api::FlowInstanceManager;
+use crate::api::RelationInstanceManager;
+use crate::di::*;
+use crate::model::FlowInstance;
 
 #[component]
-pub struct FlowManagerImpl {
+pub struct FlowInstanceManagerImpl {
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
 
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
@@ -17,24 +21,24 @@ pub struct FlowManagerImpl {
 
 #[async_trait]
 #[provides]
-impl FlowManager for FlowManagerImpl {
-    fn create(&self, flow: Flow) -> Result<Flow, FlowCreationError> {
-        for entity_instance in flow.entity_instances.iter() {
+impl FlowInstanceManager for FlowInstanceManagerImpl {
+    fn create(&self, flow_instance: FlowInstance) -> Result<FlowInstance, FlowInstanceCreationError> {
+        for entity_instance in flow_instance.entity_instances.iter() {
             if !self.entity_instance_manager.has(entity_instance.id) {
                 let _id = self.entity_instance_manager.create_from_instance(entity_instance.clone())?;
             }
         }
-        for relation_instance in flow.relation_instances.iter() {
+        for relation_instance in flow_instance.relation_instances.iter() {
             let edge_key = relation_instance.get_key();
             if edge_key.is_some() && !self.relation_instance_manager.has(edge_key.unwrap()) {
                 let _id = self.relation_instance_manager.create_from_instance(relation_instance.clone())?;
             }
         }
-        Ok(flow)
+        Ok(flow_instance)
     }
 
-    fn commit(&self, flow: Flow) {
-        for entity_instance in flow.entity_instances {
+    fn commit(&self, flow_instance: FlowInstance) {
+        for entity_instance in flow_instance.entity_instances {
             if self.entity_instance_manager.has(entity_instance.id) {
                 // The entity instance has been updated
                 self.entity_instance_manager.commit(entity_instance.clone());
@@ -44,7 +48,7 @@ impl FlowManager for FlowManagerImpl {
             }
             // TODO: what happens with removed entity instances?
         }
-        for relation_instance in flow.relation_instances {
+        for relation_instance in flow_instance.relation_instances {
             if let Some(edge_key) = relation_instance.get_key() {
                 if self.relation_instance_manager.has(edge_key) {
                     // The relation instance has been updated
@@ -58,36 +62,36 @@ impl FlowManager for FlowManagerImpl {
         }
     }
 
-    fn delete(&self, flow: Flow) {
+    fn delete(&self, flow_instance: FlowInstance) {
         // Reverse order: first relations then entities
-        for relation_instance in flow.relation_instances {
+        for relation_instance in flow_instance.relation_instances {
             if let Some(edge_key) = relation_instance.get_key() {
                 self.relation_instance_manager.delete(edge_key);
             }
         }
-        for entity_instance in flow.entity_instances {
+        for entity_instance in flow_instance.entity_instances {
             self.entity_instance_manager.delete(entity_instance.id);
         }
     }
 
-    fn import(&self, path: String) -> Result<Flow, FlowImportError> {
+    fn import(&self, path: String) -> Result<FlowInstance, FlowInstanceImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
-        let flow = serde_json::from_reader(reader)?;
-        self.create(flow).map_err(|e| e.into())
+        let flow_instance = serde_json::from_reader(reader)?;
+        self.create(flow_instance).map_err(|e| e.into())
     }
 
-    fn export(&self, flow: Flow, path: String) {
+    fn export(&self, flow_instance: FlowInstance, path: String) {
         let r_file = File::create(path.clone());
         match r_file {
             Ok(file) => {
-                let result = serde_json::to_writer_pretty(&file, &flow);
+                let result = serde_json::to_writer_pretty(&file, &flow_instance);
                 if result.is_err() {
-                    error!("Failed to export flow {} to {}: {}", flow.id, path, result.err().unwrap());
+                    error!("Failed to export flow instance {} to {}: {}", flow_instance.id, path, result.err().unwrap());
                 }
             }
             Err(error) => {
-                error!("Failed to export flow {} to {}: {}", flow.id, path, error.to_string());
+                error!("Failed to export flow instance {} to {}: {}", flow_instance.id, path, error.to_string());
             }
         }
     }

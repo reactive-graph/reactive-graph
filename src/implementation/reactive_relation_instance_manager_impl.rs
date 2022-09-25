@@ -5,6 +5,7 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 use indradb::EdgeKey;
+use inexor_rgf_core_model::ComponentContainer;
 use serde_json::json;
 use serde_json::Value;
 use uuid::Uuid;
@@ -90,6 +91,10 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         reader.values().cloned().collect()
     }
 
+    fn count_relation_instances(&self) -> usize {
+        self.reactive_relation_instances.0.read().unwrap().len()
+    }
+
     fn get_keys(&self) -> Vec<EdgeKey> {
         let reader = self.reactive_relation_instances.0.read().unwrap();
         reader.keys().cloned().collect()
@@ -122,7 +127,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             .ok_or(ReactiveRelationInstanceCreationError::MissingInboundEntityInstance(relation_instance.inbound_id))?;
         let relation_type = self
             .relation_type_manager
-            .get_starts_with(relation_instance.type_name.clone())
+            .get_starts_with(&relation_instance.type_name)
             .ok_or(ReactiveRelationInstanceCreationError::UnknownRelationType(relation_instance.type_name.clone()))?;
 
         if !relation_type.outbound_type.eq("*")
@@ -162,7 +167,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             // Apply all components that are predefined in the relation type
             if let Some(components) = self
                 .relation_type_manager
-                .get(reactive_relation_instance.type_name.clone())
+                .get(&reactive_relation_instance.type_name)
                 .map(|entity_type| entity_type.components)
             {
                 components.iter().for_each(|component| {
@@ -190,7 +195,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn add_component(&self, edge_key: EdgeKey, component_name: String) {
-        if let Some(component) = self.component_manager.get(component_name.clone()) {
+        if let Some(component) = self.component_manager.get(&component_name) {
             if let Some(reactive_relation_instance) = self.get(edge_key) {
                 // Add component
                 reactive_relation_instance.add_component(component_name);
@@ -210,7 +215,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn remove_component(&self, edge_key: EdgeKey, component_name: String) {
-        if let Some(component) = self.component_manager.get(component_name.clone()) {
+        if let Some(component) = self.component_manager.get(&component_name) {
             if let Some(reactive_relation_instance) = self.get(edge_key) {
                 // Remove component
                 reactive_relation_instance.remove_component(component_name);

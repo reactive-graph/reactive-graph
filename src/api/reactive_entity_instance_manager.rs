@@ -58,6 +58,9 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     /// Returns all registered reactive entity instances.
     fn get_entity_instances(&self) -> Vec<Arc<ReactiveEntityInstance>>;
 
+    /// Returns the count of registered reactive entity instances.
+    fn count_entity_instances(&self) -> usize;
+
     /// Returns the ids of all registered reactive entity instances.
     fn get_ids(&self) -> Vec<Uuid>;
 

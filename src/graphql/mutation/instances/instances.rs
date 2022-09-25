@@ -1,6 +1,7 @@
 use async_graphql::*;
 
 use crate::graphql::mutation::MutationEntityInstances;
+use crate::graphql::mutation::MutationFlowInstances;
 use crate::graphql::mutation::MutationRelationInstances;
 
 #[derive(Default)]
@@ -17,5 +18,10 @@ impl MutationInstances {
     /// Mutations on relation instances.
     async fn relations(&self) -> MutationRelationInstances {
         MutationRelationInstances::default()
+    }
+
+    /// Mutations for flows and their contained instances.
+    async fn flows(&self) -> MutationFlowInstances {
+        MutationFlowInstances::default()
     }
 }

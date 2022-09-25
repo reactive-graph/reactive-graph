@@ -9,7 +9,15 @@ use std::time::Duration;
 
 use actix_cors::Cors;
 use actix_http::body::BoxBody;
-use actix_web::{guard, post, web, App, HttpRequest, HttpResponse, HttpResponseBuilder, HttpServer, Result};
+use actix_web::guard;
+use actix_web::post;
+use actix_web::web;
+use actix_web::App;
+use actix_web::HttpRequest;
+use actix_web::HttpResponse;
+use actix_web::HttpResponseBuilder;
+use actix_web::HttpServer;
+use actix_web::Result;
 use actix_web_extras::middleware::Condition;
 use async_graphql::Schema;
 use async_graphql_actix_web::GraphQLRequest;
@@ -22,7 +30,7 @@ use http::Request;
 use http::Response;
 use log::debug;
 use log::error;
-use log::info;
+use log::trace;
 use log::warn;
 use rustls::Certificate;
 use rustls::PrivateKey;
@@ -32,35 +40,41 @@ use rustls_pemfile::pkcs8_private_keys;
 use serde::Deserialize;
 
 use crate::api::ComponentManager;
+use crate::api::DynamicGraph;
 use crate::api::EntityTypeManager;
+use crate::api::FlowTypeManager;
+use crate::api::GraphQLSchemaManager;
 use crate::api::GraphQLServer;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveFlowManager;
+use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::WebResourceManager;
 use crate::config::get_logger_middleware;
 use crate::di::*;
-use crate::graphql::InexorMutation;
-use crate::graphql::InexorQuery;
 use crate::graphql::InexorSchema;
-use crate::graphql::InexorSubscription;
 use crate::plugins::HttpBody;
 
 #[component]
 pub struct GraphQLServerImpl {
     component_manager: Wrc<dyn ComponentManager>,
 
+    dynamic_graph: Wrc<dyn DynamicGraph>,
+
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+
+    flow_type_manager: Wrc<dyn FlowTypeManager>,
 
     entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
 
     relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
 
-    flow_manager: Wrc<dyn ReactiveFlowManager>,
+    flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+
+    graphql_schema_manager: Wrc<dyn GraphQLSchemaManager>,
 
     web_resource_manager: Wrc<dyn WebResourceManager>,
 }
@@ -68,6 +82,13 @@ pub struct GraphQLServerImpl {
 #[post("/graphql")]
 async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest) -> GraphQLResponse {
     schema.execute(request.into_inner()).await.into()
+}
+
+// TODO: /dynamic-graph
+#[post("/dynamic_graph")]
+async fn query_dynamic_graph(dynamic_graph: web::Data<Arc<dyn DynamicGraph>>, request: GraphQLRequest) -> GraphQLResponse {
+    trace!("dynamic_graph request: {:?}", &request.0);
+    dynamic_graph.execute_request(request)
 }
 
 async fn subscription_websocket(schema: web::Data<InexorSchema>, request: HttpRequest, payload: web::Payload) -> Result<HttpResponse> {
@@ -166,54 +187,19 @@ fn convert_response(response: Response<HttpBody>) -> HttpResponse {
 #[async_trait]
 #[provides]
 impl GraphQLServer for GraphQLServerImpl {
-    fn get_schema(&self) -> InexorSchema {
-        Schema::build(InexorQuery, InexorMutation, InexorSubscription)
-            .data(self.component_manager.clone())
-            .data(self.entity_type_manager.clone())
-            .data(self.relation_type_manager.clone())
-            .data(self.entity_instance_manager.clone())
-            .data(self.relation_instance_manager.clone())
-            .data(self.flow_manager.clone())
-            .finish()
-    }
-
-    // TODO: Extract to separate service: GraphQLQueryService <- Deno Integration
-    async fn query(&self, request: String) -> Result<String, serde_json::Error> {
-        info!("query");
-        let schema = self.get_schema();
-        let result = schema.execute(request).await;
-        let json = serde_json::to_string(&result);
-        match json {
-            Ok(result) => Ok(result),
-            Err(err) => Err(err),
-        }
-    }
-
-    fn query_thread(&self, request: String) {
-        let schema = self.get_schema();
-        let _thread = task::Builder::new().name(String::from("query")).spawn(async move {
-            info!("query: {}", request.clone());
-            let result = schema.execute(request).await;
-            let json = serde_json::to_string(&result);
-            info!("query result: {}", json.unwrap());
-        });
-    }
-
     fn serve(&self, stopper: Receiver<()>) {
-        // TEST THE GRAPHQL SCHEMA  --- TODO: remove
-        let request = "{ types { entities(name:\"add\") { name } } }";
-        self.query_thread(request.to_string());
-
         // GraphQL Schema
-        let schema = self.get_schema();
+        let schema = self.graphql_schema_manager.get_schema();
 
         // REST SERVICES
         let component_manager = web::Data::new(self.component_manager.clone());
         let entity_type_manager = web::Data::new(self.entity_type_manager.clone());
         let relation_type_manager = web::Data::new(self.relation_type_manager.clone());
+        let flow_type_manager = web::Data::new(self.flow_type_manager.clone());
         let entity_instance_manager = web::Data::new(self.entity_instance_manager.clone());
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
-        let flow_manager = web::Data::new(self.flow_manager.clone());
+        let flow_instance_manager = web::Data::new(self.flow_instance_manager.clone());
+        let dynamic_graph = web::Data::new(self.dynamic_graph.clone());
         let web_resource_manager = web::Data::new(self.web_resource_manager.clone());
         let schema_data = web::Data::new(schema);
 
@@ -229,9 +215,11 @@ impl GraphQLServer for GraphQLServerImpl {
                 .app_data(component_manager.clone())
                 .app_data(entity_type_manager.clone())
                 .app_data(relation_type_manager.clone())
+                .app_data(flow_type_manager.clone())
                 .app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
-                .app_data(flow_manager.clone())
+                .app_data(flow_instance_manager.clone())
+                .app_data(dynamic_graph.clone())
                 .app_data(web_resource_manager.clone())
                 // GraphQL API
                 .service(query_graphql)
@@ -241,6 +229,8 @@ impl GraphQLServer for GraphQLServerImpl {
                         .guard(guard::Header("upgrade", "websocket"))
                         .to(subscription_websocket),
                 )
+                // Dynamic GraphQL API
+                .service(query_dynamic_graph)
                 // REST API
                 .service(crate::rest::types::components::get_components)
                 .service(crate::rest::types::entities::get_entity_types)

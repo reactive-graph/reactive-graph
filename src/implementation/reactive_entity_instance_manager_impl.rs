@@ -19,6 +19,7 @@ use crate::api::ReactiveEntityInstanceManager;
 use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
+use crate::model::ComponentContainer;
 use crate::model::EntityInstance;
 use crate::model::PropertyInstanceGetter;
 use crate::model::ReactiveEntityInstance;
@@ -93,6 +94,10 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         reader.values().cloned().collect()
     }
 
+    fn count_entity_instances(&self) -> usize {
+        self.reactive_entity_instances.0.read().unwrap().len()
+    }
+
     fn get_ids(&self) -> Vec<Uuid> {
         let reader = self.reactive_entity_instances.0.read().unwrap();
         reader.keys().cloned().collect()
@@ -154,7 +159,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         // Apply all components that are predefined in the entity type
         if let Some(components) = self
             .entity_type_manager
-            .get(reactive_entity_instance.type_name.clone())
+            .get(&reactive_entity_instance.type_name)
             .map(|entity_type| entity_type.components)
         {
             components.iter().for_each(|component| {
@@ -188,7 +193,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     fn add_component(&self, id: Uuid, component_name: String) {
-        if let Some(component) = self.component_manager.get(component_name.clone()) {
+        if let Some(component) = self.component_manager.get(&component_name) {
             if let Some(reactive_entity_instance) = self.get(id) {
                 // Add component
                 reactive_entity_instance.add_component(component_name);
@@ -208,7 +213,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     fn remove_component(&self, id: Uuid, component_name: String) {
-        if let Some(component) = self.component_manager.get(component_name.clone()) {
+        if let Some(component) = self.component_manager.get(&component_name) {
             if let Some(reactive_entity_instance) = self.get(id) {
                 // Remove component
                 reactive_entity_instance.remove_component(component_name);
@@ -275,8 +280,6 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 }
 
 impl Lifecycle for ReactiveEntityInstanceManagerImpl {
-    fn init(&self) {}
-
     fn post_init(&self) {
         for event_instance in self.event_manager.get_system_event_instances() {
             self.register_reactive_instance(event_instance);
@@ -288,6 +291,4 @@ impl Lifecycle for ReactiveEntityInstanceManagerImpl {
             self.unregister_reactive_instance(event_instance.id);
         }
     }
-
-    fn shutdown(&self) {}
 }

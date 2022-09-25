@@ -32,25 +32,28 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     fn get_entity_types(&self) -> Vec<EntityType>;
 
     /// Returns true, if a entity type with the given name exists.
-    fn has(&self, name: String) -> bool;
+    fn has(&self, name: &str) -> bool;
 
     /// Returns the entity type with the given name or empty.
-    fn get(&self, name: String) -> Option<EntityType>;
+    fn get(&self, name: &str) -> Option<EntityType>;
 
     /// Returns all entity types whose names matches the given search string.
-    fn find(&self, search: String) -> Vec<EntityType>;
+    fn find(&self, search: &str) -> Vec<EntityType>;
+
+    /// Returns the count of entity types.
+    fn count(&self) -> usize;
 
     /// Creates a new entity type.
-    fn create(&self, name: String, group: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
+    fn create(&self, name: String, namespace: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
 
     /// Deletes the entity type with the given name.
-    fn delete(&self, name: String);
+    fn delete(&self, name: &str);
 
     /// Imports an entity type from a JSON file file located at the given path.
-    fn import(&self, path: String) -> Result<EntityType, EntityTypeImportError>;
+    fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError>;
 
     /// Exports the entity type with the given name to a JSON file located at the given path.
-    fn export(&self, name: String, path: String);
+    fn export(&self, name: &str, path: &str);
 
     /// Registers an entity type provider.
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>);

@@ -26,7 +26,7 @@ impl MutationComponents {
 
     async fn delete(&self, context: &Context<'_>, name: String) -> Result<bool> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
-        component_manager.delete(name);
+        component_manager.delete(name.as_str());
         Ok(true)
     }
 }

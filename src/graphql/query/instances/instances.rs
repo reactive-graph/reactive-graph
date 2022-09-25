@@ -3,8 +3,15 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
-use crate::api::{ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
-use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance, GraphQLRelationInstance};
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveFlowInstanceManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::query::GraphQLEntityInstance;
+use crate::graphql::query::GraphQLFlowInstance;
+use crate::graphql::query::GraphQLPropertyInstance;
+use crate::graphql::query::GraphQLRelationInstance;
+use crate::model::ComponentContainer;
+use crate::model::ReactiveBehaviourContainer;
 
 #[derive(Default)]
 pub struct Instances;
@@ -94,6 +101,13 @@ impl Instances {
         Vec::new()
     }
 
+    async fn count_entity_instances(&self, context: &Context<'_>) -> usize {
+        context
+            .data::<Arc<dyn ReactiveEntityInstanceManager>>()
+            .map(|entity_instance_manager| entity_instance_manager.count_entity_instances())
+            .unwrap_or(0)
+    }
+
     /// Search for relations instances.
     ///
     /// Relation instances can be searched by relation type name, the entity type of the outbound
@@ -160,5 +174,54 @@ impl Instances {
                 .collect();
         }
         Vec::new()
+    }
+
+    async fn count_relation_instances(&self, context: &Context<'_>) -> usize {
+        context
+            .data::<Arc<dyn ReactiveRelationInstanceManager>>()
+            .map(|relation_instance_manager| relation_instance_manager.count_relation_instances())
+            .unwrap_or(0)
+    }
+
+    /// Search for flows and their contained instances.
+    async fn flows(
+        &self,
+        context: &Context<'_>,
+        #[graphql(desc = "Filters by the id of the flow")] id: Option<Uuid>,
+        #[graphql(desc = "Filters by the label of the flow")] label: Option<String>,
+        #[graphql(name = "type", desc = "Filters by the flow type")] flow_type: Option<String>,
+    ) -> Vec<GraphQLFlowInstance> {
+        if let Ok(flow_manager) = context.data::<Arc<dyn ReactiveFlowInstanceManager>>() {
+            if id.is_some() {
+                return match flow_manager.get(id.unwrap()).map(|flow| flow.into()) {
+                    Some(flow) => vec![flow],
+                    None => Vec::new(),
+                };
+            }
+            if label.is_some() {
+                let flow = flow_manager.get_by_label(label.unwrap()).map(|flow| {
+                    let flow: GraphQLFlowInstance = flow.into();
+                    flow
+                });
+                return if flow.is_some() { vec![flow.unwrap()] } else { Vec::new() };
+            }
+            return flow_manager
+                .get_all()
+                .iter()
+                .filter(|flow| flow_type.is_none() || flow_type.clone().unwrap() == flow.type_name)
+                .map(|flow| {
+                    let flow: GraphQLFlowInstance = flow.clone().into();
+                    flow
+                })
+                .collect();
+        }
+        Vec::new()
+    }
+
+    async fn count_flow_instances(&self, context: &Context<'_>) -> usize {
+        context
+            .data::<Arc<dyn ReactiveFlowInstanceManager>>()
+            .map(|flow_instance_manager| flow_instance_manager.count_flow_instances())
+            .unwrap_or(0)
     }
 }

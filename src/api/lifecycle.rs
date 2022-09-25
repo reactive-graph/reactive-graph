@@ -1,6 +1,14 @@
+/// Dual layer runtime lifecycle for initialization and shutdown of services
 pub trait Lifecycle {
-    fn init(&self);
-    fn post_init(&self);
-    fn pre_shutdown(&self);
-    fn shutdown(&self);
+    /// Called at initialization
+    fn init(&self) {}
+
+    /// Called after initialization
+    fn post_init(&self) {}
+
+    /// Called before shutdown
+    fn pre_shutdown(&self) {}
+
+    /// Called for shutdown
+    fn shutdown(&self) {}
 }

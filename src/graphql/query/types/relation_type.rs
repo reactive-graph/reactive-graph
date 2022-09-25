@@ -2,7 +2,8 @@ use std::sync::Arc;
 
 use async_graphql::*;
 
-use crate::api::{ComponentManager, EntityTypeManager};
+use crate::api::ComponentManager;
+use crate::api::EntityTypeManager;
 use crate::graphql::query::{GraphQLComponent, GraphQLEntityType, GraphQLExtension, GraphQLPropertyType};
 use crate::model::RelationType;
 
@@ -28,7 +29,7 @@ impl GraphQLRelationType {
                     .map(|entity_type| entity_type.clone().into())
                     .collect();
             }
-            if let Some(entity_type) = entity_type_manager.get(self.relation_type.outbound_type.clone()) {
+            if let Some(entity_type) = entity_type_manager.get(&self.relation_type.outbound_type) {
                 return vec![entity_type.into()];
             }
         }
@@ -39,7 +40,7 @@ impl GraphQLRelationType {
     async fn outbound_components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
         match context.data::<Arc<dyn ComponentManager>>() {
             Ok(component_manager) => {
-                if let Some(component) = component_manager.get(self.relation_type.outbound_type.clone()) {
+                if let Some(component) = component_manager.get(&self.relation_type.outbound_type) {
                     vec![component.into()]
                 } else {
                     Vec::new()
@@ -78,7 +79,7 @@ impl GraphQLRelationType {
                     .map(|entity_type| entity_type.clone().into())
                     .collect();
             }
-            if let Some(entity_type) = entity_type_manager.get(self.relation_type.inbound_type.clone()) {
+            if let Some(entity_type) = entity_type_manager.get(&self.relation_type.inbound_type) {
                 return vec![entity_type.into()];
             }
         }
@@ -89,7 +90,7 @@ impl GraphQLRelationType {
     async fn inbound_components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
         match context.data::<Arc<dyn ComponentManager>>() {
             Ok(component_manager) => {
-                if let Some(component) = component_manager.get(self.relation_type.inbound_type.clone()) {
+                if let Some(component) = component_manager.get(&self.relation_type.inbound_type) {
                     vec![component.into()]
                 } else {
                     Vec::new()
@@ -99,9 +100,9 @@ impl GraphQLRelationType {
         }
     }
 
-    /// The relation type belongs to the given group of relation types.
-    async fn group(&self) -> String {
-        self.relation_type.group.clone()
+    /// The namespace the relation type belongs to.
+    async fn namespace(&self) -> String {
+        self.relation_type.namespace.clone()
     }
 
     /// Textual description of the relation type.
@@ -117,7 +118,7 @@ impl GraphQLRelationType {
             self.relation_type
                 .components
                 .iter()
-                .filter_map(|component| component_manager.get(component.clone()))
+                .filter_map(|component_name| component_manager.get(&component_name))
                 .map(|component| component.into())
                 .collect()
         } else {
