@@ -64,7 +64,13 @@ pub trait DynamicGraph: Send + Sync + Lifecycle {
 
     fn resolve_relation_instances(&self, compiler: &ApolloCompiler, field: &Field) -> Vec<Value>;
 
-    fn resolve_relation_instance(&self, compiler: &ApolloCompiler, field: &Field, relation_instance: &Arc<ReactiveRelationInstance>, in_component: bool) -> Value;
+    fn resolve_relation_instance(
+        &self,
+        compiler: &ApolloCompiler,
+        field: &Field,
+        relation_instance: &Arc<ReactiveRelationInstance>,
+        in_component: bool,
+    ) -> Value;
 
     fn resolve_relation_instance_index_map(
         &self,

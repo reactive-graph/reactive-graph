@@ -1,12 +1,14 @@
+use std::collections::HashMap;
+use std::sync::Arc;
+
+use serde_json::Value;
+use uuid::Uuid;
+
 use crate::api::ReactiveFlowInstanceManager;
 use crate::model::FlowInstance;
 use crate::model::ReactiveFlowInstance;
 use crate::plugins::FlowInstanceCreationError;
 use crate::plugins::FlowInstanceManager;
-use serde_json::Value;
-use std::collections::HashMap;
-use std::sync::Arc;
-use uuid::Uuid;
 
 pub struct FlowInstanceManagerImpl {
     reactive_flow_instance_manager: Arc<dyn ReactiveFlowInstanceManager>,
@@ -41,7 +43,12 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
         }
     }
 
-    fn create_from_type(&self, name: String, variables: HashMap<String, Value>, properties: HashMap<String, Value>) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError> {
+    fn create_from_type(
+        &self,
+        name: String,
+        variables: HashMap<String, Value>,
+        properties: HashMap<String, Value>,
+    ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError> {
         match self.reactive_flow_instance_manager.create_from_type(name, variables, properties) {
             Ok(reactive_flow_instance) => Ok(reactive_flow_instance),
             Err(_) => Err(FlowInstanceCreationError::Failed),
