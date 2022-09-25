@@ -48,7 +48,7 @@ indradb-lib = "3"
 lazy_static = "1.4.0"
 libloading = "0.7"
 log = { version = "0.4", features = ["std", "serde"] }
-log4rs = { version = "1.0", features = ["console_appender", "file_appender", "toml_format"] }
+log4rs = { version = "1.1", features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 mime = "0.3"
 path-tree = "0.4"
 rand = "0.8"
