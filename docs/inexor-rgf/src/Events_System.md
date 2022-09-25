@@ -20,6 +20,7 @@ through these events.
 | `/org/inexor/events/type/entity/deleted`       | Triggered if an entity type has been deleted      | Name of the deleted entity type           |
 | `/org/inexor/events/type/relation/created`     | Triggered if a relation type has been created     | Name of the created relation type         |
 | `/org/inexor/events/type/relation/deleted`     | Triggered if a relation type has been deleted     | Name of the deleted relation type         |
+| `/org/inexor/event/type/changed`               | Triggered if the type system has changed          |                                           |
 | `/org/inexor/events/instance/entity/created`   | Triggered if an entity instance has been created  | UUID of the created entity instance       |
 | `/org/inexor/events/instance/entity/deleted`   | Triggered if an entity instance has been deleted  | UUID of the deleted entity instance       |
 | `/org/inexor/events/instance/relation/created` | Triggered if a relation instance has been created | Edge key of the created relation instance |
@@ -73,7 +74,7 @@ subscription getSystemEventComponentDeleted {
 
 ```graphql
 subscription getSystemEventFlowCreated {
-  entity(label: "/org/inexor/event/flow/created", propertyName: "event") {
+  entity(label: "/org/inexor/event/instance/flow/created", propertyName: "event") {
     name
     value
     type {
@@ -88,7 +89,7 @@ subscription getSystemEventFlowCreated {
 
 ```graphql
 subscription getSystemEventCFlowDeleted {
-  entity(label: "/org/inexor/event/flow/deleted", propertyName: "event") {
+  entity(label: "/org/inexor/event/instance/flow/deleted", propertyName: "event") {
     name
     value
     type {

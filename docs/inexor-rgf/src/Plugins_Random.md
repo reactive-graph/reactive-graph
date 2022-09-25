@@ -1,6 +1,6 @@
 # Plugin: Random
 
-Generate random numbers
+Generate random numbers, strings, UUIDs or booleans.
 
 ## Entity Types
 
@@ -45,18 +45,6 @@ Generate random numbers
 
 ## Usage
 
-<graphql-playground
-  id="plugin-random-example-random-number-generator"
-  title="Create random number generator"
-  href="/examples/plugin-random-create-random-number-generator.graphql">
-This example creates an entity which is a random number generator.
-</graphql-playground>
+{{ graphql_playground(config="/examples/graphql/plugin-random/plugin-random-number.json") }}
 
-<graphql-playground
-  id="plugin-random-example-generate-random-number"
-  title="Generate random number"
-  href="/examples/plugin-random-generate-random-number.graphql">
-This example uses the `random_number` generator to generate random numbers.<br>
-Please run the example above first.<br>
-Note that the property `trigger` is activated.
-</graphql-playground>
+{{ graphql_playground(config="/examples/graphql/plugin-random/plugin-random-string.json") }}

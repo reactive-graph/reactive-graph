@@ -36,3 +36,7 @@ This plugin provides generic components for meta data.
 | Name                       | Repository                                                                                                            |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-metadata | [https://github.com/inexorgame/inexor-rgf-plugin-metadata](https://github.com/inexorgame/inexor-rgf-plugin-metadata)  |
+
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugin-metadata/plugin-metadata.json") }}

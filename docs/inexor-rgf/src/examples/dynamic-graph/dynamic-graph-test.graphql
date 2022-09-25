@@ -1,0 +1,12 @@
+query {
+  add {
+    arithmetic_gate {
+      lhs
+      rhs
+      result
+    }
+  }
+  random_number {
+    result
+  }
+}

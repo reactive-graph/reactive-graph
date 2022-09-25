@@ -18,7 +18,7 @@ appearance of a connector of this type in the flow editor.
 | Name          | String                                         | The name of the relation type                                                         |
 | Full Name     | String                                         | The full name of the relation type                                                    |
 | Inbound Type  | [EntityType](./Model_Entity_Type.md)           | The entity type of the inbound entity instance                                        |
-| Group         | String                                         | The group of the relation type                                                        |
+| Namespace     | String                                         | The namespace                                                                         |
 | Description   | String                                         | Textual description of the entity type                                                |
 | Components    | Vec<[Component](./Model_Component.md)>         | The components which composes the relation type. These provides additional properties |
 | Properties    | Vec<[Property Type](./Model_Property_Type.md)> | The additional properties on relation instances                                       |
@@ -38,12 +38,12 @@ erDiagram
     Relation-Type {
         string name
         string fullname
-        string group
+        string namespace
         string description
     }
     Entity-Type {
         string name
-        string group
+        string namespace
         string description
     }
     Relation-Instance {

@@ -29,7 +29,7 @@ graph LR;
 erDiagram
     Entity-Type {
         string name
-        string group
+        string namespace
         string description
     }
     Entity-Instance {
@@ -40,13 +40,13 @@ erDiagram
     Relation-Type {
         string name
         string fullname
-        string group
+        string namespace
         string description
     }
     Relation-Instance {
         string name
         string fullname
-        string group
+        string namespace
         string description
     }
     Property-Type {

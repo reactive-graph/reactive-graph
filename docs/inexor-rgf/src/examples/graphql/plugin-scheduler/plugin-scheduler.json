@@ -1,0 +1,11 @@
+{
+  "id": "plugin-scheduler",
+  "title": "Scheduler",
+  "description": "TODO",
+  "tabs": [
+    {
+      "name": "Add Binary",
+      "url": "/examples/graphql/plugin-scheduler/plugin-scheduler-create.graphql"
+    }
+  ]
+}

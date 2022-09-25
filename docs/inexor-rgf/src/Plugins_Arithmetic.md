@@ -72,23 +72,12 @@ This plugin provides arithmetic gates and operations.
 
 ## Usage
 
-<graphql-playground
-  id="plugin-arithmetic-create-counter"
-  title="Create counter"
-  href="/examples/plugin-arithmetic-create-counter.graphql">
-This example shows how to create a counter.
-</graphql-playground>
+{{ graphql_playground(config="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json") }}
 
-<graphql-playground
-  id="plugin-arithmetic-increase-counter"
-  title="Increase counter"
-  href="/examples/plugin-arithmetic-increase-counter.graphql">
-This example shows how to increase a counter.
-</graphql-playground>
+---
 
-<graphql-playground
-  id="plugin-arithmetic-reset-counter"
-  title="Reset counter"
-  href="/examples/plugin-arithmetic-reset-counter.graphql">
-This example shows how to reset a counter.
-</graphql-playground>
+{{ graphql_playground(config="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json") }}
+
+---
+
+{{ graphql_playground(config="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json") }}

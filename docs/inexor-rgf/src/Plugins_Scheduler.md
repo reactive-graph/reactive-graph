@@ -99,6 +99,10 @@ and time elements and are not replaced.
 
 ## Usage
 
+{{ graphql_playground(config="/examples/graphql/plugin-scheduler/plugin-scheduler.json") }}
+
+## Usage
+
 ### GraphQL: Create a new timer
 
 ```graphql

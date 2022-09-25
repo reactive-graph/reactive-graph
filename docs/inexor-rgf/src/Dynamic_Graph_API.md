@@ -44,3 +44,7 @@ The GraphQL schema is regenerated each time a [Component](./Model_Component.md),
 * [Altair](https://altair.sirmuel.design/)
 * [GraphQL Voyager](https://apis.guru/graphql-voyager/)
 * [Firefox Addon GraphQL Developer Tools](https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/)
+
+## Usage
+
+{{ graphql_playground(config="/examples/dynamic-graph/dynamic-graph.json") }}

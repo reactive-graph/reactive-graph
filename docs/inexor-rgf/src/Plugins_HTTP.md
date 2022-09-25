@@ -39,6 +39,10 @@ With this plugin it's possible to integrate external services into your home aut
 
 ## Usage
 
+{{ graphql_playground(config="/examples/graphql/plugin-http/plugin-http.json") }}
+
+## Usage
+
 ### GraphQL
 
 #### Create HTTP Request

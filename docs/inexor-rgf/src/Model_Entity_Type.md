@@ -8,7 +8,7 @@ defines which components it is combined from. Additional properties can also be 
 | Field       | DataType                                       | Description                                                                         | Example       |
 |-------------|------------------------------------------------|-------------------------------------------------------------------------------------|---------------|
 | Name        | String                                         | The name of the entity type                                                         | player        |
-| Group       | String                                         | The group of the entity type                                                        | logical_gates |
+| Namespace   | String                                         | The namespace                                                                       | logical_gates |
 | Description | String                                         | Textual description of the entity type                                              |               |
 | Components  | Vec<[Component](./Model_Component.md)>         | The components which composes the entity type. These provides additional properties |               |
 | Properties  | Vec<[Property Type](./Model_Property_Type.md)> | The additional properties on entity instances                                       |               |
@@ -20,7 +20,7 @@ defines which components it is combined from. Additional properties can also be 
 erDiagram
     Entity-Type {
         string name
-        string group
+        string namespace
         string description
     }
     Entity-Instance {
@@ -45,7 +45,7 @@ erDiagram
     Relation-Type {
         string name
         string fullname
-        string group
+        string namespace
         string description
     }
     Entity-Type o{--}o Component : composes

@@ -1,8 +1,11 @@
 query {
   types {
-    components(name: "component1") {
+    entities(name: "example") {
       name
       description
+      components {
+        name
+      }
       properties {
         name
         dataType
@@ -12,7 +15,6 @@ query {
           extension
         }
       }
-      # extensions ...
     }
   }
 }

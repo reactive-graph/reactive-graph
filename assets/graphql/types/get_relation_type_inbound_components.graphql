@@ -1,0 +1,28 @@
+# Plugin: inexor_rgf_plugins_tray
+#
+# Trays have menu items. The relation 'tray_has_menu_item' defines that
+# the inbound entity type is 'tray' and
+# the outbound entity has the component named 'tray_menu_item'.
+#
+# This means that the menu item can be for example a system_command or any other
+# entity type which is a trigger
+
+query {
+  types {
+    relations(name: "tray_has_menu_item") {
+      outboundTypes {
+        name
+        properties {
+          name
+        }
+      }
+      name
+      inboundComponents {
+        name
+        properties {
+          name
+        }
+      }
+    }
+  }
+}

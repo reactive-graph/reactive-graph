@@ -23,7 +23,11 @@ Read configuration files (TOML) into an entity instance.
 |--------------------------|------------------------------------------------------------------------------------------------------------------|
 | inexor-rgf-plugin-config | [https://github.com/inexorgame/inexor-rgf-plugin-config](https://github.com/inexorgame/inexor-rgf-plugin-config) |
 
-## Usage (GraphQL)
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugin-config/plugin-config.json") }}
+
+## Usage (GraphQL) {.tabset}
 
 ### Read in a configuration
 
