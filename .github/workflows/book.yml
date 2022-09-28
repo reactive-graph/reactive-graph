@@ -40,6 +40,13 @@ jobs:
           version: latest
           use-tool-cache: true
 
+      - name: Install preprocessor mdbook-graphql-playground
+        uses: actions-rs/install@v0.1
+        with:
+          crate: mdbook-preprocessor-graphql-playground
+          version: latest
+          use-tool-cache: true
+
       - name: Build Book
         working-directory: ./docs/inexor-rgf
         run: mdbook build
