@@ -1,0 +1,34 @@
+mutation CreateConfigReader {
+  instances {
+    entities {
+      create(
+        type: "config_file"
+        id: "aed6c9b0-e495-4423-baeb-5597b66416f4"
+        properties: [
+          {
+            name: "filename"
+            value: "config/plugins.toml"
+          }
+          {
+            name: "trigger",
+            value: true
+          }
+        ]
+      ) {
+        id
+        type {
+          name
+        }
+        properties(
+          names: [
+            "filename"
+            "configuration"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}

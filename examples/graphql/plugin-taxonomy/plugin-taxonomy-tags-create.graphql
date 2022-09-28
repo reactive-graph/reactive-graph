@@ -1,0 +1,22 @@
+mutation CreateTag {
+  instances {
+    entities {
+      create(
+        type: "tag",
+        id: "8e6ab5a8-8367-40e2-8a19-391664c39042",
+        properties: [
+          {
+            name: "name",
+            value: "inexor"
+          }
+        ]
+      ) {
+        id
+        properties(name: "name") {
+          name
+          value
+        }
+      }
+    }
+  }
+}

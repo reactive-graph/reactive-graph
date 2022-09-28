@@ -1,0 +1,22 @@
+mutation CreateSubCategory {
+  instances {
+    entities {
+      create(
+        type: "category",
+        id: "65d9a00e-92d1-484f-bcce-0d07acf42059",
+        properties: [
+          {
+            name: "name",
+            value: "Sub Category"
+          }
+          {
+            name: "description",
+            value: "Level 1"
+          }
+        ]
+      ) {
+        id
+      }
+    }
+  }
+}

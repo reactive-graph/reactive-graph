@@ -1,0 +1,11 @@
+{
+  "id": "plugin-http",
+  "title": "HTTP",
+  "description": "TODO",
+  "tabs": [
+    {
+      "name": "Add Binary",
+      "url": "/examples/graphql/plugin-http/plugin-http-create.graphql"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+mutation {
+  types {
+    components {
+      create(
+        name: "component1",
+        properties: [
+          {
+            name: "first"
+            description: "First Property"
+            dataType: ANY
+            socketType: NONE
+            extensions: [
+              {
+                name: "sorted"
+                extension: {
+                  sortProperty: "first"
+                }
+              }
+            ]
+          }
+        ]
+      ) {
+        name
+        description
+        properties {
+          name
+          dataType
+          socketType
+          extensions {
+            name
+            extension
+          }
+        }
+      }
+    }
+  }
+}

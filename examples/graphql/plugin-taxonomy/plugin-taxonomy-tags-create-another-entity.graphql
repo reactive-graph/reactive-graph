@@ -1,0 +1,12 @@
+mutation CreateAnotherEntity {
+  instances {
+    entities {
+      create(
+        type: "add",
+        id: "418df3a2-55db-4fc9-a7b2-dbce928c9a03"
+      ) {
+        id
+      }
+    }
+  }
+}

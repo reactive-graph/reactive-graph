@@ -1,0 +1,11 @@
+{
+  "id": "plugin-numeric",
+  "title": "Numeric",
+  "description": "TODO",
+  "tabs": [
+    {
+      "name": "Add Binary",
+      "url": "/examples/graphql/plugin-numeric/plugin-numeric-create.graphql"
+    }
+  ]
+}

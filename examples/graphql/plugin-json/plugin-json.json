@@ -1,0 +1,11 @@
+{
+  "id": "plugin-json",
+  "title": "JSON",
+  "description": "TODO",
+  "tabs": [
+    {
+      "name": "Add Binary",
+      "url": "/examples/graphql/plugin-json/plugin-json-create.graphql"
+    }
+  ]
+}
