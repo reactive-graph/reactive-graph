@@ -16,6 +16,9 @@ pub trait RelationTypeManager: Send + Sync {
     /// Returns all relation types.
     fn get_relation_types(&self) -> Vec<RelationType>;
 
+    /// Returns all relation types of the given namespace.
+    fn get_entity_types_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
+
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, type_name: &str) -> bool;
 
@@ -35,15 +38,36 @@ pub trait RelationTypeManager: Send + Sync {
     fn count(&self) -> usize;
 
     /// Creates a new relation type.
+    #[allow(clippy::too_many_arguments)]
     fn create(
         &self,
-        outbound_type: String,
-        type_name: String,
-        inbound_type: String,
+        namespace: &str,
+        outbound_type: &str,
+        type_name: &str,
+        inbound_type: &str,
+        description: &str,
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     );
+
+    /// Adds the component with the given component_name to the relation type with the given name.
+    fn add_component(&self, name: &str, component_name: &str);
+
+    /// Remove the component with the given component_name from the relation type with the given name.
+    fn remove_component(&self, name: &str, component_name: &str);
+
+    /// Adds a property to the relation type with the given name.
+    fn add_property(&self, name: &str, property: PropertyType);
+
+    /// Removes the property with the given property_name from the relation type with the given name.
+    fn remove_property(&self, name: &str, property_name: &str);
+
+    /// Adds an extension to the relation type with the given name.
+    fn add_extension(&self, name: &str, extension: Extension);
+
+    /// Removes the extension with the given extension_name from the relation type with the given name.
+    fn remove_extension(&self, name: &str, extension_name: &str);
 
     /// Deletes the relation type with the given name.
     fn delete(&self, type_name: &str);
