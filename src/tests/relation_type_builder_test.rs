@@ -9,10 +9,10 @@ use crate::RelationTypeBuilder;
 
 #[test]
 fn relation_type_builder_test() {
+    let namespace = r_string();
     let type_name = r_string();
     let outbound_type = r_string();
     let inbound_type = r_string();
-    let namespace = r_string();
     let description = r_string();
     let component_1_name = r_string();
     let component_2_name = r_string();
@@ -27,8 +27,7 @@ fn relation_type_builder_test() {
     let property_7_name = r_string();
     let property_8_name = r_string();
     let property_9_name = r_string();
-    let relation_type = RelationTypeBuilder::new(outbound_type.clone(), type_name.clone(), inbound_type.clone())
-        .namespace(namespace.clone())
+    let relation_type = RelationTypeBuilder::new(namespace.clone(), outbound_type.clone(), type_name.clone(), inbound_type.clone())
         .description(description.clone())
         .property(property_1_name.clone(), DataType::String)
         .property_from(PropertyType::new(property_2_name.clone(), DataType::Bool))
@@ -44,11 +43,11 @@ fn relation_type_builder_test() {
         .extension(extension_1_name.clone(), json!(true))
         .extension(extension_2_name.clone(), json!(true))
         .build();
+    assert_eq!(namespace, relation_type.namespace);
     assert_eq!(outbound_type, relation_type.outbound_type.clone());
     assert_eq!(inbound_type, relation_type.inbound_type.clone());
     assert_eq!(type_name, relation_type.type_name);
-    assert_eq!(type_name, relation_type.t.to_string());
-    assert_eq!(namespace, relation_type.namespace);
+    assert_eq!(format!("{namespace}__{type_name}"), relation_type.t.to_string());
     assert_eq!(description, relation_type.description);
     assert!(relation_type.is_a(component_1_name.clone()));
     assert!(relation_type.is_a(component_2_name.clone()));

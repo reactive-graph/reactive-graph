@@ -33,7 +33,7 @@ impl EntityInstanceBuilder {
         self
     }
 
-    pub fn get(&mut self) -> EntityInstance {
+    pub fn build(&self) -> EntityInstance {
         if self.id.is_some() {
             EntityInstance::new(self.type_name.clone(), self.id.unwrap(), self.properties.clone())
         } else {

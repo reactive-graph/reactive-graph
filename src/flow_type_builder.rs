@@ -64,7 +64,7 @@ impl FlowTypeBuilder {
         self
     }
 
-    pub fn build(&mut self) -> FlowType {
+    pub fn build(&self) -> FlowType {
         FlowType::new(
             self.type_name.clone(),
             self.name.clone(),

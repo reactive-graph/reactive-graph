@@ -40,7 +40,7 @@ impl ReactiveRelationInstanceBuilder {
         self
     }
 
-    pub fn get(&mut self) -> Arc<ReactiveRelationInstance> {
-        Arc::new(ReactiveRelationInstance::from_instance(self.outbound.clone(), self.inbound.clone(), self.builder.get()))
+    pub fn build(&self) -> Arc<ReactiveRelationInstance> {
+        Arc::new(ReactiveRelationInstance::from_instance(self.outbound.clone(), self.inbound.clone(), self.builder.build()))
     }
 }

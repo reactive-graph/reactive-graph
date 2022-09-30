@@ -23,20 +23,20 @@ fn flow_builder_test() {
     let entity_instance_1 = EntityInstanceBuilder::new(type_name_1.clone())
         .id(id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
-        .get();
+        .build();
     let entity_instance_2 = EntityInstanceBuilder::new(type_name_2.clone())
         .id(id)
         .property(property_2_name.clone(), json!(property_2_value.clone()))
-        .get();
+        .build();
     let entity_instance_3 = EntityInstanceBuilder::new(type_name_3.clone())
         .id(id)
         .property(property_3_name.clone(), json!(property_3_value.clone()))
-        .get();
+        .build();
 
     let rel_type_name = r_string();
-    let relation_instance_1 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_2.id).get();
-    let relation_instance_2 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_3.id).get();
-    let relation_instance_3 = RelationInstanceBuilder::new(entity_instance_2.id, rel_type_name.clone(), entity_instance_3.id).get();
+    let relation_instance_1 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_2.id).build();
+    let relation_instance_2 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_3.id).build();
+    let relation_instance_3 = RelationInstanceBuilder::new(entity_instance_2.id, rel_type_name.clone(), entity_instance_3.id).build();
 
     let flow_instance = FlowInstanceBuilder::new(entity_instance_1.clone())
         .name(name.clone())
@@ -46,7 +46,7 @@ fn flow_builder_test() {
         .relation(relation_instance_1.clone())
         .relation(relation_instance_2.clone())
         .relation(relation_instance_3.clone())
-        .get();
+        .build();
     assert_eq!(id, flow_instance.id);
     assert_eq!(name, flow_instance.name);
     assert_eq!(description, flow_instance.description);

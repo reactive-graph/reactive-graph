@@ -16,7 +16,7 @@ fn relation_instance_builder_test() {
     let property_1_value = r_string();
     let relation_instance = RelationInstanceBuilder::new(outbound_id, type_name.clone(), inbound_id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
-        .get();
+        .build();
     assert_eq!(type_name, relation_instance.type_name);
     assert_eq!(property_1_value.clone().as_str(), relation_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
     assert!(relation_instance.get(r_string()).is_none());
@@ -33,7 +33,7 @@ fn relation_instance_from_edge_key_test() {
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
     let relation_instance = RelationInstanceBuilder::from(edge_key.clone())
         .property(property_1_name.clone(), json!(property_1_value.clone()))
-        .get();
+        .build();
     assert_eq!(type_name, relation_instance.type_name);
     assert_eq!(property_1_value.clone().as_str(), relation_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
 }

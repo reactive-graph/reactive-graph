@@ -7,8 +7,8 @@ use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct EntityTypeBuilder {
-    type_name: String,
     namespace: String,
+    type_name: String,
     description: String,
     components: Vec<String>,
     properties: Vec<PropertyType>,
@@ -17,20 +17,15 @@ pub struct EntityTypeBuilder {
 
 #[allow(dead_code)]
 impl EntityTypeBuilder {
-    pub fn new<S: Into<String>>(type_name: S) -> EntityTypeBuilder {
+    pub fn new<S: Into<String>>(namespace: S, type_name: S) -> EntityTypeBuilder {
         EntityTypeBuilder {
+            namespace: namespace.into(),
             type_name: type_name.into(),
-            namespace: String::new(),
             description: String::new(),
             components: Vec::new(),
             properties: Vec::new(),
             extensions: Vec::new(),
         }
-    }
-
-    pub fn namespace<S: Into<String>>(&mut self, namespace: S) -> &mut EntityTypeBuilder {
-        self.namespace = namespace.into();
-        self
     }
 
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut EntityTypeBuilder {
@@ -93,10 +88,10 @@ impl EntityTypeBuilder {
         self
     }
 
-    pub fn build(&mut self) -> EntityType {
+    pub fn build(&self) -> EntityType {
         EntityType::new(
-            self.type_name.clone(),
             self.namespace.clone(),
+            self.type_name.clone(),
             self.description.clone(),
             self.components.to_vec(),
             self.properties.to_vec(),

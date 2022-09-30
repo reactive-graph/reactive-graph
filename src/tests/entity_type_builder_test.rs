@@ -9,8 +9,8 @@ use crate::EntityTypeBuilder;
 
 #[test]
 fn entity_type_builder_test() {
-    let type_name = r_string();
     let namespace = r_string();
+    let type_name = r_string();
     let description = r_string();
     let component_1_name = r_string();
     let component_2_name = r_string();
@@ -25,8 +25,7 @@ fn entity_type_builder_test() {
     let property_7_name = r_string();
     let property_8_name = r_string();
     let property_9_name = r_string();
-    let entity_type = EntityTypeBuilder::new(type_name.clone())
-        .namespace(namespace.clone())
+    let entity_type = EntityTypeBuilder::new(namespace.clone(), type_name.clone())
         .description(description.clone())
         .property(property_1_name.clone(), DataType::String)
         .property_from(PropertyType::new(property_2_name.clone(), DataType::Bool))
@@ -42,9 +41,9 @@ fn entity_type_builder_test() {
         .extension(extension_1_name.clone(), json!(true))
         .extension(extension_2_name.clone(), json!(true))
         .build();
-    assert_eq!(type_name, entity_type.name);
-    assert_eq!(type_name, entity_type.t.to_string());
     assert_eq!(namespace, entity_type.namespace);
+    assert_eq!(type_name, entity_type.name);
+    assert_eq!(format!("{namespace}__{type_name}"), entity_type.t.to_string());
     assert_eq!(description, entity_type.description);
     assert!(entity_type.is_a(component_1_name.clone()));
     assert!(entity_type.is_a(component_2_name.clone()));

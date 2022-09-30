@@ -30,7 +30,7 @@ impl RelationInstanceBuilder {
         self
     }
 
-    pub fn get(&mut self) -> RelationInstance {
+    pub fn build(&self) -> RelationInstance {
         RelationInstance::new(self.outbound_id, self.type_name.clone(), self.inbound_id, self.properties.clone())
     }
 }

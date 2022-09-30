@@ -7,10 +7,10 @@ use crate::model::RelationType;
 
 #[allow(dead_code)]
 pub struct RelationTypeBuilder {
+    namespace: String,
     outbound_type: String,
     type_name: String,
     inbound_type: String,
-    namespace: String,
     description: String,
     components: Vec<String>,
     properties: Vec<PropertyType>,
@@ -19,22 +19,17 @@ pub struct RelationTypeBuilder {
 
 #[allow(dead_code)]
 impl RelationTypeBuilder {
-    pub fn new<S: Into<String>>(outbound_type: S, type_name: S, inbound_type: S) -> RelationTypeBuilder {
+    pub fn new<S: Into<String>>(namespace: S, outbound_type: S, type_name: S, inbound_type: S) -> RelationTypeBuilder {
         RelationTypeBuilder {
+            namespace: namespace.into(),
             outbound_type: outbound_type.into(),
             type_name: type_name.into(),
             inbound_type: inbound_type.into(),
-            namespace: String::new(),
             description: String::new(),
             components: Vec::new(),
             properties: Vec::new(),
             extensions: Vec::new(),
         }
-    }
-
-    pub fn namespace<S: Into<String>>(&mut self, namespace: S) -> &mut RelationTypeBuilder {
-        self.namespace = namespace.into();
-        self
     }
 
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut RelationTypeBuilder {
@@ -97,12 +92,12 @@ impl RelationTypeBuilder {
         self
     }
 
-    pub fn build(&mut self) -> RelationType {
+    pub fn build(&self) -> RelationType {
         RelationType::new(
+            self.namespace.clone(),
             self.outbound_type.clone(),
             self.type_name.clone(),
             self.inbound_type.clone(),
-            self.namespace.clone(),
             self.description.clone(),
             self.components.to_vec(),
             self.properties.to_vec(),

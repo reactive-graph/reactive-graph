@@ -16,13 +16,13 @@ fn entity_instance_builder_test() {
     let entity_instance = EntityInstanceBuilder::new(type_name.clone())
         .id(id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
-        .get();
+        .build();
     assert_eq!(type_name, entity_instance.type_name);
     assert_eq!(id, entity_instance.id);
     assert_eq!(property_1_value.clone().as_str(), entity_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
     let entity_instance = EntityInstanceBuilder::new(type_name.clone())
         .property(property_1_name.clone(), json!(property_1_value.clone()))
-        .get();
+        .build();
     assert_eq!(type_name, entity_instance.type_name);
     assert_ne!(id, entity_instance.id);
     assert_eq!(property_1_value.clone().as_str(), entity_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());
@@ -30,19 +30,21 @@ fn entity_instance_builder_test() {
 
 #[test]
 fn entity_instance_from_type_test() {
+    let namespace = r_string();
     let type_name = r_string();
     let id = Uuid::new_v4();
     let property_1_name = r_string();
     let property_1_value = r_string();
     let property_2_name = r_string();
-    let entity_type = EntityTypeBuilder::new(type_name.clone())
+    let entity_type = EntityTypeBuilder::new(namespace.clone(), type_name.clone())
         .property(property_1_name.clone(), DataType::String)
         .property(property_2_name.clone(), DataType::String)
         .build();
     let entity_instance = EntityInstanceBuilder::from(entity_type.clone())
         .id(id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
-        .get();
+        .build();
+    // assert_eq!(namespace, entity_instance.namespace);
     assert_eq!(type_name, entity_instance.type_name);
     assert_eq!(id, entity_instance.id);
     assert_eq!(property_1_value.clone().as_str(), entity_instance.get(property_1_name.clone()).unwrap().as_str().unwrap());

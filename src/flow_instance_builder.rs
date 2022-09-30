@@ -48,7 +48,7 @@ impl FlowInstanceBuilder {
         self
     }
 
-    pub fn get(&mut self) -> FlowInstance {
+    pub fn build(&self) -> FlowInstance {
         let mut flow_instance = FlowInstance::from(self.wrapper.clone());
         flow_instance.name = self.name.clone();
         flow_instance.description = self.description.clone();

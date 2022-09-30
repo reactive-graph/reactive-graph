@@ -33,8 +33,8 @@ impl ReactiveEntityInstanceBuilder {
         self
     }
 
-    pub fn get(&mut self) -> Arc<ReactiveEntityInstance> {
-        Arc::new(ReactiveEntityInstance::from(self.builder.get()))
+    pub fn build(&self) -> Arc<ReactiveEntityInstance> {
+        Arc::new(ReactiveEntityInstance::from(self.builder.build()))
     }
 }
 
