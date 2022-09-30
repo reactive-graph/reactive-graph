@@ -17,7 +17,7 @@ pub trait RelationTypeManager: Send + Sync {
     fn get_relation_types(&self) -> Vec<RelationType>;
 
     /// Returns all relation types of the given namespace.
-    fn get_entity_types_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
+    fn get_relation_types_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
 
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, type_name: &str) -> bool;
