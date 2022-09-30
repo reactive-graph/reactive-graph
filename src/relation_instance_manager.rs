@@ -41,10 +41,10 @@ pub trait RelationInstanceManager: Send + Sync {
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;
 
     /// Adds the component with the given name to the relation instance with the given edge key.
-    fn add_component(&self, edge_key: EdgeKey, component_name: String);
+    fn add_component(&self, edge_key: EdgeKey, component_name: &str);
 
     /// Removes the component with the given name from the relation instance with the given edge key.
-    fn remove_component(&self, edge_key: EdgeKey, component_name: String);
+    fn remove_component(&self, edge_key: EdgeKey, component_name: &str);
 
     /// Deletes the reactive relation instance with the given key.
     fn delete(&self, edge_key: EdgeKey) -> bool;

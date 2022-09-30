@@ -23,7 +23,7 @@ pub trait FlowInstanceManager: Send + Sync {
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveFlowInstance>>;
 
     /// Returns the flow instance with the given label or None.
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlowInstance>>;
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveFlowInstance>>;
 
     /// Creates a new reactive flow instance from the given flow instance descriptor.
     ///
@@ -45,7 +45,7 @@ pub trait FlowInstanceManager: Send + Sync {
     /// and the ReactiveRelationInstanceManager.
     fn create_from_type(
         &self,
-        name: String,
+        name: &str,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError>;

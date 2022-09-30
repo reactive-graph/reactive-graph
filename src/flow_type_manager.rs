@@ -34,9 +34,10 @@ pub trait FlowTypeManager: Send + Sync {
     #[allow(clippy::too_many_arguments)]
     fn create(
         &self,
-        type_name: String,
-        name: String,
-        namespace: String,
+        namespace: &str,
+        name: &str,
+        type_name: &str,
+        description: &str,
         entity_instances: Vec<EntityInstance>,
         relation_instances: Vec<RelationInstance>,
         variables: Vec<PropertyType>,

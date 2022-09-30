@@ -24,12 +24,12 @@ pub trait EntityInstanceManager: Send + Sync {
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>>;
 
     /// Returns the reactive entity instance with the given label or None.
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>>;
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveEntityInstance>>;
 
     /// Returns the reactive entity instance and the matched path parameters that matches the given label or None.
     /// /org/inexor/local/users/:user_id
     /// /org/inexor/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
-    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)>;
+    fn get_by_label_with_params(&self, label: &str) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)>;
 
     /// Returns all reactive entity instances.
     fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>>;
@@ -41,10 +41,10 @@ pub trait EntityInstanceManager: Send + Sync {
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 
     /// Adds the component with the given name to the entity instance with the given id.
-    fn add_component(&self, id: Uuid, component: String);
+    fn add_component(&self, id: Uuid, component: &str);
 
     /// Removes the component with the given name from the entity instance with the given id.
-    fn remove_component(&self, id: Uuid, component: String);
+    fn remove_component(&self, id: Uuid, component: &str);
 
     /// Deletes the reactive entity instance with the given id.
     fn delete(&self, id: Uuid);
