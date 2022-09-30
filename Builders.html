@@ -156,7 +156,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_component() -&gt; Component {
-    ComponentBuilder::new(&quot;test&quot;)
+    ComponentBuilder::new(&quot;namespace&quot;, &quot;component_name&quot;)
         .description(&quot;A test component with several properties&quot;)
         // Provide properties
         .property(&quot;property_1&quot;, DataType::String)
@@ -164,8 +164,10 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
         .string_property(&quot;property_3&quot;)
         .bool_property(&quot;property_4&quot;)
         .number_property(&quot;property_5&quot;)
-        .input_property(&quot;property_6&quot;, DataType::Bool)
-        .output_property(&quot;property_7&quot;, DataType::Bool)
+        .array_property(&quot;property_6&quot;)
+        .object_property(&quot;property_7&quot;)
+        .input_property(&quot;property_8&quot;, DataType::Bool)
+        .output_property(&quot;property_9&quot;, DataType::Bool)
         // Provide extensions
         .extension(&quot;security&quot;, json!({
             roles: [
@@ -191,7 +193,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_entity_type() -&gt; EntityType {
-    EntityTypeBuilder::new(&quot;Test&quot;)
+    EntityTypeBuilder::new(&quot;namespace&quot;, &quot;entity_type_name&quot;)
         .description(&quot;A test entity type&quot;)
         // Compose with the labeled component
         .component(&quot;labeled&quot;)
