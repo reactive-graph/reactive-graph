@@ -1,11 +1,17 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::{Extension, PropertyType};
+use crate::Extension;
+use crate::PropertyType;
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Component {
+    /// The namespace the component belongs to.
+    #[serde(default = "String::new")]
+    pub namespace: String,
+
     /// The name of the component.
     pub name: String,
 
@@ -24,33 +30,41 @@ pub struct Component {
 
 impl Component {
     /// Constructs a new component with the given name and properties
-    pub fn new<S: Into<String>>(name: S, properties: Vec<PropertyType>) -> Component {
+    pub fn new<S: Into<String>>(namespace: S, name: S, description: S, properties: Vec<PropertyType>, extensions: Vec<Extension>) -> Component {
         Component {
+            namespace: namespace.into(),
             name: name.into(),
-            description: String::new(),
-            properties,
-            extensions: Vec::new(),
-        }
-    }
-
-    /// Constructs a new component with the given name and properties
-    pub fn new_with_extensions<S: Into<String>>(name: S, properties: Vec<PropertyType>, extensions: Vec<Extension>) -> Component {
-        Component {
-            name: name.into(),
-            description: String::new(),
+            description: description.into(),
             properties,
             extensions,
         }
     }
 
-    /// Constructs an component with the given name but without properties
-    pub fn new_without_properties<S: Into<String>>(name: S) -> Component {
+    /// Constructs a new component with the given name and properties
+    pub fn new_without_extensions<S: Into<String>>(namespace: S, name: S, description: S, properties: Vec<PropertyType>) -> Component {
         Component {
+            namespace: namespace.into(),
             name: name.into(),
-            description: String::new(),
-            properties: Vec::new(),
+            description: description.into(),
+            properties,
             extensions: Vec::new(),
         }
+    }
+
+    /// Constructs an component with the given name but without properties
+    pub fn new_without_properties<S: Into<String>>(namespace: S, name: S, description: S, extensions: Vec<Extension>) -> Component {
+        Component {
+            namespace: namespace.into(),
+            name: name.into(),
+            description: description.into(),
+            properties: Vec::new(),
+            extensions,
+        }
+    }
+
+    /// Returns the fully qualified name
+    pub fn fully_qualified_name(&self) -> String {
+        format!("{}__{}", self.namespace, self.name)
     }
 
     /// Returns true, if the component contains a property with the given name.

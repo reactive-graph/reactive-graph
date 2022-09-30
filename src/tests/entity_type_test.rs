@@ -34,11 +34,13 @@ fn create_entity_type_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension);
 
-    let entity_type = EntityType::new(entity_type_name, namespace, description, component_names, property_types, extensions);
+    let entity_type = EntityType::new(namespace, entity_type_name, description, component_names, property_types, extensions);
+
+    assert_eq!(namespace, entity_type.namespace);
 
     assert_eq!(entity_type_name, entity_type.name);
 
-    assert_eq!(namespace, entity_type.namespace);
+    assert_eq!(format!("{namespace}__{entity_type_name}"), entity_type.t.to_string());
 
     assert_eq!(description, entity_type.description);
 

@@ -13,8 +13,8 @@ fn create_relation_type_test() {
     let outbound_type = r_string();
     let inbound_type = r_string();
 
-    let namespace = "namespace";
-    let description = "Lorem ipsum";
+    let namespace = r_string();
+    let description = r_string();
 
     let component_name = r_string();
     let behaviour_name = r_string();
@@ -35,20 +35,21 @@ fn create_relation_type_test() {
     };
     extensions.push(extension.clone());
     let relation_type = RelationType::new(
+        namespace.clone(),
         outbound_type.clone(),
         type_name.clone(),
         inbound_type.clone(),
-        namespace.into(),
-        description.into(),
+        description.clone(),
         component_names,
         property_types,
         extensions,
     );
 
+    assert_eq!(namespace, relation_type.namespace);
     assert_eq!(type_name, relation_type.type_name);
+    assert_eq!(format!("{namespace}__{type_name}"), relation_type.t.to_string());
     assert_eq!(outbound_type, relation_type.outbound_type);
     assert_eq!(inbound_type, relation_type.inbound_type);
-    assert_eq!(namespace, relation_type.namespace);
     assert_eq!(description, relation_type.description);
     assert_eq!(component_name, *relation_type.components.first().unwrap());
     assert!(relation_type.is_a(component_name.clone()));
