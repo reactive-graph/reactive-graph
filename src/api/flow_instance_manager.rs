@@ -55,7 +55,7 @@ pub trait FlowInstanceManager: Send + Sync {
 
     fn delete(&self, flow_instance: FlowInstance);
 
-    fn import(&self, path: String) -> Result<FlowInstance, FlowInstanceImportError>;
+    fn import(&self, path: &str) -> Result<FlowInstance, FlowInstanceImportError>;
 
-    fn export(&self, flow_instance: FlowInstance, path: String);
+    fn export(&self, flow_instance: FlowInstance, path: &str);
 }

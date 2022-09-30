@@ -73,14 +73,14 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         reader.get(&id).cloned()
     }
 
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveEntityInstance>> {
         let reader = self.label_path_tree.0.read().unwrap();
-        reader.find(label.as_str()).and_then(|result| self.get(*result.0))
+        reader.find(label).and_then(|result| self.get(*result.0))
     }
 
-    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
+    fn get_by_label_with_params(&self, label: &str) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
         let reader = self.label_path_tree.0.read().unwrap();
-        reader.find(label.as_str()).and_then(|result| match self.get(*result.0) {
+        reader.find(label).and_then(|result| match self.get(*result.0) {
             Some(instance) => {
                 let params: HashMap<String, String> = result.1.into_iter().map(|(a, b)| (String::from(a), String::from(b))).collect();
                 Some((instance, params))
@@ -103,7 +103,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         reader.keys().cloned().collect()
     }
 
-    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
+    fn create(&self, type_name: &str, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
         let result = self.entity_instance_manager.create(type_name, properties);
         if result.is_err() {
             return Err(ReactiveEntityInstanceCreationError::EntityInstanceCreationError(result.err().unwrap()));
@@ -116,7 +116,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn create_with_id(
         &self,
-        type_name: String,
+        type_name: &str,
         id: Uuid,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
@@ -192,8 +192,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         }
     }
 
-    fn add_component(&self, id: Uuid, component_name: String) {
-        if let Some(component) = self.component_manager.get(&component_name) {
+    fn add_component(&self, id: Uuid, component_name: &str) {
+        if let Some(component) = self.component_manager.get(component_name) {
             if let Some(reactive_entity_instance) = self.get(id) {
                 // Add component
                 reactive_entity_instance.add_component(component_name);
@@ -212,8 +212,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         }
     }
 
-    fn remove_component(&self, id: Uuid, component_name: String) {
-        if let Some(component) = self.component_manager.get(&component_name) {
+    fn remove_component(&self, id: Uuid, component_name: &str) {
+        if let Some(component) = self.component_manager.get(component_name) {
             if let Some(reactive_entity_instance) = self.get(id) {
                 // Remove component
                 reactive_entity_instance.remove_component(component_name);
@@ -258,7 +258,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         self.reactive_entity_instances.0.write().unwrap().remove(id);
     }
 
-    fn import(&self, path: String) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {
+    fn import(&self, path: &str) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {
         match self.entity_instance_manager.import(path) {
             Ok(uuid) => match self.entity_instance_manager.get(uuid) {
                 Some(entity_instance) => match self.create_reactive_instance(entity_instance) {
@@ -271,7 +271,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         }
     }
 
-    fn export(&self, id: Uuid, path: String) {
+    fn export(&self, id: Uuid, path: &str) {
         if self.has(id) {
             self.commit(id);
             self.entity_instance_manager.export(id, path);

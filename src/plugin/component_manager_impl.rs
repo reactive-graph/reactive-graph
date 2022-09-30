@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use crate::model::Component;
+use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::plugins::ComponentManager;
 
@@ -16,6 +17,10 @@ impl ComponentManagerImpl {
 impl ComponentManager for ComponentManagerImpl {
     fn get_components(&self) -> Vec<Component> {
         self.component_manager.get_components()
+    }
+
+    fn get_components_by_namespace(&self, namespace: &str) -> Vec<Component> {
+        self.component_manager.get_components_by_namespace(namespace)
     }
 
     fn has(&self, name: &str) -> bool {
@@ -34,8 +39,28 @@ impl ComponentManager for ComponentManagerImpl {
         self.component_manager.count()
     }
 
-    fn create(&self, name: &str, properties: Vec<PropertyType>) {
-        self.component_manager.create(name, properties)
+    fn create(&self, namespace: &str, name: &str, description: &str, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.component_manager.create(namespace, name, description, properties, extensions)
+    }
+
+    fn replace(&self, name: &str, component: Component) {
+        self.component_manager.replace(name, component)
+    }
+
+    fn add_property(&self, name: &str, property: PropertyType) {
+        let _ = self.component_manager.add_property(name, property);
+    }
+
+    fn remove_property(&self, name: &str, property_name: &str) {
+        self.component_manager.remove_property(name, property_name)
+    }
+
+    fn add_extension(&self, name: &str, extension: Extension) {
+        let _ = self.component_manager.add_extension(name, extension);
+    }
+
+    fn remove_extension(&self, name: &str, extension_name: &str) {
+        self.component_manager.remove_extension(name, extension_name)
     }
 
     fn delete(&self, name: &str) {

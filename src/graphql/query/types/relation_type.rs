@@ -17,6 +17,11 @@ pub struct GraphQLRelationType {
 /// Also the relation type defines the properties of the relation instance.
 #[Object(name = "RelationType")]
 impl GraphQLRelationType {
+    /// The namespace the relation type belongs to.
+    async fn namespace(&self) -> String {
+        self.relation_type.namespace.clone()
+    }
+
     /// The outbound entity type(s).
     async fn outbound_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
@@ -63,8 +68,8 @@ impl GraphQLRelationType {
     /// The full name of the relation type.
     ///
     /// Returns "default_connector__property_name__property_name" (with type suffix).
-    async fn full_name(&self) -> String {
-        self.relation_type.full_name.clone()
+    async fn instance_type_name(&self) -> String {
+        self.relation_type.instance_type_name.clone()
     }
 
     /// The inbound entity type(s).
@@ -100,11 +105,6 @@ impl GraphQLRelationType {
         }
     }
 
-    /// The namespace the relation type belongs to.
-    async fn namespace(&self) -> String {
-        self.relation_type.namespace.clone()
-    }
-
     /// Textual description of the relation type.
     async fn description(&self) -> String {
         self.relation_type.description.clone()
@@ -118,7 +118,7 @@ impl GraphQLRelationType {
             self.relation_type
                 .components
                 .iter()
-                .filter_map(|component_name| component_manager.get(&component_name))
+                .filter_map(|component_name| component_manager.get(component_name))
                 .map(|component| component.into())
                 .collect()
         } else {

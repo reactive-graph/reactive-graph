@@ -48,16 +48,16 @@ impl MutationEntityInstances {
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let entity_instance = match id {
-            Some(id) => entity_instance_manager.create_with_id(type_name, id, properties),
-            None => entity_instance_manager.create(type_name, properties),
+            Some(id) => entity_instance_manager.create_with_id(&type_name, id, properties),
+            None => entity_instance_manager.create(&type_name, properties),
         };
         if entity_instance.is_err() {
-            return Err(Error::new(format!("Failed to create entity instance: {}", entity_instance.err().unwrap().to_string())));
+            return Err(Error::new(format!("Failed to create entity instance: {}", entity_instance.err().unwrap())));
         }
         let entity_instance = entity_instance.unwrap();
         if let Some(components) = components {
             for component in components {
-                entity_instance_manager.add_component(entity_instance.id, component.clone());
+                entity_instance_manager.add_component(entity_instance.id, &component);
             }
         }
         Ok(entity_instance.into())
@@ -78,7 +78,7 @@ impl MutationEntityInstances {
         if id.is_some() {
             entity_instance = entity_instance_manager.get(id.unwrap());
         } else if label.is_some() {
-            entity_instance = entity_instance_manager.get_by_label(label.unwrap());
+            entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str());
         } else {
             return Err("Either id or label must be given!".into());
         }
@@ -89,12 +89,12 @@ impl MutationEntityInstances {
 
         if let Some(components) = add_components {
             for component in components {
-                entity_instance_manager.add_component(entity_instance.id, component.clone());
+                entity_instance_manager.add_component(entity_instance.id, &component);
             }
         }
         if let Some(components) = remove_components {
             for component in components {
-                entity_instance_manager.remove_component(entity_instance.id, component.clone());
+                entity_instance_manager.remove_component(entity_instance.id, &component);
             }
         }
         if let Some(properties) = properties {

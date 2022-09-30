@@ -1,9 +1,13 @@
-use crate::api::{EntityTypeManager, RelationTypeManager};
+use crate::api::EntityTypeManager;
+use crate::api::RelationTypeManager;
 use crate::model::TypeContainer;
 use async_graphql::*;
 use std::sync::Arc;
 
-use crate::graphql::query::{GraphQLEntityType, GraphQLExtension, GraphQLPropertyType, GraphQLRelationType};
+use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLPropertyType;
+use crate::graphql::query::GraphQLRelationType;
 use crate::model::Component;
 
 pub struct GraphQLComponent {
@@ -13,6 +17,11 @@ pub struct GraphQLComponent {
 /// Components are composable parts which can be used by types (entity type, relation type).
 #[Object(name = "Component")]
 impl GraphQLComponent {
+    /// The namespace the component belongs to.
+    async fn namespace(&self) -> String {
+        self.component.namespace.clone()
+    }
+
     /// The name of the component.
     async fn name(&self) -> String {
         self.component.name.clone()

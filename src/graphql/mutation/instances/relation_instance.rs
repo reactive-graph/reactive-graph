@@ -72,7 +72,7 @@ impl MutationRelationInstances {
         let edge_key: EdgeKey = edge_key.into();
         if let Some(components) = components {
             for component in components {
-                relation_instance_manager.add_component(edge_key.clone(), component.clone());
+                relation_instance_manager.add_component(edge_key.clone(), &component);
             }
         }
         Ok(relation_instance.into())
@@ -112,12 +112,12 @@ impl MutationRelationInstances {
 
         if let Some(components) = add_components {
             for component in components {
-                relation_instance_manager.add_component(edge_key.clone().into(), component.clone());
+                relation_instance_manager.add_component(edge_key.clone().into(), &component);
             }
         }
         if let Some(components) = remove_components {
             for component in components {
-                relation_instance_manager.remove_component(edge_key.clone().into(), component.clone());
+                relation_instance_manager.remove_component(edge_key.clone().into(), &component);
             }
         }
         if let Some(properties) = properties {

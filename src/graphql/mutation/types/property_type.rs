@@ -1,7 +1,10 @@
 use async_graphql::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
-use crate::graphql::query::{GraphQLDataType, GraphQLExtension, GraphQLSocketType};
+use crate::graphql::query::GraphQLDataType;
+use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLSocketType;
 use crate::model::PropertyType;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]

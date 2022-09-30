@@ -40,11 +40,11 @@ pub trait EntityVertexManager: Send + Sync {
     fn get_properties(&self, id: Uuid) -> Option<VertexProperties>;
 
     /// Creates a new vertex with the given type and the given properties.
-    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
+    fn create(&self, type_name: &str, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
 
     /// Creates a new vertex with the given id, the given type and the given properties.
     /// This is useful for importing an entity instance with the fixed id.
-    fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
+    fn create_with_id(&self, type_name: &str, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError>;
 
     fn commit(&self, id: Uuid, properties: HashMap<String, Value>);
 

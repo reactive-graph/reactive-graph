@@ -3,13 +3,31 @@ use std::sync::Arc;
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::model::{Extension, PropertyType, RelationType};
+use crate::model::Extension;
+use crate::model::PropertyType;
+use crate::model::RelationType;
 use crate::plugins::RelationTypeProvider;
 
 #[derive(Debug)]
 pub enum RelationTypeImportError {
     Io(std::io::Error),
     Deserialize(serde_json::Error),
+}
+
+#[derive(Debug)]
+pub enum RelationTypeComponentError {
+    ComponentAlreadyAssigned,
+    ComponentDoesNotExist,
+}
+
+#[derive(Debug)]
+pub enum RelationTypePropertyError {
+    PropertyAlreadyExists,
+}
+
+#[derive(Debug)]
+pub enum RelationTypeExtensionError {
+    ExtensionAlreadyExists,
 }
 
 impl From<std::io::Error> for RelationTypeImportError {
@@ -31,6 +49,9 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
 
     /// Returns all relation types.
     fn get_relation_types(&self) -> Vec<RelationType>;
+
+    /// Returns all relation types of the given namespace
+    fn get_relation_types_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
 
     /// Returns outbound relation types for the given entity type.
     fn get_outbound_relation_types(&self, entity_type_name: &str, wildcard: bool) -> Vec<RelationType>;
@@ -60,13 +81,33 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     // TODO: Result
     fn create(
         &self,
-        outbound_type: String,
-        type_name: String,
-        inbound_type: String,
+        namespace: &str,
+        outbound_type: &str,
+        type_name: &str,
+        inbound_type: &str,
+        description: &str,
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     );
+
+    /// Adds the component with the given component_name to the relation type with the given name.
+    fn add_component(&self, name: &str, component_name: &str) -> Result<(), RelationTypeComponentError>;
+
+    /// Remove the component with the given component_name from the relation type with the given name.
+    fn remove_component(&self, name: &str, component_name: &str);
+
+    /// Adds a property to the relation type with the given name.
+    fn add_property(&self, type_name: &str, property: PropertyType) -> Result<(), RelationTypePropertyError>;
+
+    /// Removes the property with the given property_name from the relation type with the given name.
+    fn remove_property(&self, type_name: &str, property_name: &str);
+
+    /// Adds an extension to the relation type with the given name.
+    fn add_extension(&self, type_name: &str, extension: Extension) -> Result<(), RelationTypeExtensionError>;
+
+    /// Removes the extension with the given extension_name from the relation type with the given name.
+    fn remove_extension(&self, type_name: &str, extension_name: &str);
 
     /// Deletes the relation type with the given name.
     fn delete(&self, type_name: &str);

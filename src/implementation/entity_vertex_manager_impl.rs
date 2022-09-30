@@ -1,13 +1,16 @@
 use std::collections::HashMap;
 
-use crate::di::*;
 use async_trait::async_trait;
 use indradb::{Datastore, Identifier, SpecificVertexQuery, Vertex, VertexProperties, VertexQueryExt};
 use log::debug;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::{EntityTypeManager, EntityVertexCreationError, EntityVertexManager, GraphDatabase};
+use crate::api::EntityTypeManager;
+use crate::api::EntityVertexCreationError;
+use crate::api::EntityVertexManager;
+use crate::api::GraphDatabase;
+use crate::di::*;
 
 // This service operates on the graph database.
 
@@ -46,11 +49,11 @@ impl EntityVertexManager for EntityVertexManagerImpl {
         None
     }
 
-    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError> {
-        if !self.entity_type_manager.has(&type_name) {
-            return Err(EntityVertexCreationError::EntityTypeMissing(type_name));
+    fn create(&self, type_name: &str, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError> {
+        if !self.entity_type_manager.has(type_name) {
+            return Err(EntityVertexCreationError::EntityTypeMissing(type_name.to_string()));
         }
-        let entity_type = self.entity_type_manager.get(&type_name).unwrap();
+        let entity_type = self.entity_type_manager.get(type_name).unwrap();
 
         // TODO: check if the given properties are suitable for the entity type
         let result = self.graph_database.get_datastore().create_vertex_from_type(entity_type.t);
@@ -72,15 +75,15 @@ impl EntityVertexManager for EntityVertexManagerImpl {
         Ok(id)
     }
 
-    fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError> {
+    fn create_with_id(&self, type_name: &str, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityVertexCreationError> {
         if self.has(id) {
             return Err(EntityVertexCreationError::UuidTaken(id));
         }
 
-        if !self.entity_type_manager.has(&type_name) {
-            return Err(EntityVertexCreationError::EntityTypeMissing(type_name));
+        if !self.entity_type_manager.has(type_name) {
+            return Err(EntityVertexCreationError::EntityTypeMissing(type_name.to_string()));
         }
-        let entity_type = self.entity_type_manager.get(&type_name).unwrap();
+        let entity_type = self.entity_type_manager.get(type_name).unwrap();
 
         let result = self.graph_database.get_datastore().create_vertex(&Vertex::with_id(id, entity_type.t));
         if result.is_err() {

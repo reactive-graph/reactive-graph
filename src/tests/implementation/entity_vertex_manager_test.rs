@@ -14,6 +14,7 @@ fn test_entity_vertex_manager() {
     let graph_database = application.get_graph_database();
     let datastore = graph_database.get_datastore();
 
+    let namespace = r_string();
     let type_name = r_string();
     let property_name = r_string();
     let property_value = json!(r_string());
@@ -21,7 +22,7 @@ fn test_entity_vertex_manager() {
     assert_eq!(0, datastore.get_vertex_count().unwrap());
 
     // Create entity type
-    let entity_type = EntityTypeBuilder::new(type_name.clone())
+    let entity_type = EntityTypeBuilder::new(&namespace, &type_name)
         .component(String::from("positionable"))
         .string_property(property_name.clone())
         .build();
@@ -29,7 +30,7 @@ fn test_entity_vertex_manager() {
 
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let result = entity_vertex_manager.create(type_name.clone(), properties);
+    let result = entity_vertex_manager.create(&type_name, properties);
 
     assert!(result.is_ok());
     assert_eq!(1, datastore.get_vertex_count().unwrap());
@@ -69,12 +70,13 @@ fn test_entity_vertex_manager_with_id() {
     let entity_type_manager = application.get_entity_type_manager();
     let entity_vertex_manager = application.get_entity_vertex_manager();
 
+    let namespace = r_string();
     let type_name = r_string();
     let property_name = r_string();
     let property_value = json!(r_string());
 
     // Create entity type
-    let entity_type = EntityTypeBuilder::new(type_name.clone())
+    let entity_type = EntityTypeBuilder::new(&namespace, &type_name)
         .component(String::from("positionable"))
         .string_property(property_name.clone())
         .build();
@@ -83,7 +85,7 @@ fn test_entity_vertex_manager_with_id() {
     let vertex_uuid = Uuid::new_v4();
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let result = entity_vertex_manager.create_with_id(type_name.clone(), vertex_uuid, properties);
+    let result = entity_vertex_manager.create_with_id(&type_name, vertex_uuid, properties);
     assert!(result.is_ok());
 
     // Check if entity vertex with the given uuid exists

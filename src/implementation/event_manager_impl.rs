@@ -36,12 +36,16 @@ impl SystemEventManager for SystemEventManagerImpl {
         if let Some(entity_instance) = self.get_system_event_instance((&event).into()) {
             match event {
                 SystemEvent::ComponentCreated(name)
+                | SystemEvent::ComponentUpdated(name)
                 | SystemEvent::ComponentDeleted(name)
                 | SystemEvent::EntityTypeCreated(name)
+                | SystemEvent::EntityTypeUpdated(name)
                 | SystemEvent::EntityTypeDeleted(name)
                 | SystemEvent::RelationTypeCreated(name)
+                | SystemEvent::RelationTypeUpdated(name)
                 | SystemEvent::RelationTypeDeleted(name)
                 | SystemEvent::FlowTypeCreated(name)
+                | SystemEvent::FlowTypeUpdated(name)
                 | SystemEvent::FlowTypeDeleted(name) => {
                     entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(name));
                     // Also emit event that the type system has been changed
@@ -78,12 +82,20 @@ impl SystemEventManagerImpl {
             self.create_system_event_instance("/org/inexor/event/type/component/created"),
         );
         writer.insert(
+            SystemEventTypes::ComponentUpdated,
+            self.create_system_event_instance("/org/inexor/event/type/component/updated"),
+        );
+        writer.insert(
             SystemEventTypes::ComponentDeleted,
             self.create_system_event_instance("/org/inexor/event/type/component/deleted"),
         );
         writer.insert(
             SystemEventTypes::EntityTypeCreated,
             self.create_system_event_instance("/org/inexor/event/type/entity/created"),
+        );
+        writer.insert(
+            SystemEventTypes::EntityTypeUpdated,
+            self.create_system_event_instance("/org/inexor/event/type/entity/updated"),
         );
         writer.insert(
             SystemEventTypes::EntityTypeDeleted,
@@ -94,9 +106,16 @@ impl SystemEventManagerImpl {
             self.create_system_event_instance("/org/inexor/event/type/relation/created"),
         );
         writer.insert(
+            SystemEventTypes::RelationTypeUpdated,
+            self.create_system_event_instance("/org/inexor/event/type/relation/updated"),
+        );
+        writer.insert(
             SystemEventTypes::RelationTypeDeleted,
             self.create_system_event_instance("/org/inexor/event/type/relation/deleted"),
         );
+        writer.insert(SystemEventTypes::FlowTypeCreated, self.create_system_event_instance("/org/inexor/event/type/flow/created"));
+        writer.insert(SystemEventTypes::FlowTypeUpdated, self.create_system_event_instance("/org/inexor/event/type/flow/updated"));
+        writer.insert(SystemEventTypes::FlowTypeDeleted, self.create_system_event_instance("/org/inexor/event/type/flow/deleted"));
         writer.insert(SystemEventTypes::TypeSystemChanged, self.create_system_event_instance("/org/inexor/event/type/changed"));
         writer.insert(
             SystemEventTypes::EntityInstanceCreated,
@@ -128,7 +147,7 @@ impl SystemEventManagerImpl {
         ReactiveEntityInstanceBuilder::new("system_event")
             .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
             .property(SYSTEM_EVENT_PROPERTY_EVENT, json!(false))
-            .get()
+            .build()
     }
 
     pub(crate) fn delete_system_event_instances(&self) {

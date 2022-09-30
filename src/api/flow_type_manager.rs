@@ -50,9 +50,10 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     /// Creates a new flow type.
     fn create(
         &self,
-        type_name: String,
-        name: String,
-        namespace: String,
+        namespace: &str,
+        name: &str,
+        type_name: &str,
+        description: &str,
         entity_instances: Vec<EntityInstance>,
         relation_instances: Vec<RelationInstance>,
         variables: Vec<PropertyType>,

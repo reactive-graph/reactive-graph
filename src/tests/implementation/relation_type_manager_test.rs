@@ -12,19 +12,20 @@ fn test_register_relation_type() {
     let entity_type_manager = application.get_entity_type_manager();
     let relation_type_manager = application.get_relation_type_manager();
 
+    let namespace = r_string();
     let type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
 
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
     relation_type_manager.register(crate::model::RelationType::new(
+        namespace.clone(),
         outbound_type_name.clone(),
         type_name.clone(),
         inbound_type_name.clone(),
-        String::new(),
         String::new(),
         vec![String::from("named")],
         vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
@@ -42,18 +43,22 @@ fn test_create_and_delete_relation_type() {
     let entity_type_manager = application.get_entity_type_manager();
     let relation_type_manager = application.get_relation_type_manager();
 
+    let namespace = r_string();
     let type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
+    let description = r_string();
 
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
     relation_type_manager.create(
-        outbound_type_name.clone(),
-        type_name.clone(),
-        inbound_type_name.clone(),
+        &namespace,
+        &outbound_type_name,
+        &type_name,
+        &inbound_type_name,
+        &description,
         vec![String::from("positionable")],
         vec![PropertyType::new(String::from("x"), DataType::String)],
         Vec::new(),
@@ -77,15 +82,18 @@ fn test_get_relation_types() {
     let entity_type_manager = application.get_entity_type_manager();
     let relation_type_manager = application.get_relation_type_manager();
 
+    let namespace = r_string();
     let outbound_type_name = r_string();
+    let type_name = r_string();
     let inbound_type_name = r_string();
+    let description = r_string();
 
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
 
-    relation_type_manager.create(outbound_type_name.clone(), r_string(), inbound_type_name.clone(), vec![], vec![], vec![]);
+    relation_type_manager.create(&namespace, &outbound_type_name, &type_name, &inbound_type_name, &description, vec![], vec![], vec![]);
     let relation_types = relation_type_manager.get_relation_types();
     assert_eq!(1, relation_types.len());
     for relation_type in relation_types {
@@ -100,26 +108,30 @@ fn test_register_relation_type_has_component() {
     let entity_type_manager = application.get_entity_type_manager();
     let relation_type_manager = application.get_relation_type_manager();
 
+    let namespace = r_string();
     let component_name = r_string();
 
     component_manager.register(crate::model::Component::new(
+        namespace.clone(),
         component_name.clone(),
+        String::new(),
         vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
+        Vec::new(),
     ));
 
     let relation_type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
 
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
     relation_type_manager.register(crate::model::RelationType::new(
+        namespace.clone(),
         outbound_type_name.clone(),
         relation_type_name.clone(),
         inbound_type_name.clone(),
-        String::new(),
         String::new(),
         vec![component_name.clone()],
         vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
@@ -139,19 +151,20 @@ fn test_register_relation_type_has_property() {
     let property_name = String::from("x");
     let property_type = PropertyType::new(property_name.clone(), DataType::String);
 
+    let namespace = r_string();
     let relation_type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
 
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(&namespace, &outbound_type_name).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(&namespace, &inbound_type_name).build();
     entity_type_manager.register(entity_type.clone());
     relation_type_manager.register(RelationType::new(
+        namespace.clone(),
         outbound_type_name.clone(),
         relation_type_name.clone(),
         inbound_type_name.clone(),
-        String::new(),
         String::new(),
         Vec::new(),
         vec![property_type],
@@ -167,22 +180,26 @@ fn test_export_import_relation_type() {
     let entity_type_manager = application.get_entity_type_manager();
     let relation_type_manager = application.get_relation_type_manager();
 
+    let namespace = r_string();
     let type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
+    let description = r_string();
 
     let mut path = env::temp_dir();
     path.push(format!("{}.json", type_name));
     let path = path.into_os_string().into_string().unwrap();
 
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
     relation_type_manager.create(
-        outbound_type_name.clone(),
-        type_name.clone(),
-        inbound_type_name.clone(),
+        &namespace,
+        &outbound_type_name,
+        &type_name,
+        &inbound_type_name,
+        &description,
         vec![String::from("positionable")],
         vec![PropertyType::new(String::from("x"), DataType::String)],
         Vec::new(),

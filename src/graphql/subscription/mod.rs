@@ -35,7 +35,7 @@ impl InexorSubscription {
                 if id.is_some() {
                     entity_instance = entity_instance_manager.get(id.unwrap());
                 } else if label.is_some() {
-                    entity_instance = entity_instance_manager.get_by_label(label.unwrap());
+                    entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str());
                 } else {
                     return Err("Either id or label must be given!".into());
                 }

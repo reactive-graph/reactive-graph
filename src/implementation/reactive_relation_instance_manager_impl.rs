@@ -128,7 +128,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         let relation_type = self
             .relation_type_manager
             .get_starts_with(&relation_instance.type_name)
-            .ok_or(ReactiveRelationInstanceCreationError::UnknownRelationType(relation_instance.type_name.clone()))?;
+            .ok_or_else(|| ReactiveRelationInstanceCreationError::UnknownRelationType(relation_instance.type_name.clone()))?;
 
         if !relation_type.outbound_type.eq("*")
             && !outbound.type_name.eq(&relation_type.outbound_type)
@@ -136,7 +136,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         {
             return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(
                 outbound.type_name.clone(),
-                relation_type.outbound_type.clone(),
+                relation_type.outbound_type,
             ));
         }
 
@@ -146,7 +146,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         {
             return Err(ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(
                 inbound.type_name.clone(),
-                relation_type.inbound_type.clone(),
+                relation_type.inbound_type,
             ));
         }
 
@@ -194,8 +194,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         }
     }
 
-    fn add_component(&self, edge_key: EdgeKey, component_name: String) {
-        if let Some(component) = self.component_manager.get(&component_name) {
+    fn add_component(&self, edge_key: EdgeKey, component_name: &str) {
+        if let Some(component) = self.component_manager.get(component_name) {
             if let Some(reactive_relation_instance) = self.get(edge_key) {
                 // Add component
                 reactive_relation_instance.add_component(component_name);
@@ -214,8 +214,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         }
     }
 
-    fn remove_component(&self, edge_key: EdgeKey, component_name: String) {
-        if let Some(component) = self.component_manager.get(&component_name) {
+    fn remove_component(&self, edge_key: EdgeKey, component_name: &str) {
+        if let Some(component) = self.component_manager.get(component_name) {
             if let Some(reactive_relation_instance) = self.get(edge_key) {
                 // Remove component
                 reactive_relation_instance.remove_component(component_name);
@@ -254,7 +254,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         self.reactive_relation_instances.0.write().unwrap().remove(&edge_key);
     }
 
-    fn import(&self, path: String) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceImportError> {
+    fn import(&self, path: &str) -> Result<Arc<ReactiveRelationInstance>, ReactiveRelationInstanceImportError> {
         match self.relation_instance_manager.import(path) {
             Ok(relation_instance) => match self.create_reactive_instance(relation_instance) {
                 Ok(reactive_relation_instance) => Ok(reactive_relation_instance),
@@ -264,7 +264,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         }
     }
 
-    fn export(&self, edge_key: EdgeKey, path: String) {
+    fn export(&self, edge_key: EdgeKey, path: &str) {
         if self.has(edge_key.clone()) {
             self.commit(edge_key.clone());
             self.relation_instance_manager.export(edge_key, path);

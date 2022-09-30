@@ -3,8 +3,6 @@ use std::io::BufReader;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use crate::builder::EntityTypeBuilder;
-use crate::di::{component, provides, wrapper, Component, Wrc};
 use async_trait::async_trait;
 use indradb::Identifier;
 use log::debug;
@@ -13,14 +11,20 @@ use log::warn;
 use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
+use crate::api::EntityTypeComponentError;
+use crate::api::EntityTypeExtensionError;
 use crate::api::EntityTypeImportError;
 use crate::api::EntityTypeManager;
+use crate::api::EntityTypePropertyError;
 use crate::api::Lifecycle;
 use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
+use crate::builder::EntityTypeBuilder;
+use crate::di::{component, provides, wrapper, Component, Wrc};
 use crate::model::EntityType;
 use crate::model::Extension;
 use crate::model::PropertyType;
+use crate::model::TypeContainer;
 use crate::plugins::EntityTypeProvider;
 
 #[wrapper]
@@ -43,18 +47,16 @@ pub struct EntityTypeManagerImpl {
 impl EntityTypeManagerImpl {
     pub(crate) fn create_base_entity_types(&self) {
         self.register(
-            EntityTypeBuilder::new("generic_flow")
-                .namespace("flow")
-                .description("Generic flow without inputs and outputs")
-                .component("labeled")
-                .build(),
-        );
-        self.register(
-            EntityTypeBuilder::new("system_event")
-                .namespace("events")
+            EntityTypeBuilder::new("core", "system_event")
                 .description("Events of the type system")
                 .component("labeled")
                 .component("event")
+                .build(),
+        );
+        self.register(
+            EntityTypeBuilder::new("flow", "generic_flow")
+                .description("Generic flow without inputs and outputs")
+                .component("labeled")
                 .build(),
         );
     }
@@ -67,8 +69,11 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         // Construct the type
         entity_type.t = Identifier::new(entity_type.name.clone()).unwrap();
         for component_name in entity_type.components.iter() {
-            match self.component_manager.get(&component_name) {
-                Some(component) => entity_type.properties.append(&mut component.clone().properties),
+            match self.component_manager.get(component_name) {
+                Some(component) => {
+                    // TODO: what if multiple components have the same property?
+                    entity_type.properties.append(&mut component.clone().properties)
+                }
                 None => warn!("Entity type {} not fully initialized: No component named {}", entity_type.name.clone(), component_name),
             }
         }
@@ -82,18 +87,23 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.0.read().unwrap().to_vec()
     }
 
-    fn has(&self, name: &str) -> bool {
-        self.get(name).is_some()
-    }
-
-    fn get(&self, name: &str) -> Option<EntityType> {
+    fn get_entity_types_by_namespace(&self, namespace: &str) -> Vec<EntityType> {
         self.entity_types
             .0
             .read()
             .unwrap()
             .iter()
-            .find(|entity_type| &entity_type.name == name)
+            .filter(|entity_type| entity_type.namespace == namespace)
             .cloned()
+            .collect()
+    }
+
+    fn has(&self, name: &str) -> bool {
+        self.entity_types.0.read().unwrap().iter().any(|entity_type| entity_type.name == name)
+    }
+
+    fn get(&self, name: &str) -> Option<EntityType> {
+        self.entity_types.0.read().unwrap().iter().find(|entity_type| entity_type.name == name).cloned()
     }
 
     fn find(&self, search: &str) -> Vec<EntityType> {
@@ -112,8 +122,94 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.0.read().unwrap().len()
     }
 
-    fn create(&self, name: String, namespace: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.register(EntityType::new(name, namespace, String::new(), components.to_vec(), properties.to_vec(), extensions.to_vec()));
+    fn create(&self, namespace: &str, name: &str, description: &str, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.register(EntityType::new(namespace, name, description, components.to_vec(), properties.to_vec(), extensions.to_vec()));
+    }
+
+    fn add_component(&self, name: &str, component_name: &str) -> Result<(), EntityTypeComponentError> {
+        let mut guard = self.entity_types.0.write().unwrap();
+        for entity_type in guard.iter_mut() {
+            if entity_type.name == name {
+                if entity_type.is_a(component_name) {
+                    return Err(EntityTypeComponentError::ComponentAlreadyAssigned);
+                }
+                match self.component_manager.get(component_name) {
+                    Some(component) => {
+                        entity_type.components.push(component_name.to_string());
+                        // TODO: what if multiple components have the same property?
+                        entity_type.properties.append(&mut component.clone().properties)
+                    }
+                    None => {
+                        return Err(EntityTypeComponentError::ComponentDoesNotExist);
+                    }
+                }
+                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+            }
+        }
+        Ok(())
+    }
+
+    fn remove_component(&self, name: &str, component_name: &str) {
+        let mut guard = self.entity_types.0.write().unwrap();
+        for entity_type in guard.iter_mut() {
+            if entity_type.name == name {
+                entity_type.components.retain(|c_name| c_name != component_name);
+                // TODO: what if multiple components have the same property?
+                if let Some(component) = self.component_manager.get(component_name) {
+                    let properties_to_remove: Vec<String> = component.properties.iter().map(|property| property.name.clone()).collect();
+                    entity_type.properties.retain(|property| !properties_to_remove.contains(&property.name));
+                }
+                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+            }
+        }
+    }
+
+    fn add_property(&self, name: &str, property: PropertyType) -> Result<(), EntityTypePropertyError> {
+        let mut guard = self.entity_types.0.write().unwrap();
+        for entity_type in guard.iter_mut() {
+            if entity_type.name == name {
+                if entity_type.has_own_property(property.name.clone()) {
+                    return Err(EntityTypePropertyError::PropertyAlreadyExists);
+                }
+                entity_type.properties.push(property.clone());
+                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+            }
+        }
+        Ok(())
+    }
+
+    fn remove_property(&self, name: &str, property_name: &str) {
+        let mut guard = self.entity_types.0.write().unwrap();
+        for entity_type in guard.iter_mut() {
+            if entity_type.name == name {
+                entity_type.properties.retain(|property| property.name != property_name);
+                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+            }
+        }
+    }
+
+    fn add_extension(&self, name: &str, extension: Extension) -> Result<(), EntityTypeExtensionError> {
+        let mut guard = self.entity_types.0.write().unwrap();
+        for entity_type in guard.iter_mut() {
+            if entity_type.name == name {
+                if entity_type.has_own_extension(extension.name.clone()) {
+                    return Err(EntityTypeExtensionError::ExtensionAlreadyExists);
+                }
+                entity_type.extensions.push(extension.clone());
+                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+            }
+        }
+        Ok(())
+    }
+
+    fn remove_extension(&self, name: &str, extension_name: &str) {
+        let mut guard = self.entity_types.0.write().unwrap();
+        for entity_type in guard.iter_mut() {
+            if entity_type.name == name {
+                entity_type.extensions.retain(|extension| extension.name != extension_name);
+                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+            }
+        }
     }
 
     /// TODO: first delete the entity instance of this type, then delete the entity type itself.
@@ -132,7 +228,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 
     fn export(&self, name: &str, path: &str) {
-        if let Some(entity_type) = self.get(&name) {
+        if let Some(entity_type) = self.get(name) {
             match File::create(path) {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &entity_type);
@@ -158,7 +254,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                 entity_type
                     .extensions
                     .iter()
-                    .find(|extension| extension.name == "entity_type_category".to_string())
+                    .find(|extension| extension.name == *"entity_type_category")
                     .map(|extension| extension.name.clone())
             })
             .collect()

@@ -32,11 +32,11 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         self.reactive_entity_instance_manager.get(id)
     }
 
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>> {
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveEntityInstance>> {
         self.reactive_entity_instance_manager.get_by_label(label)
     }
 
-    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
+    fn get_by_label_with_params(&self, label: &str) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)> {
         self.reactive_entity_instance_manager.get_by_label_with_params(label)
     }
 
@@ -60,7 +60,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
                 }
                 let reactive_entity_instance =
                     self.reactive_entity_instance_manager
-                        .create_with_id(entity_instance.type_name, entity_instance.id, entity_instance.properties);
+                        .create_with_id(&entity_instance.type_name, entity_instance.id, entity_instance.properties);
                 match reactive_entity_instance {
                     Ok(reactive_entity_instance) => Ok(reactive_entity_instance),
                     Err(_) => Err(EntityInstanceCreationError::Failed),
@@ -70,11 +70,11 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         }
     }
 
-    fn add_component(&self, id: Uuid, component: String) {
+    fn add_component(&self, id: Uuid, component: &str) {
         self.reactive_entity_instance_manager.add_component(id, component);
     }
 
-    fn remove_component(&self, id: Uuid, component: String) {
+    fn remove_component(&self, id: Uuid, component: &str) {
         self.reactive_entity_instance_manager.remove_component(id, component);
     }
 

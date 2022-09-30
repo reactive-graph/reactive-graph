@@ -59,11 +59,11 @@ pub trait EntityInstanceManager: Send + Sync {
 
     /// Creates an entity instance of the given type and initialize the properties with the given
     /// values.
-    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
+    fn create(&self, type_name: &str, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
 
     /// Creates an entity instance of the given type with the given id and initialize the properties
     /// with the given values.
-    fn create_with_id(&self, type_name: String, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
+    fn create_with_id(&self, type_name: &str, id: Uuid, properties: HashMap<String, Value>) -> Result<Uuid, EntityInstanceCreationError>;
 
     /// The given entity instance gets created in the graph database.
     fn create_from_instance(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError>;
@@ -74,8 +74,8 @@ pub trait EntityInstanceManager: Send + Sync {
     /// Deletes the entity instance with the given id.
     fn delete(&self, id: Uuid);
 
-    fn import(&self, path: String) -> Result<Uuid, EntityInstanceImportError>;
+    fn import(&self, path: &str) -> Result<Uuid, EntityInstanceImportError>;
 
     // TODO: return result
-    fn export(&self, id: Uuid, path: String);
+    fn export(&self, id: Uuid, path: &str);
 }

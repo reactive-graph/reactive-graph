@@ -83,7 +83,7 @@ impl FlowTypeManager for FlowTypeManagerImpl {
     }
 
     fn get(&self, name: &str) -> Option<FlowType> {
-        self.flow_types.0.read().unwrap().iter().find(|flow_type| &flow_type.name == name).cloned()
+        self.flow_types.0.read().unwrap().iter().find(|flow_type| flow_type.name == name).cloned()
     }
 
     fn find(&self, search: &str) -> Vec<FlowType> {
@@ -104,19 +104,20 @@ impl FlowTypeManager for FlowTypeManagerImpl {
 
     fn create(
         &self,
-        type_name: String,
-        name: String,
-        namespace: String,
+        namespace: &str,
+        name: &str,
+        type_name: &str,
+        description: &str,
         entity_instances: Vec<EntityInstance>,
         relation_instances: Vec<RelationInstance>,
         variables: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) {
         self.register(FlowType::new(
-            type_name,
-            name,
             namespace,
-            String::new(),
+            name,
+            type_name,
+            description,
             entity_instances.to_vec(),
             relation_instances.to_vec(),
             variables.to_vec(),
@@ -139,7 +140,7 @@ impl FlowTypeManager for FlowTypeManagerImpl {
     }
 
     fn export(&self, name: &str, path: &str) {
-        if let Some(flow_type) = self.get(&name) {
+        if let Some(flow_type) = self.get(name) {
             match File::create(path) {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &flow_type);

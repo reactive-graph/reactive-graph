@@ -18,6 +18,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.get_relation_types()
     }
 
+    fn get_relation_types_by_namespace(&self, namespace: &str) -> Vec<RelationType> {
+        self.relation_type_manager.get_relation_types_by_namespace(namespace)
+    }
+
     fn has(&self, type_name: &str) -> bool {
         self.relation_type_manager.has(type_name)
     }
@@ -44,15 +48,41 @@ impl RelationTypeManager for RelationTypeManagerImpl {
 
     fn create(
         &self,
-        outbound_type: String,
-        type_name: String,
-        inbound_type: String,
+        namespace: &str,
+        outbound_type: &str,
+        type_name: &str,
+        inbound_type: &str,
+        description: &str,
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) {
         self.relation_type_manager
-            .create(outbound_type, type_name, inbound_type, components, properties, extensions)
+            .create(namespace, outbound_type, type_name, inbound_type, description, components, properties, extensions)
+    }
+
+    fn add_component(&self, name: &str, component_name: &str) {
+        let _ = self.relation_type_manager.add_component(name, component_name);
+    }
+
+    fn remove_component(&self, name: &str, component_name: &str) {
+        self.relation_type_manager.remove_component(name, component_name);
+    }
+
+    fn add_property(&self, name: &str, property: PropertyType) {
+        let _ = self.relation_type_manager.add_property(name, property);
+    }
+
+    fn remove_property(&self, name: &str, property_name: &str) {
+        self.relation_type_manager.remove_property(name, property_name)
+    }
+
+    fn add_extension(&self, name: &str, extension: Extension) {
+        let _ = self.relation_type_manager.add_extension(name, extension);
+    }
+
+    fn remove_extension(&self, name: &str, extension_name: &str) {
+        self.relation_type_manager.remove_extension(name, extension_name)
     }
 
     fn delete(&self, type_name: &str) {

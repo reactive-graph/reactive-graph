@@ -123,8 +123,8 @@ impl MutationFlowInstances {
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let wrapper_entity_instance = match flow_id {
-            Some(id) => entity_instance_manager.create_with_id(type_name, id, properties),
-            None => entity_instance_manager.create(type_name, properties),
+            Some(id) => entity_instance_manager.create_with_id(&type_name, id, properties),
+            None => entity_instance_manager.create(&type_name, properties),
         };
 
         if wrapper_entity_instance.is_err() {
@@ -160,7 +160,7 @@ impl MutationFlowInstances {
         let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
         let variables = GraphQLPropertyInstance::to_map(variables);
         let properties = GraphQLPropertyInstance::to_map(properties);
-        match flow_instance_manager.create_from_type(flow_type_name, variables, properties) {
+        match flow_instance_manager.create_from_type(&flow_type_name, variables, properties) {
             Ok(flow_instance) => Ok(flow_instance.into()),
             Err(e) => Err(Error::new(e)),
         }
@@ -213,8 +213,8 @@ impl MutationFlowInstances {
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
 
         let entity_instance = match entity_id {
-            Some(id) => entity_instance_manager.create_with_id(type_name, id, properties),
-            None => entity_instance_manager.create(type_name, properties),
+            Some(id) => entity_instance_manager.create_with_id(&type_name, id, properties),
+            None => entity_instance_manager.create(&type_name, properties),
         };
         if entity_instance.is_err() {
             return Err(FlowMutationError::EntityInstanceCreationError().into());

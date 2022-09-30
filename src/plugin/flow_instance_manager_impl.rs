@@ -31,7 +31,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
         self.reactive_flow_instance_manager.get(id)
     }
 
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlowInstance>> {
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveFlowInstance>> {
         self.reactive_flow_instance_manager.get_by_label(label)
     }
 
@@ -45,7 +45,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
 
     fn create_from_type(
         &self,
-        name: String,
+        name: &str,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError> {

@@ -21,9 +21,9 @@ impl MutationFlowTypes {
     async fn create(
         &self,
         context: &Context<'_>,
+        #[graphql(desc = "The namespace the flow type belongs to.")] namespace: Option<String>,
         #[graphql(desc = "The name of the entity type.")] type_name: String,
         #[graphql(desc = "The name of the flow type.")] name: String,
-        #[graphql(desc = "The namespace the flow type belongs to.")] namespace: Option<String>,
         entity_instances: Option<Vec<GraphQLEntityInstanceDefinition>>,
         relation_instances: Option<Vec<GraphQLRelationInstanceDefinition>>,
         #[graphql(desc = "The variables of the flow type.")] variables: Option<Vec<PropertyTypeDefinition>>,
@@ -31,14 +31,12 @@ impl MutationFlowTypes {
     ) -> Result<GraphQLFlowType> {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager>>()?;
 
+        let namespace = namespace.unwrap_or_default();
         if flow_type_manager.has(&name) {
             return Err(Error::new(format!("Flow type {} already exists", name)));
         }
 
-        let mut flow_type_builder = FlowTypeBuilder::new(type_name, name);
-        if namespace.is_some() {
-            flow_type_builder.namespace(namespace.unwrap());
-        }
+        let mut flow_type_builder = FlowTypeBuilder::new(&namespace, &name, &type_name);
         if entity_instances.is_some() {
             let entity_instances = entity_instances.unwrap();
             for entity_instance in entity_instances {

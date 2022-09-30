@@ -14,7 +14,7 @@ Constructs a new component programmatically.
 
 ```rust
 fn build_component() -> Component {
-    ComponentBuilder::new("test")
+    ComponentBuilder::new("namespace", "component_name")
         .description("A test component with several properties")
         // Provide properties
         .property("property_1", DataType::String)
@@ -22,8 +22,10 @@ fn build_component() -> Component {
         .string_property("property_3")
         .bool_property("property_4")
         .number_property("property_5")
-        .input_property("property_6", DataType::Bool)
-        .output_property("property_7", DataType::Bool)
+        .array_property("property_6")
+        .object_property("property_7")
+        .input_property("property_8", DataType::Bool)
+        .output_property("property_9", DataType::Bool)
         // Provide extensions
         .extension("security", json!({
             roles: [
@@ -46,7 +48,7 @@ Constructs a new entity type programmatically.
 
 ```rust
 fn build_entity_type() -> EntityType {
-    EntityTypeBuilder::new("Test")
+    EntityTypeBuilder::new("namespace", "entity_type_name")
         .description("A test entity type")
         // Compose with the labeled component
         .component("labeled")

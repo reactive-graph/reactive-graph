@@ -91,7 +91,7 @@ pub trait ReactiveFlowInstanceManager: Send + Sync + Lifecycle {
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveFlowInstance>>;
 
     /// Returns the flow instance that matches the given label or None.
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlowInstance>>;
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveFlowInstance>>;
 
     /// Returns all reactive flow instances.
     fn get_all(&self) -> Vec<Arc<ReactiveFlowInstance>>;
@@ -121,7 +121,7 @@ pub trait ReactiveFlowInstanceManager: Send + Sync + Lifecycle {
     /// and the ReactiveRelationInstanceManager.
     fn create_from_type(
         &self,
-        name: String,
+        name: &str,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceCreationError>;
@@ -141,10 +141,10 @@ pub trait ReactiveFlowInstanceManager: Send + Sync + Lifecycle {
     /// Deletes the flow instance with the given id.
     fn delete(&self, id: Uuid);
 
-    fn import(&self, path: String) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceImportError>;
+    fn import(&self, path: &str) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceImportError>;
 
     // TODO: return result
-    fn export(&self, id: Uuid, path: String);
+    fn export(&self, id: Uuid, path: &str);
 
     fn add_provider(&self, flow_instance_provider: Arc<dyn FlowInstanceProvider>);
 }

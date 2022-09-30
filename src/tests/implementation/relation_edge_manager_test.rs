@@ -14,6 +14,7 @@ fn test_relation_edge_manager() {
     let entity_vertex_manager = application.get_entity_vertex_manager();
     let relation_edge_manager = application.get_relation_edge_manager();
 
+    let namespace = r_string();
     let outbound_type_name = r_string();
     let relation_type_name = r_string();
     let inbound_type_name = r_string();
@@ -21,21 +22,21 @@ fn test_relation_edge_manager() {
     let property_value = json!(r_string());
 
     // Create entity types
-    let entity_type = EntityTypeBuilder::new(outbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(inbound_type_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
     entity_type_manager.register(entity_type.clone());
 
     // Create relation type
-    let relation_type = RelationTypeBuilder::new(outbound_type_name.clone(), relation_type_name.clone(), inbound_type_name.clone())
+    let relation_type = RelationTypeBuilder::new(namespace.clone(), outbound_type_name.clone(), relation_type_name.clone(), inbound_type_name.clone())
         .component(String::from("positionable"))
         .string_property(property_name.clone())
         .build();
     relation_type_manager.register(relation_type.clone());
 
-    let outbound_entity = entity_vertex_manager.create(outbound_type_name.clone(), HashMap::new());
+    let outbound_entity = entity_vertex_manager.create(&outbound_type_name, HashMap::new());
     let outbound_id = outbound_entity.unwrap();
-    let inbound_entity = entity_vertex_manager.create(inbound_type_name.clone(), HashMap::new());
+    let inbound_entity = entity_vertex_manager.create(&inbound_type_name, HashMap::new());
     let inbound_id = inbound_entity.unwrap();
 
     let edge_key = EdgeKey::new(outbound_id, Identifier::new(relation_type_name.clone()).unwrap(), inbound_id);

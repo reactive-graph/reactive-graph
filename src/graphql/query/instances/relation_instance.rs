@@ -42,7 +42,7 @@ impl GraphQLRelationInstance {
             // between the two entity instances
             if let Some(relation_type) = relation_type_manager.get_starts_with(&type_name) {
                 let mut relation_type = relation_type;
-                relation_type.full_name = type_name;
+                relation_type.instance_type_name = type_name;
                 return Some(relation_type.into());
             }
         }

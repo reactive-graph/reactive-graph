@@ -13,12 +13,16 @@ pub const SYSTEM_EVENT_PROPERTY_LABEL: &str = "label";
 #[derive(Eq, Hash, PartialEq, Clone, Debug)]
 pub enum SystemEventTypes {
     ComponentCreated,
+    ComponentUpdated,
     ComponentDeleted,
     EntityTypeCreated,
+    EntityTypeUpdated,
     EntityTypeDeleted,
     RelationTypeCreated,
+    RelationTypeUpdated,
     RelationTypeDeleted,
     FlowTypeCreated,
+    FlowTypeUpdated,
     FlowTypeDeleted,
 
     /// The type system has changed
@@ -34,12 +38,16 @@ pub enum SystemEventTypes {
 
 pub enum SystemEvent {
     ComponentCreated(String),
+    ComponentUpdated(String),
     ComponentDeleted(String),
     EntityTypeCreated(String),
+    EntityTypeUpdated(String),
     EntityTypeDeleted(String),
     RelationTypeCreated(String),
+    RelationTypeUpdated(String),
     RelationTypeDeleted(String),
     FlowTypeCreated(String),
+    FlowTypeUpdated(String),
     FlowTypeDeleted(String),
     TypeSystemChanged,
     EntityInstanceCreated(Uuid),
@@ -54,12 +62,16 @@ impl From<&SystemEvent> for SystemEventTypes {
     fn from(event: &SystemEvent) -> Self {
         match event {
             SystemEvent::ComponentCreated(_) => SystemEventTypes::ComponentCreated,
+            SystemEvent::ComponentUpdated(_) => SystemEventTypes::ComponentUpdated,
             SystemEvent::ComponentDeleted(_) => SystemEventTypes::ComponentDeleted,
             SystemEvent::EntityTypeCreated(_) => SystemEventTypes::EntityTypeCreated,
+            SystemEvent::EntityTypeUpdated(_) => SystemEventTypes::EntityTypeUpdated,
             SystemEvent::EntityTypeDeleted(_) => SystemEventTypes::EntityTypeDeleted,
             SystemEvent::RelationTypeCreated(_) => SystemEventTypes::RelationTypeCreated,
+            SystemEvent::RelationTypeUpdated(_) => SystemEventTypes::RelationTypeUpdated,
             SystemEvent::RelationTypeDeleted(_) => SystemEventTypes::RelationTypeDeleted,
             SystemEvent::FlowTypeCreated(_) => SystemEventTypes::FlowTypeCreated,
+            SystemEvent::FlowTypeUpdated(_) => SystemEventTypes::FlowTypeUpdated,
             SystemEvent::FlowTypeDeleted(_) => SystemEventTypes::FlowTypeDeleted,
             SystemEvent::TypeSystemChanged => SystemEventTypes::TypeSystemChanged,
             SystemEvent::EntityInstanceCreated(_) => SystemEventTypes::EntityInstanceCreated,

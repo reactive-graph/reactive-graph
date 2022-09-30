@@ -69,11 +69,11 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         }
     }
 
-    fn add_component(&self, edge_key: EdgeKey, component_name: String) {
+    fn add_component(&self, edge_key: EdgeKey, component_name: &str) {
         self.reactive_relation_instance_manager.add_component(edge_key, component_name);
     }
 
-    fn remove_component(&self, edge_key: EdgeKey, component_name: String) {
+    fn remove_component(&self, edge_key: EdgeKey, component_name: &str) {
         self.reactive_relation_instance_manager.remove_component(edge_key, component_name);
     }
 

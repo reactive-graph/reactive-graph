@@ -18,17 +18,20 @@ fn test_register_reactive_entity_instance() {
     let graph_database = application.get_graph_database();
     let datastore = graph_database.get_datastore();
 
+    let namespace = r_string();
     let type_name = r_string();
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let entity_type = EntityTypeBuilder::new(type_name.clone()).string_property(property_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(namespace.as_str(), type_name.as_str())
+        .string_property(property_name.clone())
+        .build();
     entity_type_manager.register(entity_type.clone());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
     let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(type_name.clone())
         .property(property_name.clone(), property_value.clone())
-        .get();
+        .build();
     reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
     assert_eq!(1, datastore.get_vertex_count().unwrap());
     assert!(reactive_entity_instance_manager.has(reactive_entity_instance.id));
@@ -51,17 +54,18 @@ fn test_unregister_reactive_entity_instance() {
     let graph_database = application.get_graph_database();
     let datastore = graph_database.get_datastore();
 
+    let namespace = r_string();
     let type_name = r_string();
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let entity_type = EntityTypeBuilder::new(type_name.clone()).string_property(property_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(&namespace, &type_name).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
-    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(type_name.clone())
+    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(&type_name)
         .property(property_name.clone(), property_value.clone())
-        .get();
+        .build();
     reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
     assert_eq!(1, datastore.get_vertex_count().unwrap());
     assert!(reactive_entity_instance_manager.has(reactive_entity_instance.id));
@@ -78,17 +82,18 @@ fn test_not_register_twice_reactive_entity_instance() {
     let graph_database = application.get_graph_database();
     let datastore = graph_database.get_datastore();
 
+    let namespace = r_string();
     let type_name = r_string();
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let entity_type = EntityTypeBuilder::new(type_name.clone()).string_property(property_name.clone()).build();
+    let entity_type = EntityTypeBuilder::new(&namespace, &type_name).string_property(property_name.clone()).build();
     entity_type_manager.register(entity_type.clone());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
-    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(type_name.clone())
+    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(&type_name)
         .property(property_name.clone(), property_value.clone())
-        .get();
+        .build();
     assert_eq!(0, datastore.get_vertex_count().unwrap());
     reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
     assert_eq!(1, datastore.get_vertex_count().unwrap());

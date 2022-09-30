@@ -35,16 +35,17 @@ impl FlowTypeManager for FlowTypeManagerImpl {
 
     fn create(
         &self,
-        type_name: String,
-        name: String,
-        namespace: String,
+        namespace: &str,
+        name: &str,
+        type_name: &str,
+        description: &str,
         entity_instances: Vec<EntityInstance>,
         relation_instances: Vec<RelationInstance>,
         variables: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) {
         self.flow_type_manager
-            .create(type_name, name, namespace, entity_instances, relation_instances, variables, extensions);
+            .create(namespace, name, type_name, description, entity_instances, relation_instances, variables, extensions);
     }
 
     fn delete(&self, name: &str) {

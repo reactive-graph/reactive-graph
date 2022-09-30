@@ -78,9 +78,9 @@ pub trait RelationInstanceManager: Send + Sync {
 
     fn delete(&self, edge_key: EdgeKey) -> bool;
 
-    fn import(&self, path: String) -> Result<RelationInstance, RelationInstanceImportError>;
+    fn import(&self, path: &str) -> Result<RelationInstance, RelationInstanceImportError>;
 
     // TODO: return result
     // TODO: egde_key ?
-    fn export(&self, edge_key: EdgeKey, path: String);
+    fn export(&self, edge_key: EdgeKey, path: &str);
 }

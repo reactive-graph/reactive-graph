@@ -49,7 +49,7 @@ impl Instances {
                 };
             }
             if label.is_some() {
-                let entity_instance = entity_instance_manager.get_by_label(label.unwrap()).map(|entity_instance| {
+                let entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str()).map(|entity_instance| {
                     let entity_instance: GraphQLEntityInstance = entity_instance.into();
                     entity_instance
                 });
@@ -199,7 +199,7 @@ impl Instances {
                 };
             }
             if label.is_some() {
-                let flow = flow_manager.get_by_label(label.unwrap()).map(|flow| {
+                let flow = flow_manager.get_by_label(label.unwrap().as_str()).map(|flow| {
                     let flow: GraphQLFlowInstance = flow.into();
                     flow
                 });

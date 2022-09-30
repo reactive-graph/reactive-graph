@@ -17,16 +17,16 @@ pub struct GraphQLEntityType {
 /// Entity types defines the type of entity instance.
 #[Object(name = "EntityType")]
 impl GraphQLEntityType {
+    /// The namespace the entity type belongs to.
+    async fn namespace(&self) -> String {
+        self.entity_type.namespace.clone()
+    }
+
     /// The name of the entity type.
     ///
     /// The name is the unique identifier for entity types.
     async fn name(&self) -> String {
         self.entity_type.name.clone()
-    }
-
-    /// The namespace the entity type belongs to.
-    async fn namespace(&self) -> String {
-        self.entity_type.namespace.clone()
     }
 
     /// Textual description of the entity type.
@@ -42,7 +42,7 @@ impl GraphQLEntityType {
             self.entity_type
                 .components
                 .iter()
-                .filter_map(|component_name| component_manager.get(&component_name))
+                .filter_map(|component_name| component_manager.get(component_name))
                 .map(|component| component.into())
                 .collect()
         } else {

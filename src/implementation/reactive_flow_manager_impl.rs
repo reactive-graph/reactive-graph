@@ -95,9 +95,9 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         reader.get(&id).cloned()
     }
 
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveFlowInstance>> {
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveFlowInstance>> {
         let reader = self.label_path_tree.0.read().unwrap();
-        reader.find(label.as_str()).and_then(|result| self.get(*result.0))
+        reader.find(label).and_then(|result| self.get(*result.0))
     }
 
     fn get_all(&self) -> Vec<Arc<ReactiveFlowInstance>> {
@@ -133,15 +133,15 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
 
     fn create_from_type(
         &self,
-        name: String,
+        name: &str,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceCreationError> {
-        match self.flow_type_manager.get(name.as_str()) {
+        match self.flow_type_manager.get(name) {
             Some(flow_type) => {
                 for variable in flow_type.variables {
                     if !variables.contains_key(variable.name.as_str()) {
-                        return Err(ReactiveFlowInstanceCreationError::MissingVariable(variable.name.clone()));
+                        return Err(ReactiveFlowInstanceCreationError::MissingVariable(variable.name));
                     }
                 }
                 match self.entity_type_manager.get(flow_type.type_name.as_str()) {
@@ -152,7 +152,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
                         for (name, value) in properties {
                             wrapper_entity_instance_builder.property(name, value);
                         }
-                        let wrapper_entity_instance = wrapper_entity_instance_builder.get();
+                        let wrapper_entity_instance = wrapper_entity_instance_builder.build();
                         let mut flow_instance_builder = FlowInstanceBuilder::new(wrapper_entity_instance);
                         flow_instance_builder.name(flow_type.name.clone());
                         flow_instance_builder.description(flow_type.description.clone());
@@ -184,7 +184,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
                             // TODO: templating using the variables
                             flow_instance_builder.relation(relation_instance_copy);
                         }
-                        let flow_instance = flow_instance_builder.get();
+                        let flow_instance = flow_instance_builder.build();
                         match ReactiveFlowInstance::try_from(flow_instance) {
                             Ok(reactive_flow_instance) => {
                                 let reactive_flow_instance = Arc::new(reactive_flow_instance);
@@ -197,7 +197,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
                     None => Err(ReactiveFlowInstanceCreationError::EntityTypeDoesntExist(flow_type.type_name.clone())),
                 }
             }
-            None => Err(ReactiveFlowInstanceCreationError::FlowTypeDoesntExist(name.clone())),
+            None => Err(ReactiveFlowInstanceCreationError::FlowTypeDoesntExist(name.to_string())),
         }
     }
 
@@ -356,7 +356,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         }
     }
 
-    fn import(&self, path: String) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceImportError> {
+    fn import(&self, path: &str) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceImportError> {
         if let Ok(flow_instance) = self.flow_instance_manager.import(path) {
             if let Ok(reactive_flow_instance) = self.create(flow_instance) {
                 return Ok(reactive_flow_instance);
@@ -365,7 +365,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         Err(ReactiveFlowInstanceImportError)
     }
 
-    fn export(&self, id: Uuid, path: String) {
+    fn export(&self, id: Uuid, path: &str) {
         if self.has(id) {
             self.commit(id);
             if let Ok(flow_instance) = FlowInstance::try_from(self.get(id).unwrap()) {

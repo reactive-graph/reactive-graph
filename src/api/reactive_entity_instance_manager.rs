@@ -48,12 +48,12 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>>;
 
     /// Returns the reactive entity instance that matches the given label or None.
-    fn get_by_label(&self, label: String) -> Option<Arc<ReactiveEntityInstance>>;
+    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveEntityInstance>>;
 
     /// Returns the reactive entity instance and the matched path parameters that matches the given label or None.
     /// /org/inexor/local/users/:user_id
     /// /org/inexor/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
-    fn get_by_label_with_params(&self, label: String) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)>;
+    fn get_by_label_with_params(&self, label: &str) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)>;
 
     /// Returns all registered reactive entity instances.
     fn get_entity_instances(&self) -> Vec<Arc<ReactiveEntityInstance>>;
@@ -72,13 +72,13 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
 
     /// Creates a new reactive entity instance of the given type. The reactive instance will be
     /// initialized with the given properties and values. A random id will be generated.
-    fn create(&self, type_name: String, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
+    fn create(&self, type_name: &str, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
 
     /// Creates a new reactive entity instance of the given type, with the given id and initialized
     /// with the given properties and values.
     fn create_with_id(
         &self,
-        type_name: String,
+        type_name: &str,
         id: Uuid,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError>;
@@ -96,10 +96,10 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     fn register_or_merge_reactive_instance(&self, reactive_entity_instance: Arc<ReactiveEntityInstance>) -> Arc<ReactiveEntityInstance>;
 
     /// Adds the component with the given name to the entity instance with the given id.
-    fn add_component(&self, id: Uuid, component: String);
+    fn add_component(&self, id: Uuid, component: &str);
 
     /// Removes the component with the given name from the entity instance with the given id.
-    fn remove_component(&self, id: Uuid, component: String);
+    fn remove_component(&self, id: Uuid, component: &str);
 
     // TODO: return result
     fn commit(&self, id: Uuid);
@@ -114,14 +114,14 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     fn unregister_reactive_instance(&self, id: Uuid);
 
     // TODO: rename import_from_file
-    fn import(&self, path: String) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError>;
+    fn import(&self, path: &str) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError>;
 
     // TODO: import_from_json_string
     // Goal: web-ui: upload entity instance as json file
 
     // TODO: return result
     // TODO: rename export_as_file
-    fn export(&self, id: Uuid, path: String);
+    fn export(&self, id: Uuid, path: &str);
 
     // TODO: implement export_as_json_string
     // Goal: web-ui: download entity instance as json file

@@ -74,15 +74,15 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
         }
     }
 
-    fn import(&self, path: String) -> Result<FlowInstance, FlowInstanceImportError> {
+    fn import(&self, path: &str) -> Result<FlowInstance, FlowInstanceImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let flow_instance = serde_json::from_reader(reader)?;
         self.create(flow_instance).map_err(|e| e.into())
     }
 
-    fn export(&self, flow_instance: FlowInstance, path: String) {
-        let r_file = File::create(path.clone());
+    fn export(&self, flow_instance: FlowInstance, path: &str) {
+        let r_file = File::create(path);
         match r_file {
             Ok(file) => {
                 let result = serde_json::to_writer_pretty(&file, &flow_instance);

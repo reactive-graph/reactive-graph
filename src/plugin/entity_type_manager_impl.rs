@@ -19,6 +19,10 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.get_entity_types()
     }
 
+    fn get_entity_types_by_namespace(&self, namespace: &str) -> Vec<EntityType> {
+        self.entity_type_manager.get_entity_types_by_namespace(namespace)
+    }
+
     fn has(&self, name: &str) -> bool {
         self.entity_type_manager.has(name)
     }
@@ -35,8 +39,33 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.count()
     }
 
-    fn create(&self, name: String, namespace: String, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.entity_type_manager.create(name, namespace, components, properties, extensions)
+    fn create(&self, namespace: &str, name: &str, description: &str, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+        self.entity_type_manager
+            .create(namespace, name, description, components, properties, extensions)
+    }
+
+    fn add_component(&self, name: &str, component_name: &str) {
+        let _ = self.entity_type_manager.add_component(name, component_name);
+    }
+
+    fn remove_component(&self, name: &str, component_name: &str) {
+        self.entity_type_manager.remove_component(name, component_name);
+    }
+
+    fn add_property(&self, name: &str, property: PropertyType) {
+        let _ = self.entity_type_manager.add_property(name, property);
+    }
+
+    fn remove_property(&self, name: &str, property_name: &str) {
+        self.entity_type_manager.remove_property(name, property_name)
+    }
+
+    fn add_extension(&self, name: &str, extension: Extension) {
+        let _ = self.entity_type_manager.add_extension(name, extension);
+    }
+
+    fn remove_extension(&self, name: &str, extension_name: &str) {
+        self.entity_type_manager.remove_extension(name, extension_name)
     }
 
     fn delete(&self, name: &str) {

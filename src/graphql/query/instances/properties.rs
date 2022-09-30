@@ -53,7 +53,7 @@ impl GraphQLPropertyInstance {
         match &self.property_type_container {
             GraphQLPropertyTypeContainer::None => None,
             GraphQLPropertyTypeContainer::Entity(type_name) => match context.data::<Arc<dyn EntityTypeManager>>() {
-                Ok(entity_type_manager) => match entity_type_manager.get(&type_name) {
+                Ok(entity_type_manager) => match entity_type_manager.get(type_name) {
                     Some(entity_type) => {
                         let property_type = entity_type
                             .properties
@@ -68,7 +68,7 @@ impl GraphQLPropertyInstance {
                 Err(_) => None,
             },
             GraphQLPropertyTypeContainer::Relation(type_name) => match context.data::<Arc<dyn RelationTypeManager>>() {
-                Ok(relation_type_manager) => match relation_type_manager.get_starts_with(&type_name) {
+                Ok(relation_type_manager) => match relation_type_manager.get_starts_with(type_name) {
                     Some(relation_type) => {
                         let property_type = relation_type
                             .properties

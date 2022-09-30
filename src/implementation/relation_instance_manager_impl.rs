@@ -86,7 +86,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         self.relation_edge_manager.delete(edge_key)
     }
 
-    fn import(&self, path: String) -> Result<RelationInstance, RelationInstanceImportError> {
+    fn import(&self, path: &str) -> Result<RelationInstance, RelationInstanceImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let relation_instance: RelationInstance = serde_json::from_reader(reader)?;
@@ -103,9 +103,9 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         }
     }
 
-    fn export(&self, edge_key: EdgeKey, path: String) {
+    fn export(&self, edge_key: EdgeKey, path: &str) {
         if let Some(relation_instance) = self.get(edge_key) {
-            let r_file = File::create(path.clone());
+            let r_file = File::create(path);
             match r_file {
                 Ok(file) => {
                     let result = serde_json::to_writer_pretty(&file, &relation_instance);

@@ -10,14 +10,14 @@ fn test_register_entity_type() {
     let application = init_application();
     let entity_type_manager = application.get_entity_type_manager();
 
-    let type_name = r_string();
     let namespace = r_string();
+    let type_name = r_string();
     let description = r_string();
 
-    entity_type_manager.register(crate::model::EntityType::new(
-        type_name.clone(),
-        namespace.clone(),
-        description.clone(),
+    entity_type_manager.register(EntityType::new(
+        &namespace,
+        &type_name,
+        &description,
         vec![String::from("positionable")],
         vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
         vec![],
@@ -33,12 +33,14 @@ fn test_create_and_delete_entity_type() {
     let application = init_application();
     let entity_type_manager = application.get_entity_type_manager();
 
-    let type_name = r_string();
     let namespace = r_string();
+    let type_name = r_string();
+    let description = r_string();
 
     entity_type_manager.create(
-        type_name.clone(),
-        namespace.clone(),
+        namespace.as_str(),
+        type_name.as_str(),
+        description.as_str(),
         vec![String::from("positionable")],
         vec![PropertyType::new(String::from("x"), DataType::String)],
         vec![],
@@ -60,7 +62,10 @@ fn test_create_and_delete_entity_type() {
 fn test_get_entity_types() {
     let application = init_application();
     let entity_type_manager = application.get_entity_type_manager();
-    entity_type_manager.create(r_string(), r_string(), vec![], vec![], vec![]);
+    let namespace = r_string();
+    let type_name = r_string();
+    let description = r_string();
+    entity_type_manager.create(namespace.as_str(), type_name.as_str(), description.as_str(), vec![], vec![], vec![]);
     let entity_types = entity_type_manager.get_entity_types();
     assert_eq!(1, entity_types.len());
     for entity_type in entity_types {
@@ -74,21 +79,24 @@ fn test_register_entity_type_has_component() {
     let component_manager = application.get_component_manager();
     let entity_type_manager = application.get_entity_type_manager();
 
+    let namespace = r_string();
     let component_name = r_string();
 
     component_manager.register(crate::model::Component::new(
+        namespace.clone(),
         component_name.clone(),
+        String::new(),
         vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
+        Vec::new(),
     ));
 
     let entity_type_name = r_string();
-    let namespace = r_string();
     let description = r_string();
 
     entity_type_manager.register(crate::model::EntityType::new(
-        entity_type_name.clone(),
-        namespace.clone(),
-        description.clone(),
+        &namespace,
+        &entity_type_name,
+        &description,
         vec![component_name.clone()],
         vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
         vec![],
@@ -110,8 +118,8 @@ fn test_register_entity_type_has_property() {
     let namespace = r_string();
 
     entity_type_manager.register(EntityType::new(
-        entity_type_name.clone(),
         namespace.clone(),
+        entity_type_name.clone(),
         String::new(),
         vec![],
         vec![property_type],
@@ -126,16 +134,18 @@ fn test_export_import_entity_type() {
     let application = init_application();
     let entity_type_manager = application.get_entity_type_manager();
 
-    let type_name = r_string();
     let namespace = r_string();
+    let type_name = r_string();
+    let description = r_string();
 
     let mut path = env::temp_dir();
     path.push(format!("{}.json", type_name));
     let path = path.into_os_string().into_string().unwrap();
 
     entity_type_manager.create(
-        type_name.clone(),
-        namespace.clone(),
+        namespace.as_str(),
+        type_name.as_str(),
+        description.as_str(),
         vec![String::from("positionable")],
         vec![PropertyType::new(String::from("x"), DataType::String)],
         vec![],

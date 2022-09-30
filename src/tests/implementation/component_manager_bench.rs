@@ -11,9 +11,12 @@ use crate::tests::utils::r_string;
 fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
     let application = init_application();
     let component_manager = application.get_component_manager();
+    let namespace = r_string();
     let component_name = r_string();
     let property_name = r_string();
-    let component = ComponentBuilder::new(component_name.as_str()).string_property(property_name.as_str()).build();
+    let component = ComponentBuilder::new(namespace.as_str(), component_name.as_str())
+        .string_property(property_name.as_str())
+        .build();
     bencher.iter(move || {
         component_manager.register(component.clone());
         component_manager.delete(component_name.as_str());
