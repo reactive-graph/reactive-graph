@@ -48,9 +48,9 @@ fn create_flow_type_test() {
     extensions.push(extension);
 
     let flow_type = FlowType::new(
-        entity_type_name,
-        flow_type_name,
         namespace,
+        flow_type_name,
+        entity_type_name,
         description,
         entity_instances,
         relation_instances,
@@ -58,11 +58,11 @@ fn create_flow_type_test() {
         extensions,
     );
 
+    assert_eq!(namespace, flow_type.namespace);
+
     assert_eq!(flow_type_name, flow_type.name);
 
     assert_eq!(entity_type_name, flow_type.type_name);
-
-    assert_eq!(namespace, flow_type.namespace);
 
     assert_eq!(description, flow_type.description);
 

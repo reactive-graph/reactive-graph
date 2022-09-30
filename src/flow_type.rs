@@ -11,10 +11,6 @@ pub struct FlowTypeCreationError;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FlowType {
-    /// The entity type of the flow.
-    #[serde(alias = "type")]
-    pub type_name: String,
-
     /// The name of the flow type.
     #[serde(default = "String::new")]
     pub name: String,
@@ -22,6 +18,10 @@ pub struct FlowType {
     /// The namespace the entity type belongs to.
     #[serde(default = "String::new")]
     pub namespace: String,
+
+    /// The entity type of the flow.
+    #[serde(alias = "type")]
+    pub type_name: String,
 
     /// Textual description of the flow type.
     #[serde(default = "String::new")]
@@ -53,9 +53,9 @@ pub struct FlowType {
 impl FlowType {
     #[allow(clippy::too_many_arguments)]
     pub fn new<S: Into<String>>(
-        type_name: S,
-        name: S,
         namespace: S,
+        name: S,
+        type_name: S,
         description: S,
         entity_instances: Vec<EntityInstance>,
         relation_instances: Vec<RelationInstance>,
@@ -63,9 +63,9 @@ impl FlowType {
         extensions: Vec<Extension>,
     ) -> FlowType {
         FlowType {
-            type_name: type_name.into(),
-            name: name.into(),
             namespace: namespace.into(),
+            name: name.into(),
+            type_name: type_name.into(),
             description: description.into(),
             entity_instances,
             relation_instances,
