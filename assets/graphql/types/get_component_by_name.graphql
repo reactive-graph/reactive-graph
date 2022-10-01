@@ -1,6 +1,7 @@
 query {
   types {
     components(name: "component1") {
+      namespace
       name
       description
       properties {

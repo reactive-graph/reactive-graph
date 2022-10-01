@@ -1,6 +1,7 @@
 query {
   types {
     entities(name: "entitytype1") {
+      namespace
       name
       description
       components {

@@ -1,0 +1,15 @@
+# Which entity types uses the component "labeled"?
+query {
+  types {
+    # Get component by name
+    components(name: "labeled") {
+      namespace
+      name
+      # List entity types using the component
+      entityTypes {
+        namespace
+        name
+      }
+    }
+  }
+}

@@ -2,7 +2,8 @@ mutation {
   types {
     components {
       create(
-        name: "component2",
+        namespace: "example"
+        name: "component2"
         properties: [
           {
             name: "second"

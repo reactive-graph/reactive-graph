@@ -2,8 +2,9 @@ query {
   types {
     components(name: "component1") {
       relationTypes {
+        namespace
         name
-        fullName
+        instanceTypeName
       }
     }
   }

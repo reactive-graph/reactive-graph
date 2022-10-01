@@ -10,8 +10,9 @@ query findRelationInstanceByProperty {
       ]
     ) {
       type {
+        namespace
         name
-        fullName
+        instanceTypeName
       }
       properties {
         name

@@ -2,6 +2,7 @@ mutation {
   types {
     relations {
       create(
+        namespace: "example"
         name: "relationtype1"
         outboundType: "entitytype1"
         inboundType: "entitytype2"

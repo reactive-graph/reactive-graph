@@ -1,8 +1,9 @@
 query {
   types {
     relations {
+      namespace
       name
-      fullName
+      instanceTypeName
       description
       outboundTypes {
         name

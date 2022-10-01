@@ -9,8 +9,9 @@ query findIncomingConnectorsForEntityInstance {
       inboundId: "b969b749-7521-4563-8e11-8fa653a1ffd8"
     ) {
       type {
+        namespace
         name
-        fullName
+        instanceTypeName
       }
       outbound {
         id
