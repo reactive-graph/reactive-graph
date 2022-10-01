@@ -47,7 +47,7 @@ erDiagram
     }
     Relation-Instance {
         string name
-        string fullname
+        string instanceTypeName
         string namespace
         string description
     }

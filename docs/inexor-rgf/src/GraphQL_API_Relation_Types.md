@@ -7,7 +7,7 @@ query {
   types {
     relations(name: "example_relation") {
       name
-      fullName
+      instanceTypeName
       description
       outboundTypes {
         name
@@ -39,7 +39,7 @@ query {
   types {
     relations(search: "example_relation?") {
       name
-      fullName
+      instanceTypeName
       description
       outboundTypes {
         name

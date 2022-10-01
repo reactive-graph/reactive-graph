@@ -25,7 +25,12 @@ fragment RandomNumber on EntityInstance {
     name
     value
   }
-  outbound(type: "default_connector") {
+  outbound(type: "default_connector--result--lhs") {
+    type {
+      namespace
+      name
+      instanceTypeName
+    }
     inbound {
       ...ArithmeticGate
     }

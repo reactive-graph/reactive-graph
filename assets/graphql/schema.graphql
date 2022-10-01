@@ -22,6 +22,8 @@ type Component {
   inboundOf: [RelationType!]!
   "The name of the component."
   name: String!
+  "The namespace the component belongs to."
+  namespace: String!
   "Query which relation types are using this component as outbound type"
   outboundOf: [RelationType!]!
   "The properties which are applied on entity or relation instances."
@@ -263,9 +265,18 @@ type Mutation {
 
 "Mutations for components"
 type MutationComponents {
+  "Adds an extension to the component with the given name."
+  addExtension(extension: ExtensionDefinition!, name: String!): Component!
+  "Adds a property to the component with the given name."
+  addProperty(name: String!, property: PropertyTypeDefinition!): Component!
   "Creates a new component with the given name and properties."
-  create(name: String!, properties: [PropertyTypeDefinition!]): Component!
+  create(description: String, extensions: [ExtensionDefinition!], name: String!, namespace: String!, properties: [PropertyTypeDefinition!]): Component!
+  "Deletes the component with the given name."
   delete(name: String!): Boolean!
+  "Removes the extension with the given extension_name from the component with the given name."
+  removeExtension(extensionName: String!, name: String!): Component!
+  "Removes the property with the given property_name from the component with the given name."
+  removeProperty(name: String!, propertyName: String!): Component!
 }
 
 "Mutation of entity instances."
@@ -328,6 +339,12 @@ type MutationEntityInstances {
 
 "Mutations for entity types"
 type MutationEntityTypes {
+  "Adds the component with the given component_name to the entity type with the given name."
+  addComponent(componentName: String!, name: String!): EntityType!
+  "Adds an extension to the entity type with the given name."
+  addExtension(extension: ExtensionDefinition!, name: String!): EntityType!
+  "Adds a property to the entity type with the given name."
+  addProperty(name: String!, property: PropertyTypeDefinition!): EntityType!
   "Creates a new entity type with the given name and components and properties."
   create(
     components: [String!],
@@ -342,6 +359,12 @@ type MutationEntityTypes {
   ): EntityType!
   "Deletes the entity type with the given name."
   delete(name: String!): Boolean!
+  "Remove the component with the given component_name from the entity type with the given name."
+  removeComponent(componentName: String!, name: String!): EntityType!
+  "Removes the extension with the given extension_name from the entity type with the given name."
+  removeExtension(extensionName: String!, name: String!): EntityType!
+  "Removes the property with the given property_name from the entity type with the given name."
+  removeProperty(name: String!, propertyName: String!): EntityType!
 }
 
 "Mutations for flows and their contained instances."
@@ -473,6 +496,12 @@ type MutationRelationInstances {
 
 "Mutations for relation types"
 type MutationRelationTypes {
+  "Adds the component with the given component_name to the relation type with the given name."
+  addComponent(componentName: String!, name: String!): RelationType!
+  "Adds an extension to the relation type with the given name."
+  addExtension(extension: ExtensionDefinition!, name: String!): RelationType!
+  "Adds a property to the relation type with the given name."
+  addProperty(name: String!, property: PropertyTypeDefinition!): RelationType!
   """
 
   Creates a new relation type with the given name and components and properties.
@@ -485,14 +514,22 @@ type MutationRelationTypes {
     "The extension on the relation type."
     extensions: [ExtensionDefinition!],
     inboundType: String!,
-    "The name of the entity type."
+    "The name of the relation type."
     name: String!,
+    "The namespace of the relation type."
+    namespace: String,
     outboundType: String!,
     "The definitions of properties. These are added additionally to the properties provided by the given components."
     properties: [PropertyTypeDefinition!]
   ): RelationType!
   "Deletes the relation type with the given name."
   delete(name: String!): Boolean!
+  "Remove the component with the given component_name from the relation type with the given name."
+  removeComponent(componentName: String!, name: String!): RelationType!
+  "Removes the extension with the given extension_name from the relation type with the given name."
+  removeExtension(extensionName: String!, name: String!): RelationType!
+  "Removes the property with the given property_name from the relation type with the given name."
+  removeProperty(name: String!, propertyName: String!): RelationType!
 }
 
 "Mutations for types (components, entity types, relation types)."
@@ -630,17 +667,17 @@ type RelationType {
   description: String!
   "The extensions which are defined by the relation type."
   extensions(name: String): [Extension!]!
+  "The inbound components."
+  inboundComponents: [Component!]!
+  "The inbound entity type(s)."
+  inboundTypes: [EntityType!]!
   """
 
   The full name of the relation type.
 
   Returns "default_connector__property_name__property_name" (with type suffix).
   """
-  fullName: String!
-  "The inbound components."
-  inboundComponents: [Component!]!
-  "The inbound entity type(s)."
-  inboundTypes: [EntityType!]!
+  instanceTypeName: String!
   """
 
   The name of the relation type.
