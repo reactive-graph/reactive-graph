@@ -5,7 +5,6 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::ComponentContainer;
 use serde_json::json;
 use serde_json::Value;
 use uuid::Uuid;
@@ -23,6 +22,7 @@ use crate::api::RelationTypeManager;
 use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
+use crate::model::ComponentContainer;
 use crate::model::ReactivePropertyInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
