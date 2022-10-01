@@ -1,3 +1,6 @@
+#![feature(register_tool)]
+#![register_tool(tarpaulin)]
+
 pub use component_behaviour_provider::ComponentBehaviourProvider;
 pub use component_behaviour_provider::ComponentBehaviourProviderError;
 pub use component_manager::ComponentManager;
@@ -85,3 +88,7 @@ macro_rules! export_plugin {
         };
     };
 }
+
+#[cfg(test)]
+#[tarpaulin::ignore]
+pub mod tests;
