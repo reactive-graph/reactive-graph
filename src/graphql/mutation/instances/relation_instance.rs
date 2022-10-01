@@ -1,14 +1,21 @@
 use std::sync::Arc;
 
 use async_graphql::*;
-use log::debug;
-
-use crate::api::{ReactiveEntityInstanceManager, ReactiveRelationInstanceCreationError, ReactiveRelationInstanceManager, RelationTypeManager};
-use crate::graphql::mutation::GraphQLEdgeKey;
-use crate::graphql::query::{GraphQLPropertyInstance, GraphQLRelationInstance};
-use crate::model::PropertyInstanceSetter;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::ReactivePropertyContainer;
+use log::debug;
+use serde_json::json;
+use uuid::Uuid;
+
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveRelationInstanceCreationError;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationTypeManager;
+use crate::graphql::mutation::GraphQLEdgeKey;
+use crate::graphql::query::GraphQLPropertyInstance;
+use crate::graphql::query::GraphQLRelationInstance;
+use crate::model::PropertyInstanceGetter;
+use crate::model::PropertyInstanceSetter;
+use crate::model::ReactivePropertyContainer;
 
 #[derive(Default)]
 pub struct MutationRelationInstances;
@@ -76,6 +83,78 @@ impl MutationRelationInstances {
             }
         }
         Ok(relation_instance.into())
+    }
+
+    /// Creates a connector from a property of the outbound entity instance to a property of the inbound entity instance.
+    ///
+    /// The type_name must match a relation type exactly.
+    async fn create_connector(
+        &self,
+        context: &Context<'_>,
+        #[graphql(desc = "The id of the outbound entity instance")] outbound_id: Uuid,
+        #[graphql(desc = "The name of the property of the outbound entity instance")] outbound_property_name: String,
+        #[graphql(desc = "The name of the connector relation type")] type_name: String,
+        #[graphql(desc = "The id of the inbound entity instance")] inbound_id: Uuid,
+        #[graphql(desc = "The name of the property of the inbound entity instance")] inbound_property_name: String,
+        #[graphql(desc = "Creates the relation instance with the given components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "The initial property values")] properties: Option<Vec<GraphQLPropertyInstance>>,
+    ) -> Result<GraphQLRelationInstance> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+
+        // Requires an exact match of a type name!
+        let relation_type = relation_type_manager.get(&type_name);
+        if relation_type.is_none() {
+            return Err(Error::new(format!("Connector relation type {} does not exist!", type_name)));
+        }
+
+        // The outbound entity instance must exist
+        if !entity_instance_manager.has(outbound_id) {
+            return Err(Error::new(format!("Outbound entity {} does not exist!", outbound_id)));
+        }
+
+        // The inbound entity instance must exist
+        if !entity_instance_manager.has(inbound_id) {
+            return Err(Error::new(format!("Inbound entity {} does not exist!", inbound_id)));
+        }
+
+        // The outbound entity instance's property must exist
+        if entity_instance_manager.get(outbound_id).map(|e| e.get(&outbound_property_name)).is_none() {
+            return Err(Error::new(format!("Outbound entity {} has no property named {}!", outbound_id, outbound_property_name)));
+        }
+
+        // The inbound entity instance's property must exist
+        if entity_instance_manager.get(inbound_id).map(|e| e.get(&inbound_property_name)).is_none() {
+            return Err(Error::new(format!("Inbound entity {} has no property named {}!", inbound_id, inbound_property_name)));
+        }
+
+        // Construct the instanceTypeName because between two nodes only one edge with the same type can exist
+        // Therefore we construct an unique type name which contains the names of the outbound property and the inbound property
+        // This allows exactly one connector (of the given connector type) between the two properties.
+        let instance_type_name = format!("{}--{}--{}", type_name, outbound_property_name, inbound_property_name);
+
+        match indradb::Identifier::new(instance_type_name) {
+            Ok(instance_type_identifier) => {
+                let edge_key = EdgeKey::new(outbound_id, instance_type_identifier, inbound_id);
+                let mut properties = GraphQLPropertyInstance::to_map_with_defaults(properties, relation_type.unwrap().properties);
+                properties.insert("outbound_property_name".to_string(), json!(outbound_property_name));
+                properties.insert("inbound_property_name".to_string(), json!(inbound_property_name));
+                match relation_instance_manager.create(edge_key.clone(), properties) {
+                    Ok(relation_instance) => {
+                        // If created successfully, add additional components
+                        if let Some(components) = components {
+                            for component in components {
+                                relation_instance_manager.add_component(edge_key.clone(), &component);
+                            }
+                        }
+                        Ok(relation_instance.into())
+                    }
+                    Err(creation_error) => Err(Error::new(format!("Failed to create relation instance: {:?}", creation_error))),
+                }
+            }
+            Err(validation_error) => Err(Error::new(format!("Failed to create relation instance: {:?}", validation_error))),
+        }
     }
 
     /// Updates the properties of the given relation instance by edge key.
