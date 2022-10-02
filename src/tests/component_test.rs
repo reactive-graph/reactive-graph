@@ -37,6 +37,7 @@ fn component_test() {
 
     assert_eq!(namespace, component.namespace);
     assert_eq!(component_name, component.name);
+    assert_eq!(format!("{}__{}", &namespace, &component_name), component.fully_qualified_name());
     assert_eq!(description, component.description);
     component.name = component_name_2.clone();
     assert_ne!(component_name, component.name);

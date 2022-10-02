@@ -41,6 +41,8 @@ fn create_entity_type_test() {
 
     assert_eq!(entity_type_name, entity_type.name);
 
+    assert_eq!(format!("{}__{}", &namespace, &entity_type_name), entity_type.fully_qualified_name());
+
     assert_eq!(format!("{namespace}__{entity_type_name}"), entity_type.t.to_string());
 
     assert_eq!(description, entity_type.description);
