@@ -1,0 +1,8 @@
+mutation {
+  types {
+    entities {
+      DeleteFirst: delete(name: "example")
+      DeleteSecond: delete(name: "example2")
+    }
+  }
+}

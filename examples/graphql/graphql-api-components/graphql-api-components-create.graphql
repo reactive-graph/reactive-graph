@@ -2,6 +2,7 @@ mutation {
   types {
     components {
       create(
+        namespace: "book",
         name: "component1",
         properties: [
           {

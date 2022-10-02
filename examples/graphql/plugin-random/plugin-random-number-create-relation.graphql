@@ -5,7 +5,7 @@ mutation CreateConnectorFromRandomNumberToMultiplication {
         edgeKey: {
           # Outbound: The random number generator
           outboundId: "24f1e42f-1072-4c39-a239-774af89286c6",
-          typeName: "default_connector",
+          typeName: "default_connector--result--lhs",
           # Inbound: The multiplication gateway
           inboundId: "cfe0b988-4a7f-47c4-b334-ff41709aa0f4"
         },
@@ -23,7 +23,9 @@ mutation CreateConnectorFromRandomNumberToMultiplication {
         ]
       ) {
         type {
-          fullName
+          namespace
+          name
+          instanceTypeName
         }
         outbound {
           id

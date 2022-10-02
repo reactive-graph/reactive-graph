@@ -30,6 +30,10 @@
     {
       "name": "Delete Entity Type",
       "url": "/examples/graphql/graphql-api-entity-types/graphql-api-entity-types-delete.graphql"
+    },
+    {
+      "name": "Delete Multiple Entity Types",
+      "url": "/examples/graphql/graphql-api-entity-types/graphql-api-entity-types-delete.graphql"
     }
   ]
 }

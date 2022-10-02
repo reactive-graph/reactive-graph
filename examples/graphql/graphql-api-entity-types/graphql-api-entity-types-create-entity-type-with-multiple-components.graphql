@@ -2,7 +2,8 @@ mutation {
   types {
     entities {
       create(
-        name: "example2",
+        namespace: "book"
+        name: "example2"
         components: [
           "component1",
           "component2",
@@ -18,17 +19,43 @@ mutation {
           }
         ]
       ) {
-        name
-        description
-        components {
-          name
-        }
-        properties {
-          name
-          dataType
-          socketType
-        }
+        ...FullEntityType
+        ...EntityTypeExtensions
       }
     }
+  }
+}
+
+fragment FullEntityType on EntityType {
+  namespace
+  name
+  description
+  ...EntityTypeComponents
+  properties {
+    name
+    dataType
+    socketType
+    ...PropertyTypeExtensions
+  }
+}
+
+fragment EntityTypeComponents on EntityType {
+  components {
+    namespace
+    name
+  }
+}
+
+fragment EntityTypeExtensions on EntityType {
+  extensions {
+    name
+    extension
+  }
+}
+
+fragment PropertyTypeExtensions on PropertyType {
+  extensions {
+    name
+    extension
   }
 }

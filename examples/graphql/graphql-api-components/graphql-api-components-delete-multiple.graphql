@@ -1,0 +1,9 @@
+mutation {
+  types {
+    components {
+      DeleteFirst: delete(name: "component1")
+      DeleteSecond: delete(name: "component2")
+      DeleteThird: delete(name: "component3")
+    }
+  }
+}
