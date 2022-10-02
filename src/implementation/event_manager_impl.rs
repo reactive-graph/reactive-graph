@@ -6,15 +6,15 @@ use async_trait::async_trait;
 use serde_json::json;
 
 use crate::api::Lifecycle;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
-use crate::api::SystemEventTypes;
 use crate::api::SYSTEM_EVENT_PROPERTY_EVENT;
 use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::di::*;
 use crate::model::PropertyInstanceSetter;
 use crate::model::ReactiveEntityInstance;
+use crate::plugins::SystemEvent;
+use crate::plugins::SystemEventTypes;
 
 #[wrapper]
 pub struct SystemEventInstanceStorage(RwLock<HashMap<SystemEventTypes, Arc<ReactiveEntityInstance>>>);
@@ -39,25 +39,55 @@ impl SystemEventManager for SystemEventManagerImpl {
                 | SystemEvent::ComponentUpdated(name)
                 | SystemEvent::ComponentDeleted(name)
                 | SystemEvent::EntityTypeCreated(name)
-                | SystemEvent::EntityTypeComponentAdded(name, _)
-                | SystemEvent::EntityTypeComponentRemoved(name, _)
-                | SystemEvent::EntityTypePropertyAdded(name, _)
-                | SystemEvent::EntityTypePropertyRemoved(name, _)
-                | SystemEvent::EntityTypeExtensionAdded(name, _)
-                | SystemEvent::EntityTypeExtensionRemoved(name, _)
                 | SystemEvent::EntityTypeDeleted(name)
                 | SystemEvent::RelationTypeCreated(name)
-                | SystemEvent::RelationTypeComponentAdded(name, _)
-                | SystemEvent::RelationTypeComponentRemoved(name, _)
-                | SystemEvent::RelationTypePropertyAdded(name, _)
-                | SystemEvent::RelationTypePropertyRemoved(name, _)
-                | SystemEvent::RelationTypeExtensionAdded(name, _)
-                | SystemEvent::RelationTypeExtensionRemoved(name, _)
                 | SystemEvent::RelationTypeDeleted(name)
                 | SystemEvent::FlowTypeCreated(name)
                 | SystemEvent::FlowTypeUpdated(name)
                 | SystemEvent::FlowTypeDeleted(name) => {
-                    entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(name));
+                    entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!({ "name": &name }));
+                    // Also emit event that the type system has been changed
+                    self.emit_event(SystemEvent::TypeSystemChanged);
+                }
+                SystemEvent::EntityTypeComponentAdded(name, component_name)
+                | SystemEvent::EntityTypeComponentRemoved(name, component_name)
+                | SystemEvent::RelationTypeComponentAdded(name, component_name)
+                | SystemEvent::RelationTypeComponentRemoved(name, component_name) => {
+                    entity_instance.set(
+                        SYSTEM_EVENT_PROPERTY_EVENT,
+                        json!({
+                            "name": &name,
+                            "component": &component_name
+                        }),
+                    );
+                    // Also emit event that the type system has been changed
+                    self.emit_event(SystemEvent::TypeSystemChanged);
+                }
+                SystemEvent::EntityTypePropertyAdded(name, property_name)
+                | SystemEvent::EntityTypePropertyRemoved(name, property_name)
+                | SystemEvent::RelationTypePropertyAdded(name, property_name)
+                | SystemEvent::RelationTypePropertyRemoved(name, property_name) => {
+                    entity_instance.set(
+                        SYSTEM_EVENT_PROPERTY_EVENT,
+                        json!({
+                            "name": &name,
+                            "property": &property_name
+                        }),
+                    );
+                    // Also emit event that the type system has been changed
+                    self.emit_event(SystemEvent::TypeSystemChanged);
+                }
+                SystemEvent::EntityTypeExtensionAdded(name, extension_name)
+                | SystemEvent::EntityTypeExtensionRemoved(name, extension_name)
+                | SystemEvent::RelationTypeExtensionAdded(name, extension_name)
+                | SystemEvent::RelationTypeExtensionRemoved(name, extension_name) => {
+                    entity_instance.set(
+                        SYSTEM_EVENT_PROPERTY_EVENT,
+                        json!({
+                            "name": &name,
+                            "extension": &extension_name
+                        }),
+                    );
                     // Also emit event that the type system has been changed
                     self.emit_event(SystemEvent::TypeSystemChanged);
                 }
@@ -67,7 +97,7 @@ impl SystemEventManager for SystemEventManagerImpl {
                 | SystemEvent::FlowInstanceCreated(id)
                 | SystemEvent::FlowInstanceDeleted(id) => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(id)),
                 SystemEvent::RelationInstanceCreated(edge_key) | SystemEvent::RelationInstanceDeleted(edge_key) => {
-                    entity_instance.set("event", json!(edge_key))
+                    entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(edge_key))
                 }
             }
         }

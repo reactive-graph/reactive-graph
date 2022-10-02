@@ -16,7 +16,6 @@ use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceCreationError;
 use crate::api::ReactiveEntityInstanceImportError;
 use crate::api::ReactiveEntityInstanceManager;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::model::ComponentContainer;
@@ -24,6 +23,7 @@ use crate::model::EntityInstance;
 use crate::model::PropertyInstanceGetter;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactivePropertyInstance;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct ReactiveEntityInstances(RwLock<BTreeMap<Uuid, Arc<ReactiveEntityInstance>>>);

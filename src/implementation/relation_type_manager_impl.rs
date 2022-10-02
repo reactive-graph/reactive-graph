@@ -17,7 +17,6 @@ use crate::api::RelationTypeExtensionError;
 use crate::api::RelationTypeImportError;
 use crate::api::RelationTypeManager;
 use crate::api::RelationTypePropertyError;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::model::fully_qualified_identifier;
@@ -27,6 +26,7 @@ use crate::model::RelationType;
 use crate::model::TypeContainer;
 use crate::model::NAMESPACE_RELATION_TYPE;
 use crate::plugins::RelationTypeProvider;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct RelationTypes(RwLock<std::vec::Vec<RelationType>>);

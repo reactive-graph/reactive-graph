@@ -10,6 +10,7 @@ pub mod proxy;
 pub mod registrar;
 pub mod relation_instance_manager_impl;
 pub mod relation_type_manager_impl;
+pub mod system_event_manager_impl;
 
 pub use component_manager_impl::ComponentManagerImpl;
 pub use config::PluginsConfig;
@@ -22,3 +23,4 @@ pub use graphql_query_service_impl::GraphQLQueryServiceImpl;
 pub use proxy::PluginProxy;
 pub use relation_instance_manager_impl::RelationInstanceManagerImpl;
 pub use relation_type_manager_impl::RelationTypeManagerImpl;
+pub use system_event_manager_impl::SystemEventManagerImpl;

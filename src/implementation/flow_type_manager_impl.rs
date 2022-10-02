@@ -14,7 +14,6 @@ use crate::api::flow_type_manager::FlowTypeManager;
 use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
 use crate::api::RelationTypeManager;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::component;
 use crate::di::provides;
@@ -27,6 +26,7 @@ use crate::model::FlowType;
 use crate::model::PropertyType;
 use crate::model::RelationInstance;
 use crate::plugins::FlowTypeProvider;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct FlowTypesStorage(RwLock<Vec<FlowType>>);

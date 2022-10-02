@@ -12,7 +12,6 @@ use crate::api::ComponentExtensionError;
 use crate::api::ComponentManager;
 use crate::api::ComponentPropertyError;
 use crate::api::Lifecycle;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::builder::ComponentBuilder;
 use crate::di::{component, provides, wrapper, Component, Wrc};
@@ -20,6 +19,7 @@ use crate::model::DataType;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct ComponentsStorage(RwLock<Vec<crate::model::Component>>);

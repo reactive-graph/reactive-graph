@@ -19,13 +19,13 @@ use crate::api::RelationBehaviourManager;
 use crate::api::RelationEdgeManager;
 use crate::api::RelationInstanceManager;
 use crate::api::RelationTypeManager;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::model::ComponentContainer;
 use crate::model::ReactivePropertyInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct ReactiveRelationInstances(RwLock<BTreeMap<EdgeKey, Arc<ReactiveRelationInstance>>>);

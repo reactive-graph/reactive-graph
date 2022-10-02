@@ -24,9 +24,11 @@ use async_graphql_actix_web::GraphQLResponse;
 use async_trait::async_trait;
 use convert_case::Case;
 use convert_case::Casing;
-use indradb::EdgeKey;
-use inexor_rgf_core_model::{ComponentContainer, ReactiveRelationInstance, RelationType};
-use log::{debug, error, info, trace, warn};
+use log::debug;
+use log::error;
+use log::info;
+use log::trace;
+use log::warn;
 use uuid::Uuid;
 
 use crate::api::ComponentManager;
@@ -37,7 +39,6 @@ use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
-use crate::api::SystemEventTypes;
 use crate::api::SYSTEM_EVENT_PROPERTY_EVENT;
 use crate::di::*;
 use crate::graphql::dynamic_graph::introspection::ResolverType;
@@ -45,9 +46,13 @@ use crate::graphql::dynamic_graph::introspection::BUILTIN_INTROSPECTION_SCHEMA;
 use crate::graphql::dynamic_graph::introspection::{IntrospectionType, INTROSPECTION_SCHEMA};
 use crate::graphql::dynamic_graph::schema_generation::enum_definition;
 use crate::graphql::dynamic_graph::schema_generation::scalar_definition;
+use crate::model::ComponentContainer;
 use crate::model::EntityType;
 use crate::model::PropertyInstanceGetter;
 use crate::model::ReactiveEntityInstance;
+use crate::model::ReactiveRelationInstance;
+use crate::model::RelationType;
+use crate::plugins::SystemEventTypes;
 
 static UUID_TYPE_SYSTEM_CHANGED_EVENT: Uuid = Uuid::from_u128(0x6ba7b8109e1511d150b900c04fe530c7);
 

@@ -3,15 +3,11 @@ use std::ffi::OsStr;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use crate::plugins::plugin::PluginInitializationError;
-use crate::plugins::plugin::PluginPostInitializationError;
-use crate::plugins::plugin::PluginPreShutdownError;
-use crate::plugins::plugin::PluginShutdownError;
-use crate::plugins::PluginLoadingError;
 use async_trait::async_trait;
 use libloading::Library;
+use log::debug;
 use log::error;
-use log::{debug, info};
+use log::info;
 
 use crate::api::ComponentBehaviourManager;
 use crate::api::ComponentManager;
@@ -26,6 +22,7 @@ use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationBehaviourManager;
 use crate::api::RelationTypeManager;
+use crate::api::SystemEventManager;
 use crate::api::WebResourceManager;
 use crate::di::*;
 use crate::plugin::registrar::PluginRegistrar;
@@ -40,8 +37,14 @@ use crate::plugin::PluginProxy;
 use crate::plugin::PluginsConfig;
 use crate::plugin::RelationInstanceManagerImpl;
 use crate::plugin::RelationTypeManagerImpl;
+use crate::plugin::SystemEventManagerImpl;
+use crate::plugins::plugin::PluginInitializationError;
+use crate::plugins::plugin::PluginPostInitializationError;
+use crate::plugins::plugin::PluginPreShutdownError;
+use crate::plugins::plugin::PluginShutdownError;
 use crate::plugins::Plugin;
 use crate::plugins::PluginDeclaration;
+use crate::plugins::PluginLoadingError;
 use crate::plugins::INEXOR_RGF_PLUGIN_VERSION;
 use crate::plugins::RUSTC_VERSION;
 
@@ -74,6 +77,7 @@ pub struct PluginRegistryImpl {
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
     reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
     reactive_flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+    system_event_manager: Wrc<dyn SystemEventManager>,
     web_resource_manager: Wrc<dyn WebResourceManager>,
 
     pub plugins: PluginProxies,
@@ -174,6 +178,7 @@ impl PluginRegistry for PluginRegistryImpl {
                             RelationInstanceManagerImpl::new(self.relation_type_manager.clone(), self.reactive_relation_instance_manager.clone());
                         let flow_instance_manager = FlowInstanceManagerImpl::new(self.reactive_flow_instance_manager.clone());
                         let graphql_query_service = GraphQLQueryServiceImpl::new(self.graphql_query_service.clone());
+                        let system_event_manager = SystemEventManagerImpl::new(self.system_event_manager.clone());
                         let plugin_context = PluginContextImpl::new(
                             Arc::new(component_manager),
                             Arc::new(entity_type_manager),
@@ -183,6 +188,7 @@ impl PluginRegistry for PluginRegistryImpl {
                             Arc::new(relation_instance_manager),
                             Arc::new(flow_instance_manager),
                             Arc::new(graphql_query_service),
+                            Arc::new(system_event_manager),
                         );
                         let context = Arc::new(plugin_context);
                         let _ = plugin_proxy.set_context(context);

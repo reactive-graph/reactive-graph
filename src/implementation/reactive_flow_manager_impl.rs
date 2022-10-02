@@ -23,7 +23,6 @@ use crate::api::ReactiveFlowInstanceImportError;
 use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::builder::EntityInstanceBuilder;
 use crate::builder::FlowInstanceBuilder;
@@ -35,6 +34,7 @@ use crate::model::ReactiveFlowInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
 use crate::plugins::FlowInstanceProvider;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct ReactiveFlowInstancesStorage(RwLock<BTreeMap<Uuid, Arc<ReactiveFlowInstance>>>);

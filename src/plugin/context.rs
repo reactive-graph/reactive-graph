@@ -9,6 +9,7 @@ use crate::plugins::GraphQLQueryService;
 use crate::plugins::PluginContext;
 use crate::plugins::RelationInstanceManager;
 use crate::plugins::RelationTypeManager;
+use crate::plugins::SystemEventManager;
 
 pub struct PluginContextImpl {
     component_manager: Arc<dyn ComponentManager>,
@@ -19,6 +20,7 @@ pub struct PluginContextImpl {
     relation_instance_manager: Arc<dyn RelationInstanceManager>,
     flow_instance_manager: Arc<dyn FlowInstanceManager>,
     graphql_query_service: Arc<dyn GraphQLQueryService>,
+    system_event_manager: Arc<dyn SystemEventManager>,
 }
 
 impl PluginContextImpl {
@@ -31,6 +33,7 @@ impl PluginContextImpl {
         relation_instance_manager: Arc<dyn RelationInstanceManager>,
         flow_instance_manager: Arc<dyn FlowInstanceManager>,
         graphql_query_service: Arc<dyn GraphQLQueryService>,
+        system_event_manager: Arc<dyn SystemEventManager>,
     ) -> Self {
         PluginContextImpl {
             component_manager,
@@ -41,6 +44,7 @@ impl PluginContextImpl {
             relation_instance_manager,
             flow_instance_manager,
             graphql_query_service,
+            system_event_manager,
         }
     }
 }
@@ -76,5 +80,9 @@ impl PluginContext for PluginContextImpl {
 
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {
         self.graphql_query_service.clone()
+    }
+
+    fn get_system_event_manager(&self) -> Arc<dyn SystemEventManager> {
+        self.system_event_manager.clone()
     }
 }

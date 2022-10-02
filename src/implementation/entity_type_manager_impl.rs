@@ -16,7 +16,6 @@ use crate::api::EntityTypeImportError;
 use crate::api::EntityTypeManager;
 use crate::api::EntityTypePropertyError;
 use crate::api::Lifecycle;
-use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::builder::EntityTypeBuilder;
 use crate::di::component;
@@ -31,6 +30,7 @@ use crate::model::PropertyType;
 use crate::model::TypeContainer;
 use crate::model::NAMESPACE_ENTITY_TYPE;
 use crate::plugins::EntityTypeProvider;
+use crate::plugins::SystemEvent;
 
 #[wrapper]
 pub struct EntityTypesStorage(RwLock<Vec<EntityType>>);
