@@ -225,7 +225,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     return Err(RelationTypeComponentError::ComponentDoesNotExist);
                 }
                 relation_type.components.push(component_name.to_string());
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypeComponentAdded(name.to_string(), component_name.to_string()));
             }
         }
         Ok(())
@@ -236,7 +237,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         for relation_type in guard.iter_mut() {
             if relation_type.type_name == name {
                 relation_type.components.retain(|c_name| c_name != component_name);
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypeComponentRemoved(name.to_string(), component_name.to_string()));
             }
         }
     }
@@ -249,7 +251,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     return Err(RelationTypePropertyError::PropertyAlreadyExists);
                 }
                 relation_type.properties.push(property.clone());
-                self.event_manager.emit_event(SystemEvent::RelationTypeUpdated(type_name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypePropertyAdded(type_name.to_string(), property.name.clone()));
             }
         }
         Ok(())
@@ -260,7 +263,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         for relation_type in guard.iter_mut() {
             if relation_type.type_name == type_name {
                 relation_type.properties.retain(|property| property.name != property_name);
-                self.event_manager.emit_event(SystemEvent::RelationTypeUpdated(type_name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypePropertyRemoved(type_name.to_string(), property_name.to_string()));
             }
         }
     }
@@ -273,7 +277,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                     return Err(RelationTypeExtensionError::ExtensionAlreadyExists);
                 }
                 relation_type.extensions.push(extension.clone());
-                self.event_manager.emit_event(SystemEvent::RelationTypeUpdated(type_name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypeExtensionAdded(type_name.to_string(), extension.name.clone()));
             }
         }
         Ok(())
@@ -284,7 +289,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         for relation_type in guard.iter_mut() {
             if relation_type.type_name == type_name {
                 relation_type.extensions.retain(|extension| extension.name != extension_name);
-                self.event_manager.emit_event(SystemEvent::RelationTypeUpdated(type_name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypeExtensionRemoved(type_name.to_string(), extension_name.to_string()));
             }
         }
     }

@@ -149,7 +149,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                         return Err(EntityTypeComponentError::ComponentDoesNotExist);
                     }
                 }
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypeComponentAdded(name.to_string(), component_name.to_string()));
             }
         }
         Ok(())
@@ -165,7 +166,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                     let properties_to_remove: Vec<String> = component.properties.iter().map(|property| property.name.clone()).collect();
                     entity_type.properties.retain(|property| !properties_to_remove.contains(&property.name));
                 }
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypeComponentRemoved(name.to_string(), component_name.to_string()));
             }
         }
     }
@@ -178,7 +180,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                     return Err(EntityTypePropertyError::PropertyAlreadyExists);
                 }
                 entity_type.properties.push(property.clone());
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypePropertyAdded(name.to_string(), property.name.clone()));
             }
         }
         Ok(())
@@ -189,7 +192,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         for entity_type in guard.iter_mut() {
             if entity_type.name == name {
                 entity_type.properties.retain(|property| property.name != property_name);
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypePropertyRemoved(name.to_string(), property_name.to_string()));
             }
         }
     }
@@ -202,7 +206,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                     return Err(EntityTypeExtensionError::ExtensionAlreadyExists);
                 }
                 entity_type.extensions.push(extension.clone());
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypeExtensionAdded(name.to_string(), extension.name.clone()));
             }
         }
         Ok(())
@@ -213,7 +218,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         for entity_type in guard.iter_mut() {
             if entity_type.name == name {
                 entity_type.extensions.retain(|extension| extension.name != extension_name);
-                self.event_manager.emit_event(SystemEvent::EntityTypeUpdated(name.to_string()));
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypeExtensionRemoved(name.to_string(), extension_name.to_string()));
             }
         }
     }

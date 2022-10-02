@@ -39,10 +39,20 @@ impl SystemEventManager for SystemEventManagerImpl {
                 | SystemEvent::ComponentUpdated(name)
                 | SystemEvent::ComponentDeleted(name)
                 | SystemEvent::EntityTypeCreated(name)
-                | SystemEvent::EntityTypeUpdated(name)
+                | SystemEvent::EntityTypeComponentAdded(name, _)
+                | SystemEvent::EntityTypeComponentRemoved(name, _)
+                | SystemEvent::EntityTypePropertyAdded(name, _)
+                | SystemEvent::EntityTypePropertyRemoved(name, _)
+                | SystemEvent::EntityTypeExtensionAdded(name, _)
+                | SystemEvent::EntityTypeExtensionRemoved(name, _)
                 | SystemEvent::EntityTypeDeleted(name)
                 | SystemEvent::RelationTypeCreated(name)
-                | SystemEvent::RelationTypeUpdated(name)
+                | SystemEvent::RelationTypeComponentAdded(name, _)
+                | SystemEvent::RelationTypeComponentRemoved(name, _)
+                | SystemEvent::RelationTypePropertyAdded(name, _)
+                | SystemEvent::RelationTypePropertyRemoved(name, _)
+                | SystemEvent::RelationTypeExtensionAdded(name, _)
+                | SystemEvent::RelationTypeExtensionRemoved(name, _)
                 | SystemEvent::RelationTypeDeleted(name)
                 | SystemEvent::FlowTypeCreated(name)
                 | SystemEvent::FlowTypeUpdated(name)
@@ -94,8 +104,28 @@ impl SystemEventManagerImpl {
             self.create_system_event_instance("/org/inexor/event/type/entity/created"),
         );
         writer.insert(
-            SystemEventTypes::EntityTypeUpdated,
-            self.create_system_event_instance("/org/inexor/event/type/entity/updated"),
+            SystemEventTypes::EntityTypeComponentAdded,
+            self.create_system_event_instance("/org/inexor/event/type/entity/component/added"),
+        );
+        writer.insert(
+            SystemEventTypes::EntityTypeComponentRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/entity/component/removed"),
+        );
+        writer.insert(
+            SystemEventTypes::EntityTypePropertyAdded,
+            self.create_system_event_instance("/org/inexor/event/type/entity/property/added"),
+        );
+        writer.insert(
+            SystemEventTypes::EntityTypePropertyRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/entity/property/removed"),
+        );
+        writer.insert(
+            SystemEventTypes::EntityTypeExtensionAdded,
+            self.create_system_event_instance("/org/inexor/event/type/entity/extension/added"),
+        );
+        writer.insert(
+            SystemEventTypes::EntityTypeExtensionRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/entity/extension/removed"),
         );
         writer.insert(
             SystemEventTypes::EntityTypeDeleted,
@@ -106,8 +136,28 @@ impl SystemEventManagerImpl {
             self.create_system_event_instance("/org/inexor/event/type/relation/created"),
         );
         writer.insert(
-            SystemEventTypes::RelationTypeUpdated,
-            self.create_system_event_instance("/org/inexor/event/type/relation/updated"),
+            SystemEventTypes::RelationTypeComponentAdded,
+            self.create_system_event_instance("/org/inexor/event/type/relation/component/added"),
+        );
+        writer.insert(
+            SystemEventTypes::RelationTypeComponentRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/relation/component/removed"),
+        );
+        writer.insert(
+            SystemEventTypes::RelationTypePropertyAdded,
+            self.create_system_event_instance("/org/inexor/event/type/relation/property/added"),
+        );
+        writer.insert(
+            SystemEventTypes::RelationTypePropertyRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/relation/property/removed"),
+        );
+        writer.insert(
+            SystemEventTypes::RelationTypeExtensionAdded,
+            self.create_system_event_instance("/org/inexor/event/type/relation/extension/added"),
+        );
+        writer.insert(
+            SystemEventTypes::RelationTypeExtensionRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/relation/extension/removed"),
         );
         writer.insert(
             SystemEventTypes::RelationTypeDeleted,
