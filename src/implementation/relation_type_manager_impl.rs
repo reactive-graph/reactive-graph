@@ -5,7 +5,9 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 use indradb::Identifier;
-use log::{debug, error, warn};
+use log::debug;
+use log::error;
+use log::warn;
 use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
