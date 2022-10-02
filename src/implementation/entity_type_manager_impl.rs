@@ -4,7 +4,6 @@ use std::sync::Arc;
 use std::sync::RwLock;
 
 use async_trait::async_trait;
-use indradb::Identifier;
 use log::debug;
 use log::error;
 use log::warn;
@@ -25,10 +24,12 @@ use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
+use crate::model::fully_qualified_identifier;
 use crate::model::EntityType;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::TypeContainer;
+use crate::model::NAMESPACE_ENTITY_TYPE;
 use crate::plugins::EntityTypeProvider;
 
 #[wrapper]
@@ -70,20 +71,21 @@ impl EntityTypeManagerImpl {
 #[provides]
 impl EntityTypeManager for EntityTypeManagerImpl {
     fn register(&self, mut entity_type: EntityType) -> EntityType {
+        let type_name = entity_type.name.clone();
         // Construct the type
-        entity_type.t = Identifier::new(entity_type.name.clone()).unwrap();
+        entity_type.t = fully_qualified_identifier(&entity_type.namespace, &type_name, &NAMESPACE_ENTITY_TYPE);
         for component_name in entity_type.components.iter() {
             match self.component_manager.get(component_name) {
                 Some(component) => {
                     // TODO: what if multiple components have the same property?
                     entity_type.properties.append(&mut component.clone().properties)
                 }
-                None => warn!("Entity type {} not fully initialized: No component named {}", entity_type.name.clone(), component_name),
+                None => warn!("Entity type {} not fully initialized: No component named {}", &type_name, &component_name),
             }
         }
         self.entity_types.0.write().unwrap().push(entity_type.clone());
-        debug!("Registered entity type {}", entity_type.name);
-        self.event_manager.emit_event(SystemEvent::EntityTypeCreated(entity_type.name.clone()));
+        debug!("Registered entity type {}", &type_name);
+        self.event_manager.emit_event(SystemEvent::EntityTypeCreated(type_name));
         entity_type
     }
 

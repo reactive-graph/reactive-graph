@@ -1,13 +1,24 @@
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
 
-use crate::di::*;
 use async_trait::async_trait;
-use indradb::{Datastore, Edge, EdgeKey, EdgeProperties, EdgeQueryExt, Identifier, SpecificEdgeQuery, SpecificVertexQuery, VertexQueryExt};
+use indradb::Datastore;
+use indradb::Edge;
+use indradb::EdgeKey;
+use indradb::EdgeProperties;
+use indradb::EdgeQueryExt;
+use indradb::SpecificEdgeQuery;
+use indradb::SpecificVertexQuery;
+use indradb::VertexQueryExt;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::{GraphDatabase, RelationEdgeCreationError, RelationEdgeManager, RelationTypeManager};
+use crate::api::GraphDatabase;
+use crate::api::RelationEdgeCreationError;
+use crate::api::RelationEdgeManager;
+use crate::api::RelationTypeManager;
+use crate::di::*;
+use crate::model::property_identifier;
 
 // This service operates on the graph database.
 
@@ -92,7 +103,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
                 return Err(RelationEdgeCreationError::MissingRequiredProperty(property_name));
             }
             let value = value.unwrap();
-            let property_query = edge_query.clone().property(Identifier::new(property_name).unwrap());
+            let property_query = edge_query.clone().property(property_identifier(&property_name));
             let property_result = datastore.set_edge_properties(property_query, value.clone());
             if property_result.is_err() {
                 // Should not happen when using indradb::InternalMemoryDatastore
@@ -108,7 +119,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             let _property_result = datastore.set_edge_properties(
                 SpecificEdgeQuery::single(edge_key.clone())
                     .clone()
-                    .property(Identifier::new(property_name).unwrap()),
+                    .property(property_identifier(&property_name)),
                 value,
             );
         }

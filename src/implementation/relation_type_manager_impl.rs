@@ -4,7 +4,6 @@ use std::sync::Arc;
 use std::sync::RwLock;
 
 use async_trait::async_trait;
-use indradb::Identifier;
 use log::debug;
 use log::error;
 use log::warn;
@@ -21,10 +20,12 @@ use crate::api::RelationTypePropertyError;
 use crate::api::SystemEvent;
 use crate::api::SystemEventManager;
 use crate::di::*;
+use crate::model::fully_qualified_identifier;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::RelationType;
 use crate::model::TypeContainer;
+use crate::model::NAMESPACE_RELATION_TYPE;
 use crate::plugins::RelationTypeProvider;
 
 #[wrapper]
@@ -50,16 +51,16 @@ pub struct RelationTypeManagerImpl {
 #[provides]
 impl RelationTypeManager for RelationTypeManagerImpl {
     fn register(&self, mut relation_type: RelationType) {
-        debug!("Registered relation type {}", relation_type.type_name.clone());
+        let type_name = relation_type.type_name.clone();
         // Construct the type
-        relation_type.t = Identifier::new(relation_type.type_name.clone()).unwrap();
+        relation_type.t = fully_qualified_identifier(&relation_type.namespace, &type_name, &NAMESPACE_RELATION_TYPE);
         if relation_type.outbound_type != "*"
             && !self.entity_type_manager.has(&relation_type.outbound_type)
             && !self.component_manager.has(&relation_type.outbound_type)
         {
             warn!(
                 "Relation type {} not initialized: Outbound entity type or component does not exist {}",
-                relation_type.type_name.clone(),
+                &type_name,
                 relation_type.outbound_type.clone()
             );
             // TODO: Result
@@ -71,7 +72,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         {
             warn!(
                 "Relation type {} not initialized: Inbound entity type or component does not exist {}",
-                relation_type.type_name.clone(),
+                &type_name,
                 relation_type.inbound_type.clone()
             );
             // TODO: Result
@@ -88,8 +89,9 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             }
         }
 
-        let event = SystemEvent::RelationTypeCreated(relation_type.type_name.clone());
+        let event = SystemEvent::RelationTypeCreated(type_name.clone());
         self.relation_types.0.write().unwrap().push(relation_type);
+        debug!("Registered relation type {}", &type_name);
         self.event_manager.emit_event(event);
         // TODO: Result
     }
