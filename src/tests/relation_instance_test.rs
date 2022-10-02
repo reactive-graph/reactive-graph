@@ -9,6 +9,7 @@ use indradb::NamedProperty;
 use serde_json::json;
 use uuid::Uuid;
 
+use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::tests::utils::r_string_1000;
 use crate::tests::utils::r_string_255;
@@ -108,7 +109,7 @@ fn create_relation_instance_from_edge_properties() {
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: Identifier::new(&property_name).unwrap(),
+        name: property_identifier(&property_name),
         value: property_value_json,
     };
     let properties = vec![property];

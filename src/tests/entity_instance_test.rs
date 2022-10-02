@@ -9,6 +9,7 @@ use indradb::VertexProperties;
 use serde_json::json;
 use uuid::Uuid;
 
+use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::EntityInstance;
 use crate::MutablePropertyInstanceSetter;
@@ -74,7 +75,7 @@ fn create_entity_instance_from_vertex_properties() {
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: Identifier::from_str(&property_name).unwrap(),
+        name: property_identifier(&property_name),
         value: property_value_json,
     };
     let properties = vec![property];

@@ -1,9 +1,12 @@
 use serde::Deserialize;
 use serde::Serialize;
+use uuid::Uuid;
 
 use crate::extension::Extension;
 use crate::DataType;
 use crate::SocketType;
+
+pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b400d02fd540c7);
 
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket

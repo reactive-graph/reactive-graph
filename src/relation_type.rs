@@ -4,6 +4,7 @@ use serde::Serialize;
 use uuid::Uuid;
 
 use crate::extension::Extension;
+use crate::fully_qualified_identifier;
 use crate::PropertyType;
 use crate::TypeContainer;
 
@@ -70,7 +71,7 @@ impl RelationType {
     ) -> RelationType {
         let namespace = namespace.into();
         let type_name = type_name.into();
-        let t = fully_qualified_identifier(namespace.as_str(), type_name.as_str());
+        let t = fully_qualified_identifier(namespace.as_str(), type_name.as_str(), &NAMESPACE_RELATION_TYPE);
         RelationType {
             namespace,
             outbound_type: outbound_type.into(),
@@ -104,10 +105,4 @@ impl TypeContainer for RelationType {
         let extension_name = extension_name.into();
         self.extensions.iter().any(|extension| extension.name == extension_name)
     }
-}
-
-fn fully_qualified_identifier(namespace: &str, name: &str) -> Identifier {
-    let fully_qualified_name = format!("{namespace}__{name}");
-    Identifier::new(fully_qualified_name.as_str())
-        .unwrap_or_else(|_| Identifier::new(Uuid::new_v5(&NAMESPACE_RELATION_TYPE, fully_qualified_name.as_bytes()).to_string()).unwrap())
 }

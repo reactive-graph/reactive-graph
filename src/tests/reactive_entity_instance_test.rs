@@ -14,6 +14,7 @@ use indradb::VertexProperties;
 use serde_json::json;
 use uuid::Uuid;
 
+use crate::property_identifier;
 use crate::tests::utils::create_random_entity_instance;
 use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
@@ -94,7 +95,7 @@ fn reactive_entity_instance_from_vertex_properties_test() {
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
-        name: Identifier::new(&property_name).unwrap(),
+        name: property_identifier(&property_name),
         value: property_value_json.clone(),
     };
     let properties = vec![property];

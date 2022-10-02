@@ -4,6 +4,7 @@ use serde::Serialize;
 use uuid::Uuid;
 
 use crate::extension::Extension;
+use crate::fully_qualified_identifier;
 use crate::PropertyType;
 use crate::TypeContainer;
 
@@ -52,7 +53,7 @@ impl EntityType {
     ) -> EntityType {
         let namespace = namespace.into();
         let name = name.into();
-        let t = fully_qualified_identifier(namespace.as_str(), name.as_str());
+        let t = fully_qualified_identifier(namespace.as_str(), name.as_str(), &NAMESPACE_ENTITY_TYPE);
         EntityType {
             namespace,
             name,
@@ -83,10 +84,4 @@ impl TypeContainer for EntityType {
         let extension_name = extension_name.into();
         self.extensions.iter().any(|extension| extension.name == extension_name)
     }
-}
-
-fn fully_qualified_identifier(namespace: &str, name: &str) -> Identifier {
-    let fully_qualified_name = format!("{namespace}__{name}");
-    Identifier::new(fully_qualified_name.as_str())
-        .unwrap_or_else(|_| Identifier::new(Uuid::new_v5(&NAMESPACE_ENTITY_TYPE, fully_qualified_name.as_bytes()).to_string()).unwrap())
 }

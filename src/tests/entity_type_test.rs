@@ -1,6 +1,7 @@
 use serde_json::json;
 
 use crate::tests::utils::r_string;
+use crate::tests::utils::r_string_1000;
 use crate::DataType;
 use crate::EntityType;
 use crate::Extension;
@@ -57,4 +58,13 @@ fn create_entity_type_test() {
     assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
     assert!(entity_type.has_own_extension(extension_name));
     assert!(!entity_type.has_own_extension(r_string()));
+}
+
+#[test]
+fn long_entity_type_test() {
+    let namespace = r_string_1000();
+    let entity_type_name = r_string_1000();
+    let description = r_string();
+    let et = EntityType::new(namespace, entity_type_name, description, Vec::new(), Vec::new(), Vec::new());
+    assert!(et.t.as_str().len() < 255);
 }

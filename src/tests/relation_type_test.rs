@@ -1,6 +1,7 @@
 use serde_json::json;
 
 use crate::tests::utils::r_string;
+use crate::tests::utils::r_string_1000;
 use crate::DataType;
 use crate::Extension;
 use crate::PropertyType;
@@ -59,4 +60,13 @@ fn create_relation_type_test() {
     assert_eq!(extension_value, relation_type.extensions.get(0).unwrap().extension);
     assert!(relation_type.has_own_extension(extension_name));
     assert!(!relation_type.has_own_extension(r_string()));
+}
+
+#[test]
+fn long_relation_type_test() {
+    let namespace = r_string_1000();
+    let type_name = r_string_1000();
+    let description = r_string();
+    let rt = RelationType::new(&namespace, &type_name, &type_name, &type_name, &description, Vec::new(), Vec::new(), Vec::new());
+    assert!(rt.t.as_str().len() < 255);
 }
