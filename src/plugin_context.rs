@@ -8,6 +8,7 @@ use crate::FlowTypeManager;
 use crate::GraphQLQueryService;
 use crate::RelationInstanceManager;
 use crate::RelationTypeManager;
+use crate::SystemEventManager;
 
 #[derive(Debug)]
 pub enum PluginContextInitializationError {
@@ -38,4 +39,7 @@ pub trait PluginContext: Send + Sync {
 
     /// Returns the GraphQL query service.
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService>;
+
+    /// Returns the system event manager.
+    fn get_system_event_manager(&self) -> Arc<dyn SystemEventManager>;
 }

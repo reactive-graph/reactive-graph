@@ -1,10 +1,18 @@
-use crate::plugin::PluginMetadataError;
-use crate::PluginMetadata;
-use crate::{
-    ComponentManager, EntityInstanceManager, EntityTypeManager, FlowInstanceManager, FlowTypeManager, GraphQLQueryService, Plugin, PluginContext,
-    RelationInstanceManager, RelationTypeManager,
-};
 use std::sync::Arc;
+
+use crate::plugin::PluginMetadataError;
+use crate::ComponentManager;
+use crate::EntityInstanceManager;
+use crate::EntityTypeManager;
+use crate::FlowInstanceManager;
+use crate::FlowTypeManager;
+use crate::GraphQLQueryService;
+use crate::Plugin;
+use crate::PluginContext;
+use crate::PluginMetadata;
+use crate::RelationInstanceManager;
+use crate::RelationTypeManager;
+use crate::SystemEventManager;
 
 /// Fake plugin
 struct TestPlugin {}
@@ -45,6 +53,10 @@ impl PluginContext for TestPluginContext {
     }
 
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {
+        panic!();
+    }
+
+    fn get_system_event_manager(&self) -> Arc<dyn SystemEventManager> {
         panic!();
     }
 }

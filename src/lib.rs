@@ -47,6 +47,8 @@ pub use relation_type_manager::RelationTypeManager;
 pub use relation_type_manager::RelationTypeManagerError;
 pub use relation_type_provider::RelationTypeProvider;
 pub use relation_type_provider::RelationTypeProviderError;
+pub use system_event_manager::SystemEventManager;
+pub use system_events::*;
 pub use web_resource_provider::WebResourceProvider;
 pub use web_resource_provider::WebResourceProviderError;
 
@@ -71,6 +73,8 @@ pub mod relation_behaviour_provider;
 pub mod relation_instance_manager;
 pub mod relation_type_manager;
 pub mod relation_type_provider;
+pub mod system_event_manager;
+pub mod system_events;
 pub mod web_resource_provider;
 
 pub static INEXOR_RGF_PLUGIN_VERSION: &str = env!("CARGO_PKG_VERSION");
