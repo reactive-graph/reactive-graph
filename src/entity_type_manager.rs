@@ -12,6 +12,11 @@ pub enum EntityTypeCreationError {
     Failed,
 }
 
+#[derive(Debug)]
+pub enum EntityTypeImportError {
+    Failed,
+}
+
 pub trait EntityTypeManager: Send + Sync {
     /// Returns all entity types.
     fn get_entity_types(&self) -> Vec<EntityType>;
@@ -32,7 +37,15 @@ pub trait EntityTypeManager: Send + Sync {
     fn count(&self) -> usize;
 
     /// Creates a new entity type.
-    fn create(&self, namespace: &str, name: &str, description: &str, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
+    fn create(
+        &self,
+        namespace: &str,
+        name: &str,
+        description: &str,
+        components: Vec<String>,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> Result<EntityType, EntityTypeCreationError>;
 
     /// Adds the component with the given component_name to the entity type with the given name.
     fn add_component(&self, name: &str, component_name: &str);
@@ -56,7 +69,7 @@ pub trait EntityTypeManager: Send + Sync {
     fn delete(&self, name: &str);
 
     /// Imports an entity type from a JSON file file located at the given path.
-    fn import(&self, path: &str);
+    fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError>;
 
     /// Exports the entity type with the given name to a JSON file located at the given path.
     fn export(&self, name: &str, path: &str);

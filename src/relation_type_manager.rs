@@ -12,6 +12,11 @@ pub enum RelationTypeCreationError {
     Failed,
 }
 
+#[derive(Debug)]
+pub enum RelationTypeImportError {
+    Failed,
+}
+
 pub trait RelationTypeManager: Send + Sync {
     /// Returns all relation types.
     fn get_relation_types(&self) -> Vec<RelationType>;
@@ -49,7 +54,7 @@ pub trait RelationTypeManager: Send + Sync {
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
-    );
+    ) -> Result<RelationType, RelationTypeCreationError>;
 
     /// Adds the component with the given component_name to the relation type with the given name.
     fn add_component(&self, name: &str, component_name: &str);
@@ -73,7 +78,7 @@ pub trait RelationTypeManager: Send + Sync {
     fn delete(&self, type_name: &str);
 
     /// Imports a relation type from a JSON file located at the given path.
-    fn import(&self, path: &str);
+    fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError>;
 
     /// Exports the relation type with the given name to a JSON file located at the given path.
     fn export(&self, type_name: &str, path: &str);

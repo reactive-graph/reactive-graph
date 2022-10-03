@@ -3,6 +3,8 @@
 
 pub use component_behaviour_provider::ComponentBehaviourProvider;
 pub use component_behaviour_provider::ComponentBehaviourProviderError;
+pub use component_manager::ComponentCreationError;
+pub use component_manager::ComponentImportError;
 pub use component_manager::ComponentManager;
 pub use component_manager::ComponentManagerError;
 pub use component_provider::ComponentProvider;
@@ -11,6 +13,8 @@ pub use entity_behaviour_provider::EntityBehaviourProvider;
 pub use entity_behaviour_provider::EntityBehaviourProviderError;
 pub use entity_instance_manager::EntityInstanceManager;
 pub use entity_instance_manager::EntityInstanceManagerError;
+pub use entity_type_manager::EntityTypeCreationError;
+pub use entity_type_manager::EntityTypeImportError;
 pub use entity_type_manager::EntityTypeManager;
 pub use entity_type_manager::EntityTypeManagerError;
 pub use entity_type_provider::EntityTypeProvider;
@@ -43,6 +47,8 @@ pub use relation_behaviour_provider::RelationBehaviourProvider;
 pub use relation_behaviour_provider::RelationBehaviourProviderError;
 pub use relation_instance_manager::RelationInstanceManager;
 pub use relation_instance_manager::RelationInstanceManagerError;
+pub use relation_type_manager::RelationTypeCreationError;
+pub use relation_type_manager::RelationTypeImportError;
 pub use relation_type_manager::RelationTypeManager;
 pub use relation_type_manager::RelationTypeManagerError;
 pub use relation_type_provider::RelationTypeProvider;

@@ -12,6 +12,11 @@ pub enum ComponentCreationError {
     Failed,
 }
 
+#[derive(Debug)]
+pub enum ComponentImportError {
+    Failed,
+}
+
 pub trait ComponentManager: Send + Sync {
     /// Returns all components
     fn get_components(&self) -> Vec<Component>;
@@ -32,7 +37,14 @@ pub trait ComponentManager: Send + Sync {
     fn count(&self) -> usize;
 
     /// Creates a new component with the given name and the given properties.
-    fn create(&self, namespace: &str, name: &str, description: &str, properties: Vec<PropertyType>, extensions: Vec<Extension>);
+    fn create(
+        &self,
+        namespace: &str,
+        name: &str,
+        description: &str,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> Result<Component, ComponentCreationError>;
 
     /// Replaces the component with the given name with the given component.
     fn replace(&self, name: &str, component: Component);
@@ -53,7 +65,7 @@ pub trait ComponentManager: Send + Sync {
     fn delete(&self, name: &str);
 
     /// Imports a component from a JSON file located at the given path.
-    fn import(&self, path: &str);
+    fn import(&self, path: &str) -> Result<Component, ComponentImportError>;
 
     /// Exports the component with the given name to a JSON file located at the given path.
     fn export(&self, name: &str, path: &str);
