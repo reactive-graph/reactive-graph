@@ -1,3 +1,6 @@
+use crate::Extension;
+use crate::PropertyType;
+
 pub trait TypeContainer {
     /// Returns the fully qualified name of the type.
     ///
@@ -11,6 +14,14 @@ pub trait TypeContainer {
     /// Doesn't respect properties from potential components.
     fn has_own_property<S: Into<String>>(&self, property_name: S) -> bool;
 
+    /// Returns the own property with the given name.
+    /// Doesn't respect properties from potential components.
+    fn get_own_property<S: Into<String>>(&self, property_name: S) -> Option<PropertyType>;
+
     /// Returns true, if the type contains an extension with the given name.
     fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool;
+
+    /// Returns the own extension with the given name.
+    /// Doesn't respect properties from potential components.
+    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension>;
 }

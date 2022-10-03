@@ -101,8 +101,18 @@ impl TypeContainer for RelationType {
         self.properties.iter().any(|p| p.name == property_name)
     }
 
+    fn get_own_property<S: Into<String>>(&self, property_name: S) -> Option<PropertyType> {
+        let property_name = property_name.into();
+        self.properties.iter().find(|p| p.name == property_name).cloned()
+    }
+
     fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
         let extension_name = extension_name.into();
         self.extensions.iter().any(|extension| extension.name == extension_name)
+    }
+
+    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
+        let extension_name = extension_name.into();
+        self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
     }
 }
