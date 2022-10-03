@@ -1,4 +1,6 @@
 use crate::builder::EntityTypeBuilder;
+use crate::model::fully_qualified_identifier;
+use crate::model::NAMESPACE_ENTITY_TYPE;
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
 use indradb::Datastore;
@@ -47,7 +49,7 @@ fn test_entity_vertex_manager() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(uuid, properties.vertex.id);
-    assert_eq!(type_name.clone(), properties.vertex.t.to_string());
+    assert_eq!(fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_ENTITY_TYPE), properties.vertex.t);
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());
@@ -101,7 +103,7 @@ fn test_entity_vertex_manager_with_id() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(vertex_uuid, properties.vertex.id);
-    assert_eq!(type_name.clone(), properties.vertex.t.to_string());
+    assert_eq!(fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_ENTITY_TYPE), properties.vertex.t);
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());

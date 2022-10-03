@@ -38,8 +38,14 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     /// Returns true, if a flow type with the given name exists.
     fn has(&self, name: &str) -> bool;
 
+    /// Returns true, if a flow type with the given fully qualified name exists.
+    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool;
+
     /// Returns the flow type with the given name or empty.
     fn get(&self, name: &str) -> Option<FlowType>;
+
+    /// Returns the flow type with the given fully qualified name or empty.
+    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<FlowType>;
 
     /// Returns all flow types whose names matches the given search string.
     fn find(&self, search: &str) -> Vec<FlowType>;

@@ -187,7 +187,7 @@ impl DynamicGraph for DynamicGraphImpl {
             object_definition.field(field_definition_label);
 
             for component_name in &entity_type.components {
-                if let Some(component) = self.component_manager.get(&component_name) {
+                if let Some(component) = self.component_manager.get(component_name) {
                     let component_type_name = component_type_name(&component);
                     // object_definition.interface(format!("component__{}", component_name.clone()));
                     let mut field_definition = apollo_encoder::FieldDefinition::new(
@@ -208,7 +208,7 @@ impl DynamicGraph for DynamicGraphImpl {
                 if entity_type
                     .components
                     .iter()
-                    .flat_map(|component_name| self.component_manager.get(&component_name))
+                    .flat_map(|component_name| self.component_manager.get(component_name))
                     .any(|component| component.has_property(&property_name))
                 {
                     continue;
@@ -374,7 +374,7 @@ impl DynamicGraph for DynamicGraphImpl {
             object_definition.field(field_definition_label);
 
             for component_name in &relation_type.components {
-                if let Some(component) = self.component_manager.get(&component_name) {
+                if let Some(component) = self.component_manager.get(component_name) {
                     let component_type_name = component_type_name(&component);
                     // object_definition.interface(format!("component__{}", component_name.clone()));
                     let mut field_definition = apollo_encoder::FieldDefinition::new(
@@ -395,7 +395,7 @@ impl DynamicGraph for DynamicGraphImpl {
                 if relation_type
                     .components
                     .iter()
-                    .flat_map(|component_name| self.component_manager.get(&component_name))
+                    .flat_map(|component_name| self.component_manager.get(component_name))
                     .any(|component| component.has_property(&property_name))
                 {
                     continue;
@@ -620,7 +620,7 @@ impl DynamicGraph for DynamicGraphImpl {
     }
 
     fn execute_operation(&self, compiler: &ApolloCompiler, operation: &OperationDefinition) -> async_graphql::Value {
-        debug!("Executing operation {:?}", operation.name().map(|n| n.to_string()).unwrap_or("---".to_owned()));
+        debug!("Executing operation {:?}", operation.name().map(|n| n.to_string()).unwrap_or_else(|| "---".to_owned()));
         let mut fields = self.resolve_fields_index_map(compiler, operation.fields(&compiler.db));
         fields.extend(self.resolve_fields_index_map(compiler, operation.fields_in_inline_fragments(&compiler.db)));
         fields.extend(self.resolve_fields_index_map(compiler, operation.fields_in_fragment_spread(&compiler.db)));
@@ -670,7 +670,7 @@ impl DynamicGraph for DynamicGraphImpl {
             field
                 .ty(&compiler.db)
                 .map(|ty| format!("{} named: {} list: {} non-null: {}", ty.name(), ty.is_named(), ty.is_list(), ty.is_non_null()))
-                .unwrap_or("---".to_owned()),
+                .unwrap_or_else(|| "---".to_owned()),
             entity_type_name
         );
         let mut resolved_entity_instances = Vec::new();
@@ -901,7 +901,7 @@ impl DynamicGraph for DynamicGraphImpl {
             field
                 .ty(&compiler.db)
                 .map(|ty| format!("{} named: {} list: {} non-null: {}", ty.name(), ty.is_named(), ty.is_list(), ty.is_non_null()))
-                .unwrap_or("---".to_owned()),
+                .unwrap_or_else(|| "---".to_owned()),
             relation_type_name
         );
         let mut resolved_relation_instances = Vec::new();

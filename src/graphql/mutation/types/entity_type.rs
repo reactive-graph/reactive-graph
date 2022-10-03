@@ -7,6 +7,7 @@ use crate::api::EntityTypeComponentError;
 use crate::api::EntityTypeExtensionError;
 use crate::api::EntityTypeManager;
 use crate::api::EntityTypePropertyError;
+use crate::api::EntityTypeRegistrationError;
 use crate::builder::EntityTypeBuilder;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLEntityType;
@@ -32,34 +33,47 @@ impl MutationEntityTypes {
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
-        if entity_type_manager.has(&name) {
-            return Err(Error::new(format!("Entity type {} already exists", name)));
-        }
+        let namespace = match namespace {
+            Some(namespace) => {
+                if entity_type_manager.has_fully_qualified(&namespace, &name) {
+                    return Err(Error::new(format!("Entity type {}__{} already exists", &namespace, &name)));
+                }
+                namespace
+            }
+            None => {
+                if entity_type_manager.has(&name) {
+                    return Err(Error::new(format!("Entity type {} already exists", &name)));
+                }
+                String::new()
+            }
+        };
 
-        let namespace = namespace.unwrap_or_default();
         let mut entity_type_builder = EntityTypeBuilder::new(namespace, name);
-        if components.is_some() {
-            let components = components.unwrap();
+        if let Some(components) = components {
             for component in components {
                 entity_type_builder.component(component.clone());
             }
         }
-        if properties.is_some() {
-            for property in properties.unwrap() {
+        if let Some(properties) = properties {
+            for property in properties {
                 debug!("{} {}", property.name, property.data_type.to_string());
                 entity_type_builder.property_from(property.clone());
             }
         }
-        if extensions.is_some() {
-            for extension in extensions.unwrap() {
+        if let Some(extensions) = extensions {
+            for extension in extensions {
                 debug!("{} {}", extension.name, extension.extension.to_string());
                 entity_type_builder.extension(extension.name, extension.extension.clone());
             }
         }
 
         let entity_type = entity_type_builder.build();
-        entity_type_manager.register(entity_type.clone());
-        Ok(entity_type.into())
+        match entity_type_manager.register(entity_type) {
+            Ok(entity_type) => Ok(entity_type.into()),
+            Err(EntityTypeRegistrationError::EntityTypeAlreadyExists(namespace, name)) => {
+                Err(Error::new(format!("Failed to create entity type {}__{}: Entity type already exists", namespace, name)))
+            }
+        }
     }
 
     /// Adds the component with the given component_name to the entity type with the given name.

@@ -36,8 +36,7 @@ impl GraphQLPropertyType {
 
     /// The extensions which are defined by the entity type.
     async fn extensions(&self, name: Option<String>) -> Vec<GraphQLExtension> {
-        if name.is_some() {
-            let name = name.unwrap();
+        if let Some(name) = name {
             return self
                 .property_type
                 .extensions

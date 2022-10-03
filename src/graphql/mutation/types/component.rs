@@ -5,6 +5,7 @@ use async_graphql::*;
 use crate::api::ComponentExtensionError;
 use crate::api::ComponentManager;
 use crate::api::ComponentPropertyError;
+use crate::api::ComponentRegistrationError;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLExtension;
@@ -35,8 +36,12 @@ impl MutationComponents {
             None => Vec::new(),
         };
         let component = crate::model::Component::new(namespace, name, description.unwrap_or_default(), property_types, extensions);
-        component_manager.register(component.clone());
-        Ok(component.into())
+        match component_manager.register(component) {
+            Ok(component) => Ok(component.into()),
+            Err(ComponentRegistrationError::ComponentAlreadyExists(namespace, name)) => {
+                Err(Error::new(format!("Failed to create component {}__{}: Component already exists", namespace, name)))
+            }
+        }
     }
 
     /// Adds a property to the component with the given name.

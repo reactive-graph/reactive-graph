@@ -117,4 +117,12 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
 
     // TODO: return result
     fn export(&self, edge_key: EdgeKey, path: &str);
+
+    fn handle_component_added_events(&self);
+
+    fn handle_component_removed_events(&self);
+
+    fn handle_property_added_events(&self);
+
+    fn handle_property_removed_events(&self);
 }

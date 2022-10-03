@@ -11,10 +11,12 @@ use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeComponentError;
+use crate::api::EntityTypeCreationError;
 use crate::api::EntityTypeExtensionError;
 use crate::api::EntityTypeImportError;
 use crate::api::EntityTypeManager;
 use crate::api::EntityTypePropertyError;
+use crate::api::EntityTypeRegistrationError;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::builder::EntityTypeBuilder;
@@ -51,14 +53,14 @@ pub struct EntityTypeManagerImpl {
 
 impl EntityTypeManagerImpl {
     pub(crate) fn create_base_entity_types(&self) {
-        self.register(
+        let _ = self.register(
             EntityTypeBuilder::new("core", "system_event")
                 .description("Events of the type system")
                 .component("labeled")
                 .component("event")
                 .build(),
         );
-        self.register(
+        let _ = self.register(
             EntityTypeBuilder::new("flow", "generic_flow")
                 .description("Generic flow without inputs and outputs")
                 .component("labeled")
@@ -70,23 +72,25 @@ impl EntityTypeManagerImpl {
 #[async_trait]
 #[provides]
 impl EntityTypeManager for EntityTypeManagerImpl {
-    fn register(&self, mut entity_type: EntityType) -> EntityType {
-        let type_name = entity_type.name.clone();
+    fn register(&self, mut entity_type: EntityType) -> Result<EntityType, EntityTypeRegistrationError> {
+        if self.has_fully_qualified(&entity_type.namespace, &entity_type.name) {
+            return Err(EntityTypeRegistrationError::EntityTypeAlreadyExists(entity_type.namespace, entity_type.name));
+        }
         // Construct the type
-        entity_type.t = fully_qualified_identifier(&entity_type.namespace, &type_name, &NAMESPACE_ENTITY_TYPE);
+        entity_type.t = fully_qualified_identifier(&entity_type.namespace, &entity_type.name, &NAMESPACE_ENTITY_TYPE);
         for component_name in entity_type.components.iter() {
             match self.component_manager.get(component_name) {
                 Some(component) => {
                     // TODO: what if multiple components have the same property?
                     entity_type.properties.append(&mut component.clone().properties)
                 }
-                None => warn!("Entity type {} not fully initialized: No component named {}", &type_name, &component_name),
+                None => warn!("Entity type {} not fully initialized: No component named {}", &entity_type.name, &component_name),
             }
         }
         self.entity_types.0.write().unwrap().push(entity_type.clone());
-        debug!("Registered entity type {}", &type_name);
-        self.event_manager.emit_event(SystemEvent::EntityTypeCreated(type_name));
-        entity_type
+        debug!("Registered entity type {}", entity_type.fully_qualified_name());
+        self.event_manager.emit_event(SystemEvent::EntityTypeCreated(entity_type.name.clone()));
+        Ok(entity_type)
     }
 
     fn get_entity_types(&self) -> Vec<EntityType> {
@@ -108,8 +112,27 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.0.read().unwrap().iter().any(|entity_type| entity_type.name == name)
     }
 
+    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool {
+        self.entity_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .any(|entity_type| entity_type.namespace == namespace && entity_type.name == name)
+    }
+
     fn get(&self, name: &str) -> Option<EntityType> {
         self.entity_types.0.read().unwrap().iter().find(|entity_type| entity_type.name == name).cloned()
+    }
+
+    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<EntityType> {
+        self.entity_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .find(|entity_type| entity_type.namespace == namespace && entity_type.name == name)
+            .cloned()
     }
 
     fn find(&self, search: &str) -> Vec<EntityType> {
@@ -128,8 +151,17 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_types.0.read().unwrap().len()
     }
 
-    fn create(&self, namespace: &str, name: &str, description: &str, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.register(EntityType::new(namespace, name, description, components.to_vec(), properties.to_vec(), extensions.to_vec()));
+    fn create(
+        &self,
+        namespace: &str,
+        name: &str,
+        description: &str,
+        components: Vec<String>,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> Result<EntityType, EntityTypeCreationError> {
+        self.register(EntityType::new(namespace, name, description, components.to_vec(), properties.to_vec(), extensions.to_vec()))
+            .map_err(EntityTypeCreationError::RegistrationError)
     }
 
     fn add_component(&self, name: &str, component_name: &str) -> Result<(), EntityTypeComponentError> {
@@ -235,8 +267,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let entity_type: EntityType = serde_json::from_reader(reader)?;
-        self.register(entity_type.clone());
-        Ok(entity_type)
+        self.register(entity_type).map_err(EntityTypeImportError::RegistrationError)
     }
 
     fn export(&self, name: &str, path: &str) {
@@ -255,7 +286,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>) {
         for entity_type in entity_type_provider.get_entity_types() {
-            self.register(entity_type);
+            let _ = self.register(entity_type);
         }
     }
 

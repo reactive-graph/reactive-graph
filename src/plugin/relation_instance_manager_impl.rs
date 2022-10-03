@@ -1,6 +1,9 @@
-use crate::api::{ReactiveRelationInstanceManager, RelationTypeManager};
-use crate::model::{ReactiveRelationInstance, RelationInstance};
-use crate::plugins::relation_instance_manager::{RelationInstanceCreationError, RelationInstanceManager};
+use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationTypeManager;
+use crate::model::ReactiveRelationInstance;
+use crate::model::RelationInstance;
+use crate::plugins::relation_instance_manager::RelationInstanceCreationError;
+use crate::plugins::RelationInstanceManager;
 use indradb::EdgeKey;
 use std::sync::Arc;
 use uuid::Uuid;
@@ -47,7 +50,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         let relation_type = self.relation_type_manager.get_starts_with(&relation_instance.type_name);
         match relation_type {
             Some(relation_type) => {
-                let edge_key = relation_instance.get_key().unwrap();
+                let edge_key = relation_instance.get_key();
                 if self.reactive_relation_instance_manager.has(edge_key.clone()) {
                     if let Some(reactive_relation_instance) = self.reactive_relation_instance_manager.get(edge_key) {
                         return Ok(reactive_relation_instance);

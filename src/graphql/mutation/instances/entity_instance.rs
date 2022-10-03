@@ -31,6 +31,7 @@ impl MutationEntityInstances {
     async fn create(
         &self,
         context: &Context<'_>,
+        #[graphql(name = "namespace", desc = "The namespace.")] namespace: Option<String>,
         #[graphql(name = "type", desc = "The entity type.")] type_name: String,
         #[graphql(desc = "The id of the entity instance. If none is given a random uuid will be generated.")] id: Option<Uuid>,
         #[graphql(desc = "Creates the entity instance with the given components.")] components: Option<Vec<String>>,
@@ -39,7 +40,10 @@ impl MutationEntityInstances {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
-        let entity_type = entity_type_manager.get(&type_name);
+        let entity_type = match namespace {
+            Some(namespace) => entity_type_manager.get_fully_qualified(&namespace, &type_name),
+            None => entity_type_manager.get(&type_name),
+        };
 
         if entity_type.is_none() {
             return Err(Error::new(format!("Entity type {type_name} does not exist")));

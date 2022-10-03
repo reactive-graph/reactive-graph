@@ -69,17 +69,11 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
     }
 
     fn create_from_instance(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError> {
-        let edge_key = relation_instance.get_key();
-        if edge_key.is_none() {
-            return Err(RelationInstanceCreationError::InvalidEdgeKey);
-        }
-        self.create(edge_key.unwrap(), relation_instance.properties)
+        self.create(relation_instance.get_key(), relation_instance.properties)
     }
 
     fn commit(&self, relation_instance: RelationInstance) {
-        if let Some(edge_key) = relation_instance.get_key() {
-            self.relation_edge_manager.commit(edge_key, relation_instance.properties);
-        }
+        self.relation_edge_manager.commit(relation_instance.get_key(), relation_instance.properties);
     }
 
     fn delete(&self, edge_key: EdgeKey) -> bool {
@@ -90,17 +84,14 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let relation_instance: RelationInstance = serde_json::from_reader(reader)?;
-        if let Some(edge_key) = relation_instance.get_key() {
-            if self.has(edge_key.clone()) {
-                return Err(RelationInstanceImportError::RelationAlreadyExists(edge_key));
-            }
-            self.relation_edge_manager
-                .create(edge_key, relation_instance.properties.clone())
-                .map(|_| relation_instance)
-                .map_err(RelationInstanceImportError::RelationEdgeCreation)
-        } else {
-            Err(RelationInstanceImportError::InvalidEdgeKey)
+        let edge_key = relation_instance.get_key();
+        if self.has(edge_key.clone()) {
+            return Err(RelationInstanceImportError::RelationAlreadyExists(edge_key));
         }
+        self.relation_edge_manager
+            .create(edge_key, relation_instance.properties.clone())
+            .map(|_| relation_instance)
+            .map_err(RelationInstanceImportError::RelationEdgeCreation)
     }
 
     fn export(&self, edge_key: EdgeKey, path: &str) {

@@ -23,23 +23,28 @@ impl Types {
     async fn components(
         &self,
         context: &Context<'_>,
+        #[graphql(desc = "Filters by the namespace")] namespace: Option<String>,
         #[graphql(desc = "Filters by the name of the components")] name: Option<String>,
         #[graphql(desc = "Searches by the name of the components. Allowed wildcards are: ? and *")] search: Option<String>,
     ) -> Vec<GraphQLComponent> {
         if let Ok(component_manager) = context.data::<Arc<dyn ComponentManager>>() {
-            if name.is_some() {
-                let component = component_manager.get(&name.unwrap());
-                if component.is_some() {
-                    return vec![component.unwrap().into()];
+            if let Some(name) = name {
+                match namespace {
+                    Some(namespace) => {
+                        if let Some(component) = component_manager.get_fully_qualified(&namespace, &name) {
+                            return vec![component.into()];
+                        }
+                    }
+                    None => {
+                        if let Some(component) = component_manager.get(&name) {
+                            return vec![component.into()];
+                        }
+                    }
                 }
                 return Vec::new();
             }
-            if search.is_some() {
-                return component_manager
-                    .find(search.unwrap().as_str())
-                    .into_iter()
-                    .map(|component| component.into())
-                    .collect();
+            if let Some(search) = search {
+                return component_manager.find(&search).into_iter().map(|component| component.into()).collect();
             }
             return component_manager.get_components().into_iter().map(|component| component.into()).collect();
         }
@@ -59,26 +64,30 @@ impl Types {
     async fn entities(
         &self,
         context: &Context<'_>,
+        #[graphql(desc = "Filters by the namespace")] namespace: Option<String>,
         #[graphql(desc = "Filters by the name of the entity type")] name: Option<String>,
         #[graphql(desc = "Searches by the name of the entity types. Allowed wildcards are: ? and *")] search: Option<String>,
     ) -> Vec<GraphQLEntityType> {
-        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
-        if entity_type_manager.is_ok() {
-            let entity_type_manager = entity_type_manager.unwrap();
-            if name.is_some() {
-                let entity_type = entity_type_manager.get(&name.unwrap());
-                if entity_type.is_some() {
-                    let entity_type: GraphQLEntityType = entity_type.unwrap().into();
-                    return vec![entity_type];
+        if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
+            if let Some(name) = name {
+                match namespace {
+                    Some(namespace) => {
+                        if let Some(entity_type) = entity_type_manager.get_fully_qualified(&namespace, &name) {
+                            let entity_type: GraphQLEntityType = entity_type.into();
+                            return vec![entity_type];
+                        }
+                    }
+                    None => {
+                        if let Some(entity_type) = entity_type_manager.get(&name) {
+                            let entity_type: GraphQLEntityType = entity_type.into();
+                            return vec![entity_type];
+                        }
+                    }
                 }
                 return Vec::new();
             }
-            if search.is_some() {
-                return entity_type_manager
-                    .find(search.unwrap().as_str())
-                    .into_iter()
-                    .map(|entity_type| entity_type.into())
-                    .collect();
+            if let Some(search) = search {
+                return entity_type_manager.find(&search).into_iter().map(|entity_type| entity_type.into()).collect();
             }
             return entity_type_manager
                 .get_entity_types()
@@ -103,17 +112,17 @@ impl Types {
     async fn relations(
         &self,
         context: &Context<'_>,
+        #[graphql(desc = "Filters by the namespace")] namespace: Option<String>,
         #[graphql(desc = "Filters by outbound entity type")] outbound_type: Option<String>,
         #[graphql(desc = "Filters by the name of the relation type")] name: Option<String>,
         #[graphql(desc = "Searches by the name of the relation types. Allowed wildcards are: ? and *")] search: Option<String>,
         #[graphql(desc = "Filters by inbound entity type")] inbound_type: Option<String>,
     ) -> Vec<GraphQLRelationType> {
-        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>();
-        if relation_type_manager.is_ok() {
-            let relation_type_manager = relation_type_manager.unwrap();
-            if search.is_some() {
+        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
+            // "search" is preferred over "name"
+            if let Some(search) = search {
                 return relation_type_manager
-                    .find(search.unwrap().as_str())
+                    .find(search.as_str())
                     .iter()
                     .filter(|relation_type| outbound_type.is_none() || outbound_type.clone().unwrap() == relation_type.outbound_type.clone())
                     .filter(|relation_type| inbound_type.is_none() || inbound_type.clone().unwrap() == relation_type.inbound_type.clone())
@@ -126,6 +135,7 @@ impl Types {
             return relation_type_manager
                 .get_relation_types()
                 .iter()
+                .filter(|relation_type| namespace.is_none() || namespace.clone().unwrap() == relation_type.namespace.clone())
                 .filter(|relation_type| outbound_type.is_none() || outbound_type.clone().unwrap() == relation_type.outbound_type.clone())
                 .filter(|relation_type| name.is_none() || name.clone().unwrap() == relation_type.type_name.clone())
                 .filter(|relation_type| inbound_type.is_none() || inbound_type.clone().unwrap() == relation_type.inbound_type.clone())
@@ -151,17 +161,25 @@ impl Types {
     async fn flows(
         &self,
         context: &Context<'_>,
+        #[graphql(desc = "Filters by the namespace")] namespace: Option<String>,
         #[graphql(desc = "Filters by the name of the flow type")] name: Option<String>,
         #[graphql(desc = "Searches by the name of the flow types. Allowed wildcards are: ? and *")] search: Option<String>,
     ) -> Vec<GraphQLFlowType> {
-        let flow_type_manager = context.data::<Arc<dyn FlowTypeManager>>();
-        if flow_type_manager.is_ok() {
-            let flow_type_manager = flow_type_manager.unwrap();
-            if name.is_some() {
-                let flow_type = flow_type_manager.get(&name.unwrap());
-                if flow_type.is_some() {
-                    let flow_type: GraphQLFlowType = flow_type.unwrap().into();
-                    return vec![flow_type];
+        if let Ok(flow_type_manager) = context.data::<Arc<dyn FlowTypeManager>>() {
+            if let Some(name) = name {
+                match namespace {
+                    Some(namespace) => {
+                        if let Some(flow_type) = flow_type_manager.get_fully_qualified(&namespace, &name) {
+                            let flow_type: GraphQLFlowType = flow_type.into();
+                            return vec![flow_type];
+                        }
+                    }
+                    None => {
+                        if let Some(flow_type) = flow_type_manager.get(&name) {
+                            let flow_type: GraphQLFlowType = flow_type.into();
+                            return vec![flow_type];
+                        }
+                    }
                 }
                 return Vec::new();
             }

@@ -50,8 +50,8 @@ impl ShutdownManager for ShutdownManagerImpl {
 
 impl Lifecycle for ShutdownManagerImpl {
     fn init(&self) {
-        self.entity_type_manager.register(EntityTypeBuilder::new("core", SHUTDOWN).build());
-        let entity_instance = ReactiveEntityInstanceBuilder::new(SHUTDOWN)
+        let _ = self.entity_type_manager.register(EntityTypeBuilder::new("core", SHUTDOWN).build());
+        let entity_instance = ReactiveEntityInstanceBuilder::new("core", SHUTDOWN)
             .id(UUID_SHUTDOWN)
             .property(LABEL, json!("/org/inexor/system/shutdown"))
             .property(SHUTDOWN, json!(false))

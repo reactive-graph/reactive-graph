@@ -3,8 +3,13 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
-use crate::api::{EntityTypeManager, ReactiveRelationInstanceManager};
-use crate::graphql::query::{GraphQLEntityType, GraphQLPropertyInstance, GraphQLRelationInstance};
+use crate::api::ComponentManager;
+use crate::api::EntityTypeManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLPropertyInstance;
+use crate::graphql::query::GraphQLRelationInstance;
 use crate::model::ReactiveEntityInstance;
 
 pub struct GraphQLEntityInstance {
@@ -22,10 +27,10 @@ impl GraphQLEntityInstance {
     /// The entity type of the entity instance.
     #[graphql(name = "type")]
     async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
-        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
-        if entity_type_manager.is_ok() {
-            let entity_type_manager = entity_type_manager.unwrap();
-            return entity_type_manager.get(&self.entity_instance.type_name).map(|entity_type| entity_type.into());
+        if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
+            return entity_type_manager
+                .get_fully_qualified(&self.entity_instance.namespace, &self.entity_instance.type_name)
+                .map(|entity_type| entity_type.into());
         }
         None
     }
@@ -70,9 +75,29 @@ impl GraphQLEntityInstance {
             .collect()
     }
 
+    /// The components which have been actually applied on the entity instance including
+    /// components which have been added after creation.
+    async fn components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
+        match context.data::<Arc<dyn ComponentManager>>() {
+            Ok(component_manager) => self
+                .entity_instance
+                .components
+                .iter()
+                .map(|p| p.key().clone())
+                .filter_map(|component_name| {
+                    component_manager.get(&component_name).map(|component| {
+                        let component: GraphQLComponent = component.into();
+                        component
+                    })
+                })
+                .collect(),
+            Err(_) => Vec::new(),
+        }
+    }
+
     /// List of components which have been actually applied on the entity instance including
     /// components which have been added after creation.
-    async fn components(&self) -> Vec<String> {
+    async fn component_names(&self) -> Vec<String> {
         self.entity_instance.components.iter().map(|p| p.key().clone()).collect()
     }
 

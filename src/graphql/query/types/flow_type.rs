@@ -19,9 +19,16 @@ impl GraphQLFlowType {
     #[graphql(name = "type")]
     async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
         if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
-            return entity_type_manager.get(self.flow_type.type_name.as_str()).map(|e| e.into());
+            return entity_type_manager
+                .get_fully_qualified(self.flow_type.namespace.as_str(), self.flow_type.type_name.as_str())
+                .map(|e| e.into());
         }
         None
+    }
+
+    /// The namespace the flow type belongs to.
+    async fn namespace(&self) -> String {
+        self.flow_type.namespace.clone()
     }
 
     /// The name of the flow type.
@@ -31,18 +38,13 @@ impl GraphQLFlowType {
         self.flow_type.name.clone()
     }
 
-    /// The namespace the flow type belongs to.
-    async fn namespace(&self) -> String {
-        self.flow_type.namespace.clone()
-    }
-
     /// Textual description of the flow type.
     async fn description(&self) -> String {
         self.flow_type.description.clone()
     }
 
-    // TODO: Entity Instances (these are no reactive entity instances!)
-    // TODO: Relation Instances (these are no reactive relation instances!)
+    // TODO: Entity Instances (these are no reactive entity instances - only entity instance definitions!)
+    // TODO: Relation Instances (these are no reactive relation instances - only entity instance definitions!)
 
     /// The variables of the flow type.
     async fn variables(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {

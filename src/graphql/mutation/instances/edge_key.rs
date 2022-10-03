@@ -1,16 +1,20 @@
 use std::fmt;
-use std::str::FromStr;
 
 use async_graphql::*;
 use indradb::EdgeKey;
-use indradb::Identifier;
 use uuid::Uuid;
+
+use crate::model::fully_qualified_identifier;
+use crate::model::NAMESPACE_RELATION_TYPE;
 
 /// The primary key of an edge consists of the outbound id, the
 /// type name and the inbound id.
 #[derive(Debug, Clone, InputObject)]
 #[graphql(name = "EdgeKeyDefinition")]
 pub struct GraphQLEdgeKey {
+    /// The namespace.
+    pub namespace: String,
+
     /// The id of the outbound entity instance.
     pub outbound_id: Uuid,
 
@@ -29,7 +33,7 @@ impl fmt::Display for GraphQLEdgeKey {
 
 impl From<GraphQLEdgeKey> for EdgeKey {
     fn from(edge_key: GraphQLEdgeKey) -> Self {
-        let t = Identifier::from_str(edge_key.type_name.as_str()).unwrap();
+        let t = fully_qualified_identifier(&edge_key.namespace, &edge_key.type_name, &NAMESPACE_RELATION_TYPE);
         EdgeKey {
             outbound_id: edge_key.outbound_id,
             t,

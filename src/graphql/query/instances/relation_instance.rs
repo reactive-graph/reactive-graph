@@ -1,9 +1,13 @@
 use std::sync::Arc;
 
+use crate::api::ComponentManager;
 use async_graphql::*;
 
 use crate::api::RelationTypeManager;
-use crate::graphql::query::{GraphQLEntityInstance, GraphQLPropertyInstance, GraphQLRelationType};
+use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::GraphQLEntityInstance;
+use crate::graphql::query::GraphQLPropertyInstance;
+use crate::graphql::query::GraphQLRelationType;
 use crate::model::ReactiveRelationInstance;
 
 pub struct GraphQLRelationInstance {
@@ -33,15 +37,12 @@ impl GraphQLRelationInstance {
     /// The relation type.
     #[graphql(name = "type")]
     async fn relation_type(&self, context: &Context<'_>) -> Option<GraphQLRelationType> {
-        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>();
-        if relation_type_manager.is_ok() {
-            let relation_type_manager = relation_type_manager.unwrap();
+        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
             let type_name = self.relation_instance.type_name.clone();
             // starts_with because the relation type name of the default_connector contains extra
             // information (outbound+inbound property names) in order to allow multiple connectors
             // between the two entity instances
-            if let Some(relation_type) = relation_type_manager.get_starts_with(&type_name) {
-                let mut relation_type = relation_type;
+            if let Some(mut relation_type) = relation_type_manager.get_starts_with(&type_name) {
                 relation_type.instance_type_name = type_name;
                 return Some(relation_type.into());
             }
@@ -88,9 +89,29 @@ impl GraphQLRelationInstance {
             .collect()
     }
 
+    /// The components which have been actually applied on the relation instance including
+    /// components which have been added after creation.
+    async fn components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
+        match context.data::<Arc<dyn ComponentManager>>() {
+            Ok(component_manager) => self
+                .relation_instance
+                .components
+                .iter()
+                .map(|p| p.key().clone())
+                .filter_map(|component_name| {
+                    component_manager.get(&component_name).map(|component| {
+                        let component: GraphQLComponent = component.into();
+                        component
+                    })
+                })
+                .collect(),
+            Err(_) => Vec::new(),
+        }
+    }
+
     /// List of components which have been actually applied on the relation instance including
     /// components which have been added after creation.
-    async fn components(&self) -> Vec<String> {
+    async fn component_names(&self) -> Vec<String> {
         self.relation_instance.components.iter().map(|p| p.key().clone()).collect()
     }
 

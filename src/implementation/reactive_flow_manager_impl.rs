@@ -147,7 +147,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
                 match self.entity_type_manager.get(flow_type.type_name.as_str()) {
                     Some(entity_type) => {
                         let flow_instance_id = Uuid::new_v4();
-                        let mut wrapper_entity_instance_builder = EntityInstanceBuilder::new(entity_type.name);
+                        let mut wrapper_entity_instance_builder = EntityInstanceBuilder::new(entity_type.namespace, entity_type.name);
                         wrapper_entity_instance_builder.id(flow_instance_id);
                         for (name, value) in properties {
                             wrapper_entity_instance_builder.property(name, value);

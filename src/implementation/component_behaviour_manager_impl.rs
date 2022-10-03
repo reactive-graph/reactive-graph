@@ -34,7 +34,7 @@ impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
         }
     }
 
-    fn add_behaviours_to_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: inexor_rgf_core_model::Component) {
+    fn add_behaviours_to_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: crate::model::Component) {
         trace!("ComponentBehaviourManager::add_behaviours_to_entity {}", entity_instance.id);
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours_to_entity_component(entity_instance.clone(), component.clone())
@@ -48,7 +48,7 @@ impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
         }
     }
 
-    fn add_behaviours_to_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component: inexor_rgf_core_model::Component) {
+    fn add_behaviours_to_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component: crate::model::Component) {
         trace!("ComponentBehaviourManager::add_behaviours_to_relation {}", relation_instance.get_key().unwrap().t.to_string());
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.add_behaviours_to_relation_component(relation_instance.clone(), component.clone())
@@ -61,7 +61,7 @@ impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
         }
     }
 
-    fn remove_behaviours_from_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: inexor_rgf_core_model::Component) {
+    fn remove_behaviours_from_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: crate::model::Component) {
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.remove_behaviours_from_entity_component(entity_instance.clone(), component.clone())
         }
@@ -73,7 +73,7 @@ impl ComponentBehaviourManager for ComponentBehaviourManagerImpl {
         }
     }
 
-    fn remove_behaviours_from_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component: inexor_rgf_core_model::Component) {
+    fn remove_behaviours_from_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component: crate::model::Component) {
         for provider in self.behaviour_providers.0.read().unwrap().iter() {
             provider.remove_behaviours_from_relation_component(relation_instance.clone(), component.clone())
         }

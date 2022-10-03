@@ -29,8 +29,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
             }
         }
         for relation_instance in flow_instance.relation_instances.iter() {
-            let edge_key = relation_instance.get_key();
-            if edge_key.is_some() && !self.relation_instance_manager.has(edge_key.unwrap()) {
+            if !self.relation_instance_manager.has(relation_instance.get_key()) {
                 let _id = self.relation_instance_manager.create_from_instance(relation_instance.clone())?;
             }
         }
@@ -49,25 +48,21 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
             // TODO: what happens with removed entity instances?
         }
         for relation_instance in flow_instance.relation_instances {
-            if let Some(edge_key) = relation_instance.get_key() {
-                if self.relation_instance_manager.has(edge_key) {
-                    // The relation instance has been updated
-                    self.relation_instance_manager.commit(relation_instance.clone());
-                } else {
-                    // The relation instance has been added
-                    let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
-                }
-                // TODO: what happens with removed relation instances?
+            if self.relation_instance_manager.has(relation_instance.get_key()) {
+                // The relation instance has been updated
+                self.relation_instance_manager.commit(relation_instance.clone());
+            } else {
+                // The relation instance has been added
+                let _result = self.relation_instance_manager.create_from_instance(relation_instance.clone());
             }
+            // TODO: what happens with removed relation instances?
         }
     }
 
     fn delete(&self, flow_instance: FlowInstance) {
         // Reverse order: first relations then entities
         for relation_instance in flow_instance.relation_instances {
-            if let Some(edge_key) = relation_instance.get_key() {
-                self.relation_instance_manager.delete(edge_key);
-            }
+            self.relation_instance_manager.delete(relation_instance.get_key());
         }
         for entity_instance in flow_instance.entity_instances {
             self.entity_instance_manager.delete(entity_instance.id);

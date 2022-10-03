@@ -9,9 +9,22 @@ use crate::model::RelationType;
 use crate::plugins::RelationTypeProvider;
 
 #[derive(Debug)]
+pub enum RelationTypeRegistrationError {
+    RelationTypeAlreadyExists(String, String),
+    OutboundEntityTypeDoesNotExist(String, String, String),
+    InboundEntityTypeDoesNotExist(String, String, String),
+}
+
+#[derive(Debug)]
+pub enum RelationTypeCreationError {
+    RegistrationError(RelationTypeRegistrationError),
+}
+
+#[derive(Debug)]
 pub enum RelationTypeImportError {
     Io(std::io::Error),
     Deserialize(serde_json::Error),
+    RegistrationError(RelationTypeRegistrationError),
 }
 
 #[derive(Debug)]
@@ -44,8 +57,7 @@ impl From<serde_json::Error> for RelationTypeImportError {
 
 #[async_trait]
 pub trait RelationTypeManager: Send + Sync + Lifecycle {
-    // TODO: Result
-    fn register(&self, relation_type: RelationType);
+    fn register(&self, relation_type: RelationType) -> Result<RelationType, RelationTypeRegistrationError>;
 
     /// Returns all relation types.
     fn get_relation_types(&self) -> Vec<RelationType>;
@@ -62,11 +74,17 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, type_name: &str) -> bool;
 
+    /// Returns true, if a relation type with the given fully qualified name exists.
+    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool;
+
     /// Returns true, if a relation type exists whose name starts with the given name.
     fn has_starts_with(&self, type_name: &str) -> bool;
 
     /// Returns the relation type with the given name.
     fn get(&self, type_name: &str) -> Option<RelationType>;
+
+    /// Returns the relation type with the given fully qualified name.
+    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
 
     /// Returns the relation type whose name starts with the given name.
     fn get_starts_with(&self, type_name_starts_with: &str) -> Option<RelationType>;
@@ -78,7 +96,6 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     fn count(&self) -> usize;
 
     /// Creates a new relation type.
-    // TODO: Result
     fn create(
         &self,
         namespace: &str,
@@ -89,7 +106,7 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
-    );
+    ) -> Result<RelationType, RelationTypeCreationError>;
 
     /// Adds the component with the given component_name to the relation type with the given name.
     fn add_component(&self, name: &str, component_name: &str) -> Result<(), RelationTypeComponentError>;

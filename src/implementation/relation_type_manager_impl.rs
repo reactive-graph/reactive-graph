@@ -13,10 +13,12 @@ use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
 use crate::api::RelationTypeComponentError;
+use crate::api::RelationTypeCreationError;
 use crate::api::RelationTypeExtensionError;
 use crate::api::RelationTypeImportError;
 use crate::api::RelationTypeManager;
 use crate::api::RelationTypePropertyError;
+use crate::api::RelationTypeRegistrationError;
 use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::model::fully_qualified_identifier;
@@ -29,11 +31,11 @@ use crate::plugins::RelationTypeProvider;
 use crate::plugins::SystemEvent;
 
 #[wrapper]
-pub struct RelationTypes(RwLock<std::vec::Vec<RelationType>>);
+pub struct RelationTypes(RwLock<Vec<RelationType>>);
 
 #[provides]
 fn create_relation_type_storage() -> RelationTypes {
-    RelationTypes(RwLock::new(std::vec::Vec::new()))
+    RelationTypes(RwLock::new(Vec::new()))
 }
 
 #[component]
@@ -50,33 +52,40 @@ pub struct RelationTypeManagerImpl {
 #[async_trait]
 #[provides]
 impl RelationTypeManager for RelationTypeManagerImpl {
-    fn register(&self, mut relation_type: RelationType) {
-        let type_name = relation_type.type_name.clone();
+    fn register(&self, mut relation_type: RelationType) -> Result<RelationType, RelationTypeRegistrationError> {
+        if self.has_fully_qualified(&relation_type.namespace, &relation_type.type_name) {
+            return Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(relation_type.namespace, relation_type.type_name));
+        }
+        // let type_name = relation_type.type_name.clone();
         // Construct the type
-        relation_type.t = fully_qualified_identifier(&relation_type.namespace, &type_name, &NAMESPACE_RELATION_TYPE);
+        relation_type.t = fully_qualified_identifier(&relation_type.namespace, &relation_type.type_name, &NAMESPACE_RELATION_TYPE);
         if relation_type.outbound_type != "*"
             && !self.entity_type_manager.has(&relation_type.outbound_type)
             && !self.component_manager.has(&relation_type.outbound_type)
         {
             warn!(
-                "Relation type {} not initialized: Outbound entity type or component does not exist {}",
-                &type_name,
-                relation_type.outbound_type.clone()
+                "Relation type {} not registered: Outbound entity type or component does not exist {}",
+                &relation_type.type_name, &relation_type.outbound_type
             );
-            // TODO: Result
-            return;
+            return Err(RelationTypeRegistrationError::OutboundEntityTypeDoesNotExist(
+                relation_type.namespace,
+                relation_type.type_name,
+                relation_type.outbound_type,
+            ));
         }
         if relation_type.inbound_type != "*"
             && !self.entity_type_manager.has(&relation_type.inbound_type)
-            && !self.component_manager.has(&relation_type.outbound_type)
+            && !self.component_manager.has(&relation_type.inbound_type)
         {
             warn!(
-                "Relation type {} not initialized: Inbound entity type or component does not exist {}",
-                &type_name,
-                relation_type.inbound_type.clone()
+                "Relation type {} not registered: Inbound entity type or component does not exist {}",
+                &relation_type.type_name, &relation_type.inbound_type
             );
-            // TODO: Result
-            return;
+            return Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(
+                relation_type.namespace,
+                relation_type.type_name,
+                relation_type.inbound_type,
+            ));
         }
         for component_name in relation_type.components.iter() {
             match self.component_manager.get(component_name) {
@@ -89,11 +98,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             }
         }
 
-        let event = SystemEvent::RelationTypeCreated(type_name.clone());
-        self.relation_types.0.write().unwrap().push(relation_type);
-        debug!("Registered relation type {}", &type_name);
-        self.event_manager.emit_event(event);
-        // TODO: Result
+        self.relation_types.0.write().unwrap().push(relation_type.clone());
+        debug!("Registered relation type {}", &relation_type.type_name);
+        self.event_manager.emit_event(SystemEvent::RelationTypeCreated(relation_type.type_name.clone()));
+        Ok(relation_type)
     }
 
     fn get_relation_types(&self) -> Vec<RelationType> {
@@ -140,6 +148,15 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             .any(|relation_type| relation_type.type_name == type_name)
     }
 
+    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool {
+        self.relation_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .any(|relation_type| relation_type.namespace == namespace && relation_type.type_name == type_name)
+    }
+
     fn has_starts_with(&self, type_name: &str) -> bool {
         self.get_starts_with(type_name).is_some()
     }
@@ -151,6 +168,16 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             .unwrap()
             .iter()
             .find(|relation_type| relation_type.type_name == type_name)
+            .cloned()
+    }
+
+    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
+        self.relation_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .find(|relation_type| relation_type.namespace == namespace && relation_type.type_name == type_name)
             .cloned()
     }
 
@@ -201,7 +228,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
-    ) {
+    ) -> Result<RelationType, RelationTypeCreationError> {
         self.register(RelationType::new(
             namespace,
             outbound_type,
@@ -211,7 +238,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             components.to_vec(),
             properties.to_vec(),
             extensions.to_vec(),
-        ));
+        ))
+        .map_err(RelationTypeCreationError::RegistrationError)
     }
 
     fn add_component(&self, name: &str, component_name: &str) -> Result<(), RelationTypeComponentError> {
@@ -309,8 +337,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let relation_type: RelationType = serde_json::from_reader(reader)?;
-        self.register(relation_type.clone());
-        Ok(relation_type)
+        self.register(relation_type).map_err(RelationTypeImportError::RegistrationError)
     }
 
     fn export(&self, type_name: &str, path: &str) {
@@ -329,7 +356,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>) {
         for relation_type in relation_type_provider.get_relation_types() {
             debug!("Registering relation type: {}", relation_type.type_name);
-            self.register(relation_type);
+            let _ = self.register(relation_type);
         }
     }
 }

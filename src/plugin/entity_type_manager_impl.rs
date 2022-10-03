@@ -3,6 +3,8 @@ use std::sync::Arc;
 use crate::model::EntityType;
 use crate::model::Extension;
 use crate::model::PropertyType;
+use crate::plugins::EntityTypeCreationError;
+use crate::plugins::EntityTypeImportError;
 use crate::plugins::EntityTypeManager;
 
 pub struct EntityTypeManagerImpl {
@@ -27,8 +29,16 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.has(name)
     }
 
+    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool {
+        self.entity_type_manager.has_fully_qualified(namespace, name)
+    }
+
     fn get(&self, name: &str) -> Option<EntityType> {
         self.entity_type_manager.get(name)
+    }
+
+    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<EntityType> {
+        self.entity_type_manager.get_fully_qualified(namespace, name)
     }
 
     fn find(&self, search: &str) -> Vec<EntityType> {
@@ -39,9 +49,18 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.count()
     }
 
-    fn create(&self, namespace: &str, name: &str, description: &str, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
+    fn create(
+        &self,
+        namespace: &str,
+        name: &str,
+        description: &str,
+        components: Vec<String>,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> Result<EntityType, EntityTypeCreationError> {
         self.entity_type_manager
             .create(namespace, name, description, components, properties, extensions)
+            .map_err(|_| EntityTypeCreationError::Failed)
     }
 
     fn add_component(&self, name: &str, component_name: &str) {
@@ -72,8 +91,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.delete(name)
     }
 
-    fn import(&self, path: &str) {
-        let _result = self.entity_type_manager.import(path);
+    fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
+        self.entity_type_manager.import(path).map_err(|_| EntityTypeImportError::Failed)
     }
 
     fn export(&self, name: &str, path: &str) {

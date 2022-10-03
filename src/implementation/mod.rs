@@ -47,3 +47,5 @@ pub mod relation_instance_manager_impl;
 pub mod relation_type_manager_impl;
 pub mod shutdown_manager_impl;
 pub mod web_resource_manager_impl;
+pub mod reactive_type_identifiers;
+

@@ -8,9 +8,12 @@ use log::debug;
 use log::error;
 use wildmatch::WildMatch;
 
+use crate::api::ComponentCreationError;
 use crate::api::ComponentExtensionError;
+use crate::api::ComponentImportError;
 use crate::api::ComponentManager;
 use crate::api::ComponentPropertyError;
+use crate::api::ComponentRegistrationError;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::builder::ComponentBuilder;
@@ -38,13 +41,13 @@ pub struct ComponentManagerImpl {
 
 impl ComponentManagerImpl {
     pub(crate) fn create_base_components(&self) {
-        self.register(
+        let _ = self.register(
             ComponentBuilder::new("core", "labeled")
                 .description("The label is an hierarchical path with static segments, named parameters and catch-all parameters.")
                 .property("label", DataType::String)
                 .build(),
         );
-        self.register(
+        let _ = self.register(
             ComponentBuilder::new("core", "event")
                 .description("This components spawns events.")
                 .output_property("event", DataType::Any)
@@ -56,13 +59,14 @@ impl ComponentManagerImpl {
 #[async_trait]
 #[provides]
 impl ComponentManager for ComponentManagerImpl {
-    fn register(&self, component: crate::model::Component) {
-        if !self.has(&component.name) {
-            let name = component.name.clone();
-            debug!("Registered component {}", name);
-            self.components.0.write().unwrap().push(component);
-            self.event_manager.emit_event(SystemEvent::ComponentCreated(name));
+    fn register(&self, component: crate::model::Component) -> Result<crate::model::Component, ComponentRegistrationError> {
+        if self.has_fully_qualified(&component.namespace, &component.name) {
+            return Err(ComponentRegistrationError::ComponentAlreadyExists(component.namespace, component.name));
         }
+        self.components.0.write().unwrap().push(component.clone());
+        debug!("Registered component {}", component.fully_qualified_name());
+        self.event_manager.emit_event(SystemEvent::ComponentCreated(component.name.clone()));
+        Ok(component)
     }
 
     // Returns a copy
@@ -85,8 +89,27 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.0.read().unwrap().iter().any(|component| component.name == name)
     }
 
+    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool {
+        self.components
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .any(|component| component.namespace == namespace && component.name == name)
+    }
+
     fn get(&self, name: &str) -> Option<crate::model::Component> {
         self.components.0.read().unwrap().iter().find(|component| component.name == name).cloned()
+    }
+
+    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<crate::model::Component> {
+        self.components
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .find(|component| component.namespace == namespace && component.name == name)
+            .cloned()
     }
 
     fn find(&self, search: &str) -> Vec<crate::model::Component> {
@@ -105,8 +128,16 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.0.read().unwrap().len()
     }
 
-    fn create(&self, namespace: &str, name: &str, description: &str, properties: Vec<PropertyType>, extensions: Vec<Extension>) {
-        self.register(crate::model::Component::new(namespace, name, description, properties.to_vec(), extensions.to_vec()));
+    fn create(
+        &self,
+        namespace: &str,
+        name: &str,
+        description: &str,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> Result<crate::model::Component, ComponentCreationError> {
+        self.register(crate::model::Component::new(namespace, name, description, properties.to_vec(), extensions.to_vec()))
+            .map_err(ComponentCreationError::RegistrationError)
     }
 
     fn replace(&self, name: &str, r_component: crate::model::Component) {
@@ -175,13 +206,11 @@ impl ComponentManager for ComponentManagerImpl {
         self.event_manager.emit_event(event);
     }
 
-    fn import(&self, path: &str) {
-        if let Ok(file) = File::open(path) {
-            let reader = BufReader::new(file);
-            if let Ok(component) = serde_json::from_reader(reader) {
-                self.register(component);
-            }
-        }
+    fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+        let component: crate::model::Component = serde_json::from_reader(reader)?;
+        self.register(component).map_err(ComponentImportError::RegistrationError)
     }
 
     fn export(&self, name: &str, path: &str) {
@@ -200,7 +229,7 @@ impl ComponentManager for ComponentManagerImpl {
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>) {
         for component in component_provider.get_components() {
             debug!("Registering component: {}", component.name);
-            self.register(component);
+            let _ = self.register(component);
         }
     }
 

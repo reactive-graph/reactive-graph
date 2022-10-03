@@ -34,8 +34,7 @@ impl GraphQLComponent {
 
     /// The properties which are applied on entity or relation instances.
     async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
-        if name.is_some() {
-            let name = name.unwrap();
+        if let Some(name) = name {
             return self
                 .component
                 .properties
@@ -51,8 +50,7 @@ impl GraphQLComponent {
 
     /// The extensions which are defined by the component.
     async fn extensions(&self, name: Option<String>) -> Vec<GraphQLExtension> {
-        if name.is_some() {
-            let name = name.unwrap();
+        if let Some(name) = name {
             return self
                 .component
                 .extensions

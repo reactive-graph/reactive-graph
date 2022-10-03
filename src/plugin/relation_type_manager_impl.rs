@@ -1,8 +1,11 @@
+use std::sync::Arc;
+
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::RelationType;
+use crate::plugins::RelationTypeCreationError;
+use crate::plugins::RelationTypeImportError;
 use crate::plugins::RelationTypeManager;
-use std::sync::Arc;
 
 pub struct RelationTypeManagerImpl {
     relation_type_manager: Arc<dyn crate::api::RelationTypeManager>,
@@ -26,12 +29,20 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.has(type_name)
     }
 
+    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool {
+        self.relation_type_manager.has_fully_qualified(namespace, type_name)
+    }
+
     fn has_starts_with(&self, type_name: &str) -> bool {
         self.relation_type_manager.has_starts_with(type_name)
     }
 
     fn get(&self, type_name: &str) -> Option<RelationType> {
         self.relation_type_manager.get(type_name)
+    }
+
+    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
+        self.relation_type_manager.get_fully_qualified(namespace, type_name)
     }
 
     fn get_starts_with(&self, type_name_starts_with: &str) -> Option<RelationType> {
@@ -56,9 +67,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         components: Vec<String>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
-    ) {
+    ) -> Result<RelationType, RelationTypeCreationError> {
         self.relation_type_manager
             .create(namespace, outbound_type, type_name, inbound_type, description, components, properties, extensions)
+            .map_err(|_| RelationTypeCreationError::Failed)
     }
 
     fn add_component(&self, name: &str, component_name: &str) {
@@ -89,8 +101,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.delete(type_name)
     }
 
-    fn import(&self, path: &str) {
-        let _result = self.relation_type_manager.import(path);
+    fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
+        self.relation_type_manager.import(path).map_err(|_| RelationTypeImportError::Failed)
     }
 
     fn export(&self, type_name: &str, path: &str) {

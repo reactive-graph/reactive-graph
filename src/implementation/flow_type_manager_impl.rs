@@ -79,11 +79,30 @@ impl FlowTypeManager for FlowTypeManagerImpl {
     }
 
     fn has(&self, name: &str) -> bool {
-        self.get(name).is_some()
+        self.flow_types.0.read().unwrap().iter().any(|flow_type| flow_type.name == name)
+    }
+
+    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool {
+        self.flow_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .any(|flow_type| flow_type.namespace == namespace && flow_type.name == name)
     }
 
     fn get(&self, name: &str) -> Option<FlowType> {
         self.flow_types.0.read().unwrap().iter().find(|flow_type| flow_type.name == name).cloned()
+    }
+
+    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<FlowType> {
+        self.flow_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .find(|flow_type| flow_type.namespace == namespace && flow_type.name == name)
+            .cloned()
     }
 
     fn find(&self, search: &str) -> Vec<FlowType> {

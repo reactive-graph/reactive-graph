@@ -18,6 +18,9 @@ use crate::model::RelationInstance;
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "RelationInstanceDefinition")]
 pub struct GraphQLRelationInstanceDefinition {
+    /// The namespace the relation type belongs to.
+    pub namespace: String,
+
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
 
@@ -43,6 +46,7 @@ pub struct GraphQLRelationInstanceDefinition {
 impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
     fn from(relation_instance: GraphQLRelationInstanceDefinition) -> Self {
         RelationInstance {
+            namespace: relation_instance.namespace.clone(),
             outbound_id: relation_instance.outbound_id,
             type_name: relation_instance.type_name.clone(),
             inbound_id: relation_instance.inbound_id,

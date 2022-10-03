@@ -126,4 +126,12 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     // TODO: implement export_as_json_string
     // Goal: web-ui: download entity instance as json file
     // fn export_as_json_string(&self, id: Uuid) -> String;
+
+    fn handle_component_added_events(&self);
+
+    fn handle_component_removed_events(&self);
+
+    fn handle_property_added_events(&self);
+
+    fn handle_property_removed_events(&self);
 }

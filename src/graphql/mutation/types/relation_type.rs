@@ -3,10 +3,12 @@ use std::sync::Arc;
 use async_graphql::*;
 use log::debug;
 
+use crate::api::EntityTypeManager;
+use crate::api::RelationTypeComponentError;
 use crate::api::RelationTypeExtensionError;
 use crate::api::RelationTypeManager;
 use crate::api::RelationTypePropertyError;
-use crate::api::{EntityTypeManager, RelationTypeComponentError};
+use crate::api::RelationTypeRegistrationError;
 use crate::builder::RelationTypeBuilder;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLExtension;
@@ -69,8 +71,20 @@ impl MutationRelationTypes {
         }
 
         let relation_type = relation_type_builder.build();
-        relation_type_manager.register(relation_type.clone());
-        Ok(relation_type.into())
+        match relation_type_manager.register(relation_type) {
+            Ok(relation_type) => Ok(relation_type.into()),
+            Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(namespace, name)) => {
+                Err(Error::new(format!("Failed to create relation type {}__{}: relation type already exists", namespace, name)))
+            }
+            Err(RelationTypeRegistrationError::OutboundEntityTypeDoesNotExist(namespace, name, outbound_type)) => Err(Error::new(format!(
+                "Failed to create relation type {}__{}: outbound entity type {} does not exist",
+                namespace, name, outbound_type
+            ))),
+            Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(namespace, name, inbound_type)) => Err(Error::new(format!(
+                "Failed to create relation type {}__{}: inbound entity type {} does not exist",
+                namespace, name, inbound_type
+            ))),
+        }
     }
 
     /// Adds the component with the given component_name to the relation type with the given name.

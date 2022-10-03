@@ -224,7 +224,7 @@ impl SystemEventManagerImpl {
     }
 
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> Arc<ReactiveEntityInstance> {
-        ReactiveEntityInstanceBuilder::new("system_event")
+        ReactiveEntityInstanceBuilder::new("core", "system_event")
             .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
             .property(SYSTEM_EVENT_PROPERTY_EVENT, json!(false))
             .build()

@@ -1,5 +1,6 @@
 use async_graphql::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 use uuid::Uuid;
 
 use crate::graphql::query::GraphQLPropertyInstance;
@@ -14,6 +15,9 @@ use crate::model::EntityInstance;
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "EntityInstanceDefinition")]
 pub struct GraphQLEntityInstanceDefinition {
+    /// The namespace the entity type belongs to.
+    pub namespace: String,
+
     /// The name of the entity type.
     #[graphql(name = "type")]
     pub type_name: String,
@@ -37,6 +41,7 @@ pub struct GraphQLEntityInstanceDefinition {
 impl From<GraphQLEntityInstanceDefinition> for EntityInstance {
     fn from(entity_instance: GraphQLEntityInstanceDefinition) -> Self {
         EntityInstance {
+            namespace: entity_instance.namespace.clone(),
             type_name: entity_instance.type_name.clone(),
             id: entity_instance.id,
             description: entity_instance.description.clone(),

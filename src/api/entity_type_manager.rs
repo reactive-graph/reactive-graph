@@ -9,9 +9,20 @@ use crate::model::PropertyType;
 use crate::plugins::EntityTypeProvider;
 
 #[derive(Debug)]
+pub enum EntityTypeRegistrationError {
+    EntityTypeAlreadyExists(String, String),
+}
+
+#[derive(Debug)]
+pub enum EntityTypeCreationError {
+    RegistrationError(EntityTypeRegistrationError),
+}
+
+#[derive(Debug)]
 pub enum EntityTypeImportError {
     Io(std::io::Error),
     Deserialization(serde_json::Error),
+    RegistrationError(EntityTypeRegistrationError),
 }
 
 #[derive(Debug)]
@@ -44,7 +55,7 @@ impl From<serde_json::Error> for EntityTypeImportError {
 
 #[async_trait]
 pub trait EntityTypeManager: Send + Sync + Lifecycle {
-    fn register(&self, entity_type: EntityType) -> EntityType;
+    fn register(&self, entity_type: EntityType) -> Result<EntityType, EntityTypeRegistrationError>;
 
     /// Returns all entity types.
     fn get_entity_types(&self) -> Vec<EntityType>;
@@ -55,8 +66,14 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     /// Returns true, if a entity type with the given name exists.
     fn has(&self, name: &str) -> bool;
 
+    /// Returns true, if a entity type with the given fully qualified name exists.
+    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool;
+
     /// Returns the entity type with the given name or empty.
     fn get(&self, name: &str) -> Option<EntityType>;
+
+    /// Returns the entity type with the given fully qualified name or empty.
+    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<EntityType>;
 
     /// Returns all entity types whose names matches the given search string.
     fn find(&self, search: &str) -> Vec<EntityType>;
@@ -65,7 +82,15 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     fn count(&self) -> usize;
 
     /// Creates a new entity type.
-    fn create(&self, namespace: &str, name: &str, description: &str, components: Vec<String>, properties: Vec<PropertyType>, extensions: Vec<Extension>);
+    fn create(
+        &self,
+        namespace: &str,
+        name: &str,
+        description: &str,
+        components: Vec<String>,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> Result<EntityType, EntityTypeCreationError>;
 
     /// Adds the component with the given component_name to the entity type with the given name.
     fn add_component(&self, name: &str, component_name: &str) -> Result<(), EntityTypeComponentError>;
