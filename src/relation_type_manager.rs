@@ -27,11 +27,17 @@ pub trait RelationTypeManager: Send + Sync {
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, type_name: &str) -> bool;
 
+    /// Returns true, if a relation type with the given fully qualified name exists.
+    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool;
+
     /// Returns true, if a relation type exists whose name starts with the given name.
     fn has_starts_with(&self, type_name: &str) -> bool;
 
     /// Returns the relation type with the given name.
     fn get(&self, type_name: &str) -> Option<RelationType>;
+
+    /// Returns the relation type with the given fully qualified name.
+    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
 
     /// Returns the relation type whose name starts with the given name.
     fn get_starts_with(&self, type_name_starts_with: &str) -> Option<RelationType>;
