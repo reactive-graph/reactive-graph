@@ -8,6 +8,7 @@ use crate::RelationInstanceBuilder;
 
 #[test]
 fn flow_builder_test() {
+    let namespace = r_string();
     let name = r_string();
     let description = r_string();
     let id = Uuid::new_v4();
@@ -20,23 +21,23 @@ fn flow_builder_test() {
     let type_name_3 = r_string();
     let property_3_name = r_string();
     let property_3_value = r_string();
-    let entity_instance_1 = EntityInstanceBuilder::new(type_name_1.clone())
+    let entity_instance_1 = EntityInstanceBuilder::new(namespace.clone(), type_name_1.clone())
         .id(id)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
         .build();
-    let entity_instance_2 = EntityInstanceBuilder::new(type_name_2.clone())
+    let entity_instance_2 = EntityInstanceBuilder::new(namespace.clone(), type_name_2.clone())
         .id(id)
         .property(property_2_name.clone(), json!(property_2_value.clone()))
         .build();
-    let entity_instance_3 = EntityInstanceBuilder::new(type_name_3.clone())
+    let entity_instance_3 = EntityInstanceBuilder::new(namespace.clone(), type_name_3.clone())
         .id(id)
         .property(property_3_name.clone(), json!(property_3_value.clone()))
         .build();
 
     let rel_type_name = r_string();
-    let relation_instance_1 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_2.id).build();
-    let relation_instance_2 = RelationInstanceBuilder::new(entity_instance_1.id, rel_type_name.clone(), entity_instance_3.id).build();
-    let relation_instance_3 = RelationInstanceBuilder::new(entity_instance_2.id, rel_type_name.clone(), entity_instance_3.id).build();
+    let relation_instance_1 = RelationInstanceBuilder::new(namespace.clone(), entity_instance_1.id, rel_type_name.clone(), entity_instance_2.id).build();
+    let relation_instance_2 = RelationInstanceBuilder::new(namespace.clone(), entity_instance_1.id, rel_type_name.clone(), entity_instance_3.id).build();
+    let relation_instance_3 = RelationInstanceBuilder::new(namespace.clone(), entity_instance_2.id, rel_type_name.clone(), entity_instance_3.id).build();
 
     let flow_instance = FlowInstanceBuilder::new(entity_instance_1.clone())
         .name(name.clone())

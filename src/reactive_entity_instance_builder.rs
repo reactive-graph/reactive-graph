@@ -9,17 +9,20 @@ use crate::EntityInstanceBuilder;
 
 #[allow(dead_code)]
 pub struct ReactiveEntityInstanceBuilder {
+    namespace: String,
     type_name: String,
     builder: EntityInstanceBuilder,
 }
 
 #[allow(dead_code)]
 impl ReactiveEntityInstanceBuilder {
-    pub fn new<S: Into<String>>(type_name: S) -> ReactiveEntityInstanceBuilder {
+    pub fn new<S: Into<String>>(namespace: S, type_name: S) -> ReactiveEntityInstanceBuilder {
+        let namespace: String = namespace.into();
         let type_name: String = type_name.into();
         ReactiveEntityInstanceBuilder {
+            namespace: namespace.clone(),
             type_name: type_name.clone(),
-            builder: EntityInstanceBuilder::new(type_name),
+            builder: EntityInstanceBuilder::new(namespace, type_name),
         }
     }
 
@@ -40,7 +43,7 @@ impl ReactiveEntityInstanceBuilder {
 
 impl From<EntityType> for ReactiveEntityInstanceBuilder {
     fn from(entity_type: EntityType) -> Self {
-        let mut builder = ReactiveEntityInstanceBuilder::new(entity_type.name.clone());
+        let mut builder = ReactiveEntityInstanceBuilder::new(entity_type.namespace.clone(), entity_type.name.clone());
         for property_type in entity_type.properties {
             builder.property(property_type.name.clone(), property_type.data_type.default_value());
         }

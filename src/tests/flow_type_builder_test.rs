@@ -14,9 +14,9 @@ fn flow_type_builder_test() {
     let name = r_string();
     let type_name = r_string();
     let description = r_string();
-    let entity_instance_1 = EntityInstanceBuilder::new(entity_type_name_1.clone()).build();
-    let entity_instance_2 = EntityInstanceBuilder::new(entity_type_name_2.clone()).build();
-    let relation_instance = RelationInstanceBuilder::new(entity_instance_1.id, relation_type_name.clone(), entity_instance_2.id).build();
+    let entity_instance_1 = EntityInstanceBuilder::new(namespace.clone(), entity_type_name_1.clone()).build();
+    let entity_instance_2 = EntityInstanceBuilder::new(namespace.clone(), entity_type_name_2.clone()).build();
+    let relation_instance = RelationInstanceBuilder::new(namespace.clone(), entity_instance_1.id, relation_type_name.clone(), entity_instance_2.id).build();
     let variable_1_name = r_string();
     let variable_2_name = r_string();
     let extension_1_name = r_string();

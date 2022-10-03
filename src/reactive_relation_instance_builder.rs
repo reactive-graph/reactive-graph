@@ -9,6 +9,7 @@ use crate::RelationInstanceBuilder;
 
 #[allow(dead_code)]
 pub struct ReactiveRelationInstanceBuilder {
+    namespace: String,
     outbound: Arc<ReactiveEntityInstance>,
     type_name: String,
     inbound: Arc<ReactiveEntityInstance>,
@@ -17,10 +18,17 @@ pub struct ReactiveRelationInstanceBuilder {
 
 #[allow(dead_code)]
 impl ReactiveRelationInstanceBuilder {
-    pub fn new<S: Into<String>>(outbound: Arc<ReactiveEntityInstance>, type_name: S, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
+    pub fn new<S: Into<String>>(
+        namespace: S,
+        outbound: Arc<ReactiveEntityInstance>,
+        type_name: S,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        let namespace: String = namespace.into();
         let type_name: String = type_name.into();
-        let builder = RelationInstanceBuilder::new(outbound.id, type_name.clone(), inbound.id);
+        let builder = RelationInstanceBuilder::new(namespace.clone(), outbound.id, type_name.clone(), inbound.id);
         ReactiveRelationInstanceBuilder {
+            namespace,
             outbound,
             type_name,
             inbound,

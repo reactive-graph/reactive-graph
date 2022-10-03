@@ -22,7 +22,7 @@ fn reactive_relation_instance_builder_test() {
     let type_name = r_string();
     let property_1_name = r_string();
     let property_1_value = r_string();
-    let relation_instance = ReactiveRelationInstanceBuilder::new(outbound, type_name.clone(), inbound)
+    let relation_instance = ReactiveRelationInstanceBuilder::new(namespace.clone(), outbound, type_name.clone(), inbound)
         .property(property_1_name.clone(), json!(property_1_value.clone()))
         .build();
     assert_eq!(type_name, relation_instance.type_name);
@@ -45,12 +45,12 @@ fn reactive_relation_instance_builder_set_property_defaults_test() {
     let property_2_name = r_string();
     let property_3_name = r_string();
     let property_3_value = r_string();
-    let relation_type = RelationTypeBuilder::new(namespace, entity_type_name.clone(), type_name.clone(), entity_type_name.clone())
+    let relation_type = RelationTypeBuilder::new(namespace.clone(), entity_type_name.clone(), type_name.clone(), entity_type_name.clone())
         .property(property_1_name.clone(), DataType::String)
         .property(property_2_name.clone(), DataType::Number)
         .property(property_3_name.clone(), DataType::String)
         .build();
-    let relation_instance = ReactiveRelationInstanceBuilder::new(outbound, type_name.clone(), inbound)
+    let relation_instance = ReactiveRelationInstanceBuilder::new(namespace.clone(), outbound, type_name.clone(), inbound)
         .set_properties_defaults(relation_type.clone())
         .property(property_3_name.clone(), json!(property_3_value.clone()))
         .build();
