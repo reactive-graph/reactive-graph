@@ -7,6 +7,7 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::get_namespace_and_type_name;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 
@@ -18,6 +19,9 @@ use crate::PropertyInstanceGetter;
 /// properties.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct EntityInstance {
+    /// The namespace the entity instance belongs to.
+    pub namespace: String,
+
     /// The name of the entity type.
     #[serde(alias = "type")]
     pub type_name: String,
@@ -41,8 +45,9 @@ pub struct EntityInstance {
 
 impl EntityInstance {
     /// Constructs a new entity instance with the given type, id and properties
-    pub fn new<S: Into<String>>(type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
+    pub fn new<S: Into<String>>(namespace: S, type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
         EntityInstance {
+            namespace: namespace.into(),
             type_name: type_name.into(),
             id,
             description: String::new(),
@@ -51,8 +56,9 @@ impl EntityInstance {
     }
 
     /// Constructs a new entity instance with the given type and id but without properties
-    pub fn new_without_properties<S: Into<String>>(type_name: S, id: Uuid) -> EntityInstance {
+    pub fn new_without_properties<S: Into<String>>(namespace: S, type_name: S, id: Uuid) -> EntityInstance {
         EntityInstance {
+            namespace: namespace.into(),
             type_name: type_name.into(),
             id,
             description: String::new(),
@@ -63,11 +69,11 @@ impl EntityInstance {
 
 impl From<VertexProperties> for EntityInstance {
     fn from(properties: VertexProperties) -> Self {
-        let type_name = properties.vertex.t.to_string();
-        // let type_name = properties.vertex.t.0.clone();
+        let (namespace, type_name) = get_namespace_and_type_name(properties.vertex.t);
         let id = properties.vertex.id;
         let properties: HashMap<String, Value> = properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect();
         EntityInstance {
+            namespace,
             type_name,
             id,
             description: String::new(),

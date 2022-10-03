@@ -45,5 +45,5 @@ pub fn create_random_relation_instance_with_properties(
 ) -> ReactiveRelationInstance {
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(r_string()));
-    ReactiveRelationInstance::create_with_properties(outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
+    ReactiveRelationInstance::create_with_properties(r_string(), outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
 }

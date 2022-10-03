@@ -3,14 +3,19 @@ use std::sync::Arc;
 
 use dashmap::DashMap;
 use dashmap::DashSet;
-use indradb::{EdgeKey, EdgeProperties, Identifier};
+use indradb::EdgeKey;
+use indradb::EdgeProperties;
+use indradb::Identifier;
 use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::get_namespace_and_type_name;
+use crate::Component;
 use crate::ComponentContainer;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
+use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
 use crate::ReactiveEntityInstance;
 use crate::ReactivePropertyContainer;
@@ -40,6 +45,9 @@ use crate::RelationInstance;
 /// Player--(CurrentCamera)-->Camera
 ///
 pub struct ReactiveRelationInstance {
+    /// The namespace the relation instance belongs to.
+    pub namespace: String,
+
     /// The outbound entity instance.
     pub outbound: Arc<ReactiveEntityInstance>,
 
@@ -49,7 +57,7 @@ pub struct ReactiveRelationInstance {
     /// The outbound entity instance.
     pub inbound: Arc<ReactiveEntityInstance>,
 
-    /// An optional description of the relation.
+    /// An optional description of the relation instance.
     pub description: String,
 
     /// The reactive properties.
@@ -65,7 +73,7 @@ pub struct ReactiveRelationInstance {
 impl ReactiveRelationInstance {
     // TODO: rename to "from_properties"
     pub fn from(outbound: Arc<ReactiveEntityInstance>, inbound: Arc<ReactiveEntityInstance>, properties: EdgeProperties) -> ReactiveRelationInstance {
-        let type_name = properties.edge.key.t.to_string();
+        let (namespace, type_name) = get_namespace_and_type_name(properties.edge.key.t);
         let properties = properties
             .props
             .iter()
@@ -81,6 +89,7 @@ impl ReactiveRelationInstance {
             })
             .collect();
         ReactiveRelationInstance {
+            namespace,
             outbound,
             type_name,
             inbound,
@@ -98,6 +107,7 @@ impl ReactiveRelationInstance {
             .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value.clone())))
             .collect();
         ReactiveRelationInstance {
+            namespace: instance.namespace.clone(),
             outbound,
             type_name: instance.type_name.clone(),
             inbound,
@@ -111,6 +121,7 @@ impl ReactiveRelationInstance {
     // TODO: unit test
     // TODO: rename to "new_with_properties"
     pub fn create_with_properties<S: Into<String>>(
+        namespace: S,
         outbound: Arc<ReactiveEntityInstance>,
         type_name: S,
         inbound: Arc<ReactiveEntityInstance>,
@@ -130,6 +141,7 @@ impl ReactiveRelationInstance {
             })
             .collect();
         ReactiveRelationInstance {
+            namespace: namespace.into(),
             outbound,
             type_name: type_name.into(),
             inbound,
@@ -161,11 +173,45 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
             self.properties.insert(name, property_instance);
         }
     }
+
+    fn add_property_by_type(&self, property: &PropertyType) {
+        let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), &property.name, property.data_type.default_value());
+        self.properties.insert(property.name.clone(), property_instance);
+    }
+
+    fn remove_property<S: Into<String>>(&self, name: S) {
+        let name = name.into();
+        self.properties.retain(|property_name, _| property_name != &name);
+    }
+
+    fn observe_with_handle<F>(&self, name: &str, subscriber: F, handle_id: u128)
+    where
+        F: FnMut(&Value) + 'static,
+    {
+        if let Some(property) = self.properties.get(name) {
+            property.stream.read().unwrap().observe_with_handle(subscriber, handle_id);
+        }
+    }
+
+    fn remove_observer(&self, name: &str, handle_id: u128) {
+        if let Some(property) = self.properties.get(name) {
+            property.stream.read().unwrap().remove(handle_id);
+        }
+    }
 }
 
 impl ComponentContainer for ReactiveRelationInstance {
     fn add_component<S: Into<String>>(&self, component: S) {
         self.components.insert(component.into());
+    }
+
+    fn add_component_with_properties(&self, component: &Component) {
+        self.add_component(&component.name);
+        for property_type in component.properties.iter() {
+            if !self.properties.contains_key(&property_type.name) {
+                self.add_property_by_type(&property_type);
+            }
+        }
     }
 
     fn remove_component<S: Into<String>>(&self, component: S) {
@@ -199,6 +245,7 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
             .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
         RelationInstance {
+            namespace: instance.namespace.clone(),
             outbound_id: instance.outbound.id,
             type_name: instance.type_name.clone(),
             inbound_id: instance.inbound.id,

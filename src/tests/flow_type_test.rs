@@ -26,7 +26,7 @@ fn create_flow_type_test() {
     entity_instances.push(entity_instance_1.clone());
     entity_instances.push(entity_instance_2.clone());
 
-    let relation_instance = RelationInstance::new(entity_instance_1.id, relation_type_name.clone(), entity_instance_2.id, HashMap::new());
+    let relation_instance = RelationInstance::new(namespace.clone(), entity_instance_1.id, relation_type_name.clone(), entity_instance_2.id, HashMap::new());
     let mut relation_instances = Vec::new();
     relation_instances.push(relation_instance.clone());
 

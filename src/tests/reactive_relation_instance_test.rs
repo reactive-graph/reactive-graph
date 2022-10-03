@@ -27,6 +27,7 @@ use crate::RelationInstance;
 
 #[test]
 fn reactive_relation_instance_test() {
+    let namespace = r_string();
     let relation_type_name = r_string();
     let relation_description = r_string();
     let property_name = r_string();
@@ -51,6 +52,7 @@ fn reactive_relation_instance_test() {
     behaviours.insert(behaviour_name.clone());
 
     let reactive_relation_instance = Arc::new(ReactiveRelationInstance {
+        namespace: namespace.clone(),
         outbound: outbound_entity.clone(),
         type_name: relation_type_name.clone(),
         inbound: inbound_entity.clone(),
@@ -59,6 +61,7 @@ fn reactive_relation_instance_test() {
         components,
         behaviours,
     });
+    assert_eq!(namespace.clone(), reactive_relation_instance.namespace.clone());
     assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name.clone());
     assert_eq!(outbound_entity.id, reactive_relation_instance.outbound.id);
     assert_eq!(inbound_entity.id, reactive_relation_instance.inbound.id);
@@ -91,10 +94,12 @@ fn reactive_relation_instance_test() {
 
 #[test]
 fn reactive_relation_instance_from_edge_properties_test() {
+    let namespace = r_string();
     let outbound_id = Uuid::new_v4();
     let outbound_type_name = r_string();
     let outbound_description = r_string();
     let outbound_entity = Arc::new(ReactiveEntityInstance {
+        namespace: namespace.clone(),
         type_name: outbound_type_name.clone(),
         id: outbound_id.clone(),
         description: outbound_description.clone(),
@@ -107,6 +112,7 @@ fn reactive_relation_instance_from_edge_properties_test() {
     let inbound_type_name = r_string();
     let inbound_description = r_string();
     let inbound_entity = Arc::new(ReactiveEntityInstance {
+        namespace: namespace.clone(),
         type_name: inbound_type_name.clone(),
         id: inbound_id.clone(),
         description: inbound_description.clone(),
@@ -118,6 +124,7 @@ fn reactive_relation_instance_from_edge_properties_test() {
     let relation_type_name = r_string();
     let relation_description = r_string();
     let reactive_relation_instance = Arc::new(ReactiveRelationInstance {
+        namespace: namespace.clone(),
         outbound: outbound_entity.clone(), // Arc::clone -> Reference Counted
         type_name: relation_type_name.clone(),
         inbound: inbound_entity.clone(), // Arc::clone -> Reference Counted
@@ -211,5 +218,5 @@ pub fn create_random_relation_instance_with_properties(
 ) -> ReactiveRelationInstance {
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(r_string()));
-    ReactiveRelationInstance::create_with_properties(outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
+    ReactiveRelationInstance::create_with_properties(r_string(), outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
 }

@@ -1,8 +1,11 @@
-use std::ops::{Deref, DerefMut};
-use std::sync::{Arc, RwLock};
+use std::ops::Deref;
+use std::ops::DerefMut;
+use std::sync::Arc;
+use std::sync::RwLock;
 
 use inexor_rgf_core_frp::Stream;
-use serde_json::{Map, Value};
+use serde_json::Map;
+use serde_json::Value;
 use uuid::Uuid;
 
 pub struct ReactivePropertyInstance {

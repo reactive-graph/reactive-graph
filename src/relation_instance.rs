@@ -1,17 +1,18 @@
 use std::collections::HashMap;
-use std::str::FromStr;
 
 use indradb::EdgeKey;
 use indradb::EdgeProperties;
-use indradb::Identifier;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::fully_qualified_identifier;
+use crate::get_namespace_and_type_name;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
+use crate::NAMESPACE_RELATION_TYPE;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -25,6 +26,9 @@ use crate::PropertyInstanceGetter;
 /// documents in it's properties.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RelationInstance {
+    /// The namespace the relation instance belongs to.
+    pub namespace: String,
+
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
 
@@ -51,8 +55,9 @@ pub struct RelationInstance {
 
 impl RelationInstance {
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new<S: Into<String>>(outbound_id: Uuid, type_name: S, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
+    pub fn new<S: Into<String>>(namespace: S, outbound_id: Uuid, type_name: S, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
         RelationInstance {
+            namespace: namespace.into(),
             outbound_id,
             type_name: type_name.into(),
             inbound_id,
@@ -62,8 +67,9 @@ impl RelationInstance {
     }
 
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id but without properties
-    pub fn new_without_properties<S: Into<String>>(outbound_id: Uuid, type_name: S, inbound_id: Uuid) -> RelationInstance {
+    pub fn new_without_properties<S: Into<String>>(namespace: S, outbound_id: Uuid, type_name: S, inbound_id: Uuid) -> RelationInstance {
         RelationInstance {
+            namespace: namespace.into(),
             outbound_id,
             type_name: type_name.into(),
             inbound_id,
@@ -72,18 +78,19 @@ impl RelationInstance {
         }
     }
 
-    pub fn get_key(&self) -> Option<EdgeKey> {
-        Identifier::from_str(self.type_name.as_str())
-            .map(|t| EdgeKey::new(self.outbound_id, t, self.inbound_id))
-            .ok()
+    pub fn get_key(&self) -> EdgeKey {
+        let t = fully_qualified_identifier(&self.namespace, &self.type_name, &NAMESPACE_RELATION_TYPE);
+        EdgeKey::new(self.outbound_id, t, self.inbound_id)
     }
 }
 
 impl From<EdgeProperties> for RelationInstance {
     fn from(properties: EdgeProperties) -> Self {
+        let (namespace, type_name) = get_namespace_and_type_name(properties.edge.key.t);
         RelationInstance {
+            namespace,
             outbound_id: properties.edge.key.outbound_id,
-            type_name: properties.edge.key.t.to_string(),
+            type_name,
             inbound_id: properties.edge.key.inbound_id,
             description: String::new(),
             properties: properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect(),

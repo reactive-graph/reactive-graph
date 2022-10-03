@@ -29,6 +29,7 @@ use crate::ReactivePropertyInstance;
 #[test]
 fn reactive_entity_instance_test() {
     let uuid = Uuid::new_v4();
+    let namespace = r_string();
     let type_name = r_string();
     let description = r_string();
     let property_name = r_string();
@@ -51,6 +52,7 @@ fn reactive_entity_instance_test() {
     behaviours.insert(behaviour_name.clone());
 
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
+        namespace: namespace.clone(),
         type_name: type_name.clone(),
         id: uuid.clone(),
         description: description.clone(),
@@ -58,6 +60,7 @@ fn reactive_entity_instance_test() {
         components,
         behaviours,
     });
+    assert_eq!(namespace.clone(), reactive_entity_instance.namespace.clone());
     assert_eq!(type_name.clone(), reactive_entity_instance.type_name.clone());
     assert_eq!(uuid.clone(), reactive_entity_instance.id.clone());
     assert_eq!(description.clone(), reactive_entity_instance.description.clone());
@@ -161,6 +164,7 @@ fn reactive_entity_instance_typed_eq_bool_test() {
 #[bench]
 fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Termination {
     let uuid = Uuid::new_v4();
+    let namespace = r_string();
     let type_name = r_string();
     let description = r_string();
     let property_name = r_string();
@@ -182,6 +186,7 @@ fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Term
         behaviours.insert(behaviour_name.clone());
 
         let _reactive_entity_instance = Arc::new(ReactiveEntityInstance {
+            namespace: namespace.clone(),
             type_name: type_name.clone(),
             id: uuid.clone(),
             description: description.clone(),

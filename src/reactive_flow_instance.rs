@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::fmt;
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use std::sync::RwLock;
 
 use crate::ReactivePropertyContainer;
 
@@ -174,22 +175,21 @@ impl TryFrom<FlowInstance> for ReactiveFlowInstance {
         }
         let mut relation_instances = HashMap::new();
         for relation_instance in flow.relation_instances {
-            if let Some(edge_key) = relation_instance.get_key() {
-                let outbound = entity_instances.get(&relation_instance.outbound_id);
-                if outbound.is_none() {
-                    // outbound entity missing
-                    return Err(ReactiveFlowInstanceConstructionError::MissingOutboundEntityInstance(relation_instance.outbound_id));
-                }
-                let inbound = entity_instances.get(&relation_instance.inbound_id);
-                if inbound.is_none() {
-                    // inbound entity missing
-                    return Err(ReactiveFlowInstanceConstructionError::MissingInboundEntityInstance(relation_instance.inbound_id));
-                }
-                let outbound = outbound.unwrap().clone();
-                let inbound = inbound.unwrap().clone();
-                let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance.clone()));
-                relation_instances.insert(edge_key.clone(), reactive_relation_instance);
+            let edge_key = relation_instance.get_key();
+            let outbound = entity_instances.get(&relation_instance.outbound_id);
+            if outbound.is_none() {
+                // outbound entity missing
+                return Err(ReactiveFlowInstanceConstructionError::MissingOutboundEntityInstance(relation_instance.outbound_id));
             }
+            let inbound = entity_instances.get(&relation_instance.inbound_id);
+            if inbound.is_none() {
+                // inbound entity missing
+                return Err(ReactiveFlowInstanceConstructionError::MissingInboundEntityInstance(relation_instance.inbound_id));
+            }
+            let outbound = outbound.unwrap().clone();
+            let inbound = inbound.unwrap().clone();
+            let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance.clone()));
+            relation_instances.insert(edge_key.clone(), reactive_relation_instance);
         }
         Ok(ReactiveFlowInstance {
             id: flow_id,

@@ -7,21 +7,31 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::get_namespace_and_type_name;
+use crate::Component;
 use crate::ComponentContainer;
 use crate::EntityInstance;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
+use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 
 pub struct ReactiveEntityInstance {
+    /// The namespace the entity instance belongs to.
+    pub namespace: String,
+
+    /// The name of the entity type.
     pub type_name: String,
 
+    /// The unique identifier of the entity instance.
     pub id: Uuid,
 
+    /// An optional description of the entity instance.
     pub description: String,
 
+    /// The reactive properties.
     pub properties: DashMap<String, ReactivePropertyInstance>,
 
     /// The names of the components which are applied on this entity instance.
@@ -47,11 +57,45 @@ impl ReactivePropertyContainer for ReactiveEntityInstance {
             self.properties.insert(name, property_instance);
         }
     }
+
+    fn add_property_by_type(&self, property: &PropertyType) {
+        let property_instance = ReactivePropertyInstance::new(self.id, &property.name, property.data_type.default_value());
+        self.properties.insert(property.name.clone(), property_instance);
+    }
+
+    fn remove_property<S: Into<String>>(&self, name: S) {
+        let name = name.into();
+        self.properties.retain(|property_name, _| property_name != &name);
+    }
+
+    fn observe_with_handle<F>(&self, name: &str, subscriber: F, handle_id: u128)
+    where
+        F: FnMut(&Value) + 'static,
+    {
+        if let Some(property_instance) = self.properties.get(name) {
+            property_instance.stream.read().unwrap().observe_with_handle(subscriber, handle_id);
+        }
+    }
+
+    fn remove_observer(&self, name: &str, handle_id: u128) {
+        if let Some(property_instance) = self.properties.get(name) {
+            property_instance.stream.read().unwrap().remove(handle_id);
+        }
+    }
 }
 
 impl ComponentContainer for ReactiveEntityInstance {
     fn add_component<S: Into<String>>(&self, component: S) {
         self.components.insert(component.into());
+    }
+
+    fn add_component_with_properties(&self, component: &Component) {
+        self.add_component(&component.name);
+        for property_type in component.properties.iter() {
+            if !self.properties.contains_key(&property_type.name) {
+                self.add_property_by_type(&property_type);
+            }
+        }
     }
 
     fn remove_component<S: Into<String>>(&self, component: S) {
@@ -90,8 +134,10 @@ impl From<VertexProperties> for ReactiveEntityInstance {
                 )
             })
             .collect();
+        let (namespace, type_name) = get_namespace_and_type_name(properties.vertex.t);
         ReactiveEntityInstance {
-            type_name: properties.vertex.t.to_string(),
+            namespace,
+            type_name,
             id,
             description: String::new(),
             properties: instance_properties,
@@ -109,6 +155,7 @@ impl From<EntityInstance> for ReactiveEntityInstance {
             .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(instance.id, name.clone(), value.clone())))
             .collect();
         ReactiveEntityInstance {
+            namespace: instance.namespace.clone(),
             type_name: instance.type_name.clone(),
             id: instance.id,
             description: instance.description,
@@ -127,6 +174,7 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
             .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
         EntityInstance {
+            namespace: instance.namespace.clone(),
             type_name: instance.type_name.clone(),
             id: instance.id,
             description: instance.description.clone(),
