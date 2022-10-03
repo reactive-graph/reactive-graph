@@ -1,0 +1,21 @@
+query {
+  types {
+    entities(namespace: "example", name: "entitytype1") {
+      namespace
+      name
+      description
+      components {
+        name
+      }
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+          extension
+        }
+      }
+    }
+  }
+}

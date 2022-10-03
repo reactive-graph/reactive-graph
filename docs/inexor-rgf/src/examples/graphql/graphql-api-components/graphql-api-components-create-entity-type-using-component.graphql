@@ -2,6 +2,7 @@ mutation {
   types {
     entities {
       create(
+        namespace: "book",
         name: "example1",
         components: [ "component1" ]
       ) {

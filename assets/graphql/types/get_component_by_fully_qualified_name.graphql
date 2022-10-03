@@ -1,0 +1,18 @@
+query {
+  types {
+    components(namespace: "example", name: "component1") {
+      namespace
+      name
+      description
+      properties {
+        name
+        dataType
+        socketType
+        extensions {
+          name
+          extension
+        }
+      }
+    }
+  }
+}

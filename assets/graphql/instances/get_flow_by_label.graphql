@@ -1,11 +1,13 @@
 query getFlowByLabel {
-  flows(label: "/org/qualityland/mqtt") {
-    id
-    label
-    wrapper {
-      properties {
-        name
-        value
+  instances {
+    flows(label: "/org/qualityland/mqtt") {
+      id
+      label
+      wrapper {
+        properties {
+          name
+          value
+        }
       }
     }
   }

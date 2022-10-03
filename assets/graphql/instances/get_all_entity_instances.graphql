@@ -3,7 +3,9 @@ query getAllMqttBrokers {
     entities (type: "mqtt_broker") {
       id
       label
-      components
+      components {
+        name
+      }
       behaviours
       type {
         components {

@@ -1,11 +1,13 @@
 query findAllFlows {
-  flows {
-    id
-    label
-    entities {
-      properties {
-        name
-        value
+  instances {
+    flows {
+      id
+      label
+      entities {
+        properties {
+          name
+          value
+        }
       }
     }
   }

@@ -3,7 +3,9 @@ query getAllEntityInstancesThatAreComposedWith {
     composedWith: entities(components: "labeled") {
       id
       label
-      components
+      components {
+        name
+      }
       behaviours
       properties(name: "label") {
         name

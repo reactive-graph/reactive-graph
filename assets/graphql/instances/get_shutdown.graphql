@@ -16,7 +16,10 @@ query {
           socketType
           dataType
           description
-          extensions
+          extensions {
+            name
+            extension
+          }
         }
       }
     }
