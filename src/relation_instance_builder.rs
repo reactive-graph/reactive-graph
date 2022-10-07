@@ -40,7 +40,7 @@ impl RelationInstanceBuilder {
 
 impl From<EdgeKey> for RelationInstanceBuilder {
     fn from(edge_key: EdgeKey) -> Self {
-        let (namespace, type_name) = get_namespace_and_type_name(edge_key.t);
+        let (namespace, type_name) = get_namespace_and_type_name(&edge_key.t);
         RelationInstanceBuilder {
             namespace,
             outbound_id: edge_key.outbound_id,
