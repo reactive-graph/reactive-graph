@@ -2,6 +2,9 @@ use crate::Component;
 
 /// Reactive instance container for components.
 pub trait ComponentContainer {
+    /// Returns the names of the components
+    fn get_components(&self) -> Vec<String>;
+
     /// Adds a component to the container.
     fn add_component<S: Into<String>>(&self, component: S);
 

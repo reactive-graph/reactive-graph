@@ -112,33 +112,30 @@ impl ReactiveFlowInstance {
     }
 
     pub fn has_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) -> bool {
-        if let Some(edge_key) = relation_instance.get_key() {
-            return self.relation_instances.read().unwrap().contains_key(&edge_key);
-        }
-        false
-    }
-
-    pub fn has_relation_by_key(&self, edge_key: EdgeKey) -> bool {
+        let edge_key = relation_instance.get_key();
         self.relation_instances.read().unwrap().contains_key(&edge_key)
     }
 
-    pub fn get_relation(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
+    pub fn has_relation_by_key(&self, edge_key: &EdgeKey) -> bool {
+        self.relation_instances.read().unwrap().contains_key(edge_key)
+    }
+
+    pub fn get_relation(&self, edge_key: &EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
         let reader = self.relation_instances.read().unwrap();
-        reader.get(&edge_key).cloned()
+        reader.get(edge_key).cloned()
     }
 
     pub fn add_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        if let Some(edge_key) = relation_instance.get_key() {
-            if !self.has_relation_by_key(edge_key.clone()) {
-                self.relation_instances.write().unwrap().insert(edge_key.clone(), relation_instance.clone());
-                self.relations_added.write().unwrap().push(edge_key);
-            }
+        let edge_key = relation_instance.get_key();
+        if !self.has_relation_by_key(&edge_key) {
+            self.relation_instances.write().unwrap().insert(edge_key.clone(), relation_instance.clone());
+            self.relations_added.write().unwrap().push(edge_key);
         }
     }
 
-    pub fn remove_relation(&self, edge_key: EdgeKey) {
-        self.relation_instances.write().unwrap().remove(&edge_key);
-        self.relations_removed.write().unwrap().push(edge_key);
+    pub fn remove_relation(&self, edge_key: &EdgeKey) {
+        self.relation_instances.write().unwrap().remove(edge_key);
+        self.relations_removed.write().unwrap().push(edge_key.clone());
     }
 
     pub fn tick(&self) {

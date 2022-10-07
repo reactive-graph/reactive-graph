@@ -5,6 +5,9 @@ pub trait ReactivePropertyContainer {
     /// Sends the current value down the stream.
     fn tick(&self);
 
+    /// Returns true, if a property with the given name exists.
+    fn has_property(&self, name: &str) -> bool;
+
     /// Adds a reactive property with the given name and the given initial value.
     fn add_property<S: Into<String>>(&self, name: S, value: Value);
 

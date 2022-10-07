@@ -33,7 +33,7 @@ fn create_entity_type_test() {
     };
     extensions.push(extension);
     let extension = Extension::new("other_extension", extension_value.clone());
-    extensions.push(extension);
+    extensions.push(extension.clone());
 
     let entity_type = EntityType::new(namespace, entity_type_name, description, component_names, property_types, extensions);
 
@@ -54,12 +54,15 @@ fn create_entity_type_test() {
     assert_eq!(property_name, entity_type.properties.first().unwrap().name);
 
     assert!(entity_type.has_own_property(property_name));
+    assert!(!entity_type.has_own_property(r_string()));
+    assert_eq!(property_type.data_type, entity_type.get_own_property(property_name).unwrap().data_type);
 
     assert_eq!(extension_name.clone(), entity_type.extensions.first().unwrap().name);
 
     assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
     assert!(entity_type.has_own_extension(extension_name));
     assert!(!entity_type.has_own_extension(r_string()));
+    assert_eq!(extension.extension, entity_type.get_own_extension(extension_name).unwrap().extension);
 }
 
 #[test]

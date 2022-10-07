@@ -57,10 +57,13 @@ fn create_relation_type_test() {
     assert!(relation_type.is_a(component_name.clone()));
     assert_eq!(property_name, *relation_type.properties.first().unwrap().name);
     assert!(relation_type.has_own_property(property_name.clone()));
+    assert!(!relation_type.has_own_property(r_string()));
+    assert_eq!(property_type.data_type, relation_type.get_own_property(property_name).unwrap().data_type);
     assert_eq!(extension_name.clone(), relation_type.extensions.get(0).unwrap().name);
     assert_eq!(extension_value, relation_type.extensions.get(0).unwrap().extension);
-    assert!(relation_type.has_own_extension(extension_name));
+    assert!(relation_type.has_own_extension(&extension_name));
     assert!(!relation_type.has_own_extension(r_string()));
+    assert_eq!(extension.extension, relation_type.get_own_extension(&extension_name).unwrap().extension);
 }
 
 #[test]

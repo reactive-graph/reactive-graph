@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use serde::Serialize;
+use uuid::Uuid;
 
 use crate::EntityInstance;
 use crate::Extension;
@@ -11,21 +12,20 @@ pub struct FlowTypeCreationError;
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FlowType {
-    /// The name of the flow type.
-    #[serde(default = "String::new")]
-    pub name: String,
-
     /// The namespace the entity type belongs to.
     #[serde(default = "String::new")]
     pub namespace: String,
 
-    /// The entity type of the flow.
-    #[serde(alias = "type")]
-    pub type_name: String,
+    /// The name of the flow type.
+    #[serde(default = "String::new")]
+    pub name: String,
 
     /// Textual description of the flow type.
     #[serde(default = "String::new")]
     pub description: String,
+
+    /// The wrapper entity instance.
+    pub wrapper_entity_instance: EntityInstance,
 
     /// The entity instances which are contained in this flow.
     ///
@@ -55,8 +55,8 @@ impl FlowType {
     pub fn new<S: Into<String>>(
         namespace: S,
         name: S,
-        type_name: S,
         description: S,
+        wrapper_entity_instance: EntityInstance,
         entity_instances: Vec<EntityInstance>,
         relation_instances: Vec<RelationInstance>,
         variables: Vec<PropertyType>,
@@ -65,8 +65,8 @@ impl FlowType {
         FlowType {
             namespace: namespace.into(),
             name: name.into(),
-            type_name: type_name.into(),
             description: description.into(),
+            wrapper_entity_instance,
             entity_instances,
             relation_instances,
             variables,
@@ -74,12 +74,33 @@ impl FlowType {
         }
     }
 
+    pub fn id(&self) -> Uuid {
+        self.wrapper_entity_instance.id
+    }
+
+    /// Returns the entity type namespace of the flow type
+    pub fn type_namespace(&self) -> String {
+        self.wrapper_entity_instance.namespace.clone()
+    }
+
+    /// Returns the entity type name of the flow type
+    pub fn type_name(&self) -> String {
+        self.wrapper_entity_instance.type_name.clone()
+    }
+
     /// Returns the entity types which are used by the flow type
     pub fn uses_entity_types(&self) -> Vec<String> {
         let mut entity_type_names: Vec<String> = self.entity_instances.iter().map(|e| e.type_name.clone()).collect();
-        entity_type_names.push(self.type_name.clone());
+        entity_type_names.push(self.type_name());
         entity_type_names.dedup();
         entity_type_names
+    }
+
+    /// Returns the entity instances (including the wrapper entity instance) of the flow type
+    pub fn entity_instances(&self) -> Vec<EntityInstance> {
+        let mut entity_instances = self.entity_instances.to_vec();
+        entity_instances.push(self.wrapper_entity_instance.clone());
+        entity_instances
     }
 
     /// Returns the entity types which are used by the flow type
@@ -87,6 +108,11 @@ impl FlowType {
         let mut relation_type_names: Vec<String> = self.relation_instances.iter().map(|r| r.type_name.clone()).collect();
         relation_type_names.dedup();
         relation_type_names
+    }
+
+    /// Returns the relation instances of the flow type
+    pub fn relation_instances(&self) -> Vec<RelationInstance> {
+        self.relation_instances.to_vec()
     }
 
     /// Returns true, if the flow type contains an variable with the given name.

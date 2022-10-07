@@ -5,11 +5,11 @@ use dashmap::DashMap;
 use dashmap::DashSet;
 use indradb::EdgeKey;
 use indradb::EdgeProperties;
-use indradb::Identifier;
 use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::fully_qualified_identifier;
 use crate::get_namespace_and_type_name;
 use crate::Component;
 use crate::ComponentContainer;
@@ -21,6 +21,7 @@ use crate::ReactiveEntityInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::RelationInstance;
+use crate::NAMESPACE_RELATION_TYPE;
 
 /// Reactive instance of a relation in the directed property graph.
 ///
@@ -73,7 +74,7 @@ pub struct ReactiveRelationInstance {
 impl ReactiveRelationInstance {
     // TODO: rename to "from_properties"
     pub fn from(outbound: Arc<ReactiveEntityInstance>, inbound: Arc<ReactiveEntityInstance>, properties: EdgeProperties) -> ReactiveRelationInstance {
-        let (namespace, type_name) = get_namespace_and_type_name(properties.edge.key.t);
+        let (namespace, type_name) = get_namespace_and_type_name(&properties.edge.key.t);
         let properties = properties
             .props
             .iter()
@@ -152,10 +153,9 @@ impl ReactiveRelationInstance {
         }
     }
 
-    pub fn get_key(&self) -> Option<EdgeKey> {
-        Identifier::new(self.type_name.as_str())
-            .map(|t| EdgeKey::new(self.outbound.id, t, self.inbound.id))
-            .ok()
+    pub fn get_key(&self) -> EdgeKey {
+        let t = fully_qualified_identifier(&self.namespace, &self.type_name, &NAMESPACE_RELATION_TYPE);
+        EdgeKey::new(self.outbound.id, t, self.inbound.id)
     }
 }
 
@@ -164,6 +164,10 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
         for property_instance in &self.properties {
             property_instance.tick();
         }
+    }
+
+    fn has_property(&self, name: &str) -> bool {
+        self.properties.contains_key(name)
     }
 
     fn add_property<S: Into<String>>(&self, name: S, value: Value) {
@@ -195,12 +199,16 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
 
     fn remove_observer(&self, name: &str, handle_id: u128) {
         if let Some(property) = self.properties.get(name) {
-            property.stream.read().unwrap().remove(handle_id);
+            property.stream.read().unwrap().remove(handle_id.into());
         }
     }
 }
 
 impl ComponentContainer for ReactiveRelationInstance {
+    fn get_components(&self) -> Vec<String> {
+        self.components.iter().map(|c| c.key().clone()).collect()
+    }
+
     fn add_component<S: Into<String>>(&self, component: S) {
         self.components.insert(component.into());
     }

@@ -10,6 +10,7 @@ use crate::tests::utils::create_random_entity_instance_with_type;
 use crate::tests::utils::create_random_relation_instance;
 use crate::tests::utils::r_string;
 use crate::FlowInstance;
+use crate::FlowInstanceCreationError;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::ReactiveFlowInstance;
@@ -66,24 +67,20 @@ fn reactive_flow_test() {
     reactive_flow_instance.add_relation(relation_instance.clone());
     assert_eq!(1, reactive_flow_instance.relation_instances.read().unwrap().len());
     assert!(reactive_flow_instance.has_relation(relation_instance.clone()));
-    assert!(reactive_flow_instance.has_relation_by_key(relation_instance.get_key().unwrap()));
+    assert!(reactive_flow_instance.has_relation_by_key(&relation_instance.get_key()));
     let second_relation_instance = Arc::new(create_random_relation_instance(wrapper_entity_instance.clone(), second_entity_instance.clone(), r_string()));
     reactive_flow_instance.add_relation(second_relation_instance.clone());
     assert_eq!(2, reactive_flow_instance.relation_instances.read().unwrap().len());
     assert!(reactive_flow_instance.has_relation(second_relation_instance.clone()));
-    assert!(reactive_flow_instance.has_relation_by_key(second_relation_instance.get_key().unwrap()));
+    assert!(reactive_flow_instance.has_relation_by_key(&second_relation_instance.get_key()));
     assert_eq!(
-        second_relation_instance.get_key().unwrap(),
-        reactive_flow_instance
-            .get_relation(second_relation_instance.get_key().unwrap())
-            .unwrap()
-            .get_key()
-            .unwrap()
+        second_relation_instance.get_key(),
+        reactive_flow_instance.get_relation(&second_relation_instance.get_key()).unwrap().get_key()
     );
-    reactive_flow_instance.remove_relation(second_relation_instance.get_key().unwrap());
+    reactive_flow_instance.remove_relation(&second_relation_instance.get_key());
     assert_eq!(1, reactive_flow_instance.relation_instances.read().unwrap().len());
     assert!(!reactive_flow_instance.has_relation(second_relation_instance.clone()));
-    assert!(!reactive_flow_instance.has_relation_by_key(second_relation_instance.get_key().unwrap()));
+    assert!(!reactive_flow_instance.has_relation_by_key(&second_relation_instance.get_key()));
 
     let reactive_flow_instance_2 = ReactiveFlowInstance::from(wrapper_entity_instance.clone());
     assert_eq!(wrapper_entity_instance.id, reactive_flow_instance_2.id);
@@ -117,4 +114,24 @@ fn reactive_flow_test_try_into() {
     let reactive_flow_instance_copy = ReactiveFlowInstance::try_from(flow_instance).unwrap();
     assert_eq!(wrapper_entity_instance.id, reactive_flow_instance_copy.id);
     assert_eq!(wrapper_entity_instance.type_name, reactive_flow_instance_copy.type_name);
+}
+
+#[test]
+fn reactive_flow_test_try_fail() {
+    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("generic_flow", "test"));
+    let mut reactive_flow_instance = ReactiveFlowInstance::new(wrapper_entity_instance.clone());
+    // Poisoning by altering the id
+    reactive_flow_instance.id = Uuid::new_v4();
+    let result: Result<FlowInstance, FlowInstanceCreationError> = reactive_flow_instance.try_into();
+    assert!(result.is_err());
+}
+
+#[test]
+fn reactive_flow_test_try_fail_2() {
+    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("generic_flow", "test"));
+    let reactive_flow_instance = Arc::new(ReactiveFlowInstance::new(wrapper_entity_instance.clone()));
+    // Poisoning by removing the wrapper entity instance
+    reactive_flow_instance.remove_entity(reactive_flow_instance.id);
+    let result: Result<FlowInstance, FlowInstanceCreationError> = reactive_flow_instance.try_into();
+    assert!(result.is_err());
 }

@@ -88,3 +88,48 @@ fn property_type_new_with_all_test() {
     assert_eq!(DataType::String, property_type.data_type);
     assert_eq!(SocketType::Input, property_type.socket_type);
 }
+
+#[test]
+fn property_type_bool_test() {
+    let property_name = r_string();
+    let property_type = PropertyType::bool(&property_name);
+    assert_eq!(property_name, property_type.name);
+    assert_eq!(DataType::Bool, property_type.data_type);
+    assert_eq!(SocketType::None, property_type.socket_type);
+}
+
+#[test]
+fn property_type_number_test() {
+    let property_name = r_string();
+    let property_type = PropertyType::number(&property_name);
+    assert_eq!(property_name, property_type.name);
+    assert_eq!(DataType::Number, property_type.data_type);
+    assert_eq!(SocketType::None, property_type.socket_type);
+}
+
+#[test]
+fn property_type_string_test() {
+    let property_name = r_string();
+    let property_type = PropertyType::string(&property_name);
+    assert_eq!(property_name, property_type.name);
+    assert_eq!(DataType::String, property_type.data_type);
+    assert_eq!(SocketType::None, property_type.socket_type);
+}
+
+#[test]
+fn property_type_array_test() {
+    let property_name = r_string();
+    let property_type = PropertyType::array(&property_name);
+    assert_eq!(property_name, property_type.name);
+    assert_eq!(DataType::Array, property_type.data_type);
+    assert_eq!(SocketType::None, property_type.socket_type);
+}
+
+#[test]
+fn property_type_object_test() {
+    let property_name = r_string();
+    let property_type = PropertyType::object(&property_name);
+    assert_eq!(property_name, property_type.name);
+    assert_eq!(DataType::Object, property_type.data_type);
+    assert_eq!(SocketType::None, property_type.socket_type);
+}

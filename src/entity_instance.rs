@@ -69,7 +69,7 @@ impl EntityInstance {
 
 impl From<VertexProperties> for EntityInstance {
     fn from(properties: VertexProperties) -> Self {
-        let (namespace, type_name) = get_namespace_and_type_name(properties.vertex.t);
+        let (namespace, type_name) = get_namespace_and_type_name(&properties.vertex.t);
         let id = properties.vertex.id;
         let properties: HashMap<String, Value> = properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect();
         EntityInstance {
@@ -118,7 +118,8 @@ impl PropertyInstanceGetter for EntityInstance {
 
 impl MutablePropertyInstanceSetter for EntityInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
-        let property_value = self.properties.get_mut(&property_name.into()).unwrap();
-        *property_value = value
+        if let Some(property_value) = self.properties.get_mut(&property_name.into()) {
+            *property_value = value
+        }
     }
 }

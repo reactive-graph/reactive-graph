@@ -82,4 +82,24 @@ impl PropertyType {
             extensions,
         }
     }
+
+    pub fn bool<S: Into<String>>(name: S) -> PropertyType {
+        PropertyType::new(name, DataType::Bool)
+    }
+
+    pub fn number<S: Into<String>>(name: S) -> PropertyType {
+        PropertyType::new(name, DataType::Number)
+    }
+
+    pub fn string<S: Into<String>>(name: S) -> PropertyType {
+        PropertyType::new(name, DataType::String)
+    }
+
+    pub fn array<S: Into<String>>(name: S) -> PropertyType {
+        PropertyType::new(name, DataType::Array)
+    }
+
+    pub fn object<S: Into<String>>(name: S) -> PropertyType {
+        PropertyType::new(name, DataType::Object)
+    }
 }

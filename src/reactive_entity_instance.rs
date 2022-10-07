@@ -50,9 +50,13 @@ impl ReactivePropertyContainer for ReactiveEntityInstance {
         }
     }
 
+    fn has_property(&self, name: &str) -> bool {
+        self.properties.contains_key(name)
+    }
+
     fn add_property<S: Into<String>>(&self, name: S, value: Value) {
         let name = name.into();
-        if !self.properties.contains_key(name.as_str()) {
+        if !self.properties.contains_key(&name) {
             let property_instance = ReactivePropertyInstance::new(self.id, name.clone(), value);
             self.properties.insert(name, property_instance);
         }
@@ -73,18 +77,22 @@ impl ReactivePropertyContainer for ReactiveEntityInstance {
         F: FnMut(&Value) + 'static,
     {
         if let Some(property_instance) = self.properties.get(name) {
-            property_instance.stream.read().unwrap().observe_with_handle(subscriber, handle_id);
+            property_instance.stream.read().unwrap().observe_with_handle(subscriber, handle_id.into());
         }
     }
 
     fn remove_observer(&self, name: &str, handle_id: u128) {
         if let Some(property_instance) = self.properties.get(name) {
-            property_instance.stream.read().unwrap().remove(handle_id);
+            property_instance.stream.read().unwrap().remove(handle_id.into());
         }
     }
 }
 
 impl ComponentContainer for ReactiveEntityInstance {
+    fn get_components(&self) -> Vec<String> {
+        self.components.iter().map(|c| c.key().clone()).collect()
+    }
+
     fn add_component<S: Into<String>>(&self, component: S) {
         self.components.insert(component.into());
     }
@@ -134,7 +142,7 @@ impl From<VertexProperties> for ReactiveEntityInstance {
                 )
             })
             .collect();
-        let (namespace, type_name) = get_namespace_and_type_name(properties.vertex.t);
+        let (namespace, type_name) = get_namespace_and_type_name(&properties.vertex.t);
         ReactiveEntityInstance {
             namespace,
             type_name,

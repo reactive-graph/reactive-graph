@@ -86,7 +86,7 @@ impl RelationInstance {
 
 impl From<EdgeProperties> for RelationInstance {
     fn from(properties: EdgeProperties) -> Self {
-        let (namespace, type_name) = get_namespace_and_type_name(properties.edge.key.t);
+        let (namespace, type_name) = get_namespace_and_type_name(&properties.edge.key.t);
         RelationInstance {
             namespace,
             outbound_id: properties.edge.key.outbound_id,
@@ -134,7 +134,8 @@ impl PropertyInstanceGetter for RelationInstance {
 
 impl MutablePropertyInstanceSetter for RelationInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
-        let property_value = self.properties.get_mut(&property_name.into()).unwrap();
-        *property_value = value
+        if let Some(property_value) = self.properties.get_mut(&property_name.into()) {
+            *property_value = value
+        }
     }
 }

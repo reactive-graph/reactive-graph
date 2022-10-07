@@ -12,7 +12,7 @@ pub fn fully_qualified_identifier(namespace: &str, name: &str, type_namespace: &
 }
 
 /// Returns the namespace and type name from the given identifier.
-pub fn get_namespace_and_type_name(t: Identifier) -> (String, String) {
+pub fn get_namespace_and_type_name(t: &Identifier) -> (String, String) {
     let type_name = t.to_string();
     match type_name.split_once("__") {
         Some((namespace, type_name)) => (namespace.to_string(), type_name.to_string()),
