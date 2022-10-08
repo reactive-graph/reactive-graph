@@ -50,5 +50,5 @@ pub trait ComponentBehaviourProvider: Send + Sync {
 
     /// Removes behaviour from the given relation instance by edge key
     #[allow(unused_variables)]
-    fn remove_behaviours_by_key(&self, edge_key: EdgeKey) {}
+    fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {}
 }

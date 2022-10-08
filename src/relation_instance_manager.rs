@@ -16,14 +16,19 @@ pub enum RelationInstanceCreationError {
     Failed,
 }
 
+#[derive(Debug)]
+pub enum ReactiveRelationInstanceComponentAddError {
+    Failed,
+}
+
 pub trait RelationInstanceManager: Send + Sync {
     /// Returns true, if an relation of the given type exists which starts at the given outbound entity and
     /// ends at the given inbound entity.
-    fn has(&self, edge_key: EdgeKey) -> bool;
+    fn has(&self, edge_key: &EdgeKey) -> bool;
 
     /// Returns the ReactiveRelationInstance with the given type_name, which starts at the given
     /// outbound entity and ends at the given inbound entity.
-    fn get(&self, edge_key: EdgeKey) -> Option<Arc<ReactiveRelationInstance>>;
+    fn get(&self, edge_key: &EdgeKey) -> Option<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given outbound entity instance.
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>>;
@@ -41,11 +46,11 @@ pub trait RelationInstanceManager: Send + Sync {
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;
 
     /// Adds the component with the given name to the relation instance with the given edge key.
-    fn add_component(&self, edge_key: EdgeKey, component_name: &str);
+    fn add_component(&self, edge_key: &EdgeKey, component_name: &str) -> Result<(), ReactiveRelationInstanceComponentAddError>;
 
     /// Removes the component with the given name from the relation instance with the given edge key.
-    fn remove_component(&self, edge_key: EdgeKey, component_name: &str);
+    fn remove_component(&self, edge_key: &EdgeKey, component_name: &str);
 
     /// Deletes the reactive relation instance with the given key.
-    fn delete(&self, edge_key: EdgeKey) -> bool;
+    fn delete(&self, edge_key: &EdgeKey) -> bool;
 }
