@@ -36,12 +36,7 @@ impl EntityInstanceBuilder {
     }
 
     pub fn build(&self) -> EntityInstance {
-        EntityInstance::new(
-            self.namespace.clone(),
-            self.type_name.clone(),
-            self.id.unwrap_or_else(|| Uuid::new_v4()),
-            self.properties.clone(),
-        )
+        EntityInstance::new(self.namespace.clone(), self.type_name.clone(), self.id.unwrap_or_else(Uuid::new_v4), self.properties.clone())
     }
 }
 
