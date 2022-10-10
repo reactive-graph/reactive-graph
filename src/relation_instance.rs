@@ -128,7 +128,7 @@ impl PropertyInstanceGetter for RelationInstance {
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties.get(&property_name.into()).and_then(|p| p.as_object()).map(Map::clone)
+        self.properties.get(&property_name.into()).and_then(|p| p.as_object().map(Map::clone))
     }
 }
 

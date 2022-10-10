@@ -128,7 +128,7 @@ impl ReactiveFlowInstance {
     pub fn add_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
         let edge_key = relation_instance.get_key();
         if !self.has_relation_by_key(&edge_key) {
-            self.relation_instances.write().unwrap().insert(edge_key.clone(), relation_instance.clone());
+            self.relation_instances.write().unwrap().insert(edge_key.clone(), relation_instance);
             self.relations_added.write().unwrap().push(edge_key);
         }
     }

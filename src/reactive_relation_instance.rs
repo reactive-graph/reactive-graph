@@ -199,7 +199,7 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
 
     fn remove_observer(&self, name: &str, handle_id: u128) {
         if let Some(property) = self.properties.get(name) {
-            property.stream.read().unwrap().remove(handle_id.into());
+            property.stream.read().unwrap().remove(handle_id);
         }
     }
 }
@@ -217,7 +217,7 @@ impl ComponentContainer for ReactiveRelationInstance {
         self.add_component(&component.name);
         for property_type in component.properties.iter() {
             if !self.properties.contains_key(&property_type.name) {
-                self.add_property_by_type(&property_type);
+                self.add_property_by_type(property_type);
             }
         }
     }
