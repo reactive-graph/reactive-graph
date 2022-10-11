@@ -1,5 +1,6 @@
 use serde_json::json;
 use std::collections::HashMap;
+use uuid::Uuid;
 
 use crate::tests::utils::create_entity_instance;
 use crate::tests::utils::r_string;
@@ -113,4 +114,10 @@ fn create_flow_type_test() {
     assert_eq!(extension_value, flow_type.extensions.first().unwrap().extension);
     assert!(flow_type.has_extension(extension_name));
     assert!(!flow_type.has_extension(r_string()));
+
+    assert!(flow_type.has_entity_instance(entity_instance_2.id));
+    assert!(!flow_type.has_entity_instance(Uuid::new_v4()));
+
+    assert!(flow_type.has_relation_which_uses_entity_instance(entity_instance_2.id));
+    assert!(!flow_type.has_relation_which_uses_entity_instance(Uuid::new_v4()));
 }

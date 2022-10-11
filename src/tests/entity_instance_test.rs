@@ -11,6 +11,8 @@ use crate::fully_qualified_identifier;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::EntityInstance;
+use crate::Extension;
+use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 use crate::NAMESPACE_ENTITY_TYPE;
@@ -25,13 +27,24 @@ fn entity_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
+    let mut extensions = Vec::new();
+    let extension_name = "extension_name";
+    let extension_value = json!("extension_value");
+    let extension = Extension {
+        name: extension_name.to_string(),
+        extension: extension_value.clone(),
+    };
+    extensions.push(extension);
+    let extension = Extension::new("other_extension", extension_value.clone());
+    extensions.push(extension.clone());
+
     let entity_instance = EntityInstance {
         namespace: namespace.clone(),
         type_name: type_name.clone(),
         id: uuid.clone(),
         description: description.to_string(),
         properties: properties.clone(),
-        extensions: Vec::new(),
+        extensions: extensions.clone(),
     };
     assert_eq!(namespace.clone(), entity_instance.namespace.clone());
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
@@ -41,6 +54,11 @@ fn entity_instance_test() {
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
+    assert_eq!(extension_name.clone(), entity_instance.extensions.first().unwrap().name);
+    assert_eq!(extension_value, entity_instance.extensions.first().unwrap().extension);
+    assert!(entity_instance.has_own_extension(extension_name));
+    assert!(!entity_instance.has_own_extension(r_string()));
+    assert_eq!(extension.extension, entity_instance.get_own_extension(extension_name).unwrap().extension);
 }
 
 #[test]

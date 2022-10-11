@@ -11,6 +11,8 @@ use crate::fully_qualified_identifier;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::tests::utils::r_string_1000;
+use crate::Extension;
+use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 use crate::RelationInstance;
@@ -27,6 +29,16 @@ fn relation_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
+    let mut extensions = Vec::new();
+    let extension_name = "extension_name";
+    let extension_value = json!("extension_value");
+    let extension = Extension {
+        name: extension_name.to_string(),
+        extension: extension_value.clone(),
+    };
+    extensions.push(extension);
+    let extension = Extension::new("other_extension", extension_value.clone());
+    extensions.push(extension.clone());
     let relation_instance = RelationInstance {
         namespace: namespace.clone(),
         outbound_id,
@@ -34,7 +46,7 @@ fn relation_instance_test() {
         inbound_id,
         description: description.to_string(),
         properties: properties.clone(),
-        extensions: Vec::new(),
+        extensions: extensions.clone(),
     };
     assert_eq!(namespace.clone(), relation_instance.namespace.clone());
     assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
@@ -45,6 +57,11 @@ fn relation_instance_test() {
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
+    assert_eq!(extension_name.clone(), relation_instance.extensions.first().unwrap().name);
+    assert_eq!(extension_value, relation_instance.extensions.first().unwrap().extension);
+    assert!(relation_instance.has_own_extension(extension_name));
+    assert!(!relation_instance.has_own_extension(r_string()));
+    assert_eq!(extension.extension, relation_instance.get_own_extension(extension_name).unwrap().extension);
 }
 
 #[test]

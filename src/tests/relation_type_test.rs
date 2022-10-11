@@ -1,3 +1,4 @@
+use indradb::Identifier;
 use serde_json::json;
 
 use crate::tests::utils::r_string;
@@ -50,6 +51,10 @@ fn create_relation_type_test() {
     assert_eq!(namespace, relation_type.namespace);
     assert_eq!(type_name, relation_type.type_name);
     assert_eq!(format!("{}__{}", &namespace, &type_name), relation_type.fully_qualified_name());
+    assert_eq!(
+        Identifier::new(relation_type.fully_qualified_name().as_str()).unwrap(),
+        relation_type.fully_qualified_identifier()
+    );
     assert_eq!(format!("{namespace}__{type_name}"), relation_type.t.to_string());
     assert_eq!(outbound_type, relation_type.outbound_type);
     assert_eq!(inbound_type, relation_type.inbound_type);

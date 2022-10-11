@@ -1,3 +1,4 @@
+use indradb::Identifier;
 use serde_json::json;
 
 use crate::tests::utils::r_string;
@@ -43,6 +44,10 @@ fn create_entity_type_test() {
     assert_eq!(entity_type_name, entity_type.name);
 
     assert_eq!(format!("{}__{}", &namespace, &entity_type_name), entity_type.fully_qualified_name());
+    assert_eq!(
+        Identifier::new(entity_type.fully_qualified_name().as_str()).unwrap(),
+        entity_type.fully_qualified_identifier()
+    );
 
     assert_eq!(format!("{namespace}__{entity_type_name}"), entity_type.t.to_string());
 
