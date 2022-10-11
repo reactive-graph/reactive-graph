@@ -8,6 +8,9 @@ pub trait TypeContainer {
     /// The fully qualified name contains the namespace and the name.
     fn fully_qualified_name(&self) -> String;
 
+    /// Returns the fully qualified identifier of the type.
+    fn fully_qualified_identifier(&self) -> Identifier;
+
     /// Returns true, if the type is a component with the given name.
     fn is_a<S: Into<String>>(&self, component_name: S) -> bool;
 

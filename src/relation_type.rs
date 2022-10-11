@@ -93,6 +93,10 @@ impl TypeContainer for RelationType {
         format!("{}__{}", self.namespace, self.type_name)
     }
 
+    fn fully_qualified_identifier(&self) -> Identifier {
+        fully_qualified_identifier(&self.namespace, &self.type_name, &NAMESPACE_RELATION_TYPE)
+    }
+
     fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
         self.components.contains(&component_name.into())
     }

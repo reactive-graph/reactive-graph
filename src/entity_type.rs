@@ -72,6 +72,10 @@ impl TypeContainer for EntityType {
         format!("{}__{}", self.namespace, self.name)
     }
 
+    fn fully_qualified_identifier(&self) -> Identifier {
+        fully_qualified_identifier(&self.namespace, &self.name, &NAMESPACE_ENTITY_TYPE)
+    }
+
     fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
         self.components.contains(&component_name.into())
     }
