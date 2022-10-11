@@ -1,6 +1,8 @@
 use indradb::Identifier;
 use uuid::Uuid;
 
+use crate::NAMESPACE_RELATION_TYPE;
+
 /// Safely constructs a type identifier.
 ///
 /// Fallback: generate a UUID v5 based on the type_name and a given namespace. The generated
@@ -9,6 +11,16 @@ pub fn fully_qualified_identifier(namespace: &str, name: &str, type_namespace: &
     let fully_qualified_name = format!("{namespace}__{name}");
     Identifier::new(fully_qualified_name.as_str())
         .unwrap_or_else(|_| Identifier::new(Uuid::new_v5(type_namespace, fully_qualified_name.as_bytes()).to_string()).unwrap())
+}
+
+/// Safely constructs a instance type identifier.
+///
+/// Fallback: generate a UUID v5 based on the type_name and a given namespace. The generated
+/// type identifier is stable for the same namespace, name and type_namespace.
+pub fn fully_qualified_instance_type_identifier(namespace: &str, name: &str, outbound_property_name: &str, inbound_property_name: &str) -> Identifier {
+    let fully_qualified_name = format!("{namespace}__{name}__{outbound_property_name}__{inbound_property_name}");
+    Identifier::new(fully_qualified_name.as_str())
+        .unwrap_or_else(|_| Identifier::new(Uuid::new_v5(&NAMESPACE_RELATION_TYPE, fully_qualified_name.as_bytes()).to_string()).unwrap())
 }
 
 /// Returns the namespace and type name from the given identifier.
