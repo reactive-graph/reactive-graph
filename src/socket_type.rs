@@ -1,7 +1,9 @@
 use core::fmt;
-use std::fmt::{Display, Formatter};
+use std::fmt::Display;
+use std::fmt::Formatter;
 
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 
 /// The socket type defines if the property acts as an input or output socket
 /// or is an hidden property

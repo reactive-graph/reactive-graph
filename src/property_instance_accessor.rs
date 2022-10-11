@@ -1,4 +1,5 @@
-use serde_json::{Map, Value};
+use serde_json::Map;
+use serde_json::Value;
 
 pub trait PropertyInstanceGetter {
     /// Returns the json value of the given property by name

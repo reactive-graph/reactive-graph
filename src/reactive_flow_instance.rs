@@ -7,7 +7,8 @@ use std::sync::RwLock;
 use crate::ReactivePropertyContainer;
 
 use indradb::EdgeKey;
-use serde_json::{Map, Value};
+use serde_json::Map;
+use serde_json::Value;
 use uuid::Uuid;
 
 use crate::FlowInstance;
