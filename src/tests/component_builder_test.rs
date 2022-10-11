@@ -1,9 +1,11 @@
+use serde_json::json;
+
 use crate::model::DataType;
 use crate::model::PropertyType;
 use crate::model::SocketType;
 use crate::tests::utils::r_string;
-use crate::{ComponentBuilder, ComponentsBuilder};
-use serde_json::json;
+use crate::ComponentBuilder;
+use crate::ComponentsBuilder;
 
 #[test]
 fn component_builder_test() {
