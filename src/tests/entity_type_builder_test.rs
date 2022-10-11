@@ -1,6 +1,7 @@
 use serde_json::json;
 
 use crate::model::DataType;
+use crate::model::ExtensionContainer;
 use crate::model::PropertyType;
 use crate::model::SocketType;
 use crate::model::TypeContainer;
