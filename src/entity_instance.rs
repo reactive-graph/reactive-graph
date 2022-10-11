@@ -8,6 +8,8 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::get_namespace_and_type_name;
+use crate::Extension;
+use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 
@@ -41,6 +43,10 @@ pub struct EntityInstance {
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
+
+    /// Entity instance specific extensions.
+    #[serde(default = "Vec::new")]
+    pub extensions: Vec<Extension>,
 }
 
 impl EntityInstance {
@@ -52,6 +58,7 @@ impl EntityInstance {
             id,
             description: String::new(),
             properties,
+            extensions: Vec::new(),
         }
     }
 
@@ -63,6 +70,7 @@ impl EntityInstance {
             id,
             description: String::new(),
             properties: HashMap::new(),
+            extensions: Vec::new(),
         }
     }
 }
@@ -78,6 +86,7 @@ impl From<VertexProperties> for EntityInstance {
             id,
             description: String::new(),
             properties,
+            extensions: Vec::new(),
         }
     }
 }
@@ -121,5 +130,17 @@ impl MutablePropertyInstanceSetter for EntityInstance {
         if let Some(property_value) = self.properties.get_mut(&property_name.into()) {
             *property_value = value
         }
+    }
+}
+
+impl ExtensionContainer for EntityInstance {
+    fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
+        let extension_name = extension_name.into();
+        self.extensions.iter().any(|extension| extension.name == extension_name)
+    }
+
+    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
+        let extension_name = extension_name.into();
+        self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
     }
 }

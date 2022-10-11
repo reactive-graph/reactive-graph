@@ -10,6 +10,8 @@ use uuid::Uuid;
 
 use crate::fully_qualified_identifier;
 use crate::get_namespace_and_type_name;
+use crate::Extension;
+use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
 use crate::PropertyInstanceGetter;
 use crate::NAMESPACE_RELATION_TYPE;
@@ -51,6 +53,10 @@ pub struct RelationInstance {
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
+
+    /// Relation instance specific extensions.
+    #[serde(default = "Vec::new")]
+    pub extensions: Vec<Extension>,
 }
 
 impl RelationInstance {
@@ -63,6 +69,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties,
+            extensions: Vec::new(),
         }
     }
 
@@ -75,6 +82,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties: HashMap::new(),
+            extensions: Vec::new(),
         }
     }
 
@@ -94,6 +102,7 @@ impl From<EdgeProperties> for RelationInstance {
             inbound_id: properties.edge.key.inbound_id,
             description: String::new(),
             properties: properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect(),
+            extensions: Vec::new(),
         }
     }
 }
@@ -137,5 +146,17 @@ impl MutablePropertyInstanceSetter for RelationInstance {
         if let Some(property_value) = self.properties.get_mut(&property_name.into()) {
             *property_value = value
         }
+    }
+}
+
+impl ExtensionContainer for RelationInstance {
+    fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
+        let extension_name = extension_name.into();
+        self.extensions.iter().any(|extension| extension.name == extension_name)
+    }
+
+    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
+        let extension_name = extension_name.into();
+        self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
     }
 }

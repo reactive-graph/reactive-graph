@@ -259,6 +259,7 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
             inbound_id: instance.inbound.id,
             description: instance.description.clone(),
             properties,
+            extensions: Vec::new(),
         }
     }
 }

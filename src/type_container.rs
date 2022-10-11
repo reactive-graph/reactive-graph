@@ -1,4 +1,5 @@
-use crate::Extension;
+use indradb::Identifier;
+
 use crate::PropertyType;
 
 pub trait TypeContainer {
@@ -17,11 +18,4 @@ pub trait TypeContainer {
     /// Returns the own property with the given name.
     /// Doesn't respect properties from potential components.
     fn get_own_property<S: Into<String>>(&self, property_name: S) -> Option<PropertyType>;
-
-    /// Returns true, if the type contains an extension with the given name.
-    fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool;
-
-    /// Returns the own extension with the given name.
-    /// Doesn't respect properties from potential components.
-    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension>;
 }

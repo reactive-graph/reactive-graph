@@ -34,6 +34,7 @@ fn relation_instance_test() {
         inbound_id,
         description: description.to_string(),
         properties: properties.clone(),
+        extensions: Vec::new(),
     };
     assert_eq!(namespace.clone(), relation_instance.namespace.clone());
     assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
@@ -59,6 +60,7 @@ fn edge_key_test() {
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
+        extensions: Vec::new(),
     };
     let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
@@ -80,6 +82,7 @@ fn edge_key_with_long_namespace_test() {
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
+        extensions: Vec::new(),
     };
     let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
@@ -101,6 +104,7 @@ fn edge_key_with_long_type_name_test() {
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
+        extensions: Vec::new(),
     };
     let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
@@ -122,6 +126,7 @@ fn edge_key_with_long_namespace_and_type_name_test() {
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
+        extensions: Vec::new(),
     };
     let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
     let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
@@ -234,6 +239,7 @@ fn relation_instance_get_key_test() {
         inbound_id,
         description: description.to_string(),
         properties: properties.clone(),
+        extensions: Vec::new(),
     };
     let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
     assert_eq!(EdgeKey::new(outbound_id, t, inbound_id), relation_instance.get_key());

@@ -187,6 +187,7 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
             id: instance.id,
             description: instance.description.clone(),
             properties,
+            extensions: Vec::new(),
         }
     }
 }

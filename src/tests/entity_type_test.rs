@@ -5,6 +5,7 @@ use crate::tests::utils::r_string_1000;
 use crate::DataType;
 use crate::EntityType;
 use crate::Extension;
+use crate::ExtensionContainer;
 use crate::PropertyType;
 use crate::TypeContainer;
 

@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use crate::extension::Extension;
 use crate::fully_qualified_identifier;
+use crate::ExtensionContainer;
 use crate::PropertyType;
 use crate::TypeContainer;
 
@@ -105,7 +106,9 @@ impl TypeContainer for RelationType {
         let property_name = property_name.into();
         self.properties.iter().find(|p| p.name == property_name).cloned()
     }
+}
 
+impl ExtensionContainer for RelationType {
     fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
         let extension_name = extension_name.into();
         self.extensions.iter().any(|extension| extension.name == extension_name)

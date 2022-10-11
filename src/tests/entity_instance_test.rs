@@ -31,6 +31,7 @@ fn entity_instance_test() {
         id: uuid.clone(),
         description: description.to_string(),
         properties: properties.clone(),
+        extensions: Vec::new(),
     };
     assert_eq!(namespace.clone(), entity_instance.namespace.clone());
     assert_eq!(type_name.clone(), entity_instance.type_name.clone());
