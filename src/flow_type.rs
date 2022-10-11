@@ -103,6 +103,26 @@ impl FlowType {
         entity_instances
     }
 
+    pub fn has_entity_instance(&self, id: Uuid) -> bool {
+        self.entity_instances.iter().any(|e| e.id == id)
+    }
+
+    pub fn has_relation_which_uses_entity_instance(&self, id: Uuid) -> bool {
+        self.relation_instances.iter().any(|r| r.outbound_id == id || r.inbound_id == id)
+    }
+
+    /// Adds the given entity instance.
+    pub fn add_entity_instance(&mut self, entity_instance: EntityInstance) {
+        self.entity_instances.push(entity_instance);
+    }
+
+    /// Removes the entity instance with the given id from the flow type
+    pub fn remove_entity_instance(&mut self, id: Uuid) {
+        if !self.has_relation_which_uses_entity_instance(id) {
+            self.entity_instances.retain(|e| e.id != id);
+        }
+    }
+
     /// Returns the entity types which are used by the flow type
     pub fn uses_relation_types(&self) -> Vec<String> {
         let mut relation_type_names: Vec<String> = self.relation_instances.iter().map(|r| r.type_name.clone()).collect();
@@ -121,9 +141,30 @@ impl FlowType {
         self.variables.iter().any(|p| p.name == variable_name)
     }
 
+    /// Adds the given variable.
+    pub fn add_variable(&mut self, property: PropertyType) {
+        self.variables.push(property)
+    }
+
+    /// Removes the variable with the given name from the flow type.
+    pub fn remove_variable(&mut self, variable_name: &str) {
+        self.variables.retain(|v| &v.name != variable_name)
+    }
+
     /// Returns true, if the flow type contains an extension with the given name.
     pub fn has_extension<S: Into<String>>(&self, extension_name: S) -> bool {
         let extension_name = extension_name.into();
         self.extensions.iter().any(|extension| extension.name == extension_name)
+    }
+
+    /// Adds an extension to the flow type.
+    pub fn add_extension(&mut self, extension: Extension) {
+        self.extensions.push(extension)
+    }
+
+    /// Removes the extension with the given name from the flow type.
+    pub fn remove_extension<S: Into<String>>(&mut self, extension_name: S) {
+        let extension_name = extension_name.into();
+        self.extensions.retain(|extension| extension.name != extension_name)
     }
 }
