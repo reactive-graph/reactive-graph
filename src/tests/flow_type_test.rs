@@ -49,8 +49,8 @@ fn create_flow_type_test() {
         extension: extension_value.clone(),
     };
     extensions.push(extension);
-    let extension = Extension::new("other_extension", extension_value.clone());
-    extensions.push(extension);
+    let extension_2 = Extension::new("other_extension", extension_value.clone());
+    extensions.push(extension_2);
 
     let flow_type = FlowType::new(
         namespace,
@@ -120,4 +120,32 @@ fn create_flow_type_test() {
 
     assert!(flow_type.has_relation_which_uses_entity_instance(entity_instance_2.id));
     assert!(!flow_type.has_relation_which_uses_entity_instance(Uuid::new_v4()));
+
+    let mut flow_type = flow_type;
+    let entity_instance_4 = create_entity_instance("property3");
+    flow_type.add_entity_instance(entity_instance_4.clone());
+    assert_eq!(4, flow_type.entity_instances().len());
+    assert!(flow_type.has_entity_instance(entity_instance_4.id));
+    flow_type.remove_entity_instance(entity_instance_4.id);
+    assert_eq!(3, flow_type.entity_instances().len());
+    assert!(!flow_type.has_entity_instance(entity_instance_4.id));
+
+    let variable_2_name = "variable_name_2";
+    let variable_2 = PropertyType::new(variable_2_name, DataType::Object);
+    flow_type.add_variable(variable_2);
+    assert_eq!(2, flow_type.variables.len());
+    assert!(flow_type.has_variable(variable_2_name));
+    flow_type.remove_variable(variable_2_name);
+    assert_eq!(1, flow_type.variables.len());
+    assert!(!flow_type.has_variable(variable_2_name));
+
+    let extension_3_name = "extension_name_3";
+    let extension_3_value = json!("extension_value");
+    let extension_3 = Extension::new(extension_3_name, extension_3_value);
+    flow_type.add_extension(extension_3);
+    assert_eq!(3, flow_type.extensions.len());
+    assert!(flow_type.has_extension(extension_3_name));
+    flow_type.remove_extension(extension_3_name);
+    assert_eq!(2, flow_type.extensions.len());
+    assert!(!flow_type.has_extension(extension_3_name));
 }
