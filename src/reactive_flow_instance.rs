@@ -25,6 +25,7 @@ pub enum ReactiveFlowInstanceConstructionError {
 }
 
 impl fmt::Display for ReactiveFlowInstanceConstructionError {
+    #[cfg(not(tarpaulin_include))]
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match *self {
             ReactiveFlowInstanceConstructionError::MissingWrapperInstance => {
