@@ -45,6 +45,15 @@ fn reactive_flow_test() {
     assert_eq!(1.1, reactive_flow_instance.as_f64("test").unwrap());
     reactive_flow_instance.set("test", json!(2));
     assert_eq!(2, reactive_flow_instance.as_u64("test").unwrap());
+    reactive_flow_instance.set("test", json!([1.23]));
+    assert_eq!(vec![json!(1.23)], reactive_flow_instance.as_array("test").unwrap());
+    reactive_flow_instance.set(
+        "test",
+        json!({
+            "test": 1.23
+        }),
+    );
+    assert_eq!(1.23, reactive_flow_instance.as_object("test").unwrap().get("test").unwrap().as_f64().unwrap());
     reactive_flow_instance.set_no_propagate("test", json!(false));
     assert_eq!(false, reactive_flow_instance.as_bool("test").unwrap());
 
