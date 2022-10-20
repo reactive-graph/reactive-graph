@@ -39,6 +39,9 @@ pub trait RelationInstanceManager: Send + Sync {
     /// Returns all reactive relation instances.
     fn get_all(&self) -> Vec<Arc<ReactiveRelationInstance>>;
 
+    /// Returns all reactive relation instances of the given type.
+    fn get_by_type(&self, type_name: &str) -> Vec<Arc<ReactiveRelationInstance>>;
+
     /// Returns all edge keys.
     fn get_keys(&self) -> Vec<EdgeKey>;
 

@@ -40,6 +40,9 @@ pub trait EntityInstanceManager: Send + Sync {
     /// Returns all reactive entity instances.
     fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>>;
 
+    /// Returns all reactive entity instances of the given type.
+    fn get_by_type(&self, type_name: &str) -> Vec<Arc<ReactiveEntityInstance>>;
+
     /// Returns all ids.
     fn get_ids(&self) -> Vec<Uuid>;
 
