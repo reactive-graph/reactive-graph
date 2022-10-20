@@ -74,6 +74,10 @@ pub trait EntityTypeManager: Send + Sync {
     /// Deletes the entity type with the given name.
     fn delete(&self, name: &str);
 
+    /// Validates the entity type with the given name.
+    /// Tests that all components exists.
+    fn validate(&self, name: &str) -> bool;
+
     /// Imports an entity type from a JSON file file located at the given path.
     fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError>;
 

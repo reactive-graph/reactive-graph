@@ -83,6 +83,10 @@ pub trait RelationTypeManager: Send + Sync {
     /// Deletes the relation type with the given name.
     fn delete(&self, type_name: &str);
 
+    /// Validates the relation type with the given name.
+    /// Tests that all components, the outbound and inbound entity type exists.
+    fn validate(&self, name: &str) -> bool;
+
     /// Imports a relation type from a JSON file located at the given path.
     fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError>;
 

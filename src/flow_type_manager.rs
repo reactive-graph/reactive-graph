@@ -47,6 +47,10 @@ pub trait FlowTypeManager: Send + Sync {
     /// Deletes the flow type with the given name.
     fn delete(&self, name: &str);
 
+    /// Validates the flow type with the given name.
+    /// Tests that all entity types and relation types exists and are valid.
+    fn validate(&self, name: &str) -> bool;
+
     /// Imports an flow type from a JSON file file located at the given path.
     fn import(&self, path: &str);
 
