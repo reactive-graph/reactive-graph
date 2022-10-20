@@ -15,6 +15,11 @@ pub enum PluginContextInitializationError {
     InitializationError,
 }
 
+#[derive(Debug)]
+pub enum PluginContextDeinitializationError {
+    DeinitializationError,
+}
+
 pub trait PluginContext: Send + Sync {
     /// Returns the component manager.
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;

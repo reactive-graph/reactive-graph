@@ -32,17 +32,17 @@ pub use flow_type_provider::FlowTypeProviderError;
 pub use graphql_query_service::GraphQLQueryService;
 pub use http_body::HttpBody;
 pub use plugin::Plugin;
-pub use plugin::PluginDeclaration;
-pub use plugin::PluginInitializationError;
+pub use plugin::PluginActivationError;
+pub use plugin::PluginDeactivationError;
 pub use plugin::PluginLoadingError;
-pub use plugin::PluginMetadata;
-pub use plugin::PluginPostInitializationError;
-pub use plugin::PluginPreShutdownError;
-pub use plugin::PluginRegistrar;
-pub use plugin::PluginShutdownError;
 pub use plugin::PluginUnloadingError;
 pub use plugin_context::PluginContext;
+pub use plugin_context::PluginContextDeinitializationError;
 pub use plugin_context::PluginContextInitializationError;
+pub use plugin_declaration::PluginDeclaration;
+pub use plugin_declaration::PluginRegistrar;
+pub use plugin_dependency::PluginDependency;
+pub use plugin_state::PluginState;
 pub use relation_behaviour_provider::RelationBehaviourProvider;
 pub use relation_behaviour_provider::RelationBehaviourProviderError;
 pub use relation_instance_manager::RelationInstanceManager;
@@ -75,6 +75,9 @@ pub mod graphql_query_service;
 pub mod http_body;
 pub mod plugin;
 pub mod plugin_context;
+pub mod plugin_declaration;
+pub mod plugin_dependency;
+pub mod plugin_state;
 pub mod relation_behaviour_provider;
 pub mod relation_instance_manager;
 pub mod relation_type_manager;
@@ -83,18 +86,22 @@ pub mod system_event_manager;
 pub mod system_events;
 pub mod web_resource_provider;
 
-pub static INEXOR_RGF_PLUGIN_VERSION: &str = env!("CARGO_PKG_VERSION");
 pub static RUSTC_VERSION: &str = env!("RUSTC_VERSION");
+pub static PLUGIN_API_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[macro_export]
 macro_rules! export_plugin {
-    ($register:expr) => {
+    ($register:expr, $get_dependencies:expr, $name:expr, $description:expr, $version:expr) => {
         #[doc(hidden)]
         #[no_mangle]
         pub static plugin_declaration: $crate::PluginDeclaration = $crate::PluginDeclaration {
             rustc_version: $crate::RUSTC_VERSION,
-            inexor_rgf_plugin_version: $crate::INEXOR_RGF_PLUGIN_VERSION,
+            plugin_api_version: $crate::PLUGIN_API_VERSION,
+            name: $name,
+            description: $description,
+            version: $version,
             register: $register,
+            get_dependencies: $get_dependencies,
         };
     };
 }

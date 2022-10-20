@@ -1,9 +1,8 @@
 use std::sync::Arc;
 
 use crate::ComponentBehaviourProviderError;
-use serde::Deserialize;
-use serde::Serialize;
 
+use crate::plugin_context::PluginContextDeinitializationError;
 use crate::ComponentBehaviourProvider;
 use crate::ComponentProvider;
 use crate::ComponentProviderError;
@@ -50,46 +49,25 @@ pub enum PluginMetadataError {
 }
 
 #[derive(Debug)]
-pub enum PluginInitializationError {
-    InitializationFailed,
+pub enum PluginActivationError {
+    // TODO: Add more specific error types
+    ActivationFailed,
 }
 
 #[derive(Debug)]
-pub enum PluginPostInitializationError {
-    PostInitializationFailed,
-}
-
-#[derive(Debug)]
-pub enum PluginPreShutdownError {
-    PreShutdownFailed,
-}
-
-#[derive(Debug)]
-pub enum PluginShutdownError {
-    ShutdownFailed,
+pub enum PluginDeactivationError {
+    // TODO: Add more specific error types
+    DeactivationFailed,
 }
 
 pub trait Plugin: Send + Sync {
-    /// Returns the metadata of the plugin.
-    fn metadata(&self) -> Result<PluginMetadata, PluginMetadataError>;
-
     /// Called on initialization of the plugin.
-    fn init(&self) -> Result<(), PluginInitializationError> {
+    fn activate(&self) -> Result<(), PluginActivationError> {
         Ok(())
     }
 
-    /// Called after initialization of the plugin.
-    fn post_init(&self) -> Result<(), PluginPostInitializationError> {
-        Ok(())
-    }
-
-    /// Called before shutdown of the plugin.
-    fn pre_shutdown(&self) -> Result<(), PluginPreShutdownError> {
-        Ok(())
-    }
-
-    /// Called on shutdown of the plugin.
-    fn shutdown(&self) -> Result<(), PluginShutdownError> {
+    /// Called on deactivation of the plugin.
+    fn deactivate(&self) -> Result<(), PluginDeactivationError> {
         Ok(())
     }
 
@@ -98,6 +76,10 @@ pub trait Plugin: Send + Sync {
     /// The plugin context provides access to the core services of the reactive graph flow.
     #[allow(unused_variables)]
     fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginContextInitializationError> {
+        Ok(())
+    }
+
+    fn remove_context(&self) -> Result<(), PluginContextDeinitializationError> {
         Ok(())
     }
 
@@ -172,21 +154,4 @@ pub trait Plugin: Send + Sync {
     fn get_web_resource_provider(&self) -> Result<Option<Arc<dyn WebResourceProvider>>, WebResourceProviderError> {
         Ok(None)
     }
-}
-
-#[derive(Copy, Clone)]
-pub struct PluginDeclaration {
-    /// The version of the rust compiler which has compiled the plugin. The version must match with the version the core application has been compiled with.
-    pub rustc_version: &'static str,
-
-    /// The version of plugin API. The version must match with the version of the plugin API used by the core application.
-    pub inexor_rgf_plugin_version: &'static str,
-
-    /// The library registrar function.
-    pub register: unsafe extern "C" fn(&mut dyn PluginRegistrar),
-}
-
-pub trait PluginRegistrar {
-    /// Registers the given plugin with the given name in the core application.
-    fn register_plugin(&mut self, name: &str, plugin: Box<Arc<dyn Plugin>>);
 }
