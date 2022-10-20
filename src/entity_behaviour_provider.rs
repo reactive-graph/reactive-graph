@@ -18,3 +18,15 @@ pub trait EntityBehaviourProvider: Send + Sync {
     /// Removes behaviour to the given entity instance by uuid
     fn remove_behaviours_by_id(&self, id: Uuid);
 }
+
+#[macro_export]
+macro_rules! entity_behaviour_provider {
+    ($entity_behaviour_provider:expr) => {{
+        let entity_behaviour_provider = $entity_behaviour_provider.clone();
+        let entity_behaviour_provider: Result<Arc<dyn EntityBehaviourProvider>, _> = <dyn query_interface::Object>::query_arc(entity_behaviour_provider);
+        if entity_behaviour_provider.is_err() {
+            return Err(EntityBehaviourProviderError::InitializationError);
+        }
+        Ok(entity_behaviour_provider.ok())
+    }};
+}

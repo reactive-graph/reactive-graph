@@ -19,3 +19,15 @@ pub trait RelationBehaviourProvider: Send + Sync {
     /// Removes behaviour from the given relation instance by edge key
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey);
 }
+
+#[macro_export]
+macro_rules! relation_behaviour_provider {
+    ($relation_behaviour_provider:expr) => {{
+        let relation_behaviour_provider = $relation_behaviour_provider.clone();
+        let relation_behaviour_provider: Result<Arc<dyn RelationBehaviourProvider>, _> = <dyn query_interface::Object>::query_arc(relation_behaviour_provider);
+        if relation_behaviour_provider.is_err() {
+            return Err(RelationBehaviourProviderError::InitializationError);
+        }
+        Ok(relation_behaviour_provider.ok())
+    }};
+}

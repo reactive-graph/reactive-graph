@@ -52,3 +52,16 @@ pub trait ComponentBehaviourProvider: Send + Sync {
     #[allow(unused_variables)]
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {}
 }
+
+#[macro_export]
+macro_rules! component_behaviour_provider {
+    ($component_behaviour_provider:expr) => {{
+        let component_behaviour_provider = $component_behaviour_provider.clone();
+        let component_behaviour_provider: Result<Arc<dyn ComponentBehaviourProvider>, _> =
+            <dyn query_interface::Object>::query_arc(component_behaviour_provider);
+        if component_behaviour_provider.is_err() {
+            return Err(ComponentBehaviourProviderError::InitializationError);
+        }
+        Ok(component_behaviour_provider.ok())
+    }};
+}
