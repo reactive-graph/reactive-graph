@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use crate::plugin::PluginMetadataError;
 use crate::ComponentManager;
 use crate::EntityInstanceManager;
 use crate::EntityTypeManager;
@@ -9,18 +8,13 @@ use crate::FlowTypeManager;
 use crate::GraphQLQueryService;
 use crate::Plugin;
 use crate::PluginContext;
-use crate::PluginMetadata;
 use crate::RelationInstanceManager;
 use crate::RelationTypeManager;
 use crate::SystemEventManager;
 
 /// Fake plugin
 struct TestPlugin {}
-impl Plugin for TestPlugin {
-    fn metadata(&self) -> Result<PluginMetadata, PluginMetadataError> {
-        Err(PluginMetadataError::InvalidMetadataError)
-    }
-}
+impl Plugin for TestPlugin {}
 
 struct TestPluginContext {}
 impl PluginContext for TestPluginContext {
@@ -65,11 +59,10 @@ impl PluginContext for TestPluginContext {
 fn plugin_api_default_trait_impl_test() {
     let plugin = TestPlugin {};
     let context = TestPluginContext {};
-    assert_eq!(true, plugin.init().is_ok());
-    assert_eq!(true, plugin.post_init().is_ok());
-    assert_eq!(true, plugin.pre_shutdown().is_ok());
-    assert_eq!(true, plugin.shutdown().is_ok());
+    assert_eq!(true, plugin.activate().is_ok());
+    assert_eq!(true, plugin.deactivate().is_ok());
     assert_eq!(true, plugin.set_context(Arc::new(context)).is_ok());
+    assert_eq!(true, plugin.remove_context().is_ok());
     assert_eq!(true, plugin.get_component_behaviour_provider().is_ok());
     assert_eq!(true, plugin.get_entity_type_provider().is_ok());
     assert_eq!(true, plugin.get_relation_type_provider().is_ok());

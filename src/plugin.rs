@@ -44,11 +44,6 @@ pub enum PluginUnloadingError {
 }
 
 #[derive(Debug)]
-pub enum PluginMetadataError {
-    InvalidMetadataError,
-}
-
-#[derive(Debug)]
 pub enum PluginActivationError {
     // TODO: Add more specific error types
     ActivationFailed,
