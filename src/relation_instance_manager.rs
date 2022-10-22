@@ -4,6 +4,7 @@ use indradb::EdgeKey;
 use uuid::Uuid;
 
 use crate::model::ComponentType;
+use crate::model::EntityTypeType;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
 use crate::model::RelationTypeType;
@@ -49,6 +50,18 @@ pub trait RelationInstanceManager: Send + Sync {
 
     /// Returns all edge keys.
     fn get_keys(&self) -> Vec<EdgeKey>;
+
+    /// Returns the count of registered reactive relation instances.
+    fn count(&self) -> usize;
+
+    /// Returns the count of registered reactive relation instances of the given type.
+    fn count_by_type(&self, ty: &RelationTypeType) -> usize;
+
+    /// Returns the count of registered reactive relation instances which are of the given component.
+    fn count_by_component(&self, component: &ComponentType) -> usize;
+
+    /// Returns the count of registered reactive relation instances which behaves as the given behaviour.
+    fn count_by_behaviour(&self, behaviour: &str) -> usize;
 
     /// Creates a new reactive relation instance.
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;
