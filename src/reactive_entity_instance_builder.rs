@@ -3,6 +3,8 @@ use std::sync::Arc;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::model::ComponentContainer;
+use crate::model::ComponentType;
 use crate::model::EntityType;
 use crate::model::EntityTypeType;
 use crate::model::ReactiveEntityInstance;
@@ -11,6 +13,7 @@ use crate::EntityInstanceBuilder;
 #[allow(dead_code)]
 pub struct ReactiveEntityInstanceBuilder {
     ty: EntityTypeType,
+    components: Vec<ComponentType>,
     builder: EntityInstanceBuilder,
 }
 
@@ -19,6 +22,7 @@ impl ReactiveEntityInstanceBuilder {
     pub fn new(ty: EntityTypeType) -> ReactiveEntityInstanceBuilder {
         ReactiveEntityInstanceBuilder {
             ty: ty.clone(),
+            components: Vec::new(),
             builder: EntityInstanceBuilder::new(ty),
         }
     }
@@ -37,8 +41,17 @@ impl ReactiveEntityInstanceBuilder {
         self
     }
 
+    pub fn component(&mut self, component: ComponentType) -> &mut ReactiveEntityInstanceBuilder {
+        self.components.push(component);
+        self
+    }
+
     pub fn build(&self) -> Arc<ReactiveEntityInstance> {
-        Arc::new(ReactiveEntityInstance::from(self.builder.build()))
+        let entity_instance = ReactiveEntityInstance::from(self.builder.build());
+        for component in self.components.iter() {
+            entity_instance.add_component(component.clone());
+        }
+        Arc::new(entity_instance)
     }
 }
 

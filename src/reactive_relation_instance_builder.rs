@@ -2,6 +2,8 @@ use std::sync::Arc;
 
 use serde_json::Value;
 
+use crate::model::ComponentContainer;
+use crate::model::ComponentType;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationType;
@@ -13,6 +15,7 @@ pub struct ReactiveRelationInstanceBuilder {
     outbound: Arc<ReactiveEntityInstance>,
     ty: RelationTypeType,
     inbound: Arc<ReactiveEntityInstance>,
+    components: Vec<ComponentType>,
     builder: RelationInstanceBuilder,
 }
 
@@ -24,6 +27,7 @@ impl ReactiveRelationInstanceBuilder {
             outbound,
             ty,
             inbound,
+            components: Vec::new(),
             builder,
         }
     }
@@ -49,7 +53,16 @@ impl ReactiveRelationInstanceBuilder {
         self
     }
 
+    pub fn component(&mut self, component: ComponentType) -> &mut ReactiveRelationInstanceBuilder {
+        self.components.push(component);
+        self
+    }
+
     pub fn build(&self) -> Arc<ReactiveRelationInstance> {
-        Arc::new(ReactiveRelationInstance::new_from_instance(self.outbound.clone(), self.inbound.clone(), self.builder.build()))
+        let relation_instance = ReactiveRelationInstance::new_from_instance(self.outbound.clone(), self.inbound.clone(), self.builder.build());
+        for component in self.components.iter() {
+            relation_instance.add_component(component.clone());
+        }
+        Arc::new(relation_instance)
     }
 }
