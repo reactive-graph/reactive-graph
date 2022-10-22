@@ -3,8 +3,10 @@ use std::sync::Arc;
 use indradb::EdgeKey;
 use uuid::Uuid;
 
+use crate::model::ComponentType;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
+use crate::model::RelationTypeType;
 
 #[derive(Debug)]
 pub enum RelationInstanceManagerError {
@@ -40,7 +42,10 @@ pub trait RelationInstanceManager: Send + Sync {
     fn get_all(&self) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given type.
-    fn get_by_type(&self, type_name: &str) -> Vec<Arc<ReactiveRelationInstance>>;
+    fn get_by_type(&self, ty: &RelationTypeType) -> Vec<Arc<ReactiveRelationInstance>>;
+
+    /// Returns all reactive relation instances of the given namespace.
+    fn get_by_namespace(&self, namespace: &str) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all edge keys.
     fn get_keys(&self) -> Vec<EdgeKey>;
@@ -49,10 +54,10 @@ pub trait RelationInstanceManager: Send + Sync {
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;
 
     /// Adds the component with the given name to the relation instance with the given edge key.
-    fn add_component(&self, edge_key: &EdgeKey, component_name: &str) -> Result<(), ReactiveRelationInstanceComponentAddError>;
+    fn add_component(&self, edge_key: &EdgeKey, component: &ComponentType) -> Result<(), ReactiveRelationInstanceComponentAddError>;
 
     /// Removes the component with the given name from the relation instance with the given edge key.
-    fn remove_component(&self, edge_key: &EdgeKey, component_name: &str);
+    fn remove_component(&self, edge_key: &EdgeKey, component: &ComponentType);
 
     /// Deletes the reactive relation instance with the given key.
     fn delete(&self, edge_key: &EdgeKey) -> bool;

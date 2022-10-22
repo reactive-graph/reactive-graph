@@ -3,7 +3,9 @@ use std::sync::Arc;
 
 use uuid::Uuid;
 
+use crate::model::ComponentType;
 use crate::model::EntityInstance;
+use crate::model::EntityTypeType;
 use crate::model::ReactiveEntityInstance;
 
 #[derive(Debug)]
@@ -41,7 +43,7 @@ pub trait EntityInstanceManager: Send + Sync {
     fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>>;
 
     /// Returns all reactive entity instances of the given type.
-    fn get_by_type(&self, type_name: &str) -> Vec<Arc<ReactiveEntityInstance>>;
+    fn get_by_type(&self, ty: &EntityTypeType) -> Vec<Arc<ReactiveEntityInstance>>;
 
     /// Returns all ids.
     fn get_ids(&self) -> Vec<Uuid>;
@@ -50,10 +52,10 @@ pub trait EntityInstanceManager: Send + Sync {
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 
     /// Adds the component with the given name to the entity instance with the given id.
-    fn add_component(&self, id: Uuid, component: &str) -> Result<(), EntityInstanceComponentAddError>;
+    fn add_component(&self, id: Uuid, component: &ComponentType) -> Result<(), EntityInstanceComponentAddError>;
 
     /// Removes the component with the given name from the entity instance with the given id.
-    fn remove_component(&self, id: Uuid, component: &str);
+    fn remove_component(&self, id: Uuid, component: &ComponentType);
 
     /// Deletes the reactive entity instance with the given id.
     fn delete(&self, id: Uuid);

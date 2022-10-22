@@ -1,9 +1,12 @@
-use crate::model::FlowInstance;
-use crate::model::ReactiveFlowInstance;
-use serde_json::Value;
 use std::collections::HashMap;
 use std::sync::Arc;
+
+use serde_json::Value;
 use uuid::Uuid;
+
+use crate::model::FlowInstance;
+use crate::model::FlowTypeType;
+use crate::model::ReactiveFlowInstance;
 
 #[derive(Debug)]
 pub enum FlowInstanceManagerError {
@@ -45,7 +48,7 @@ pub trait FlowInstanceManager: Send + Sync {
     /// and the ReactiveRelationInstanceManager.
     fn create_from_type(
         &self,
-        name: &str,
+        ty: &FlowTypeType,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError>;
