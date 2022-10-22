@@ -4,13 +4,13 @@ use crate::model::DataType;
 use crate::model::EntityInstance;
 use crate::model::Extension;
 use crate::model::FlowType;
+use crate::model::FlowTypeType;
 use crate::model::PropertyType;
 use crate::model::RelationInstance;
 
 #[allow(dead_code)]
 pub struct FlowTypeBuilder {
-    namespace: String,
-    name: String,
+    ty: FlowTypeType,
     description: String,
     wrapper_entity_instance: EntityInstance,
     entity_instances: Vec<EntityInstance>,
@@ -21,10 +21,9 @@ pub struct FlowTypeBuilder {
 
 #[allow(dead_code)]
 impl FlowTypeBuilder {
-    pub fn new<S: Into<String>>(namespace: S, name: S, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
+    pub fn new(ty: FlowTypeType, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
         FlowTypeBuilder {
-            namespace: namespace.into(),
-            name: name.into(),
+            ty,
             description: String::new(),
             wrapper_entity_instance,
             entity_instances: Vec::new(),
@@ -32,6 +31,10 @@ impl FlowTypeBuilder {
             variables: Vec::new(),
             extensions: Vec::new(),
         }
+    }
+
+    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
+        FlowTypeBuilder::new(FlowTypeType::new_from_type(namespace, type_name), wrapper_entity_instance)
     }
 
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut FlowTypeBuilder {
@@ -66,8 +69,7 @@ impl FlowTypeBuilder {
 
     pub fn build(&self) -> FlowType {
         FlowType::new(
-            self.namespace.clone(),
-            self.name.clone(),
+            self.ty.clone(),
             self.description.clone(),
             self.wrapper_entity_instance.clone(),
             self.entity_instances.to_vec(),

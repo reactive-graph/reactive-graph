@@ -1,14 +1,14 @@
 use serde_json::Value;
 
 use crate::model::Component;
+use crate::model::ComponentType;
 use crate::model::DataType;
 use crate::model::Extension;
 use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct ComponentBuilder {
-    namespace: String,
-    name: String,
+    ty: ComponentType,
     description: String,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
@@ -16,15 +16,18 @@ pub struct ComponentBuilder {
 
 #[allow(dead_code)]
 impl ComponentBuilder {
-    /// Creates a builder for creating a new component with the given name and namespace.
-    pub fn new<S: Into<String>>(namespace: S, type_name: S) -> ComponentBuilder {
+    pub fn new(ty: ComponentType) -> ComponentBuilder {
         ComponentBuilder {
-            namespace: namespace.into(),
-            name: type_name.into(),
+            ty,
             description: String::new(),
             properties: Vec::new(),
             extensions: Vec::new(),
         }
+    }
+
+    /// Creates a builder for creating a new component with the given name and namespace.
+    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> ComponentBuilder {
+        ComponentBuilder::new(ComponentType::new_from_type(namespace, type_name))
     }
 
     /// Sets the description of the component.
@@ -96,8 +99,7 @@ impl ComponentBuilder {
     /// Constructs the component with the previously defined builder data.
     pub fn build(&self) -> Component {
         Component {
-            namespace: self.namespace.clone(),
-            name: self.name.clone(),
+            ty: self.ty.clone(),
             description: self.description.clone(),
             properties: self.properties.to_vec(),
             extensions: self.extensions.to_vec(),
@@ -212,7 +214,7 @@ impl ComponentsBuilder {
         if self.builder.is_some() {
             self.done();
         }
-        self.builder = Some(ComponentBuilder::new(self.namespace.clone(), name.into()));
+        self.builder = Some(ComponentBuilder::new_from_type(self.namespace.clone(), name.into()));
         self
     }
 

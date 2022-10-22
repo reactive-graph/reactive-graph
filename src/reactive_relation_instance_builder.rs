@@ -5,35 +5,36 @@ use serde_json::Value;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationType;
+use crate::model::RelationTypeType;
 use crate::RelationInstanceBuilder;
 
 #[allow(dead_code)]
 pub struct ReactiveRelationInstanceBuilder {
-    namespace: String,
     outbound: Arc<ReactiveEntityInstance>,
-    type_name: String,
+    ty: RelationTypeType,
     inbound: Arc<ReactiveEntityInstance>,
     builder: RelationInstanceBuilder,
 }
 
 #[allow(dead_code)]
 impl ReactiveRelationInstanceBuilder {
-    pub fn new<S: Into<String>>(
+    pub fn new(outbound: Arc<ReactiveEntityInstance>, ty: RelationTypeType, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
+        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
+        ReactiveRelationInstanceBuilder {
+            outbound,
+            ty,
+            inbound,
+            builder,
+        }
+    }
+
+    pub fn new_from_type<S: Into<String>>(
         namespace: S,
         outbound: Arc<ReactiveEntityInstance>,
         type_name: S,
         inbound: Arc<ReactiveEntityInstance>,
     ) -> ReactiveRelationInstanceBuilder {
-        let namespace: String = namespace.into();
-        let type_name: String = type_name.into();
-        let builder = RelationInstanceBuilder::new(namespace.clone(), outbound.id, type_name.clone(), inbound.id);
-        ReactiveRelationInstanceBuilder {
-            namespace,
-            outbound,
-            type_name,
-            inbound,
-            builder,
-        }
+        ReactiveRelationInstanceBuilder::new(outbound, RelationTypeType::new_from_type(namespace, type_name), inbound)
     }
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut ReactiveRelationInstanceBuilder {
@@ -49,6 +50,6 @@ impl ReactiveRelationInstanceBuilder {
     }
 
     pub fn build(&self) -> Arc<ReactiveRelationInstance> {
-        Arc::new(ReactiveRelationInstance::from_instance(self.outbound.clone(), self.inbound.clone(), self.builder.build()))
+        Arc::new(ReactiveRelationInstance::new_from_instance(self.outbound.clone(), self.inbound.clone(), self.builder.build()))
     }
 }

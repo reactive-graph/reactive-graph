@@ -1,26 +1,26 @@
 use serde_json::Value;
 
+use crate::model::ComponentType;
 use crate::model::DataType;
 use crate::model::EntityType;
+use crate::model::EntityTypeType;
 use crate::model::Extension;
 use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct EntityTypeBuilder {
-    namespace: String,
-    type_name: String,
+    ty: EntityTypeType,
     description: String,
-    components: Vec<String>,
+    components: Vec<ComponentType>,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
 }
 
 #[allow(dead_code)]
 impl EntityTypeBuilder {
-    pub fn new<S: Into<String>>(namespace: S, type_name: S) -> EntityTypeBuilder {
+    pub fn new(ty: EntityTypeType) -> EntityTypeBuilder {
         EntityTypeBuilder {
-            namespace: namespace.into(),
-            type_name: type_name.into(),
+            ty,
             description: String::new(),
             components: Vec::new(),
             properties: Vec::new(),
@@ -28,13 +28,22 @@ impl EntityTypeBuilder {
         }
     }
 
+    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> EntityTypeBuilder {
+        EntityTypeBuilder::new(EntityTypeType::new_from_type(namespace, type_name))
+    }
+
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut EntityTypeBuilder {
         self.description = description.into();
         self
     }
 
-    pub fn component<S: Into<String>>(&mut self, component_name: S) -> &mut EntityTypeBuilder {
-        self.components.push(component_name.into());
+    pub fn component(&mut self, ty: ComponentType) -> &mut EntityTypeBuilder {
+        self.components.push(ty);
+        self
+    }
+
+    pub fn component_from_type<S: Into<String>>(&mut self, namespace: S, component_name: S) -> &mut EntityTypeBuilder {
+        self.components.push(ComponentType::new_from_type(namespace, component_name));
         self
     }
 
@@ -90,8 +99,7 @@ impl EntityTypeBuilder {
 
     pub fn build(&self) -> EntityType {
         EntityType::new(
-            self.namespace.clone(),
-            self.type_name.clone(),
+            self.ty.clone(),
             self.description.clone(),
             self.components.to_vec(),
             self.properties.to_vec(),

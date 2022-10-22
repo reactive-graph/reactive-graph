@@ -5,24 +5,27 @@ use uuid::Uuid;
 
 use crate::model::EntityInstance;
 use crate::model::EntityType;
+use crate::model::EntityTypeType;
 
 #[allow(dead_code)]
 pub struct EntityInstanceBuilder {
-    namespace: String,
-    type_name: String,
+    ty: EntityTypeType,
     id: Option<Uuid>,
     properties: HashMap<String, Value>,
 }
 
 #[allow(dead_code)]
 impl EntityInstanceBuilder {
-    pub fn new<S: Into<String>>(namespace: S, type_name: S) -> EntityInstanceBuilder {
+    pub fn new(ty: EntityTypeType) -> EntityInstanceBuilder {
         EntityInstanceBuilder {
-            namespace: namespace.into(),
-            type_name: type_name.into(),
+            ty,
             id: None,
             properties: HashMap::new(),
         }
+    }
+
+    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> EntityInstanceBuilder {
+        EntityInstanceBuilder::new(EntityTypeType::new_from_type(namespace, type_name))
     }
 
     pub fn id(&mut self, id: Uuid) -> &mut EntityInstanceBuilder {
@@ -36,15 +39,14 @@ impl EntityInstanceBuilder {
     }
 
     pub fn build(&self) -> EntityInstance {
-        EntityInstance::new(self.namespace.clone(), self.type_name.clone(), self.id.unwrap_or_else(Uuid::new_v4), self.properties.clone())
+        EntityInstance::new(self.ty.clone(), self.id.unwrap_or_else(Uuid::new_v4), self.properties.clone())
     }
 }
 
 impl From<EntityType> for EntityInstanceBuilder {
     fn from(entity_type: EntityType) -> Self {
         let mut builder = EntityInstanceBuilder {
-            namespace: entity_type.namespace.clone(),
-            type_name: entity_type.name.clone(),
+            ty: entity_type.ty.clone(),
             id: None,
             properties: HashMap::new(),
         };

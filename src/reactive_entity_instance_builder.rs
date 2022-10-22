@@ -4,26 +4,27 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::model::EntityType;
+use crate::model::EntityTypeType;
 use crate::model::ReactiveEntityInstance;
 use crate::EntityInstanceBuilder;
 
 #[allow(dead_code)]
 pub struct ReactiveEntityInstanceBuilder {
-    namespace: String,
-    type_name: String,
+    ty: EntityTypeType,
     builder: EntityInstanceBuilder,
 }
 
 #[allow(dead_code)]
 impl ReactiveEntityInstanceBuilder {
-    pub fn new<S: Into<String>>(namespace: S, type_name: S) -> ReactiveEntityInstanceBuilder {
-        let namespace: String = namespace.into();
-        let type_name: String = type_name.into();
+    pub fn new(ty: EntityTypeType) -> ReactiveEntityInstanceBuilder {
         ReactiveEntityInstanceBuilder {
-            namespace: namespace.clone(),
-            type_name: type_name.clone(),
-            builder: EntityInstanceBuilder::new(namespace, type_name),
+            ty: ty.clone(),
+            builder: EntityInstanceBuilder::new(ty),
         }
+    }
+
+    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> ReactiveEntityInstanceBuilder {
+        ReactiveEntityInstanceBuilder::new(EntityTypeType::new_from_type(namespace, type_name))
     }
 
     pub fn id(&mut self, id: Uuid) -> &mut ReactiveEntityInstanceBuilder {
@@ -43,7 +44,7 @@ impl ReactiveEntityInstanceBuilder {
 
 impl From<EntityType> for ReactiveEntityInstanceBuilder {
     fn from(entity_type: EntityType) -> Self {
-        let mut builder = ReactiveEntityInstanceBuilder::new(entity_type.namespace.clone(), entity_type.name.clone());
+        let mut builder = ReactiveEntityInstanceBuilder::new(entity_type.ty.clone());
         for property_type in entity_type.properties {
             builder.property(property_type.name.clone(), property_type.data_type.default_value());
         }

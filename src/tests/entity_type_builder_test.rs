@@ -1,10 +1,13 @@
 use serde_json::json;
 
+use crate::model::ComponentType;
 use crate::model::DataType;
 use crate::model::ExtensionContainer;
+use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::SocketType;
 use crate::model::TypeContainer;
+use crate::model::TypeDefinitionGetter;
 use crate::tests::utils::r_string;
 use crate::EntityTypeBuilder;
 
@@ -13,8 +16,12 @@ fn entity_type_builder_test() {
     let namespace = r_string();
     let type_name = r_string();
     let description = r_string();
-    let component_1_name = r_string();
-    let component_2_name = r_string();
+    let component_1_namespace = r_string();
+    let component_1_type_name = r_string();
+    let component_1_ty = ComponentType::new_from_type(&component_1_namespace, &component_1_type_name);
+    let component_2_namespace = r_string();
+    let component_2_type_name = r_string();
+    let component_2_ty = ComponentType::new_from_type(&component_2_namespace, &component_2_type_name);
     let extension_1_name = r_string();
     let extension_2_name = r_string();
     let property_1_name = r_string();
@@ -26,7 +33,7 @@ fn entity_type_builder_test() {
     let property_7_name = r_string();
     let property_8_name = r_string();
     let property_9_name = r_string();
-    let entity_type = EntityTypeBuilder::new(namespace.clone(), type_name.clone())
+    let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name)
         .description(description.clone())
         .property(property_1_name.clone(), DataType::String)
         .property_from(PropertyType::new(property_2_name.clone(), DataType::Bool))
@@ -37,18 +44,19 @@ fn entity_type_builder_test() {
         .object_property(property_7_name.clone())
         .input_property(property_8_name.clone(), DataType::Bool)
         .output_property(property_9_name.clone(), DataType::Bool)
-        .component(component_1_name.clone())
-        .component(component_2_name.clone())
+        .component(component_1_ty.clone())
+        .component_from_type(&component_2_namespace, &component_2_type_name)
         .extension(extension_1_name.clone(), json!(true))
         .extension(extension_2_name.clone(), json!(true))
         .build();
-    assert_eq!(namespace, entity_type.namespace);
-    assert_eq!(type_name, entity_type.name);
-    assert_eq!(format!("{namespace}__{type_name}"), entity_type.t.to_string());
+    assert_eq!(namespace, entity_type.namespace());
+    assert_eq!(type_name, entity_type.type_name());
+    assert_eq!(format!("e__{namespace}__{type_name}"), entity_type.type_definition().to_string());
     assert_eq!(description, entity_type.description);
-    assert!(entity_type.is_a(component_1_name.clone()));
-    assert!(entity_type.is_a(component_2_name.clone()));
-    assert!(!entity_type.is_a(r_string()));
+    assert!(entity_type.is_a(&component_1_ty));
+    assert!(entity_type.is_a(&component_2_ty));
+    let component_ty_non_existent = ComponentType::new_from_type(&r_string(), &r_string());
+    assert!(!entity_type.is_a(&component_ty_non_existent));
     assert!(entity_type.has_own_extension(extension_1_name.clone()));
     assert!(entity_type.has_own_extension(extension_2_name.clone()));
     assert!(!entity_type.has_own_extension(r_string()));
