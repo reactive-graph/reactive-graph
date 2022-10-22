@@ -48,6 +48,18 @@ pub trait EntityInstanceManager: Send + Sync {
     /// Returns all ids.
     fn get_ids(&self) -> Vec<Uuid>;
 
+    /// Returns the count of registered reactive entity instances.
+    fn count(&self) -> usize;
+
+    /// Returns the count of registered reactive entity instances of the given type.
+    fn count_by_type(&self, ty: &EntityTypeType) -> usize;
+
+    /// Returns the count of registered reactive entity instances which are of the given component.
+    fn count_by_component(&self, component: &ComponentType) -> usize;
+
+    /// Returns the count of registered reactive entity instances which behaves as the given behaviour.
+    fn count_by_behaviour(&self, behaviour: &str) -> usize;
+
     /// Creates a new reactive entity instance.
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 
