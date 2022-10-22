@@ -122,7 +122,7 @@ impl From<&EntityType> for TypeDefinition {
 }
 
 #[derive(Serialize, Deserialize)]
-struct EntityTypeDao {
+pub struct EntityTypeDao {
     /// The namespace the entity type belongs to.
     #[serde(default = "String::new")]
     pub namespace: String,
