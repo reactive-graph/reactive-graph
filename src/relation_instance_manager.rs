@@ -4,7 +4,6 @@ use indradb::EdgeKey;
 use uuid::Uuid;
 
 use crate::model::ComponentType;
-use crate::model::EntityTypeType;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
 use crate::model::RelationTypeType;
