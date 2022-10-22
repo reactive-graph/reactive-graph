@@ -1,18 +1,9 @@
-use indradb::Identifier;
-
+use crate::ComponentType;
 use crate::PropertyType;
 
 pub trait TypeContainer {
-    /// Returns the fully qualified name of the type.
-    ///
-    /// The fully qualified name contains the namespace and the name.
-    fn fully_qualified_name(&self) -> String;
-
-    /// Returns the fully qualified identifier of the type.
-    fn fully_qualified_identifier(&self) -> Identifier;
-
-    /// Returns true, if the type is a component with the given name.
-    fn is_a<S: Into<String>>(&self, component_name: S) -> bool;
+    /// Returns true, if the type is composed with a component of the given type.
+    fn is_a(&self, ty: &ComponentType) -> bool;
 
     /// Returns true, if the type contains an own property with the given name.
     /// Doesn't respect properties from potential components.

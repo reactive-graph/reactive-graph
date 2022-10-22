@@ -1,14 +1,12 @@
 extern crate test;
 
 use std::process::Termination;
-use std::str::FromStr;
 use std::sync::Arc;
 use std::sync::RwLock;
 use test::Bencher;
 
 use dashmap::DashMap;
 use dashmap::DashSet;
-use indradb::Identifier;
 use indradb::NamedProperty;
 use indradb::Vertex;
 use indradb::VertexProperties;
@@ -21,8 +19,11 @@ use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 use crate::Component;
 use crate::ComponentContainer;
+use crate::ComponentType;
 use crate::DataType;
 use crate::EntityInstance;
+use crate::EntityTypeType;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::PropertyType;
@@ -30,6 +31,7 @@ use crate::ReactiveBehaviourContainer;
 use crate::ReactiveEntityInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
+use crate::TypeDefinitionGetter;
 
 #[test]
 fn reactive_entity_instance_test() {
@@ -46,44 +48,48 @@ fn reactive_entity_instance_test() {
         ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), property_value.clone()),
     );
 
+    let component_namespace = r_string();
     let component_name = r_string();
+    let component_ty = ComponentType::new_from_type(&component_namespace, &component_name);
     let component_name_2 = r_string();
+    let component_ty_2 = ComponentType::new_from_type(&component_namespace, &component_name_2);
     let components = DashSet::new();
-    components.insert(component_name.clone());
+    components.insert(component_ty.clone());
 
     let behaviour_name = r_string();
     let behaviour_name_2 = r_string();
     let behaviours = DashSet::new();
     behaviours.insert(behaviour_name.clone());
 
+    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
-        namespace: namespace.clone(),
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         id: uuid.clone(),
         description: description.clone(),
         properties,
         components,
         behaviours,
     });
-    assert_eq!(namespace.clone(), reactive_entity_instance.namespace.clone());
-    assert_eq!(type_name.clone(), reactive_entity_instance.type_name.clone());
+    assert_eq!(namespace.clone(), reactive_entity_instance.namespace());
+    assert_eq!(type_name.clone(), reactive_entity_instance.type_name());
     assert_eq!(uuid.clone(), reactive_entity_instance.id.clone());
     assert_eq!(description.clone(), reactive_entity_instance.description.clone());
 
     assert_eq!(1, reactive_entity_instance.get_components().len());
-    assert!(reactive_entity_instance.is_a(component_name.clone()));
-    assert!(!reactive_entity_instance.is_a(component_name_2.clone()));
-    assert!(!reactive_entity_instance.is_a(r_string()));
-    reactive_entity_instance.add_component(component_name_2.clone());
-    assert!(reactive_entity_instance.is_a(component_name_2.clone()));
+    assert!(reactive_entity_instance.is_a(&component_ty));
+    assert!(!reactive_entity_instance.is_a(&component_ty_2));
+    assert!(!reactive_entity_instance.is_a(&ComponentType::new_from_type(&component_namespace, &r_string())));
+    reactive_entity_instance.add_component(component_ty_2.clone());
+    assert!(reactive_entity_instance.is_a(&component_ty_2));
     assert_eq!(2, reactive_entity_instance.get_components().len());
-    reactive_entity_instance.remove_component(component_name.clone());
-    assert!(!reactive_entity_instance.is_a(component_name.clone()));
+    reactive_entity_instance.remove_component(&component_ty);
+    assert!(!reactive_entity_instance.is_a(&component_ty));
     assert_eq!(1, reactive_entity_instance.get_components().len());
 
     let component_2_property_name = r_string();
     let component_2_properties = vec![PropertyType::string(&component_2_property_name)];
-    let component_2 = Component::new_without_extensions(&namespace, &r_string(), &r_string(), component_2_properties);
+    let component_2_ty = ComponentType::new_from_type(&namespace, &component_name);
+    let component_2 = Component::new_without_extensions(component_2_ty.clone(), &r_string(), component_2_properties);
     reactive_entity_instance.add_component_with_properties(&component_2);
     assert_eq!(2, reactive_entity_instance.get_components().len());
     assert!(reactive_entity_instance.has_property(&component_2_property_name));
@@ -112,7 +118,8 @@ fn reactive_entity_instance_test() {
     assert!(!reactive_entity_instance.has_property(&new_property_name));
 
     let entity_instance: EntityInstance = reactive_entity_instance.into();
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
+    assert_eq!(namespace.clone(), entity_instance.namespace());
+    assert_eq!(type_name.clone(), entity_instance.type_name());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(description.clone(), entity_instance.description.clone());
     assert!(entity_instance.properties.contains_key(property_name.as_str()));
@@ -122,8 +129,9 @@ fn reactive_entity_instance_test() {
 #[test]
 fn reactive_entity_instance_from_vertex_properties_test() {
     let uuid = Uuid::new_v4();
+    let namespace = r_string();
     let type_name = r_string();
-    let t = Identifier::from_str(type_name.as_str()).unwrap();
+    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
@@ -133,17 +141,18 @@ fn reactive_entity_instance_from_vertex_properties_test() {
     };
     let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex { id: uuid, t: t.clone() },
+        vertex: Vertex { id: uuid, t: ty.type_id() },
         props: properties.clone(),
     };
-    let reactive_entity_instance = Arc::new(ReactiveEntityInstance::from(vertex_properties));
-    assert_eq!(type_name.clone(), reactive_entity_instance.type_name.clone());
+    let reactive_entity_instance = Arc::new(ReactiveEntityInstance::try_from(vertex_properties).unwrap());
+    assert_eq!(type_name.clone(), reactive_entity_instance.type_name());
     assert_eq!(uuid.clone(), reactive_entity_instance.id.clone());
     assert_eq!(property_name.clone(), reactive_entity_instance.properties.get(property_name.as_str()).unwrap().name);
     assert_eq!(property_value.clone(), reactive_entity_instance.properties.get(property_name.as_str()).unwrap().get());
 
     let entity_instance: EntityInstance = reactive_entity_instance.into();
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
+    assert_eq!(type_name.clone(), entity_instance.type_name());
+    assert_eq!(type_name.clone(), entity_instance.type_name());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert!(entity_instance.properties.contains_key(property_name.as_str()));
     assert_eq!(property_value_json, *entity_instance.properties.get(property_name.as_str()).unwrap());
@@ -203,9 +212,11 @@ fn reactive_entity_instance_typed_eq_bool_test() {
 
 #[test]
 fn reactive_entity_instance_stream_test() {
+    let namespace = r_string();
+    let type_name = r_string();
+    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
-        namespace: r_string(),
-        type_name: r_string(),
+        ty: ty.clone(),
         id: Uuid::new_v4(),
         description: r_string(),
         properties: DashMap::new(),
@@ -297,6 +308,8 @@ fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Term
     let property_name = r_string();
     let property_value = r_json_string();
 
+    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+
     bencher.iter(move || {
         let properties = DashMap::new();
         properties.insert(
@@ -305,16 +318,16 @@ fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Term
         );
 
         let component_name = r_string();
+        let component_ty = ComponentType::new_from_type(&namespace, &component_name);
         let components = DashSet::new();
-        components.insert(component_name.clone());
+        components.insert(component_ty);
 
         let behaviour_name = r_string();
         let behaviours = DashSet::new();
         behaviours.insert(behaviour_name.clone());
 
         let _reactive_entity_instance = Arc::new(ReactiveEntityInstance {
-            namespace: namespace.clone(),
-            type_name: type_name.clone(),
+            ty: ty.clone(),
             id: uuid.clone(),
             description: description.clone(),
             properties,

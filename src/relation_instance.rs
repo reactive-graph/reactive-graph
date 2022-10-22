@@ -8,13 +8,17 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::fully_qualified_identifier;
-use crate::get_namespace_and_type_name;
+// use crate::fully_qualified_identifier;
+// use crate::get_namespace_and_type_name;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
-use crate::NAMESPACE_RELATION_TYPE;
+use crate::RelationTypeType;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
+// use crate::NAMESPACE_RELATION_TYPE;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -24,25 +28,20 @@ use crate::NAMESPACE_RELATION_TYPE;
 /// instance. Furthermore the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
-/// In constrast to the relation type, the relation instance stores values/
+/// In contrast to the relation type, the relation instance stores values/
 /// documents in it's properties.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct RelationInstance {
-    /// The namespace the relation instance belongs to.
-    pub namespace: String,
-
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
 
-    /// The name of the relation type
-    #[serde(alias = "type")]
-    pub type_name: String,
+    /// The type definition of the relation type.
+    pub ty: RelationTypeType,
 
     /// The id of the inbound vertex.
     pub inbound_id: Uuid,
 
     /// Textual description of the relation instance.
-    #[serde(default = "String::new")]
     pub description: String,
 
     /// The properties of then relation instance.
@@ -51,21 +50,36 @@ pub struct RelationInstance {
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
-    #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 
     /// Relation instance specific extensions.
-    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
 }
 
 impl RelationInstance {
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new<S: Into<String>>(namespace: S, outbound_id: Uuid, type_name: S, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
+    pub fn new<T: Into<RelationTypeType>>(outbound_id: Uuid, ty: T, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
         RelationInstance {
-            namespace: namespace.into(),
             outbound_id,
-            type_name: type_name.into(),
+            ty: ty.into(),
+            inbound_id,
+            description: String::new(),
+            properties,
+            extensions: Vec::new(),
+        }
+    }
+
+    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
+    pub fn new_from_type<S: Into<String>>(
+        namespace: S,
+        outbound_id: Uuid,
+        type_name: S,
+        inbound_id: Uuid,
+        properties: HashMap<String, Value>,
+    ) -> RelationInstance {
+        RelationInstance {
+            outbound_id,
+            ty: RelationTypeType::new_from_type(namespace, type_name),
             inbound_id,
             description: String::new(),
             properties,
@@ -74,11 +88,10 @@ impl RelationInstance {
     }
 
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id but without properties
-    pub fn new_without_properties<S: Into<String>>(namespace: S, outbound_id: Uuid, type_name: S, inbound_id: Uuid) -> RelationInstance {
+    pub fn new_without_properties<T: Into<RelationTypeType>>(outbound_id: Uuid, ty: T, inbound_id: Uuid) -> RelationInstance {
         RelationInstance {
-            namespace: namespace.into(),
             outbound_id,
-            type_name: type_name.into(),
+            ty: ty.into(),
             inbound_id,
             description: String::new(),
             properties: HashMap::new(),
@@ -87,23 +100,23 @@ impl RelationInstance {
     }
 
     pub fn get_key(&self) -> EdgeKey {
-        let t = fully_qualified_identifier(&self.namespace, &self.type_name, &NAMESPACE_RELATION_TYPE);
-        EdgeKey::new(self.outbound_id, t, self.inbound_id)
+        EdgeKey::new(self.outbound_id, self.type_id(), self.inbound_id)
     }
 }
 
-impl From<EdgeProperties> for RelationInstance {
-    fn from(properties: EdgeProperties) -> Self {
-        let (namespace, type_name) = get_namespace_and_type_name(&properties.edge.key.t);
-        RelationInstance {
-            namespace,
+impl TryFrom<EdgeProperties> for RelationInstance {
+    type Error = ();
+
+    fn try_from(properties: EdgeProperties) -> Result<Self, Self::Error> {
+        let ty = RelationTypeType::try_from(&properties.edge.key.t)?;
+        Ok(RelationInstance {
             outbound_id: properties.edge.key.outbound_id,
-            type_name,
+            ty,
             inbound_id: properties.edge.key.inbound_id,
             description: String::new(),
             properties: properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect(),
             extensions: Vec::new(),
-        }
+        })
     }
 }
 
@@ -158,5 +171,81 @@ impl ExtensionContainer for RelationInstance {
     fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
         let extension_name = extension_name.into();
         self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
+    }
+}
+
+impl NamespacedTypeGetter for RelationInstance {
+    fn namespace(&self) -> String {
+        self.ty.namespace()
+    }
+
+    fn type_name(&self) -> String {
+        self.ty.type_name()
+    }
+}
+
+impl TypeDefinitionGetter for RelationInstance {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct RelationInstanceDao {
+    /// The namespace the relation instance belongs to.
+    pub namespace: String,
+
+    /// The id of the outbound vertex.
+    pub outbound_id: Uuid,
+
+    /// The name of the relation type
+    #[serde(alias = "type")]
+    pub type_name: String,
+
+    /// The id of the inbound vertex.
+    pub inbound_id: Uuid,
+
+    /// Textual description of the relation instance.
+    #[serde(default = "String::new")]
+    pub description: String,
+
+    /// The properties of then relation instance.
+    ///
+    /// Each property is represented by it's name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// array or an object. For more information about the data types please look at
+    /// https://docs.serde.rs/serde_json/value/enum.Value.html
+    #[serde(default = "HashMap::new")]
+    pub properties: HashMap<String, Value>,
+
+    /// Relation instance specific extensions.
+    #[serde(default = "Vec::new")]
+    pub extensions: Vec<Extension>,
+}
+
+impl From<&RelationInstanceDao> for RelationInstance {
+    fn from(dao: &RelationInstanceDao) -> Self {
+        Self {
+            outbound_id: dao.outbound_id,
+            ty: RelationTypeType::new_from_type(&dao.namespace, &dao.type_name),
+            inbound_id: dao.inbound_id,
+            description: dao.description.clone(),
+            properties: dao.properties.clone(),
+            extensions: dao.extensions.clone(),
+        }
+    }
+}
+
+impl From<&RelationInstance> for RelationInstanceDao {
+    fn from(relation_instance: &RelationInstance) -> Self {
+        RelationInstanceDao {
+            outbound_id: relation_instance.outbound_id,
+            namespace: relation_instance.namespace(),
+            type_name: relation_instance.type_name(),
+            inbound_id: relation_instance.inbound_id,
+            description: relation_instance.description.clone(),
+            properties: relation_instance.properties.clone(),
+            extensions: relation_instance.extensions.clone(),
+        }
     }
 }

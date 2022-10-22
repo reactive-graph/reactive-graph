@@ -1,104 +1,110 @@
-use indradb::Identifier;
 use serde::Deserialize;
 use serde::Serialize;
-use uuid::Uuid;
 
 use crate::extension::Extension;
-use crate::fully_qualified_identifier;
+use crate::ComponentType;
+use crate::EntityTypeType;
 use crate::ExtensionContainer;
+use crate::NamespacedTypeGetter;
 use crate::PropertyType;
+use crate::RelationTypeType;
 use crate::TypeContainer;
-
-pub static NAMESPACE_RELATION_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b400d01fd530c7);
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
+use crate::TypeOfType;
 
 /// A relation type defines the type of an relation instance.
 ///
 /// The relation type defines the entity types of the outbound and inbound entity instances.
 /// Also the relation type defines the properties of the relation instance.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct RelationType {
-    /// The namespace the relation type belongs to.
-    #[serde(default = "String::new")]
-    pub namespace: String,
-
     /// The name of the outbound entity type.
-    pub outbound_type: String,
+    pub outbound_type: EntityTypeType,
 
-    /// The name of the relation type.
-    ///
-    /// The name is the unique identifier for relation types.
-    #[serde(alias = "name")]
-    pub type_name: String,
+    /// The type definition contains the namespace and the type name.
+    pub ty: RelationTypeType,
 
     /// The instance type name is unique between two entity instances and is set for a
     /// concrete relation instance.
-    #[serde(default = "String::new")]
+    /// TODO: RelationInstanceType
     pub instance_type_name: String,
 
     /// The name of the inbound entity type.
-    pub inbound_type: String,
+    pub inbound_type: EntityTypeType,
 
     /// Textual description of the relation type.
-    #[serde(default = "String::new")]
     pub description: String,
 
     /// The names of the components of the relation type.
-    #[serde(default = "Vec::new")]
-    pub components: Vec<String>,
+    pub components: Vec<ComponentType>,
 
     /// The properties which are defined by the relation type.
-    #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
 
     /// Relation type specific extensions
-    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
-
-    #[serde(skip)]
-    pub t: Identifier,
 }
 
 impl RelationType {
     #[allow(clippy::too_many_arguments)]
-    pub fn new<S: Into<String>>(
-        namespace: S,
-        outbound_type: S,
-        type_name: S,
-        inbound_type: S,
+    pub fn new<RT: Into<RelationTypeType>, ET: Into<EntityTypeType>, S: Into<String>>(
+        outbound_type: ET,
+        ty: RT,
+        inbound_type: ET,
         description: S,
-        components: Vec<String>,
+        components: Vec<ComponentType>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> RelationType {
-        let namespace = namespace.into();
-        let type_name = type_name.into();
-        let t = fully_qualified_identifier(namespace.as_str(), type_name.as_str(), &NAMESPACE_RELATION_TYPE);
+        let ty = ty.into();
+        let type_name = ty.type_name();
         RelationType {
-            namespace,
+            ty,
             outbound_type: outbound_type.into(),
-            instance_type_name: type_name.clone(),
-            type_name,
+            instance_type_name: type_name,
             inbound_type: inbound_type.into(),
             description: description.into(),
             components,
             properties,
             extensions,
-            t,
+        }
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub fn new_from_type<S: Into<String>>(
+        namespace: S,
+        outbound_type: S,
+        type_name: S,
+        inbound_type: S,
+        description: S,
+        components: Vec<ComponentType>,
+        properties: Vec<PropertyType>,
+        extensions: Vec<Extension>,
+    ) -> RelationType {
+        let namespace = namespace.into();
+        let outbound_type = outbound_type.into();
+        let type_name = type_name.into();
+        let inbound_type = inbound_type.into();
+        let outbound_type = EntityTypeType::new_from_type(&namespace, &outbound_type);
+        let ty = RelationTypeType::new_from_type(&namespace, &type_name);
+        let inbound_type = EntityTypeType::new_from_type(&namespace, &inbound_type);
+        RelationType {
+            ty,
+            outbound_type,
+            instance_type_name: type_name,
+            inbound_type,
+            description: description.into(),
+            components,
+            properties,
+            extensions,
         }
     }
 }
 
 impl TypeContainer for RelationType {
-    fn fully_qualified_name(&self) -> String {
-        format!("{}__{}", self.namespace, self.type_name)
-    }
-
-    fn fully_qualified_identifier(&self) -> Identifier {
-        fully_qualified_identifier(&self.namespace, &self.type_name, &NAMESPACE_RELATION_TYPE)
-    }
-
-    fn is_a<S: Into<String>>(&self, component_name: S) -> bool {
-        self.components.contains(&component_name.into())
+    fn is_a(&self, ty: &ComponentType) -> bool {
+        self.components.contains(ty)
     }
 
     fn has_own_property<S: Into<String>>(&self, property_name: S) -> bool {
@@ -121,5 +127,113 @@ impl ExtensionContainer for RelationType {
     fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
         let extension_name = extension_name.into();
         self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
+    }
+}
+
+impl NamespacedTypeGetter for RelationType {
+    fn namespace(&self) -> String {
+        self.ty.namespace()
+    }
+
+    fn type_name(&self) -> String {
+        self.ty.type_name()
+    }
+}
+
+impl TypeDefinitionGetter for RelationType {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
+}
+
+impl From<&RelationType> for TypeDefinition {
+    fn from(relation_type: &RelationType) -> Self {
+        TypeDefinition {
+            type_type: TypeOfType::RelationType,
+            namespace: relation_type.namespace(),
+            type_name: relation_type.type_name(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct RelationTypeDao {
+    /// The namespace the outbound entity type.
+    #[serde(default = "String::new")]
+    pub outbound_namespace: String,
+
+    /// The type name of the outbound entity type.
+    pub outbound_type_name: String,
+
+    /// The namespace the relation type.
+    #[serde(default = "String::new")]
+    pub namespace: String,
+
+    /// The type name of the relation type.
+    #[serde(alias = "name")]
+    pub type_name: String,
+
+    /// The instance type name is unique between two entity instances and is set for a
+    /// concrete relation instance.
+    #[serde(default = "String::new")]
+    pub instance_type_name: String,
+
+    /// The namespace the inbound entity type.
+    #[serde(default = "String::new")]
+    pub inbound_namespace: String,
+
+    /// The type name of the inbound entity type.
+    pub inbound_type_name: String,
+
+    /// Textual description of the relation type.
+    #[serde(default = "String::new")]
+    pub description: String,
+
+    /// The names of the components of the relation type.
+    #[serde(default = "Vec::new")]
+    pub components: Vec<String>,
+
+    /// The properties which are defined by the relation type.
+    #[serde(default = "Vec::new")]
+    pub properties: Vec<PropertyType>,
+
+    /// Relation type specific extensions
+    #[serde(default = "Vec::new")]
+    pub extensions: Vec<Extension>,
+}
+
+impl From<&RelationTypeDao> for RelationType {
+    fn from(dao: &RelationTypeDao) -> Self {
+        let outbound_type = EntityTypeType::new_from_type(&dao.outbound_namespace, &dao.outbound_type_name);
+        let ty = RelationTypeType::new_from_type(&dao.namespace, &dao.type_name);
+        let inbound_type = EntityTypeType::new_from_type(&dao.inbound_namespace, &dao.inbound_type_name);
+        Self {
+            outbound_type,
+            ty,
+            instance_type_name: dao.instance_type_name.clone(),
+            inbound_type,
+            description: dao.description.clone(),
+            components: dao.components.iter().cloned().filter_map(|c| ComponentType::try_from(&c).ok()).collect(),
+            properties: dao.properties.clone(),
+            extensions: dao.extensions.clone(),
+        }
+    }
+}
+
+impl From<&RelationType> for RelationTypeDao {
+    fn from(relation_type: &RelationType) -> Self {
+        RelationTypeDao {
+            outbound_namespace: relation_type.outbound_type.namespace(),
+            outbound_type_name: relation_type.outbound_type.type_name(),
+            namespace: relation_type.namespace(),
+            type_name: relation_type.type_name(),
+            instance_type_name: relation_type.instance_type_name.clone(),
+            inbound_namespace: relation_type.inbound_type.namespace(),
+            inbound_type_name: relation_type.inbound_type.type_name(),
+            description: relation_type.description.clone(),
+            components: relation_type.components.iter().cloned().map(|c| c.type_definition().to_string()).collect(),
+            properties: relation_type.properties.clone(),
+            extensions: relation_type.extensions.clone(),
+        }
     }
 }

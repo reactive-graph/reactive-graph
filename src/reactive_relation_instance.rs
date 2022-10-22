@@ -9,10 +9,10 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::fully_qualified_identifier;
-use crate::get_namespace_and_type_name;
 use crate::Component;
 use crate::ComponentContainer;
+use crate::ComponentType;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::PropertyType;
@@ -21,7 +21,9 @@ use crate::ReactiveEntityInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::RelationInstance;
-use crate::NAMESPACE_RELATION_TYPE;
+use crate::RelationTypeType;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
 
 /// Reactive instance of a relation in the directed property graph.
 ///
@@ -46,14 +48,11 @@ use crate::NAMESPACE_RELATION_TYPE;
 /// Player--(CurrentCamera)-->Camera
 ///
 pub struct ReactiveRelationInstance {
-    /// The namespace the relation instance belongs to.
-    pub namespace: String,
-
     /// The outbound entity instance.
     pub outbound: Arc<ReactiveEntityInstance>,
 
-    /// The name of the relation type.
-    pub type_name: String,
+    /// The type definition of the relation type.
+    pub ty: RelationTypeType,
 
     /// The outbound entity instance.
     pub inbound: Arc<ReactiveEntityInstance>,
@@ -65,16 +64,19 @@ pub struct ReactiveRelationInstance {
     pub properties: DashMap<String, ReactivePropertyInstance>,
 
     /// The names of the components which are applied on this relation instance.
-    pub components: DashSet<String>,
+    pub components: DashSet<ComponentType>,
 
     /// The names of the behaviours which are applied on this relation instance.
     pub behaviours: DashSet<String>,
 }
 
 impl ReactiveRelationInstance {
-    // TODO: rename to "from_properties"
-    pub fn from(outbound: Arc<ReactiveEntityInstance>, inbound: Arc<ReactiveEntityInstance>, properties: EdgeProperties) -> ReactiveRelationInstance {
-        let (namespace, type_name) = get_namespace_and_type_name(&properties.edge.key.t);
+    pub fn new_from_properties(
+        outbound: Arc<ReactiveEntityInstance>,
+        inbound: Arc<ReactiveEntityInstance>,
+        properties: EdgeProperties,
+    ) -> Result<ReactiveRelationInstance, ()> {
+        let ty = RelationTypeType::try_from(&properties.edge.key.t)?;
         let properties = properties
             .props
             .iter()
@@ -89,28 +91,30 @@ impl ReactiveRelationInstance {
                 )
             })
             .collect();
-        ReactiveRelationInstance {
-            namespace,
+        Ok(ReactiveRelationInstance {
             outbound,
-            type_name,
+            ty,
             inbound,
             description: String::new(),
             properties,
             components: DashSet::new(),
             behaviours: DashSet::new(),
-        }
+        })
     }
 
-    pub fn from_instance(outbound: Arc<ReactiveEntityInstance>, inbound: Arc<ReactiveEntityInstance>, instance: RelationInstance) -> ReactiveRelationInstance {
+    pub fn new_from_instance(
+        outbound: Arc<ReactiveEntityInstance>,
+        inbound: Arc<ReactiveEntityInstance>,
+        instance: RelationInstance,
+    ) -> ReactiveRelationInstance {
         let properties = instance
             .properties
             .iter()
             .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value.clone())))
             .collect();
         ReactiveRelationInstance {
-            namespace: instance.namespace.clone(),
             outbound,
-            type_name: instance.type_name.clone(),
+            ty: instance.ty,
             inbound,
             description: instance.description,
             properties,
@@ -119,15 +123,14 @@ impl ReactiveRelationInstance {
         }
     }
 
-    // TODO: unit test
-    // TODO: rename to "new_with_properties"
-    pub fn create_with_properties<S: Into<String>>(
+    pub fn new_from_type_with_properties<S: Into<String>>(
         namespace: S,
         outbound: Arc<ReactiveEntityInstance>,
         type_name: S,
         inbound: Arc<ReactiveEntityInstance>,
         properties: HashMap<String, Value>,
     ) -> ReactiveRelationInstance {
+        let ty = RelationTypeType::new_from_type(namespace, type_name);
         let properties = properties
             .iter()
             .map(|(name, value)| {
@@ -142,9 +145,8 @@ impl ReactiveRelationInstance {
             })
             .collect();
         ReactiveRelationInstance {
-            namespace: namespace.into(),
             outbound,
-            type_name: type_name.into(),
+            ty,
             inbound,
             description: String::new(),
             properties,
@@ -154,8 +156,7 @@ impl ReactiveRelationInstance {
     }
 
     pub fn get_key(&self) -> EdgeKey {
-        let t = fully_qualified_identifier(&self.namespace, &self.type_name, &NAMESPACE_RELATION_TYPE);
-        EdgeKey::new(self.outbound.id, t, self.inbound.id)
+        EdgeKey::new(self.outbound.id, self.type_id(), self.inbound.id)
     }
 }
 
@@ -205,16 +206,16 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
 }
 
 impl ComponentContainer for ReactiveRelationInstance {
-    fn get_components(&self) -> Vec<String> {
+    fn get_components(&self) -> Vec<ComponentType> {
         self.components.iter().map(|c| c.key().clone()).collect()
     }
 
-    fn add_component<S: Into<String>>(&self, component: S) {
-        self.components.insert(component.into());
+    fn add_component(&self, ty: ComponentType) {
+        self.components.insert(ty);
     }
 
     fn add_component_with_properties(&self, component: &Component) {
-        self.add_component(&component.name);
+        self.add_component(component.ty.clone());
         for property_type in component.properties.iter() {
             if !self.properties.contains_key(&property_type.name) {
                 self.add_property_by_type(property_type);
@@ -222,12 +223,12 @@ impl ComponentContainer for ReactiveRelationInstance {
         }
     }
 
-    fn remove_component<S: Into<String>>(&self, component: S) {
-        self.components.remove(component.into().as_str());
+    fn remove_component(&self, ty: &ComponentType) {
+        self.components.remove(ty);
     }
 
-    fn is_a<S: Into<String>>(&self, component: S) -> bool {
-        self.components.contains(component.into().as_str())
+    fn is_a(&self, ty: &ComponentType) -> bool {
+        self.components.contains(ty)
     }
 }
 
@@ -253,9 +254,8 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
             .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
         RelationInstance {
-            namespace: instance.namespace.clone(),
             outbound_id: instance.outbound.id,
-            type_name: instance.type_name.clone(),
+            ty: instance.ty.clone(),
             inbound_id: instance.inbound.id,
             description: instance.description.clone(),
             properties,
@@ -309,5 +309,21 @@ impl PropertyInstanceSetter for ReactiveRelationInstance {
         if let Some(instance) = self.properties.get(&property_name.into()) {
             instance.set_no_propagate(value);
         }
+    }
+}
+
+impl NamespacedTypeGetter for ReactiveRelationInstance {
+    fn namespace(&self) -> String {
+        self.ty.namespace()
+    }
+
+    fn type_name(&self) -> String {
+        self.ty.type_name()
+    }
+}
+
+impl TypeDefinitionGetter for ReactiveRelationInstance {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
     }
 }

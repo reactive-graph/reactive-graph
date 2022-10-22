@@ -24,7 +24,7 @@ pub use relation_instance::*;
 pub use relation_type::*;
 pub use socket_type::*;
 pub use type_container::*;
-pub use type_identifier::*;
+pub use types::*;
 
 pub mod component;
 pub mod component_container;
@@ -41,7 +41,7 @@ pub mod reactive_property_container;
 pub mod relation_type;
 pub mod socket_type;
 pub mod type_container;
-pub mod type_identifier;
+pub mod types;
 
 pub mod entity_instance;
 pub mod flow_instance;

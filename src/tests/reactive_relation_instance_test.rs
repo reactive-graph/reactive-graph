@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::str::FromStr;
 use std::sync::Arc;
 use std::sync::RwLock;
 
@@ -8,7 +7,6 @@ use dashmap::DashSet;
 use indradb::Edge;
 use indradb::EdgeKey;
 use indradb::EdgeProperties;
-use indradb::Identifier;
 use indradb::NamedProperty;
 use serde_json::json;
 use uuid::Uuid;
@@ -19,7 +17,10 @@ use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 use crate::Component;
 use crate::ComponentContainer;
+use crate::ComponentType;
 use crate::DataType;
+use crate::EntityTypeType;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::PropertyType;
@@ -29,6 +30,8 @@ use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::ReactiveRelationInstance;
 use crate::RelationInstance;
+use crate::RelationTypeType;
+use crate::TypeDefinitionGetter;
 
 #[test]
 fn reactive_relation_instance_test() {
@@ -46,46 +49,50 @@ fn reactive_relation_instance_test() {
         ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), property_value.clone()),
     );
 
+    let component_namespace = r_string();
     let component_name = r_string();
+    let component_ty = ComponentType::new_from_type(&component_namespace, &component_name);
     let component_name_2 = r_string();
+    let component_ty_2 = ComponentType::new_from_type(&component_namespace, &component_name_2);
     let components = DashSet::new();
-    components.insert(component_name.clone());
+    components.insert(component_ty.clone());
 
     let behaviour_name = r_string();
     let behaviour_name_2 = r_string();
     let behaviours = DashSet::new();
     behaviours.insert(behaviour_name.clone());
 
+    let ty = RelationTypeType::new_from_type(&namespace, &relation_type_name);
     let reactive_relation_instance = Arc::new(ReactiveRelationInstance {
-        namespace: namespace.clone(),
         outbound: outbound_entity.clone(),
-        type_name: relation_type_name.clone(),
+        ty: ty.clone(),
         inbound: inbound_entity.clone(),
         description: relation_description.clone(),
         properties,
         components,
         behaviours,
     });
-    assert_eq!(namespace.clone(), reactive_relation_instance.namespace.clone());
-    assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name.clone());
+    assert_eq!(namespace.clone(), reactive_relation_instance.namespace());
+    assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name());
     assert_eq!(outbound_entity.id, reactive_relation_instance.outbound.id);
     assert_eq!(inbound_entity.id, reactive_relation_instance.inbound.id);
     assert_eq!(relation_description.clone(), reactive_relation_instance.description.clone());
 
     assert_eq!(1, reactive_relation_instance.get_components().len());
-    assert!(reactive_relation_instance.is_a(component_name.clone()));
-    assert!(!reactive_relation_instance.is_a(component_name_2.clone()));
-    assert!(!reactive_relation_instance.is_a(r_string()));
-    reactive_relation_instance.add_component(component_name_2.clone());
-    assert!(reactive_relation_instance.is_a(component_name_2.clone()));
+    assert!(reactive_relation_instance.is_a(&component_ty));
+    assert!(!reactive_relation_instance.is_a(&component_ty_2));
+    assert!(!reactive_relation_instance.is_a(&ComponentType::new_from_type(&component_namespace, &r_string())));
+    reactive_relation_instance.add_component(component_ty_2.clone());
+    assert!(reactive_relation_instance.is_a(&component_ty_2));
     assert_eq!(2, reactive_relation_instance.get_components().len());
-    reactive_relation_instance.remove_component(component_name.clone());
-    assert!(!reactive_relation_instance.is_a(component_name.clone()));
+    reactive_relation_instance.remove_component(&component_ty);
+    assert!(!reactive_relation_instance.is_a(&component_ty));
     assert_eq!(1, reactive_relation_instance.get_components().len());
 
     let component_2_property_name = r_string();
     let component_2_properties = vec![PropertyType::string(&component_2_property_name)];
-    let component_2 = Component::new_without_extensions(&namespace, &r_string(), &r_string(), component_2_properties);
+    let component_2_ty = ComponentType::new_from_type(&namespace, &component_name);
+    let component_2 = Component::new_without_extensions(component_2_ty.clone(), &r_string(), component_2_properties);
     reactive_relation_instance.add_component_with_properties(&component_2);
     assert_eq!(2, reactive_relation_instance.get_components().len());
     assert!(reactive_relation_instance.has_property(&component_2_property_name));
@@ -115,7 +122,8 @@ fn reactive_relation_instance_test() {
 
     let relation_instance: RelationInstance = reactive_relation_instance.into();
     assert_eq!(outbound_entity.id, relation_instance.outbound_id);
-    assert_eq!(relation_type_name.clone(), relation_instance.type_name.clone());
+    assert_eq!(namespace.clone(), relation_instance.namespace());
+    assert_eq!(relation_type_name.clone(), relation_instance.type_name());
     assert_eq!(inbound_entity.id, relation_instance.inbound_id);
     assert_eq!(relation_description.clone(), relation_instance.description.clone());
     assert!(relation_instance.properties.contains_key(property_name.as_str()));
@@ -128,9 +136,9 @@ fn reactive_relation_instance_from_edge_properties_test() {
     let outbound_id = Uuid::new_v4();
     let outbound_type_name = r_string();
     let outbound_description = r_string();
+    let outbound_ty = EntityTypeType::new_from_type(&namespace, &outbound_type_name);
     let outbound_entity = Arc::new(ReactiveEntityInstance {
-        namespace: namespace.clone(),
-        type_name: outbound_type_name.clone(),
+        ty: outbound_ty.clone(),
         id: outbound_id.clone(),
         description: outbound_description.clone(),
         properties: DashMap::new(),
@@ -141,9 +149,9 @@ fn reactive_relation_instance_from_edge_properties_test() {
     let inbound_id = Uuid::new_v4();
     let inbound_type_name = r_string();
     let inbound_description = r_string();
+    let inbound_ty = EntityTypeType::new_from_type(&namespace, &inbound_type_name);
     let inbound_entity = Arc::new(ReactiveEntityInstance {
-        namespace: namespace.clone(),
-        type_name: inbound_type_name.clone(),
+        ty: inbound_ty.clone(),
         id: inbound_id.clone(),
         description: inbound_description.clone(),
         properties: DashMap::new(),
@@ -153,10 +161,10 @@ fn reactive_relation_instance_from_edge_properties_test() {
 
     let relation_type_name = r_string();
     let relation_description = r_string();
+    let relation_ty = RelationTypeType::new_from_type(&namespace, &relation_type_name);
     let reactive_relation_instance = Arc::new(ReactiveRelationInstance {
-        namespace: namespace.clone(),
         outbound: outbound_entity.clone(), // Arc::clone -> Reference Counted
-        type_name: relation_type_name.clone(),
+        ty: relation_ty.clone(),
         inbound: inbound_entity.clone(), // Arc::clone -> Reference Counted
         description: relation_description.clone(),
         properties: DashMap::new(),
@@ -164,14 +172,16 @@ fn reactive_relation_instance_from_edge_properties_test() {
         behaviours: DashSet::new(),
     });
 
-    assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name.clone());
+    assert_eq!(namespace.clone(), reactive_relation_instance.namespace());
+    assert_eq!(relation_type_name.clone(), reactive_relation_instance.type_name());
     assert_eq!(outbound_id, reactive_relation_instance.outbound.id);
     assert_eq!(inbound_id, reactive_relation_instance.inbound.id);
     assert_eq!(relation_description.clone(), reactive_relation_instance.description.clone());
 
     let relation_instance: RelationInstance = reactive_relation_instance.into();
     assert_eq!(outbound_entity.id, relation_instance.outbound_id);
-    assert_eq!(relation_type_name.clone(), relation_instance.type_name.clone());
+    assert_eq!(namespace.clone(), relation_instance.namespace());
+    assert_eq!(relation_type_name.clone(), relation_instance.type_name());
     assert_eq!(inbound_entity.id, relation_instance.inbound_id);
     assert_eq!(relation_description.clone(), relation_instance.description.clone());
 }
@@ -233,8 +243,9 @@ fn create_random_relation_instance(
     inbound_entity: Arc<ReactiveEntityInstance>,
     property_name: String,
 ) -> ReactiveRelationInstance {
+    let namespace = r_string();
     let type_name = r_string();
-    let t = Identifier::from_str(type_name.as_str()).unwrap();
+    let ty = RelationTypeType::new_from_type(namespace, type_name);
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
@@ -244,11 +255,11 @@ fn create_random_relation_instance(
     let properties = vec![property];
     let outbound_id = outbound_entity.id;
     let inbound_id = inbound_entity.id;
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
     let edge_properties = EdgeProperties::new(Edge::new_with_current_datetime(edge_key), properties.clone());
     let outbound_entity = outbound_entity.clone();
     let inbound_entity = outbound_entity.clone();
-    ReactiveRelationInstance::from(outbound_entity, inbound_entity, edge_properties)
+    ReactiveRelationInstance::new_from_properties(outbound_entity, inbound_entity, edge_properties).unwrap()
 }
 
 pub fn create_random_relation_instance_with_properties(
@@ -258,7 +269,7 @@ pub fn create_random_relation_instance_with_properties(
 ) -> ReactiveRelationInstance {
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(r_string()));
-    ReactiveRelationInstance::create_with_properties(r_string(), outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
+    ReactiveRelationInstance::new_from_type_with_properties(r_string(), outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
 }
 
 #[test]

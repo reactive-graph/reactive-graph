@@ -11,16 +11,19 @@ use crate::tests::utils::create_random_relation_instance;
 use crate::tests::utils::r_string;
 use crate::FlowInstance;
 use crate::FlowInstanceCreationError;
+use crate::FlowInstanceDao;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::ReactiveFlowInstance;
 
 #[test]
 fn reactive_flow_test() {
-    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("generic_flow", "test"));
+    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("namespace", "generic_flow", "test"));
     let reactive_flow_instance = ReactiveFlowInstance::new(wrapper_entity_instance.clone());
     assert_eq!(wrapper_entity_instance.id, reactive_flow_instance.id);
-    assert_eq!(wrapper_entity_instance.type_name, reactive_flow_instance.type_name);
+    assert_eq!(wrapper_entity_instance.namespace(), reactive_flow_instance.namespace());
+    assert_eq!(wrapper_entity_instance.type_name(), reactive_flow_instance.type_name());
     assert!(reactive_flow_instance.has_entity(wrapper_entity_instance.clone()));
     assert!(reactive_flow_instance.has_entity_by_id(wrapper_entity_instance.id));
     assert!(!reactive_flow_instance.has_entity_by_id(Uuid::new_v4()));
@@ -97,17 +100,19 @@ fn reactive_flow_test() {
     let reactive_flow_instance = Arc::new(reactive_flow_instance);
     let flow_instance: FlowInstance = reactive_flow_instance.clone().try_into().unwrap();
     assert_eq!(reactive_flow_instance.id, flow_instance.id);
-    assert_eq!(reactive_flow_instance.type_name, flow_instance.type_name);
+    assert_eq!(reactive_flow_instance.namespace(), flow_instance.namespace());
+    assert_eq!(reactive_flow_instance.type_name(), flow_instance.type_name());
 
     assert_eq!(3, flow_instance.entity_instances.len());
     assert_eq!(1, flow_instance.relation_instances.len());
-    let flow_str = serde_json::to_string_pretty(&flow_instance).unwrap_or("Failed".into());
+    let flow_instance_dao: FlowInstanceDao = (&flow_instance).into();
+    let flow_str = serde_json::to_string_pretty(&flow_instance_dao).unwrap_or("Failed".into());
     println!("{}", flow_str);
 }
 
 #[test]
 fn reactive_flow_test_try_into() {
-    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("generic_flow", "test"));
+    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("namespace", "generic_flow", "test"));
     let reactive_flow_instance = ReactiveFlowInstance::new(wrapper_entity_instance.clone());
     let second_entity_instance = Arc::new(create_random_entity_instance(r_string()));
     let third_entity_instance = Arc::new(create_random_entity_instance(r_string()));
@@ -118,16 +123,18 @@ fn reactive_flow_test_try_into() {
 
     let flow_instance: FlowInstance = reactive_flow_instance.try_into().unwrap();
     assert_eq!(wrapper_entity_instance.id, flow_instance.id);
-    assert_eq!(wrapper_entity_instance.type_name, flow_instance.type_name);
+    assert_eq!(wrapper_entity_instance.namespace(), flow_instance.namespace());
+    assert_eq!(wrapper_entity_instance.type_name(), flow_instance.type_name());
 
     let reactive_flow_instance_copy = ReactiveFlowInstance::try_from(flow_instance).unwrap();
     assert_eq!(wrapper_entity_instance.id, reactive_flow_instance_copy.id);
-    assert_eq!(wrapper_entity_instance.type_name, reactive_flow_instance_copy.type_name);
+    assert_eq!(wrapper_entity_instance.namespace(), reactive_flow_instance_copy.namespace());
+    assert_eq!(wrapper_entity_instance.type_name(), reactive_flow_instance_copy.type_name());
 }
 
 #[test]
 fn reactive_flow_test_try_fail() {
-    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("generic_flow", "test"));
+    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("namespace", "generic_flow", "test"));
     let mut reactive_flow_instance = ReactiveFlowInstance::new(wrapper_entity_instance.clone());
     // Poisoning by altering the id
     reactive_flow_instance.id = Uuid::new_v4();
@@ -137,7 +144,7 @@ fn reactive_flow_test_try_fail() {
 
 #[test]
 fn reactive_flow_test_try_fail_2() {
-    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("generic_flow", "test"));
+    let wrapper_entity_instance = Arc::new(create_random_entity_instance_with_type("namespace", "generic_flow", "test"));
     let reactive_flow_instance = Arc::new(ReactiveFlowInstance::new(wrapper_entity_instance.clone()));
     // Poisoning by removing the wrapper entity instance
     reactive_flow_instance.remove_entity(reactive_flow_instance.id);

@@ -7,15 +7,16 @@ use indradb::VertexProperties;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::fully_qualified_identifier;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::EntityInstance;
+use crate::EntityTypeType;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
-use crate::NAMESPACE_ENTITY_TYPE;
+use crate::TypeDefinitionGetter;
 
 #[test]
 fn entity_instance_test() {
@@ -38,23 +39,23 @@ fn entity_instance_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
 
+    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
     let entity_instance = EntityInstance {
-        namespace: namespace.clone(),
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         id: uuid.clone(),
         description: description.to_string(),
         properties: properties.clone(),
         extensions: extensions.clone(),
     };
-    assert_eq!(namespace.clone(), entity_instance.namespace.clone());
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
+    assert_eq!(namespace, entity_instance.namespace());
+    assert_eq!(type_name, entity_instance.type_name());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(description.clone(), entity_instance.description.clone());
     assert_eq!(properties.clone(), entity_instance.properties.clone());
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
-    assert_eq!(extension_name.clone(), entity_instance.extensions.first().unwrap().name);
+    assert_eq!(&extension_name, &entity_instance.extensions.first().unwrap().name);
     assert_eq!(extension_value, entity_instance.extensions.first().unwrap().extension);
     assert!(entity_instance.has_own_extension(extension_name));
     assert!(!entity_instance.has_own_extension(r_string()));
@@ -70,10 +71,11 @@ fn create_entity_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let entity_instance = EntityInstance::new(namespace.clone(), type_name.clone(), uuid.clone(), properties.clone());
-    assert_eq!(namespace.clone(), entity_instance.namespace.clone());
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
-    assert_eq!(uuid.clone(), entity_instance.id.clone());
+    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let entity_instance = EntityInstance::new(ty, uuid, properties.clone());
+    assert_eq!(namespace, entity_instance.namespace());
+    assert_eq!(type_name, entity_instance.type_name());
+    assert_eq!(uuid, entity_instance.id.clone());
     assert_eq!(properties.clone(), properties.clone());
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
@@ -85,10 +87,11 @@ fn create_entity_instance_without_properties_test() {
     let uuid = Uuid::new_v4();
     let namespace = r_string();
     let type_name = r_string();
-    let entity_instance = EntityInstance::new_without_properties(namespace.clone(), type_name.clone(), uuid.clone());
-    assert_eq!(namespace.clone(), entity_instance.namespace.clone());
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
-    assert_eq!(uuid.clone(), entity_instance.id.clone());
+    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let entity_instance = EntityInstance::new_without_properties(ty, uuid);
+    assert_eq!(namespace, entity_instance.namespace());
+    assert_eq!(type_name, entity_instance.type_name());
+    assert_eq!(uuid, entity_instance.id.clone());
     assert!(entity_instance.get(r_string()).is_none());
 }
 
@@ -97,7 +100,7 @@ fn create_entity_instance_from_vertex_properties() {
     let uuid = Uuid::new_v4();
     let namespace = r_string();
     let type_name = r_string();
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_ENTITY_TYPE);
+    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
@@ -107,12 +110,12 @@ fn create_entity_instance_from_vertex_properties() {
     };
     let properties = vec![property];
     let vertex_properties = VertexProperties {
-        vertex: Vertex { id: uuid, t: t.clone() },
+        vertex: Vertex { id: uuid, t: ty.type_id() },
         props: properties.clone(),
     };
-    let entity_instance = EntityInstance::from(vertex_properties);
-    assert_eq!(namespace.clone(), entity_instance.namespace.clone());
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
+    let entity_instance = EntityInstance::try_from(vertex_properties).unwrap();
+    assert_eq!(namespace, entity_instance.namespace());
+    assert_eq!(type_name, entity_instance.type_name());
     assert_eq!(uuid.clone(), entity_instance.id.clone());
     assert_eq!(property_value.as_str(), entity_instance.properties.get(property_name.as_str()).unwrap().as_str().unwrap());
 }
@@ -125,7 +128,8 @@ fn entity_instance_typed_getter_test() {
     let property_name = r_string();
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(false));
-    let mut i = EntityInstance::new(namespace.clone(), type_name.clone(), uuid.clone(), properties.clone());
+    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let mut i = EntityInstance::new(ty, uuid, properties.clone());
     i.set(property_name.clone(), json!(true));
     assert!(i.as_bool(property_name.clone()).unwrap());
     i.set(property_name.clone(), json!(false));

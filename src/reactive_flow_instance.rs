@@ -4,7 +4,11 @@ use std::fmt;
 use std::sync::Arc;
 use std::sync::RwLock;
 
+use crate::EntityTypeType;
+use crate::NamespacedTypeGetter;
 use crate::ReactivePropertyContainer;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
 
 use indradb::EdgeKey;
 use serde_json::Map;
@@ -41,8 +45,8 @@ pub struct ReactiveFlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance.
     pub id: Uuid,
 
-    /// The entity type of the flow.
-    pub type_name: String,
+    /// The type definition of the entity type of the wrapper entity instance.
+    pub ty: EntityTypeType,
 
     /// The flow contains entity instances. The entity instance may also
     /// be contained in other flows.
@@ -67,15 +71,13 @@ pub struct ReactiveFlowInstance {
 
 impl ReactiveFlowInstance {
     pub fn new(wrapper_entity_instance: Arc<ReactiveEntityInstance>) -> ReactiveFlowInstance {
-        let type_name = wrapper_entity_instance.type_name.clone();
         let mut entity_instances = HashMap::new();
         entity_instances.insert(wrapper_entity_instance.id, wrapper_entity_instance.clone());
         ReactiveFlowInstance {
             id: wrapper_entity_instance.id,
-            type_name,
+            ty: wrapper_entity_instance.ty.clone(),
             entity_instances: RwLock::new(entity_instances),
             relation_instances: RwLock::new(HashMap::new()),
-            // wrapper,
             entities_added: RwLock::new(Vec::new()),
             entities_removed: RwLock::new(Vec::new()),
             relations_added: RwLock::new(Vec::new()),
@@ -157,11 +159,11 @@ impl From<Arc<ReactiveEntityInstance>> for ReactiveFlowInstance {
 impl TryFrom<FlowInstance> for ReactiveFlowInstance {
     type Error = ReactiveFlowInstanceConstructionError;
 
-    fn try_from(flow: FlowInstance) -> Result<Self, ReactiveFlowInstanceConstructionError> {
-        let flow_id = flow.id;
+    fn try_from(flow_instance: FlowInstance) -> Result<Self, ReactiveFlowInstanceConstructionError> {
+        let flow_id = flow_instance.id;
         let mut entity_instances = HashMap::new();
         let mut wrapper = None;
-        for entity_instance in flow.entity_instances {
+        for entity_instance in flow_instance.entity_instances {
             let id = entity_instance.id;
             let reactive_entity_instance = Arc::new(ReactiveEntityInstance::from(entity_instance));
             entity_instances.insert(id, reactive_entity_instance.clone());
@@ -173,7 +175,7 @@ impl TryFrom<FlowInstance> for ReactiveFlowInstance {
             return Err(ReactiveFlowInstanceConstructionError::MissingWrapperInstance);
         }
         let mut relation_instances = HashMap::new();
-        for relation_instance in flow.relation_instances {
+        for relation_instance in flow_instance.relation_instances {
             let edge_key = relation_instance.get_key();
             let outbound = entity_instances.get(&relation_instance.outbound_id);
             if outbound.is_none() {
@@ -187,12 +189,12 @@ impl TryFrom<FlowInstance> for ReactiveFlowInstance {
             }
             let outbound = outbound.unwrap().clone();
             let inbound = inbound.unwrap().clone();
-            let reactive_relation_instance = Arc::new(ReactiveRelationInstance::from_instance(outbound, inbound, relation_instance.clone()));
+            let reactive_relation_instance = Arc::new(ReactiveRelationInstance::new_from_instance(outbound, inbound, relation_instance.clone()));
             relation_instances.insert(edge_key.clone(), reactive_relation_instance);
         }
         Ok(ReactiveFlowInstance {
             id: flow_id,
-            type_name: flow.type_name,
+            ty: flow_instance.ty,
             entity_instances: RwLock::new(entity_instances),
             relation_instances: RwLock::new(relation_instances),
             // wrapper: wrapper.unwrap(),
@@ -264,4 +266,20 @@ impl PropertyInstanceSetter for ReactiveFlowInstance {
 
     // TODO: fn set(&self, Map<String, Value>
     // TODO: Set values transactional: first set all values internally, then send all affected streams
+}
+
+impl NamespacedTypeGetter for ReactiveFlowInstance {
+    fn namespace(&self) -> String {
+        self.ty.namespace()
+    }
+
+    fn type_name(&self) -> String {
+        self.ty.type_name()
+    }
+}
+
+impl TypeDefinitionGetter for ReactiveFlowInstance {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
 }

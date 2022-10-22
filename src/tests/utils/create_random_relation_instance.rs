@@ -7,12 +7,12 @@ use indradb::EdgeProperties;
 use indradb::NamedProperty;
 use serde_json::json;
 
-use crate::fully_qualified_identifier;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::ReactiveEntityInstance;
 use crate::ReactiveRelationInstance;
-use crate::NAMESPACE_RELATION_TYPE;
+use crate::RelationTypeType;
+use crate::TypeDefinitionGetter;
 
 pub fn create_random_relation_instance(
     outbound_entity: Arc<ReactiveEntityInstance>,
@@ -21,7 +21,7 @@ pub fn create_random_relation_instance(
 ) -> ReactiveRelationInstance {
     let namespace = r_string();
     let type_name = r_string();
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {
@@ -31,11 +31,11 @@ pub fn create_random_relation_instance(
     let properties = vec![property];
     let outbound_id = outbound_entity.id;
     let inbound_id = inbound_entity.id;
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
     let edge_properties = EdgeProperties::new(Edge::new_with_current_datetime(edge_key), properties.clone());
     let outbound_entity = outbound_entity.clone();
     let inbound_entity = outbound_entity.clone();
-    ReactiveRelationInstance::from(outbound_entity, inbound_entity, edge_properties)
+    ReactiveRelationInstance::new_from_properties(outbound_entity, inbound_entity, edge_properties).unwrap()
 }
 
 pub fn create_random_relation_instance_with_properties(
@@ -45,5 +45,5 @@ pub fn create_random_relation_instance_with_properties(
 ) -> ReactiveRelationInstance {
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(r_string()));
-    ReactiveRelationInstance::create_with_properties(r_string(), outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
+    ReactiveRelationInstance::new_from_type_with_properties(r_string(), outbound_entity.clone(), r_string(), inbound_entity.clone(), properties)
 }

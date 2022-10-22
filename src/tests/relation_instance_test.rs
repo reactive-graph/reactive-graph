@@ -7,16 +7,19 @@ use indradb::NamedProperty;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::fully_qualified_identifier;
+// use crate::fully_qualified_identifier;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::tests::utils::r_string_1000;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::RelationInstance;
-use crate::NAMESPACE_RELATION_TYPE;
+use crate::RelationTypeType;
+use crate::TypeDefinitionGetter;
+// use crate::NAMESPACE_RELATION_TYPE;
 
 #[test]
 fn relation_instance_test() {
@@ -39,25 +42,25 @@ fn relation_instance_test() {
     extensions.push(extension);
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let relation_instance = RelationInstance {
-        namespace: namespace.clone(),
         outbound_id,
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         inbound_id,
         description: description.to_string(),
         properties: properties.clone(),
         extensions: extensions.clone(),
     };
-    assert_eq!(namespace.clone(), relation_instance.namespace.clone());
-    assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
-    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
-    assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
-    assert_eq!(description.clone(), relation_instance.description.clone());
+    assert_eq!(namespace, relation_instance.namespace());
+    assert_eq!(outbound_id, relation_instance.outbound_id);
+    assert_eq!(type_name.clone(), relation_instance.type_name());
+    assert_eq!(inbound_id, relation_instance.inbound_id);
+    assert_eq!(description, relation_instance.description);
     assert_eq!(properties.clone(), relation_instance.properties.clone());
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
-    assert_eq!(extension_name.clone(), relation_instance.extensions.first().unwrap().name);
+    assert_eq!(&extension_name, &relation_instance.extensions.first().unwrap().name);
     assert_eq!(extension_value, relation_instance.extensions.first().unwrap().extension);
     assert!(relation_instance.has_own_extension(extension_name));
     assert!(!relation_instance.has_own_extension(r_string()));
@@ -70,18 +73,19 @@ fn edge_key_test() {
     let type_name = r_string();
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let relation_instance = RelationInstance {
-        namespace: namespace.clone(),
         outbound_id,
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
         extensions: Vec::new(),
     };
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    // let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
+    assert_eq!(edge_key.t, relation_instance.type_id());
     assert_eq!(edge_key.t, relation_instance.get_key().t);
     assert_eq!(edge_key, relation_instance.get_key());
 }
@@ -92,18 +96,18 @@ fn edge_key_with_long_namespace_test() {
     let type_name = r_string();
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let relation_instance = RelationInstance {
-        namespace: namespace.clone(),
         outbound_id,
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
         extensions: Vec::new(),
     };
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
+    assert_eq!(edge_key.t, relation_instance.type_id());
     assert_eq!(edge_key.t, relation_instance.get_key().t);
     assert_eq!(edge_key, relation_instance.get_key());
 }
@@ -114,18 +118,18 @@ fn edge_key_with_long_type_name_test() {
     let type_name = r_string_1000();
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let relation_instance = RelationInstance {
-        namespace: namespace.clone(),
         outbound_id,
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
         extensions: Vec::new(),
     };
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
+    assert_eq!(edge_key.t, relation_instance.type_id());
     assert_eq!(edge_key.t, relation_instance.get_key().t);
     assert_eq!(edge_key, relation_instance.get_key());
 }
@@ -136,18 +140,18 @@ fn edge_key_with_long_namespace_and_type_name_test() {
     let type_name = r_string_1000();
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let relation_instance = RelationInstance {
-        namespace: namespace.clone(),
         outbound_id,
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         inbound_id,
         description: r_string(),
         properties: HashMap::new(),
         extensions: Vec::new(),
     };
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
+    assert_eq!(edge_key.t, relation_instance.type_id());
     assert_eq!(edge_key.t, relation_instance.get_key().t);
     assert_eq!(edge_key, relation_instance.get_key());
 }
@@ -162,11 +166,12 @@ fn create_relation_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let relation_instance = RelationInstance::new(namespace.clone(), outbound_id, type_name.clone(), inbound_id, properties.clone());
-    assert_eq!(namespace.clone(), relation_instance.namespace.clone());
-    assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
-    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
-    assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
+    let relation_instance = RelationInstance::new(outbound_id, ty, inbound_id, properties.clone());
+    assert_eq!(namespace, relation_instance.namespace());
+    assert_eq!(outbound_id, relation_instance.outbound_id);
+    assert_eq!(type_name, relation_instance.type_name());
+    assert_eq!(inbound_id, relation_instance.inbound_id);
     assert_eq!(properties.clone(), relation_instance.properties.clone());
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
@@ -179,11 +184,12 @@ fn create_relation_instance_without_properties_test() {
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
     let type_name = r_string();
-    let relation_instance = RelationInstance::new_without_properties(namespace.clone(), outbound_id, type_name.clone(), inbound_id);
-    assert_eq!(namespace.clone(), relation_instance.namespace.clone());
-    assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
-    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
-    assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
+    let relation_instance = RelationInstance::new_without_properties(outbound_id, ty.clone(), inbound_id);
+    assert_eq!(namespace, relation_instance.namespace());
+    assert_eq!(outbound_id, relation_instance.outbound_id);
+    assert_eq!(type_name, relation_instance.type_name());
+    assert_eq!(inbound_id, relation_instance.inbound_id);
     assert_eq!(0, relation_instance.properties.len());
 }
 
@@ -193,7 +199,7 @@ fn create_relation_instance_from_edge_properties() {
     let outbound_id = Uuid::new_v4();
     let inbound_id = Uuid::new_v4();
     let type_name = r_string();
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
@@ -202,13 +208,13 @@ fn create_relation_instance_from_edge_properties() {
         value: property_value_json,
     };
     let properties = vec![property];
-    let edge_key = EdgeKey::new(outbound_id, t, inbound_id);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
     let edge_properties = EdgeProperties::new(Edge::new_with_current_datetime(edge_key), properties.clone());
-    let relation_instance = RelationInstance::from(edge_properties);
-    assert_eq!(namespace.clone(), relation_instance.namespace.clone());
-    assert_eq!(outbound_id.clone(), relation_instance.outbound_id.clone());
-    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
-    assert_eq!(inbound_id.clone(), relation_instance.inbound_id.clone());
+    let relation_instance = RelationInstance::try_from(edge_properties).unwrap();
+    assert_eq!(namespace, relation_instance.namespace());
+    assert_eq!(outbound_id, relation_instance.outbound_id);
+    assert_eq!(type_name, relation_instance.type_name());
+    assert_eq!(inbound_id, relation_instance.inbound_id);
     assert_eq!(property_value.as_str(), relation_instance.properties.get(property_name.as_str()).unwrap().as_str().unwrap());
 }
 
@@ -221,7 +227,8 @@ fn relation_instance_typed_getter_test() {
     let property_name = r_string();
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(false));
-    let mut i = RelationInstance::new(namespace.clone(), outbound_id, type_name.clone(), inbound_id, properties.clone());
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
+    let mut i = RelationInstance::new(outbound_id, ty.clone(), inbound_id, properties.clone());
     i.set(property_name.clone(), json!(true));
     assert!(i.as_bool(property_name.clone()).unwrap());
     i.set(property_name.clone(), json!(false));
@@ -249,15 +256,14 @@ fn relation_instance_get_key_test() {
     let type_name = r_string();
     let description = r_string();
     let properties = HashMap::new();
+    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
     let relation_instance = RelationInstance {
-        namespace: namespace.clone(),
         outbound_id,
-        type_name: type_name.clone(),
+        ty: ty.clone(),
         inbound_id,
         description: description.to_string(),
         properties: properties.clone(),
         extensions: Vec::new(),
     };
-    let t = fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_RELATION_TYPE);
-    assert_eq!(EdgeKey::new(outbound_id, t, inbound_id), relation_instance.get_key());
+    assert_eq!(EdgeKey::new(outbound_id, ty.type_id(), inbound_id), relation_instance.get_key());
 }

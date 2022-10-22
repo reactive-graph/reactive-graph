@@ -1,19 +1,20 @@
 use crate::Component;
+use crate::ComponentType;
 
 /// Reactive instance container for components.
 pub trait ComponentContainer {
     /// Returns the names of the components
-    fn get_components(&self) -> Vec<String>;
+    fn get_components(&self) -> Vec<ComponentType>;
 
     /// Adds a component to the container.
-    fn add_component<S: Into<String>>(&self, component: S);
+    fn add_component(&self, ty: ComponentType);
 
     /// Adds a component to the container and initializes the reactive property instances.
     fn add_component_with_properties(&self, component: &Component);
 
     /// Removes a component from the container.
-    fn remove_component<S: Into<String>>(&self, component: S);
+    fn remove_component(&self, ty: &ComponentType);
 
     /// Returns true, if the reactive instance is composed with the given component.
-    fn is_a<S: Into<String>>(&self, component: S) -> bool;
+    fn is_a(&self, ty: &ComponentType) -> bool;
 }

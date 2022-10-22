@@ -7,23 +7,24 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::get_namespace_and_type_name;
 use crate::Component;
 use crate::ComponentContainer;
+use crate::ComponentType;
 use crate::EntityInstance;
+use crate::EntityTypeType;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
 
 pub struct ReactiveEntityInstance {
-    /// The namespace the entity instance belongs to.
-    pub namespace: String,
-
-    /// The name of the entity type.
-    pub type_name: String,
+    /// The type definition of the entity type.
+    pub ty: EntityTypeType,
 
     /// The unique identifier of the entity instance.
     pub id: Uuid,
@@ -35,7 +36,7 @@ pub struct ReactiveEntityInstance {
     pub properties: DashMap<String, ReactivePropertyInstance>,
 
     /// The names of the components which are applied on this entity instance.
-    pub components: DashSet<String>,
+    pub components: DashSet<ComponentType>,
 
     /// The names of the behaviours which are applied on this entity instance.
     pub behaviours: DashSet<String>,
@@ -89,16 +90,16 @@ impl ReactivePropertyContainer for ReactiveEntityInstance {
 }
 
 impl ComponentContainer for ReactiveEntityInstance {
-    fn get_components(&self) -> Vec<String> {
+    fn get_components(&self) -> Vec<ComponentType> {
         self.components.iter().map(|c| c.key().clone()).collect()
     }
 
-    fn add_component<S: Into<String>>(&self, component: S) {
-        self.components.insert(component.into());
+    fn add_component(&self, ty: ComponentType) {
+        self.components.insert(ty);
     }
 
     fn add_component_with_properties(&self, component: &Component) {
-        self.add_component(&component.name);
+        self.add_component(component.ty.clone());
         for property_type in component.properties.iter() {
             if !self.properties.contains_key(&property_type.name) {
                 self.add_property_by_type(property_type);
@@ -106,12 +107,12 @@ impl ComponentContainer for ReactiveEntityInstance {
         }
     }
 
-    fn remove_component<S: Into<String>>(&self, component: S) {
-        self.components.remove(component.into().as_str());
+    fn remove_component(&self, ty: &ComponentType) {
+        self.components.remove(ty);
     }
 
-    fn is_a<S: Into<String>>(&self, component: S) -> bool {
-        self.components.contains(component.into().as_str())
+    fn is_a(&self, ty: &ComponentType) -> bool {
+        self.components.contains(ty)
     }
 }
 
@@ -129,8 +130,11 @@ impl ReactiveBehaviourContainer for ReactiveEntityInstance {
     }
 }
 
-impl From<VertexProperties> for ReactiveEntityInstance {
-    fn from(properties: VertexProperties) -> Self {
+impl TryFrom<VertexProperties> for ReactiveEntityInstance {
+    type Error = ();
+
+    fn try_from(properties: VertexProperties) -> Result<Self, Self::Error> {
+        let ty = EntityTypeType::try_from(&properties.vertex.t)?;
         let id = properties.vertex.id;
         let instance_properties = properties
             .props
@@ -142,16 +146,14 @@ impl From<VertexProperties> for ReactiveEntityInstance {
                 )
             })
             .collect();
-        let (namespace, type_name) = get_namespace_and_type_name(&properties.vertex.t);
-        ReactiveEntityInstance {
-            namespace,
-            type_name,
+        Ok(ReactiveEntityInstance {
+            ty,
             id,
             description: String::new(),
             properties: instance_properties,
             components: DashSet::new(),
             behaviours: DashSet::new(),
-        }
+        })
     }
 }
 
@@ -163,8 +165,7 @@ impl From<EntityInstance> for ReactiveEntityInstance {
             .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(instance.id, name.clone(), value.clone())))
             .collect();
         ReactiveEntityInstance {
-            namespace: instance.namespace.clone(),
-            type_name: instance.type_name.clone(),
+            ty: instance.ty.clone(),
             id: instance.id,
             description: instance.description,
             properties,
@@ -182,8 +183,7 @@ impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
             .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
         EntityInstance {
-            namespace: instance.namespace.clone(),
-            type_name: instance.type_name.clone(),
+            ty: instance.ty.clone(),
             id: instance.id,
             description: instance.description.clone(),
             properties,
@@ -241,4 +241,20 @@ impl PropertyInstanceSetter for ReactiveEntityInstance {
 
     // TODO: fn set(&self, Map<String, Value>
     // TODO: Set values transactional: first set all values internally, then send all affected streams
+}
+
+impl NamespacedTypeGetter for ReactiveEntityInstance {
+    fn namespace(&self) -> String {
+        self.ty.namespace()
+    }
+
+    fn type_name(&self) -> String {
+        self.ty.type_name()
+    }
+}
+
+impl TypeDefinitionGetter for ReactiveEntityInstance {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
 }

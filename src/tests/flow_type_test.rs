@@ -7,8 +7,11 @@ use crate::tests::utils::r_string;
 use crate::DataType;
 use crate::Extension;
 use crate::FlowType;
+use crate::FlowTypeType;
+use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::RelationInstance;
+use crate::RelationTypeType;
 
 #[test]
 fn create_flow_type_test() {
@@ -23,17 +26,14 @@ fn create_flow_type_test() {
     let wrapper_entity_instance = create_entity_instance("property");
     let entity_instance_2 = create_entity_instance("property2");
     let entity_instance_3 = create_entity_instance("property3");
-    let mut entity_instances = Vec::new();
-    entity_instances.push(entity_instance_2.clone());
-    entity_instances.push(entity_instance_3.clone());
+    let entity_instances = vec![entity_instance_2.clone(), entity_instance_3.clone()];
 
-    let relation_instance_1 = RelationInstance::new(namespace, wrapper_entity_instance.id, relation_type_name, entity_instance_2.id, HashMap::new());
-    let relation_instance_2 = RelationInstance::new(namespace, entity_instance_2.id, relation_type_name, entity_instance_3.id, HashMap::new());
-    let relation_instance_3 = RelationInstance::new(namespace, entity_instance_3.id, relation_type_name_2, wrapper_entity_instance.id, HashMap::new());
-    let mut relation_instances = Vec::new();
-    relation_instances.push(relation_instance_1.clone());
-    relation_instances.push(relation_instance_2.clone());
-    relation_instances.push(relation_instance_3.clone());
+    let r_ty = RelationTypeType::new_from_type(namespace, relation_type_name);
+    let r_ty_2 = RelationTypeType::new_from_type(namespace, relation_type_name_2);
+    let relation_instance_1 = RelationInstance::new(wrapper_entity_instance.id, r_ty.clone(), entity_instance_2.id, HashMap::new());
+    let relation_instance_2 = RelationInstance::new(entity_instance_2.id, r_ty, entity_instance_3.id, HashMap::new());
+    let relation_instance_3 = RelationInstance::new(entity_instance_3.id, r_ty_2, wrapper_entity_instance.id, HashMap::new());
+    let relation_instances = vec![relation_instance_1.clone(), relation_instance_2.clone(), relation_instance_3.clone()];
 
     let mut variables = Vec::new();
     let variable_name = "variable_name";
@@ -52,9 +52,9 @@ fn create_flow_type_test() {
     let extension_2 = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension_2);
 
+    let f_ty = FlowTypeType::new_from_type(namespace, flow_type_name);
     let flow_type = FlowType::new(
-        namespace,
-        flow_type_name,
+        f_ty,
         description,
         wrapper_entity_instance.clone(),
         entity_instances,
@@ -63,24 +63,23 @@ fn create_flow_type_test() {
         extensions,
     );
 
-    assert_eq!(namespace, flow_type.namespace);
+    assert_eq!(namespace, flow_type.namespace());
 
-    assert_eq!(flow_type_name, flow_type.name);
+    assert_eq!(flow_type_name, flow_type.type_name());
 
     assert_eq!(wrapper_entity_instance.id, flow_type.id());
-    assert_eq!(wrapper_entity_instance.namespace, flow_type.type_namespace());
-    assert_eq!(wrapper_entity_instance.type_name, flow_type.type_name());
-    assert_eq!(&wrapper_entity_instance.namespace, &flow_type.wrapper_entity_instance.namespace);
-    assert_eq!(&wrapper_entity_instance.type_name, &flow_type.wrapper_entity_instance.type_name);
+    assert_eq!(wrapper_entity_instance.ty, flow_type.wrapper_type());
+    assert_eq!(&wrapper_entity_instance.namespace(), &flow_type.wrapper_entity_instance.namespace());
+    assert_eq!(&wrapper_entity_instance.type_name(), &flow_type.wrapper_entity_instance.type_name());
 
     assert_eq!(description, flow_type.description);
 
     assert_eq!(entity_instance_2.id, flow_type.entity_instances.get(0).unwrap().id);
     assert_eq!(entity_instance_3.id, flow_type.entity_instances.get(1).unwrap().id);
 
-    assert_eq!(relation_instance_1.type_name, *flow_type.relation_instances.first().unwrap().type_name);
-    assert_eq!(relation_instance_2.type_name, *flow_type.relation_instances.get(1).unwrap().type_name);
-    assert_eq!(relation_instance_3.type_name, *flow_type.relation_instances.get(2).unwrap().type_name);
+    assert_eq!(relation_instance_1.type_name(), *flow_type.relation_instances.first().unwrap().type_name());
+    assert_eq!(relation_instance_2.type_name(), *flow_type.relation_instances.get(1).unwrap().type_name());
+    assert_eq!(relation_instance_3.type_name(), *flow_type.relation_instances.get(2).unwrap().type_name());
 
     assert_eq!(relation_instance_1.outbound_id, flow_type.relation_instances.first().unwrap().outbound_id);
     assert_eq!(wrapper_entity_instance.id, flow_type.relation_instances.first().unwrap().outbound_id);
@@ -92,19 +91,19 @@ fn create_flow_type_test() {
 
     assert_eq!(variable_data_type, flow_type.variables.first().unwrap().data_type);
 
-    assert_eq!(extension_name.clone(), flow_type.extensions.first().unwrap().name);
+    assert_eq!(&extension_name, &flow_type.extensions.first().unwrap().name);
 
     assert_eq!(3, flow_type.uses_entity_types().len());
-    assert!(flow_type.uses_entity_types().contains(&wrapper_entity_instance.type_name));
-    assert!(flow_type.uses_entity_types().contains(&entity_instance_2.type_name));
-    assert!(flow_type.uses_entity_types().contains(&entity_instance_3.type_name));
+    assert!(flow_type.uses_entity_types().contains(&wrapper_entity_instance.ty));
+    assert!(flow_type.uses_entity_types().contains(&entity_instance_2.ty));
+    assert!(flow_type.uses_entity_types().contains(&entity_instance_3.ty));
 
     assert_eq!(3, flow_type.entity_instances().len());
 
     assert_eq!(2, flow_type.uses_relation_types().len());
-    assert!(flow_type.uses_relation_types().contains(&relation_instance_1.type_name));
-    assert!(flow_type.uses_relation_types().contains(&relation_instance_2.type_name));
-    assert!(flow_type.uses_relation_types().contains(&relation_instance_3.type_name));
+    assert!(flow_type.uses_relation_types().contains(&relation_instance_1.ty));
+    assert!(flow_type.uses_relation_types().contains(&relation_instance_2.ty));
+    assert!(flow_type.uses_relation_types().contains(&relation_instance_3.ty));
 
     assert_eq!(3, flow_type.relation_instances().len());
 

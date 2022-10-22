@@ -7,11 +7,14 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::get_namespace_and_type_name;
+use crate::EntityTypeType;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
+use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
+use crate::TypeDefinition;
+use crate::TypeDefinitionGetter;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -19,20 +22,15 @@ use crate::PropertyInstanceGetter;
 ///
 /// In contrast to the entity type the entity instance stores values in it's
 /// properties.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug)]
 pub struct EntityInstance {
-    /// The namespace the entity instance belongs to.
-    pub namespace: String,
-
-    /// The name of the entity type.
-    #[serde(alias = "type")]
-    pub type_name: String,
+    /// The type definition of the entity type.
+    pub ty: EntityTypeType,
 
     /// The unique identifier of the entity instance.
     pub id: Uuid,
 
     /// The description of the entity instance.
-    #[serde(default = "String::new")]
     pub description: String,
 
     /// The properties of then entity instance.
@@ -41,20 +39,17 @@ pub struct EntityInstance {
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
-    #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 
     /// Entity instance specific extensions.
-    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
 }
 
 impl EntityInstance {
-    /// Constructs a new entity instance with the given type, id and properties
-    pub fn new<S: Into<String>>(namespace: S, type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
+    /// Constructs a new entity instance with the given type.
+    pub fn new<T: Into<EntityTypeType>>(ty: T, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
         EntityInstance {
-            namespace: namespace.into(),
-            type_name: type_name.into(),
+            ty: ty.into(),
             id,
             description: String::new(),
             properties,
@@ -62,11 +57,21 @@ impl EntityInstance {
         }
     }
 
-    /// Constructs a new entity instance with the given type and id but without properties
-    pub fn new_without_properties<S: Into<String>>(namespace: S, type_name: S, id: Uuid) -> EntityInstance {
+    /// Constructs a new entity instance with the given namespace, type_name, id and properties.
+    pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
         EntityInstance {
-            namespace: namespace.into(),
-            type_name: type_name.into(),
+            ty: EntityTypeType::new_from_type(namespace, type_name),
+            id,
+            description: String::new(),
+            properties,
+            extensions: Vec::new(),
+        }
+    }
+
+    /// Constructs a new entity instance with the given type and id but without properties.
+    pub fn new_without_properties<T: Into<EntityTypeType>>(ty: T, id: Uuid) -> EntityInstance {
+        EntityInstance {
+            ty: ty.into(),
             id,
             description: String::new(),
             properties: HashMap::new(),
@@ -75,19 +80,20 @@ impl EntityInstance {
     }
 }
 
-impl From<VertexProperties> for EntityInstance {
-    fn from(properties: VertexProperties) -> Self {
-        let (namespace, type_name) = get_namespace_and_type_name(&properties.vertex.t);
+impl TryFrom<VertexProperties> for EntityInstance {
+    type Error = ();
+
+    fn try_from(properties: VertexProperties) -> Result<Self, Self::Error> {
+        let ty = EntityTypeType::try_from(&properties.vertex.t)?;
         let id = properties.vertex.id;
         let properties: HashMap<String, Value> = properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect();
-        EntityInstance {
-            namespace,
-            type_name,
+        Ok(EntityInstance {
+            ty,
             id,
             description: String::new(),
             properties,
             extensions: Vec::new(),
-        }
+        })
     }
 }
 
@@ -142,5 +148,76 @@ impl ExtensionContainer for EntityInstance {
     fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
         let extension_name = extension_name.into();
         self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
+    }
+}
+
+impl NamespacedTypeGetter for EntityInstance {
+    fn namespace(&self) -> String {
+        self.ty.namespace()
+    }
+
+    fn type_name(&self) -> String {
+        self.ty.type_name()
+    }
+}
+
+impl TypeDefinitionGetter for EntityInstance {
+    fn type_definition(&self) -> TypeDefinition {
+        self.ty.type_definition()
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct EntityInstanceDao {
+    /// The namespace the entity instance belongs to.
+    pub namespace: String,
+
+    /// The name of the entity type.
+    #[serde(alias = "type")]
+    pub type_name: String,
+
+    /// The unique identifier of the entity instance.
+    pub id: Uuid,
+
+    /// The description of the entity instance.
+    #[serde(default = "String::new")]
+    pub description: String,
+
+    /// The properties of then entity instance.
+    ///
+    /// Each property is represented by it's name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// array or an object. For more information about the data types please look at
+    /// https://docs.serde.rs/serde_json/value/enum.Value.html
+    #[serde(default = "HashMap::new")]
+    pub properties: HashMap<String, Value>,
+
+    /// Entity instance specific extensions.
+    #[serde(default = "Vec::new")]
+    pub extensions: Vec<Extension>,
+}
+
+impl From<&EntityInstanceDao> for EntityInstance {
+    fn from(dao: &EntityInstanceDao) -> Self {
+        Self {
+            ty: EntityTypeType::new_from_type(&dao.namespace, &dao.type_name),
+            id: dao.id,
+            description: dao.description.clone(),
+            properties: dao.properties.clone(),
+            extensions: dao.extensions.clone(),
+        }
+    }
+}
+
+impl From<&EntityInstance> for EntityInstanceDao {
+    fn from(entity_instance: &EntityInstance) -> Self {
+        EntityInstanceDao {
+            namespace: entity_instance.namespace(),
+            type_name: entity_instance.type_name(),
+            id: entity_instance.id,
+            description: entity_instance.description.clone(),
+            properties: entity_instance.properties.clone(),
+            extensions: entity_instance.extensions.clone(),
+        }
     }
 }
