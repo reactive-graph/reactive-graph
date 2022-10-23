@@ -48,10 +48,10 @@ pub struct RelationType {
 
 impl RelationType {
     #[allow(clippy::too_many_arguments)]
-    pub fn new<RT: Into<RelationTypeType>, ET: Into<EntityTypeType>, S: Into<String>>(
-        outbound_type: ET,
+    pub fn new<OT: Into<EntityTypeType>, RT: Into<RelationTypeType>, IT: Into<EntityTypeType>, S: Into<String>>(
+        outbound_type: OT,
         ty: RT,
-        inbound_type: ET,
+        inbound_type: IT,
         description: S,
         components: Vec<ComponentType>,
         properties: Vec<PropertyType>,
