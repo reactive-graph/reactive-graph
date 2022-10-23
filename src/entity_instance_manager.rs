@@ -20,7 +20,7 @@ pub enum EntityInstanceCreationError {
 
 #[derive(Debug)]
 pub enum EntityInstanceComponentAddError {
-    MissingComponent(String),
+    MissingComponent(ComponentType),
     MissingInstance(Uuid),
 }
 
