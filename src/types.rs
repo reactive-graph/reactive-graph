@@ -269,6 +269,11 @@ impl RelationTypeType {
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> RelationTypeType {
         RelationTypeType(NamespacedType::new(namespace, type_name))
     }
+
+    /// Returns true, if the type name starts with the given relation type name.
+    pub fn starts_with(&self, ty: &RelationTypeType) -> bool {
+        self.0.namespace == ty.0.namespace && self.0.type_name.starts_with(&ty.0.type_name)
+    }
 }
 
 impl NamespacedTypeGetter for RelationTypeType {
