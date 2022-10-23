@@ -92,7 +92,7 @@ pub trait TypeDefinitionGetter {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct NamespacedType {
     pub namespace: String,
     pub type_name: String,
@@ -117,7 +117,7 @@ impl NamespacedTypeGetter for NamespacedType {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ComponentType(NamespacedType);
 
 impl ComponentType {
@@ -195,7 +195,7 @@ impl TryFrom<&String> for ComponentType {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct EntityTypeType(NamespacedType);
 
 impl EntityTypeType {
@@ -263,7 +263,7 @@ impl TryFrom<&Identifier> for EntityTypeType {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RelationTypeType(NamespacedType);
 
 impl RelationTypeType {
@@ -331,7 +331,7 @@ impl TryFrom<&Identifier> for RelationTypeType {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct FlowTypeType(NamespacedType);
 
 impl FlowTypeType {
