@@ -1,4 +1,6 @@
 use std::fmt::Debug;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use indradb::Identifier;
 use serde::Deserialize;
@@ -117,6 +119,12 @@ impl NamespacedTypeGetter for NamespacedType {
     }
 }
 
+impl Display for NamespacedType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}__{}", &self.namespace, self.type_name)
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct ComponentType(NamespacedType);
 
@@ -195,6 +203,12 @@ impl TryFrom<&String> for ComponentType {
     }
 }
 
+impl Display for ComponentType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", &self.type_definition().to_string())
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct EntityTypeType(NamespacedType);
 
@@ -260,6 +274,12 @@ impl TryFrom<&Identifier> for EntityTypeType {
             return Ok(EntityTypeType(NamespacedType::new(namespace, type_name)));
         }
         Err(())
+    }
+}
+
+impl Display for EntityTypeType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", &self.type_definition().to_string())
     }
 }
 
@@ -331,6 +351,12 @@ impl TryFrom<&Identifier> for RelationTypeType {
     }
 }
 
+impl Display for RelationTypeType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", &self.type_definition().to_string())
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct FlowTypeType(NamespacedType);
 
@@ -391,6 +417,12 @@ impl TryFrom<&Identifier> for FlowTypeType {
             return Ok(FlowTypeType(NamespacedType::new(namespace, type_name)));
         }
         Err(())
+    }
+}
+
+impl Display for FlowTypeType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", &self.type_definition().to_string())
     }
 }
 
@@ -506,5 +538,11 @@ impl TryFrom<&Identifier> for TypeDefinition {
         let type_name = s.next().ok_or(())?;
         let nt = NamespacedType::new(namespace, type_name);
         Ok(TypeDefinition::new(type_type, nt))
+    }
+}
+
+impl Display for TypeDefinition {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", &self.to_string())
     }
 }
