@@ -540,9 +540,3 @@ impl TryFrom<&Identifier> for TypeDefinition {
         Ok(TypeDefinition::new(type_type, nt))
     }
 }
-
-impl Display for TypeDefinition {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", &self.to_string())
-    }
-}
