@@ -206,6 +206,11 @@ impl EntityTypeType {
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> EntityTypeType {
         EntityTypeType(NamespacedType::new(namespace, type_name))
     }
+
+    /// Returns true, if the type name starts with the given entity type name.
+    pub fn starts_with(&self, ty: &EntityTypeType) -> bool {
+        self.0.namespace == ty.0.namespace && self.0.type_name.starts_with(&ty.0.type_name)
+    }
 }
 
 impl NamespacedTypeGetter for EntityTypeType {
