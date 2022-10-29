@@ -20,5 +20,5 @@ pub fn create_random_entity_instance(property_name: String) -> ReactiveEntityIns
         vertex: Vertex { id: uuid, t: t.clone() },
         props: properties.clone(),
     };
-    ReactiveEntityInstance::from(vertex_properties)
+    ReactiveEntityInstance::try_from(vertex_properties).unwrap()
 }
