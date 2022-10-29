@@ -138,3 +138,27 @@ fn component_has_property_test() {
     assert!(component.has_property(property_name));
     assert!(!component.has_property(r_string()));
 }
+
+#[test]
+fn component_serde_test() {
+    let s = r#"{
+  "namespace": "abc",
+  "type_name": "def",
+  "description": "d",
+  "properties": [
+    {
+      "name": "property_name",
+      "data_type": "string",
+      "socket_type": "input"
+    }
+  ],
+  "extensions": []
+}"#;
+    let component: Component = serde_json::from_str(s).unwrap();
+    assert_eq!("abc", component.namespace());
+    assert_eq!("def", component.type_name());
+    assert_eq!("c__abc__def", component.ty.to_string());
+    assert_eq!("d", component.description);
+    assert_eq!(1, component.properties.len());
+    assert_eq!(0, component.extensions.len());
+}

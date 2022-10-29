@@ -16,7 +16,12 @@ pub trait NamespacedTypeGetter {
 /// Defines the namespace and the name of a type.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct NamespacedType {
+    /// The namespace the component belongs to.
+    #[serde(default = "String::new")]
     pub namespace: String,
+
+    /// The name of the type.
+    #[serde(alias = "name")]
     pub type_name: String,
 }
 

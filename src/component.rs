@@ -11,18 +11,22 @@ use crate::TypeIdType;
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Component {
     /// The type definition of the component.
+    #[serde(flatten)]
     pub ty: ComponentTypeId,
 
     /// Textual description of the component.
+    #[serde(default = "String::new")]
     pub description: String,
 
     /// The properties which are applied on entity or relation instances.
+    #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
 
     /// Component specific extensions
+    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
 }
 
@@ -108,51 +112,5 @@ impl From<Component> for TypeDefinition {
 impl From<&Component> for ComponentTypeId {
     fn from(component: &Component) -> Self {
         component.ty.clone()
-    }
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct ComponentDao {
-    /// The namespace the component belongs to.
-    #[serde(default = "String::new")]
-    pub namespace: String,
-
-    /// The name of the component.
-    #[serde(alias = "name")]
-    pub type_name: String,
-
-    /// Textual description of the component.
-    #[serde(default = "String::new")]
-    pub description: String,
-
-    /// The properties which are applied on entity or relation instances.
-    #[serde(default = "Vec::new")]
-    pub properties: Vec<PropertyType>,
-
-    /// Component specific extensions
-    #[serde(default = "Vec::new")]
-    pub extensions: Vec<Extension>,
-}
-
-impl From<&ComponentDao> for Component {
-    fn from(dao: &ComponentDao) -> Self {
-        Self {
-            ty: ComponentTypeId::new_from_type(&dao.namespace, &dao.type_name),
-            description: dao.description.clone(),
-            properties: dao.properties.clone(),
-            extensions: dao.extensions.clone(),
-        }
-    }
-}
-
-impl From<&Component> for ComponentDao {
-    fn from(component: &Component) -> Self {
-        ComponentDao {
-            namespace: component.namespace(),
-            type_name: component.type_name(),
-            description: component.description.clone(),
-            properties: component.properties.clone(),
-            extensions: component.extensions.clone(),
-        }
     }
 }
