@@ -13,21 +13,26 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 
 /// Entity types defines the type of an entity instance.
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct EntityType {
     /// The type definition contains the namespace and the type name.
+    #[serde(flatten)]
     pub ty: EntityTypeId,
 
     /// Textual description of the entity type.
+    #[serde(default = "String::new")]
     pub description: String,
 
     /// The names of the components of the entity type.
+    #[serde(default = "Vec::new")]
     pub components: Vec<ComponentTypeId>,
 
     /// The properties which are defined by the entity type.
+    #[serde(default = "Vec::new")]
     pub properties: Vec<PropertyType>,
 
-    /// Entity type specific extensions
+    /// Entity type specific extensions.
+    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
 }
 
@@ -117,60 +122,6 @@ impl From<&EntityType> for TypeDefinition {
             type_id_type: TypeIdType::EntityType,
             namespace: entity_type.namespace(),
             type_name: entity_type.type_name(),
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct EntityTypeDao {
-    /// The namespace the entity type belongs to.
-    #[serde(default = "String::new")]
-    pub namespace: String,
-
-    /// The name of the entity type.
-    ///
-    /// The name is the unique identifier for entity types.
-    #[serde(alias = "name")]
-    pub type_name: String,
-
-    /// Textual description of the entity type.
-    #[serde(default = "String::new")]
-    pub description: String,
-
-    /// The names of the components of the entity type.
-    #[serde(default = "Vec::new")]
-    pub components: Vec<String>,
-
-    /// The properties which are defined by the entity type.
-    #[serde(default = "Vec::new")]
-    pub properties: Vec<PropertyType>,
-
-    /// Entity type specific extensions
-    #[serde(default = "Vec::new")]
-    pub extensions: Vec<Extension>,
-}
-
-impl From<&EntityTypeDao> for EntityType {
-    fn from(dao: &EntityTypeDao) -> Self {
-        Self {
-            ty: EntityTypeId::new_from_type(&dao.namespace, &dao.type_name),
-            description: dao.description.clone(),
-            components: dao.components.iter().cloned().filter_map(|c| ComponentTypeId::try_from(&c).ok()).collect(),
-            properties: dao.properties.clone(),
-            extensions: dao.extensions.clone(),
-        }
-    }
-}
-
-impl From<&EntityType> for EntityTypeDao {
-    fn from(entity_type: &EntityType) -> Self {
-        EntityTypeDao {
-            namespace: entity_type.namespace(),
-            type_name: entity_type.type_name(),
-            description: entity_type.description.clone(),
-            components: entity_type.components.iter().cloned().map(|c| c.type_definition().to_string()).collect(),
-            properties: entity_type.properties.clone(),
-            extensions: entity_type.extensions.clone(),
         }
     }
 }

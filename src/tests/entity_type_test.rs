@@ -11,6 +11,7 @@ use crate::Extension;
 use crate::ExtensionContainer;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
+use crate::SocketType;
 use crate::TypeContainer;
 use crate::TypeDefinitionGetter;
 
@@ -84,4 +85,50 @@ fn long_entity_type_test() {
     let et = EntityType::new(ty, description, Vec::new(), Vec::new(), Vec::new());
     let identifier: Identifier = et.type_id();
     assert!(identifier.as_str().len() < 255);
+}
+
+#[test]
+fn entity_type_serde_test() {
+    let s = r#"{
+  "namespace": "abc",
+  "type_name": "def",
+  "description": "d",
+  "components": [
+    {
+      "namespace": "mno",
+      "type_name": "pqr"
+    }
+  ],
+  "properties": [
+    {
+      "name": "property_name",
+      "data_type": "string",
+      "socket_type": "input"
+    }
+  ],
+  "extensions": [
+    {
+      "name": "ext_name",
+      "extension": "ext_value"
+    }
+  ]
+}"#;
+    let entity_type: EntityType = serde_json::from_str(s).unwrap();
+    assert_eq!("abc", entity_type.namespace());
+    assert_eq!("def", entity_type.type_name());
+    assert_eq!("e__abc__def", entity_type.ty.to_string());
+    assert_eq!("d", entity_type.description);
+    assert_eq!(1, entity_type.components.len());
+    let component = entity_type.components.first().unwrap();
+    assert_eq!("mno", component.namespace());
+    assert_eq!("pqr", component.type_name());
+    assert_eq!(1, entity_type.properties.len());
+    let property = entity_type.properties.first().unwrap();
+    assert_eq!("property_name", property.name);
+    assert_eq!(DataType::String, property.data_type);
+    assert_eq!(SocketType::Input, property.socket_type);
+    assert_eq!(1, entity_type.extensions.len());
+    let extension = entity_type.extensions.first().unwrap();
+    assert_eq!("ext_name", extension.name);
+    assert_eq!(json!("ext_value"), extension.extension);
 }
