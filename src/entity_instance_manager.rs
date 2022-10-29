@@ -3,9 +3,9 @@ use std::sync::Arc;
 
 use uuid::Uuid;
 
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 use crate::model::ReactiveEntityInstance;
 
 #[derive(Debug)]
@@ -20,7 +20,7 @@ pub enum EntityInstanceCreationError {
 
 #[derive(Debug)]
 pub enum EntityInstanceComponentAddError {
-    MissingComponent(ComponentType),
+    MissingComponent(ComponentTypeId),
     MissingInstance(Uuid),
 }
 
@@ -43,7 +43,7 @@ pub trait EntityInstanceManager: Send + Sync {
     fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>>;
 
     /// Returns all reactive entity instances of the given type.
-    fn get_by_type(&self, ty: &EntityTypeType) -> Vec<Arc<ReactiveEntityInstance>>;
+    fn get_by_type(&self, ty: &EntityTypeId) -> Vec<Arc<ReactiveEntityInstance>>;
 
     /// Returns all ids.
     fn get_ids(&self) -> Vec<Uuid>;
@@ -52,10 +52,10 @@ pub trait EntityInstanceManager: Send + Sync {
     fn count(&self) -> usize;
 
     /// Returns the count of registered reactive entity instances of the given type.
-    fn count_by_type(&self, ty: &EntityTypeType) -> usize;
+    fn count_by_type(&self, ty: &EntityTypeId) -> usize;
 
     /// Returns the count of registered reactive entity instances which are of the given component.
-    fn count_by_component(&self, component: &ComponentType) -> usize;
+    fn count_by_component(&self, component: &ComponentTypeId) -> usize;
 
     /// Returns the count of registered reactive entity instances which behaves as the given behaviour.
     fn count_by_behaviour(&self, behaviour: &str) -> usize;
@@ -64,10 +64,10 @@ pub trait EntityInstanceManager: Send + Sync {
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
 
     /// Adds the component with the given name to the entity instance with the given id.
-    fn add_component(&self, id: Uuid, component: &ComponentType) -> Result<(), EntityInstanceComponentAddError>;
+    fn add_component(&self, id: Uuid, component: &ComponentTypeId) -> Result<(), EntityInstanceComponentAddError>;
 
     /// Removes the component with the given name from the entity instance with the given id.
-    fn remove_component(&self, id: Uuid, component: &ComponentType);
+    fn remove_component(&self, id: Uuid, component: &ComponentTypeId);
 
     /// Deletes the reactive entity instance with the given id.
     fn delete(&self, id: Uuid);

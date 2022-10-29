@@ -5,7 +5,7 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::model::FlowInstance;
-use crate::model::FlowTypeType;
+use crate::model::FlowTypeId;
 use crate::model::ReactiveFlowInstance;
 
 #[derive(Debug)]
@@ -48,7 +48,7 @@ pub trait FlowInstanceManager: Send + Sync {
     /// and the ReactiveRelationInstanceManager.
     fn create_from_type(
         &self,
-        ty: &FlowTypeType,
+        ty: &FlowTypeId,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError>;

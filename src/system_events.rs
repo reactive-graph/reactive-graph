@@ -1,9 +1,10 @@
-use crate::model::ComponentType;
-use crate::model::EntityTypeType;
-use crate::model::FlowTypeType;
-use crate::model::RelationTypeType;
 use indradb::EdgeKey;
 use uuid::Uuid;
+
+use crate::model::ComponentTypeId;
+use crate::model::EntityTypeId;
+use crate::model::FlowTypeId;
+use crate::model::RelationTypeId;
 
 #[derive(Eq, Hash, PartialEq, Clone, Debug)]
 pub enum SystemEventTypes {
@@ -42,33 +43,33 @@ pub enum SystemEventTypes {
 }
 
 pub enum SystemEvent {
-    ComponentCreated(ComponentType),
+    ComponentCreated(ComponentTypeId),
     // TODO: Replace ComponentUpdated with more concrete events
-    ComponentUpdated(ComponentType),
+    ComponentUpdated(ComponentTypeId),
     // TODO: ComponentPropertyAdded
     // TODO: ComponentPropertyRemoved
     // TODO: ComponentExtensionAdded
     // TODO: ComponentExtensionRemoved
-    ComponentDeleted(ComponentType),
-    EntityTypeCreated(EntityTypeType),
-    EntityTypeComponentAdded(EntityTypeType, ComponentType),
-    EntityTypeComponentRemoved(EntityTypeType, ComponentType),
-    EntityTypePropertyAdded(EntityTypeType, String),
-    EntityTypePropertyRemoved(EntityTypeType, String),
-    EntityTypeExtensionAdded(EntityTypeType, String),
-    EntityTypeExtensionRemoved(EntityTypeType, String),
-    EntityTypeDeleted(EntityTypeType),
-    RelationTypeCreated(RelationTypeType),
-    RelationTypeComponentAdded(RelationTypeType, ComponentType),
-    RelationTypeComponentRemoved(RelationTypeType, ComponentType),
-    RelationTypePropertyAdded(RelationTypeType, String),
-    RelationTypePropertyRemoved(RelationTypeType, String),
-    RelationTypeExtensionAdded(RelationTypeType, String),
-    RelationTypeExtensionRemoved(RelationTypeType, String),
-    RelationTypeDeleted(RelationTypeType),
-    FlowTypeCreated(FlowTypeType),
-    FlowTypeUpdated(FlowTypeType),
-    FlowTypeDeleted(FlowTypeType),
+    ComponentDeleted(ComponentTypeId),
+    EntityTypeCreated(EntityTypeId),
+    EntityTypeComponentAdded(EntityTypeId, ComponentTypeId),
+    EntityTypeComponentRemoved(EntityTypeId, ComponentTypeId),
+    EntityTypePropertyAdded(EntityTypeId, String),
+    EntityTypePropertyRemoved(EntityTypeId, String),
+    EntityTypeExtensionAdded(EntityTypeId, String),
+    EntityTypeExtensionRemoved(EntityTypeId, String),
+    EntityTypeDeleted(EntityTypeId),
+    RelationTypeCreated(RelationTypeId),
+    RelationTypeComponentAdded(RelationTypeId, ComponentTypeId),
+    RelationTypeComponentRemoved(RelationTypeId, ComponentTypeId),
+    RelationTypePropertyAdded(RelationTypeId, String),
+    RelationTypePropertyRemoved(RelationTypeId, String),
+    RelationTypeExtensionAdded(RelationTypeId, String),
+    RelationTypeExtensionRemoved(RelationTypeId, String),
+    RelationTypeDeleted(RelationTypeId),
+    FlowTypeCreated(FlowTypeId),
+    FlowTypeUpdated(FlowTypeId),
+    FlowTypeDeleted(FlowTypeId),
     TypeSystemChanged,
     EntityInstanceCreated(Uuid),
     EntityInstanceDeleted(Uuid),

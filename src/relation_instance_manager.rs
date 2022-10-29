@@ -3,10 +3,10 @@ use std::sync::Arc;
 use indradb::EdgeKey;
 use uuid::Uuid;
 
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
-use crate::model::RelationTypeType;
+use crate::model::RelationTypeId;
 
 #[derive(Debug)]
 pub enum RelationInstanceManagerError {
@@ -42,7 +42,7 @@ pub trait RelationInstanceManager: Send + Sync {
     fn get_all(&self) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given type.
-    fn get_by_type(&self, ty: &RelationTypeType) -> Vec<Arc<ReactiveRelationInstance>>;
+    fn get_by_type(&self, ty: &RelationTypeId) -> Vec<Arc<ReactiveRelationInstance>>;
 
     /// Returns all reactive relation instances of the given namespace.
     fn get_by_namespace(&self, namespace: &str) -> Vec<Arc<ReactiveRelationInstance>>;
@@ -54,10 +54,10 @@ pub trait RelationInstanceManager: Send + Sync {
     fn count(&self) -> usize;
 
     /// Returns the count of registered reactive relation instances of the given type.
-    fn count_by_type(&self, ty: &RelationTypeType) -> usize;
+    fn count_by_type(&self, ty: &RelationTypeId) -> usize;
 
     /// Returns the count of registered reactive relation instances which are of the given component.
-    fn count_by_component(&self, component: &ComponentType) -> usize;
+    fn count_by_component(&self, component: &ComponentTypeId) -> usize;
 
     /// Returns the count of registered reactive relation instances which behaves as the given behaviour.
     fn count_by_behaviour(&self, behaviour: &str) -> usize;
@@ -66,10 +66,10 @@ pub trait RelationInstanceManager: Send + Sync {
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;
 
     /// Adds the component with the given name to the relation instance with the given edge key.
-    fn add_component(&self, edge_key: &EdgeKey, component: &ComponentType) -> Result<(), ReactiveRelationInstanceComponentAddError>;
+    fn add_component(&self, edge_key: &EdgeKey, component: &ComponentTypeId) -> Result<(), ReactiveRelationInstanceComponentAddError>;
 
     /// Removes the component with the given name from the relation instance with the given edge key.
-    fn remove_component(&self, edge_key: &EdgeKey, component: &ComponentType);
+    fn remove_component(&self, edge_key: &EdgeKey, component: &ComponentTypeId);
 
     /// Deletes the reactive relation instance with the given key.
     fn delete(&self, edge_key: &EdgeKey) -> bool;
