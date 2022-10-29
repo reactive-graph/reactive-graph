@@ -28,18 +28,20 @@ use crate::TypeDefinitionGetter;
 ///
 /// In contrast to the relation type, the relation instance stores values/
 /// documents in it's properties.
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RelationInstance {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
 
     /// The type definition of the relation type.
+    #[serde(flatten)]
     pub ty: RelationInstanceTypeId,
 
     /// The id of the inbound vertex.
     pub inbound_id: Uuid,
 
     /// Textual description of the relation instance.
+    #[serde(default = "String::new")]
     pub description: String,
 
     /// The properties of then relation instance.
@@ -48,9 +50,11 @@ pub struct RelationInstance {
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
+    #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 
     /// Relation instance specific extensions.
+    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
 }
 
@@ -233,69 +237,5 @@ impl NamespacedTypeGetter for RelationInstance {
 impl TypeDefinitionGetter for RelationInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
-    }
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct RelationInstanceDao {
-    /// The namespace the relation instance belongs to.
-    pub namespace: String,
-
-    /// The id of the outbound vertex.
-    pub outbound_id: Uuid,
-
-    /// The name of the relation type
-    #[serde(alias = "type")]
-    pub type_name: String,
-
-    /// The type instance id.
-    pub instance_id: String,
-
-    /// The id of the inbound vertex.
-    pub inbound_id: Uuid,
-
-    /// Textual description of the relation instance.
-    #[serde(default = "String::new")]
-    pub description: String,
-
-    /// The properties of then relation instance.
-    ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
-    /// array or an object. For more information about the data types please look at
-    /// https://docs.serde.rs/serde_json/value/enum.Value.html
-    #[serde(default = "HashMap::new")]
-    pub properties: HashMap<String, Value>,
-
-    /// Relation instance specific extensions.
-    #[serde(default = "Vec::new")]
-    pub extensions: Vec<Extension>,
-}
-
-impl From<&RelationInstanceDao> for RelationInstance {
-    fn from(dao: &RelationInstanceDao) -> Self {
-        Self {
-            outbound_id: dao.outbound_id,
-            ty: RelationInstanceTypeId::new_from_type_unique_for_instance_id(&dao.namespace, &dao.type_name, &dao.instance_id),
-            inbound_id: dao.inbound_id,
-            description: dao.description.clone(),
-            properties: dao.properties.clone(),
-            extensions: dao.extensions.clone(),
-        }
-    }
-}
-
-impl From<&RelationInstance> for RelationInstanceDao {
-    fn from(relation_instance: &RelationInstance) -> Self {
-        RelationInstanceDao {
-            outbound_id: relation_instance.outbound_id,
-            namespace: relation_instance.namespace(),
-            type_name: relation_instance.type_name(),
-            instance_id: relation_instance.instance_id(),
-            inbound_id: relation_instance.inbound_id,
-            description: relation_instance.description.clone(),
-            properties: relation_instance.properties.clone(),
-            extensions: relation_instance.extensions.clone(),
-        }
     }
 }

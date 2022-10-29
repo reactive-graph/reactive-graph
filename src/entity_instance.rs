@@ -22,15 +22,17 @@ use crate::TypeDefinitionGetter;
 ///
 /// In contrast to the entity type the entity instance stores values in it's
 /// properties.
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct EntityInstance {
     /// The type definition of the entity type.
+    #[serde(flatten)]
     pub ty: EntityTypeId,
 
     /// The unique identifier of the entity instance.
     pub id: Uuid,
 
     /// The description of the entity instance.
+    #[serde(default = "String::new")]
     pub description: String,
 
     /// The properties of then entity instance.
@@ -39,9 +41,11 @@ pub struct EntityInstance {
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
+    #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 
     /// Entity instance specific extensions.
+    #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
 }
 
@@ -164,60 +168,5 @@ impl NamespacedTypeGetter for EntityInstance {
 impl TypeDefinitionGetter for EntityInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
-    }
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct EntityInstanceDao {
-    /// The namespace the entity instance belongs to.
-    pub namespace: String,
-
-    /// The name of the entity type.
-    #[serde(alias = "type")]
-    pub type_name: String,
-
-    /// The unique identifier of the entity instance.
-    pub id: Uuid,
-
-    /// The description of the entity instance.
-    #[serde(default = "String::new")]
-    pub description: String,
-
-    /// The properties of then entity instance.
-    ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
-    /// array or an object. For more information about the data types please look at
-    /// https://docs.serde.rs/serde_json/value/enum.Value.html
-    #[serde(default = "HashMap::new")]
-    pub properties: HashMap<String, Value>,
-
-    /// Entity instance specific extensions.
-    #[serde(default = "Vec::new")]
-    pub extensions: Vec<Extension>,
-}
-
-impl From<&EntityInstanceDao> for EntityInstance {
-    fn from(dao: &EntityInstanceDao) -> Self {
-        Self {
-            ty: EntityTypeId::new_from_type(&dao.namespace, &dao.type_name),
-            id: dao.id,
-            description: dao.description.clone(),
-            properties: dao.properties.clone(),
-            extensions: dao.extensions.clone(),
-        }
-    }
-}
-
-impl From<&EntityInstance> for EntityInstanceDao {
-    fn from(entity_instance: &EntityInstance) -> Self {
-        EntityInstanceDao {
-            namespace: entity_instance.namespace(),
-            type_name: entity_instance.type_name(),
-            id: entity_instance.id,
-            description: entity_instance.description.clone(),
-            properties: entity_instance.properties.clone(),
-            extensions: entity_instance.extensions.clone(),
-        }
     }
 }

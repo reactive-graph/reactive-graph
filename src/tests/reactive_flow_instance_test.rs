@@ -11,7 +11,6 @@ use crate::tests::utils::create_random_relation_instance;
 use crate::tests::utils::r_string;
 use crate::FlowInstance;
 use crate::FlowInstanceCreationError;
-use crate::FlowInstanceDao;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
@@ -105,8 +104,7 @@ fn reactive_flow_test() {
 
     assert_eq!(3, flow_instance.entity_instances.len());
     assert_eq!(1, flow_instance.relation_instances.len());
-    let flow_instance_dao: FlowInstanceDao = (&flow_instance).into();
-    let flow_str = serde_json::to_string_pretty(&flow_instance_dao).unwrap_or("Failed".into());
+    let flow_str = serde_json::to_string_pretty(&flow_instance).expect("Failed to serialize the flow instance");
     println!("{}", flow_str);
 }
 

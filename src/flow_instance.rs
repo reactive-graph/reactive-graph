@@ -6,12 +6,10 @@ use serde::Serialize;
 use uuid::Uuid;
 
 use crate::EntityInstance;
-use crate::EntityInstanceDao;
 use crate::EntityTypeId;
 use crate::NamespacedTypeGetter;
 use crate::ReactiveFlowInstance;
 use crate::RelationInstance;
-use crate::RelationInstanceDao;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 
@@ -32,7 +30,7 @@ pub struct FlowInstanceCreationError;
 /// It's even possible to connect entity instances from different flows with relation
 /// instances.
 ///
-#[derive(Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///
@@ -40,24 +38,31 @@ pub struct FlowInstance {
     /// the id of the flow.
     pub id: Uuid,
 
+    /// TODO: FlowInstanceTypeId = FlowTypeId + instance_id
     /// The type definition of the entity type of the wrapper entity instance.
+    #[serde(flatten)]
     pub ty: EntityTypeId,
 
+    /// TODO: Rename: flow_instance_name
     /// The name of the flow instance.
+    #[serde(default = "String::new")]
     pub name: String,
 
     /// Textual description of the flow instance.
+    #[serde(default = "String::new")]
     pub description: String,
 
     /// The entity instances which are contained in this flow instance.
     ///
     /// It can't have a default because the wrapper entity instance must be
     /// present in the list of entities.
+    #[serde(default = "Vec::new", alias = "entities")]
     pub entity_instances: Vec<EntityInstance>,
 
     /// The relation instances which are contained in this flow instance.
     ///
     /// By default, no relation instances are contained in this flow instance.
+    #[serde(default = "Vec::new", alias = "relations")]
     pub relation_instances: Vec<RelationInstance>,
 }
 
@@ -149,69 +154,5 @@ impl NamespacedTypeGetter for FlowInstance {
 impl TypeDefinitionGetter for FlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
-    }
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct FlowInstanceDao {
-    /// The namespace the entity instance belongs to.
-    pub namespace: String,
-
-    /// The entity type of the flow instance.
-    #[serde(alias = "type")]
-    pub type_name: String,
-
-    /// The id of the flow corresponds to the id of the wrapper entity instance
-    ///
-    /// This means the vector of entity instances must contain an instance with
-    /// the id of the flow.
-    pub id: Uuid,
-
-    /// The name of the flow instance.
-    #[serde(default = "String::new")]
-    pub name: String,
-
-    /// Textual description of the flow instance.
-    #[serde(default = "String::new")]
-    pub description: String,
-
-    /// The entity instances which are contained in this flow instance.
-    ///
-    /// It can't have a default because the wrapper entity instance must be
-    /// present in the list of entities.
-    #[serde(alias = "entities")]
-    pub entity_instances: Vec<EntityInstanceDao>,
-
-    /// The relation instances which are contained in this flow instance.
-    ///
-    /// By default, no relation instances are contained in this flow instance.
-    #[serde(default = "Vec::new", alias = "relations")]
-    pub relation_instances: Vec<RelationInstanceDao>,
-}
-
-impl From<&FlowInstanceDao> for FlowInstance {
-    fn from(dao: &FlowInstanceDao) -> Self {
-        Self {
-            ty: EntityTypeId::new_from_type(&dao.namespace, &dao.type_name),
-            id: dao.id,
-            name: dao.name.clone(),
-            description: dao.description.clone(),
-            entity_instances: dao.entity_instances.iter().map(|e| e.into()).collect(),
-            relation_instances: dao.relation_instances.iter().map(|r| r.into()).collect(),
-        }
-    }
-}
-
-impl From<&FlowInstance> for FlowInstanceDao {
-    fn from(flow_instance: &FlowInstance) -> Self {
-        FlowInstanceDao {
-            namespace: flow_instance.namespace(),
-            type_name: flow_instance.type_name(),
-            id: flow_instance.id,
-            name: flow_instance.name.clone(),
-            description: flow_instance.description.clone(),
-            entity_instances: flow_instance.entity_instances.iter().map(|e| e.into()).collect(),
-            relation_instances: flow_instance.relation_instances.iter().map(|r| r.into()).collect(),
-        }
     }
 }

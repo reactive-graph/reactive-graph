@@ -140,8 +140,17 @@ fn component_has_property_test() {
 }
 
 #[test]
-fn component_serde_test() {
-    // TODO: rename "type_name" to "name" (https://github.com/serde-rs/serde/pull/2160 https://github.com/serde-rs/serde/issues/1504)
+fn component_type_ser_test() {
+    let ty = ComponentTypeId::new_from_type("cnc", "ctc");
+    let c = Component::new(ty, "d", Vec::new(), Vec::new());
+    println!("{}", serde_json::to_string_pretty(&c).expect("Failed to serialize component"));
+}
+
+#[test]
+fn component_ser_test() {
+    // TODO: rename "type_name" to "name"
+    // https://github.com/serde-rs/serde/pull/2160
+    // https://github.com/serde-rs/serde/issues/1504)
     let s = r#"{
   "namespace": "abc",
   "type_name": "def",

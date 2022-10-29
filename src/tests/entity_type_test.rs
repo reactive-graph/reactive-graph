@@ -88,7 +88,14 @@ fn long_entity_type_test() {
 }
 
 #[test]
-fn entity_type_serde_test() {
+fn entity_type_ser_test() {
+    let ty = EntityTypeId::new_from_type("ene", "ete");
+    let et = EntityType::new(ty, "d", Vec::new(), Vec::new(), Vec::new());
+    println!("{}", serde_json::to_string_pretty(&et).expect("Failed to serialize entity type"));
+}
+
+#[test]
+fn entity_type_de_test() {
     let s = r#"{
   "namespace": "abc",
   "type_name": "def",

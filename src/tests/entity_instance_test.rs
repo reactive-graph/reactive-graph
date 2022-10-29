@@ -154,3 +154,70 @@ fn entity_instance_typed_getter_test() {
     i.set(property_name.clone(), o.clone());
     assert_eq!(json!("v"), i.as_object(property_name.clone()).unwrap().index("k").clone());
 }
+
+#[test]
+fn entity_instance_ser_test() {
+    let uuid = Uuid::new_v4();
+    let namespace = r_string();
+    let type_name = r_string();
+    let description = r_string();
+    let property_name = r_string();
+    let property_value = json!(r_string());
+    let mut properties = HashMap::new();
+    properties.insert(property_name.clone(), property_value.clone());
+    let mut extensions = Vec::new();
+    let extension_name = "extension_name";
+    let extension_value = json!("extension_value");
+    let extension = Extension {
+        name: extension_name.to_string(),
+        extension: extension_value.clone(),
+    };
+    extensions.push(extension);
+    let extension = Extension::new("other_extension", extension_value.clone());
+    extensions.push(extension.clone());
+
+    let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
+    let entity_instance = EntityInstance {
+        ty: ty.clone(),
+        id: uuid.clone(),
+        description: description.to_string(),
+        properties: properties.clone(),
+        extensions: extensions.clone(),
+    };
+    println!("{}", serde_json::to_string_pretty(&entity_instance).expect("Failed to serialize entity instance"));
+}
+
+#[test]
+fn entity_instance_de_test() {
+    let s = r#"{
+  "namespace": "XARPbZkHrU",
+  "type_name": "zHMZhLUpeH",
+  "id": "590f4446-b080-48d3-bd14-05e09de89e62",
+  "description": "gDyZTYONjh",
+  "properties": {
+    "NaUPOBoqyp": "qEnGqwNeEL"
+  },
+  "extensions": [
+    {
+      "name": "extension_name",
+      "extension": "extension_value"
+    },
+    {
+      "name": "other_extension",
+      "extension": "extension_value"
+    }
+  ]
+}"#;
+    let entity_instance: EntityInstance = serde_json::from_str(s).unwrap();
+    assert_eq!("XARPbZkHrU", entity_instance.namespace());
+    assert_eq!("zHMZhLUpeH", entity_instance.type_name());
+    assert_eq!("e__XARPbZkHrU__zHMZhLUpeH", entity_instance.ty.to_string());
+    assert_eq!("gDyZTYONjh", entity_instance.description);
+    assert_eq!(1, entity_instance.properties.len());
+    let property = entity_instance.properties.get("NaUPOBoqyp").expect("Missing property");
+    assert_eq!("qEnGqwNeEL", property.as_str().unwrap());
+    assert_eq!(2, entity_instance.extensions.len());
+    let extension = entity_instance.extensions.first().unwrap();
+    assert_eq!("extension_name", extension.name);
+    assert_eq!(json!("extension_value"), extension.extension);
+}
