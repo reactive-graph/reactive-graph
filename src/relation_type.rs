@@ -25,11 +25,6 @@ pub struct RelationType {
     /// The type definition contains the namespace and the type name.
     pub ty: RelationTypeId,
 
-    /// The instance type name is unique between two entity instances and is set for a
-    /// concrete relation instance.
-    /// TODO: RelationInstanceType
-    pub instance_type_name: String,
-
     /// The name of the inbound entity type.
     pub inbound_type: EntityTypeId,
 
@@ -58,11 +53,9 @@ impl RelationType {
         extensions: Vec<Extension>,
     ) -> RelationType {
         let ty = ty.into();
-        let type_name = ty.type_name();
         RelationType {
             ty,
             outbound_type: outbound_type.into(),
-            instance_type_name: type_name,
             inbound_type: inbound_type.into(),
             description: description.into(),
             components,
@@ -90,9 +83,8 @@ impl RelationType {
         let ty = RelationTypeId::new_from_type(&namespace, &type_name);
         let inbound_type = EntityTypeId::new_from_type(&namespace, &inbound_type);
         RelationType {
-            ty,
             outbound_type,
-            instance_type_name: type_name,
+            ty,
             inbound_type,
             description: description.into(),
             components,
@@ -173,11 +165,6 @@ pub struct RelationTypeDao {
     #[serde(alias = "name")]
     pub type_name: String,
 
-    /// The instance type name is unique between two entity instances and is set for a
-    /// concrete relation instance.
-    #[serde(default = "String::new")]
-    pub instance_type_name: String,
-
     /// The namespace the inbound entity type.
     #[serde(default = "String::new")]
     pub inbound_namespace: String,
@@ -210,7 +197,6 @@ impl From<&RelationTypeDao> for RelationType {
         Self {
             outbound_type,
             ty,
-            instance_type_name: dao.instance_type_name.clone(),
             inbound_type,
             description: dao.description.clone(),
             components: dao.components.iter().cloned().filter_map(|c| ComponentTypeId::try_from(&c).ok()).collect(),
@@ -227,7 +213,6 @@ impl From<&RelationType> for RelationTypeDao {
             outbound_type_name: relation_type.outbound_type.type_name(),
             namespace: relation_type.namespace(),
             type_name: relation_type.type_name(),
-            instance_type_name: relation_type.instance_type_name.clone(),
             inbound_namespace: relation_type.inbound_type.namespace(),
             inbound_type_name: relation_type.inbound_type.type_name(),
             description: relation_type.description.clone(),
