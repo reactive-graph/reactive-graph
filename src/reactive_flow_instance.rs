@@ -4,7 +4,7 @@ use std::fmt;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::NamespacedTypeGetter;
 use crate::ReactivePropertyContainer;
 use crate::TypeDefinition;
@@ -46,7 +46,7 @@ pub struct ReactiveFlowInstance {
     pub id: Uuid,
 
     /// The type definition of the entity type of the wrapper entity instance.
-    pub ty: EntityTypeType,
+    pub ty: EntityTypeId,
 
     /// The flow contains entity instances. The entity instance may also
     /// be contained in other flows.

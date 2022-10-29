@@ -3,15 +3,15 @@ use serde_json::json;
 
 use crate::tests::utils::r_string;
 use crate::tests::utils::r_string_1000;
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::DataType;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::RelationType;
-use crate::RelationTypeType;
+use crate::RelationTypeId;
 use crate::TypeContainer;
 use crate::TypeDefinitionGetter;
 
@@ -30,7 +30,7 @@ fn create_relation_type_test() {
     let extension_name = r_string();
     let extension_value = json!("JSON");
     let mut component_names = Vec::new();
-    let component_ty = ComponentType::new_from_type(&namespace, &component_name);
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     component_names.push(component_ty.clone());
     let mut behaviour_names = Vec::new();
     behaviour_names.push(behaviour_name.clone());
@@ -43,9 +43,9 @@ fn create_relation_type_test() {
         extension: extension_value.clone(),
     };
     extensions.push(extension.clone());
-    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
-    let outbound_type = EntityTypeType::new_from_type(&namespace, &outbound_type_name);
-    let inbound_type = EntityTypeType::new_from_type(&namespace, &inbound_type_name);
+    let ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let outbound_type = EntityTypeId::new_from_type(&namespace, &outbound_type_name);
+    let inbound_type = EntityTypeId::new_from_type(&namespace, &inbound_type_name);
     let relation_type = RelationType::new(
         outbound_type.clone(),
         ty,
@@ -86,9 +86,9 @@ fn long_relation_type_test() {
     let type_name = r_string_1000();
     let inbound_type_name = r_string_1000();
     let description = r_string();
-    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
-    let outbound_type = EntityTypeType::new_from_type(&namespace, &outbound_type_name);
-    let inbound_type = EntityTypeType::new_from_type(&namespace, &inbound_type_name);
+    let ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let outbound_type = EntityTypeId::new_from_type(&namespace, &outbound_type_name);
+    let inbound_type = EntityTypeId::new_from_type(&namespace, &inbound_type_name);
     let rt = RelationType::new(outbound_type, ty, inbound_type, &description, Vec::new(), Vec::new(), Vec::new());
     let identifier: Identifier = rt.type_id();
     assert!(identifier.as_str().len() < 255);

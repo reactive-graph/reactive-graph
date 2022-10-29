@@ -19,10 +19,10 @@ use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 use crate::Component;
 use crate::ComponentContainer;
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::DataType;
 use crate::EntityInstance;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
@@ -50,9 +50,9 @@ fn reactive_entity_instance_test() {
 
     let component_namespace = r_string();
     let component_name = r_string();
-    let component_ty = ComponentType::new_from_type(&component_namespace, &component_name);
+    let component_ty = ComponentTypeId::new_from_type(&component_namespace, &component_name);
     let component_name_2 = r_string();
-    let component_ty_2 = ComponentType::new_from_type(&component_namespace, &component_name_2);
+    let component_ty_2 = ComponentTypeId::new_from_type(&component_namespace, &component_name_2);
     let components = DashSet::new();
     components.insert(component_ty.clone());
 
@@ -61,7 +61,7 @@ fn reactive_entity_instance_test() {
     let behaviours = DashSet::new();
     behaviours.insert(behaviour_name.clone());
 
-    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
         ty: ty.clone(),
         id: uuid.clone(),
@@ -78,7 +78,7 @@ fn reactive_entity_instance_test() {
     assert_eq!(1, reactive_entity_instance.get_components().len());
     assert!(reactive_entity_instance.is_a(&component_ty));
     assert!(!reactive_entity_instance.is_a(&component_ty_2));
-    assert!(!reactive_entity_instance.is_a(&ComponentType::new_from_type(&component_namespace, &r_string())));
+    assert!(!reactive_entity_instance.is_a(&ComponentTypeId::new_from_type(&component_namespace, &r_string())));
     reactive_entity_instance.add_component(component_ty_2.clone());
     assert!(reactive_entity_instance.is_a(&component_ty_2));
     assert_eq!(2, reactive_entity_instance.get_components().len());
@@ -88,7 +88,7 @@ fn reactive_entity_instance_test() {
 
     let component_2_property_name = r_string();
     let component_2_properties = vec![PropertyType::string(&component_2_property_name)];
-    let component_2_ty = ComponentType::new_from_type(&namespace, &component_name);
+    let component_2_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     let component_2 = Component::new_without_extensions(component_2_ty.clone(), &r_string(), component_2_properties);
     reactive_entity_instance.add_component_with_properties(&component_2);
     assert_eq!(2, reactive_entity_instance.get_components().len());
@@ -131,7 +131,7 @@ fn reactive_entity_instance_from_vertex_properties_test() {
     let uuid = Uuid::new_v4();
     let namespace = r_string();
     let type_name = r_string();
-    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
@@ -214,7 +214,7 @@ fn reactive_entity_instance_typed_eq_bool_test() {
 fn reactive_entity_instance_stream_test() {
     let namespace = r_string();
     let type_name = r_string();
-    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
         ty: ty.clone(),
         id: Uuid::new_v4(),
@@ -308,7 +308,7 @@ fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Term
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
 
     bencher.iter(move || {
         let properties = DashMap::new();
@@ -318,7 +318,7 @@ fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Term
         );
 
         let component_name = r_string();
-        let component_ty = ComponentType::new_from_type(&namespace, &component_name);
+        let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
         let components = DashSet::new();
         components.insert(component_ty);
 

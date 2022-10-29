@@ -11,7 +11,7 @@ use uuid::Uuid;
 
 use crate::Component;
 use crate::ComponentContainer;
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
@@ -21,7 +21,8 @@ use crate::ReactiveEntityInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::RelationInstance;
-use crate::RelationTypeType;
+use crate::RelationInstanceTypeId;
+use crate::RelationTypeId;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 
@@ -52,7 +53,7 @@ pub struct ReactiveRelationInstance {
     pub outbound: Arc<ReactiveEntityInstance>,
 
     /// The type definition of the relation type.
-    pub ty: RelationTypeType,
+    pub ty: RelationInstanceTypeId,
 
     /// The outbound entity instance.
     pub inbound: Arc<ReactiveEntityInstance>,
@@ -64,7 +65,7 @@ pub struct ReactiveRelationInstance {
     pub properties: DashMap<String, ReactivePropertyInstance>,
 
     /// The names of the components which are applied on this relation instance.
-    pub components: DashSet<ComponentType>,
+    pub components: DashSet<ComponentTypeId>,
 
     /// The names of the behaviours which are applied on this relation instance.
     pub behaviours: DashSet<String>,
@@ -76,7 +77,7 @@ impl ReactiveRelationInstance {
         inbound: Arc<ReactiveEntityInstance>,
         properties: EdgeProperties,
     ) -> Result<ReactiveRelationInstance, ()> {
-        let ty = RelationTypeType::try_from(&properties.edge.key.t)?;
+        let ty = RelationInstanceTypeId::try_from(&properties.edge.key.t)?;
         let properties = properties
             .props
             .iter()
@@ -130,7 +131,7 @@ impl ReactiveRelationInstance {
         inbound: Arc<ReactiveEntityInstance>,
         properties: HashMap<String, Value>,
     ) -> ReactiveRelationInstance {
-        let ty = RelationTypeType::new_from_type(namespace, type_name);
+        let ty = RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name);
         let properties = properties
             .iter()
             .map(|(name, value)| {
@@ -153,6 +154,16 @@ impl ReactiveRelationInstance {
             components: DashSet::new(),
             behaviours: DashSet::new(),
         }
+    }
+
+    /// Returns the inner relation type id.
+    pub fn relation_type_id(&self) -> RelationTypeId {
+        self.ty.relation_type_id()
+    }
+
+    /// Returns the relation instance type id.
+    pub fn instance_id(&self) -> String {
+        self.ty.instance_id()
     }
 
     pub fn get_key(&self) -> EdgeKey {
@@ -206,11 +217,11 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
 }
 
 impl ComponentContainer for ReactiveRelationInstance {
-    fn get_components(&self) -> Vec<ComponentType> {
+    fn get_components(&self) -> Vec<ComponentTypeId> {
         self.components.iter().map(|c| c.key().clone()).collect()
     }
 
-    fn add_component(&self, ty: ComponentType) {
+    fn add_component(&self, ty: ComponentTypeId) {
         self.components.insert(ty);
     }
 
@@ -223,11 +234,11 @@ impl ComponentContainer for ReactiveRelationInstance {
         }
     }
 
-    fn remove_component(&self, ty: &ComponentType) {
+    fn remove_component(&self, ty: &ComponentTypeId) {
         self.components.remove(ty);
     }
 
-    fn is_a(&self, ty: &ComponentType) -> bool {
+    fn is_a(&self, ty: &ComponentTypeId) -> bool {
         self.components.contains(ty)
     }
 }

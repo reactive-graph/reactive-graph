@@ -2,7 +2,7 @@ use serde_json::json;
 
 use crate::tests::utils::r_string;
 use crate::Component;
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::DataType;
 use crate::Extension;
 use crate::NamespacedTypeGetter;
@@ -30,7 +30,7 @@ fn component_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension);
 
-    let ty = ComponentType::new_from_type(&namespace, &component_name);
+    let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     let component = Component {
         ty,
         description: description.clone(),
@@ -69,7 +69,7 @@ fn create_new_component_test() {
     extensions.push(extension);
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension);
-    let ty = ComponentType::new_from_type(&namespace, &component_name);
+    let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     let component = Component::new(ty, description.clone(), property_types.clone(), extensions);
     assert_eq!(namespace, component.namespace());
     assert_eq!(component_name, component.type_name());
@@ -96,7 +96,7 @@ fn create_new_component_without_properties_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension);
 
-    let ty = ComponentType::new_from_type(&namespace, &component_name);
+    let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     let component = Component::new_without_properties(ty, r_string(), extensions.clone());
     assert_eq!(namespace, component.namespace());
     assert_eq!(component_name, component.type_name());
@@ -116,7 +116,7 @@ fn create_component_without_extensions_test() {
     let property_type = PropertyType::new(property_name.clone(), DataType::String);
     property_types.push(property_type.clone());
 
-    let ty = ComponentType::new_from_type(&namespace, &component_name);
+    let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     let component = Component::new_without_extensions(ty, r_string(), property_types);
     assert_eq!(namespace, component.namespace());
     assert_eq!(component_name, component.type_name());
@@ -133,7 +133,7 @@ fn component_has_property_test() {
     let property_name = r_string();
     let property_type = PropertyType::new(property_name.clone(), DataType::String);
     property_types.push(property_type.clone());
-    let ty = ComponentType::new_from_type(&namespace, &component_name);
+    let ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     let component = Component::new(ty, r_string(), property_types.clone(), Vec::new());
     assert!(component.has_property(property_name));
     assert!(!component.has_property(r_string()));

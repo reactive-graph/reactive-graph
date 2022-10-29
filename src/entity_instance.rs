@@ -7,7 +7,7 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
@@ -25,7 +25,7 @@ use crate::TypeDefinitionGetter;
 #[derive(Clone, Debug)]
 pub struct EntityInstance {
     /// The type definition of the entity type.
-    pub ty: EntityTypeType,
+    pub ty: EntityTypeId,
 
     /// The unique identifier of the entity instance.
     pub id: Uuid,
@@ -47,7 +47,7 @@ pub struct EntityInstance {
 
 impl EntityInstance {
     /// Constructs a new entity instance with the given type.
-    pub fn new<T: Into<EntityTypeType>>(ty: T, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
+    pub fn new<T: Into<EntityTypeId>>(ty: T, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
         EntityInstance {
             ty: ty.into(),
             id,
@@ -60,7 +60,7 @@ impl EntityInstance {
     /// Constructs a new entity instance with the given namespace, type_name, id and properties.
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, id: Uuid, properties: HashMap<String, Value>) -> EntityInstance {
         EntityInstance {
-            ty: EntityTypeType::new_from_type(namespace, type_name),
+            ty: EntityTypeId::new_from_type(namespace, type_name),
             id,
             description: String::new(),
             properties,
@@ -69,7 +69,7 @@ impl EntityInstance {
     }
 
     /// Constructs a new entity instance with the given type and id but without properties.
-    pub fn new_without_properties<T: Into<EntityTypeType>>(ty: T, id: Uuid) -> EntityInstance {
+    pub fn new_without_properties<T: Into<EntityTypeId>>(ty: T, id: Uuid) -> EntityInstance {
         EntityInstance {
             ty: ty.into(),
             id,
@@ -84,7 +84,7 @@ impl TryFrom<VertexProperties> for EntityInstance {
     type Error = ();
 
     fn try_from(properties: VertexProperties) -> Result<Self, Self::Error> {
-        let ty = EntityTypeType::try_from(&properties.vertex.t)?;
+        let ty = EntityTypeId::try_from(&properties.vertex.t)?;
         let id = properties.vertex.id;
         let properties: HashMap<String, Value> = properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect();
         Ok(EntityInstance {
@@ -200,7 +200,7 @@ pub struct EntityInstanceDao {
 impl From<&EntityInstanceDao> for EntityInstance {
     fn from(dao: &EntityInstanceDao) -> Self {
         Self {
-            ty: EntityTypeType::new_from_type(&dao.namespace, &dao.type_name),
+            ty: EntityTypeId::new_from_type(&dao.namespace, &dao.type_name),
             id: dao.id,
             description: dao.description.clone(),
             properties: dao.properties.clone(),

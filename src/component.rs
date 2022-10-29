@@ -1,20 +1,20 @@
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::Extension;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
-use crate::TypeOfType;
+use crate::TypeIdType;
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
 #[derive(Clone, Debug)]
 pub struct Component {
     /// The type definition of the component.
-    pub ty: ComponentType,
+    pub ty: ComponentTypeId,
 
     /// Textual description of the component.
     pub description: String,
@@ -27,7 +27,7 @@ pub struct Component {
 }
 
 impl Component {
-    pub fn new<T: Into<ComponentType>, S: Into<String>>(ty: T, description: S, properties: Vec<PropertyType>, extensions: Vec<Extension>) -> Component {
+    pub fn new<T: Into<ComponentTypeId>, S: Into<String>>(ty: T, description: S, properties: Vec<PropertyType>, extensions: Vec<Extension>) -> Component {
         Component {
             ty: ty.into(),
             description: description.into(),
@@ -39,7 +39,7 @@ impl Component {
     /// Constructs a new component with the given name and properties
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, description: S, properties: Vec<PropertyType>, extensions: Vec<Extension>) -> Component {
         Component {
-            ty: ComponentType::new_from_type(namespace, type_name),
+            ty: ComponentTypeId::new_from_type(namespace, type_name),
             description: description.into(),
             properties,
             extensions,
@@ -47,7 +47,7 @@ impl Component {
     }
 
     /// Constructs a new component with the given name and properties
-    pub fn new_without_extensions<T: Into<ComponentType>, S: Into<String>>(ty: T, description: S, properties: Vec<PropertyType>) -> Component {
+    pub fn new_without_extensions<T: Into<ComponentTypeId>, S: Into<String>>(ty: T, description: S, properties: Vec<PropertyType>) -> Component {
         Component {
             ty: ty.into(),
             description: description.into(),
@@ -57,7 +57,7 @@ impl Component {
     }
 
     /// Constructs an component with the given name but without properties
-    pub fn new_without_properties<T: Into<ComponentType>, S: Into<String>>(ty: T, description: S, extensions: Vec<Extension>) -> Component {
+    pub fn new_without_properties<T: Into<ComponentTypeId>, S: Into<String>>(ty: T, description: S, extensions: Vec<Extension>) -> Component {
         Component {
             ty: ty.into(),
             description: description.into(),
@@ -98,14 +98,14 @@ impl TypeDefinitionGetter for Component {
 impl From<Component> for TypeDefinition {
     fn from(component: Component) -> Self {
         TypeDefinition {
-            type_type: TypeOfType::Component,
+            type_id_type: TypeIdType::Component,
             namespace: component.ty.namespace(),
             type_name: component.ty.type_name(),
         }
     }
 }
 
-impl From<&Component> for ComponentType {
+impl From<&Component> for ComponentTypeId {
     fn from(component: &Component) -> Self {
         component.ty.clone()
     }
@@ -137,7 +137,7 @@ pub struct ComponentDao {
 impl From<&ComponentDao> for Component {
     fn from(dao: &ComponentDao) -> Self {
         Self {
-            ty: ComponentType::new_from_type(&dao.namespace, &dao.type_name),
+            ty: ComponentTypeId::new_from_type(&dao.namespace, &dao.type_name),
             description: dao.description.clone(),
             properties: dao.properties.clone(),
             extensions: dao.extensions.clone(),

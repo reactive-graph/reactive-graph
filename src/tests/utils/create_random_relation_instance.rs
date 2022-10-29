@@ -11,7 +11,7 @@ use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::ReactiveEntityInstance;
 use crate::ReactiveRelationInstance;
-use crate::RelationTypeType;
+use crate::RelationTypeId;
 use crate::TypeDefinitionGetter;
 
 pub fn create_random_relation_instance(
@@ -21,7 +21,7 @@ pub fn create_random_relation_instance(
 ) -> ReactiveRelationInstance {
     let namespace = r_string();
     let type_name = r_string();
-    let ty = RelationTypeType::new_from_type(&namespace, &type_name);
+    let ty = RelationTypeId::new_from_type(&namespace, &type_name);
     let property_value = r_string();
     let property_value_json = json!(property_value);
     let property = NamedProperty {

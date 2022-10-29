@@ -2,7 +2,7 @@ use uuid::Uuid;
 
 use crate::tests::utils::create_entity_instance_from_type;
 use crate::tests::utils::r_string;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::FlowInstance;
 use crate::NamespacedTypeGetter;
 
@@ -14,7 +14,7 @@ fn flow_instance_test() {
     let flow_name = r_string();
     let flow_description = r_string();
 
-    let ty = EntityTypeType::new_from_type(&namespace, &flow_type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &flow_type_name);
     let flow_instance = FlowInstance {
         id: flow_id,
         ty: ty.clone(),

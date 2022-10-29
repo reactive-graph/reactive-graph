@@ -2,27 +2,27 @@ use serde::Deserialize;
 use serde::Serialize;
 
 use crate::extension::Extension;
-use crate::ComponentType;
-use crate::EntityTypeType;
+use crate::ComponentTypeId;
+use crate::EntityTypeId;
 use crate::ExtensionContainer;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::TypeContainer;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
-use crate::TypeOfType;
+use crate::TypeIdType;
 
 /// Entity types defines the type of an entity instance.
 #[derive(Clone, Debug)]
 pub struct EntityType {
     /// The type definition contains the namespace and the type name.
-    pub ty: EntityTypeType,
+    pub ty: EntityTypeId,
 
     /// Textual description of the entity type.
     pub description: String,
 
     /// The names of the components of the entity type.
-    pub components: Vec<ComponentType>,
+    pub components: Vec<ComponentTypeId>,
 
     /// The properties which are defined by the entity type.
     pub properties: Vec<PropertyType>,
@@ -33,10 +33,10 @@ pub struct EntityType {
 
 impl EntityType {
     /// Constructs an entity type from the given namespaced type with the given description, components, properties and extensions.
-    pub fn new<T: Into<EntityTypeType>, S: Into<String>>(
+    pub fn new<T: Into<EntityTypeId>, S: Into<String>>(
         ty: T,
         description: S,
-        components: Vec<ComponentType>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> EntityType {
@@ -53,12 +53,12 @@ impl EntityType {
         namespace: S,
         type_name: S,
         description: S,
-        components: Vec<ComponentType>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> EntityType {
         EntityType {
-            ty: EntityTypeType::new_from_type(namespace, type_name),
+            ty: EntityTypeId::new_from_type(namespace, type_name),
             description: description.into(),
             components,
             properties,
@@ -68,7 +68,7 @@ impl EntityType {
 }
 
 impl TypeContainer for EntityType {
-    fn is_a(&self, ty: &ComponentType) -> bool {
+    fn is_a(&self, ty: &ComponentTypeId) -> bool {
         self.components.contains(ty)
     }
 
@@ -114,7 +114,7 @@ impl TypeDefinitionGetter for EntityType {
 impl From<&EntityType> for TypeDefinition {
     fn from(entity_type: &EntityType) -> Self {
         TypeDefinition {
-            type_type: TypeOfType::EntityType,
+            type_id_type: TypeIdType::EntityType,
             namespace: entity_type.namespace(),
             type_name: entity_type.type_name(),
         }
@@ -153,9 +153,9 @@ pub struct EntityTypeDao {
 impl From<&EntityTypeDao> for EntityType {
     fn from(dao: &EntityTypeDao) -> Self {
         Self {
-            ty: EntityTypeType::new_from_type(&dao.namespace, &dao.type_name),
+            ty: EntityTypeId::new_from_type(&dao.namespace, &dao.type_name),
             description: dao.description.clone(),
-            components: dao.components.iter().cloned().filter_map(|c| ComponentType::try_from(&c).ok()).collect(),
+            components: dao.components.iter().cloned().filter_map(|c| ComponentTypeId::try_from(&c).ok()).collect(),
             properties: dao.properties.clone(),
             extensions: dao.extensions.clone(),
         }

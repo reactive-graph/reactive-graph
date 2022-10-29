@@ -5,14 +5,14 @@ use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
 
-use crate::types::TypeDefinition;
 use crate::EntityInstance;
 use crate::EntityInstanceDao;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::NamespacedTypeGetter;
 use crate::ReactiveFlowInstance;
 use crate::RelationInstance;
 use crate::RelationInstanceDao;
+use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 
 #[derive(Debug)]
@@ -41,7 +41,7 @@ pub struct FlowInstance {
     pub id: Uuid,
 
     /// The type definition of the entity type of the wrapper entity instance.
-    pub ty: EntityTypeType,
+    pub ty: EntityTypeId,
 
     /// The name of the flow instance.
     pub name: String,
@@ -192,7 +192,7 @@ pub struct FlowInstanceDao {
 impl From<&FlowInstanceDao> for FlowInstance {
     fn from(dao: &FlowInstanceDao) -> Self {
         Self {
-            ty: EntityTypeType::new_from_type(&dao.namespace, &dao.type_name),
+            ty: EntityTypeId::new_from_type(&dao.namespace, &dao.type_name),
             id: dao.id,
             name: dao.name.clone(),
             description: dao.description.clone(),

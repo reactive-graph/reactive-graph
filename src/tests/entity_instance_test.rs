@@ -10,7 +10,7 @@ use uuid::Uuid;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::EntityInstance;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
@@ -39,7 +39,7 @@ fn entity_instance_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
 
-    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let entity_instance = EntityInstance {
         ty: ty.clone(),
         id: uuid.clone(),
@@ -71,7 +71,7 @@ fn create_entity_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let entity_instance = EntityInstance::new(ty, uuid, properties.clone());
     assert_eq!(namespace, entity_instance.namespace());
     assert_eq!(type_name, entity_instance.type_name());
@@ -87,7 +87,7 @@ fn create_entity_instance_without_properties_test() {
     let uuid = Uuid::new_v4();
     let namespace = r_string();
     let type_name = r_string();
-    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let entity_instance = EntityInstance::new_without_properties(ty, uuid);
     assert_eq!(namespace, entity_instance.namespace());
     assert_eq!(type_name, entity_instance.type_name());
@@ -100,7 +100,7 @@ fn create_entity_instance_from_vertex_properties() {
     let uuid = Uuid::new_v4();
     let namespace = r_string();
     let type_name = r_string();
-    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let property_name = r_string();
     let property_value = r_string();
     let property_value_json = json!(property_value);
@@ -128,7 +128,7 @@ fn entity_instance_typed_getter_test() {
     let property_name = r_string();
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), json!(false));
-    let ty = EntityTypeType::new_from_type(namespace.clone(), type_name.clone());
+    let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let mut i = EntityInstance::new(ty, uuid, properties.clone());
     i.set(property_name.clone(), json!(true));
     assert!(i.as_bool(property_name.clone()).unwrap());

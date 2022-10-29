@@ -9,7 +9,7 @@ use uuid::Uuid;
 use crate::property_identifier;
 use crate::tests::utils::r_string;
 use crate::EntityInstance;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::ReactiveEntityInstance;
 use crate::TypeDefinitionGetter;
 
@@ -18,7 +18,7 @@ pub fn create_random_entity_instance<S: Into<String>>(property_name: S) -> React
 }
 
 pub fn create_random_entity_instance_with_type<S: Into<String>>(namespace: S, type_name: S, property_name: S) -> ReactiveEntityInstance {
-    let ty = EntityTypeType::new_from_type(namespace, type_name);
+    let ty = EntityTypeId::new_from_type(namespace, type_name);
     let uuid = Uuid::new_v4();
     let property_value = r_string();
     let property_value_json = json!(property_value);
@@ -39,10 +39,10 @@ pub fn create_entity_instance<S: Into<String>>(property_name: S) -> EntityInstan
 }
 
 pub fn create_entity_instance_from_type_with_property<S: Into<String>>(namespace: S, type_name: S, property_name: S) -> EntityInstance {
-    create_entity_instance_with_property(EntityTypeType::new_from_type(namespace, type_name), property_name)
+    create_entity_instance_with_property(EntityTypeId::new_from_type(namespace, type_name), property_name)
 }
 
-pub fn create_entity_instance_with_property<T: Into<EntityTypeType>, S: Into<String>>(ty: T, property_name: S) -> EntityInstance {
+pub fn create_entity_instance_with_property<T: Into<EntityTypeId>, S: Into<String>>(ty: T, property_name: S) -> EntityInstance {
     let id = Uuid::new_v4();
     let property_value = json!(r_string());
     let mut properties = HashMap::new();

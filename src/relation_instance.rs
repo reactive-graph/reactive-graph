@@ -8,17 +8,15 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
-// use crate::fully_qualified_identifier;
-// use crate::get_namespace_and_type_name;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::MutablePropertyInstanceSetter;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
-use crate::RelationTypeType;
+use crate::RelationInstanceTypeId;
+use crate::RelationTypeId;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
-// use crate::NAMESPACE_RELATION_TYPE;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -36,7 +34,7 @@ pub struct RelationInstance {
     pub outbound_id: Uuid,
 
     /// The type definition of the relation type.
-    pub ty: RelationTypeType,
+    pub ty: RelationInstanceTypeId,
 
     /// The id of the inbound vertex.
     pub inbound_id: Uuid,
@@ -58,7 +56,7 @@ pub struct RelationInstance {
 
 impl RelationInstance {
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new<T: Into<RelationTypeType>>(outbound_id: Uuid, ty: T, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
+    pub fn new<T: Into<RelationInstanceTypeId>>(outbound_id: Uuid, ty: T, inbound_id: Uuid, properties: HashMap<String, Value>) -> RelationInstance {
         RelationInstance {
             outbound_id,
             ty: ty.into(),
@@ -70,7 +68,7 @@ impl RelationInstance {
     }
 
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
-    pub fn new_from_type<S: Into<String>>(
+    pub fn new_from_type_unique_id<S: Into<String>>(
         namespace: S,
         outbound_id: Uuid,
         type_name: S,
@@ -79,7 +77,44 @@ impl RelationInstance {
     ) -> RelationInstance {
         RelationInstance {
             outbound_id,
-            ty: RelationTypeType::new_from_type(namespace, type_name),
+            ty: RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name),
+            inbound_id,
+            description: String::new(),
+            properties,
+            extensions: Vec::new(),
+        }
+    }
+
+    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
+    pub fn new_from_type_unique_for_instance_id<S: Into<String>>(
+        namespace: S,
+        outbound_id: Uuid,
+        type_name: S,
+        instance_id: S,
+        inbound_id: Uuid,
+        properties: HashMap<String, Value>,
+    ) -> RelationInstance {
+        RelationInstance {
+            outbound_id,
+            ty: RelationInstanceTypeId::new_from_type_unique_for_instance_id(namespace, type_name, instance_id),
+            inbound_id,
+            description: String::new(),
+            properties,
+            extensions: Vec::new(),
+        }
+    }
+
+    /// Constructs a new relation instance with the given outbound_id, type, inbound_id and properties
+    pub fn new_from_type_with_random_instance_id<S: Into<String>>(
+        namespace: S,
+        outbound_id: Uuid,
+        type_name: S,
+        inbound_id: Uuid,
+        properties: HashMap<String, Value>,
+    ) -> RelationInstance {
+        RelationInstance {
+            outbound_id,
+            ty: RelationInstanceTypeId::new_from_type_with_random_instance_id(namespace, type_name),
             inbound_id,
             description: String::new(),
             properties,
@@ -88,7 +123,7 @@ impl RelationInstance {
     }
 
     /// Constructs a new relation instance with the given outbound_id, type, inbound_id but without properties
-    pub fn new_without_properties<T: Into<RelationTypeType>>(outbound_id: Uuid, ty: T, inbound_id: Uuid) -> RelationInstance {
+    pub fn new_without_properties<T: Into<RelationInstanceTypeId>>(outbound_id: Uuid, ty: T, inbound_id: Uuid) -> RelationInstance {
         RelationInstance {
             outbound_id,
             ty: ty.into(),
@@ -99,6 +134,17 @@ impl RelationInstance {
         }
     }
 
+    /// Returns the inner relation type id.
+    pub fn relation_type_id(&self) -> RelationTypeId {
+        self.ty.relation_type_id()
+    }
+
+    /// Returns the relation instance type id.
+    pub fn instance_id(&self) -> String {
+        self.ty.instance_id()
+    }
+
+    /// Returns the edge key of the relation instance.
     pub fn get_key(&self) -> EdgeKey {
         EdgeKey::new(self.outbound_id, self.type_id(), self.inbound_id)
     }
@@ -108,7 +154,7 @@ impl TryFrom<EdgeProperties> for RelationInstance {
     type Error = ();
 
     fn try_from(properties: EdgeProperties) -> Result<Self, Self::Error> {
-        let ty = RelationTypeType::try_from(&properties.edge.key.t)?;
+        let ty = RelationInstanceTypeId::try_from(&properties.edge.key.t)?;
         Ok(RelationInstance {
             outbound_id: properties.edge.key.outbound_id,
             ty,
@@ -202,6 +248,9 @@ pub struct RelationInstanceDao {
     #[serde(alias = "type")]
     pub type_name: String,
 
+    /// The type instance id.
+    pub instance_id: String,
+
     /// The id of the inbound vertex.
     pub inbound_id: Uuid,
 
@@ -227,7 +276,7 @@ impl From<&RelationInstanceDao> for RelationInstance {
     fn from(dao: &RelationInstanceDao) -> Self {
         Self {
             outbound_id: dao.outbound_id,
-            ty: RelationTypeType::new_from_type(&dao.namespace, &dao.type_name),
+            ty: RelationInstanceTypeId::new_from_type_unique_for_instance_id(&dao.namespace, &dao.type_name, &dao.instance_id),
             inbound_id: dao.inbound_id,
             description: dao.description.clone(),
             properties: dao.properties.clone(),
@@ -242,6 +291,7 @@ impl From<&RelationInstance> for RelationInstanceDao {
             outbound_id: relation_instance.outbound_id,
             namespace: relation_instance.namespace(),
             type_name: relation_instance.type_name(),
+            instance_id: relation_instance.instance_id(),
             inbound_id: relation_instance.inbound_id,
             description: relation_instance.description.clone(),
             properties: relation_instance.properties.clone(),

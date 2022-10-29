@@ -3,10 +3,10 @@ use serde_json::json;
 
 use crate::tests::utils::r_string;
 use crate::tests::utils::r_string_1000;
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::DataType;
 use crate::EntityType;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::NamespacedTypeGetter;
@@ -23,7 +23,7 @@ fn create_entity_type_test() {
 
     let component_name = r_string();
     let mut component_names = Vec::new();
-    let component_ty = ComponentType::new_from_type(&namespace, &component_name);
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     component_names.push(component_ty.clone());
 
     let mut property_types = Vec::new();
@@ -42,7 +42,7 @@ fn create_entity_type_test() {
     let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
 
-    let ty = EntityTypeType::new_from_type(&namespace, &entity_type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
     let entity_type = EntityType::new(ty, &description, component_names, property_types, extensions);
 
     assert_eq!(namespace, entity_type.namespace());
@@ -80,7 +80,7 @@ fn long_entity_type_test() {
     let namespace = r_string_1000();
     let entity_type_name = r_string_1000();
     let description = r_string();
-    let ty = EntityTypeType::new_from_type(&namespace, &entity_type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
     let et = EntityType::new(ty, description, Vec::new(), Vec::new(), Vec::new());
     let identifier: Identifier = et.type_id();
     assert!(identifier.as_str().len() < 255);

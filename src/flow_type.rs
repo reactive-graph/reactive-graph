@@ -4,17 +4,17 @@ use uuid::Uuid;
 
 use crate::EntityInstance;
 use crate::EntityInstanceDao;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::Extension;
-use crate::FlowTypeType;
+use crate::FlowTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::RelationInstance;
 use crate::RelationInstanceDao;
-use crate::RelationTypeType;
+use crate::RelationTypeId;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
-use crate::TypeOfType;
+use crate::TypeIdType;
 
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
@@ -22,7 +22,7 @@ pub struct FlowTypeCreationError;
 #[derive(Clone, Debug)]
 pub struct FlowType {
     /// The type definition of the entity type.
-    pub ty: FlowTypeType,
+    pub ty: FlowTypeId,
 
     /// Textual description of the flow type.
     pub description: String,
@@ -50,7 +50,7 @@ pub struct FlowType {
 }
 
 impl FlowType {
-    pub fn new<T: Into<FlowTypeType>, S: Into<String>>(
+    pub fn new<T: Into<FlowTypeId>, S: Into<String>>(
         ty: T,
         description: S,
         wrapper_entity_instance: EntityInstance,
@@ -82,7 +82,7 @@ impl FlowType {
         extensions: Vec<Extension>,
     ) -> FlowType {
         FlowType {
-            ty: FlowTypeType::new_from_type(namespace, type_name),
+            ty: FlowTypeId::new_from_type(namespace, type_name),
             description: description.into(),
             wrapper_entity_instance,
             entity_instances,
@@ -97,13 +97,13 @@ impl FlowType {
     }
 
     /// Returns the entity type namespace of the flow type
-    pub fn wrapper_type(&self) -> EntityTypeType {
+    pub fn wrapper_type(&self) -> EntityTypeId {
         self.wrapper_entity_instance.ty.clone()
     }
 
     /// Returns the entity types which are used by the flow type
-    pub fn uses_entity_types(&self) -> Vec<EntityTypeType> {
-        let mut entity_types: Vec<EntityTypeType> = self.entity_instances.iter().map(|e| e.ty.clone()).collect();
+    pub fn uses_entity_types(&self) -> Vec<EntityTypeId> {
+        let mut entity_types: Vec<EntityTypeId> = self.entity_instances.iter().map(|e| e.ty.clone()).collect();
         entity_types.push(self.wrapper_type());
         entity_types.dedup();
         entity_types
@@ -137,8 +137,8 @@ impl FlowType {
     }
 
     /// Returns the entity types which are used by the flow type
-    pub fn uses_relation_types(&self) -> Vec<RelationTypeType> {
-        let mut relation_type_names: Vec<RelationTypeType> = self.relation_instances.iter().map(|r| r.ty.clone()).collect();
+    pub fn uses_relation_types(&self) -> Vec<RelationTypeId> {
+        let mut relation_type_names: Vec<RelationTypeId> = self.relation_instances.iter().map(|r| r.relation_type_id()).collect();
         relation_type_names.dedup();
         relation_type_names
     }
@@ -201,7 +201,7 @@ impl TypeDefinitionGetter for FlowType {
 impl From<&FlowType> for TypeDefinition {
     fn from(flow_type: &FlowType) -> Self {
         TypeDefinition {
-            type_type: TypeOfType::FlowType,
+            type_id_type: TypeIdType::FlowType,
             namespace: flow_type.namespace(),
             type_name: flow_type.type_name(),
         }
@@ -250,7 +250,7 @@ pub struct FlowTypeDao {
 
 impl From<&FlowTypeDao> for FlowType {
     fn from(dao: &FlowTypeDao) -> Self {
-        let ty = FlowTypeType::new_from_type(&dao.namespace, &dao.type_name);
+        let ty = FlowTypeId::new_from_type(&dao.namespace, &dao.type_name);
         Self {
             ty,
             description: dao.description.clone(),

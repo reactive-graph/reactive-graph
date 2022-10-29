@@ -9,9 +9,9 @@ use uuid::Uuid;
 
 use crate::Component;
 use crate::ComponentContainer;
-use crate::ComponentType;
+use crate::ComponentTypeId;
 use crate::EntityInstance;
-use crate::EntityTypeType;
+use crate::EntityTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
@@ -24,7 +24,7 @@ use crate::TypeDefinitionGetter;
 
 pub struct ReactiveEntityInstance {
     /// The type definition of the entity type.
-    pub ty: EntityTypeType,
+    pub ty: EntityTypeId,
 
     /// The unique identifier of the entity instance.
     pub id: Uuid,
@@ -36,7 +36,7 @@ pub struct ReactiveEntityInstance {
     pub properties: DashMap<String, ReactivePropertyInstance>,
 
     /// The names of the components which are applied on this entity instance.
-    pub components: DashSet<ComponentType>,
+    pub components: DashSet<ComponentTypeId>,
 
     /// The names of the behaviours which are applied on this entity instance.
     pub behaviours: DashSet<String>,
@@ -90,11 +90,11 @@ impl ReactivePropertyContainer for ReactiveEntityInstance {
 }
 
 impl ComponentContainer for ReactiveEntityInstance {
-    fn get_components(&self) -> Vec<ComponentType> {
+    fn get_components(&self) -> Vec<ComponentTypeId> {
         self.components.iter().map(|c| c.key().clone()).collect()
     }
 
-    fn add_component(&self, ty: ComponentType) {
+    fn add_component(&self, ty: ComponentTypeId) {
         self.components.insert(ty);
     }
 
@@ -107,11 +107,11 @@ impl ComponentContainer for ReactiveEntityInstance {
         }
     }
 
-    fn remove_component(&self, ty: &ComponentType) {
+    fn remove_component(&self, ty: &ComponentTypeId) {
         self.components.remove(ty);
     }
 
-    fn is_a(&self, ty: &ComponentType) -> bool {
+    fn is_a(&self, ty: &ComponentTypeId) -> bool {
         self.components.contains(ty)
     }
 }
@@ -134,7 +134,7 @@ impl TryFrom<VertexProperties> for ReactiveEntityInstance {
     type Error = ();
 
     fn try_from(properties: VertexProperties) -> Result<Self, Self::Error> {
-        let ty = EntityTypeType::try_from(&properties.vertex.t)?;
+        let ty = EntityTypeId::try_from(&properties.vertex.t)?;
         let id = properties.vertex.id;
         let instance_properties = properties
             .props
