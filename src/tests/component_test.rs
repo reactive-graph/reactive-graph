@@ -141,6 +141,7 @@ fn component_has_property_test() {
 
 #[test]
 fn component_serde_test() {
+    // TODO: rename "type_name" to "name" (https://github.com/serde-rs/serde/pull/2160 https://github.com/serde-rs/serde/issues/1504)
     let s = r#"{
   "namespace": "abc",
   "type_name": "def",
