@@ -1,14 +1,14 @@
 use serde_json::Value;
 
 use crate::model::Component;
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::Extension;
 use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct ComponentBuilder {
-    ty: ComponentType,
+    ty: ComponentTypeId,
     description: String,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
@@ -16,7 +16,7 @@ pub struct ComponentBuilder {
 
 #[allow(dead_code)]
 impl ComponentBuilder {
-    pub fn new(ty: ComponentType) -> ComponentBuilder {
+    pub fn new(ty: ComponentTypeId) -> ComponentBuilder {
         ComponentBuilder {
             ty,
             description: String::new(),
@@ -27,7 +27,7 @@ impl ComponentBuilder {
 
     /// Creates a builder for creating a new component with the given name and namespace.
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> ComponentBuilder {
-        ComponentBuilder::new(ComponentType::new_from_type(namespace, type_name))
+        ComponentBuilder::new(ComponentTypeId::new_from_type(namespace, type_name))
     }
 
     /// Sets the description of the component.

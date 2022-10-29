@@ -4,13 +4,13 @@ use crate::model::DataType;
 use crate::model::EntityInstance;
 use crate::model::Extension;
 use crate::model::FlowType;
-use crate::model::FlowTypeType;
+use crate::model::FlowTypeId;
 use crate::model::PropertyType;
 use crate::model::RelationInstance;
 
 #[allow(dead_code)]
 pub struct FlowTypeBuilder {
-    ty: FlowTypeType,
+    ty: FlowTypeId,
     description: String,
     wrapper_entity_instance: EntityInstance,
     entity_instances: Vec<EntityInstance>,
@@ -21,7 +21,7 @@ pub struct FlowTypeBuilder {
 
 #[allow(dead_code)]
 impl FlowTypeBuilder {
-    pub fn new(ty: FlowTypeType, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
+    pub fn new(ty: FlowTypeId, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
         FlowTypeBuilder {
             ty,
             description: String::new(),
@@ -34,7 +34,7 @@ impl FlowTypeBuilder {
     }
 
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
-        FlowTypeBuilder::new(FlowTypeType::new_from_type(namespace, type_name), wrapper_entity_instance)
+        FlowTypeBuilder::new(FlowTypeId::new_from_type(namespace, type_name), wrapper_entity_instance)
     }
 
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut FlowTypeBuilder {

@@ -1,24 +1,24 @@
 use serde_json::Value;
 
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::EntityType;
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 
 #[allow(dead_code)]
 pub struct EntityTypeBuilder {
-    ty: EntityTypeType,
+    ty: EntityTypeId,
     description: String,
-    components: Vec<ComponentType>,
+    components: Vec<ComponentTypeId>,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
 }
 
 #[allow(dead_code)]
 impl EntityTypeBuilder {
-    pub fn new(ty: EntityTypeType) -> EntityTypeBuilder {
+    pub fn new(ty: EntityTypeId) -> EntityTypeBuilder {
         EntityTypeBuilder {
             ty,
             description: String::new(),
@@ -29,7 +29,7 @@ impl EntityTypeBuilder {
     }
 
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> EntityTypeBuilder {
-        EntityTypeBuilder::new(EntityTypeType::new_from_type(namespace, type_name))
+        EntityTypeBuilder::new(EntityTypeId::new_from_type(namespace, type_name))
     }
 
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut EntityTypeBuilder {
@@ -37,13 +37,13 @@ impl EntityTypeBuilder {
         self
     }
 
-    pub fn component(&mut self, ty: ComponentType) -> &mut EntityTypeBuilder {
+    pub fn component(&mut self, ty: ComponentTypeId) -> &mut EntityTypeBuilder {
         self.components.push(ty);
         self
     }
 
     pub fn component_from_type<S: Into<String>>(&mut self, namespace: S, component_name: S) -> &mut EntityTypeBuilder {
-        self.components.push(ComponentType::new_from_type(namespace, component_name));
+        self.components.push(ComponentTypeId::new_from_type(namespace, component_name));
         self
     }
 

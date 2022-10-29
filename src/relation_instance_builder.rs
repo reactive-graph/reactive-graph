@@ -1,23 +1,24 @@
 use std::collections::HashMap;
 
+use crate::model::RelationInstanceTypeId;
 use indradb::EdgeKey;
 use serde_json::Value;
 use uuid::Uuid;
 
 use crate::model::RelationInstance;
-use crate::model::RelationTypeType;
+use crate::model::RelationTypeId;
 
 #[allow(dead_code)]
 pub struct RelationInstanceBuilder {
     outbound_id: Uuid,
-    ty: RelationTypeType,
+    ty: RelationInstanceTypeId,
     inbound_id: Uuid,
     properties: HashMap<String, Value>,
 }
 
 #[allow(dead_code)]
 impl RelationInstanceBuilder {
-    pub fn new(outbound_id: Uuid, ty: RelationTypeType, inbound_id: Uuid) -> RelationInstanceBuilder {
+    pub fn new(outbound_id: Uuid, ty: RelationInstanceTypeId, inbound_id: Uuid) -> RelationInstanceBuilder {
         RelationInstanceBuilder {
             outbound_id,
             ty,
@@ -26,8 +27,53 @@ impl RelationInstanceBuilder {
         }
     }
 
-    pub fn new_from_type<S: Into<String>>(namespace: S, outbound_id: Uuid, type_name: S, inbound_id: Uuid) -> RelationInstanceBuilder {
-        RelationInstanceBuilder::new(outbound_id, RelationTypeType::new_from_type(namespace, type_name), inbound_id)
+    pub fn new_unique_id(outbound_id: Uuid, ty: &RelationTypeId, inbound_id: Uuid) -> RelationInstanceBuilder {
+        RelationInstanceBuilder {
+            outbound_id,
+            ty: RelationInstanceTypeId::new_unique_id(ty.clone()),
+            inbound_id,
+            properties: HashMap::new(),
+        }
+    }
+
+    pub fn new_unique_for_instance_id<S: Into<String>>(outbound_id: Uuid, ty: &RelationTypeId, instance_id: S, inbound_id: Uuid) -> RelationInstanceBuilder {
+        RelationInstanceBuilder {
+            outbound_id,
+            ty: RelationInstanceTypeId::new_unique_for_instance_id(ty.clone(), instance_id),
+            inbound_id,
+            properties: HashMap::new(),
+        }
+    }
+
+    pub fn new_with_random_instance_id(outbound_id: Uuid, ty: &RelationTypeId, inbound_id: Uuid) -> RelationInstanceBuilder {
+        RelationInstanceBuilder {
+            outbound_id,
+            ty: RelationInstanceTypeId::new_with_random_instance_id(ty.clone()),
+            inbound_id,
+            properties: HashMap::new(),
+        }
+    }
+
+    pub fn new_from_type_unique_id<S: Into<String>>(outbound_id: Uuid, namespace: S, type_name: S, inbound_id: Uuid) -> RelationInstanceBuilder {
+        RelationInstanceBuilder::new(outbound_id, RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name), inbound_id)
+    }
+
+    pub fn new_from_type_unique_for_instance_id<S: Into<String>>(
+        outbound_id: Uuid,
+        namespace: S,
+        type_name: S,
+        instance_id: S,
+        inbound_id: Uuid,
+    ) -> RelationInstanceBuilder {
+        RelationInstanceBuilder::new(
+            outbound_id,
+            RelationInstanceTypeId::new_from_type_unique_for_instance_id(namespace, type_name, instance_id),
+            inbound_id,
+        )
+    }
+
+    pub fn new_from_type_with_random_instance_id<S: Into<String>>(outbound_id: Uuid, namespace: S, type_name: S, inbound_id: Uuid) -> RelationInstanceBuilder {
+        RelationInstanceBuilder::new(outbound_id, RelationInstanceTypeId::new_from_type_with_random_instance_id(namespace, type_name), inbound_id)
     }
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut RelationInstanceBuilder {
@@ -46,7 +92,7 @@ impl TryFrom<&EdgeKey> for RelationInstanceBuilder {
     fn try_from(edge_key: &EdgeKey) -> Result<Self, Self::Error> {
         Ok(RelationInstanceBuilder::new(
             edge_key.outbound_id,
-            RelationTypeType::try_from(&edge_key.t)?,
+            RelationInstanceTypeId::try_from(&edge_key.t)?,
             edge_key.inbound_id,
         ))
     }

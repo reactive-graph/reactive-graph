@@ -1,9 +1,10 @@
+use inexor_rgf_core_model::RelationInstanceTypeId;
 use serde_json::json;
 use uuid::Uuid;
 
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
-use crate::model::RelationTypeType;
+use crate::model::RelationTypeId;
 use crate::tests::utils::r_string;
 use crate::EntityInstanceBuilder;
 use crate::FlowInstanceBuilder;
@@ -17,21 +18,21 @@ fn flow_builder_test() {
 
     let entity_type_1_namespace = r_string();
     let entity_type_1_name = r_string();
-    let entity_type_1_ty = EntityTypeType::new_from_type(&entity_type_1_namespace, &entity_type_1_name);
+    let entity_type_1_ty = EntityTypeId::new_from_type(&entity_type_1_namespace, &entity_type_1_name);
 
     let property_1_name = r_string();
     let property_1_value = r_string();
 
     let entity_type_2_namespace = r_string();
     let entity_type_2_name = r_string();
-    let entity_type_2_ty = EntityTypeType::new_from_type(&entity_type_2_namespace, &entity_type_2_name);
+    let entity_type_2_ty = EntityTypeId::new_from_type(&entity_type_2_namespace, &entity_type_2_name);
 
     let property_2_name = r_string();
     let property_2_value = r_string();
 
     let entity_type_3_namespace = r_string();
     let entity_type_3_name = r_string();
-    let entity_type_3_ty = EntityTypeType::new_from_type(&entity_type_3_namespace, &entity_type_3_name);
+    let entity_type_3_ty = EntityTypeId::new_from_type(&entity_type_3_namespace, &entity_type_3_name);
 
     let property_3_name = r_string();
     let property_3_value = r_string();
@@ -51,19 +52,22 @@ fn flow_builder_test() {
 
     let relation_type_1_namespace = r_string();
     let relation_type_1_name = r_string();
-    let relation_type_1_ty = RelationTypeType::new_from_type(&relation_type_1_namespace, &relation_type_1_name);
+    let relation_type_1_ty = RelationTypeId::new_from_type(&relation_type_1_namespace, &relation_type_1_name);
+    let relation_instance_1_ty = RelationInstanceTypeId::new_unique_id(relation_type_1_ty.clone());
 
     let relation_type_2_namespace = r_string();
     let relation_type_2_name = r_string();
-    let relation_type_2_ty = RelationTypeType::new_from_type(&relation_type_2_namespace, &relation_type_2_name);
+    let relation_type_2_ty = RelationTypeId::new_from_type(&relation_type_2_namespace, &relation_type_2_name);
+    let relation_instance_2_ty = RelationInstanceTypeId::new_unique_id(relation_type_2_ty.clone());
 
     let relation_type_3_namespace = r_string();
     let relation_type_3_name = r_string();
-    let relation_type_3_ty = RelationTypeType::new_from_type(&relation_type_3_namespace, &relation_type_3_name);
+    let relation_type_3_ty = RelationTypeId::new_from_type(&relation_type_3_namespace, &relation_type_3_name);
+    let relation_instance_3_ty = RelationInstanceTypeId::new_unique_id(relation_type_3_ty.clone());
 
-    let relation_instance_1 = RelationInstanceBuilder::new(entity_instance_1.id, relation_type_1_ty, entity_instance_2.id).build();
-    let relation_instance_2 = RelationInstanceBuilder::new(entity_instance_1.id, relation_type_2_ty, entity_instance_3.id).build();
-    let relation_instance_3 = RelationInstanceBuilder::new(entity_instance_2.id, relation_type_3_ty, entity_instance_3.id).build();
+    let relation_instance_1 = RelationInstanceBuilder::new(entity_instance_1.id, relation_instance_1_ty, entity_instance_2.id).build();
+    let relation_instance_2 = RelationInstanceBuilder::new(entity_instance_1.id, relation_instance_2_ty, entity_instance_3.id).build();
+    let relation_instance_3 = RelationInstanceBuilder::new(entity_instance_2.id, relation_instance_3_ty, entity_instance_3.id).build();
 
     let flow_instance = FlowInstanceBuilder::new(entity_instance_1.clone())
         .name(flow_instance_name.clone())

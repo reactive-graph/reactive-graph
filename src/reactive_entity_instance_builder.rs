@@ -4,22 +4,22 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::model::ComponentContainer;
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::EntityType;
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 use crate::model::ReactiveEntityInstance;
 use crate::EntityInstanceBuilder;
 
 #[allow(dead_code)]
 pub struct ReactiveEntityInstanceBuilder {
-    ty: EntityTypeType,
-    components: Vec<ComponentType>,
+    ty: EntityTypeId,
+    components: Vec<ComponentTypeId>,
     builder: EntityInstanceBuilder,
 }
 
 #[allow(dead_code)]
 impl ReactiveEntityInstanceBuilder {
-    pub fn new(ty: EntityTypeType) -> ReactiveEntityInstanceBuilder {
+    pub fn new(ty: EntityTypeId) -> ReactiveEntityInstanceBuilder {
         ReactiveEntityInstanceBuilder {
             ty: ty.clone(),
             components: Vec::new(),
@@ -28,7 +28,7 @@ impl ReactiveEntityInstanceBuilder {
     }
 
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> ReactiveEntityInstanceBuilder {
-        ReactiveEntityInstanceBuilder::new(EntityTypeType::new_from_type(namespace, type_name))
+        ReactiveEntityInstanceBuilder::new(EntityTypeId::new_from_type(namespace, type_name))
     }
 
     pub fn id(&mut self, id: Uuid) -> &mut ReactiveEntityInstanceBuilder {
@@ -41,7 +41,7 @@ impl ReactiveEntityInstanceBuilder {
         self
     }
 
-    pub fn component(&mut self, component: ComponentType) -> &mut ReactiveEntityInstanceBuilder {
+    pub fn component(&mut self, component: ComponentTypeId) -> &mut ReactiveEntityInstanceBuilder {
         self.components.push(component);
         self
     }

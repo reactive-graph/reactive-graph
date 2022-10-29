@@ -2,7 +2,7 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::model::DataType;
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::tests::utils::r_string;
@@ -13,7 +13,7 @@ use crate::EntityTypeBuilder;
 fn entity_instance_builder_test() {
     let namespace = r_string();
     let type_name = r_string();
-    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
     let id = Uuid::new_v4();
     let property_1_name = r_string();
     let property_1_value = r_string();
@@ -41,7 +41,7 @@ fn entity_instance_builder_test() {
 fn entity_instance_from_type_test() {
     let namespace = r_string();
     let type_name = r_string();
-    let ty = EntityTypeType::new_from_type(&namespace, &type_name);
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
     let id = Uuid::new_v4();
     let property_1_name = r_string();
     let property_1_value = r_string();

@@ -1,27 +1,27 @@
 use serde_json::Value;
 
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::DataType;
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::RelationType;
-use crate::model::RelationTypeType;
+use crate::model::RelationTypeId;
 
 #[allow(dead_code)]
 pub struct RelationTypeBuilder {
-    outbound_type: EntityTypeType,
-    ty: RelationTypeType,
-    inbound_type: EntityTypeType,
+    outbound_type: EntityTypeId,
+    ty: RelationTypeId,
+    inbound_type: EntityTypeId,
     description: String,
-    components: Vec<ComponentType>,
+    components: Vec<ComponentTypeId>,
     properties: Vec<PropertyType>,
     extensions: Vec<Extension>,
 }
 
 #[allow(dead_code)]
 impl RelationTypeBuilder {
-    pub fn new(outbound_type: EntityTypeType, ty: RelationTypeType, inbound_type: EntityTypeType) -> RelationTypeBuilder {
+    pub fn new(outbound_type: EntityTypeId, ty: RelationTypeId, inbound_type: EntityTypeId) -> RelationTypeBuilder {
         RelationTypeBuilder {
             outbound_type,
             ty,
@@ -42,9 +42,9 @@ impl RelationTypeBuilder {
         inbound_type_name: S,
     ) -> RelationTypeBuilder {
         RelationTypeBuilder::new(
-            EntityTypeType::new_from_type(outbound_namespace, outbound_type_name),
-            RelationTypeType::new_from_type(namespace, type_name),
-            EntityTypeType::new_from_type(inbound_namespace, inbound_type_name),
+            EntityTypeId::new_from_type(outbound_namespace, outbound_type_name),
+            RelationTypeId::new_from_type(namespace, type_name),
+            EntityTypeId::new_from_type(inbound_namespace, inbound_type_name),
         )
     }
 
@@ -53,13 +53,13 @@ impl RelationTypeBuilder {
         self
     }
 
-    pub fn component(&mut self, ty: ComponentType) -> &mut RelationTypeBuilder {
+    pub fn component(&mut self, ty: ComponentTypeId) -> &mut RelationTypeBuilder {
         self.components.push(ty);
         self
     }
 
     pub fn component_from_type<S: Into<String>>(&mut self, namespace: S, component_name: S) -> &mut RelationTypeBuilder {
-        self.components.push(ComponentType::new_from_type(namespace, component_name));
+        self.components.push(ComponentTypeId::new_from_type(namespace, component_name));
         self
     }
 

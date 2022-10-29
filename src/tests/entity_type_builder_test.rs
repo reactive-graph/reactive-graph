@@ -1,6 +1,6 @@
 use serde_json::json;
 
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::ExtensionContainer;
 use crate::model::NamespacedTypeGetter;
@@ -18,10 +18,10 @@ fn entity_type_builder_test() {
     let description = r_string();
     let component_1_namespace = r_string();
     let component_1_type_name = r_string();
-    let component_1_ty = ComponentType::new_from_type(&component_1_namespace, &component_1_type_name);
+    let component_1_ty = ComponentTypeId::new_from_type(&component_1_namespace, &component_1_type_name);
     let component_2_namespace = r_string();
     let component_2_type_name = r_string();
-    let component_2_ty = ComponentType::new_from_type(&component_2_namespace, &component_2_type_name);
+    let component_2_ty = ComponentTypeId::new_from_type(&component_2_namespace, &component_2_type_name);
     let extension_1_name = r_string();
     let extension_2_name = r_string();
     let property_1_name = r_string();
@@ -55,7 +55,7 @@ fn entity_type_builder_test() {
     assert_eq!(description, entity_type.description);
     assert!(entity_type.is_a(&component_1_ty));
     assert!(entity_type.is_a(&component_2_ty));
-    let component_ty_non_existent = ComponentType::new_from_type(&r_string(), &r_string());
+    let component_ty_non_existent = ComponentTypeId::new_from_type(&r_string(), &r_string());
     assert!(!entity_type.is_a(&component_ty_non_existent));
     assert!(entity_type.has_own_extension(extension_1_name.clone()));
     assert!(entity_type.has_own_extension(extension_2_name.clone()));

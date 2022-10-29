@@ -1,27 +1,28 @@
+use inexor_rgf_core_model::RelationInstanceTypeId;
 use std::sync::Arc;
 
 use serde_json::Value;
 
 use crate::model::ComponentContainer;
-use crate::model::ComponentType;
+use crate::model::ComponentTypeId;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationType;
-use crate::model::RelationTypeType;
+use crate::model::RelationTypeId;
 use crate::RelationInstanceBuilder;
 
 #[allow(dead_code)]
 pub struct ReactiveRelationInstanceBuilder {
     outbound: Arc<ReactiveEntityInstance>,
-    ty: RelationTypeType,
+    ty: RelationInstanceTypeId,
     inbound: Arc<ReactiveEntityInstance>,
-    components: Vec<ComponentType>,
+    components: Vec<ComponentTypeId>,
     builder: RelationInstanceBuilder,
 }
 
 #[allow(dead_code)]
 impl ReactiveRelationInstanceBuilder {
-    pub fn new(outbound: Arc<ReactiveEntityInstance>, ty: RelationTypeType, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
+    pub fn new(outbound: Arc<ReactiveEntityInstance>, ty: RelationInstanceTypeId, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
         let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
         ReactiveRelationInstanceBuilder {
             outbound,
@@ -32,13 +33,81 @@ impl ReactiveRelationInstanceBuilder {
         }
     }
 
-    pub fn new_from_type<S: Into<String>>(
-        namespace: S,
+    pub fn new_unique_id(outbound: Arc<ReactiveEntityInstance>, ty: &RelationTypeId, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
+        let ty = RelationInstanceTypeId::new_unique_id(ty.clone());
+        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
+        ReactiveRelationInstanceBuilder {
+            outbound,
+            ty,
+            inbound,
+            components: Vec::new(),
+            builder,
+        }
+    }
+
+    pub fn new_unique_for_instance_id<S: Into<String>>(
         outbound: Arc<ReactiveEntityInstance>,
+        ty: &RelationTypeId,
+        instance_id: S,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        let ty = RelationInstanceTypeId::new_unique_for_instance_id(ty.clone(), instance_id);
+        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
+        ReactiveRelationInstanceBuilder {
+            outbound,
+            ty,
+            inbound,
+            components: Vec::new(),
+            builder,
+        }
+    }
+
+    pub fn new_with_random_instance_id(
+        outbound: Arc<ReactiveEntityInstance>,
+        ty: &RelationTypeId,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        let ty = RelationInstanceTypeId::new_with_random_instance_id(ty.clone());
+        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
+        ReactiveRelationInstanceBuilder {
+            outbound,
+            ty,
+            inbound,
+            components: Vec::new(),
+            builder,
+        }
+    }
+
+    pub fn new_from_type_unique_id<S: Into<String>>(
+        outbound: Arc<ReactiveEntityInstance>,
+        namespace: S,
         type_name: S,
         inbound: Arc<ReactiveEntityInstance>,
     ) -> ReactiveRelationInstanceBuilder {
-        ReactiveRelationInstanceBuilder::new(outbound, RelationTypeType::new_from_type(namespace, type_name), inbound)
+        ReactiveRelationInstanceBuilder::new(outbound, RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name), inbound)
+    }
+
+    pub fn new_from_type_unique_for_instance_id<S: Into<String>>(
+        outbound: Arc<ReactiveEntityInstance>,
+        namespace: S,
+        type_name: S,
+        instance_id: S,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        ReactiveRelationInstanceBuilder::new(
+            outbound,
+            RelationInstanceTypeId::new_from_type_unique_for_instance_id(namespace, type_name, instance_id),
+            inbound,
+        )
+    }
+
+    pub fn new_from_type_with_random_instance_id<S: Into<String>>(
+        outbound: Arc<ReactiveEntityInstance>,
+        namespace: S,
+        type_name: S,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        ReactiveRelationInstanceBuilder::new(outbound, RelationInstanceTypeId::new_from_type_with_random_instance_id(namespace, type_name), inbound)
     }
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut ReactiveRelationInstanceBuilder {
@@ -53,7 +122,7 @@ impl ReactiveRelationInstanceBuilder {
         self
     }
 
-    pub fn component(&mut self, component: ComponentType) -> &mut ReactiveRelationInstanceBuilder {
+    pub fn component(&mut self, component: ComponentTypeId) -> &mut ReactiveRelationInstanceBuilder {
         self.components.push(component);
         self
     }

@@ -5,18 +5,18 @@ use uuid::Uuid;
 
 use crate::model::EntityInstance;
 use crate::model::EntityType;
-use crate::model::EntityTypeType;
+use crate::model::EntityTypeId;
 
 #[allow(dead_code)]
 pub struct EntityInstanceBuilder {
-    ty: EntityTypeType,
+    ty: EntityTypeId,
     id: Option<Uuid>,
     properties: HashMap<String, Value>,
 }
 
 #[allow(dead_code)]
 impl EntityInstanceBuilder {
-    pub fn new(ty: EntityTypeType) -> EntityInstanceBuilder {
+    pub fn new(ty: EntityTypeId) -> EntityInstanceBuilder {
         EntityInstanceBuilder {
             ty,
             id: None,
@@ -25,7 +25,7 @@ impl EntityInstanceBuilder {
     }
 
     pub fn new_from_type<S: Into<String>>(namespace: S, type_name: S) -> EntityInstanceBuilder {
-        EntityInstanceBuilder::new(EntityTypeType::new_from_type(namespace, type_name))
+        EntityInstanceBuilder::new(EntityTypeId::new_from_type(namespace, type_name))
     }
 
     pub fn id(&mut self, id: Uuid) -> &mut EntityInstanceBuilder {

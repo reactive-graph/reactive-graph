@@ -1,10 +1,11 @@
+use inexor_rgf_core_model::RelationInstanceTypeId;
 use serde_json::json;
 
 use crate::model::DataType;
-use crate::model::EntityTypeType;
-use crate::model::FlowTypeType;
+use crate::model::EntityTypeId;
+use crate::model::FlowTypeId;
 use crate::model::NamespacedTypeGetter;
-use crate::model::RelationTypeType;
+use crate::model::RelationTypeId;
 use crate::tests::utils::r_string;
 use crate::EntityInstanceBuilder;
 use crate::FlowTypeBuilder;
@@ -14,7 +15,7 @@ use crate::RelationInstanceBuilder;
 fn flow_type_builder_test() {
     let entity_type_1_namespace = r_string();
     let entity_type_1_name = r_string();
-    let entity_type_1_ty = EntityTypeType::new_from_type(&entity_type_1_namespace, &entity_type_1_name);
+    let entity_type_1_ty = EntityTypeId::new_from_type(&entity_type_1_namespace, &entity_type_1_name);
     let wrapper_entity_instance = EntityInstanceBuilder::new(entity_type_1_ty).build();
 
     let entity_type_2_namespace = r_string();
@@ -23,12 +24,13 @@ fn flow_type_builder_test() {
 
     let relation_type_namespace = r_string();
     let relation_type_name = r_string();
-    let relation_type_ty = RelationTypeType::new_from_type(&relation_type_namespace, &relation_type_name);
-    let relation_instance = RelationInstanceBuilder::new(wrapper_entity_instance.id, relation_type_ty, entity_instance_2.id).build();
+    let relation_type_ty = RelationTypeId::new_from_type(&relation_type_namespace, &relation_type_name);
+    let ri_ty = RelationInstanceTypeId::new_unique_id(relation_type_ty);
+    let relation_instance = RelationInstanceBuilder::new(wrapper_entity_instance.id, ri_ty.clone(), entity_instance_2.id).build();
 
     let flow_type_namespace = r_string();
     let flow_type_name = r_string();
-    let flow_type_ty = FlowTypeType::new_from_type(&flow_type_namespace, &flow_type_name);
+    let flow_type_ty = FlowTypeId::new_from_type(&flow_type_namespace, &flow_type_name);
     let description = r_string();
     let variable_1_name = r_string();
     let variable_2_name = r_string();
