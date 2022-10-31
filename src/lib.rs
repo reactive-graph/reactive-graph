@@ -4,6 +4,7 @@
 
 pub use component::*;
 pub use component_container::*;
+pub use component_or_entity_type_id::*;
 pub use component_type_id::*;
 pub use data_type::*;
 pub use entity_instance::*;
@@ -35,6 +36,7 @@ pub use type_namespaced_type::*;
 
 pub mod component;
 pub mod component_container;
+pub mod component_or_entity_type_id;
 pub mod component_type_id;
 pub mod data_type;
 pub mod entity_type;
