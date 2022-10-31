@@ -1,5 +1,6 @@
 use serde_json::Value;
 
+use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::EntityTypeId;
@@ -10,9 +11,9 @@ use crate::model::RelationTypeId;
 
 #[allow(dead_code)]
 pub struct RelationTypeBuilder {
-    outbound_type: EntityTypeId,
+    outbound_type: ComponentOrEntityTypeId,
     ty: RelationTypeId,
-    inbound_type: EntityTypeId,
+    inbound_type: ComponentOrEntityTypeId,
     description: String,
     components: Vec<ComponentTypeId>,
     properties: Vec<PropertyType>,
@@ -21,11 +22,15 @@ pub struct RelationTypeBuilder {
 
 #[allow(dead_code)]
 impl RelationTypeBuilder {
-    pub fn new(outbound_type: EntityTypeId, ty: RelationTypeId, inbound_type: EntityTypeId) -> RelationTypeBuilder {
+    pub fn new<OT: Into<ComponentOrEntityTypeId>, RT: Into<RelationTypeId>, IT: Into<ComponentOrEntityTypeId>>(
+        outbound_type: OT,
+        ty: RT,
+        inbound_type: IT,
+    ) -> RelationTypeBuilder {
         RelationTypeBuilder {
-            outbound_type,
-            ty,
-            inbound_type,
+            outbound_type: outbound_type.into(),
+            ty: ty.into(),
+            inbound_type: inbound_type.into(),
             description: String::new(),
             components: Vec::new(),
             properties: Vec::new(),
@@ -41,11 +46,10 @@ impl RelationTypeBuilder {
         inbound_namespace: S,
         inbound_type_name: S,
     ) -> RelationTypeBuilder {
-        RelationTypeBuilder::new(
-            EntityTypeId::new_from_type(outbound_namespace, outbound_type_name),
-            RelationTypeId::new_from_type(namespace, type_name),
-            EntityTypeId::new_from_type(inbound_namespace, inbound_type_name),
-        )
+        let outbound_ty = EntityTypeId::new_from_type(outbound_namespace, outbound_type_name);
+        let ty = RelationTypeId::new_from_type(namespace, type_name);
+        let inbound_ty = EntityTypeId::new_from_type(inbound_namespace, inbound_type_name);
+        RelationTypeBuilder::new(outbound_ty, ty, inbound_ty)
     }
 
     pub fn description<S: Into<String>>(&mut self, description: S) -> &mut RelationTypeBuilder {
