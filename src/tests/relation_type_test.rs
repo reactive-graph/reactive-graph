@@ -15,6 +15,7 @@ use crate::RelationTypeId;
 use crate::SocketType;
 use crate::TypeContainer;
 use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
 
 #[test]
 fn create_relation_type_test() {
@@ -64,8 +65,8 @@ fn create_relation_type_test() {
         Identifier::new(relation_type.type_definition().to_string().as_str()).unwrap(),
         (&relation_type.type_definition()).into()
     );
-    assert_eq!(outbound_type, relation_type.outbound_type);
-    assert_eq!(inbound_type, relation_type.inbound_type);
+    assert_eq!(outbound_type, relation_type.outbound_type.clone().try_into().unwrap());
+    assert_eq!(inbound_type, relation_type.inbound_type.clone().try_into().unwrap());
     assert_eq!(description, relation_type.description);
     assert_eq!(component_ty, *relation_type.components.first().unwrap());
     assert!(relation_type.is_a(&component_ty));
@@ -108,16 +109,20 @@ fn relation_type_ser_test() {
 fn relation_type_de_test() {
     let s = r#"{
   "outbound": {
-    "namespace": "ono",
-    "type_name": "oto"
+    "entity_type": {
+      "namespace": "ono",
+      "type_name": "oto"
+    }
   },
   
   "namespace": "rnr",
   "type_name": "rtr",
   
   "inbound": {
-    "namespace": "ini",
-    "type_name": "iti"
+    "component": {
+      "namespace": "ini",
+      "type_name": "iti"
+    }
   },
   
   "description": "d",
@@ -145,8 +150,10 @@ fn relation_type_de_test() {
     assert_eq!("rnr", relation_type.namespace());
     assert_eq!("rtr", relation_type.type_name());
     assert_eq!("r__rnr__rtr", relation_type.ty.to_string());
+    assert_eq!(TypeIdType::EntityType, relation_type.outbound_type.type_definition().type_id_type);
     assert_eq!("ono", relation_type.outbound_type.namespace());
     assert_eq!("oto", relation_type.outbound_type.type_name());
+    assert_eq!(TypeIdType::Component, relation_type.inbound_type.type_definition().type_id_type);
     assert_eq!("ini", relation_type.inbound_type.namespace());
     assert_eq!("iti", relation_type.inbound_type.type_name());
     assert_eq!("d", relation_type.description);

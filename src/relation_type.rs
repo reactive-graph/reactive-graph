@@ -5,6 +5,7 @@ use crate::extension::Extension;
 use crate::ComponentTypeId;
 use crate::EntityTypeId;
 use crate::ExtensionContainer;
+use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::RelationTypeId;
@@ -13,23 +14,108 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+pub enum ComponentOrEntityTypeId {
+    #[serde(rename = "component")]
+    Component(ComponentTypeId),
+    #[serde(rename = "entity_type")]
+    EntityType(EntityTypeId),
+}
+
+impl From<ComponentTypeId> for ComponentOrEntityTypeId {
+    fn from(ty: ComponentTypeId) -> Self {
+        ComponentOrEntityTypeId::Component(ty)
+    }
+}
+
+impl TryFrom<ComponentOrEntityTypeId> for ComponentTypeId {
+    type Error = ();
+
+    fn try_from(ty: ComponentOrEntityTypeId) -> Result<Self, Self::Error> {
+        match ty {
+            ComponentOrEntityTypeId::Component(ty) => Ok(ty),
+            ComponentOrEntityTypeId::EntityType(_) => Err(()),
+        }
+    }
+}
+
+impl From<EntityTypeId> for ComponentOrEntityTypeId {
+    fn from(ty: EntityTypeId) -> Self {
+        ComponentOrEntityTypeId::EntityType(ty)
+    }
+}
+
+impl TryFrom<ComponentOrEntityTypeId> for EntityTypeId {
+    type Error = ();
+
+    fn try_from(ty: ComponentOrEntityTypeId) -> Result<Self, Self::Error> {
+        match ty {
+            ComponentOrEntityTypeId::Component(_) => Err(()),
+            ComponentOrEntityTypeId::EntityType(ty) => Ok(ty),
+        }
+    }
+}
+
+impl NamespacedTypeGetter for ComponentOrEntityTypeId {
+    fn namespace(&self) -> String {
+        match self {
+            ComponentOrEntityTypeId::Component(ty) => ty.namespace(),
+            ComponentOrEntityTypeId::EntityType(ty) => ty.namespace(),
+        }
+    }
+
+    fn type_name(&self) -> String {
+        match self {
+            ComponentOrEntityTypeId::Component(ty) => ty.type_name(),
+            ComponentOrEntityTypeId::EntityType(ty) => ty.type_name(),
+        }
+    }
+}
+
+impl TypeDefinitionGetter for ComponentOrEntityTypeId {
+    fn type_definition(&self) -> TypeDefinition {
+        match self {
+            ComponentOrEntityTypeId::Component(ty) => ty.type_definition(),
+            ComponentOrEntityTypeId::EntityType(ty) => ty.type_definition(),
+        }
+    }
+}
+
+impl From<&ComponentOrEntityTypeId> for TypeDefinition {
+    fn from(ty: &ComponentOrEntityTypeId) -> Self {
+        match ty {
+            ComponentOrEntityTypeId::Component(ty) => ty.type_definition(),
+            ComponentOrEntityTypeId::EntityType(ty) => ty.type_definition(),
+        }
+    }
+}
+
+impl From<&ComponentOrEntityTypeId> for NamespacedType {
+    fn from(ty: &ComponentOrEntityTypeId) -> Self {
+        match ty {
+            ComponentOrEntityTypeId::Component(ty) => ty.into(),
+            ComponentOrEntityTypeId::EntityType(ty) => ty.into(),
+        }
+    }
+}
+
 /// A relation type defines the type of an relation instance.
 ///
 /// The relation type defines the entity types of the outbound and inbound entity instances.
 /// Also the relation type defines the properties of the relation instance.
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct RelationType {
-    /// The name of the outbound entity type.
+    /// The outbound component or entity type.
     #[serde(rename = "outbound", alias = "outbound")]
-    pub outbound_type: EntityTypeId,
+    pub outbound_type: ComponentOrEntityTypeId,
 
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
     pub ty: RelationTypeId,
 
-    /// The name of the inbound entity type.
+    /// The inbound component or entity type.
     #[serde(rename = "inbound", alias = "inbound")]
-    pub inbound_type: EntityTypeId,
+    pub inbound_type: ComponentOrEntityTypeId,
 
     /// Textual description of the relation type.
     #[serde(default = "String::new")]
@@ -50,7 +136,7 @@ pub struct RelationType {
 
 impl RelationType {
     #[allow(clippy::too_many_arguments)]
-    pub fn new<OT: Into<EntityTypeId>, RT: Into<RelationTypeId>, IT: Into<EntityTypeId>, S: Into<String>>(
+    pub fn new<OT: Into<ComponentOrEntityTypeId>, RT: Into<RelationTypeId>, IT: Into<ComponentOrEntityTypeId>, S: Into<String>>(
         outbound_type: OT,
         ty: RT,
         inbound_type: IT,
@@ -64,35 +150,6 @@ impl RelationType {
             outbound_type: outbound_type.into(),
             ty,
             inbound_type: inbound_type.into(),
-            description: description.into(),
-            components,
-            properties,
-            extensions,
-        }
-    }
-
-    #[allow(clippy::too_many_arguments)]
-    pub fn new_from_type<S: Into<String>>(
-        namespace: S,
-        outbound_type: S,
-        type_name: S,
-        inbound_type: S,
-        description: S,
-        components: Vec<ComponentTypeId>,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
-    ) -> RelationType {
-        let namespace = namespace.into();
-        let outbound_type = outbound_type.into();
-        let type_name = type_name.into();
-        let inbound_type = inbound_type.into();
-        let outbound_type = EntityTypeId::new_from_type(&namespace, &outbound_type);
-        let ty = RelationTypeId::new_from_type(&namespace, &type_name);
-        let inbound_type = EntityTypeId::new_from_type(&namespace, &inbound_type);
-        RelationType {
-            outbound_type,
-            ty,
-            inbound_type,
             description: description.into(),
             components,
             properties,
