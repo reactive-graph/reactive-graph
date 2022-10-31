@@ -108,7 +108,7 @@ macro_rules! export_plugin {
 
 #[macro_export]
 macro_rules! embedded_asset_provider_impl {
-    ($asset: ident, $dao: ident, $ty: ident) => {{
+    ($asset: ident, $ty: ident) => {{
         let mut entries = Vec::new();
         for file in $asset::iter() {
             let filename = file.as_ref();
@@ -117,8 +117,8 @@ macro_rules! embedded_asset_provider_impl {
                 Some(asset) => match std::str::from_utf8(asset.data.as_ref()) {
                     Ok(json_str) => match serde_json::from_str(json_str) {
                         Ok(parsed_entry) => {
-                            let dao_entry: $dao = parsed_entry;
-                            entries.push($ty::from(&dao_entry));
+                            let entry: $ty = parsed_entry;
+                            entries.push(entry);
                         }
                         Err(e) => error!("Error in parsing JSON file {}: {}", filename, e),
                     },
