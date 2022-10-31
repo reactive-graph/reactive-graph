@@ -71,6 +71,7 @@ pub struct ReactiveRelationInstance {
     pub behaviours: DashSet<String>,
 }
 
+#[allow(clippy::result_unit_err)]
 impl ReactiveRelationInstance {
     pub fn new_from_properties(
         outbound: Arc<ReactiveEntityInstance>,
