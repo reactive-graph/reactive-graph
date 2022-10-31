@@ -16,6 +16,24 @@ pub enum ComponentOrEntityTypeId {
     EntityType(EntityTypeId),
 }
 
+impl ComponentOrEntityTypeId {
+    /// Returns true, if the given component type id is equal to the inner component type id.
+    pub fn eq_component(&self, component_ty: &ComponentTypeId) -> bool {
+        match self {
+            ComponentOrEntityTypeId::Component(ty) => ty.eq(component_ty),
+            _ => false,
+        }
+    }
+
+    /// Returns true, if the given entity type id is equal to the inner entity type id.
+    pub fn eq_entity_type(&self, entity_ty: &EntityTypeId) -> bool {
+        match self {
+            ComponentOrEntityTypeId::EntityType(ty) => ty.eq(entity_ty),
+            _ => false,
+        }
+    }
+}
+
 impl From<ComponentTypeId> for ComponentOrEntityTypeId {
     fn from(ty: ComponentTypeId) -> Self {
         ComponentOrEntityTypeId::Component(ty)
