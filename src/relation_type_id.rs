@@ -59,6 +59,17 @@ impl From<NamespacedType> for RelationTypeId {
     }
 }
 
+impl TryFrom<&TypeDefinition> for RelationTypeId {
+    type Error = ();
+
+    fn try_from(type_definition: &TypeDefinition) -> Result<Self, Self::Error> {
+        match type_definition.type_id_type {
+            TypeIdType::RelationType => Ok(RelationTypeId::new_from_type(type_definition.namespace.clone(), type_definition.type_name.clone())),
+            _ => Err(()),
+        }
+    }
+}
+
 impl TryFrom<&Identifier> for RelationTypeId {
     type Error = ();
 

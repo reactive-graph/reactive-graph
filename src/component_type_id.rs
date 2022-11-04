@@ -59,6 +59,17 @@ impl From<NamespacedType> for ComponentTypeId {
     }
 }
 
+impl TryFrom<&TypeDefinition> for ComponentTypeId {
+    type Error = ();
+
+    fn try_from(type_definition: &TypeDefinition) -> Result<Self, Self::Error> {
+        match type_definition.type_id_type {
+            TypeIdType::Component => Ok(ComponentTypeId::new_from_type(type_definition.namespace.clone(), type_definition.type_name.clone())),
+            _ => Err(()),
+        }
+    }
+}
+
 impl TryFrom<&Identifier> for ComponentTypeId {
     type Error = ();
 

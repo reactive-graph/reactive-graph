@@ -59,6 +59,17 @@ impl From<NamespacedType> for FlowTypeId {
     }
 }
 
+impl TryFrom<&TypeDefinition> for FlowTypeId {
+    type Error = ();
+
+    fn try_from(type_definition: &TypeDefinition) -> Result<Self, Self::Error> {
+        match type_definition.type_id_type {
+            TypeIdType::FlowType => Ok(FlowTypeId::new_from_type(type_definition.namespace.clone(), type_definition.type_name.clone())),
+            _ => Err(()),
+        }
+    }
+}
+
 impl TryFrom<&Identifier> for FlowTypeId {
     type Error = ();
 
