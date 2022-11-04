@@ -33,23 +33,11 @@ pub trait RelationTypeManager: Send + Sync {
     /// Returns true, if a relation type with the given fully qualified name exists.
     fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
 
-    /// Returns true, if a relation type exists whose name starts with the given name.
-    fn has_starts_with(&self, ty_starts_with: &RelationTypeId) -> bool;
-
-    /// Returns true, if a relation type exists whose name starts with the given fully qualified name.
-    fn has_by_type_starts_with(&self, namespace: &str, type_name_starts_with: &str) -> bool;
-
     /// Returns the relation type with the given name.
     fn get(&self, ty: &RelationTypeId) -> Option<RelationType>;
 
     /// Returns the relation type with the given fully qualified name.
     fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
-
-    /// Returns the relation type whose name starts with the given name.
-    fn get_starts_with(&self, ty_starts_with: &RelationTypeId) -> Option<RelationType>;
-
-    /// Returns the relation type whose name starts with the given fully qualified name.
-    fn get_by_type_starts_with(&self, namespace: &str, type_name_starts_with: &str) -> Option<RelationType>;
 
     /// Returns all relation types whose names matches the given search string.
     fn find(&self, search: &str) -> Vec<RelationType>;
