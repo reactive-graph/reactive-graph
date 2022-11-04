@@ -16,7 +16,11 @@ use crate::TYPE_ID_TYPE_SEPARATOR;
 /// Type identifier of a relation instance.
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RelationInstanceTypeId {
+    /// The type definition of the relation type.
+    #[serde(flatten)]
     ty: RelationTypeId,
+
+    /// The instance id.
     instance_id: String,
 }
 

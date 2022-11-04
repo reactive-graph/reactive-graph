@@ -17,7 +17,9 @@ use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::RelationInstance;
 use crate::RelationInstanceTypeId;
+use crate::RelationTypeId;
 use crate::TypeDefinitionGetter;
+use crate::TypeIdType;
 
 #[test]
 fn relation_instance_test() {
@@ -326,4 +328,55 @@ fn relation_instance_get_key_test() {
         extensions: Vec::new(),
     };
     assert_eq!(EdgeKey::new(outbound_id, ty.type_id(), inbound_id), relation_instance.get_key());
+}
+
+#[test]
+fn relation_instance_ser_test() {
+    let rty = RelationTypeId::new_from_type("rnr", "rtr");
+    let ty = RelationInstanceTypeId::new_unique_for_instance_id(rty.clone(), "result__lhs");
+    let outbound_id = Uuid::new_v4();
+    let inbound_id = Uuid::new_v4();
+    let relation_instance = RelationInstance::new(outbound_id, ty, inbound_id, HashMap::new());
+    println!("{}", serde_json::to_string_pretty(&relation_instance).expect("Failed to serialize relation instance"));
+}
+#[test]
+fn relation_instance_de_test() {
+    let s = r#"{
+  "outbound_id": "d82cc81a-e0e5-4de8-8b87-9b5bed0de795",
+  "namespace": "rnr",
+  "type_name": "rtr",
+  "instance_id": "result__lhs",
+  "inbound_id": "3f13400e-9286-441d-b85f-ef5df2177e7c",
+  "description": "d",
+  "components": [
+    {
+      "namespace": "mno",
+      "type_name": "pqr"
+    }
+  ],
+  "properties": {
+      "property_name": "property_value"
+  },
+  "extensions": [
+    {
+      "name": "ext_name",
+      "extension": "ext_value"
+    }
+  ]
+}"#;
+    let relation_instance: RelationInstance = serde_json::from_str(s).unwrap();
+    assert_eq!("d82cc81a-e0e5-4de8-8b87-9b5bed0de795", relation_instance.outbound_id.to_string());
+    assert_eq!("3f13400e-9286-441d-b85f-ef5df2177e7c", relation_instance.inbound_id.to_string());
+    assert_eq!("rnr", relation_instance.namespace());
+    assert_eq!("rtr__result__lhs", relation_instance.type_name());
+    assert_eq!("rtr", relation_instance.relation_type_id().type_name());
+    assert_eq!("result__lhs", relation_instance.instance_id());
+    assert_eq!("r__rnr__rtr__result__lhs", relation_instance.ty.to_string());
+    assert_eq!(TypeIdType::RelationType, relation_instance.type_definition().type_id_type);
+    assert_eq!("d", relation_instance.description);
+    assert_eq!("property_value", relation_instance.properties.get("property_name").unwrap().as_str().unwrap());
+    assert_eq!(1, relation_instance.extensions.len());
+    let extension = relation_instance.extensions.first().unwrap();
+    assert_eq!("ext_name", extension.name);
+    assert_eq!(json!("ext_value"), extension.extension);
 }

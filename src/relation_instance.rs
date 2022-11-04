@@ -33,7 +33,7 @@ pub struct RelationInstance {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
 
-    /// The type definition of the relation type.
+    /// The type definition of the relation instance type.
     #[serde(flatten)]
     pub ty: RelationInstanceTypeId,
 
