@@ -107,6 +107,12 @@ impl TypeDefinitionGetter for RelationInstanceTypeId {
     }
 }
 
+impl From<&RelationInstanceTypeId> for RelationInstanceTypeId {
+    fn from(ty: &RelationInstanceTypeId) -> Self {
+        ty.clone()
+    }
+}
+
 impl From<&RelationInstanceTypeId> for TypeDefinition {
     fn from(ty: &RelationInstanceTypeId) -> Self {
         TypeDefinition::new(TypeIdType::RelationType, ty.into())
