@@ -1,9 +1,14 @@
-use crate::tests::utils::r_string;
-use indradb::{Identifier, NamedProperty, Vertex, VertexProperties};
-use inexor_rgf_core_model::ReactiveEntityInstance;
-use serde_json::json;
 use std::str::FromStr;
+
+use indradb::Identifier;
+use indradb::NamedProperty;
+use indradb::Vertex;
+use indradb::VertexProperties;
+use serde_json::json;
 use uuid::Uuid;
+
+use crate::model::ReactiveEntityInstance;
+use crate::tests::utils::r_string;
 
 pub fn create_random_entity_instance(property_name: String) -> ReactiveEntityInstance {
     let uuid = Uuid::new_v4();
