@@ -18,6 +18,7 @@ mod reactive_relation_instance_test;
 
 mod reactive_flow_instance_test;
 
+mod behaviour_type_id_test;
 mod component_type_id_test;
 mod entity_type_id_test;
 mod flow_type_id_test;
