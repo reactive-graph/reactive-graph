@@ -41,6 +41,12 @@ impl TypeDefinitionGetter for EntityTypeId {
     }
 }
 
+impl From<&EntityTypeId> for EntityTypeId {
+    fn from(ty: &EntityTypeId) -> Self {
+        ty.clone()
+    }
+}
+
 impl From<&EntityTypeId> for TypeDefinition {
     fn from(ty: &EntityTypeId) -> Self {
         TypeDefinition::new(TypeIdType::EntityType, ty.0.clone())

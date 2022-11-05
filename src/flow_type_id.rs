@@ -41,6 +41,12 @@ impl TypeDefinitionGetter for FlowTypeId {
     }
 }
 
+impl From<&FlowTypeId> for FlowTypeId {
+    fn from(ty: &FlowTypeId) -> Self {
+        ty.clone()
+    }
+}
+
 impl From<&FlowTypeId> for TypeDefinition {
     fn from(ty: &FlowTypeId) -> Self {
         TypeDefinition::new(TypeIdType::FlowType, ty.0.clone())

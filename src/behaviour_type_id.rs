@@ -41,6 +41,12 @@ impl TypeDefinitionGetter for BehaviourTypeId {
     }
 }
 
+impl From<&BehaviourTypeId> for BehaviourTypeId {
+    fn from(ty: &BehaviourTypeId) -> Self {
+        ty.clone()
+    }
+}
+
 impl From<&BehaviourTypeId> for TypeDefinition {
     fn from(ty: &BehaviourTypeId) -> Self {
         TypeDefinition::new(TypeIdType::Behaviour, ty.0.clone())

@@ -41,6 +41,12 @@ impl TypeDefinitionGetter for ComponentTypeId {
     }
 }
 
+impl From<&ComponentTypeId> for ComponentTypeId {
+    fn from(ty: &ComponentTypeId) -> Self {
+        ty.clone()
+    }
+}
+
 impl From<&ComponentTypeId> for TypeDefinition {
     fn from(ty: &ComponentTypeId) -> Self {
         TypeDefinition::new(TypeIdType::Component, ty.0.clone())
