@@ -1,15 +1,9 @@
 use serde_json::Value;
 
-pub trait Disconnectable {
-    fn disconnect(&self);
-}
+use crate::Behaviour;
 
-pub trait Operation: Disconnectable {
+pub trait Operation: Behaviour {
     fn lhs(&self, value: Value);
 
     fn result(&self) -> Value;
-}
-
-pub trait BehaviourType {
-    fn type_name(&self) -> String;
 }

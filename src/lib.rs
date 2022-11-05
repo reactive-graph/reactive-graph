@@ -1,17 +1,17 @@
 #![feature(register_tool)]
 #![register_tool(tarpaulin)]
 
-pub mod entity;
+pub use behaviour::*;
 pub use entity::*;
-
-pub mod relation;
+pub use property::*;
 pub use relation::*;
 
-pub mod property;
-pub use property::*;
+use inexor_rgf_core_model as model;
 
-#[derive(Debug)]
-pub struct BehaviourCreationError;
+pub mod behaviour;
+pub mod entity;
+pub mod property;
+pub mod relation;
 
 #[cfg(test)]
 #[tarpaulin::ignore]
