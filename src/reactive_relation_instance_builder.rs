@@ -1,4 +1,3 @@
-use inexor_rgf_core_model::RelationInstanceTypeId;
 use std::sync::Arc;
 
 use serde_json::Value;
@@ -7,6 +6,7 @@ use crate::model::ComponentContainer;
 use crate::model::ComponentTypeId;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
+use crate::model::RelationInstanceTypeId;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::RelationInstanceBuilder;
@@ -22,36 +22,45 @@ pub struct ReactiveRelationInstanceBuilder {
 
 #[allow(dead_code)]
 impl ReactiveRelationInstanceBuilder {
-    pub fn new(outbound: Arc<ReactiveEntityInstance>, ty: RelationInstanceTypeId, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
-        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
-        ReactiveRelationInstanceBuilder {
-            outbound,
-            ty,
-            inbound,
-            components: Vec::new(),
-            builder,
-        }
-    }
-
-    pub fn new_unique_id(outbound: Arc<ReactiveEntityInstance>, ty: &RelationTypeId, inbound: Arc<ReactiveEntityInstance>) -> ReactiveRelationInstanceBuilder {
-        let ty = RelationInstanceTypeId::new_unique_id(ty.clone());
-        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
-        ReactiveRelationInstanceBuilder {
-            outbound,
-            ty,
-            inbound,
-            components: Vec::new(),
-            builder,
-        }
-    }
-
-    pub fn new_unique_for_instance_id<S: Into<String>>(
+    pub fn new<RIT: Into<RelationInstanceTypeId>>(
         outbound: Arc<ReactiveEntityInstance>,
-        ty: &RelationTypeId,
+        ty: RIT,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        let ty = ty.into();
+        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
+        ReactiveRelationInstanceBuilder {
+            outbound,
+            ty,
+            inbound,
+            components: Vec::new(),
+            builder,
+        }
+    }
+
+    pub fn new_unique_id<RT: Into<RelationTypeId>>(
+        outbound: Arc<ReactiveEntityInstance>,
+        ty: RT,
+        inbound: Arc<ReactiveEntityInstance>,
+    ) -> ReactiveRelationInstanceBuilder {
+        let ty = RelationInstanceTypeId::new_unique_id(ty.into());
+        let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
+        ReactiveRelationInstanceBuilder {
+            outbound,
+            ty,
+            inbound,
+            components: Vec::new(),
+            builder,
+        }
+    }
+
+    pub fn new_unique_for_instance_id<RT: Into<RelationTypeId>, S: Into<String>>(
+        outbound: Arc<ReactiveEntityInstance>,
+        ty: RT,
         instance_id: S,
         inbound: Arc<ReactiveEntityInstance>,
     ) -> ReactiveRelationInstanceBuilder {
-        let ty = RelationInstanceTypeId::new_unique_for_instance_id(ty.clone(), instance_id);
+        let ty = RelationInstanceTypeId::new_unique_for_instance_id(ty.into(), instance_id);
         let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
         ReactiveRelationInstanceBuilder {
             outbound,
@@ -62,12 +71,12 @@ impl ReactiveRelationInstanceBuilder {
         }
     }
 
-    pub fn new_with_random_instance_id(
+    pub fn new_with_random_instance_id<RT: Into<RelationTypeId>>(
         outbound: Arc<ReactiveEntityInstance>,
-        ty: &RelationTypeId,
+        ty: RT,
         inbound: Arc<ReactiveEntityInstance>,
     ) -> ReactiveRelationInstanceBuilder {
-        let ty = RelationInstanceTypeId::new_with_random_instance_id(ty.clone());
+        let ty = RelationInstanceTypeId::new_with_random_instance_id(ty.into());
         let builder = RelationInstanceBuilder::new(outbound.id, ty.clone(), inbound.id);
         ReactiveRelationInstanceBuilder {
             outbound,

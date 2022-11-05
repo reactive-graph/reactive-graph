@@ -19,7 +19,8 @@ pub struct ReactiveEntityInstanceBuilder {
 
 #[allow(dead_code)]
 impl ReactiveEntityInstanceBuilder {
-    pub fn new(ty: EntityTypeId) -> ReactiveEntityInstanceBuilder {
+    pub fn new<ET: Into<EntityTypeId>>(ty: ET) -> ReactiveEntityInstanceBuilder {
+        let ty = ty.into();
         ReactiveEntityInstanceBuilder {
             ty: ty.clone(),
             components: Vec::new(),

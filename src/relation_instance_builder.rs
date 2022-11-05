@@ -18,37 +18,42 @@ pub struct RelationInstanceBuilder {
 
 #[allow(dead_code)]
 impl RelationInstanceBuilder {
-    pub fn new(outbound_id: Uuid, ty: RelationInstanceTypeId, inbound_id: Uuid) -> RelationInstanceBuilder {
+    pub fn new<RIT: Into<RelationInstanceTypeId>>(outbound_id: Uuid, ty: RIT, inbound_id: Uuid) -> RelationInstanceBuilder {
         RelationInstanceBuilder {
             outbound_id,
-            ty,
+            ty: ty.into(),
             inbound_id,
             properties: HashMap::new(),
         }
     }
 
-    pub fn new_unique_id(outbound_id: Uuid, ty: &RelationTypeId, inbound_id: Uuid) -> RelationInstanceBuilder {
+    pub fn new_unique_id<RT: Into<RelationTypeId>>(outbound_id: Uuid, ty: RT, inbound_id: Uuid) -> RelationInstanceBuilder {
         RelationInstanceBuilder {
             outbound_id,
-            ty: RelationInstanceTypeId::new_unique_id(ty.clone()),
+            ty: RelationInstanceTypeId::new_unique_id(ty.into()),
             inbound_id,
             properties: HashMap::new(),
         }
     }
 
-    pub fn new_unique_for_instance_id<S: Into<String>>(outbound_id: Uuid, ty: &RelationTypeId, instance_id: S, inbound_id: Uuid) -> RelationInstanceBuilder {
+    pub fn new_unique_for_instance_id<RT: Into<RelationTypeId>, S: Into<String>>(
+        outbound_id: Uuid,
+        ty: RT,
+        instance_id: S,
+        inbound_id: Uuid,
+    ) -> RelationInstanceBuilder {
         RelationInstanceBuilder {
             outbound_id,
-            ty: RelationInstanceTypeId::new_unique_for_instance_id(ty.clone(), instance_id),
+            ty: RelationInstanceTypeId::new_unique_for_instance_id(ty.into(), instance_id),
             inbound_id,
             properties: HashMap::new(),
         }
     }
 
-    pub fn new_with_random_instance_id(outbound_id: Uuid, ty: &RelationTypeId, inbound_id: Uuid) -> RelationInstanceBuilder {
+    pub fn new_with_random_instance_id<RT: Into<RelationTypeId>>(outbound_id: Uuid, ty: RT, inbound_id: Uuid) -> RelationInstanceBuilder {
         RelationInstanceBuilder {
             outbound_id,
-            ty: RelationInstanceTypeId::new_with_random_instance_id(ty.clone()),
+            ty: RelationInstanceTypeId::new_with_random_instance_id(ty.into()),
             inbound_id,
             properties: HashMap::new(),
         }

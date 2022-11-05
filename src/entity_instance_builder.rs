@@ -16,9 +16,9 @@ pub struct EntityInstanceBuilder {
 
 #[allow(dead_code)]
 impl EntityInstanceBuilder {
-    pub fn new(ty: EntityTypeId) -> EntityInstanceBuilder {
+    pub fn new<ET: Into<EntityTypeId>>(ty: ET) -> EntityInstanceBuilder {
         EntityInstanceBuilder {
-            ty,
+            ty: ty.into(),
             id: None,
             properties: HashMap::new(),
         }
