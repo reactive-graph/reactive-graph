@@ -1,6 +1,8 @@
 use async_graphql::*;
 
-use crate::graphql::mutation::{MutationComponents, MutationEntityTypes, MutationRelationTypes};
+use crate::graphql::mutation::MutationComponents;
+use crate::graphql::mutation::MutationEntityTypes;
+use crate::graphql::mutation::MutationRelationTypes;
 
 #[derive(Default)]
 pub struct MutationTypes;
