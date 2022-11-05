@@ -57,8 +57,8 @@ impl RelationTypeBuilder {
         self
     }
 
-    pub fn component(&mut self, ty: ComponentTypeId) -> &mut RelationTypeBuilder {
-        self.components.push(ty);
+    pub fn component<C: Into<ComponentTypeId>>(&mut self, ty: C) -> &mut RelationTypeBuilder {
+        self.components.push(ty.into());
         self
     }
 

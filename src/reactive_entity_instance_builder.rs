@@ -42,8 +42,8 @@ impl ReactiveEntityInstanceBuilder {
         self
     }
 
-    pub fn component(&mut self, component: ComponentTypeId) -> &mut ReactiveEntityInstanceBuilder {
-        self.components.push(component);
+    pub fn component<C: Into<ComponentTypeId>>(&mut self, ty: C) -> &mut ReactiveEntityInstanceBuilder {
+        self.components.push(ty.into());
         self
     }
 

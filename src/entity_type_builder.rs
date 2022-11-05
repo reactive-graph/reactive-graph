@@ -37,8 +37,8 @@ impl EntityTypeBuilder {
         self
     }
 
-    pub fn component(&mut self, ty: ComponentTypeId) -> &mut EntityTypeBuilder {
-        self.components.push(ty);
+    pub fn component<C: Into<ComponentTypeId>>(&mut self, ty: C) -> &mut EntityTypeBuilder {
+        self.components.push(ty.into());
         self
     }
 

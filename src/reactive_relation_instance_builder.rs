@@ -131,8 +131,8 @@ impl ReactiveRelationInstanceBuilder {
         self
     }
 
-    pub fn component(&mut self, component: ComponentTypeId) -> &mut ReactiveRelationInstanceBuilder {
-        self.components.push(component);
+    pub fn component<C: Into<ComponentTypeId>>(&mut self, ty: C) -> &mut ReactiveRelationInstanceBuilder {
+        self.components.push(ty.into());
         self
     }
 
