@@ -3,6 +3,7 @@ use std::sync::Arc;
 use indradb::EdgeKey;
 use uuid::Uuid;
 
+use crate::model::BehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
@@ -60,7 +61,7 @@ pub trait RelationInstanceManager: Send + Sync {
     fn count_by_component(&self, component: &ComponentTypeId) -> usize;
 
     /// Returns the count of registered reactive relation instances which behaves as the given behaviour.
-    fn count_by_behaviour(&self, behaviour: &str) -> usize;
+    fn count_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> usize;
 
     /// Creates a new reactive relation instance.
     fn create(&self, relation_instance: RelationInstance) -> Result<Arc<ReactiveRelationInstance>, RelationInstanceCreationError>;

@@ -3,6 +3,7 @@ use std::sync::Arc;
 
 use uuid::Uuid;
 
+use crate::model::BehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
@@ -58,7 +59,7 @@ pub trait EntityInstanceManager: Send + Sync {
     fn count_by_component(&self, component: &ComponentTypeId) -> usize;
 
     /// Returns the count of registered reactive entity instances which behaves as the given behaviour.
-    fn count_by_behaviour(&self, behaviour: &str) -> usize;
+    fn count_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> usize;
 
     /// Creates a new reactive entity instance.
     fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
