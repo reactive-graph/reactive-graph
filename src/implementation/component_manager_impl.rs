@@ -6,6 +6,7 @@ use std::sync::RwLock;
 use async_trait::async_trait;
 use log::debug;
 use log::error;
+use log::trace;
 use wildmatch::WildMatch;
 
 use crate::api::ComponentCreationError;
@@ -17,10 +18,22 @@ use crate::api::ComponentRegistrationError;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::builder::ComponentBuilder;
-use crate::di::{component, provides, wrapper, Component, Wrc};
+use crate::di::component;
+use crate::di::provides;
+use crate::di::wrapper;
+use crate::di::Component;
+use crate::di::Wrc;
+use crate::implementation::COMPONENT_EVENT;
+use crate::implementation::COMPONENT_LABELED;
+use crate::implementation::NAMESPACE_CORE;
+use crate::implementation::PROPERTY_EVENT;
+use crate::implementation::PROPERTY_LABEL;
+use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::Extension;
+use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::TypeDefinitionGetter;
 use crate::plugins::ComponentProvider;
 use crate::plugins::SystemEvent;
 
@@ -41,16 +54,18 @@ pub struct ComponentManagerImpl {
 
 impl ComponentManagerImpl {
     pub(crate) fn create_base_components(&self) {
+        let labeled_ty = ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_LABELED);
         let _ = self.register(
-            ComponentBuilder::new("core", "labeled")
+            ComponentBuilder::new(labeled_ty)
                 .description("The label is an hierarchical path with static segments, named parameters and catch-all parameters.")
-                .property("label", DataType::String)
+                .property(PROPERTY_LABEL, DataType::String)
                 .build(),
         );
+        let event_ty = ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_EVENT);
         let _ = self.register(
-            ComponentBuilder::new("core", "event")
+            ComponentBuilder::new(event_ty)
                 .description("This components spawns events.")
-                .output_property("event", DataType::Any)
+                .output_property(PROPERTY_EVENT, DataType::Any)
                 .build(),
         );
     }
@@ -60,56 +75,45 @@ impl ComponentManagerImpl {
 #[provides]
 impl ComponentManager for ComponentManagerImpl {
     fn register(&self, component: crate::model::Component) -> Result<crate::model::Component, ComponentRegistrationError> {
-        if self.has_fully_qualified(&component.namespace, &component.name) {
-            return Err(ComponentRegistrationError::ComponentAlreadyExists(component.namespace, component.name));
+        if self.has(&component.ty) {
+            return Err(ComponentRegistrationError::ComponentAlreadyExists(component.ty.clone()));
         }
         self.components.0.write().unwrap().push(component.clone());
-        debug!("Registered component {}", component.fully_qualified_name());
-        self.event_manager.emit_event(SystemEvent::ComponentCreated(component.name.clone()));
+        debug!("Registered component {}", component.type_definition().to_string());
+        self.event_manager.emit_event(SystemEvent::ComponentCreated(component.ty.clone()));
         Ok(component)
     }
 
     // Returns a copy
-    fn get_components(&self) -> Vec<crate::model::Component> {
+    fn get_all(&self) -> Vec<crate::model::Component> {
         self.components.0.read().unwrap().to_vec()
     }
 
-    fn get_components_by_namespace(&self, namespace: &str) -> Vec<crate::model::Component> {
+    fn get_by_namespace(&self, namespace: &str) -> Vec<crate::model::Component> {
         self.components
             .0
             .read()
             .unwrap()
             .iter()
-            .filter(|component| component.namespace == namespace)
+            .filter(|component| component.namespace() == namespace)
             .cloned()
             .collect()
     }
 
-    fn has(&self, name: &str) -> bool {
-        self.components.0.read().unwrap().iter().any(|component| component.name == name)
+    fn has(&self, ty: &ComponentTypeId) -> bool {
+        self.components.0.read().unwrap().iter().any(|component| &component.ty == ty)
     }
 
-    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool {
-        self.components
-            .0
-            .read()
-            .unwrap()
-            .iter()
-            .any(|component| component.namespace == namespace && component.name == name)
+    fn has_by_type(&self, namespace: &str, name: &str) -> bool {
+        self.has(&ComponentTypeId::new_from_type(namespace, name))
     }
 
-    fn get(&self, name: &str) -> Option<crate::model::Component> {
-        self.components.0.read().unwrap().iter().find(|component| component.name == name).cloned()
+    fn get(&self, ty: &ComponentTypeId) -> Option<crate::model::Component> {
+        self.components.0.read().unwrap().iter().find(|component| &component.ty == ty).cloned()
     }
 
-    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<crate::model::Component> {
-        self.components
-            .0
-            .read()
-            .unwrap()
-            .iter()
-            .find(|component| component.namespace == namespace && component.name == name)
-            .cloned()
+    fn get_by_type(&self, namespace: &str, name: &str) -> Option<crate::model::Component> {
+        self.get(&ComponentTypeId::new_from_type(namespace, name))
     }
 
     fn find(&self, search: &str) -> Vec<crate::model::Component> {
@@ -119,7 +123,7 @@ impl ComponentManager for ComponentManagerImpl {
             .read()
             .unwrap()
             .iter()
-            .filter(|component| matcher.matches(component.name.as_str()))
+            .filter(|component| matcher.matches(component.type_name().as_str()))
             .cloned()
             .collect()
     }
@@ -128,22 +132,31 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.0.read().unwrap().len()
     }
 
+    fn count_by_namespace(&self, namespace: &str) -> usize {
+        self.components
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .filter(|component| component.ty.namespace() == namespace)
+            .count()
+    }
+
     fn create(
         &self,
-        namespace: &str,
-        name: &str,
+        ty: &ComponentTypeId,
         description: &str,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<crate::model::Component, ComponentCreationError> {
-        self.register(crate::model::Component::new(namespace, name, description, properties.to_vec(), extensions.to_vec()))
-            .map_err(ComponentCreationError::RegistrationError)
+        let component = crate::model::Component::new(ty.clone(), description, properties.to_vec(), extensions.to_vec());
+        self.register(component).map_err(ComponentCreationError::RegistrationError)
     }
 
-    fn replace(&self, name: &str, r_component: crate::model::Component) {
+    fn replace(&self, ty: &ComponentTypeId, r_component: crate::model::Component) {
         let mut guard = self.components.0.write().unwrap();
         for mut component in guard.iter_mut() {
-            if component.name == name {
+            if &component.ty == ty {
                 component.description = r_component.description.clone();
                 component.properties = r_component.properties.clone();
                 component.extensions = r_component.extensions.clone();
@@ -152,58 +165,61 @@ impl ComponentManager for ComponentManagerImpl {
         }
     }
 
-    fn add_property(&self, name: &str, property: PropertyType) -> Result<(), ComponentPropertyError> {
+    fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<(), ComponentPropertyError> {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
-            if component.name == name {
+            if &component.ty == ty {
                 if component.has_property(property.name.clone()) {
                     return Err(ComponentPropertyError::PropertyAlreadyExists);
                 }
                 component.properties.push(property.clone());
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(name.to_string()));
+                // TODO: more specific system event
+                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_property(&self, name: &str, property_name: &str) {
+    fn remove_property(&self, ty: &ComponentTypeId, property_name: &str) {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
-            if component.name == name {
+            if &component.ty == ty {
                 component.properties.retain(|property| property.name != property_name);
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(name.to_string()));
+                // TODO: more specific system event
+                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
             }
         }
     }
 
-    fn add_extension(&self, name: &str, extension: Extension) -> Result<(), ComponentExtensionError> {
+    fn add_extension(&self, ty: &ComponentTypeId, extension: Extension) -> Result<(), ComponentExtensionError> {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
-            if component.name == name {
+            if &component.ty == ty {
                 if component.has_extension(extension.name.clone()) {
                     return Err(ComponentExtensionError::ExtensionAlreadyExists);
                 }
                 component.extensions.push(extension.clone());
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(name.to_string()));
+                // TODO: more specific system event
+                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_extension(&self, name: &str, extension_name: &str) {
+    fn remove_extension(&self, ty: &ComponentTypeId, extension_name: &str) {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
-            if component.name == name {
+            if &component.ty == ty {
                 component.extensions.retain(|extension| extension.name != extension_name);
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(name.to_string()));
+                // TODO: more specific system event
+                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
             }
         }
     }
 
-    fn delete(&self, name: &str) {
-        let event = SystemEvent::ComponentDeleted(name.to_string());
-        self.components.0.write().unwrap().retain(|component| component.name != name);
-        self.event_manager.emit_event(event);
+    fn delete(&self, ty: &ComponentTypeId) {
+        self.components.0.write().unwrap().retain(|component| &component.ty != ty);
+        self.event_manager.emit_event(SystemEvent::ComponentDeleted(ty.clone()));
     }
 
     fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {
@@ -213,28 +229,28 @@ impl ComponentManager for ComponentManagerImpl {
         self.register(component).map_err(ComponentImportError::RegistrationError)
     }
 
-    fn export(&self, name: &str, path: &str) {
-        if let Some(component) = self.get(name) {
+    fn export(&self, ty: &ComponentTypeId, path: &str) {
+        if let Some(component) = self.get(ty) {
             match File::create(path) {
                 Ok(file) => {
                     if let Err(error) = serde_json::to_writer_pretty(&file, &component) {
-                        error!("Failed to export component {} to {}: {}", name, path, error);
+                        error!("Failed to export component {} to {}: {}", component.type_definition().to_string(), path, error);
                     }
                 }
-                Err(error) => error!("Failed to export component {} to {}: {}", name, path, error.to_string()),
+                Err(error) => error!("Failed to export component {} to {}: {}", component.type_definition().to_string(), path, error.to_string()),
             }
         }
     }
 
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>) {
         for component in component_provider.get_components() {
-            debug!("Registering component: {}", component.name);
+            trace!("Registering component: {}", component.type_definition().to_string());
             let _ = self.register(component);
         }
     }
 
     fn get_component_categories(&self) -> Vec<String> {
-        self.get_components()
+        self.get_all()
             .iter()
             .filter_map(|component| {
                 component

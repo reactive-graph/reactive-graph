@@ -4,13 +4,14 @@ use async_trait::async_trait;
 
 use crate::api::Lifecycle;
 use crate::model::Component;
+use crate::model::ComponentTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
 
 #[derive(Debug)]
 pub enum ComponentRegistrationError {
-    ComponentAlreadyExists(String, String),
+    ComponentAlreadyExists(ComponentTypeId),
 }
 
 #[derive(Debug)]
@@ -53,62 +54,64 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
     fn register(&self, component: Component) -> Result<Component, ComponentRegistrationError>;
 
     /// Returns all components
-    fn get_components(&self) -> Vec<Component>;
+    fn get_all(&self) -> Vec<Component>;
 
     /// Returns all components of the given namespace
-    fn get_components_by_namespace(&self, namespace: &str) -> Vec<Component>;
+    fn get_by_namespace(&self, namespace: &str) -> Vec<Component>;
 
-    /// Returns true, if a component with the given name exists.
-    fn has(&self, name: &str) -> bool;
+    /// Returns true, if a component with the given type exists.
+    fn has(&self, ty: &ComponentTypeId) -> bool;
 
     /// Returns true, if a component with the given fully qualified name exists.
-    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool;
+    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
 
     /// Returns the component with the given name or empty.
-    fn get(&self, name: &str) -> Option<Component>;
+    fn get(&self, ty: &ComponentTypeId) -> Option<Component>;
 
     /// Returns the component with the given fully qualified name or empty.
-    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<Component>;
+    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<Component>;
 
-    /// Returns all components whose names matches the given search string.
+    /// Returns all components whose type names matches the given search string.
     fn find(&self, search: &str) -> Vec<Component>;
 
     /// Returns the count of components.
     fn count(&self) -> usize;
 
-    /// Creates a new component with the given namespace, name, description, properties and extensions.
+    /// Returns the count of components of the given namespace.
+    fn count_by_namespace(&self, namespace: &str) -> usize;
+
+    /// Creates a new component of the given type with the description, properties and extensions.
     fn create(
         &self,
-        namespace: &str,
-        name: &str,
+        ty: &ComponentTypeId,
         description: &str,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<Component, ComponentCreationError>;
 
     /// Replaces the component with the given name with the given component.
-    fn replace(&self, name: &str, component: Component);
+    fn replace(&self, ty: &ComponentTypeId, component: Component);
 
     /// Adds a property to the component with the given name.
-    fn add_property(&self, name: &str, property: PropertyType) -> Result<(), ComponentPropertyError>;
+    fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<(), ComponentPropertyError>;
 
     /// Removes the property with the given property_name from the component with the given name.
-    fn remove_property(&self, name: &str, property_name: &str);
+    fn remove_property(&self, ty: &ComponentTypeId, property_name: &str);
 
     /// Adds an extension to the component with the given name.
-    fn add_extension(&self, name: &str, extension: Extension) -> Result<(), ComponentExtensionError>;
+    fn add_extension(&self, ty: &ComponentTypeId, extension: Extension) -> Result<(), ComponentExtensionError>;
 
     /// Removes the extension with the given extension_name from the component with the given name.
-    fn remove_extension(&self, name: &str, extension_name: &str);
+    fn remove_extension(&self, ty: &ComponentTypeId, extension_name: &str);
 
     /// Deletes the component with the given name.
-    fn delete(&self, name: &str);
+    fn delete(&self, ty: &ComponentTypeId);
 
     /// Imports a component from a JSON file located at the given path.
     fn import(&self, path: &str) -> Result<Component, ComponentImportError>;
 
     /// Exports the component with the given name to a JSON file located at the given path.
-    fn export(&self, name: &str, path: &str);
+    fn export(&self, ty: &ComponentTypeId, path: &str);
 
     /// Registers a component provider.
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>);
