@@ -34,6 +34,12 @@ impl ComponentOrEntityTypeId {
     }
 }
 
+impl From<&ComponentOrEntityTypeId> for ComponentOrEntityTypeId {
+    fn from(ty: &ComponentOrEntityTypeId) -> Self {
+        ty.clone()
+    }
+}
+
 impl From<ComponentTypeId> for ComponentOrEntityTypeId {
     fn from(ty: ComponentTypeId) -> Self {
         ComponentOrEntityTypeId::Component(ty)
