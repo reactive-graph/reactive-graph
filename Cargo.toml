@@ -1,7 +1,7 @@
 [package]
 name = "inexor-rgf-core-reactive"
 description = "Inexor - Reactive Graph Flow - Core - Reactive"
-version = "0.7.0"
+version = "0.8.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
 edition = "2021"
 license = "MIT"
