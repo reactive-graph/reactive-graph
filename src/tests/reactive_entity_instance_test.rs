@@ -17,6 +17,7 @@ use crate::property_identifier;
 use crate::tests::utils::create_random_entity_instance;
 use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
+use crate::BehaviourTypeId;
 use crate::Component;
 use crate::ComponentContainer;
 use crate::ComponentTypeId;
@@ -58,8 +59,10 @@ fn reactive_entity_instance_test() {
 
     let behaviour_name = r_string();
     let behaviour_name_2 = r_string();
+    let behaviour_ty = BehaviourTypeId::new_from_type(&namespace, &behaviour_name);
+    let behaviour_ty_2 = BehaviourTypeId::new_from_type(&namespace, &behaviour_name_2);
     let behaviours = DashSet::new();
-    behaviours.insert(behaviour_name.clone());
+    behaviours.insert(behaviour_ty.clone());
 
     let ty = EntityTypeId::new_from_type(&namespace, &type_name);
     let reactive_entity_instance = Arc::new(ReactiveEntityInstance {
@@ -94,13 +97,13 @@ fn reactive_entity_instance_test() {
     assert_eq!(2, reactive_entity_instance.get_components().len());
     assert!(reactive_entity_instance.has_property(&component_2_property_name));
 
-    assert!(reactive_entity_instance.behaves_as(behaviour_name.clone()));
-    assert!(!reactive_entity_instance.behaves_as(behaviour_name_2.clone()));
-    assert!(!reactive_entity_instance.behaves_as(r_string()));
-    reactive_entity_instance.add_behaviour(behaviour_name_2.clone());
-    assert!(reactive_entity_instance.behaves_as(behaviour_name_2.clone()));
-    reactive_entity_instance.remove_behaviour(behaviour_name.clone());
-    assert!(!reactive_entity_instance.behaves_as(behaviour_name.clone()));
+    assert!(reactive_entity_instance.behaves_as(&behaviour_ty));
+    assert!(!reactive_entity_instance.behaves_as(&behaviour_ty_2));
+    assert!(!reactive_entity_instance.behaves_as(&BehaviourTypeId::new_from_type(r_string(), r_string())));
+    reactive_entity_instance.add_behaviour(behaviour_ty_2.clone());
+    assert!(reactive_entity_instance.behaves_as(&behaviour_ty_2));
+    reactive_entity_instance.remove_behaviour(&behaviour_ty);
+    assert!(!reactive_entity_instance.behaves_as(&behaviour_ty));
 
     assert!(reactive_entity_instance.has_property(&property_name));
     let new_property_name = r_string();
@@ -323,8 +326,9 @@ fn create_reactive_entity_instance_benchmark(bencher: &mut Bencher) -> impl Term
         components.insert(component_ty);
 
         let behaviour_name = r_string();
+        let behaviour_ty = BehaviourTypeId::new_from_type(&namespace, &behaviour_name);
         let behaviours = DashSet::new();
-        behaviours.insert(behaviour_name.clone());
+        behaviours.insert(behaviour_ty);
 
         let _reactive_entity_instance = Arc::new(ReactiveEntityInstance {
             ty: ty.clone(),

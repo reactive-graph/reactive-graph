@@ -9,6 +9,7 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::BehaviourTypeId;
 use crate::Component;
 use crate::ComponentContainer;
 use crate::ComponentTypeId;
@@ -68,7 +69,7 @@ pub struct ReactiveRelationInstance {
     pub components: DashSet<ComponentTypeId>,
 
     /// The names of the behaviours which are applied on this relation instance.
-    pub behaviours: DashSet<String>,
+    pub behaviours: DashSet<BehaviourTypeId>,
 }
 
 #[allow(clippy::result_unit_err)]
@@ -245,16 +246,20 @@ impl ComponentContainer for ReactiveRelationInstance {
 }
 
 impl ReactiveBehaviourContainer for ReactiveRelationInstance {
-    fn add_behaviour<S: Into<String>>(&self, behaviour: S) {
-        self.behaviours.insert(behaviour.into());
+    fn get_behaviours(&self) -> Vec<BehaviourTypeId> {
+        self.behaviours.iter().map(|b| b.key().clone()).collect()
     }
 
-    fn remove_behaviour<S: Into<String>>(&self, behaviour: S) {
-        self.behaviours.remove(behaviour.into().as_str());
+    fn add_behaviour(&self, ty: BehaviourTypeId) {
+        self.behaviours.insert(ty);
     }
 
-    fn behaves_as<S: Into<String>>(&self, behaviour: S) -> bool {
-        self.behaviours.contains(behaviour.into().as_str())
+    fn remove_behaviour(&self, ty: &BehaviourTypeId) {
+        self.behaviours.remove(ty);
+    }
+
+    fn behaves_as(&self, ty: &BehaviourTypeId) -> bool {
+        self.behaviours.contains(ty)
     }
 }
 

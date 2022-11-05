@@ -2,6 +2,7 @@
 #![feature(test)]
 #![register_tool(tarpaulin)]
 
+pub use behaviour_type_id::*;
 pub use component::*;
 pub use component_container::*;
 pub use component_or_entity_type_id::*;
@@ -37,6 +38,7 @@ pub use type_definition_property::*;
 pub use type_id_type::*;
 pub use type_namespaced_type::*;
 
+pub mod behaviour_type_id;
 pub mod component;
 pub mod component_container;
 pub mod component_or_entity_type_id;
