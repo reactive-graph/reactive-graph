@@ -13,10 +13,10 @@ serde_json = "1.0"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 uuid = { version = "1.2", features = ["serde", "v4"] }
+inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
 
 [dev-dependencies]
 random-string = "1.0"
-inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
 
 [lib]
 crate-type = ["lib"]
