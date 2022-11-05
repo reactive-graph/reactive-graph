@@ -36,7 +36,7 @@ fn flow_type_builder_test() {
     let variable_2_name = r_string();
     let extension_1_name = r_string();
     let extension_2_name = r_string();
-    let flow_type = FlowTypeBuilder::new(flow_type_ty.clone(), wrapper_entity_instance.clone())
+    let flow_type = FlowTypeBuilder::new(&flow_type_ty, wrapper_entity_instance.clone())
         .description(&description)
         .entity_instance(entity_instance_2)
         .relation_instance(relation_instance)

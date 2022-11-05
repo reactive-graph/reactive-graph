@@ -21,9 +21,9 @@ pub struct FlowTypeBuilder {
 
 #[allow(dead_code)]
 impl FlowTypeBuilder {
-    pub fn new(ty: FlowTypeId, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
+    pub fn new<FT: Into<FlowTypeId>>(ty: FT, wrapper_entity_instance: EntityInstance) -> FlowTypeBuilder {
         FlowTypeBuilder {
-            ty,
+            ty: ty.into(),
             description: String::new(),
             wrapper_entity_instance,
             entity_instances: Vec::new(),

@@ -1,5 +1,6 @@
 use serde_json::json;
 
+use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
@@ -127,4 +128,13 @@ fn components_builder_test() {
     assert_eq!(namespace, components[1].namespace());
     assert_eq!(type_name_2, components[1].type_name());
     assert_eq!(description_2, components[1].description);
+}
+
+#[test]
+fn components_builder_new_test() {
+    let namespace = r_string();
+    let type_name = r_string();
+    let ty = ComponentTypeId::new_from_type(&namespace, &type_name);
+    let component = ComponentBuilder::new(&ty).build();
+    assert_eq!(ty, component.ty);
 }

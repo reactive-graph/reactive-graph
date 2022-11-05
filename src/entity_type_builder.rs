@@ -18,9 +18,9 @@ pub struct EntityTypeBuilder {
 
 #[allow(dead_code)]
 impl EntityTypeBuilder {
-    pub fn new(ty: EntityTypeId) -> EntityTypeBuilder {
+    pub fn new<ET: Into<EntityTypeId>>(ty: ET) -> EntityTypeBuilder {
         EntityTypeBuilder {
-            ty,
+            ty: ty.into(),
             description: String::new(),
             components: Vec::new(),
             properties: Vec::new(),

@@ -16,9 +16,9 @@ pub struct ComponentBuilder {
 
 #[allow(dead_code)]
 impl ComponentBuilder {
-    pub fn new(ty: ComponentTypeId) -> ComponentBuilder {
+    pub fn new<C: Into<ComponentTypeId>>(ty: C) -> ComponentBuilder {
         ComponentBuilder {
-            ty,
+            ty: ty.into(),
             description: String::new(),
             properties: Vec::new(),
             extensions: Vec::new(),

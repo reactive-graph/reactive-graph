@@ -1,3 +1,4 @@
+use inexor_rgf_core_model::EntityTypeId;
 use serde_json::json;
 
 use crate::model::ComponentTypeId;
@@ -78,4 +79,13 @@ fn entity_type_builder_test() {
         SocketType::Output,
         entity_type.properties.iter().find(|p| p.name == property_9_name.clone()).unwrap().socket_type
     );
+}
+
+#[test]
+fn entity_type_builder_new_test() {
+    let namespace = r_string();
+    let type_name = r_string();
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
+    let entity_type = EntityTypeBuilder::new(&ty).build();
+    assert_eq!(ty, entity_type.ty);
 }
