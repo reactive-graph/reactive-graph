@@ -1,5 +1,5 @@
+use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
-use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::RelationType;
@@ -52,9 +52,9 @@ pub trait RelationTypeManager: Send + Sync {
     #[allow(clippy::too_many_arguments)]
     fn create(
         &self,
-        outbound_type: &EntityTypeId,
+        outbound_type: &ComponentOrEntityTypeId,
         ty: &RelationTypeId,
-        inbound_type: &EntityTypeId,
+        inbound_type: &ComponentOrEntityTypeId,
         description: &str,
         components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
