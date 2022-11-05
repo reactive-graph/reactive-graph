@@ -26,9 +26,9 @@ pub struct RelationInstanceTypeId {
 
 impl RelationInstanceTypeId {
     /// Between two entity instances there can be only one relation instance.
-    pub fn new_unique_id(ty: RelationTypeId) -> RelationInstanceTypeId {
+    pub fn new_unique_id<RT: Into<RelationTypeId>>(ty: RT) -> RelationInstanceTypeId {
         RelationInstanceTypeId {
-            ty,
+            ty: ty.into(),
             instance_id: String::new(),
         }
     }
@@ -38,18 +38,18 @@ impl RelationInstanceTypeId {
     ///
     /// For example, multiple connectors exists between two entity instances. But only one connector
     /// is allowed between two properties.
-    pub fn new_unique_for_instance_id<S: Into<String>>(ty: RelationTypeId, instance_id: S) -> RelationInstanceTypeId {
+    pub fn new_unique_for_instance_id<RT: Into<RelationTypeId>, S: Into<String>>(ty: RT, instance_id: S) -> RelationInstanceTypeId {
         RelationInstanceTypeId {
-            ty,
+            ty: ty.into(),
             instance_id: instance_id.into(),
         }
     }
 
     /// Between two entity instances there can be multiple one relation instances. The instance id
     /// of the relation instance will be generated randomly.
-    pub fn new_with_random_instance_id(ty: RelationTypeId) -> RelationInstanceTypeId {
+    pub fn new_with_random_instance_id<RT: Into<RelationTypeId>>(ty: RT) -> RelationInstanceTypeId {
         RelationInstanceTypeId {
-            ty,
+            ty: ty.into(),
             instance_id: Uuid::new_v4().to_string(),
         }
     }
