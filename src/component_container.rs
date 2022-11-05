@@ -3,7 +3,7 @@ use crate::ComponentTypeId;
 
 /// Reactive instance container for components.
 pub trait ComponentContainer {
-    /// Returns the names of the components
+    /// Returns the component types of the container.
     fn get_components(&self) -> Vec<ComponentTypeId>;
 
     /// Adds a component to the container.
