@@ -3,10 +3,17 @@ use std::sync::Arc;
 use async_graphql::*;
 
 use crate::api::EntityTypeManager;
+use crate::api::FlowTypeManager;
+use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLPropertyType;
+use crate::graphql::query::GraphQLRelationInstance;
 use crate::model::FlowType;
+use crate::model::NamespacedTypeGetter;
+use crate::model::ReactiveEntityInstance;
+use crate::model::ReactiveRelationInstance;
 
 pub struct GraphQLFlowType {
     flow_type: FlowType,
@@ -19,23 +26,21 @@ impl GraphQLFlowType {
     #[graphql(name = "type")]
     async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
         if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
-            return entity_type_manager
-                .get_fully_qualified(self.flow_type.namespace.as_str(), self.flow_type.type_name.as_str())
-                .map(|e| e.into());
+            return entity_type_manager.get(&self.flow_type.wrapper_entity_instance.ty).map(|e| e.into());
         }
         None
     }
 
     /// The namespace the flow type belongs to.
     async fn namespace(&self) -> String {
-        self.flow_type.namespace.clone()
+        self.flow_type.namespace()
     }
 
     /// The name of the flow type.
     ///
-    /// The name is the unique identifier for flow types.
+    /// The name is the unique identifier for flow types of the same namespace.
     async fn name(&self) -> String {
-        self.flow_type.name.clone()
+        self.flow_type.type_name()
     }
 
     /// Textual description of the flow type.
@@ -43,8 +48,77 @@ impl GraphQLFlowType {
         self.flow_type.description.clone()
     }
 
-    // TODO: Entity Instances (these are no reactive entity instances - only entity instance definitions!)
-    // TODO: Relation Instances (these are no reactive relation instances - only entity instance definitions!)
+    /// The entity instances contained by the flow type
+    async fn entity_instances(&self) -> Vec<GraphQLEntityInstance> {
+        self.flow_type
+            .entity_instances
+            .iter()
+            .map(|entity_instance| {
+                // Construct a temporary instance, do not register!
+                let entity_instance: GraphQLEntityInstance = Arc::new(ReactiveEntityInstance::from(entity_instance.clone())).into();
+                entity_instance
+            })
+            .collect()
+    }
+
+    async fn count_entity_instances(&self) -> usize {
+        self.flow_type.entity_instances.len()
+    }
+
+    /// The relation instances contained by the flow type
+    async fn relation_instances(&self) -> Vec<GraphQLRelationInstance> {
+        self.flow_type
+            .relation_instances
+            .iter()
+            .filter_map(|relation_instance| {
+                // Construct temporary entity instances and a temporary relation instance, do not register!
+                let outbound = if relation_instance.outbound_id == self.flow_type.wrapper_entity_instance.id {
+                    Arc::new(ReactiveEntityInstance::from(self.flow_type.wrapper_entity_instance.clone()))
+                } else {
+                    self.flow_type
+                        .entity_instances
+                        .iter()
+                        .find(|e| e.id == relation_instance.outbound_id)
+                        .map(|e| Arc::new(ReactiveEntityInstance::from(e.clone())))?
+                };
+                let inbound = if relation_instance.inbound_id == self.flow_type.wrapper_entity_instance.id {
+                    Arc::new(ReactiveEntityInstance::from(self.flow_type.wrapper_entity_instance.clone()))
+                } else {
+                    self.flow_type
+                        .entity_instances
+                        .iter()
+                        .find(|e| e.id == relation_instance.inbound_id)
+                        .map(|e| Arc::new(ReactiveEntityInstance::from(e.clone())))?
+                };
+                let relation_instance = Arc::new(ReactiveRelationInstance::new_from_instance(outbound, inbound, relation_instance.clone()));
+                let relation_instance: GraphQLRelationInstance = relation_instance.into();
+                Some(relation_instance)
+            })
+            .collect()
+    }
+
+    async fn count_relation_instances(&self) -> usize {
+        self.flow_type.relation_instances.len()
+    }
+
+    /// The properties of the flow type.
+    /// This are the properties of the wrapper entity instance.
+    async fn properties(
+        &self,
+        #[graphql(desc = "Filters by property name")] name: Option<String>,
+        #[graphql(desc = "Filters by property names")] names: Option<Vec<String>>,
+    ) -> Vec<GraphQLPropertyInstance> {
+        self.flow_type
+            .wrapper_entity_instance
+            .properties
+            .iter()
+            .filter(|(property_name, _)| name.is_none() || name.clone().unwrap().as_str() == property_name.as_str())
+            .filter(|(property_name, _)| names.is_none() || names.clone().unwrap().contains(property_name))
+            .map(|(property_name, property_value)| {
+                GraphQLPropertyInstance::new_entity_property(self.flow_type.wrapper_entity_instance.ty.clone(), property_name.clone(), property_value.clone())
+            })
+            .collect()
+    }
 
     /// The variables of the flow type.
     async fn variables(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
@@ -78,6 +152,16 @@ impl GraphQLFlowType {
                 .collect();
         }
         self.flow_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
+    }
+
+    /// Returns true, if the relation type is valid.
+    ///
+    /// This means all components exists and the outbound and inbound entity types are valid.
+    async fn is_valid(&self, context: &Context<'_>) -> bool {
+        match context.data::<Arc<dyn FlowTypeManager>>() {
+            Ok(flow_type_manager) => flow_type_manager.validate(&self.flow_type.ty),
+            Err(_) => false,
+        }
     }
 }
 
