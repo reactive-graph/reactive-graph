@@ -18,6 +18,7 @@ use crate::di::provides;
 use crate::di::Component;
 use crate::di::Wrc;
 use crate::model::EntityInstance;
+use crate::model::EntityTypeId;
 
 #[component]
 pub struct EntityInstanceManagerImpl {
@@ -32,19 +33,21 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn get(&self, id: Uuid) -> Option<EntityInstance> {
-        self.entity_vertex_manager.get_properties(id).map(EntityInstance::from)
+        self.entity_vertex_manager
+            .get_properties(id)
+            .and_then(|properties| EntityInstance::try_from(properties).ok())
     }
 
-    fn create(&self, type_name: &str, properties: HashMap<String, Value, RandomState>) -> Result<Uuid, EntityInstanceCreationError> {
-        let result = self.entity_vertex_manager.create(type_name, properties);
+    fn create(&self, ty: &EntityTypeId, properties: HashMap<String, Value, RandomState>) -> Result<Uuid, EntityInstanceCreationError> {
+        let result = self.entity_vertex_manager.create(ty, properties);
         if result.is_err() {
             return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
         }
         Ok(result.unwrap())
     }
 
-    fn create_with_id(&self, type_name: &str, id: Uuid, properties: HashMap<String, Value, RandomState>) -> Result<Uuid, EntityInstanceCreationError> {
-        let result = self.entity_vertex_manager.create_with_id(type_name, id, properties);
+    fn create_with_id(&self, ty: &EntityTypeId, id: Uuid, properties: HashMap<String, Value, RandomState>) -> Result<Uuid, EntityInstanceCreationError> {
+        let result = self.entity_vertex_manager.create_with_id(ty, id, properties);
         if result.is_err() {
             return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
         }
@@ -52,13 +55,17 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
     }
 
     fn create_from_instance(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError> {
-        let result = self
-            .entity_vertex_manager
-            .create_with_id(&entity_instance.type_name, entity_instance.id, entity_instance.properties);
-        if result.is_err() {
-            return Err(EntityInstanceCreationError::EntityVertexCreationError(result.err().unwrap()));
+        self.entity_vertex_manager
+            .create_with_id(&entity_instance.ty, entity_instance.id, entity_instance.properties)
+            .map_err(EntityInstanceCreationError::EntityVertexCreationError)
+    }
+
+    fn create_from_instance_if_not_exist(&self, entity_instance: EntityInstance) -> Result<Uuid, EntityInstanceCreationError> {
+        if self.entity_vertex_manager.has(entity_instance.id) {
+            Ok(entity_instance.id)
+        } else {
+            self.create_from_instance(entity_instance)
         }
-        Ok(result.unwrap())
     }
 
     fn commit(&self, entity_instance: EntityInstance) {
@@ -77,7 +84,7 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
             return Err(EntityInstanceImportError::EntityAlreadyExists(entity_instance.id));
         }
         self.entity_vertex_manager
-            .create_with_id(&entity_instance.type_name, entity_instance.id, entity_instance.properties)
+            .create_with_id(&entity_instance.ty, entity_instance.id, entity_instance.properties)
             .map_err(EntityVertexCreationError::into)
     }
 
