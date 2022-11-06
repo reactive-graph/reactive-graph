@@ -1,10 +1,14 @@
+use std::env;
+
+use indradb::Datastore;
 use uuid::Uuid;
 
-use crate::builder::{EntityInstanceBuilder, EntityTypeBuilder};
+use crate::builder::EntityInstanceBuilder;
+use crate::builder::EntityTypeBuilder;
+use crate::model::NamespacedTypeGetter;
 use crate::tests::utils::application::init_application;
-use crate::tests::utils::{r_json_string, r_string};
-use indradb::Datastore;
-use std::env;
+use crate::tests::utils::r_json_string;
+use crate::tests::utils::r_string;
 
 #[test]
 fn test_entity_instance_manager() {
@@ -22,20 +26,19 @@ fn test_entity_instance_manager() {
     assert_eq!(0, datastore.get_vertex_count().unwrap());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
-    let entity_instance = EntityInstanceBuilder::new(type_name.clone())
-        .property(property_name.clone(), property_value.clone())
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &type_name)
+        .property(&property_name, property_value.clone())
         .build();
     let result = entity_instance_manager.create_from_instance(entity_instance);
     assert!(result.is_err());
     assert_eq!(0, datastore.get_vertex_count().unwrap());
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), type_name.as_str())
-        .string_property(property_name.clone())
-        .build();
-    entity_type_manager.register(entity_type.clone());
+    let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name).string_property(&property_name).build();
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
-    let entity_instance = EntityInstanceBuilder::new(type_name.clone())
-        .property(property_name.clone(), property_value.clone())
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &type_name)
+        .property(&property_name, property_value.clone())
         .build();
     let result = entity_instance_manager.create_from_instance(entity_instance);
     assert!(result.is_ok());
@@ -56,12 +59,12 @@ fn test_entity_instance_manager() {
     assert!(entity_instance.is_some());
     let entity_instance = entity_instance.unwrap();
     assert_eq!(uuid, entity_instance.id);
-    assert_eq!(type_name.clone(), entity_instance.type_name.clone());
+    assert_eq!(type_name.clone(), entity_instance.type_name());
 
     // Check if we cannot create an entity with the same uuid
-    let entity_instance = EntityInstanceBuilder::new(type_name.clone())
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &type_name)
         .id(uuid)
-        .property(property_name.clone(), property_value.clone())
+        .property(&property_name, property_value.clone())
         .build();
     let result = entity_instance_manager.create_from_instance(entity_instance.clone());
     assert!(result.is_err());
@@ -69,9 +72,9 @@ fn test_entity_instance_manager() {
 
     // Check if we can create an another entity with a different uuid
     let another_uuid = Uuid::new_v4();
-    let entity_instance = EntityInstanceBuilder::new(type_name.clone())
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &type_name)
         .id(another_uuid)
-        .property(property_name.clone(), property_value.clone())
+        .property(&property_name, property_value.clone())
         .build();
     let result = entity_instance_manager.create_from_instance(entity_instance.clone());
     assert!(result.is_ok());
@@ -93,7 +96,6 @@ fn test_entity_instance_manager_import_export() {
 
     let namespace = r_string();
     let type_name = r_string();
-    let type_name = type_name.as_str();
 
     let mut path = env::temp_dir();
     path.push(format!("{}.json", type_name));
@@ -101,13 +103,12 @@ fn test_entity_instance_manager_import_export() {
 
     let property_name = r_string();
     let property_value = r_json_string();
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), type_name)
-        .string_property(property_name.clone())
-        .build();
-    entity_type_manager.register(entity_type.clone());
+    let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name).string_property(&property_name).build();
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
-    let entity_instance = EntityInstanceBuilder::new(type_name)
-        .property(property_name.clone(), property_value.clone())
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &type_name)
+        .property(&property_name, property_value.clone())
         .build();
     let result = entity_instance_manager.create_from_instance(entity_instance.clone());
 
