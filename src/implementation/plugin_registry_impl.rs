@@ -571,8 +571,51 @@ impl PluginRegistryImpl {
                 };
             }
         }
-        info!("Resolver finished");
+        // No more actions possible
+        info!("Plugin resolver finished\n{}\n", self.count_by_states());
         NoChange
+    }
+
+    fn count_by_states(&self) -> String {
+        let states = vec![
+            PluginState::Installed,
+            PluginState::Resolving(PluginResolveState::Loaded),
+            PluginState::Resolving(PluginResolveState::PluginDeclarationLoaded),
+            PluginState::Resolving(PluginResolveState::CompilerVersionMismatch),
+            PluginState::Resolving(PluginResolveState::PluginApiVersionMismatch),
+            PluginState::Resolving(PluginResolveState::DependenciesNotActive),
+            PluginState::Resolving(PluginResolveState::PluginCompatible),
+            PluginState::Resolved,
+            PluginState::Starting(PluginStartingState::ConstructingProxy),
+            PluginState::Starting(PluginStartingState::InjectingContext),
+            PluginState::Starting(PluginStartingState::Registering),
+            PluginState::Starting(PluginStartingState::Activating),
+            PluginState::Active,
+            PluginState::Stopping(PluginStoppingState::Deactivating),
+            PluginState::Stopping(PluginStoppingState::Unregistering),
+            PluginState::Stopping(PluginStoppingState::RemoveContext),
+            PluginState::Stopping(PluginStoppingState::RemoveProxy),
+            PluginState::Refreshing(PluginRefreshingState::Stopping),
+            PluginState::Refreshing(PluginRefreshingState::UnloadingProxy),
+            PluginState::Refreshing(PluginRefreshingState::UnloadPluginDeclaration),
+            PluginState::Refreshing(PluginRefreshingState::UnloadLibrary),
+            PluginState::Uninstalling,
+            PluginState::Uninstalled,
+        ];
+        states.iter().map(|state| self.count_by_state_str(state)).collect()
+    }
+
+    fn count_by_state_str(&self, state: &PluginState) -> String {
+        let count = self.count_by_state(state);
+        if count > 0 {
+            format!("\n  {:?}: {}", state, self.count_by_state(state))
+        } else {
+            "".to_owned()
+        }
+    }
+
+    fn count_by_state(&self, state: &PluginState) -> usize {
+        self.plugin_containers.0.iter().filter(|p| &p.state == state).count()
     }
 
     fn get_plugin_state(&self, id: &Uuid) -> Option<PluginState> {
