@@ -1,15 +1,74 @@
+use std::sync::Arc;
+
 use crate::model::BehaviourTypeId;
+use crate::model::DataType;
+use crate::model::ReactivePropertyContainer;
 
 #[derive(Debug)]
-pub struct BehaviourCreationError;
+pub enum BehaviourCreationError {
+    /// Creating the behaviour failed because connecting the behaviour failed.
+    BehaviourConnectFailed(BehaviourConnectFailed),
+}
 
-pub trait Behaviour {
-    /// Wires the reactive streams.
-    fn connect(&self) {}
+#[derive(Debug)]
+pub enum BehaviourConnectFailed {
+    /// Connecting the behaviour failed because the behaviour is invalid.
+    BehaviourInvalid(BehaviourInvalid),
+}
+
+#[derive(Debug)]
+pub enum BehaviourInvalid {
+    /// The behaviour is invalid because one or multiple properties are invalid.
+    BehaviourPropertyInvalid(BehaviourPropertyInvalid),
+}
+
+#[derive(Debug)]
+pub enum BehaviourPropertyInvalid {
+    /// The property with the given name is missing.
+    PropertyMissing(String),
+
+    /// The property with the given name has a data type which is not the expected data type.
+    InvalidDataType(String, DataType, DataType),
+}
+
+#[allow(drop_bounds)]
+pub trait Behaviour<T: ReactivePropertyContainer>: BehaviourReactiveInstanceContainer<T> + BehaviourValidator<T> + Drop {
+    /// Connects the reactive streams.
+    fn connect(&self) -> Result<(), BehaviourConnectFailed> {
+        Ok(())
+    }
 
     /// Disconnects the reactive streams.
     fn disconnect(&self) {}
 
     /// Returns the behaviour type.
     fn ty(&self) -> BehaviourTypeId;
+}
+
+pub trait BehaviourValidator<T: ReactivePropertyContainer>: BehaviourPropertyValidator<T> {
+    /// Validates the behaviour.
+    fn validate(&self) -> Result<(), BehaviourInvalid> {
+        self.validate_properties().map_err(|e| BehaviourInvalid::BehaviourPropertyInvalid(e))
+    }
+}
+
+pub trait BehaviourPropertyValidator<T: ReactivePropertyContainer>: BehaviourReactiveInstanceContainer<T> {
+    /// Validates the properties of the reactive instance.
+    fn validate_properties(&self) -> Result<(), BehaviourPropertyInvalid> {
+        Ok(())
+    }
+
+    /// Validates the property with the given name.
+    fn validate_property(&self, property_name: &str) -> Result<(), BehaviourPropertyInvalid> {
+        let x = self.get_reactive_instance();
+        if !x.has_property(property_name) {
+            return Err(BehaviourPropertyInvalid::PropertyMissing(property_name.to_owned()));
+        }
+        Ok(())
+    }
+}
+
+pub trait BehaviourReactiveInstanceContainer<T> {
+    /// Returns the reactive instance of the behaviour.
+    fn get_reactive_instance(&self) -> &Arc<T>;
 }
