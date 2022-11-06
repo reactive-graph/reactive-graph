@@ -1,5 +1,3 @@
-// TODO: fix these unit test
-
 use indradb::Datastore;
 use serde_json::json;
 
@@ -23,14 +21,15 @@ fn test_register_reactive_entity_instance() {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), type_name.as_str())
+    let entity_type = EntityTypeBuilder::new_from_type(namespace.as_str(), type_name.as_str())
         .string_property(property_name.clone())
         .build();
-    entity_type_manager.register(entity_type.clone());
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
-    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(type_name.clone())
-        .property(property_name.clone(), property_value.clone())
+    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new_from_type(&namespace, &type_name)
+        .property(&property_name, property_value.clone())
         .build();
     reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
     assert_eq!(1, datastore.get_vertex_count().unwrap());
@@ -59,12 +58,15 @@ fn test_unregister_reactive_entity_instance() {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let entity_type = EntityTypeBuilder::new(&namespace, &type_name).string_property(property_name.clone()).build();
-    entity_type_manager.register(entity_type.clone());
+    let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name)
+        .string_property(property_name.clone())
+        .build();
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
-    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(&type_name)
-        .property(property_name.clone(), property_value.clone())
+    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new_from_type(&namespace, &type_name)
+        .property(&property_name, property_value.clone())
         .build();
     reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
     assert_eq!(1, datastore.get_vertex_count().unwrap());
@@ -87,12 +89,15 @@ fn test_not_register_twice_reactive_entity_instance() {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let entity_type = EntityTypeBuilder::new(&namespace, &type_name).string_property(property_name.clone()).build();
-    entity_type_manager.register(entity_type.clone());
+    let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name)
+        .string_property(property_name.clone())
+        .build();
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
     // Check that we cannot create an entity instance with a type which doesn't exist
-    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(&type_name)
-        .property(property_name.clone(), property_value.clone())
+    let reactive_entity_instance = ReactiveEntityInstanceBuilder::new_from_type(&namespace, &type_name)
+        .property(&property_name, property_value.clone())
         .build();
     assert_eq!(0, datastore.get_vertex_count().unwrap());
     reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
