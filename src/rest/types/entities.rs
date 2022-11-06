@@ -11,18 +11,21 @@ use crate::api::EntityTypeManager;
 pub async fn get_entity_types(entity_type_manager: web::Data<Arc<dyn EntityTypeManager>>) -> HttpResponse {
     HttpResponse::Ok()
         .content_type(APPLICATION_JSON.to_string())
-        .json(entity_type_manager.get_entity_types())
+        .json(entity_type_manager.get_all())
 }
 
-#[get("/types/entities/{name}")]
-pub async fn get_entity_type(name: web::Path<(String,)>, entity_type_manager: web::Data<Arc<dyn EntityTypeManager>>) -> HttpResponse {
-    let name = name.into_inner().0;
-    let entity_type = entity_type_manager.get(&name);
-    if entity_type.is_some() {
-        HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(entity_type)
-    } else {
-        HttpResponse::NotFound()
+#[get("/types/entities/{namespace}/{type_name}")]
+pub async fn get_entity_type(
+    namespace: web::Path<(String,)>,
+    type_name: web::Path<(String,)>,
+    entity_type_manager: web::Data<Arc<dyn EntityTypeManager>>,
+) -> HttpResponse {
+    let namespace = namespace.into_inner().0;
+    let type_name = type_name.into_inner().0;
+    match entity_type_manager.get_by_type(&namespace, &type_name) {
+        Some(entity_type) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&entity_type),
+        None => HttpResponse::NotFound()
             .content_type(APPLICATION_JSON.to_string())
-            .body(format!("Entity Type {} not found", name))
+            .body(format!("Entity Type {}__{} not found", namespace, type_name)),
     }
 }
