@@ -9,7 +9,7 @@ pub mod mutation;
 pub mod query;
 pub mod subscription;
 
-pub mod dynamic_graph;
+// pub mod dynamic_graph;
 
 /// Inexor GraphQL Interface
 pub type InexorSchema = Schema<InexorQuery, InexorMutation, InexorSubscription>;

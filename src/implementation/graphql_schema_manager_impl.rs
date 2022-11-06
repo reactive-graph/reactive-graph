@@ -2,7 +2,7 @@ use async_graphql::Schema;
 use async_trait::async_trait;
 
 use crate::api::ComponentManager;
-use crate::api::DynamicGraph;
+// use crate::api::DynamicGraph;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::GraphQLSchemaManager;
@@ -25,8 +25,7 @@ use crate::graphql::InexorSubscription;
 pub struct GraphQLSchemaManagerImpl {
     component_manager: Wrc<dyn ComponentManager>,
 
-    dynamic_graph: Wrc<dyn DynamicGraph>,
-
+    // dynamic_graph: Wrc<dyn DynamicGraph>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     relation_type_manager: Wrc<dyn RelationTypeManager>,
@@ -54,7 +53,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.entity_instance_manager.clone())
             .data(self.relation_instance_manager.clone())
             .data(self.flow_manager.clone())
-            .data(self.dynamic_graph.clone())
+            // .data(self.dynamic_graph.clone())
             .directive(directives::concat)
             .directive(directives::random_uuid)
             .finish()

@@ -30,7 +30,6 @@ use http::Request;
 use http::Response;
 use log::debug;
 use log::error;
-use log::trace;
 use log::warn;
 use rustls::Certificate;
 use rustls::PrivateKey;
@@ -40,7 +39,7 @@ use rustls_pemfile::pkcs8_private_keys;
 use serde::Deserialize;
 
 use crate::api::ComponentManager;
-use crate::api::DynamicGraph;
+// use crate::api::DynamicGraph;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::GraphQLSchemaManager;
@@ -60,8 +59,7 @@ use crate::plugins::HttpBody;
 pub struct GraphQLServerImpl {
     component_manager: Wrc<dyn ComponentManager>,
 
-    dynamic_graph: Wrc<dyn DynamicGraph>,
-
+    // dynamic_graph: Wrc<dyn DynamicGraph>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     relation_type_manager: Wrc<dyn RelationTypeManager>,
@@ -85,11 +83,11 @@ async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest)
 }
 
 // TODO: /dynamic-graph
-#[post("/dynamic_graph")]
-async fn query_dynamic_graph(dynamic_graph: web::Data<Arc<dyn DynamicGraph>>, request: GraphQLRequest) -> GraphQLResponse {
-    trace!("dynamic_graph request: {:?}", &request.0);
-    dynamic_graph.execute_request(request)
-}
+// #[post("/dynamic_graph")]
+// async fn query_dynamic_graph(dynamic_graph: web::Data<Arc<dyn DynamicGraph>>, request: GraphQLRequest) -> GraphQLResponse {
+//     trace!("dynamic_graph request: {:?}", &request.0);
+//     dynamic_graph.execute_request(request)
+// }
 
 async fn subscription_websocket(schema: web::Data<InexorSchema>, request: HttpRequest, payload: web::Payload) -> Result<HttpResponse> {
     // let mut data = Data::default();
@@ -199,7 +197,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let entity_instance_manager = web::Data::new(self.entity_instance_manager.clone());
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_instance_manager = web::Data::new(self.flow_instance_manager.clone());
-        let dynamic_graph = web::Data::new(self.dynamic_graph.clone());
+        // let dynamic_graph = web::Data::new(self.dynamic_graph.clone());
         let web_resource_manager = web::Data::new(self.web_resource_manager.clone());
         let schema_data = web::Data::new(schema);
 
@@ -219,7 +217,7 @@ impl GraphQLServer for GraphQLServerImpl {
                 .app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
                 .app_data(flow_instance_manager.clone())
-                .app_data(dynamic_graph.clone())
+                // .app_data(dynamic_graph.clone())
                 .app_data(web_resource_manager.clone())
                 // GraphQL API
                 .service(query_graphql)
@@ -230,7 +228,7 @@ impl GraphQLServer for GraphQLServerImpl {
                         .to(subscription_websocket),
                 )
                 // Dynamic GraphQL API
-                .service(query_dynamic_graph)
+                // .service(query_dynamic_graph)
                 // REST API
                 .service(crate::rest::types::components::get_components)
                 .service(crate::rest::types::entities::get_entity_types)
@@ -284,7 +282,7 @@ impl GraphQLServer for GraphQLServerImpl {
         let t_terminate = terminate.clone();
 
         // This thread handles the server stop routine from the main thread
-        std::thread::spawn(move || {
+        thread::spawn(move || {
             // wait for shutdown signal
             stopper.recv().unwrap();
             debug!("Received shutdown signal. Stopping GraphQL server thread.");

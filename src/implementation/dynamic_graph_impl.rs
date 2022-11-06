@@ -2,10 +2,19 @@ use std::ops::Deref;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use apollo_compiler::values::{
-    DirectiveDefinition, EnumTypeDefinition, Field, FieldDefinition, FragmentDefinition, InputObjectTypeDefinition, ObjectTypeDefinition, OperationDefinition,
-    OperationType, RootOperationTypeDefinition, ScalarTypeDefinition, SelectionSet, UnionTypeDefinition,
-};
+use apollo_compiler::values::DirectiveDefinition;
+use apollo_compiler::values::EnumTypeDefinition;
+use apollo_compiler::values::Field;
+use apollo_compiler::values::FieldDefinition;
+use apollo_compiler::values::FragmentDefinition;
+use apollo_compiler::values::InputObjectTypeDefinition;
+use apollo_compiler::values::ObjectTypeDefinition;
+use apollo_compiler::values::OperationDefinition;
+use apollo_compiler::values::OperationType;
+use apollo_compiler::values::RootOperationTypeDefinition;
+use apollo_compiler::values::ScalarTypeDefinition;
+use apollo_compiler::values::SelectionSet;
+use apollo_compiler::values::UnionTypeDefinition;
 use apollo_compiler::ApolloCompiler;
 use apollo_compiler::ApolloDiagnostic;
 use apollo_encoder::Document;
@@ -39,17 +48,19 @@ use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
-use crate::api::SYSTEM_EVENT_PROPERTY_EVENT;
 use crate::di::*;
+use crate::graphql::dynamic_graph::introspection::IntrospectionType;
 use crate::graphql::dynamic_graph::introspection::ResolverType;
 use crate::graphql::dynamic_graph::introspection::BUILTIN_INTROSPECTION_SCHEMA;
-use crate::graphql::dynamic_graph::introspection::{IntrospectionType, INTROSPECTION_SCHEMA};
+use crate::graphql::dynamic_graph::introspection::INTROSPECTION_SCHEMA;
 use crate::graphql::dynamic_graph::schema_generation::enum_definition;
 use crate::graphql::dynamic_graph::schema_generation::scalar_definition;
+use crate::implementation::PROPERTY_EVENT;
 use crate::model::ComponentContainer;
 use crate::model::EntityType;
 use crate::model::PropertyInstanceGetter;
 use crate::model::ReactiveEntityInstance;
+use crate::model::ReactivePropertyContainer;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationType;
 use crate::plugins::SystemEventTypes;
@@ -143,7 +154,7 @@ impl DynamicGraph for DynamicGraphImpl {
         // field_definition_entities.description("The entities".to_owned());
         // object_definition_query.field(field_definition_entities);
 
-        for component in self.component_manager.get_components() {
+        for component in self.component_manager.get_all() {
             let type_name = component_type_name(&component);
             // let mut interface_definition = InterfaceDefinition::new(format!("component__{}", component.name.clone()));
             let mut object_definition = ObjectDefinition::new(type_name);
@@ -910,7 +921,7 @@ impl DynamicGraph for DynamicGraphImpl {
         if self.relation_type_manager.has(&relation_type_name) {
             let relation_instances: Vec<Arc<ReactiveRelationInstance>> = self
                 .relation_instance_manager
-                .get_relation_instances()
+                .get_all()
                 .iter()
                 .filter(|relation_instance| relation_instance.type_name.starts_with(relation_type_name.as_str()))
                 .cloned()
@@ -966,14 +977,10 @@ impl DynamicGraph for DynamicGraphImpl {
                     resolved_fields.insert(Name::new(field.name()), async_graphql::Value::String(relation_instance.type_name.clone()));
                 }
                 "_edge_key" => {
+                    let edge_key = relation_instance.get_key();
                     resolved_fields.insert(
                         Name::new(field.name()),
-                        relation_instance
-                            .get_key()
-                            .map(|edge_key| {
-                                async_graphql::Value::String(format!("{}-{}-{}", edge_key.outbound_id, edge_key.t.to_string(), edge_key.inbound_id))
-                            })
-                            .unwrap_or(async_graphql::Value::Null),
+                        async_graphql::Value::String(format!("{}-{}-{}", edge_key.outbound_id, edge_key.t.to_string(), edge_key.inbound_id)),
                     );
                 }
                 "_label" => {
@@ -1593,36 +1600,31 @@ impl Lifecycle for DynamicGraphImpl {
     fn post_init(&self) {
         if let Some(event_type_system_changed) = self.event_manager.get_system_event_instance(SystemEventTypes::TypeSystemChanged) {
             let type_system_modified_state = self.type_system_modified_state.0.clone();
-            event_type_system_changed
-                .properties
-                .get(SYSTEM_EVENT_PROPERTY_EVENT)
-                .unwrap()
-                .stream
-                .read()
-                .unwrap()
-                .observe_with_handle(
-                    move |v| {
-                        if v.is_boolean() && v.as_bool().unwrap() {
-                            // The type system has changed -> regenerate the dynamic schema
-                            let mut guard = type_system_modified_state.write().unwrap();
-                            *guard = true;
-                        }
-                    },
-                    UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128(),
-                );
+            event_type_system_changed.observe_with_handle(
+                PROPERTY_EVENT,
+                move |v| {
+                    if v.is_boolean() && v.as_bool().unwrap() {
+                        // The type system has changed -> regenerate the dynamic schema
+                        let mut guard = type_system_modified_state.write().unwrap();
+                        *guard = true;
+                    }
+                },
+                UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128(),
+            );
         }
     }
 
     fn pre_shutdown(&self) {
         if let Some(event_type_system_changed) = self.event_manager.get_system_event_instance(SystemEventTypes::TypeSystemChanged) {
-            event_type_system_changed
-                .properties
-                .get(SYSTEM_EVENT_PROPERTY_EVENT)
-                .unwrap()
-                .stream
-                .read()
-                .unwrap()
-                .remove(UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128());
+            event_type_system_changed.remove_observer(PROPERTY_EVENT, UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128());
+            // event_type_system_changed
+            //     .properties
+            //     .get(PROPERTY_EVENT)
+            //     .unwrap()
+            //     .stream
+            //     .read()
+            //     .unwrap()
+            //     .remove(UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128());
         }
     }
 

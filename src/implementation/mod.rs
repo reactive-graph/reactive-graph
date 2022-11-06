@@ -1,6 +1,6 @@
 pub use component_behaviour_manager_impl::*;
 pub use component_manager_impl::*;
-pub use dynamic_graph_impl::*;
+// pub use dynamic_graph_impl::*;
 pub use entity_behaviour_manager_impl::*;
 pub use entity_instance_manager_impl::*;
 pub use entity_type_manager_impl::*;
@@ -25,7 +25,7 @@ pub use web_resource_manager_impl::*;
 
 pub mod component_behaviour_manager_impl;
 pub mod component_manager_impl;
-pub mod dynamic_graph_impl;
+// pub mod dynamic_graph_impl;
 pub mod entity_behaviour_manager_impl;
 pub mod entity_instance_manager_impl;
 pub mod entity_type_manager_impl;
