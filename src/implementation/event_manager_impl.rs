@@ -7,12 +7,20 @@ use serde_json::json;
 
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
-use crate::api::SYSTEM_EVENT_PROPERTY_EVENT;
 use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::di::*;
+use crate::implementation::NAMESPACE_CORE;
+use crate::implementation::PROPERTY_EVENT;
+use crate::implementation::TYPE_SYSTEM_EVENT;
+use crate::model::ComponentTypeId;
 use crate::model::PropertyInstanceSetter;
 use crate::model::ReactiveEntityInstance;
+use crate::model::TypeDefinition;
+use crate::model::TypeDefinitionComponent;
+use crate::model::TypeDefinitionExtension;
+use crate::model::TypeDefinitionGetter;
+use crate::model::TypeDefinitionProperty;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
 
@@ -33,72 +41,47 @@ pub struct SystemEventManagerImpl {
 #[provides]
 impl SystemEventManager for SystemEventManagerImpl {
     fn emit_event(&self, event: SystemEvent) {
-        if let Some(entity_instance) = self.get_system_event_instance((&event).into()) {
-            match event {
-                SystemEvent::ComponentCreated(name)
-                | SystemEvent::ComponentUpdated(name)
-                | SystemEvent::ComponentDeleted(name)
-                | SystemEvent::EntityTypeCreated(name)
-                | SystemEvent::EntityTypeDeleted(name)
-                | SystemEvent::RelationTypeCreated(name)
-                | SystemEvent::RelationTypeDeleted(name)
-                | SystemEvent::FlowTypeCreated(name)
-                | SystemEvent::FlowTypeUpdated(name)
-                | SystemEvent::FlowTypeDeleted(name) => {
-                    entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!({ "name": &name }));
-                    // Also emit event that the type system has been changed
-                    self.emit_event(SystemEvent::TypeSystemChanged);
-                }
-                SystemEvent::EntityTypeComponentAdded(name, component_name)
-                | SystemEvent::EntityTypeComponentRemoved(name, component_name)
-                | SystemEvent::RelationTypeComponentAdded(name, component_name)
-                | SystemEvent::RelationTypeComponentRemoved(name, component_name) => {
-                    entity_instance.set(
-                        SYSTEM_EVENT_PROPERTY_EVENT,
-                        json!({
-                            "name": &name,
-                            "component": &component_name
-                        }),
-                    );
-                    // Also emit event that the type system has been changed
-                    self.emit_event(SystemEvent::TypeSystemChanged);
-                }
-                SystemEvent::EntityTypePropertyAdded(name, property_name)
-                | SystemEvent::EntityTypePropertyRemoved(name, property_name)
-                | SystemEvent::RelationTypePropertyAdded(name, property_name)
-                | SystemEvent::RelationTypePropertyRemoved(name, property_name) => {
-                    entity_instance.set(
-                        SYSTEM_EVENT_PROPERTY_EVENT,
-                        json!({
-                            "name": &name,
-                            "property": &property_name
-                        }),
-                    );
-                    // Also emit event that the type system has been changed
-                    self.emit_event(SystemEvent::TypeSystemChanged);
-                }
-                SystemEvent::EntityTypeExtensionAdded(name, extension_name)
-                | SystemEvent::EntityTypeExtensionRemoved(name, extension_name)
-                | SystemEvent::RelationTypeExtensionAdded(name, extension_name)
-                | SystemEvent::RelationTypeExtensionRemoved(name, extension_name) => {
-                    entity_instance.set(
-                        SYSTEM_EVENT_PROPERTY_EVENT,
-                        json!({
-                            "name": &name,
-                            "extension": &extension_name
-                        }),
-                    );
-                    // Also emit event that the type system has been changed
-                    self.emit_event(SystemEvent::TypeSystemChanged);
-                }
-                SystemEvent::TypeSystemChanged => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(true)),
-                SystemEvent::EntityInstanceCreated(id)
-                | SystemEvent::EntityInstanceDeleted(id)
-                | SystemEvent::FlowInstanceCreated(id)
-                | SystemEvent::FlowInstanceDeleted(id) => entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(id)),
-                SystemEvent::RelationInstanceCreated(edge_key) | SystemEvent::RelationInstanceDeleted(edge_key) => {
-                    entity_instance.set(SYSTEM_EVENT_PROPERTY_EVENT, json!(edge_key))
-                }
+        let Some(entity_instance) = self.get_system_event_instance((&event).into()) else {
+            return;
+        };
+        match event {
+            SystemEvent::ComponentCreated(ty) | SystemEvent::ComponentUpdated(ty) | SystemEvent::ComponentDeleted(ty) => {
+                self.propagate_type_definition_event(entity_instance, ty.type_definition());
+            }
+            SystemEvent::EntityTypeCreated(ty) | SystemEvent::EntityTypeDeleted(ty) => {
+                self.propagate_type_definition_event(entity_instance, ty.type_definition());
+            }
+            SystemEvent::RelationTypeCreated(ty) | SystemEvent::RelationTypeDeleted(ty) => {
+                self.propagate_type_definition_event(entity_instance, ty.type_definition());
+            }
+            SystemEvent::FlowTypeCreated(ty) | SystemEvent::FlowTypeUpdated(ty) | SystemEvent::FlowTypeDeleted(ty) => {
+                self.propagate_type_definition_event(entity_instance, ty.type_definition());
+            }
+            SystemEvent::EntityTypeComponentAdded(ty, component) | SystemEvent::EntityTypeComponentRemoved(ty, component) => {
+                self.propagate_type_definition_component_event(entity_instance, ty.type_definition(), &component);
+            }
+            SystemEvent::RelationTypeComponentAdded(ty, component) | SystemEvent::RelationTypeComponentRemoved(ty, component) => {
+                self.propagate_type_definition_component_event(entity_instance, ty.type_definition(), &component);
+            }
+            SystemEvent::EntityTypePropertyAdded(ty, property_name) | SystemEvent::EntityTypePropertyRemoved(ty, property_name) => {
+                self.propagate_type_definition_property_event(entity_instance, ty.type_definition(), property_name);
+            }
+            SystemEvent::RelationTypePropertyAdded(ty, property_name) | SystemEvent::RelationTypePropertyRemoved(ty, property_name) => {
+                self.propagate_type_definition_property_event(entity_instance, ty.type_definition(), property_name);
+            }
+            SystemEvent::EntityTypeExtensionAdded(ty, extension_name) | SystemEvent::EntityTypeExtensionRemoved(ty, extension_name) => {
+                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_name);
+            }
+            SystemEvent::RelationTypeExtensionAdded(ty, extension_name) | SystemEvent::RelationTypeExtensionRemoved(ty, extension_name) => {
+                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_name);
+            }
+            SystemEvent::TypeSystemChanged => entity_instance.set(PROPERTY_EVENT, json!(true)),
+            SystemEvent::EntityInstanceCreated(id)
+            | SystemEvent::EntityInstanceDeleted(id)
+            | SystemEvent::FlowInstanceCreated(id)
+            | SystemEvent::FlowInstanceDeleted(id) => entity_instance.set(PROPERTY_EVENT, json!(id)),
+            SystemEvent::RelationInstanceCreated(edge_key) | SystemEvent::RelationInstanceDeleted(edge_key) => {
+                entity_instance.set(PROPERTY_EVENT, json!(edge_key))
             }
         }
     }
@@ -115,6 +98,41 @@ impl SystemEventManager for SystemEventManagerImpl {
 }
 
 impl SystemEventManagerImpl {
+    fn propagate_type_definition_event(&self, entity_instance: Arc<ReactiveEntityInstance>, type_definition: TypeDefinition) {
+        if let Ok(value) = serde_json::to_value(type_definition) {
+            entity_instance.set(PROPERTY_EVENT, value);
+            // Also emit event that the type system has been changed
+            self.emit_event(SystemEvent::TypeSystemChanged);
+        };
+    }
+
+    fn propagate_type_definition_component_event<T: Into<TypeDefinition>>(
+        &self,
+        entity_instance: Arc<ReactiveEntityInstance>,
+        type_definition: T,
+        component_ty: &ComponentTypeId,
+    ) {
+        if let Ok(v) = TypeDefinitionComponent::new(type_definition, component_ty.clone()).try_into() {
+            entity_instance.set(PROPERTY_EVENT, v);
+        };
+        // Also emit event that the type system has been changed
+        self.emit_event(SystemEvent::TypeSystemChanged);
+    }
+
+    fn propagate_type_definition_property_event(&self, entity_instance: Arc<ReactiveEntityInstance>, type_definition: TypeDefinition, property_name: String) {
+        if let Ok(v) = TypeDefinitionProperty::new(type_definition, property_name).try_into() {
+            entity_instance.set(PROPERTY_EVENT, v);
+        };
+        self.emit_event(SystemEvent::TypeSystemChanged);
+    }
+
+    fn propagate_type_definition_extension_event(&self, entity_instance: Arc<ReactiveEntityInstance>, type_definition: TypeDefinition, extension_name: String) {
+        if let Ok(v) = TypeDefinitionExtension::new(type_definition, extension_name).try_into() {
+            entity_instance.set(PROPERTY_EVENT, v);
+        };
+        self.emit_event(SystemEvent::TypeSystemChanged);
+    }
+
     pub(crate) fn create_system_event_instances(&self) {
         let mut writer = self.system_event_instances.0.write().unwrap();
         writer.insert(
@@ -224,9 +242,9 @@ impl SystemEventManagerImpl {
     }
 
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> Arc<ReactiveEntityInstance> {
-        ReactiveEntityInstanceBuilder::new("core", "system_event")
+        ReactiveEntityInstanceBuilder::new_from_type(NAMESPACE_CORE, TYPE_SYSTEM_EVENT)
             .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
-            .property(SYSTEM_EVENT_PROPERTY_EVENT, json!(false))
+            .property(PROPERTY_EVENT, json!(false))
             .build()
     }
 

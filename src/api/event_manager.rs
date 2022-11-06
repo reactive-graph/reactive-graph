@@ -7,7 +7,6 @@ use crate::model::ReactiveEntityInstance;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
 
-pub const SYSTEM_EVENT_PROPERTY_EVENT: &str = "event";
 pub const SYSTEM_EVENT_PROPERTY_LABEL: &str = "label";
 
 #[async_trait]

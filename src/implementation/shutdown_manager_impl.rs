@@ -1,11 +1,11 @@
 use std::ops::Deref;
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use std::sync::RwLock;
 use std::time;
 
-use crate::builder::EntityTypeBuilder;
-use crate::builder::ReactiveEntityInstanceBuilder;
-use crate::di::*;
 use async_trait::async_trait;
+use inexor_rgf_core_model::ComponentTypeId;
+use inexor_rgf_core_model::EntityTypeId;
 use serde_json::json;
 use tokio::task;
 
@@ -13,11 +13,20 @@ use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ShutdownManager;
-use crate::api::LABEL;
-use crate::api::SHUTDOWN;
-use crate::api::TRIGGER;
 use crate::api::UUID_SHUTDOWN;
 use crate::api::UUID_SHUTDOWN_TRIGGER;
+use crate::builder::EntityTypeBuilder;
+use crate::builder::ReactiveEntityInstanceBuilder;
+use crate::di::*;
+use crate::implementation::COMPONENT_ACTION;
+use crate::implementation::COMPONENT_LABELED;
+use crate::implementation::NAMESPACE_CORE;
+use crate::implementation::NAMESPACE_LOGICAL;
+use crate::implementation::PROPERTY_LABEL;
+use crate::implementation::PROPERTY_SHUTDOWN;
+use crate::implementation::PROPERTY_TRIGGER;
+use crate::implementation::TYPE_SHUTDOWN;
+use crate::model::ReactivePropertyContainer;
 
 #[wrapper]
 pub struct ShutdownStateContainer(Arc<RwLock<bool>>);
@@ -50,18 +59,20 @@ impl ShutdownManager for ShutdownManagerImpl {
 
 impl Lifecycle for ShutdownManagerImpl {
     fn init(&self) {
-        let _ = self.entity_type_manager.register(EntityTypeBuilder::new("core", SHUTDOWN).build());
-        let entity_instance = ReactiveEntityInstanceBuilder::new("core", SHUTDOWN)
+        let ty = EntityTypeId::new_from_type(NAMESPACE_CORE, TYPE_SHUTDOWN);
+        let _ = self.entity_type_manager.register(EntityTypeBuilder::new(&ty).build());
+        let shutdown_handler = ReactiveEntityInstanceBuilder::new(ty)
             .id(UUID_SHUTDOWN)
-            .property(LABEL, json!("/org/inexor/system/shutdown"))
-            .property(SHUTDOWN, json!(false))
-            .property(TRIGGER, json!(false))
+            .property(PROPERTY_LABEL, json!("/org/inexor/system/shutdown"))
+            .property(PROPERTY_SHUTDOWN, json!(false))
+            .property(PROPERTY_TRIGGER, json!(false))
+            .component(ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_LABELED))
+            .component(ComponentTypeId::new_from_type(NAMESPACE_LOGICAL, COMPONENT_ACTION))
             .build();
-        entity_instance.components.insert("labeled".to_owned());
-        entity_instance.components.insert("action".to_owned());
-        self.reactive_entity_instance_manager.register_reactive_instance(entity_instance.clone());
+        let _ = self.reactive_entity_instance_manager.register_reactive_instance(shutdown_handler.clone());
         let shutdown_state = self.shutdown_state.0.clone();
-        entity_instance.properties.get(TRIGGER).unwrap().stream.read().unwrap().observe_with_handle(
+        shutdown_handler.observe_with_handle(
+            PROPERTY_TRIGGER,
             move |v| {
                 if v.is_boolean() && v.as_bool().unwrap() {
                     let mut guard = shutdown_state.write().unwrap();
@@ -71,7 +82,8 @@ impl Lifecycle for ShutdownManagerImpl {
             UUID_SHUTDOWN_TRIGGER.as_u128(),
         );
         let shutdown_state = self.shutdown_state.0.clone();
-        entity_instance.properties.get(SHUTDOWN).unwrap().stream.read().unwrap().observe_with_handle(
+        shutdown_handler.observe_with_handle(
+            PROPERTY_SHUTDOWN,
             move |v| {
                 if v.is_boolean() && v.as_bool().unwrap() {
                     let mut guard = shutdown_state.write().unwrap();
@@ -92,26 +104,10 @@ impl Lifecycle for ShutdownManagerImpl {
     }
 
     fn shutdown(&self) {
-        // Disconnect entity instances
-        self.reactive_entity_instance_manager
-            .get(UUID_SHUTDOWN)
-            .unwrap()
-            .properties
-            .get(TRIGGER)
-            .unwrap()
-            .stream
-            .read()
-            .unwrap()
-            .remove(UUID_SHUTDOWN_TRIGGER.as_u128());
-        self.reactive_entity_instance_manager
-            .get(UUID_SHUTDOWN)
-            .unwrap()
-            .properties
-            .get(SHUTDOWN)
-            .unwrap()
-            .stream
-            .read()
-            .unwrap()
-            .remove(UUID_SHUTDOWN.as_u128());
+        // Disconnect reactive streams of the shutdown handler
+        if let Some(shutdown_handler) = self.reactive_entity_instance_manager.get(UUID_SHUTDOWN) {
+            shutdown_handler.remove_observer(PROPERTY_TRIGGER, UUID_SHUTDOWN_TRIGGER.as_u128());
+            shutdown_handler.remove_observer(PROPERTY_SHUTDOWN, UUID_SHUTDOWN.as_u128());
+        }
     }
 }
