@@ -1,7 +1,8 @@
 pub mod application;
 
 use random_string::generate;
-use serde_json::{json, Value};
+use serde_json::json;
+use serde_json::Value;
 
 const CHARSET_LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
