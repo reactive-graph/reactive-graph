@@ -6,11 +6,13 @@ use uuid::Uuid;
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::mutation::RelationTypeIdDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
 use crate::model::ReactiveEntityInstance;
+use crate::model::RelationTypeId;
 
 pub struct GraphQLEntityInstance {
     entity_instance: Arc<ReactiveEntityInstance>,
@@ -28,9 +30,7 @@ impl GraphQLEntityInstance {
     #[graphql(name = "type")]
     async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
         if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
-            return entity_type_manager
-                .get_fully_qualified(&self.entity_instance.namespace, &self.entity_instance.type_name)
-                .map(|entity_type| entity_type.into());
+            return entity_type_manager.get(&self.entity_instance.ty).map(|entity_type| entity_type.into());
         }
         None
     }
@@ -70,7 +70,7 @@ impl GraphQLEntityInstance {
             .filter(|property_instance| name.is_none() || name.clone().unwrap().as_str() == property_instance.key().as_str())
             .filter(|property_instance| names.is_none() || names.clone().unwrap().contains(property_instance.key()))
             .map(|property_instance| {
-                GraphQLPropertyInstance::new_entity_property(self.entity_instance.type_name.clone(), property_instance.key().clone(), property_instance.get())
+                GraphQLPropertyInstance::new_entity_property(self.entity_instance.ty.clone(), property_instance.key().clone(), property_instance.get())
             })
             .collect()
     }
@@ -84,8 +84,8 @@ impl GraphQLEntityInstance {
                 .components
                 .iter()
                 .map(|p| p.key().clone())
-                .filter_map(|component_name| {
-                    component_manager.get(&component_name).map(|component| {
+                .filter_map(|component_ty| {
+                    component_manager.get(&component_ty).map(|component| {
                         let component: GraphQLComponent = component.into();
                         component
                     })
@@ -95,54 +95,45 @@ impl GraphQLEntityInstance {
         }
     }
 
-    /// List of components which have been actually applied on the entity instance including
-    /// components which have been added after creation.
-    async fn component_names(&self) -> Vec<String> {
-        self.entity_instance.components.iter().map(|p| p.key().clone()).collect()
-    }
-
     /// List of behaviours which have been actually applied on the entity instance including
     /// behaviours which have been applied after creation.
     async fn behaviours(&self) -> Vec<String> {
-        self.entity_instance.behaviours.iter().map(|p| p.key().clone()).collect()
+        /// TODO: Implement BehaviourTypeId representation
+        self.entity_instance.behaviours.iter().map(|p| p.key().to_string()).collect()
     }
 
     /// List of relation instances which starts at this entity instance.
     async fn outbound(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The outbound relation type")] type_name: Option<String>,
-    ) -> Vec<GraphQLRelationInstance> {
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
-        if relation_instance_manager.is_ok() {
-            let relation_instance_manager = relation_instance_manager.unwrap();
-            return relation_instance_manager
-                .get_by_outbound_entity(self.entity_instance.id)
-                .iter()
-                .filter(|relation_instance| type_name.is_none() || type_name.clone().unwrap() == relation_instance.type_name.clone())
-                .map(|relation_instance| relation_instance.clone().into())
-                .collect();
-        }
-        Vec::new()
+        #[graphql(name = "type", desc = "The outbound relation type")] outbound_ty: Option<RelationTypeIdDefinition>,
+    ) -> Result<Vec<GraphQLRelationInstance>> {
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let outbound_ty: Option<RelationTypeId> = outbound_ty.map(|outbound_ty| outbound_ty.into());
+        let relation_instances = relation_instance_manager
+            .get_by_outbound_entity(self.entity_instance.id)
+            .iter()
+            .filter(|relation_instance| outbound_ty.is_none() || &outbound_ty.clone().unwrap() == &relation_instance.relation_type_id())
+            .map(|relation_instance| relation_instance.clone().into())
+            .collect();
+        Ok(relation_instances)
     }
 
     /// List of relation instances which ends at this entity instance.
     async fn inbound(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "type", desc = "The inbound relation type")] type_name: Option<String>,
-    ) -> Vec<GraphQLRelationInstance> {
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>();
-        if relation_instance_manager.is_ok() {
-            let relation_instance_manager = relation_instance_manager.unwrap();
-            return relation_instance_manager
-                .get_by_inbound_entity(self.entity_instance.id)
-                .iter()
-                .filter(|relation_instance| type_name.is_none() || type_name.clone().unwrap() == relation_instance.type_name.clone())
-                .map(|relation_instance| relation_instance.clone().into())
-                .collect();
-        }
-        Vec::new()
+        #[graphql(name = "type", desc = "The inbound relation type")] inbound_ty: Option<RelationTypeIdDefinition>,
+    ) -> Result<Vec<GraphQLRelationInstance>> {
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let inbound_ty: Option<RelationTypeId> = inbound_ty.map(|inbound_ty| inbound_ty.into());
+        let relation_instances = relation_instance_manager
+            .get_by_inbound_entity(self.entity_instance.id)
+            .iter()
+            .filter(|relation_instance| inbound_ty.is_none() || &inbound_ty.clone().unwrap() == &relation_instance.relation_type_id())
+            .map(|relation_instance| relation_instance.clone().into())
+            .collect();
+        Ok(relation_instances)
     }
 }
 

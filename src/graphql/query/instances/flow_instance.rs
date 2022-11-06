@@ -4,7 +4,9 @@ use async_graphql::*;
 use uuid::Uuid;
 
 use crate::api::EntityTypeManager;
-use crate::graphql::query::{GraphQLEntityInstance, GraphQLEntityType, GraphQLRelationInstance};
+use crate::graphql::query::GraphQLEntityInstance;
+use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLRelationInstance;
 use crate::model::ReactiveFlowInstance;
 
 pub struct GraphQLFlowInstance {
@@ -52,7 +54,7 @@ impl GraphQLFlowInstance {
             return None;
         }
         let entity_type_manager = entity_type_manager.unwrap();
-        let entity_type = entity_type_manager.get(&self.flow_instance.type_name)?;
+        let entity_type = entity_type_manager.get(&self.flow_instance.ty)?;
         Some(entity_type.into())
     }
 

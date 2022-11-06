@@ -1,9 +1,13 @@
 use async_graphql::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 use uuid::Uuid;
 
+use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
+use crate::model::Extension;
 use crate::model::RelationInstance;
+use crate::model::RelationInstanceTypeId;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -18,15 +22,17 @@ use crate::model::RelationInstance;
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "RelationInstanceDefinition")]
 pub struct GraphQLRelationInstanceDefinition {
-    /// The namespace the relation type belongs to.
-    pub namespace: String,
-
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
 
-    /// The name of the relation type
-    #[graphql(name = "type")]
+    /// The namespace the relation type belongs to.
+    pub namespace: String,
+
+    /// The name of the relation type.
     pub type_name: String,
+
+    /// The instance id of the relation instance type.
+    pub instance_id: String,
 
     /// The id of the inbound vertex.
     pub inbound_id: Uuid,
@@ -41,14 +47,21 @@ pub struct GraphQLRelationInstanceDefinition {
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     pub properties: Vec<GraphQLPropertyInstance>,
+
+    /// Relation instance specific extensions.
+    pub extensions: Vec<GraphQLExtension>,
 }
 
 impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
     fn from(relation_instance: GraphQLRelationInstanceDefinition) -> Self {
+        let ty = RelationInstanceTypeId::new_from_type_unique_for_instance_id(
+            relation_instance.namespace,
+            relation_instance.type_name,
+            relation_instance.instance_id,
+        );
         RelationInstance {
-            namespace: relation_instance.namespace.clone(),
             outbound_id: relation_instance.outbound_id,
-            type_name: relation_instance.type_name.clone(),
+            ty,
             inbound_id: relation_instance.inbound_id,
             description: relation_instance.description.clone(),
             properties: relation_instance
@@ -56,6 +69,7 @@ impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
                 .iter()
                 .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
                 .collect(),
+            extensions: relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect(),
         }
     }
 }

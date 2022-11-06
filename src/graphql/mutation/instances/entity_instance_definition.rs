@@ -3,8 +3,11 @@ use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
 
+use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::EntityInstance;
+use crate::model::EntityTypeId;
+use crate::model::Extension;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -19,7 +22,6 @@ pub struct GraphQLEntityInstanceDefinition {
     pub namespace: String,
 
     /// The name of the entity type.
-    #[graphql(name = "type")]
     pub type_name: String,
 
     /// The unique identifier of the entity instance.
@@ -36,13 +38,15 @@ pub struct GraphQLEntityInstanceDefinition {
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     pub properties: Vec<GraphQLPropertyInstance>,
+
+    /// Entity instance specific extensions.
+    pub extensions: Vec<GraphQLExtension>,
 }
 
 impl From<GraphQLEntityInstanceDefinition> for EntityInstance {
     fn from(entity_instance: GraphQLEntityInstanceDefinition) -> Self {
         EntityInstance {
-            namespace: entity_instance.namespace.clone(),
-            type_name: entity_instance.type_name.clone(),
+            ty: EntityTypeId::new_from_type(entity_instance.namespace, entity_instance.type_name),
             id: entity_instance.id,
             description: entity_instance.description.clone(),
             properties: entity_instance
@@ -50,6 +54,7 @@ impl From<GraphQLEntityInstanceDefinition> for EntityInstance {
                 .iter()
                 .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
                 .collect(),
+            extensions: entity_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect(),
         }
     }
 }

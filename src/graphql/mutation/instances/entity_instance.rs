@@ -7,6 +7,8 @@ use uuid::Uuid;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::mutation::ComponentTypeIdDefinition;
+use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::PropertyInstanceSetter;
@@ -31,40 +33,39 @@ impl MutationEntityInstances {
     async fn create(
         &self,
         context: &Context<'_>,
-        #[graphql(name = "namespace", desc = "The namespace.")] namespace: Option<String>,
-        #[graphql(name = "type", desc = "The entity type.")] type_name: String,
+        #[graphql(name = "type", desc = "The entity type")] entity_ty: EntityTypeIdDefinition,
         #[graphql(desc = "The id of the entity instance. If none is given a random uuid will be generated.")] id: Option<Uuid>,
-        #[graphql(desc = "Creates the entity instance with the given components.")] components: Option<Vec<String>>,
+        #[graphql(desc = "Creates the entity instance with the given components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
 
-        let entity_type = match namespace {
-            Some(namespace) => entity_type_manager.get_fully_qualified(&namespace, &type_name),
-            None => entity_type_manager.get(&type_name),
-        };
+        let entity_ty = entity_ty.into();
+        let entity_type = entity_type_manager
+            .get(&entity_ty)
+            .ok_or(Error::new(format!("Entity type {} does not exist", entity_ty)))?;
 
-        if entity_type.is_none() {
-            return Err(Error::new(format!("Entity type {type_name} does not exist")));
-        }
-
-        let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
+        let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.properties);
 
         let entity_instance = match id {
-            Some(id) => entity_instance_manager.create_with_id(&type_name, id, properties),
-            None => entity_instance_manager.create(&type_name, properties),
+            Some(id) => entity_instance_manager.create_with_id(&entity_ty, id, properties),
+            None => entity_instance_manager.create(&entity_ty, properties),
         };
-        if entity_instance.is_err() {
-            return Err(Error::new(format!("Failed to create entity instance: {}", entity_instance.err().unwrap())));
-        }
-        let entity_instance = entity_instance.unwrap();
-        if let Some(components) = components {
-            for component in components {
-                entity_instance_manager.add_component(entity_instance.id, &component);
+        match entity_instance {
+            Ok(entity_instance) => {
+                if let Some(components) = components {
+                    for component in components {
+                        // TODO: handle the case when one or multiple components wasn't added
+                        // How to handle this?
+                        let component_ty = component.into();
+                        let _ = entity_instance_manager.add_component(entity_instance.id, &component_ty);
+                    }
+                }
+                Ok(entity_instance.into())
             }
+            Err(e) => Err(Error::new(format!("Failed to create entity instance: {}", e))),
         }
-        Ok(entity_instance.into())
     }
 
     /// Updates the properties of the entity instance with the given id.
@@ -73,8 +74,8 @@ impl MutationEntityInstances {
         context: &Context<'_>,
         #[graphql(desc = "Updates the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Updates the entity instance with the given label.")] label: Option<String>,
-        #[graphql(desc = "Updates the entity instance with the given label.")] add_components: Option<Vec<String>>,
-        #[graphql(desc = "Updates the entity instance with the given label.")] remove_components: Option<Vec<String>>,
+        #[graphql(desc = "Adds the given components.")] add_components: Option<Vec<ComponentTypeIdDefinition>>,
+        #[graphql(desc = "Removes the given components.")] remove_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
@@ -93,11 +94,14 @@ impl MutationEntityInstances {
 
         if let Some(components) = add_components {
             for component in components {
-                entity_instance_manager.add_component(entity_instance.id, &component);
+                // TODO: handle the case when one or multiple components wasn't added
+                let component = component.into();
+                let _ = entity_instance_manager.add_component(entity_instance.id, &component);
             }
         }
         if let Some(components) = remove_components {
             for component in components {
+                let component = component.into();
                 entity_instance_manager.remove_component(entity_instance.id, &component);
             }
         }
@@ -150,10 +154,10 @@ impl MutationEntityInstances {
         if delete_relations.is_some() && delete_relations.unwrap() {
             let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
             relation_instance_manager.get_by_inbound_entity(id).iter().for_each(|r| {
-                relation_instance_manager.delete(r.get_key().unwrap());
+                relation_instance_manager.delete(&r.get_key());
             });
             relation_instance_manager.get_by_outbound_entity(id).iter().for_each(|r| {
-                relation_instance_manager.delete(r.get_key().unwrap());
+                relation_instance_manager.delete(&r.get_key());
             });
         }
         entity_instance_manager.delete(id);

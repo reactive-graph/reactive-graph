@@ -1,13 +1,16 @@
-use crate::model::ReactiveRelationInstance;
+use std::pin::Pin;
+use std::sync::Arc;
+use std::task::Poll;
+use std::time::Duration;
+
 use crossbeam::channel::Receiver;
 use futures_util::Stream;
 use log::debug;
 use rand::Rng;
 use serde_json::Value;
-use std::pin::Pin;
-use std::sync::Arc;
-use std::task::Poll;
-use std::time::Duration;
+
+use crate::model::ReactiveRelationInstance;
+use crate::model::TypeDefinitionGetter;
 
 pub struct RelationPropertyInstanceStream {
     relation_instance: Arc<ReactiveRelationInstance>,
@@ -21,7 +24,7 @@ impl RelationPropertyInstanceStream {
         debug!(
             "Opened subscription relation({}__{}__{})[{}]",
             relation_instance.inbound.id,
-            relation_instance.type_name.clone(),
+            relation_instance.type_definition().to_string(),
             relation_instance.outbound.id,
             property_name
         );
@@ -67,7 +70,7 @@ impl Drop for RelationPropertyInstanceStream {
         debug!(
             "Closing subscription relation({}__{}__{})[{}]",
             self.relation_instance.inbound.id,
-            self.relation_instance.type_name.clone(),
+            self.relation_instance.type_definition().to_string(),
             self.relation_instance.outbound.id,
             self.property_name.clone()
         );

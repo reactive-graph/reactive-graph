@@ -1,23 +1,28 @@
+use std::sync::Arc;
+use std::time::Duration;
+
+use async_graphql::async_stream;
+use async_graphql::Context;
+use async_graphql::Result;
+use async_graphql::Subscription;
+use futures_util::Stream;
+use futures_util::StreamExt;
+use serde::Serialize;
+use serde_json::Value;
+use uuid::Uuid;
+
 pub use entity_instance::*;
 pub use relation_instance::*;
 
-use serde::Serialize;
+use crate::api::ReactiveEntityInstanceManager;
+use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::mutation::GraphQLEdgeKey;
+use crate::graphql::query::GraphQLPropertyInstance;
 
 pub mod entity_instance;
 pub mod relation_instance;
 
 pub struct InexorSubscription;
-
-use crate::api::{ReactiveEntityInstanceManager, ReactiveRelationInstanceManager};
-use crate::graphql::mutation::GraphQLEdgeKey;
-use crate::graphql::query::GraphQLPropertyInstance;
-use async_graphql::{async_stream, Context, Result, Subscription};
-use futures_util::Stream;
-use futures_util::StreamExt;
-use serde_json::Value;
-use std::sync::Arc;
-use std::time::Duration;
-use uuid::Uuid;
 
 /// Subscriptions for the reactive property instances.
 #[Subscription(name = "Subscription")]
@@ -44,7 +49,7 @@ impl InexorSubscription {
                         if !entity_instance.properties.contains_key(&property_name) {
                             return Err("Error: property by name not found".into());
                         }
-                        let type_name = entity_instance.type_name.clone();
+                        let entity_ty = entity_instance.ty.clone();
                         let mut stream = EntityPropertyInstanceStream::new(entity_instance, property_name.clone());
 
                         Ok(async_stream::stream! {
@@ -52,7 +57,7 @@ impl InexorSubscription {
                                 match stream.next().await {
                                     Some(value) => {
                                         futures_timer::Delay::new(Duration::from_millis(10)).await;
-                                        yield GraphQLPropertyInstance::new_entity_property(type_name.clone(), property_name.clone(), value.clone());
+                                        yield GraphQLPropertyInstance::new_entity_property(entity_ty.clone(), property_name.clone(), value.clone());
                                     }
                                     None => {
                                         futures_timer::Delay::new(Duration::from_millis(100)).await;
@@ -75,12 +80,12 @@ impl InexorSubscription {
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
         match context.data::<Arc<dyn ReactiveRelationInstanceManager>>() {
-            Ok(relation_instance_manager) => match relation_instance_manager.get(edge_key.into()) {
+            Ok(relation_instance_manager) => match relation_instance_manager.get(&edge_key.into()) {
                 Some(relation_instance) => {
                     if !relation_instance.properties.contains_key(&property_name) {
                         return Err("Error: property by name not found".into());
                     }
-                    let type_name = relation_instance.type_name.clone();
+                    let relation_ty = relation_instance.relation_type_id();
                     let mut stream = RelationPropertyInstanceStream::new(relation_instance, property_name.clone());
 
                     Ok(async_stream::stream! {
@@ -88,7 +93,7 @@ impl InexorSubscription {
                             match stream.next().await {
                                 Some(value) => {
                                     futures_timer::Delay::new(Duration::from_millis(10)).await;
-                                    yield GraphQLPropertyInstance::new_entity_property(type_name.clone(), property_name.clone(), value.clone());
+                                    yield GraphQLPropertyInstance::new_relation_property(relation_ty.clone(), property_name.clone(), value.clone());
                                 }
                                 None => {
                                     futures_timer::Delay::new(Duration::from_millis(100)).await;

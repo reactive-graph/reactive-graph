@@ -1,8 +1,11 @@
 use async_graphql::*;
-use serde::{Deserialize, Serialize};
+use inexor_rgf_core_model::EntityTypeId;
+use serde::Deserialize;
+use serde::Serialize;
 use uuid::Uuid;
 
-use crate::graphql::mutation::{GraphQLEntityInstanceDefinition, GraphQLRelationInstanceDefinition};
+use crate::graphql::mutation::GraphQLEntityInstanceDefinition;
+use crate::graphql::mutation::GraphQLRelationInstanceDefinition;
 use crate::model::FlowInstance;
 
 /// Represents a flow with entity instances and relation instances.
@@ -18,8 +21,10 @@ pub struct GraphQLFlowInstanceDefinition {
     /// the id of the flow.
     pub id: Uuid,
 
+    /// The namespace the entity type belongs to.
+    pub namespace: String,
+
     /// The name of the entity type.
-    #[graphql(name = "type")]
     pub type_name: String,
 
     /// The name of the flow.
@@ -45,7 +50,7 @@ impl From<GraphQLFlowInstanceDefinition> for FlowInstance {
     fn from(flow: GraphQLFlowInstanceDefinition) -> Self {
         FlowInstance {
             id: flow.id,
-            type_name: flow.type_name.clone(),
+            ty: EntityTypeId::new_from_type(flow.namespace, flow.type_name),
             name: flow.name.clone(),
             description: flow.description.clone(),
             entity_instances: flow.entity_instances.iter().map(|entity_instance| entity_instance.clone().into()).collect(),
