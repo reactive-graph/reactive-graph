@@ -20,5 +20,8 @@ pub trait EntityBehaviourManager: Send + Sync {
     fn remove_behaviours_by_id(&self, id: Uuid);
 
     /// Registers a entity behaviour provider.
-    fn add_provider(&self, behaviour_provider: Arc<dyn EntityBehaviourProvider>);
+    fn add_provider(&self, id: Uuid, behaviour_provider: Arc<dyn EntityBehaviourProvider>);
+
+    /// Unregisters a entity behaviour provider.
+    fn remove_provider(&self, id: &Uuid);
 }
