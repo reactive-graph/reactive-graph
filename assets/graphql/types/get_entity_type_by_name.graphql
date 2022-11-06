@@ -1,6 +1,11 @@
 query {
   types {
-    entities(name: "entitytype1") {
+    entities(
+      type: {
+        namespace: "value"
+        name: "value_number"
+      }
+    ) {
       namespace
       name
       description
