@@ -1,5 +1,6 @@
 use async_graphql::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 use strum::Display;
 
 /// The data types of a value.
