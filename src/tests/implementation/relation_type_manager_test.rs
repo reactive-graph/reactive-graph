@@ -1,8 +1,13 @@
-use inexor_rgf_core_model::TypeContainer;
 use std::env;
 
 use crate::builder::EntityTypeBuilder;
-use crate::model::{DataType, PropertyType, RelationType};
+use crate::model::ComponentOrEntityTypeId;
+use crate::model::ComponentTypeId;
+use crate::model::NamespacedTypeGetter;
+use crate::model::PropertyType;
+use crate::model::RelationType;
+use crate::model::RelationTypeId;
+use crate::model::TypeContainer;
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
 
@@ -17,24 +22,24 @@ fn test_register_relation_type() {
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    relation_type_manager.register(crate::model::RelationType::new(
-        namespace.clone(),
-        outbound_type_name.clone(),
-        type_name.clone(),
-        inbound_type_name.clone(),
-        String::new(),
-        vec![String::from("named")],
-        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
-        Vec::new(),
-    ));
-    assert!(relation_type_manager.has(type_name.as_str()));
+    let outbound_type = EntityTypeBuilder::new_from_type(namespace.as_str(), outbound_type_name.as_str()).build();
+    let result = entity_type_manager.register(outbound_type.clone());
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(namespace.as_str(), inbound_type_name.as_str()).build();
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
 
-    let relation_type: Option<RelationType> = relation_type_manager.get(type_name.as_str());
-    assert_eq!(type_name, relation_type.unwrap().type_name);
+    let outbound_type: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let inbound_type: ComponentOrEntityTypeId = inbound_type.ty.into();
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
+    let relation_type = RelationType::new(outbound_type, &relation_ty, inbound_type, "", vec![component_ty], vec![PropertyType::string("x")], Vec::new());
+    let result = relation_type_manager.register(relation_type);
+    assert!(result.is_ok());
+    assert!(relation_type_manager.has(&relation_ty));
+
+    let relation_type: Option<RelationType> = relation_type_manager.get(&relation_ty);
+    assert_eq!(type_name, relation_type.unwrap().type_name());
 }
 
 #[test]
@@ -49,31 +54,35 @@ fn test_create_and_delete_relation_type() {
     let inbound_type_name = r_string();
     let description = r_string();
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    relation_type_manager.create(
-        &namespace,
-        &outbound_type_name,
-        &type_name,
-        &inbound_type_name,
+    let outbound_type = EntityTypeBuilder::new_from_type(namespace.as_str(), outbound_type_name.as_str()).build();
+    let result = entity_type_manager.register(outbound_type.clone());
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(namespace.as_str(), inbound_type_name.as_str()).build();
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
+
+    let outbound_ty: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let inbound_ty: ComponentOrEntityTypeId = inbound_type.ty.into();
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
+
+    let result = relation_type_manager.create(
+        &outbound_ty,
+        &relation_ty,
+        &inbound_ty,
         &description,
-        vec![String::from("positionable")],
-        vec![PropertyType::new(String::from("x"), DataType::String)],
+        vec![component_ty],
+        vec![PropertyType::string("x")],
         Vec::new(),
     );
-    assert!(relation_type_manager.has(type_name.as_str()));
+    assert!(result.is_ok());
+    assert!(relation_type_manager.has(&relation_ty));
+    assert!(relation_type_manager.has_by_type(&namespace, &type_name));
 
-    let relation_type: Option<RelationType> = relation_type_manager.get(type_name.as_str());
-    assert_eq!(type_name, relation_type.unwrap().type_name);
-
-    relation_type_manager.delete(type_name.as_str());
-
-    assert!(!relation_type_manager.has(type_name.as_str()));
-
-    let relation_type: Option<RelationType> = relation_type_manager.get(type_name.as_str());
-    assert!(relation_type.is_none());
+    assert_eq!(type_name, relation_type_manager.get(&relation_ty).unwrap().type_name());
+    relation_type_manager.delete(&relation_ty);
+    assert!(!relation_type_manager.has(&relation_ty));
+    assert!(relation_type_manager.get(&relation_ty).is_none());
 }
 
 #[test]
@@ -88,16 +97,23 @@ fn test_get_relation_types() {
     let inbound_type_name = r_string();
     let description = r_string();
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
+    let outbound_type = EntityTypeBuilder::new_from_type(namespace.as_str(), outbound_type_name.as_str()).build();
+    let result = entity_type_manager.register(outbound_type.clone());
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(namespace.as_str(), inbound_type_name.as_str()).build();
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
 
-    relation_type_manager.create(&namespace, &outbound_type_name, &type_name, &inbound_type_name, &description, vec![], vec![], vec![]);
-    let relation_types = relation_type_manager.get_relation_types();
+    let outbound_ty: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let inbound_ty: ComponentOrEntityTypeId = inbound_type.ty.into();
+
+    let result = relation_type_manager.create(&outbound_ty, &relation_ty, &inbound_ty, &description, vec![], vec![], vec![]);
+    assert!(result.is_ok());
+    let relation_types = relation_type_manager.get_all();
     assert_eq!(1, relation_types.len());
     for relation_type in relation_types {
-        assert!(relation_type_manager.has(relation_type.type_name.as_str()));
+        assert!(relation_type_manager.has(&relation_type.ty));
     }
 }
 
@@ -111,35 +127,41 @@ fn test_register_relation_type_has_component() {
     let namespace = r_string();
     let component_name = r_string();
 
-    component_manager.register(crate::model::Component::new(
-        namespace.clone(),
-        component_name.clone(),
-        String::new(),
-        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
-        Vec::new(),
-    ));
+    let component =
+        crate::model::Component::new_from_type(namespace.clone(), component_name.clone(), String::new(), vec![PropertyType::string("x")], Vec::new());
+    let result = component_manager.register(component.clone());
+    assert!(result.is_ok());
+    let component_ty = component.ty.clone();
 
     let relation_type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    relation_type_manager.register(crate::model::RelationType::new(
-        namespace.clone(),
-        outbound_type_name.clone(),
-        relation_type_name.clone(),
-        inbound_type_name.clone(),
+    let outbound_type = EntityTypeBuilder::new_from_type(&namespace, &outbound_type_name).build();
+    let result = entity_type_manager.register(outbound_type.clone());
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(&namespace, &inbound_type_name).build();
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
+
+    let outbound_ty: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &relation_type_name);
+    let inbound_ty: ComponentOrEntityTypeId = inbound_type.ty.into();
+
+    let relation_type = RelationType::new(
+        &outbound_ty,
+        &relation_ty,
+        &inbound_ty,
         String::new(),
-        vec![component_name.clone()],
-        vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
+        vec![component_ty.clone()],
+        vec![PropertyType::string("y")],
         Vec::new(),
-    ));
-    let relation_type: RelationType = relation_type_manager.get(relation_type_name.as_str()).unwrap();
-    assert!(relation_type.components.contains(&component_name.clone()));
-    assert!(relation_type.is_a(component_name.clone()));
+    );
+    let result = relation_type_manager.register(relation_type);
+    assert!(result.is_ok());
+    let relation_type: RelationType = relation_type_manager.get(&relation_ty).unwrap();
+    assert!(relation_type.components.contains(&component_ty));
+    assert!(relation_type.is_a(&component_ty));
 }
 
 #[test]
@@ -149,28 +171,28 @@ fn test_register_relation_type_has_property() {
     let relation_type_manager = application.get_relation_type_manager();
 
     let property_name = String::from("x");
-    let property_type = PropertyType::new(property_name.clone(), DataType::String);
+    let property_type = PropertyType::string(&property_name);
 
     let namespace = r_string();
     let relation_type_name = r_string();
     let outbound_type_name = r_string();
     let inbound_type_name = r_string();
 
-    let entity_type = EntityTypeBuilder::new(&namespace, &outbound_type_name).build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(&namespace, &inbound_type_name).build();
-    entity_type_manager.register(entity_type.clone());
-    relation_type_manager.register(RelationType::new(
-        namespace.clone(),
-        outbound_type_name.clone(),
-        relation_type_name.clone(),
-        inbound_type_name.clone(),
-        String::new(),
-        Vec::new(),
-        vec![property_type],
-        Vec::new(),
-    ));
-    let relation_type: Option<RelationType> = relation_type_manager.get(relation_type_name.as_str());
+    let outbound_type = EntityTypeBuilder::new_from_type(&namespace, &outbound_type_name).build();
+    let result = entity_type_manager.register(outbound_type.clone());
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(&namespace, &inbound_type_name).build();
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
+
+    let outbound_ty: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &relation_type_name);
+    let inbound_ty: ComponentOrEntityTypeId = inbound_type.ty.into();
+
+    let relation_type = RelationType::new(&outbound_ty, &relation_ty, &inbound_ty, String::new(), Vec::new(), vec![property_type], Vec::new());
+    let result = relation_type_manager.register(relation_type);
+    assert!(result.is_ok());
+    let relation_type: Option<RelationType> = relation_type_manager.get(&relation_ty);
     assert!(relation_type.unwrap().has_own_property(property_name.clone()));
 }
 
@@ -190,25 +212,33 @@ fn test_export_import_relation_type() {
     path.push(format!("{}.json", type_name));
     let path = path.into_os_string().into_string().unwrap();
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type_name.as_str()).build();
-    entity_type_manager.register(entity_type.clone());
-    relation_type_manager.create(
-        &namespace,
-        &outbound_type_name,
-        &type_name,
-        &inbound_type_name,
+    let outbound_type = EntityTypeBuilder::new_from_type(&namespace, &outbound_type_name).build();
+    let result = entity_type_manager.register(outbound_type.clone());
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(&namespace, &inbound_type_name).build();
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
+
+    let outbound_ty: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let inbound_ty: ComponentOrEntityTypeId = inbound_type.ty.into();
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
+
+    let result = relation_type_manager.create(
+        &outbound_ty,
+        &relation_ty,
+        &inbound_ty,
         &description,
-        vec![String::from("positionable")],
-        vec![PropertyType::new(String::from("x"), DataType::String)],
+        vec![component_ty],
+        vec![PropertyType::string("x")],
         Vec::new(),
     );
-    relation_type_manager.export(type_name.as_str(), path.as_str());
-    assert!(relation_type_manager.has(type_name.as_str()));
-    relation_type_manager.delete(type_name.as_str());
-    assert!(!relation_type_manager.has(type_name.as_str()));
+    assert!(result.is_ok());
+    relation_type_manager.export(&relation_ty, path.as_str());
+    assert!(relation_type_manager.has(&relation_ty));
+    relation_type_manager.delete(&relation_ty);
+    assert!(!relation_type_manager.has(&relation_ty));
     let result = relation_type_manager.import(path.as_str());
-    assert!(relation_type_manager.has(type_name.as_str()));
+    assert!(relation_type_manager.has(&relation_ty));
     assert!(result.is_ok());
 }
