@@ -1,53 +1,51 @@
-use inexor_rgf_core_plugins::plugin::{
-    PluginInitializationError, PluginMetadataError, PluginPostInitializationError, PluginPreShutdownError, PluginShutdownError,
-};
-use inexor_rgf_core_plugins::{
-    ComponentBehaviourProviderError, ComponentProviderError, EntityBehaviourProviderError, EntityTypeProviderError, FlowInstanceProviderError,
-    FlowTypeProvider, FlowTypeProviderError, PluginContextInitializationError, RelationBehaviourProviderError, RelationTypeProviderError,
-    WebResourceProviderError,
-};
 use std::sync::Arc;
 
-use libloading::Library;
-
-use crate::plugins::plugin::PluginMetadata;
 use crate::plugins::plugin_context::PluginContext;
-use crate::plugins::{
-    ComponentBehaviourProvider, ComponentProvider, EntityBehaviourProvider, EntityTypeProvider, FlowInstanceProvider, Plugin, RelationBehaviourProvider,
-    RelationTypeProvider, WebResourceProvider,
-};
+use crate::plugins::ComponentBehaviourProvider;
+use crate::plugins::ComponentBehaviourProviderError;
+use crate::plugins::ComponentProvider;
+use crate::plugins::ComponentProviderError;
+use crate::plugins::EntityBehaviourProvider;
+use crate::plugins::EntityBehaviourProviderError;
+use crate::plugins::EntityTypeProvider;
+use crate::plugins::EntityTypeProviderError;
+use crate::plugins::FlowInstanceProvider;
+use crate::plugins::FlowInstanceProviderError;
+use crate::plugins::FlowTypeProvider;
+use crate::plugins::FlowTypeProviderError;
+use crate::plugins::Plugin;
+use crate::plugins::PluginActivationError;
+use crate::plugins::PluginContextDeinitializationError;
+use crate::plugins::PluginContextInitializationError;
+use crate::plugins::PluginDeactivationError;
+use crate::plugins::RelationBehaviourProvider;
+use crate::plugins::RelationBehaviourProviderError;
+use crate::plugins::RelationTypeProvider;
+use crate::plugins::RelationTypeProviderError;
+use crate::plugins::WebResourceProvider;
+use crate::plugins::WebResourceProviderError;
 
 /// A proxy object which wraps a [`Plugin`] and makes sure it can't outlive
 /// the library it came from.
 pub struct PluginProxy {
     pub(crate) plugin: Box<Arc<dyn Plugin>>,
-    #[allow(dead_code)]
-    pub(crate) lib: Arc<Library>,
 }
 
 impl Plugin for PluginProxy {
-    fn metadata(&self) -> Result<PluginMetadata, PluginMetadataError> {
-        self.plugin.metadata()
+    fn activate(&self) -> Result<(), PluginActivationError> {
+        self.plugin.activate()
     }
 
-    fn init(&self) -> Result<(), PluginInitializationError> {
-        self.plugin.init()
-    }
-
-    fn post_init(&self) -> Result<(), PluginPostInitializationError> {
-        self.plugin.post_init()
-    }
-
-    fn pre_shutdown(&self) -> Result<(), PluginPreShutdownError> {
-        self.plugin.pre_shutdown()
-    }
-
-    fn shutdown(&self) -> Result<(), PluginShutdownError> {
-        self.plugin.shutdown()
+    fn deactivate(&self) -> Result<(), PluginDeactivationError> {
+        self.plugin.deactivate()
     }
 
     fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginContextInitializationError> {
         self.plugin.set_context(context.clone())
+    }
+
+    fn remove_context(&self) -> Result<(), PluginContextDeinitializationError> {
+        self.plugin.remove_context()
     }
 
     fn get_component_provider(&self) -> Result<Option<Arc<dyn ComponentProvider>>, ComponentProviderError> {

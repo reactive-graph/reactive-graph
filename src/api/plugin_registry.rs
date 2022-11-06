@@ -1,35 +1,42 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
+use uuid::Uuid;
 
 use crate::api::Lifecycle;
-use crate::plugin::proxy::PluginProxy;
-use crate::plugins::PluginInitializationError;
-use crate::plugins::PluginLoadingError;
-use crate::plugins::PluginPostInitializationError;
-use crate::plugins::PluginPreShutdownError;
-use crate::plugins::PluginShutdownError;
+use crate::plugins::plugin_state::PluginStartError;
+use crate::plugins::plugin_state::PluginStopError;
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub enum PluginRegistryMode {
+    Starting,
+    Neutral,
+    Stopping,
+}
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub enum PluginTransitionResult {
+    NoChange,
+    Changed,
+}
 
 #[async_trait]
 pub trait PluginRegistry: Send + Sync + Lifecycle {
-    fn has(&self, name: String) -> bool;
+    fn has(&self, stem: &str) -> bool;
 
-    fn get(&self, name: String) -> Option<Arc<PluginProxy>>;
+    fn get_id(&self, stem: &str) -> Option<Uuid>;
 
-    fn load_plugins(&self);
+    fn resolve_until_idle(&self);
 
-    fn load_plugin(&self, name: String, path: String);
+    fn start(&self, id: &Uuid) -> Result<(), PluginStartError>;
 
-    fn unload_plugins(&self);
+    fn start_by_stem(&self, stem: &str) -> Result<(), PluginStartError>;
 
-    unsafe fn load(&self, library_path: String) -> Result<(), PluginLoadingError>;
-    // unsafe fn unload<P: AsRef<OsStr>>(&mut self, library_path: P) -> Result<(), PluginError>;
+    fn stop(&self, id: &Uuid) -> Result<(), PluginStopError>;
 
-    fn plugin_init(&self, name: String) -> Result<(), PluginInitializationError>;
+    fn stop_by_stem(&self, stem: &str) -> Result<(), PluginStopError>;
 
-    fn plugin_post_init(&self, name: String) -> Result<(), PluginPostInitializationError>;
+    fn stop_all(&self);
 
-    fn plugin_pre_shutdown(&self, name: String) -> Result<(), PluginPreShutdownError>;
+    fn set_mode(&self, mode: PluginRegistryMode);
 
-    fn plugin_shutdown(&self, name: String) -> Result<(), PluginShutdownError>;
+    fn get_mode(&self) -> PluginRegistryMode;
 }

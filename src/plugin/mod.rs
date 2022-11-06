@@ -1,5 +1,6 @@
 pub mod component_manager_impl;
 pub mod config;
+pub mod container;
 pub mod context;
 pub mod entity_instance_manager_impl;
 pub mod entity_type_manager_impl;
@@ -14,6 +15,7 @@ pub mod system_event_manager_impl;
 
 pub use component_manager_impl::ComponentManagerImpl;
 pub use config::PluginsConfig;
+pub use container::PluginContainer;
 pub use context::PluginContextImpl;
 pub use entity_instance_manager_impl::EntityInstanceManagerImpl;
 pub use entity_type_manager_impl::EntityTypeManagerImpl;
