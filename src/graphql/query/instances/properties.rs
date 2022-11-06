@@ -1,18 +1,26 @@
-use crate::api::{EntityTypeManager, RelationTypeManager};
-use crate::graphql::query::GraphQLPropertyType;
-use async_graphql::{Context, InputObject, Object};
-use inexor_rgf_core_model::PropertyType;
-use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::collections::HashMap;
 use std::sync::Arc;
+
+use async_graphql::Context;
+use async_graphql::InputObject;
+use async_graphql::Object;
+use serde::Deserialize;
+use serde::Serialize;
+use serde_json::Value;
+
+use crate::api::EntityTypeManager;
+use crate::api::RelationTypeManager;
+use crate::graphql::query::GraphQLPropertyType;
+use crate::model::EntityTypeId;
+use crate::model::PropertyType;
+use crate::model::RelationTypeId;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub enum GraphQLPropertyTypeContainer {
     #[default]
     None,
-    Entity(String),
-    Relation(String),
+    Entity(EntityTypeId),
+    Relation(RelationTypeId),
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
@@ -52,8 +60,8 @@ impl GraphQLPropertyInstance {
         let property_name = self.name.clone();
         match &self.property_type_container {
             GraphQLPropertyTypeContainer::None => None,
-            GraphQLPropertyTypeContainer::Entity(type_name) => match context.data::<Arc<dyn EntityTypeManager>>() {
-                Ok(entity_type_manager) => match entity_type_manager.get(type_name) {
+            GraphQLPropertyTypeContainer::Entity(ty) => match context.data::<Arc<dyn EntityTypeManager>>() {
+                Ok(entity_type_manager) => match entity_type_manager.get(ty) {
                     Some(entity_type) => {
                         let property_type = entity_type
                             .properties
@@ -67,8 +75,8 @@ impl GraphQLPropertyInstance {
                 },
                 Err(_) => None,
             },
-            GraphQLPropertyTypeContainer::Relation(type_name) => match context.data::<Arc<dyn RelationTypeManager>>() {
-                Ok(relation_type_manager) => match relation_type_manager.get_starts_with(type_name) {
+            GraphQLPropertyTypeContainer::Relation(ty) => match context.data::<Arc<dyn RelationTypeManager>>() {
+                Ok(relation_type_manager) => match relation_type_manager.get(ty) {
                     Some(relation_type) => {
                         let property_type = relation_type
                             .properties
@@ -87,17 +95,18 @@ impl GraphQLPropertyInstance {
 }
 
 impl GraphQLPropertyInstance {
-    pub fn new_entity_property(type_name: String, name: String, value: Value) -> Self {
+    pub fn new_entity_property(ty: EntityTypeId, name: String, value: Value) -> Self {
         GraphQLPropertyInstance {
-            property_type_container: GraphQLPropertyTypeContainer::Entity(type_name),
+            property_type_container: GraphQLPropertyTypeContainer::Entity(ty),
             name,
             value,
         }
     }
 
-    pub fn new_relation_property(type_name: String, name: String, value: Value) -> Self {
+    // TODO: Change to ty: RelationInstanceTypeId ???
+    pub fn new_relation_property(ty: RelationTypeId, name: String, value: Value) -> Self {
         GraphQLPropertyInstance {
-            property_type_container: GraphQLPropertyTypeContainer::Relation(type_name),
+            property_type_container: GraphQLPropertyTypeContainer::Relation(ty),
             name,
             value,
         }
