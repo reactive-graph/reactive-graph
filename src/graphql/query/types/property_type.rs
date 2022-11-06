@@ -1,7 +1,8 @@
 use async_graphql::*;
 
+use crate::graphql::query::GraphQLDataType;
 use crate::graphql::query::GraphQLExtension;
-use crate::graphql::query::{GraphQLDataType, GraphQLSocketType};
+use crate::graphql::query::GraphQLSocketType;
 use crate::model::PropertyType;
 
 pub struct GraphQLPropertyType {
@@ -59,5 +60,17 @@ impl GraphQLPropertyType {
 impl From<PropertyType> for GraphQLPropertyType {
     fn from(property_type: PropertyType) -> Self {
         GraphQLPropertyType { property_type }
+    }
+}
+
+impl From<GraphQLPropertyType> for PropertyType {
+    fn from(property_type: GraphQLPropertyType) -> Self {
+        PropertyType::new_with_all(
+            property_type.property_type.name,
+            property_type.property_type.description,
+            property_type.property_type.data_type,
+            property_type.property_type.socket_type,
+            property_type.property_type.extensions,
+        )
     }
 }
