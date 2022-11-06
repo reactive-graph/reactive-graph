@@ -1,7 +1,11 @@
-use inexor_rgf_core_model::TypeContainer;
 use std::env;
 
-use crate::model::{DataType, EntityType, PropertyType};
+use crate::model::ComponentTypeId;
+use crate::model::EntityType;
+use crate::model::EntityTypeId;
+use crate::model::NamespacedTypeGetter;
+use crate::model::PropertyType;
+use crate::model::TypeContainer;
 use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
 
@@ -14,18 +18,15 @@ fn test_register_entity_type() {
     let type_name = r_string();
     let description = r_string();
 
-    entity_type_manager.register(EntityType::new(
-        &namespace,
-        &type_name,
-        &description,
-        vec![String::from("positionable")],
-        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
-        vec![],
-    ));
-    assert!(entity_type_manager.has(type_name.as_str()));
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
+    let entity_type = EntityType::new_from_type(&namespace, &type_name, &description, vec![component_ty], vec![PropertyType::string("x")], vec![]);
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
+    assert!(entity_type_manager.has_by_type(&namespace, &type_name));
+    assert!(entity_type_manager.has(&entity_type.ty));
 
-    let entity_type: Option<EntityType> = entity_type_manager.get(type_name.as_str());
-    assert_eq!(type_name, entity_type.unwrap().name);
+    assert_eq!(type_name, entity_type_manager.get_by_type(&namespace, &type_name).unwrap().type_name());
+    assert_eq!(type_name, entity_type_manager.get(&entity_type.ty).unwrap().type_name());
 }
 
 #[test]
@@ -37,25 +38,18 @@ fn test_create_and_delete_entity_type() {
     let type_name = r_string();
     let description = r_string();
 
-    entity_type_manager.create(
-        namespace.as_str(),
-        type_name.as_str(),
-        description.as_str(),
-        vec![String::from("positionable")],
-        vec![PropertyType::new(String::from("x"), DataType::String)],
-        vec![],
-    );
-    assert!(entity_type_manager.has(type_name.as_str()));
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
+    let result = entity_type_manager.create(&ty, &description, vec![component_ty], vec![PropertyType::string("x")], vec![]);
+    assert!(result.is_ok());
+    assert!(entity_type_manager.has_by_type(&namespace, &type_name));
+    assert!(entity_type_manager.has(&ty));
 
-    let entity_type: Option<EntityType> = entity_type_manager.get(type_name.as_str());
-    assert_eq!(type_name, entity_type.unwrap().name);
+    assert_eq!(type_name, entity_type_manager.get_by_type(&namespace, &type_name).unwrap().type_name());
 
-    entity_type_manager.delete(type_name.as_str());
-
-    assert!(!entity_type_manager.has(type_name.as_str()));
-
-    let entity_type: Option<EntityType> = entity_type_manager.get(type_name.as_str());
-    assert!(entity_type.is_none());
+    entity_type_manager.delete(&ty);
+    assert!(!entity_type_manager.has(&ty));
+    assert!(entity_type_manager.get(&ty).is_none());
 }
 
 #[test]
@@ -65,11 +59,13 @@ fn test_get_entity_types() {
     let namespace = r_string();
     let type_name = r_string();
     let description = r_string();
-    entity_type_manager.create(namespace.as_str(), type_name.as_str(), description.as_str(), vec![], vec![], vec![]);
-    let entity_types = entity_type_manager.get_entity_types();
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
+    let result = entity_type_manager.create(&ty, description.as_str(), vec![], vec![], vec![]);
+    assert!(result.is_ok());
+    let entity_types = entity_type_manager.get_all();
     assert_eq!(1, entity_types.len());
     for entity_type in entity_types {
-        assert!(entity_type_manager.has(entity_type.name.as_str()));
+        assert!(entity_type_manager.has(&entity_type.ty));
     }
 }
 
@@ -81,29 +77,21 @@ fn test_register_entity_type_has_component() {
 
     let namespace = r_string();
     let component_name = r_string();
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
 
-    component_manager.register(crate::model::Component::new(
-        namespace.clone(),
-        component_name.clone(),
-        String::new(),
-        vec![crate::model::PropertyType::new(String::from("x"), DataType::String)],
-        Vec::new(),
-    ));
+    let component = crate::model::Component::new(&component_ty, String::new(), vec![PropertyType::string("x")], Vec::new());
+    assert!(component_manager.register(component).is_ok());
 
     let entity_type_name = r_string();
     let description = r_string();
 
-    entity_type_manager.register(crate::model::EntityType::new(
-        &namespace,
-        &entity_type_name,
-        &description,
-        vec![component_name.clone()],
-        vec![crate::model::PropertyType::new(String::from("y"), DataType::String)],
-        vec![],
-    ));
-    let entity_type: EntityType = entity_type_manager.get(entity_type_name.as_str()).unwrap();
-    assert!(entity_type.components.contains(&component_name.clone()));
-    assert!(entity_type.is_a(component_name.clone()));
+    let entity_ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
+    let entity_type = EntityType::new(&entity_ty, &description, vec![component_ty.clone()], vec![PropertyType::string("y")], vec![]);
+    let result = entity_type_manager.register(entity_type);
+    assert!(result.is_ok());
+    let entity_type: EntityType = entity_type_manager.get(&entity_ty).unwrap();
+    assert!(entity_type.components.contains(&component_ty));
+    assert!(entity_type.is_a(&component_ty));
 }
 
 #[test]
@@ -112,21 +100,15 @@ fn test_register_entity_type_has_property() {
     let entity_type_manager = application.get_entity_type_manager();
 
     let property_name = String::from("x");
-    let property_type = PropertyType::new(property_name.clone(), DataType::String);
+    let property_type = PropertyType::string(&property_name);
 
     let entity_type_name = r_string();
     let namespace = r_string();
 
-    entity_type_manager.register(EntityType::new(
-        namespace.clone(),
-        entity_type_name.clone(),
-        String::new(),
-        vec![],
-        vec![property_type],
-        vec![],
-    ));
-    let entity_type: Option<EntityType> = entity_type_manager.get(entity_type_name.as_str());
-    assert!(entity_type.unwrap().has_own_property(property_name.as_str()));
+    let entity_ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
+    let entity_type = EntityType::new(&entity_ty, String::new(), vec![], vec![property_type], vec![]);
+    assert!(entity_type_manager.register(entity_type).is_ok());
+    assert!(entity_type_manager.get(&entity_ty).unwrap().has_own_property(property_name.as_str()));
 }
 
 #[test]
@@ -142,19 +124,15 @@ fn test_export_import_entity_type() {
     path.push(format!("{}.json", type_name));
     let path = path.into_os_string().into_string().unwrap();
 
-    entity_type_manager.create(
-        namespace.as_str(),
-        type_name.as_str(),
-        description.as_str(),
-        vec![String::from("positionable")],
-        vec![PropertyType::new(String::from("x"), DataType::String)],
-        vec![],
-    );
-    entity_type_manager.export(type_name.as_str(), path.as_str());
-    assert!(entity_type_manager.has(type_name.as_str()));
-    entity_type_manager.delete(type_name.as_str());
-    assert!(!entity_type_manager.has(type_name.as_str()));
-    let result = entity_type_manager.import(path.as_str());
-    assert!(entity_type_manager.has(type_name.as_str()));
+    let entity_ty = EntityTypeId::new_from_type(&namespace, &type_name);
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &r_string());
+    let result = entity_type_manager.create(&entity_ty, &description, vec![component_ty], vec![PropertyType::string("x")], vec![]);
     assert!(result.is_ok());
+    entity_type_manager.export(&entity_ty, path.as_str());
+    assert!(entity_type_manager.has(&entity_ty));
+    entity_type_manager.delete(&entity_ty);
+    assert!(!entity_type_manager.has(&entity_ty));
+    let result = entity_type_manager.import(path.as_str());
+    assert!(result.is_ok());
+    assert!(entity_type_manager.has(&entity_ty));
 }
