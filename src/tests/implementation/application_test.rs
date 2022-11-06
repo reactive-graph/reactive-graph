@@ -60,10 +60,10 @@ async fn wait(application: Arc<RwLock<dyn Application>>) {
     assert!(false);
     let application = application.read().unwrap();
     let component_manager = application.get_component_manager();
-    assert!(!component_manager.has("named"));
+    assert!(!component_manager.has_by_type("core", "named"));
     assert!(!application.is_running());
     thread::sleep(Duration::from_millis(200));
-    assert!(component_manager.has("named"));
+    assert!(component_manager.has_by_type("core", "named"));
     assert!(application.is_running());
     application.stop();
     assert!(!application.is_running());
