@@ -3,14 +3,16 @@ use std::sync::Arc;
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
+use crate::model::ComponentTypeId;
 use crate::model::EntityType;
+use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::plugins::EntityTypeProvider;
 
 #[derive(Debug)]
 pub enum EntityTypeRegistrationError {
-    EntityTypeAlreadyExists(String, String),
+    EntityTypeAlreadyExists(EntityTypeId),
 }
 
 #[derive(Debug)]
@@ -58,22 +60,25 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     fn register(&self, entity_type: EntityType) -> Result<EntityType, EntityTypeRegistrationError>;
 
     /// Returns all entity types.
-    fn get_entity_types(&self) -> Vec<EntityType>;
+    fn get_all(&self) -> Vec<EntityType>;
 
     /// Returns all entity types of the given namespace
-    fn get_entity_types_by_namespace(&self, namespace: &str) -> Vec<EntityType>;
+    fn get_by_namespace(&self, namespace: &str) -> Vec<EntityType>;
+
+    /// Returns all entity types of the given namespace
+    fn get_by_having_component(&self, component_ty: &ComponentTypeId) -> Vec<EntityType>;
 
     /// Returns true, if a entity type with the given name exists.
-    fn has(&self, name: &str) -> bool;
+    fn has(&self, ty: &EntityTypeId) -> bool;
 
     /// Returns true, if a entity type with the given fully qualified name exists.
-    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool;
+    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
 
     /// Returns the entity type with the given name or empty.
-    fn get(&self, name: &str) -> Option<EntityType>;
+    fn get(&self, ty: &EntityTypeId) -> Option<EntityType>;
 
     /// Returns the entity type with the given fully qualified name or empty.
-    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<EntityType>;
+    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<EntityType>;
 
     /// Returns all entity types whose names matches the given search string.
     fn find(&self, search: &str) -> Vec<EntityType>;
@@ -81,43 +86,49 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     /// Returns the count of entity types.
     fn count(&self) -> usize;
 
+    /// Returns the count of entity types of the given namespace.
+    fn count_by_namespace(&self, namespace: &str) -> usize;
+
     /// Creates a new entity type.
     fn create(
         &self,
-        namespace: &str,
-        name: &str,
+        ty: &EntityTypeId,
         description: &str,
-        components: Vec<String>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<EntityType, EntityTypeCreationError>;
 
     /// Adds the component with the given component_name to the entity type with the given name.
-    fn add_component(&self, name: &str, component_name: &str) -> Result<(), EntityTypeComponentError>;
+    fn add_component(&self, ty: &EntityTypeId, component: &ComponentTypeId) -> Result<(), EntityTypeComponentError>;
 
     /// Remove the component with the given component_name from the entity type with the given name.
-    fn remove_component(&self, name: &str, component_name: &str);
+    fn remove_component(&self, ty: &EntityTypeId, component: &ComponentTypeId);
 
     /// Adds a property to the entity type with the given name.
-    fn add_property(&self, name: &str, property: PropertyType) -> Result<(), EntityTypePropertyError>;
+    fn add_property(&self, ty: &EntityTypeId, property: PropertyType) -> Result<(), EntityTypePropertyError>;
 
     /// Removes the property with the given property_name from the entity type with the given name.
-    fn remove_property(&self, name: &str, property_name: &str);
+    fn remove_property(&self, ty: &EntityTypeId, property_name: &str);
 
     /// Adds an extension to the entity type with the given name.
-    fn add_extension(&self, name: &str, extension: Extension) -> Result<(), EntityTypeExtensionError>;
+    fn add_extension(&self, ty: &EntityTypeId, extension: Extension) -> Result<(), EntityTypeExtensionError>;
 
     /// Removes the extension with the given extension_name from the entity type with the given name.
-    fn remove_extension(&self, name: &str, extension_name: &str);
+    fn remove_extension(&self, ty: &EntityTypeId, extension_name: &str);
 
     /// Deletes the entity type with the given name.
-    fn delete(&self, name: &str);
+    fn delete(&self, ty: &EntityTypeId);
+
+    /// Validates the entity type with the given name.
+    /// Tests that all components exists.
+    fn validate(&self, ty: &EntityTypeId) -> bool;
 
     /// Imports an entity type from a JSON file file located at the given path.
     fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError>;
 
     /// Exports the entity type with the given name to a JSON file located at the given path.
-    fn export(&self, name: &str, path: &str);
+    fn export(&self, ty: &EntityTypeId, path: &str);
 
     /// Registers an entity type provider.
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>);

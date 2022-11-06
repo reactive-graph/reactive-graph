@@ -1,6 +1,8 @@
 use std::sync::Arc;
 
+use crate::model::ComponentTypeId;
 use crate::model::EntityType;
+use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::plugins::EntityTypeCreationError;
@@ -17,28 +19,28 @@ impl EntityTypeManagerImpl {
     }
 }
 impl EntityTypeManager for EntityTypeManagerImpl {
-    fn get_entity_types(&self) -> Vec<EntityType> {
-        self.entity_type_manager.get_entity_types()
+    fn get_all(&self) -> Vec<EntityType> {
+        self.entity_type_manager.get_all()
     }
 
-    fn get_entity_types_by_namespace(&self, namespace: &str) -> Vec<EntityType> {
-        self.entity_type_manager.get_entity_types_by_namespace(namespace)
+    fn get_by_namespace(&self, namespace: &str) -> Vec<EntityType> {
+        self.entity_type_manager.get_by_namespace(namespace)
     }
 
-    fn has(&self, name: &str) -> bool {
-        self.entity_type_manager.has(name)
+    fn has(&self, ty: &EntityTypeId) -> bool {
+        self.entity_type_manager.has(ty)
     }
 
-    fn has_fully_qualified(&self, namespace: &str, name: &str) -> bool {
-        self.entity_type_manager.has_fully_qualified(namespace, name)
+    fn has_by_type(&self, namespace: &str, name: &str) -> bool {
+        self.entity_type_manager.has_by_type(namespace, name)
     }
 
-    fn get(&self, name: &str) -> Option<EntityType> {
-        self.entity_type_manager.get(name)
+    fn get(&self, ty: &EntityTypeId) -> Option<EntityType> {
+        self.entity_type_manager.get(ty)
     }
 
-    fn get_fully_qualified(&self, namespace: &str, name: &str) -> Option<EntityType> {
-        self.entity_type_manager.get_fully_qualified(namespace, name)
+    fn get_by_type(&self, namespace: &str, name: &str) -> Option<EntityType> {
+        self.entity_type_manager.get_by_type(namespace, name)
     }
 
     fn find(&self, search: &str) -> Vec<EntityType> {
@@ -49,53 +51,60 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.count()
     }
 
+    fn count_by_namespace(&self, namespace: &str) -> usize {
+        self.entity_type_manager.count_by_namespace(namespace)
+    }
+
     fn create(
         &self,
-        namespace: &str,
-        name: &str,
+        ty: &EntityTypeId,
         description: &str,
-        components: Vec<String>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<EntityType, EntityTypeCreationError> {
         self.entity_type_manager
-            .create(namespace, name, description, components, properties, extensions)
+            .create(ty, description, components, properties, extensions)
             .map_err(|_| EntityTypeCreationError::Failed)
     }
 
-    fn add_component(&self, name: &str, component_name: &str) {
-        let _ = self.entity_type_manager.add_component(name, component_name);
+    fn add_component(&self, ty: &EntityTypeId, component: &ComponentTypeId) {
+        let _ = self.entity_type_manager.add_component(ty, component);
     }
 
-    fn remove_component(&self, name: &str, component_name: &str) {
-        self.entity_type_manager.remove_component(name, component_name);
+    fn remove_component(&self, ty: &EntityTypeId, component: &ComponentTypeId) {
+        self.entity_type_manager.remove_component(ty, component);
     }
 
-    fn add_property(&self, name: &str, property: PropertyType) {
-        let _ = self.entity_type_manager.add_property(name, property);
+    fn add_property(&self, ty: &EntityTypeId, property: PropertyType) {
+        let _ = self.entity_type_manager.add_property(ty, property);
     }
 
-    fn remove_property(&self, name: &str, property_name: &str) {
-        self.entity_type_manager.remove_property(name, property_name)
+    fn remove_property(&self, ty: &EntityTypeId, property_name: &str) {
+        self.entity_type_manager.remove_property(ty, property_name)
     }
 
-    fn add_extension(&self, name: &str, extension: Extension) {
-        let _ = self.entity_type_manager.add_extension(name, extension);
+    fn add_extension(&self, ty: &EntityTypeId, extension: Extension) {
+        let _ = self.entity_type_manager.add_extension(ty, extension);
     }
 
-    fn remove_extension(&self, name: &str, extension_name: &str) {
-        self.entity_type_manager.remove_extension(name, extension_name)
+    fn remove_extension(&self, ty: &EntityTypeId, extension_name: &str) {
+        self.entity_type_manager.remove_extension(ty, extension_name)
     }
 
-    fn delete(&self, name: &str) {
-        self.entity_type_manager.delete(name)
+    fn delete(&self, ty: &EntityTypeId) {
+        self.entity_type_manager.delete(ty)
+    }
+
+    fn validate(&self, ty: &EntityTypeId) -> bool {
+        self.entity_type_manager.validate(ty)
     }
 
     fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
         self.entity_type_manager.import(path).map_err(|_| EntityTypeImportError::Failed)
     }
 
-    fn export(&self, name: &str, path: &str) {
-        self.entity_type_manager.export(name, path)
+    fn export(&self, ty: &EntityTypeId, path: &str) {
+        self.entity_type_manager.export(ty, path)
     }
 }
