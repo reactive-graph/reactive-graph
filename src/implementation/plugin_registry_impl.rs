@@ -10,10 +10,9 @@ use std::time::Duration;
 use async_trait::async_trait;
 use dashmap::DashMap;
 use dashmap::DashSet;
-use inexor_rgf_core_plugins::plugin_state::PluginStartError;
-use inexor_rgf_core_plugins::plugin_state::PluginStopError;
-use inexor_rgf_core_plugins::Plugin;
+use log::debug;
 use log::info;
+use log::trace;
 use notify::RecursiveMode;
 use notify::Watcher;
 use uuid::Uuid;
@@ -49,9 +48,13 @@ use crate::plugin::PluginContextImpl;
 use crate::plugin::RelationInstanceManagerImpl;
 use crate::plugin::RelationTypeManagerImpl;
 use crate::plugin::SystemEventManagerImpl;
+use crate::plugins::plugin_state::PluginRefreshingState;
 use crate::plugins::plugin_state::PluginResolveState;
+use crate::plugins::plugin_state::PluginStartError;
 use crate::plugins::plugin_state::PluginStartingState;
+use crate::plugins::plugin_state::PluginStopError;
 use crate::plugins::plugin_state::PluginStoppingState;
+use crate::plugins::Plugin;
 use crate::plugins::PluginContext;
 use crate::plugins::PluginDependency;
 use crate::plugins::PluginState;
@@ -151,12 +154,12 @@ impl PluginRegistryImpl {
             let plugin_container = PluginContainer::new(stem.to_string(), path.clone().into_boxed_path());
             let id = plugin_container.id;
             self.plugin_containers.0.insert(id, plugin_container);
-            info!("Detected plugin {} located at {} and assigned id {}", stem, path.display(), id);
+            debug!("Detected plugin {} located at {} and assigned id {}", stem, path.display(), id);
         }
     }
 
     fn rescan_plugin_repository(&self) {
-        info!("Scanning plugin repository");
+        debug!("Scanning plugin repository");
         if let Ok(dir) = fs::read_dir("./plugins") {
             for entry in dir.flatten() {
                 if let Ok(file_type) = entry.file_type() {
@@ -199,7 +202,7 @@ impl PluginRegistryImpl {
     fn load_dll(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
             Some(mut plugin_container) => {
-                info!("Plugin {} is loading the dynamic linked library", id);
+                trace!("Plugin {} is loading the dynamic linked library", id);
                 plugin_container.load_dll()
             }
             None => NoChange,
@@ -209,7 +212,7 @@ impl PluginRegistryImpl {
     fn load_plugin_declaration(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
             Some(mut plugin_container) => {
-                info!("Plugin {} is loading the plugin declaration", id);
+                trace!("Plugin {} is loading the plugin declaration", id);
                 plugin_container.value_mut().load_plugin_declaration()
             }
             None => NoChange,
@@ -219,7 +222,7 @@ impl PluginRegistryImpl {
     fn check_plugin_compatibility(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
             Some(mut plugin_container) => {
-                info!("Plugin {} is checked for compatibility", id);
+                trace!("Plugin {} is checked for compatibility", id);
                 plugin_container.value_mut().check_compatibility()
             }
             None => NoChange,
@@ -229,7 +232,7 @@ impl PluginRegistryImpl {
     fn load_plugin_dependencies(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
             Some(mut plugin_container) => {
-                info!("Plugin {} is loading the list of dependencies", id);
+                trace!("Plugin {} is loading the list of dependencies", id);
                 plugin_container.value_mut().load_plugin_dependencies()
             }
             None => NoChange,
@@ -272,10 +275,10 @@ impl PluginRegistryImpl {
 
     fn resolve_dependencies_state(&self, id: &Uuid) -> PluginTransitionResult {
         if !self.has_unsatisfied_dependencies(id) {
-            info!("Plugin {} has no unsatisfied dependencies", id);
+            debug!("Plugin {} has no unsatisfied dependencies", id);
             self.set_state(id, PluginState::Resolved)
         } else {
-            info!("Plugin {} has unsatisfied dependencies", id);
+            trace!("Plugin {} has unsatisfied dependencies", id);
             self.set_state(id, PluginState::Resolving(PluginResolveState::DependenciesNotActive))
         }
     }
@@ -310,7 +313,7 @@ impl PluginRegistryImpl {
                 {
                     let reader = plugin_container.proxy.read().unwrap();
                     if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-                        info!("Plugin {} is registering providers", id);
+                        trace!("Plugin {} is registering providers", id);
                         if let Ok(Some(component_provider)) = proxy.get_component_provider() {
                             self.component_manager.add_provider(component_provider);
                         }
@@ -437,8 +440,8 @@ impl PluginRegistryImpl {
     }
 
     fn resolve(&self) -> PluginTransitionResult {
-        info!("Resolving");
         let mode = self.get_mode();
+        trace!("Resolving plugins (mode: {:?})", mode);
         // Uninstalling --> Uninstalled
         for id in self.get_plugins_with_state(PluginState::Uninstalling) {
             if self.uninstall(&id) == Changed {

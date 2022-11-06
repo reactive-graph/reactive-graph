@@ -17,8 +17,10 @@ use crate::plugins::PLUGIN_API_VERSION;
 use crate::plugins::RUSTC_VERSION;
 use dashmap::DashSet;
 use libloading::Library;
+use log::debug;
 use log::error;
 use log::info;
+use log::trace;
 use uuid::Uuid;
 
 use crate::plugin::registrar::PluginRegistrar;
@@ -79,7 +81,7 @@ impl PluginContainer {
                     let mut writer = self.library.write().unwrap();
                     *writer = Some(Arc::new(library));
                     self.state = PluginState::Resolving(PluginResolveState::Loaded);
-                    info!("Plugin {} successfully loaded dynamic link library located at {}", self.id, self.path.display());
+                    debug!("Plugin {} successfully loaded dynamic link library located at {}", self.id, self.path.display());
                     Changed
                 }
                 Err(e) => {
@@ -99,7 +101,7 @@ impl PluginContainer {
         let mut writer = self.library.write().unwrap();
         // This drops the library
         *writer = None;
-        info!("Plugin {} unloaded library located at {}", self.id, self.path.display());
+        debug!("Plugin {} unloaded library located at {}", self.id, self.path.display());
         self.state = PluginState::Uninstalled;
         Changed
     }
@@ -112,7 +114,7 @@ impl PluginContainer {
         match self.unload_dll() {
             Changed => match std::fs::remove_file(self.path.clone()) {
                 Ok(_) => {
-                    info!("Plugin {} deleted dynamic linked library located at {}", self.id, self.path.display());
+                    debug!("Plugin {} deleted dynamic linked library located at {}", self.id, self.path.display());
                     Changed
                 }
                 Err(_) => NoChange,
@@ -128,14 +130,14 @@ impl PluginContainer {
         }
         let mut writer = self.library.write().unwrap();
         // This drops the library
-        info!("Plugin {} unloaded library located at {}", self.id, self.path.display());
+        trace!("Plugin {} unloaded library located at {}", self.id, self.path.display());
         *writer = None;
         unsafe {
             match Library::new(self.path.as_os_str()) {
                 Ok(library) => {
                     let mut writer = self.library.write().unwrap();
                     *writer = Some(Arc::new(library));
-                    info!("Plugin {} successfully loaded library located at {}", self.id, self.path.display());
+                    debug!("Plugin {} successfully loaded library located at {}", self.id, self.path.display());
                     self.state = PluginState::Resolving(PluginResolveState::Loaded);
                 }
                 Err(e) => {
@@ -155,14 +157,14 @@ impl PluginContainer {
         if let Some(library) = reader.as_ref() {
             let library = library.clone();
             unsafe {
-                info!("Plugin {} is reading dynamic linked library symbol plugin_declaration", self.id);
+                trace!("Plugin {} is reading dynamic linked library symbol plugin_declaration", self.id);
                 match library.get::<*mut PluginDeclaration>(b"plugin_declaration\0") {
                     Ok(plugin_declaration) => {
                         {
                             let mut writer = self.plugin_declaration.write().unwrap();
                             *writer = Some(plugin_declaration.read());
                         }
-                        info!("Plugin {} successfully loaded plugin declaration", self.id);
+                        debug!("Plugin {} successfully loaded plugin declaration", self.id);
                         self.state = PluginState::Resolving(PluginResolveState::PluginDeclarationLoaded);
                         return Changed;
                     }
@@ -184,7 +186,7 @@ impl PluginContainer {
         match *reader {
             Some(plugin_declaration) => {
                 if plugin_declaration.rustc_version != RUSTC_VERSION {
-                    info!(
+                    error!(
                         "Plugin {} is not compatible: Expected rustc_version {} - Actual {}",
                         self.id, RUSTC_VERSION, plugin_declaration.rustc_version
                     );
@@ -192,14 +194,14 @@ impl PluginContainer {
                     return Changed;
                 }
                 if plugin_declaration.plugin_api_version != PLUGIN_API_VERSION {
-                    info!(
+                    error!(
                         "Plugin {} is not compatible: Expected plugin_api_version {} - Actual {}",
                         self.id, PLUGIN_API_VERSION, plugin_declaration.plugin_api_version
                     );
                     self.state = PluginState::Resolving(PluginResolveState::PluginApiVersionMismatch);
                     return Changed;
                 }
-                info!("Plugin {} is compatible with the rustc_version and the plugin_api_version)", self.id);
+                debug!("Plugin {} is compatible with the rustc_version and the plugin_api_version)", self.id);
                 self.state = PluginState::Resolving(PluginResolveState::PluginCompatible);
                 Changed
             }
@@ -216,10 +218,10 @@ impl PluginContainer {
         }
         let reader = self.plugin_declaration.read().unwrap();
         if let Some(plugin_declaration) = *reader {
-            info!("Plugin {} is loading the list of dependencies", self.id);
+            trace!("Plugin {} is loading the list of dependencies", self.id);
             unsafe {
                 for dependency in (plugin_declaration.get_dependencies)() {
-                    info!("Plugin {} depends on {}:{}", self.id, &dependency.name, &dependency.version);
+                    trace!("Plugin {} depends on {}:{}", self.id, &dependency.name, &dependency.version);
                     self.dependencies.insert(dependency);
                 }
             }
@@ -250,13 +252,14 @@ impl PluginContainer {
         }
         let reader = self.plugin_declaration.read().unwrap();
         if let Some(plugin_declaration) = *reader {
+            trace!("Plugin {} is constructing proxy", self.id);
             let mut registrar = PluginRegistrar::new();
             unsafe {
                 (plugin_declaration.register)(&mut registrar);
             }
             let mut writer = self.proxy.write().unwrap();
             *writer = registrar.plugin;
-            info!("Plugin {} successfully constructed proxy", self.id);
+            debug!("Plugin {} successfully constructed proxy", self.id);
             self.state = PluginState::Starting(PluginStartingState::InjectingContext);
             return Changed;
         }
@@ -270,9 +273,10 @@ impl PluginContainer {
         }
         let reader = self.proxy.read().unwrap();
         if let Some(proxy) = reader.as_ref().cloned() {
+            trace!("Plugin {} is injecting context", self.id);
             match proxy.set_context(plugin_context) {
                 Ok(_) => {
-                    info!("Plugin {} successfully injected context", self.id);
+                    debug!("Plugin {} successfully injected context", self.id);
                     self.state = PluginState::Starting(PluginStartingState::Registering);
                     return Changed;
                 }
@@ -333,10 +337,10 @@ impl PluginContainer {
         }
         let reader = self.proxy.read().unwrap();
         if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-            info!("Plugin {} is being activated", self.id);
+            trace!("Plugin {} is being activated", self.id);
             match proxy.activate() {
                 Ok(_) => {
-                    info!("Plugin {} has been activated successfully", self.id);
+                    debug!("Plugin {} has been activated successfully", self.id);
                     self.state = PluginState::Active;
                     return Changed;
                 }
@@ -355,7 +359,7 @@ impl PluginContainer {
                 Err(PluginStopError::NotActive)
             }
             PluginState::Active => {
-                info!("Stopping plugin {}", self.id);
+                trace!("Stopping plugin {}", self.id);
                 self.state = PluginState::Stopping(PluginStoppingState::Deactivating);
                 Ok(())
             }
@@ -369,10 +373,10 @@ impl PluginContainer {
         }
         let reader = self.proxy.read().unwrap();
         if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-            info!("Plugin {} is being deactivated", self.id);
+            trace!("Plugin {} is being deactivated", self.id);
             match proxy.deactivate() {
                 Ok(_) => {
-                    info!("Plugin {} has been deactivated successfully", self.id);
+                    debug!("Plugin {} has been deactivated successfully", self.id);
                     self.state = PluginState::Stopping(PluginStoppingState::Unregistering);
                     return Changed;
                 }
@@ -391,10 +395,10 @@ impl PluginContainer {
     //     }
     //     let reader = self.proxy.read().unwrap();
     //     if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-    //         info!("Plugin {} is being deactivated", self.id);
+    //         trace!("Plugin {} is being deactivated", self.id);
     //         match proxy.unregister() {
     //             Ok(_) => {
-    //                 info!("Plugin {} has been deactivated successfully", self.id);
+    //                 debug!("Plugin {} has been deactivated successfully", self.id);
     //                 self.state = PluginState::Stopping(PluginStoppingState::RemoveContext);
     //                 return Changed;
     //             }
@@ -413,10 +417,10 @@ impl PluginContainer {
         }
         let reader = self.proxy.read().unwrap();
         if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-            info!("Plugin {} is removing the plugin context", self.id);
+            trace!("Plugin {} is removing the plugin context", self.id);
             match proxy.remove_context() {
                 Ok(_) => {
-                    info!("Plugin {} successfully removed the plugin context", self.id);
+                    debug!("Plugin {} successfully removed the plugin context", self.id);
                     self.state = PluginState::Stopping(PluginStoppingState::RemoveProxy);
                     return Changed;
                 }
