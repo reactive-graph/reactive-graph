@@ -58,7 +58,7 @@ pub(crate) fn get_graphql_server_config() -> GraphQLServerConfig {
 }
 
 pub(crate) fn get_logger_middleware() -> Option<Logger> {
-    let graphql_server_config = crate::config::graphql::get_graphql_server_config();
+    let graphql_server_config = get_graphql_server_config();
     match graphql_server_config.logging {
         Some(logging_config) => {
             if logging_config.enabled {
