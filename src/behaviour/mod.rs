@@ -39,6 +39,10 @@ pub enum BehaviourPropertyInvalid {
 pub trait Behaviour<T: ReactivePropertyContainer>: BehaviourReactiveInstanceContainer<T> + BehaviourValidator<T> + BehaviourInitializer + Drop {
     /// Connects the reactive streams.
     fn connect(&self) -> Result<(), BehaviourConnectFailed> {
+        // Validation Guard
+        self.validate().map_err(|e| BehaviourConnectFailed::BehaviourInvalid(e))?;
+        // Initialize the behaviour
+        self.init().map_err(|_| BehaviourConnectFailed::BehaviourInitializationFailed)?;
         Ok(())
     }
 
