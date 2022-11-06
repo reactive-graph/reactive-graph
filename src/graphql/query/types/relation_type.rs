@@ -4,7 +4,13 @@ use async_graphql::*;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
-use crate::graphql::query::{GraphQLComponent, GraphQLEntityType, GraphQLExtension, GraphQLPropertyType};
+use crate::api::RelationTypeManager;
+use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLPropertyType;
+use crate::model::ComponentOrEntityTypeId;
+use crate::model::NamespacedTypeGetter;
 use crate::model::RelationType;
 
 pub struct GraphQLRelationType {
@@ -19,40 +25,47 @@ pub struct GraphQLRelationType {
 impl GraphQLRelationType {
     /// The namespace the relation type belongs to.
     async fn namespace(&self) -> String {
-        self.relation_type.namespace.clone()
+        self.relation_type.namespace()
     }
 
     /// The outbound entity type(s).
-    async fn outbound_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
-        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
-        if entity_type_manager.is_ok() {
-            let entity_type_manager = entity_type_manager.unwrap();
-            if self.relation_type.outbound_type == "*" {
-                return entity_type_manager
-                    .get_entity_types()
+    async fn outbound_types(&self, context: &Context<'_>) -> Result<Vec<GraphQLEntityType>> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
+        if self.relation_type.outbound_type.type_name() == "*" {
+            let entity_types = entity_type_manager.get_all().iter().cloned().map(|entity_type| entity_type.into()).collect();
+            return Ok(entity_types);
+        }
+        match &self.relation_type.outbound_type {
+            ComponentOrEntityTypeId::Component(component_ty) => {
+                let entity_types = entity_type_manager
+                    .get_by_having_component(component_ty)
                     .iter()
-                    .map(|entity_type| entity_type.clone().into())
+                    .cloned()
+                    .map(|entity_type| entity_type.into())
                     .collect();
+                return Ok(entity_types);
             }
-            if let Some(entity_type) = entity_type_manager.get(&self.relation_type.outbound_type) {
-                return vec![entity_type.into()];
+            ComponentOrEntityTypeId::EntityType(entity_ty) => {
+                if let Some(entity_type) = entity_type_manager.get(&entity_ty) {
+                    let entity_type = entity_type.into();
+                    return Ok(vec![entity_type]);
+                }
             }
         }
-        Vec::new()
+        Ok(Vec::new())
     }
 
     /// The outbound components.
-    async fn outbound_components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
-        match context.data::<Arc<dyn ComponentManager>>() {
-            Ok(component_manager) => {
-                if let Some(component) = component_manager.get(&self.relation_type.outbound_type) {
-                    vec![component.into()]
-                } else {
-                    Vec::new()
-                }
+    async fn outbound_components(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponent>> {
+        let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
+        match &self.relation_type.outbound_type {
+            ComponentOrEntityTypeId::Component(component_ty) => {
+                let components = component_manager.get(component_ty).iter().cloned().map(|component| component.into()).collect();
+                return Ok(components);
             }
-            Err(_) => Vec::new(),
+            _ => {}
         }
+        Ok(Vec::new())
     }
 
     /// The name of the relation type.
@@ -62,47 +75,47 @@ impl GraphQLRelationType {
     /// Returns "default_connector" for "default_connector__property_name__property_name"
     /// (without type suffix).
     async fn name(&self) -> String {
-        self.relation_type.type_name.clone()
-    }
-
-    /// The full name of the relation type.
-    ///
-    /// Returns "default_connector__property_name__property_name" (with type suffix).
-    async fn instance_type_name(&self) -> String {
-        self.relation_type.instance_type_name.clone()
+        self.relation_type.type_name()
     }
 
     /// The inbound entity type(s).
-    async fn inbound_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
-        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>();
-        if entity_type_manager.is_ok() {
-            let entity_type_manager = entity_type_manager.unwrap();
-            if self.relation_type.inbound_type == "*" {
-                return entity_type_manager
-                    .get_entity_types()
+    async fn inbound_types(&self, context: &Context<'_>) -> Result<Vec<GraphQLEntityType>> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
+        if self.relation_type.inbound_type.type_name() == "*" {
+            let entity_types = entity_type_manager.get_all().iter().cloned().map(|entity_type| entity_type.into()).collect();
+            return Ok(entity_types);
+        }
+        match &self.relation_type.inbound_type {
+            ComponentOrEntityTypeId::Component(component_ty) => {
+                let entity_types = entity_type_manager
+                    .get_by_having_component(component_ty)
                     .iter()
-                    .map(|entity_type| entity_type.clone().into())
+                    .cloned()
+                    .map(|entity_type| entity_type.into())
                     .collect();
+                return Ok(entity_types);
             }
-            if let Some(entity_type) = entity_type_manager.get(&self.relation_type.inbound_type) {
-                return vec![entity_type.into()];
+            ComponentOrEntityTypeId::EntityType(entity_ty) => {
+                if let Some(entity_type) = entity_type_manager.get(&entity_ty) {
+                    let entity_type = entity_type.into();
+                    return Ok(vec![entity_type]);
+                }
             }
         }
-        Vec::new()
+        Ok(Vec::new())
     }
 
     /// The inbound components.
-    async fn inbound_components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
-        match context.data::<Arc<dyn ComponentManager>>() {
-            Ok(component_manager) => {
-                if let Some(component) = component_manager.get(&self.relation_type.inbound_type) {
-                    vec![component.into()]
-                } else {
-                    Vec::new()
-                }
+    async fn inbound_components(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponent>> {
+        let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
+        match &self.relation_type.inbound_type {
+            ComponentOrEntityTypeId::Component(component_ty) => {
+                let components = component_manager.get(component_ty).iter().cloned().map(|component| component.into()).collect();
+                return Ok(components);
             }
-            Err(_) => Vec::new(),
+            _ => {}
         }
+        Ok(Vec::new())
     }
 
     /// Textual description of the relation type.
@@ -111,19 +124,16 @@ impl GraphQLRelationType {
     }
 
     /// The relation type composes it's properties by these components.
-    async fn components(&self, context: &Context<'_>) -> Vec<GraphQLComponent> {
-        let component_manager = context.data::<Arc<dyn ComponentManager>>();
-        if component_manager.is_ok() {
-            let component_manager = component_manager.unwrap();
-            self.relation_type
-                .components
-                .iter()
-                .filter_map(|component_name| component_manager.get(component_name))
-                .map(|component| component.into())
-                .collect()
-        } else {
-            Vec::new()
-        }
+    async fn components(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponent>> {
+        let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
+        let components = self
+            .relation_type
+            .components
+            .iter()
+            .filter_map(|component_ty| component_manager.get(component_ty))
+            .map(|component| component.into())
+            .collect();
+        Ok(components)
     }
 
     /// The properties / property types which are defined by the relation type or
@@ -164,6 +174,16 @@ impl GraphQLRelationType {
                 .collect();
         }
         self.relation_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
+    }
+
+    /// Returns true, if the relation type is valid.
+    ///
+    /// This means all components exists and the outbound and inbound entity types are valid.
+    async fn is_valid(&self, context: &Context<'_>) -> bool {
+        match context.data::<Arc<dyn RelationTypeManager>>() {
+            Ok(relation_type_manager) => relation_type_manager.validate(&self.relation_type.ty),
+            Err(_) => false,
+        }
     }
 }
 
