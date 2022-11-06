@@ -36,7 +36,7 @@ pub enum BehaviourPropertyInvalid {
 }
 
 #[allow(drop_bounds)]
-pub trait Behaviour<T: ReactivePropertyContainer>: BehaviourReactiveInstanceContainer<T> + BehaviourValidator<T> + Drop {
+pub trait Behaviour<T: ReactivePropertyContainer>: BehaviourReactiveInstanceContainer<T> + BehaviourValidator<T> + BehaviourInitializer + Drop {
     /// Connects the reactive streams.
     fn connect(&self) -> Result<(), BehaviourConnectFailed> {
         Ok(())
@@ -47,6 +47,13 @@ pub trait Behaviour<T: ReactivePropertyContainer>: BehaviourReactiveInstanceCont
 
     /// Returns the behaviour type.
     fn ty(&self) -> BehaviourTypeId;
+}
+
+pub trait BehaviourInitializer {
+    /// Initializes the behaviour. For example, calculates and propagates the initial value.
+    fn init(&self) -> Result<(), BehaviourInitializationFailed> {
+        Ok(())
+    }
 }
 
 pub trait BehaviourValidator<T: ReactivePropertyContainer>: BehaviourPropertyValidator<T> {
