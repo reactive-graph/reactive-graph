@@ -39,8 +39,11 @@ pub trait ComponentBehaviourManager: Send + Sync {
     fn remove_behaviours_by_id(&self, id: Uuid);
 
     /// Removes behaviours from the given relation instance by edge key.
-    fn remove_behaviours_by_key(&self, edge_key: EdgeKey);
+    fn remove_behaviours_by_key(&self, edge_key: &EdgeKey);
 
     /// Registers a component behaviour provider.
-    fn add_provider(&self, behaviour_provider: Arc<dyn ComponentBehaviourProvider>);
+    fn add_provider(&self, id: Uuid, behaviour_provider: Arc<dyn ComponentBehaviourProvider>);
+
+    /// Unregisters a component behaviour provider.
+    fn remove_provider(&self, id: &Uuid);
 }
