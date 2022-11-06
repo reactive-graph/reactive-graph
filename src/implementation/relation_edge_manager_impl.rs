@@ -19,6 +19,7 @@ use crate::api::RelationEdgeManager;
 use crate::api::RelationTypeManager;
 use crate::di::*;
 use crate::model::property_identifier;
+use crate::model::RelationInstanceTypeId;
 
 // This service operates on the graph database.
 
@@ -32,15 +33,23 @@ pub struct RelationEdgeManagerImpl {
 #[async_trait]
 #[provides]
 impl RelationEdgeManager for RelationEdgeManagerImpl {
-    fn has(&self, edge_key: EdgeKey) -> bool {
-        if let Ok(edges) = self.graph_database.get_datastore().get_edges(SpecificEdgeQuery::single(edge_key).into()) {
+    fn has(&self, edge_key: &EdgeKey) -> bool {
+        if let Ok(edges) = self
+            .graph_database
+            .get_datastore()
+            .get_edges(SpecificEdgeQuery::single(edge_key.clone()).into())
+        {
             return !edges.is_empty();
         }
         false
     }
 
-    fn get(&self, edge_key: EdgeKey) -> Option<Edge> {
-        if let Ok(edges) = self.graph_database.get_datastore().get_edges(SpecificEdgeQuery::single(edge_key).into()) {
+    fn get(&self, edge_key: &EdgeKey) -> Option<Edge> {
+        if let Ok(edges) = self
+            .graph_database
+            .get_datastore()
+            .get_edges(SpecificEdgeQuery::single(edge_key.clone()).into())
+        {
             return edges.first().cloned();
         }
         None
@@ -68,11 +77,11 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
         Vec::new()
     }
 
-    fn get_properties(&self, edge_key: EdgeKey) -> Option<EdgeProperties> {
+    fn get_properties(&self, edge_key: &EdgeKey) -> Option<EdgeProperties> {
         if let Ok(edge_properties) = self
             .graph_database
             .get_datastore()
-            .get_all_edge_properties(SpecificEdgeQuery::single(edge_key).into())
+            .get_all_edge_properties(SpecificEdgeQuery::single(edge_key.clone()).into())
         {
             if !edge_properties.is_empty() {
                 return Some(edge_properties[0].clone());
@@ -81,19 +90,16 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
         None
     }
 
-    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationEdgeCreationError> {
-        let type_name = edge_key.t.to_string();
-        if !self.relation_type_manager.has_starts_with(&type_name) {
-            return Err(RelationEdgeCreationError::RelationTypeMissing(type_name));
-        }
-        let relation_type = self.relation_type_manager.get_starts_with(&type_name).unwrap();
+    fn create(&self, edge_key: &EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationEdgeCreationError> {
+        let ty = RelationInstanceTypeId::try_from(&edge_key.t).map_err(|_| RelationEdgeCreationError::InvalidEdgeKey(edge_key.t.to_string()))?;
+        let relation_ty = ty.relation_type_id();
+        let relation_type = self
+            .relation_type_manager
+            .get(&relation_ty)
+            .ok_or(RelationEdgeCreationError::RelationTypeMissing(relation_ty.clone()))?;
 
         let datastore = self.graph_database.get_datastore();
-        let result = datastore.create_edge(&edge_key);
-        if result.is_err() {
-            // Should not happen when using indradb::InternalMemoryDatastore
-            return Err(RelationEdgeCreationError::GraphDatabaseError(result.err().unwrap()));
-        }
+        let _ = datastore.create_edge(&edge_key).map_err(|e| RelationEdgeCreationError::GraphDatabaseError(e))?;
         let edge_query = SpecificEdgeQuery::single(edge_key.clone());
         for property_type in relation_type.properties {
             let property_name = property_type.name;
@@ -110,10 +116,10 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
                 return Err(RelationEdgeCreationError::GraphDatabaseError(property_result.err().unwrap()));
             }
         }
-        Ok(edge_key)
+        Ok(edge_key.clone())
     }
 
-    fn commit(&self, edge_key: EdgeKey, properties: HashMap<String, Value, RandomState>) {
+    fn commit(&self, edge_key: &EdgeKey, properties: HashMap<String, Value, RandomState>) {
         let datastore = self.graph_database.get_datastore();
         for (property_name, value) in properties {
             let _property_result = datastore.set_edge_properties(
@@ -125,12 +131,12 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
         }
     }
 
-    fn delete(&self, edge_key: EdgeKey) -> bool {
-        if self.has(edge_key.clone()) {
+    fn delete(&self, edge_key: &EdgeKey) -> bool {
+        if self.has(edge_key) {
             return self
                 .graph_database
                 .get_datastore()
-                .delete_edges(SpecificEdgeQuery::single(edge_key).into())
+                .delete_edges(SpecificEdgeQuery::single(edge_key.clone()).into())
                 .is_ok();
         }
         false
