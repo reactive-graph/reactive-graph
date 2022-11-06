@@ -26,12 +26,12 @@ impl fmt::Display for RelationInstanceCreationError {
                 write!(f, "The edge already exists: {:?}", edge_key)
             }
             RelationInstanceCreationError::MissingOutboundEntityInstance(id) => {
-                write!(f, "The outbound entity instance {} cannot be found", id)
+                write!(f, "The outbound entity instance {id} cannot be found")
             }
             RelationInstanceCreationError::MissingInboundEntityInstance(id) => {
-                write!(f, "The inbound entity instance {} cannot be found", id)
+                write!(f, "The inbound entity instance {id} cannot be found")
             }
-            RelationInstanceCreationError::RelationEdgeCreationError(error) => write!(f, "Failed to create relation instance: {}", error),
+            RelationInstanceCreationError::RelationEdgeCreationError(e) => write!(f, "Failed to create relation instance: {}", e),
         }
     }
 }
@@ -60,27 +60,29 @@ impl From<serde_json::Error> for RelationInstanceImportError {
 #[async_trait]
 pub trait RelationInstanceManager: Send + Sync {
     /// Returns true, if an relation instance exists with the given key.
-    fn has(&self, edge_key: EdgeKey) -> bool;
+    fn has(&self, edge_key: &EdgeKey) -> bool;
 
     /// Returns the relation instance with the given key or None.
-    fn get(&self, edge_key: EdgeKey) -> Option<RelationInstance>;
+    fn get(&self, edge_key: &EdgeKey) -> Option<RelationInstance>;
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<RelationInstance>;
 
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<RelationInstance>;
 
-    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError>;
+    fn create(&self, edge_key: &EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError>;
 
     fn create_from_instance(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError>;
+
+    /// The given relation instance gets created in the graph database if not exists.
+    fn create_from_instance_if_not_exist(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError>;
 
     // TODO: return result
     fn commit(&self, relation_instance: RelationInstance);
 
-    fn delete(&self, edge_key: EdgeKey) -> bool;
+    fn delete(&self, edge_key: &EdgeKey) -> bool;
 
     fn import(&self, path: &str) -> Result<RelationInstance, RelationInstanceImportError>;
 
     // TODO: return result
-    // TODO: egde_key ?
-    fn export(&self, edge_key: EdgeKey, path: &str);
+    fn export(&self, edge_key: &EdgeKey, path: &str);
 }

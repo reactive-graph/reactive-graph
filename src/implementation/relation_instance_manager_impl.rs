@@ -2,14 +2,19 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufReader;
 
-use crate::di::*;
 use async_trait::async_trait;
 use indradb::EdgeKey;
 use log::error;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::{EntityInstanceManager, RelationEdgeManager, RelationInstanceCreationError, RelationInstanceImportError, RelationInstanceManager};
+use crate::api::EntityInstanceManager;
+use crate::api::RelationEdgeManager;
+use crate::api::RelationInstanceCreationError;
+use crate::api::RelationInstanceImportError;
+use crate::api::RelationInstanceManager;
+use crate::di::*;
+use crate::model::NamespacedTypeGetter;
 use crate::model::RelationInstance;
 
 #[component]
@@ -22,12 +27,14 @@ pub struct RelationInstanceManagerImpl {
 #[async_trait]
 #[provides]
 impl RelationInstanceManager for RelationInstanceManagerImpl {
-    fn has(&self, edge_key: EdgeKey) -> bool {
+    fn has(&self, edge_key: &EdgeKey) -> bool {
         self.relation_edge_manager.has(edge_key)
     }
 
-    fn get(&self, edge_key: EdgeKey) -> Option<RelationInstance> {
-        self.relation_edge_manager.get_properties(edge_key).map(RelationInstance::from)
+    fn get(&self, edge_key: &EdgeKey) -> Option<RelationInstance> {
+        self.relation_edge_manager
+            .get_properties(edge_key)
+            .and_then(|properties| RelationInstance::try_from(properties).ok())
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<RelationInstance> {
@@ -35,7 +42,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             .get_by_outbound_entity(outbound_entity_id)
             .iter()
             .map(|edge| edge.key.clone())
-            .filter_map(|edge_key| self.get(edge_key))
+            .filter_map(|edge_key| self.get(&edge_key))
             .collect()
     }
 
@@ -44,14 +51,14 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             .get_by_outbound_entity(inbound_entity_id)
             .iter()
             .map(|edge| edge.key.clone())
-            .filter_map(|edge_key| self.get(edge_key))
+            .filter_map(|edge_key| self.get(&edge_key))
             .collect()
     }
 
-    fn create(&self, edge_key: EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError> {
-        if self.relation_edge_manager.has(edge_key.clone()) {
+    fn create(&self, edge_key: &EdgeKey, properties: HashMap<String, Value>) -> Result<EdgeKey, RelationInstanceCreationError> {
+        if self.relation_edge_manager.has(edge_key) {
             // Edge already exists!
-            return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key));
+            return Err(RelationInstanceCreationError::EdgeAlreadyExists(edge_key.clone()));
         }
         if !self.entity_instance_manager.has(edge_key.outbound_id) {
             // Outbound entity does not exist!
@@ -61,22 +68,29 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             // Inbound entity does not exist!
             return Err(RelationInstanceCreationError::MissingInboundEntityInstance(edge_key.inbound_id));
         }
-        let result = self.relation_edge_manager.create(edge_key, properties);
-        if result.is_err() {
-            return Err(RelationInstanceCreationError::RelationEdgeCreationError(result.err().unwrap()));
-        }
-        Ok(result.unwrap())
+        self.relation_edge_manager
+            .create(edge_key, properties)
+            .map_err(RelationInstanceCreationError::RelationEdgeCreationError)
     }
 
     fn create_from_instance(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError> {
-        self.create(relation_instance.get_key(), relation_instance.properties)
+        self.create(&relation_instance.get_key(), relation_instance.properties)
+    }
+
+    fn create_from_instance_if_not_exist(&self, relation_instance: RelationInstance) -> Result<EdgeKey, RelationInstanceCreationError> {
+        let edge_key = relation_instance.get_key();
+        if self.relation_edge_manager.has(&edge_key) {
+            Ok(edge_key)
+        } else {
+            self.create_from_instance(relation_instance)
+        }
     }
 
     fn commit(&self, relation_instance: RelationInstance) {
-        self.relation_edge_manager.commit(relation_instance.get_key(), relation_instance.properties);
+        self.relation_edge_manager.commit(&relation_instance.get_key(), relation_instance.properties);
     }
 
-    fn delete(&self, edge_key: EdgeKey) -> bool {
+    fn delete(&self, edge_key: &EdgeKey) -> bool {
         self.relation_edge_manager.delete(edge_key)
     }
 
@@ -85,16 +99,16 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         let reader = BufReader::new(file);
         let relation_instance: RelationInstance = serde_json::from_reader(reader)?;
         let edge_key = relation_instance.get_key();
-        if self.has(edge_key.clone()) {
+        if self.has(&edge_key) {
             return Err(RelationInstanceImportError::RelationAlreadyExists(edge_key));
         }
         self.relation_edge_manager
-            .create(edge_key, relation_instance.properties.clone())
+            .create(&edge_key, relation_instance.properties.clone())
             .map(|_| relation_instance)
             .map_err(RelationInstanceImportError::RelationEdgeCreation)
     }
 
-    fn export(&self, edge_key: EdgeKey, path: &str) {
+    fn export(&self, edge_key: &EdgeKey, path: &str) {
         if let Some(relation_instance) = self.get(edge_key) {
             let r_file = File::create(path);
             match r_file {
@@ -105,7 +119,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
                         error!(
                             "Failed to export relation instance {} {} {} to {}: {}",
                             relation_instance.outbound_id,
-                            relation_instance.type_name.clone(),
+                            relation_instance.type_name(),
                             relation_instance.inbound_id,
                             path,
                             result.err().unwrap()
@@ -117,7 +131,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
                     error!(
                         "Failed to export relation instance {} {} {} to {}: {}",
                         relation_instance.outbound_id,
-                        relation_instance.type_name.clone(),
+                        relation_instance.type_name(),
                         relation_instance.inbound_id,
                         path,
                         error.to_string()
