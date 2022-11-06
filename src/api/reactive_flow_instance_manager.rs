@@ -7,9 +7,13 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::api::Lifecycle;
+use crate::model::EntityTypeId;
 use crate::model::FlowInstance;
+use crate::model::FlowTypeId;
 use crate::model::ReactiveFlowInstance;
 use crate::model::ReactiveFlowInstanceConstructionError;
+use crate::model::RelationTypeId;
+use crate::model::TypeDefinitionGetter;
 use crate::plugins::FlowInstanceProvider;
 
 #[derive(Debug)]
@@ -20,9 +24,9 @@ pub enum ReactiveFlowInstanceCreationError {
     // ReactiveRelationInstanceCreationError(ReactiveRelationInstanceCreationError),
     ReactiveFlowInstanceConstructionError(ReactiveFlowInstanceConstructionError),
     MissingVariable(String),
-    FlowTypeDoesntExist(String),
-    EntityTypeDoesntExist(String),
-    RelationTypeDoesntExist(String),
+    FlowTypeDoesntExist(FlowTypeId),
+    EntityTypeDoesntExist(EntityTypeId),
+    RelationTypeDoesntExist(RelationTypeId),
     InvalidOutboundId(Uuid),
     InvalidInboundId(Uuid),
 }
@@ -46,21 +50,25 @@ impl fmt::Display for ReactiveFlowInstanceCreationError {
                     variable_name
                 )
             }
-            ReactiveFlowInstanceCreationError::FlowTypeDoesntExist(flow_type_name) => {
-                write!(f, "Failed to construct reactive flow instance: Flow type {} doesn't exist", flow_type_name)
+            ReactiveFlowInstanceCreationError::FlowTypeDoesntExist(flow_ty) => {
+                write!(
+                    f,
+                    "Failed to construct reactive flow instance: Flow type {} doesn't exist",
+                    flow_ty.type_definition().to_string()
+                )
             }
-            ReactiveFlowInstanceCreationError::EntityTypeDoesntExist(entity_type_name) => {
+            ReactiveFlowInstanceCreationError::EntityTypeDoesntExist(entity_ty) => {
                 write!(
                     f,
                     "Failed to construct reactive flow instance: Flow type contains an entity instance of type {} which doesn't exist",
-                    entity_type_name
+                    entity_ty.type_definition().to_string()
                 )
             }
-            ReactiveFlowInstanceCreationError::RelationTypeDoesntExist(relation_type_name) => {
+            ReactiveFlowInstanceCreationError::RelationTypeDoesntExist(relation_ty) => {
                 write!(
                     f,
                     "Failed to construct reactive flow instance: Flow type contains a relation instance of type {} which doesn't exist",
-                    relation_type_name
+                    relation_ty.type_definition().to_string()
                 )
             }
             ReactiveFlowInstanceCreationError::InvalidOutboundId(id) => {
@@ -121,7 +129,7 @@ pub trait ReactiveFlowInstanceManager: Send + Sync + Lifecycle {
     /// and the ReactiveRelationInstanceManager.
     fn create_from_type(
         &self,
-        name: &str,
+        ty: &FlowTypeId,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceCreationError>;
@@ -146,5 +154,9 @@ pub trait ReactiveFlowInstanceManager: Send + Sync + Lifecycle {
     // TODO: return result
     fn export(&self, id: Uuid, path: &str);
 
-    fn add_provider(&self, flow_instance_provider: Arc<dyn FlowInstanceProvider>);
+    /// Registers a flow instance provider.
+    fn add_provider(&self, id: Uuid, flow_instance_provider: Arc<dyn FlowInstanceProvider>);
+
+    /// Unregisters a flow instance provider.
+    fn remove_provider(&self, id: &Uuid);
 }
