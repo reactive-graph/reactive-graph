@@ -1,5 +1,6 @@
 use async_graphql::*;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde::Serialize;
 use strum::Display;
 
 /// The socket type defines if the property acts as an input or output socket
