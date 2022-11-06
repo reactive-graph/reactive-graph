@@ -6,6 +6,7 @@ use std::sync::RwLock;
 use async_trait::async_trait;
 use log::debug;
 use log::error;
+use log::trace;
 use log::warn;
 use wildmatch::WildMatch;
 
@@ -21,12 +22,16 @@ use crate::api::RelationTypePropertyError;
 use crate::api::RelationTypeRegistrationError;
 use crate::api::SystemEventManager;
 use crate::di::*;
-use crate::model::fully_qualified_identifier;
+use crate::model::ComponentOrEntityTypeId;
+use crate::model::ComponentTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionContainer;
+use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::RelationType;
+use crate::model::RelationTypeId;
 use crate::model::TypeContainer;
-use crate::model::NAMESPACE_RELATION_TYPE;
+use crate::model::TypeDefinitionGetter;
 use crate::plugins::RelationTypeProvider;
 use crate::plugins::SystemEvent;
 
@@ -53,153 +58,124 @@ pub struct RelationTypeManagerImpl {
 #[provides]
 impl RelationTypeManager for RelationTypeManagerImpl {
     fn register(&self, mut relation_type: RelationType) -> Result<RelationType, RelationTypeRegistrationError> {
-        if self.has_fully_qualified(&relation_type.namespace, &relation_type.type_name) {
-            return Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(relation_type.namespace, relation_type.type_name));
+        let relation_ty = relation_type.ty.clone();
+        if self.has(&relation_ty) {
+            return Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(relation_ty));
         }
-        // let type_name = relation_type.type_name.clone();
-        // Construct the type
-        relation_type.t = fully_qualified_identifier(&relation_type.namespace, &relation_type.type_name, &NAMESPACE_RELATION_TYPE);
-        if relation_type.outbound_type != "*"
-            && !self.entity_type_manager.has(&relation_type.outbound_type)
-            && !self.component_manager.has(&relation_type.outbound_type)
-        {
-            warn!(
-                "Relation type {} not registered: Outbound entity type or component does not exist {}",
-                &relation_type.type_name, &relation_type.outbound_type
-            );
-            return Err(RelationTypeRegistrationError::OutboundEntityTypeDoesNotExist(
-                relation_type.namespace,
-                relation_type.type_name,
-                relation_type.outbound_type,
-            ));
+        // Check if outbound type exists
+        if relation_type.outbound_type.type_name() != "*" {
+            match &relation_type.outbound_type {
+                ComponentOrEntityTypeId::Component(component_ty) => {
+                    if !self.component_manager.has(component_ty) {
+                        warn!("Relation type {} not registered: Outbound component {} does not exist", &relation_ty, component_ty);
+                        return Err(RelationTypeRegistrationError::OutboundComponentDoesNotExist(relation_ty, component_ty.clone()));
+                    }
+                }
+                ComponentOrEntityTypeId::EntityType(entity_ty) => {
+                    if !self.entity_type_manager.has(entity_ty) {
+                        warn!("Relation type {} not registered: Outbound entity type {} does not exist", &relation_ty, entity_ty);
+                        return Err(RelationTypeRegistrationError::OutboundEntityTypeDoesNotExist(relation_ty, entity_ty.clone()));
+                    }
+                }
+            }
         }
-        if relation_type.inbound_type != "*"
-            && !self.entity_type_manager.has(&relation_type.inbound_type)
-            && !self.component_manager.has(&relation_type.inbound_type)
-        {
-            warn!(
-                "Relation type {} not registered: Inbound entity type or component does not exist {}",
-                &relation_type.type_name, &relation_type.inbound_type
-            );
-            return Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(
-                relation_type.namespace,
-                relation_type.type_name,
-                relation_type.inbound_type,
-            ));
+        // Check if inbound type exists
+        if relation_type.inbound_type.type_name() != "*" {
+            match &relation_type.inbound_type {
+                ComponentOrEntityTypeId::Component(component_ty) => {
+                    if !self.component_manager.has(component_ty) {
+                        warn!("Relation type {} not registered: Inbound component {} does not exist", &relation_ty, component_ty);
+                        return Err(RelationTypeRegistrationError::InboundComponentDoesNotExist(relation_ty, component_ty.clone()));
+                    }
+                }
+                ComponentOrEntityTypeId::EntityType(entity_ty) => {
+                    if !self.entity_type_manager.has(entity_ty) {
+                        warn!("Relation type {} not registered: Inbound entity type {} does not exist", &relation_ty, entity_ty);
+                        return Err(RelationTypeRegistrationError::InboundEntityTypeDoesNotExist(relation_ty, entity_ty.clone()));
+                    }
+                }
+            }
         }
-        for component_name in relation_type.components.iter() {
-            match self.component_manager.get(component_name) {
+        // Apply components
+        for component_ty in relation_type.components.iter() {
+            match self.component_manager.get(component_ty) {
                 Some(component) => relation_type.properties.append(&mut component.properties.to_vec()),
-                None => warn!(
-                    "Relation type {} not fully initialized: No component named {}",
-                    relation_type.type_name.clone(),
-                    component_name
-                ),
+                None => warn!("Relation type {} not fully initialized: Missing component {}", &relation_ty, component_ty),
             }
         }
 
         self.relation_types.0.write().unwrap().push(relation_type.clone());
-        debug!("Registered relation type {}", &relation_type.type_name);
-        self.event_manager.emit_event(SystemEvent::RelationTypeCreated(relation_type.type_name.clone()));
+        debug!("Registered relation type {}", &relation_ty);
+        self.event_manager.emit_event(SystemEvent::RelationTypeCreated(relation_ty));
         Ok(relation_type)
     }
 
-    fn get_relation_types(&self) -> Vec<RelationType> {
+    fn get_all(&self) -> Vec<RelationType> {
         self.relation_types.0.read().unwrap().to_vec()
     }
 
-    fn get_relation_types_by_namespace(&self, namespace: &str) -> Vec<RelationType> {
+    fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType> {
         self.relation_types
             .0
             .read()
             .unwrap()
             .iter()
-            .filter(|relation_type| relation_type.namespace == namespace)
+            .filter(|relation_type| relation_type.namespace() == namespace)
             .cloned()
             .collect()
     }
 
-    fn get_outbound_relation_types(&self, entity_type_name: &str, wildcard: bool) -> Vec<RelationType> {
-        if wildcard && entity_type_name == "*" {
-            return self.get_relation_types();
+    fn get_by_having_component(&self, component_ty: &ComponentTypeId) -> Vec<RelationType> {
+        self.relation_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .filter(|relation_type| relation_type.components.contains(component_ty))
+            .cloned()
+            .collect()
+    }
+
+    fn get_outbound_relation_types(&self, outbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> Vec<RelationType> {
+        if wildcard && outbound_ty.type_name() == "*" {
+            return self.get_all();
         }
-        self.get_relation_types()
+        self.get_all()
             .into_iter()
-            .filter(|relation_type| (wildcard && &relation_type.outbound_type == "*") || entity_type_name.starts_with(&relation_type.outbound_type))
+            .filter(|relation_type| (wildcard && &relation_type.outbound_type.type_name() == "*") || outbound_ty == &relation_type.outbound_type)
             .collect()
     }
 
-    fn get_inbound_relation_types(&self, entity_type_name: &str, wildcard: bool) -> Vec<RelationType> {
-        if wildcard && entity_type_name == "*" {
-            return self.get_relation_types();
+    fn get_inbound_relation_types(&self, inbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> Vec<RelationType> {
+        if wildcard && inbound_ty.type_name() == "*" {
+            return self.get_all();
         }
-        self.get_relation_types()
+        self.get_all()
             .into_iter()
-            .filter(|relation_type| (wildcard && &relation_type.inbound_type == "*") || entity_type_name.starts_with(&relation_type.inbound_type))
+            .filter(|relation_type| (wildcard && &relation_type.inbound_type.type_name() == "*") || inbound_ty == &relation_type.inbound_type)
             .collect()
     }
 
-    fn has(&self, type_name: &str) -> bool {
+    fn has(&self, ty: &RelationTypeId) -> bool {
+        self.relation_types.0.read().unwrap().iter().any(|relation_type| &relation_type.ty == ty)
+    }
+
+    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
+        self.has(&RelationTypeId::new_from_type(namespace, type_name))
+    }
+
+    fn get(&self, ty: &RelationTypeId) -> Option<RelationType> {
         self.relation_types
             .0
             .read()
             .unwrap()
             .iter()
-            .any(|relation_type| relation_type.type_name == type_name)
-    }
-
-    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool {
-        self.relation_types
-            .0
-            .read()
-            .unwrap()
-            .iter()
-            .any(|relation_type| relation_type.namespace == namespace && relation_type.type_name == type_name)
-    }
-
-    fn has_starts_with(&self, type_name: &str) -> bool {
-        self.get_starts_with(type_name).is_some()
-    }
-
-    fn get(&self, type_name: &str) -> Option<RelationType> {
-        self.relation_types
-            .0
-            .read()
-            .unwrap()
-            .iter()
-            .find(|relation_type| relation_type.type_name == type_name)
+            .find(|relation_type| &relation_type.ty == ty)
             .cloned()
     }
 
-    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
-        self.relation_types
-            .0
-            .read()
-            .unwrap()
-            .iter()
-            .find(|relation_type| relation_type.namespace == namespace && relation_type.type_name == type_name)
-            .cloned()
-    }
-
-    fn get_starts_with(&self, type_name_starts_with: &str) -> Option<RelationType> {
-        // Exact match has higher priority
-        match self.get(type_name_starts_with) {
-            Some(relation_type) => Some(relation_type),
-            None => {
-                // Fuzzy match has lower priority
-                self.relation_types
-                    .0
-                    .read()
-                    .unwrap()
-                    .iter()
-                    .find(|relation_type| type_name_starts_with.starts_with(relation_type.type_name.as_str()))
-                    .map(|relation_type| {
-                        let mut relation_type = relation_type.clone();
-                        relation_type.instance_type_name = type_name_starts_with.to_string();
-                        relation_type
-                    })
-            }
-        }
+    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
+        self.get(&RelationTypeId::new_from_type(namespace, type_name))
     }
 
     fn find(&self, search: &str) -> Vec<RelationType> {
@@ -209,7 +185,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             .read()
             .unwrap()
             .iter()
-            .filter(|relation_type| matcher.matches(relation_type.type_name.as_str()))
+            .filter(|relation_type| matcher.matches(relation_type.type_name().as_str()))
             .cloned()
             .collect()
     }
@@ -218,21 +194,30 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_types.0.read().unwrap().len()
     }
 
+    /// Returns the count of relation types of the given namespace.
+    fn count_by_namespace(&self, namespace: &str) -> usize {
+        self.relation_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .filter(|relation_type| relation_type.namespace() == namespace)
+            .count()
+    }
+
     fn create(
         &self,
-        namespace: &str,
-        outbound_type: &str,
-        type_name: &str,
-        inbound_type: &str,
+        outbound_type: &ComponentOrEntityTypeId,
+        ty: &RelationTypeId,
+        inbound_type: &ComponentOrEntityTypeId,
         description: &str,
-        components: Vec<String>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<RelationType, RelationTypeCreationError> {
         self.register(RelationType::new(
-            namespace,
             outbound_type,
-            type_name,
+            ty,
             inbound_type,
             description,
             components.to_vec(),
@@ -242,95 +227,105 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         .map_err(RelationTypeCreationError::RegistrationError)
     }
 
-    fn add_component(&self, name: &str, component_name: &str) -> Result<(), RelationTypeComponentError> {
+    fn add_component(&self, ty: &RelationTypeId, component_ty: &ComponentTypeId) -> Result<(), RelationTypeComponentError> {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
-            if relation_type.type_name == name {
-                if relation_type.is_a(component_name) {
+            if &relation_type.ty == ty {
+                if relation_type.is_a(component_ty) {
                     return Err(RelationTypeComponentError::ComponentAlreadyAssigned);
                 }
-                if !self.component_manager.has(component_name) {
+                if !self.component_manager.has(component_ty) {
                     return Err(RelationTypeComponentError::ComponentDoesNotExist);
                 }
-                relation_type.components.push(component_name.to_string());
+                relation_type.components.push(component_ty.clone());
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypeComponentAdded(name.to_string(), component_name.to_string()));
+                    .emit_event(SystemEvent::RelationTypeComponentAdded(relation_type.ty.clone(), component_ty.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_component(&self, name: &str, component_name: &str) {
+    fn remove_component(&self, ty: &RelationTypeId, component_ty: &ComponentTypeId) {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
-            if relation_type.type_name == name {
-                relation_type.components.retain(|c_name| c_name != component_name);
+            if &relation_type.ty == ty {
+                relation_type.components.retain(|c| c != component_ty);
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypeComponentRemoved(name.to_string(), component_name.to_string()));
+                    .emit_event(SystemEvent::RelationTypeComponentRemoved(relation_type.ty.clone(), component_ty.clone()));
             }
         }
     }
 
-    fn add_property(&self, type_name: &str, property: PropertyType) -> Result<(), RelationTypePropertyError> {
+    fn add_property(&self, ty: &RelationTypeId, property: PropertyType) -> Result<(), RelationTypePropertyError> {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
-            if relation_type.type_name == type_name {
+            if &relation_type.ty == ty {
                 if relation_type.has_own_property(property.name.clone()) {
                     return Err(RelationTypePropertyError::PropertyAlreadyExists);
                 }
                 relation_type.properties.push(property.clone());
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypePropertyAdded(type_name.to_string(), property.name.clone()));
+                    .emit_event(SystemEvent::RelationTypePropertyAdded(relation_type.ty.clone(), property.name.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_property(&self, type_name: &str, property_name: &str) {
+    fn remove_property(&self, ty: &RelationTypeId, property_name: &str) {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
-            if relation_type.type_name == type_name {
+            if &relation_type.ty == ty {
                 relation_type.properties.retain(|property| property.name != property_name);
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypePropertyRemoved(type_name.to_string(), property_name.to_string()));
+                    .emit_event(SystemEvent::RelationTypePropertyRemoved(relation_type.ty.clone(), property_name.to_string()));
             }
         }
     }
 
-    fn add_extension(&self, type_name: &str, extension: Extension) -> Result<(), RelationTypeExtensionError> {
+    fn add_extension(&self, ty: &RelationTypeId, extension: Extension) -> Result<(), RelationTypeExtensionError> {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
-            if relation_type.type_name == type_name {
+            if &relation_type.ty == ty {
                 if relation_type.has_own_extension(extension.name.clone()) {
                     return Err(RelationTypeExtensionError::ExtensionAlreadyExists);
                 }
                 relation_type.extensions.push(extension.clone());
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypeExtensionAdded(type_name.to_string(), extension.name.clone()));
+                    .emit_event(SystemEvent::RelationTypeExtensionAdded(relation_type.ty.clone(), extension.name.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_extension(&self, type_name: &str, extension_name: &str) {
+    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str) {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
-            if relation_type.type_name == type_name {
+            if &relation_type.ty == ty {
                 relation_type.extensions.retain(|extension| extension.name != extension_name);
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypeExtensionRemoved(type_name.to_string(), extension_name.to_string()));
+                    .emit_event(SystemEvent::RelationTypeExtensionRemoved(relation_type.ty.clone(), extension_name.to_string()));
             }
         }
     }
 
-    fn delete(&self, type_name: &str) {
-        let event = SystemEvent::RelationTypeDeleted(type_name.to_string());
-        self.relation_types
-            .0
-            .write()
-            .unwrap()
-            .retain(|relation_type| relation_type.type_name != type_name);
-        self.event_manager.emit_event(event);
+    fn delete(&self, ty: &RelationTypeId) {
+        self.relation_types.0.write().unwrap().retain(|relation_type| &relation_type.ty != ty);
+        self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
+    }
+
+    fn validate(&self, ty: &RelationTypeId) -> bool {
+        if let Some(relation_type) = self.get(ty) {
+            return relation_type.components.iter().all(|component_ty| self.component_manager.has(component_ty))
+                && match &relation_type.outbound_type {
+                    ComponentOrEntityTypeId::EntityType(entity_ty) => self.entity_type_manager.validate(entity_ty),
+                    ComponentOrEntityTypeId::Component(component_ty) => self.component_manager.has(component_ty),
+                }
+                && match &relation_type.inbound_type {
+                    ComponentOrEntityTypeId::EntityType(entity_ty) => self.entity_type_manager.validate(entity_ty),
+                    ComponentOrEntityTypeId::Component(component_ty) => self.component_manager.has(component_ty),
+                };
+        }
+        false
     }
 
     fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
@@ -340,22 +335,22 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.register(relation_type).map_err(RelationTypeImportError::RegistrationError)
     }
 
-    fn export(&self, type_name: &str, path: &str) {
-        if let Some(relation_type) = self.get(type_name) {
+    fn export(&self, ty: &RelationTypeId, path: &str) {
+        if let Some(relation_type) = self.get(ty) {
             match File::create(path) {
                 Ok(file) => {
                     if let Err(error) = serde_json::to_writer_pretty(&file, &relation_type) {
-                        error!("Failed to export relation type {} to {}: {}", type_name, path, error);
+                        error!("Failed to export relation type {} to {}: {}", ty.type_definition().to_string(), path, error);
                     }
                 }
-                Err(error) => error!("Failed to export relation type {} to {}: {}", type_name, path, error.to_string()),
+                Err(error) => error!("Failed to export relation type {} to {}: {}", ty.type_definition().to_string(), path, error.to_string()),
             }
         }
     }
 
     fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>) {
         for relation_type in relation_type_provider.get_relation_types() {
-            debug!("Registering relation type: {}", relation_type.type_name);
+            trace!("Registering relation type: {}", relation_type.type_definition().to_string());
             let _ = self.register(relation_type);
         }
     }

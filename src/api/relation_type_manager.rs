@@ -3,16 +3,22 @@ use std::sync::Arc;
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
+use crate::model::ComponentOrEntityTypeId;
+use crate::model::ComponentTypeId;
+use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::RelationType;
+use crate::model::RelationTypeId;
 use crate::plugins::RelationTypeProvider;
 
 #[derive(Debug)]
 pub enum RelationTypeRegistrationError {
-    RelationTypeAlreadyExists(String, String),
-    OutboundEntityTypeDoesNotExist(String, String, String),
-    InboundEntityTypeDoesNotExist(String, String, String),
+    RelationTypeAlreadyExists(RelationTypeId),
+    OutboundComponentDoesNotExist(RelationTypeId, ComponentTypeId),
+    OutboundEntityTypeDoesNotExist(RelationTypeId, EntityTypeId),
+    InboundComponentDoesNotExist(RelationTypeId, ComponentTypeId),
+    InboundEntityTypeDoesNotExist(RelationTypeId, EntityTypeId),
 }
 
 #[derive(Debug)]
@@ -60,34 +66,31 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     fn register(&self, relation_type: RelationType) -> Result<RelationType, RelationTypeRegistrationError>;
 
     /// Returns all relation types.
-    fn get_relation_types(&self) -> Vec<RelationType>;
+    fn get_all(&self) -> Vec<RelationType>;
 
     /// Returns all relation types of the given namespace
-    fn get_relation_types_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
+    fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
+
+    /// Returns all entity types of the given namespace
+    fn get_by_having_component(&self, component_ty: &ComponentTypeId) -> Vec<RelationType>;
 
     /// Returns outbound relation types for the given entity type.
-    fn get_outbound_relation_types(&self, entity_type_name: &str, wildcard: bool) -> Vec<RelationType>;
+    fn get_outbound_relation_types(&self, outbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> Vec<RelationType>;
 
     /// Returns inbound relation types for the given entity type.
-    fn get_inbound_relation_types(&self, entity_type_name: &str, wildcard: bool) -> Vec<RelationType>;
+    fn get_inbound_relation_types(&self, inbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> Vec<RelationType>;
 
     /// Returns true, if a relation type with the given name exists.
-    fn has(&self, type_name: &str) -> bool;
+    fn has(&self, ty: &RelationTypeId) -> bool;
 
     /// Returns true, if a relation type with the given fully qualified name exists.
-    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool;
-
-    /// Returns true, if a relation type exists whose name starts with the given name.
-    fn has_starts_with(&self, type_name: &str) -> bool;
+    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool;
 
     /// Returns the relation type with the given name.
-    fn get(&self, type_name: &str) -> Option<RelationType>;
+    fn get(&self, ty: &RelationTypeId) -> Option<RelationType>;
 
     /// Returns the relation type with the given fully qualified name.
-    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
-
-    /// Returns the relation type whose name starts with the given name.
-    fn get_starts_with(&self, type_name_starts_with: &str) -> Option<RelationType>;
+    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
 
     /// Returns all relation types whose names matches the given search string.
     fn find(&self, search: &str) -> Vec<RelationType>;
@@ -95,45 +98,51 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     /// Returns the count of relation types.
     fn count(&self) -> usize;
 
+    /// Returns the count of relation types of the given namespace.
+    fn count_by_namespace(&self, namespace: &str) -> usize;
+
     /// Creates a new relation type.
     fn create(
         &self,
-        namespace: &str,
-        outbound_type: &str,
-        type_name: &str,
-        inbound_type: &str,
+        outbound_type: &ComponentOrEntityTypeId,
+        ty: &RelationTypeId,
+        inbound_type: &ComponentOrEntityTypeId,
         description: &str,
-        components: Vec<String>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<RelationType, RelationTypeCreationError>;
 
     /// Adds the component with the given component_name to the relation type with the given name.
-    fn add_component(&self, name: &str, component_name: &str) -> Result<(), RelationTypeComponentError>;
+    fn add_component(&self, ty: &RelationTypeId, component_ty: &ComponentTypeId) -> Result<(), RelationTypeComponentError>;
 
     /// Remove the component with the given component_name from the relation type with the given name.
-    fn remove_component(&self, name: &str, component_name: &str);
+    fn remove_component(&self, ty: &RelationTypeId, component_ty: &ComponentTypeId);
 
     /// Adds a property to the relation type with the given name.
-    fn add_property(&self, type_name: &str, property: PropertyType) -> Result<(), RelationTypePropertyError>;
+    fn add_property(&self, ty: &RelationTypeId, property: PropertyType) -> Result<(), RelationTypePropertyError>;
 
     /// Removes the property with the given property_name from the relation type with the given name.
-    fn remove_property(&self, type_name: &str, property_name: &str);
+    fn remove_property(&self, ty: &RelationTypeId, property_name: &str);
 
     /// Adds an extension to the relation type with the given name.
-    fn add_extension(&self, type_name: &str, extension: Extension) -> Result<(), RelationTypeExtensionError>;
+    fn add_extension(&self, ty: &RelationTypeId, extension: Extension) -> Result<(), RelationTypeExtensionError>;
 
     /// Removes the extension with the given extension_name from the relation type with the given name.
-    fn remove_extension(&self, type_name: &str, extension_name: &str);
+    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str);
 
     /// Deletes the relation type with the given name.
-    fn delete(&self, type_name: &str);
+    fn delete(&self, ty: &RelationTypeId);
+
+    /// Validates the relation type with the given name.
+    /// Tests that all components, the outbound and inbound entity type exists.
+    fn validate(&self, ty: &RelationTypeId) -> bool;
 
     /// Imports a relation type from a JSON file located at the given path.
     fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError>;
 
     /// Exports the relation type with the given name to a JSON file located at the given path.
-    fn export(&self, type_name: &str, path: &str);
+    fn export(&self, ty: &RelationTypeId, path: &str);
 
     /// Registers a relation type provider.
     fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>);

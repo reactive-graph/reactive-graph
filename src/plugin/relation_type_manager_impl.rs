@@ -1,8 +1,11 @@
 use std::sync::Arc;
 
+use crate::model::ComponentOrEntityTypeId;
+use crate::model::ComponentTypeId;
 use crate::model::Extension;
 use crate::model::PropertyType;
 use crate::model::RelationType;
+use crate::model::RelationTypeId;
 use crate::plugins::RelationTypeCreationError;
 use crate::plugins::RelationTypeImportError;
 use crate::plugins::RelationTypeManager;
@@ -17,36 +20,28 @@ impl RelationTypeManagerImpl {
     }
 }
 impl RelationTypeManager for RelationTypeManagerImpl {
-    fn get_relation_types(&self) -> Vec<RelationType> {
-        self.relation_type_manager.get_relation_types()
+    fn get_all(&self) -> Vec<RelationType> {
+        self.relation_type_manager.get_all()
     }
 
-    fn get_relation_types_by_namespace(&self, namespace: &str) -> Vec<RelationType> {
-        self.relation_type_manager.get_relation_types_by_namespace(namespace)
+    fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType> {
+        self.relation_type_manager.get_by_namespace(namespace)
     }
 
-    fn has(&self, type_name: &str) -> bool {
-        self.relation_type_manager.has(type_name)
+    fn has(&self, ty: &RelationTypeId) -> bool {
+        self.relation_type_manager.has(ty)
     }
 
-    fn has_fully_qualified(&self, namespace: &str, type_name: &str) -> bool {
-        self.relation_type_manager.has_fully_qualified(namespace, type_name)
+    fn has_by_type(&self, namespace: &str, type_name: &str) -> bool {
+        self.relation_type_manager.has_by_type(namespace, type_name)
     }
 
-    fn has_starts_with(&self, type_name: &str) -> bool {
-        self.relation_type_manager.has_starts_with(type_name)
+    fn get(&self, ty: &RelationTypeId) -> Option<RelationType> {
+        self.relation_type_manager.get(ty)
     }
 
-    fn get(&self, type_name: &str) -> Option<RelationType> {
-        self.relation_type_manager.get(type_name)
-    }
-
-    fn get_fully_qualified(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
-        self.relation_type_manager.get_fully_qualified(namespace, type_name)
-    }
-
-    fn get_starts_with(&self, type_name_starts_with: &str) -> Option<RelationType> {
-        self.relation_type_manager.get_starts_with(type_name_starts_with)
+    fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType> {
+        self.relation_type_manager.get_by_type(namespace, type_name)
     }
 
     fn find(&self, search: &str) -> Vec<RelationType> {
@@ -57,55 +52,62 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.count()
     }
 
+    fn count_by_namespace(&self, namespace: &str) -> usize {
+        self.relation_type_manager.count_by_namespace(namespace)
+    }
+
     fn create(
         &self,
-        namespace: &str,
-        outbound_type: &str,
-        type_name: &str,
-        inbound_type: &str,
+        outbound_type: &ComponentOrEntityTypeId,
+        ty: &RelationTypeId,
+        inbound_type: &ComponentOrEntityTypeId,
         description: &str,
-        components: Vec<String>,
+        components: Vec<ComponentTypeId>,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<RelationType, RelationTypeCreationError> {
         self.relation_type_manager
-            .create(namespace, outbound_type, type_name, inbound_type, description, components, properties, extensions)
+            .create(outbound_type, ty, inbound_type, description, components, properties, extensions)
             .map_err(|_| RelationTypeCreationError::Failed)
     }
 
-    fn add_component(&self, name: &str, component_name: &str) {
-        let _ = self.relation_type_manager.add_component(name, component_name);
+    fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) {
+        let _ = self.relation_type_manager.add_component(ty, component);
     }
 
-    fn remove_component(&self, name: &str, component_name: &str) {
-        self.relation_type_manager.remove_component(name, component_name);
+    fn remove_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) {
+        self.relation_type_manager.remove_component(ty, component);
     }
 
-    fn add_property(&self, name: &str, property: PropertyType) {
-        let _ = self.relation_type_manager.add_property(name, property);
+    fn add_property(&self, ty: &RelationTypeId, property: PropertyType) {
+        let _ = self.relation_type_manager.add_property(ty, property);
     }
 
-    fn remove_property(&self, name: &str, property_name: &str) {
-        self.relation_type_manager.remove_property(name, property_name)
+    fn remove_property(&self, ty: &RelationTypeId, property_name: &str) {
+        self.relation_type_manager.remove_property(ty, property_name)
     }
 
-    fn add_extension(&self, name: &str, extension: Extension) {
-        let _ = self.relation_type_manager.add_extension(name, extension);
+    fn add_extension(&self, ty: &RelationTypeId, extension: Extension) {
+        let _ = self.relation_type_manager.add_extension(ty, extension);
     }
 
-    fn remove_extension(&self, name: &str, extension_name: &str) {
-        self.relation_type_manager.remove_extension(name, extension_name)
+    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str) {
+        self.relation_type_manager.remove_extension(ty, extension_name)
     }
 
-    fn delete(&self, type_name: &str) {
-        self.relation_type_manager.delete(type_name)
+    fn delete(&self, ty: &RelationTypeId) {
+        self.relation_type_manager.delete(ty)
+    }
+
+    fn validate(&self, ty: &RelationTypeId) -> bool {
+        self.relation_type_manager.validate(ty)
     }
 
     fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
         self.relation_type_manager.import(path).map_err(|_| RelationTypeImportError::Failed)
     }
 
-    fn export(&self, type_name: &str, path: &str) {
-        self.relation_type_manager.export(type_name, path)
+    fn export(&self, ty: &RelationTypeId, path: &str) {
+        self.relation_type_manager.export(ty, path)
     }
 }
