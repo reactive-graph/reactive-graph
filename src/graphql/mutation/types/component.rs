@@ -21,7 +21,7 @@ impl MutationComponents {
     async fn create(
         &self,
         context: &Context<'_>,
-        ty: ComponentTypeIdDefinition,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
         description: Option<String>,
         properties: Option<Vec<PropertyTypeDefinition>>,
         extensions: Option<Vec<GraphQLExtension>>,

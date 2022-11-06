@@ -25,7 +25,7 @@ impl MutationEntityTypes {
     async fn create(
         &self,
         context: &Context<'_>,
-        ty: EntityTypeIdDefinition,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
         components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,

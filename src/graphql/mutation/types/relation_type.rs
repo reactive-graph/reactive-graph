@@ -30,7 +30,7 @@ impl MutationRelationTypes {
         &self,
         context: &Context<'_>,
         outbound_type: EntityTypeIdDefinition, // TODO: ComponentOrEntityTypeIdDefinition
-        relation_type: RelationTypeIdDefinition,
+        #[graphql(name = "type", desc = "The relation type.")] relation_type: RelationTypeIdDefinition,
         inbound_type: EntityTypeIdDefinition, // TODO: ComponentOrEntityTypeIdDefinition
         #[graphql(desc = "Adds the given components to the newly created relation type.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
