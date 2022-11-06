@@ -1,11 +1,21 @@
 use std::env;
 
+use indradb::EdgeKey;
 use uuid::Uuid;
 
-use crate::builder::{EntityInstanceBuilder, EntityTypeBuilder, RelationInstanceBuilder, RelationTypeBuilder};
+use crate::builder::EntityInstanceBuilder;
+use crate::builder::EntityTypeBuilder;
+use crate::builder::RelationInstanceBuilder;
+use crate::builder::RelationTypeBuilder;
+use crate::model::ComponentOrEntityTypeId;
+use crate::model::EntityTypeId;
+use crate::model::NamespacedTypeGetter;
+use crate::model::RelationInstanceTypeId;
+use crate::model::RelationTypeId;
+use crate::model::TypeDefinitionGetter;
 use crate::tests::utils::application::init_application;
-use crate::tests::utils::{r_json_string, r_string};
-use indradb::{EdgeKey, Identifier};
+use crate::tests::utils::r_json_string;
+use crate::tests::utils::r_string;
 
 #[test]
 fn test_relation_instance_manager() {
@@ -16,114 +26,131 @@ fn test_relation_instance_manager() {
     let relation_instance_manager = application.get_relation_instance_manager();
 
     let namespace = r_string();
-    let outbound_type = r_string();
+    let outbound_type_name = r_string();
     let outbound_id = Uuid::new_v4();
     let type_name = r_string();
-    let inbound_type = r_string();
+    let inbound_type_name = r_string();
     let inbound_id = Uuid::new_v4();
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let edge_key = EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), inbound_id);
+    let relation_ty = RelationTypeId::new_from_type(&namespace, &type_name);
+    let ty = RelationInstanceTypeId::new_unique_id(&relation_ty);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), outbound_type.as_str())
-        .string_property(property_name.clone())
+    let outbound_type = EntityTypeBuilder::new_from_type(&namespace, &outbound_type_name)
+        .string_property(&property_name)
         .build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.as_str(), inbound_type.as_str())
-        .string_property(property_name.clone())
+    let result = entity_type_manager.register(outbound_type);
+    assert!(result.is_ok());
+    let inbound_type = EntityTypeBuilder::new_from_type(&namespace, &inbound_type_name)
+        .string_property(&property_name)
         .build();
-    entity_type_manager.register(entity_type.clone());
+    let result = entity_type_manager.register(inbound_type);
+    assert!(result.is_ok());
 
-    let entity_instance = EntityInstanceBuilder::new(outbound_type.clone())
+    let outbound_instance = EntityInstanceBuilder::new_from_type(&namespace, &outbound_type_name)
         .id(outbound_id)
-        .property(property_name.clone(), property_value.clone())
+        .property(&property_name, property_value.clone())
         .build();
-    let result = entity_instance_manager.create_from_instance(entity_instance.clone());
+    let result = entity_instance_manager.create_from_instance(outbound_instance);
     assert!(result.is_ok());
 
-    let entity_instance = EntityInstanceBuilder::new(inbound_type.clone())
+    let inbound_instance = EntityInstanceBuilder::new_from_type(&namespace, &inbound_type_name)
         .id(inbound_id)
-        .property(property_name.clone(), property_value.clone())
+        .property(&property_name, property_value.clone())
         .build();
-    let result = entity_instance_manager.create_from_instance(entity_instance.clone());
+    let result = entity_instance_manager.create_from_instance(inbound_instance);
     assert!(result.is_ok());
 
-    // Check that we cannot create an relation instance with a type which doesn't exist
-    let relation_instance = RelationInstanceBuilder::new(outbound_id, type_name.clone(), inbound_id)
-        .property(property_name.clone(), property_value.clone())
+    // Check that we cannot create an relation instance with a type which is not registered
+    let relation_instance = RelationInstanceBuilder::new(outbound_id, &ty, inbound_id)
+        .property(&property_name, property_value.clone())
         .build();
-    let result = relation_instance_manager.create_from_instance(relation_instance.clone());
+    let result = relation_instance_manager.create_from_instance(relation_instance);
     assert!(result.is_err());
 
-    let relation_type = RelationTypeBuilder::new(namespace.clone(), outbound_type.clone(), type_name.clone(), inbound_type.clone())
-        .string_property(property_name.clone())
+    // Now: create the relation type
+    let outbound_ty = ComponentOrEntityTypeId::EntityType(EntityTypeId::new_from_type(&namespace, &outbound_type_name));
+    let inbound_ty = ComponentOrEntityTypeId::EntityType(EntityTypeId::new_from_type(&namespace, &inbound_type_name));
+    let relation_type = RelationTypeBuilder::new(&outbound_ty, &relation_ty, &inbound_ty)
+        .string_property(&property_name)
         .build();
-    relation_type_manager.register(relation_type.clone());
+    let result = relation_type_manager.register(relation_type);
+    assert!(result.is_ok());
+    let relation_type_2 = result.unwrap();
+    assert_eq!(&namespace, &relation_type_2.namespace());
+    assert_eq!(&type_name, &relation_type_2.type_name());
+    assert_eq!(&outbound_type_name, &relation_type_2.outbound_type.type_name());
+    assert_eq!(&inbound_type_name, &relation_type_2.inbound_type.type_name());
 
     // Check that we cannot create a relation instance with a non-existent outbound
-    let relation_instance = RelationInstanceBuilder::new(Uuid::new_v4(), type_name.clone(), inbound_id)
-        .property(property_name.clone(), property_value.clone())
+    let relation_instance = RelationInstanceBuilder::new(Uuid::new_v4(), &ty, inbound_id)
+        .property(&property_name, property_value.clone())
         .build();
-    let result = relation_instance_manager.create_from_instance(relation_instance.clone());
+    let result = relation_instance_manager.create_from_instance(relation_instance);
     assert!(result.is_err());
 
     // Check that we cannot create a relation instance with a non-existent inbound
-    let relation_instance = RelationInstanceBuilder::new(outbound_id, type_name.clone(), Uuid::new_v4())
-        .property(property_name.clone(), property_value.clone())
+    let relation_instance = RelationInstanceBuilder::new(outbound_id, &ty, Uuid::new_v4())
+        .property(&property_name, property_value.clone())
         .build();
-    let result = relation_instance_manager.create_from_instance(relation_instance.clone());
+    let result = relation_instance_manager.create_from_instance(relation_instance);
     assert!(result.is_err());
 
     // Check that we can create a relation instance with existent inbound and outbound
-    let relation_instance = RelationInstanceBuilder::new(outbound_id, type_name.clone(), inbound_id.clone())
-        .property(property_name.clone(), property_value.clone())
+    let relation_instance = RelationInstanceBuilder::new(outbound_id, &ty, inbound_id)
+        .property(&property_name, property_value.clone())
         .build();
-    let result = relation_instance_manager.create_from_instance(relation_instance.clone());
-    assert!(result.is_ok());
+    assert_eq!(edge_key, relation_instance.get_key());
+    let result = relation_instance_manager.create_from_instance(relation_instance);
+    if result.is_err() {
+        println!("{:?}", result.as_ref().err());
+        assert!(false);
+    }
     let actual_edge_key = result.unwrap();
     assert_eq!(outbound_id, actual_edge_key.outbound_id);
-    assert_eq!(type_name.clone(), actual_edge_key.t.to_string());
+    assert_eq!(format!("r__{}__{}", &namespace, &type_name), actual_edge_key.t.to_string());
     assert_eq!(inbound_id, actual_edge_key.inbound_id);
 
     // Check if has returns false for a non-existent uuid
-    let wrong_outbound_id_edge_key = EdgeKey::new(Uuid::new_v4(), Identifier::new(type_name.clone()).unwrap(), inbound_id);
-    let wrong_inbound_id_edge_key = EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), Uuid::new_v4());
-    // let wrong_outbound_id_edge_key = EdgeKey::new(outbound_id, Type::new(type_name.clone()).unwrap(), inbound_id);
+    let wrong_outbound_id_edge_key = EdgeKey::new(Uuid::new_v4(), ty.type_id(), inbound_id);
+    let wrong_inbound_id_edge_key = EdgeKey::new(outbound_id, ty.type_id(), Uuid::new_v4());
 
-    assert!(!relation_instance_manager.has(wrong_outbound_id_edge_key.clone()));
-    assert!(!relation_instance_manager.has(wrong_inbound_id_edge_key.clone()));
+    assert!(!relation_instance_manager.has(&wrong_outbound_id_edge_key));
+    assert!(!relation_instance_manager.has(&wrong_inbound_id_edge_key));
 
     // Check if has returns true for the created relation
-    assert!(relation_instance_manager.has(edge_key.clone()));
+    assert!(relation_instance_manager.has(&edge_key));
 
     // Check if get returns none for a non-existent uuid
-    assert!(relation_instance_manager.get(wrong_outbound_id_edge_key.clone()).is_none());
-    assert!(relation_instance_manager.get(wrong_inbound_id_edge_key.clone()).is_none());
+    assert!(relation_instance_manager.get(&wrong_outbound_id_edge_key).is_none());
+    assert!(relation_instance_manager.get(&wrong_inbound_id_edge_key).is_none());
 
     // Check if get returns the created relation
-    let relation_instance = relation_instance_manager.get(edge_key.clone());
+    let relation_instance = relation_instance_manager.get(&edge_key);
     assert!(relation_instance.is_some());
     let relation_instance = relation_instance.unwrap();
     assert_eq!(outbound_id, relation_instance.outbound_id);
     assert_eq!(inbound_id, relation_instance.inbound_id);
-    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
+    assert_eq!(type_name.clone(), relation_instance.type_name());
 
     // Check that we cannot create the same relation instance twice
-    let relation_instance = RelationInstanceBuilder::new(outbound_id, type_name.clone(), inbound_id)
-        .property(property_name.clone(), property_value.clone())
+    let relation_instance = RelationInstanceBuilder::new(outbound_id, &ty, inbound_id)
+        .property(&property_name, property_value.clone())
         .build();
     let result = relation_instance_manager.create_from_instance(relation_instance.clone());
     assert!(result.is_err());
-    let relation_instance = RelationInstanceBuilder::from(edge_key.clone())
-        .property(property_name.clone(), property_value.clone())
+    let relation_instance = RelationInstanceBuilder::try_from(&edge_key)
+        .unwrap()
+        .property(&property_name, property_value.clone())
         .build();
     let result = relation_instance_manager.create_from_instance(relation_instance.clone());
     assert!(result.is_err());
 
-    relation_instance_manager.delete(edge_key.clone());
-    assert!(!relation_instance_manager.has(edge_key.clone()));
-    assert!(relation_instance_manager.get(edge_key.clone()).is_none());
+    relation_instance_manager.delete(&edge_key);
+    assert!(!relation_instance_manager.has(&edge_key));
+    assert!(relation_instance_manager.get(&edge_key).is_none());
 }
 
 #[test]
@@ -135,67 +162,76 @@ fn test_relation_instance_manager_import_export() {
     let relation_instance_manager = application.get_relation_instance_manager();
 
     let namespace = r_string();
-    let outbound_type = r_string();
+    let outbound_type_name = r_string();
     let outbound_id = Uuid::new_v4();
     let type_name = r_string();
-    let inbound_type = r_string();
+    let inbound_type_name = r_string();
     let inbound_id = Uuid::new_v4();
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let edge_key = EdgeKey::new(outbound_id, Identifier::new(type_name.clone()).unwrap(), inbound_id);
+    let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
+    let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
-    let entity_type = EntityTypeBuilder::new(namespace.clone(), outbound_type.clone())
-        .string_property(property_name.clone())
+    let outbound_type = EntityTypeBuilder::new_from_type(&namespace, &outbound_type_name)
+        .string_property(&property_name)
         .build();
-    entity_type_manager.register(entity_type.clone());
-    let entity_type = EntityTypeBuilder::new(namespace.clone(), inbound_type.clone())
-        .string_property(property_name.clone())
-        .build();
-    entity_type_manager.register(entity_type.clone());
-
-    let entity_instance = EntityInstanceBuilder::new(outbound_type.clone())
-        .id(outbound_id)
-        .property(property_name.clone(), property_value.clone())
-        .build();
-    let result = entity_instance_manager.create_from_instance(entity_instance.clone());
+    let result = entity_type_manager.register(outbound_type.clone());
     assert!(result.is_ok());
 
-    let entity_instance = EntityInstanceBuilder::new(inbound_type.clone())
-        .id(inbound_id)
-        .property(property_name.clone(), property_value.clone())
+    let inbound_type = EntityTypeBuilder::new_from_type(&namespace, &inbound_type_name)
+        .string_property(&property_name)
         .build();
-    let result = entity_instance_manager.create_from_instance(entity_instance.clone());
+    let result = entity_type_manager.register(inbound_type.clone());
+    assert!(result.is_ok());
+
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &outbound_type_name)
+        .id(outbound_id)
+        .property(&property_name, property_value.clone())
+        .build();
+    let result = entity_instance_manager.create_from_instance(entity_instance);
+    assert!(result.is_ok());
+
+    let entity_instance = EntityInstanceBuilder::new_from_type(&namespace, &inbound_type_name)
+        .id(inbound_id)
+        .property(&property_name, property_value.clone())
+        .build();
+    let result = entity_instance_manager.create_from_instance(entity_instance);
     assert!(result.is_ok());
 
     let mut path = env::temp_dir();
     path.push(format!("{}-{}-{}.json", outbound_id.to_string().as_str(), type_name.clone(), inbound_id.to_string().as_str()));
     let path = path.into_os_string().into_string().unwrap();
 
-    let relation_type = RelationTypeBuilder::new(namespace.clone(), outbound_type, type_name.clone(), inbound_type)
-        .string_property(property_name.clone())
-        .build();
-    relation_type_manager.register(relation_type.clone());
+    let outbound_ty: ComponentOrEntityTypeId = outbound_type.ty.into();
+    let relation_ty = ty.relation_type_id();
+    let inbound_ty: ComponentOrEntityTypeId = inbound_type.ty.into();
 
-    let relation_instance = RelationInstanceBuilder::new(outbound_id, type_name.clone(), inbound_id)
-        .property(property_name.clone(), property_value.clone())
+    let relation_type = RelationTypeBuilder::new(&outbound_ty, &relation_ty, &inbound_ty)
+        .string_property(&property_name)
         .build();
-    let result = relation_instance_manager.create_from_instance(relation_instance.clone());
+    let result = relation_type_manager.register(relation_type);
+    assert!(result.is_ok());
+
+    let relation_instance = RelationInstanceBuilder::new(outbound_id, &ty, inbound_id)
+        .property(&property_name, property_value.clone())
+        .build();
+    let result = relation_instance_manager.create_from_instance(relation_instance);
 
     let actual_edge_key = result.unwrap();
     assert_eq!(outbound_id, actual_edge_key.outbound_id);
-    assert_eq!(type_name.clone(), actual_edge_key.t.to_string());
+    assert_eq!(format!("r__{}__{}", &namespace, &type_name), actual_edge_key.t.to_string());
     assert_eq!(inbound_id, actual_edge_key.inbound_id);
 
-    relation_instance_manager.export(edge_key.clone(), &path);
-    assert!(relation_instance_manager.has(edge_key.clone()));
-    relation_instance_manager.delete(edge_key.clone());
-    assert!(!relation_instance_manager.has(edge_key.clone()));
+    relation_instance_manager.export(&edge_key, &path);
+    assert!(relation_instance_manager.has(&edge_key));
+    relation_instance_manager.delete(&edge_key);
+    assert!(!relation_instance_manager.has(&edge_key));
     let result = relation_instance_manager.import(&path);
     assert!(result.is_ok());
     let relation_instance = result.unwrap();
     assert_eq!(outbound_id, relation_instance.outbound_id);
-    assert_eq!(type_name.clone(), relation_instance.type_name.clone());
+    assert_eq!(&type_name, &relation_instance.type_name());
     assert_eq!(inbound_id, relation_instance.inbound_id);
-    assert!(relation_instance_manager.has(edge_key.clone()));
+    assert!(relation_instance_manager.has(&edge_key));
 }
