@@ -23,7 +23,7 @@ pub struct GraphQLEdgeKey {
     pub type_name: String,
 
     /// The instance id.
-    #[graphql(default = "String::new")]
+    #[graphql(default)]
     pub instance_id: String,
 
     /// The id of the inbound entity instance.
