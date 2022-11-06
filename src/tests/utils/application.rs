@@ -1,6 +1,8 @@
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
+use std::sync::RwLock;
 
-use crate::di::{profiles, Provider};
+use crate::di::profiles;
+use crate::di::Provider;
 
 use crate::application::Application;
 use crate::di_container_get;
