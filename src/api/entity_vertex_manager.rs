@@ -8,7 +8,6 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::model::EntityTypeId;
-use crate::model::TypeDefinitionGetter;
 
 #[derive(Debug)]
 pub enum EntityVertexCreationError {

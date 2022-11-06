@@ -98,7 +98,7 @@ impl GraphQLEntityInstance {
     /// List of behaviours which have been actually applied on the entity instance including
     /// behaviours which have been applied after creation.
     async fn behaviours(&self) -> Vec<String> {
-        /// TODO: Implement BehaviourTypeId representation
+        // TODO: Implement BehaviourTypeId representation
         self.entity_instance.behaviours.iter().map(|p| p.key().to_string()).collect()
     }
 
