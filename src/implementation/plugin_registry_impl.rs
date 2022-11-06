@@ -15,6 +15,8 @@ use log::info;
 use log::trace;
 use notify::RecursiveMode;
 use notify::Watcher;
+use semver::Version;
+use semver::VersionReq;
 use uuid::Uuid;
 
 use crate::api::ComponentBehaviourManager;
@@ -591,13 +593,19 @@ impl PluginRegistryImpl {
     }
 
     fn get_plugin_by_dependency(&self, plugin_dependency: &PluginDependency) -> Option<Uuid> {
+        let version_requirement = VersionReq::parse(plugin_dependency.version).ok()?;
         self.plugin_containers
             .0
             .iter()
             .find(|e| {
                 let reader = e.plugin_declaration.read().unwrap();
                 match *reader {
-                    Some(plugin_declaration) => plugin_declaration.name == plugin_dependency.name && plugin_declaration.version.eq(plugin_declaration.version),
+                    Some(plugin_declaration) => {
+                        plugin_declaration.name == plugin_dependency.name
+                            && Version::parse(plugin_declaration.version)
+                                .map(|version| version_requirement.matches(&version))
+                                .unwrap_or(false)
+                    }
                     None => false,
                 }
             })
