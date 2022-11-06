@@ -37,17 +37,16 @@ impl GraphQLRelationInstance {
     /// The relation type.
     #[graphql(name = "type")]
     async fn relation_type(&self, context: &Context<'_>) -> Option<GraphQLRelationType> {
-        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
-            let type_name = self.relation_instance.type_name.clone();
-            // starts_with because the relation type name of the default_connector contains extra
-            // information (outbound+inbound property names) in order to allow multiple connectors
-            // between the two entity instances
-            if let Some(mut relation_type) = relation_type_manager.get_starts_with(&type_name) {
-                relation_type.instance_type_name = type_name;
-                return Some(relation_type.into());
-            }
-        }
-        None
+        context
+            .data::<Arc<dyn RelationTypeManager>>()
+            .ok()?
+            .get(&self.relation_instance.relation_type_id())
+            .map(|r| r.into())
+    }
+
+    /// The instance id of the relation instance type.
+    async fn instance_id(&self) -> String {
+        self.relation_instance.ty.instance_id()
     }
 
     /// The inbound entity instance.
@@ -81,7 +80,7 @@ impl GraphQLRelationInstance {
             .filter(|property_instance| names.is_none() || names.clone().unwrap().contains(property_instance.key()))
             .map(|property_instance| {
                 GraphQLPropertyInstance::new_relation_property(
-                    self.relation_instance.type_name.clone(),
+                    self.relation_instance.relation_type_id(),
                     property_instance.key().clone(),
                     property_instance.get(),
                 )
@@ -109,16 +108,10 @@ impl GraphQLRelationInstance {
         }
     }
 
-    /// List of components which have been actually applied on the relation instance including
-    /// components which have been added after creation.
-    async fn component_names(&self) -> Vec<String> {
-        self.relation_instance.components.iter().map(|p| p.key().clone()).collect()
-    }
-
     /// List of behaviours which have been actually applied on the relation instance including
     /// behaviours which have been applied after creation.
     async fn behaviours(&self) -> Vec<String> {
-        self.relation_instance.behaviours.iter().map(|p| p.key().clone()).collect()
+        self.relation_instance.behaviours.iter().map(|p| p.key().to_string()).collect()
     }
 }
 
