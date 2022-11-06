@@ -1,5 +1,7 @@
-use async_graphql::{InputObject, Object};
-use serde::{Deserialize, Serialize};
+use async_graphql::InputObject;
+use async_graphql::Object;
+use serde::Deserialize;
+use serde::Serialize;
 use serde_json::Value;
 
 use crate::model::Extension;
