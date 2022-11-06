@@ -1,9 +1,13 @@
 query {
   types {
-    relations(search: "relationtype?") {
+    relations(
+      type: {
+        namespace: ""
+        name: "relationtype?"
+      }
+    ) {
       namespace
       name
-      instanceTypeName
       description
       outboundTypes {
         name

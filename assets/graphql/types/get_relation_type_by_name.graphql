@@ -1,17 +1,24 @@
 query {
   types {
-    relations(name: "relationtype1") {
+    relations(
+      type: {
+        namespace: "example"
+        name: "relationtype1"
+      }
+    ) {
       namespace
       name
-      instanceTypeName
       description
       outboundTypes {
+        namespace
         name
       }
       inboundTypes {
+        namespace
         name
       }
       components {
+        namespace
         name
       }
       properties {

@@ -3,7 +3,6 @@ query {
     relations {
       namespace
       name
-      instanceTypeName
       description
       outboundTypes {
         name

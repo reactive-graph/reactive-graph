@@ -1,6 +1,11 @@
 query {
   types {
-    components(name: "component1") {
+    components(
+      type: {
+        namespace: "example"
+        name: "component1"
+      }
+    ) {
       namespace
       name
       description
