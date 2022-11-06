@@ -120,6 +120,11 @@ fn reactive_entity_instance_test() {
     reactive_entity_instance.remove_property(&new_property_name);
     assert!(!reactive_entity_instance.has_property(&new_property_name));
 
+    assert_eq!(
+        format!("{}__{}", reactive_entity_instance.ty, reactive_entity_instance.id),
+        format!("{}", reactive_entity_instance)
+    );
+
     let entity_instance: EntityInstance = reactive_entity_instance.into();
     assert_eq!(namespace.clone(), entity_instance.namespace());
     assert_eq!(type_name.clone(), entity_instance.type_name());

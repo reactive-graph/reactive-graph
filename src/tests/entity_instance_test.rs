@@ -60,6 +60,7 @@ fn entity_instance_test() {
     assert!(entity_instance.has_own_extension(extension_name));
     assert!(!entity_instance.has_own_extension(r_string()));
     assert_eq!(extension.extension, entity_instance.get_own_extension(extension_name).unwrap().extension);
+    assert_eq!(format!("{}__{}", entity_instance.ty, entity_instance.id), format!("{}", entity_instance));
 }
 
 #[test]

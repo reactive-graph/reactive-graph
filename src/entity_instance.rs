@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use indradb::VertexProperties;
 use serde::Deserialize;
@@ -168,5 +170,11 @@ impl NamespacedTypeGetter for EntityInstance {
 impl TypeDefinitionGetter for EntityInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl Display for EntityInstance {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}__{}", &self.ty, self.id)
     }
 }

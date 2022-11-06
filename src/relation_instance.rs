@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use indradb::EdgeKey;
 use indradb::EdgeProperties;
@@ -237,5 +239,11 @@ impl NamespacedTypeGetter for RelationInstance {
 impl TypeDefinitionGetter for RelationInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl Display for RelationInstance {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}--[{}]-->{}", self.outbound_id, &self.ty, self.inbound_id)
     }
 }

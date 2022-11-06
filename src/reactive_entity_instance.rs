@@ -1,3 +1,5 @@
+use std::fmt::Display;
+use std::fmt::Formatter;
 use std::sync::Arc;
 
 use dashmap::DashMap;
@@ -261,5 +263,11 @@ impl NamespacedTypeGetter for ReactiveEntityInstance {
 impl TypeDefinitionGetter for ReactiveEntityInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl Display for ReactiveEntityInstance {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}__{}", &self.ty, self.id)
     }
 }

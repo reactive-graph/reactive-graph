@@ -1,4 +1,6 @@
 use std::collections::HashMap;
+use std::fmt::Display;
+use std::fmt::Formatter;
 use std::sync::Arc;
 
 use dashmap::DashMap;
@@ -342,5 +344,11 @@ impl NamespacedTypeGetter for ReactiveRelationInstance {
 impl TypeDefinitionGetter for ReactiveRelationInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl Display for ReactiveRelationInstance {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}--[{}]-->{}", self.outbound.id, &self.ty, self.inbound.id)
     }
 }

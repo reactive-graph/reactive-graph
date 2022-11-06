@@ -65,6 +65,11 @@ fn relation_instance_test() {
     assert!(relation_instance.has_own_extension(extension_name));
     assert!(!relation_instance.has_own_extension(r_string()));
     assert_eq!(extension.extension, relation_instance.get_own_extension(extension_name).unwrap().extension);
+
+    assert_eq!(
+        format!("{}--[{}]-->{}", relation_instance.outbound_id, relation_instance.ty, relation_instance.inbound_id),
+        format!("{}", relation_instance)
+    );
 }
 
 #[test]

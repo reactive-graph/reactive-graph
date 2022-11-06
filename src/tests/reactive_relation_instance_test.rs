@@ -124,6 +124,14 @@ fn reactive_relation_instance_test() {
     reactive_relation_instance.remove_property(&new_property_name);
     assert!(!reactive_relation_instance.has_property(&new_property_name));
 
+    assert_eq!(
+        format!(
+            "{}--[{}]-->{}",
+            reactive_relation_instance.outbound.id, reactive_relation_instance.ty, reactive_relation_instance.inbound.id
+        ),
+        format!("{}", reactive_relation_instance)
+    );
+
     let relation_instance: RelationInstance = reactive_relation_instance.into();
     assert_eq!(outbound_entity.id, relation_instance.outbound_id);
     assert_eq!(namespace.clone(), relation_instance.namespace());
