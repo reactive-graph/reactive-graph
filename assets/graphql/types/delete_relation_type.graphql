@@ -1,7 +1,12 @@
 mutation {
   types {
     relations {
-      delete(name: "relationtype1")
+      delete(
+        type: {
+          namespace: "example"
+          name: "relationtype1"
+        }
+      )
     }
   }
 }

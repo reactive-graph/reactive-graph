@@ -306,17 +306,17 @@ type Mutation {
 "Mutations for components"
 type MutationComponents {
   "Adds an extension to the component with the given name."
-  addExtension(extension: ExtensionDefinition!, ty: ComponentTypeId!): Component!
+  addExtension(extension: ExtensionDefinition!, type: ComponentTypeId!): Component!
   "Adds a property to the component with the given name."
-  addProperty(property: PropertyTypeDefinition!, ty: ComponentTypeId!): Component!
+  addProperty(property: PropertyTypeDefinition!, type: ComponentTypeId!): Component!
   "Creates a new component with the given name and properties."
   create(description: String, extensions: [ExtensionDefinition!], properties: [PropertyTypeDefinition!], type: ComponentTypeId!): Component!
   "Deletes the component with the given name."
-  delete(ty: ComponentTypeId!): Boolean!
+  delete(type: ComponentTypeId!): Boolean!
   "Removes the extension with the given extension_name from the component with the given name."
-  removeExtension(extensionName: String!, ty: ComponentTypeId!): Component!
+  removeExtension(extensionName: String!, type: ComponentTypeId!): Component!
   "Removes the property with the given property_name from the component with the given name."
-  removeProperty(propertyName: String!, ty: ComponentTypeId!): Component!
+  removeProperty(propertyName: String!, type: ComponentTypeId!): Component!
 }
 
 "Mutation of entity instances."
@@ -380,11 +380,11 @@ type MutationEntityInstances {
 "Mutations for entity types"
 type MutationEntityTypes {
   "Adds the component with the given component_name to the entity type with the given name."
-  addComponent(component: ComponentTypeId!, ty: EntityTypeId!): EntityType!
+  addComponent(component: ComponentTypeId!, type: EntityTypeId!): EntityType!
   "Adds an extension to the entity type with the given name."
-  addExtension(extension: ExtensionDefinition!, ty: EntityTypeId!): EntityType!
+  addExtension(extension: ExtensionDefinition!, type: EntityTypeId!): EntityType!
   "Adds a property to the entity type with the given name."
-  addProperty(property: PropertyTypeDefinition!, ty: EntityTypeId!): EntityType!
+  addProperty(property: PropertyTypeDefinition!, type: EntityTypeId!): EntityType!
   "Creates a new entity type with the given name and components and properties."
   create(
     components: [ComponentTypeId!],
@@ -395,13 +395,13 @@ type MutationEntityTypes {
     type: EntityTypeId!
   ): EntityType!
   "Deletes the entity type with the given name."
-  delete(ty: EntityTypeId!): Boolean!
+  delete(type: EntityTypeId!): Boolean!
   "Remove the component with the given component_name from the entity type with the given name."
-  removeComponent(component: ComponentTypeId!, ty: EntityTypeId!): EntityType!
+  removeComponent(component: ComponentTypeId!, type: EntityTypeId!): EntityType!
   "Removes the extension with the given extension_name from the entity type with the given name."
-  removeExtension(extensionName: String!, ty: EntityTypeId!): EntityType!
+  removeExtension(extensionName: String!, type: EntityTypeId!): EntityType!
   "Removes the property with the given property_name from the entity type with the given name."
-  removeProperty(propertyName: String!, ty: EntityTypeId!): EntityType!
+  removeProperty(propertyName: String!, type: EntityTypeId!): EntityType!
 }
 
 "Mutations for flows and their contained instances."
@@ -557,11 +557,11 @@ type MutationRelationInstances {
 "Mutations for relation types"
 type MutationRelationTypes {
   "Adds the component with the given component_name to the relation type with the given name."
-  addComponent(component: ComponentTypeId!, relationType: RelationTypeId!): RelationType!
+  addComponent(component: ComponentTypeId!, type: RelationTypeId!): RelationType!
   "Adds an extension to the relation type with the given name."
-  addExtension(extension: ExtensionDefinition!, relationType: RelationTypeId!): RelationType!
+  addExtension(extension: ExtensionDefinition!, type: RelationTypeId!): RelationType!
   "Adds a property to the relation type with the given name."
-  addProperty(property: PropertyTypeDefinition!, relationType: RelationTypeId!): RelationType!
+  addProperty(property: PropertyTypeDefinition!, type: RelationTypeId!): RelationType!
   """
 
   Creates a new relation type with the given name and components and properties.
@@ -581,13 +581,13 @@ type MutationRelationTypes {
     type: RelationTypeId!
   ): RelationType!
   "Deletes the relation type with the given name."
-  delete(relationType: RelationTypeId!): Boolean!
+  delete(type: RelationTypeId!): Boolean!
   "Remove the component with the given component_name from the relation type with the given name."
-  removeComponent(component: ComponentTypeId!, relationType: RelationTypeId!): RelationType!
+  removeComponent(component: ComponentTypeId!, type: RelationTypeId!): RelationType!
   "Removes the extension with the given extension_name from the relation type with the given name."
-  removeExtension(extensionName: String!, relationType: RelationTypeId!): RelationType!
+  removeExtension(extensionName: String!, type: RelationTypeId!): RelationType!
   "Removes the property with the given property_name from the relation type with the given name."
-  removeProperty(propertyName: String!, relationType: RelationTypeId!): RelationType!
+  removeProperty(propertyName: String!, type: RelationTypeId!): RelationType!
 }
 
 "Mutations for types (components, entity types, relation types)."

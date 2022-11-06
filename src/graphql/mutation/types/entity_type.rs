@@ -66,7 +66,12 @@ impl MutationEntityTypes {
     }
 
     /// Adds the component with the given component_name to the entity type with the given name.
-    async fn add_component(&self, context: &Context<'_>, ty: EntityTypeIdDefinition, component: ComponentTypeIdDefinition) -> Result<GraphQLEntityType> {
+    async fn add_component(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        component: ComponentTypeIdDefinition,
+    ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         let component_ty = component.into();
@@ -84,7 +89,12 @@ impl MutationEntityTypes {
     }
 
     /// Remove the component with the given component_name from the entity type with the given name.
-    async fn remove_component(&self, context: &Context<'_>, ty: EntityTypeIdDefinition, component: ComponentTypeIdDefinition) -> Result<GraphQLEntityType> {
+    async fn remove_component(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        component: ComponentTypeIdDefinition,
+    ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         let component_ty = component.into();
@@ -99,7 +109,12 @@ impl MutationEntityTypes {
     }
 
     /// Adds a property to the entity type with the given name.
-    async fn add_property(&self, context: &Context<'_>, ty: EntityTypeIdDefinition, property: PropertyTypeDefinition) -> Result<GraphQLEntityType> {
+    async fn add_property(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        property: PropertyTypeDefinition,
+    ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
@@ -117,7 +132,12 @@ impl MutationEntityTypes {
     }
 
     /// Removes the property with the given property_name from the entity type with the given name.
-    async fn remove_property(&self, context: &Context<'_>, ty: EntityTypeIdDefinition, property_name: String) -> Result<GraphQLEntityType> {
+    async fn remove_property(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        property_name: String,
+    ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
@@ -131,7 +151,12 @@ impl MutationEntityTypes {
     }
 
     /// Adds an extension to the entity type with the given name.
-    async fn add_extension(&self, context: &Context<'_>, ty: EntityTypeIdDefinition, extension: GraphQLExtension) -> Result<GraphQLEntityType> {
+    async fn add_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        extension: GraphQLExtension,
+    ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
@@ -149,7 +174,12 @@ impl MutationEntityTypes {
     }
 
     /// Removes the extension with the given extension_name from the entity type with the given name.
-    async fn remove_extension(&self, context: &Context<'_>, ty: EntityTypeIdDefinition, extension_name: String) -> Result<GraphQLEntityType> {
+    async fn remove_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        extension_name: String,
+    ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
@@ -163,7 +193,7 @@ impl MutationEntityTypes {
     }
 
     /// Deletes the entity type with the given name.
-    async fn delete(&self, context: &Context<'_>, ty: EntityTypeIdDefinition) -> Result<bool> {
+    async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] ty: EntityTypeIdDefinition) -> Result<bool> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         entity_type_manager.delete(&ty.into());
         Ok(true)

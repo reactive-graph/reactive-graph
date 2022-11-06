@@ -45,7 +45,12 @@ impl MutationComponents {
     }
 
     /// Adds a property to the component with the given name.
-    async fn add_property(&self, context: &Context<'_>, ty: ComponentTypeIdDefinition, property: PropertyTypeDefinition) -> Result<GraphQLComponent> {
+    async fn add_property(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        property: PropertyTypeDefinition,
+    ) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
         if !component_manager.has(&ty) {
@@ -63,7 +68,12 @@ impl MutationComponents {
     }
 
     /// Removes the property with the given property_name from the component with the given name.
-    async fn remove_property(&self, context: &Context<'_>, ty: ComponentTypeIdDefinition, property_name: String) -> Result<GraphQLComponent> {
+    async fn remove_property(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        property_name: String,
+    ) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
         if !component_manager.has(&ty) {
@@ -77,7 +87,12 @@ impl MutationComponents {
     }
 
     /// Adds an extension to the component with the given name.
-    async fn add_extension(&self, context: &Context<'_>, ty: ComponentTypeIdDefinition, extension: GraphQLExtension) -> Result<GraphQLComponent> {
+    async fn add_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        extension: GraphQLExtension,
+    ) -> Result<GraphQLComponent> {
         let ty = ty.into();
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         if !component_manager.has(&ty) {
@@ -95,7 +110,12 @@ impl MutationComponents {
     }
 
     /// Removes the extension with the given extension_name from the component with the given name.
-    async fn remove_extension(&self, context: &Context<'_>, ty: ComponentTypeIdDefinition, extension_name: String) -> Result<GraphQLComponent> {
+    async fn remove_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        extension_name: String,
+    ) -> Result<GraphQLComponent> {
         let ty = ty.into();
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         if !component_manager.has(&ty) {
@@ -109,7 +129,7 @@ impl MutationComponents {
     }
 
     /// Deletes the component with the given name.
-    async fn delete(&self, context: &Context<'_>, ty: ComponentTypeIdDefinition) -> Result<bool> {
+    async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] ty: ComponentTypeIdDefinition) -> Result<bool> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         component_manager.delete(&ty.into());
         Ok(true)

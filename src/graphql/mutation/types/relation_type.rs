@@ -104,7 +104,7 @@ impl MutationRelationTypes {
     async fn add_component(
         &self,
         context: &Context<'_>,
-        relation_type: RelationTypeIdDefinition,
+        #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
         component: ComponentTypeIdDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
@@ -129,7 +129,7 @@ impl MutationRelationTypes {
     async fn remove_component(
         &self,
         context: &Context<'_>,
-        relation_type: RelationTypeIdDefinition,
+        #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
         component: ComponentTypeIdDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
@@ -149,7 +149,7 @@ impl MutationRelationTypes {
     async fn add_property(
         &self,
         context: &Context<'_>,
-        relation_type: RelationTypeIdDefinition,
+        #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
         property: PropertyTypeDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
@@ -169,7 +169,12 @@ impl MutationRelationTypes {
     }
 
     /// Removes the property with the given property_name from the relation type with the given name.
-    async fn remove_property(&self, context: &Context<'_>, relation_type: RelationTypeIdDefinition, property_name: String) -> Result<GraphQLRelationType> {
+    async fn remove_property(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
+        property_name: String,
+    ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         if !relation_type_manager.has(&ty) {
@@ -183,7 +188,12 @@ impl MutationRelationTypes {
     }
 
     /// Adds an extension to the relation type with the given name.
-    async fn add_extension(&self, context: &Context<'_>, relation_type: RelationTypeIdDefinition, extension: GraphQLExtension) -> Result<GraphQLRelationType> {
+    async fn add_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
+        extension: GraphQLExtension,
+    ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         if !relation_type_manager.has(&ty) {
@@ -201,7 +211,12 @@ impl MutationRelationTypes {
     }
 
     /// Removes the extension with the given extension_name from the relation type with the given name.
-    async fn remove_extension(&self, context: &Context<'_>, relation_type: RelationTypeIdDefinition, extension_name: String) -> Result<GraphQLRelationType> {
+    async fn remove_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
+        extension_name: String,
+    ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         if !relation_type_manager.has(&ty) {
@@ -215,7 +230,7 @@ impl MutationRelationTypes {
     }
 
     /// Deletes the relation type with the given name.
-    async fn delete(&self, context: &Context<'_>, relation_type: RelationTypeIdDefinition) -> Result<bool> {
+    async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] relation_type: RelationTypeIdDefinition) -> Result<bool> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         relation_type_manager.delete(&relation_type.into());
         Ok(true)
