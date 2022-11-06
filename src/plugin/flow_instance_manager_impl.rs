@@ -6,6 +6,7 @@ use uuid::Uuid;
 
 use crate::api::ReactiveFlowInstanceManager;
 use crate::model::FlowInstance;
+use crate::model::FlowTypeId;
 use crate::model::ReactiveFlowInstance;
 use crate::plugins::FlowInstanceCreationError;
 use crate::plugins::FlowInstanceManager;
@@ -45,11 +46,11 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
 
     fn create_from_type(
         &self,
-        name: &str,
+        ty: &FlowTypeId,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
     ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError> {
-        match self.reactive_flow_instance_manager.create_from_type(name, variables, properties) {
+        match self.reactive_flow_instance_manager.create_from_type(ty, variables, properties) {
             Ok(reactive_flow_instance) => Ok(reactive_flow_instance),
             Err(_) => Err(FlowInstanceCreationError::Failed),
         }

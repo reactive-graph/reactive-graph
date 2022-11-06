@@ -29,7 +29,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
             }
         }
         for relation_instance in flow_instance.relation_instances.iter() {
-            if !self.relation_instance_manager.has(relation_instance.get_key()) {
+            if !self.relation_instance_manager.has(&relation_instance.get_key()) {
                 let _id = self.relation_instance_manager.create_from_instance(relation_instance.clone())?;
             }
         }
@@ -48,7 +48,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
             // TODO: what happens with removed entity instances?
         }
         for relation_instance in flow_instance.relation_instances {
-            if self.relation_instance_manager.has(relation_instance.get_key()) {
+            if self.relation_instance_manager.has(&relation_instance.get_key()) {
                 // The relation instance has been updated
                 self.relation_instance_manager.commit(relation_instance.clone());
             } else {
@@ -62,7 +62,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
     fn delete(&self, flow_instance: FlowInstance) {
         // Reverse order: first relations then entities
         for relation_instance in flow_instance.relation_instances {
-            self.relation_instance_manager.delete(relation_instance.get_key());
+            self.relation_instance_manager.delete(&relation_instance.get_key());
         }
         for entity_instance in flow_instance.entity_instances {
             self.entity_instance_manager.delete(entity_instance.id);
@@ -72,7 +72,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
     fn import(&self, path: &str) -> Result<FlowInstance, FlowInstanceImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
-        let flow_instance = serde_json::from_reader(reader)?;
+        let flow_instance: FlowInstance = serde_json::from_reader(reader)?;
         self.create(flow_instance).map_err(|e| e.into())
     }
 
