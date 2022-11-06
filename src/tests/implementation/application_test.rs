@@ -1,11 +1,12 @@
-use crate::tests::utils::application::rw_application;
+use std::sync::Arc;
+use std::sync::RwLock;
+use std::thread;
+use std::time::Duration;
+
 use futures_await_test::async_test;
 
 use crate::application::Application;
-use std::sync::{Arc, RwLock};
-use std::thread;
-use std::time::Duration;
-// use async_std::task;
+use crate::tests::utils::application::rw_application;
 
 // #[test]
 #[async_test]
