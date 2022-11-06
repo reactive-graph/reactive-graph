@@ -50,12 +50,6 @@ type EntityInstance {
   behaviours: [String!]!
   """
 
-  List of components which have been actually applied on the entity instance including
-  components which have been added after creation.
-  """
-  componentNames: [String!]!
-  """
-
   The components which have been actually applied on the entity instance including
   components which have been added after creation.
   """
@@ -67,14 +61,14 @@ type EntityInstance {
   "List of relation instances which ends at this entity instance."
   inbound(
     "The inbound relation type"
-    type: String
+    type: RelationTypeId
   ): [RelationInstance!]!
   "The label of the entity instance if available."
   label: String
   "List of relation instances which starts at this entity instance."
   outbound(
     "The outbound relation type"
-    type: String
+    type: RelationTypeId
   ): [RelationInstance!]!
   """
 
@@ -105,6 +99,8 @@ type EntityType {
   extensions(name: String): [Extension!]!
   "List of relation types which has this entity type as inbound."
   inboundRelations: [RelationType!]!
+  "Returns true, if the entity type is valid. This means all components exists."
+  isValid: Boolean!
   """
 
   The name of the entity type.
@@ -177,19 +173,43 @@ type FlowInstance {
 
 "Flow types are templates for flow instances."
 type FlowType {
+  countEntityInstances: Int!
+  countRelationInstances: Int!
   "Textual description of the flow type."
   description: String!
+  "The entity instances contained by the flow type"
+  entityInstances: [EntityInstance!]!
   "The extensions which are defined by the flow type."
   extensions(name: String): [Extension!]!
   """
 
+  Returns true, if the relation type is valid.
+
+  This means all components exists and the outbound and inbound entity types are valid.
+  """
+  isValid: Boolean!
+  """
+
   The name of the flow type.
 
-  The name is the unique identifier for flow types.
+  The name is the unique identifier for flow types of the same namespace.
   """
   name: String!
   "The namespace the flow type belongs to."
   namespace: String!
+  """
+
+  The properties of the flow type.
+  This are the properties of the wrapper entity instance.
+  """
+  properties(
+    "Filters by property name"
+    name: String,
+    "Filters by property names"
+    names: [String!]
+  ): [PropertyInstance!]!
+  "The relation instances contained by the flow type"
+  relationInstances: [RelationInstance!]!
   "The entity type of the flow type."
   type: EntityType
   "The variables of the flow type."
@@ -198,9 +218,19 @@ type FlowType {
 
 "Search for instances"
 type Instances {
-  countEntityInstances: Int!
+  countEntityInstances(
+    "Counts the entity instances which behaves as the behaviour only."
+    behaviour: BehaviourTypeId,
+    "Counts the entity instances which are composed by the given component only."
+    component: ComponentTypeId,
+    "Counts the entity instances of the given type only."
+    type: EntityTypeId
+  ): Int!
   countFlowInstances: Int!
-  countRelationInstances: Int!
+  countRelationInstances(
+    "Counts the entity instances of the given type only."
+    type: RelationTypeId
+  ): Int!
   """
 
   Search for entity instances.
@@ -211,9 +241,9 @@ type Instances {
   """
   entities(
     "Filters the entity instances by applied behaviours."
-    behaviours: [String!],
+    behaviours: [BehaviourTypeId!],
     "Filters the entity instances by applied components."
-    components: [String!],
+    components: [ComponentTypeId!],
     "Returns only the entity instance with the given id."
     id: UUID,
     "Returns the entity instance with the given label."
@@ -221,7 +251,7 @@ type Instances {
     "Query by properties."
     properties: [PropertyInstanceDefinition!],
     "Filters the entity instances by type."
-    type: String
+    type: EntityTypeId
   ): [EntityInstance!]!
   "Search for flows and their contained instances."
   flows(
@@ -230,7 +260,7 @@ type Instances {
     "Filters by the label of the flow"
     label: String,
     "Filters by the flow type"
-    type: String
+    type: EntityTypeId
   ): [FlowInstance!]!
   """
 
@@ -243,21 +273,25 @@ type Instances {
   """
   relations(
     "Filters the relation instances by applied behaviours."
-    behaviours: [String!],
+    behaviours: [BehaviourTypeId!],
     "Filters the relation instances by applied components."
-    components: [String!],
+    components: [ComponentTypeId!],
+    "Filters the relation instances by the component of the inbound entity instance."
+    inboundComponentTy: ComponentTypeId,
+    "Filters the relation instances by the entity type of the inbound entity instance."
+    inboundEntityTy: EntityTypeId,
     "Filters the relation instances by the id of the inbound entity instance"
     inboundId: UUID,
-    "Filters the relation instances by the entity type of the inbound entity instance"
-    inboundType: String,
+    "Filters the relation instances by the component of the outbound entity instance."
+    outboundComponentTy: ComponentTypeId,
+    "Filters the relation instances by the entity type of the outbound entity instance."
+    outboundEntityTy: EntityTypeId,
     "Filters the relation instances by the id of the outbound entity instance"
     outboundId: UUID,
-    "Filters the relation instances by the entity type of the outbound entity instance"
-    outboundType: String,
     "Query by properties."
     properties: [PropertyInstanceDefinition!],
     "Filters the relation instances by relation type"
-    type: String
+    type: RelationTypeId
   ): [RelationInstance!]!
 }
 
@@ -272,17 +306,17 @@ type Mutation {
 "Mutations for components"
 type MutationComponents {
   "Adds an extension to the component with the given name."
-  addExtension(extension: ExtensionDefinition!, name: String!): Component!
+  addExtension(extension: ExtensionDefinition!, ty: ComponentTypeId!): Component!
   "Adds a property to the component with the given name."
-  addProperty(name: String!, property: PropertyTypeDefinition!): Component!
+  addProperty(property: PropertyTypeDefinition!, ty: ComponentTypeId!): Component!
   "Creates a new component with the given name and properties."
-  create(description: String, extensions: [ExtensionDefinition!], name: String!, namespace: String!, properties: [PropertyTypeDefinition!]): Component!
+  create(description: String, extensions: [ExtensionDefinition!], properties: [PropertyTypeDefinition!], type: ComponentTypeId!): Component!
   "Deletes the component with the given name."
-  delete(name: String!): Boolean!
+  delete(ty: ComponentTypeId!): Boolean!
   "Removes the extension with the given extension_name from the component with the given name."
-  removeExtension(extensionName: String!, name: String!): Component!
+  removeExtension(extensionName: String!, ty: ComponentTypeId!): Component!
   "Removes the property with the given property_name from the component with the given name."
-  removeProperty(name: String!, propertyName: String!): Component!
+  removeProperty(propertyName: String!, ty: ComponentTypeId!): Component!
 }
 
 "Mutation of entity instances."
@@ -302,14 +336,12 @@ type MutationEntityInstances {
   """
   create(
     "Creates the entity instance with the given components."
-    components: [String!],
+    components: [ComponentTypeId!],
     "The id of the entity instance. If none is given a random uuid will be generated."
     id: UUID,
-    "The namespace."
-    namespace: String,
     properties: [PropertyInstanceDefinition!],
-    "The entity type."
-    type: String!
+    "The entity type"
+    type: EntityTypeId!
   ): EntityInstance!
   "Deletes an entity instance."
   delete(
@@ -332,47 +364,44 @@ type MutationEntityInstances {
   tick(id: UUID!): EntityInstance!
   "Updates the properties of the entity instance with the given id."
   update(
-    "Updates the entity instance with the given label."
-    addComponents: [String!],
+    "Adds the given components."
+    addComponents: [ComponentTypeId!],
     "Updates the entity instance with the given id."
     id: UUID,
     "Updates the entity instance with the given label."
     label: String,
     "Updates the given properties"
     properties: [PropertyInstanceDefinition!],
-    "Updates the entity instance with the given label."
-    removeComponents: [String!]
+    "Removes the given components."
+    removeComponents: [ComponentTypeId!]
   ): EntityInstance!
 }
 
 "Mutations for entity types"
 type MutationEntityTypes {
   "Adds the component with the given component_name to the entity type with the given name."
-  addComponent(componentName: String!, name: String!): EntityType!
+  addComponent(component: ComponentTypeId!, ty: EntityTypeId!): EntityType!
   "Adds an extension to the entity type with the given name."
-  addExtension(extension: ExtensionDefinition!, name: String!): EntityType!
+  addExtension(extension: ExtensionDefinition!, ty: EntityTypeId!): EntityType!
   "Adds a property to the entity type with the given name."
-  addProperty(name: String!, property: PropertyTypeDefinition!): EntityType!
+  addProperty(property: PropertyTypeDefinition!, ty: EntityTypeId!): EntityType!
   "Creates a new entity type with the given name and components and properties."
   create(
-    components: [String!],
+    components: [ComponentTypeId!],
     "The extension on the entity type."
     extensions: [ExtensionDefinition!],
-    "The name of the entity type."
-    name: String!,
-    "The namespace the entity type belongs to."
-    namespace: String,
     "The definitions of properties. These are added additionally to the properties provided by the given components."
-    properties: [PropertyTypeDefinition!]
+    properties: [PropertyTypeDefinition!],
+    type: EntityTypeId!
   ): EntityType!
   "Deletes the entity type with the given name."
-  delete(name: String!): Boolean!
+  delete(ty: EntityTypeId!): Boolean!
   "Remove the component with the given component_name from the entity type with the given name."
-  removeComponent(componentName: String!, name: String!): EntityType!
+  removeComponent(component: ComponentTypeId!, ty: EntityTypeId!): EntityType!
   "Removes the extension with the given extension_name from the entity type with the given name."
-  removeExtension(extensionName: String!, name: String!): EntityType!
+  removeExtension(extensionName: String!, ty: EntityTypeId!): EntityType!
   "Removes the property with the given property_name from the entity type with the given name."
-  removeProperty(name: String!, propertyName: String!): EntityType!
+  removeProperty(propertyName: String!, ty: EntityTypeId!): EntityType!
 }
 
 "Mutations for flows and their contained instances."
@@ -407,9 +436,9 @@ type MutationFlowInstances {
   which are not provided by the given entity type are lacking of a definition (data type,
   socket type).
   """
-  create(flowId: UUID, properties: [PropertyInstanceDefinition!], type: String!): FlowInstance!
+  create(flowId: UUID, namespace: String!, properties: [PropertyInstanceDefinition!], type: String!): FlowInstance!
   "Creates a new entity instance and adds the entity instance to the given flow by id."
-  createEntity(entityId: UUID, flowId: UUID!, properties: [PropertyInstanceDefinition!], type: String!): FlowInstance!
+  createEntity(entityId: UUID, flowId: UUID!, namespace: String!, properties: [PropertyInstanceDefinition!], type: String!): FlowInstance!
   """
 
   Creates a new flow from the given type.
@@ -425,7 +454,7 @@ type MutationFlowInstances {
   which are not provided by the given entity type are lacking of a definition (data type,
   socket type).
   """
-  createFromType(flowTypeName: String!, properties: [PropertyInstanceDefinition!], variables: [PropertyInstanceDefinition!]): FlowInstance!
+  createFromType(namespace: String!, properties: [PropertyInstanceDefinition!], typeName: String!, variables: [PropertyInstanceDefinition!]): FlowInstance!
   "Creates a new relation instance and adds the relation instance to the given flow by id."
   createRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!, properties: [PropertyInstanceDefinition!]): FlowInstance!
   """
@@ -472,7 +501,8 @@ type MutationRelationInstances {
   """
   create(
     "Creates the relation instance with the given components."
-    components: [String!],
+    components: [ComponentTypeId!],
+    "Specifies the outbound id, the inbound id, the relation type and the instance_id."
     edgeKey: EdgeKeyDefinition!,
     properties: [PropertyInstanceDefinition!]
   ): RelationInstance!
@@ -484,7 +514,7 @@ type MutationRelationInstances {
   """
   createConnector(
     "Creates the relation instance with the given components."
-    components: [String!],
+    components: [ComponentTypeId!],
     "The id of the inbound entity instance"
     inboundId: UUID!,
     "The name of the property of the inbound entity instance"
@@ -496,7 +526,7 @@ type MutationRelationInstances {
     "The initial property values"
     properties: [PropertyInstanceDefinition!],
     "The name of the connector relation type"
-    typeName: String!
+    type: RelationTypeId!
   ): RelationInstance!
   "Deletes an relation instance."
   delete(edgeKey: EdgeKeyDefinition!): Boolean!
@@ -515,23 +545,23 @@ type MutationRelationInstances {
   "Updates the properties of the given relation instance by edge key."
   update(
     "Adds the components with the given name"
-    addComponents: [String!],
+    addComponents: [ComponentTypeId!],
     edgeKey: EdgeKeyDefinition!,
     "Updates the given properties"
     properties: [PropertyInstanceDefinition!],
     "Removes the components with the given name"
-    removeComponents: [String!]
+    removeComponents: [ComponentTypeId!]
   ): RelationInstance!
 }
 
 "Mutations for relation types"
 type MutationRelationTypes {
   "Adds the component with the given component_name to the relation type with the given name."
-  addComponent(componentName: String!, name: String!): RelationType!
+  addComponent(component: ComponentTypeId!, relationType: RelationTypeId!): RelationType!
   "Adds an extension to the relation type with the given name."
-  addExtension(extension: ExtensionDefinition!, name: String!): RelationType!
+  addExtension(extension: ExtensionDefinition!, relationType: RelationTypeId!): RelationType!
   "Adds a property to the relation type with the given name."
-  addProperty(name: String!, property: PropertyTypeDefinition!): RelationType!
+  addProperty(property: PropertyTypeDefinition!, relationType: RelationTypeId!): RelationType!
   """
 
   Creates a new relation type with the given name and components and properties.
@@ -540,26 +570,24 @@ type MutationRelationTypes {
   """
   create(
     "Adds the given components to the newly created relation type."
-    components: [String!],
+    components: [ComponentTypeId!],
     "The extension on the relation type."
     extensions: [ExtensionDefinition!],
-    inboundType: String!,
-    "The name of the relation type."
-    name: String!,
-    "The namespace of the relation type."
-    namespace: String,
-    outboundType: String!,
+    inboundType: EntityTypeId!,
+    outboundType: EntityTypeId!,
     "The definitions of properties. These are added additionally to the properties provided by the given components."
-    properties: [PropertyTypeDefinition!]
+    properties: [PropertyTypeDefinition!],
+    "The relation type."
+    type: RelationTypeId!
   ): RelationType!
   "Deletes the relation type with the given name."
-  delete(name: String!): Boolean!
+  delete(relationType: RelationTypeId!): Boolean!
   "Remove the component with the given component_name from the relation type with the given name."
-  removeComponent(componentName: String!, name: String!): RelationType!
+  removeComponent(component: ComponentTypeId!, relationType: RelationTypeId!): RelationType!
   "Removes the extension with the given extension_name from the relation type with the given name."
-  removeExtension(extensionName: String!, name: String!): RelationType!
+  removeExtension(extensionName: String!, relationType: RelationTypeId!): RelationType!
   "Removes the property with the given property_name from the relation type with the given name."
-  removeProperty(name: String!, propertyName: String!): RelationType!
+  removeProperty(propertyName: String!, relationType: RelationTypeId!): RelationType!
 }
 
 "Mutations for types (components, entity types, relation types)."
@@ -612,7 +640,6 @@ type PropertyType {
 
 "Search queries for the type system, the instances and the flows."
 type Query {
-  dynamicGraph: String!
   "Search for instances (entity instances, relation instances)."
   instances: Instances!
   randomUuid: String!
@@ -642,12 +669,6 @@ type RelationInstance {
   behaviours: [String!]!
   """
 
-  List of components which have been actually applied on the relation instance including
-  components which have been added after creation.
-  """
-  componentNames: [String!]!
-  """
-
   The components which have been actually applied on the relation instance including
   components which have been added after creation.
   """
@@ -662,6 +683,8 @@ type RelationInstance {
   entity instance or vice versa.
   """
   inbound: EntityInstance!
+  "The instance id of the relation instance type."
+  instanceId: String!
   """
 
   The outbound entity instance.
@@ -709,11 +732,11 @@ type RelationType {
   inboundTypes: [EntityType!]!
   """
 
-  The full name of the relation type.
+  Returns true, if the relation type is valid.
 
-  Returns "default_connector__property_name__property_name" (with type suffix).
+  This means all components exists and the outbound and inbound entity types are valid.
   """
-  instanceTypeName: String!
+  isValid: Boolean!
   """
 
   The name of the relation type.
@@ -764,12 +787,10 @@ type Types {
   Optionally the list of components can be filtered by name.
   """
   components(
-    "Filters by the name of the components"
-    name: String,
-    "Filters by the namespace"
-    namespace: String,
     "Searches by the name of the components. Allowed wildcards are: ? and *"
-    search: String
+    search: String,
+    "The component type"
+    type: ComponentTypeId
   ): [Component!]!
   countComponents: Int!
   countEntityTypes: Int!
@@ -782,12 +803,10 @@ type Types {
   Optionally the list of entity types can be filtered by name.
   """
   entities(
-    "Filters by the name of the entity type"
-    name: String,
-    "Filters by the namespace"
-    namespace: String,
     "Searches by the name of the entity types. Allowed wildcards are: ? and *"
-    search: String
+    search: String,
+    "The entity type"
+    type: EntityTypeId
   ): [EntityType!]!
   """
 
@@ -796,25 +815,23 @@ type Types {
   Optionally the list of flow types can be filtered by name.
   """
   flows(
-    "Filters by the name of the flow type"
-    name: String,
-    "Filters by the namespace"
-    namespace: String,
     "Searches by the name of the flow types. Allowed wildcards are: ? and *"
-    search: String
+    search: String,
+    "The flow type"
+    type: FlowTypeId
   ): [FlowType!]!
   "Search for relation types."
   relations(
+    "Filters by inbound component"
+    inboundComponent: ComponentTypeId,
     "Filters by inbound entity type"
-    inboundType: String,
-    "Filters by the name of the relation type"
-    name: String,
-    "Filters by the namespace"
-    namespace: String,
+    inboundEntityType: EntityTypeId,
+    "Filters by outbound component"
+    outboundComponent: ComponentTypeId,
     "Filters by outbound entity type"
-    outboundType: String,
-    "Searches by the name of the relation types. Allowed wildcards are: ? and *"
-    search: String
+    outboundEntityType: EntityTypeId,
+    "The relation type."
+    type: RelationTypeId
   ): [RelationType!]!
 }
 
@@ -871,6 +888,20 @@ entities without requiring a central allocating authority.
 """
 scalar UUID
 
+input BehaviourTypeId {
+  "The name of the behaviour type."
+  name: String!
+  "The namespace of the behaviour type."
+  namespace: String!
+}
+
+input ComponentTypeId {
+  "The name of the component."
+  name: String!
+  "The namespace of the component."
+  namespace: String!
+}
+
 """
 
 The primary key of an edge consists of the outbound id, the
@@ -879,6 +910,8 @@ type name and the inbound id.
 input EdgeKeyDefinition {
   "The id of the inbound entity instance."
   inboundId: UUID!
+  "The instance id."
+  instanceId: String! = "String::new"
   "The namespace."
   namespace: String!
   "The id of the outbound entity instance."
@@ -899,6 +932,8 @@ properties.
 input EntityInstanceDefinition {
   "The description of the entity instance."
   description: String!
+  "Entity instance specific extensions."
+  extensions: [ExtensionDefinition!]!
   "The unique identifier of the entity instance."
   id: UUID!
   "The namespace the entity type belongs to."
@@ -914,7 +949,14 @@ input EntityInstanceDefinition {
   """
   properties: [PropertyInstanceDefinition!]!
   "The name of the entity type."
-  type: String!
+  typeName: String!
+}
+
+input EntityTypeId {
+  "The name of the entity type."
+  name: String!
+  "The namespace of the entity type."
+  namespace: String!
 }
 
 input ExtensionDefinition {
@@ -952,10 +994,19 @@ input FlowInstanceDefinition {
   id: UUID!
   "The name of the flow."
   name: String!
+  "The namespace the entity type belongs to."
+  namespace: String!
   "The relation instances which are contained in this flow."
   relationInstances: [RelationInstanceDefinition!]!
   "The name of the entity type."
-  type: String!
+  typeName: String!
+}
+
+input FlowTypeId {
+  "The name of the flow type."
+  name: String!
+  "The namespace of the flow type."
+  namespace: String!
 }
 
 input PropertyInstanceDefinition {
@@ -994,8 +1045,12 @@ documents in it's properties.
 input RelationInstanceDefinition {
   "Textual description of the relation instance."
   description: String!
+  "Relation instance specific extensions."
+  extensions: [ExtensionDefinition!]!
   "The id of the inbound vertex."
   inboundId: UUID!
+  "The instance id of the relation instance type."
+  instanceId: String!
   "The namespace the relation type belongs to."
   namespace: String!
   "The id of the outbound vertex."
@@ -1010,6 +1065,13 @@ input RelationInstanceDefinition {
   https://docs.serde.rs/serde_json/value/enum.Value.html
   """
   properties: [PropertyInstanceDefinition!]!
-  "The name of the relation type"
-  type: String!
+  "The name of the relation type."
+  typeName: String!
+}
+
+input RelationTypeId {
+  "The name of the relation type."
+  name: String!
+  "The namespace of the relation type."
+  namespace: String!
 }
