@@ -7,7 +7,11 @@ use std::sync::RwLock;
 use std::thread;
 use std::time::Duration;
 
-use crate::di::{module, provides, wrapper, Component, Wrc};
+use crate::di::module;
+use crate::di::provides;
+use crate::di::wrapper;
+use crate::di::Component;
+use crate::di::Wrc;
 use async_trait::async_trait;
 use log::debug;
 use log::info;
