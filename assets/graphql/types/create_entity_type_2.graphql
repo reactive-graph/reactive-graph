@@ -2,11 +2,19 @@ mutation {
   types {
     entities {
       create(
-        namespace: "example"
-        name: "entitytype2"
+        type: {
+          namespace: "example"
+          name: "entitytype2"
+        }
         components: [
-          "component1"
-          "component2"
+          {
+            namespace: "example"
+            name: "component1"
+          }
+          {
+            namespace: "example"
+            name: "component2"
+          }
         ]
         properties: [
           {
