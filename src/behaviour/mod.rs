@@ -60,8 +60,8 @@ pub trait BehaviourPropertyValidator<T: ReactivePropertyContainer>: BehaviourRea
 
     /// Validates the property with the given name.
     fn validate_property(&self, property_name: &str) -> Result<(), BehaviourPropertyInvalid> {
-        let x = self.get_reactive_instance();
-        if !x.has_property(property_name) {
+        let reactive_property_container = self.get_reactive_instance();
+        if !reactive_property_container.has_property(property_name) {
             return Err(BehaviourPropertyInvalid::PropertyMissing(property_name.to_owned()));
         }
         Ok(())
