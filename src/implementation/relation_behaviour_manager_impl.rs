@@ -1,20 +1,22 @@
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
-use crate::di::*;
 use async_trait::async_trait;
-
-use crate::api::RelationBehaviourManager;
-use crate::model::ReactiveRelationInstance;
-use crate::plugins::RelationBehaviourProvider;
+use dashmap::DashMap;
 use indradb::EdgeKey;
 use log::trace;
+use uuid::Uuid;
+
+use crate::api::RelationBehaviourManager;
+use crate::di::*;
+use crate::model::ReactiveRelationInstance;
+use crate::plugins::RelationBehaviourProvider;
 
 #[wrapper]
-pub struct RelationBehaviourProviders(RwLock<Vec<Arc<dyn RelationBehaviourProvider>>>);
+pub struct RelationBehaviourProviders(DashMap<Uuid, Arc<dyn RelationBehaviourProvider>>);
 
 #[provides]
 fn create_relation_behaviour_providers() -> RelationBehaviourProviders {
-    RelationBehaviourProviders(RwLock::new(Vec::new()))
+    RelationBehaviourProviders(DashMap::new())
 }
 
 #[component]
@@ -26,25 +28,29 @@ pub struct RelationBehaviourManagerImpl {
 #[provides]
 impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     fn add_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        trace!("RelationBehaviourManager::add_behaviours {}", relation_instance.get_key().unwrap().t.to_string());
-        for provider in self.behaviour_providers.0.read().unwrap().iter() {
+        trace!("RelationBehaviourManager::add_behaviours {}", relation_instance.get_key().t.to_string());
+        for provider in self.behaviour_providers.0.iter() {
             provider.add_behaviours(relation_instance.clone())
         }
     }
 
     fn remove_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        for provider in self.behaviour_providers.0.read().unwrap().iter() {
+        for provider in self.behaviour_providers.0.iter() {
             provider.remove_behaviours(relation_instance.clone())
         }
     }
 
-    fn remove_behaviours_by_key(&self, edge_key: EdgeKey) {
-        for provider in self.behaviour_providers.0.read().unwrap().iter() {
-            provider.remove_behaviours_by_key(edge_key.clone())
+    fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {
+        for provider in self.behaviour_providers.0.iter() {
+            provider.remove_behaviours_by_key(&edge_key)
         }
     }
 
-    fn add_provider(&self, provider: Arc<dyn RelationBehaviourProvider>) {
-        self.behaviour_providers.0.write().unwrap().push(provider);
+    fn add_provider(&self, id: Uuid, provider: Arc<dyn RelationBehaviourProvider>) {
+        self.behaviour_providers.0.insert(id, provider);
+    }
+
+    fn remove_provider(&self, id: &Uuid) {
+        self.behaviour_providers.0.remove(id);
     }
 }
