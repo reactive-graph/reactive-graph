@@ -2,6 +2,7 @@ use crate::api::EntityTypeManager;
 use crate::api::RelationTypeManager;
 use crate::model::TypeContainer;
 use async_graphql::*;
+use inexor_rgf_core_model::NamespacedTypeGetter;
 use std::sync::Arc;
 
 use crate::graphql::query::GraphQLEntityType;
@@ -19,12 +20,12 @@ pub struct GraphQLComponent {
 impl GraphQLComponent {
     /// The namespace the component belongs to.
     async fn namespace(&self) -> String {
-        self.component.namespace.clone()
+        self.component.namespace()
     }
 
     /// The name of the component.
     async fn name(&self) -> String {
-        self.component.name.clone()
+        self.component.type_name()
     }
 
     /// Textual description of the component.
@@ -68,9 +69,9 @@ impl GraphQLComponent {
     async fn entity_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
         if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
             return entity_type_manager
-                .get_entity_types()
+                .get_all()
                 .iter()
-                .filter(|entity_type| entity_type.is_a(self.component.name.clone()))
+                .filter(|entity_type| entity_type.is_a(&self.component.ty))
                 .cloned()
                 .map(|entity_type| entity_type.into())
                 .collect();
@@ -82,9 +83,9 @@ impl GraphQLComponent {
     async fn relation_types(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
         if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
             return relation_type_manager
-                .get_relation_types()
+                .get_all()
                 .iter()
-                .filter(|relation_type| relation_type.is_a(self.component.name.clone()))
+                .filter(|relation_type| relation_type.is_a(&self.component.ty))
                 .cloned()
                 .map(|relation_type| relation_type.into())
                 .collect();
@@ -93,31 +94,43 @@ impl GraphQLComponent {
     }
 
     /// Query which relation types are using this component as outbound type
-    async fn outbound_of(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
-        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
-            return relation_type_manager
-                .get_relation_types()
-                .iter()
-                .filter(|relation_type| relation_type.outbound_type.eq(&self.component.name))
-                .cloned()
-                .map(|relation_type| relation_type.into())
-                .collect();
-        }
-        Vec::new()
+    async fn outbound_of(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
+        return Ok(relation_type_manager
+            .get_all()
+            .iter()
+            .filter(|relation_type| {
+                // Either the outbound type is the component or the outbound type is an entity type having the component
+                relation_type.outbound_type.eq_component(&self.component.ty)
+                    || entity_type_manager
+                        .get_by_having_component(&self.component.ty)
+                        .iter()
+                        .any(|e| relation_type.outbound_type.eq_entity_type(&e.ty))
+            })
+            .cloned()
+            .map(|relation_type| relation_type.into())
+            .collect());
     }
 
     /// Query which relation types are using this component as inbound type
-    async fn inbound_of(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
-        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
-            return relation_type_manager
-                .get_relation_types()
-                .iter()
-                .filter(|relation_type| relation_type.inbound_type.eq(&self.component.name))
-                .cloned()
-                .map(|relation_type| relation_type.into())
-                .collect();
-        }
-        Vec::new()
+    async fn inbound_of(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
+        return Ok(relation_type_manager
+            .get_all()
+            .iter()
+            .filter(|relation_type| {
+                // Either the outbound type is the component or the outbound type is an entity type having the component
+                relation_type.inbound_type.eq_component(&self.component.ty)
+                    || entity_type_manager
+                        .get_by_having_component(&self.component.ty)
+                        .iter()
+                        .any(|e| relation_type.inbound_type.eq_entity_type(&e.ty))
+            })
+            .cloned()
+            .map(|relation_type| relation_type.into())
+            .collect());
     }
 }
 
