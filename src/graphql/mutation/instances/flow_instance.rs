@@ -3,7 +3,6 @@ use std::sync::Arc;
 
 use async_graphql::*;
 use indradb::EdgeKey;
-use inexor_rgf_core_model::TypeDefinitionGetter;
 use uuid::Uuid;
 
 use crate::api::EntityTypeManager;
@@ -20,6 +19,7 @@ use crate::model::EntityTypeId;
 use crate::model::FlowTypeId;
 use crate::model::ReactiveFlowInstance;
 use crate::model::RelationTypeId;
+use crate::model::TypeDefinitionGetter;
 
 #[derive(Debug)]
 pub enum FlowMutationError {
