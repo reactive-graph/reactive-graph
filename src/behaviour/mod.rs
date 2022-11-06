@@ -14,7 +14,11 @@ pub enum BehaviourCreationError {
 pub enum BehaviourConnectFailed {
     /// Connecting the behaviour failed because the behaviour is invalid.
     BehaviourInvalid(BehaviourInvalid),
+    BehaviourInitializationFailed,
 }
+
+#[derive(Debug)]
+pub struct BehaviourInitializationFailed {}
 
 #[derive(Debug)]
 pub enum BehaviourInvalid {
