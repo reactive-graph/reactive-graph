@@ -1,12 +1,15 @@
-use crate::builder::EntityTypeBuilder;
-use crate::model::fully_qualified_identifier;
-use crate::model::NAMESPACE_ENTITY_TYPE;
-use crate::tests::utils::application::init_application;
-use crate::tests::utils::r_string;
+use std::collections::HashMap;
+
 use indradb::Datastore;
 use serde_json::json;
-use std::collections::HashMap;
 use uuid::Uuid;
+
+use crate::builder::EntityTypeBuilder;
+use crate::model::ComponentTypeId;
+use crate::model::EntityTypeId;
+use crate::model::TypeDefinitionGetter;
+use crate::tests::utils::application::init_application;
+use crate::tests::utils::r_string;
 
 #[test]
 fn test_entity_vertex_manager() {
@@ -20,19 +23,23 @@ fn test_entity_vertex_manager() {
     let type_name = r_string();
     let property_name = r_string();
     let property_value = json!(r_string());
+    let component_name = r_string();
 
     assert_eq!(0, datastore.get_vertex_count().unwrap());
 
     // Create entity type
-    let entity_type = EntityTypeBuilder::new(&namespace, &type_name)
-        .component(String::from("positionable"))
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
+    let entity_type = EntityTypeBuilder::new(ty.clone())
+        .component(component_ty)
         .string_property(property_name.clone())
         .build();
-    entity_type_manager.register(entity_type.clone());
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let result = entity_vertex_manager.create(&type_name, properties);
+    let result = entity_vertex_manager.create(&ty, properties);
 
     assert!(result.is_ok());
     assert_eq!(1, datastore.get_vertex_count().unwrap());
@@ -49,7 +56,7 @@ fn test_entity_vertex_manager() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(uuid, properties.vertex.id);
-    assert_eq!(fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_ENTITY_TYPE), properties.vertex.t);
+    assert_eq!(&ty.type_id(), &properties.vertex.t);
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());
@@ -76,18 +83,22 @@ fn test_entity_vertex_manager_with_id() {
     let type_name = r_string();
     let property_name = r_string();
     let property_value = json!(r_string());
+    let component_name = r_string();
 
     // Create entity type
-    let entity_type = EntityTypeBuilder::new(&namespace, &type_name)
-        .component(String::from("positionable"))
+    let ty = EntityTypeId::new_from_type(&namespace, &type_name);
+    let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
+    let entity_type = EntityTypeBuilder::new(ty.clone())
+        .component(component_ty.clone())
         .string_property(property_name.clone())
         .build();
-    entity_type_manager.register(entity_type.clone());
+    let result = entity_type_manager.register(entity_type.clone());
+    assert!(result.is_ok());
 
     let vertex_uuid = Uuid::new_v4();
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
-    let result = entity_vertex_manager.create_with_id(&type_name, vertex_uuid, properties);
+    let result = entity_vertex_manager.create_with_id(&ty, vertex_uuid, properties);
     assert!(result.is_ok());
 
     // Check if entity vertex with the given uuid exists
@@ -103,7 +114,7 @@ fn test_entity_vertex_manager_with_id() {
     assert!(properties.is_some());
     let properties = properties.unwrap();
     assert_eq!(vertex_uuid, properties.vertex.id);
-    assert_eq!(fully_qualified_identifier(&namespace, &type_name, &NAMESPACE_ENTITY_TYPE), properties.vertex.t);
+    assert_eq!(&ty.type_id(), &properties.vertex.t);
     assert_eq!(1, properties.props.len());
     let property = properties.props.get(0);
     assert!(property.is_some());
