@@ -1,11 +1,11 @@
 use async_graphql::*;
-use inexor_rgf_core_model::EntityTypeId;
 use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
 
 use crate::graphql::mutation::GraphQLEntityInstanceDefinition;
 use crate::graphql::mutation::GraphQLRelationInstanceDefinition;
+use crate::model::EntityTypeId;
 use crate::model::FlowInstance;
 
 /// Represents a flow with entity instances and relation instances.
