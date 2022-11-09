@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::fmt;
+use std::fmt::Display;
+use std::fmt::Formatter;
 use std::sync::Arc;
 use std::sync::RwLock;
 
@@ -281,5 +283,11 @@ impl NamespacedTypeGetter for ReactiveFlowInstance {
 impl TypeDefinitionGetter for ReactiveFlowInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
+    }
+}
+
+impl Display for ReactiveFlowInstance {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}__{}", &self.ty, self.id)
     }
 }
