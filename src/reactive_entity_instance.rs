@@ -20,6 +20,7 @@ use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
+use crate::ReactiveInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::TypeDefinition;
@@ -271,3 +272,5 @@ impl Display for ReactiveEntityInstance {
         write!(f, "{}__{}", &self.ty, self.id)
     }
 }
+
+impl ReactiveInstance for ReactiveEntityInstance {}

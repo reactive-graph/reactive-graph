@@ -21,6 +21,7 @@ use crate::PropertyInstanceSetter;
 use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
 use crate::ReactiveEntityInstance;
+use crate::ReactiveInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
 use crate::RelationInstance;
@@ -352,3 +353,5 @@ impl Display for ReactiveRelationInstance {
         write!(f, "{}--[{}]-->{}", self.outbound.id, &self.ty, self.inbound.id)
     }
 }
+
+impl ReactiveInstance for ReactiveRelationInstance {}
