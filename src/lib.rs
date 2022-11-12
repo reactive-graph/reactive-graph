@@ -2,8 +2,6 @@
 #![feature(test)]
 #![register_tool(tarpaulin)]
 
-use std::fmt::Display;
-
 pub use behaviour_type_id::*;
 pub use component::*;
 pub use component_container::*;
@@ -24,6 +22,7 @@ pub use property_type::*;
 pub use reactive_behaviour_container::*;
 pub use reactive_entity_instance::*;
 pub use reactive_flow_instance::*;
+pub use reactive_instance::*;
 pub use reactive_property_container::*;
 pub use reactive_property_instance::*;
 pub use reactive_relation_instance::*;
@@ -75,13 +74,9 @@ pub mod relation_instance_type_id;
 
 pub mod reactive_entity_instance;
 pub mod reactive_flow_instance;
+pub mod reactive_instance;
 pub mod reactive_property_instance;
 pub mod reactive_relation_instance;
-
-pub trait ReactiveInstance:
-    ReactivePropertyContainer + ComponentContainer + ReactiveBehaviourContainer + PropertyInstanceSetter + NamespacedTypeGetter + Display
-{
-}
 
 #[cfg(test)]
 #[tarpaulin::ignore]
