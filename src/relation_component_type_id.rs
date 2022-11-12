@@ -13,3 +13,9 @@ pub struct RelationComponentTypeId {
     /// The component type.
     pub component_ty: ComponentTypeId,
 }
+
+impl RelationComponentTypeId {
+    pub fn new(relation_ty: RelationTypeId, component_ty: ComponentTypeId) -> Self {
+        RelationComponentTypeId { relation_ty, component_ty }
+    }
+}

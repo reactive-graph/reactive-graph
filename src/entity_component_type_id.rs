@@ -13,3 +13,9 @@ pub struct EntityComponentTypeId {
     /// The component type.
     pub component_ty: ComponentTypeId,
 }
+
+impl EntityComponentTypeId {
+    pub fn new(entity_ty: EntityTypeId, component_ty: ComponentTypeId) -> Self {
+        EntityComponentTypeId { entity_ty, component_ty }
+    }
+}
