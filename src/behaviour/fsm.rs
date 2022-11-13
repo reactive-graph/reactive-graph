@@ -48,19 +48,19 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                     .get_validator()
                     .validate()
                     .map(|_| self.set_state(target_state))
-                    .map_err(|e| BehaviourTransitionError::BehaviourInvalid(e)),
+                    .map_err(BehaviourTransitionError::BehaviourInvalid),
                 BehaviourState::Ready => self.transition(BehaviourState::Valid).and_then(|_| {
                     self.get_transitions()
                         .init()
                         .map(|_| self.set_state(target_state))
-                        .map_err(|e| BehaviourTransitionError::BehaviourInitializationFailed(e))
+                        .map_err(BehaviourTransitionError::BehaviourInitializationFailed)
                 }),
                 BehaviourState::Connected => self.transition(BehaviourState::Ready).and_then(|_| {
                     self.get_transitions()
                         .connect()
                         .map(|_| self.get_property_observers().add_behaviour(self.ty().clone()))
                         .map(|_| self.set_state(target_state))
-                        .map_err(|e| BehaviourTransitionError::BehaviourConnectFailed(e))
+                        .map_err(BehaviourTransitionError::BehaviourConnectFailed)
                 }),
             },
             BehaviourState::Valid => match target_state {
@@ -70,13 +70,13 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                     .get_transitions()
                     .init()
                     .map(|_| self.set_state(target_state))
-                    .map_err(|e| BehaviourTransitionError::BehaviourInitializationFailed(e)),
+                    .map_err(BehaviourTransitionError::BehaviourInitializationFailed),
                 BehaviourState::Connected => self.transition(BehaviourState::Ready).and_then(|_| {
                     self.get_transitions()
                         .connect()
                         .map(|_| self.get_property_observers().add_behaviour(self.ty().clone()))
                         .map(|_| self.set_state(target_state))
-                        .map_err(|e| BehaviourTransitionError::BehaviourConnectFailed(e))
+                        .map_err(BehaviourTransitionError::BehaviourConnectFailed)
                 }),
             },
             BehaviourState::Ready => match target_state {
@@ -88,7 +88,7 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                     .connect()
                     .map(|_| self.get_property_observers().add_behaviour(self.ty().clone()))
                     .map(|_| self.set_state(target_state))
-                    .map_err(|e| BehaviourTransitionError::BehaviourConnectFailed(e)),
+                    .map_err(BehaviourTransitionError::BehaviourConnectFailed),
             },
             BehaviourState::Connected => match target_state {
                 BehaviourState::Created => Err(BehaviourTransitionError::InvalidTransition),
@@ -96,9 +96,9 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                 BehaviourState::Ready => self
                     .get_transitions()
                     .disconnect()
-                    .map(|_| self.get_property_observers().remove_behaviour(&self.ty()))
+                    .map(|_| self.get_property_observers().remove_behaviour(self.ty()))
                     .map(|_| self.set_state(target_state))
-                    .map_err(|e| BehaviourTransitionError::BehaviourDisconnectFailed(e)),
+                    .map_err(BehaviourTransitionError::BehaviourDisconnectFailed),
                 BehaviourState::Connected => Err(BehaviourTransitionError::InvalidTransition),
             },
         }

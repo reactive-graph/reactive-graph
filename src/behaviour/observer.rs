@@ -86,7 +86,7 @@ impl<T: ReactiveInstance> ReactiveBehaviourContainer for PropertyObserverContain
     }
 
     fn add_behaviour(&self, ty: BehaviourTypeId) {
-        self.reactive_instance.add_behaviour(ty.clone());
+        self.reactive_instance.add_behaviour(ty);
     }
 
     fn remove_behaviour(&self, ty: &BehaviourTypeId) {

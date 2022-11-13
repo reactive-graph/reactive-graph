@@ -38,6 +38,12 @@ impl RelationBehaviourStorage {
     }
 
     pub fn remove_all(&self, key: &EdgeKey) {
-        self.0.remove(&key);
+        self.0.remove(key);
+    }
+}
+
+impl Default for RelationBehaviourStorage {
+    fn default() -> Self {
+        Self::new()
     }
 }

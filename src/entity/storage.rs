@@ -31,13 +31,19 @@ impl EntityBehaviourStorage {
     }
 
     pub fn remove(&self, key: &Uuid, ty: &BehaviourTypeId) -> Option<(BehaviourTypeId, Arc<dyn BehaviourFsm<ReactiveEntityInstance> + Send + Sync>)> {
-        if let Some(instance_behaviours) = self.0.get(&key) {
+        if let Some(instance_behaviours) = self.0.get(key) {
             return instance_behaviours.value().remove(ty);
         }
         None
     }
 
     pub fn remove_all(&self, key: &Uuid) {
-        self.0.remove(&key);
+        self.0.remove(key);
+    }
+}
+
+impl Default for EntityBehaviourStorage {
+    fn default() -> Self {
+        Self::new()
     }
 }

@@ -6,7 +6,7 @@ use crate::BehaviourReactiveInstanceContainer;
 pub trait BehaviourValidator<T: ReactiveInstance>: BehaviourPropertyValidator<T> {
     /// Validates the behaviour.
     fn validate(&self) -> Result<(), BehaviourInvalid> {
-        self.validate_properties().map_err(|e| BehaviourInvalid::BehaviourPropertyInvalid(e))
+        self.validate_properties().map_err(BehaviourInvalid::BehaviourPropertyInvalid)
     }
 }
 
