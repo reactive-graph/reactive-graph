@@ -1,3 +1,5 @@
+use serde_json::Value;
+
 use crate::model::ReactiveInstance;
 use crate::BehaviourConnectFailed;
 use crate::BehaviourDisconnectFailed;
@@ -30,6 +32,14 @@ pub trait BehaviourTransitions<T: ReactiveInstance>: Drop {
     }
 
     fn get_property_observers(&self) -> &PropertyObserverContainerImpl<T>;
+
+    fn get(&self, property_name: &str) -> Option<Value> {
+        self.get_property_observers().reactive_instance.get(property_name)
+    }
+
+    fn set(&self, property_name: &str, value: Value) {
+        self.get_property_observers().reactive_instance.set(property_name, value);
+    }
 }
 
 #[macro_export]
