@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use dashmap::DashMap;
 use dashmap::DashSet;
+use log::trace;
 use serde_json::Value;
 use uuid::Uuid;
 
@@ -44,6 +45,7 @@ impl<T: ReactiveInstance> PropertyObserverContainer for PropertyObserverContaine
                 property_handles.insert(handle_id);
             }
         }
+        trace!("Add observer {} {} {}", self.reactive_instance, name, handle_id);
         self.reactive_instance.observe_with_handle(name, subscriber, handle_id);
         handle_id
     }
@@ -51,6 +53,7 @@ impl<T: ReactiveInstance> PropertyObserverContainer for PropertyObserverContaine
     fn remove_observer(&self, name: &str, handle_id: u128) {
         self.reactive_instance.remove_observer(name, handle_id);
         if let Some(property_handles) = self.handles.get(name) {
+            trace!("Remove observer {} {} {}", self.reactive_instance, property_handles.key(), &handle_id);
             property_handles.remove(&handle_id.clone());
         }
     }
@@ -58,6 +61,7 @@ impl<T: ReactiveInstance> PropertyObserverContainer for PropertyObserverContaine
     fn remove_observers(&self, name: &str) {
         if let Some(property_handles) = self.handles.get(name) {
             for handle_id in property_handles.iter() {
+                trace!("Remove observer {} {} {}", self.reactive_instance, property_handles.key(), handle_id.key());
                 self.reactive_instance.remove_observer(name, *handle_id.key());
             }
         }
@@ -67,6 +71,7 @@ impl<T: ReactiveInstance> PropertyObserverContainer for PropertyObserverContaine
     fn remove_all_observers(&self) {
         for property_handles in self.handles.iter() {
             for handle_id in property_handles.iter() {
+                trace!("Remove observer {} {} {}", self.reactive_instance, property_handles.key(), handle_id.key());
                 self.reactive_instance.remove_observer(property_handles.key(), *handle_id.key());
             }
         }
