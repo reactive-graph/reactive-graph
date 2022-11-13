@@ -77,6 +77,7 @@ inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://git
 inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
 inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
 inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
+inexor-rgf-core-reactive = { git = "https://github.com/inexorgame/inexor-rgf-core-reactive.git" }
 inexor-rgf-core-plugins = { git = "https://github.com/inexorgame/inexor-rgf-core-plugins.git" }
 
 [dev-dependencies]
