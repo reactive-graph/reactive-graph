@@ -1,13 +1,8 @@
 use std::sync::Arc;
 
-use crate::ComponentBehaviourProviderError;
-
 use crate::plugin_context::PluginContextDeinitializationError;
-use crate::ComponentBehaviourProvider;
 use crate::ComponentProvider;
 use crate::ComponentProviderError;
-use crate::EntityBehaviourProvider;
-use crate::EntityBehaviourProviderError;
 use crate::EntityTypeProvider;
 use crate::EntityTypeProviderError;
 use crate::FlowInstanceProvider;
@@ -16,8 +11,6 @@ use crate::FlowTypeProvider;
 use crate::FlowTypeProviderError;
 use crate::PluginContext;
 use crate::PluginContextInitializationError;
-use crate::RelationBehaviourProvider;
-use crate::RelationBehaviourProviderError;
 use crate::RelationTypeProvider;
 use crate::RelationTypeProviderError;
 use crate::WebResourceProvider;
@@ -107,30 +100,6 @@ pub trait Plugin: Send + Sync {
     /// This is not mandatory.
     /// A macro exists which reduces boilerplate code: flow_type_provider!(self.flow_type_provider)
     fn get_flow_type_provider(&self) -> Result<Option<Arc<dyn FlowTypeProvider>>, FlowTypeProviderError> {
-        Ok(None)
-    }
-
-    /// Returns a service which provides behaviours for reactive instances having a component.
-    ///
-    /// This is not mandatory.
-    /// A macro exists which reduces boilerplate code: component_behaviour_provider!(self.component_behaviour_provider)
-    fn get_component_behaviour_provider(&self) -> Result<Option<Arc<dyn ComponentBehaviourProvider>>, ComponentBehaviourProviderError> {
-        Ok(None)
-    }
-
-    /// Returns a service which provides behaviours for reactive entity instances.
-    ///
-    /// This is not mandatory.
-    /// A macro exists which reduces boilerplate code: entity_behaviour_provider!(self.entity_behaviour_provider)
-    fn get_entity_behaviour_provider(&self) -> Result<Option<Arc<dyn EntityBehaviourProvider>>, EntityBehaviourProviderError> {
-        Ok(None)
-    }
-
-    /// Returns a service which provides behaviours for reactive relation instances.
-    ///
-    /// This is not mandatory.
-    /// A macro exists which reduces boilerplate code: relation_behaviour_provider!(self.relation_behaviour_provider)
-    fn get_relation_behaviour_provider(&self) -> Result<Option<Arc<dyn RelationBehaviourProvider>>, RelationBehaviourProviderError> {
         Ok(None)
     }
 

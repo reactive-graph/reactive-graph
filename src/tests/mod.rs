@@ -1,6 +1,8 @@
 use std::sync::Arc;
 
 use crate::ComponentManager;
+use crate::EntityBehaviourRegistry;
+use crate::EntityComponentBehaviourRegistry;
 use crate::EntityInstanceManager;
 use crate::EntityTypeManager;
 use crate::FlowInstanceManager;
@@ -8,6 +10,8 @@ use crate::FlowTypeManager;
 use crate::GraphQLQueryService;
 use crate::Plugin;
 use crate::PluginContext;
+use crate::RelationBehaviourRegistry;
+use crate::RelationComponentBehaviourRegistry;
 use crate::RelationInstanceManager;
 use crate::RelationTypeManager;
 use crate::SystemEventManager;
@@ -46,6 +50,22 @@ impl PluginContext for TestPluginContext {
         panic!();
     }
 
+    fn get_entity_behaviour_registry(&self) -> Arc<dyn EntityBehaviourRegistry> {
+        panic!();
+    }
+
+    fn get_entity_component_behaviour_registry(&self) -> Arc<dyn EntityComponentBehaviourRegistry> {
+        panic!();
+    }
+
+    fn get_relation_behaviour_registry(&self) -> Arc<dyn RelationBehaviourRegistry> {
+        panic!();
+    }
+
+    fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry> {
+        panic!();
+    }
+
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {
         panic!();
     }
@@ -63,13 +83,12 @@ fn plugin_api_default_trait_impl_test() {
     assert_eq!(true, plugin.deactivate().is_ok());
     assert_eq!(true, plugin.set_context(Arc::new(context)).is_ok());
     assert_eq!(true, plugin.remove_context().is_ok());
-    assert_eq!(true, plugin.get_component_behaviour_provider().is_ok());
+    // Type providers
+    assert_eq!(true, plugin.get_component_provider().is_ok());
     assert_eq!(true, plugin.get_entity_type_provider().is_ok());
     assert_eq!(true, plugin.get_relation_type_provider().is_ok());
     assert_eq!(true, plugin.get_flow_type_provider().is_ok());
-    assert_eq!(true, plugin.get_component_behaviour_provider().is_ok());
-    assert_eq!(true, plugin.get_entity_behaviour_provider().is_ok());
-    assert_eq!(true, plugin.get_relation_behaviour_provider().is_ok());
+    // Instance providers
     assert_eq!(true, plugin.get_flow_instance_provider().is_ok());
     assert_eq!(true, plugin.get_web_resource_provider().is_ok());
 }
