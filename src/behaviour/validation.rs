@@ -25,3 +25,35 @@ pub trait BehaviourPropertyValidator<T: ReactiveInstance>: BehaviourReactiveInst
         Ok(())
     }
 }
+
+#[macro_export]
+macro_rules! behaviour_validator {
+    ($validator: ident, $reactive_instance: ty $(, $property_names:expr)*) => {
+        pub struct $validator {
+            reactive_instance: Arc<$reactive_instance>,
+        }
+
+        impl $validator {
+            pub fn new(reactive_instance: Arc<$reactive_instance>) -> Self {
+                $validator { reactive_instance }
+            }
+        }
+
+        impl BehaviourValidator<$reactive_instance> for $validator {}
+
+        impl BehaviourReactiveInstanceContainer<$reactive_instance> for $validator {
+            fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
+                &self.reactive_instance
+            }
+        }
+
+        impl BehaviourPropertyValidator<$reactive_instance> for $validator {
+            fn validate_properties(&self) -> Result<(), BehaviourPropertyInvalid> {
+                $(
+                self.validate_property($property_names)?;
+                )*
+                Ok(())
+            }
+        }
+    };
+}
