@@ -104,3 +104,56 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
         }
     }
 }
+
+#[macro_export]
+macro_rules! behaviour_fsm {
+    ($fsm: ident, $validator: ty, $transitions: ty, $reactive_instance: ty) => {
+        pub struct $fsm {
+            pub ty: BehaviourTypeId,
+            pub state: BehaviourState,
+            pub validator: $validator,
+            pub transitions: $transitions,
+        }
+
+        impl $fsm {
+            pub fn new(ty: BehaviourTypeId, validator: $validator, transitions: $transitions) -> Self {
+                $fsm {
+                    ty,
+                    state: BehaviourState::Created,
+                    validator,
+                    transitions,
+                }
+            }
+        }
+
+        impl BehaviourFsm<$reactive_instance> for $fsm {
+            fn ty(&self) -> &BehaviourTypeId {
+                &self.ty
+            }
+
+            fn get_state(&self) -> BehaviourState {
+                self.state
+            }
+
+            fn set_state(&mut self, state: BehaviourState) {
+                self.state = state;
+            }
+
+            fn get_validator(&self) -> &dyn BehaviourValidator<$reactive_instance> {
+                &self.validator
+            }
+
+            fn get_transitions(&self) -> &dyn BehaviourTransitions<$reactive_instance> {
+                &self.transitions
+            }
+
+            fn get_property_observers(&self) -> &PropertyObserverContainerImpl<$reactive_instance> {
+                &self.transitions.property_observers
+            }
+
+            fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
+                &self.transitions.property_observers.reactive_instance
+            }
+        }
+    };
+}
