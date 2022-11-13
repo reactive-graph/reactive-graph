@@ -25,3 +25,7 @@ cobertura.xml
 
 /docs/inexor-rgf/book/
 /docs/graphql-docs/
+
+/plugins/deploy/*
+/plugins/installed/*
+/plugins/runtime/*
