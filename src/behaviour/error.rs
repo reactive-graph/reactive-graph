@@ -22,6 +22,12 @@ pub struct BehaviourConnectFailed {}
 pub struct BehaviourDisconnectFailed {}
 
 #[derive(Debug)]
+pub enum BehaviourReconnectFailed {
+    BehaviourConnectFailed(BehaviourConnectFailed),
+    BehaviourDisconnectFailed(BehaviourDisconnectFailed),
+}
+
+#[derive(Debug)]
 pub struct BehaviourInitializationFailed {}
 
 #[derive(Debug)]

@@ -4,6 +4,7 @@ use crate::model::ReactiveInstance;
 use crate::BehaviourConnectFailed;
 use crate::BehaviourDisconnectFailed;
 use crate::BehaviourInitializationFailed;
+use crate::BehaviourReconnectFailed;
 use crate::BehaviourShutdownFailed;
 use crate::PropertyObserverContainer;
 use crate::PropertyObserverContainerImpl;
@@ -23,6 +24,13 @@ pub trait BehaviourTransitions<T: ReactiveInstance>: Drop {
     /// Disconnects the reactive streams.
     fn disconnect(&self) -> Result<(), BehaviourDisconnectFailed> {
         self.get_property_observers().remove_all_observers();
+        Ok(())
+    }
+
+    /// Reconnects the reactive streams.
+    fn reconnect(&self) -> Result<(), BehaviourReconnectFailed> {
+        self.disconnect().map_err(BehaviourReconnectFailed::BehaviourDisconnectFailed)?;
+        self.connect().map_err(BehaviourReconnectFailed::BehaviourConnectFailed)?;
         Ok(())
     }
 
