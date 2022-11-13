@@ -15,9 +15,9 @@ use tokio::runtime::Runtime;
 use tokio::time::sleep;
 use uuid::Uuid;
 
-use crate::api::ComponentBehaviourManager;
 use crate::api::ComponentManager;
 use crate::api::EntityBehaviourManager;
+use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityInstanceManager;
 use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
@@ -124,9 +124,9 @@ pub struct ReactiveEntityInstanceManagerImpl {
 
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
 
-    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
-
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
+
+    entity_component_behaviour_manager: Wrc<dyn EntityComponentBehaviourManager>,
 
     reactive_entity_instances: ReactiveEntityInstances,
 
@@ -290,7 +290,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                     });
                 }
                 // Add component behaviours
-                self.component_behaviour_manager.add_behaviours_to_entity(reactive_entity_instance.clone());
+                self.entity_component_behaviour_manager
+                    .add_behaviours_to_entity(reactive_entity_instance.clone());
                 // Add entity behaviours
                 self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
                 // Register label
@@ -325,7 +326,8 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                         // Add components with properties
                         entity_instance.add_component_with_properties(&component);
                         // Add component behaviours
-                        self.component_behaviour_manager.add_behaviours_to_entity_component(entity_instance, component);
+                        self.entity_component_behaviour_manager
+                            .add_behaviours_to_entity_component(entity_instance, component);
                         Ok(())
                     }
                     None => Err(ReactiveEntityInstanceComponentAddError::MissingInstance(id)),
@@ -342,7 +344,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 entity_instance.remove_component(component_ty);
                 // We do not remove properties because we cannot asure that the removal is intended
                 // Remove component behaviours
-                self.component_behaviour_manager
+                self.entity_component_behaviour_manager
                     .remove_behaviours_from_entity_component(entity_instance, component);
             }
         }
@@ -407,10 +409,16 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     fn unregister_reactive_instance(&self, id: Uuid) {
         match self.get(id) {
             Some(entity_instance) => {
-                self.entity_behaviour_manager.remove_behaviours(entity_instance);
+                // Remove entity behaviours
+                self.entity_behaviour_manager.remove_behaviours(entity_instance.clone());
+                // Remove entity component behaviours
+                self.entity_component_behaviour_manager.remove_behaviours_from_entity(entity_instance);
             }
             None => {
-                self.entity_behaviour_manager.remove_behaviours_by_id(id);
+                // Remove entity behaviours
+                self.entity_behaviour_manager.remove_behaviours_by_id(&id);
+                // Remove entity component behaviours
+                self.entity_component_behaviour_manager.remove_behaviours_by_id(&id);
             }
         }
         self.reactive_entity_instances.0.remove(&id);
@@ -438,7 +446,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn handle_component_added_events(&self) {
         let component_manager = self.component_manager.clone();
-        let component_behaviour_manager = self.component_behaviour_manager.clone();
+        let component_behaviour_manager = self.entity_component_behaviour_manager.clone();
         let reactive_entity_instances = self.reactive_entity_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_ENTITY_TYPE_COMPONENT_ADDED) {
@@ -470,7 +478,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn handle_component_removed_events(&self) {
         let component_manager = self.component_manager.clone();
-        let component_behaviour_manager = self.component_behaviour_manager.clone();
+        let component_behaviour_manager = self.entity_component_behaviour_manager.clone();
         let reactive_entity_instances = self.reactive_entity_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_ENTITY_TYPE_COMPONENT_REMOVED) {

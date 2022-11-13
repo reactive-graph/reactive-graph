@@ -3,6 +3,7 @@ use std::sync::Arc;
 use async_graphql::*;
 use indradb::EdgeKey;
 use log::debug;
+use log::info;
 use serde_json::json;
 use uuid::Uuid;
 
@@ -68,7 +69,8 @@ impl MutationRelationInstances {
         }
 
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, relation_type.properties);
-        let edge_key = edge_key.into();
+        let edge_key: EdgeKey = edge_key.into();
+        info!("edge_key.t: {}", edge_key.t.as_str());
 
         let relation_instance = relation_instance_manager
             .create(&edge_key, properties)

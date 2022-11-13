@@ -1,12 +1,16 @@
 use std::sync::Arc;
 
 use crate::plugins::ComponentManager;
+use crate::plugins::EntityBehaviourRegistry;
+use crate::plugins::EntityComponentBehaviourRegistry;
 use crate::plugins::EntityInstanceManager;
 use crate::plugins::EntityTypeManager;
 use crate::plugins::FlowInstanceManager;
 use crate::plugins::FlowTypeManager;
 use crate::plugins::GraphQLQueryService;
 use crate::plugins::PluginContext;
+use crate::plugins::RelationBehaviourRegistry;
+use crate::plugins::RelationComponentBehaviourRegistry;
 use crate::plugins::RelationInstanceManager;
 use crate::plugins::RelationTypeManager;
 use crate::plugins::SystemEventManager;
@@ -19,6 +23,10 @@ pub struct PluginContextImpl {
     entity_instance_manager: Arc<dyn EntityInstanceManager>,
     relation_instance_manager: Arc<dyn RelationInstanceManager>,
     flow_instance_manager: Arc<dyn FlowInstanceManager>,
+    entity_behaviour_registry: Arc<dyn EntityBehaviourRegistry>,
+    entity_component_behaviour_registry: Arc<dyn EntityComponentBehaviourRegistry>,
+    relation_behaviour_registry: Arc<dyn RelationBehaviourRegistry>,
+    relation_component_behaviour_registry: Arc<dyn RelationComponentBehaviourRegistry>,
     graphql_query_service: Arc<dyn GraphQLQueryService>,
     system_event_manager: Arc<dyn SystemEventManager>,
 }
@@ -32,6 +40,10 @@ impl PluginContextImpl {
         entity_instance_manager: Arc<dyn EntityInstanceManager>,
         relation_instance_manager: Arc<dyn RelationInstanceManager>,
         flow_instance_manager: Arc<dyn FlowInstanceManager>,
+        entity_behaviour_registry: Arc<dyn EntityBehaviourRegistry>,
+        entity_component_behaviour_registry: Arc<dyn EntityComponentBehaviourRegistry>,
+        relation_behaviour_registry: Arc<dyn RelationBehaviourRegistry>,
+        relation_component_behaviour_registry: Arc<dyn RelationComponentBehaviourRegistry>,
         graphql_query_service: Arc<dyn GraphQLQueryService>,
         system_event_manager: Arc<dyn SystemEventManager>,
     ) -> Self {
@@ -43,6 +55,10 @@ impl PluginContextImpl {
             entity_instance_manager,
             relation_instance_manager,
             flow_instance_manager,
+            entity_behaviour_registry,
+            entity_component_behaviour_registry,
+            relation_behaviour_registry,
+            relation_component_behaviour_registry,
             graphql_query_service,
             system_event_manager,
         }
@@ -76,6 +92,22 @@ impl PluginContext for PluginContextImpl {
 
     fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager> {
         self.flow_instance_manager.clone()
+    }
+
+    fn get_entity_behaviour_registry(&self) -> Arc<dyn EntityBehaviourRegistry> {
+        self.entity_behaviour_registry.clone()
+    }
+
+    fn get_entity_component_behaviour_registry(&self) -> Arc<dyn EntityComponentBehaviourRegistry> {
+        self.entity_component_behaviour_registry.clone()
+    }
+
+    fn get_relation_behaviour_registry(&self) -> Arc<dyn RelationBehaviourRegistry> {
+        self.relation_behaviour_registry.clone()
+    }
+
+    fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry> {
+        self.relation_component_behaviour_registry.clone()
     }
 
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {

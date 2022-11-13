@@ -1,58 +1,53 @@
 use std::sync::Arc;
 
+use async_trait::async_trait;
+use log::trace;
+use uuid::Uuid;
+
+use crate::api::EntityBehaviourManager;
+use crate::api::EntityBehaviourRegistry;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
-use async_trait::async_trait;
-use dashmap::DashMap;
-use uuid::Uuid;
-
-use crate::api::EntityBehaviourManager;
+use crate::di::Wrc;
 use crate::model::ReactiveEntityInstance;
-use crate::plugins::EntityBehaviourProvider;
-use log::trace;
+use crate::reactive::EntityBehaviourStorage;
 
 #[wrapper]
-pub struct EntityBehaviourProviders(DashMap<Uuid, Arc<dyn EntityBehaviourProvider>>);
+pub struct EntityBehaviourStorageWrapper(EntityBehaviourStorage);
 
 #[provides]
-fn create_behaviour_providers() -> EntityBehaviourProviders {
-    EntityBehaviourProviders(DashMap::new())
+fn create_entity_behaviour_storage() -> EntityBehaviourStorageWrapper {
+    EntityBehaviourStorageWrapper(EntityBehaviourStorage::new())
 }
 
 #[component]
 pub struct EntityBehaviourManagerImpl {
-    behaviour_providers: EntityBehaviourProviders,
+    entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
+
+    entity_behaviour_storage: EntityBehaviourStorageWrapper,
 }
 
 #[async_trait]
 #[provides]
 impl EntityBehaviourManager for EntityBehaviourManagerImpl {
     fn add_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!("EntityBehaviourManager::add_behaviours {}", entity_instance.id);
-        for provider in self.behaviour_providers.0.iter() {
-            provider.add_behaviours(entity_instance.clone())
+        trace!("EntityBehaviourManager::add_behaviours {}", &entity_instance);
+        for factory in self.entity_behaviour_registry.get(&entity_instance.ty) {
+            if let Ok(behaviour) = factory.create(entity_instance.clone()) {
+                self.entity_behaviour_storage.0.insert(entity_instance.id, behaviour.ty().clone(), behaviour);
+            }
         }
     }
 
     fn remove_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        for provider in self.behaviour_providers.0.iter() {
-            provider.remove_behaviours(entity_instance.clone())
-        }
+        trace!("EntityBehaviourManager::remove_behaviours {}", &entity_instance);
+        self.entity_behaviour_storage.0.remove_all(&entity_instance.id);
     }
 
-    fn remove_behaviours_by_id(&self, id: Uuid) {
-        for provider in self.behaviour_providers.0.iter() {
-            provider.remove_behaviours_by_id(id)
-        }
-    }
-
-    fn add_provider(&self, id: Uuid, provider: Arc<dyn EntityBehaviourProvider>) {
-        self.behaviour_providers.0.insert(id, provider);
-    }
-
-    fn remove_provider(&self, id: &Uuid) {
-        self.behaviour_providers.0.remove(id);
+    fn remove_behaviours_by_id(&self, id: &Uuid) {
+        trace!("EntityBehaviourManager::remove_behaviours {}", &id);
+        self.entity_behaviour_storage.0.remove_all(id);
     }
 }

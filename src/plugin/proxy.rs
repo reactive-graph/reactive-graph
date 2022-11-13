@@ -1,12 +1,8 @@
 use std::sync::Arc;
 
 use crate::plugins::plugin_context::PluginContext;
-use crate::plugins::ComponentBehaviourProvider;
-use crate::plugins::ComponentBehaviourProviderError;
 use crate::plugins::ComponentProvider;
 use crate::plugins::ComponentProviderError;
-use crate::plugins::EntityBehaviourProvider;
-use crate::plugins::EntityBehaviourProviderError;
 use crate::plugins::EntityTypeProvider;
 use crate::plugins::EntityTypeProviderError;
 use crate::plugins::FlowInstanceProvider;
@@ -18,8 +14,6 @@ use crate::plugins::PluginActivationError;
 use crate::plugins::PluginContextDeinitializationError;
 use crate::plugins::PluginContextInitializationError;
 use crate::plugins::PluginDeactivationError;
-use crate::plugins::RelationBehaviourProvider;
-use crate::plugins::RelationBehaviourProviderError;
 use crate::plugins::RelationTypeProvider;
 use crate::plugins::RelationTypeProviderError;
 use crate::plugins::WebResourceProvider;
@@ -62,18 +56,6 @@ impl Plugin for PluginProxy {
 
     fn get_flow_type_provider(&self) -> Result<Option<Arc<dyn FlowTypeProvider>>, FlowTypeProviderError> {
         self.plugin.get_flow_type_provider()
-    }
-
-    fn get_component_behaviour_provider(&self) -> Result<Option<Arc<dyn ComponentBehaviourProvider>>, ComponentBehaviourProviderError> {
-        self.plugin.get_component_behaviour_provider()
-    }
-
-    fn get_entity_behaviour_provider(&self) -> Result<Option<Arc<dyn EntityBehaviourProvider>>, EntityBehaviourProviderError> {
-        self.plugin.get_entity_behaviour_provider()
-    }
-
-    fn get_relation_behaviour_provider(&self) -> Result<Option<Arc<dyn RelationBehaviourProvider>>, RelationBehaviourProviderError> {
-        self.plugin.get_relation_behaviour_provider()
     }
 
     fn get_flow_instance_provider(&self) -> Result<Option<Arc<dyn FlowInstanceProvider>>, FlowInstanceProviderError> {

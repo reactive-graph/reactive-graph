@@ -19,9 +19,9 @@ use semver::Version;
 use semver::VersionReq;
 use uuid::Uuid;
 
-use crate::api::ComponentBehaviourManager;
 use crate::api::ComponentManager;
-use crate::api::EntityBehaviourManager;
+use crate::api::EntityBehaviourRegistry;
+use crate::api::EntityComponentBehaviourRegistry;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::GraphQLQueryService;
@@ -34,12 +34,15 @@ use crate::api::PluginTransitionResult::NoChange;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
-use crate::api::RelationBehaviourManager;
+use crate::api::RelationBehaviourRegistry;
+use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::api::WebResourceManager;
 use crate::di::*;
 use crate::plugin::ComponentManagerImpl;
+use crate::plugin::EntityBehaviourRegistryImpl;
+use crate::plugin::EntityComponentBehaviourRegistryImpl;
 use crate::plugin::EntityInstanceManagerImpl;
 use crate::plugin::EntityTypeManagerImpl;
 use crate::plugin::FlowInstanceManagerImpl;
@@ -47,6 +50,8 @@ use crate::plugin::FlowTypeManagerImpl;
 use crate::plugin::GraphQLQueryServiceImpl;
 use crate::plugin::PluginContainer;
 use crate::plugin::PluginContextImpl;
+use crate::plugin::RelationBehaviourRegistryImpl;
+use crate::plugin::RelationComponentBehaviourRegistryImpl;
 use crate::plugin::RelationInstanceManagerImpl;
 use crate::plugin::RelationTypeManagerImpl;
 use crate::plugin::SystemEventManagerImpl;
@@ -87,17 +92,22 @@ fn create_plugin_context_storage() -> PluginContextStorage {
 
 #[component]
 pub struct PluginRegistryImpl {
-    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
+    // Type System
     component_manager: Wrc<dyn ComponentManager>,
-    entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
-    flow_type_manager: Wrc<dyn FlowTypeManager>,
-    graphql_query_service: Wrc<dyn GraphQLQueryService>,
-    relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+    flow_type_manager: Wrc<dyn FlowTypeManager>,
+    // Instance System
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
     reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
     reactive_flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+    // Behaviour Registries
+    entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
+    entity_component_behaviour_registry: Wrc<dyn EntityComponentBehaviourRegistry>,
+    relation_behaviour_registry: Wrc<dyn RelationBehaviourRegistry>,
+    relation_component_behaviour_registry: Wrc<dyn RelationComponentBehaviourRegistry>,
+    // System Services
+    graphql_query_service: Wrc<dyn GraphQLQueryService>,
     system_event_manager: Wrc<dyn SystemEventManager>,
     web_resource_manager: Wrc<dyn WebResourceManager>,
 
@@ -328,15 +338,6 @@ impl PluginRegistryImpl {
                         if let Ok(Some(flow_type_provider)) = proxy.get_flow_type_provider() {
                             self.flow_type_manager.add_provider(flow_type_provider);
                         }
-                        if let Ok(Some(component_behaviour_provider)) = proxy.get_component_behaviour_provider() {
-                            self.component_behaviour_manager.add_provider(id.clone(), component_behaviour_provider);
-                        }
-                        if let Ok(Some(entity_behaviour_provider)) = proxy.get_entity_behaviour_provider() {
-                            self.entity_behaviour_manager.add_provider(id.clone(), entity_behaviour_provider);
-                        }
-                        if let Ok(Some(relation_behaviour_provider)) = proxy.get_relation_behaviour_provider() {
-                            self.relation_behaviour_manager.add_provider(id.clone(), relation_behaviour_provider);
-                        }
                         if let Ok(Some(flow_instance_provider)) = proxy.get_flow_instance_provider() {
                             self.reactive_flow_instance_manager.add_provider(id.clone(), flow_instance_provider);
                         }
@@ -395,9 +396,6 @@ impl PluginRegistryImpl {
                 // self.entity_type_manager.remove_provider(id);
                 // self.relation_type_manager.remove_provider(id);
                 // self.flow_type_manager.remove_provider(id);
-                self.component_behaviour_manager.remove_provider(id);
-                self.entity_behaviour_manager.remove_provider(id);
-                self.relation_behaviour_manager.remove_provider(id);
                 self.reactive_flow_instance_manager.remove_provider(id);
                 self.web_resource_manager.remove_provider(id);
                 plugin_container.state = PluginState::Stopping(PluginStoppingState::RemoveContext);
@@ -657,10 +655,12 @@ impl PluginRegistryImpl {
 
     fn construct_plugin_context(&self) {
         // -> Arc<dyn PluginContext> {
+        // Type System
         let component_manager = ComponentManagerImpl::new(self.component_manager.clone());
         let entity_type_manager = EntityTypeManagerImpl::new(self.entity_type_manager.clone());
         let relation_type_manager = RelationTypeManagerImpl::new(self.relation_type_manager.clone());
         let flow_type_manager = FlowTypeManagerImpl::new(self.flow_type_manager.clone());
+        // Instance System
         let entity_instance_manager = EntityInstanceManagerImpl::new(
             self.component_manager.clone(),
             self.entity_type_manager.clone(),
@@ -672,6 +672,12 @@ impl PluginRegistryImpl {
             self.reactive_relation_instance_manager.clone(),
         );
         let flow_instance_manager = FlowInstanceManagerImpl::new(self.reactive_flow_instance_manager.clone());
+        // Behaviour Registries
+        let entity_behaviour_registry = EntityBehaviourRegistryImpl::new(self.entity_behaviour_registry.clone());
+        let entity_component_behaviour_registry = EntityComponentBehaviourRegistryImpl::new(self.entity_component_behaviour_registry.clone());
+        let relation_behaviour_registry = RelationBehaviourRegistryImpl::new(self.relation_behaviour_registry.clone());
+        let relation_component_behaviour_registry = RelationComponentBehaviourRegistryImpl::new(self.relation_component_behaviour_registry.clone());
+        // System Services
         let graphql_query_service = GraphQLQueryServiceImpl::new(self.graphql_query_service.clone());
         let system_event_manager = SystemEventManagerImpl::new(self.system_event_manager.clone());
         let plugin_context = PluginContextImpl::new(
@@ -682,6 +688,10 @@ impl PluginRegistryImpl {
             Arc::new(entity_instance_manager),
             Arc::new(relation_instance_manager),
             Arc::new(flow_instance_manager),
+            Arc::new(entity_behaviour_registry),
+            Arc::new(entity_component_behaviour_registry),
+            Arc::new(relation_behaviour_registry),
+            Arc::new(relation_component_behaviour_registry),
             Arc::new(graphql_query_service),
             Arc::new(system_event_manager),
         );

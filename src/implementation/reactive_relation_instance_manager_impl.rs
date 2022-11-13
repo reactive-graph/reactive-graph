@@ -15,7 +15,6 @@ use tokio::time::Duration;
 use uuid::Uuid;
 
 use crate::api::system_event_subscriber::SystemEventSubscriber;
-use crate::api::ComponentBehaviourManager;
 use crate::api::ComponentManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceManager;
@@ -27,6 +26,7 @@ use crate::api::ReactiveRelationInstancePropertyAddError;
 use crate::api::ReactiveRelationInstancePropertyRemoveError;
 use crate::api::ReactiveRelationInstanceRegistrationError;
 use crate::api::RelationBehaviourManager;
+use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationEdgeManager;
 use crate::api::RelationInstanceManager;
 use crate::api::RelationTypeManager;
@@ -121,9 +121,9 @@ pub struct ReactiveRelationInstanceManagerImpl {
 
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
 
-    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
-
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
+
+    relation_component_behaviour_manager: Wrc<dyn RelationComponentBehaviourManager>,
 
     reactive_relation_instances: ReactiveRelationInstances,
 
@@ -333,7 +333,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                     });
                 }
                 // Add component behaviours
-                self.component_behaviour_manager.add_behaviours_to_relation(reactive_relation_instance.clone());
+                self.relation_component_behaviour_manager
+                    .add_behaviours_to_relation(reactive_relation_instance.clone());
                 // Add relation behaviours
                 self.relation_behaviour_manager.add_behaviours(reactive_relation_instance.clone());
                 self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(edge_key));
@@ -364,7 +365,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                         // Add components with properties
                         relation_instance.add_component_with_properties(&component);
                         // Add component behaviours
-                        self.component_behaviour_manager
+                        self.relation_component_behaviour_manager
                             .add_behaviours_to_relation_component(relation_instance, component);
                         Ok(())
                     }
@@ -385,7 +386,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 // (At least yet)
                 //
                 // Remove component behaviours
-                self.component_behaviour_manager
+                self.relation_component_behaviour_manager
                     .remove_behaviours_from_relation_component(reactive_relation_instance, component);
             }
         }
@@ -442,10 +443,16 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     fn unregister_reactive_instance(&self, edge_key: &EdgeKey) {
         match self.get(edge_key) {
             Some(relation_instance) => {
-                self.relation_behaviour_manager.remove_behaviours(relation_instance);
+                // Remove relation behaviours
+                self.relation_behaviour_manager.remove_behaviours(relation_instance.clone());
+                // Remove component behaviours
+                self.relation_component_behaviour_manager.remove_behaviours_from_relation(relation_instance);
             }
             None => {
+                // Remove relation behaviours
                 self.relation_behaviour_manager.remove_behaviours_by_key(edge_key);
+                // Remove component behaviours
+                self.relation_component_behaviour_manager.remove_behaviours_by_key(edge_key);
             }
         }
         self.reactive_relation_instances.0.remove(edge_key);
@@ -470,7 +477,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
 
     fn handle_component_added_events(&self) {
         let component_manager = self.component_manager.clone();
-        let component_behaviour_manager = self.component_behaviour_manager.clone();
+        let relation_component_behaviour_manager = self.relation_component_behaviour_manager.clone();
         let reactive_relation_instances = self.reactive_relation_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_RELATION_TYPE_COMPONENT_ADDED) {
@@ -488,7 +495,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                                         .map(|relation_instance| relation_instance.value().clone())
                                     {
                                         reactive_relation_instance.add_component_with_properties(&component);
-                                        component_behaviour_manager.add_behaviours_to_relation_component(reactive_relation_instance, component.clone());
+                                        relation_component_behaviour_manager
+                                            .add_behaviours_to_relation_component(reactive_relation_instance, component.clone());
                                     }
                                 }
                             }
@@ -504,7 +512,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
 
     fn handle_component_removed_events(&self) {
         let component_manager = self.component_manager.clone();
-        let component_behaviour_manager = self.component_behaviour_manager.clone();
+        let relation_component_behaviour_manager = self.relation_component_behaviour_manager.clone();
         let reactive_relation_instances = self.reactive_relation_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_RELATION_TYPE_COMPONENT_REMOVED) {
@@ -522,7 +530,8 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                                         .map(|relation_instance| relation_instance.value().clone())
                                     {
                                         reactive_relation_instance.remove_component(&component.ty);
-                                        component_behaviour_manager.remove_behaviours_from_relation_component(reactive_relation_instance, component.clone());
+                                        relation_component_behaviour_manager
+                                            .remove_behaviours_from_relation_component(reactive_relation_instance, component.clone());
                                     }
                                 }
                             }

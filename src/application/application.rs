@@ -43,13 +43,17 @@ pub trait Application: Send + Sync {
 
     fn is_running(&self) -> bool;
 
-    fn get_component_behaviour_manager(&self) -> Arc<dyn ComponentBehaviourManager>;
-
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
     // fn get_dynamic_graph(&self) -> Arc<dyn DynamicGraph>;
 
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager>;
+
+    fn get_entity_behaviour_registry(&self) -> Arc<dyn EntityBehaviourRegistry>;
+
+    fn get_entity_component_behaviour_manager(&self) -> Arc<dyn EntityComponentBehaviourManager>;
+
+    fn get_entity_component_behaviour_registry(&self) -> Arc<dyn EntityComponentBehaviourRegistry>;
 
     fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager>;
 
@@ -79,6 +83,12 @@ pub trait Application: Send + Sync {
 
     fn get_relation_behaviour_manager(&self) -> Arc<dyn RelationBehaviourManager>;
 
+    fn get_relation_behaviour_registry(&self) -> Arc<dyn RelationBehaviourRegistry>;
+
+    fn get_relation_component_behaviour_manager(&self) -> Arc<dyn RelationComponentBehaviourManager>;
+
+    fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry>;
+
     fn get_relation_edge_manager(&self) -> Arc<dyn RelationEdgeManager>;
 
     fn get_relation_instance_manager(&self) -> Arc<dyn RelationInstanceManager>;
@@ -94,11 +104,13 @@ pub trait Application: Send + Sync {
 pub struct ApplicationImpl {
     running: RunningState,
 
-    component_behaviour_manager: Wrc<dyn ComponentBehaviourManager>,
     component_manager: Wrc<dyn ComponentManager>,
     // dynamic_graph: Wrc<dyn DynamicGraph>,
     event_manager: Wrc<dyn SystemEventManager>,
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
+    entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
+    entity_component_behaviour_manager: Wrc<dyn EntityComponentBehaviourManager>,
+    entity_component_behaviour_registry: Wrc<dyn EntityComponentBehaviourRegistry>,
     entity_instance_manager: Wrc<dyn EntityInstanceManager>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
     entity_vertex_manager: Wrc<dyn EntityVertexManager>,
@@ -112,6 +124,9 @@ pub struct ApplicationImpl {
     reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
     reactive_flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
+    relation_behaviour_registry: Wrc<dyn RelationBehaviourRegistry>,
+    relation_component_behaviour_manager: Wrc<dyn RelationComponentBehaviourManager>,
+    relation_component_behaviour_registry: Wrc<dyn RelationComponentBehaviourRegistry>,
     relation_edge_manager: Wrc<dyn RelationEdgeManager>,
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
@@ -258,10 +273,6 @@ impl Application for ApplicationImpl {
         *self.running.0.read().unwrap().deref()
     }
 
-    fn get_component_behaviour_manager(&self) -> Arc<dyn ComponentBehaviourManager> {
-        self.component_behaviour_manager.clone()
-    }
-
     fn get_component_manager(&self) -> Arc<dyn ComponentManager> {
         self.component_manager.clone()
     }
@@ -272,6 +283,18 @@ impl Application for ApplicationImpl {
 
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager> {
         self.entity_behaviour_manager.clone()
+    }
+
+    fn get_entity_behaviour_registry(&self) -> Arc<dyn EntityBehaviourRegistry> {
+        self.entity_behaviour_registry.clone()
+    }
+
+    fn get_entity_component_behaviour_manager(&self) -> Arc<dyn EntityComponentBehaviourManager> {
+        self.entity_component_behaviour_manager.clone()
+    }
+
+    fn get_entity_component_behaviour_registry(&self) -> Arc<dyn EntityComponentBehaviourRegistry> {
+        self.entity_component_behaviour_registry.clone()
     }
 
     fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager> {
@@ -328,6 +351,18 @@ impl Application for ApplicationImpl {
 
     fn get_relation_behaviour_manager(&self) -> Arc<dyn RelationBehaviourManager> {
         self.relation_behaviour_manager.clone()
+    }
+
+    fn get_relation_behaviour_registry(&self) -> Arc<dyn RelationBehaviourRegistry> {
+        self.relation_behaviour_registry.clone()
+    }
+
+    fn get_relation_component_behaviour_manager(&self) -> Arc<dyn RelationComponentBehaviourManager> {
+        self.relation_component_behaviour_manager.clone()
+    }
+
+    fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry> {
+        self.relation_component_behaviour_registry.clone()
     }
 
     fn get_relation_edge_manager(&self) -> Arc<dyn RelationEdgeManager> {
