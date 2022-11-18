@@ -13,6 +13,7 @@ use crate::BehaviourReactiveInstanceContainer;
 use crate::BehaviourState;
 use crate::PropertyObserverContainer;
 
+/// Container which manages the observers of a reactive instance.
 pub struct PropertyObserverContainerImpl<T: ReactiveInstance> {
     pub reactive_instance: Arc<T>,
     pub handles: DashMap<String, DashSet<u128>>,
@@ -20,6 +21,7 @@ pub struct PropertyObserverContainerImpl<T: ReactiveInstance> {
 }
 
 impl<T: ReactiveInstance> PropertyObserverContainerImpl<T> {
+    /// Creates a property observer container for the given reactive instance.
     pub fn new(reactive_instance: Arc<T>) -> Self {
         PropertyObserverContainerImpl {
             reactive_instance,
