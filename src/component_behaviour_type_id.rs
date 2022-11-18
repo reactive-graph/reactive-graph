@@ -31,3 +31,9 @@ impl From<NamespacedType> for ComponentBehaviourTypeId {
         ComponentBehaviourTypeId::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
+
+impl From<&BehaviourTypeId> for ComponentBehaviourTypeId {
+    fn from(behaviour_ty: &BehaviourTypeId) -> Self {
+        ComponentBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
+    }
+}
