@@ -20,3 +20,38 @@ macro_rules! relation_type_provider {
         Ok(relation_type_provider.ok())
     }};
 }
+
+#[macro_export]
+macro_rules! relation_type_provider_impl {
+    ($asset: ident, $path: expr) => {
+        paste! {
+            #[derive(RustEmbed)]
+            #[folder = $path]
+            struct [<$asset RelationTypeAsset>];
+
+            pub trait [<$asset RelationTypeProvider>]: RelationTypeProvider + Send + Sync {}
+
+            #[derive(Clone)]
+            pub struct [<$asset RelationTypeProviderImpl>] {}
+
+            interfaces!([<$asset RelationTypeProviderImpl>]: dyn RelationTypeProvider);
+
+            #[component]
+            impl [<$asset RelationTypeProviderImpl>] {
+                #[provides]
+                fn new() -> Self {
+                    Self {}
+                }
+            }
+
+            #[provides]
+            impl [<$asset RelationTypeProvider>] for [<$asset RelationTypeProviderImpl>] {}
+
+            impl RelationTypeProvider for [<$asset RelationTypeProviderImpl>] {
+                fn get_relation_types(&self) -> Vec<RelationType> {
+                    embedded_asset_provider_impl!([<$asset RelationTypeAsset>], RelationType)
+                }
+            }
+        }
+    };
+}

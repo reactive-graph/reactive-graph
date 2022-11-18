@@ -20,3 +20,38 @@ macro_rules! flow_instance_provider {
         Ok(flow_instance_provider.ok())
     }};
 }
+
+#[macro_export]
+macro_rules! flow_instance_provider_impl {
+    ($asset: ident, $path: expr) => {
+        paste! {
+            #[derive(RustEmbed)]
+            #[folder = $path]
+            struct [<$asset FlowInstanceAsset>];
+
+            pub trait [<$asset FlowInstanceProvider>]: FlowInstanceProvider + Send + Sync {}
+
+            #[derive(Clone)]
+            pub struct [<$asset FlowInstanceProviderImpl>] {}
+
+            interfaces!([<$asset FlowInstanceProviderImpl>]: dyn FlowInstanceProvider);
+
+            #[component]
+            impl [<$asset FlowInstanceProviderImpl>] {
+                #[provides]
+                fn new() -> Self {
+                    Self {}
+                }
+            }
+
+            #[provides]
+            impl [<$asset FlowInstanceProvider>] for [<$asset FlowInstanceProviderImpl>] {}
+
+            impl FlowInstanceProvider for [<$asset FlowInstanceProviderImpl>] {
+                fn get_flow_instances(&self) -> Vec<FlowInstance> {
+                    embedded_asset_provider_impl!([<$asset FlowInstanceAsset>], FlowInstance)
+                }
+            }
+        }
+    };
+}

@@ -20,3 +20,38 @@ macro_rules! flow_type_provider {
         Ok(flow_type_provider.ok())
     }};
 }
+
+#[macro_export]
+macro_rules! flow_type_provider_impl {
+    ($asset: ident, $path: expr) => {
+        paste! {
+            #[derive(RustEmbed)]
+            #[folder = $path]
+            struct [<$asset FlowTypeAsset>];
+
+            pub trait [<$asset FlowTypeProvider>]: FlowTypeProvider + Send + Sync {}
+
+            #[derive(Clone)]
+            pub struct [<$asset FlowTypeProviderImpl>] {}
+
+            interfaces!([<$asset FlowTypeProviderImpl>]: dyn FlowTypeProvider);
+
+            #[component]
+            impl [<$asset FlowTypeProviderImpl>] {
+                #[provides]
+                fn new() -> Self {
+                    Self {}
+                }
+            }
+
+            #[provides]
+            impl [<$asset FlowTypeProvider>] for [<$asset FlowTypeProviderImpl>] {}
+
+            impl FlowTypeProvider for [<$asset FlowTypeProviderImpl>] {
+                fn get_flow_types(&self) -> Vec<FlowType> {
+                    embedded_asset_provider_impl!([<$asset FlowTypeAsset>], FlowType)
+                }
+            }
+        }
+    };
+}
