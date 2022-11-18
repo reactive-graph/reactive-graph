@@ -1,3 +1,4 @@
+use crate::model::BehaviourTypeId;
 use crate::model::DataType;
 
 #[derive(Debug)]
@@ -11,6 +12,8 @@ pub enum BehaviourTransitionError {
 
 #[derive(Debug)]
 pub enum BehaviourCreationError {
+    /// Creating the behaviour failed because the behaviour is already applied on the reactive instance.
+    BehaviourAlreadyApplied(BehaviourTypeId),
     /// Creating the behaviour failed because connecting the behaviour failed.
     BehaviourTransitionError(BehaviourTransitionError),
 }

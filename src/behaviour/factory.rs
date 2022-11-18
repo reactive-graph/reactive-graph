@@ -15,14 +15,23 @@ pub trait BehaviourFactory<T: ReactiveInstance> {
 
 #[macro_export]
 macro_rules! behaviour_factory {
-    ($factory: ident, $behaviour: ty, $reactive_instance: ty) => {
+    (
+        $factory: ident,
+        $behaviour: ty,
+        $reactive_instance: ty
+        $(, $fn_name:ident, $fn_ident: ident)*
+    ) => {
         pub struct $factory {
             pub ty: BehaviourTypeId,
+            $(pub $fn_name: $fn_ident,)*
         }
 
         impl $factory {
-            pub fn new(ty: BehaviourTypeId) -> Self {
-                $factory { ty }
+            pub fn new(ty: BehaviourTypeId, $($fn_name: $fn_ident)*) -> Self {
+                $factory {
+                    ty,
+                    $($fn_name,)*
+                }
             }
         }
 
@@ -31,7 +40,11 @@ macro_rules! behaviour_factory {
                 &self,
                 reactive_instance: Arc<$reactive_instance>,
             ) -> Result<Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>, BehaviourCreationError> {
-                match <$behaviour>::new(reactive_instance, self.ty.clone()) {
+                // Prevent that the same behaviour can be applied twice.
+                if reactive_instance.behaves_as(&self.ty) {
+                    return Err(BehaviourCreationError::BehaviourAlreadyApplied(self.ty.clone()));
+                }
+                match <$behaviour>::new(reactive_instance, self.ty.clone() $(, self.$fn_name)*) {
                     Ok(state) => {
                         let state = state as Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>;
                         Ok(state)

@@ -52,20 +52,27 @@ pub trait BehaviourTransitions<T: ReactiveInstance>: Drop {
 
 #[macro_export]
 macro_rules! behaviour_transitions {
-    ($transitions: ident, $reactive_instance: ty) => {
+    ($transitions: ident, $reactive_instance: ty $(, $fn_name:ident, $fn_ident: ident)*) => {
         pub struct $transitions {
             pub property_observers: PropertyObserverContainerImpl<$reactive_instance>,
+            pub ty: BehaviourTypeId,
+            $(pub $fn_name: $fn_ident,)*
         }
 
         impl $transitions {
-            pub fn new(property_observers: PropertyObserverContainerImpl<$reactive_instance>) -> Self {
-                $transitions { property_observers }
+            pub fn new(property_observers: PropertyObserverContainerImpl<$reactive_instance>, ty: BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
+                $transitions {
+                    property_observers,
+                    ty,
+                    $($fn_name,)*
+                }
             }
         }
 
         impl Drop for $transitions {
             fn drop(&mut self) {
                 let _ = self.disconnect();
+                self.property_observers.remove_behaviour(&self.ty);
                 let _ = self.shutdown();
             }
         }
