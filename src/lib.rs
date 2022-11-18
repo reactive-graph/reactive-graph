@@ -1,4 +1,5 @@
 #![feature(register_tool)]
+#![feature(concat_idents)]
 #![register_tool(tarpaulin)]
 
 pub use component_manager::*;
