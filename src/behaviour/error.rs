@@ -47,6 +47,12 @@ pub enum BehaviourPropertyInvalid {
     /// The property with the given name is missing.
     PropertyMissing(String),
 
+    /// The outbound property with the given name is missing.
+    OutboundPropertyMissing(String),
+
+    /// The inbound property with the given name is missing.
+    InboundPropertyMissing(String),
+
     /// The property with the given name has a data type which is not the expected data type.
     InvalidDataType(String, DataType, DataType),
 }
