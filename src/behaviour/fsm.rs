@@ -5,19 +5,11 @@ use log::trace;
 use crate::model::BehaviourTypeId;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactiveInstance;
+use crate::BehaviourState;
 use crate::BehaviourTransitionError;
 use crate::BehaviourTransitions;
 use crate::BehaviourValidator;
 use crate::PropertyObserverContainerImpl;
-
-/// The state of a behaviour.
-#[derive(Debug, Clone, Copy)]
-pub enum BehaviourState {
-    Created,
-    Valid,
-    Ready,
-    Connected,
-}
 
 pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
     /// Returns the current state of the behaviour.
