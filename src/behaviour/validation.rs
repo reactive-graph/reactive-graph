@@ -1,4 +1,6 @@
 use crate::model::ReactiveInstance;
+use crate::model::ReactivePropertyContainer;
+use crate::model::ReactiveRelationInstance;
 use crate::BehaviourInvalid;
 use crate::BehaviourPropertyInvalid;
 use crate::BehaviourReactiveInstanceContainer;
@@ -26,9 +28,47 @@ pub trait BehaviourPropertyValidator<T: ReactiveInstance>: BehaviourReactiveInst
     }
 }
 
+pub trait RelationPropertyValidator: BehaviourReactiveInstanceContainer<ReactiveRelationInstance> {
+    /// Validates the outbound property with the given name.
+    fn validate_outbound_property(&self, property_name: &str) -> Result<(), BehaviourPropertyInvalid> {
+        if !self.get_reactive_instance().outbound.has_property(property_name) {
+            return Err(BehaviourPropertyInvalid::OutboundPropertyMissing(property_name.to_owned()));
+        }
+        Ok(())
+    }
+
+    /// Validates the inbound property with the given name.
+    fn validate_inbound_property(&self, property_name: &str) -> Result<(), BehaviourPropertyInvalid> {
+        if !self.get_reactive_instance().inbound.has_property(property_name) {
+            return Err(BehaviourPropertyInvalid::InboundPropertyMissing(property_name.to_owned()));
+        }
+        Ok(())
+    }
+}
+
 #[macro_export]
 macro_rules! behaviour_validator {
-    ($validator: ident, $reactive_instance: ty $(, $property_names:expr)*) => {
+    ($validator: ident, $reactive_instance: ty) => {
+        pub struct $validator {
+            reactive_instance: Arc<$reactive_instance>,
+        }
+
+        impl $validator {
+            pub fn new(reactive_instance: Arc<$reactive_instance>) -> Self {
+                $validator { reactive_instance }
+            }
+        }
+
+        impl BehaviourValidator<$reactive_instance> for $validator {}
+
+        impl BehaviourReactiveInstanceContainer<$reactive_instance> for $validator {
+            fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
+                &self.reactive_instance
+            }
+        }
+    };
+
+    ($validator: ident, $reactive_instance: ty $(, $property_names:expr)+) => {
         pub struct $validator {
             reactive_instance: Arc<$reactive_instance>,
         }
