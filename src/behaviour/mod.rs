@@ -19,13 +19,26 @@ pub mod validation;
 #[macro_export]
 macro_rules! behaviour {
     (
+        /// The reactive instance type.
+        $reactive_instance: ty,
+        /// The property observer container type.
+        $property_observer: ty,
+        /// The ident of the behaviour.
         $behaviour: ident,
+        /// The ident of the factory to create instances of the behaviour.
         $factory: ident,
+        /// The ident of the finite state machine of the behaviour.
         $fsm: ident,
+        /// The ident of the transitions of the finite state machine.
         $transitions: ident,
-        $validator: ty,
-        $reactive_instance: ty
-        $(, $fn_name: ident, $fn_ident: ident)*
+        /// The ident of the property validator of the behaviour.
+        $validator: ty
+        $(,
+            /// Function name.
+            $fn_name: ident,
+            /// Function.
+            $fn_ident: ident
+        )*
     ) => {
         pub struct $behaviour {
             pub fsm: $fsm,
@@ -33,7 +46,7 @@ macro_rules! behaviour {
 
         impl $behaviour {
             pub fn new(reactive_instance: Arc<$reactive_instance>, ty: BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<Arc<$behaviour>, BehaviourCreationError> {
-                let property_observers = PropertyObserverContainerImpl::new(reactive_instance.clone());
+                let property_observers = <$property_observer>::new(reactive_instance.clone());
                 let transitions = <$transitions>::new(property_observers, ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance);
                 let fsm = <$fsm>::new(ty, validator, transitions);
