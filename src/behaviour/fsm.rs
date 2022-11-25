@@ -3,13 +3,11 @@ use std::sync::Arc;
 use log::trace;
 
 use crate::model::BehaviourTypeId;
-use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactiveInstance;
 use crate::BehaviourState;
 use crate::BehaviourTransitionError;
 use crate::BehaviourTransitions;
 use crate::BehaviourValidator;
-use crate::PropertyObserverContainerImpl;
 
 pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
     /// Returns the current state of the behaviour.
@@ -26,8 +24,6 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
 
     /// Returns the validator.
     fn get_transitions(&self) -> &dyn BehaviourTransitions<T>;
-
-    fn get_property_observers(&self) -> &PropertyObserverContainerImpl<T>;
 
     fn get_reactive_instance(&self) -> &Arc<T>;
 
@@ -50,7 +46,7 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                 BehaviourState::Connected => self.transition(BehaviourState::Ready).and_then(|_| {
                     self.get_transitions()
                         .connect()
-                        .map(|_| self.get_property_observers().add_behaviour(self.ty().clone()))
+                        .map(|_| self.get_reactive_instance().add_behaviour(self.ty().clone()))
                         .map(|_| self.set_state(target_state))
                         .map_err(BehaviourTransitionError::BehaviourConnectFailed)
                 }),
@@ -66,7 +62,7 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                 BehaviourState::Connected => self.transition(BehaviourState::Ready).and_then(|_| {
                     self.get_transitions()
                         .connect()
-                        .map(|_| self.get_property_observers().add_behaviour(self.ty().clone()))
+                        .map(|_| self.get_reactive_instance().add_behaviour(self.ty().clone()))
                         .map(|_| self.set_state(target_state))
                         .map_err(BehaviourTransitionError::BehaviourConnectFailed)
                 }),
@@ -78,7 +74,7 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                 BehaviourState::Connected => self
                     .get_transitions()
                     .connect()
-                    .map(|_| self.get_property_observers().add_behaviour(self.ty().clone()))
+                    .map(|_| self.get_reactive_instance().add_behaviour(self.ty().clone()))
                     .map(|_| self.set_state(target_state))
                     .map_err(BehaviourTransitionError::BehaviourConnectFailed),
             },
@@ -88,7 +84,7 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
                 BehaviourState::Ready => self
                     .get_transitions()
                     .disconnect()
-                    .map(|_| self.get_property_observers().remove_behaviour(self.ty()))
+                    .map(|_| self.get_reactive_instance().remove_behaviour(self.ty()))
                     .map(|_| self.set_state(target_state))
                     .map_err(BehaviourTransitionError::BehaviourDisconnectFailed),
                 BehaviourState::Connected => Err(BehaviourTransitionError::InvalidTransition),
@@ -137,10 +133,6 @@ macro_rules! behaviour_fsm {
 
             fn get_transitions(&self) -> &dyn BehaviourTransitions<$reactive_instance> {
                 &self.transitions
-            }
-
-            fn get_property_observers(&self) -> &PropertyObserverContainerImpl<$reactive_instance> {
-                &self.transitions.property_observers
             }
 
             fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {

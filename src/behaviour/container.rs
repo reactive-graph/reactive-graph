@@ -1,6 +1,5 @@
-use std::sync::Arc;
-
 use serde_json::Value;
+use std::sync::Arc;
 
 use crate::model::BehaviourTypeId;
 use crate::model::ReactiveInstance;
@@ -12,25 +11,12 @@ pub trait BehaviourTypeContainer {
 pub trait BehaviourReactiveInstanceContainer<T: ReactiveInstance> {
     /// Returns the reactive instance of the behaviour.
     fn get_reactive_instance(&self) -> &Arc<T>;
-}
 
-/// A PropertyObserverContainer manages the observers of a PropertyContainer.
-///
-/// Internally it stores the handle ids of created observers. This makes it possible to remove the
-/// observers for a single property by name or for all properties.
-pub trait PropertyObserverContainer {
-    /// Observes the property with the given name.
-    /// A handle will be automatically created and stored
-    fn observe_with_handle<F>(&self, name: &str, subscriber: F) -> u128
-    where
-        F: FnMut(&Value) + 'static;
+    fn get(&self, property_name: &str) -> Option<Value> {
+        self.get_reactive_instance().get(property_name)
+    }
 
-    /// Removes the observers of the property with the given name and the given observer handle.
-    fn remove_observer(&self, name: &str, handle_id: u128);
-
-    /// Removes all observers of the property with the given name that are managed by this PropertyObserverContainer.
-    fn remove_observers(&self, name: &str);
-
-    /// Removes all observers that are managed by this PropertyObserverContainer.
-    fn remove_all_observers(&self);
+    fn set(&self, property_name: &str, value: Value) {
+        self.get_reactive_instance().set(property_name, value);
+    }
 }

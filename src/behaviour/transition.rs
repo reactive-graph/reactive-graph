@@ -1,80 +1,47 @@
-use serde_json::Value;
-
 use crate::model::ReactiveInstance;
 use crate::BehaviourConnectFailed;
 use crate::BehaviourDisconnectFailed;
 use crate::BehaviourInitializationFailed;
+use crate::BehaviourReactiveInstanceContainer;
 use crate::BehaviourReconnectFailed;
 use crate::BehaviourShutdownFailed;
-use crate::PropertyObserverContainer;
-use crate::PropertyObserverContainerImpl;
 
 #[allow(drop_bounds)]
-pub trait BehaviourTransitions<T: ReactiveInstance>: Drop {
-    /// Initializes the behaviour. For example, calculates and propagates the initial value.
-    fn init(&self) -> Result<(), BehaviourInitializationFailed> {
-        Ok(())
-    }
-
-    /// Connects the reactive streams.
-    fn connect(&self) -> Result<(), BehaviourConnectFailed> {
-        Ok(())
-    }
-
-    /// Disconnects the reactive streams.
-    fn disconnect(&self) -> Result<(), BehaviourDisconnectFailed> {
-        self.get_property_observers().remove_all_observers();
-        Ok(())
-    }
-
+pub trait BehaviourTransitions<T: ReactiveInstance>:
+    BehaviourReactiveInstanceContainer<T> + BehaviourInit<T> + BehaviourShutdown<T> + BehaviourConnect<T> + BehaviourDisconnect<T> + Drop
+{
     /// Reconnects the reactive streams.
     fn reconnect(&self) -> Result<(), BehaviourReconnectFailed> {
         self.disconnect().map_err(BehaviourReconnectFailed::BehaviourDisconnectFailed)?;
         self.connect().map_err(BehaviourReconnectFailed::BehaviourConnectFailed)?;
         Ok(())
     }
+}
 
+pub trait BehaviourInit<T: ReactiveInstance> {
+    /// Initializes the behaviour. For example, calculates and propagates the initial value.
+    fn init(&self) -> Result<(), BehaviourInitializationFailed> {
+        Ok(())
+    }
+}
+
+pub trait BehaviourShutdown<T: ReactiveInstance> {
     /// Destructs the behaviour.
     fn shutdown(&self) -> Result<(), BehaviourShutdownFailed> {
         Ok(())
     }
+}
 
-    fn get_property_observers(&self) -> &PropertyObserverContainerImpl<T>;
-
-    fn get(&self, property_name: &str) -> Option<Value> {
-        self.get_property_observers().reactive_instance.get(property_name)
-    }
-
-    fn set(&self, property_name: &str, value: Value) {
-        self.get_property_observers().reactive_instance.set(property_name, value);
+pub trait BehaviourConnect<T: ReactiveInstance> {
+    /// Connects the reactive streams.
+    fn connect(&self) -> Result<(), BehaviourConnectFailed> {
+        Ok(())
     }
 }
 
-#[macro_export]
-macro_rules! behaviour_transitions {
-    ($transitions: ident, $reactive_instance: ty $(, $fn_name:ident, $fn_ident: ident)*) => {
-        pub struct $transitions {
-            pub property_observers: PropertyObserverContainerImpl<$reactive_instance>,
-            pub ty: BehaviourTypeId,
-            $(pub $fn_name: $fn_ident,)*
-        }
-
-        impl $transitions {
-            pub fn new(property_observers: PropertyObserverContainerImpl<$reactive_instance>, ty: BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
-                $transitions {
-                    property_observers,
-                    ty,
-                    $($fn_name,)*
-                }
-            }
-        }
-
-        impl Drop for $transitions {
-            fn drop(&mut self) {
-                let _ = self.disconnect();
-                self.property_observers.remove_behaviour(&self.ty);
-                let _ = self.shutdown();
-            }
-        }
-    };
+pub trait BehaviourDisconnect<T: ReactiveInstance> {
+    /// Disconnects the reactive streams.
+    fn disconnect(&self) -> Result<(), BehaviourDisconnectFailed> {
+        Ok(())
+    }
 }

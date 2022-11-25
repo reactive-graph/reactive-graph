@@ -40,7 +40,7 @@ macro_rules! behaviour_factory {
                 &self,
                 reactive_instance: Arc<$reactive_instance>,
             ) -> Result<Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>, BehaviourCreationError> {
-                // Prevent that the same behaviour can be applied twice.
+                // Prevent that the same behaviour can be applied twice / multiple times.
                 if reactive_instance.behaves_as(&self.ty) {
                     return Err(BehaviourCreationError::BehaviourAlreadyApplied(self.ty.clone()));
                 }
