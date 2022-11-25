@@ -31,3 +31,9 @@ impl From<NamespacedType> for EntityBehaviourTypeId {
         EntityBehaviourTypeId::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
+
+impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
+    fn from(behaviour_ty: &BehaviourTypeId) -> Self {
+        EntityBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
+    }
+}

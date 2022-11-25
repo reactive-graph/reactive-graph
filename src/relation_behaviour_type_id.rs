@@ -31,3 +31,9 @@ impl From<NamespacedType> for RelationBehaviourTypeId {
         RelationBehaviourTypeId::new(namespaced_type.clone().into(), namespaced_type.into())
     }
 }
+
+impl From<&BehaviourTypeId> for RelationBehaviourTypeId {
+    fn from(behaviour_ty: &BehaviourTypeId) -> Self {
+        RelationBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
+    }
+}
