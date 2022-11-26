@@ -39,10 +39,10 @@ pub struct RelationBehaviourManagerImpl {
 impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     fn add_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
         let edge_key = relation_instance.get_key();
-        trace!("RelationBehaviourManager::add_behaviours {}", relation_instance);
         let relation_ty = relation_instance.relation_type_id();
         for factory in self.relation_behaviour_registry.get(&relation_ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
+                trace!("Added relation behaviour {}", behaviour.ty());
                 self.relation_behaviour_storage.0.insert(edge_key.clone(), behaviour.ty().clone(), behaviour);
             }
         }

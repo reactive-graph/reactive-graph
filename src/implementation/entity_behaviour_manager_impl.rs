@@ -38,21 +38,20 @@ pub struct EntityBehaviourManagerImpl {
 #[provides]
 impl EntityBehaviourManager for EntityBehaviourManagerImpl {
     fn add_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!("EntityBehaviourManager::add_behaviours {}", &entity_instance);
         for factory in self.entity_behaviour_registry.get(&entity_instance.ty) {
             if let Ok(behaviour) = factory.create(entity_instance.clone()) {
-                self.entity_behaviour_storage.0.insert(entity_instance.id, behaviour.ty().clone(), behaviour);
+                let behaviour_ty = behaviour.ty().clone();
+                self.entity_behaviour_storage.0.insert(entity_instance.id, behaviour_ty.clone(), behaviour);
+                trace!("Added entity behaviour {}", &behaviour_ty);
             }
         }
     }
 
     fn remove_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!("EntityBehaviourManager::remove_behaviours {}", &entity_instance);
         self.entity_behaviour_storage.0.remove_all(&entity_instance.id);
     }
 
     fn remove_behaviours_by_id(&self, id: &Uuid) {
-        trace!("EntityBehaviourManager::remove_behaviours {}", &id);
         self.entity_behaviour_storage.0.remove_all(id);
     }
 

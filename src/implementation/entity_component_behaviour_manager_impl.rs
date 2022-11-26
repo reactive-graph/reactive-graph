@@ -39,7 +39,6 @@ pub struct EntityComponentBehaviourManagerImpl {
 #[provides]
 impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
     fn add_behaviours_to_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!("EntityComponentBehaviourManager::add_behaviours_to_entity {}", &entity_instance);
         for component_ty in entity_instance.get_components() {
             for factory in self.entity_component_behaviour_registry.get(&component_ty) {
                 if let Ok(behaviour) = factory.create(entity_instance.clone()) {
@@ -52,7 +51,6 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
     }
 
     fn add_behaviours_to_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: crate::model::Component) {
-        trace!("EntityComponentBehaviourManager::add_behaviours_to_entity {}", &entity_instance);
         for factory in self.entity_component_behaviour_registry.get(&component.ty) {
             if let Ok(behaviour) = factory.create(entity_instance.clone()) {
                 let behaviour_ty = behaviour.ty().clone();
@@ -63,18 +61,13 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
     }
 
     fn remove_behaviours_from_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
-        trace!("EntityComponentBehaviourManager::remove_behaviours_from_entity {}", &entity_instance);
         self.entity_behaviour_storage.0.remove_all(&entity_instance.id);
     }
 
     fn remove_behaviours_from_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: crate::model::Component) {
-        trace!(
-            "EntityComponentBehaviourManager::remove_behaviours_from_entity_component {} {}",
-            &entity_instance,
-            &component.ty
-        );
         for factory in self.entity_component_behaviour_registry.get(&component.ty) {
             self.entity_behaviour_storage.0.remove(&entity_instance.id, factory.behaviour_ty());
+            trace!("Removed entity component behaviour {}", factory.behaviour_ty());
         }
     }
 

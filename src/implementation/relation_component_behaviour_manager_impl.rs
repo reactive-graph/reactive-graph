@@ -39,7 +39,6 @@ pub struct RelationComponentBehaviourManagerImpl {
 #[provides]
 impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl {
     fn add_behaviours_to_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
-        trace!("RelationComponentBehaviourManagerImpl::add_behaviours_to_relation {}", &relation_instance);
         let edge_key = relation_instance.get_key();
         for component_ty in relation_instance.get_components() {
             for factory in self.relation_component_behaviour_registry.get(&component_ty) {
@@ -53,7 +52,6 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
     }
 
     fn add_behaviours_to_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component: crate::model::Component) {
-        trace!("RelationComponentBehaviourManagerImpl::add_behaviours_to_relation {}", &relation_instance);
         let edge_key = relation_instance.get_key();
         for factory in self.relation_component_behaviour_registry.get(&component.ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
@@ -72,6 +70,7 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
         let edge_key = relation_instance.get_key();
         for factory in self.relation_component_behaviour_registry.get(&component.ty) {
             self.relation_behaviour_storage.0.remove(&edge_key, factory.behaviour_ty());
+            trace!("Removed relation component behaviour {}", factory.behaviour_ty());
         }
     }
 
