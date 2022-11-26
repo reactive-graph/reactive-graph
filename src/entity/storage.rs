@@ -49,6 +49,16 @@ impl EntityBehaviourStorage {
         }
         None
     }
+
+    pub fn get_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<dyn BehaviourFsm<ReactiveEntityInstance> + Send + Sync>> {
+        let mut fsms = vec![];
+        for instance_behaviours in self.0.iter() {
+            if let Some(fsm) = instance_behaviours.value().get(ty) {
+                fsms.push(fsm.value().clone());
+            }
+        }
+        fsms
+    }
 }
 
 impl Default for EntityBehaviourStorage {

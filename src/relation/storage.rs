@@ -40,6 +40,25 @@ impl RelationBehaviourStorage {
     pub fn remove_all(&self, key: &EdgeKey) {
         self.0.remove(key);
     }
+
+    pub fn get(&self, key: &EdgeKey, ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFsm<ReactiveRelationInstance> + Send + Sync>> {
+        if let Some(instance_behaviours) = self.0.get(key) {
+            if let Some(fsm) = instance_behaviours.value().get(ty) {
+                return Some(fsm.value().clone());
+            }
+        }
+        None
+    }
+
+    pub fn get_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<dyn BehaviourFsm<ReactiveRelationInstance> + Send + Sync>> {
+        let mut fsms = vec![];
+        for instance_behaviours in self.0.iter() {
+            if let Some(fsm) = instance_behaviours.value().get(ty) {
+                fsms.push(fsm.value().clone());
+            }
+        }
+        fsms
+    }
 }
 
 impl Default for RelationBehaviourStorage {
