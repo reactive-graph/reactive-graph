@@ -40,6 +40,15 @@ impl EntityBehaviourStorage {
     pub fn remove_all(&self, key: &Uuid) {
         self.0.remove(key);
     }
+
+    pub fn get(&self, key: &Uuid, ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFsm<ReactiveEntityInstance> + Send + Sync>> {
+        if let Some(instance_behaviours) = self.0.get(key) {
+            if let Some(fsm) = instance_behaviours.value().get(ty) {
+                return Some(fsm.value().clone());
+            }
+        }
+        None
+    }
 }
 
 impl Default for EntityBehaviourStorage {

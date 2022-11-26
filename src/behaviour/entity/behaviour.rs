@@ -27,7 +27,7 @@ macro_rules! entity_behaviour {
             pub fn new(reactive_instance: Arc<ReactiveEntityInstance>, ty: BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<Arc<$behaviour>, BehaviourCreationError> {
                 let transitions = <$transitions>::new(reactive_instance.clone(), ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance.clone());
-                let fsm = <$fsm>::new(ty, validator, transitions);
+                let fsm = <$fsm>::new(reactive_instance.clone(), ty, validator, transitions);
                 let mut behaviour = $behaviour { reactive_instance, fsm };
                 behaviour
                     .fsm
@@ -43,10 +43,10 @@ macro_rules! entity_behaviour {
             }
 
             fn get_state(&self) -> BehaviourState {
-                self.fsm.state
+                self.fsm.get_state()
             }
 
-            fn set_state(&mut self, state: BehaviourState) {
+            fn set_state(&self, state: BehaviourState) {
                 self.fsm.set_state(state);
             }
 
@@ -57,9 +57,19 @@ macro_rules! entity_behaviour {
             fn get_transitions(&self) -> &dyn BehaviourTransitions<ReactiveEntityInstance> {
                 &self.fsm.transitions
             }
+        }
 
+        impl BehaviourReactiveInstanceContainer<ReactiveEntityInstance> for $behaviour {
             fn get_reactive_instance(&self) -> &Arc<ReactiveEntityInstance> {
                 &self.reactive_instance
+            }
+
+            fn get(&self, property_name: &str) -> Option<Value> {
+                self.reactive_instance.get(property_name)
+            }
+
+            fn set(&self, property_name: &str, value: Value) {
+                self.reactive_instance.set(property_name, value);
             }
         }
 

@@ -1,15 +1,14 @@
-use std::sync::Arc;
-
 use log::trace;
 
 use crate::model::BehaviourTypeId;
 use crate::model::ReactiveInstance;
+use crate::BehaviourReactiveInstanceContainer;
 use crate::BehaviourState;
 use crate::BehaviourTransitionError;
 use crate::BehaviourTransitions;
 use crate::BehaviourValidator;
 
-pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
+pub trait BehaviourFsm<T: ReactiveInstance>: BehaviourReactiveInstanceContainer<T> + Send + Sync {
     /// Returns the current state of the behaviour.
     fn ty(&self) -> &BehaviourTypeId;
 
@@ -17,7 +16,7 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
     fn get_state(&self) -> BehaviourState;
 
     /// Returns the current state of the behaviour.
-    fn set_state(&mut self, state: BehaviourState);
+    fn set_state(&self, state: BehaviourState);
 
     /// Returns the validator.
     fn get_validator(&self) -> &dyn BehaviourValidator<T>;
@@ -25,9 +24,8 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
     /// Returns the validator.
     fn get_transitions(&self) -> &dyn BehaviourTransitions<T>;
 
-    fn get_reactive_instance(&self) -> &Arc<T>;
-
-    fn transition(&mut self, target_state: BehaviourState) -> Result<(), BehaviourTransitionError> {
+    /// Executes a behaviour transition.
+    fn transition(&self, target_state: BehaviourState) -> Result<(), BehaviourTransitionError> {
         trace!("transition {:?} -> {:?}", self.get_state(), target_state);
         match self.get_state() {
             BehaviourState::Created => match target_state {
@@ -97,17 +95,19 @@ pub trait BehaviourFsm<T: ReactiveInstance>: Send + Sync {
 macro_rules! behaviour_fsm {
     ($fsm: ident, $validator: ty, $transitions: ty, $reactive_instance: ty) => {
         pub struct $fsm {
+            pub reactive_instance: Arc<$reactive_instance>,
             pub ty: BehaviourTypeId,
-            pub state: BehaviourState,
+            pub state: RwLock<BehaviourState>,
             pub validator: $validator,
             pub transitions: $transitions,
         }
 
         impl $fsm {
-            pub fn new(ty: BehaviourTypeId, validator: $validator, transitions: $transitions) -> Self {
+            pub fn new(reactive_instance: Arc<$reactive_instance>, ty: BehaviourTypeId, validator: $validator, transitions: $transitions) -> Self {
                 $fsm {
+                    reactive_instance,
                     ty,
-                    state: BehaviourState::Created,
+                    state: RwLock::new(BehaviourState::Created),
                     validator,
                     transitions,
                 }
@@ -120,11 +120,13 @@ macro_rules! behaviour_fsm {
             }
 
             fn get_state(&self) -> BehaviourState {
-                self.state
+                let reader = self.state.read().unwrap();
+                (*reader).clone()
             }
 
-            fn set_state(&mut self, state: BehaviourState) {
-                self.state = state;
+            fn set_state(&self, state: BehaviourState) {
+                let mut writer = self.state.write().unwrap();
+                *writer = state;
             }
 
             fn get_validator(&self) -> &dyn BehaviourValidator<$reactive_instance> {
@@ -134,9 +136,19 @@ macro_rules! behaviour_fsm {
             fn get_transitions(&self) -> &dyn BehaviourTransitions<$reactive_instance> {
                 &self.transitions
             }
+        }
 
+        impl BehaviourReactiveInstanceContainer<$reactive_instance> for $fsm {
             fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
-                &self.transitions.property_observers.reactive_instance
+                &self.reactive_instance
+            }
+
+            fn get(&self, property_name: &str) -> Option<Value> {
+                self.reactive_instance.get(property_name)
+            }
+
+            fn set(&self, property_name: &str, value: Value) {
+                self.reactive_instance.set(property_name, value);
             }
         }
     };
