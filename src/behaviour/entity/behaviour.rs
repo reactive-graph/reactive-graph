@@ -19,12 +19,12 @@ macro_rules! entity_behaviour {
         )*
     ) => {
         pub struct $behaviour {
-            pub reactive_instance: Arc<ReactiveEntityInstance>,
+            pub reactive_instance: std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance>,
             pub fsm: $fsm,
         }
 
         impl $behaviour {
-            pub fn new(reactive_instance: Arc<ReactiveEntityInstance>, ty: BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<Arc<$behaviour>, BehaviourCreationError> {
+            pub fn new(reactive_instance: std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance>, ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, BehaviourCreationError> {
                 let transitions = <$transitions>::new(reactive_instance.clone(), ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance.clone());
                 let fsm = <$fsm>::new(reactive_instance.clone(), ty, validator, transitions);
@@ -33,12 +33,12 @@ macro_rules! entity_behaviour {
                     .fsm
                     .transition(BehaviourState::Connected)
                     .map_err(BehaviourCreationError::BehaviourTransitionError)?;
-                Ok(Arc::new(behaviour))
+                Ok(std::sync::Arc::new(behaviour))
             }
         }
 
-        impl BehaviourFsm<ReactiveEntityInstance> for $behaviour {
-            fn ty(&self) -> &BehaviourTypeId {
+        impl BehaviourFsm<inexor_rgf_core_model::ReactiveEntityInstance> for $behaviour {
+            fn ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
                 &self.fsm.ty
             }
 
@@ -50,32 +50,32 @@ macro_rules! entity_behaviour {
                 self.fsm.set_state(state);
             }
 
-            fn get_validator(&self) -> &dyn BehaviourValidator<ReactiveEntityInstance> {
+            fn get_validator(&self) -> &dyn BehaviourValidator<inexor_rgf_core_model::ReactiveEntityInstance> {
                 &self.fsm.validator
             }
 
-            fn get_transitions(&self) -> &dyn BehaviourTransitions<ReactiveEntityInstance> {
+            fn get_transitions(&self) -> &dyn BehaviourTransitions<inexor_rgf_core_model::ReactiveEntityInstance> {
                 &self.fsm.transitions
             }
         }
 
-        impl BehaviourReactiveInstanceContainer<ReactiveEntityInstance> for $behaviour {
-            fn get_reactive_instance(&self) -> &Arc<ReactiveEntityInstance> {
+        impl BehaviourReactiveInstanceContainer<inexor_rgf_core_model::ReactiveEntityInstance> for $behaviour {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance> {
                 &self.reactive_instance
             }
 
-            fn get(&self, property_name: &str) -> Option<Value> {
+            fn get(&self, property_name: &str) -> Option<serde_json::Value> {
                 self.reactive_instance.get(property_name)
             }
 
-            fn set(&self, property_name: &str, value: Value) {
+            fn set(&self, property_name: &str, value: serde_json::Value) {
                 self.reactive_instance.set(property_name, value);
             }
         }
 
         impl Drop for $behaviour {
             fn drop(&mut self) {
-                trace!("Drop entity behaviour {}", &self.fsm.ty);
+                log::trace!("Drop entity behaviour {}", &self.fsm.ty);
             }
         }
 

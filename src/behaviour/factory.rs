@@ -38,15 +38,15 @@ macro_rules! behaviour_factory {
         impl BehaviourFactory<$reactive_instance> for $factory {
             fn create(
                 &self,
-                reactive_instance: Arc<$reactive_instance>,
-            ) -> Result<Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>, BehaviourCreationError> {
+                reactive_instance: std::sync::Arc<$reactive_instance>,
+            ) -> Result<std::sync::Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>, BehaviourCreationError> {
                 // Prevent that the same behaviour can be applied twice / multiple times.
                 if reactive_instance.behaves_as(&self.ty) {
                     return Err(BehaviourCreationError::BehaviourAlreadyApplied(self.ty.clone()));
                 }
                 match <$behaviour>::new(reactive_instance, self.ty.clone() $(, self.$fn_name)*) {
                     Ok(state) => {
-                        let state = state as Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>;
+                        let state = state as std::sync::Arc<dyn BehaviourFsm<$reactive_instance> + Send + Sync>;
                         Ok(state)
                     }
                     Err(e) => Err(e),

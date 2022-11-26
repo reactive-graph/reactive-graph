@@ -95,19 +95,24 @@ pub trait BehaviourFsm<T: ReactiveInstance>: BehaviourReactiveInstanceContainer<
 macro_rules! behaviour_fsm {
     ($fsm: ident, $validator: ty, $transitions: ty, $reactive_instance: ty) => {
         pub struct $fsm {
-            pub reactive_instance: Arc<$reactive_instance>,
-            pub ty: BehaviourTypeId,
-            pub state: RwLock<BehaviourState>,
+            pub reactive_instance: std::sync::Arc<$reactive_instance>,
+            pub ty: inexor_rgf_core_model::BehaviourTypeId,
+            pub state: std::sync::RwLock<BehaviourState>,
             pub validator: $validator,
             pub transitions: $transitions,
         }
 
         impl $fsm {
-            pub fn new(reactive_instance: Arc<$reactive_instance>, ty: BehaviourTypeId, validator: $validator, transitions: $transitions) -> Self {
+            pub fn new(
+                reactive_instance: std::sync::Arc<$reactive_instance>,
+                ty: inexor_rgf_core_model::BehaviourTypeId,
+                validator: $validator,
+                transitions: $transitions,
+            ) -> Self {
                 $fsm {
                     reactive_instance,
                     ty,
-                    state: RwLock::new(BehaviourState::Created),
+                    state: std::sync::RwLock::new(BehaviourState::Created),
                     validator,
                     transitions,
                 }
@@ -115,7 +120,7 @@ macro_rules! behaviour_fsm {
         }
 
         impl BehaviourFsm<$reactive_instance> for $fsm {
-            fn ty(&self) -> &BehaviourTypeId {
+            fn ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
                 &self.ty
             }
 
@@ -139,15 +144,15 @@ macro_rules! behaviour_fsm {
         }
 
         impl BehaviourReactiveInstanceContainer<$reactive_instance> for $fsm {
-            fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<$reactive_instance> {
                 &self.reactive_instance
             }
 
-            fn get(&self, property_name: &str) -> Option<Value> {
+            fn get(&self, property_name: &str) -> Option<serde_json::Value> {
                 self.reactive_instance.get(property_name)
             }
 
-            fn set(&self, property_name: &str, value: Value) {
+            fn set(&self, property_name: &str, value: serde_json::Value) {
                 self.reactive_instance.set(property_name, value);
             }
         }

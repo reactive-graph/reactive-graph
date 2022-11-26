@@ -30,11 +30,11 @@ pub trait BehaviourPropertyValidator<T: ReactiveInstance>: BehaviourReactiveInst
 macro_rules! behaviour_validator {
     ($validator: ident, $reactive_instance: ty) => {
         pub struct $validator {
-            reactive_instance: Arc<$reactive_instance>,
+            reactive_instance: std::sync::Arc<$reactive_instance>,
         }
 
         impl $validator {
-            pub fn new(reactive_instance: Arc<$reactive_instance>) -> Self {
+            pub fn new(reactive_instance: std::sync::Arc<$reactive_instance>) -> Self {
                 $validator { reactive_instance }
             }
         }
@@ -42,7 +42,7 @@ macro_rules! behaviour_validator {
         impl BehaviourValidator<$reactive_instance> for $validator {}
 
         impl BehaviourReactiveInstanceContainer<$reactive_instance> for $validator {
-            fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<$reactive_instance> {
                 &self.reactive_instance
             }
         }
@@ -50,11 +50,11 @@ macro_rules! behaviour_validator {
 
     ($validator: ident, $reactive_instance: ty $(, $property_names:expr)+) => {
         pub struct $validator {
-            reactive_instance: Arc<$reactive_instance>,
+            reactive_instance: std::sync::Arc<$reactive_instance>,
         }
 
         impl $validator {
-            pub fn new(reactive_instance: Arc<$reactive_instance>) -> Self {
+            pub fn new(reactive_instance: std::sync::Arc<$reactive_instance>) -> Self {
                 $validator { reactive_instance }
             }
         }
@@ -62,7 +62,7 @@ macro_rules! behaviour_validator {
         impl BehaviourValidator<$reactive_instance> for $validator {}
 
         impl BehaviourReactiveInstanceContainer<$reactive_instance> for $validator {
-            fn get_reactive_instance(&self) -> &Arc<$reactive_instance> {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<$reactive_instance> {
                 &self.reactive_instance
             }
         }
