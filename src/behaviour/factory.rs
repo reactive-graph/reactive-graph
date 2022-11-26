@@ -22,12 +22,12 @@ macro_rules! behaviour_factory {
         $(, $fn_name:ident, $fn_ident: ident)*
     ) => {
         pub struct $factory {
-            pub ty: BehaviourTypeId,
+            pub ty: inexor_rgf_core_model::BehaviourTypeId,
             $(pub $fn_name: $fn_ident,)*
         }
 
         impl $factory {
-            pub fn new(ty: BehaviourTypeId, $($fn_name: $fn_ident)*) -> Self {
+            pub fn new(ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Self {
                 $factory {
                     ty,
                     $($fn_name,)*
@@ -53,7 +53,7 @@ macro_rules! behaviour_factory {
                 }
             }
 
-            fn behaviour_ty(&self) -> &BehaviourTypeId {
+            fn behaviour_ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
                 &self.ty
             }
         }
