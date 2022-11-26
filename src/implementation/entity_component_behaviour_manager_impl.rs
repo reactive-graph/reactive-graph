@@ -11,8 +11,13 @@ use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
+use crate::model::BehaviourTypeId;
 use crate::model::ComponentContainer;
 use crate::model::ReactiveEntityInstance;
+use crate::reactive::BehaviourConnectFailed;
+use crate::reactive::BehaviourDisconnectFailed;
+use crate::reactive::BehaviourState;
+use crate::reactive::BehaviourTransitionError;
 use crate::reactive::EntityBehaviourStorage;
 
 #[wrapper]
@@ -75,5 +80,26 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
 
     fn remove_behaviours_by_id(&self, id: &Uuid) {
         self.entity_behaviour_storage.0.remove_all(id);
+    }
+
+    fn connect(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
+        if let Some(fsm) = self.entity_behaviour_storage.0.get(&entity_instance.id, behaviour_ty) {
+            return fsm.transition(BehaviourState::Connected);
+        }
+        Err(BehaviourTransitionError::BehaviourConnectFailed(BehaviourConnectFailed {}))
+    }
+
+    fn disconnect(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
+        if let Some(fsm) = self.entity_behaviour_storage.0.get(&entity_instance.id, behaviour_ty) {
+            return fsm.transition(BehaviourState::Ready);
+        }
+        Err(BehaviourTransitionError::BehaviourDisconnectFailed(BehaviourDisconnectFailed {}))
+    }
+
+    fn reconnect(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
+        if let Some(fsm) = self.entity_behaviour_storage.0.get(&entity_instance.id, behaviour_ty) {
+            return fsm.transition(BehaviourState::Ready).and_then(|_| fsm.transition(BehaviourState::Connected));
+        }
+        Err(BehaviourTransitionError::InvalidTransition)
     }
 }

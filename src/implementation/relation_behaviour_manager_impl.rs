@@ -11,7 +11,12 @@ use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
+use crate::model::BehaviourTypeId;
 use crate::model::ReactiveRelationInstance;
+use crate::reactive::BehaviourConnectFailed;
+use crate::reactive::BehaviourDisconnectFailed;
+use crate::reactive::BehaviourState;
+use crate::reactive::BehaviourTransitionError;
 use crate::reactive::RelationBehaviourStorage;
 
 #[wrapper]
@@ -49,5 +54,26 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
 
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {
         self.relation_behaviour_storage.0.remove_all(&edge_key);
+    }
+
+    fn connect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
+        if let Some(fsm) = self.relation_behaviour_storage.0.get(&relation_instance.get_key(), behaviour_ty) {
+            return fsm.transition(BehaviourState::Connected);
+        }
+        Err(BehaviourTransitionError::BehaviourConnectFailed(BehaviourConnectFailed {}))
+    }
+
+    fn disconnect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
+        if let Some(fsm) = self.relation_behaviour_storage.0.get(&relation_instance.get_key(), behaviour_ty) {
+            return fsm.transition(BehaviourState::Ready);
+        }
+        Err(BehaviourTransitionError::BehaviourDisconnectFailed(BehaviourDisconnectFailed {}))
+    }
+
+    fn reconnect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
+        if let Some(fsm) = self.relation_behaviour_storage.0.get(&relation_instance.get_key(), behaviour_ty) {
+            return fsm.transition(BehaviourState::Ready).and_then(|_| fsm.transition(BehaviourState::Connected));
+        }
+        Err(BehaviourTransitionError::InvalidTransition)
     }
 }
