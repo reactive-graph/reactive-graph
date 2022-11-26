@@ -11,6 +11,7 @@ use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
+use crate::model::BehaviourTypeId;
 use crate::model::ReactiveEntityInstance;
 use crate::reactive::BehaviourConnectFailed;
 use crate::reactive::BehaviourDisconnectFailed;
