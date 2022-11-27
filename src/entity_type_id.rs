@@ -130,3 +130,18 @@ impl Display for EntityTypeId {
         write!(f, "{}", &self.type_definition().to_string())
     }
 }
+
+#[macro_export]
+macro_rules! entity_type {
+    (
+        $entity_type_id: ident,
+        $namespace: ident,
+        $entity_type_name_const: ident,
+        $entity_type_name: expr
+    ) => {
+        pub const $entity_type_name_const: &str = $entity_type_name;
+        lazy_static::lazy_static! {
+            pub static ref $entity_type_id: $crate::EntityTypeId = $crate::EntityTypeId::new_from_type($namespace, $entity_type_name_const);
+        }
+    };
+}

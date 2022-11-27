@@ -130,3 +130,18 @@ impl Display for RelationTypeId {
         write!(f, "{}", &self.type_definition().to_string())
     }
 }
+
+#[macro_export]
+macro_rules! relation_type {
+    (
+        $relation_type_id: ident,
+        $namespace: ident,
+        $relation_type_name_const: ident,
+        $relation_type_name: expr
+    ) => {
+        pub const $relation_type_name_const: &str = $relation_type_name;
+        lazy_static::lazy_static! {
+            pub static ref $relation_type_id: $crate::RelationTypeId = $crate::RelationTypeId::new_from_type($namespace, $relation_type_name_const);
+        }
+    };
+}

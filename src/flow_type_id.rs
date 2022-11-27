@@ -130,3 +130,18 @@ impl Display for FlowTypeId {
         write!(f, "{}", &self.type_definition().to_string())
     }
 }
+
+#[macro_export]
+macro_rules! flow_type {
+    (
+        $flow_type_id: ident,
+        $namespace: ident,
+        $flow_type_name_const: ident,
+        $flow_type_name: expr
+    ) => {
+        pub const $flow_type_name_const: &str = $flow_type_name;
+        lazy_static::lazy_static! {
+            pub static ref $flow_type_id: $crate::FlowTypeId = $crate::FlowypeId::new_from_type($namespace, $flow_type_name_const);
+        }
+    };
+}
