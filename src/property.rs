@@ -26,14 +26,14 @@ macro_rules! properties {
         }
 
         impl $properties {
-            fn default_value(&self) -> serde_json::Value {
+            pub fn default_value(&self) -> serde_json::Value {
                 match self {
                     $(
                         $properties::$property_ident => serde_json::json!($property_default_value),
                     )*
                 }
             }
-            fn properties() -> Vec<indradb::NamedProperty> {
+            pub fn properties() -> Vec<indradb::NamedProperty> {
                 vec![
                     $(
                         indradb::NamedProperty::from($properties::$property_ident),
