@@ -132,7 +132,7 @@ impl Display for ComponentTypeId {
 }
 
 #[macro_export]
-macro_rules! component_type {
+macro_rules! component_ty {
     (
         $component_type_id: ident,
         $namespace: ident,

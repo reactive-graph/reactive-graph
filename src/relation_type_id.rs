@@ -132,7 +132,7 @@ impl Display for RelationTypeId {
 }
 
 #[macro_export]
-macro_rules! relation_type {
+macro_rules! relation_ty {
     (
         $relation_type_id: ident,
         $namespace: ident,

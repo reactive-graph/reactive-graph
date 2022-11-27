@@ -132,7 +132,7 @@ impl Display for EntityTypeId {
 }
 
 #[macro_export]
-macro_rules! entity_type {
+macro_rules! entity_ty {
     (
         $entity_type_id: ident,
         $namespace: ident,

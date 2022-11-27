@@ -37,3 +37,16 @@ impl From<&BehaviourTypeId> for ComponentBehaviourTypeId {
         ComponentBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
     }
 }
+
+#[macro_export]
+macro_rules! component_behaviour_ty {
+    (
+        $component_behaviour_type_id: ident,
+        $component_type_id: ident,
+        $behaviour_type_id: ident
+    ) => {
+        lazy_static::lazy_static! {
+            pub static ref $component_behaviour_type_id: $crate::ComponentBehaviourTypeId = $crate::ComponentBehaviourTypeId::new($component_type_id.clone(), $behaviour_type_id.clone());
+        }
+    };
+}

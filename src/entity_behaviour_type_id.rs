@@ -37,3 +37,16 @@ impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
         EntityBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
     }
 }
+
+#[macro_export]
+macro_rules! entity_behaviour_ty {
+    (
+        $entity_behaviour_type_id: ident,
+        $entity_type_id: ident,
+        $behaviour_type_id: ident
+    ) => {
+        lazy_static::lazy_static! {
+            pub static ref $entity_behaviour_type_id: $crate::EntityBehaviourTypeId = $crate::EntityBehaviourTypeId::new($entity_type_id.clone(), $behaviour_type_id.clone());
+        }
+    };
+}

@@ -130,3 +130,18 @@ impl Display for BehaviourTypeId {
         write!(f, "{}", &self.type_definition().to_string())
     }
 }
+
+#[macro_export]
+macro_rules! behaviour_ty {
+    (
+        $behaviour_type_id: ident,
+        $namespace: ident,
+        $behaviour_name_const: ident,
+        $behaviour_name: expr
+    ) => {
+        pub const $behaviour_name_const: &str = $behaviour_name;
+        lazy_static::lazy_static! {
+            pub static ref $behaviour_type_id: $crate::BehaviourTypeId = $crate::BehaviourTypeId::new_from_type($namespace, $behaviour_name_const);
+        }
+    };
+}
