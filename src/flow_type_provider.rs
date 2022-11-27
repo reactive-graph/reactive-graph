@@ -25,6 +25,8 @@ macro_rules! flow_type_provider {
 macro_rules! flow_type_provider_impl {
     ($asset: ident, $path: expr) => {
         paste::paste! {
+            use inexor_rgf_core_model::FlowType as ModelFlowType;
+
             #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset FlowTypeAsset>];
@@ -48,8 +50,8 @@ macro_rules! flow_type_provider_impl {
             impl [<$asset FlowTypeProvider>] for [<$asset FlowTypeProviderImpl>] {}
 
             impl $crate::FlowTypeProvider for [<$asset FlowTypeProviderImpl>] {
-                fn get_flow_types(&self) -> Vec<inexor_rgf_core_model::FlowType> {
-                    $crate::embedded_asset_provider_impl!([<$asset FlowTypeAsset>], FlowType)
+                fn get_flow_types(&self) -> Vec<ModelFlowType> {
+                    $crate::embedded_asset_provider_impl!([<$asset FlowTypeAsset>], ModelFlowType)
                 }
             }
         }

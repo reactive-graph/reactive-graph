@@ -25,6 +25,8 @@ macro_rules! component_provider {
 macro_rules! component_provider_impl {
     ($asset: ident, $path: expr) => {
         paste::paste! {
+            use inexor_rgf_core_model::Component as ModelComponent;
+
             #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset ComponentAsset>];
@@ -48,8 +50,8 @@ macro_rules! component_provider_impl {
             impl [<$asset ComponentProvider>] for [<$asset ComponentProviderImpl>] {}
 
             impl $crate::ComponentProvider for [<$asset ComponentProviderImpl>] {
-                fn get_components(&self) -> Vec<inexor_rgf_core_model::Component> {
-                    $crate::embedded_asset_provider_impl!([<$asset ComponentAsset>], Component)
+                fn get_components(&self) -> Vec<ModelComponent> {
+                    $crate::embedded_asset_provider_impl!([<$asset ComponentAsset>], ModelComponent)
                 }
             }
         }

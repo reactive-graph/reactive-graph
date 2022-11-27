@@ -25,6 +25,8 @@ macro_rules! relation_type_provider {
 macro_rules! relation_type_provider_impl {
     ($asset: ident, $path: expr) => {
         paste::paste! {
+            use inexor_rgf_core_model::RelationType as ModelRelationType;
+
             #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset RelationTypeAsset>];
@@ -48,8 +50,8 @@ macro_rules! relation_type_provider_impl {
             impl [<$asset RelationTypeProvider>] for [<$asset RelationTypeProviderImpl>] {}
 
             impl $crate::RelationTypeProvider for [<$asset RelationTypeProviderImpl>] {
-                fn get_relation_types(&self) -> Vec<inexor_rgf_core_model::RelationType> {
-                    $crate::embedded_asset_provider_impl!([<$asset RelationTypeAsset>], RelationType)
+                fn get_relation_types(&self) -> Vec<ModelRelationType> {
+                    $crate::embedded_asset_provider_impl!([<$asset RelationTypeAsset>], ModelRelationType)
                 }
             }
         }

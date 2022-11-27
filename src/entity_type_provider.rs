@@ -25,6 +25,8 @@ macro_rules! entity_type_provider {
 macro_rules! entity_type_provider_impl {
     ($asset: ident, $path: expr) => {
         paste::paste! {
+            use inexor_rgf_core_model::EntityType as ModelEntityType;
+
             #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset EntityTypeAsset>];
@@ -48,8 +50,8 @@ macro_rules! entity_type_provider_impl {
             impl [<$asset EntityTypeProvider>] for [<$asset EntityTypeProviderImpl>] {}
 
             impl $crate::EntityTypeProvider for [<$asset EntityTypeProviderImpl>] {
-                fn get_entity_types(&self) -> Vec<inexor_rgf_core_model::EntityType> {
-                    $crate::embedded_asset_provider_impl!([<$asset EntityTypeAsset>], EntityType)
+                fn get_entity_types(&self) -> Vec<ModelEntityType> {
+                    $crate::embedded_asset_provider_impl!([<$asset EntityTypeAsset>], ModelEntityType)
                 }
             }
         }
