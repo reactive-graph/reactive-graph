@@ -24,19 +24,19 @@ macro_rules! component_provider {
 #[macro_export]
 macro_rules! component_provider_impl {
     ($asset: ident, $path: expr) => {
-        paste! {
-            #[derive(RustEmbed)]
+        paste::paste! {
+            #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset ComponentAsset>];
 
-            pub trait [<$asset ComponentProvider>]: ComponentProvider + Send + Sync {}
+            pub trait [<$asset ComponentProvider>]: $crate::ComponentProvider + Send + Sync {}
 
             #[derive(Clone)]
             pub struct [<$asset ComponentProviderImpl>] {}
 
-            interfaces!([<$asset ComponentProviderImpl>]: dyn ComponentProvider);
+            interfaces!([<$asset ComponentProviderImpl>]: dyn $crate::ComponentProvider);
 
-            #[component]
+            #[inexor_rgf_core_di::component]
             impl [<$asset ComponentProviderImpl>] {
                 #[provides]
                 fn new() -> Self {
@@ -44,12 +44,12 @@ macro_rules! component_provider_impl {
                 }
             }
 
-            #[provides]
+            #[inexor_rgf_core_di::provides]
             impl [<$asset ComponentProvider>] for [<$asset ComponentProviderImpl>] {}
 
-            impl ComponentProvider for [<$asset ComponentProviderImpl>] {
-                fn get_components(&self) -> Vec<Component> {
-                    embedded_asset_provider_impl!([<$asset ComponentAsset>], Component)
+            impl $crate::ComponentProvider for [<$asset ComponentProviderImpl>] {
+                fn get_components(&self) -> Vec<inexor_rgf_core_model::Component> {
+                    $crate::embedded_asset_provider_impl!([<$asset ComponentAsset>], Component)
                 }
             }
         }

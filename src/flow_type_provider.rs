@@ -24,19 +24,19 @@ macro_rules! flow_type_provider {
 #[macro_export]
 macro_rules! flow_type_provider_impl {
     ($asset: ident, $path: expr) => {
-        paste! {
-            #[derive(RustEmbed)]
+        paste::paste! {
+            #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset FlowTypeAsset>];
 
-            pub trait [<$asset FlowTypeProvider>]: FlowTypeProvider + Send + Sync {}
+            pub trait [<$asset FlowTypeProvider>]: $crate::FlowTypeProvider + Send + Sync {}
 
             #[derive(Clone)]
             pub struct [<$asset FlowTypeProviderImpl>] {}
 
-            interfaces!([<$asset FlowTypeProviderImpl>]: dyn FlowTypeProvider);
+            interfaces!([<$asset FlowTypeProviderImpl>]: dyn $crate::FlowTypeProvider);
 
-            #[component]
+            #[inexor_rgf_core_di::component]
             impl [<$asset FlowTypeProviderImpl>] {
                 #[provides]
                 fn new() -> Self {
@@ -44,12 +44,12 @@ macro_rules! flow_type_provider_impl {
                 }
             }
 
-            #[provides]
+            #[inexor_rgf_core_di::provides]
             impl [<$asset FlowTypeProvider>] for [<$asset FlowTypeProviderImpl>] {}
 
-            impl FlowTypeProvider for [<$asset FlowTypeProviderImpl>] {
-                fn get_flow_types(&self) -> Vec<FlowType> {
-                    embedded_asset_provider_impl!([<$asset FlowTypeAsset>], FlowType)
+            impl $crate::FlowTypeProvider for [<$asset FlowTypeProviderImpl>] {
+                fn get_flow_types(&self) -> Vec<inexor_rgf_core_model::FlowType> {
+                    $crate::embedded_asset_provider_impl!([<$asset FlowTypeAsset>], FlowType)
                 }
             }
         }

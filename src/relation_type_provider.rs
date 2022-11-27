@@ -24,19 +24,19 @@ macro_rules! relation_type_provider {
 #[macro_export]
 macro_rules! relation_type_provider_impl {
     ($asset: ident, $path: expr) => {
-        paste! {
-            #[derive(RustEmbed)]
+        paste::paste! {
+            #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset RelationTypeAsset>];
 
-            pub trait [<$asset RelationTypeProvider>]: RelationTypeProvider + Send + Sync {}
+            pub trait [<$asset RelationTypeProvider>]: $crate::RelationTypeProvider + Send + Sync {}
 
             #[derive(Clone)]
             pub struct [<$asset RelationTypeProviderImpl>] {}
 
-            interfaces!([<$asset RelationTypeProviderImpl>]: dyn RelationTypeProvider);
+            interfaces!([<$asset RelationTypeProviderImpl>]: dyn $crate::RelationTypeProvider);
 
-            #[component]
+            #[inexor_rgf_core_di::component]
             impl [<$asset RelationTypeProviderImpl>] {
                 #[provides]
                 fn new() -> Self {
@@ -44,12 +44,12 @@ macro_rules! relation_type_provider_impl {
                 }
             }
 
-            #[provides]
+            #[inexor_rgf_core_di::provides]
             impl [<$asset RelationTypeProvider>] for [<$asset RelationTypeProviderImpl>] {}
 
-            impl RelationTypeProvider for [<$asset RelationTypeProviderImpl>] {
-                fn get_relation_types(&self) -> Vec<RelationType> {
-                    embedded_asset_provider_impl!([<$asset RelationTypeAsset>], RelationType)
+            impl $crate::RelationTypeProvider for [<$asset RelationTypeProviderImpl>] {
+                fn get_relation_types(&self) -> Vec<inexor_rgf_core_model::RelationType> {
+                    $crate::embedded_asset_provider_impl!([<$asset RelationTypeAsset>], RelationType)
                 }
             }
         }
