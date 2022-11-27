@@ -4,6 +4,7 @@
 
 pub use component_manager::*;
 pub use component_provider::*;
+pub use embedded_asset_provider::*;
 pub use entity_behaviour_registry::*;
 pub use entity_component_behaviour_registry::*;
 pub use entity_instance_manager::*;
@@ -34,6 +35,7 @@ use inexor_rgf_core_reactive as reactive;
 
 pub mod component_manager;
 pub mod component_provider;
+pub mod embedded_asset_provider;
 pub mod entity_behaviour_registry;
 pub mod entity_component_behaviour_registry;
 pub mod entity_instance_manager;
@@ -77,31 +79,6 @@ macro_rules! export_plugin {
             get_dependencies: $get_dependencies,
         };
     };
-}
-
-#[macro_export]
-macro_rules! embedded_asset_provider_impl {
-    ($asset: ident, $ty: ident) => {{
-        let mut entries = Vec::new();
-        for file in $asset::iter() {
-            let filename = file.as_ref();
-            debug!("Loading resource {}", filename);
-            match $asset::get(filename) {
-                Some(asset) => match std::str::from_utf8(asset.data.as_ref()) {
-                    Ok(json_str) => match serde_json::from_str(json_str) {
-                        Ok(parsed_entry) => {
-                            let entry: $ty = parsed_entry;
-                            entries.push(entry);
-                        }
-                        Err(e) => error!("Error in parsing JSON file {}: {}", filename, e),
-                    },
-                    Err(e) => error!("Error in decoding file to UTF-8 {}: {}", filename, e),
-                },
-                None => {}
-            }
-        }
-        entries
-    }};
 }
 
 #[cfg(test)]
