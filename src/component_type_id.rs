@@ -130,3 +130,18 @@ impl Display for ComponentTypeId {
         write!(f, "{}", &self.type_definition().to_string())
     }
 }
+
+#[macro_export]
+macro_rules! component_type {
+    (
+        $namespace: ident,
+        $component_type_id: ident,
+        $component_name_ident: ident,
+        $component_name: expr
+    ) => {
+        pub const $component_name_ident: &str = $component_name;
+        lazy_static::lazy_static! {
+            pub static ref $component_type_id: $crate::ComponentTypeId = $crate::ComponentTypeId::new_from_type($namespace, $component_name_ident);
+        }
+    };
+}
