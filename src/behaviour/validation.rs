@@ -59,16 +59,16 @@ macro_rules! behaviour_validator {
             }
         }
 
-        impl BehaviourValidator<$reactive_instance> for $validator {}
+        impl $crate::BehaviourValidator<$reactive_instance> for $validator {}
 
-        impl BehaviourReactiveInstanceContainer<$reactive_instance> for $validator {
+        impl $crate::BehaviourReactiveInstanceContainer<$reactive_instance> for $validator {
             fn get_reactive_instance(&self) -> &std::sync::Arc<$reactive_instance> {
                 &self.reactive_instance
             }
         }
 
-        impl BehaviourPropertyValidator<$reactive_instance> for $validator {
-            fn validate_properties(&self) -> Result<(), BehaviourPropertyInvalid> {
+        impl $crate::BehaviourPropertyValidator<$reactive_instance> for $validator {
+            fn validate_properties(&self) -> Result<(), $crate::BehaviourPropertyInvalid> {
                 $(
                 self.validate_property($property_names)?;
                 )*

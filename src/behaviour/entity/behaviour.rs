@@ -18,49 +18,52 @@ macro_rules! entity_behaviour {
             $fn_ident: ident
         )*
     ) => {
+        use inexor_rgf_core_model::ReactiveEntityInstance as ModelReactiveEntityInstance;
+        use inexor_rgf_core_model::PropertyInstanceGetter as EntityBehaviourPropertyInstanceGetter;
+
         pub struct $behaviour {
-            pub reactive_instance: std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance>,
+            pub reactive_instance: std::sync::Arc<ModelReactiveEntityInstance>,
             pub fsm: $fsm,
         }
 
         impl $behaviour {
-            pub fn new(reactive_instance: std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance>, ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, BehaviourCreationError> {
+            pub fn new(reactive_instance: std::sync::Arc<ModelReactiveEntityInstance>, ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
                 let transitions = <$transitions>::new(reactive_instance.clone(), ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance.clone());
                 let fsm = <$fsm>::new(reactive_instance.clone(), ty, validator, transitions);
                 let mut behaviour = $behaviour { reactive_instance, fsm };
                 behaviour
                     .fsm
-                    .transition(BehaviourState::Connected)
-                    .map_err(BehaviourCreationError::BehaviourTransitionError)?;
+                    .transition($crate::BehaviourState::Connected)
+                    .map_err($crate::BehaviourCreationError::BehaviourTransitionError)?;
                 Ok(std::sync::Arc::new(behaviour))
             }
         }
 
-        impl BehaviourFsm<inexor_rgf_core_model::ReactiveEntityInstance> for $behaviour {
+        impl $crate::BehaviourFsm<ModelReactiveEntityInstance> for $behaviour {
             fn ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
                 &self.fsm.ty
             }
 
-            fn get_state(&self) -> BehaviourState {
+            fn get_state(&self) -> $crate::BehaviourState {
                 self.fsm.get_state()
             }
 
-            fn set_state(&self, state: BehaviourState) {
+            fn set_state(&self, state: $crate::BehaviourState) {
                 self.fsm.set_state(state);
             }
 
-            fn get_validator(&self) -> &dyn BehaviourValidator<inexor_rgf_core_model::ReactiveEntityInstance> {
+            fn get_validator(&self) -> &dyn $crate::BehaviourValidator<ModelReactiveEntityInstance> {
                 &self.fsm.validator
             }
 
-            fn get_transitions(&self) -> &dyn BehaviourTransitions<inexor_rgf_core_model::ReactiveEntityInstance> {
+            fn get_transitions(&self) -> &dyn $crate::BehaviourTransitions<ModelReactiveEntityInstance> {
                 &self.fsm.transitions
             }
         }
 
-        impl BehaviourReactiveInstanceContainer<inexor_rgf_core_model::ReactiveEntityInstance> for $behaviour {
-            fn get_reactive_instance(&self) -> &std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance> {
+        impl $crate::BehaviourReactiveInstanceContainer<ModelReactiveEntityInstance> for $behaviour {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<ModelReactiveEntityInstance> {
                 &self.reactive_instance
             }
 
@@ -79,10 +82,10 @@ macro_rules! entity_behaviour {
             }
         }
 
-        behaviour_factory!($factory, $behaviour, ReactiveEntityInstance $(, $fn_name, $fn_ident)*);
+        $crate::behaviour_factory!($factory, $behaviour, ModelReactiveEntityInstance $(, $fn_name, $fn_ident)*);
 
-        behaviour_fsm!($fsm, $validator, $transitions, ReactiveEntityInstance);
+        $crate::behaviour_fsm!($fsm, $validator, $transitions, ModelReactiveEntityInstance);
 
-        entity_behaviour_transitions!($transitions $(, $fn_name, $fn_ident)*);
+        $crate::entity_behaviour_transitions!($transitions $(, $fn_name, $fn_ident)*);
     };
 }

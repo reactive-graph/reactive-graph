@@ -3,14 +3,14 @@ macro_rules! entity_behaviour_transitions {
     ($transitions: ident $(, $fn_name:ident, $fn_ident: ident)*) => {
         pub struct $transitions {
             pub reactive_instance: std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance>,
-            pub property_observers: EntityPropertyObserverContainerImpl,
+            pub property_observers: $crate::EntityPropertyObserverContainerImpl,
             pub ty: inexor_rgf_core_model::BehaviourTypeId,
             $(pub $fn_name: $fn_ident,)*
         }
 
         impl $transitions {
             pub fn new(reactive_instance: std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance>, ty: inexor_rgf_core_model::BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
-                let property_observers = EntityPropertyObserverContainerImpl::new(reactive_instance.clone());
+                let property_observers = $crate::EntityPropertyObserverContainerImpl::new(reactive_instance.clone());
                 $transitions {
                     reactive_instance,
                     property_observers,
@@ -20,14 +20,14 @@ macro_rules! entity_behaviour_transitions {
             }
         }
 
-        impl BehaviourDisconnect<inexor_rgf_core_model::ReactiveEntityInstance> for $transitions {
-            fn disconnect(&self) -> Result<(), BehaviourDisconnectFailed> {
+        impl $crate::BehaviourDisconnect<inexor_rgf_core_model::ReactiveEntityInstance> for $transitions {
+            fn disconnect(&self) -> Result<(), $crate::BehaviourDisconnectFailed> {
                 self.property_observers.remove_all_observers();
                 Ok(())
             }
         }
 
-        impl BehaviourReactiveInstanceContainer<inexor_rgf_core_model::ReactiveEntityInstance> for $transitions {
+        impl $crate::BehaviourReactiveInstanceContainer<inexor_rgf_core_model::ReactiveEntityInstance> for $transitions {
             fn get_reactive_instance(&self) -> &std::sync::Arc<inexor_rgf_core_model::ReactiveEntityInstance> {
                 &self.reactive_instance
             }

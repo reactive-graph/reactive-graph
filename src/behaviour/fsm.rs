@@ -94,10 +94,12 @@ pub trait BehaviourFsm<T: ReactiveInstance>: BehaviourReactiveInstanceContainer<
 #[macro_export]
 macro_rules! behaviour_fsm {
     ($fsm: ident, $validator: ty, $transitions: ty, $reactive_instance: ty) => {
+        use inexor_rgf_core_model::PropertyInstanceGetter as BehaviourFsmPropertyInstanceGetter;
+
         pub struct $fsm {
             pub reactive_instance: std::sync::Arc<$reactive_instance>,
             pub ty: inexor_rgf_core_model::BehaviourTypeId,
-            pub state: std::sync::RwLock<BehaviourState>,
+            pub state: std::sync::RwLock<$crate::BehaviourState>,
             pub validator: $validator,
             pub transitions: $transitions,
         }
@@ -112,38 +114,38 @@ macro_rules! behaviour_fsm {
                 $fsm {
                     reactive_instance,
                     ty,
-                    state: std::sync::RwLock::new(BehaviourState::Created),
+                    state: std::sync::RwLock::new($crate::BehaviourState::Created),
                     validator,
                     transitions,
                 }
             }
         }
 
-        impl BehaviourFsm<$reactive_instance> for $fsm {
+        impl $crate::BehaviourFsm<$reactive_instance> for $fsm {
             fn ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
                 &self.ty
             }
 
-            fn get_state(&self) -> BehaviourState {
+            fn get_state(&self) -> $crate::BehaviourState {
                 let reader = self.state.read().unwrap();
                 (*reader).clone()
             }
 
-            fn set_state(&self, state: BehaviourState) {
+            fn set_state(&self, state: $crate::BehaviourState) {
                 let mut writer = self.state.write().unwrap();
                 *writer = state;
             }
 
-            fn get_validator(&self) -> &dyn BehaviourValidator<$reactive_instance> {
+            fn get_validator(&self) -> &dyn $crate::BehaviourValidator<$reactive_instance> {
                 &self.validator
             }
 
-            fn get_transitions(&self) -> &dyn BehaviourTransitions<$reactive_instance> {
+            fn get_transitions(&self) -> &dyn $crate::BehaviourTransitions<$reactive_instance> {
                 &self.transitions
             }
         }
 
-        impl BehaviourReactiveInstanceContainer<$reactive_instance> for $fsm {
+        impl $crate::BehaviourReactiveInstanceContainer<$reactive_instance> for $fsm {
             fn get_reactive_instance(&self) -> &std::sync::Arc<$reactive_instance> {
                 &self.reactive_instance
             }
