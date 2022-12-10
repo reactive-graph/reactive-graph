@@ -1,5 +1,5 @@
 /// The state of a behaviour.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum BehaviourState {
     /// The behaviour has been created.
     Created,
