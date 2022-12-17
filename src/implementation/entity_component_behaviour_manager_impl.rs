@@ -75,6 +75,18 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
         self.entity_behaviour_storage.0.remove_all(id);
     }
 
+    fn has(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> bool {
+        self.entity_behaviour_storage.0.has(&entity_instance.id, behaviour_ty)
+    }
+
+    fn get_all(&self, entity_instance: Arc<ReactiveEntityInstance>) -> Vec<BehaviourTypeId> {
+        self.entity_behaviour_storage.0.get_behaviours_by_instance(&entity_instance.id)
+    }
+
+    fn get_instances_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<ReactiveEntityInstance>> {
+        self.entity_behaviour_storage.0.get_instances_by_behaviour(&ty)
+    }
+
     fn connect(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
         if let Some(fsm) = self.entity_behaviour_storage.0.get(&entity_instance.id, behaviour_ty) {
             return fsm.transition(BehaviourState::Connected);

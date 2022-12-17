@@ -56,6 +56,18 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
         self.relation_behaviour_storage.0.remove_all(&edge_key);
     }
 
+    fn has(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> bool {
+        self.relation_behaviour_storage.0.has(&relation_instance.get_key(), behaviour_ty)
+    }
+
+    fn get_all(&self, relation_instance: Arc<ReactiveRelationInstance>) -> Vec<BehaviourTypeId> {
+        self.relation_behaviour_storage.0.get_behaviours_by_instance(&relation_instance.get_key())
+    }
+
+    fn get_instances_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<ReactiveRelationInstance>> {
+        self.relation_behaviour_storage.0.get_instances_by_behaviour(&ty)
+    }
+
     fn connect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {
         if let Some(fsm) = self.relation_behaviour_storage.0.get(&relation_instance.get_key(), behaviour_ty) {
             return fsm.transition(BehaviourState::Connected);
