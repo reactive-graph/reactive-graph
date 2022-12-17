@@ -1,7 +1,18 @@
 use async_graphql::Schema;
 use async_trait::async_trait;
+use inexor_rgf_core_di::Deferred;
 
 use crate::api::ComponentManager;
+use crate::api::EntityBehaviourManager;
+use crate::api::EntityBehaviourRegistry;
+use crate::api::EntityComponentBehaviourManager;
+use crate::api::EntityComponentBehaviourRegistry;
+use crate::api::PluginContainerManager;
+use crate::api::PluginResolver;
+use crate::api::RelationBehaviourManager;
+use crate::api::RelationBehaviourRegistry;
+use crate::api::RelationComponentBehaviourManager;
+use crate::api::RelationComponentBehaviourRegistry;
 // use crate::api::DynamicGraph;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
@@ -36,7 +47,27 @@ pub struct GraphQLSchemaManagerImpl {
 
     relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
 
-    flow_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+    flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+
+    entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
+
+    entity_component_behaviour_registry: Wrc<dyn EntityComponentBehaviourRegistry>,
+
+    relation_behaviour_registry: Wrc<dyn RelationBehaviourRegistry>,
+
+    relation_component_behaviour_registry: Wrc<dyn RelationComponentBehaviourRegistry>,
+
+    entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
+
+    entity_component_behaviour_manager: Wrc<dyn EntityComponentBehaviourManager>,
+
+    relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
+
+    relation_component_behaviour_manager: Wrc<dyn RelationComponentBehaviourManager>,
+
+    plugin_container_manager: Wrc<dyn PluginContainerManager>,
+
+    plugin_resolver: Deferred<Wrc<dyn PluginResolver>>,
 }
 
 impl GraphQLSchemaManagerImpl {}
@@ -52,7 +83,17 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.flow_type_manager.clone())
             .data(self.entity_instance_manager.clone())
             .data(self.relation_instance_manager.clone())
-            .data(self.flow_manager.clone())
+            .data(self.flow_instance_manager.clone())
+            .data(self.entity_behaviour_registry.clone())
+            .data(self.entity_component_behaviour_registry.clone())
+            .data(self.relation_behaviour_registry.clone())
+            .data(self.relation_component_behaviour_registry.clone())
+            .data(self.entity_behaviour_manager.clone())
+            .data(self.entity_component_behaviour_manager.clone())
+            .data(self.relation_behaviour_manager.clone())
+            .data(self.relation_component_behaviour_manager.clone())
+            .data(self.plugin_container_manager.clone())
+            .data(self.plugin_resolver.clone())
             // .data(self.dynamic_graph.clone())
             .directive(directives::concat)
             .directive(directives::random_uuid)

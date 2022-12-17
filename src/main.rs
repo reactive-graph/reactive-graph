@@ -2,6 +2,7 @@
 #![feature(concat_idents)]
 #![feature(register_tool)]
 #![feature(test)]
+#![feature(path_file_prefix)]
 #![register_tool(tarpaulin)]
 #![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 

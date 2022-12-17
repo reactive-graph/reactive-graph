@@ -1,9 +1,11 @@
 use async_graphql::*;
 
 pub use instances::*;
+pub use system::*;
 pub use types::*;
 
 pub mod instances;
+pub mod system;
 pub mod types;
 
 pub struct InexorMutation;
@@ -19,5 +21,10 @@ impl InexorMutation {
     /// Mutations for instances (entity instances, relation instances).
     async fn instances(&self) -> MutationInstances {
         MutationInstances::default()
+    }
+
+    /// Mutations for instances (entity instances, relation instances).
+    async fn system(&self) -> MutationSystem {
+        MutationSystem::default()
     }
 }

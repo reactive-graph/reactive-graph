@@ -73,7 +73,9 @@ pub trait Application: Send + Sync {
 
     fn get_graphql_server(&self) -> Arc<dyn GraphQLServer>;
 
-    fn get_plugin_registry(&self) -> Arc<dyn PluginRegistry>;
+    fn get_plugin_container_manager(&self) -> Arc<dyn PluginContainerManager>;
+
+    fn get_plugin_repository_manager(&self) -> Arc<dyn PluginRepositoryManager>;
 
     fn get_reactive_entity_instance_manager(&self) -> Arc<dyn ReactiveEntityInstanceManager>;
 
@@ -130,7 +132,10 @@ pub struct ApplicationImpl {
     relation_edge_manager: Wrc<dyn RelationEdgeManager>,
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
-    plugin_registry: Wrc<dyn PluginRegistry>,
+    plugin_container_manager: Wrc<dyn PluginContainerManager>,
+    plugin_context_factory: Wrc<dyn PluginContextFactory>,
+    plugin_repository_manager: Wrc<dyn PluginRepositoryManager>,
+    plugin_resolver: Wrc<dyn PluginResolver>,
     web_resource_manager: Wrc<dyn WebResourceManager>,
 }
 
@@ -142,7 +147,9 @@ impl Application for ApplicationImpl {
         self.component_manager.init();
         self.entity_type_manager.init();
         self.relation_type_manager.init();
-        self.plugin_registry.init();
+        self.plugin_context_factory.init();
+        self.plugin_repository_manager.init();
+        self.plugin_resolver.init();
         self.reactive_flow_instance_manager.init();
         self.web_resource_manager.init();
         self.graphql_schema_manager.init();
@@ -159,7 +166,9 @@ impl Application for ApplicationImpl {
         self.component_manager.post_init();
         self.entity_type_manager.post_init();
         self.relation_type_manager.post_init();
-        self.plugin_registry.post_init();
+        self.plugin_context_factory.post_init();
+        self.plugin_repository_manager.post_init();
+        self.plugin_resolver.post_init();
         self.reactive_flow_instance_manager.post_init();
         self.web_resource_manager.post_init();
         self.graphql_schema_manager.post_init();
@@ -182,7 +191,9 @@ impl Application for ApplicationImpl {
         self.graphql_schema_manager.pre_shutdown();
         self.web_resource_manager.pre_shutdown();
         self.reactive_flow_instance_manager.pre_shutdown();
-        self.plugin_registry.pre_shutdown();
+        self.plugin_resolver.pre_shutdown();
+        self.plugin_repository_manager.pre_shutdown();
+        self.plugin_context_factory.pre_shutdown();
         self.relation_type_manager.pre_shutdown();
         self.entity_type_manager.pre_shutdown();
         self.component_manager.pre_shutdown();
@@ -199,7 +210,9 @@ impl Application for ApplicationImpl {
         self.graphql_schema_manager.shutdown();
         self.web_resource_manager.shutdown();
         self.reactive_flow_instance_manager.shutdown();
-        self.plugin_registry.shutdown();
+        self.plugin_resolver.shutdown();
+        self.plugin_repository_manager.shutdown();
+        self.plugin_context_factory.shutdown();
         self.relation_type_manager.shutdown();
         self.entity_type_manager.shutdown();
         self.component_manager.shutdown();
@@ -333,8 +346,12 @@ impl Application for ApplicationImpl {
         self.graphql_server.clone()
     }
 
-    fn get_plugin_registry(&self) -> Arc<dyn PluginRegistry> {
-        self.plugin_registry.clone()
+    fn get_plugin_container_manager(&self) -> Arc<dyn PluginContainerManager> {
+        self.plugin_container_manager.clone()
+    }
+
+    fn get_plugin_repository_manager(&self) -> Arc<dyn PluginRepositoryManager> {
+        self.plugin_repository_manager.clone()
     }
 
     fn get_reactive_entity_instance_manager(&self) -> Arc<dyn ReactiveEntityInstanceManager> {

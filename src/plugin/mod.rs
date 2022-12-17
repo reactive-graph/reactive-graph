@@ -15,7 +15,9 @@ pub mod relation_behaviour_registry_impl;
 pub mod relation_component_behaviour_registry_impl;
 pub mod relation_instance_manager_impl;
 pub mod relation_type_manager_impl;
+pub mod resolver;
 pub mod system_event_manager_impl;
+pub mod transition;
 
 pub use component_manager_impl::ComponentManagerImpl;
 pub use config::PluginsConfig;
@@ -33,4 +35,6 @@ pub use relation_behaviour_registry_impl::RelationBehaviourRegistryImpl;
 pub use relation_component_behaviour_registry_impl::RelationComponentBehaviourRegistryImpl;
 pub use relation_instance_manager_impl::RelationInstanceManagerImpl;
 pub use relation_type_manager_impl::RelationTypeManagerImpl;
+pub use resolver::*;
 pub use system_event_manager_impl::SystemEventManagerImpl;
+pub use transition::*;
