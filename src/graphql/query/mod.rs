@@ -1,12 +1,15 @@
 use async_graphql::*;
 use uuid::Uuid;
 
+pub use behaviours::*;
 pub use instances::*;
 pub use types::*;
 
+use crate::graphql::query::Behaviours;
 use crate::graphql::query::Instances;
 use crate::graphql::query::Types;
 
+pub mod behaviours;
 pub mod instances;
 pub mod types;
 
