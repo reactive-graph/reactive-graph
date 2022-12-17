@@ -1,0 +1,35 @@
+query ListPlugins {
+  system {
+    plugins {
+      ...FullPlugin
+      unsatisfiedDependencies {
+        ...DependencyPlugin
+      }
+    }
+  }
+}
+
+fragment FullPlugin on Plugin {
+  id
+  stem
+  path
+  state
+  name
+  description
+  version
+  rustcVersion
+  pluginApiVersion
+  dependencies {
+    ...DependencyPlugin
+  }
+  dependents {
+    ...DependencyPlugin
+  }
+}
+
+fragment DependencyPlugin on Plugin {
+  id
+  name
+  version
+  state
+}

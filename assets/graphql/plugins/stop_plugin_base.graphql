@@ -1,0 +1,34 @@
+mutation StopPluginBase {
+  system {
+    plugins {
+      stop(name: "libinexor_rgf_plugin_base") {
+        ...FullPlugin
+      }
+    }
+  }
+}
+
+fragment FullPlugin on Plugin {
+  id
+  stem
+  path
+  state
+  name
+  description
+  version
+  rustcVersion
+  pluginApiVersion
+  dependencies {
+    ...DependencyPlugin
+  }
+  dependents {
+    ...DependencyPlugin
+  }
+}
+
+fragment DependencyPlugin on Plugin {
+  id
+  name
+  version
+  state
+}
