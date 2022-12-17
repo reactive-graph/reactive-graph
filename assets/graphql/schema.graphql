@@ -10,8 +10,29 @@ directive @concat(value: String!) on FIELD
 
 directive @random_uuid on FIELD
 
+"A behaviour."
+type Behaviour {
+  "The name of the behaviour type."
+  name: String!
+  "The namespace the behaviour type belongs to."
+  namespace: String!
+}
+
+"Search for behaviours (component behaviours, entity behaviours or relation behaviours)"
+type Behaviours {
+  countEntityBehaviours: Int!
+  countEntityComponentBehaviours: Int!
+  countRelationBehaviours: Int!
+  countRelationComponentBehaviours: Int!
+  entities: [EntityBehaviour!]!
+  entityComponents: [ComponentBehaviour!]!
+  relationComponents: [ComponentBehaviour!]!
+  relations: [RelationBehaviour!]!
+}
+
 "Components are composable parts which can be used by types (entity type, relation type)."
 type Component {
+  behaviours: [ComponentBehaviour!]!
   "Textual description of the component."
   description: String!
   "Query which entity types are using this component"
@@ -32,6 +53,32 @@ type Component {
   relationTypes: [RelationType!]!
 }
 
+"A component behaviour."
+type ComponentBehaviour {
+  "The behaviour type."
+  behaviour: Behaviour!
+  "The component."
+  component: Component!
+  "The name of the behaviour type."
+  name: String!
+  "The namespace the behaviour type belongs to."
+  namespace: String!
+}
+
+"An entity behaviour."
+type EntityBehaviour {
+  "The behaviour type."
+  behaviour: Behaviour!
+  "The entity type."
+  entityType: EntityType!
+  "The instances with the behaviour."
+  instances: [EntityInstance!]!
+  "The name of the behaviour type."
+  name: String!
+  "The namespace the behaviour type belongs to."
+  namespace: String!
+}
+
 """
 
 Entity instances represents an typed objects which contains properties.
@@ -44,10 +91,16 @@ properties.
 type EntityInstance {
   """
 
-  List of behaviours which have been actually applied on the entity instance including
-  behaviours which have been applied after creation.
+  List of entity behaviours which have been actually applied on the entity instance
+  including behaviours which have been applied after creation.
   """
-  behaviours: [String!]!
+  behaviours: [EntityBehaviour!]!
+  """
+
+  List of component behaviours which have been actually applied on the entity instance
+  including behaviours which have been applied after creation.
+  """
+  componentBehaviours: [ComponentBehaviour!]!
   """
 
   The components which have been actually applied on the entity instance including
@@ -91,6 +144,7 @@ type EntityInstance {
 
 "Entity types defines the type of entity instance."
 type EntityType {
+  behaviours: [EntityBehaviour!]!
   "The components of the entity type."
   components: [Component!]!
   "Textual description of the entity type."
@@ -299,6 +353,8 @@ type Instances {
 type Mutation {
   "Mutations for instances (entity instances, relation instances)."
   instances: MutationInstances!
+  "Mutations for instances (entity instances, relation instances)."
+  system: MutationSystem!
   "Mutations for types (components, entity types, relation types)."
   types: MutationTypes!
 }
@@ -321,6 +377,7 @@ type MutationComponents {
 
 "Mutation of entity instances."
 type MutationEntityInstances {
+  connect(id: UUID!, type: BehaviourTypeId!): EntityInstance!
   """
 
   Creates a new entity instance of the given type.
@@ -350,6 +407,8 @@ type MutationEntityInstances {
     "The id of the entity instance"
     id: UUID!
   ): Boolean!
+  disconnect(id: UUID!, type: BehaviourTypeId!): EntityInstance!
+  reconnect(id: UUID!, type: BehaviourTypeId!): EntityInstance!
   """
 
   Manually tick the entity instance. This means for each property of the entity instance
@@ -479,8 +538,20 @@ type MutationInstances {
   relations: MutationRelationInstances!
 }
 
+"Mutations for plugins."
+type MutationPlugins {
+  "Redeploys a plugin which is already installed, resolved or active."
+  redeploy(name: String!): Plugin!
+  restart(name: String!): Plugin!
+  start(name: String!): Plugin!
+  stop(name: String!): Plugin!
+  "Uninstalls a plugin"
+  uninstall(name: String!): Boolean!
+}
+
 "Mutation of relation instances."
 type MutationRelationInstances {
+  connect(edgeKey: EdgeKeyDefinition!, type: BehaviourTypeId!): RelationInstance!
   """
 
   Creates a new relation instance with the given edge_key.
@@ -530,6 +601,8 @@ type MutationRelationInstances {
   ): RelationInstance!
   "Deletes an relation instance."
   delete(edgeKey: EdgeKeyDefinition!): Boolean!
+  disconnect(edgeKey: EdgeKeyDefinition!, type: BehaviourTypeId!): RelationInstance!
+  reconnect(edgeKey: EdgeKeyDefinition!, type: BehaviourTypeId!): RelationInstance!
   """
 
   Manually tick the relation instance. This means for each property of the entity instance
@@ -590,6 +663,10 @@ type MutationRelationTypes {
   removeProperty(propertyName: String!, type: RelationTypeId!): RelationType!
 }
 
+type MutationSystem {
+  plugins: MutationPlugins!
+}
+
 "Mutations for types (components, entity types, relation types)."
 type MutationTypes {
   "Mutations for components"
@@ -598,6 +675,21 @@ type MutationTypes {
   entities: MutationEntityTypes!
   "Mutations for relation types"
   relations: MutationRelationTypes!
+}
+
+type Plugin {
+  dependencies: [Plugin!]!
+  dependents: [Plugin!]!
+  description: String!
+  id: UUID!
+  name: String!
+  path: String!
+  pluginApiVersion: String!
+  rustcVersion: String!
+  state: String!
+  stem: String!
+  unsatisfiedDependencies: [Plugin!]!
+  version: String!
 }
 
 """
@@ -640,11 +732,32 @@ type PropertyType {
 
 "Search queries for the type system, the instances and the flows."
 type Query {
+  """
+
+  Search for behaviours (entity behaviours, entity component behaviours, relation behaviours,
+  relation component behaviours).
+  """
+  behaviours: Behaviours!
   "Search for instances (entity instances, relation instances)."
   instances: Instances!
   randomUuid: String!
+  system: System!
   "Search for types (components, entity types, relation types)."
   types: Types!
+}
+
+"A relation behaviour."
+type RelationBehaviour {
+  "The behaviour type."
+  behaviour: Behaviour!
+  "The instances with the behaviour."
+  instances: [RelationInstance!]!
+  "The name of the behaviour type."
+  name: String!
+  "The namespace the behaviour type belongs to."
+  namespace: String!
+  "The relation type."
+  relationType: RelationType!
 }
 
 """
@@ -663,10 +776,16 @@ documents in it's properties.
 type RelationInstance {
   """
 
-  List of behaviours which have been actually applied on the relation instance including
-  behaviours which have been applied after creation.
+  List of relation behaviours which have been actually applied on the relation instance
+  including behaviours which have been applied after creation.
   """
-  behaviours: [String!]!
+  behaviours: [RelationBehaviour!]!
+  """
+
+  List of component behaviours which have been actually applied on the entity instance
+  including behaviours which have been applied after creation.
+  """
+  componentBehaviours: [ComponentBehaviour!]!
   """
 
   The components which have been actually applied on the relation instance including
@@ -720,6 +839,7 @@ The relation type defines the entity types of the outbound and inbound entity in
 Also the relation type defines the properties of the relation instance.
 """
 type RelationType {
+  behaviours: [RelationBehaviour!]!
   "The relation type composes it's properties by these components."
   components: [Component!]!
   "Textual description of the relation type."
@@ -776,6 +896,10 @@ type Subscription {
     "The name of the property"
     propertyName: String!
   ): PropertyInstance!
+}
+
+type System {
+  plugins(id: UUID, name: String, state: String, stem: String): [Plugin!]!
 }
 
 "Search for types (components, entity types or relation types)"
@@ -911,7 +1035,7 @@ input EdgeKeyDefinition {
   "The id of the inbound entity instance."
   inboundId: UUID!
   "The instance id."
-  instanceId: String! = "String::new"
+  instanceId: String! = ""
   "The namespace."
   namespace: String!
   "The id of the outbound entity instance."
