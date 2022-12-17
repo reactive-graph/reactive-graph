@@ -109,7 +109,7 @@ impl PluginRepositoryManagerImpl {
                     }
                 }
             }
-            Err(e) => {}
+            Err(_) => {}
         })
         .ok();
         let mut writer = self.hot_deploy_watcher.0.write().unwrap();
