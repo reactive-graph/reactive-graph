@@ -9,12 +9,16 @@ use uuid::Uuid;
 
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationBehaviourManager;
+use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationTypeManager;
+use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::GraphQLEdgeKey;
 use crate::graphql::mutation::RelationTypeIdDefinition;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
+use crate::model::BehaviourTypeId;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
 use crate::model::ReactivePropertyContainer;
@@ -265,5 +269,80 @@ impl MutationRelationInstances {
             .ok_or_else(|| Error::new(format!("Relation type {} does not exist!", ty.type_definition().to_string())))?;
 
         Ok(relation_instance_manager.delete(&edge_key.into()))
+    }
+
+    async fn connect(
+        &self,
+        context: &Context<'_>,
+        edge_key: GraphQLEdgeKey,
+        #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
+    ) -> Result<GraphQLRelationInstance> {
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager>>()?;
+        let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager>>()?;
+        let edge_key = EdgeKey::from(edge_key);
+        let reactive_instance = relation_instance_manager.get(&edge_key).ok_or(Error::new("Relation instance not found"))?;
+        let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
+        if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            relation_behaviour_manager
+                .connect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to connect relation behaviour {:?}", e)))?;
+        }
+        if relation_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            relation_component_behaviour_manager
+                .connect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to connect relation component behaviour {:?}", e)))?;
+        }
+        Ok(reactive_instance.into())
+    }
+
+    async fn disconnect(
+        &self,
+        context: &Context<'_>,
+        edge_key: GraphQLEdgeKey,
+        #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
+    ) -> Result<GraphQLRelationInstance> {
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager>>()?;
+        let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager>>()?;
+        let edge_key = EdgeKey::from(edge_key);
+        let reactive_instance = relation_instance_manager.get(&edge_key).ok_or(Error::new("Relation instance not found"))?;
+        let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
+        if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            relation_behaviour_manager
+                .disconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to disconnect relation behaviour {:?}", e)))?;
+        }
+        if relation_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            relation_component_behaviour_manager
+                .disconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to disconnect relation component behaviour {:?}", e)))?;
+        }
+        Ok(reactive_instance.into())
+    }
+
+    async fn reconnect(
+        &self,
+        context: &Context<'_>,
+        edge_key: GraphQLEdgeKey,
+        #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
+    ) -> Result<GraphQLRelationInstance> {
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager>>()?;
+        let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager>>()?;
+        let edge_key = EdgeKey::from(edge_key);
+        let reactive_instance = relation_instance_manager.get(&edge_key).ok_or(Error::new("Relation instance not found"))?;
+        let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
+        if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            relation_behaviour_manager
+                .reconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to reconnect relation behaviour {:?}", e)))?;
+        }
+        if relation_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            relation_component_behaviour_manager
+                .reconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to reconnect relation component behaviour {:?}", e)))?;
+        }
+        Ok(reactive_instance.into())
     }
 }

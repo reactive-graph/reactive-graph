@@ -3,6 +3,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 use crate::model::BehaviourTypeId;
+use crate::model::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "BehaviourTypeId")]
@@ -18,5 +19,14 @@ pub struct BehaviourTypeIdDefinition {
 impl From<BehaviourTypeIdDefinition> for BehaviourTypeId {
     fn from(ty: BehaviourTypeIdDefinition) -> Self {
         BehaviourTypeId::new_from_type(ty.namespace, ty.type_name)
+    }
+}
+
+impl From<BehaviourTypeId> for BehaviourTypeIdDefinition {
+    fn from(ty: BehaviourTypeId) -> Self {
+        BehaviourTypeIdDefinition {
+            namespace: ty.namespace(),
+            type_name: ty.type_name(),
+        }
     }
 }

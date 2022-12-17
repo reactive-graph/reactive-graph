@@ -4,13 +4,17 @@ use async_graphql::*;
 use log::debug;
 use uuid::Uuid;
 
+use crate::api::EntityBehaviourManager;
+use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
+use crate::model::BehaviourTypeId;
 use crate::model::PropertyInstanceSetter;
 use crate::model::ReactivePropertyContainer;
 
@@ -162,5 +166,77 @@ impl MutationEntityInstances {
         }
         entity_instance_manager.delete(id);
         Ok(true)
+    }
+
+    async fn connect(
+        &self,
+        context: &Context<'_>,
+        id: Uuid,
+        #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
+    ) -> Result<GraphQLEntityInstance> {
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager>>()?;
+        let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager>>()?;
+        let reactive_instance = entity_instance_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
+        let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
+        if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            entity_behaviour_manager
+                .connect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to connect entity behaviour {:?}", e)))?;
+        }
+        if entity_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            entity_component_behaviour_manager
+                .connect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {:?}", e)))?;
+        }
+        Ok(reactive_instance.into())
+    }
+
+    async fn disconnect(
+        &self,
+        context: &Context<'_>,
+        id: Uuid,
+        #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
+    ) -> Result<GraphQLEntityInstance> {
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager>>()?;
+        let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager>>()?;
+        let reactive_instance = entity_instance_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
+        let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
+        if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            entity_behaviour_manager
+                .disconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to disconnect entity behaviour {:?}", e)))?;
+        }
+        if entity_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            entity_component_behaviour_manager
+                .disconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {:?}", e)))?;
+        }
+        Ok(reactive_instance.into())
+    }
+
+    async fn reconnect(
+        &self,
+        context: &Context<'_>,
+        id: Uuid,
+        #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
+    ) -> Result<GraphQLEntityInstance> {
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager>>()?;
+        let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager>>()?;
+        let reactive_instance = entity_instance_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
+        let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
+        if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            entity_behaviour_manager
+                .reconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to reconnect entity behaviour {:?}", e)))?;
+        }
+        if entity_component_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
+            entity_component_behaviour_manager
+                .reconnect(reactive_instance.clone(), &behaviour_ty)
+                .map_err(|e| Error::new(format!("Failed to connect entity component behaviour {:?}", e)))?;
+        }
+        Ok(reactive_instance.into())
     }
 }

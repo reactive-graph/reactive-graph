@@ -1,6 +1,7 @@
 pub use behaviour_type_id::*;
 pub use component::*;
 pub use component_type_id::*;
+pub use entity_behaviour_type_id::*;
 pub use entity_type::*;
 pub use entity_type_id::*;
 // pub use extension::*;
@@ -14,6 +15,7 @@ pub use types::*;
 pub mod behaviour_type_id;
 pub mod component;
 pub mod component_type_id;
+pub mod entity_behaviour_type_id;
 pub mod entity_type;
 pub mod entity_type_id;
 // pub mod extension;
