@@ -1,0 +1,14 @@
+query listRelationBehaviourInstances {
+  behaviours {
+    relations {
+      namespace
+      name
+      instances {
+        outbound {id}
+        type { name }
+        instanceId
+        inbound {id}
+      }
+    }
+  }
+}

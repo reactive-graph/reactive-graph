@@ -1,0 +1,13 @@
+query behavioursCounts {
+  behaviours {
+
+    countEntityBehaviours
+
+    countEntityComponentBehaviours
+
+    countRelationBehaviours
+
+    countRelationComponentBehaviours
+
+  }
+}

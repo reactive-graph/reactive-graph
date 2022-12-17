@@ -1,0 +1,20 @@
+query relationBehaviours {
+  types {
+    relations {
+      namespace
+      name
+      components {
+        namespace
+        name
+        behaviours {
+          namespace
+          name
+        }
+      }
+      behaviours {
+        namespace
+        name
+      }
+    }
+  }
+}

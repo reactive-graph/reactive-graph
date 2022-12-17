@@ -1,0 +1,20 @@
+query entityBehaviours {
+  types {
+    entities {
+      namespace
+      name
+      components {
+        namespace
+        name
+        behaviours {
+          namespace
+          name
+        }
+      }
+      behaviours {
+        namespace
+        name
+      }
+    }
+  }
+}
