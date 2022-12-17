@@ -1,12 +1,16 @@
 use std::sync::Arc;
 
-use crate::api::ComponentManager;
 use async_graphql::*;
 
+use crate::api::ComponentManager;
+use crate::api::RelationBehaviourRegistry;
+use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::GraphQLComponentBehaviour;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
+use crate::graphql::query::GraphQLRelationBehaviour;
 use crate::graphql::query::GraphQLRelationType;
 use crate::model::ReactiveRelationInstance;
 
@@ -108,10 +112,38 @@ impl GraphQLRelationInstance {
         }
     }
 
-    /// List of behaviours which have been actually applied on the relation instance including
-    /// behaviours which have been applied after creation.
-    async fn behaviours(&self) -> Vec<String> {
-        self.relation_instance.behaviours.iter().map(|p| p.key().to_string()).collect()
+    /// List of relation behaviours which have been actually applied on the relation instance
+    /// including behaviours which have been applied after creation.
+    async fn behaviours(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationBehaviour>> {
+        let relation_behaviour_registry = context.data::<Arc<dyn RelationBehaviourRegistry>>()?;
+        Ok(self
+            .relation_instance
+            .behaviours
+            .iter()
+            .filter_map(move |p| {
+                let behaviour_ty = p.key();
+                relation_behaviour_registry
+                    .get_by_behaviour_type(behaviour_ty)
+                    .map(GraphQLRelationBehaviour::from)
+            })
+            .collect())
+    }
+
+    /// List of component behaviours which have been actually applied on the entity instance
+    /// including behaviours which have been applied after creation.
+    async fn component_behaviours(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponentBehaviour>> {
+        let relation_component_behaviour_registry = context.data::<Arc<dyn RelationComponentBehaviourRegistry>>()?;
+        Ok(self
+            .relation_instance
+            .behaviours
+            .iter()
+            .filter_map(move |p| {
+                let behaviour_ty = p.key();
+                relation_component_behaviour_registry
+                    .get_by_behaviour_type(behaviour_ty)
+                    .map(GraphQLComponentBehaviour::from)
+            })
+            .collect())
     }
 }
 

@@ -163,7 +163,7 @@ impl Instances {
             ComponentTypeIdDefinition,
         >,
         #[graphql(desc = "Filters the relation instances by the id of the outbound entity instance")] outbound_id: Option<Uuid>,
-        #[graphql(name = "type", desc = "Filters the relation instances by relation type")] relation_ty: Option<RelationTypeIdDefinition>,
+        #[graphql(name = "type", desc = "Filters the relation instances by relation type")] relation_ty: Option<RelationTypeIdDefinition>, // TODO: RelationInstanceTypeIdDefinition ?
         #[graphql(desc = "Filters the relation instances by the entity type of the inbound entity instance.")] inbound_entity_ty: Option<
             EntityTypeIdDefinition,
         >,
