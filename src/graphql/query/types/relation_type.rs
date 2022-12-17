@@ -4,11 +4,13 @@ use async_graphql::*;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
+use crate::api::RelationBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
+use crate::graphql::query::GraphQLRelationBehaviour;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::RelationType;
@@ -184,6 +186,16 @@ impl GraphQLRelationType {
             Ok(relation_type_manager) => relation_type_manager.validate(&self.relation_type.ty),
             Err(_) => false,
         }
+    }
+
+    async fn behaviours(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationBehaviour>> {
+        let relation_behaviour_registry = context.data::<Arc<dyn RelationBehaviourRegistry>>()?;
+        let relation_behaviour_types = relation_behaviour_registry
+            .get_behaviour_types(&self.relation_type.ty)
+            .iter()
+            .map(|relation_behaviour_ty| GraphQLRelationBehaviour::from(relation_behaviour_ty.clone()))
+            .collect();
+        Ok(relation_behaviour_types)
     }
 }
 

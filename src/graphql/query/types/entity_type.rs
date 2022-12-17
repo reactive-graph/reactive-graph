@@ -3,9 +3,11 @@ use std::sync::Arc;
 use async_graphql::*;
 
 use crate::api::ComponentManager;
+use crate::api::EntityBehaviourRegistry;
 use crate::api::EntityTypeManager;
 use crate::api::RelationTypeManager;
 use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::GraphQLEntityBehaviour;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationType;
@@ -131,6 +133,16 @@ impl GraphQLEntityType {
             Ok(entity_type_manager) => entity_type_manager.validate(&self.entity_type.ty),
             Err(_) => false,
         }
+    }
+
+    async fn behaviours(&self, context: &Context<'_>) -> Result<Vec<GraphQLEntityBehaviour>> {
+        let entity_behaviour_registry = context.data::<Arc<dyn EntityBehaviourRegistry>>()?;
+        let entity_behaviour_types = entity_behaviour_registry
+            .get_behaviour_types(&self.entity_type.ty)
+            .iter()
+            .map(|entity_behaviour_ty| GraphQLEntityBehaviour::from(entity_behaviour_ty.clone()))
+            .collect();
+        Ok(entity_behaviour_types)
     }
 }
 

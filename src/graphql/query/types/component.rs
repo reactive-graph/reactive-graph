@@ -1,15 +1,19 @@
-use crate::api::EntityTypeManager;
-use crate::api::RelationTypeManager;
-use crate::model::TypeContainer;
-use async_graphql::*;
-use inexor_rgf_core_model::NamespacedTypeGetter;
 use std::sync::Arc;
 
+use async_graphql::*;
+
+use crate::api::EntityComponentBehaviourRegistry;
+use crate::api::EntityTypeManager;
+use crate::api::RelationComponentBehaviourRegistry;
+use crate::api::RelationTypeManager;
+use crate::graphql::query::GraphQLComponentBehaviour;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationType;
 use crate::model::Component;
+use crate::model::NamespacedTypeGetter;
+use crate::model::TypeContainer;
 
 pub struct GraphQLComponent {
     component: Component,
@@ -131,6 +135,26 @@ impl GraphQLComponent {
             .cloned()
             .map(|relation_type| relation_type.into())
             .collect());
+    }
+
+    async fn behaviours(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponentBehaviour>> {
+        let entity_component_behaviour_registry = context.data::<Arc<dyn EntityComponentBehaviourRegistry>>()?;
+        let relation_component_behaviour_registry = context.data::<Arc<dyn RelationComponentBehaviourRegistry>>()?;
+        let entity_component_behaviour_types: Vec<GraphQLComponentBehaviour> = entity_component_behaviour_registry
+            .get_behaviour_types(&self.component.ty)
+            .iter()
+            .map(|component_behaviour_ty| GraphQLComponentBehaviour::from(component_behaviour_ty.clone()))
+            .collect();
+        let relation_component_behaviour_types: Vec<GraphQLComponentBehaviour> = relation_component_behaviour_registry
+            .get_behaviour_types(&self.component.ty)
+            .iter()
+            .map(|component_behaviour_ty| GraphQLComponentBehaviour::from(component_behaviour_ty.clone()))
+            .collect();
+        let component_behaviour_types = vec![entity_component_behaviour_types, relation_component_behaviour_types]
+            .into_iter()
+            .flatten()
+            .collect();
+        Ok(component_behaviour_types)
     }
 }
 

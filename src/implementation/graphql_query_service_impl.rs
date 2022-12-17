@@ -40,7 +40,7 @@ impl GraphQLQueryService for GraphQLQueryServiceImpl {
 
 impl Lifecycle for GraphQLQueryServiceImpl {
     fn post_init(&self) {
-        let request = "query { types { countComponents countEntityTypes countRelationTypes countFlowTypes } instances { countEntityInstances countRelationInstances countFlowInstances } }";
+        let request = "query { types { countComponents countEntityTypes countRelationTypes countFlowTypes } instances { countEntityInstances countRelationInstances countFlowInstances } behaviours { countEntityBehaviours countRelationBehaviours countEntityComponentBehaviours countRelationComponentBehaviours }}";
         self.query_thread(request.to_string());
     }
 }
