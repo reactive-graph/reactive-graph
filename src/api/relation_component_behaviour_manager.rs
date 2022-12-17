@@ -25,6 +25,15 @@ pub trait RelationComponentBehaviourManager: Send + Sync {
     /// Removes behaviours from the given relation instance by edge key.
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey);
 
+    /// Returns true, if the relation instance has the given behaviour.
+    fn has(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> bool;
+
+    /// Returns the behaviours of the given relation instance.
+    fn get_all(&self, relation_instance: Arc<ReactiveRelationInstance>) -> Vec<BehaviourTypeId>;
+
+    /// Returns the relation instances with the given behaviour.
+    fn get_instances_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<ReactiveRelationInstance>>;
+
     /// Connect
     fn connect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError>;
 
