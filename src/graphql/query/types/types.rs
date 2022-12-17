@@ -50,10 +50,10 @@ impl Types {
     }
 
     async fn count_components(&self, context: &Context<'_>) -> usize {
-        context
-            .data::<Arc<dyn ComponentManager>>()
-            .map(|component_manager| component_manager.count())
-            .unwrap_or(0)
+        if let Ok(component_manager) = context.data::<Arc<dyn ComponentManager>>() {
+            return component_manager.count();
+        }
+        0
     }
 
     /// Search for entity types.
@@ -89,10 +89,10 @@ impl Types {
     }
 
     async fn count_entity_types(&self, context: &Context<'_>) -> usize {
-        context
-            .data::<Arc<dyn EntityTypeManager>>()
-            .map(|entity_type_manager| entity_type_manager.count())
-            .unwrap_or(0)
+        if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {
+            return entity_type_manager.count();
+        }
+        0
     }
 
     /// Search for relation types.
@@ -253,10 +253,10 @@ impl Types {
     }
 
     async fn count_relation_types(&self, context: &Context<'_>) -> usize {
-        context
-            .data::<Arc<dyn RelationTypeManager>>()
-            .map(|relation_type_manager| relation_type_manager.count())
-            .unwrap_or(0)
+        if let Ok(relation_type_manager) = context.data::<Arc<dyn RelationTypeManager>>() {
+            return relation_type_manager.count();
+        }
+        0
     }
 
     /// Search for flow types.
@@ -296,9 +296,9 @@ impl Types {
     }
 
     async fn count_flow_types(&self, context: &Context<'_>) -> usize {
-        context
-            .data::<Arc<dyn FlowTypeManager>>()
-            .map(|flow_type_manager| flow_type_manager.count())
-            .unwrap_or(0)
+        if let Ok(flow_type_manager) = context.data::<Arc<dyn FlowTypeManager>>() {
+            return flow_type_manager.count();
+        }
+        0
     }
 }
