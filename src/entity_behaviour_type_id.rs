@@ -1,5 +1,7 @@
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use crate::BehaviourTypeId;
 use crate::EntityTypeId;
@@ -35,6 +37,12 @@ impl From<NamespacedType> for EntityBehaviourTypeId {
 impl From<&BehaviourTypeId> for EntityBehaviourTypeId {
     fn from(behaviour_ty: &BehaviourTypeId) -> Self {
         EntityBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
+    }
+}
+
+impl Display for EntityBehaviourTypeId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}__{}", &self.entity_ty, &self.behaviour_ty)
     }
 }
 

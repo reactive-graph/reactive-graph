@@ -1,5 +1,7 @@
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use crate::BehaviourTypeId;
 use crate::NamespacedType;
@@ -35,6 +37,12 @@ impl From<NamespacedType> for RelationBehaviourTypeId {
 impl From<&BehaviourTypeId> for RelationBehaviourTypeId {
     fn from(behaviour_ty: &BehaviourTypeId) -> Self {
         RelationBehaviourTypeId::new(NamespacedType::from(behaviour_ty).into(), behaviour_ty.clone())
+    }
+}
+
+impl Display for RelationBehaviourTypeId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}__{}", &self.relation_ty, &self.behaviour_ty)
     }
 }
 
