@@ -132,7 +132,7 @@ impl Display for FlowTypeId {
 }
 
 #[macro_export]
-macro_rules! flow_type {
+macro_rules! flow_ty {
     (
         $flow_type_id: ident,
         $namespace: ident,
@@ -141,7 +141,7 @@ macro_rules! flow_type {
     ) => {
         pub const $flow_type_name_const: &str = $flow_type_name;
         lazy_static::lazy_static! {
-            pub static ref $flow_type_id: $crate::FlowTypeId = $crate::FlowypeId::new_from_type($namespace, $flow_type_name_const);
+            pub static ref $flow_type_id: $crate::FlowTypeId = $crate::FlowTypeId::new_from_type($namespace, $flow_type_name_const);
         }
     };
 }
