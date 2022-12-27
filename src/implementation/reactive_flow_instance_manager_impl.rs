@@ -153,7 +153,6 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         self.reactive_flow_instances.0.read().unwrap().len()
     }
 
-    // fn create(&self, type_name: String, properties: HashMap<String, Value, RandomState>) -> Result<Arc<ReactiveFlow>, ReactiveFlowCreationError> {
     fn create(&self, flow_instance: FlowInstance) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceCreationError> {
         let reactive_flow_instance = ReactiveFlowInstance::try_from(flow_instance);
         if reactive_flow_instance.is_err() {
@@ -165,14 +164,6 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         let reactive_flow_instance = Arc::new(reactive_flow_instance);
         self.register_flow_instance_and_reactive_instances(reactive_flow_instance.clone());
         Ok(reactive_flow_instance)
-
-        // let reactive_flow = ReactiveFlow::try_from(flow);
-        // if reactive_flow.is_ok() {
-        //     let reactive_flow = Arc::new(reactive_flow.unwrap());
-        //     self.register_flow_and_reactive_instances(reactive_flow.clone());
-        //     return Ok(reactive_flow.clone());
-        // }
-        // Err(ReactiveFlowCreationError.into())
     }
 
     fn create_from_type(
