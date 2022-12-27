@@ -304,3 +304,116 @@ impl Display for ReactiveEntityInstance {
 }
 
 impl ReactiveInstance for ReactiveEntityInstance {}
+
+#[macro_export]
+macro_rules! entity_model {
+    (
+        $ident: ident
+        $(,
+            $accessor_type: tt
+            $accessor_name: ident
+            $accessor_data_type: tt
+        )*
+        $(,)?
+    ) => {
+        // use $crate::PropertyInstanceGetter as RxPropertyInstanceGetter;
+        // use $crate::PropertyInstanceSetter as RxPropertyInstanceSetter;
+        pub struct $ident {
+            i: std::sync::Arc<$crate::ReactiveEntityInstance>,
+        }
+
+        impl $ident {
+            $(
+                $crate::rx_accessor!($accessor_type $accessor_name $accessor_data_type);
+            )*
+        }
+
+        impl From<std::sync::Arc<$crate::ReactiveEntityInstance>> for $ident {
+            fn from(i: std::sync::Arc<$crate::ReactiveEntityInstance>) -> Self {
+                $ident { i }
+            }
+        }
+
+        impl $crate::PropertyInstanceGetter for $ident {
+            fn get<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Value> {
+                self.i.get(property_name)
+            }
+
+            fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
+                self.i.as_bool(property_name)
+            }
+
+            fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
+                self.i.as_u64(property_name)
+            }
+
+            fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
+                self.i.as_i64(property_name)
+            }
+
+            fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
+                self.i.as_f64(property_name)
+            }
+
+            fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
+                self.i.as_string(property_name)
+            }
+
+            fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<serde_json::Value>> {
+                self.i.as_array(property_name)
+            }
+
+            fn as_object<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Map<String, serde_json::Value>> {
+                self.i.as_object(property_name)
+            }
+        }
+
+        impl $crate::PropertyInstanceSetter for $ident {
+            fn set_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
+                self.i.set_checked(property_name, value);
+            }
+
+            fn set<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
+                self.i.set(property_name, value);
+            }
+
+            fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
+                self.i.set_no_propagate_checked(property_name, value);
+            }
+
+            fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
+                self.i.set_no_propagate(property_name, value);
+            }
+
+            fn mutability<S: Into<String>>(&self, property_name: S) -> Option<$crate::Mutability> {
+                self.i.mutability(property_name)
+            }
+
+            fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: $crate::Mutability) {
+                self.i.set_mutability(property_name, mutability);
+            }
+        }
+
+        impl $crate::NamespacedTypeGetter for $ident {
+            fn namespace(&self) -> String {
+                self.i.ty.namespace()
+            }
+
+            fn type_name(&self) -> String {
+                self.i.ty.type_name()
+            }
+        }
+
+        impl $crate::TypeDefinitionGetter for $ident {
+            fn type_definition(&self) -> $crate::TypeDefinition {
+                self.i.ty.type_definition()
+            }
+        }
+
+        impl std::fmt::Display for $ident {
+            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                write!(f, "{}__{}", &self.i.ty, self.i.id)
+            }
+        }
+    };
+}
