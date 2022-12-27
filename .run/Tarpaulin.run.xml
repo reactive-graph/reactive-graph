@@ -10,7 +10,6 @@
     <option name="backtrace" value="FULL" />
     <envs>
       <env name="RUSTC_WRAPPER" value="sccache" />
-      <env name="CODECOV_TOKEN" value="4e75e741-5658-4cfb-a908-19f6234e675f" />
     </envs>
     <option name="isRedirectInput" value="false" />
     <option name="redirectInputPath" value="" />
