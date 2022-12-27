@@ -56,6 +56,9 @@ level = "info"
 [loggers."inexor_rgf_application::implementation::relation_type_manager_impl"]
 level = "info"
 
+[loggers."inexor_rgf_application::implementation::flow_type_manager_impl"]
+level = "info"
+
 [loggers."inexor_rgf_application::implementation::entity_vertex_manager_impl"]
 level = "info"
 
@@ -65,7 +68,10 @@ level = "info"
 [loggers."inexor_rgf_application::implementation::relation_behaviour_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::reactive_flow_manager_impl"]
+[loggers."inexor_rgf_application::implementation::reactive_flow_instance_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_application::implementation::web_resource_manager_impl"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_mqtt::provider::component_provider"]
@@ -125,7 +131,10 @@ level = "info"
 [loggers."inexor_rgf_plugin_input_device::provider"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_logical::provider"]
+[loggers."inexor_rgf_plugin_logical::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_numeric::plugin"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_numeric::providers"]
