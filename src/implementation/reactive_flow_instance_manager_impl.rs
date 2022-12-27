@@ -193,7 +193,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
 
         // Add properties from entity_type if not existing
         for property in wrapper_entity_type.properties.iter() {
-            info!("Adding property {} from entity type {}", &property.name, &wrapper_entity_type.type_definition().to_string());
+            trace!("Adding property {} from entity type {}", &property.name, &wrapper_entity_type.type_definition().to_string());
             if !wrapper_entity_instance.properties.contains_key(&property.name) {
                 wrapper_entity_instance
                     .properties
@@ -205,7 +205,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         for component_ty in wrapper_entity_type.components.iter() {
             if let Some(component) = self.component_manager.get(component_ty) {
                 for property in component.properties {
-                    info!("Adding property {} from component {}", &property.name, &component_ty.type_definition().to_string());
+                    trace!("Adding property {} from component {}", &property.name, &component_ty.type_definition().to_string());
                     if !wrapper_entity_instance.properties.contains_key(&property.name) {
                         //
                         // TODO: templating using the variables
@@ -219,7 +219,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         }
 
         for (property_name, property_value) in properties.iter() {
-            info!("Setting property {} with value {} from parameter", &property_name, property_value.clone());
+            trace!("Setting property {} with value {} from parameter", &property_name, property_value.clone());
             wrapper_entity_instance.set(property_name, property_value.clone());
         }
 
@@ -238,7 +238,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
 
             // Add properties from entity_type if not existing
             for property in entity_type.properties.iter() {
-                info!("Adding property {} from entity type {}", &property.name, &entity_type.type_definition().to_string());
+                trace!("Adding property {} from entity type {}", &property.name, &entity_type.type_definition().to_string());
                 if !entity_instance_copy.properties.contains_key(&property.name) {
                     //
                     // TODO: templating using the variables
@@ -253,7 +253,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
             for component_ty in entity_type.components.iter() {
                 if let Some(component) = self.component_manager.get(component_ty) {
                     for property in component.properties {
-                        info!("Adding property {} from component {}", &property.name, component_ty.type_definition().to_string());
+                        trace!("Adding property {} from component {}", &property.name, component_ty.type_definition().to_string());
                         if !entity_instance_copy.properties.contains_key(&property.name) {
                             entity_instance_copy
                                 .properties
@@ -267,15 +267,15 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
             flow_instance_builder.entity(entity_instance_copy);
         }
         for (uf, ut) in entity_instance_id_mapping.iter() {
-            info!("{uf} -> {ut}");
+            trace!("Mapping flow type entity instance id {uf} to actual entity instance id {ut}");
         }
         for relation_instance in flow_type.relation_instances {
             let relation_ty = relation_instance.relation_type_id();
-            info!("relation instance type: {}", &relation_instance.ty);
+            trace!("Relation instance type: {}", &relation_instance.ty);
             let relation_type = self
                 .relation_type_manager
                 .get(&relation_ty)
-                .ok_or_else(|| ReactiveFlowInstanceCreationError::RelationTypeDoesntExist(relation_ty))?;
+                .ok_or(ReactiveFlowInstanceCreationError::RelationTypeDoesntExist(relation_ty))?;
             let mut relation_instance_copy = relation_instance.clone();
             match entity_instance_id_mapping.get(&relation_instance.outbound_id) {
                 Some(replaced_id) => relation_instance_copy.outbound_id = *replaced_id,
@@ -318,7 +318,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
             flow_instance_builder.relation(relation_instance_copy);
         }
         let flow_instance = flow_instance_builder.build();
-        info!("{:?}", flow_instance);
+        trace!("{:?}", flow_instance);
         match ReactiveFlowInstance::try_from(flow_instance) {
             Ok(reactive_flow_instance) => {
                 let reactive_flow_instance = Arc::new(reactive_flow_instance);
@@ -331,7 +331,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
                             trace!("Adding parameter property {} with value {} from parameter", property_name, property_value.clone());
                             wrapper_entity_instance.add_property(property_name, Mutable, property_value.clone());
                         } else {
-                            info!("Set parameter property {} with value {} from parameter", property_name, property_value.clone());
+                            trace!("Set parameter property {} with value {} from parameter", property_name, property_value.clone());
                             wrapper_entity_instance.set(property_name, property_value.clone());
                         }
                     }
