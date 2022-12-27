@@ -15,6 +15,8 @@ use crate::BehaviourTypeId;
 use crate::Component;
 use crate::ComponentContainer;
 use crate::ComponentTypeId;
+use crate::Mutability;
+use crate::Mutability::Mutable;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
@@ -92,6 +94,7 @@ impl ReactiveRelationInstance {
                     ReactivePropertyInstance::new(
                         Uuid::new_v4(), // or generate a combined uuid from "outbound_id + type + inbound_id"
                         named_property.name.to_string(),
+                        Mutable,
                         named_property.value.clone(),
                     ),
                 )
@@ -116,7 +119,8 @@ impl ReactiveRelationInstance {
         let properties = instance
             .properties
             .iter()
-            .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value.clone())))
+            // TODO: mutability
+            .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), Mutable, value.clone())))
             .collect();
         ReactiveRelationInstance {
             outbound,
@@ -145,6 +149,8 @@ impl ReactiveRelationInstance {
                     ReactivePropertyInstance::new(
                         Uuid::new_v4(), // or generate a combined uuid from "outbound_id + type + inbound_id"
                         name.clone(),
+                        // TODO: mutability
+                        Mutable,
                         value.clone(),
                     ),
                 )
@@ -177,6 +183,12 @@ impl ReactiveRelationInstance {
 }
 
 impl ReactivePropertyContainer for ReactiveRelationInstance {
+    fn tick_checked(&self) {
+        for property_instance in &self.properties {
+            property_instance.tick_checked();
+        }
+    }
+
     fn tick(&self) {
         for property_instance in &self.properties {
             property_instance.tick();
@@ -187,16 +199,16 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
         self.properties.contains_key(name)
     }
 
-    fn add_property<S: Into<String>>(&self, name: S, value: Value) {
+    fn add_property<S: Into<String>>(&self, name: S, mutability: Mutability, value: Value) {
         let name = name.into();
         if !self.properties.contains_key(name.as_str()) {
-            let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), value);
+            let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), mutability, value);
             self.properties.insert(name, property_instance);
         }
     }
 
     fn add_property_by_type(&self, property: &PropertyType) {
-        let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), &property.name, property.data_type.default_value());
+        let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), &property.name, property.mutability, property.data_type.default_value());
         self.properties.insert(property.name.clone(), property_instance);
     }
 
@@ -319,15 +331,37 @@ impl PropertyInstanceGetter for ReactiveRelationInstance {
 }
 
 impl PropertyInstanceSetter for ReactiveRelationInstance {
+    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+        if let Some(instance) = self.properties.get(&property_name.into()) {
+            instance.set_checked(value);
+        }
+    }
+
     fn set<S: Into<String>>(&self, property_name: S, value: Value) {
         if let Some(instance) = self.properties.get(&property_name.into()) {
             instance.set(value);
         }
     }
 
+    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+        if let Some(instance) = self.properties.get(&property_name.into()) {
+            instance.set_no_propagate_checked(value);
+        }
+    }
+
     fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value) {
         if let Some(instance) = self.properties.get(&property_name.into()) {
             instance.set_no_propagate(value);
+        }
+    }
+
+    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability> {
+        self.properties.get(&property_name.into()).map(|p| p.value().mutability)
+    }
+
+    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability) {
+        if let Some(mut property_instance) = self.properties.get_mut(&property_name.into()) {
+            property_instance.set_mutability(mutability);
         }
     }
 }

@@ -8,12 +8,18 @@ use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::Mutability;
+use crate::Mutability::Mutable;
+
 pub struct ReactivePropertyInstance {
     /// Vertex uuid
     pub id: Uuid,
 
     /// Property name
     pub name: String,
+
+    /// The property instance is mutable or immutable.
+    pub mutability: Mutability,
 
     /// The reactive stream
     pub stream: Arc<RwLock<Stream<'static, Value>>>,
@@ -23,10 +29,11 @@ pub struct ReactivePropertyInstance {
 }
 
 impl ReactivePropertyInstance {
-    pub fn new<S: Into<String>>(id: Uuid, name: S, value: Value) -> ReactivePropertyInstance {
+    pub fn new<S: Into<String>>(id: Uuid, name: S, mutability: Mutability, value: Value) -> ReactivePropertyInstance {
         ReactivePropertyInstance {
             id,
             name: name.into(),
+            mutability,
             stream: Arc::new(RwLock::new(Stream::new())),
             value: RwLock::new(value),
         }
@@ -36,10 +43,22 @@ impl ReactivePropertyInstance {
         self.value.read().unwrap().clone()
     }
 
+    pub fn set_checked(&self, value: Value) {
+        if self.mutability == Mutable {
+            self.set(value);
+        }
+    }
+
     pub fn set(&self, value: Value) {
         let mut writer = self.value.write().unwrap();
         *writer.deref_mut() = value.clone();
         self.stream.read().unwrap().send(&value);
+    }
+
+    pub fn set_no_propagate_checked(&self, value: Value) {
+        if self.mutability == Mutable {
+            self.set_no_propagate(value);
+        }
     }
 
     pub fn set_no_propagate(&self, value: Value) {
@@ -52,11 +71,22 @@ impl ReactivePropertyInstance {
         self.stream.read().unwrap().send(signal);
     }
 
+    /// Resend the current value manually if mutable
+    pub fn tick_checked(&self) {
+        if self.mutability == Mutable {
+            self.tick();
+        }
+    }
+
     /// Resend the current value manually
     pub fn tick(&self) {
         // println!("tick {}::{}", self.id, self.name);
         let value = self.value.read().unwrap().deref().clone();
         self.stream.read().unwrap().send(&value);
+    }
+
+    pub fn set_mutability(&mut self, mutability: Mutability) {
+        self.mutability = mutability;
     }
 
     pub fn as_bool(&self) -> Option<bool> {

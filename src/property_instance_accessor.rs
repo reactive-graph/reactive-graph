@@ -1,6 +1,8 @@
 use serde_json::Map;
 use serde_json::Value;
 
+use crate::Mutability;
+
 pub trait PropertyInstanceGetter {
     /// Returns the json value of the given property by name
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value>;
@@ -49,8 +51,22 @@ pub trait MutablePropertyInstanceSetter: PropertyInstanceGetter {
 }
 
 pub trait PropertyInstanceSetter: PropertyInstanceGetter {
+    /// Sets the value of the given property by name if the property is mutable.
+    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value);
+
     /// Sets the value of the given property by name
     fn set<S: Into<String>>(&self, property_name: S, value: Value);
 
+    /// Sets the value of the given property by name if the property is mutable. Sends the value
+    /// down the stream.
+    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value);
+
+    /// Sets the value of the given property by name. Sends the value down the stream.
     fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value);
+
+    /// Returns the mutability of the property by name.
+    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability>;
+
+    /// Sets the mutability of the property by name.
+    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability);
 }

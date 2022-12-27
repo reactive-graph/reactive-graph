@@ -1,7 +1,12 @@
-use crate::PropertyType;
 use serde_json::Value;
 
+use crate::Mutability;
+use crate::PropertyType;
+
 pub trait ReactivePropertyContainer {
+    /// Sends the current value down the stream if mutable.
+    fn tick_checked(&self);
+
     /// Sends the current value down the stream.
     fn tick(&self);
 
@@ -9,7 +14,7 @@ pub trait ReactivePropertyContainer {
     fn has_property(&self, name: &str) -> bool;
 
     /// Adds a reactive property with the given name and the given initial value.
-    fn add_property<S: Into<String>>(&self, name: S, value: Value);
+    fn add_property<S: Into<String>>(&self, name: S, mutability: Mutability, value: Value);
 
     /// Adds a reactive property with the given name and the given initial value.
     fn add_property_by_type(&self, property: &PropertyType);

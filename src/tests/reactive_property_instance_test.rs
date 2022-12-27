@@ -10,6 +10,7 @@ use std::sync::RwLock;
 use std::thread;
 use test::Bencher;
 
+use crate::Mutability::Mutable;
 use inexor_rgf_core_frp::Stream;
 use rand::Rng;
 use serde_json::json;
@@ -33,6 +34,7 @@ fn reactive_property_instance_test() {
         id: uuid,
         name: property_name.clone(),
         stream: Arc::new(RwLock::new(Stream::new())),
+        mutability: Mutable,
         value: RwLock::new(initial_property_value_json),
     };
 
@@ -104,7 +106,7 @@ fn create_reactive_property_instance_test() {
     let property_name = r_string();
     let initial_property_value = r_string();
     let initial_property_value_json = json!(initial_property_value);
-    let reactive_property_instance = ReactivePropertyInstance::new(uuid, property_name.clone(), initial_property_value_json);
+    let reactive_property_instance = ReactivePropertyInstance::new(uuid, property_name.clone(), Mutable, initial_property_value_json);
 
     assert_eq!(uuid, reactive_property_instance.id);
     assert_eq!(property_name.clone(), reactive_property_instance.name);
@@ -138,26 +140,46 @@ fn reactive_property_instance_typed_getter_test() {
     let bool_value = json!(true);
     assert_eq!(
         bool_value.as_bool().unwrap(),
-        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), bool_value)
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, bool_value)
             .as_bool()
             .unwrap()
     );
 
     let u64 = json!(123);
-    assert_eq!(123, ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), u64).as_u64().unwrap());
+    assert_eq!(
+        123,
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, u64)
+            .as_u64()
+            .unwrap()
+    );
 
     let i64 = json!(-123);
-    assert_eq!(-123, ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), i64).as_i64().unwrap());
+    assert_eq!(
+        -123,
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, i64)
+            .as_i64()
+            .unwrap()
+    );
 
     let f64 = json!(-1.23);
-    assert_eq!(-1.23, ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), f64).as_f64().unwrap());
+    assert_eq!(
+        -1.23,
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, f64)
+            .as_f64()
+            .unwrap()
+    );
 
     let rand_str = r_string();
     let s = json!(rand_str.clone());
-    assert_eq!(rand_str.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), s).as_string().unwrap());
+    assert_eq!(
+        rand_str.clone(),
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, s)
+            .as_string()
+            .unwrap()
+    );
 
     let a = json!([1, 2, 3]);
-    let i = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), a);
+    let i = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, a);
     assert_eq!(json!(1), i.as_array().unwrap().index(0).clone());
     assert_eq!(json!(2), i.as_array().unwrap().index(1).clone());
     assert_eq!(json!(3), i.as_array().unwrap().index(2).clone());
@@ -165,7 +187,7 @@ fn reactive_property_instance_typed_getter_test() {
     let o = json!({
         "k": "v"
     });
-    let i = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), o);
+    let i = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, o);
     assert_eq!(json!("v"), i.as_object().unwrap().index("k").clone());
 }
 
@@ -173,20 +195,20 @@ fn reactive_property_instance_typed_getter_test() {
 fn reactive_property_instance_eq_bool_test() {
     let property_name = r_string();
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(true));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(true));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(true));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(true));
     assert!(instance1 == instance2);
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(false));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(true));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(false));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(true));
     assert!(instance1 != instance2);
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(true));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(false));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(true));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(false));
     assert!(instance1 != instance2);
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(false));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(false));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(false));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(false));
     assert!(instance1 == instance2);
 }
 
@@ -194,12 +216,12 @@ fn reactive_property_instance_eq_bool_test() {
 fn reactive_property_instance_eq_number_test() {
     let property_name = r_string();
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(1));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(1));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(1));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(1));
     assert!(instance1 == instance2);
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(2));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(3));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(2));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(3));
     assert!(instance1 != instance2);
 }
 
@@ -207,12 +229,12 @@ fn reactive_property_instance_eq_number_test() {
 fn reactive_property_instance_eq_float_test() {
     let property_name = r_string();
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(0.0));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(0.0));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(0.0));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(0.0));
     assert!(instance1 == instance2);
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(1.0));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(1.1));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(1.0));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(1.1));
     assert!(instance1 != instance2);
 }
 
@@ -221,19 +243,19 @@ fn reactive_property_instance_eq_string_test() {
     let property_name = r_string();
     let property_value = r_string();
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(property_value.clone()));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(property_value.clone()));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(property_value.clone()));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(property_value.clone()));
     assert!(instance1 == instance2);
 
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(r_string()));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), json!(r_string()));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(r_string()));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, json!(r_string()));
     assert!(instance1 != instance2);
 }
 
 #[test]
 fn reactive_property_instance_stream_test() {
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
 
     let v = Arc::new(AtomicU64::new(0));
 
@@ -268,8 +290,8 @@ fn reactive_property_instance_stream_test() {
 #[test]
 #[ignore]
 fn reactive_property_instance_stream_loop_test() {
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
 
     {
         let writer = instance2.stream.write().unwrap();
@@ -303,8 +325,8 @@ fn reactive_property_instance_stream_loop_test() {
 
 #[bench]
 fn reactive_property_instance_stream_benchmark(bencher: &mut Bencher) -> impl Termination {
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
 
     let v = Arc::new(AtomicU64::new(0));
 
@@ -343,8 +365,8 @@ fn reactive_property_instance_stream_benchmark(bencher: &mut Bencher) -> impl Te
 #[test]
 #[ignore]
 fn reactive_property_instance_stream_mt_benchmark() {
-    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
-    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), json!(0));
+    let instance1 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
+    let instance2 = ReactivePropertyInstance::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
 
     let v = Arc::new(AtomicU64::new(0));
 

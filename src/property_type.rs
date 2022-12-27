@@ -4,6 +4,7 @@ use uuid::Uuid;
 
 use crate::extension::Extension;
 use crate::DataType;
+use crate::Mutability;
 use crate::SocketType;
 
 pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b400d02fd540c7);
@@ -27,6 +28,9 @@ pub struct PropertyType {
     #[serde(default = "SocketType::none")]
     pub socket_type: SocketType,
 
+    #[serde(default = "Mutability::mutable")]
+    pub mutability: Mutability,
+
     /// Property specific extensions
     #[serde(default = "Vec::new")]
     pub extensions: Vec<Extension>,
@@ -39,6 +43,7 @@ impl PropertyType {
             description: String::new(),
             data_type,
             socket_type: SocketType::None,
+            mutability: Mutability::Mutable,
             extensions: Vec::new(),
         }
     }
@@ -49,6 +54,7 @@ impl PropertyType {
             description: String::new(),
             data_type,
             socket_type,
+            mutability: Mutability::Mutable,
             extensions: Vec::new(),
         }
     }
@@ -59,6 +65,7 @@ impl PropertyType {
             description: String::new(),
             data_type,
             socket_type: SocketType::Input,
+            mutability: Mutability::Mutable,
             extensions: Vec::new(),
         }
     }
@@ -69,16 +76,25 @@ impl PropertyType {
             description: String::new(),
             data_type,
             socket_type: SocketType::Output,
+            mutability: Mutability::Immutable,
             extensions: Vec::new(),
         }
     }
 
-    pub fn new_with_all<S: Into<String>>(name: S, description: S, data_type: DataType, socket_type: SocketType, extensions: Vec<Extension>) -> PropertyType {
+    pub fn new_with_all<S: Into<String>>(
+        name: S,
+        description: S,
+        data_type: DataType,
+        socket_type: SocketType,
+        mutability: Mutability,
+        extensions: Vec<Extension>,
+    ) -> PropertyType {
         PropertyType {
             name: name.into(),
             description: description.into(),
             data_type,
             socket_type,
+            mutability,
             extensions,
         }
     }

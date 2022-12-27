@@ -7,6 +7,7 @@ use std::sync::Arc;
 use std::sync::RwLock;
 
 use crate::EntityTypeId;
+use crate::Mutability;
 use crate::NamespacedTypeGetter;
 use crate::ReactivePropertyContainer;
 use crate::TypeDefinition;
@@ -250,6 +251,14 @@ impl PropertyInstanceGetter for ReactiveFlowInstance {
 }
 
 impl PropertyInstanceSetter for ReactiveFlowInstance {
+    fn set_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+        if let Some(instance) = self.get_entity(self.id) {
+            if let Some(instance) = instance.properties.get(&property_name.into()) {
+                instance.set_checked(value);
+            }
+        }
+    }
+
     fn set<S: Into<String>>(&self, property_name: S, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
             if let Some(instance) = instance.properties.get(&property_name.into()) {
@@ -258,10 +267,31 @@ impl PropertyInstanceSetter for ReactiveFlowInstance {
         }
     }
 
+    fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: Value) {
+        if let Some(instance) = self.get_entity(self.id) {
+            if let Some(instance) = instance.properties.get(&property_name.into()) {
+                instance.set_no_propagate_checked(value);
+            }
+        }
+    }
+
     fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: Value) {
         if let Some(instance) = self.get_entity(self.id) {
             if let Some(instance) = instance.properties.get(&property_name.into()) {
                 instance.set_no_propagate(value);
+            }
+        }
+    }
+
+    fn mutability<S: Into<String>>(&self, property_name: S) -> Option<Mutability> {
+        self.get_entity(self.id)
+            .and_then(|instance| instance.properties.get(&property_name.into()).map(|p| p.value().mutability))
+    }
+
+    fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability) {
+        if let Some(instance) = self.get_entity(self.id) {
+            if let Some(mut property_instance) = instance.properties.get_mut(&property_name.into()) {
+                property_instance.set_mutability(mutability);
             }
         }
     }

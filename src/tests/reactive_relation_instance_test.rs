@@ -21,6 +21,7 @@ use crate::ComponentContainer;
 use crate::ComponentTypeId;
 use crate::DataType;
 use crate::EntityTypeId;
+use crate::Mutability::Mutable;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
@@ -48,7 +49,7 @@ fn reactive_relation_instance_test() {
     let properties = DashMap::new();
     properties.insert(
         property_name.clone(),
-        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), property_value.clone()),
+        ReactivePropertyInstance::new(Uuid::new_v4(), property_name.clone(), Mutable, property_value.clone()),
     );
 
     let component_namespace = r_string();
@@ -113,7 +114,7 @@ fn reactive_relation_instance_test() {
     let new_property_name = r_string();
     let new_property_value = json!(r_string());
     assert!(!reactive_relation_instance.has_property(&new_property_name));
-    reactive_relation_instance.add_property(&new_property_name, new_property_value);
+    reactive_relation_instance.add_property(&new_property_name, Mutable, new_property_value);
     assert!(reactive_relation_instance.has_property(&new_property_name));
 
     let new_property_name = r_string();
@@ -294,7 +295,7 @@ fn reactive_relation_instance_stream_test() {
     let property_name = r_string();
     let initial_property_value = r_string();
     let initial_outer_value = r_string();
-    reactive_relation_instance.add_property(&property_name, json!(&initial_property_value));
+    reactive_relation_instance.add_property(&property_name, Mutable, json!(&initial_property_value));
 
     assert_eq!(initial_property_value, reactive_relation_instance.as_string(&property_name).unwrap());
 
