@@ -37,6 +37,13 @@ impl EntityBehaviourStorage {
         None
     }
 
+    /// Removes all behaviours of the given behaviour type.
+    pub fn remove_by_behaviour(&self, ty: &BehaviourTypeId) {
+        for instance_behaviours in self.0.iter_mut() {
+            instance_behaviours.value().remove(ty);
+        }
+    }
+
     pub fn remove_all(&self, key: &Uuid) {
         self.0.remove(key);
     }
