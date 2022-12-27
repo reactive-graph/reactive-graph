@@ -91,17 +91,23 @@ pub enum PluginUninstallingState {
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum PluginRefreshingState {
-    /// The plugin being stopped.
-    Stopping,
+    /// The plugin is being stopped.
+    Stopping(PluginStoppingState),
 
-    /// The plugin proxy is being unloaded.
-    UnloadingProxy,
+    /// The plugin is being uninstalled.
+    Uninstalling(PluginUninstallingState),
 
-    /// The library is being unloaded.
-    UnloadPluginDeclaration,
+    /// The plugin is being deployed.
+    Deploying,
 
-    /// The library is being unloaded.
-    UnloadLibrary,
+    /// The plugin is installed.
+    Installed,
+
+    /// The plugin is being resolved.
+    Resolving(PluginResolveState),
+
+    /// The plugin is being started.
+    Starting(PluginStartingState),
 }
 
 #[derive(Debug)]
@@ -122,4 +128,19 @@ pub enum PluginStopError {
     NotActive,
     InTransition,
     Uninstalled,
+}
+
+#[derive(Debug)]
+pub enum PluginUninstallError {
+    AlreadyUninstalled,
+    NotStopped,
+    InTransition,
+    Uninstalled,
+}
+
+#[derive(Debug)]
+pub enum PluginDeployError {
+    InTransition,
+    Uninstalled,
+    NotFound,
 }
