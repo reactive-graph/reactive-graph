@@ -10,7 +10,6 @@ use dashmap::DashMap;
 use indradb::EdgeKey;
 use log::debug;
 use log::error;
-use log::info;
 use log::trace;
 use path_tree::PathTree;
 use serde_json::Value;
