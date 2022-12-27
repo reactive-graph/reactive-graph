@@ -377,8 +377,9 @@ impl PluginContainer {
             trace!("Plugin {} is being activated", self.id);
             match proxy.activate() {
                 Ok(_) => {
-                    info!("Plugin {} has been activated successfully", self.id);
+                    debug!("Plugin {} has been activated successfully", self.id);
                     self.state = PluginState::Active;
+                    info!("[ACTIVE] {}:{}", self.name().unwrap_or_default(), self.version().unwrap_or_default());
                     return Changed;
                 }
                 Err(e) => {
