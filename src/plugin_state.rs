@@ -19,11 +19,11 @@ pub enum PluginState {
     /// The plugin is being stopped. If it has a shutdown method, it is executed. When done, the plugin will become "Resolved".
     Stopping(PluginStoppingState),
 
+    /// The bundle is being uninstalled.
+    Uninstalling(PluginUninstallingState),
+
     /// The bundle is being refreshed.
     Refreshing(PluginRefreshingState),
-
-    /// The bundle is being uninstalled.
-    Uninstalling,
 
     /// The bundle has been removed from the runtime.
     Uninstalled,
