@@ -3,7 +3,7 @@ use std::thread;
 use std::time::Duration;
 
 use async_trait::async_trait;
-use log::debug;
+use log::info;
 use log::trace;
 use log::warn;
 
@@ -318,7 +318,7 @@ impl PluginResolver for PluginResolverImpl {
             }
         }
         // No more actions possible
-        debug!("Plugin resolver finished\n{}\n", self.plugin_container_manager.count_by_states());
+        info!("Plugin resolver finished\n{}\n", self.plugin_container_manager.count_by_states());
         NoChange
     }
 
