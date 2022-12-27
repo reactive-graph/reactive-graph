@@ -7,7 +7,7 @@ kind = "console"
 
 [appenders.stdout.encoder]
 # https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html
-pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r"
+pattern = "{d(%H:%M:%S%.3f)} {h([{l}])} [{T}] {h({M}:{L})} {m}{n}\r"
 
 [appenders.file-application]
 kind = "file"
