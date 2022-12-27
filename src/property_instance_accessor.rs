@@ -70,3 +70,87 @@ pub trait PropertyInstanceSetter: PropertyInstanceGetter {
     /// Sets the mutability of the property by name.
     fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: Mutability);
 }
+
+#[macro_export]
+macro_rules! rx_accessor {
+    (get $getter_name: ident value) => {
+        pub fn $getter_name(&self) -> Option<serde_json::Value> {
+            self.i.get(stringify!($getter_name))
+        }
+    };
+    (get $getter_name: ident bool) => {
+        pub fn $getter_name(&self) -> Option<bool> {
+            self.i.as_bool(stringify!($getter_name))
+        }
+    };
+    (get $getter_name: ident u64) => {
+        pub fn $getter_name(&self) -> Option<u64> {
+            self.i.as_u64(stringify!($getter_name))
+        }
+    };
+    (get $getter_name: ident i64) => {
+        pub fn $getter_name(&self) -> Option<i64> {
+            self.i.as_i64(stringify!($getter_name))
+        }
+    };
+    (get $getter_name: ident f64) => {
+        pub fn $getter_name(&self) -> Option<f64> {
+            self.i.as_f64(stringify!($getter_name))
+        }
+    };
+    (get $getter_name: ident string) => {
+        pub fn $getter_name(&self) -> Option<String> {
+            self.i.as_string(stringify!($getter_name)).map(String::from)
+        }
+    };
+    (get $getter_name: ident array) => {
+        pub fn $getter_name(&self) -> Option<Vec<serde_json::Value>> {
+            self.i.as_array(stringify!($getter_name))
+        }
+    };
+    (get $getter_name: ident object) => {
+        pub fn $getter_name(&self) -> Option<serde_json::Map<String, serde_json::Value>> {
+            self.i.as_object(stringify!($getter_name))
+        }
+    };
+    (set $setter_name: ident value) => {
+        pub fn $setter_name(&self, v: serde_json::Value) {
+            self.i.set(stringify!($setter_name), v);
+        }
+    };
+    (set $setter_name: ident bool) => {
+        pub fn $setter_name(&self, v: bool) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+    (set $setter_name: ident u64) => {
+        pub fn $setter_name(&self, v: u64) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+    (set $setter_name: ident i64) => {
+        pub fn $setter_name(&self, v: i64) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+    (set $setter_name: ident f64) => {
+        pub fn $setter_name(&self, v: f64) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+    (set $setter_name: ident string) => {
+        pub fn $setter_name(&self, v: String) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+    (set $setter_name: ident array) => {
+        pub fn $setter_name(&self, v: Vec<serde_json::Value>) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+    (set $setter_name: ident object) => {
+        pub fn $setter_name(&self, v: serde_json::Map<String, serde_json::Value>) {
+            self.i.set(stringify!($setter_name), serde_json::json!(v));
+        }
+    };
+}
