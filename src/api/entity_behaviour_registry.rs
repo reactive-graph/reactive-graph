@@ -22,6 +22,9 @@ pub trait EntityBehaviourRegistry: Send + Sync {
     /// Returns the entity behaviour factories for the given entity type.
     fn get(&self, entity_ty: &EntityTypeId) -> Vec<Arc<dyn BehaviourFactory<ReactiveEntityInstance> + Send + Sync>>;
 
+    /// Returns the entity behaviour for the given behaviour type if the entity behaviour exists.
+    fn get_factory_by_behaviour_type(&self, behaviour_ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFactory<ReactiveEntityInstance> + Send + Sync>>;
+
     /// Returns the entity behaviours for the given entity type.
     fn get_behaviour_types(&self, entity_ty: &EntityTypeId) -> Vec<EntityBehaviourTypeId>;
 

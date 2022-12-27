@@ -5,6 +5,7 @@ use indradb::EdgeKey;
 
 use crate::model::BehaviourTypeId;
 use crate::model::Component;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ReactiveRelationInstance;
 use crate::reactive::BehaviourTransitionError;
 
@@ -16,6 +17,12 @@ pub trait RelationComponentBehaviourManager: Send + Sync {
     /// Possibly adds new behaviour to the given relation instance's component
     fn add_behaviours_to_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component: Component);
 
+    /// Creates and adds the given behaviour to the given reactive entity instance's component.
+    fn add_behaviour_to_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component_behaviour_ty: &ComponentBehaviourTypeId);
+
+    /// Removes the given behaviour from the given reactive relation instance.
+    fn remove_behaviour_from_relation(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId);
+
     /// Removes behaviours from the given relation instance.
     fn remove_behaviours_from_relation(&self, relation_instance: Arc<ReactiveRelationInstance>);
 
@@ -24,6 +31,9 @@ pub trait RelationComponentBehaviourManager: Send + Sync {
 
     /// Removes behaviours from the given relation instance by edge key.
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey);
+
+    /// Removes all behaviours of the given behaviour type.
+    fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId);
 
     /// Returns true, if the relation instance has the given behaviour.
     fn has(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> bool;

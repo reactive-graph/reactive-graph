@@ -12,6 +12,7 @@ use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
 use crate::model::BehaviourTypeId;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ComponentContainer;
 use crate::model::ReactiveRelationInstance;
 use crate::reactive::BehaviourConnectFailed;
@@ -62,6 +63,24 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
         }
     }
 
+    fn add_behaviour_to_relation_component(&self, relation_instance: Arc<ReactiveRelationInstance>, component_behaviour_ty: &ComponentBehaviourTypeId) {
+        let edge_key = relation_instance.get_key();
+        for factory in self.relation_component_behaviour_registry.get(&component_behaviour_ty.component_ty) {
+            if let Ok(behaviour) = factory.create(relation_instance.clone()) {
+                let behaviour_ty = behaviour.ty().clone();
+                self.relation_behaviour_storage.0.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                trace!("Added relation component behaviour {}", &behaviour_ty);
+            }
+        }
+    }
+
+    fn remove_behaviour_from_relation(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) {
+        let edge_key = relation_instance.get_key();
+        let _ = self.disconnect(relation_instance, behaviour_ty);
+        self.relation_behaviour_storage.0.remove(&edge_key, behaviour_ty);
+        trace!("Removed relation behaviour {}", &behaviour_ty);
+    }
+
     fn remove_behaviours_from_relation(&self, relation_instance: Arc<ReactiveRelationInstance>) {
         self.relation_behaviour_storage.0.remove_all(&relation_instance.get_key());
     }
@@ -76,6 +95,11 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
 
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {
         self.relation_behaviour_storage.0.remove_all(edge_key);
+    }
+
+    fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) {
+        self.relation_behaviour_storage.0.remove_by_behaviour(behaviour_ty);
+        trace!("Removed all relation behaviours of type {}", &behaviour_ty);
     }
 
     fn has(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> bool {

@@ -34,8 +34,10 @@ use crate::di::*;
 use crate::implementation::PROPERTY_EVENT;
 use crate::implementation::PROPERTY_LABEL;
 use crate::model::BehaviourTypeId;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ComponentContainer;
 use crate::model::ComponentTypeId;
+use crate::model::EntityBehaviourTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
 use crate::model::Mutability;
@@ -403,6 +405,24 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 Ok(())
             }
             None => Err(ReactiveEntityInstancePropertyRemoveError::MissingInstance(id)),
+        }
+    }
+
+    fn add_behaviour_to_all_entity_instances(&self, entity_behaviour_ty: &EntityBehaviourTypeId) {
+        for entity_instance in self.reactive_entity_instances.0.iter() {
+            if &entity_instance.ty == &entity_behaviour_ty.entity_ty {
+                self.entity_behaviour_manager
+                    .add_behaviour(entity_instance.clone(), &entity_behaviour_ty.behaviour_ty);
+            }
+        }
+    }
+
+    fn add_behaviour_to_all_entity_components(&self, component_behaviour_ty: &ComponentBehaviourTypeId) {
+        for entity_instance in self.reactive_entity_instances.0.iter() {
+            if entity_instance.components.contains(&component_behaviour_ty.component_ty) {
+                self.entity_component_behaviour_manager
+                    .add_behaviour_to_entity_component(entity_instance.clone(), &component_behaviour_ty);
+            }
         }
     }
 

@@ -4,7 +4,9 @@ use std::sync::RwLock;
 use async_trait::async_trait;
 
 use crate::api::ComponentManager;
+use crate::api::EntityBehaviourManager;
 use crate::api::EntityBehaviourRegistry;
+use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityComponentBehaviourRegistry;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
@@ -14,7 +16,9 @@ use crate::api::PluginContextFactory;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationBehaviourManager;
 use crate::api::RelationBehaviourRegistry;
+use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
@@ -54,6 +58,11 @@ pub struct PluginContextFactoryImpl {
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
     reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
     reactive_flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+    // Behaviour Managers
+    entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
+    entity_component_behaviour_manager: Wrc<dyn EntityComponentBehaviourManager>,
+    relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
+    relation_component_behaviour_manager: Wrc<dyn RelationComponentBehaviourManager>,
     // Behaviour Registries
     entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
     entity_component_behaviour_registry: Wrc<dyn EntityComponentBehaviourRegistry>,
@@ -91,10 +100,26 @@ impl PluginContextFactory for PluginContextFactoryImpl {
         );
         let flow_instance_manager = FlowInstanceManagerImpl::new(self.reactive_flow_instance_manager.clone());
         // Behaviour Registries
-        let entity_behaviour_registry = EntityBehaviourRegistryImpl::new(self.entity_behaviour_registry.clone());
-        let entity_component_behaviour_registry = EntityComponentBehaviourRegistryImpl::new(self.entity_component_behaviour_registry.clone());
-        let relation_behaviour_registry = RelationBehaviourRegistryImpl::new(self.relation_behaviour_registry.clone());
-        let relation_component_behaviour_registry = RelationComponentBehaviourRegistryImpl::new(self.relation_component_behaviour_registry.clone());
+        let entity_behaviour_registry = EntityBehaviourRegistryImpl::new(
+            self.entity_behaviour_manager.clone(),
+            self.entity_behaviour_registry.clone(),
+            self.reactive_entity_instance_manager.clone(),
+        );
+        let entity_component_behaviour_registry = EntityComponentBehaviourRegistryImpl::new(
+            self.entity_component_behaviour_manager.clone(),
+            self.entity_component_behaviour_registry.clone(),
+            self.reactive_entity_instance_manager.clone(),
+        );
+        let relation_behaviour_registry = RelationBehaviourRegistryImpl::new(
+            self.relation_behaviour_manager.clone(),
+            self.relation_behaviour_registry.clone(),
+            self.reactive_relation_instance_manager.clone(),
+        );
+        let relation_component_behaviour_registry = RelationComponentBehaviourRegistryImpl::new(
+            self.relation_component_behaviour_manager.clone(),
+            self.relation_component_behaviour_registry.clone(),
+            self.reactive_relation_instance_manager.clone(),
+        );
         // System Services
         let graphql_query_service = GraphQLQueryServiceImpl::new(self.graphql_query_service.clone());
         let system_event_manager = SystemEventManagerImpl::new(self.system_event_manager.clone());

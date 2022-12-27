@@ -11,10 +11,12 @@ use uuid::Uuid;
 use crate::api::RelationInstanceCreationError;
 use crate::api::RelationInstanceImportError;
 use crate::model::BehaviourTypeId;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
 use crate::model::Mutability;
 use crate::model::ReactiveRelationInstance;
+use crate::model::RelationBehaviourTypeId;
 use crate::model::RelationInstance;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinitionGetter;
@@ -203,6 +205,12 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
 
     /// Removes the property with the given name from the relation instance with the given id.
     fn remove_property(&self, edge_key: &EdgeKey, property_name: &str) -> Result<(), ReactiveRelationInstancePropertyRemoveError>;
+
+    /// Adds the given behaviour to all instances of the given relation type.
+    fn add_behaviour_to_all_relation_instances(&self, relation_behaviour_ty: &RelationBehaviourTypeId);
+
+    /// Adds the given behaviour to all instances of the given relation type.
+    fn add_behaviour_to_all_relation_components(&self, component_behaviour_ty: &ComponentBehaviourTypeId);
 
     // TODO: fn commit(&self, relation_instance: RelationInstance);
     // TODO: return result

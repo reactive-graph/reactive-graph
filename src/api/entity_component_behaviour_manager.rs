@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use crate::model::BehaviourTypeId;
 use crate::model::Component;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ReactiveEntityInstance;
 use crate::reactive::BehaviourTransitionError;
 
@@ -16,6 +17,12 @@ pub trait EntityComponentBehaviourManager: Send + Sync {
     /// Possibly adds new behaviour to the given entity instance's component
     fn add_behaviours_to_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component: Component);
 
+    /// Creates and adds the given behaviour to the given reactive entity instance's component.
+    fn add_behaviour_to_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component_behaviour_ty: &ComponentBehaviourTypeId);
+
+    /// Removes the given behaviour from the given reactive entity instance.
+    fn remove_behaviour_from_entity(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId);
+
     /// Removes behaviours from the given entity instance.
     fn remove_behaviours_from_entity(&self, entity_instance: Arc<ReactiveEntityInstance>);
 
@@ -24,6 +31,9 @@ pub trait EntityComponentBehaviourManager: Send + Sync {
 
     /// Removes behaviours from the given entity instance by uuid.
     fn remove_behaviours_by_id(&self, id: &Uuid);
+
+    /// Removes all behaviours of the given behaviour type.
+    fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId);
 
     /// Returns true, if the entity instance has the given behaviour.
     fn has(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> bool;

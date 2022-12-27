@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use dashmap::DashMap;
-use inexor_rgf_core_di::Wrc;
 use log::debug;
 use log::warn;
 
@@ -12,6 +11,7 @@ use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
+use crate::di::Wrc;
 use crate::model::BehaviourTypeId;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationBehaviourTypeId;
@@ -69,6 +69,14 @@ impl RelationBehaviourRegistry for RelationBehaviourRegistryImpl {
             .filter(|factory| &factory.key().relation_ty == relation_ty)
             .map(|factory| factory.value().clone())
             .collect()
+    }
+
+    fn get_factory_by_behaviour_type(&self, behaviour_ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFactory<ReactiveRelationInstance> + Send + Sync>> {
+        self.factories
+            .0
+            .iter()
+            .find(|factory| &factory.key().behaviour_ty == behaviour_ty)
+            .map(|factory| factory.value().clone())
     }
 
     fn get_behaviour_types(&self, relation_ty: &RelationTypeId) -> Vec<RelationBehaviourTypeId> {

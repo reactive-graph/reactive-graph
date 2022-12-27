@@ -10,7 +10,9 @@ use crate::api::EntityInstanceCreationError;
 use crate::api::EntityInstanceImportError;
 use crate::api::Lifecycle;
 use crate::model::BehaviourTypeId;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ComponentTypeId;
+use crate::model::EntityBehaviourTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
 use crate::model::Mutability;
@@ -163,6 +165,12 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
 
     /// Removes the property with the given name from the entity instance with the given id.
     fn remove_property(&self, id: Uuid, property_name: &str) -> Result<(), ReactiveEntityInstancePropertyRemoveError>;
+
+    /// Adds the given behaviour to all instances of the given entity type.
+    fn add_behaviour_to_all_entity_instances(&self, entity_behaviour_ty: &EntityBehaviourTypeId);
+
+    /// Adds the given behaviour to all instances of the given entity type.
+    fn add_behaviour_to_all_entity_components(&self, component_behaviour_ty: &ComponentBehaviourTypeId);
 
     // TODO: return result
     fn commit(&self, id: Uuid);

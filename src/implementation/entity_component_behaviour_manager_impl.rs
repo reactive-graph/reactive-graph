@@ -12,6 +12,7 @@ use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
 use crate::model::BehaviourTypeId;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ComponentContainer;
 use crate::model::ReactiveEntityInstance;
 use crate::reactive::BehaviourConnectFailed;
@@ -60,6 +61,23 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
         }
     }
 
+    fn add_behaviour_to_entity_component(&self, entity_instance: Arc<ReactiveEntityInstance>, component_behaviour_ty: &ComponentBehaviourTypeId) {
+        for factory in self.entity_component_behaviour_registry.get(&component_behaviour_ty.component_ty) {
+            if let Ok(behaviour) = factory.create(entity_instance.clone()) {
+                let behaviour_ty = behaviour.ty().clone();
+                self.entity_behaviour_storage.0.insert(entity_instance.id, behaviour_ty.clone(), behaviour);
+                trace!("Added entity component behaviour {}", &behaviour_ty);
+            }
+        }
+    }
+
+    fn remove_behaviour_from_entity(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) {
+        let id = entity_instance.id;
+        let _ = self.disconnect(entity_instance, behaviour_ty);
+        self.entity_behaviour_storage.0.remove(&id, behaviour_ty);
+        trace!("Removed entity behaviour {} from {}", &behaviour_ty, id);
+    }
+
     fn remove_behaviours_from_entity(&self, entity_instance: Arc<ReactiveEntityInstance>) {
         self.entity_behaviour_storage.0.remove_all(&entity_instance.id);
     }
@@ -73,6 +91,11 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
 
     fn remove_behaviours_by_id(&self, id: &Uuid) {
         self.entity_behaviour_storage.0.remove_all(id);
+    }
+
+    fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) {
+        self.entity_behaviour_storage.0.remove_by_behaviour(behaviour_ty);
+        trace!("Removed all entity component behaviours of type {}", &behaviour_ty);
     }
 
     fn has(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> bool {

@@ -65,6 +65,14 @@ impl EntityBehaviourRegistry for EntityBehaviourRegistryImpl {
             .collect()
     }
 
+    fn get_factory_by_behaviour_type(&self, behaviour_ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFactory<ReactiveEntityInstance> + Send + Sync>> {
+        self.factories
+            .0
+            .iter()
+            .find(|factory| &factory.key().behaviour_ty == behaviour_ty)
+            .map(|factory| factory.value().clone())
+    }
+
     fn get_behaviour_types(&self, entity_ty: &EntityTypeId) -> Vec<EntityBehaviourTypeId> {
         self.factories
             .0

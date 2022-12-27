@@ -34,6 +34,7 @@ use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::implementation::PROPERTY_EVENT;
 use crate::model::BehaviourTypeId;
+use crate::model::ComponentBehaviourTypeId;
 use crate::model::ComponentContainer;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
@@ -42,6 +43,7 @@ use crate::model::NamespacedTypeGetter;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactivePropertyContainer;
 use crate::model::ReactiveRelationInstance;
+use crate::model::RelationBehaviourTypeId;
 use crate::model::RelationInstance;
 use crate::model::RelationTypeId;
 use crate::model::TypeContainer;
@@ -448,6 +450,24 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                 Ok(())
             }
             None => Err(ReactiveRelationInstancePropertyRemoveError::MissingInstance(edge_key.clone())),
+        }
+    }
+
+    fn add_behaviour_to_all_relation_instances(&self, relation_behaviour_ty: &RelationBehaviourTypeId) {
+        for relation_instance in self.reactive_relation_instances.0.iter() {
+            if &relation_instance.relation_type_id() == &relation_behaviour_ty.relation_ty {
+                self.relation_behaviour_manager
+                    .add_behaviour(relation_instance.clone(), &relation_behaviour_ty.behaviour_ty);
+            }
+        }
+    }
+
+    fn add_behaviour_to_all_relation_components(&self, component_behaviour_ty: &ComponentBehaviourTypeId) {
+        for relation_instance in self.reactive_relation_instances.0.iter() {
+            if relation_instance.components.contains(&component_behaviour_ty.component_ty) {
+                self.relation_component_behaviour_manager
+                    .add_behaviour_to_relation_component(relation_instance.clone(), &component_behaviour_ty);
+            }
         }
     }
 

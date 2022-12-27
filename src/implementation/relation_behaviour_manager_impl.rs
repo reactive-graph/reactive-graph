@@ -42,10 +42,30 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
         let relation_ty = relation_instance.relation_type_id();
         for factory in self.relation_behaviour_registry.get(&relation_ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
+                self.relation_behaviour_storage
+                    .0
+                    .insert(edge_key.clone(), behaviour.ty().clone(), behaviour.clone());
                 trace!("Added relation behaviour {}", behaviour.ty());
-                self.relation_behaviour_storage.0.insert(edge_key.clone(), behaviour.ty().clone(), behaviour);
             }
         }
+    }
+
+    fn add_behaviour(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) {
+        if let Some(factory) = self.relation_behaviour_registry.get_factory_by_behaviour_type(behaviour_ty) {
+            let edge_key = relation_instance.get_key();
+            if let Ok(behaviour) = factory.create(relation_instance) {
+                let behaviour_ty = behaviour.ty().clone();
+                self.relation_behaviour_storage.0.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                trace!("Added relation behaviour {}", &behaviour_ty);
+            }
+        }
+    }
+
+    fn remove_behaviour(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) {
+        let edge_key = relation_instance.get_key();
+        let _ = self.disconnect(relation_instance, behaviour_ty);
+        self.relation_behaviour_storage.0.remove(&edge_key, behaviour_ty);
+        trace!("Removed relation behaviour {}", &behaviour_ty);
     }
 
     fn remove_behaviours(&self, relation_instance: Arc<ReactiveRelationInstance>) {
@@ -54,6 +74,11 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
 
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {
         self.relation_behaviour_storage.0.remove_all(&edge_key);
+    }
+
+    fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) {
+        self.relation_behaviour_storage.0.remove_by_behaviour(behaviour_ty);
+        trace!("Removed all relation behaviours of type {}", &behaviour_ty);
     }
 
     fn has(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> bool {
