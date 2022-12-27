@@ -81,6 +81,15 @@ pub enum PluginStoppingState {
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
+pub enum PluginUninstallingState {
+    /// The DLL is being unloaded from memory.
+    UnloadDll,
+
+    /// The DLL is being deleted from file system.
+    UninstallDll,
+}
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum PluginRefreshingState {
     /// The plugin being stopped.
     Stopping,
