@@ -9,6 +9,7 @@ use dashmap::DashSet;
 use libloading::Library;
 use log::debug;
 use log::error;
+use log::info;
 use log::trace;
 use uuid::Uuid;
 
@@ -376,7 +377,7 @@ impl PluginContainer {
             trace!("Plugin {} is being activated", self.id);
             match proxy.activate() {
                 Ok(_) => {
-                    debug!("Plugin {} has been activated successfully", self.id);
+                    info!("Plugin {} has been activated successfully", self.id);
                     self.state = PluginState::Active;
                     return Changed;
                 }
