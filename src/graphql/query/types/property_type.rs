@@ -2,6 +2,7 @@ use async_graphql::*;
 
 use crate::graphql::query::GraphQLDataType;
 use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLMutability;
 use crate::graphql::query::GraphQLSocketType;
 use crate::model::PropertyType;
 
@@ -33,6 +34,11 @@ impl GraphQLPropertyType {
     /// The socket type of the property instances.
     async fn socket_type(&self) -> GraphQLSocketType {
         self.property_type.socket_type.into()
+    }
+
+    /// The property instance is mutable or immutable.
+    async fn mutability(&self) -> GraphQLMutability {
+        self.property_type.mutability.into()
     }
 
     /// The extensions which are defined by the entity type.
@@ -70,6 +76,7 @@ impl From<GraphQLPropertyType> for PropertyType {
             property_type.property_type.description,
             property_type.property_type.data_type,
             property_type.property_type.socket_type,
+            property_type.property_type.mutability,
             property_type.property_type.extensions,
         )
     }

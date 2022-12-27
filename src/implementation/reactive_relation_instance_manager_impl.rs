@@ -37,6 +37,7 @@ use crate::model::BehaviourTypeId;
 use crate::model::ComponentContainer;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
+use crate::model::Mutability;
 use crate::model::NamespacedTypeGetter;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactivePropertyContainer;
@@ -310,6 +311,25 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         // }
 
         let relation_instance = Arc::new(ReactiveRelationInstance::new_from_instance(outbound, inbound, reactive_relation_instance));
+
+        // Initialize property mutability states
+        if let Some(entity_type) = self.relation_type_manager.get(&relation_instance.relation_type_id()) {
+            for component_ty in entity_type.components {
+                if let Some(component) = self.component_manager.get(&component_ty) {
+                    for property_type in component.properties.iter() {
+                        if let Some(mut property) = relation_instance.properties.get_mut(&property_type.name) {
+                            property.set_mutability(property_type.mutability);
+                        }
+                    }
+                }
+            }
+            for property_type in entity_type.properties.iter() {
+                if let Some(mut property) = relation_instance.properties.get_mut(&property_type.name) {
+                    property.set_mutability(property_type.mutability);
+                }
+            }
+        }
+
         self.register_reactive_instance(relation_instance)
             .map_err(|e| ReactiveRelationInstanceCreationError::ReactiveRelationInstanceRegistrationError(e))
     }
@@ -392,13 +412,19 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         }
     }
 
-    fn add_property(&self, edge_key: &EdgeKey, property_name: &str, value: Value) -> Result<(), ReactiveRelationInstancePropertyAddError> {
+    fn add_property(
+        &self,
+        edge_key: &EdgeKey,
+        property_name: &str,
+        mutability: Mutability,
+        value: Value,
+    ) -> Result<(), ReactiveRelationInstancePropertyAddError> {
         match self.get(edge_key) {
             Some(relation_instance) => {
                 if relation_instance.has_property(property_name) {
                     return Err(ReactiveRelationInstancePropertyAddError::PropertyAlreadyExists(property_name.to_string()));
                 }
-                relation_instance.add_property(property_name, value);
+                relation_instance.add_property(property_name, mutability, value);
                 Ok(())
             }
             None => Err(ReactiveRelationInstancePropertyAddError::MissingInstance(edge_key.clone())),

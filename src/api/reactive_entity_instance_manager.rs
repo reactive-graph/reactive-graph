@@ -13,6 +13,7 @@ use crate::model::BehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
+use crate::model::Mutability;
 use crate::model::ReactiveEntityInstance;
 
 #[derive(Debug)]
@@ -158,7 +159,7 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     fn remove_component(&self, id: Uuid, component_ty: &ComponentTypeId);
 
     /// Adds the property with the given name and initial value to the entity instance with the given id.
-    fn add_property(&self, id: Uuid, property_name: &str, value: Value) -> Result<(), ReactiveEntityInstancePropertyAddError>;
+    fn add_property(&self, id: Uuid, property_name: &str, mutability: Mutability, value: Value) -> Result<(), ReactiveEntityInstancePropertyAddError>;
 
     /// Removes the property with the given name from the entity instance with the given id.
     fn remove_property(&self, id: Uuid, property_name: &str) -> Result<(), ReactiveEntityInstancePropertyRemoveError>;

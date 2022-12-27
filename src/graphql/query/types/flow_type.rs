@@ -115,6 +115,7 @@ impl GraphQLFlowType {
             .filter(|(property_name, _)| name.is_none() || name.clone().unwrap().as_str() == property_name.as_str())
             .filter(|(property_name, _)| names.is_none() || names.clone().unwrap().contains(property_name))
             .map(|(property_name, property_value)| {
+                // TODO: Resolve mutability using entity_type_manager and property_name
                 GraphQLPropertyInstance::new_entity_property(self.flow_type.wrapper_entity_instance.ty.clone(), property_name.clone(), property_value.clone())
             })
             .collect()

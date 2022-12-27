@@ -38,6 +38,7 @@ use crate::model::ComponentContainer;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
+use crate::model::Mutability;
 use crate::model::PropertyInstanceGetter;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactiveEntityInstance;
@@ -263,6 +264,25 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn create_reactive_instance(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
         let reactive_entity_instance = Arc::new(ReactiveEntityInstance::from(entity_instance));
+
+        // Initialize property mutability states
+        if let Some(entity_type) = self.entity_type_manager.get(&reactive_entity_instance.ty) {
+            for component_ty in entity_type.components {
+                if let Some(component) = self.component_manager.get(&component_ty) {
+                    for property_type in component.properties.iter() {
+                        if let Some(mut property) = reactive_entity_instance.properties.get_mut(&property_type.name) {
+                            property.set_mutability(property_type.mutability);
+                        }
+                    }
+                }
+            }
+            for property_type in entity_type.properties.iter() {
+                if let Some(mut property) = reactive_entity_instance.properties.get_mut(&property_type.name) {
+                    property.set_mutability(property_type.mutability);
+                }
+            }
+        }
+
         self.register_reactive_instance(reactive_entity_instance)
             .map_err(ReactiveEntityInstanceCreationError::ReactiveEntityInstanceRegistrationError)
     }
@@ -350,13 +370,13 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         }
     }
 
-    fn add_property(&self, id: Uuid, property_name: &str, value: Value) -> Result<(), ReactiveEntityInstancePropertyAddError> {
+    fn add_property(&self, id: Uuid, property_name: &str, mutability: Mutability, value: Value) -> Result<(), ReactiveEntityInstancePropertyAddError> {
         match self.get(id) {
             Some(entity_instance) => {
                 if entity_instance.has_property(property_name) {
                     return Err(ReactiveEntityInstancePropertyAddError::PropertyAlreadyExists(property_name.to_string()));
                 }
-                entity_instance.add_property(property_name, value);
+                entity_instance.add_property(property_name, mutability, value);
                 Ok(())
             }
             None => Err(ReactiveEntityInstancePropertyAddError::MissingInstance(id)),

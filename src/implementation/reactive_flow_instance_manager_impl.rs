@@ -11,6 +11,7 @@ use indradb::EdgeKey;
 use log::debug;
 use log::error;
 use log::info;
+use log::trace;
 use path_tree::PathTree;
 use serde_json::Value;
 use uuid::Uuid;
@@ -34,6 +35,7 @@ use crate::model::EntityInstance;
 use crate::model::ExtensionContainer;
 use crate::model::FlowInstance;
 use crate::model::FlowTypeId;
+use crate::model::Mutability::Mutable;
 use crate::model::MutablePropertyInstanceSetter;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
@@ -335,8 +337,8 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
                 if let Some(wrapper_entity_instance) = reactive_flow_instance.get_wrapper_entity_instance() {
                     for (property_name, property_value) in properties.iter() {
                         if !wrapper_entity_instance.has_property(property_name) {
-                            info!("Adding parameter property {} with value {} from parameter", property_name, property_value.clone());
-                            wrapper_entity_instance.add_property(property_name, property_value.clone());
+                            trace!("Adding parameter property {} with value {} from parameter", property_name, property_value.clone());
+                            wrapper_entity_instance.add_property(property_name, Mutable, property_value.clone());
                         } else {
                             info!("Set parameter property {} with value {} from parameter", property_name, property_value.clone());
                             wrapper_entity_instance.set(property_name, property_value.clone());
