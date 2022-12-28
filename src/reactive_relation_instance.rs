@@ -497,7 +497,7 @@ macro_rules! relation_model {
 
         impl std::fmt::Display for $ident {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                write!(f, "{}__{}", &self.i.ty, self.i.id)
+                write!(f, "{}", &self.i)
             }
         }
     };
