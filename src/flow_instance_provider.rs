@@ -24,17 +24,19 @@ macro_rules! flow_instance_provider {
 #[macro_export]
 macro_rules! flow_instance_provider_impl {
     ($asset: ident, $path: expr) => {
-        paste! {
-            #[derive(RustEmbed)]
+        paste::paste! {
+            use inexor_rgf_core_model::FlowInstance as ModelFlowInstance;
+
+            #[derive(rust_embed::RustEmbed)]
             #[folder = $path]
             struct [<$asset FlowInstanceAsset>];
 
-            pub trait [<$asset FlowInstanceProvider>]: FlowInstanceProvider + Send + Sync {}
+            pub trait [<$asset FlowInstanceProvider>]: $crate::FlowInstanceProvider + Send + Sync {}
 
             #[derive(Clone)]
             pub struct [<$asset FlowInstanceProviderImpl>] {}
 
-            interfaces!([<$asset FlowInstanceProviderImpl>]: dyn FlowInstanceProvider);
+            interfaces!([<$asset FlowInstanceProviderImpl>]: dyn $crate::FlowInstanceProvider);
 
             #[component]
             impl [<$asset FlowInstanceProviderImpl>] {
@@ -44,12 +46,12 @@ macro_rules! flow_instance_provider_impl {
                 }
             }
 
-            #[provides]
+            #[inexor_rgf_core_di::provides]
             impl [<$asset FlowInstanceProvider>] for [<$asset FlowInstanceProviderImpl>] {}
 
-            impl FlowInstanceProvider for [<$asset FlowInstanceProviderImpl>] {
-                fn get_flow_instances(&self) -> Vec<FlowInstance> {
-                    embedded_asset_provider_impl!([<$asset FlowInstanceAsset>], FlowInstance)
+            impl $crate::FlowInstanceProvider for [<$asset FlowInstanceProviderImpl>] {
+                fn get_flow_instances(&self) -> Vec<ModelFlowInstance> {
+                    $crate::embedded_asset_provider_impl!([<$asset FlowInstanceAsset>], ModelFlowInstance)
                 }
             }
         }
