@@ -38,7 +38,7 @@ macro_rules! flow_instance_provider_impl {
 
             interfaces!([<$asset FlowInstanceProviderImpl>]: dyn $crate::FlowInstanceProvider);
 
-            #[component]
+            #[inexor_rgf_core_di::component]
             impl [<$asset FlowInstanceProviderImpl>] {
                 #[provides]
                 fn new() -> Self {
