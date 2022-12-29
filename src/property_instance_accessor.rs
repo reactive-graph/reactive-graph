@@ -223,7 +223,7 @@ macro_rules! rx_accessor {
     };
     (pub set $setter_name: ident string) => {
         pub fn $setter_name<S: Into<String>>(&self, v: S) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            self.set(stringify!($setter_name), serde_json::json!(v.into()));
         }
     };
     (set $setter_name: ident array) => {
