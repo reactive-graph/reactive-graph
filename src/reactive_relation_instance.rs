@@ -396,8 +396,10 @@ macro_rules! relation_model {
         $ident: ident
         $(,
             $accessor_type: tt
+            $(
             $accessor_name: ident
             $accessor_data_type: tt
+            )?
         )*
         $(,)?
     ) => {
@@ -409,8 +411,14 @@ macro_rules! relation_model {
 
         impl $ident {
             $(
-                $crate::rx_accessor!($accessor_type $accessor_name $accessor_data_type);
+                $crate::rx_accessor!(pub $accessor_type $($accessor_name $accessor_data_type)?);
             )*
+        }
+
+        impl $crate::ReactiveInstanceGetter<$crate::ReactiveRelationInstance> for $ident {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<$crate::ReactiveRelationInstance> {
+                &self.i
+            }
         }
 
         impl From<std::sync::Arc<$crate::ReactiveRelationInstance>> for $ident {

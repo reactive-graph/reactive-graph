@@ -114,3 +114,24 @@ impl From<&Component> for ComponentTypeId {
         component.ty.clone()
     }
 }
+
+#[macro_export]
+macro_rules! component_model {
+    (
+        $ident: ident
+        $(,
+            $accessor_type: tt
+            $(
+            $accessor_name: ident
+            $accessor_data_type: tt
+            )?
+        )*
+        $(,)?
+    ) => {
+        pub trait $ident: $crate::PropertyInstanceGetter + $crate::PropertyInstanceSetter {
+            $(
+                $crate::rx_accessor!($accessor_type $($accessor_name $accessor_data_type)?);
+            )*
+        }
+    };
+}

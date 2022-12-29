@@ -1,4 +1,5 @@
 use std::fmt::Display;
+use std::sync::Arc;
 
 use crate::ComponentContainer;
 use crate::NamespacedTypeGetter;
@@ -11,4 +12,9 @@ use crate::ReactivePropertyContainer;
 pub trait ReactiveInstance:
     ReactivePropertyContainer + ComponentContainer + ReactiveBehaviourContainer + PropertyInstanceSetter + NamespacedTypeGetter + Display
 {
+}
+
+pub trait ReactiveInstanceGetter<T> {
+    /// Returns the reactive instance.
+    fn get_reactive_instance(&self) -> &Arc<T>;
 }

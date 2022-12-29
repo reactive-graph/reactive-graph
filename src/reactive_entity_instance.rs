@@ -311,8 +311,10 @@ macro_rules! entity_model {
         $ident: ident
         $(,
             $accessor_type: tt
+            $(
             $accessor_name: ident
             $accessor_data_type: tt
+            )?
         )*
         $(,)?
     ) => {
@@ -324,8 +326,14 @@ macro_rules! entity_model {
 
         impl $ident {
             $(
-                $crate::rx_accessor!($accessor_type $accessor_name $accessor_data_type);
+                $crate::rx_accessor!(pub $accessor_type $($accessor_name $accessor_data_type)?);
             )*
+        }
+
+        impl $crate::ReactiveInstanceGetter<$crate::ReactiveEntityInstance> for $ident {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<$crate::ReactiveEntityInstance> {
+                &self.i
+            }
         }
 
         impl From<std::sync::Arc<$crate::ReactiveEntityInstance>> for $ident {
