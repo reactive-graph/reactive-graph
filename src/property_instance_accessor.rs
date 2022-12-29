@@ -217,12 +217,12 @@ macro_rules! rx_accessor {
         }
     };
     (set $setter_name: ident string) => {
-        fn $setter_name(&self, v: String) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+        fn $setter_name<S: Into<String>>(&self, v: S) {
+            self.set(stringify!($setter_name), serde_json::json!(v.into()));
         }
     };
     (pub set $setter_name: ident string) => {
-        pub fn $setter_name(&self, v: String) {
+        pub fn $setter_name<S: Into<String>>(&self, v: S) {
             self.set(stringify!($setter_name), serde_json::json!(v));
         }
     };
@@ -352,8 +352,8 @@ macro_rules! rx_accessor {
             fn [<get_ $property_name>](&self) -> Option<String> {
                 self.as_string(stringify!($property_name)).map(String::from)
             }
-            fn [<set_ $property_name>](&self, v: String) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+            fn [<set_ $property_name>]<S: Into<String>>(&self, v: S) {
+                self.set(stringify!($property_name), serde_json::json!(v.into()));
             }
         }
     };
@@ -362,8 +362,8 @@ macro_rules! rx_accessor {
             pub fn [<get_ $property_name>](&self) -> Option<String> {
                 self.as_string(stringify!($property_name)).map(String::from)
             }
-            pub fn [<set_ $property_name>](&self, v: String) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+            pub fn [<set_ $property_name>]<S: Into<String>>(&self, v: S) {
+                self.set(stringify!($property_name), serde_json::json!(v.into()));
             }
         }
     };
