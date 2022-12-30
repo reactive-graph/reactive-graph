@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use serde::Serialize;
+use serde_json::Value;
 use uuid::Uuid;
 
 use crate::extension::Extension;
@@ -118,4 +119,12 @@ impl PropertyType {
     pub fn object<S: Into<String>>(name: S) -> PropertyType {
         PropertyType::new(name, DataType::Object)
     }
+}
+
+pub trait PropertyTypeDefinition {
+    /// The property name.
+    fn property_name(&self) -> String;
+
+    /// The default value of the property.
+    fn default_value(&self) -> Value;
 }
