@@ -87,323 +87,323 @@ macro_rules! rx_accessor {
     // Getters
     (get $getter_name: ident value) => {
         fn $getter_name(&self) -> Option<serde_json::Value> {
-            self.get(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::get(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident value) => {
         pub fn $getter_name(&self) -> Option<serde_json::Value> {
-            self.get(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::get(self, stringify!($getter_name))
         }
     };
     (get $getter_name: ident bool) => {
         fn $getter_name(&self) -> Option<bool> {
-            self.as_bool(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_bool(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident bool) => {
         pub fn $getter_name(&self) -> Option<bool> {
-            self.as_bool(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_bool(self, stringify!($getter_name))
         }
     };
     (get $getter_name: ident u64) => {
         fn $getter_name(&self) -> Option<u64> {
-            self.as_u64(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_u64(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident u64) => {
         pub fn $getter_name(&self) -> Option<u64> {
-            self.as_u64(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_u64(self, stringify!($getter_name))
         }
     };
     (get $getter_name: ident i64) => {
         fn $getter_name(&self) -> Option<i64> {
-            self.as_i64(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_i64(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident i64) => {
         pub fn $getter_name(&self) -> Option<i64> {
-            self.as_i64(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_i64(self, stringify!($getter_name))
         }
     };
     (get $getter_name: ident f64) => {
         fn $getter_name(&self) -> Option<f64> {
-            self.as_f64(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_f64(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident f64) => {
         pub fn $getter_name(&self) -> Option<f64> {
-            self.as_f64(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_f64(self, stringify!($getter_name))
         }
     };
     (get $getter_name: ident string) => {
         fn $getter_name(&self) -> Option<String> {
-            self.as_string(stringify!($getter_name)).map(String::from)
+            $crate::PropertyInstanceGetter::as_string(self, stringify!($getter_name)).map(String::from)
         }
     };
     (pub get $getter_name: ident string) => {
         pub fn $getter_name(&self) -> Option<String> {
-            self.as_string(stringify!($getter_name)).map(String::from)
+            $crate::PropertyInstanceGetter::as_string(self, stringify!($getter_name)).map(String::from)
         }
     };
     (get $getter_name: ident array) => {
         fn $getter_name(&self) -> Option<Vec<serde_json::Value>> {
-            self.as_array(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_array(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident array) => {
         pub fn $getter_name(&self) -> Option<Vec<serde_json::Value>> {
-            self.as_array(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_array(self, stringify!($getter_name))
         }
     };
     (get $getter_name: ident object) => {
         fn $getter_name(&self) -> Option<serde_json::Map<String, serde_json::Value>> {
-            self.as_object(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_object(self, stringify!($getter_name))
         }
     };
     (pub get $getter_name: ident object) => {
         pub fn $getter_name(&self) -> Option<serde_json::Map<String, serde_json::Value>> {
-            self.as_object(stringify!($getter_name))
+            $crate::PropertyInstanceGetter::as_object(self, stringify!($getter_name))
         }
     };
     // Setters
     (set $setter_name: ident value) => {
         fn $setter_name(&self, v: serde_json::Value) {
-            self.set(stringify!($setter_name), v);
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), v);
         }
     };
     (pub set $setter_name: ident value) => {
         pub fn $setter_name(&self, v: serde_json::Value) {
-            self.set(stringify!($setter_name), v);
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), v);
         }
     };
     (set $setter_name: ident bool) => {
         fn $setter_name(&self, v: bool) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (pub set $setter_name: ident bool) => {
         pub fn $setter_name(&self, v: bool) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (set $setter_name: ident u64) => {
         fn $setter_name(&self, v: u64) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (pub set $setter_name: ident u64) => {
         pub fn $setter_name(&self, v: u64) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (set $setter_name: ident i64) => {
         fn $setter_name(&self, v: i64) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (pub set $setter_name: ident i64) => {
         pub fn $setter_name(&self, v: i64) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (set $setter_name: ident f64) => {
         fn $setter_name(&self, v: f64) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (pub set $setter_name: ident f64) => {
         pub fn $setter_name(&self, v: f64) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (set $setter_name: ident string) => {
         fn $setter_name<S: Into<String>>(&self, v: S) {
-            self.set(stringify!($setter_name), serde_json::json!(v.into()));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v.into()));
         }
     };
     (pub set $setter_name: ident string) => {
         pub fn $setter_name<S: Into<String>>(&self, v: S) {
-            self.set(stringify!($setter_name), serde_json::json!(v.into()));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v.into()));
         }
     };
     (set $setter_name: ident array) => {
         fn $setter_name(&self, v: Vec<serde_json::Value>) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (pub set $setter_name: ident array) => {
         pub fn $setter_name(&self, v: Vec<serde_json::Value>) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (set $setter_name: ident object) => {
         fn $setter_name(&self, v: serde_json::Map<String, serde_json::Value>) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     (pub set $setter_name: ident object) => {
         pub fn $setter_name(&self, v: serde_json::Map<String, serde_json::Value>) {
-            self.set(stringify!($setter_name), serde_json::json!(v));
+            $crate::PropertyInstanceSetter::set(self, stringify!($setter_name), serde_json::json!(v));
         }
     };
     // data (getter + setter)
     (data $property_name: ident value) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<serde_json::Value> {
-                self.get(stringify!($property_name))
+                $crate::PropertyInstanceGetter::get(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: serde_json::Value) {
-                self.set(stringify!($property_name), v);
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), v);
             }
         }
     };
     (pub data $property_name: ident value) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<serde_json::Value> {
-                self.get(stringify!($property_name))
+                $crate::PropertyInstanceGetter::get(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: serde_json::Value) {
-                self.set(stringify!($property_name), v);
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), v);
             }
         }
     };
     (data $property_name: ident bool) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<bool> {
-                self.as_bool(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_bool(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: bool) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (pub data $property_name: ident bool) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<bool> {
-                self.as_bool(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_bool(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: bool) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (data $property_name: ident u64) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<u64> {
-                self.as_u64(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_u64(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: u64) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (pub data $property_name: ident u64) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<u64> {
-                self.as_u64(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_u64(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: u64) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (data $property_name: ident i64) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<i64> {
-                self.as_i64(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_i64(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: i64) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (pub data $property_name: ident i64) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<i64> {
-                self.as_i64(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_i64(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: i64) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (data $property_name: ident f64) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<f64> {
-                self.as_f64(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_f64(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: f64) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (pub data $property_name: ident f64) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<f64> {
-                self.as_f64(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_f64(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: f64) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (data $property_name: ident string) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<String> {
-                self.as_string(stringify!($property_name)).map(String::from)
+                $crate::PropertyInstanceGetter::as_string(self, stringify!($property_name)).map(String::from)
             }
             fn [<set_ $property_name>]<S: Into<String>>(&self, v: S) {
-                self.set(stringify!($property_name), serde_json::json!(v.into()));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v.into()));
             }
         }
     };
     (pub data $property_name: ident string) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<String> {
-                self.as_string(stringify!($property_name)).map(String::from)
+                $crate::PropertyInstanceGetter::as_string(self, stringify!($property_name)).map(String::from)
             }
             pub fn [<set_ $property_name>]<S: Into<String>>(&self, v: S) {
-                self.set(stringify!($property_name), serde_json::json!(v.into()));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v.into()));
             }
         }
     };
     (data $property_name: ident array) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<Vec<serde_json::Value>> {
-                self.as_array(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_array(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: Vec<serde_json::Value>) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (pub data $property_name: ident array) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<Vec<serde_json::Value>> {
-                self.as_array(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_array(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: Vec<serde_json::Value>) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (data $property_name: ident object) => {
         paste::paste! {
             fn [<get_ $property_name>](&self) -> Option<serde_json::Map<String, serde_json::Value>> {
-                self.as_object(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_object(self, stringify!($property_name))
             }
             fn [<set_ $property_name>](&self, v: serde_json::Map<String, serde_json::Value>) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
     (pub data $property_name: ident object) => {
         paste::paste! {
             pub fn [<get_ $property_name>](&self) -> Option<serde_json::Map<String, serde_json::Value>> {
-                self.as_object(stringify!($property_name))
+                $crate::PropertyInstanceGetter::as_object(self, stringify!($property_name))
             }
             pub fn [<set_ $property_name>](&self, v: serde_json::Map<String, serde_json::Value>) {
-                self.set(stringify!($property_name), serde_json::json!(v));
+                $crate::PropertyInstanceSetter::set(self, stringify!($property_name), serde_json::json!(v));
             }
         }
     };
