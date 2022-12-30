@@ -76,12 +76,12 @@ macro_rules! rx_accessor {
     // Special accessors
     (trigger) => {
         fn trigger(&self) {
-            self.set("trigger", serde_json::json!(true));
+            $crate::PropertyInstanceSetter::set(self, "trigger", serde_json::json!(true));
         }
     };
     (pub trigger) => {
         pub fn trigger(&self) {
-            self.set("trigger", serde_json::json!(true));
+            $crate::PropertyInstanceSetter::set(self, "trigger", serde_json::json!(true));
         }
     };
     // Getters
