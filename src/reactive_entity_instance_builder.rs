@@ -7,6 +7,7 @@ use crate::model::ComponentContainer;
 use crate::model::ComponentTypeId;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveEntityInstance;
 use crate::EntityInstanceBuilder;
 
@@ -39,6 +40,18 @@ impl ReactiveEntityInstanceBuilder {
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut ReactiveEntityInstanceBuilder {
         self.builder.property(property_name.into(), value);
+        self
+    }
+
+    pub fn property_with_default(&mut self, property: &dyn PropertyTypeDefinition) -> &mut ReactiveEntityInstanceBuilder {
+        self.builder.property_with_default(property);
+        self
+    }
+
+    pub fn set_properties_defaults(&mut self, entity_type: EntityType) -> &mut ReactiveEntityInstanceBuilder {
+        for property_type in entity_type.properties {
+            self.property(property_type.name.clone(), property_type.data_type.default_value());
+        }
         self
     }
 

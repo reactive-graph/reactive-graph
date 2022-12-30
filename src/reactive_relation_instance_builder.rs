@@ -4,6 +4,7 @@ use serde_json::Value;
 
 use crate::model::ComponentContainer;
 use crate::model::ComponentTypeId;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstanceTypeId;
@@ -121,6 +122,11 @@ impl ReactiveRelationInstanceBuilder {
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut ReactiveRelationInstanceBuilder {
         self.builder.property(property_name.into(), value);
+        self
+    }
+
+    pub fn property_with_default(&mut self, property: Box<dyn PropertyTypeDefinition>) -> &mut ReactiveRelationInstanceBuilder {
+        self.builder.property_with_default(property);
         self
     }
 

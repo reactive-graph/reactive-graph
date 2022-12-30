@@ -1,11 +1,12 @@
 use std::collections::HashMap;
 
-use crate::model::RelationInstanceTypeId;
 use indradb::EdgeKey;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::model::PropertyTypeDefinition;
 use crate::model::RelationInstance;
+use crate::model::RelationInstanceTypeId;
 use crate::model::RelationTypeId;
 
 #[allow(dead_code)]
@@ -83,6 +84,11 @@ impl RelationInstanceBuilder {
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut RelationInstanceBuilder {
         self.properties.insert(property_name.into(), value);
+        self
+    }
+
+    pub fn property_with_default(&mut self, property: Box<dyn PropertyTypeDefinition>) -> &mut RelationInstanceBuilder {
+        self.properties.insert(property.property_name().into(), property.default_value());
         self
     }
 

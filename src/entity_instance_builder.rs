@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::model::EntityInstance;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
+use crate::model::PropertyTypeDefinition;
 
 #[allow(dead_code)]
 pub struct EntityInstanceBuilder {
@@ -35,6 +36,11 @@ impl EntityInstanceBuilder {
 
     pub fn property<S: Into<String>>(&mut self, property_name: S, value: Value) -> &mut EntityInstanceBuilder {
         self.properties.insert(property_name.into(), value);
+        self
+    }
+
+    pub fn property_with_default(&mut self, property: &dyn PropertyTypeDefinition) -> &mut EntityInstanceBuilder {
+        self.properties.insert(property.property_name().into(), property.default_value());
         self
     }
 
