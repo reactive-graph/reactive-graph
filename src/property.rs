@@ -26,13 +26,6 @@ macro_rules! properties {
         }
 
         impl $properties {
-            pub fn default_value(&self) -> serde_json::Value {
-                match self {
-                    $(
-                        $properties::$property_ident => serde_json::json!($property_default_value),
-                    )*
-                }
-            }
             pub fn properties() -> Vec<indradb::NamedProperty> {
                 vec![
                     $(
@@ -42,11 +35,25 @@ macro_rules! properties {
             }
         }
 
+        impl $crate::PropertyTypeDefinition for $properties {
+            fn property_name(&self) -> String {
+                self.as_ref().into()
+            }
+
+            fn default_value(&self) -> serde_json::Value {
+                match self {
+                    $(
+                        $properties::$property_ident => serde_json::json!($property_default_value),
+                    )*
+                }
+            }
+        }
+
         impl From<$properties> for indradb::NamedProperty {
             fn from(p: $properties) -> Self {
                 indradb::NamedProperty {
                     name: indradb::Identifier::new(p.to_string()).unwrap(),
-                    value: p.default_value(),
+                    value: $crate::PropertyTypeDefinition::default_value(&p),
                 }
             }
         }
