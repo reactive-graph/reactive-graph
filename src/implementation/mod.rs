@@ -64,22 +64,3 @@ pub mod relation_instance_manager_impl;
 pub mod relation_type_manager_impl;
 pub mod shutdown_manager_impl;
 pub mod web_resource_manager_impl;
-
-// TODO: Move this to a core model
-
-const NAMESPACE_CORE: &str = "core";
-const NAMESPACE_LOGICAL: &str = "logical";
-const NAMESPACE_FLOW: &str = "flow";
-
-const TYPE_SYSTEM_EVENT: &str = "system_event";
-const TYPE_GENERIC_FLOW: &str = "generic_flow";
-const TYPE_SHUTDOWN: &str = "shutdown";
-
-const COMPONENT_LABELED: &str = "labeled";
-const COMPONENT_ACTION: &str = "action";
-const COMPONENT_EVENT: &str = "event";
-
-const PROPERTY_LABEL: &str = "label";
-const PROPERTY_SHUTDOWN: &str = "shutdown";
-const PROPERTY_TRIGGER: &str = "trigger";
-const PROPERTY_EVENT: &str = "event";

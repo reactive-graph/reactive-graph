@@ -17,15 +17,15 @@ use crate::api::UUID_SHUTDOWN;
 use crate::api::UUID_SHUTDOWN_TRIGGER;
 use crate::builder::EntityTypeBuilder;
 use crate::builder::ReactiveEntityInstanceBuilder;
+use crate::core_model::COMPONENT_ACTION;
+use crate::core_model::COMPONENT_LABELED;
+use crate::core_model::NAMESPACE_CORE;
+use crate::core_model::NAMESPACE_LOGICAL;
+use crate::core_model::PROPERTY_LABEL;
+use crate::core_model::PROPERTY_SHUTDOWN;
+use crate::core_model::PROPERTY_TRIGGER;
+use crate::core_model::TYPE_SHUTDOWN;
 use crate::di::*;
-use crate::implementation::COMPONENT_ACTION;
-use crate::implementation::COMPONENT_LABELED;
-use crate::implementation::NAMESPACE_CORE;
-use crate::implementation::NAMESPACE_LOGICAL;
-use crate::implementation::PROPERTY_LABEL;
-use crate::implementation::PROPERTY_SHUTDOWN;
-use crate::implementation::PROPERTY_TRIGGER;
-use crate::implementation::TYPE_SHUTDOWN;
 use crate::model::ReactivePropertyContainer;
 
 #[wrapper]
