@@ -33,15 +33,9 @@ actix-http = "3.0"
 actix-rt = "2.6"
 actix-web = { version = "4.0", features = ["rustls"] }
 actix-web-extras = "0.1"
-apollo-encoder = { version = "0.3", git = "https://github.com/aschaeffer/apollo-rs.git", branch = "aschaeffer/introspection-description" }
-apollo-compiler = { version = "0.2", git = "https://github.com/aschaeffer/apollo-rs.git", branch = "aschaeffer/introspection-description" }
-apollo-parser = { version = "0.2", git = "https://github.com/aschaeffer/apollo-rs.git", branch = "aschaeffer/introspection-description" }
-#apollo-encoder = { path = "../apollo-rs/crates/apollo-encoder" }
-#apollo-compiler = { path = "../apollo-rs/crates/apollo-compiler" }
-#apollo-parser = { path = "../apollo-rs/crates/apollo-parser" }
 # async-graphql features: uuid, chrono, url, log
-async-graphql = { version = "4.0", features = ["uuid"] }
-async-graphql-actix-web = { version = "4.0" }
+async-graphql = { version = "5.0", features = ["uuid", "dynamic-schema"] }
+async-graphql-actix-web = { version = "5.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 convert_case = "0.6"
