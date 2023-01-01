@@ -104,7 +104,7 @@ level = "debug"
 appenders = [ "file-plugin-mqtt" ]
 additive = false
 
-[loggers."inexor_rgf_plugin_arithmetic::provider"]
+[loggers."inexor_rgf_plugin_arithmetic::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_base::providers"]
@@ -122,7 +122,7 @@ level = "info"
 [loggers."inexor_rgf_plugin_comparison::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_config::provider"]
+[loggers."inexor_rgf_plugin_config::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_connector::providers"]
@@ -149,13 +149,19 @@ level = "info"
 [loggers."inexor_rgf_plugin_string::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_json::provider"]
+[loggers."inexor_rgf_plugin_file::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_random::provider"]
+[loggers."inexor_rgf_plugin_json::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_http::provider"]
+[loggers."inexor_rgf_plugin_binary::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_random::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_http::providers"]
 level = "info"
 
 [loggers."salsa"]
