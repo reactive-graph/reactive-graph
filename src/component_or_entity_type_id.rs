@@ -1,5 +1,7 @@
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use crate::ComponentTypeId;
 use crate::EntityTypeId;
@@ -96,6 +98,16 @@ impl TypeDefinitionGetter for ComponentOrEntityTypeId {
             ComponentOrEntityTypeId::Component(ty) => ty.type_definition(),
             ComponentOrEntityTypeId::EntityType(ty) => ty.type_definition(),
         }
+    }
+}
+
+impl Display for ComponentOrEntityTypeId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let d = match self {
+            ComponentOrEntityTypeId::Component(ty) => ty.to_string(),
+            ComponentOrEntityTypeId::EntityType(ty) => ty.to_string(),
+        };
+        write!(f, "{}", &d)
     }
 }
 
