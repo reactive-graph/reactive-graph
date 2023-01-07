@@ -8,6 +8,8 @@ use log::debug;
 use log::error;
 use log::trace;
 use log::warn;
+use rayon::prelude::*;
+use serde_json::json;
 use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
@@ -84,19 +86,52 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         if self.has(&entity_type.ty) {
             return Err(EntityTypeRegistrationError::EntityTypeAlreadyExists(entity_type.ty));
         }
+        // Apply components
+        let mut divergent = Vec::new();
         for component_ty in entity_type.components.iter() {
+            let mut is_divergent = false;
             match self.component_manager.get(component_ty) {
                 Some(component) => {
-                    // TODO: what if multiple components have the same property?
-                    entity_type.properties.append(&mut component.clone().properties)
+                    // TODO: what if multiple components have the same property? (like c__http__http__*__result and c__logical__action__*__result)
+                    for property_type in component.properties {
+                        // Own property wins
+                        if !entity_type.has_own_property(&property_type.name) {
+                            entity_type.properties.push(property_type.clone());
+                        } else {
+                            // Check for divergent data type
+                            if let Some(entity_type_property_type) = entity_type.get_own_property(&property_type.name) {
+                                if property_type.data_type != entity_type_property_type.data_type {
+                                    is_divergent = true;
+                                    warn!(
+                                        "{}__{} has divergent data type {} to {}__{} which has data type {}",
+                                        &entity_type.ty,
+                                        &entity_type_property_type.name,
+                                        &entity_type_property_type.data_type,
+                                        &component_ty,
+                                        &property_type.name,
+                                        &property_type.data_type
+                                    );
+                                }
+                            }
+                            // TODO: merge description (if no own description)
+                            // TODO: merge extensions (for each: if own does not have the extension, add it)
+                        }
+                    }
                 }
-                None => warn!(
-                    "Entity type {} not fully initialized: No component named {}",
-                    entity_type.type_definition().to_string(),
-                    component_ty.type_definition().to_string()
-                ),
+                None => {
+                    is_divergent = true;
+                    warn!(
+                        "Entity type {} not fully initialized: No component named {}",
+                        entity_type.type_definition().to_string(),
+                        component_ty.type_definition().to_string()
+                    )
+                }
+            }
+            if is_divergent {
+                divergent.push(component_ty.to_string());
             }
         }
+        entity_type.extensions.push(Extension::new("divergent", json!(divergent)));
         self.entity_types.0.write().unwrap().push(entity_type.clone());
         debug!("Registered entity type {}", entity_type.type_definition().to_string());
         self.event_manager.emit_event(SystemEvent::EntityTypeCreated(entity_type.ty.clone()));
