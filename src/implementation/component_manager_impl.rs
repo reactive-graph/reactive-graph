@@ -20,7 +20,6 @@ use crate::api::SystemEventManager;
 use crate::builder::ComponentBuilder;
 use crate::core_model::COMPONENT_EVENT;
 use crate::core_model::COMPONENT_LABELED;
-use crate::core_model::NAMESPACE_CORE;
 use crate::core_model::PROPERTY_EVENT;
 use crate::core_model::PROPERTY_LABEL;
 use crate::di::component;
@@ -54,16 +53,14 @@ pub struct ComponentManagerImpl {
 
 impl ComponentManagerImpl {
     pub(crate) fn create_base_components(&self) {
-        let labeled_ty = ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_LABELED);
         let _ = self.register(
-            ComponentBuilder::new(labeled_ty)
+            ComponentBuilder::new(&COMPONENT_LABELED.clone())
                 .description("The label is an hierarchical path with static segments, named parameters and catch-all parameters.")
                 .property(PROPERTY_LABEL, DataType::String)
                 .build(),
         );
-        let event_ty = ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_EVENT);
         let _ = self.register(
-            ComponentBuilder::new(event_ty)
+            ComponentBuilder::new(&COMPONENT_EVENT.clone())
                 .description("This components spawns events.")
                 .output_property(PROPERTY_EVENT, DataType::Any)
                 .build(),

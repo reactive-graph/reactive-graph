@@ -4,8 +4,6 @@ use std::sync::RwLock;
 use std::time;
 
 use async_trait::async_trait;
-use inexor_rgf_core_model::ComponentTypeId;
-use inexor_rgf_core_model::EntityTypeId;
 use serde_json::json;
 use tokio::task;
 
@@ -19,13 +17,13 @@ use crate::builder::EntityTypeBuilder;
 use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::core_model::COMPONENT_ACTION;
 use crate::core_model::COMPONENT_LABELED;
-use crate::core_model::NAMESPACE_CORE;
-use crate::core_model::NAMESPACE_LOGICAL;
+use crate::core_model::ENTITY_TYPE_SHUTDOWN;
 use crate::core_model::PROPERTY_LABEL;
+use crate::core_model::PROPERTY_RESULT;
 use crate::core_model::PROPERTY_SHUTDOWN;
 use crate::core_model::PROPERTY_TRIGGER;
-use crate::core_model::TYPE_SHUTDOWN;
 use crate::di::*;
+use crate::model::DataType;
 use crate::model::ReactivePropertyContainer;
 
 #[wrapper]
@@ -59,15 +57,21 @@ impl ShutdownManager for ShutdownManagerImpl {
 
 impl Lifecycle for ShutdownManagerImpl {
     fn init(&self) {
-        let ty = EntityTypeId::new_from_type(NAMESPACE_CORE, TYPE_SHUTDOWN);
-        let _ = self.entity_type_manager.register(EntityTypeBuilder::new(&ty).build());
-        let shutdown_handler = ReactiveEntityInstanceBuilder::new(ty)
+        let entity_type = EntityTypeBuilder::new(&ENTITY_TYPE_SHUTDOWN.clone())
+            .property(PROPERTY_SHUTDOWN, DataType::Bool)
+            .property(PROPERTY_TRIGGER, DataType::Bool)
+            .component(&COMPONENT_LABELED.clone())
+            .component(&COMPONENT_ACTION.clone())
+            .build();
+        let _ = self.entity_type_manager.register(entity_type);
+        let shutdown_handler = ReactiveEntityInstanceBuilder::new(&ENTITY_TYPE_SHUTDOWN.clone())
             .id(UUID_SHUTDOWN)
             .property(PROPERTY_LABEL, json!("/org/inexor/system/shutdown"))
             .property(PROPERTY_SHUTDOWN, json!(false))
             .property(PROPERTY_TRIGGER, json!(false))
-            .component(ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_LABELED))
-            .component(ComponentTypeId::new_from_type(NAMESPACE_LOGICAL, COMPONENT_ACTION))
+            .property(PROPERTY_RESULT, json!(false))
+            .component(&COMPONENT_LABELED.clone())
+            .component(&COMPONENT_ACTION.clone())
             .build();
         let _ = self.reactive_entity_instance_manager.register_reactive_instance(shutdown_handler.clone());
         let shutdown_state = self.shutdown_state.0.clone();

@@ -9,9 +9,8 @@ use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::builder::ReactiveEntityInstanceBuilder;
-use crate::core_model::NAMESPACE_CORE;
+use crate::core_model::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::core_model::PROPERTY_EVENT;
-use crate::core_model::TYPE_SYSTEM_EVENT;
 use crate::di::*;
 use crate::model::ComponentTypeId;
 use crate::model::PropertyInstanceSetter;
@@ -242,7 +241,7 @@ impl SystemEventManagerImpl {
     }
 
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> Arc<ReactiveEntityInstance> {
-        ReactiveEntityInstanceBuilder::new_from_type(NAMESPACE_CORE, TYPE_SYSTEM_EVENT)
+        ReactiveEntityInstanceBuilder::new(&ENTITY_TYPE_SYSTEM_EVENT.clone())
             .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
             .property(PROPERTY_EVENT, json!(false))
             .build()

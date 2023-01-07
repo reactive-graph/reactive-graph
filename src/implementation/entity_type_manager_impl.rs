@@ -23,10 +23,8 @@ use crate::api::SystemEventManager;
 use crate::builder::EntityTypeBuilder;
 use crate::core_model::COMPONENT_EVENT;
 use crate::core_model::COMPONENT_LABELED;
-use crate::core_model::NAMESPACE_CORE;
-use crate::core_model::NAMESPACE_FLOW;
-use crate::core_model::TYPE_GENERIC_FLOW;
-use crate::core_model::TYPE_SYSTEM_EVENT;
+use crate::core_model::ENTITY_TYPE_GENERIC_FLOW;
+use crate::core_model::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
@@ -63,18 +61,17 @@ pub struct EntityTypeManagerImpl {
 
 impl EntityTypeManagerImpl {
     pub(crate) fn create_base_entity_types(&self) {
-        let ty_component_labeled = ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_LABELED);
         let _ = self.register(
-            EntityTypeBuilder::new_from_type(NAMESPACE_CORE, TYPE_SYSTEM_EVENT)
+            EntityTypeBuilder::new(&ENTITY_TYPE_SYSTEM_EVENT.clone())
                 .description("Events of the type system")
-                .component(ty_component_labeled.clone())
-                .component(ComponentTypeId::new_from_type(NAMESPACE_CORE, COMPONENT_EVENT))
+                .component(&COMPONENT_LABELED.clone())
+                .component(&COMPONENT_EVENT.clone())
                 .build(),
         );
         let _ = self.register(
-            EntityTypeBuilder::new_from_type(NAMESPACE_FLOW, TYPE_GENERIC_FLOW)
+            EntityTypeBuilder::new(&ENTITY_TYPE_GENERIC_FLOW.clone())
                 .description("Generic flow without inputs and outputs")
-                .component(ty_component_labeled)
+                .component(&COMPONENT_LABELED.clone())
                 .build(),
         );
     }
