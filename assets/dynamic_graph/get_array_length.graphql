@@ -1,0 +1,10 @@
+query GetArrayLength {
+  json {
+    ArrayLength {
+      id
+      name
+      array
+      length
+    }
+  }
+}
