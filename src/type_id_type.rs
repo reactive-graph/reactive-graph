@@ -41,6 +41,20 @@ pub enum TypeIdType {
     FlowType,
 }
 
+impl TypeIdType {
+    pub fn full_name(&self) -> String {
+        match self {
+            TypeIdType::Behaviour => "Behaviour",
+            TypeIdType::Component => "Component",
+            TypeIdType::EntityType => "Entity",
+            TypeIdType::Extension => "Extension",
+            TypeIdType::RelationType => "Relation",
+            TypeIdType::FlowType => "Flow",
+        }
+        .to_string()
+    }
+}
+
 /// Converts the type of a type into the uuid namespace representation.
 impl From<TypeIdType> for Uuid {
     fn from(t: TypeIdType) -> Self {
