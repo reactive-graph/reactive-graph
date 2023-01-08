@@ -45,7 +45,7 @@ pub trait Application: Send + Sync {
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
-    // fn get_dynamic_graph(&self) -> Arc<dyn DynamicGraph>;
+    fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager>;
 
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager>;
 
@@ -109,7 +109,7 @@ pub struct ApplicationImpl {
     running: RunningState,
 
     component_manager: Wrc<dyn ComponentManager>,
-    // dynamic_graph: Wrc<dyn DynamicGraph>,
+    dynamic_graph_schema_manager: Wrc<dyn DynamicGraphSchemaManager>,
     event_manager: Wrc<dyn SystemEventManager>,
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
     entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
@@ -161,7 +161,7 @@ impl Application for ApplicationImpl {
         self.shutdown_manager.init();
         self.event_manager.init();
         self.reactive_entity_instance_manager.init();
-        // self.dynamic_graph.init();
+        self.dynamic_graph_schema_manager.init();
     }
 
     fn post_init(&self) {
@@ -180,12 +180,12 @@ impl Application for ApplicationImpl {
         self.shutdown_manager.post_init();
         self.event_manager.post_init();
         self.reactive_entity_instance_manager.post_init(); // after event_manager!
-                                                           // self.dynamic_graph.post_init();
+        self.dynamic_graph_schema_manager.post_init();
     }
 
     fn pre_shutdown(&self) {
         // Reverse order matters
-        // self.dynamic_graph.pre_shutdown();
+        self.dynamic_graph_schema_manager.pre_shutdown();
         self.reactive_entity_instance_manager.pre_shutdown();
         self.event_manager.pre_shutdown();
         self.shutdown_manager.pre_shutdown();
@@ -204,7 +204,7 @@ impl Application for ApplicationImpl {
 
     fn shutdown(&self) {
         // Reverse order matters
-        // self.dynamic_graph.shutdown();
+        self.dynamic_graph_schema_manager.shutdown();
         self.reactive_entity_instance_manager.shutdown();
         self.event_manager.shutdown();
         self.shutdown_manager.shutdown();
@@ -293,9 +293,9 @@ impl Application for ApplicationImpl {
         self.component_manager.clone()
     }
 
-    // fn get_dynamic_graph(&self) -> Arc<dyn DynamicGraph> {
-    //     self.dynamic_graph.clone()
-    // }
+    fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager> {
+        self.dynamic_graph_schema_manager.clone()
+    }
 
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager> {
         self.entity_behaviour_manager.clone()

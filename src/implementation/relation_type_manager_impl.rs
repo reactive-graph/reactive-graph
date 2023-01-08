@@ -99,7 +99,16 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         // Apply components
         for component_ty in relation_type.components.iter() {
             match self.component_manager.get(component_ty) {
-                Some(component) => relation_type.properties.append(&mut component.properties.to_vec()),
+                Some(component) => {
+                    // TODO: what if multiple components have the same property?
+                    for property_type in component.properties {
+                        // Own property wins
+                        if !relation_type.has_own_property(&property_type.name) {
+                            relation_type.properties.push(property_type.clone());
+                        }
+                    }
+                    // relation_type.properties.append(&mut component.properties.to_vec())
+                }
                 None => warn!("Relation type {} not fully initialized: Missing component {}", &relation_ty, component_ty),
             }
         }

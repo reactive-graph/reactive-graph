@@ -19,7 +19,9 @@ use actix_web::HttpResponseBuilder;
 use actix_web::HttpServer;
 use actix_web::Result;
 use actix_web_extras::middleware::Condition;
+use async_graphql::dynamic::DynamicRequest;
 use async_graphql::Schema;
+use async_graphql::ServerError;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 use async_graphql_actix_web::GraphQLSubscription;
@@ -39,7 +41,7 @@ use rustls_pemfile::pkcs8_private_keys;
 use serde::Deserialize;
 
 use crate::api::ComponentManager;
-// use crate::api::DynamicGraph;
+use crate::api::DynamicGraphSchemaManager;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::GraphQLSchemaManager;
@@ -59,7 +61,8 @@ use crate::plugins::HttpBody;
 pub struct GraphQLServerImpl {
     component_manager: Wrc<dyn ComponentManager>,
 
-    // dynamic_graph: Wrc<dyn DynamicGraph>,
+    dynamic_graph_schema_manager: Wrc<dyn DynamicGraphSchemaManager>,
+
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     relation_type_manager: Wrc<dyn RelationTypeManager>,
@@ -82,12 +85,19 @@ async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest)
     schema.execute(request.into_inner()).await.into()
 }
 
-// TODO: /dynamic-graph
-// #[post("/dynamic_graph")]
-// async fn query_dynamic_graph(dynamic_graph: web::Data<Arc<dyn DynamicGraph>>, request: GraphQLRequest) -> GraphQLResponse {
-//     trace!("dynamic_graph request: {:?}", &request.0);
-//     dynamic_graph.execute_request(request)
-// }
+#[post("/dynamic_graph")]
+async fn query_dynamic_graph(
+    dynamic_graph_schema_manager: web::Data<Arc<dyn DynamicGraphSchemaManager>>,
+    request: async_graphql_actix_web::GraphQLRequest,
+) -> GraphQLResponse {
+    match dynamic_graph_schema_manager.get_dynamic_schema() {
+        Some(schema) => {
+            let dynamic_request = DynamicRequest::from(request.into_inner());
+            schema.execute(dynamic_request).await.into()
+        }
+        None => async_graphql::Response::from_errors(vec![ServerError::new("Dynamic schema not available", None)]).into(),
+    }
+}
 
 async fn subscription_websocket(schema: web::Data<InexorSchema>, request: HttpRequest, payload: web::Payload) -> Result<HttpResponse> {
     // let mut data = Data::default();
@@ -197,9 +207,9 @@ impl GraphQLServer for GraphQLServerImpl {
         let entity_instance_manager = web::Data::new(self.entity_instance_manager.clone());
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_instance_manager = web::Data::new(self.flow_instance_manager.clone());
-        // let dynamic_graph = web::Data::new(self.dynamic_graph.clone());
         let web_resource_manager = web::Data::new(self.web_resource_manager.clone());
         let schema_data = web::Data::new(schema);
+        let dynamic_graph_schema_manager = web::Data::new(self.dynamic_graph_schema_manager.clone());
 
         let system = actix::System::new(); // actix::System::new("inexor-graphql");
 
@@ -217,8 +227,8 @@ impl GraphQLServer for GraphQLServerImpl {
                 .app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
                 .app_data(flow_instance_manager.clone())
-                // .app_data(dynamic_graph.clone())
                 .app_data(web_resource_manager.clone())
+                .app_data(dynamic_graph_schema_manager.clone())
                 // GraphQL API
                 .service(query_graphql)
                 .service(
@@ -228,7 +238,7 @@ impl GraphQLServer for GraphQLServerImpl {
                         .to(subscription_websocket),
                 )
                 // Dynamic GraphQL API
-                // .service(query_dynamic_graph)
+                .service(query_dynamic_graph)
                 // REST API
                 .service(crate::rest::types::components::get_components)
                 .service(crate::rest::types::entities::get_entity_types)

@@ -5,24 +5,28 @@ use std::sync::RwLock;
 use async_graphql::dynamic::Schema;
 use async_graphql::dynamic::SchemaError;
 use async_trait::async_trait;
-use log::debug;
 use log::error;
 use log::info;
 use log::trace;
-use log::warn;
 use uuid::Uuid;
 
 use crate::api::ComponentManager;
-use crate::api::DynamicGraph;
+use crate::api::DynamicGraphSchemaManager;
 use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
+use crate::api::NamespaceManager;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::core_model::PROPERTY_EVENT;
 use crate::di::*;
-use crate::model::ReactiveEntityInstance;
+use crate::graphql::dynamic::get_entity_types;
+use crate::graphql::dynamic::get_interfaces;
+use crate::graphql::dynamic::get_query;
+use crate::graphql::dynamic::get_relation_types;
+use crate::graphql::dynamic::get_unions;
+use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::model::ReactivePropertyContainer;
 use crate::plugins::SystemEventTypes;
 
@@ -45,7 +49,7 @@ fn create_dynamic_schema_modified() -> TypeSystemModifiedStateContainer {
 }
 
 #[component]
-pub struct DynamicGraphImpl {
+pub struct DynamicGraphSchemaManagerImpl {
     event_manager: Wrc<dyn SystemEventManager>,
 
     component_manager: Wrc<dyn ComponentManager>,
@@ -53,6 +57,8 @@ pub struct DynamicGraphImpl {
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+
+    namespace_manager: Wrc<dyn NamespaceManager>,
 
     entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
 
@@ -65,22 +71,47 @@ pub struct DynamicGraphImpl {
 
 #[async_trait]
 #[provides]
-impl DynamicGraph for DynamicGraphImpl {
+impl DynamicGraphSchemaManager for DynamicGraphSchemaManagerImpl {
     fn is_type_system_modified(&self) -> bool {
         *self.type_system_modified_state.0.read().unwrap().deref()
     }
 
     fn create_dynamic_schema(&self) -> Result<Schema, SchemaError> {
-        Schema::build("InexorDynamic", None, None).finish()
+        let context = SchemaBuilderContext::new(
+            self.namespace_manager.clone(),
+            self.component_manager.clone(),
+            self.entity_type_manager.clone(),
+            self.relation_type_manager.clone(),
+        );
+        let mut schema = Schema::build("Query", None, None)
+            .data(self.namespace_manager.clone())
+            .data(self.component_manager.clone())
+            .data(self.entity_type_manager.clone())
+            .data(self.relation_type_manager.clone())
+            .data(self.entity_instance_manager.clone())
+            .data(self.relation_instance_manager.clone());
+        schema = get_interfaces(schema, &context);
+        schema = get_unions(schema, &context);
+        schema = get_entity_types(schema, &context);
+        schema = get_relation_types(schema, &context);
+        schema = get_query(schema, &context);
+        schema.finish()
     }
 
     fn regenerate_dynamic_schema(&self) {
-        debug!("Regenerate dynamic schema");
-        if let Ok(dynamic_schema) = self.create_dynamic_schema() {
-            let mut guard = self.dynamic_schema.0.write().unwrap();
-            *guard = Some(Arc::new(dynamic_schema));
-            let mut guard = self.type_system_modified_state.0.write().unwrap();
-            *guard = false;
+        trace!("Regenerating dynamic schema");
+        match self.create_dynamic_schema() {
+            Ok(dynamic_schema) => {
+                info!("Successfully regenerated schema");
+                trace!("{}", dynamic_schema.sdl());
+                let mut guard = self.dynamic_schema.0.write().unwrap();
+                *guard = Some(Arc::new(dynamic_schema));
+                let mut guard = self.type_system_modified_state.0.write().unwrap();
+                *guard = false;
+            }
+            Err(e) => {
+                error!("Failed to regenerate dynamic schema: {}", e);
+            }
         }
     }
 
@@ -90,12 +121,24 @@ impl DynamicGraph for DynamicGraphImpl {
             self.regenerate_dynamic_schema();
         }
     }
+
+    fn get_dynamic_schema(&self) -> Option<Arc<Schema>> {
+        let guard = self.dynamic_schema.0.read().unwrap();
+        match guard.deref() {
+            None => {
+                error!("Can't get dynamic schema!");
+                None
+            }
+            Some(schema) => Some(schema.clone()),
+        }
+    }
 }
 
-impl Lifecycle for DynamicGraphImpl {
+impl Lifecycle for DynamicGraphSchemaManagerImpl {
     fn init(&self) {}
 
     fn post_init(&self) {
+        self.regenerate_dynamic_schema();
         if let Some(event_type_system_changed) = self.event_manager.get_system_event_instance(SystemEventTypes::TypeSystemChanged) {
             let type_system_modified_state = self.type_system_modified_state.0.clone();
             event_type_system_changed.observe_with_handle(
