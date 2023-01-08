@@ -199,6 +199,24 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             .collect()
     }
 
+    fn get_by_component(&self, ty: &ComponentTypeId) -> Vec<Arc<ReactiveRelationInstance>> {
+        self.reactive_relation_instances
+            .0
+            .iter()
+            .filter(|e| e.is_a(ty))
+            .map(|e| e.value().clone())
+            .collect()
+    }
+
+    fn get_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> Vec<Arc<ReactiveRelationInstance>> {
+        self.reactive_relation_instances
+            .0
+            .iter()
+            .filter(|e| e.behaves_as(behaviour_ty))
+            .map(|e| e.value().clone())
+            .collect()
+    }
+
     fn get_by_namespace(&self, namespace: &str) -> Vec<Arc<ReactiveRelationInstance>> {
         self.reactive_relation_instances
             .0

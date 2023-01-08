@@ -108,6 +108,15 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     /// Returns all reactive entity instances of the given type.
     fn get_by_type(&self, ty: &EntityTypeId) -> Vec<Arc<ReactiveEntityInstance>>;
 
+    /// Returns all reactive entity instances of the given type which are of the given component..
+    fn get_by_component(&self, component_ty: &ComponentTypeId) -> Vec<Arc<ReactiveEntityInstance>>;
+
+    /// Returns all reactive entity instances of the given type which behaves as the given behaviour.
+    fn get_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> Vec<Arc<ReactiveEntityInstance>>;
+
+    /// Returns all reactive entity instances of the given namespace.
+    fn get_by_namespace(&self, namespace: &str) -> Vec<Arc<ReactiveEntityInstance>>;
+
     /// Returns the ids of all registered reactive entity instances.
     fn get_ids(&self) -> Vec<Uuid>;
 

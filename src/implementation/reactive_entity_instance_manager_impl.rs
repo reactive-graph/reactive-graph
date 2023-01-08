@@ -41,6 +41,7 @@ use crate::model::EntityBehaviourTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
 use crate::model::Mutability;
+use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactiveEntityInstance;
@@ -202,6 +203,33 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
             .iter()
             .filter(|e| &e.ty == ty)
             .map(|e| e.value().clone())
+            .collect()
+    }
+
+    fn get_by_component(&self, ty: &ComponentTypeId) -> Vec<Arc<ReactiveEntityInstance>> {
+        self.reactive_entity_instances
+            .0
+            .iter()
+            .filter(|e| e.is_a(ty))
+            .map(|e| e.value().clone())
+            .collect()
+    }
+
+    fn get_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> Vec<Arc<ReactiveEntityInstance>> {
+        self.reactive_entity_instances
+            .0
+            .iter()
+            .filter(|e| e.behaves_as(behaviour_ty))
+            .map(|e| e.value().clone())
+            .collect()
+    }
+
+    fn get_by_namespace(&self, namespace: &str) -> Vec<Arc<ReactiveEntityInstance>> {
+        self.reactive_entity_instances
+            .0
+            .iter()
+            .filter(|r| r.namespace() == namespace)
+            .map(|r| r.value().clone())
             .collect()
     }
 

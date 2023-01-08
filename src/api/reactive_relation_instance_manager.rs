@@ -154,6 +154,12 @@ pub trait ReactiveRelationInstanceManager: Send + Sync {
     /// Returns all reactive relation instances of the given type.
     fn get_by_type(&self, ty: &RelationTypeId) -> Vec<Arc<ReactiveRelationInstance>>;
 
+    /// Returns all reactive relation instances of the given type which are of the given component..
+    fn get_by_component(&self, component_ty: &ComponentTypeId) -> Vec<Arc<ReactiveRelationInstance>>;
+
+    /// Returns all reactive relation instances of the given type which behaves as the given behaviour.
+    fn get_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> Vec<Arc<ReactiveRelationInstance>>;
+
     /// Returns all reactive relation instances of the given namespace.
     fn get_by_namespace(&self, namespace: &str) -> Vec<Arc<ReactiveRelationInstance>>;
 
