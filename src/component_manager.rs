@@ -1,6 +1,7 @@
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 
 #[derive(Debug)]
@@ -67,8 +68,8 @@ pub trait ComponentManager: Send + Sync {
     /// Adds an extension to the component with the given name.
     fn add_extension(&self, ty: &ComponentTypeId, extension: Extension);
 
-    /// Removes the extension with the given extension_name from the component with the given name.
-    fn remove_extension(&self, ty: &ComponentTypeId, extension_name: &str);
+    /// Removes the extension with the given type from the component with the given type.
+    fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the component with the given name.
     fn delete(&self, ty: &ComponentTypeId);

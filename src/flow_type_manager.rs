@@ -2,6 +2,7 @@ use uuid::Uuid;
 
 use crate::model::EntityInstance;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::PropertyType;
@@ -67,16 +68,16 @@ pub trait FlowTypeManager: Send + Sync {
     /// Removes the entity instance with the given id from the flow type with the given name.
     fn remove_entity_instance(&self, ty: &FlowTypeId, id: Uuid);
 
-    /// Adds the given extension to the flow type with the given name.
+    /// Adds the given extension to the given flow type.
     fn add_extension(&self, ty: &FlowTypeId, extension: Extension);
 
-    /// Updates the extension with the given name of the flow type with the given name.
-    fn update_extension(&self, ty: &FlowTypeId, extension_name: &str, extension: Extension);
+    /// Updates the extension with the given type of the given flow type.
+    fn update_extension(&self, ty: &FlowTypeId, extension: Extension);
 
-    /// Removes the extension with the given name from the flow type with the given name.
-    fn remove_extension(&self, ty: &FlowTypeId, extension_name: &str);
+    /// Removes the extension with the given type from the given flow type.
+    fn remove_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId);
 
-    /// Adds the given variable to the flow type with the given name.
+    /// Adds the given variable to the given flow type.
     fn add_variable(&self, ty: &FlowTypeId, variable: PropertyType);
 
     /// Updates the variable with the given name of the flow type with the given name.

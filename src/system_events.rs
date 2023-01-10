@@ -3,13 +3,17 @@ use uuid::Uuid;
 
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
+use crate::model::ExtensionTypeId;
 use crate::model::FlowTypeId;
 use crate::model::RelationTypeId;
 
 #[derive(Eq, Hash, PartialEq, Clone, Debug)]
 pub enum SystemEventTypes {
     ComponentCreated,
-    ComponentUpdated,
+    ComponentPropertyAdded,
+    ComponentPropertyRemoved,
+    ComponentExtensionAdded,
+    ComponentExtensionRemoved,
     ComponentDeleted,
     EntityTypeCreated,
     EntityTypeComponentAdded,
@@ -44,30 +48,29 @@ pub enum SystemEventTypes {
 
 pub enum SystemEvent {
     ComponentCreated(ComponentTypeId),
-    // TODO: Replace ComponentUpdated with more concrete events
-    ComponentUpdated(ComponentTypeId),
-    // TODO: ComponentPropertyAdded
-    // TODO: ComponentPropertyRemoved
-    // TODO: ComponentExtensionAdded
-    // TODO: ComponentExtensionRemoved
+    ComponentPropertyAdded(ComponentTypeId, String),
+    ComponentPropertyRemoved(ComponentTypeId, String),
+    ComponentExtensionAdded(ComponentTypeId, ExtensionTypeId),
+    ComponentExtensionRemoved(ComponentTypeId, ExtensionTypeId),
     ComponentDeleted(ComponentTypeId),
     EntityTypeCreated(EntityTypeId),
     EntityTypeComponentAdded(EntityTypeId, ComponentTypeId),
     EntityTypeComponentRemoved(EntityTypeId, ComponentTypeId),
     EntityTypePropertyAdded(EntityTypeId, String),
     EntityTypePropertyRemoved(EntityTypeId, String),
-    EntityTypeExtensionAdded(EntityTypeId, String),
-    EntityTypeExtensionRemoved(EntityTypeId, String),
+    EntityTypeExtensionAdded(EntityTypeId, ExtensionTypeId),
+    EntityTypeExtensionRemoved(EntityTypeId, ExtensionTypeId),
     EntityTypeDeleted(EntityTypeId),
     RelationTypeCreated(RelationTypeId),
     RelationTypeComponentAdded(RelationTypeId, ComponentTypeId),
     RelationTypeComponentRemoved(RelationTypeId, ComponentTypeId),
     RelationTypePropertyAdded(RelationTypeId, String),
     RelationTypePropertyRemoved(RelationTypeId, String),
-    RelationTypeExtensionAdded(RelationTypeId, String),
-    RelationTypeExtensionRemoved(RelationTypeId, String),
+    RelationTypeExtensionAdded(RelationTypeId, ExtensionTypeId),
+    RelationTypeExtensionRemoved(RelationTypeId, ExtensionTypeId),
     RelationTypeDeleted(RelationTypeId),
     FlowTypeCreated(FlowTypeId),
+    // TODO: Replace FlowTypeUpdated with more concrete events
     FlowTypeUpdated(FlowTypeId),
     FlowTypeDeleted(FlowTypeId),
     TypeSystemChanged,
@@ -83,7 +86,10 @@ impl From<&SystemEvent> for SystemEventTypes {
     fn from(event: &SystemEvent) -> Self {
         match event {
             SystemEvent::ComponentCreated(_) => SystemEventTypes::ComponentCreated,
-            SystemEvent::ComponentUpdated(_) => SystemEventTypes::ComponentUpdated,
+            SystemEvent::ComponentPropertyAdded(_, _) => SystemEventTypes::ComponentPropertyAdded,
+            SystemEvent::ComponentPropertyRemoved(_, _) => SystemEventTypes::ComponentPropertyRemoved,
+            SystemEvent::ComponentExtensionAdded(_, _) => SystemEventTypes::ComponentExtensionAdded,
+            SystemEvent::ComponentExtensionRemoved(_, _) => SystemEventTypes::ComponentExtensionRemoved,
             SystemEvent::ComponentDeleted(_) => SystemEventTypes::ComponentDeleted,
             SystemEvent::EntityTypeCreated(_) => SystemEventTypes::EntityTypeCreated,
             SystemEvent::EntityTypeComponentAdded(_, _) => SystemEventTypes::EntityTypeComponentAdded,

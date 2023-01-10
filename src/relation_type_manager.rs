@@ -1,6 +1,7 @@
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
@@ -61,25 +62,25 @@ pub trait RelationTypeManager: Send + Sync {
         extensions: Vec<Extension>,
     ) -> Result<RelationType, RelationTypeCreationError>;
 
-    /// Adds the component with the given component_name to the relation type with the given name.
+    /// Adds the component with the given type to the given relation type.
     fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId);
 
-    /// Remove the component with the given component_name from the relation type with the given name.
+    /// Remove the component with the given type from the given relation type.
     fn remove_component(&self, ty: &RelationTypeId, component: &ComponentTypeId);
 
-    /// Adds a property to the relation type with the given name.
+    /// Adds a property to the given relation type.
     fn add_property(&self, ty: &RelationTypeId, property: PropertyType);
 
-    /// Removes the property with the given property_name from the relation type with the given name.
+    /// Removes the property with the given property_name from the given relation type.
     fn remove_property(&self, ty: &RelationTypeId, property_name: &str);
 
-    /// Adds an extension to the relation type with the given name.
+    /// Adds an extension to the given relation type.
     fn add_extension(&self, ty: &RelationTypeId, extension: Extension);
 
-    /// Removes the extension with the given extension_name from the relation type with the given name.
-    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str);
+    /// Removes the extension with the given type from the given relation type.
+    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId);
 
-    /// Deletes the relation type with the given name.
+    /// Deletes the given relation type.
     fn delete(&self, ty: &RelationTypeId);
 
     /// Validates the relation type with the given name.

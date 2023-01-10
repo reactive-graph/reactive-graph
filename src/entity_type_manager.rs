@@ -2,6 +2,7 @@ use crate::model::ComponentTypeId;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 
 #[derive(Debug)]
@@ -57,25 +58,25 @@ pub trait EntityTypeManager: Send + Sync {
         extensions: Vec<Extension>,
     ) -> Result<EntityType, EntityTypeCreationError>;
 
-    /// Adds the component with the given component_name to the entity type with the given name.
+    /// Adds the component with the given component_name to the given entity type.
     fn add_component(&self, ty: &EntityTypeId, component: &ComponentTypeId);
 
-    /// Remove the component with the given component_name from the entity type with the given name.
+    /// Remove the component with the given component_name from the given entity type.
     fn remove_component(&self, ty: &EntityTypeId, component: &ComponentTypeId);
 
-    /// Adds a property to the entity type with the given name.
+    /// Adds a property to the given entity type.
     fn add_property(&self, ty: &EntityTypeId, property: PropertyType);
 
-    /// Removes the property with the given property_name from the entity type with the given name.
+    /// Removes the property with the given property_name from the given entity type.
     fn remove_property(&self, ty: &EntityTypeId, property_name: &str);
 
-    /// Adds an extension to the entity type with the given name.
+    /// Adds an extension to the given entity type.
     fn add_extension(&self, ty: &EntityTypeId, extension: Extension);
 
-    /// Removes the extension with the given extension_name from the entity type with the given name.
-    fn remove_extension(&self, ty: &EntityTypeId, extension_name: &str);
+    /// Removes the extension with the given type from the given entity type.
+    fn remove_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId);
 
-    /// Deletes the entity type with the given name.
+    /// Deletes the entity type.
     fn delete(&self, ty: &EntityTypeId);
 
     /// Validates the entity type with the given name.
