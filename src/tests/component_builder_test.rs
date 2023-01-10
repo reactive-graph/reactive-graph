@@ -2,6 +2,7 @@ use serde_json::json;
 
 use crate::model::ComponentTypeId;
 use crate::model::DataType;
+use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::SocketType;
@@ -14,6 +15,7 @@ fn component_builder_test() {
     let namespace = r_string();
     let type_name = r_string();
     let description = r_string();
+    let extension_namespace = r_string();
     let extension_1_name = r_string();
     let extension_2_name = r_string();
     let property_1_name = r_string();
@@ -36,15 +38,18 @@ fn component_builder_test() {
         .object_property(property_7_name.clone())
         .input_property(property_8_name.clone(), DataType::Bool)
         .output_property(property_9_name.clone(), DataType::Bool)
-        .extension(extension_1_name.clone(), json!(true))
-        .extension(extension_2_name.clone(), json!(true))
+        .extension(&extension_namespace, &extension_1_name, json!(true))
+        .extension(&extension_namespace, &extension_2_name, json!(true))
         .build();
     assert_eq!(namespace, component.namespace());
     assert_eq!(type_name, component.type_name());
     assert_eq!(description, component.description);
-    assert!(component.has_extension(extension_1_name.clone()));
-    assert!(component.has_extension(extension_2_name.clone()));
-    assert!(!component.has_extension(r_string()));
+    let extension_1_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_1_name);
+    assert!(component.has_extension(&extension_1_ty));
+    let extension_2_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_2_name);
+    assert!(component.has_extension(&extension_2_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    assert!(!component.has_extension(&non_existing_extension));
     assert!(component.has_property(property_1_name.clone()));
     assert!(component.has_property(property_2_name.clone()));
     assert!(component.has_property(property_3_name.clone()));
@@ -79,6 +84,7 @@ fn components_builder_test() {
     let property_7_name = r_string();
     let property_8_name = r_string();
     let property_9_name = r_string();
+    let extension_namespace = r_string();
     let extension_1_name = r_string();
     let extension_2_name = r_string();
     let type_name_2 = r_string();
@@ -99,8 +105,8 @@ fn components_builder_test() {
         .object_property(property_7_name.clone())
         .input_property(property_8_name.clone(), DataType::Bool)
         .output_property(property_9_name.clone(), DataType::Bool)
-        .extension(extension_1_name.clone(), json!(true))
-        .extension(extension_2_name.clone(), json!(true))
+        .extension(&extension_namespace, &extension_1_name, json!(true))
+        .extension(&extension_namespace, &extension_2_name, json!(true))
         .done() // Explicit done()
         .next(&type_name_2)
         .description(&description_2)
@@ -122,9 +128,12 @@ fn components_builder_test() {
     assert!(components[0].has_property(property_7_name.clone()));
     assert!(components[0].has_property(property_8_name.clone()));
     assert!(components[0].has_property(property_9_name.clone()));
-    assert!(components[0].has_extension(extension_1_name.clone()));
-    assert!(components[0].has_extension(extension_2_name.clone()));
-    assert!(!components[0].has_extension(r_string()));
+    let extension_1_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_1_name);
+    assert!(components[0].has_extension(&extension_1_ty));
+    let extension_2_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_2_name);
+    assert!(components[0].has_extension(&extension_2_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    assert!(!components[0].has_extension(&non_existing_extension));
     assert_eq!(namespace, components[1].namespace());
     assert_eq!(type_name_2, components[1].type_name());
     assert_eq!(description_2, components[1].description);

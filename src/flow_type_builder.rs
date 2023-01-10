@@ -3,6 +3,7 @@ use serde_json::Value;
 use crate::model::DataType;
 use crate::model::EntityInstance;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::PropertyType;
@@ -62,8 +63,13 @@ impl FlowTypeBuilder {
         self
     }
 
-    pub fn extension<S: Into<String>>(&mut self, name: S, extension: Value) -> &mut FlowTypeBuilder {
-        self.extensions.push(Extension { name: name.into(), extension });
+    pub fn extension<S: Into<String>>(&mut self, namespace: S, name: S, extension: Value) -> &mut FlowTypeBuilder {
+        let ty = ExtensionTypeId::new_from_type(namespace.into(), name.into());
+        self.extensions.push(Extension {
+            ty,
+            description: Default::default(),
+            extension,
+        });
         self
     }
 

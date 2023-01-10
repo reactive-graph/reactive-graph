@@ -5,6 +5,7 @@ use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
@@ -112,8 +113,13 @@ impl RelationTypeBuilder {
         self
     }
 
-    pub fn extension<S: Into<String>>(&mut self, name: S, extension: Value) -> &mut RelationTypeBuilder {
-        self.extensions.push(Extension { name: name.into(), extension });
+    pub fn extension<S: Into<String>>(&mut self, namespace: S, name: S, extension: Value) -> &mut RelationTypeBuilder {
+        let ty = ExtensionTypeId::new_from_type(namespace.into(), name.into());
+        self.extensions.push(Extension {
+            ty,
+            description: Default::default(),
+            extension,
+        });
         self
     }
 

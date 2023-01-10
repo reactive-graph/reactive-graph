@@ -4,6 +4,7 @@ use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::EntityTypeId;
 use crate::model::ExtensionContainer;
+use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::RelationTypeId;
@@ -31,6 +32,7 @@ fn relation_type_builder_test() {
     let component_2_namespace = r_string();
     let component_2_type_name = r_string();
     let component_2_ty = ComponentTypeId::new_from_type(&component_2_namespace, &component_2_type_name);
+    let extension_namespace = r_string();
     let extension_1_name = r_string();
     let extension_2_name = r_string();
     let property_1_name = r_string();
@@ -55,8 +57,8 @@ fn relation_type_builder_test() {
         .output_property(property_9_name.clone(), DataType::Bool)
         .component(component_1_ty.clone())
         .component_from_type(&component_2_namespace, &component_2_type_name)
-        .extension(extension_1_name.clone(), json!(true))
-        .extension(extension_2_name.clone(), json!(true))
+        .extension(&extension_namespace, &extension_1_name, json!(true))
+        .extension(&extension_namespace, &extension_2_name, json!(true))
         .build();
     assert_eq!(namespace, relation_type.namespace());
     assert_eq!(type_name, relation_type.type_name());
@@ -78,9 +80,12 @@ fn relation_type_builder_test() {
     assert!(relation_type.is_a(&component_2_ty));
     let component_ty_non_existent = ComponentTypeId::new_from_type(&r_string(), &r_string());
     assert!(!relation_type.is_a(&component_ty_non_existent));
-    assert!(relation_type.has_own_extension(extension_1_name.clone()));
-    assert!(relation_type.has_own_extension(extension_2_name.clone()));
-    assert!(!relation_type.has_own_extension(r_string()));
+    let extension_1_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_1_name);
+    assert!(relation_type.has_own_extension(&extension_1_ty));
+    let extension_2_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_2_name);
+    assert!(relation_type.has_own_extension(&extension_2_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    assert!(!relation_type.has_own_extension(&non_existing_extension));
     assert!(relation_type.has_own_property(property_1_name.clone()));
     assert!(relation_type.has_own_property(property_2_name.clone()));
     assert!(relation_type.has_own_property(property_3_name.clone()));

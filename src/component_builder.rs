@@ -4,6 +4,7 @@ use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 
 #[allow(dead_code)]
@@ -91,8 +92,13 @@ impl ComponentBuilder {
     }
 
     /// Adds an extension to the component with the given name.
-    pub fn extension<S: Into<String>>(&mut self, name: S, extension: Value) -> &mut ComponentBuilder {
-        self.extensions.push(Extension { name: name.into(), extension });
+    pub fn extension<S: Into<String>>(&mut self, namespace: S, name: S, extension: Value) -> &mut ComponentBuilder {
+        let ty = ExtensionTypeId::new_from_type(namespace.into(), name.into());
+        self.extensions.push(Extension {
+            ty,
+            description: Default::default(),
+            extension,
+        });
         self
     }
 
@@ -194,9 +200,9 @@ impl ComponentsBuilder {
         self
     }
 
-    pub fn extension<S: Into<String>>(&mut self, name: S, extension: Value) -> &mut ComponentsBuilder {
+    pub fn extension<S: Into<String>>(&mut self, namespace: S, name: S, extension: Value) -> &mut ComponentsBuilder {
         if let Some(builder) = &mut self.builder {
-            builder.extension(name, extension);
+            builder.extension(namespace, name, extension);
         }
         self
     }
