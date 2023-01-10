@@ -5,6 +5,7 @@ use crate::extension::Extension;
 use crate::ComponentOrEntityTypeId;
 use crate::ComponentTypeId;
 use crate::ExtensionContainer;
+use crate::ExtensionTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::RelationTypeId;
@@ -89,14 +90,12 @@ impl TypeContainer for RelationType {
 }
 
 impl ExtensionContainer for RelationType {
-    fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
-        let extension_name = extension_name.into();
-        self.extensions.iter().any(|extension| extension.name == extension_name)
+    fn has_own_extension(&self, extension_ty: &ExtensionTypeId) -> bool {
+        self.extensions.iter().any(|extension| &extension.ty == extension_ty)
     }
 
-    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
-        let extension_name = extension_name.into();
-        self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
+    fn get_own_extension(&self, extension_ty: &ExtensionTypeId) -> Option<Extension> {
+        self.extensions.iter().find(|extension| &extension.ty == extension_ty).cloned()
     }
 }
 

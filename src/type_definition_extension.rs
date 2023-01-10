@@ -5,6 +5,7 @@ use serde_json::to_value;
 use serde_json::Error;
 use serde_json::Value;
 
+use crate::ExtensionTypeId;
 use crate::TypeDefinition;
 
 /// References an extension of a type.
@@ -15,14 +16,14 @@ pub struct TypeDefinitionExtension {
     pub type_definition: TypeDefinition,
 
     /// The extension name.
-    pub extension: String,
+    pub extension_ty: ExtensionTypeId,
 }
 
 impl TypeDefinitionExtension {
-    pub fn new<T: Into<TypeDefinition>>(type_definition: T, extension: String) -> Self {
+    pub fn new<T: Into<TypeDefinition>, X: Into<ExtensionTypeId>>(type_definition: T, extension_ty: X) -> Self {
         TypeDefinitionExtension {
             type_definition: type_definition.into(),
-            extension,
+            extension_ty: extension_ty.into(),
         }
     }
 }

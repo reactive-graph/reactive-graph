@@ -8,6 +8,7 @@ use crate::DataType;
 use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
+use crate::ExtensionTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::RelationType;
@@ -29,8 +30,6 @@ fn create_relation_type_test() {
     let component_name = r_string();
     let behaviour_name = r_string();
     let property_name = r_string();
-    let extension_name = r_string();
-    let extension_value = json!("JSON");
     let mut component_names = Vec::new();
     let component_ty = ComponentTypeId::new_from_type(&namespace, &component_name);
     component_names.push(component_ty.clone());
@@ -39,12 +38,22 @@ fn create_relation_type_test() {
     let mut property_types = Vec::new();
     let property_type = PropertyType::new(property_name.clone(), DataType::String);
     property_types.push(property_type.clone());
+
     let mut extensions = Vec::new();
+    let extension_namespace = r_string();
+    let extension_name = r_string();
+    let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
+    let extension_value = json!("extension_value");
     let extension = Extension {
-        name: extension_name.clone(),
+        ty: extension_ty.clone(),
+        description: r_string(),
         extension: extension_value.clone(),
     };
     extensions.push(extension.clone());
+    let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
+    extensions.push(other_extension);
+
     let ty = RelationTypeId::new_from_type(&namespace, &type_name);
     let outbound_type = EntityTypeId::new_from_type(&namespace, &outbound_type_name);
     let inbound_type = EntityTypeId::new_from_type(&namespace, &inbound_type_name);
@@ -74,11 +83,12 @@ fn create_relation_type_test() {
     assert!(relation_type.has_own_property(property_name.clone()));
     assert!(!relation_type.has_own_property(r_string()));
     assert_eq!(property_type.data_type, relation_type.get_own_property(property_name).unwrap().data_type);
-    assert_eq!(extension_name.clone(), relation_type.extensions.get(0).unwrap().name);
-    assert_eq!(extension_value, relation_type.extensions.get(0).unwrap().extension);
-    assert!(relation_type.has_own_extension(&extension_name));
-    assert!(!relation_type.has_own_extension(r_string()));
-    assert_eq!(extension.extension, relation_type.get_own_extension(&extension_name).unwrap().extension);
+    assert_eq!(&extension_namespace, &relation_type.extensions.first().unwrap().namespace());
+    assert_eq!(&extension_name, &relation_type.extensions.first().unwrap().type_name());
+    assert!(relation_type.has_own_extension(&extension_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
+    assert!(!relation_type.has_own_extension(&non_existing_extension));
+    assert_eq!(extension.extension, relation_type.get_own_extension(&extension_ty).unwrap().extension);
 }
 
 #[test]
@@ -141,7 +151,8 @@ fn relation_type_de_test() {
   ],
   "extensions": [
     {
-      "name": "ext_name",
+      "namespace": "ext_namespace",
+      "type_name": "ext_name",
       "extension": "ext_value"
     }
   ]
@@ -168,6 +179,7 @@ fn relation_type_de_test() {
     assert_eq!(SocketType::Input, property.socket_type);
     assert_eq!(1, relation_type.extensions.len());
     let extension = relation_type.extensions.first().unwrap();
-    assert_eq!("ext_name", extension.name);
+    assert_eq!("ext_namespace", extension.ty.namespace());
+    assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("ext_value"), extension.extension);
 }

@@ -6,6 +6,7 @@ use crate::tests::utils::create_entity_instance;
 use crate::tests::utils::r_string;
 use crate::DataType;
 use crate::Extension;
+use crate::ExtensionTypeId;
 use crate::FlowType;
 use crate::FlowTypeId;
 use crate::NamespacedTypeGetter;
@@ -42,15 +43,19 @@ fn create_flow_type_test() {
     variables.push(variable.clone());
 
     let mut extensions = Vec::new();
-    let extension_name = "extension_name";
+    let extension_namespace = r_string();
+    let extension_name = r_string();
+    let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
     let extension_value = json!("extension_value");
     let extension = Extension {
-        name: extension_name.to_string(),
+        ty: extension_ty.clone(),
+        description: r_string(),
         extension: extension_value.clone(),
     };
     extensions.push(extension);
-    let extension_2 = Extension::new("other_extension", extension_value.clone());
-    extensions.push(extension_2);
+    let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
+    extensions.push(other_extension);
 
     let f_ty = FlowTypeId::new_from_type(namespace, flow_type_name);
     let flow_type = FlowType::new(
@@ -91,7 +96,8 @@ fn create_flow_type_test() {
 
     assert_eq!(variable_data_type, flow_type.variables.first().unwrap().data_type);
 
-    assert_eq!(&extension_name, &flow_type.extensions.first().unwrap().name);
+    assert_eq!(&extension_namespace, &flow_type.extensions.first().unwrap().ty.namespace());
+    assert_eq!(&extension_name, &flow_type.extensions.first().unwrap().ty.type_name());
 
     assert_eq!(3, flow_type.uses_entity_types().len());
     assert!(flow_type.uses_entity_types().contains(&wrapper_entity_instance.ty));
@@ -111,8 +117,9 @@ fn create_flow_type_test() {
     assert!(!flow_type.has_variable(r_string()));
 
     assert_eq!(extension_value, flow_type.extensions.first().unwrap().extension);
-    assert!(flow_type.has_extension(extension_name));
-    assert!(!flow_type.has_extension(r_string()));
+    assert!(flow_type.has_extension(&extension_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
+    assert!(!flow_type.has_extension(&non_existing_extension));
 
     assert!(flow_type.has_entity_instance(entity_instance_2.id));
     assert!(!flow_type.has_entity_instance(Uuid::new_v4()));
@@ -140,11 +147,12 @@ fn create_flow_type_test() {
 
     let extension_3_name = "extension_name_3";
     let extension_3_value = json!("extension_value");
-    let extension_3 = Extension::new(extension_3_name, extension_3_value);
+    let extension_3_ty = ExtensionTypeId::new_from_type(&extension_namespace, &String::from(extension_3_name));
+    let extension_3 = Extension::new(extension_3_ty.clone(), r_string(), extension_3_value);
     flow_type.add_extension(extension_3);
     assert_eq!(3, flow_type.extensions.len());
-    assert!(flow_type.has_extension(extension_3_name));
-    flow_type.remove_extension(extension_3_name);
+    assert!(flow_type.has_extension(&extension_3_ty));
+    flow_type.remove_extension(&extension_3_ty);
     assert_eq!(2, flow_type.extensions.len());
-    assert!(!flow_type.has_extension(extension_3_name));
+    assert!(!flow_type.has_extension(&extension_3_ty));
 }

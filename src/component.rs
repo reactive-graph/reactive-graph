@@ -3,6 +3,7 @@ use serde::Serialize;
 
 use crate::ComponentTypeId;
 use crate::Extension;
+use crate::ExtensionTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::TypeDefinition;
@@ -76,10 +77,9 @@ impl Component {
         self.properties.iter().any(|p| p.name == property_name)
     }
 
-    /// Returns true, if the component contains an extension with the given name.
-    pub fn has_extension<S: Into<String>>(&self, extension_name: S) -> bool {
-        let extension_name = extension_name.into();
-        self.extensions.iter().any(|extension| extension.name == extension_name)
+    /// Returns true, if the component contains an extension with the given type.
+    pub fn has_extension(&self, ty: &ExtensionTypeId) -> bool {
+        self.extensions.iter().any(|extension| &extension.ty == ty)
     }
 }
 

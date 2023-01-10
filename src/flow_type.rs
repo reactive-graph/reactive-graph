@@ -5,6 +5,7 @@ use uuid::Uuid;
 use crate::EntityInstance;
 use crate::EntityTypeId;
 use crate::Extension;
+use crate::ExtensionTypeId;
 use crate::FlowTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
@@ -168,10 +169,9 @@ impl FlowType {
         self.variables.retain(|v| v.name != variable_name)
     }
 
-    /// Returns true, if the flow type contains an extension with the given name.
-    pub fn has_extension<S: Into<String>>(&self, extension_name: S) -> bool {
-        let extension_name = extension_name.into();
-        self.extensions.iter().any(|extension| extension.name == extension_name)
+    /// Returns true, if the flow type contains an extension with the given type.
+    pub fn has_extension(&self, extension_ty: &ExtensionTypeId) -> bool {
+        self.extensions.iter().any(|extension| &extension.ty == extension_ty)
     }
 
     /// Adds an extension to the flow type.
@@ -179,10 +179,9 @@ impl FlowType {
         self.extensions.push(extension)
     }
 
-    /// Removes the extension with the given name from the flow type.
-    pub fn remove_extension<S: Into<String>>(&mut self, extension_name: S) {
-        let extension_name = extension_name.into();
-        self.extensions.retain(|extension| extension.name != extension_name)
+    /// Removes the extension with the given type from the flow type.
+    pub fn remove_extension(&mut self, extension_ty: &ExtensionTypeId) {
+        self.extensions.retain(|extension| &extension.ty != extension_ty)
     }
 }
 

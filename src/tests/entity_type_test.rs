@@ -9,6 +9,7 @@ use crate::EntityType;
 use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
+use crate::ExtensionTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
 use crate::SocketType;
@@ -33,15 +34,19 @@ fn create_entity_type_test() {
     property_types.push(property_type.clone());
 
     let mut extensions = Vec::new();
-    let extension_name = "extension_name";
+    let extension_namespace = r_string();
+    let extension_name = r_string();
+    let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
     let extension_value = json!("extension_value");
     let extension = Extension {
-        name: extension_name.to_string(),
+        ty: extension_ty.clone(),
+        description: r_string(),
         extension: extension_value.clone(),
     };
-    extensions.push(extension);
-    let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
+    let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
+    extensions.push(other_extension);
 
     let ty = EntityTypeId::new_from_type(&namespace, &entity_type_name);
     let entity_type = EntityType::new(ty, &description, component_names, property_types, extensions);
@@ -68,12 +73,14 @@ fn create_entity_type_test() {
     assert!(!entity_type.has_own_property(r_string()));
     assert_eq!(property_type.data_type, entity_type.get_own_property(property_name).unwrap().data_type);
 
-    assert_eq!(&extension_name, &entity_type.extensions.first().unwrap().name);
+    assert_eq!(&extension_namespace, &entity_type.extensions.first().unwrap().namespace());
+    assert_eq!(&extension_name, &entity_type.extensions.first().unwrap().type_name());
 
     assert_eq!(extension_value, entity_type.extensions.first().unwrap().extension);
-    assert!(entity_type.has_own_extension(extension_name));
-    assert!(!entity_type.has_own_extension(r_string()));
-    assert_eq!(extension.extension, entity_type.get_own_extension(extension_name).unwrap().extension);
+    assert!(entity_type.has_own_extension(&extension_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
+    assert!(!entity_type.has_own_extension(&non_existing_extension));
+    assert_eq!(extension.extension, entity_type.get_own_extension(&extension_ty).unwrap().extension);
 }
 
 #[test]
@@ -115,7 +122,8 @@ fn entity_type_de_test() {
   ],
   "extensions": [
     {
-      "name": "ext_name",
+      "namespace": "ext_namespace",
+      "type_name": "ext_name",
       "extension": "ext_value"
     }
   ]
@@ -136,6 +144,7 @@ fn entity_type_de_test() {
     assert_eq!(SocketType::Input, property.socket_type);
     assert_eq!(1, entity_type.extensions.len());
     let extension = entity_type.extensions.first().unwrap();
-    assert_eq!("ext_name", extension.name);
+    assert_eq!("ext_namespace", extension.ty.namespace());
+    assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("ext_value"), extension.extension);
 }

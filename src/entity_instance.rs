@@ -12,6 +12,7 @@ use uuid::Uuid;
 use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
+use crate::ExtensionTypeId;
 use crate::MutablePropertyInstanceSetter;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
@@ -146,14 +147,12 @@ impl MutablePropertyInstanceSetter for EntityInstance {
 }
 
 impl ExtensionContainer for EntityInstance {
-    fn has_own_extension<S: Into<String>>(&self, extension_name: S) -> bool {
-        let extension_name = extension_name.into();
-        self.extensions.iter().any(|extension| extension.name == extension_name)
+    fn has_own_extension(&self, extension_ty: &ExtensionTypeId) -> bool {
+        self.extensions.iter().any(|extension| &extension.ty == extension_ty)
     }
 
-    fn get_own_extension<S: Into<String>>(&self, extension_name: S) -> Option<Extension> {
-        let extension_name = extension_name.into();
-        self.extensions.iter().find(|extension| extension.name == extension_name).cloned()
+    fn get_own_extension(&self, extension_ty: &ExtensionTypeId) -> Option<Extension> {
+        self.extensions.iter().find(|extension| &extension.ty == extension_ty).cloned()
     }
 }
 

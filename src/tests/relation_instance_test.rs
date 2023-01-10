@@ -12,6 +12,7 @@ use crate::tests::utils::r_string;
 use crate::tests::utils::r_string_1000;
 use crate::Extension;
 use crate::ExtensionContainer;
+use crate::ExtensionTypeId;
 use crate::MutablePropertyInstanceSetter;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
@@ -32,16 +33,22 @@ fn relation_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
+
     let mut extensions = Vec::new();
-    let extension_name = "extension_name";
+    let extension_namespace = r_string();
+    let extension_name = r_string();
+    let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
     let extension_value = json!("extension_value");
     let extension = Extension {
-        name: extension_name.to_string(),
+        ty: extension_ty.clone(),
+        description: r_string(),
         extension: extension_value.clone(),
     };
-    extensions.push(extension);
-    let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
+    let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
+    extensions.push(other_extension);
+
     let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
     let relation_instance = RelationInstance {
         outbound_id,
@@ -60,11 +67,13 @@ fn relation_instance_test() {
     assert!(relation_instance.get(property_name.clone()).is_some());
     assert!(relation_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
-    assert_eq!(&extension_name, &relation_instance.extensions.first().unwrap().name);
+    assert_eq!(&extension_namespace, &relation_instance.extensions.first().unwrap().ty.namespace());
+    assert_eq!(&extension_name, &relation_instance.extensions.first().unwrap().ty.type_name());
     assert_eq!(extension_value, relation_instance.extensions.first().unwrap().extension);
-    assert!(relation_instance.has_own_extension(extension_name));
-    assert!(!relation_instance.has_own_extension(r_string()));
-    assert_eq!(extension.extension, relation_instance.get_own_extension(extension_name).unwrap().extension);
+    assert!(relation_instance.has_own_extension(&extension_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
+    assert!(!relation_instance.has_own_extension(&non_existing_extension));
+    assert_eq!(extension.extension, relation_instance.get_own_extension(&extension_ty).unwrap().extension);
 
     assert_eq!(
         format!("{}--[{}]-->{}", relation_instance.outbound_id, relation_instance.ty, relation_instance.inbound_id),
@@ -364,7 +373,8 @@ fn relation_instance_de_test() {
   },
   "extensions": [
     {
-      "name": "ext_name",
+      "namespace": "ext_namespace",
+      "type_name": "ext_name",
       "extension": "ext_value"
     }
   ]
@@ -382,6 +392,7 @@ fn relation_instance_de_test() {
     assert_eq!("property_value", relation_instance.properties.get("property_name").unwrap().as_str().unwrap());
     assert_eq!(1, relation_instance.extensions.len());
     let extension = relation_instance.extensions.first().unwrap();
-    assert_eq!("ext_name", extension.name);
+    assert_eq!("ext_namespace", extension.ty.namespace());
+    assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("ext_value"), extension.extension);
 }

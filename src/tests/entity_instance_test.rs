@@ -13,6 +13,7 @@ use crate::EntityInstance;
 use crate::EntityTypeId;
 use crate::Extension;
 use crate::ExtensionContainer;
+use crate::ExtensionTypeId;
 use crate::MutablePropertyInstanceSetter;
 use crate::NamespacedTypeGetter;
 use crate::PropertyInstanceGetter;
@@ -28,16 +29,21 @@ fn entity_instance_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
+
     let mut extensions = Vec::new();
-    let extension_name = "extension_name";
+    let extension_namespace = r_string();
+    let extension_name = r_string();
+    let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
     let extension_value = json!("extension_value");
     let extension = Extension {
-        name: extension_name.to_string(),
+        ty: extension_ty.clone(),
+        description: r_string(),
         extension: extension_value.clone(),
     };
-    extensions.push(extension);
-    let extension = Extension::new("other_extension", extension_value.clone());
     extensions.push(extension.clone());
+    let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
+    extensions.push(other_extension);
 
     let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let entity_instance = EntityInstance {
@@ -55,11 +61,12 @@ fn entity_instance_test() {
     assert!(entity_instance.get(property_name.clone()).is_some());
     assert!(entity_instance.get(r_string()).is_none());
     assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
-    assert_eq!(&extension_name, &entity_instance.extensions.first().unwrap().name);
-    assert_eq!(extension_value, entity_instance.extensions.first().unwrap().extension);
-    assert!(entity_instance.has_own_extension(extension_name));
-    assert!(!entity_instance.has_own_extension(r_string()));
-    assert_eq!(extension.extension, entity_instance.get_own_extension(extension_name).unwrap().extension);
+    assert_eq!(&extension_namespace, &entity_instance.extensions.first().unwrap().ty.namespace());
+    assert_eq!(&extension_name, &entity_instance.extensions.first().unwrap().ty.type_name());
+    assert!(entity_instance.has_own_extension(&extension_ty));
+    let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
+    assert!(!entity_instance.has_own_extension(&non_existing_extension));
+    assert_eq!(extension.extension, entity_instance.get_own_extension(&extension_ty).unwrap().extension);
     assert_eq!(format!("{}__{}", entity_instance.ty, entity_instance.id), format!("{}", entity_instance));
 }
 
@@ -166,16 +173,21 @@ fn entity_instance_ser_test() {
     let property_value = json!(r_string());
     let mut properties = HashMap::new();
     properties.insert(property_name.clone(), property_value.clone());
+
     let mut extensions = Vec::new();
-    let extension_name = "extension_name";
+    let extension_namespace = r_string();
+    let extension_name = r_string();
+    let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
     let extension_value = json!("extension_value");
     let extension = Extension {
-        name: extension_name.to_string(),
+        ty: extension_ty.clone(),
+        description: r_string(),
         extension: extension_value.clone(),
     };
     extensions.push(extension);
-    let extension = Extension::new("other_extension", extension_value.clone());
-    extensions.push(extension.clone());
+    let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
+    let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
+    extensions.push(other_extension);
 
     let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
     let entity_instance = EntityInstance {
@@ -200,12 +212,14 @@ fn entity_instance_de_test() {
   },
   "extensions": [
     {
-      "name": "extension_name",
+      "namespace": "ext_namespace",
+      "type_name": "ext_name",
       "extension": "extension_value"
     },
     {
-      "name": "other_extension",
-      "extension": "extension_value"
+      "namespace": "other_ext_namespace",
+      "type_name": "other_ext_name",
+      "extension": "other_extension_value"
     }
   ]
 }"#;
@@ -219,6 +233,7 @@ fn entity_instance_de_test() {
     assert_eq!("qEnGqwNeEL", property.as_str().unwrap());
     assert_eq!(2, entity_instance.extensions.len());
     let extension = entity_instance.extensions.first().unwrap();
-    assert_eq!("extension_name", extension.name);
+    assert_eq!("ext_namespace", extension.ty.namespace());
+    assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("extension_value"), extension.extension);
 }
