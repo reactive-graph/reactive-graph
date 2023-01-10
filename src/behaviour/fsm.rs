@@ -1,5 +1,3 @@
-use log::trace;
-
 use crate::model::BehaviourTypeId;
 use crate::model::ReactiveInstance;
 use crate::BehaviourReactiveInstanceContainer;
@@ -26,7 +24,6 @@ pub trait BehaviourFsm<T: ReactiveInstance>: BehaviourReactiveInstanceContainer<
 
     /// Executes a behaviour transition.
     fn transition(&self, target_state: BehaviourState) -> Result<(), BehaviourTransitionError> {
-        trace!("transition {:?} -> {:?}", self.get_state(), target_state);
         match self.get_state() {
             BehaviourState::Created => match target_state {
                 BehaviourState::Created => Err(BehaviourTransitionError::InvalidTransition),
