@@ -16,14 +16,14 @@ pub struct TypeDefinitionComponent {
     pub type_definition: TypeDefinition,
 
     /// The component.
-    pub component: ComponentTypeId,
+    pub component_ty: ComponentTypeId,
 }
 
 impl TypeDefinitionComponent {
-    pub fn new<T: Into<TypeDefinition>>(type_definition: T, component: ComponentTypeId) -> Self {
+    pub fn new<T: Into<TypeDefinition>, C: Into<ComponentTypeId>>(type_definition: T, component_ty: C) -> Self {
         TypeDefinitionComponent {
             type_definition: type_definition.into(),
-            component,
+            component_ty: component_ty.into(),
         }
     }
 }
