@@ -5,7 +5,7 @@ schema {
 }
 
 "Arithmetic operation with two inputs and one result"
-interface ArithmeticArithmeticGateComponent {
+interface Arithmetic_ArithmeticGate_Component {
   _c__arithmetic__arithmetic_gate: ID
   lhs: Float
   result: Float
@@ -13,21 +13,21 @@ interface ArithmeticArithmeticGateComponent {
 }
 
 "Arithmetic operation with one input and one result"
-interface ArithmeticArithmeticOperationComponent {
+interface Arithmetic_ArithmeticOperation_Component {
   _c__arithmetic__arithmetic_operation: ID
   lhs: Float
   result: Float
 }
 
 "The entity or relation has a description."
-interface BaseDescribableComponent {
+interface Base_Describable_Component {
   _c__base__describable: ID
   "The description of an entity or a relation"
   description: String
 }
 
 "The entity is licensed."
-interface BaseLicensedComponent {
+interface Base_Licensed_Component {
   _c__base__licensed: ID
   "Title, author, source and license. Best practices for attribution: https://wiki.creativecommons.org/wiki/best_practices_for_attribution"
   attribution: String
@@ -36,44 +36,44 @@ interface BaseLicensedComponent {
 }
 
 "The entity or relation has a name."
-interface BaseNamedComponent {
+interface Base_Named_Component {
   _c__base__named: ID
   "The name of an entity or a relation"
   name: String
 }
 
 "The relations between two entities are ordered using a ordinal number associated with sibling relations"
-interface BaseOrderedComponent {
+interface Base_Ordered_Component {
   _c__base__ordered: ID
   "The relation ordinal number associated with sibling relations"
   order: Float
 }
 
 "The entity is versioned."
-interface BaseVersionedComponent {
+interface Base_Versioned_Component {
   _c__base__versioned: ID
   "The version number. Use semantic versioning. See: https://semver.org/"
   version: String
 }
 
-interface BinaryBinaryDataComponent {
+interface Binary_BinaryData_Component {
   _c__binary__binary_data: ID
   data_url: String
 }
 
 "Loads binary data"
-interface BinaryLoadBinaryDataComponent {
+interface Binary_LoadBinaryData_Component {
   _c__binary__load_binary_data: ID
   data_url: String
 }
 
 "Saves binary data"
-interface BinarySaveBinaryDataComponent {
+interface Binary_SaveBinaryData_Component {
   _c__binary__save_binary_data: ID
   data_url: String
 }
 
-interface ComparisonComparisonGateComponent {
+interface Comparison_ComparisonGate_Component {
   _c__comparison__comparison_gate: ID
   lhs: String
   result: Boolean
@@ -81,13 +81,13 @@ interface ComparisonComparisonGateComponent {
 }
 
 "Loads a configuration file"
-interface ConfigConfigFileComponent {
+interface Config_ConfigFile_Component {
   _c__config__config_file: ID
   result: String
 }
 
 "A buffer of the given size"
-interface ConnectorBufferComponent {
+interface Connector_Buffer_Component {
   _c__connector__buffer: ID
   "The buffer with up to buffer_size elements"
   buffer: [String]!
@@ -96,7 +96,7 @@ interface ConnectorBufferComponent {
 }
 
 "Connects a property of an entity instance with a other property of another entity instance"
-interface ConnectorConnectorComponent {
+interface Connector_Connector_Component {
   _c__connector__connector: ID
   "The name of the inbound property"
   inbound_property_name: String
@@ -105,37 +105,38 @@ interface ConnectorConnectorComponent {
 }
 
 "Counts the number of propagations"
-interface ConnectorPropagationCounterComponent {
+interface Connector_PropagationCounter_Component {
   _c__connector__propagation_counter: ID
   "The count of propagations"
   propagation_count: Float
 }
 
 "This components spawns events."
-interface CoreEventComponent {
+interface Core_Event_Component {
   _c__core__event: ID
   event: String
 }
 
 "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
-interface CoreLabeledComponent {
+interface Core_Labeled_Component {
   _c__core__labeled: ID
   label: String
 }
 
+"Entities have a outbound relations and a inbound relations as well as components and properties "
 interface Entity {
   id: ID!
 }
 
 "Represents a file in the file system"
-interface FileFileComponent {
+interface File_File_Component {
   _c__file__file: ID
   "The filename"
   filename: String
 }
 
 "Triggers if the file with the given filename has been changed"
-interface FileFsNotifyComponent {
+interface File_FsNotify_Component {
   _c__file__fs_notify: ID
   "The filename"
   filename: String
@@ -144,7 +145,7 @@ interface FileFsNotifyComponent {
 }
 
 "Sends HTTP request to a given URL"
-interface HttpHttpComponent {
+interface Http_Http_Component {
   _c__http__http: ID
   "The HTTP method"
   method: String
@@ -157,7 +158,7 @@ interface HttpHttpComponent {
 }
 
 "Sends JSON-RPC request to a given URL"
-interface HttpJsonRpcComponent {
+interface Http_JsonRpc_Component {
   _c__http__json_rpc: ID
   error: String
   json_rpc_version: String
@@ -168,19 +169,19 @@ interface HttpJsonRpcComponent {
 }
 
 "Loads a JSON file"
-interface JsonLoadJsonComponent {
+interface Json_LoadJson_Component {
   _c__json__load_json: ID
   result: String
 }
 
 "Saves an object as JSON file"
-interface JsonSaveJsonComponent {
+interface Json_SaveJson_Component {
   _c__json__save_json: ID
   payload: String
 }
 
 "An action can be triggered"
-interface LogicalActionComponent {
+interface Logical_Action_Component {
   _c__logical__action: ID
   "The result"
   result: String
@@ -189,7 +190,7 @@ interface LogicalActionComponent {
 }
 
 "Depending on the given condition outputs a result"
-interface LogicalConditionComponent {
+interface Logical_Condition_Component {
   _c__logical__condition: ID
   "A boolean condition"
   condition: Boolean
@@ -198,14 +199,14 @@ interface LogicalConditionComponent {
 }
 
 "A generator sends a trigger"
-interface LogicalGeneratorComponent {
+interface Logical_Generator_Component {
   _c__logical__generator: ID
   "Sends a boolean trigger"
   trigger: Boolean
 }
 
 "Executes a logical operation on the inputs lhs and rhs and outputs the result"
-interface LogicalLogicalGateComponent {
+interface Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   lhs: Boolean
   result: Boolean
@@ -213,13 +214,13 @@ interface LogicalLogicalGateComponent {
 }
 
 "Executes a logical operation on the input lhs and outputs the result"
-interface LogicalLogicalOperationComponent {
+interface Logical_LogicalOperation_Component {
   _c__logical__logical_operation: ID
   lhs: Boolean
   result: Boolean
 }
 
-interface MetadataDublinCoreComponent {
+interface Metadata_DublinCore_Component {
   _c__metadata__dublin_core: ID
   "An entity responsible for making contributions to the resource."
   dc_contributor: String
@@ -253,236 +254,251 @@ interface MetadataDublinCoreComponent {
   dc_type: String
 }
 
-interface MetadataId3Component {
+interface Metadata_Id3_Component {
   _c__metadata__id3: ID
   id3_talb: String
 }
 
-interface NumericNumericGateComponent {
+interface Numeric_NumericGate_Component {
   _c__numeric__numeric_gate: ID
   lhs: Float
   result: Float
   rhs: Float
 }
 
-interface NumericNumericOperationComponent {
+interface Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   lhs: Float
   result: Float
 }
 
+"Relations have a outbound entity and a inbound entity as well as components and properties,"
 interface Relation {
+  instance_id: ID!
   key: ID!
 }
 
 "State of type array"
-interface StateStateArrayComponent {
+interface State_StateArray_Component {
   _c__state__state_array: ID
   set_state: [String]!
   state: [String]!
 }
 
 "State of type boolean"
-interface StateStateBooleanComponent {
+interface State_StateBoolean_Component {
   _c__state__state_boolean: ID
   set_state: Boolean
   state: Boolean
 }
 
-interface StateStateDebuggerDebugComponent {
+interface State_StateDebuggerDebug_Component {
   _c__state__state_debugger_debug: ID
 }
 
-interface StateStateDebuggerTraceComponent {
+interface State_StateDebuggerTrace_Component {
   _c__state__state_debugger_trace: ID
 }
 
 "State of type number"
-interface StateStateNumberComponent {
+interface State_StateNumber_Component {
   _c__state__state_number: ID
   set_state: Float
   state: Float
 }
 
 "State of type object"
-interface StateStateObjectComponent {
+interface State_StateObject_Component {
   _c__state__state_object: ID
   set_state: String
   state: String
 }
 
 "State of type string"
-interface StateStateStringComponent {
+interface State_StateString_Component {
   _c__state__state_string: ID
   set_state: String
   state: String
 }
 
-interface StringStringBoolOperationComponent {
+interface String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   lhs: String
   result: Boolean
 }
 
-interface StringStringComparisonComponent {
+interface String_StringComparison_Component {
   _c__string__string_comparison: ID
   lhs: String
   result: Boolean
   rhs: String
 }
 
-interface StringStringGateComponent {
+interface String_StringGate_Component {
   _c__string__string_gate: ID
   lhs: String
   result: String
   rhs: String
 }
 
-interface StringStringNumberOperationComponent {
+interface String_StringNumberOperation_Component {
   _c__string__string_number_operation: ID
   lhs: String
   result: Float
 }
 
-interface StringStringOperationComponent {
+interface String_StringOperation_Component {
   _c__string__string_operation: ID
   lhs: String
   result: String
 }
 
-interface StringStringStringNumberGateComponent {
+interface String_StringStringNumberGate_Component {
   _c__string__string_string_number_gate: ID
   lhs: String
   result: Float
   rhs: String
 }
 
-interface TaxonomyWeightedComponent {
+"Executes a system command"
+interface SystemCommand_SystemCommand_Component {
+  _c__system_command__system_command: ID
+  command: String
+  current_dir: String
+  parameters: [String]!
+  stderr: String
+  stdin: String
+  stdout: String
+}
+
+interface Taxonomy_Weighted_Component {
   _c__taxonomy__weighted: ID
   weight: Float
 }
 
 "Value of type array"
-interface ValueValueArrayComponent {
+interface Value_ValueArray_Component {
   _c__value__value_array: ID
   value: [String]!
 }
 
 "Value of type boolean"
-interface ValueValueBooleanComponent {
+interface Value_ValueBoolean_Component {
   _c__value__value_boolean: ID
   value: Boolean
 }
 
-interface ValueValueDebuggerDebugComponent {
+interface Value_ValueDebuggerDebug_Component {
   _c__value__value_debugger_debug: ID
 }
 
-interface ValueValueDebuggerTraceComponent {
+interface Value_ValueDebuggerTrace_Component {
   _c__value__value_debugger_trace: ID
 }
 
 "Value of type number"
-interface ValueValueNumberComponent {
+interface Value_ValueNumber_Component {
   _c__value__value_number: ID
   value: Float
 }
 
 "Value of type object"
-interface ValueValueObjectComponent {
+interface Value_ValueObject_Component {
   _c__value__value_object: ID
   value: String
 }
 
 "Value of type string"
-interface ValueValueStringComponent {
+interface Value_ValueString_Component {
   _c__value__value_string: ID
   value: String
 }
 
-union AllEntities = ArithmeticF64AddEntity | ArithmeticF64DecrementEntity | ArithmeticF64DivEntity | ArithmeticF64IncrementEntity | ArithmeticF64MaxEntity | ArithmeticF64MinEntity | ArithmeticF64ModEntity | ArithmeticF64MulEntity | ArithmeticF64SubEntity | ArithmeticI64AddEntity | ArithmeticI64DecrementEntity | ArithmeticI64DivEntity | ArithmeticI64IncrementEntity | ArithmeticI64MaxEntity | ArithmeticI64MinEntity | ArithmeticI64ModEntity | ArithmeticI64MulEntity | ArithmeticI64SubEntity | ArithmeticU64AddEntity | ArithmeticU64CounterEntity | ArithmeticU64DecrementEntity | ArithmeticU64DivEntity | ArithmeticU64IncrementEntity | ArithmeticU64MaxEntity | ArithmeticU64MinEntity | ArithmeticU64ModEntity | ArithmeticU64MulEntity | ArithmeticU64SubEntity | BaseCommentEntity | BinaryLoadBinaryDataEntity | BinarySaveBinaryDataEntity | ComparisonEqualsEntity | ComparisonGreaterThanEntity | ComparisonGreaterThanOrEqualsEntity | ComparisonLowerThanEntity | ComparisonLowerThanOrEqualsEntity | ComparisonNotEqualsEntity | ConfigConfigFileEntity | CoreShutdownEntity | CoreSystemEventEntity | FlowGenericFlowEntity | HttpHttpEntity | HttpJsonRpcEntity | JsonArrayContainsEntity | JsonArrayGetByIndexEntity | JsonArrayLengthEntity | JsonArrayPopEntity | JsonArrayPushEntity | JsonArrayReverseEntity | JsonLoadJsonEntity | JsonObjectGetPropertyEntity | JsonObjectKeysEntity | JsonObjectRemovePropertyEntity | JsonObjectSetPropertyEntity | JsonSaveJsonEntity | LogicalAnd3Entity | LogicalAndEntity | LogicalIfThenElseEntity | LogicalNandEntity | LogicalNorEntity | LogicalNotEntity | LogicalOrEntity | LogicalToggleEntity | LogicalTriggerEntity | LogicalXnorEntity | LogicalXorEntity | NumericF64AbsEntity | NumericF64AcosEntity | NumericF64AcoshEntity | NumericF64AsinEntity | NumericF64AsinhEntity | NumericF64Atan2Entity | NumericF64AtanEntity | NumericF64AtanhEntity | NumericF64CbrtEntity | NumericF64CeilEntity | NumericF64CosEntity | NumericF64CoshEntity | NumericF64Exp2Entity | NumericF64ExpEntity | NumericF64FloorEntity | NumericF64FractEntity | NumericF64HypotEntity | NumericF64LnEntity | NumericF64Log10Entity | NumericF64Log2Entity | NumericF64LogEntity | NumericF64PowEntity | NumericF64RecipEntity | NumericF64RoundEntity | NumericF64SignumEntity | NumericF64SinEntity | NumericF64SinhEntity | NumericF64SqrtEntity | NumericF64TanEntity | NumericF64TanhEntity | NumericF64ToDegreesEntity | NumericF64ToRadiansEntity | NumericF64TruncEntity | NumericI64AbsEntity | NumericI64SignumEntity | RandomRandomBoolEntity | RandomRandomF64Entity | RandomRandomF64PseudoEntity | RandomRandomF64RangeEntity | RandomRandomI64Entity | RandomRandomI64PseudoEntity | RandomRandomI64RangeEntity | RandomRandomStringEntity | RandomRandomU64Entity | RandomRandomU64PseudoEntity | RandomRandomU64RangeEntity | RandomRandomUuidEntity | StateStateArrayEntity | StateStateBooleanEntity | StateStateNumberEntity | StateStateObjectEntity | StateStateStringEntity | StringCamelCaseEntity | StringCapitalizeEntity | StringCharCountEntity | StringCharCountGraphemesEntity | StringChopAfterEntity | StringChopAfterLastEntity | StringChopBeforeEntity | StringChopBeforeLastEntity | StringChopRemovePrefixEntity | StringChopRemoveSuffixEntity | StringConcatEntity | StringContainsEntity | StringCountSubstringsEntity | StringCountUniqueWordsEntity | StringCountWordsEntity | StringDecapitalizeEntity | StringEndsWithEntity | StringEscapeHtmlEntity | StringEscapeRegexpEntity | StringIsAlphaDigitEntity | StringIsAlphaEntity | StringIsBlankEntity | StringIsCamelCaseEntity | StringIsCapitalizeEntity | StringIsDecapitalizeEntity | StringIsDigitEntity | StringIsEmptyEntity | StringIsKebabCaseEntity | StringIsLowerFirstEntity | StringIsLowercaseEntity | StringIsNumericEntity | StringIsPascalCaseEntity | StringIsShoutyKebabCaseEntity | StringIsShoutySnakeCaseEntity | StringIsSnakeCaseEntity | StringIsTitleCaseEntity | StringIsTrainCaseEntity | StringIsUpperFirstEntity | StringIsUppercaseEntity | StringKebabCaseEntity | StringLowerFirstEntity | StringLowercaseEntity | StringPascalCaseEntity | StringReverseEntity | StringShoutyKebabCaseEntity | StringShoutySnakeCaseEntity | StringSnakeCaseEntity | StringStartsWithEntity | StringStringLengthEntity | StringStripHtmlTagsEntity | StringSwapCaseEntity | StringTemplatingEntity | StringTitleCaseEntity | StringTrainCaseEntity | StringTrimEndEntity | StringTrimEntity | StringTrimStartEntity | StringUnescapeHtmlEntity | StringUpperFirstEntity | StringUppercaseEntity | SystemSystemEnvEntity | TaxonomyCategoryEntity | TaxonomyTagEntity | ValueValueArrayEntity | ValueValueBooleanEntity | ValueValueNumberEntity | ValueValueObjectEntity | ValueValueStringEntity
+"Any entity."
+union AllEntities = ArithmeticF64_Add_Entity | ArithmeticF64_Decrement_Entity | ArithmeticF64_Div_Entity | ArithmeticF64_Increment_Entity | ArithmeticF64_Max_Entity | ArithmeticF64_Min_Entity | ArithmeticF64_Mod_Entity | ArithmeticF64_Mul_Entity | ArithmeticF64_Sub_Entity | ArithmeticI64_Add_Entity | ArithmeticI64_Decrement_Entity | ArithmeticI64_Div_Entity | ArithmeticI64_Increment_Entity | ArithmeticI64_Max_Entity | ArithmeticI64_Min_Entity | ArithmeticI64_Mod_Entity | ArithmeticI64_Mul_Entity | ArithmeticI64_Sub_Entity | ArithmeticU64_Add_Entity | ArithmeticU64_Counter_Entity | ArithmeticU64_Decrement_Entity | ArithmeticU64_Div_Entity | ArithmeticU64_Increment_Entity | ArithmeticU64_Max_Entity | ArithmeticU64_Min_Entity | ArithmeticU64_Mod_Entity | ArithmeticU64_Mul_Entity | ArithmeticU64_Sub_Entity | Base_Comment_Entity | Binary_LoadBinaryData_Entity | Binary_SaveBinaryData_Entity | Comparison_Equals_Entity | Comparison_GreaterThanOrEquals_Entity | Comparison_GreaterThan_Entity | Comparison_LowerThanOrEquals_Entity | Comparison_LowerThan_Entity | Comparison_NotEquals_Entity | Config_ConfigFile_Entity | Core_Shutdown_Entity | Core_SystemEvent_Entity | Flow_GenericFlow_Entity | Http_Http_Entity | Http_JsonRpc_Entity | Json_ArrayContains_Entity | Json_ArrayGetByIndex_Entity | Json_ArrayLength_Entity | Json_ArrayPop_Entity | Json_ArrayPush_Entity | Json_ArrayReverse_Entity | Json_LoadJson_Entity | Json_ObjectGetProperty_Entity | Json_ObjectKeys_Entity | Json_ObjectRemoveProperty_Entity | Json_ObjectSetProperty_Entity | Json_SaveJson_Entity | Logical_And3_Entity | Logical_And_Entity | Logical_IfThenElse_Entity | Logical_Nand_Entity | Logical_Nor_Entity | Logical_Not_Entity | Logical_Or_Entity | Logical_Toggle_Entity | Logical_Trigger_Entity | Logical_Xnor_Entity | Logical_Xor_Entity | NumericF64_Abs_Entity | NumericF64_Acos_Entity | NumericF64_Acosh_Entity | NumericF64_Asin_Entity | NumericF64_Asinh_Entity | NumericF64_Atan2_Entity | NumericF64_Atan_Entity | NumericF64_Atanh_Entity | NumericF64_Cbrt_Entity | NumericF64_Ceil_Entity | NumericF64_Cos_Entity | NumericF64_Cosh_Entity | NumericF64_Exp2_Entity | NumericF64_Exp_Entity | NumericF64_Floor_Entity | NumericF64_Fract_Entity | NumericF64_Hypot_Entity | NumericF64_Ln_Entity | NumericF64_Log10_Entity | NumericF64_Log2_Entity | NumericF64_Log_Entity | NumericF64_Pow_Entity | NumericF64_Recip_Entity | NumericF64_Round_Entity | NumericF64_Signum_Entity | NumericF64_Sin_Entity | NumericF64_Sinh_Entity | NumericF64_Sqrt_Entity | NumericF64_Tan_Entity | NumericF64_Tanh_Entity | NumericF64_ToDegrees_Entity | NumericF64_ToRadians_Entity | NumericF64_Trunc_Entity | NumericI64_Abs_Entity | NumericI64_Signum_Entity | Random_RandomBool_Entity | Random_RandomF64Pseudo_Entity | Random_RandomF64Range_Entity | Random_RandomF64_Entity | Random_RandomI64Pseudo_Entity | Random_RandomI64Range_Entity | Random_RandomI64_Entity | Random_RandomString_Entity | Random_RandomU64Pseudo_Entity | Random_RandomU64Range_Entity | Random_RandomU64_Entity | Random_RandomUuid_Entity | State_StateArray_Entity | State_StateBoolean_Entity | State_StateNumber_Entity | State_StateObject_Entity | State_StateString_Entity | String_CamelCase_Entity | String_Capitalize_Entity | String_CharCountGraphemes_Entity | String_CharCount_Entity | String_ChopAfterLast_Entity | String_ChopAfter_Entity | String_ChopBeforeLast_Entity | String_ChopBefore_Entity | String_ChopRemovePrefix_Entity | String_ChopRemoveSuffix_Entity | String_Concat_Entity | String_Contains_Entity | String_CountSubstrings_Entity | String_CountUniqueWords_Entity | String_CountWords_Entity | String_Decapitalize_Entity | String_EndsWith_Entity | String_EscapeHtml_Entity | String_EscapeRegexp_Entity | String_IsAlphaDigit_Entity | String_IsAlpha_Entity | String_IsBlank_Entity | String_IsCamelCase_Entity | String_IsCapitalize_Entity | String_IsDecapitalize_Entity | String_IsDigit_Entity | String_IsEmpty_Entity | String_IsKebabCase_Entity | String_IsLowerFirst_Entity | String_IsLowercase_Entity | String_IsNumeric_Entity | String_IsPascalCase_Entity | String_IsShoutyKebabCase_Entity | String_IsShoutySnakeCase_Entity | String_IsSnakeCase_Entity | String_IsTitleCase_Entity | String_IsTrainCase_Entity | String_IsUpperFirst_Entity | String_IsUppercase_Entity | String_KebabCase_Entity | String_LowerFirst_Entity | String_Lowercase_Entity | String_PascalCase_Entity | String_Reverse_Entity | String_ShoutyKebabCase_Entity | String_ShoutySnakeCase_Entity | String_SnakeCase_Entity | String_StartsWith_Entity | String_StringLength_Entity | String_StripHtmlTags_Entity | String_SwapCase_Entity | String_Templating_Entity | String_TitleCase_Entity | String_TrainCase_Entity | String_TrimEnd_Entity | String_TrimStart_Entity | String_Trim_Entity | String_UnescapeHtml_Entity | String_UpperFirst_Entity | String_Uppercase_Entity | SystemCommand_SystemCommand_Entity | System_SystemEnv_Entity | Taxonomy_Category_Entity | Taxonomy_Tag_Entity | Value_ValueArray_Entity | Value_ValueBoolean_Entity | Value_ValueNumber_Entity | Value_ValueObject_Entity | Value_ValueString_Entity
+
+"Subtract an floating point number from another floating point number"
+type ArithmeticF64Namespace {
+  add: [ArithmeticF64_Add_Entity!]!
+  decrement: [ArithmeticF64_Decrement_Entity!]!
+  div: [ArithmeticF64_Div_Entity!]!
+  increment: [ArithmeticF64_Increment_Entity!]!
+  max: [ArithmeticF64_Max_Entity!]!
+  min: [ArithmeticF64_Min_Entity!]!
+  mod: [ArithmeticF64_Mod_Entity!]!
+  mul: [ArithmeticF64_Mul_Entity!]!
+  sub: [ArithmeticF64_Sub_Entity!]!
+}
 
 "Adds two floating point numbers"
-type ArithmeticF64AddEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Add_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Decrements a number"
-type ArithmeticF64DecrementEntity implements ArithmeticArithmeticOperationComponent & Entity {
+type ArithmeticF64_Decrement_Entity implements Entity {
   _c__arithmetic__arithmetic_operation: ID
   id: ID!
-  lhs: Float
-  result: Float
 }
 
 "Divides two floating point numbers"
-type ArithmeticF64DivEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Div_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Increments a number"
-type ArithmeticF64IncrementEntity implements ArithmeticArithmeticOperationComponent & Entity {
+type ArithmeticF64_Increment_Entity implements Entity {
   _c__arithmetic__arithmetic_operation: ID
   id: ID!
-  lhs: Float
-  result: Float
 }
 
 "Returns the maximum value of two inputs"
-type ArithmeticF64MaxEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Max_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Returns the minimum value of two inputs"
-type ArithmeticF64MinEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Min_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Modulo"
-type ArithmeticF64ModEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Mod_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Multiply two floating point numbers"
-type ArithmeticF64MulEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Mul_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Subtract an floating point number from another floating point number"
-type ArithmeticF64SubEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticF64_Sub_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Adds two signed integer numbers"
-type ArithmeticI64AddEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64Namespace {
+  add: [ArithmeticI64_Add_Entity!]!
+  decrement: [ArithmeticI64_Decrement_Entity!]!
+  div: [ArithmeticI64_Div_Entity!]!
+  increment: [ArithmeticI64_Increment_Entity!]!
+  max: [ArithmeticI64_Max_Entity!]!
+  min: [ArithmeticI64_Min_Entity!]!
+  mod: [ArithmeticI64_Mod_Entity!]!
+  mul: [ArithmeticI64_Mul_Entity!]!
+  sub: [ArithmeticI64_Sub_Entity!]!
+}
+
+"Adds two signed integer numbers"
+type ArithmeticI64_Add_Entity implements Arithmetic_ArithmeticGate_Component & Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
   lhs: Float
@@ -491,77 +507,75 @@ type ArithmeticI64AddEntity implements ArithmeticArithmeticGateComponent & Entit
 }
 
 "Decrements a signed integer number"
-type ArithmeticI64DecrementEntity implements ArithmeticArithmeticOperationComponent & Entity {
+type ArithmeticI64_Decrement_Entity implements Entity {
   _c__arithmetic__arithmetic_operation: ID
   id: ID!
-  lhs: Float
-  result: Float
 }
 
 "Divides two signed integer numbers"
-type ArithmeticI64DivEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64_Div_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Increments a signed integer number"
-type ArithmeticI64IncrementEntity implements ArithmeticArithmeticOperationComponent & Entity {
+type ArithmeticI64_Increment_Entity implements Entity {
   _c__arithmetic__arithmetic_operation: ID
   id: ID!
-  lhs: Float
-  result: Float
 }
 
 "Returns the maximum value of two signed integer numbers"
-type ArithmeticI64MaxEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64_Max_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Returns the minimum value of two signed integer numbers"
-type ArithmeticI64MinEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64_Min_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Modulo"
-type ArithmeticI64ModEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64_Mod_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Multiply two signed integer numbers"
-type ArithmeticI64MulEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64_Mul_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Subtract an signed integer number from another signed integer number"
-type ArithmeticI64SubEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticI64_Sub_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
+}
+
+"Arithmetic operation with two inputs and one result"
+type ArithmeticNamespace {
+  arithmeticGateComponent: [Arithmetic_ArithmeticGate_Component!]!
+  arithmeticOperationComponent: [Arithmetic_ArithmeticOperation_Component!]!
 }
 
 "Adds two unsigned integer numbers"
-type ArithmeticU64AddEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64Namespace {
+  add: [ArithmeticU64_Add_Entity!]!
+  counter: [ArithmeticU64_Counter_Entity!]!
+  decrement: [ArithmeticU64_Decrement_Entity!]!
+  div: [ArithmeticU64_Div_Entity!]!
+  increment: [ArithmeticU64_Increment_Entity!]!
+  max: [ArithmeticU64_Max_Entity!]!
+  min: [ArithmeticU64_Min_Entity!]!
+  mod: [ArithmeticU64_Mod_Entity!]!
+  mul: [ArithmeticU64_Mul_Entity!]!
+  sub: [ArithmeticU64_Sub_Entity!]!
+}
+
+"Adds two unsigned integer numbers"
+type ArithmeticU64_Add_Entity implements Arithmetic_ArithmeticGate_Component & Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
   lhs: Float
@@ -570,7 +584,7 @@ type ArithmeticU64AddEntity implements ArithmeticArithmeticGateComponent & Entit
 }
 
 "If triggered the counter will be increased"
-type ArithmeticU64CounterEntity implements Entity {
+type ArithmeticU64_Counter_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   result: Float
@@ -579,77 +593,65 @@ type ArithmeticU64CounterEntity implements Entity {
 }
 
 "Decrements a unsigned integer number"
-type ArithmeticU64DecrementEntity implements ArithmeticArithmeticOperationComponent & Entity {
+type ArithmeticU64_Decrement_Entity implements Entity {
   _c__arithmetic__arithmetic_operation: ID
   id: ID!
-  lhs: Float
-  result: Float
 }
 
 "Divides two unsigned integer numbers"
-type ArithmeticU64DivEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64_Div_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Increments a unsigned integer number"
-type ArithmeticU64IncrementEntity implements ArithmeticArithmeticOperationComponent & Entity {
+type ArithmeticU64_Increment_Entity implements Entity {
   _c__arithmetic__arithmetic_operation: ID
   id: ID!
-  lhs: Float
-  result: Float
 }
 
 "Returns the maximum value of two unsigned integer numbers"
-type ArithmeticU64MaxEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64_Max_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Returns the minimum value of two unsigned integer numbers"
-type ArithmeticU64MinEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64_Min_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Modulo"
-type ArithmeticU64ModEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64_Mod_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Multiply two unsigned integer numbers"
-type ArithmeticU64MulEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64_Mul_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "Subtract an unsigned integer number from another unsigned integer number"
-type ArithmeticU64SubEntity implements ArithmeticArithmeticGateComponent & Entity {
+type ArithmeticU64_Sub_Entity implements Entity {
   _c__arithmetic__arithmetic_gate: ID
   id: ID!
-  lhs: Float
-  result: Float
-  rhs: Float
 }
 
 "A simple comment"
-type BaseCommentEntity implements BaseDescribableComponent & BaseNamedComponent & Entity {
+type BaseNamespace {
+  comment: [Base_Comment_Entity!]!
+  describableComponent: [Base_Describable_Component!]!
+  licensedComponent: [Base_Licensed_Component!]!
+  namedComponent: [Base_Named_Component!]!
+  orderedComponent: [Base_Ordered_Component!]!
+  versionedComponent: [Base_Versioned_Component!]!
+}
+
+"A simple comment"
+type Base_Comment_Entity implements Base_Describable_Component & Base_Named_Component & Entity {
   _c__base__describable: ID
   _c__base__named: ID
   "The description of an entity or a relation"
@@ -659,8 +661,17 @@ type BaseCommentEntity implements BaseDescribableComponent & BaseNamedComponent 
   name: String
 }
 
+"Saves binary data"
+type BinaryNamespace {
+  binaryDataComponent: [Binary_BinaryData_Component!]!
+  loadBinaryData: [Binary_LoadBinaryData_Entity!]!
+  loadBinaryDataComponent: [Binary_LoadBinaryData_Component!]!
+  saveBinaryData: [Binary_SaveBinaryData_Entity!]!
+  saveBinaryDataComponent: [Binary_SaveBinaryData_Component!]!
+}
+
 "Loads binary data"
-type BinaryLoadBinaryDataEntity implements BaseNamedComponent & BinaryBinaryDataComponent & BinaryLoadBinaryDataComponent & Entity & FileFileComponent & LogicalActionComponent {
+type Binary_LoadBinaryData_Entity implements Base_Named_Component & Binary_BinaryData_Component & Binary_LoadBinaryData_Component & Entity & File_File_Component & Logical_Action_Component {
   _c__base__named: ID
   _c__binary__binary_data: ID
   _c__binary__load_binary_data: ID
@@ -679,7 +690,7 @@ type BinaryLoadBinaryDataEntity implements BaseNamedComponent & BinaryBinaryData
 }
 
 "Saves binary data"
-type BinarySaveBinaryDataEntity implements BaseNamedComponent & BinaryBinaryDataComponent & BinarySaveBinaryDataComponent & Entity & FileFileComponent & LogicalActionComponent {
+type Binary_SaveBinaryData_Entity implements Base_Named_Component & Binary_BinaryData_Component & Binary_SaveBinaryData_Component & Entity & File_File_Component & Logical_Action_Component {
   _c__base__named: ID
   _c__binary__binary_data: ID
   _c__binary__save_binary_data: ID
@@ -697,8 +708,19 @@ type BinarySaveBinaryDataEntity implements BaseNamedComponent & BinaryBinaryData
   trigger: Boolean
 }
 
+"Checks if lhs not equal to rhs"
+type ComparisonNamespace {
+  comparisonGateComponent: [Comparison_ComparisonGate_Component!]!
+  equals: [Comparison_Equals_Entity!]!
+  greaterThan: [Comparison_GreaterThan_Entity!]!
+  greaterThanOrEquals: [Comparison_GreaterThanOrEquals_Entity!]!
+  lowerThan: [Comparison_LowerThan_Entity!]!
+  lowerThanOrEquals: [Comparison_LowerThanOrEquals_Entity!]!
+  notEquals: [Comparison_NotEquals_Entity!]!
+}
+
 "Checks if lhs is equal to rhs"
-type ComparisonEqualsEntity implements ComparisonComparisonGateComponent & Entity {
+type Comparison_Equals_Entity implements Comparison_ComparisonGate_Component & Entity {
   _c__comparison__comparison_gate: ID
   id: ID!
   lhs: String
@@ -706,17 +728,8 @@ type ComparisonEqualsEntity implements ComparisonComparisonGateComponent & Entit
   rhs: String
 }
 
-"Checks if lhs is greater than rhs"
-type ComparisonGreaterThanEntity implements Entity {
-  _c__comparison__comparison_gate: ID
-  id: ID!
-  lhs: Float
-  result: Boolean
-  rhs: Float
-}
-
 "Checks if lhs is greater than or equal to rhs"
-type ComparisonGreaterThanOrEqualsEntity implements Entity {
+type Comparison_GreaterThanOrEquals_Entity implements Entity {
   _c__comparison__comparison_gate: ID
   id: ID!
   lhs: Float
@@ -724,8 +737,8 @@ type ComparisonGreaterThanOrEqualsEntity implements Entity {
   rhs: Float
 }
 
-"Checks if lhs is lower than rhs"
-type ComparisonLowerThanEntity implements Entity {
+"Checks if lhs is greater than rhs"
+type Comparison_GreaterThan_Entity implements Entity {
   _c__comparison__comparison_gate: ID
   id: ID!
   lhs: Float
@@ -734,7 +747,16 @@ type ComparisonLowerThanEntity implements Entity {
 }
 
 "Checks if lhs is lower than or equal to rhs"
-type ComparisonLowerThanOrEqualsEntity implements Entity {
+type Comparison_LowerThanOrEquals_Entity implements Entity {
+  _c__comparison__comparison_gate: ID
+  id: ID!
+  lhs: Float
+  result: Boolean
+  rhs: Float
+}
+
+"Checks if lhs is lower than rhs"
+type Comparison_LowerThan_Entity implements Entity {
   _c__comparison__comparison_gate: ID
   id: ID!
   lhs: Float
@@ -743,7 +765,7 @@ type ComparisonLowerThanOrEqualsEntity implements Entity {
 }
 
 "Checks if lhs not equal to rhs"
-type ComparisonNotEqualsEntity implements ComparisonComparisonGateComponent & Entity {
+type Comparison_NotEquals_Entity implements Comparison_ComparisonGate_Component & Entity {
   _c__comparison__comparison_gate: ID
   id: ID!
   lhs: String
@@ -752,7 +774,13 @@ type ComparisonNotEqualsEntity implements ComparisonComparisonGateComponent & En
 }
 
 "Loads a configuration file"
-type ConfigConfigFileEntity implements BaseNamedComponent & Entity & FileFileComponent & LogicalActionComponent {
+type ConfigNamespace {
+  configFile: [Config_ConfigFile_Entity!]!
+  configFileComponent: [Config_ConfigFile_Component!]!
+}
+
+"Loads a configuration file"
+type Config_ConfigFile_Entity implements Base_Named_Component & Entity & File_File_Component & Logical_Action_Component {
   _c__base__named: ID
   _c__config__config_file: ID
   _c__file__file: ID
@@ -768,8 +796,28 @@ type ConfigConfigFileEntity implements BaseNamedComponent & Entity & FileFileCom
   trigger: Boolean
 }
 
+"Connects a property with a other property and logs changes to the trace logger"
+type ConnectorNamespace {
+  bufferComponent: [Connector_Buffer_Component!]!
+  bufferedFifoConnector: [Connector_BufferedFifoConnector_Relation!]!
+  connectorComponent: [Connector_Connector_Component!]!
+  debounceConnector: [Connector_DebounceConnector_Relation!]!
+  debugConnector: [Connector_DebugConnector_Relation!]!
+  decrementByConnector: [Connector_DecrementByConnector_Relation!]!
+  defaultConnector: [Connector_DefaultConnector_Relation!]!
+  delayConnector: [Connector_DelayConnector_Relation!]!
+  incrementByConnector: [Connector_IncrementByConnector_Relation!]!
+  numericInterpolationConnector: [Connector_NumericInterpolationConnector_Relation!]!
+  parseFloatConnector: [Connector_ParseFloatConnector_Relation!]!
+  parseIntConnector: [Connector_ParseIntConnector_Relation!]!
+  propagationCounterComponent: [Connector_PropagationCounter_Component!]!
+  threadedConnector: [Connector_ThreadedConnector_Relation!]!
+  toStringConnector: [Connector_ToStringConnector_Relation!]!
+  traceConnector: [Connector_TraceConnector_Relation!]!
+}
+
 "Connects a property with a other property and buffers the values in a FIFO buffer before propagation"
-type ConnectorBufferedFifoConnectorRelation implements ConnectorBufferComponent & ConnectorConnectorComponent & Relation {
+type Connector_BufferedFifoConnector_Relation implements Connector_Buffer_Component & Connector_Connector_Component & Relation {
   _c__connector__buffer: ID
   _c__connector__connector: ID
   "The buffer with up to buffer_size elements"
@@ -779,6 +827,7 @@ type ConnectorBufferedFifoConnectorRelation implements ConnectorBufferComponent 
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -786,11 +835,12 @@ type ConnectorBufferedFifoConnectorRelation implements ConnectorBufferComponent 
 }
 
 "Connects a property with a other property and propagates the value if and only if the value is different"
-type ConnectorDebounceConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_DebounceConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -798,11 +848,12 @@ type ConnectorDebounceConnectorRelation implements ConnectorConnectorComponent &
 }
 
 "Connects a property with a other property and logs changes to the debug logger"
-type ConnectorDebugConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_DebugConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -810,11 +861,12 @@ type ConnectorDebugConnectorRelation implements ConnectorConnectorComponent & Re
 }
 
 "Connects a outbound property with another property. The value of the outbound property will be subtracted from the value of the inbound property."
-type ConnectorDecrementByConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_DecrementByConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -822,11 +874,12 @@ type ConnectorDecrementByConnectorRelation implements ConnectorConnectorComponen
 }
 
 "Connects a property of an entity instance with a other property of another entity instance"
-type ConnectorDefaultConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_DefaultConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -834,13 +887,14 @@ type ConnectorDefaultConnectorRelation implements ConnectorConnectorComponent & 
 }
 
 "Connects a property with a other property after the given milli seconds"
-type ConnectorDelayConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_DelayConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   "The delay in milli seconds"
   delay: Float
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -848,11 +902,12 @@ type ConnectorDelayConnectorRelation implements ConnectorConnectorComponent & Re
 }
 
 "Connects a outbound property with another property. The value of the outbound property will be added to the value of the inbound property."
-type ConnectorIncrementByConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_IncrementByConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -860,7 +915,7 @@ type ConnectorIncrementByConnectorRelation implements ConnectorConnectorComponen
 }
 
 "Connects a property with a other property and interpolate the numeric values before propagation"
-type ConnectorNumericInterpolationConnectorRelation implements ConnectorBufferComponent & ConnectorConnectorComponent & Relation {
+type Connector_NumericInterpolationConnector_Relation implements Connector_Buffer_Component & Connector_Connector_Component & Relation {
   _c__connector__buffer: ID
   _c__connector__connector: ID
   "The buffer with up to buffer_size elements"
@@ -870,6 +925,7 @@ type ConnectorNumericInterpolationConnectorRelation implements ConnectorBufferCo
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -877,11 +933,12 @@ type ConnectorNumericInterpolationConnectorRelation implements ConnectorBufferCo
 }
 
 "Connects an string property of an entity instance with a number property of another entity instance. Outgoing string point values gets converted to floating point numbers if possible"
-type ConnectorParseFloatConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_ParseFloatConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -889,11 +946,12 @@ type ConnectorParseFloatConnectorRelation implements ConnectorConnectorComponent
 }
 
 "Connects an string property of an entity instance with a number property of another entity instance. Outgoing string values gets converted to integer numbers if possible"
-type ConnectorParseIntConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_ParseIntConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -901,11 +959,12 @@ type ConnectorParseIntConnectorRelation implements ConnectorConnectorComponent &
 }
 
 "Connects a property with a other property. The propagation will run in a new thread"
-type ConnectorThreadedConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_ThreadedConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -913,11 +972,12 @@ type ConnectorThreadedConnectorRelation implements ConnectorConnectorComponent &
 }
 
 "Connects an number property of an entity instance with a string property of another entity instance. Outgoing integer values gets converted to string"
-type ConnectorToStringConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_ToStringConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
@@ -925,30 +985,36 @@ type ConnectorToStringConnectorRelation implements ConnectorConnectorComponent &
 }
 
 "Connects a property with a other property and logs changes to the trace logger"
-type ConnectorTraceConnectorRelation implements ConnectorConnectorComponent & Relation {
+type Connector_TraceConnector_Relation implements Connector_Connector_Component & Relation {
   _c__connector__connector: ID
   inbound: AllEntities!
   "The name of the inbound property"
   inbound_property_name: String
+  instance_id: ID!
   key: ID!
   outbound: AllEntities!
   "The name of the outbound property"
   outbound_property_name: String
 }
 
-type CoreShutdownEntity implements CoreLabeledComponent & Entity & LogicalActionComponent {
+type CoreNamespace {
+  eventComponent: [Core_Event_Component!]!
+  labeledComponent: [Core_Labeled_Component!]!
+  shutdown: [Core_Shutdown_Entity!]!
+  systemEvent: [Core_SystemEvent_Entity!]!
+}
+
+type Core_Shutdown_Entity implements Core_Labeled_Component & Entity {
   _c__core__labeled: ID
   _c__logical__action: ID
   id: ID!
   label: String
-  "The result"
-  result: String
   shutdown: Boolean
   trigger: Boolean
 }
 
 "Events of the type system"
-type CoreSystemEventEntity implements CoreEventComponent & CoreLabeledComponent & Entity {
+type Core_SystemEvent_Entity implements Core_Event_Component & Core_Labeled_Component & Entity {
   _c__core__event: ID
   _c__core__labeled: ID
   event: String
@@ -956,15 +1022,34 @@ type CoreSystemEventEntity implements CoreEventComponent & CoreLabeledComponent 
   label: String
 }
 
+"Triggers if the file with the given filename has been changed"
+type FileNamespace {
+  fileComponent: [File_File_Component!]!
+  fsNotifyComponent: [File_FsNotify_Component!]!
+}
+
 "Generic flow without inputs and outputs"
-type FlowGenericFlowEntity implements CoreLabeledComponent & Entity {
+type FlowNamespace {
+  genericFlow: [Flow_GenericFlow_Entity!]!
+}
+
+"Generic flow without inputs and outputs"
+type Flow_GenericFlow_Entity implements Core_Labeled_Component & Entity {
   _c__core__labeled: ID
   id: ID!
   label: String
 }
 
+"Sends JSON-RPC request to a given URL"
+type HttpNamespace {
+  http: [Http_Http_Entity!]!
+  httpComponent: [Http_Http_Component!]!
+  jsonRpc: [Http_JsonRpc_Entity!]!
+  jsonRpcComponent: [Http_JsonRpc_Component!]!
+}
+
 "Sends HTTP request to a given URL"
-type HttpHttpEntity implements Entity & HttpHttpComponent {
+type Http_Http_Entity implements Entity & Http_Http_Component {
   _c__http__http: ID
   _c__logical__action: ID
   id: ID!
@@ -981,23 +1066,36 @@ type HttpHttpEntity implements Entity & HttpHttpComponent {
 }
 
 "Sends JSON-RPC request to a given URL"
-type HttpJsonRpcEntity implements Entity & LogicalActionComponent {
+type Http_JsonRpc_Entity implements Entity & Logical_Action_Component {
   _c__http__json_rpc: ID
   _c__logical__action: ID
-  error: String
   id: ID!
-  json_rpc_version: String
-  method: String
-  params: String
   "The result"
   result: String
   "On receiving a boolean trigger the action will be executed"
   trigger: Boolean
-  url: String
+}
+
+"Saves an object as JSON file"
+type JsonNamespace {
+  arrayContains: [Json_ArrayContains_Entity!]!
+  arrayGetByIndex: [Json_ArrayGetByIndex_Entity!]!
+  arrayLength: [Json_ArrayLength_Entity!]!
+  arrayPop: [Json_ArrayPop_Entity!]!
+  arrayPush: [Json_ArrayPush_Entity!]!
+  arrayReverse: [Json_ArrayReverse_Entity!]!
+  loadJson: [Json_LoadJson_Entity!]!
+  loadJsonComponent: [Json_LoadJson_Component!]!
+  objectGetProperty: [Json_ObjectGetProperty_Entity!]!
+  objectKeys: [Json_ObjectKeys_Entity!]!
+  objectRemoveProperty: [Json_ObjectRemoveProperty_Entity!]!
+  objectSetProperty: [Json_ObjectSetProperty_Entity!]!
+  saveJson: [Json_SaveJson_Entity!]!
+  saveJsonComponent: [Json_SaveJson_Component!]!
 }
 
 "Array Contains"
-type JsonArrayContainsEntity implements BaseNamedComponent & Entity {
+type Json_ArrayContains_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   array: [String]!
   id: ID!
@@ -1008,7 +1106,7 @@ type JsonArrayContainsEntity implements BaseNamedComponent & Entity {
 }
 
 "Array Get By Index"
-type JsonArrayGetByIndexEntity implements BaseNamedComponent & Entity {
+type Json_ArrayGetByIndex_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   array: [String]!
   id: ID!
@@ -1019,7 +1117,7 @@ type JsonArrayGetByIndexEntity implements BaseNamedComponent & Entity {
 }
 
 "Array Length"
-type JsonArrayLengthEntity implements BaseNamedComponent & Entity {
+type Json_ArrayLength_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   array: [String]!
   id: ID!
@@ -1029,7 +1127,7 @@ type JsonArrayLengthEntity implements BaseNamedComponent & Entity {
 }
 
 "Array Pop"
-type JsonArrayPopEntity implements BaseNamedComponent & Entity {
+type Json_ArrayPop_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   array: [String]!
   id: ID!
@@ -1040,7 +1138,7 @@ type JsonArrayPopEntity implements BaseNamedComponent & Entity {
 }
 
 "Array Push"
-type JsonArrayPushEntity implements BaseNamedComponent & Entity {
+type Json_ArrayPush_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   array: [String]!
   id: ID!
@@ -1051,7 +1149,7 @@ type JsonArrayPushEntity implements BaseNamedComponent & Entity {
 }
 
 "Array Reverse"
-type JsonArrayReverseEntity implements BaseNamedComponent & Entity {
+type Json_ArrayReverse_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   array: [String]!
   id: ID!
@@ -1061,7 +1159,7 @@ type JsonArrayReverseEntity implements BaseNamedComponent & Entity {
 }
 
 "Loads a JSON file"
-type JsonLoadJsonEntity implements BaseNamedComponent & Entity & FileFileComponent & LogicalActionComponent {
+type Json_LoadJson_Entity implements Base_Named_Component & Entity & File_File_Component & Logical_Action_Component {
   _c__base__named: ID
   _c__file__file: ID
   _c__json__load_json: ID
@@ -1078,7 +1176,7 @@ type JsonLoadJsonEntity implements BaseNamedComponent & Entity & FileFileCompone
 }
 
 "Object Get Property"
-type JsonObjectGetPropertyEntity implements BaseNamedComponent & Entity {
+type Json_ObjectGetProperty_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   id: ID!
   "The name of an entity or a relation"
@@ -1089,7 +1187,7 @@ type JsonObjectGetPropertyEntity implements BaseNamedComponent & Entity {
 }
 
 "Object Keys"
-type JsonObjectKeysEntity implements BaseNamedComponent & Entity {
+type Json_ObjectKeys_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   id: ID!
   keys: [String]!
@@ -1099,7 +1197,7 @@ type JsonObjectKeysEntity implements BaseNamedComponent & Entity {
 }
 
 "Object Remove Property"
-type JsonObjectRemovePropertyEntity implements BaseNamedComponent & Entity {
+type Json_ObjectRemoveProperty_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   id: ID!
   "The name of an entity or a relation"
@@ -1110,7 +1208,7 @@ type JsonObjectRemovePropertyEntity implements BaseNamedComponent & Entity {
 }
 
 "Object Set Property"
-type JsonObjectSetPropertyEntity implements BaseNamedComponent & Entity {
+type Json_ObjectSetProperty_Entity implements Base_Named_Component & Entity {
   _c__base__named: ID
   id: ID!
   "The name of an entity or a relation"
@@ -1122,7 +1220,7 @@ type JsonObjectSetPropertyEntity implements BaseNamedComponent & Entity {
 }
 
 "Saves an object as JSON file"
-type JsonSaveJsonEntity implements BaseNamedComponent & Entity & FileFileComponent & JsonSaveJsonComponent & LogicalActionComponent {
+type Json_SaveJson_Entity implements Base_Named_Component & Entity & File_File_Component & Json_SaveJson_Component & Logical_Action_Component {
   _c__base__named: ID
   _c__file__file: ID
   _c__json__save_json: ID
@@ -1139,8 +1237,28 @@ type JsonSaveJsonEntity implements BaseNamedComponent & Entity & FileFileCompone
   trigger: Boolean
 }
 
+"XOR"
+type LogicalNamespace {
+  actionComponent: [Logical_Action_Component!]!
+  and: [Logical_And_Entity!]!
+  and3: [Logical_And3_Entity!]!
+  conditionComponent: [Logical_Condition_Component!]!
+  generatorComponent: [Logical_Generator_Component!]!
+  ifThenElse: [Logical_IfThenElse_Entity!]!
+  logicalGateComponent: [Logical_LogicalGate_Component!]!
+  logicalOperationComponent: [Logical_LogicalOperation_Component!]!
+  nand: [Logical_Nand_Entity!]!
+  nor: [Logical_Nor_Entity!]!
+  not: [Logical_Not_Entity!]!
+  or: [Logical_Or_Entity!]!
+  toggle: [Logical_Toggle_Entity!]!
+  trigger: [Logical_Trigger_Entity!]!
+  xnor: [Logical_Xnor_Entity!]!
+  xor: [Logical_Xor_Entity!]!
+}
+
 "An AND Gate with three inputs"
-type LogicalAnd3Entity implements Entity {
+type Logical_And3_Entity implements Entity {
   id: ID!
   input1: Boolean
   input2: Boolean
@@ -1149,7 +1267,7 @@ type LogicalAnd3Entity implements Entity {
 }
 
 "AND"
-type LogicalAndEntity implements Entity & LogicalLogicalGateComponent {
+type Logical_And_Entity implements Entity & Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   id: ID!
   lhs: Boolean
@@ -1158,7 +1276,7 @@ type LogicalAndEntity implements Entity & LogicalLogicalGateComponent {
 }
 
 "Each time it's triggered, either the then-payload or the else-payload gets propagated"
-type LogicalIfThenElseEntity implements Entity & LogicalConditionComponent {
+type Logical_IfThenElse_Entity implements Entity & Logical_Condition_Component {
   _c__logical__condition: ID
   "A boolean condition"
   condition: Boolean
@@ -1172,7 +1290,7 @@ type LogicalIfThenElseEntity implements Entity & LogicalConditionComponent {
 }
 
 "NAND"
-type LogicalNandEntity implements Entity & LogicalLogicalGateComponent {
+type Logical_Nand_Entity implements Entity & Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   id: ID!
   lhs: Boolean
@@ -1181,7 +1299,7 @@ type LogicalNandEntity implements Entity & LogicalLogicalGateComponent {
 }
 
 "NOR"
-type LogicalNorEntity implements Entity & LogicalLogicalGateComponent {
+type Logical_Nor_Entity implements Entity & Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   id: ID!
   lhs: Boolean
@@ -1190,7 +1308,7 @@ type LogicalNorEntity implements Entity & LogicalLogicalGateComponent {
 }
 
 "NOT"
-type LogicalNotEntity implements Entity & LogicalLogicalOperationComponent {
+type Logical_Not_Entity implements Entity & Logical_LogicalOperation_Component {
   _c__logical__logical_operation: ID
   id: ID!
   lhs: Boolean
@@ -1198,7 +1316,7 @@ type LogicalNotEntity implements Entity & LogicalLogicalOperationComponent {
 }
 
 "OR"
-type LogicalOrEntity implements Entity & LogicalLogicalGateComponent {
+type Logical_Or_Entity implements Entity & Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   id: ID!
   lhs: Boolean
@@ -1207,27 +1325,21 @@ type LogicalOrEntity implements Entity & LogicalLogicalGateComponent {
 }
 
 "If triggered the state will toggled"
-type LogicalToggleEntity implements Entity {
+type Logical_Toggle_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   result: Boolean
-  "On receiving a boolean trigger the action will be executed"
-  trigger: Boolean
 }
 
 "If triggered the payload will be copied to the output"
-type LogicalTriggerEntity implements Entity & LogicalActionComponent {
+type Logical_Trigger_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   payload: String
-  "The result"
-  result: String
-  "On receiving a boolean trigger the action will be executed"
-  trigger: Boolean
 }
 
 "XNOR"
-type LogicalXnorEntity implements Entity & LogicalLogicalGateComponent {
+type Logical_Xnor_Entity implements Entity & Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   id: ID!
   lhs: Boolean
@@ -1236,7 +1348,7 @@ type LogicalXnorEntity implements Entity & LogicalLogicalGateComponent {
 }
 
 "XOR"
-type LogicalXorEntity implements Entity & LogicalLogicalGateComponent {
+type Logical_Xor_Entity implements Entity & Logical_LogicalGate_Component {
   _c__logical__logical_gate: ID
   id: ID!
   lhs: Boolean
@@ -1244,8 +1356,50 @@ type LogicalXorEntity implements Entity & LogicalLogicalGateComponent {
   rhs: Boolean
 }
 
+type MetadataNamespace {
+  dublinCoreComponent: [Metadata_DublinCore_Component!]!
+  id3Component: [Metadata_Id3_Component!]!
+}
+
+"Returns the integer part of a number"
+type NumericF64Namespace {
+  abs: [NumericF64_Abs_Entity!]!
+  acos: [NumericF64_Acos_Entity!]!
+  acosh: [NumericF64_Acosh_Entity!]!
+  asin: [NumericF64_Asin_Entity!]!
+  asinh: [NumericF64_Asinh_Entity!]!
+  atan: [NumericF64_Atan_Entity!]!
+  atan2: [NumericF64_Atan2_Entity!]!
+  atanh: [NumericF64_Atanh_Entity!]!
+  cbrt: [NumericF64_Cbrt_Entity!]!
+  ceil: [NumericF64_Ceil_Entity!]!
+  cos: [NumericF64_Cos_Entity!]!
+  cosh: [NumericF64_Cosh_Entity!]!
+  exp: [NumericF64_Exp_Entity!]!
+  exp2: [NumericF64_Exp2_Entity!]!
+  floor: [NumericF64_Floor_Entity!]!
+  fract: [NumericF64_Fract_Entity!]!
+  hypot: [NumericF64_Hypot_Entity!]!
+  ln: [NumericF64_Ln_Entity!]!
+  log: [NumericF64_Log_Entity!]!
+  log10: [NumericF64_Log10_Entity!]!
+  log2: [NumericF64_Log2_Entity!]!
+  pow: [NumericF64_Pow_Entity!]!
+  recip: [NumericF64_Recip_Entity!]!
+  round: [NumericF64_Round_Entity!]!
+  signum: [NumericF64_Signum_Entity!]!
+  sin: [NumericF64_Sin_Entity!]!
+  sinh: [NumericF64_Sinh_Entity!]!
+  sqrt: [NumericF64_Sqrt_Entity!]!
+  tan: [NumericF64_Tan_Entity!]!
+  tanh: [NumericF64_Tanh_Entity!]!
+  toDegrees: [NumericF64_ToDegrees_Entity!]!
+  toRadians: [NumericF64_ToRadians_Entity!]!
+  trunc: [NumericF64_Trunc_Entity!]!
+}
+
 "Computes the absolute value"
-type NumericF64AbsEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Abs_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1253,7 +1407,7 @@ type NumericF64AbsEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Computes the arccosine of a number"
-type NumericF64AcosEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Acos_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1261,7 +1415,7 @@ type NumericF64AcosEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Inverse hyperbolic cosine function"
-type NumericF64AcoshEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Acosh_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1269,7 +1423,7 @@ type NumericF64AcoshEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Computes the arcsine of a number"
-type NumericF64AsinEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Asin_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1277,7 +1431,7 @@ type NumericF64AsinEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Inverse hyperbolic sine function"
-type NumericF64AsinhEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Asinh_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1285,7 +1439,7 @@ type NumericF64AsinhEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Computes the four quadrant arctangent in radians"
-type NumericF64Atan2Entity implements Entity & NumericNumericGateComponent {
+type NumericF64_Atan2_Entity implements Entity & Numeric_NumericGate_Component {
   _c__numeric__numeric_gate: ID
   id: ID!
   lhs: Float
@@ -1294,7 +1448,7 @@ type NumericF64Atan2Entity implements Entity & NumericNumericGateComponent {
 }
 
 "Computes the arctangent of a number"
-type NumericF64AtanEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Atan_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1302,7 +1456,7 @@ type NumericF64AtanEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Inverse hyperbolic tangent function"
-type NumericF64AtanhEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Atanh_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1310,7 +1464,7 @@ type NumericF64AtanhEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Returns the cube root of a number"
-type NumericF64CbrtEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Cbrt_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1318,7 +1472,7 @@ type NumericF64CbrtEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns the smallest integer greater than or equal to a number"
-type NumericF64CeilEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Ceil_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1326,7 +1480,7 @@ type NumericF64CeilEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Computes the cosine of a number (in radians)"
-type NumericF64CosEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Cos_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1334,7 +1488,7 @@ type NumericF64CosEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Hyperbolic cosine function"
-type NumericF64CoshEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Cosh_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1342,7 +1496,7 @@ type NumericF64CoshEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns 2^(input)"
-type NumericF64Exp2Entity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Exp2_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1350,7 +1504,7 @@ type NumericF64Exp2Entity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns e^(input), (the exponential function)"
-type NumericF64ExpEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Exp_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1358,7 +1512,7 @@ type NumericF64ExpEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns the largest integer less than or equal to a number"
-type NumericF64FloorEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Floor_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1366,7 +1520,7 @@ type NumericF64FloorEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Returns the fractional part of a number"
-type NumericF64FractEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Fract_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1374,7 +1528,7 @@ type NumericF64FractEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
-type NumericF64HypotEntity implements Entity & NumericNumericGateComponent {
+type NumericF64_Hypot_Entity implements Entity & Numeric_NumericGate_Component {
   _c__numeric__numeric_gate: ID
   id: ID!
   lhs: Float
@@ -1383,7 +1537,7 @@ type NumericF64HypotEntity implements Entity & NumericNumericGateComponent {
 }
 
 "Returns the natural logarithm of the number"
-type NumericF64LnEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Ln_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1391,7 +1545,7 @@ type NumericF64LnEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns the base 10 logarithm of the number"
-type NumericF64Log10Entity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Log10_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1399,7 +1553,7 @@ type NumericF64Log10Entity implements Entity & NumericNumericOperationComponent 
 }
 
 "Returns the base 2 logarithm of the number"
-type NumericF64Log2Entity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Log2_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1407,7 +1561,7 @@ type NumericF64Log2Entity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns the logarithm of the number with respect to an arbitrary base"
-type NumericF64LogEntity implements Entity & NumericNumericGateComponent {
+type NumericF64_Log_Entity implements Entity & Numeric_NumericGate_Component {
   _c__numeric__numeric_gate: ID
   id: ID!
   lhs: Float
@@ -1416,7 +1570,7 @@ type NumericF64LogEntity implements Entity & NumericNumericGateComponent {
 }
 
 "Raises a number to a power"
-type NumericF64PowEntity implements Entity & NumericNumericGateComponent {
+type NumericF64_Pow_Entity implements Entity & Numeric_NumericGate_Component {
   _c__numeric__numeric_gate: ID
   id: ID!
   lhs: Float
@@ -1425,7 +1579,7 @@ type NumericF64PowEntity implements Entity & NumericNumericGateComponent {
 }
 
 "Takes the reciprocal (inverse) of a number, 1/x"
-type NumericF64RecipEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Recip_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1433,7 +1587,7 @@ type NumericF64RecipEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Returns the nearest integer to a number. Round half-way cases away from 0.0"
-type NumericF64RoundEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Round_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1441,7 +1595,7 @@ type NumericF64RoundEntity implements Entity & NumericNumericOperationComponent 
 }
 
 "Returns a number that represents the sign of the input"
-type NumericF64SignumEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Signum_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1449,7 +1603,7 @@ type NumericF64SignumEntity implements Entity & NumericNumericOperationComponent
 }
 
 "Computes the sine of a number (in radians)"
-type NumericF64SinEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Sin_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1457,7 +1611,7 @@ type NumericF64SinEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Hyperbolic sine function"
-type NumericF64SinhEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Sinh_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1465,7 +1619,7 @@ type NumericF64SinhEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns the square root of a number"
-type NumericF64SqrtEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Sqrt_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1473,7 +1627,7 @@ type NumericF64SqrtEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Computes the tangent of a number (in radians)"
-type NumericF64TanEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Tan_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1481,7 +1635,7 @@ type NumericF64TanEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Hyperbolic tangent function"
-type NumericF64TanhEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Tanh_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1489,7 +1643,7 @@ type NumericF64TanhEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Converts radians to degrees"
-type NumericF64ToDegreesEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_ToDegrees_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1497,7 +1651,7 @@ type NumericF64ToDegreesEntity implements Entity & NumericNumericOperationCompon
 }
 
 "Converts degrees to radians"
-type NumericF64ToRadiansEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_ToRadians_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1505,15 +1659,7 @@ type NumericF64ToRadiansEntity implements Entity & NumericNumericOperationCompon
 }
 
 "Returns the integer part of a number"
-type NumericF64TruncEntity implements Entity & NumericNumericOperationComponent {
-  _c__numeric__numeric_operation: ID
-  id: ID!
-  lhs: Float
-  result: Float
-}
-
-"Computes the absolute value"
-type NumericI64AbsEntity implements Entity & NumericNumericOperationComponent {
+type NumericF64_Trunc_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
@@ -1521,43 +1667,79 @@ type NumericI64AbsEntity implements Entity & NumericNumericOperationComponent {
 }
 
 "Returns a number that represents the sign of the input"
-type NumericI64SignumEntity implements Entity & NumericNumericOperationComponent {
+type NumericI64Namespace {
+  abs: [NumericI64_Abs_Entity!]!
+  signum: [NumericI64_Signum_Entity!]!
+}
+
+"Computes the absolute value"
+type NumericI64_Abs_Entity implements Entity & Numeric_NumericOperation_Component {
   _c__numeric__numeric_operation: ID
   id: ID!
   lhs: Float
   result: Float
 }
 
+"Returns a number that represents the sign of the input"
+type NumericI64_Signum_Entity implements Entity & Numeric_NumericOperation_Component {
+  _c__numeric__numeric_operation: ID
+  id: ID!
+  lhs: Float
+  result: Float
+}
+
+type NumericNamespace {
+  numericGateComponent: [Numeric_NumericGate_Component!]!
+  numericOperationComponent: [Numeric_NumericOperation_Component!]!
+}
+
 type Query {
-  arithmetic: arithmetic!
-  arithmetic_f64: arithmetic_f64!
-  arithmetic_i64: arithmetic_i64!
-  arithmetic_u64: arithmetic_u64!
-  base: base!
-  binary: binary!
-  comparison: comparison!
-  config: config!
-  connector: connector!
-  core: core!
-  file: file!
-  flow: flow!
-  http: http!
-  json: json!
-  logical: logical!
-  metadata: metadata!
-  numeric: numeric!
-  numeric_f64: numeric_f64!
-  numeric_i64: numeric_i64!
-  random: random!
-  state: state!
-  string: string!
-  system: system!
-  taxonomy: taxonomy!
-  value: value!
+  arithmetic: ArithmeticNamespace!
+  arithmeticF64: ArithmeticF64Namespace!
+  arithmeticI64: ArithmeticI64Namespace!
+  arithmeticU64: ArithmeticU64Namespace!
+  base: BaseNamespace!
+  binary: BinaryNamespace!
+  comparison: ComparisonNamespace!
+  config: ConfigNamespace!
+  connector: ConnectorNamespace!
+  core: CoreNamespace!
+  file: FileNamespace!
+  flow: FlowNamespace!
+  http: HttpNamespace!
+  json: JsonNamespace!
+  logical: LogicalNamespace!
+  metadata: MetadataNamespace!
+  numeric: NumericNamespace!
+  numericF64: NumericF64Namespace!
+  numericI64: NumericI64Namespace!
+  random: RandomNamespace!
+  state: StateNamespace!
+  string: StringNamespace!
+  system: SystemNamespace!
+  systemCommand: SystemCommandNamespace!
+  taxonomy: TaxonomyNamespace!
+  value: ValueNamespace!
+}
+
+"Random UUID"
+type RandomNamespace {
+  randomBool: [Random_RandomBool_Entity!]!
+  randomF64: [Random_RandomF64_Entity!]!
+  randomF64Pseudo: [Random_RandomF64Pseudo_Entity!]!
+  randomF64Range: [Random_RandomF64Range_Entity!]!
+  randomI64: [Random_RandomI64_Entity!]!
+  randomI64Pseudo: [Random_RandomI64Pseudo_Entity!]!
+  randomI64Range: [Random_RandomI64Range_Entity!]!
+  randomString: [Random_RandomString_Entity!]!
+  randomU64: [Random_RandomU64_Entity!]!
+  randomU64Pseudo: [Random_RandomU64Pseudo_Entity!]!
+  randomU64Range: [Random_RandomU64Range_Entity!]!
+  randomUuid: [Random_RandomUuid_Entity!]!
 }
 
 "Random Bool"
-type RandomRandomBoolEntity implements Entity {
+type Random_RandomBool_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   result: Boolean
@@ -1565,17 +1747,8 @@ type RandomRandomBoolEntity implements Entity {
   trigger: Boolean
 }
 
-"Random Floating Point Number"
-type RandomRandomF64Entity implements Entity {
-  _c__logical__action: ID
-  id: ID!
-  result: Float
-  "On receiving a boolean trigger the action will be executed"
-  trigger: Boolean
-}
-
 "Pseudo Random Floating Point Number"
-type RandomRandomF64PseudoEntity implements Entity {
+type Random_RandomF64Pseudo_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   result: Float
@@ -1585,7 +1758,37 @@ type RandomRandomF64PseudoEntity implements Entity {
 }
 
 "Random Floating Point Number Within Range"
-type RandomRandomF64RangeEntity implements Entity {
+type Random_RandomF64Range_Entity implements Entity {
+  _c__logical__action: ID
+  high: Float
+  id: ID!
+  low: Float
+  result: Float
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+"Random Floating Point Number"
+type Random_RandomF64_Entity implements Entity {
+  _c__logical__action: ID
+  id: ID!
+  result: Float
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+"Pseudo Random Signed Integer Number"
+type Random_RandomI64Pseudo_Entity implements Entity {
+  _c__logical__action: ID
+  id: ID!
+  result: Float
+  seed: Float
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+"Random Signed Integer Within Range"
+type Random_RandomI64Range_Entity implements Entity {
   _c__logical__action: ID
   high: Float
   id: ID!
@@ -1596,37 +1799,16 @@ type RandomRandomF64RangeEntity implements Entity {
 }
 
 "Random Signed Integer Number"
-type RandomRandomI64Entity implements Entity {
+type Random_RandomI64_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
-  result: Float
-  "On receiving a boolean trigger the action will be executed"
-  trigger: Boolean
-}
-
-"Pseudo Random Signed Integer Number"
-type RandomRandomI64PseudoEntity implements Entity {
-  _c__logical__action: ID
-  id: ID!
-  result: Float
-  seed: Float
-  "On receiving a boolean trigger the action will be executed"
-  trigger: Boolean
-}
-
-"Random Signed Integer Within Range"
-type RandomRandomI64RangeEntity implements Entity {
-  _c__logical__action: ID
-  high: Float
-  id: ID!
-  low: Float
   result: Float
   "On receiving a boolean trigger the action will be executed"
   trigger: Boolean
 }
 
 "Random String"
-type RandomRandomStringEntity implements Entity {
+type Random_RandomString_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   length: Float
@@ -1635,17 +1817,8 @@ type RandomRandomStringEntity implements Entity {
   trigger: Boolean
 }
 
-"Random Unsigned Integer Number"
-type RandomRandomU64Entity implements Entity {
-  _c__logical__action: ID
-  id: ID!
-  result: Float
-  "On receiving a boolean trigger the action will be executed"
-  trigger: Boolean
-}
-
 "Pseudo Random Unsigned Integer Number"
-type RandomRandomU64PseudoEntity implements Entity {
+type Random_RandomU64Pseudo_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   result: Float
@@ -1655,7 +1828,7 @@ type RandomRandomU64PseudoEntity implements Entity {
 }
 
 "Random Unsigned Integer Within Range"
-type RandomRandomU64RangeEntity implements Entity {
+type Random_RandomU64Range_Entity implements Entity {
   _c__logical__action: ID
   high: Float
   id: ID!
@@ -1665,8 +1838,17 @@ type RandomRandomU64RangeEntity implements Entity {
   trigger: Boolean
 }
 
+"Random Unsigned Integer Number"
+type Random_RandomU64_Entity implements Entity {
+  _c__logical__action: ID
+  id: ID!
+  result: Float
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
 "Random UUID"
-type RandomRandomUuidEntity implements Entity {
+type Random_RandomUuid_Entity implements Entity {
   _c__logical__action: ID
   id: ID!
   result: String
@@ -1674,8 +1856,24 @@ type RandomRandomUuidEntity implements Entity {
   trigger: Boolean
 }
 
+"State of type string"
+type StateNamespace {
+  stateArray: [State_StateArray_Entity!]!
+  stateArrayComponent: [State_StateArray_Component!]!
+  stateBoolean: [State_StateBoolean_Entity!]!
+  stateBooleanComponent: [State_StateBoolean_Component!]!
+  stateDebuggerDebugComponent: [State_StateDebuggerDebug_Component!]!
+  stateDebuggerTraceComponent: [State_StateDebuggerTrace_Component!]!
+  stateNumber: [State_StateNumber_Entity!]!
+  stateNumberComponent: [State_StateNumber_Component!]!
+  stateObject: [State_StateObject_Entity!]!
+  stateObjectComponent: [State_StateObject_Component!]!
+  stateString: [State_StateString_Entity!]!
+  stateStringComponent: [State_StateString_Component!]!
+}
+
 "State of type array"
-type StateStateArrayEntity implements BaseNamedComponent & Entity & StateStateArrayComponent & ValueValueArrayComponent {
+type State_StateArray_Entity implements Base_Named_Component & Entity & State_StateArray_Component & Value_ValueArray_Component {
   _c__base__named: ID
   _c__state__state_array: ID
   _c__value__value_array: ID
@@ -1688,7 +1886,7 @@ type StateStateArrayEntity implements BaseNamedComponent & Entity & StateStateAr
 }
 
 "State of type boolean"
-type StateStateBooleanEntity implements BaseNamedComponent & Entity & StateStateBooleanComponent & ValueValueBooleanComponent {
+type State_StateBoolean_Entity implements Base_Named_Component & Entity & State_StateBoolean_Component & Value_ValueBoolean_Component {
   _c__base__named: ID
   _c__state__state_boolean: ID
   _c__value__value_boolean: ID
@@ -1701,7 +1899,7 @@ type StateStateBooleanEntity implements BaseNamedComponent & Entity & StateState
 }
 
 "State of type number"
-type StateStateNumberEntity implements BaseNamedComponent & Entity & StateStateNumberComponent & ValueValueNumberComponent {
+type State_StateNumber_Entity implements Base_Named_Component & Entity & State_StateNumber_Component & Value_ValueNumber_Component {
   _c__base__named: ID
   _c__state__state_number: ID
   _c__value__value_number: ID
@@ -1714,7 +1912,7 @@ type StateStateNumberEntity implements BaseNamedComponent & Entity & StateStateN
 }
 
 "State of type object"
-type StateStateObjectEntity implements BaseNamedComponent & Entity & StateStateObjectComponent & ValueValueObjectComponent {
+type State_StateObject_Entity implements Base_Named_Component & Entity & State_StateObject_Component & Value_ValueObject_Component {
   _c__base__named: ID
   _c__state__state_object: ID
   _c__value__value_object: ID
@@ -1727,7 +1925,7 @@ type StateStateObjectEntity implements BaseNamedComponent & Entity & StateStateO
 }
 
 "State of type string"
-type StateStateStringEntity implements BaseNamedComponent & Entity & StateStateStringComponent & ValueValueStringComponent {
+type State_StateString_Entity implements Base_Named_Component & Entity & State_StateString_Component & Value_ValueString_Component {
   _c__base__named: ID
   _c__state__state_string: ID
   _c__value__value_string: ID
@@ -1739,8 +1937,78 @@ type StateStateStringEntity implements BaseNamedComponent & Entity & StateStateS
   value: String
 }
 
+"Uppercase"
+type StringNamespace {
+  camelCase: [String_CamelCase_Entity!]!
+  capitalize: [String_Capitalize_Entity!]!
+  charCount: [String_CharCount_Entity!]!
+  charCountGraphemes: [String_CharCountGraphemes_Entity!]!
+  chopAfter: [String_ChopAfter_Entity!]!
+  chopAfterLast: [String_ChopAfterLast_Entity!]!
+  chopBefore: [String_ChopBefore_Entity!]!
+  chopBeforeLast: [String_ChopBeforeLast_Entity!]!
+  chopRemovePrefix: [String_ChopRemovePrefix_Entity!]!
+  chopRemoveSuffix: [String_ChopRemoveSuffix_Entity!]!
+  concat: [String_Concat_Entity!]!
+  contains: [String_Contains_Entity!]!
+  countSubstrings: [String_CountSubstrings_Entity!]!
+  countUniqueWords: [String_CountUniqueWords_Entity!]!
+  countWords: [String_CountWords_Entity!]!
+  decapitalize: [String_Decapitalize_Entity!]!
+  endsWith: [String_EndsWith_Entity!]!
+  escapeHtml: [String_EscapeHtml_Entity!]!
+  escapeRegexp: [String_EscapeRegexp_Entity!]!
+  isAlpha: [String_IsAlpha_Entity!]!
+  isAlphaDigit: [String_IsAlphaDigit_Entity!]!
+  isBlank: [String_IsBlank_Entity!]!
+  isCamelCase: [String_IsCamelCase_Entity!]!
+  isCapitalize: [String_IsCapitalize_Entity!]!
+  isDecapitalize: [String_IsDecapitalize_Entity!]!
+  isDigit: [String_IsDigit_Entity!]!
+  isEmpty: [String_IsEmpty_Entity!]!
+  isKebabCase: [String_IsKebabCase_Entity!]!
+  isLowerFirst: [String_IsLowerFirst_Entity!]!
+  isLowercase: [String_IsLowercase_Entity!]!
+  isNumeric: [String_IsNumeric_Entity!]!
+  isPascalCase: [String_IsPascalCase_Entity!]!
+  isShoutyKebabCase: [String_IsShoutyKebabCase_Entity!]!
+  isShoutySnakeCase: [String_IsShoutySnakeCase_Entity!]!
+  isSnakeCase: [String_IsSnakeCase_Entity!]!
+  isTitleCase: [String_IsTitleCase_Entity!]!
+  isTrainCase: [String_IsTrainCase_Entity!]!
+  isUpperFirst: [String_IsUpperFirst_Entity!]!
+  isUppercase: [String_IsUppercase_Entity!]!
+  kebabCase: [String_KebabCase_Entity!]!
+  lowerFirst: [String_LowerFirst_Entity!]!
+  lowercase: [String_Lowercase_Entity!]!
+  pascalCase: [String_PascalCase_Entity!]!
+  reverse: [String_Reverse_Entity!]!
+  shoutyKebabCase: [String_ShoutyKebabCase_Entity!]!
+  shoutySnakeCase: [String_ShoutySnakeCase_Entity!]!
+  snakeCase: [String_SnakeCase_Entity!]!
+  startsWith: [String_StartsWith_Entity!]!
+  stringBoolOperationComponent: [String_StringBoolOperation_Component!]!
+  stringComparisonComponent: [String_StringComparison_Component!]!
+  stringGateComponent: [String_StringGate_Component!]!
+  stringLength: [String_StringLength_Entity!]!
+  stringNumberOperationComponent: [String_StringNumberOperation_Component!]!
+  stringOperationComponent: [String_StringOperation_Component!]!
+  stringStringNumberGateComponent: [String_StringStringNumberGate_Component!]!
+  stripHtmlTags: [String_StripHtmlTags_Entity!]!
+  swapCase: [String_SwapCase_Entity!]!
+  templating: [String_Templating_Entity!]!
+  titleCase: [String_TitleCase_Entity!]!
+  trainCase: [String_TrainCase_Entity!]!
+  trim: [String_Trim_Entity!]!
+  trimEnd: [String_TrimEnd_Entity!]!
+  trimStart: [String_TrimStart_Entity!]!
+  unescapeHtml: [String_UnescapeHtml_Entity!]!
+  upperFirst: [String_UpperFirst_Entity!]!
+  uppercase: [String_Uppercase_Entity!]!
+}
+
 "Converts the input to camel case"
-type StringCamelCaseEntity implements Entity & StringStringOperationComponent {
+type String_CamelCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -1748,40 +2016,31 @@ type StringCamelCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Converts the first character of the input to upper case and convert the rest of the input to lower case"
-type StringCapitalizeEntity implements Entity & StringStringOperationComponent {
+type String_Capitalize_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
   result: String
 }
 
-"Counts the characters"
-type StringCharCountEntity implements Entity & StringStringNumberOperationComponent {
-  _c__string__string_number_operation: ID
-  id: ID!
-  lhs: String
-  result: Float
-}
-
 "Counts the graphemes in the input string taking care of surrogate pairs and combining marks"
-type StringCharCountGraphemesEntity implements Entity & StringStringNumberOperationComponent {
+type String_CharCountGraphemes_Entity implements Entity & String_StringNumberOperation_Component {
   _c__string__string_number_operation: ID
   id: ID!
   lhs: String
   result: Float
 }
 
-"Returns everything after the given search"
-type StringChopAfterEntity implements Entity & StringStringGateComponent {
-  _c__string__string_gate: ID
+"Counts the characters"
+type String_CharCount_Entity implements Entity & String_StringNumberOperation_Component {
+  _c__string__string_number_operation: ID
   id: ID!
   lhs: String
-  result: String
-  rhs: String
+  result: Float
 }
 
 "Returns everything after the last given search"
-type StringChopAfterLastEntity implements Entity & StringStringGateComponent {
+type String_ChopAfterLast_Entity implements Entity & String_StringGate_Component {
   _c__string__string_gate: ID
   id: ID!
   lhs: String
@@ -1789,8 +2048,8 @@ type StringChopAfterLastEntity implements Entity & StringStringGateComponent {
   rhs: String
 }
 
-"Returns everything before the given search"
-type StringChopBeforeEntity implements Entity & StringStringGateComponent {
+"Returns everything after the given search"
+type String_ChopAfter_Entity implements Entity & String_StringGate_Component {
   _c__string__string_gate: ID
   id: ID!
   lhs: String
@@ -1799,7 +2058,16 @@ type StringChopBeforeEntity implements Entity & StringStringGateComponent {
 }
 
 "Returns everything before the last given search"
-type StringChopBeforeLastEntity implements Entity & StringStringGateComponent {
+type String_ChopBeforeLast_Entity implements Entity & String_StringGate_Component {
+  _c__string__string_gate: ID
+  id: ID!
+  lhs: String
+  result: String
+  rhs: String
+}
+
+"Returns everything before the given search"
+type String_ChopBefore_Entity implements Entity & String_StringGate_Component {
   _c__string__string_gate: ID
   id: ID!
   lhs: String
@@ -1808,7 +2076,7 @@ type StringChopBeforeLastEntity implements Entity & StringStringGateComponent {
 }
 
 "Extracts the prefix from the input"
-type StringChopRemovePrefixEntity implements Entity & StringStringGateComponent {
+type String_ChopRemovePrefix_Entity implements Entity & String_StringGate_Component {
   _c__string__string_gate: ID
   id: ID!
   lhs: String
@@ -1817,7 +2085,7 @@ type StringChopRemovePrefixEntity implements Entity & StringStringGateComponent 
 }
 
 "Extracts the suffix from the input"
-type StringChopRemoveSuffixEntity implements Entity & StringStringGateComponent {
+type String_ChopRemoveSuffix_Entity implements Entity & String_StringGate_Component {
   _c__string__string_gate: ID
   id: ID!
   lhs: String
@@ -1826,7 +2094,7 @@ type StringChopRemoveSuffixEntity implements Entity & StringStringGateComponent 
 }
 
 "Concat"
-type StringConcatEntity implements Entity & StringStringGateComponent {
+type String_Concat_Entity implements Entity & String_StringGate_Component {
   _c__string__string_gate: ID
   id: ID!
   lhs: String
@@ -1835,7 +2103,7 @@ type StringConcatEntity implements Entity & StringStringGateComponent {
 }
 
 "Contains"
-type StringContainsEntity implements Entity & StringStringComparisonComponent {
+type String_Contains_Entity implements Entity & String_StringComparison_Component {
   _c__string__string_comparison: ID
   id: ID!
   lhs: String
@@ -1844,7 +2112,7 @@ type StringContainsEntity implements Entity & StringStringComparisonComponent {
 }
 
 "Counts the number of substring appearances in the input string"
-type StringCountSubstringsEntity implements Entity & StringStringStringNumberGateComponent {
+type String_CountSubstrings_Entity implements Entity & String_StringStringNumberGate_Component {
   _c__string__string_string_number_gate: ID
   id: ID!
   lhs: String
@@ -1853,7 +2121,7 @@ type StringCountSubstringsEntity implements Entity & StringStringStringNumberGat
 }
 
 "Counting occurrences of unique words in the input string. This function respects unicode"
-type StringCountUniqueWordsEntity implements Entity & StringStringStringNumberGateComponent {
+type String_CountUniqueWords_Entity implements Entity & String_StringStringNumberGate_Component {
   _c__string__string_string_number_gate: ID
   id: ID!
   lhs: String
@@ -1862,7 +2130,7 @@ type StringCountUniqueWordsEntity implements Entity & StringStringStringNumberGa
 }
 
 "Counts the number of words in the input string"
-type StringCountWordsEntity implements Entity & StringStringStringNumberGateComponent {
+type String_CountWords_Entity implements Entity & String_StringStringNumberGate_Component {
   _c__string__string_string_number_gate: ID
   id: ID!
   lhs: String
@@ -1871,7 +2139,7 @@ type StringCountWordsEntity implements Entity & StringStringStringNumberGateComp
 }
 
 "Converts the first character of the input to lower case and convert the rest of the input to lower case"
-type StringDecapitalizeEntity implements Entity & StringStringOperationComponent {
+type String_Decapitalize_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -1879,7 +2147,7 @@ type StringDecapitalizeEntity implements Entity & StringStringOperationComponent
 }
 
 "Ends With"
-type StringEndsWithEntity implements Entity & StringStringComparisonComponent {
+type String_EndsWith_Entity implements Entity & String_StringComparison_Component {
   _c__string__string_comparison: ID
   id: ID!
   lhs: String
@@ -1888,7 +2156,7 @@ type StringEndsWithEntity implements Entity & StringStringComparisonComponent {
 }
 
 "Escapes HTML special characters"
-type StringEscapeHtmlEntity implements Entity & StringStringOperationComponent {
+type String_EscapeHtml_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -1896,7 +2164,7 @@ type StringEscapeHtmlEntity implements Entity & StringStringOperationComponent {
 }
 
 "Escapes the regular expression special characters"
-type StringEscapeRegexpEntity implements Entity & StringStringOperationComponent {
+type String_EscapeRegexp_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -1904,7 +2172,7 @@ type StringEscapeRegexpEntity implements Entity & StringStringOperationComponent
 }
 
 "Checks whether the input string contains contains only alpha and digit characters"
-type StringIsAlphaDigitEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsAlphaDigit_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1912,7 +2180,7 @@ type StringIsAlphaDigitEntity implements Entity & StringStringBoolOperationCompo
 }
 
 "Checks whether the input string contains only alpha characters"
-type StringIsAlphaEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsAlpha_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1920,7 +2188,7 @@ type StringIsAlphaEntity implements Entity & StringStringBoolOperationComponent 
 }
 
 "Checks whether the input string is empty or contains only whitespaces"
-type StringIsBlankEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsBlank_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1928,7 +2196,7 @@ type StringIsBlankEntity implements Entity & StringStringBoolOperationComponent 
 }
 
 "Checks whether the input string is camelCased"
-type StringIsCamelCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsCamelCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1936,7 +2204,7 @@ type StringIsCamelCaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Checks whether the input string is capitalized and the rest of the input string is lower case"
-type StringIsCapitalizeEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsCapitalize_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1944,7 +2212,7 @@ type StringIsCapitalizeEntity implements Entity & StringStringBoolOperationCompo
 }
 
 "Checks whether the input string is decapitalized and the rest of the input string is converted to lower case"
-type StringIsDecapitalizeEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsDecapitalize_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1952,7 +2220,7 @@ type StringIsDecapitalizeEntity implements Entity & StringStringBoolOperationCom
 }
 
 "Checks whether the input string contains only digit characters"
-type StringIsDigitEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsDigit_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1960,7 +2228,7 @@ type StringIsDigitEntity implements Entity & StringStringBoolOperationComponent 
 }
 
 "Checks whether the input string is empty"
-type StringIsEmptyEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsEmpty_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1968,7 +2236,7 @@ type StringIsEmptyEntity implements Entity & StringStringBoolOperationComponent 
 }
 
 "Checks whether the input string is kebab-cased"
-type StringIsKebabCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsKebabCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1976,7 +2244,7 @@ type StringIsKebabCaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Checks whether the input string has the first character in lower case"
-type StringIsLowerFirstEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsLowerFirst_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1984,7 +2252,7 @@ type StringIsLowerFirstEntity implements Entity & StringStringBoolOperationCompo
 }
 
 "Checks whether the input string has only lower case characters"
-type StringIsLowercaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsLowercase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -1992,7 +2260,7 @@ type StringIsLowercaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Checks whether the input string is numeric"
-type StringIsNumericEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsNumeric_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2000,7 +2268,7 @@ type StringIsNumericEntity implements Entity & StringStringBoolOperationComponen
 }
 
 "Checks whether the input string is PascalCased"
-type StringIsPascalCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsPascalCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2008,7 +2276,7 @@ type StringIsPascalCaseEntity implements Entity & StringStringBoolOperationCompo
 }
 
 "Checks whether the input string is SHOUTY-KEBAB-CASED"
-type StringIsShoutyKebabCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsShoutyKebabCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2016,7 +2284,7 @@ type StringIsShoutyKebabCaseEntity implements Entity & StringStringBoolOperation
 }
 
 "Checks whether the input string is SHOUTY_SNAKE_CASED"
-type StringIsShoutySnakeCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsShoutySnakeCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2024,7 +2292,7 @@ type StringIsShoutySnakeCaseEntity implements Entity & StringStringBoolOperation
 }
 
 "Checks whether the input string is snake_cased"
-type StringIsSnakeCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsSnakeCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2032,7 +2300,7 @@ type StringIsSnakeCaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Checks whether the input string is a titlecased string and there is at least one character"
-type StringIsTitleCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsTitleCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2040,7 +2308,7 @@ type StringIsTitleCaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Checks whether the input string is Train-Cased"
-type StringIsTrainCaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsTrainCase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2048,7 +2316,7 @@ type StringIsTrainCaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Checks whether the input string has the first character in upper case"
-type StringIsUpperFirstEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsUpperFirst_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2056,7 +2324,7 @@ type StringIsUpperFirstEntity implements Entity & StringStringBoolOperationCompo
 }
 
 "Checks whether the input string has only upper case characters"
-type StringIsUppercaseEntity implements Entity & StringStringBoolOperationComponent {
+type String_IsUppercase_Entity implements Entity & String_StringBoolOperation_Component {
   _c__string__string_bool_operation: ID
   id: ID!
   lhs: String
@@ -2064,7 +2332,7 @@ type StringIsUppercaseEntity implements Entity & StringStringBoolOperationCompon
 }
 
 "Converts the input to kebab case"
-type StringKebabCaseEntity implements Entity & StringStringOperationComponent {
+type String_KebabCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2072,7 +2340,7 @@ type StringKebabCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Converts the first character of the input to lower case"
-type StringLowerFirstEntity implements Entity & StringStringOperationComponent {
+type String_LowerFirst_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2080,7 +2348,7 @@ type StringLowerFirstEntity implements Entity & StringStringOperationComponent {
 }
 
 "Lowercase"
-type StringLowercaseEntity implements Entity & StringStringOperationComponent {
+type String_Lowercase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2088,7 +2356,7 @@ type StringLowercaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Converts the input to pascal case"
-type StringPascalCaseEntity implements Entity & StringStringOperationComponent {
+type String_PascalCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2096,7 +2364,7 @@ type StringPascalCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Reverses the given string"
-type StringReverseEntity implements Entity & StringStringOperationComponent {
+type String_Reverse_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2104,7 +2372,7 @@ type StringReverseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Converts the input to SHOUTY kebab case"
-type StringShoutyKebabCaseEntity implements Entity & StringStringOperationComponent {
+type String_ShoutyKebabCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2112,7 +2380,7 @@ type StringShoutyKebabCaseEntity implements Entity & StringStringOperationCompon
 }
 
 "Converts the title to SHOUTY snake case"
-type StringShoutySnakeCaseEntity implements Entity & StringStringOperationComponent {
+type String_ShoutySnakeCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2120,7 +2388,7 @@ type StringShoutySnakeCaseEntity implements Entity & StringStringOperationCompon
 }
 
 "Converts the subject to snake case"
-type StringSnakeCaseEntity implements Entity & StringStringOperationComponent {
+type String_SnakeCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2128,7 +2396,7 @@ type StringSnakeCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Starts With"
-type StringStartsWithEntity implements Entity & StringStringComparisonComponent {
+type String_StartsWith_Entity implements Entity & String_StringComparison_Component {
   _c__string__string_comparison: ID
   id: ID!
   lhs: String
@@ -2137,7 +2405,7 @@ type StringStartsWithEntity implements Entity & StringStringComparisonComponent 
 }
 
 "Returns the length of the input string"
-type StringStringLengthEntity implements Entity & StringStringNumberOperationComponent {
+type String_StringLength_Entity implements Entity & String_StringNumberOperation_Component {
   _c__string__string_number_operation: ID
   id: ID!
   lhs: String
@@ -2145,7 +2413,7 @@ type StringStringLengthEntity implements Entity & StringStringNumberOperationCom
 }
 
 "Strips all HTML tags"
-type StringStripHtmlTagsEntity implements Entity & StringStringOperationComponent {
+type String_StripHtmlTags_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2153,7 +2421,7 @@ type StringStripHtmlTagsEntity implements Entity & StringStringOperationComponen
 }
 
 "Converts the uppercase alpha characters of the input to lowercase and lowercase characters to uppercase"
-type StringSwapCaseEntity implements Entity & StringStringOperationComponent {
+type String_SwapCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2161,7 +2429,7 @@ type StringSwapCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Renders a template"
-type StringTemplatingEntity implements Entity {
+type String_Templating_Entity implements Entity {
   context: String
   id: ID!
   result: String
@@ -2169,7 +2437,7 @@ type StringTemplatingEntity implements Entity {
 }
 
 "Converts the input to title case"
-type StringTitleCaseEntity implements Entity & StringStringOperationComponent {
+type String_TitleCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2177,7 +2445,7 @@ type StringTitleCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Converts the input to train case"
-type StringTrainCaseEntity implements Entity & StringStringOperationComponent {
+type String_TrainCase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2185,15 +2453,7 @@ type StringTrainCaseEntity implements Entity & StringStringOperationComponent {
 }
 
 "Trim  End"
-type StringTrimEndEntity implements Entity & StringStringOperationComponent {
-  _c__string__string_operation: ID
-  id: ID!
-  lhs: String
-  result: String
-}
-
-"Trim"
-type StringTrimEntity implements Entity & StringStringOperationComponent {
+type String_TrimEnd_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2201,7 +2461,15 @@ type StringTrimEntity implements Entity & StringStringOperationComponent {
 }
 
 "Trim  Start"
-type StringTrimStartEntity implements Entity & StringStringOperationComponent {
+type String_TrimStart_Entity implements Entity & String_StringOperation_Component {
+  _c__string__string_operation: ID
+  id: ID!
+  lhs: String
+  result: String
+}
+
+"Trim"
+type String_Trim_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2209,7 +2477,7 @@ type StringTrimStartEntity implements Entity & StringStringOperationComponent {
 }
 
 "Unescapes HTML special characters"
-type StringUnescapeHtmlEntity implements Entity & StringStringOperationComponent {
+type String_UnescapeHtml_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2217,7 +2485,7 @@ type StringUnescapeHtmlEntity implements Entity & StringStringOperationComponent
 }
 
 "Converts the first character of the title to upper case"
-type StringUpperFirstEntity implements Entity & StringStringOperationComponent {
+type String_UpperFirst_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
@@ -2225,15 +2493,46 @@ type StringUpperFirstEntity implements Entity & StringStringOperationComponent {
 }
 
 "Uppercase"
-type StringUppercaseEntity implements Entity & StringStringOperationComponent {
+type String_Uppercase_Entity implements Entity & String_StringOperation_Component {
   _c__string__string_operation: ID
   id: ID!
   lhs: String
   result: String
 }
 
+"Executes a system command"
+type SystemCommandNamespace {
+  systemCommand: [SystemCommand_SystemCommand_Entity!]!
+  systemCommandComponent: [SystemCommand_SystemCommand_Component!]!
+}
+
+"Executes a system command"
+type SystemCommand_SystemCommand_Entity implements Base_Named_Component & Entity & Logical_Action_Component & SystemCommand_SystemCommand_Component {
+  _c__base__named: ID
+  _c__logical__action: ID
+  _c__system_command__system_command: ID
+  command: String
+  current_dir: String
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  parameters: [String]!
+  "The result"
+  result: String
+  stderr: String
+  stdin: String
+  stdout: String
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
 "System Environment Variable"
-type SystemSystemEnvEntity implements BaseNamedComponent & CoreLabeledComponent & Entity & ValueValueStringComponent {
+type SystemNamespace {
+  systemEnv: [System_SystemEnv_Entity!]!
+}
+
+"System Environment Variable"
+type System_SystemEnv_Entity implements Base_Named_Component & Core_Labeled_Component & Entity & Value_ValueString_Component {
   _c__base__named: ID
   _c__core__labeled: ID
   _c__value__value_string: ID
@@ -2244,66 +2543,109 @@ type SystemSystemEnvEntity implements BaseNamedComponent & CoreLabeledComponent 
   value: String
 }
 
+"The outbound entity is tagged with the inbound tag"
+type TaxonomyNamespace {
+  categorizedAs: [Taxonomy_CategorizedAs_Relation!]!
+  category: [Taxonomy_Category_Entity!]!
+  hasSubcategory: [Taxonomy_HasSubcategory_Relation!]!
+  tag: [Taxonomy_Tag_Entity!]!
+  taggedWith: [Taxonomy_TaggedWith_Relation!]!
+  weightedComponent: [Taxonomy_Weighted_Component!]!
+}
+
 "The outbound entity is categorized as the inbound category"
-type TaxonomyCategorizedAsRelation implements Relation & TaxonomyWeightedComponent {
+type Taxonomy_CategorizedAs_Relation implements Relation & Taxonomy_Weighted_Component {
   _c__taxonomy__weighted: ID
-  inbound_taxonomy_category: TaxonomyCategoryEntity!
+  "The entity which is categorized."
+  categorized_entity: AllEntities!
+  "The category."
+  category: Taxonomy_Category_Entity!
+  instance_id: ID!
   key: ID!
-  outbound: AllEntities!
   weight: Float
 }
 
 "A category is a fundamental and distinct class to which entities or concepts belong"
-type TaxonomyCategoryEntity implements BaseDescribableComponent & BaseNamedComponent & Entity {
+type Taxonomy_Category_Entity implements Base_Describable_Component & Base_Named_Component & Entity {
   _c__base__describable: ID
   _c__base__named: ID
+  "The relations between the category and the categorized entities."
+  categorized_as: [Taxonomy_CategorizedAs_Relation!]!
+  "The category categorizes these entities."
+  categorizes: [AllEntities!]!
   "The description of an entity or a relation"
   description: String
+  "The parent categories."
+  has_parent_categories: [Taxonomy_HasSubcategory_Relation!]!
+  "The sub categories."
+  has_sub_categories: [Taxonomy_HasSubcategory_Relation!]!
   id: ID!
-  "The outbound entity is categorized as the inbound category"
-  inbound_taxonomy_categorized_as: [TaxonomyCategorizedAsRelation!]!
-  "The outbound category has the inbound entity as sub category"
-  inbound_taxonomy_has_subcategory: [TaxonomyHasSubcategoryRelation!]!
   "The name of an entity or a relation"
   name: String
-  "The outbound category has the inbound entity as sub category"
-  outbound_taxonomy_has_subcategory: [TaxonomyHasSubcategoryRelation!]!
+  "The parent categories."
+  parent_categories: [Taxonomy_Category_Entity!]!
+  "The sub categories."
+  sub_categories: [Taxonomy_Category_Entity!]!
 }
 
 "The outbound category has the inbound entity as sub category"
-type TaxonomyHasSubcategoryRelation implements Relation & TaxonomyWeightedComponent {
+type Taxonomy_HasSubcategory_Relation implements Relation & Taxonomy_Weighted_Component {
   _c__taxonomy__weighted: ID
-  inbound_taxonomy_category: TaxonomyCategoryEntity!
+  instance_id: ID!
   key: ID!
-  outbound_taxonomy_category: TaxonomyCategoryEntity!
+  "The parent category."
+  parent_category: Taxonomy_Category_Entity!
+  "The sub category."
+  sub_category: Taxonomy_Category_Entity!
   weight: Float
 }
 
 "A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
-type TaxonomyTagEntity implements BaseNamedComponent & CoreLabeledComponent & Entity {
+type Taxonomy_Tag_Entity implements Base_Named_Component & Core_Labeled_Component & Entity {
   _c__base__named: ID
   _c__core__labeled: ID
   id: ID!
-  "The outbound entity is tagged with the inbound tag"
-  inbound_taxonomy_tagged_with: [TaxonomyTaggedWithRelation!]!
   label: String
   "The name of an entity or a relation"
   name: String
+  "Entities which are tagged by this tag."
+  tagged_entities: [AllEntities!]!
+  "The weighted relations between the tag and the tagged entities."
+  tags_entities: [Taxonomy_TaggedWith_Relation!]!
 }
 
 "The outbound entity is tagged with the inbound tag"
-type TaxonomyTaggedWithRelation implements CoreLabeledComponent & Relation & TaxonomyWeightedComponent {
+type Taxonomy_TaggedWith_Relation implements Core_Labeled_Component & Relation & Taxonomy_Weighted_Component {
   _c__core__labeled: ID
   _c__taxonomy__weighted: ID
-  inbound_taxonomy_tag: TaxonomyTagEntity!
+  instance_id: ID!
   key: ID!
   label: String
-  outbound: AllEntities!
+  "The tag."
+  tag: Taxonomy_Tag_Entity!
+  "The entity which is tagged."
+  tagged_entity: AllEntities!
   weight: Float
 }
 
+"Value of type string"
+type ValueNamespace {
+  valueArray: [Value_ValueArray_Entity!]!
+  valueArrayComponent: [Value_ValueArray_Component!]!
+  valueBoolean: [Value_ValueBoolean_Entity!]!
+  valueBooleanComponent: [Value_ValueBoolean_Component!]!
+  valueDebuggerDebugComponent: [Value_ValueDebuggerDebug_Component!]!
+  valueDebuggerTraceComponent: [Value_ValueDebuggerTrace_Component!]!
+  valueNumber: [Value_ValueNumber_Entity!]!
+  valueNumberComponent: [Value_ValueNumber_Component!]!
+  valueObject: [Value_ValueObject_Entity!]!
+  valueObjectComponent: [Value_ValueObject_Component!]!
+  valueString: [Value_ValueString_Entity!]!
+  valueStringComponent: [Value_ValueString_Component!]!
+}
+
 "Value of type array"
-type ValueValueArrayEntity implements BaseNamedComponent & Entity & ValueValueArrayComponent {
+type Value_ValueArray_Entity implements Base_Named_Component & Entity & Value_ValueArray_Component {
   _c__base__named: ID
   _c__value__value_array: ID
   id: ID!
@@ -2313,7 +2655,7 @@ type ValueValueArrayEntity implements BaseNamedComponent & Entity & ValueValueAr
 }
 
 "Value of type boolean"
-type ValueValueBooleanEntity implements BaseNamedComponent & Entity & ValueValueBooleanComponent {
+type Value_ValueBoolean_Entity implements Base_Named_Component & Entity & Value_ValueBoolean_Component {
   _c__base__named: ID
   _c__value__value_boolean: ID
   id: ID!
@@ -2323,7 +2665,7 @@ type ValueValueBooleanEntity implements BaseNamedComponent & Entity & ValueValue
 }
 
 "Value of type number"
-type ValueValueNumberEntity implements BaseNamedComponent & Entity & ValueValueNumberComponent {
+type Value_ValueNumber_Entity implements Base_Named_Component & Entity & Value_ValueNumber_Component {
   _c__base__named: ID
   _c__value__value_number: ID
   id: ID!
@@ -2333,7 +2675,7 @@ type ValueValueNumberEntity implements BaseNamedComponent & Entity & ValueValueN
 }
 
 "Value of type object"
-type ValueValueObjectEntity implements BaseNamedComponent & Entity & ValueValueObjectComponent {
+type Value_ValueObject_Entity implements Base_Named_Component & Entity & Value_ValueObject_Component {
   _c__base__named: ID
   _c__value__value_object: ID
   id: ID!
@@ -2343,341 +2685,11 @@ type ValueValueObjectEntity implements BaseNamedComponent & Entity & ValueValueO
 }
 
 "Value of type string"
-type ValueValueStringEntity implements BaseNamedComponent & Entity & ValueValueStringComponent {
+type Value_ValueString_Entity implements Base_Named_Component & Entity & Value_ValueString_Component {
   _c__base__named: ID
   _c__value__value_string: ID
   id: ID!
   "The name of an entity or a relation"
   name: String
   value: String
-}
-
-type arithmetic {
-  ArithmeticGateComponent: [ArithmeticArithmeticGateComponent!]!
-  ArithmeticOperationComponent: [ArithmeticArithmeticOperationComponent!]!
-}
-
-type arithmetic_f64 {
-  Add: [ArithmeticF64AddEntity!]!
-  Decrement: [ArithmeticF64DecrementEntity!]!
-  Div: [ArithmeticF64DivEntity!]!
-  Increment: [ArithmeticF64IncrementEntity!]!
-  Max: [ArithmeticF64MaxEntity!]!
-  Min: [ArithmeticF64MinEntity!]!
-  Mod: [ArithmeticF64ModEntity!]!
-  Mul: [ArithmeticF64MulEntity!]!
-  Sub: [ArithmeticF64SubEntity!]!
-}
-
-type arithmetic_i64 {
-  Add: [ArithmeticI64AddEntity!]!
-  Decrement: [ArithmeticI64DecrementEntity!]!
-  Div: [ArithmeticI64DivEntity!]!
-  Increment: [ArithmeticI64IncrementEntity!]!
-  Max: [ArithmeticI64MaxEntity!]!
-  Min: [ArithmeticI64MinEntity!]!
-  Mod: [ArithmeticI64ModEntity!]!
-  Mul: [ArithmeticI64MulEntity!]!
-  Sub: [ArithmeticI64SubEntity!]!
-}
-
-type arithmetic_u64 {
-  Add: [ArithmeticU64AddEntity!]!
-  Counter: [ArithmeticU64CounterEntity!]!
-  Decrement: [ArithmeticU64DecrementEntity!]!
-  Div: [ArithmeticU64DivEntity!]!
-  Increment: [ArithmeticU64IncrementEntity!]!
-  Max: [ArithmeticU64MaxEntity!]!
-  Min: [ArithmeticU64MinEntity!]!
-  Mod: [ArithmeticU64ModEntity!]!
-  Mul: [ArithmeticU64MulEntity!]!
-  Sub: [ArithmeticU64SubEntity!]!
-}
-
-type base {
-  Comment: [BaseCommentEntity!]!
-  DescribableComponent: [BaseDescribableComponent!]!
-  LicensedComponent: [BaseLicensedComponent!]!
-  NamedComponent: [BaseNamedComponent!]!
-  OrderedComponent: [BaseOrderedComponent!]!
-  VersionedComponent: [BaseVersionedComponent!]!
-}
-
-type binary {
-  BinaryDataComponent: [BinaryBinaryDataComponent!]!
-  LoadBinaryData: [BinaryLoadBinaryDataEntity!]!
-  LoadBinaryDataComponent: [BinaryLoadBinaryDataComponent!]!
-  SaveBinaryData: [BinarySaveBinaryDataEntity!]!
-  SaveBinaryDataComponent: [BinarySaveBinaryDataComponent!]!
-}
-
-type comparison {
-  ComparisonGateComponent: [ComparisonComparisonGateComponent!]!
-  Equals: [ComparisonEqualsEntity!]!
-  GreaterThan: [ComparisonGreaterThanEntity!]!
-  GreaterThanOrEquals: [ComparisonGreaterThanOrEqualsEntity!]!
-  LowerThan: [ComparisonLowerThanEntity!]!
-  LowerThanOrEquals: [ComparisonLowerThanOrEqualsEntity!]!
-  NotEquals: [ComparisonNotEqualsEntity!]!
-}
-
-type config {
-  ConfigFile: [ConfigConfigFileEntity!]!
-  ConfigFileComponent: [ConfigConfigFileComponent!]!
-}
-
-type connector {
-  BufferComponent: [ConnectorBufferComponent!]!
-  BufferedFifoConnector: [ConnectorBufferedFifoConnectorRelation!]!
-  ConnectorComponent: [ConnectorConnectorComponent!]!
-  DebounceConnector: [ConnectorDebounceConnectorRelation!]!
-  DebugConnector: [ConnectorDebugConnectorRelation!]!
-  DecrementByConnector: [ConnectorDecrementByConnectorRelation!]!
-  DefaultConnector: [ConnectorDefaultConnectorRelation!]!
-  DelayConnector: [ConnectorDelayConnectorRelation!]!
-  IncrementByConnector: [ConnectorIncrementByConnectorRelation!]!
-  NumericInterpolationConnector: [ConnectorNumericInterpolationConnectorRelation!]!
-  ParseFloatConnector: [ConnectorParseFloatConnectorRelation!]!
-  ParseIntConnector: [ConnectorParseIntConnectorRelation!]!
-  PropagationCounterComponent: [ConnectorPropagationCounterComponent!]!
-  ThreadedConnector: [ConnectorThreadedConnectorRelation!]!
-  ToStringConnector: [ConnectorToStringConnectorRelation!]!
-  TraceConnector: [ConnectorTraceConnectorRelation!]!
-}
-
-type core {
-  EventComponent: [CoreEventComponent!]!
-  LabeledComponent: [CoreLabeledComponent!]!
-  Shutdown: [CoreShutdownEntity!]!
-  SystemEvent: [CoreSystemEventEntity!]!
-}
-
-type file {
-  FileComponent: [FileFileComponent!]!
-  FsNotifyComponent: [FileFsNotifyComponent!]!
-}
-
-type flow {
-  GenericFlow: [FlowGenericFlowEntity!]!
-}
-
-type http {
-  Http: [HttpHttpEntity!]!
-  HttpComponent: [HttpHttpComponent!]!
-  JsonRpc: [HttpJsonRpcEntity!]!
-  JsonRpcComponent: [HttpJsonRpcComponent!]!
-}
-
-type json {
-  ArrayContains: [JsonArrayContainsEntity!]!
-  ArrayGetByIndex: [JsonArrayGetByIndexEntity!]!
-  ArrayLength: [JsonArrayLengthEntity!]!
-  ArrayPop: [JsonArrayPopEntity!]!
-  ArrayPush: [JsonArrayPushEntity!]!
-  ArrayReverse: [JsonArrayReverseEntity!]!
-  LoadJson: [JsonLoadJsonEntity!]!
-  LoadJsonComponent: [JsonLoadJsonComponent!]!
-  ObjectGetProperty: [JsonObjectGetPropertyEntity!]!
-  ObjectKeys: [JsonObjectKeysEntity!]!
-  ObjectRemoveProperty: [JsonObjectRemovePropertyEntity!]!
-  ObjectSetProperty: [JsonObjectSetPropertyEntity!]!
-  SaveJson: [JsonSaveJsonEntity!]!
-  SaveJsonComponent: [JsonSaveJsonComponent!]!
-}
-
-type logical {
-  ActionComponent: [LogicalActionComponent!]!
-  And: [LogicalAndEntity!]!
-  And3: [LogicalAnd3Entity!]!
-  ConditionComponent: [LogicalConditionComponent!]!
-  GeneratorComponent: [LogicalGeneratorComponent!]!
-  IfThenElse: [LogicalIfThenElseEntity!]!
-  LogicalGateComponent: [LogicalLogicalGateComponent!]!
-  LogicalOperationComponent: [LogicalLogicalOperationComponent!]!
-  Nand: [LogicalNandEntity!]!
-  Nor: [LogicalNorEntity!]!
-  Not: [LogicalNotEntity!]!
-  Or: [LogicalOrEntity!]!
-  Toggle: [LogicalToggleEntity!]!
-  Trigger: [LogicalTriggerEntity!]!
-  Xnor: [LogicalXnorEntity!]!
-  Xor: [LogicalXorEntity!]!
-}
-
-type metadata {
-  DublinCoreComponent: [MetadataDublinCoreComponent!]!
-  Id3Component: [MetadataId3Component!]!
-}
-
-type numeric {
-  NumericGateComponent: [NumericNumericGateComponent!]!
-  NumericOperationComponent: [NumericNumericOperationComponent!]!
-}
-
-type numeric_f64 {
-  Abs: [NumericF64AbsEntity!]!
-  Acos: [NumericF64AcosEntity!]!
-  Acosh: [NumericF64AcoshEntity!]!
-  Asin: [NumericF64AsinEntity!]!
-  Asinh: [NumericF64AsinhEntity!]!
-  Atan: [NumericF64AtanEntity!]!
-  Atan2: [NumericF64Atan2Entity!]!
-  Atanh: [NumericF64AtanhEntity!]!
-  Cbrt: [NumericF64CbrtEntity!]!
-  Ceil: [NumericF64CeilEntity!]!
-  Cos: [NumericF64CosEntity!]!
-  Cosh: [NumericF64CoshEntity!]!
-  Exp: [NumericF64ExpEntity!]!
-  Exp2: [NumericF64Exp2Entity!]!
-  Floor: [NumericF64FloorEntity!]!
-  Fract: [NumericF64FractEntity!]!
-  Hypot: [NumericF64HypotEntity!]!
-  Ln: [NumericF64LnEntity!]!
-  Log: [NumericF64LogEntity!]!
-  Log10: [NumericF64Log10Entity!]!
-  Log2: [NumericF64Log2Entity!]!
-  Pow: [NumericF64PowEntity!]!
-  Recip: [NumericF64RecipEntity!]!
-  Round: [NumericF64RoundEntity!]!
-  Signum: [NumericF64SignumEntity!]!
-  Sin: [NumericF64SinEntity!]!
-  Sinh: [NumericF64SinhEntity!]!
-  Sqrt: [NumericF64SqrtEntity!]!
-  Tan: [NumericF64TanEntity!]!
-  Tanh: [NumericF64TanhEntity!]!
-  ToDegrees: [NumericF64ToDegreesEntity!]!
-  ToRadians: [NumericF64ToRadiansEntity!]!
-  Trunc: [NumericF64TruncEntity!]!
-}
-
-type numeric_i64 {
-  Abs: [NumericI64AbsEntity!]!
-  Signum: [NumericI64SignumEntity!]!
-}
-
-type random {
-  RandomBool: [RandomRandomBoolEntity!]!
-  RandomF64: [RandomRandomF64Entity!]!
-  RandomF64Pseudo: [RandomRandomF64PseudoEntity!]!
-  RandomF64Range: [RandomRandomF64RangeEntity!]!
-  RandomI64: [RandomRandomI64Entity!]!
-  RandomI64Pseudo: [RandomRandomI64PseudoEntity!]!
-  RandomI64Range: [RandomRandomI64RangeEntity!]!
-  RandomString: [RandomRandomStringEntity!]!
-  RandomU64: [RandomRandomU64Entity!]!
-  RandomU64Pseudo: [RandomRandomU64PseudoEntity!]!
-  RandomU64Range: [RandomRandomU64RangeEntity!]!
-  RandomUuid: [RandomRandomUuidEntity!]!
-}
-
-type state {
-  StateArray: [StateStateArrayEntity!]!
-  StateArrayComponent: [StateStateArrayComponent!]!
-  StateBoolean: [StateStateBooleanEntity!]!
-  StateBooleanComponent: [StateStateBooleanComponent!]!
-  StateDebuggerDebugComponent: [StateStateDebuggerDebugComponent!]!
-  StateDebuggerTraceComponent: [StateStateDebuggerTraceComponent!]!
-  StateNumber: [StateStateNumberEntity!]!
-  StateNumberComponent: [StateStateNumberComponent!]!
-  StateObject: [StateStateObjectEntity!]!
-  StateObjectComponent: [StateStateObjectComponent!]!
-  StateString: [StateStateStringEntity!]!
-  StateStringComponent: [StateStateStringComponent!]!
-}
-
-type string {
-  CamelCase: [StringCamelCaseEntity!]!
-  Capitalize: [StringCapitalizeEntity!]!
-  CharCount: [StringCharCountEntity!]!
-  CharCountGraphemes: [StringCharCountGraphemesEntity!]!
-  ChopAfter: [StringChopAfterEntity!]!
-  ChopAfterLast: [StringChopAfterLastEntity!]!
-  ChopBefore: [StringChopBeforeEntity!]!
-  ChopBeforeLast: [StringChopBeforeLastEntity!]!
-  ChopRemovePrefix: [StringChopRemovePrefixEntity!]!
-  ChopRemoveSuffix: [StringChopRemoveSuffixEntity!]!
-  Concat: [StringConcatEntity!]!
-  Contains: [StringContainsEntity!]!
-  CountSubstrings: [StringCountSubstringsEntity!]!
-  CountUniqueWords: [StringCountUniqueWordsEntity!]!
-  CountWords: [StringCountWordsEntity!]!
-  Decapitalize: [StringDecapitalizeEntity!]!
-  EndsWith: [StringEndsWithEntity!]!
-  EscapeHtml: [StringEscapeHtmlEntity!]!
-  EscapeRegexp: [StringEscapeRegexpEntity!]!
-  IsAlpha: [StringIsAlphaEntity!]!
-  IsAlphaDigit: [StringIsAlphaDigitEntity!]!
-  IsBlank: [StringIsBlankEntity!]!
-  IsCamelCase: [StringIsCamelCaseEntity!]!
-  IsCapitalize: [StringIsCapitalizeEntity!]!
-  IsDecapitalize: [StringIsDecapitalizeEntity!]!
-  IsDigit: [StringIsDigitEntity!]!
-  IsEmpty: [StringIsEmptyEntity!]!
-  IsKebabCase: [StringIsKebabCaseEntity!]!
-  IsLowerFirst: [StringIsLowerFirstEntity!]!
-  IsLowercase: [StringIsLowercaseEntity!]!
-  IsNumeric: [StringIsNumericEntity!]!
-  IsPascalCase: [StringIsPascalCaseEntity!]!
-  IsShoutyKebabCase: [StringIsShoutyKebabCaseEntity!]!
-  IsShoutySnakeCase: [StringIsShoutySnakeCaseEntity!]!
-  IsSnakeCase: [StringIsSnakeCaseEntity!]!
-  IsTitleCase: [StringIsTitleCaseEntity!]!
-  IsTrainCase: [StringIsTrainCaseEntity!]!
-  IsUpperFirst: [StringIsUpperFirstEntity!]!
-  IsUppercase: [StringIsUppercaseEntity!]!
-  KebabCase: [StringKebabCaseEntity!]!
-  LowerFirst: [StringLowerFirstEntity!]!
-  Lowercase: [StringLowercaseEntity!]!
-  PascalCase: [StringPascalCaseEntity!]!
-  Reverse: [StringReverseEntity!]!
-  ShoutyKebabCase: [StringShoutyKebabCaseEntity!]!
-  ShoutySnakeCase: [StringShoutySnakeCaseEntity!]!
-  SnakeCase: [StringSnakeCaseEntity!]!
-  StartsWith: [StringStartsWithEntity!]!
-  StringBoolOperationComponent: [StringStringBoolOperationComponent!]!
-  StringComparisonComponent: [StringStringComparisonComponent!]!
-  StringGateComponent: [StringStringGateComponent!]!
-  StringLength: [StringStringLengthEntity!]!
-  StringNumberOperationComponent: [StringStringNumberOperationComponent!]!
-  StringOperationComponent: [StringStringOperationComponent!]!
-  StringStringNumberGateComponent: [StringStringStringNumberGateComponent!]!
-  StripHtmlTags: [StringStripHtmlTagsEntity!]!
-  SwapCase: [StringSwapCaseEntity!]!
-  Templating: [StringTemplatingEntity!]!
-  TitleCase: [StringTitleCaseEntity!]!
-  TrainCase: [StringTrainCaseEntity!]!
-  Trim: [StringTrimEntity!]!
-  TrimEnd: [StringTrimEndEntity!]!
-  TrimStart: [StringTrimStartEntity!]!
-  UnescapeHtml: [StringUnescapeHtmlEntity!]!
-  UpperFirst: [StringUpperFirstEntity!]!
-  Uppercase: [StringUppercaseEntity!]!
-}
-
-type system {
-  SystemEnv: [SystemSystemEnvEntity!]!
-}
-
-type taxonomy {
-  CategorizedAs: [TaxonomyCategorizedAsRelation!]!
-  Category: [TaxonomyCategoryEntity!]!
-  HasSubcategory: [TaxonomyHasSubcategoryRelation!]!
-  Tag: [TaxonomyTagEntity!]!
-  TaggedWith: [TaxonomyTaggedWithRelation!]!
-  WeightedComponent: [TaxonomyWeightedComponent!]!
-}
-
-type value {
-  ValueArray: [ValueValueArrayEntity!]!
-  ValueArrayComponent: [ValueValueArrayComponent!]!
-  ValueBoolean: [ValueValueBooleanEntity!]!
-  ValueBooleanComponent: [ValueValueBooleanComponent!]!
-  ValueDebuggerDebugComponent: [ValueValueDebuggerDebugComponent!]!
-  ValueDebuggerTraceComponent: [ValueValueDebuggerTraceComponent!]!
-  ValueNumber: [ValueValueNumberEntity!]!
-  ValueNumberComponent: [ValueValueNumberComponent!]!
-  ValueObject: [ValueValueObjectEntity!]!
-  ValueObjectComponent: [ValueValueObjectComponent!]!
-  ValueString: [ValueValueStringEntity!]!
-  ValueStringComponent: [ValueValueStringComponent!]!
 }
