@@ -14,6 +14,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [0.8.0] - 2022-02-01
+
+### Added
+
+- Plugins: Plugin resolver state machine
+- Plugins: Plugin dependencies and plugin versioning
+- Plugins: Plugin installation directory
+- Plugins: Hot deployment
+- Plugins: Gracefully shutdown and refresh plugins and their behaviours during deployment / hot deployment
+- Plugins: GraphQL: List, start, stop and restart plugins
+- Plugins: GraphQL: List unsatisfied dependencies
+- Behaviours: Lifecycles (init, connect, disconnect, shutdown)
+- Behaviours: A state machine manages the behaviour (connecting, disconnecting, reconnecting)
+- Behaviours: Compute behaviour initially
+- Behaviours: Validation layer for behaviours
+- Behaviours: Factories can construct behaviour instances
+- Behaviours: Handle behaviour construction errors
+- Behaviours: Macro support for implementing behaviours
+- Behaviours: Added GraphQL API for behaviours + Allow connecting and disconnecting behaviours manually (flow editor)
+- Behaviours: Unit tests for lots of reactive behaviours
+- Model: Introduce namespaces
+- Model: Use concrete type system identifiers instead of strings
+- API: Validate types on construction (validate that components or entity types are present)
+
+### Changed
+
+- Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)
+- Behaviours: Reimplemented lots of reactive behaviours
+- Plugins: Split most plugins into a model and plugin crate
+- API: Make service API and plugin API more consistent (same/similar method names + use type system identifiers)
+- Tooling: rustfmt uses separate lines per import
+
 ## [0.7.0] - 2022-09-25
 
 ### Added
