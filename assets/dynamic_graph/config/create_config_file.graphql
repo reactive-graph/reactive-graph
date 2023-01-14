@@ -1,0 +1,15 @@
+mutation {
+  config {
+    createConfigFile(
+      id: "29621fce-41c1-4a21-9059-00486326a81c"
+      name: "Logging",
+      filename: "./config/logging.toml"
+      trigger: true
+      result: {}
+    ) {
+      id
+      filename
+      result
+    }
+  }
+}

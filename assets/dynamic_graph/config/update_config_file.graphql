@@ -1,0 +1,9 @@
+mutation {
+  config {
+    configFile(id: "29621fce-41c1-4a21-9059-00486326a81c") {
+      update(trigger: true) {
+        result
+      }
+    }
+  }
+}
