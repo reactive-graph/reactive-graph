@@ -7,6 +7,7 @@ use crate::api::ComponentManager;
 use crate::api::ComponentPropertyError;
 use crate::api::ComponentRegistrationError;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLExtension;
@@ -114,14 +115,15 @@ impl MutationComponents {
         &self,
         context: &Context<'_>,
         #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
-        extension_name: String,
+        #[graphql(name = "extension")] extension_ty: ExtensionTypeIdDefinition,
     ) -> Result<GraphQLComponent> {
         let ty = ty.into();
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         if !component_manager.has(&ty) {
             return Err(Error::new(format!("Component {} does not exist", ty)));
         }
-        component_manager.remove_extension(&ty, extension_name.as_str());
+        let extension_ty = extension_ty.into();
+        component_manager.remove_extension(&ty, &extension_ty);
         return component_manager
             .get(&ty)
             .map(|component| component.into())
