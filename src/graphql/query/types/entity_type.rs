@@ -6,6 +6,7 @@ use crate::api::ComponentManager;
 use crate::api::EntityBehaviourRegistry;
 use crate::api::EntityTypeManager;
 use crate::api::RelationTypeManager;
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityBehaviour;
 use crate::graphql::query::GraphQLExtension;
@@ -70,19 +71,20 @@ impl GraphQLEntityType {
     }
 
     /// The extensions which are defined by the entity type.
-    async fn extensions(&self, name: Option<String>) -> Vec<GraphQLExtension> {
-        match name {
-            Some(name) => self
+    async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
+        if let Some(extension_ty) = extension_ty {
+            let extension_ty = extension_ty.into();
+            return self
                 .entity_type
                 .extensions
                 .to_vec()
                 .iter()
-                .filter(|extension| extension.name == name.clone())
+                .filter(|extension| &extension.ty == &extension_ty)
                 .cloned()
                 .map(|extension| extension.into())
-                .collect(),
-            None => self.entity_type.extensions.iter().cloned().map(|extension| extension.into()).collect(),
+                .collect();
         }
+        self.entity_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 
     /// List of relation types which has this entity type as outbound.
