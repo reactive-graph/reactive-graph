@@ -38,6 +38,7 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
 }
 
 pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
+    // TODO: implement analogous to entity_mutation_field
     None
 }
 

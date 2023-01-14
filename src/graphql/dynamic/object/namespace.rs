@@ -1,8 +1,4 @@
-use async_graphql::dynamic::Field;
-use async_graphql::dynamic::FieldFuture;
-use async_graphql::dynamic::FieldValue;
 use async_graphql::dynamic::Object;
-use async_graphql::dynamic::TypeRef;
 use convert_case::Case::Pascal;
 use convert_case::Casing;
 use log::warn;
@@ -55,11 +51,6 @@ pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> 
     let mut namespace = Object::new(&type_name).description(format!("Mutations for entities and relations on the namespace {}", &namespace.to_case(Pascal)));
 
     let mut contains_field = false;
-
-    namespace = namespace.field(Field::new("_", TypeRef::named_nn(TypeRef::STRING), move |ctx| {
-        FieldFuture::new(async move { Ok(FieldValue::none()) })
-    }));
-    contains_field = true;
 
     for entity_type in entity_types {
         if let Some(field) = entity_creation_field(&entity_type) {
