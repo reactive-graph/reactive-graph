@@ -1,8 +1,9 @@
-use crate::model::ComponentTypeId;
 use std::sync::Arc;
 
 use crate::model::Component;
+use crate::model::ComponentTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::plugins::ComponentCreationError;
 use crate::plugins::ComponentImportError;
@@ -82,8 +83,8 @@ impl ComponentManager for ComponentManagerImpl {
         let _ = self.component_manager.add_extension(ty, extension);
     }
 
-    fn remove_extension(&self, ty: &ComponentTypeId, extension_name: &str) {
-        self.component_manager.remove_extension(ty, extension_name)
+    fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId) {
+        self.component_manager.remove_extension(component_ty, extension_ty)
     }
 
     fn delete(&self, ty: &ComponentTypeId) {

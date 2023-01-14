@@ -20,6 +20,7 @@ use crate::api::SystemEventManager;
 use crate::builder::ComponentBuilder;
 use crate::core_model::COMPONENT_EVENT;
 use crate::core_model::COMPONENT_LABELED;
+use crate::core_model::EXTENSION_COMPONENT_CATEGORY;
 use crate::core_model::PROPERTY_EVENT;
 use crate::core_model::PROPERTY_LABEL;
 use crate::di::component;
@@ -30,6 +31,7 @@ use crate::di::Wrc;
 use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::TypeDefinitionGetter;
@@ -170,8 +172,8 @@ impl ComponentManager for ComponentManagerImpl {
                     return Err(ComponentPropertyError::PropertyAlreadyExists);
                 }
                 component.properties.push(property.clone());
-                // TODO: more specific system event
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentPropertyAdded(ty.clone(), property.name.clone()));
             }
         }
         Ok(())
@@ -182,8 +184,8 @@ impl ComponentManager for ComponentManagerImpl {
         for component in guard.iter_mut() {
             if &component.ty == ty {
                 component.properties.retain(|property| property.name != property_name);
-                // TODO: more specific system event
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentPropertyRemoved(ty.clone(), property_name.to_string()));
             }
         }
     }
@@ -192,24 +194,24 @@ impl ComponentManager for ComponentManagerImpl {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
             if &component.ty == ty {
-                if component.has_extension(extension.name.clone()) {
+                if component.has_extension(&extension.ty) {
                     return Err(ComponentExtensionError::ExtensionAlreadyExists);
                 }
                 component.extensions.push(extension.clone());
-                // TODO: more specific system event
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentExtensionAdded(ty.clone(), extension.ty.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_extension(&self, ty: &ComponentTypeId, extension_name: &str) {
+    fn remove_extension(&self, ty: &ComponentTypeId, extension_ty: &ExtensionTypeId) {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
             if &component.ty == ty {
-                component.extensions.retain(|extension| extension.name != extension_name);
-                // TODO: more specific system event
-                self.event_manager.emit_event(SystemEvent::ComponentUpdated(ty.clone()));
+                component.extensions.retain(|extension| &extension.ty != extension_ty);
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentExtensionRemoved(ty.clone(), extension_ty.clone()));
             }
         }
     }
@@ -246,6 +248,7 @@ impl ComponentManager for ComponentManagerImpl {
         }
     }
 
+    // TODO: move to own service ComponentCategoryManager
     fn get_component_categories(&self) -> Vec<String> {
         self.get_all()
             .iter()
@@ -253,8 +256,8 @@ impl ComponentManager for ComponentManagerImpl {
                 component
                     .extensions
                     .iter()
-                    .find(|extension| extension.name == *"component_category")
-                    .map(|extension| extension.name.clone())
+                    .find(|extension| &extension.ty == &EXTENSION_COMPONENT_CATEGORY.clone())
+                    .and_then(|extension| extension.extension.as_str().map(str::to_string).clone())
             })
             .collect()
     }
