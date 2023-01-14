@@ -108,7 +108,7 @@ impl DynamicGraphSchemaManager for DynamicGraphSchemaManagerImpl {
         trace!("Regenerating dynamic schema");
         match self.create_dynamic_schema() {
             Ok(dynamic_schema) => {
-                info!("Successfully regenerated schema");
+                info!("Successfully regenerated dynamic schema");
                 trace!("{}", dynamic_schema.sdl());
                 let mut guard = self.dynamic_schema.0.write().unwrap();
                 *guard = Some(Arc::new(dynamic_schema));
@@ -129,6 +129,7 @@ impl DynamicGraphSchemaManager for DynamicGraphSchemaManagerImpl {
     }
 
     fn get_dynamic_schema(&self) -> Option<Arc<Schema>> {
+        self.regenerate_dynamic_schema_if_modified();
         let guard = self.dynamic_schema.0.read().unwrap();
         match guard.deref() {
             None => {
