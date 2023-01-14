@@ -45,6 +45,8 @@ pub trait Application: Send + Sync {
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
+    fn get_dynamic_graph_query_service(&self) -> Arc<dyn DynamicGraphQueryService>;
+
     fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager>;
 
     fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager>;
@@ -109,6 +111,7 @@ pub struct ApplicationImpl {
     running: RunningState,
 
     component_manager: Wrc<dyn ComponentManager>,
+    dynamic_graph_query_service: Wrc<dyn DynamicGraphQueryService>,
     dynamic_graph_schema_manager: Wrc<dyn DynamicGraphSchemaManager>,
     event_manager: Wrc<dyn SystemEventManager>,
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
@@ -162,6 +165,7 @@ impl Application for ApplicationImpl {
         self.event_manager.init();
         self.reactive_entity_instance_manager.init();
         self.dynamic_graph_schema_manager.init();
+        self.dynamic_graph_query_service.init();
     }
 
     fn post_init(&self) {
@@ -181,10 +185,12 @@ impl Application for ApplicationImpl {
         self.event_manager.post_init();
         self.reactive_entity_instance_manager.post_init(); // after event_manager!
         self.dynamic_graph_schema_manager.post_init();
+        self.dynamic_graph_query_service.post_init();
     }
 
     fn pre_shutdown(&self) {
         // Reverse order matters
+        self.dynamic_graph_query_service.pre_shutdown();
         self.dynamic_graph_schema_manager.pre_shutdown();
         self.reactive_entity_instance_manager.pre_shutdown();
         self.event_manager.pre_shutdown();
@@ -204,6 +210,7 @@ impl Application for ApplicationImpl {
 
     fn shutdown(&self) {
         // Reverse order matters
+        self.dynamic_graph_query_service.shutdown();
         self.dynamic_graph_schema_manager.shutdown();
         self.reactive_entity_instance_manager.shutdown();
         self.event_manager.shutdown();
@@ -291,6 +298,10 @@ impl Application for ApplicationImpl {
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager> {
         self.component_manager.clone()
+    }
+
+    fn get_dynamic_graph_query_service(&self) -> Arc<dyn DynamicGraphQueryService> {
+        self.dynamic_graph_query_service.clone()
     }
 
     fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager> {
