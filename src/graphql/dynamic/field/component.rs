@@ -31,6 +31,7 @@ pub fn component_field(component: &Component) -> Field {
             return Ok(Some(FieldValue::list(field_values)));
         })
     })
+    .description(component.description.clone())
 }
 
 fn entity_instance_component<'a>(entity_instance: Arc<ReactiveEntityInstance>) -> FieldValue<'a> {
