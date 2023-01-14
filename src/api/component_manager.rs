@@ -6,6 +6,7 @@ use crate::api::Lifecycle;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::plugins::ComponentProvider;
 
@@ -102,7 +103,7 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
     fn add_extension(&self, ty: &ComponentTypeId, extension: Extension) -> Result<(), ComponentExtensionError>;
 
     /// Removes the extension with the given extension_name from the component with the given name.
-    fn remove_extension(&self, ty: &ComponentTypeId, extension_name: &str);
+    fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the component with the given name.
     fn delete(&self, ty: &ComponentTypeId);
@@ -116,6 +117,7 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
     /// Registers a component provider.
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>);
 
+    // TODO: move to own service ComponentCategoryManager
     /// Returns the list of component categories
     fn get_component_categories(&self) -> Vec<String>;
 }
