@@ -1,0 +1,9 @@
+mutation {
+  random {
+    randomBool(id: "9b699717-b20d-47c8-8e1f-a163b0a87ef0") {
+      update(trigger: true) {
+        result
+      }
+    }
+  }
+}

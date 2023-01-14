@@ -1,0 +1,11 @@
+query GetConfigConfigFileEntity {
+  config {
+    configFile {
+      id
+      name
+      filename
+      trigger
+      result
+    }
+  }
+}

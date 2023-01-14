@@ -1,0 +1,20 @@
+mutation {
+  json {
+    arrayContains(
+      id: "1c73fa9e-deed-440d-8671-09fccaeb54a9"
+    ) {
+      update(
+        array: [
+          40,
+          50
+        ]
+      ) {
+        id
+        name
+        search
+        result
+        array
+      }
+    }
+  }
+}

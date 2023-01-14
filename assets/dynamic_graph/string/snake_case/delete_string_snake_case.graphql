@@ -1,0 +1,7 @@
+mutation {
+  string {
+    snakeCase(id: "b3c4805b-9382-11ed-8000-000000000000") {
+      delete
+    }
+  }
+}

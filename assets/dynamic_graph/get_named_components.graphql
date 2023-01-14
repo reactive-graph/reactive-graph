@@ -1,0 +1,10 @@
+query GetBaseNamedComponents {
+  base {
+    namedComponent {
+      name
+      ... on Entity {
+        id
+      }
+    }
+  }
+}

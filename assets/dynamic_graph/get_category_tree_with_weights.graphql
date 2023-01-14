@@ -1,0 +1,37 @@
+query CategoryTree {
+  taxonomy {
+    category { # TODO: only select the root category: category(label: "root")
+      name
+      has_sub_categories {
+        weight
+        sub_category {
+          name
+          has_sub_categories {
+            weight
+            sub_category {
+              name
+              has_sub_categories {
+                weight
+                sub_category {
+                  name
+                  has_sub_categories {
+                    weight
+                    sub_category {
+                      name
+                      has_sub_categories {
+                        weight
+                        sub_category {
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

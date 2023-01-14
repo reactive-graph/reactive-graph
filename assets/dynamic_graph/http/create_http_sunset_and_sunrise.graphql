@@ -1,0 +1,19 @@
+mutation {
+  http {
+    createHttp(
+      id: "ab4ac500-7003-4405-80d2-2af5a65449b9"
+      url: "https://api.sunrise-sunset.org/json?lat=47.557400&lng=9.707209&formatted=0"
+      method: "GET"
+      request_headers: {}
+      payload: {}
+      response_headers: {}
+      result: {}
+      status: 500
+      trigger: true
+    ) {
+      response_headers
+      status
+      result
+    }
+  }
+}

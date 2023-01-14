@@ -1,0 +1,16 @@
+query GetTaggedWith {
+  taxonomy {
+    taggedWith {
+      _c__taxonomy__weighted
+      key
+      weight
+      tagged_entity {
+        __typename
+        ...on Core_Shutdown_Entity {
+          id
+          label
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+mutation {
+  random {
+    b1: randomBool(id: "9b699717-b20d-47c8-8e1f-000000000001") {
+      update(trigger: true) {
+        result
+      }
+    }
+    b2: randomBool(id: "9b699717-b20d-47c8-8e1f-000000000002") {
+      update(trigger: true) {
+        result
+      }
+    }
+    b3: randomBool(id: "9b699717-b20d-47c8-8e1f-000000000003") {
+      update(trigger: true) {
+        result
+      }
+    }
+    b4: randomBool(id: "9b699717-b20d-47c8-8e1f-000000000004") {
+      update(trigger: true) {
+        result
+      }
+    }
+    b5: randomBool(id: "9b699717-b20d-47c8-8e1f-000000000005") {
+      update(trigger: true) {
+        result
+      }
+    }
+  }
+}

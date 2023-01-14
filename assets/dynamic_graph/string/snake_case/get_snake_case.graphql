@@ -1,6 +1,6 @@
 query GetSnakeCase {
   string {
-    SnakeCase {
+    snakeCase {
       id
       lhs
       result

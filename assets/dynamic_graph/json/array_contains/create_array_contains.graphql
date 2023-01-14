@@ -1,0 +1,20 @@
+mutation {
+  json {
+    createArrayContains(
+      id: "1c73fa9e-deed-440d-8671-09fccaeb54a9"
+      name: "Searching for 10 in an array with two elements: 10, 20"
+      array: [
+        10,
+        20
+      ]
+      search: 10
+      result: false
+    ) {
+      id
+      name
+      search
+      result
+      array
+    }
+  }
+}

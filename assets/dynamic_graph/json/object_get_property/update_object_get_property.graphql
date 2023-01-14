@@ -1,0 +1,17 @@
+mutation {
+  json {
+    objectGetProperty(
+      id: "1c73fa9e-deed-440d-8671-09fccaeb54b9"
+    ) {
+      update(
+        property_name: "second"
+      ) {
+        id
+        name
+        object
+        property_name
+        result
+      }
+    }
+  }
+}

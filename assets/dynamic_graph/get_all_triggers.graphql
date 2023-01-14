@@ -1,0 +1,14 @@
+query GetActionTrigger {
+  logical {
+    actionComponent {
+      __typename
+      trigger
+      ... on SystemCommand_SystemCommand_Entity {
+        id
+      }
+      ... on Config_ConfigFile_Entity {
+        id
+      }
+    }
+  }
+}

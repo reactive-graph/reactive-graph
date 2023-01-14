@@ -1,6 +1,6 @@
 query GetArrayLength {
   json {
-    ArrayLength {
+    arrayLength {
       id
       name
       array

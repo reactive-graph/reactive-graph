@@ -1,0 +1,9 @@
+query GetAnd {
+  logical {
+    and {
+      lhs
+      rhs
+      result
+    }
+  }
+}

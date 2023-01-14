@@ -1,0 +1,7 @@
+mutation {
+  json {
+    arrayContains {
+      delete
+    }
+  }
+}

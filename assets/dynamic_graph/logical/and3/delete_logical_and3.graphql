@@ -1,0 +1,7 @@
+mutation {
+  logical {
+    and3(id: "fb8b2c82-0aaf-42a3-b639-a81010adabd3") {
+      delete
+    }
+  }
+}

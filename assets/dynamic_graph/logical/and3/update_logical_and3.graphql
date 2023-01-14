@@ -1,0 +1,18 @@
+mutation {
+  logical {
+    and3(id: "070e5b62-f56f-4ac5-aa3a-1c5d000bbb4e") {
+      update(
+        input1: true
+        input2: true
+        input3: true
+        result: false
+      ) {
+        id
+        input1,
+        input2,
+        input3,
+        result
+      }
+    }
+  }
+}

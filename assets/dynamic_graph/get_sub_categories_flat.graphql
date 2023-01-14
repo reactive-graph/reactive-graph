@@ -1,0 +1,15 @@
+query GetSubCategoriesFlat {
+  taxonomy {
+    hasSubcategory {
+      weight
+      parent_category {
+        id
+        name
+      }
+      sub_category {
+        id
+        name
+      }
+    }
+  }
+}

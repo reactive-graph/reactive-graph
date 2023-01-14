@@ -1,0 +1,11 @@
+query GetArrayContains {
+  json {
+    arrayContains {
+      id
+      name
+      search
+      result
+      array
+    }
+  }
+}

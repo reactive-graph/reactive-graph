@@ -1,0 +1,35 @@
+mutation {
+  string {
+    # Create an entity of type snake_case
+    first: createSnakeCase(
+      # The newly created entity instance will have this uuid
+      # No entity instance will be created if the uuid is already taken
+      id: "b3c4805b-9382-11ed-8000-000000000006"
+      # Initially the property "lhs" will be set
+      lhs: "Hallo Welt"
+      # The result will be calculated immediately by the behaviour
+      result: "will be calculated"
+    ) {
+      # Return the uuid of the newly created entity instance
+      id
+      # Return the properties lhs and result
+      lhs
+      # You will notice, that the result will be overwritten
+      result
+    }
+    # Create another entity instance with the same GraphQL mutation
+    # You will need to specify for example "second:" to distinguish
+    # the results
+    second: createSnakeCase(
+      # If no id is given, an uuid will be generated
+      id: "b3c4805b-9382-11ed-8000-000000000008"
+      lhs: "Servus Inexor"
+      # The result will be calculated immediately
+      result: "will be calculated"
+    ) {
+      id
+      lhs
+      result
+    }
+  }
+}

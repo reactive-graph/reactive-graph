@@ -1,0 +1,10 @@
+query GetHttpSunsetAndSunrise {
+  http {                           # Namespace
+    http {                         # Entity-Type-Name
+      id                           # Property-Name
+      status
+      method
+      result
+    }
+  }
+}

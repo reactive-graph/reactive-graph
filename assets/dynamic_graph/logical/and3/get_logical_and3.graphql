@@ -1,0 +1,18 @@
+query GetAnd3 {
+  logical {
+    #
+    # Please note that and3 is an entity type which is the
+    # wrapper entity for a flow type of the same name
+    #
+    # Though it's a flow instance created from a flow type
+    # we can just use it like any other entity type.
+    #
+    and3(id: "fb8b2c82-0aaf-42a3-b639-a81010adabd3") {
+      id
+      input1
+      input2
+      input3
+      result
+    }
+  }
+}

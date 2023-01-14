@@ -1,0 +1,9 @@
+query GetNumbers {
+  value {
+    valueNumber {
+      id
+      name
+      value
+    }
+  }
+}

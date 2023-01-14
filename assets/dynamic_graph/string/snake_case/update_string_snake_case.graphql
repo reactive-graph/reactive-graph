@@ -1,0 +1,35 @@
+mutation {
+  # Select the namespace "string"
+  # Every entity type have to be a member of a namespace!
+  string {
+    # Select the entity with the given id.
+    #
+    # Notice, that if the entity is not of type snake_case an error
+    # will be thrown!
+    first: snakeCase(id: "b3c4805b-9382-11ed-8000-000000000006") {
+      # Perform an update on the selected entity instances
+      # If the selection returns more than one entity instance,
+      # all entity instances will be updated
+      update(
+        # Update the property "lhs" of the entity instance and
+        # set the string value "Hallo Inexor"
+        lhs: "Hallo Inexor"
+      ) {
+        # Return the uuid of the updated entity instance
+        id
+        # Return the properties lhs and result
+        lhs
+        result
+      }
+    }
+    second: snakeCase(id: "b3c4805b-9382-11ed-8000-000000000008") {
+      update(
+        lhs: "Servus Welt"
+      ) {
+        id
+        lhs
+        result
+      }
+    }
+  }
+}
