@@ -11,9 +11,11 @@ use crate::api::EntityTypeRegistrationError;
 use crate::builder::EntityTypeBuilder;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
+use crate::model::Extension;
 
 #[derive(Default)]
 pub struct MutationEntityTypes;
@@ -51,8 +53,8 @@ impl MutationEntityTypes {
         }
         if let Some(extensions) = extensions {
             for extension in extensions {
-                debug!("{} {}", extension.name, extension.extension.to_string());
-                entity_type_builder.extension(extension.name, extension.extension.clone());
+                debug!("{} {}", &extension.ty, extension.extension.to_string());
+                entity_type_builder.extension(extension.ty.namespace, extension.ty.type_name, extension.extension.clone());
             }
         }
 
@@ -162,30 +164,35 @@ impl MutationEntityTypes {
         if !entity_type_manager.has(&ty) {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
-        return match entity_type_manager.add_extension(&ty, extension.into()) {
+        let extension: Extension = extension.into();
+        return match entity_type_manager.add_extension(&ty, extension) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
                 .ok_or_else(|| Error::new(format!("Entity type {} not found", ty))),
-            Err(EntityTypeExtensionError::ExtensionAlreadyExists) => {
-                Err(Error::new(format!("Failed to add extension to component {}: Extension already exists", ty)))
-            }
+            Err(EntityTypeExtensionError::ExtensionAlreadyExists(extension_ty)) => Err(Error::new(format!(
+                "Failed to add extension {} to entity type {}: Extension already exists",
+                extension_ty, ty
+            ))),
         };
     }
+
+    // TODO: async fn update_extension()
 
     /// Removes the extension with the given extension_name from the entity type with the given name.
     async fn remove_extension(
         &self,
         context: &Context<'_>,
         #[graphql(name = "type")] ty: EntityTypeIdDefinition,
-        extension_name: String,
+        #[graphql(name = "extension")] extension_ty: ExtensionTypeIdDefinition,
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
-        entity_type_manager.remove_extension(&ty, extension_name.as_str());
+        let extension_ty = extension_ty.into();
+        entity_type_manager.remove_extension(&ty, &extension_ty);
         return entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
