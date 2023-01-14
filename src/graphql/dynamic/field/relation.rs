@@ -21,10 +21,10 @@ use crate::model::PropertyType;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationType;
 
-pub fn relation_field(relation_type: &RelationType) -> Field {
+pub fn relation_query_field(relation_type: &RelationType) -> Field {
     let ty = relation_type.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
-    Field::new(dy_ty.type_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {
             let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
@@ -34,6 +34,11 @@ pub fn relation_field(relation_type: &RelationType) -> Field {
             )));
         })
     })
+    .description(relation_type.description.clone())
+}
+
+pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
+    None
 }
 
 pub fn relation_key_field() -> Field {
@@ -66,15 +71,24 @@ pub fn relation_property_field(property_type: &PropertyType) -> Field {
     .description(&property_type.description)
 }
 
-pub fn relation_outbound_field(ty: &ComponentOrEntityTypeId, context: &SchemaBuilderContext) -> Vec<Field> {
+pub fn relation_outbound_field(
+    ty: &ComponentOrEntityTypeId,
+    field_name: Option<String>,
+    field_description: Option<String>,
+    context: &SchemaBuilderContext,
+) -> Vec<Field> {
     match ty {
         ComponentOrEntityTypeId::EntityType(ty) => {
             if ty.namespace() == "*" {
-                vec![relation_outbound_entity_union_field(&UNION_ALL_ENTITIES)]
+                vec![relation_outbound_entity_union_field(&UNION_ALL_ENTITIES, field_name, field_description)]
             } else if ty.type_name() == "*" {
-                vec![relation_outbound_entity_union_field(&namespace_entities_union_type_name(&ty.namespace()))]
+                vec![relation_outbound_entity_union_field(
+                    &namespace_entities_union_type_name(&ty.namespace()),
+                    field_name,
+                    field_description,
+                )]
             } else {
-                vec![relation_outbound_entity_field(ty)]
+                vec![relation_outbound_entity_field(ty, field_name, field_description)]
             }
         }
         ComponentOrEntityTypeId::Component(ty) => {
@@ -84,7 +98,7 @@ pub fn relation_outbound_field(ty: &ComponentOrEntityTypeId, context: &SchemaBui
                     .get_all()
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| relation_outbound_component_field(&ty))
+                    .map(|ty| relation_outbound_component_field(&ty, None, None))
                     .collect()
             } else if ty.type_name() == "*" {
                 context
@@ -92,24 +106,33 @@ pub fn relation_outbound_field(ty: &ComponentOrEntityTypeId, context: &SchemaBui
                     .get_by_namespace(&ty.namespace())
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| relation_outbound_component_field(&ty))
+                    .map(|ty| relation_outbound_component_field(&ty, None, None))
                     .collect()
             } else {
-                vec![relation_outbound_component_field(ty)]
+                vec![relation_outbound_component_field(ty, field_name, field_description)]
             }
         }
     }
 }
 
-pub fn relation_inbound_field(ty: &ComponentOrEntityTypeId, context: &SchemaBuilderContext) -> Vec<Field> {
+pub fn relation_inbound_field(
+    ty: &ComponentOrEntityTypeId,
+    field_name: Option<String>,
+    field_description: Option<String>,
+    context: &SchemaBuilderContext,
+) -> Vec<Field> {
     match ty {
         ComponentOrEntityTypeId::EntityType(ty) => {
             if ty.namespace() == "*" {
-                vec![relation_inbound_entity_union_field(&UNION_ALL_ENTITIES)]
+                vec![relation_inbound_entity_union_field(&UNION_ALL_ENTITIES, field_name, field_description)]
             } else if ty.type_name() == "*" {
-                vec![relation_inbound_entity_union_field(&namespace_entities_union_type_name(&ty.namespace()))]
+                vec![relation_inbound_entity_union_field(
+                    &namespace_entities_union_type_name(&ty.namespace()),
+                    field_name,
+                    field_description,
+                )]
             } else {
-                vec![relation_inbound_entity_field(ty)]
+                vec![relation_inbound_entity_field(ty, field_name, field_description)]
             }
         }
         ComponentOrEntityTypeId::Component(ty) => {
@@ -119,7 +142,7 @@ pub fn relation_inbound_field(ty: &ComponentOrEntityTypeId, context: &SchemaBuil
                     .get_all()
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| relation_inbound_component_field(&ty))
+                    .map(|ty| relation_inbound_component_field(&ty, None, None))
                     .collect()
             } else if ty.type_name() == "*" {
                 context
@@ -127,69 +150,91 @@ pub fn relation_inbound_field(ty: &ComponentOrEntityTypeId, context: &SchemaBuil
                     .get_by_namespace(&ty.namespace())
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| relation_inbound_component_field(&ty))
+                    .map(|ty| relation_inbound_component_field(&ty, None, None))
                     .collect()
             } else {
-                vec![relation_inbound_component_field(ty)]
+                vec![relation_inbound_component_field(ty, field_name, field_description)]
             }
         }
     }
 }
 
-pub fn relation_outbound_entity_field(ty: &EntityTypeId) -> Field {
+pub fn relation_outbound_entity_field(ty: &EntityTypeId, field_name: Option<String>, field_description: Option<String>) -> Field {
     let dy_ty = DynamicGraphTypeDefinition::from(ty);
-    create_relation_outbound_field(&dy_ty.outbound_type_name(), &dy_ty.to_string())
+    let field_name = field_name.unwrap_or(dy_ty.outbound_type_name());
+    create_relation_outbound_field(&dy_ty.to_string(), &field_name, field_description)
 }
 
-pub fn relation_outbound_entity_union_field(type_name: &str) -> Field {
-    Field::new("outbound", TypeRef::named_nn(type_name), move |ctx| {
+pub fn relation_outbound_entity_union_field(type_name: &str, field_name: Option<String>, field_description: Option<String>) -> Field {
+    let field_name = field_name.unwrap_or("outbound".to_string());
+    let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
             let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
             let dy_ty = DynamicGraphTypeDefinition::from(&relation_instance.outbound.ty);
             Ok(Some(FieldValue::owned_any(relation_instance.outbound.clone()).with_type(dy_ty.to_string())))
         })
-    })
+    });
+    if let Some(field_description) = field_description {
+        field = field.description(field_description);
+    }
+    field
 }
 
-pub fn relation_outbound_component_field(ty: &ComponentTypeId) -> Field {
+pub fn relation_outbound_component_field(ty: &ComponentTypeId, field_name: Option<String>, field_description: Option<String>) -> Field {
     let dy_ty = DynamicGraphTypeDefinition::from(ty);
-    create_relation_outbound_field(&dy_ty.outbound_type_name(), &dy_ty.to_string())
+    let field_name = field_name.unwrap_or(dy_ty.outbound_type_name());
+    create_relation_outbound_field(&dy_ty.to_string(), &field_name, field_description)
 }
 
-pub fn create_relation_outbound_field(field_name: &str, type_name: &str) -> Field {
-    Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
+pub fn create_relation_outbound_field(type_name: &str, field_name: &str, field_description: Option<String>) -> Field {
+    let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
             let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
             Ok(Some(FieldValue::owned_any(relation_instance.outbound.clone())))
         })
-    })
+    });
+    if let Some(field_description) = field_description {
+        field = field.description(field_description);
+    }
+    field
 }
 
-pub fn relation_inbound_entity_field(ty: &EntityTypeId) -> Field {
+pub fn relation_inbound_entity_field(ty: &EntityTypeId, field_name: Option<String>, field_description: Option<String>) -> Field {
     let dy_ty = DynamicGraphTypeDefinition::from(ty);
-    create_relation_inbound_field(&dy_ty.inbound_type_name(), &dy_ty.to_string())
+    let field_name = field_name.unwrap_or(dy_ty.inbound_type_name());
+    create_relation_inbound_field(&dy_ty.to_string(), &field_name, field_description)
 }
 
-pub fn relation_inbound_entity_union_field(type_name: &str) -> Field {
-    Field::new("inbound", TypeRef::named_nn(type_name), move |ctx| {
+pub fn relation_inbound_entity_union_field(type_name: &str, field_name: Option<String>, field_description: Option<String>) -> Field {
+    let field_name = field_name.unwrap_or("inbound".to_string());
+    let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
             let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
             let dy_ty = DynamicGraphTypeDefinition::from(&relation_instance.inbound.ty);
             Ok(Some(FieldValue::owned_any(relation_instance.inbound.clone()).with_type(dy_ty.to_string())))
         })
-    })
+    });
+    if let Some(field_description) = field_description {
+        field = field.description(field_description);
+    }
+    field
 }
 
-pub fn relation_inbound_component_field(ty: &ComponentTypeId) -> Field {
+pub fn relation_inbound_component_field(ty: &ComponentTypeId, field_name: Option<String>, field_description: Option<String>) -> Field {
     let dy_ty = DynamicGraphTypeDefinition::from(ty);
-    create_relation_inbound_field(&dy_ty.inbound_type_name(), &dy_ty.to_string())
+    let field_name = field_name.unwrap_or(dy_ty.inbound_type_name());
+    create_relation_inbound_field(&dy_ty.to_string(), &field_name, field_description)
 }
 
-pub fn create_relation_inbound_field(field_name: &str, type_name: &str) -> Field {
-    Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
+pub fn create_relation_inbound_field(type_name: &str, field_name: &str, field_description: Option<String>) -> Field {
+    let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
             let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
             Ok(Some(FieldValue::owned_any(relation_instance.inbound.clone())))
         })
-    })
+    });
+    if let Some(field_description) = field_description {
+        field = field.description(field_description);
+    }
+    field
 }

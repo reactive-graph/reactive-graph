@@ -1,3 +1,4 @@
+use convert_case::Case::Camel;
 use convert_case::Case::Pascal;
 use convert_case::Casing;
 
@@ -7,26 +8,26 @@ use crate::model::NamespacedTypeGetter;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinition;
 use crate::model::TypeDefinitionGetter;
-use crate::model::TypeIdType;
 
 pub struct DynamicGraphTypeDefinition {
     ty: TypeDefinition,
 }
 
 impl DynamicGraphTypeDefinition {
-    pub fn type_name_with_suffix(&self) -> String {
-        format!("{}{}", self.type_name(), self.type_id_suffix())
+    pub fn field_name(&self) -> String {
+        self.ty.type_name.to_case(Camel)
     }
 
-    pub fn type_id_suffix(&self) -> String {
-        match self.ty.type_id_type {
-            TypeIdType::Behaviour => "Behaviour",
-            TypeIdType::Component => "Component",
-            TypeIdType::EntityType => "Entity",
-            TypeIdType::RelationType => "Relation",
-            TypeIdType::FlowType => "Flow",
-        }
-        .to_string()
+    pub fn mutation_field_name(&self, action: &str) -> String {
+        format!("{}{}", action, self.ty.type_name.to_case(Pascal))
+    }
+
+    pub fn field_name_with_suffix(&self) -> String {
+        format!("{}{}", self.field_name(), self.ty.type_id_type.full_name())
+    }
+
+    pub fn type_name_with_suffix(&self) -> String {
+        format!("{}{}", self.type_name(), self.ty.type_id_type.full_name())
     }
 
     pub fn outbound_type_name(&self) -> String {
@@ -35,6 +36,10 @@ impl DynamicGraphTypeDefinition {
 
     pub fn inbound_type_name(&self) -> String {
         format!("inbound_{}_{}", &self.ty.namespace, &self.ty.type_name)
+    }
+
+    pub fn mutation_type_name(&self) -> String {
+        format!("{}_Mutations", self.to_string())
     }
 }
 
@@ -50,7 +55,7 @@ impl NamespacedTypeGetter for DynamicGraphTypeDefinition {
 
 impl ToString for DynamicGraphTypeDefinition {
     fn to_string(&self) -> String {
-        format!("{}{}{}", self.namespace(), self.type_name(), self.type_id_suffix())
+        format!("{}_{}_{}", self.namespace(), self.type_name(), self.ty.type_id_type.full_name())
     }
 }
 

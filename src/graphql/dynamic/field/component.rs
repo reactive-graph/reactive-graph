@@ -17,10 +17,10 @@ use crate::model::PropertyType;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveRelationInstance;
 
-pub fn component_field(component: &Component) -> Field {
+pub fn component_query_field(component: &Component) -> Field {
     let ty = component.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&component.ty);
-    Field::new(dy_ty.type_name_with_suffix(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    Field::new(dy_ty.field_name_with_suffix(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {
             let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;

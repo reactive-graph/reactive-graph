@@ -21,10 +21,13 @@ use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::core_model::PROPERTY_EVENT;
 use crate::di::*;
+use crate::graphql::dynamic::get_entity_mutation_types;
 use crate::graphql::dynamic::get_entity_types;
 use crate::graphql::dynamic::get_interfaces;
+use crate::graphql::dynamic::get_mutation;
 use crate::graphql::dynamic::get_query;
 use crate::graphql::dynamic::get_relation_types;
+use crate::graphql::dynamic::get_scalars;
 use crate::graphql::dynamic::get_unions;
 use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::model::ReactivePropertyContainer;
@@ -83,18 +86,21 @@ impl DynamicGraphSchemaManager for DynamicGraphSchemaManagerImpl {
             self.entity_type_manager.clone(),
             self.relation_type_manager.clone(),
         );
-        let mut schema = Schema::build("Query", None, None)
+        let mut schema = Schema::build("Query", Some("Mutation"), None)
             .data(self.namespace_manager.clone())
             .data(self.component_manager.clone())
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())
             .data(self.entity_instance_manager.clone())
             .data(self.relation_instance_manager.clone());
+        schema = get_scalars(schema);
         schema = get_interfaces(schema, &context);
         schema = get_unions(schema, &context);
         schema = get_entity_types(schema, &context);
+        schema = get_entity_mutation_types(schema, &context);
         schema = get_relation_types(schema, &context);
         schema = get_query(schema, &context);
+        schema = get_mutation(schema, &context);
         schema.finish()
     }
 
