@@ -6,6 +6,7 @@ use uuid::Uuid;
 
 use crate::api::FlowTypeManager;
 use crate::builder::FlowTypeBuilder;
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::FlowTypeIdDefinition;
 use crate::graphql::mutation::GraphQLEntityInstanceDefinition;
 use crate::graphql::mutation::GraphQLRelationInstanceDefinition;
@@ -61,8 +62,8 @@ impl MutationFlowTypes {
         }
         if let Some(extensions) = extensions {
             for extension in extensions {
-                debug!("{} {}", extension.name, extension.extension.to_string());
-                flow_type_builder.extension(extension.name, extension.extension.clone());
+                debug!("{} {}", &extension.ty, extension.extension.to_string());
+                flow_type_builder.extension(extension.ty.namespace, extension.ty.type_name, extension.extension.clone());
             }
         }
 
@@ -142,7 +143,6 @@ impl MutationFlowTypes {
         &self,
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The flow type.")] ty: FlowTypeIdDefinition,
-        extension_name: String,
         extension: GraphQLExtension,
     ) -> Result<bool> {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager>>()?;
@@ -150,7 +150,7 @@ impl MutationFlowTypes {
         if !flow_type_manager.has(&ty) {
             return Err(Error::new(format!("Flow type {} does not exist", &ty)));
         }
-        flow_type_manager.update_extension(&ty, &extension_name, extension.into());
+        flow_type_manager.update_extension(&ty, extension.into());
         Ok(true)
     }
 
@@ -159,14 +159,15 @@ impl MutationFlowTypes {
         &self,
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The flow type.")] ty: FlowTypeIdDefinition,
-        extension_name: String,
+        #[graphql(name = "extension", desc = "The extension type.")] extension_ty: ExtensionTypeIdDefinition,
     ) -> Result<bool> {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager>>()?;
         let ty: FlowTypeId = ty.into();
         if !flow_type_manager.has(&ty) {
             return Err(Error::new(format!("Flow type {} does not exist", &ty)));
         }
-        flow_type_manager.remove_extension(&ty, &extension_name);
+        let extension_ty = extension_ty.into();
+        flow_type_manager.remove_extension(&ty, &extension_ty);
         Ok(true)
     }
 

@@ -4,6 +4,7 @@ use uuid::Uuid;
 
 use crate::model::EntityInstance;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::PropertyType;
@@ -86,12 +87,12 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_type_manager.add_extension(ty, extension);
     }
 
-    fn update_extension(&self, ty: &FlowTypeId, extension_name: &str, extension: Extension) {
-        self.flow_type_manager.update_extension(ty, extension_name, extension);
+    fn update_extension(&self, ty: &FlowTypeId, extension: Extension) {
+        self.flow_type_manager.update_extension(ty, extension);
     }
 
-    fn remove_extension(&self, ty: &FlowTypeId, extension_name: &str) {
-        self.flow_type_manager.remove_extension(ty, extension_name);
+    fn remove_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId) {
+        self.flow_type_manager.remove_extension(flow_ty, extension_ty);
     }
 
     fn add_variable(&self, ty: &FlowTypeId, variable: PropertyType) {

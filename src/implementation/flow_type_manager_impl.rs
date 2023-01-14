@@ -23,6 +23,7 @@ use crate::di::Component;
 use crate::di::Wrc;
 use crate::model::EntityInstance;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::NamespacedTypeGetter;
@@ -193,18 +194,19 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         }
     }
 
-    fn update_extension(&self, ty: &FlowTypeId, extension_name: &str, extension: Extension) {
+    fn update_extension(&self, ty: &FlowTypeId, extension: Extension) {
+        let extension_ty = extension.ty.clone();
         let mut guard = self.flow_types.0.write().unwrap();
         if let Some(flow_type) = guard.iter_mut().find(|flow_type| &flow_type.ty == ty) {
-            flow_type.extensions.retain(|extension| extension.name == extension_name);
+            flow_type.extensions.retain(|extension| &extension.ty == &extension_ty);
             flow_type.extensions.push(extension);
         }
     }
 
-    fn remove_extension(&self, ty: &FlowTypeId, extension_name: &str) {
+    fn remove_extension(&self, ty: &FlowTypeId, extension_ty: &ExtensionTypeId) {
         let mut guard = self.flow_types.0.write().unwrap();
         if let Some(flow_type) = guard.iter_mut().find(|flow_type| &flow_type.ty == ty) {
-            flow_type.extensions.retain(|extension| extension.name == extension_name);
+            flow_type.extensions.retain(|extension| &extension.ty == extension_ty);
         }
     }
 

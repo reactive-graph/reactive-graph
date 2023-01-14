@@ -1,4 +1,5 @@
 pub use component_manager::*;
+pub use dynamic_graph_query_service::*;
 pub use dynamic_graph_schema_manager::*;
 pub use entity_behaviour_manager::*;
 pub use entity_behaviour_registry::*;
@@ -36,6 +37,7 @@ pub use system_event_subscriber::SystemEventSubscriber;
 pub use web_resource_manager::*;
 
 pub mod component_manager;
+pub mod dynamic_graph_query_service;
 pub mod dynamic_graph_schema_manager;
 pub mod entity_behaviour_manager;
 pub mod entity_behaviour_registry;

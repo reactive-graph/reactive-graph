@@ -13,6 +13,7 @@ use crate::core_model::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::core_model::PROPERTY_EVENT;
 use crate::di::*;
 use crate::model::ComponentTypeId;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyInstanceSetter;
 use crate::model::ReactiveEntityInstance;
 use crate::model::TypeDefinition;
@@ -44,7 +45,7 @@ impl SystemEventManager for SystemEventManagerImpl {
             return;
         };
         match event {
-            SystemEvent::ComponentCreated(ty) | SystemEvent::ComponentUpdated(ty) | SystemEvent::ComponentDeleted(ty) => {
+            SystemEvent::ComponentCreated(ty) | SystemEvent::ComponentDeleted(ty) => {
                 self.propagate_type_definition_event(entity_instance, ty.type_definition());
             }
             SystemEvent::EntityTypeCreated(ty) | SystemEvent::EntityTypeDeleted(ty) => {
@@ -56,11 +57,14 @@ impl SystemEventManager for SystemEventManagerImpl {
             SystemEvent::FlowTypeCreated(ty) | SystemEvent::FlowTypeUpdated(ty) | SystemEvent::FlowTypeDeleted(ty) => {
                 self.propagate_type_definition_event(entity_instance, ty.type_definition());
             }
-            SystemEvent::EntityTypeComponentAdded(ty, component) | SystemEvent::EntityTypeComponentRemoved(ty, component) => {
-                self.propagate_type_definition_component_event(entity_instance, ty.type_definition(), &component);
+            SystemEvent::EntityTypeComponentAdded(ty, component_ty) | SystemEvent::EntityTypeComponentRemoved(ty, component_ty) => {
+                self.propagate_type_definition_component_event(entity_instance, ty.type_definition(), &component_ty);
             }
-            SystemEvent::RelationTypeComponentAdded(ty, component) | SystemEvent::RelationTypeComponentRemoved(ty, component) => {
-                self.propagate_type_definition_component_event(entity_instance, ty.type_definition(), &component);
+            SystemEvent::RelationTypeComponentAdded(ty, component_ty) | SystemEvent::RelationTypeComponentRemoved(ty, component_ty) => {
+                self.propagate_type_definition_component_event(entity_instance, ty.type_definition(), &component_ty);
+            }
+            SystemEvent::ComponentPropertyAdded(ty, property_name) | SystemEvent::ComponentPropertyRemoved(ty, property_name) => {
+                self.propagate_type_definition_property_event(entity_instance, ty.type_definition(), property_name);
             }
             SystemEvent::EntityTypePropertyAdded(ty, property_name) | SystemEvent::EntityTypePropertyRemoved(ty, property_name) => {
                 self.propagate_type_definition_property_event(entity_instance, ty.type_definition(), property_name);
@@ -68,11 +72,14 @@ impl SystemEventManager for SystemEventManagerImpl {
             SystemEvent::RelationTypePropertyAdded(ty, property_name) | SystemEvent::RelationTypePropertyRemoved(ty, property_name) => {
                 self.propagate_type_definition_property_event(entity_instance, ty.type_definition(), property_name);
             }
-            SystemEvent::EntityTypeExtensionAdded(ty, extension_name) | SystemEvent::EntityTypeExtensionRemoved(ty, extension_name) => {
-                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_name);
+            SystemEvent::ComponentExtensionAdded(ty, extension_ty) | SystemEvent::ComponentExtensionRemoved(ty, extension_ty) => {
+                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_ty);
             }
-            SystemEvent::RelationTypeExtensionAdded(ty, extension_name) | SystemEvent::RelationTypeExtensionRemoved(ty, extension_name) => {
-                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_name);
+            SystemEvent::EntityTypeExtensionAdded(ty, extension_ty) | SystemEvent::EntityTypeExtensionRemoved(ty, extension_ty) => {
+                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_ty);
+            }
+            SystemEvent::RelationTypeExtensionAdded(ty, extension_ty) | SystemEvent::RelationTypeExtensionRemoved(ty, extension_ty) => {
+                self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_ty);
             }
             SystemEvent::TypeSystemChanged => entity_instance.set(PROPERTY_EVENT, json!(true)),
             SystemEvent::EntityInstanceCreated(id)
@@ -125,8 +132,13 @@ impl SystemEventManagerImpl {
         self.emit_event(SystemEvent::TypeSystemChanged);
     }
 
-    fn propagate_type_definition_extension_event(&self, entity_instance: Arc<ReactiveEntityInstance>, type_definition: TypeDefinition, extension_name: String) {
-        if let Ok(v) = TypeDefinitionExtension::new(type_definition, extension_name).try_into() {
+    fn propagate_type_definition_extension_event(
+        &self,
+        entity_instance: Arc<ReactiveEntityInstance>,
+        type_definition: TypeDefinition,
+        extension_ty: ExtensionTypeId,
+    ) {
+        if let Ok(v) = TypeDefinitionExtension::new(type_definition, extension_ty).try_into() {
             entity_instance.set(PROPERTY_EVENT, v);
         };
         self.emit_event(SystemEvent::TypeSystemChanged);
@@ -139,8 +151,20 @@ impl SystemEventManagerImpl {
             self.create_system_event_instance("/org/inexor/event/type/component/created"),
         );
         writer.insert(
-            SystemEventTypes::ComponentUpdated,
-            self.create_system_event_instance("/org/inexor/event/type/component/updated"),
+            SystemEventTypes::ComponentPropertyAdded,
+            self.create_system_event_instance("/org/inexor/event/type/component/property/added"),
+        );
+        writer.insert(
+            SystemEventTypes::ComponentPropertyRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/component/property/removed"),
+        );
+        writer.insert(
+            SystemEventTypes::ComponentExtensionAdded,
+            self.create_system_event_instance("/org/inexor/event/type/component/extension/added"),
+        );
+        writer.insert(
+            SystemEventTypes::ComponentExtensionRemoved,
+            self.create_system_event_instance("/org/inexor/event/type/component/extension/removed"),
         );
         writer.insert(
             SystemEventTypes::ComponentDeleted,

@@ -4,6 +4,7 @@ use crate::model::ComponentTypeId;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::plugins::EntityTypeCreationError;
 use crate::plugins::EntityTypeImportError;
@@ -88,8 +89,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         let _ = self.entity_type_manager.add_extension(ty, extension);
     }
 
-    fn remove_extension(&self, ty: &EntityTypeId, extension_name: &str) {
-        self.entity_type_manager.remove_extension(ty, extension_name)
+    fn remove_extension(&self, ty: &EntityTypeId, extension_ty: &ExtensionTypeId) {
+        self.entity_type_manager.remove_extension(ty, extension_ty)
     }
 
     fn delete(&self, ty: &EntityTypeId) {

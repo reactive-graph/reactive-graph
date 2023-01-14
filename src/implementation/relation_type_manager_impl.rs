@@ -8,6 +8,7 @@ use log::debug;
 use log::error;
 use log::trace;
 use log::warn;
+use serde_json::json;
 use wildmatch::WildMatch;
 
 use crate::api::ComponentManager;
@@ -21,11 +22,13 @@ use crate::api::RelationTypeManager;
 use crate::api::RelationTypePropertyError;
 use crate::api::RelationTypeRegistrationError;
 use crate::api::SystemEventManager;
+use crate::core_model::EXTENSION_DIVERGENT;
 use crate::di::*;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
 use crate::model::ExtensionContainer;
+use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::RelationType;
@@ -97,7 +100,9 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             }
         }
         // Apply components
+        let mut divergent = Vec::new();
         for component_ty in relation_type.components.iter() {
+            let mut is_divergent = false;
             match self.component_manager.get(component_ty) {
                 Some(component) => {
                     // TODO: what if multiple components have the same property?
@@ -105,14 +110,40 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                         // Own property wins
                         if !relation_type.has_own_property(&property_type.name) {
                             relation_type.properties.push(property_type.clone());
+                        } else {
+                            // Check for divergent data type
+                            if let Some(relation_type_property_type) = relation_type.get_own_property(&property_type.name) {
+                                if property_type.data_type != relation_type_property_type.data_type {
+                                    is_divergent = true;
+                                    warn!(
+                                        "{}__{} has divergent data type {} to {}__{} which has data type {}",
+                                        &relation_type.ty,
+                                        &relation_type_property_type.name,
+                                        &relation_type_property_type.data_type,
+                                        &component_ty,
+                                        &property_type.name,
+                                        &property_type.data_type
+                                    );
+                                }
+                            }
+                            // TODO: merge description (if no own description)
+                            // TODO: merge extensions (for each: if own does not have the extension, add it)
                         }
                     }
                     // relation_type.properties.append(&mut component.properties.to_vec())
                 }
-                None => warn!("Relation type {} not fully initialized: Missing component {}", &relation_ty, component_ty),
+                None => {
+                    is_divergent = true;
+                    warn!("Relation type {} not fully initialized: Missing component {}", &relation_ty, component_ty)
+                }
+            }
+            if is_divergent {
+                divergent.push(component_ty.to_string());
             }
         }
-
+        relation_type
+            .extensions
+            .push(Extension::new(&EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
         self.relation_types.0.write().unwrap().push(relation_type.clone());
         debug!("Registered relation type {}", &relation_ty);
         self.event_manager.emit_event(SystemEvent::RelationTypeCreated(relation_ty));
@@ -295,24 +326,27 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
             if &relation_type.ty == ty {
-                if relation_type.has_own_extension(extension.name.clone()) {
-                    return Err(RelationTypeExtensionError::ExtensionAlreadyExists);
+                let extension_ty = extension.ty.clone();
+                if relation_type.has_own_extension(&extension_ty) {
+                    return Err(RelationTypeExtensionError::ExtensionAlreadyExists(extension_ty));
                 }
                 relation_type.extensions.push(extension.clone());
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypeExtensionAdded(relation_type.ty.clone(), extension.name.clone()));
+                    .emit_event(SystemEvent::RelationTypeExtensionAdded(relation_type.ty.clone(), extension_ty));
             }
         }
         Ok(())
     }
 
-    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str) {
+    // TODO: update extension
+
+    fn remove_extension(&self, ty: &RelationTypeId, extension_ty: &ExtensionTypeId) {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
             if &relation_type.ty == ty {
-                relation_type.extensions.retain(|extension| extension.name != extension_name);
+                relation_type.extensions.retain(|extension| &extension.ty != extension_ty);
                 self.event_manager
-                    .emit_event(SystemEvent::RelationTypeExtensionRemoved(relation_type.ty.clone(), extension_name.to_string()));
+                    .emit_event(SystemEvent::RelationTypeExtensionRemoved(relation_type.ty.clone(), extension_ty.clone()));
             }
         }
     }

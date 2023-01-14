@@ -12,6 +12,7 @@ use crate::api::RelationTypeRegistrationError;
 use crate::builder::RelationTypeBuilder;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::mutation::RelationTypeIdDefinition;
 use crate::graphql::query::GraphQLExtension;
@@ -70,8 +71,8 @@ impl MutationRelationTypes {
         }
         if extensions.is_some() {
             for extension in extensions.unwrap() {
-                debug!("{} {}", extension.name, extension.extension.to_string());
-                relation_type_builder.extension(extension.name, extension.extension.clone());
+                debug!("Add extension {} {}", &extension.ty, extension.extension.to_string());
+                relation_type_builder.extension(extension.ty.namespace, extension.ty.type_name, extension.extension.clone());
             }
         }
 
@@ -204,25 +205,29 @@ impl MutationRelationTypes {
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypeExtensionError::ExtensionAlreadyExists) => {
-                Err(Error::new(format!("Failed to add extension to relation type {}: Extension already exists", ty)))
-            }
+            Err(RelationTypeExtensionError::ExtensionAlreadyExists(extension_ty)) => Err(Error::new(format!(
+                "Failed to add extension {} to relation type {}: Extension already exists",
+                extension_ty, ty
+            ))),
         };
     }
+
+    // TODO: async fn update_extension() --> see flow_type mutation
 
     /// Removes the extension with the given extension_name from the relation type with the given name.
     async fn remove_extension(
         &self,
         context: &Context<'_>,
         #[graphql(name = "type")] relation_type: RelationTypeIdDefinition,
-        extension_name: String,
+        #[graphql(name = "extension")] extension_ty: ExtensionTypeIdDefinition,
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         if !relation_type_manager.has(&ty) {
             return Err(Error::new(format!("Relation type {} does not exist", ty)));
         }
-        relation_type_manager.remove_extension(&ty, extension_name.as_str());
+        let extension_ty = extension_ty.into();
+        relation_type_manager.remove_extension(&ty, &extension_ty);
         return relation_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())

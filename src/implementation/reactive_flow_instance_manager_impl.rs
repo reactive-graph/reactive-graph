@@ -28,6 +28,9 @@ use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::builder::FlowInstanceBuilder;
+use crate::core_model::EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE;
+use crate::core_model::EXTENSION_FLOW_UUID_TYPE_EXTENSION;
+use crate::core_model::EXTENSION_FLOW_UUID_TYPE_VARIABLE;
 use crate::core_model::PROPERTY_LABEL;
 use crate::di::*;
 use crate::model::EntityInstance;
@@ -100,12 +103,12 @@ pub struct ReactiveFlowInstanceManagerImpl {
 impl ReactiveFlowInstanceManagerImpl {
     fn get_entity_instance_id_by_extension(&self, entity_instance: &EntityInstance, variables: &HashMap<String, Value>) -> Uuid {
         // Resolve an existing entity instance: Do not replace the uuid
-        if entity_instance.has_own_extension("resolve_existing_instance") {
+        if entity_instance.has_own_extension(&EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE.clone()) {
             return entity_instance.id;
         }
         // Parse the UUID from the variable with the name specified by the extension value.
         if let Some(id) = entity_instance
-            .get_own_extension("uuid_type_variable")
+            .get_own_extension(&EXTENSION_FLOW_UUID_TYPE_VARIABLE.clone())
             .and_then(|extension| extension.extension.as_str().map(|s| s.to_string()))
             .and_then(|variable_name| variables.get(&variable_name))
             .and_then(|variable_value| variable_value.as_str())
@@ -115,7 +118,7 @@ impl ReactiveFlowInstanceManagerImpl {
         }
         // Parse the UUID from the extension value.
         if let Some(id) = entity_instance
-            .get_own_extension("uuid_type_extension")
+            .get_own_extension(&EXTENSION_FLOW_UUID_TYPE_EXTENSION.clone())
             .and_then(|extension| extension.extension.as_str().map(|s| s.to_string()))
             .and_then(|extension_value| Uuid::parse_str(extension_value.as_str()).ok())
         {

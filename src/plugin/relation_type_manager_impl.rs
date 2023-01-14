@@ -3,6 +3,7 @@ use std::sync::Arc;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
@@ -91,8 +92,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         let _ = self.relation_type_manager.add_extension(ty, extension);
     }
 
-    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str) {
-        self.relation_type_manager.remove_extension(ty, extension_name)
+    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId) {
+        self.relation_type_manager.remove_extension(relation_ty, extension_ty)
     }
 
     fn delete(&self, ty: &RelationTypeId) {

@@ -6,6 +6,7 @@ use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::RelationBehaviourRegistry;
 use crate::api::RelationTypeManager;
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
@@ -162,15 +163,15 @@ impl GraphQLRelationType {
     }
 
     /// The extensions which are defined by the relation type.
-    async fn extensions(&self, name: Option<String>) -> Vec<GraphQLExtension> {
-        if name.is_some() {
-            let name = name.unwrap();
+    async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
+        if let Some(extension_ty) = extension_ty {
+            let extension_ty = extension_ty.into();
             return self
                 .relation_type
                 .extensions
                 .to_vec()
                 .iter()
-                .filter(|extension| extension.name == name.clone())
+                .filter(|extension| &extension.ty == &extension_ty)
                 .cloned()
                 .map(|extension| extension.into())
                 .collect();

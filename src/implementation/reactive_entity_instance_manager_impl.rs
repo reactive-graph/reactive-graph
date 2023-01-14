@@ -523,7 +523,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                     match receiver.try_recv() {
                         Ok(type_definition_component_event) => {
                             if let Ok(type_definition_component) = TypeDefinitionComponent::try_from(type_definition_component_event.clone()) {
-                                if let Some(component) = component_manager.get(&type_definition_component.component) {
+                                if let Some(component) = component_manager.get(&type_definition_component.component_ty) {
                                     for instance in reactive_entity_instances
                                         .iter()
                                         .filter(|instance| &instance.ty.type_definition() == &type_definition_component.type_definition)
@@ -555,7 +555,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                     match receiver.try_recv() {
                         Ok(type_definition_component_event) => {
                             if let Ok(type_definition_component) = TypeDefinitionComponent::try_from(type_definition_component_event.clone()) {
-                                if let Some(component) = component_manager.get(&type_definition_component.component) {
+                                if let Some(component) = component_manager.get(&type_definition_component.component_ty) {
                                     for reactive_entity_instance in reactive_entity_instances
                                         .iter()
                                         .filter(|entity_instance| &entity_instance.type_definition() == &type_definition_component.type_definition)

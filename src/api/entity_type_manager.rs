@@ -7,6 +7,7 @@ use crate::model::ComponentTypeId;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::plugins::EntityTypeProvider;
 
@@ -40,7 +41,7 @@ pub enum EntityTypePropertyError {
 
 #[derive(Debug)]
 pub enum EntityTypeExtensionError {
-    ExtensionAlreadyExists,
+    ExtensionAlreadyExists(ExtensionTypeId),
 }
 
 impl From<std::io::Error> for EntityTypeImportError {
@@ -115,7 +116,7 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     fn add_extension(&self, ty: &EntityTypeId, extension: Extension) -> Result<(), EntityTypeExtensionError>;
 
     /// Removes the extension with the given extension_name from the entity type with the given name.
-    fn remove_extension(&self, ty: &EntityTypeId, extension_name: &str);
+    fn remove_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the entity type with the given name.
     fn delete(&self, ty: &EntityTypeId);
@@ -133,6 +134,7 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     /// Registers an entity type provider.
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>);
 
+    // TODO: Move this to a new service EntityTypeCategoryManager
     /// Returns the entity type categories.
     fn get_entity_type_categories(&self) -> Vec<String>;
 }

@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::api::Lifecycle;
 use crate::model::EntityInstance;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::PropertyType;
@@ -86,10 +87,10 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     fn add_extension(&self, ty: &FlowTypeId, extension: Extension);
 
     /// Updates the extension with the given name of the flow type with the given name.
-    fn update_extension(&self, ty: &FlowTypeId, extension_name: &str, extension: Extension);
+    fn update_extension(&self, flow_ty: &FlowTypeId, extension: Extension);
 
     /// Removes the extension with the given name from the flow type with the given name.
-    fn remove_extension(&self, ty: &FlowTypeId, extension_name: &str);
+    fn remove_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId);
 
     /// Adds the given variable to the flow type with the given name.
     fn add_variable(&self, ty: &FlowTypeId, variable: PropertyType);

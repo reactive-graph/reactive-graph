@@ -7,6 +7,7 @@ use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
+use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
@@ -46,7 +47,7 @@ pub enum RelationTypePropertyError {
 
 #[derive(Debug)]
 pub enum RelationTypeExtensionError {
-    ExtensionAlreadyExists,
+    ExtensionAlreadyExists(ExtensionTypeId),
 }
 
 impl From<std::io::Error> for RelationTypeImportError {
@@ -129,7 +130,7 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     fn add_extension(&self, ty: &RelationTypeId, extension: Extension) -> Result<(), RelationTypeExtensionError>;
 
     /// Removes the extension with the given extension_name from the relation type with the given name.
-    fn remove_extension(&self, ty: &RelationTypeId, extension_name: &str);
+    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the relation type with the given name.
     fn delete(&self, ty: &RelationTypeId);

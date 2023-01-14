@@ -4,13 +4,19 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::model::Extension;
+use crate::model::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "ExtensionDefinition")]
 pub struct GraphQLExtension {
-    /// The name of the extension.
-    pub name: String,
+    /// The namespace of the extension.
+    #[graphql(name = "type")]
+    pub ty: ExtensionTypeIdDefinition,
+
+    /// The description of the extension.
+    pub description: String,
 
     /// The extension as JSON representation.
     pub extension: Value,
@@ -23,8 +29,18 @@ pub struct GraphQLExtension {
 #[Object(name = "Extension")]
 impl GraphQLExtension {
     /// The name of the extension.
+    async fn namespace(&self) -> String {
+        self.ty.namespace.clone()
+    }
+
+    /// The name of the extension.
     async fn name(&self) -> String {
-        self.name.clone()
+        self.ty.type_name.clone()
+    }
+
+    /// The name of the extension.
+    async fn description(&self) -> String {
+        self.description.clone()
     }
 
     /// The additional information as JSON representation (schema-less).
@@ -36,7 +52,8 @@ impl GraphQLExtension {
 impl From<GraphQLExtension> for Extension {
     fn from(extension: GraphQLExtension) -> Self {
         Extension {
-            name: extension.name.clone(),
+            ty: extension.ty.into(),
+            description: extension.description.clone(),
             extension: extension.extension,
         }
     }
@@ -45,7 +62,11 @@ impl From<GraphQLExtension> for Extension {
 impl From<Extension> for GraphQLExtension {
     fn from(extension: Extension) -> Self {
         GraphQLExtension {
-            name: extension.name.clone(),
+            ty: ExtensionTypeIdDefinition {
+                namespace: extension.namespace(),
+                type_name: extension.type_name(),
+            },
+            description: extension.description.clone(),
             extension: extension.extension,
         }
     }

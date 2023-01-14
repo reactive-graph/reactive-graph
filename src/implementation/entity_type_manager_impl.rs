@@ -27,6 +27,8 @@ use crate::core_model::COMPONENT_EVENT;
 use crate::core_model::COMPONENT_LABELED;
 use crate::core_model::ENTITY_TYPE_GENERIC_FLOW;
 use crate::core_model::ENTITY_TYPE_SYSTEM_EVENT;
+use crate::core_model::EXTENSION_DIVERGENT;
+use crate::core_model::EXTENSION_ENTITY_TYPE_CATEGORY;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
@@ -37,6 +39,7 @@ use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
 use crate::model::ExtensionContainer;
+use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::TypeContainer;
@@ -131,7 +134,9 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                 divergent.push(component_ty.to_string());
             }
         }
-        entity_type.extensions.push(Extension::new("divergent", json!(divergent)));
+        entity_type
+            .extensions
+            .push(Extension::new(&EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
         self.entity_types.0.write().unwrap().push(entity_type.clone());
         debug!("Registered entity type {}", entity_type.type_definition().to_string());
         self.event_manager.emit_event(SystemEvent::EntityTypeCreated(entity_type.ty.clone()));
@@ -279,27 +284,30 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 
     fn add_extension(&self, ty: &EntityTypeId, extension: Extension) -> Result<(), EntityTypeExtensionError> {
+        let extension_ty = extension.ty.clone();
         let mut guard = self.entity_types.0.write().unwrap();
         for entity_type in guard.iter_mut() {
             if &entity_type.ty == ty {
-                if entity_type.has_own_extension(extension.name.clone()) {
-                    return Err(EntityTypeExtensionError::ExtensionAlreadyExists);
+                if entity_type.has_own_extension(&extension_ty) {
+                    return Err(EntityTypeExtensionError::ExtensionAlreadyExists(extension_ty));
                 }
                 entity_type.extensions.push(extension.clone());
                 self.event_manager
-                    .emit_event(SystemEvent::EntityTypeExtensionAdded(ty.clone(), extension.name.clone()));
+                    .emit_event(SystemEvent::EntityTypeExtensionAdded(ty.clone(), extension_ty.clone()));
             }
         }
         Ok(())
     }
 
-    fn remove_extension(&self, ty: &EntityTypeId, extension_name: &str) {
+    // TODO: update extension
+
+    fn remove_extension(&self, ty: &EntityTypeId, extension_ty: &ExtensionTypeId) {
         let mut guard = self.entity_types.0.write().unwrap();
         for entity_type in guard.iter_mut() {
             if &entity_type.ty == ty {
-                entity_type.extensions.retain(|extension| extension.name != extension_name);
+                entity_type.extensions.retain(|extension| &extension.ty != extension_ty);
                 self.event_manager
-                    .emit_event(SystemEvent::EntityTypeExtensionRemoved(ty.clone(), extension_name.to_string()));
+                    .emit_event(SystemEvent::EntityTypeExtensionRemoved(ty.clone(), extension_ty.clone()));
             }
         }
     }
@@ -345,6 +353,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         }
     }
 
+    // TODO: Move this to a new service EntityTypeCategoryManager
     fn get_entity_type_categories(&self) -> Vec<String> {
         self.get_all()
             .iter()
@@ -352,8 +361,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                 entity_type
                     .extensions
                     .iter()
-                    .find(|extension| extension.name == *"entity_type_category")
-                    .map(|extension| extension.name.clone())
+                    .find(|extension| &extension.ty == &EXTENSION_ENTITY_TYPE_CATEGORY.clone())
+                    .and_then(|extension| extension.extension.as_str().map(str::to_string).clone())
             })
             .collect()
     }
