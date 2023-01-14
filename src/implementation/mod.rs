@@ -1,4 +1,5 @@
 pub use component_manager_impl::*;
+pub use dynamic_graph_query_service_impl::*;
 pub use dynamic_graph_schema_manager_impl::*;
 pub use entity_behaviour_manager_impl::*;
 pub use entity_behaviour_registry_impl::*;
@@ -33,6 +34,7 @@ pub use shutdown_manager_impl::*;
 pub use web_resource_manager_impl::*;
 
 pub mod component_manager_impl;
+pub mod dynamic_graph_query_service_impl;
 pub mod dynamic_graph_schema_manager_impl;
 pub mod entity_behaviour_manager_impl;
 pub mod entity_behaviour_registry_impl;
