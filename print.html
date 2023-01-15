@@ -5,8 +5,10 @@
         <meta charset="UTF-8">
         <title>Inexor Reactive Graph Flow</title>
         <meta name="robots" content="noindex" />
+
+
         <!-- Custom HTML head -->
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -16,9 +18,11 @@
         <link rel="stylesheet" href="css/general.css">
         <link rel="stylesheet" href="css/chrome.css">
         <link rel="stylesheet" href="css/print.css" media="print">
+
         <!-- Fonts -->
         <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link rel="stylesheet" href="fonts/fonts.css">
+
         <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
@@ -28,16 +32,17 @@
         <link rel="stylesheet" href="././inexor-rgf-book.css">
         <link rel="stylesheet" href="././mdbook-admonish.css">
         <link rel="stylesheet" href="graphql-playground.css">
+
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -53,7 +58,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -65,7 +70,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -86,7 +91,7 @@
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
+                                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky bordered">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -96,7 +101,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -113,6 +118,7 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
+
                     </div>
                 </div>
 
@@ -126,8 +132,9 @@
                         </ul>
                     </div>
                 </div>
+
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -382,8 +389,39 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
-<h2 id="070---2022-09-25"><a class="header" href="#070---2022-09-25">[0.7.0] - 2022-09-25</a></h2>
+<h2 id="080---2022-02-01"><a class="header" href="#080---2022-02-01">[0.8.0] - 2022-02-01</a></h2>
 <h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<ul>
+<li>Plugins: Plugin resolver state machine</li>
+<li>Plugins: Plugin dependencies and plugin versioning</li>
+<li>Plugins: Plugin installation directory</li>
+<li>Plugins: Hot deployment</li>
+<li>Plugins: Gracefully shutdown and refresh plugins and their behaviours during deployment / hot deployment</li>
+<li>Plugins: GraphQL: List, start, stop and restart plugins</li>
+<li>Plugins: GraphQL: List unsatisfied dependencies</li>
+<li>Behaviours: Lifecycles (init, connect, disconnect, shutdown)</li>
+<li>Behaviours: A state machine manages the behaviour (connecting, disconnecting, reconnecting)</li>
+<li>Behaviours: Compute behaviour initially</li>
+<li>Behaviours: Validation layer for behaviours</li>
+<li>Behaviours: Factories can construct behaviour instances</li>
+<li>Behaviours: Handle behaviour construction errors</li>
+<li>Behaviours: Macro support for implementing behaviours</li>
+<li>Behaviours: Added GraphQL API for behaviours + Allow connecting and disconnecting behaviours manually (flow editor)</li>
+<li>Behaviours: Unit tests for lots of reactive behaviours</li>
+<li>Model: Introduce namespaces</li>
+<li>Model: Use concrete type system identifiers instead of strings</li>
+<li>API: Validate types on construction (validate that components or entity types are present)</li>
+</ul>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li>Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)</li>
+<li>Behaviours: Reimplemented lots of reactive behaviours</li>
+<li>Plugins: Split most plugins into a model and plugin crate</li>
+<li>API: Make service API and plugin API more consistent (same/similar method names + use type system identifiers)</li>
+<li>Tooling: rustfmt uses separate lines per import</li>
+</ul>
+<h2 id="070---2022-09-25"><a class="header" href="#070---2022-09-25">[0.7.0] - 2022-09-25</a></h2>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>Flow Types: Replicate and instantiate flows multiple times (like flow templates)</li>
 <li>Dynamic Graph: A second GraphQL api make the access to the instance system more intuitive</li>
@@ -392,7 +430,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Plugins: Dependency information</li>
 <li>Plugins: Expose GraphQL query service to plugins</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Plugin: Dedicated error messages for the plugin API</li>
 <li>Plugin: Default trait implementations for the plugin API to reduce boilerplate</li>
@@ -400,7 +438,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
 <h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
-<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
 <ul>
 <li>Documentation: Added initial documentation as book (using mdBook)</li>
 <li>GraphQL: Navigate from components to entity types and to relation types</li>
@@ -415,7 +453,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Core: Provide required components and entity types in the application core</li>
 <li>Core: Event System for Type System and Instance System</li>
 </ul>
-<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
 <ul>
 <li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
 <li>GraphQL: Rename type_name to type</li>
@@ -430,12 +468,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="removed-2"><a class="header" href="#removed-2">Removed</a></h3>
 <h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
-<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
 <ul>
 <li>Plugin API: Added find, import &amp; export methods for all managers</li>
 <li>Core: Search for type names with wildcards</li>
 </ul>
-<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
@@ -1692,10 +1730,10 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="721cec7e-ff2d-42bf-a207-2223c8e7d9ea" src="/examples/graphql/graphql-api-components/graphql-api-components.json">
+<graphql-playground id="3540b4eb-ff1a-4b04-a091-66643b269ce2" src="/examples/graphql/graphql-api-components/graphql-api-components.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="7303e92f-a9ce-462b-a462-e2275d39af4f" src="/examples/graphql/graphql-api-entity-types/graphql-api-entity-types.json">
+<graphql-playground id="21cc767a-2b9b-4f1d-9d98-79e0621c61ca" src="/examples/graphql/graphql-api-entity-types/graphql-api-entity-types.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
 <h2 id="get-relation-type-by-name"><a class="header" href="#get-relation-type-by-name">Get Relation Type by Name</a></h2>
@@ -2150,7 +2188,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="a87538b0-9e64-4a20-8cbd-901b010e3b5f" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="f9f0a341-e752-4729-9071-9e1591a95673" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -2203,8 +2241,7 @@ restarting the core application.</p>
 
     fn get_web_resource_provider(&amp;self) -&gt; Result&lt;Arc&lt;dyn WebResourceProvider&gt;, PluginError&gt; {}
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h3 id="provide-plugin-metadata"><a class="header" href="#provide-plugin-metadata">Provide plugin metadata</a></h3>
 <p>Built-in metadata of the plugin:</p>
 <ul>
@@ -2223,8 +2260,7 @@ restarting the core application.</p>
         })
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h3 id="lifecycle"><a class="header" href="#lifecycle">Lifecycle</a></h3>
 <p>The plugin trait provides methods to do initialization and shutdown before and after setting up and shutting down
 providers.</p>
@@ -2252,8 +2288,7 @@ providers.</p>
         Ok(())
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h2 id="trait-plugincontext"><a class="header" href="#trait-plugincontext">Trait <code>PluginContext</code></a></h2>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -2276,8 +2311,7 @@ providers.</p>
     /// Returns the flow manager.
     fn get_flow_manager(&amp;self) -&gt; Arc&lt;dyn FlowManager&gt;;
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h3 id="make-use-of-the-plugin-context"><a class="header" href="#make-use-of-the-plugin-context">Make use of the plugin context</a></h3>
 <p>The plugin have to store a reference to the plugin context. Therefore, you have to implement the method <code>set_context</code>
 which is called during initialization:</p>
@@ -2289,8 +2323,7 @@ which is called during initialization:</p>
         Ok(())
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>If you want to make use of the <code>EntityInstanceManager</code> you have to:</p>
 <ol>
 <li>Get a RwLock on the context</li>
@@ -2310,8 +2343,7 @@ which is called during initialization:</p>
         let reactive_entity_instance = entity_instance_manager.create(entity_instance);
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h3 id="implement-or-ignore-providers"><a class="header" href="#implement-or-ignore-providers">Implement or ignore providers</a></h3>
 <p>If your plugin provide components you have to return a reference of the <code>ComponentProvider</code>:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
@@ -2326,8 +2358,7 @@ which is called during initialization:</p>
         Ok(component_provider.unwrap())
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>If your plugin doesn't provide components:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -2336,8 +2367,7 @@ which is called during initialization:</p>
         Err(PluginError::NoComponentProvider)
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>The same applies to all other providers:</p>
 <ul>
 <li><code>ComponentProvider</code></li>
@@ -2359,8 +2389,7 @@ plugin.</p>
         // Return a vector of components
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h2 id="use-cases"><a class="header" href="#use-cases">Use cases</a></h2>
 <ul>
 <li>Read <code>Component</code>s from external JSON-file from a specific location</li>
@@ -2378,8 +2407,7 @@ plugin.</p>
         // Return a vector of entity types
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h2 id="use-cases-1"><a class="header" href="#use-cases-1">Use cases</a></h2>
 <ul>
 <li>Read <code>EntityType</code>s from external JSON-file from a specific location</li>
@@ -2397,8 +2425,7 @@ plugin.</p>
         // Return a vector of relation types
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h2 id="use-cases-2"><a class="header" href="#use-cases-2">Use cases</a></h2>
 <ul>
 <li>Read <code>RelationType</code>s from external JSON-file from a specific location</li>
@@ -2416,8 +2443,7 @@ plugin.</p>
         // Return a vector of flows
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h2 id="use-cases-3"><a class="header" href="#use-cases-3">Use cases</a></h2>
 <ul>
 <li>Read <code>Flow</code>s from external JSON-file from a specific location</li>
@@ -2509,8 +2535,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
         self.remove_by_id(id);
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-behaviour-provider"><a class="header" href="#relation-behaviour-provider">Relation Behaviour Provider</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="web-resource-provider"><a class="header" href="#web-resource-provider">Web Resource Provider</a></h1>
 <p>Plugins can implement the trait <code>WebResourceProvider</code> in order to register handlers for endpoints.</p>
@@ -2551,8 +2576,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
         }
     }
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Description</th></tr></thead><tbody>
 <tr><td><a href="./Plugins_Arithmetic.html">Arithmetic</a></td><td>Provides arithmetic gates and operations</td></tr>
@@ -2646,13 +2670,13 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="37d08f97-fb13-46c0-bfbd-08f09ca7b0bc" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
+<graphql-playground id="2bf0d6ea-c491-42d1-b58e-db72fff04074" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="cb84e7f3-011e-4a6a-aedd-094799cd0d65" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
+<graphql-playground id="75d47ab3-226d-4d7a-baba-9266c6172b14" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="787d19e9-f2be-4c48-bdb7-259054bac1ec" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
+<graphql-playground id="6b5b92df-0b5f-4025-a933-fe3971d388b7" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -2668,7 +2692,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="3eefdeb6-928d-4219-ba44-4de587d43785" src="/examples/graphql/plugin-asset/plugin-asset.json">
+<graphql-playground id="d067933e-6bef-40d0-ba64-127cf2d01d53" src="/examples/graphql/plugin-asset/plugin-asset.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -2767,7 +2791,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="3760b52a-8f54-48f1-9c92-dd5586cb8fba" src="/examples/graphql/plugin-binary/plugin-binary.json">
+<graphql-playground id="1186c8d2-6c39-4807-8743-b727bfaded20" src="/examples/graphql/plugin-binary/plugin-binary.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -2800,7 +2824,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="a61241b9-7874-4195-b6a5-3b16396d963e" src="/examples/graphql/plugin-comparison/plugin-comparison.json">
+<graphql-playground id="f444120a-310c-4208-88e3-b1a4b115e7e0" src="/examples/graphql/plugin-comparison/plugin-comparison.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -2823,7 +2847,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="04fa62b5-3872-462e-ad6c-0990670ccf1d" src="/examples/graphql/plugin-config/plugin-config.json">
+<graphql-playground id="8b55d2b7-246f-4216-9f4e-e08af7898599" src="/examples/graphql/plugin-config/plugin-config.json">
 </graphql-playground>
 <h2 id="usage-graphql-tabset"><a class="header" href="#usage-graphql-tabset">Usage (GraphQL) {.tabset}</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -2971,7 +2995,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="396b39b6-02d4-47d3-9743-c368369bf3b2" src="/examples/graphql/plugin-connector/plugin-connector.json">
+<graphql-playground id="c1c9568c-d0e7-455e-a81b-312773b25017" src="/examples/graphql/plugin-connector/plugin-connector.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3102,7 +3126,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="ccd0dde2-cd17-4950-b0cf-5cc2d657a756" src="/examples/graphql/plugin-http/plugin-http.json">
+<graphql-playground id="82937ada-bcd9-47fd-b4d4-42869b26ba30" src="/examples/graphql/plugin-http/plugin-http.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-7"><a class="header" href="#graphql-7">GraphQL</a></h3>
@@ -4043,7 +4067,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="48f5ac5f-36b3-45cc-8525-c651551a7623" src="/examples/graphql/plugin-json/plugin-json.json">
+<graphql-playground id="812871a1-ddd7-448e-b372-bfd89711c665" src="/examples/graphql/plugin-json/plugin-json.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4154,7 +4178,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="86a05ead-a151-4365-9b46-adabab572d7f" src="/examples/graphql/plugin-metadata/plugin-metadata.json">
+<graphql-playground id="f76391d6-a9a1-43df-94b3-3f0974cbb537" src="/examples/graphql/plugin-metadata/plugin-metadata.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4337,7 +4361,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-13"><a class="header" href="#usage-13">Usage</a></h2>
-<graphql-playground id="4c7cb56f-df11-442d-b491-99dde5775e6d" src="/examples/graphql/plugin-numeric/plugin-numeric.json">
+<graphql-playground id="0239a8d3-f3b4-4c3c-9805-7684ca7b0492" src="/examples/graphql/plugin-numeric/plugin-numeric.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4380,9 +4404,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="582c4bad-65ed-4080-92ad-986818740917" src="/examples/graphql/plugin-random/plugin-random-number.json">
+<graphql-playground id="3d9bb0c9-9c6b-4c35-b6a5-f5bc7057bcca" src="/examples/graphql/plugin-random/plugin-random-number.json">
 </graphql-playground>
-<graphql-playground id="aefd80e0-550c-4cff-832f-a0007b249c4a" src="/examples/graphql/plugin-random/plugin-random-string.json">
+<graphql-playground id="264aa364-10f5-4923-aff6-ca3e1726ec3c" src="/examples/graphql/plugin-random/plugin-random-string.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-scheduler"><a class="header" href="#plugin-scheduler">Plugin: Scheduler</a></h1>
 <p>Timers and scheduled jobs</p>
@@ -4470,7 +4494,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="015f87fa-00e9-48ef-816a-4b38055d68be" src="/examples/graphql/plugin-scheduler/plugin-scheduler.json">
+<graphql-playground id="ebea5a6c-8fbb-4258-b44c-0a4e89ccb77f" src="/examples/graphql/plugin-scheduler/plugin-scheduler.json">
 </graphql-playground>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4643,7 +4667,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
-<graphql-playground id="daed24e3-6308-4b5c-96f2-3443bffd5cd5" src="/examples/graphql/plugin-string/plugin-string.json">
+<graphql-playground id="8b755154-c973-4e28-94ea-7983f4f0411d" src="/examples/graphql/plugin-string/plugin-string.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4823,7 +4847,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-19"><a class="header" href="#usage-19">Usage</a></h2>
-<graphql-playground id="901b148a-7f2f-4796-b325-e801fd2fd239" src="/examples/graphql/plugin-system-environment/plugin-system-environment.json">
+<graphql-playground id="6ee05fb2-d9bf-4f9f-a01e-947e377b33c8" src="/examples/graphql/plugin-system-environment/plugin-system-environment.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -4871,9 +4895,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="8cdc252c-244a-48f9-90ad-093b35afbf7c" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json">
+<graphql-playground id="354ca51e-8ee8-440b-a071-ed660554bb33" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json">
 </graphql-playground>
-<graphql-playground id="3d744145-f0b4-45cc-a29b-52f95611674c" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json">
+<graphql-playground id="8a5b2386-44a2-4aa4-99d0-21ee7acb40e6" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value and state components. States extends values with debounce mechanism. States are important for
@@ -5169,8 +5193,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
         }))
         .build()
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <div id="admonition-register-component" class="admonition tip">
 <div class="admonition-title">
 <p>Register Component</p>
@@ -5202,8 +5225,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
         .extension(&quot;usage&quot;, json!(&quot;ls [OPTION]... [FILE]...&quot;))
         .build()
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <div id="admonition-register-entity-type" class="admonition tip">
 <div class="admonition-title">
 <p>Register Entity Type</p>
@@ -5243,8 +5265,7 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
         .extension(&quot;flow_arrow_labeling&quot;, json!(&quot;teleports from {outbound.name} to {inbound.name}&quot;))
         .build()
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <div id="admonition-register-relation-type" class="admonition tip">
 <div class="admonition-title">
 <p>Register Relation Type</p>
@@ -5272,8 +5293,7 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
         .property(&quot;property_1&quot;, json!(&quot;value_1&quot;))
         .get()
 }
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <div id="admonition-create-reactive-entity-instance" class="admonition tip">
 <div class="admonition-title">
 <p>Create Reactive Entity Instance</p>
@@ -5617,35 +5637,46 @@ cargo install mdbook-preprocessor-graphql-playground
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+
+
                         <div style="clear: both"></div>
                     </nav>
                 </div>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
             </nav>
 
         </div>
 
-        <script type="text/javascript">
+
+
+
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script type="text/javascript" src="mermaid.min.js"></script>
-        <script type="text/javascript" src="mermaid-init.js"></script>
-        <script type="text/javascript" src="graphql-playground-react-middleware.js"></script>
-        <script type="text/javascript" src="graphql-playground.js"></script>
-        <script type="text/javascript">
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+        <script src="graphql-playground-react-middleware.js"></script>
+        <script src="graphql-playground.js"></script>
+
+        <script>
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });
         </script>
+
     </body>
 </html>

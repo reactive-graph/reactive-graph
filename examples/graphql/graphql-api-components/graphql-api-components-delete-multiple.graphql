@@ -1,9 +1,24 @@
 mutation {
   types {
     components {
-      DeleteFirst: delete(name: "component1")
-      DeleteSecond: delete(name: "component2")
-      DeleteThird: delete(name: "component3")
+      DeleteFirst: delete(
+        type: {
+          namespace: "book"
+          name: "component1"
+        }
+      )
+      DeleteSecond: delete(
+        type: {
+          namespace: "book"
+          name: "component2"
+        }
+      )
+      DeleteThird: delete(
+        type: {
+          namespace: "book"
+          name: "component3"
+        }
+      )
     }
   }
 }

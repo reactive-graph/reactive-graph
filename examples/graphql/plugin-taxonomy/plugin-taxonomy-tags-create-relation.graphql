@@ -5,7 +5,8 @@ mutation CreateTaggedWithRelation {
         edgeKey: {
           # Outbound: The other entity
           outboundId: "418df3a2-55db-4fc9-a7b2-dbce928c9a03",
-          typeName: "tagged_with",
+          namespace: "taxonomy"
+          typeName: "tagged_with"
           # Inbound: The tag entity
           inboundId: "8e6ab5a8-8367-40e2-8a19-391664c39042"
         },
@@ -17,8 +18,10 @@ mutation CreateTaggedWithRelation {
         ]
       ) {
         type {
-          fullName
+          namespace
+          name
         }
+        instanceId
         outbound {
           id
         }
