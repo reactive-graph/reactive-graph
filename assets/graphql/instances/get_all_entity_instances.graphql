@@ -1,12 +1,20 @@
 query getAllMqttBrokers {
   instances {
-    entities (type: "mqtt_broker") {
+    entities (
+      type: {
+        namespace: "mqtt"
+        name: "mqtt_broker"
+      }
+    ) {
       id
       label
       components {
         name
       }
-      behaviours
+      behaviours {
+        namespace
+        name
+      }
       type {
         components {
           name

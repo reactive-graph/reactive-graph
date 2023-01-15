@@ -1,7 +1,10 @@
 query findRelationInstanceByProperty {
   instances {
     keys: relations(
-      type: "default_connector",
+      type: {
+        namespace: "connector"
+        name: "default_connector"
+      }
       properties: [
         {
           name: "outbound_property_name"
@@ -12,8 +15,8 @@ query findRelationInstanceByProperty {
       type {
         namespace
         name
-        instanceTypeName
       }
+      instanceId
       properties {
         name
         value

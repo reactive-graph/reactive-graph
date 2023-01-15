@@ -2,8 +2,8 @@ query {
   types {
     components(
       type: {
-        namespace: "example"
-        name: "component1"
+        namespace: "logical"
+        name: "action"
       }
     ) {
       namespace

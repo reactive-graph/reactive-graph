@@ -1,17 +1,24 @@
 query getAllEntityInstancesThatAreComposedWith {
   instances {
-    composedWith: entities(components: "labeled") {
+    composedWith: entities(
+      components: {
+        namespace: "core"
+        name: "labeled"
+      }
+    ) {
       id
       label
       components {
         name
       }
-      behaviours
+      behaviours {
+        namespace
+        name
+      }
       properties(name: "label") {
         name
         value
       }
-      behaviours
     }
   }
 }

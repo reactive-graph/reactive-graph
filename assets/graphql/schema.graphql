@@ -38,7 +38,7 @@ type Component {
   "Query which entity types are using this component"
   entityTypes: [EntityType!]!
   "The extensions which are defined by the component."
-  extensions(name: String): [Extension!]!
+  extensions(type: ExtensionTypeId): [Extension!]!
   "Query which relation types are using this component as inbound type"
   inboundOf: [RelationType!]!
   "The name of the component."
@@ -150,7 +150,7 @@ type EntityType {
   "Textual description of the entity type."
   description: String!
   "The extensions which are defined by the entity type."
-  extensions(name: String): [Extension!]!
+  extensions(type: ExtensionTypeId): [Extension!]!
   "List of relation types which has this entity type as inbound."
   inboundRelations: [RelationType!]!
   "Returns true, if the entity type is valid. This means all components exists."
@@ -182,10 +182,14 @@ meta data. For example an extension named "shape" provides information
 about the look and feel in the flow editor.
 """
 type Extension {
+  "The name of the extension."
+  description: String!
   "The additional information as JSON representation (schema-less)."
   extension: JSON!
   "The name of the extension."
   name: String!
+  "The name of the extension."
+  namespace: String!
 }
 
 """
@@ -234,7 +238,7 @@ type FlowType {
   "The entity instances contained by the flow type"
   entityInstances: [EntityInstance!]!
   "The extensions which are defined by the flow type."
-  extensions(name: String): [Extension!]!
+  extensions(type: ExtensionTypeId): [Extension!]!
   """
 
   Returns true, if the relation type is valid.
@@ -370,7 +374,7 @@ type MutationComponents {
   "Deletes the component with the given name."
   delete(type: ComponentTypeId!): Boolean!
   "Removes the extension with the given extension_name from the component with the given name."
-  removeExtension(extensionName: String!, type: ComponentTypeId!): Component!
+  removeExtension(extension: ExtensionTypeId!, type: ComponentTypeId!): Component!
   "Removes the property with the given property_name from the component with the given name."
   removeProperty(propertyName: String!, type: ComponentTypeId!): Component!
 }
@@ -458,7 +462,7 @@ type MutationEntityTypes {
   "Remove the component with the given component_name from the entity type with the given name."
   removeComponent(component: ComponentTypeId!, type: EntityTypeId!): EntityType!
   "Removes the extension with the given extension_name from the entity type with the given name."
-  removeExtension(extensionName: String!, type: EntityTypeId!): EntityType!
+  removeExtension(extension: ExtensionTypeId!, type: EntityTypeId!): EntityType!
   "Removes the property with the given property_name from the entity type with the given name."
   removeProperty(propertyName: String!, type: EntityTypeId!): EntityType!
 }
@@ -658,7 +662,7 @@ type MutationRelationTypes {
   "Remove the component with the given component_name from the relation type with the given name."
   removeComponent(component: ComponentTypeId!, type: RelationTypeId!): RelationType!
   "Removes the extension with the given extension_name from the relation type with the given name."
-  removeExtension(extensionName: String!, type: RelationTypeId!): RelationType!
+  removeExtension(extension: ExtensionTypeId!, type: RelationTypeId!): RelationType!
   "Removes the property with the given property_name from the relation type with the given name."
   removeProperty(propertyName: String!, type: RelationTypeId!): RelationType!
 }
@@ -723,7 +727,9 @@ type PropertyType {
   "Textual description of the component."
   description: String!
   "The extensions which are defined by the entity type."
-  extensions(name: String): [Extension!]!
+  extensions(type: ExtensionTypeId): [Extension!]!
+  "The property instance is mutable or immutable."
+  mutability: Mutability!
   "The name of the component."
   name: String!
   "The socket type of the property instances."
@@ -845,7 +851,7 @@ type RelationType {
   "Textual description of the relation type."
   description: String!
   "The extensions which are defined by the relation type."
-  extensions(name: String): [Extension!]!
+  extensions(type: ExtensionTypeId): [Extension!]!
   "The inbound components."
   inboundComponents: [Component!]!
   "The inbound entity type(s)."
@@ -982,6 +988,14 @@ enum DataType {
   STRING
 }
 
+"The mutability of a property."
+enum Mutability {
+  "The property is immutable."
+  IMMUTABLE
+  "The property is mutable."
+  MUTABLE
+}
+
 """
 
 The socket type defines if the property acts as an input or output socket
@@ -1084,10 +1098,19 @@ input EntityTypeId {
 }
 
 input ExtensionDefinition {
+  "The description of the extension."
+  description: String!
   "The extension as JSON representation."
   extension: JSON!
+  "The namespace of the extension."
+  type: ExtensionTypeId!
+}
+
+input ExtensionTypeId {
   "The name of the extension."
   name: String!
+  "The namespace of the extension."
+  namespace: String!
 }
 
 """
@@ -1147,6 +1170,8 @@ input PropertyTypeDefinition {
   description: String!
   "Property specific extensions"
   extensions: [ExtensionDefinition!]!
+  "The property is mutable or immutable"
+  mutability: Mutability!
   "The name of the property"
   name: String!
   "Specifies which type of socket"

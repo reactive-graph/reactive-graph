@@ -2,9 +2,16 @@ mutation {
   types {
     entities {
       create(
-        namespace: "book",
-        name: "example1",
-        components: [ "component1" ]
+        type: {
+          namespace: "book"
+          name: "example1"
+        }
+        components: [
+          {
+            namespace: "book"
+            name: "component1"
+          }
+        ]
       ) {
         ...FullEntityType
       }

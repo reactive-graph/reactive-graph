@@ -1,7 +1,10 @@
 query findEntityInstanceByMultipleProperties {
   instances {
     keys: entities(
-      type: "input_device_key",
+      type: {
+        namespace: "input"
+        name: "input_device_key"
+      }
       properties: [
         {
           name: "key_code"

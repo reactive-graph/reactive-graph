@@ -22,6 +22,11 @@ query {
           extension
         }
       }
+      extensions {
+        namespace
+        name
+        extension
+      }
     }
   }
 }

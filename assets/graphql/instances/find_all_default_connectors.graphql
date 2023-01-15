@@ -5,17 +5,21 @@
 query findIncomingConnectorsForEntityInstance {
   instances {
     relations(
-      type: "default_connector"
+      type: {
+        namespace: "connector"
+        name: "default_connector"
+      }
       inboundId: "b969b749-7521-4563-8e11-8fa653a1ffd8"
     ) {
       type {
         namespace
         name
-        instanceTypeName
       }
+      instanceId
       outbound {
         id
         type {
+          namespace
           name
         }
         properties(names: [ "key_down" ]) {
@@ -30,6 +34,7 @@ query findIncomingConnectorsForEntityInstance {
       inbound {
         id
         type {
+          namespace
           name
         }
         properties(names: [ "lhs", "rhs", "result" ]) {

@@ -1,7 +1,10 @@
 query getAllSystemEvents {
   instances {
     systemEvents: entities(
-      type: "system_event"
+      type: {
+        namespace: "core"
+        name: "system_event"
+      }
     ) {
       id
       label

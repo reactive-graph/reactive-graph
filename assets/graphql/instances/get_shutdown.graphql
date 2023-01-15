@@ -1,8 +1,16 @@
 query {
   instances {
-    entities(type: "shutdown") {
+    entities(
+      type: {
+        namespace: "core"
+        name: "shutdown"
+      }
+    ) {
       id
-      type {name}
+      type {
+        namespace
+        name
+      }
       label
       properties(
         names: [

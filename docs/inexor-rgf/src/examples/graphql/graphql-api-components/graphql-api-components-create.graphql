@@ -2,17 +2,24 @@ mutation {
   types {
     components {
       create(
-        namespace: "book",
-        name: "component1",
+        type: {
+          namespace: "book"
+          name: "component1"
+        }
         properties: [
           {
             name: "first"
             description: "First Property"
             dataType: ANY
             socketType: NONE
+            mutability: MUTABLE
             extensions: [
               {
-                name: "sorted"
+                type: {
+                  namespace: "book"
+                  name: "sorted"
+                }
+                description: ""
                 extension: {
                   sortProperty: "first"
                 }
