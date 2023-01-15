@@ -126,7 +126,7 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
                                 }
                             }
                             DataType::Number => {
-                                if value.f64().is_err() || value.i64().is_err() || value.u64().is_err() {
+                                if value.f64().is_err() && value.i64().is_err() && value.u64().is_err() {
                                     // Fail if no number was set for a number property
                                     return Err(data_type_error(property));
                                 }
