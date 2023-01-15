@@ -1,0 +1,15 @@
+mutation {
+  arithmeticU64 {
+    add(id: "358b51ac-8570-47ba-a68a-9207f63dcb99") {
+      update(
+        lhs: 20
+        rhs: 30
+      ) {
+        id
+        lhs
+        rhs
+        result
+      }
+    }
+  }
+}
