@@ -2,7 +2,12 @@
 query {
   types {
     # Get component by name
-    components(name: "labeled") {
+    components(
+      type: {
+        namespace: "core"
+        name: "labeled"
+      }
+    ) {
       namespace
       name
       # List entity types using the component
