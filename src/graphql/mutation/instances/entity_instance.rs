@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use async_graphql::*;
 use log::debug;
+use serde_json::json;
 use uuid::Uuid;
 
 use crate::api::EntityBehaviourManager;
@@ -9,6 +10,7 @@ use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::core_model::PROPERTY_TRIGGER;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
@@ -128,6 +130,31 @@ impl MutationEntityInstances {
         // TODO: it's still not a transactional mutation
         // entity_instance.tick();
         Ok(entity_instance.into())
+    }
+
+    /// Triggers the entity instance with the given id.
+    async fn trigger(
+        &self,
+        context: &Context<'_>,
+        #[graphql(desc = "Triggers the entity instance with the given id.")] id: Option<Uuid>,
+        #[graphql(desc = "Triggers the entity instance with the given label.")] label: Option<String>,
+    ) -> Result<GraphQLEntityInstance> {
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let Some(entity_instance) = (if id.is_some() {
+            entity_instance_manager.get(id.unwrap())
+        } else if label.is_some() {
+            entity_instance_manager.get_by_label(label.unwrap().as_str())
+        } else {
+            return Err("Either id or label must be given!".into());
+        }) else {
+            return Err("Entity instance not found!".into());
+        };
+        if entity_instance.has_property(PROPERTY_TRIGGER) {
+            entity_instance.set_checked(PROPERTY_TRIGGER, json!(true));
+            Ok(entity_instance.into())
+        } else {
+            Err(Error::new(format!("Unable to trigger {}", entity_instance.id)))
+        }
     }
 
     /// Manually tick the entity instance. This means for each property of the entity instance
