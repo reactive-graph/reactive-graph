@@ -29,3 +29,6 @@ cobertura.xml
 /plugins/deploy/*
 /plugins/installed/*
 /plugins/runtime/*
+
+/repositories/assets/*
+/repositories/flows/*
