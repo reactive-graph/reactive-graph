@@ -182,6 +182,18 @@ level = "trace"
 [loggers."inexor_rgf_plugin_logical"]
 level = "trace"
 
+[loggers."inexor_rgf_plugin_trigger"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_result"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_date_time"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_state"]
+level = "info"
+
 [loggers."inexor_rgf_core_frp"]
 level = "trace"
 
