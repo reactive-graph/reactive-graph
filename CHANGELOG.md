@@ -10,7 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- GraphQL: Simplify trigger action by providing a dedicated GraphQL mutation
+
 ### Changed
+
+- GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0
 
 ### Removed
 
