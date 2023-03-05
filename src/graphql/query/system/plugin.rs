@@ -44,6 +44,14 @@ impl GraphQLPlugin {
             .ok_or_else(|| Error::new("Failed to resolve plugin name"))
     }
 
+    async fn short_name(&self, context: &Context<'_>) -> Result<String> {
+        let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager>>()?;
+        plugin_container_manager
+            .name(&self.id)
+            .map(|name| name.replace("inexor-rgf-plugin-", ""))
+            .ok_or_else(|| Error::new("Failed to resolve plugin short name"))
+    }
+
     async fn description(&self, context: &Context<'_>) -> Result<String> {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager>>()?;
         plugin_container_manager
