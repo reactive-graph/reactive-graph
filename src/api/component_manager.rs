@@ -33,8 +33,18 @@ pub enum ComponentPropertyError {
 }
 
 #[derive(Debug)]
+pub enum ComponentPropertyUpdateError {
+    PropertyDoesNotExist,
+}
+
+#[derive(Debug)]
 pub enum ComponentExtensionError {
     ExtensionAlreadyExists,
+}
+
+#[derive(Debug)]
+pub enum ComponentExtensionUpdateError {
+    ExtensionDoesNotExist,
 }
 
 impl From<std::io::Error> for ComponentImportError {
@@ -93,16 +103,28 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
     /// Replaces the component with the given name with the given component.
     fn replace(&self, ty: &ComponentTypeId, component: Component);
 
-    /// Adds a property to the component with the given name.
+    /// Adds a property to the given component.
     fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<(), ComponentPropertyError>;
 
-    /// Removes the property with the given property_name from the component with the given name.
+    /// Updates the property with the given property_name.
+    /// It's possible to rename the property by using another name in the new property than the provided property_name.
+    fn update_property(&self, ty: &ComponentTypeId, property_name: &str, property: PropertyType) -> Result<(), ComponentPropertyUpdateError>;
+
+    /// Removes the property with the given property_name from the given component.
     fn remove_property(&self, ty: &ComponentTypeId, property_name: &str);
 
-    /// Adds an extension to the component with the given name.
+    /// Adds an extension to the given component.
     fn add_extension(&self, ty: &ComponentTypeId, extension: Extension) -> Result<(), ComponentExtensionError>;
 
-    /// Removes the extension with the given extension_name from the component with the given name.
+    /// Replaces the extension of the given component.
+    fn update_extension(
+        &self,
+        component_ty: &ComponentTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<(), ComponentExtensionUpdateError>;
+
+    /// Removes the extension with the given extension_name from the given component.
     fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the component with the given name.

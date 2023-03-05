@@ -5,6 +5,7 @@ use async_graphql::*;
 use crate::api::ComponentExtensionError;
 use crate::api::ComponentManager;
 use crate::api::ComponentPropertyError;
+use crate::api::ComponentPropertyUpdateError;
 use crate::api::ComponentRegistrationError;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
@@ -45,6 +46,23 @@ impl MutationComponents {
         }
     }
 
+    /// Renames the component with the given type to the component with the given new type.
+    async fn rename(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        #[graphql(name = "newType")] new_ty: ComponentTypeIdDefinition,
+    ) -> Result<GraphQLComponent> {
+        let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
+        let ty = ty.into();
+        let Some(mut component) = component_manager.get(&ty) else {
+            return Err(Error::new(format!("Failed to rename component {}: Component does not exist", ty)));
+        };
+        component.ty = new_ty.into();
+        component_manager.replace(&ty, component.clone());
+        Ok(component.into())
+    }
+
     /// Adds a property to the component with the given name.
     async fn add_property(
         &self,
@@ -65,6 +83,31 @@ impl MutationComponents {
             Err(ComponentPropertyError::PropertyAlreadyExists) => {
                 Err(Error::new(format!("Failed to add property to component {}: Property already exists", ty)))
             }
+        };
+    }
+
+    /// Updates the property with the given name of the given component.
+    async fn update_property(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        #[graphql(name = "name")] property_name: String,
+        property: PropertyTypeDefinition,
+    ) -> Result<GraphQLComponent> {
+        let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
+        let ty = ty.into();
+        if !component_manager.has(&ty) {
+            return Err(Error::new(format!("Component {} does not exist", ty)));
+        }
+        return match component_manager.update_property(&ty, &property_name, property.into()) {
+            Ok(_) => component_manager
+                .get(&ty)
+                .map(|component| component.into())
+                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+            Err(ComponentPropertyUpdateError::PropertyDoesNotExist) => Err(Error::new(format!(
+                "Failed to update property of component {}: Property {} does not exists",
+                ty, &property_name
+            ))),
         };
     }
 

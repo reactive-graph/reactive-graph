@@ -11,9 +11,11 @@ use wildmatch::WildMatch;
 
 use crate::api::ComponentCreationError;
 use crate::api::ComponentExtensionError;
+use crate::api::ComponentExtensionUpdateError;
 use crate::api::ComponentImportError;
 use crate::api::ComponentManager;
 use crate::api::ComponentPropertyError;
+use crate::api::ComponentPropertyUpdateError;
 use crate::api::ComponentRegistrationError;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
@@ -156,6 +158,7 @@ impl ComponentManager for ComponentManagerImpl {
         let mut guard = self.components.0.write().unwrap();
         for mut component in guard.iter_mut() {
             if &component.ty == ty {
+                component.ty = r_component.ty.clone();
                 component.description = r_component.description.clone();
                 component.properties = r_component.properties.clone();
                 component.extensions = r_component.extensions.clone();
@@ -174,6 +177,23 @@ impl ComponentManager for ComponentManagerImpl {
                 component.properties.push(property.clone());
                 self.event_manager
                     .emit_event(SystemEvent::ComponentPropertyAdded(ty.clone(), property.name.clone()));
+            }
+        }
+        Ok(())
+    }
+
+    fn update_property(&self, ty: &ComponentTypeId, property_name: &str, property: PropertyType) -> Result<(), ComponentPropertyUpdateError> {
+        let mut guard = self.components.0.write().unwrap();
+        for component in guard.iter_mut() {
+            if &component.ty == ty {
+                if !component.has_property(property_name) {
+                    return Err(ComponentPropertyUpdateError::PropertyDoesNotExist);
+                }
+                component.properties.retain(|property| property.name != property_name);
+                component.properties.push(property.clone());
+                // TODO:
+                // self.event_manager
+                //     .emit_event(SystemEvent::ComponentPropertyUpdated(ty.clone(), property.name.clone()));
             }
         }
         Ok(())
@@ -200,6 +220,27 @@ impl ComponentManager for ComponentManagerImpl {
                 component.extensions.push(extension.clone());
                 self.event_manager
                     .emit_event(SystemEvent::ComponentExtensionAdded(ty.clone(), extension.ty.clone()));
+            }
+        }
+        Ok(())
+    }
+
+    fn update_extension(
+        &self,
+        component_ty: &ComponentTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<(), ComponentExtensionUpdateError> {
+        let mut guard = self.components.0.write().unwrap();
+        for component in guard.iter_mut() {
+            if &component.ty == component_ty {
+                if !component.has_extension(&extension_ty) {
+                    return Err(ComponentExtensionUpdateError::ExtensionDoesNotExist);
+                }
+                component.extensions.retain(|extension| &extension.ty != extension_ty);
+                component.extensions.push(extension.clone());
+                // self.event_manager
+                //     .emit_event(SystemEvent::ComponentExtensionRemoved(ty.clone(), extension_ty.clone()));
             }
         }
         Ok(())
