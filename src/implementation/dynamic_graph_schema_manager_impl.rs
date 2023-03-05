@@ -26,6 +26,7 @@ use crate::graphql::dynamic::get_entity_types;
 use crate::graphql::dynamic::get_interfaces;
 use crate::graphql::dynamic::get_mutation;
 use crate::graphql::dynamic::get_query;
+use crate::graphql::dynamic::get_relation_mutation_types;
 use crate::graphql::dynamic::get_relation_types;
 use crate::graphql::dynamic::get_scalars;
 use crate::graphql::dynamic::get_unions;
@@ -99,6 +100,7 @@ impl DynamicGraphSchemaManager for DynamicGraphSchemaManagerImpl {
         schema = get_entity_types(schema, &context);
         schema = get_entity_mutation_types(schema, &context);
         schema = get_relation_types(schema, &context);
+        schema = get_relation_mutation_types(schema, &context);
         schema = get_query(schema, &context);
         schema = get_mutation(schema, &context);
         schema.finish()

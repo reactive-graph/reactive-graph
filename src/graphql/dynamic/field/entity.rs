@@ -12,6 +12,7 @@ use uuid::Uuid;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::builder::ReactiveEntityInstanceBuilder;
+use crate::core_model::PROPERTY_LABEL;
 use crate::graphql::dynamic::data_type_error;
 use crate::graphql::dynamic::entity_instance_not_found_error;
 use crate::graphql::dynamic::entity_instance_not_of_entity_type_error;
@@ -40,9 +41,11 @@ use crate::model::RelationTypeId;
 
 pub fn entity_query_field(entity_type: &EntityType) -> Field {
     let ty = entity_type.ty.clone();
+    let entity_type_inner = entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
+        let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
             let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
             if let Ok(id) = ctx.args.try_get("id") {
@@ -60,15 +63,17 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
                 }
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance.clone())])));
             }
-            let instances = entity_instance_manager.get_by_type(&ty);
+            let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, &entity_instance_manager);
             return Ok(Some(FieldValue::list(
                 instances.into_iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
             )));
         })
     })
-    .argument(InputValue::new("id", TypeRef::named(TypeRef::STRING)))
-    .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)))
     .description(entity_type.description.clone())
+    .argument(InputValue::new("id", TypeRef::named(TypeRef::STRING)))
+    .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)));
+    field = add_entity_type_properties_as_field_arguments(field, &entity_type, true, true);
+    field
 }
 
 pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
@@ -82,6 +87,7 @@ pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
             let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
             let mut builder = ReactiveEntityInstanceBuilder::new(&ty);
             let mut builder = builder.id(Uuid::new_v4());
+            builder = builder.set_properties_defaults(entity_type.clone());
             for property in entity_type.properties.iter() {
                 let value = ctx.args.try_get(&property.name)?;
                 match &property.data_type {
@@ -142,19 +148,17 @@ pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
         })
     })
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)));
-    for property in entity_type.properties.iter() {
-        if let Some(type_ref) = to_input_type_ref(&property, false) {
-            field = field.argument(InputValue::new(&property.name, type_ref));
-        }
-    }
+    field = add_entity_type_properties_as_field_arguments(field, &entity_type, false, false);
     Some(field)
 }
 
 pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
     let ty = entity_type.ty.clone();
+    let entity_type_inner = entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let field = Field::new(dy_ty.field_name(), TypeRef::named_nn(&dy_ty.mutation_type_name()), move |ctx| {
+    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn(&dy_ty.mutation_type_name()), move |ctx| {
         let ty = ty.clone();
+        let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
             let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
             // Multiple ids
@@ -188,18 +192,17 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
                 return Ok(Some(field_value));
             }
             // TODO: implement label matching
-            // TODO: implement property search
-            return Ok(None);
+            let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, &entity_instance_manager);
+            let field_value = FieldValue::owned_any(instances);
+            return Ok(Some(field_value));
         })
     })
+    .description(entity_type.description.clone())
     .argument(InputValue::new("ids", TypeRef::named_nn_list(TypeRef::ID)))
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)))
     // TODO: implement label matching
-    .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)))
-    // TODO: implement property search
-    // for property in properties {
-    //   .argument(InputValue::new(property.name, TypeRef::named_nn_list(type_ref_properties(property))))
-    .description(entity_type.description.clone());
+    .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)));
+    field = add_entity_type_properties_as_field_arguments(field, &entity_type, true, true);
     Some(field)
 }
 
@@ -228,18 +231,21 @@ pub fn entity_outbound_relation_field(
     outbound_relation_type: &RelationType,
     field_names: &DynamicGraphFieldNameExtension,
     field_descriptions: &DynamicGraphFieldDescriptionExtension,
-) -> Field {
+) -> Option<Field> {
     let outbound_ty = outbound_relation_type.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&outbound_ty);
     let outbound_ty_inner = outbound_ty.clone();
 
     let field_name = field_names.from_outbound_entity_to_relation.clone().unwrap_or(dy_ty.outbound_type_name());
+    if field_name.is_empty() {
+        return None;
+    }
     let field_description = field_descriptions
         .from_outbound_entity_to_relation
         .clone()
         .unwrap_or(outbound_relation_type.description.clone());
 
-    Field::new(field_name, TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let field = Field::new(field_name, TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
         let outbound_ty = outbound_ty_inner.clone();
         FieldFuture::new(async move {
             let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
@@ -253,25 +259,29 @@ pub fn entity_outbound_relation_field(
             Ok(Some(FieldValue::list(relation_instances)))
         })
     })
-    .description(&field_description)
+    .description(&field_description);
+    Some(field)
 }
 
 pub fn entity_inbound_relation_field(
     inbound_relation_type: &RelationType,
     field_names: &DynamicGraphFieldNameExtension,
     field_descriptions: &DynamicGraphFieldDescriptionExtension,
-) -> Field {
+) -> Option<Field> {
     let inbound_ty = inbound_relation_type.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&inbound_ty);
     let inbound_ty_inner = inbound_ty.clone();
 
     let field_name = field_names.from_inbound_entity_to_relation.clone().unwrap_or(dy_ty.inbound_type_name());
+    if field_name.is_empty() {
+        return None;
+    }
     let field_description = field_descriptions
         .from_inbound_entity_to_relation
         .clone()
         .unwrap_or(inbound_relation_type.description.clone());
 
-    Field::new(field_name, TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let field = Field::new(field_name, TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
         let inbound_ty = inbound_ty_inner.clone();
         FieldFuture::new(async move {
             let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
@@ -285,7 +295,8 @@ pub fn entity_inbound_relation_field(
             Ok(Some(FieldValue::list(relation_instances)))
         })
     })
-    .description(&field_description)
+    .description(&field_description);
+    Some(field)
 }
 
 pub fn outbound_entity_to_inbound_field(
@@ -298,27 +309,30 @@ pub fn outbound_entity_to_inbound_field(
         return Vec::new();
     };
     let field_name = field_names.from_outbound_entity_to_inbound_entity.clone();
+    // if field_name.is_empty() {
+    //     return Vec::new();
+    // }
     info!("from outbound {} to inbound {:?} {}", &outbound_relation_type.ty, field_name, &relation_type.inbound_type);
     let field_description = field_descriptions.from_outbound_entity_to_inbound_entity.clone();
 
     match &relation_type.inbound_type {
         ComponentOrEntityTypeId::EntityType(ty) => {
             if ty.namespace() == "*" {
-                vec![outbound_entity_to_inbound_entities_union_field(
+                optional_field_to_vec(outbound_entity_to_inbound_entities_union_field(
                     &relation_type.ty,
                     &UNION_ALL_ENTITIES,
                     field_name,
                     field_description,
-                )]
+                ))
             } else if ty.type_name() == "*" {
-                vec![outbound_entity_to_inbound_entities_union_field(
+                optional_field_to_vec(outbound_entity_to_inbound_entities_union_field(
                     &relation_type.ty,
                     &namespace_entities_union_type_name(&ty.namespace()),
                     field_name,
                     field_description,
-                )]
+                ))
             } else {
-                vec![outbound_entity_to_inbound_entities_field(&relation_type.ty, ty, field_name, field_description)]
+                optional_field_to_vec(outbound_entity_to_inbound_entities_field(&relation_type.ty, ty, field_name, field_description))
             }
         }
         ComponentOrEntityTypeId::Component(ty) => {
@@ -328,7 +342,7 @@ pub fn outbound_entity_to_inbound_field(
                     .get_all()
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| outbound_entity_to_inbound_components_field(&relation_type.ty, &ty, None, None))
+                    .filter_map(|ty| outbound_entity_to_inbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else if ty.type_name() == "*" {
                 context
@@ -336,15 +350,10 @@ pub fn outbound_entity_to_inbound_field(
                     .get_by_namespace(&ty.namespace())
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| outbound_entity_to_inbound_components_field(&relation_type.ty, &ty, None, None))
+                    .filter_map(|ty| outbound_entity_to_inbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else {
-                vec![outbound_entity_to_inbound_components_field(
-                    &relation_type.ty,
-                    ty,
-                    field_name,
-                    field_description,
-                )]
+                optional_field_to_vec(outbound_entity_to_inbound_components_field(&relation_type.ty, ty, field_name, field_description))
             }
         }
     }
@@ -366,21 +375,21 @@ pub fn inbound_entity_to_outbound_field(
     match &relation_type.outbound_type {
         ComponentOrEntityTypeId::EntityType(ty) => {
             if ty.namespace() == "*" {
-                vec![inbound_entity_to_outbound_entities_union_field(
+                optional_field_to_vec(inbound_entity_to_outbound_entities_union_field(
                     &relation_type.ty,
                     &UNION_ALL_ENTITIES,
                     field_name,
                     field_description,
-                )]
+                ))
             } else if ty.type_name() == "*" {
-                vec![inbound_entity_to_outbound_entities_union_field(
+                optional_field_to_vec(inbound_entity_to_outbound_entities_union_field(
                     &relation_type.ty,
                     &namespace_entities_union_type_name(&ty.namespace()),
                     field_name,
                     field_description,
-                )]
+                ))
             } else {
-                vec![inbound_entity_to_outbound_entities_field(&relation_type.ty, ty, field_name, field_description)]
+                optional_field_to_vec(inbound_entity_to_outbound_entities_field(&relation_type.ty, ty, field_name, field_description))
             }
         }
         ComponentOrEntityTypeId::Component(ty) => {
@@ -390,7 +399,7 @@ pub fn inbound_entity_to_outbound_field(
                     .get_all()
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| inbound_entity_to_outbound_components_field(&relation_type.ty, &ty, None, None))
+                    .filter_map(|ty| inbound_entity_to_outbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else if ty.type_name() == "*" {
                 context
@@ -398,15 +407,10 @@ pub fn inbound_entity_to_outbound_field(
                     .get_by_namespace(&ty.namespace())
                     .into_iter()
                     .map(|component| component.ty)
-                    .map(|ty| inbound_entity_to_outbound_components_field(&relation_type.ty, &ty, None, None))
+                    .filter_map(|ty| inbound_entity_to_outbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else {
-                vec![inbound_entity_to_outbound_components_field(
-                    &relation_type.ty,
-                    ty,
-                    field_name,
-                    field_description,
-                )]
+                optional_field_to_vec(inbound_entity_to_outbound_components_field(&relation_type.ty, ty, field_name, field_description))
             }
         }
     }
@@ -419,7 +423,7 @@ pub fn outbound_entity_to_inbound_entities_field(
     inbound_ty: &EntityTypeId,
     field_name: Option<String>,
     field_description: Option<String>,
-) -> Field {
+) -> Option<Field> {
     let dy_ty = DynamicGraphTypeDefinition::from(inbound_ty);
     let field_name = field_name.unwrap_or(dy_ty.inbound_type_name());
     create_outbound_entity_to_inbound_field(ty, &dy_ty.to_string(), &field_name, field_description)
@@ -430,8 +434,11 @@ pub fn outbound_entity_to_inbound_entities_union_field(
     type_name: &str,
     field_name: Option<String>,
     field_description: Option<String>,
-) -> Field {
+) -> Option<Field> {
     let field_name = field_name.unwrap_or("inbound".to_string());
+    if field_name.is_empty() {
+        return None;
+    }
     let relation_ty_inner = ty.clone();
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
@@ -454,7 +461,7 @@ pub fn outbound_entity_to_inbound_entities_union_field(
     if let Some(field_description) = field_description {
         field = field.description(field_description);
     }
-    field
+    Some(field)
 }
 
 pub fn outbound_entity_to_inbound_components_field(
@@ -462,13 +469,16 @@ pub fn outbound_entity_to_inbound_components_field(
     component_ty: &ComponentTypeId,
     field_name: Option<String>,
     field_description: Option<String>,
-) -> Field {
+) -> Option<Field> {
     let dy_ty = DynamicGraphTypeDefinition::from(component_ty);
     let field_name = field_name.unwrap_or(dy_ty.inbound_type_name());
     create_outbound_entity_to_inbound_field(ty, &dy_ty.to_string(), &field_name, field_description)
 }
 
-pub fn create_outbound_entity_to_inbound_field(ty: &RelationTypeId, type_name: &str, field_name: &str, field_description: Option<String>) -> Field {
+pub fn create_outbound_entity_to_inbound_field(ty: &RelationTypeId, type_name: &str, field_name: &str, field_description: Option<String>) -> Option<Field> {
+    if field_name.is_empty() {
+        return None;
+    }
     let relation_ty_inner = ty.clone();
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
@@ -487,7 +497,7 @@ pub fn create_outbound_entity_to_inbound_field(ty: &RelationTypeId, type_name: &
     if let Some(field_description) = field_description {
         field = field.description(field_description);
     }
-    field
+    Some(field)
 }
 
 ////////////////////////////////
@@ -497,7 +507,7 @@ pub fn inbound_entity_to_outbound_entities_field(
     outbound_ty: &EntityTypeId,
     field_name: Option<String>,
     field_description: Option<String>,
-) -> Field {
+) -> Option<Field> {
     let dy_ty = DynamicGraphTypeDefinition::from(outbound_ty);
     let field_name = field_name.unwrap_or(dy_ty.outbound_type_name());
     create_inbound_entity_to_outbound_field(ty, &dy_ty.to_string(), &field_name, field_description)
@@ -508,8 +518,11 @@ pub fn inbound_entity_to_outbound_entities_union_field(
     type_name: &str,
     field_name: Option<String>,
     field_description: Option<String>,
-) -> Field {
+) -> Option<Field> {
     let field_name = field_name.unwrap_or("outbound".to_string());
+    if field_name.is_empty() {
+        return None;
+    }
     let relation_ty_inner = ty.clone();
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
@@ -532,7 +545,7 @@ pub fn inbound_entity_to_outbound_entities_union_field(
     if let Some(field_description) = field_description {
         field = field.description(field_description);
     }
-    field
+    Some(field)
 }
 
 pub fn inbound_entity_to_outbound_components_field(
@@ -540,13 +553,16 @@ pub fn inbound_entity_to_outbound_components_field(
     component_ty: &ComponentTypeId,
     field_name: Option<String>,
     field_description: Option<String>,
-) -> Field {
+) -> Option<Field> {
     let dy_ty = DynamicGraphTypeDefinition::from(component_ty);
     let field_name = field_name.unwrap_or(dy_ty.outbound_type_name());
     create_inbound_entity_to_outbound_field(ty, &dy_ty.to_string(), &field_name, field_description)
 }
 
-pub fn create_inbound_entity_to_outbound_field(ty: &RelationTypeId, type_name: &str, field_name: &str, field_description: Option<String>) -> Field {
+pub fn create_inbound_entity_to_outbound_field(ty: &RelationTypeId, type_name: &str, field_name: &str, field_description: Option<String>) -> Option<Field> {
+    if field_name.is_empty() {
+        return None;
+    }
     let relation_ty_inner = ty.clone();
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
@@ -564,6 +580,98 @@ pub fn create_inbound_entity_to_outbound_field(ty: &RelationTypeId, type_name: &
     });
     if let Some(field_description) = field_description {
         field = field.description(field_description);
+    }
+    Some(field)
+}
+
+fn optional_field_to_vec(field: Option<Field>) -> Vec<Field> {
+    match field {
+        Some(field) => vec![field],
+        None => vec![],
+    }
+}
+
+fn get_entity_instances_by_type_filter_by_properties(
+    ctx: &ResolverContext,
+    entity_type: &EntityType,
+    entity_instance_manager: &Arc<dyn ReactiveEntityInstanceManager>,
+) -> Vec<Arc<ReactiveEntityInstance>> {
+    let mut instances = entity_instance_manager.get_by_type(&entity_type.ty);
+    for property in entity_type.properties.iter() {
+        let Some(expected_value) = ctx.args.get(&property.name) else {
+            continue;
+        };
+        instances.retain(|instance| match instance.get(&property.name) {
+            Some(actual_value) => match &property.data_type {
+                DataType::Null => false,
+                DataType::Bool => expected_value
+                    .boolean()
+                    .map(|expected_value| actual_value.as_bool().map(|actual_value| expected_value == actual_value).unwrap_or(false))
+                    .unwrap_or(false),
+                DataType::Number => {
+                    if let Ok(expected_value) = expected_value.i64() {
+                        actual_value.as_i64().map(|actual_value| expected_value == actual_value).unwrap_or(false)
+                    } else if let Ok(expected_value) = expected_value.u64() {
+                        actual_value.as_u64().map(|actual_value| expected_value == actual_value).unwrap_or(false)
+                    } else if let Ok(expected_value) = expected_value.f64() {
+                        actual_value.as_f64().map(|actual_value| expected_value == actual_value).unwrap_or(false)
+                    } else {
+                        false
+                    }
+                }
+                DataType::String => expected_value
+                    .string()
+                    .map(|expected_value| actual_value.as_str().map(|actual_value| expected_value == actual_value).unwrap_or(false))
+                    .unwrap_or(false),
+                DataType::Array => {
+                    if let Ok(_l) = expected_value.list() {
+                        if let Ok(expected_value) = expected_value.deserialize::<Value>() {
+                            if expected_value.is_array() && actual_value.is_array() {
+                                expected_value == actual_value
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                }
+                DataType::Object => {
+                    if let Ok(_o) = expected_value.object() {
+                        if let Ok(expected_value) = expected_value.deserialize::<Value>() {
+                            if expected_value.is_object() && actual_value.is_object() {
+                                expected_value == actual_value
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                }
+                DataType::Any => match expected_value.deserialize::<Value>() {
+                    Ok(expected_value) => expected_value == actual_value,
+                    Err(_) => false,
+                },
+            },
+            None => false,
+        });
+    }
+    instances
+}
+
+fn add_entity_type_properties_as_field_arguments(mut field: Field, entity_type: &EntityType, is_optional: bool, exclude_label: bool) -> Field {
+    for property in entity_type.properties.iter() {
+        if exclude_label && &property.name == PROPERTY_LABEL {
+            continue;
+        }
+        if let Some(type_ref) = to_input_type_ref(&property, is_optional) {
+            field = field.argument(InputValue::new(&property.name, type_ref));
+        }
     }
     field
 }

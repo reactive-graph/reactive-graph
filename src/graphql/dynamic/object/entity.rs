@@ -65,7 +65,9 @@ pub fn get_entity_type(entity_type: EntityType, outbound_types: Vec<RelationType
         let field_names = get_dynamic_graph_field_names(&outbound_relation_type);
         let field_descriptions = get_dynamic_graph_field_descriptions(&outbound_relation_type);
 
-        object = object.field(entity_outbound_relation_field(&outbound_relation_type, &field_names, &field_descriptions));
+        if let Some(entity_outbound_relation_field) = entity_outbound_relation_field(&outbound_relation_type, &field_names, &field_descriptions) {
+            object = object.field(entity_outbound_relation_field);
+        }
         for field in outbound_entity_to_inbound_field(&outbound_relation_type, &field_names, &field_descriptions, &context) {
             object = object.field(field);
         }
@@ -76,7 +78,9 @@ pub fn get_entity_type(entity_type: EntityType, outbound_types: Vec<RelationType
         let field_names = get_dynamic_graph_field_names(&inbound_relation_type);
         let field_descriptions = get_dynamic_graph_field_descriptions(&inbound_relation_type);
 
-        object = object.field(entity_inbound_relation_field(&inbound_relation_type, &field_names, &field_descriptions));
+        if let Some(entity_inbound_relation_field) = entity_inbound_relation_field(&inbound_relation_type, &field_names, &field_descriptions) {
+            object = object.field(entity_inbound_relation_field);
+        }
         for field in inbound_entity_to_outbound_field(&inbound_relation_type, &field_names, &field_descriptions, &context) {
             object = object.field(field);
         }

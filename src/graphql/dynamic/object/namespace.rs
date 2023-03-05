@@ -9,6 +9,7 @@ use crate::graphql::dynamic::entity_mutation_field;
 use crate::graphql::dynamic::entity_query_field;
 use crate::graphql::dynamic::namespace_mutation_type_name;
 use crate::graphql::dynamic::namespace_type_name;
+use crate::graphql::dynamic::relation_creation_field;
 use crate::graphql::dynamic::relation_mutation_field;
 use crate::graphql::dynamic::relation_query_field;
 use crate::graphql::dynamic::SchemaBuilderContext;
@@ -64,6 +65,10 @@ pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> 
     }
 
     for relation_type in relation_types {
+        if let Some(field) = relation_creation_field(&relation_type) {
+            namespace = namespace.field(field);
+            contains_field = true;
+        }
         if let Some(field) = relation_mutation_field(&relation_type) {
             namespace = namespace.field(field);
             contains_field = true;

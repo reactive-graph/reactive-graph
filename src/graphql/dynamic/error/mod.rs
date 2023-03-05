@@ -3,6 +3,8 @@ use uuid::Uuid;
 
 use crate::model::EntityTypeId;
 use crate::model::PropertyType;
+use crate::model::RelationInstanceTypeId;
+use crate::model::RelationTypeId;
 
 pub fn data_type_error(property: &PropertyType) -> Error {
     Error::new(format!("Invalid datatype: Property {} is of datatype {}!", &property.name, &property.data_type))
@@ -22,4 +24,12 @@ pub fn entity_instance_not_found_error(id: &Uuid) -> Error {
 
 pub fn entity_instance_not_of_entity_type_error(id: &Uuid, ty: &EntityTypeId) -> Error {
     Error::new(format!("Entity instance {} is not a {}", id, &ty))
+}
+
+pub fn relation_instance_not_found_error(ty: &RelationInstanceTypeId) -> Error {
+    Error::new(format!("Relation instance {} not found", &ty))
+}
+
+pub fn relation_instance_not_of_relation_type_error(instance_ty: &RelationInstanceTypeId, ty: &RelationTypeId) -> Error {
+    Error::new(format!("Relation instance {} is not a {}", &instance_ty, &ty))
 }
