@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::Arc;
 
 use async_graphql::*;
@@ -33,6 +34,7 @@ impl Types {
         &self,
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The component type")] ty: Option<ComponentTypeIdDefinition>,
+        #[graphql(name = "namespace", desc = "Searches by the namespace of the components.")] namespace: Option<String>,
         #[graphql(desc = "Searches by the name of the components. Allowed wildcards are: ? and *")] search: Option<String>,
     ) -> Result<Vec<GraphQLComponent>> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
@@ -40,6 +42,14 @@ impl Types {
             if let Some(component) = component_manager.get(&ty.into()) {
                 return Ok(vec![component.into()]);
             }
+        }
+        if let Some(namespace) = namespace {
+            let components = component_manager
+                .get_by_namespace(&namespace)
+                .into_iter()
+                .map(|component| component.into())
+                .collect();
+            return Ok(components);
         }
         if let Some(search) = search {
             let components = component_manager.find(&search).into_iter().map(|component| component.into()).collect();
@@ -300,5 +310,12 @@ impl Types {
             return flow_type_manager.count();
         }
         0
+    }
+
+    async fn namespaces(&self, context: &Context<'_>) -> HashSet<String> {
+        let Ok(component_manager) = context.data::<Arc<dyn ComponentManager>>() else {
+            return HashSet::new();
+        };
+        component_manager.get_all().iter().map(|c| c.ty.namespace()).collect()
     }
 }
