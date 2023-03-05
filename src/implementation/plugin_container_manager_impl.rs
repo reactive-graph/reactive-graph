@@ -77,7 +77,11 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     }
 
     fn get_id(&self, stem: &str) -> Option<Uuid> {
-        self.plugin_containers.0.iter().find(|p| p.stem.eq(stem)).map(|p| p.id)
+        self.plugin_containers
+            .0
+            .iter()
+            .find(|p| p.stem.eq(stem) || p.name().map(|name| name.eq(stem)).unwrap_or(false))
+            .map(|p| p.id)
     }
 
     fn get_stem(&self, id: &Uuid) -> Option<String> {
