@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -37,6 +38,9 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
 
     /// Returns all flow types.
     fn get_all(&self) -> Vec<FlowType>;
+
+    /// Returns all defined namespaces.
+    fn get_namespaces(&self) -> HashSet<String>;
 
     /// Returns all flow types.
     fn get_by_namespace(&self, namespace: &str) -> Vec<FlowType>;

@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::fs::File;
 use std::io::BufReader;
 use std::sync::Arc;
@@ -8,7 +9,6 @@ use log::debug;
 use log::error;
 use log::trace;
 use log::warn;
-use rayon::prelude::*;
 use serde_json::json;
 use wildmatch::WildMatch;
 
@@ -145,6 +145,16 @@ impl EntityTypeManager for EntityTypeManagerImpl {
 
     fn get_all(&self) -> Vec<EntityType> {
         self.entity_types.0.read().unwrap().to_vec()
+    }
+
+    fn get_namespaces(&self) -> HashSet<String> {
+        self.entity_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .map(|entity_type| entity_type.ty.namespace())
+            .collect()
     }
 
     fn get_by_namespace(&self, namespace: &str) -> Vec<EntityType> {

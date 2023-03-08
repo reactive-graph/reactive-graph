@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::fs::File;
 use std::io::BufReader;
 use std::sync::Arc;
@@ -152,6 +153,16 @@ impl RelationTypeManager for RelationTypeManagerImpl {
 
     fn get_all(&self) -> Vec<RelationType> {
         self.relation_types.0.read().unwrap().to_vec()
+    }
+
+    fn get_namespaces(&self) -> HashSet<String> {
+        self.relation_types
+            .0
+            .read()
+            .unwrap()
+            .iter()
+            .map(|relation_type| relation_type.ty.namespace())
+            .collect()
     }
 
     fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType> {

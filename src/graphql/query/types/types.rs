@@ -6,6 +6,7 @@ use async_graphql::*;
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
+use crate::api::NamespaceManager;
 use crate::api::RelationTypeManager;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
@@ -313,9 +314,9 @@ impl Types {
     }
 
     async fn namespaces(&self, context: &Context<'_>) -> HashSet<String> {
-        let Ok(component_manager) = context.data::<Arc<dyn ComponentManager>>() else {
+        let Ok(namespace_manager) = context.data::<Arc<dyn NamespaceManager>>() else {
             return HashSet::new();
         };
-        component_manager.get_all().iter().map(|c| c.ty.namespace()).collect()
+        namespace_manager.get_all()
     }
 }

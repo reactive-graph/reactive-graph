@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -62,6 +63,9 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
 
     /// Returns all entity types.
     fn get_all(&self) -> Vec<EntityType>;
+
+    /// Returns all defined namespaces.
+    fn get_namespaces(&self) -> HashSet<String>;
 
     /// Returns all entity types of the given namespace
     fn get_by_namespace(&self, namespace: &str) -> Vec<EntityType>;

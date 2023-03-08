@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -68,6 +69,9 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
 
     /// Returns all relation types.
     fn get_all(&self) -> Vec<RelationType>;
+
+    /// Returns all defined namespaces.
+    fn get_namespaces(&self) -> HashSet<String>;
 
     /// Returns all relation types of the given namespace
     fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType>;

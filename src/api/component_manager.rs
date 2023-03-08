@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -66,6 +67,9 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
 
     /// Returns all components
     fn get_all(&self) -> Vec<Component>;
+
+    /// Returns all defined namespaces.
+    fn get_namespaces(&self) -> HashSet<String>;
 
     /// Returns all components of the given namespace
     fn get_by_namespace(&self, namespace: &str) -> Vec<Component>;

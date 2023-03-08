@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::fs::File;
 use std::io::BufReader;
 use std::sync::Arc;
@@ -89,6 +90,10 @@ impl FlowTypeManager for FlowTypeManagerImpl {
 
     fn get_all(&self) -> Vec<FlowType> {
         self.flow_types.0.read().unwrap().to_vec()
+    }
+
+    fn get_namespaces(&self) -> HashSet<String> {
+        self.flow_types.0.read().unwrap().iter().map(|flow_type| flow_type.ty.namespace()).collect()
     }
 
     fn get_by_namespace(&self, namespace: &str) -> Vec<FlowType> {

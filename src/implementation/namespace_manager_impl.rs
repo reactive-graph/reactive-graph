@@ -16,6 +16,7 @@ pub struct NamespaceManagerImpl {
     component_manager: Wrc<dyn ComponentManager>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+    flow_type_manager: Wrc<dyn RelationTypeManager>,
 }
 #[async_trait]
 #[provides]
@@ -27,6 +28,7 @@ impl NamespaceManager for NamespaceManagerImpl {
             .map(|t| t.namespace())
             .chain(self.entity_type_manager.get_all().iter().map(|t| t.namespace()))
             .chain(self.relation_type_manager.get_all().iter().map(|t| t.namespace()))
+            .chain(self.flow_type_manager.get_all().iter().map(|t| t.namespace()))
             .collect()
     }
 }

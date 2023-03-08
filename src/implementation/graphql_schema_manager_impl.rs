@@ -1,30 +1,30 @@
 use async_graphql::Schema;
 use async_trait::async_trait;
-use inexor_rgf_core_di::Deferred;
 
 use crate::api::ComponentManager;
 use crate::api::EntityBehaviourManager;
 use crate::api::EntityBehaviourRegistry;
 use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityComponentBehaviourRegistry;
-use crate::api::PluginContainerManager;
-use crate::api::PluginResolver;
-use crate::api::RelationBehaviourManager;
-use crate::api::RelationBehaviourRegistry;
-use crate::api::RelationComponentBehaviourManager;
-use crate::api::RelationComponentBehaviourRegistry;
-// use crate::api::DynamicGraph;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::GraphQLSchemaManager;
 use crate::api::Lifecycle;
+use crate::api::NamespaceManager;
+use crate::api::PluginContainerManager;
+use crate::api::PluginResolver;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
+use crate::api::RelationBehaviourManager;
+use crate::api::RelationBehaviourRegistry;
+use crate::api::RelationComponentBehaviourManager;
+use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::Component;
+use crate::di::Deferred;
 use crate::di::Wrc;
 use crate::graphql::directives;
 use crate::graphql::InexorMutation;
@@ -36,12 +36,13 @@ use crate::graphql::InexorSubscription;
 pub struct GraphQLSchemaManagerImpl {
     component_manager: Wrc<dyn ComponentManager>,
 
-    // dynamic_graph: Wrc<dyn DynamicGraph>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     relation_type_manager: Wrc<dyn RelationTypeManager>,
 
     flow_type_manager: Wrc<dyn FlowTypeManager>,
+
+    namespace_manager: Wrc<dyn NamespaceManager>,
 
     entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
 
@@ -81,6 +82,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())
             .data(self.flow_type_manager.clone())
+            .data(self.namespace_manager.clone())
             .data(self.entity_instance_manager.clone())
             .data(self.relation_instance_manager.clone())
             .data(self.flow_instance_manager.clone())
