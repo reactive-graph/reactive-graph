@@ -75,6 +75,8 @@ pub trait Application: Send + Sync {
 
     fn get_graphql_server(&self) -> Arc<dyn GraphQLServer>;
 
+    fn get_instance_service(&self) -> Arc<dyn InstanceService>;
+
     fn get_namespace_manager(&self) -> Arc<dyn NamespaceManager>;
 
     fn get_plugin_container_manager(&self) -> Arc<dyn PluginContainerManager>;
@@ -126,6 +128,7 @@ pub struct ApplicationImpl {
     graphql_query_service: Wrc<dyn GraphQLQueryService>,
     graphql_schema_manager: Wrc<dyn GraphQLSchemaManager>,
     graphql_server: Wrc<dyn GraphQLServer>,
+    instance_service: Wrc<dyn InstanceService>,
     namespace_manager: Wrc<dyn NamespaceManager>,
     shutdown_manager: Wrc<dyn ShutdownManager>,
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
@@ -358,6 +361,10 @@ impl Application for ApplicationImpl {
 
     fn get_graphql_server(&self) -> Arc<dyn GraphQLServer> {
         self.graphql_server.clone()
+    }
+
+    fn get_instance_service(&self) -> Arc<dyn InstanceService> {
+        self.instance_service.clone()
     }
 
     fn get_namespace_manager(&self) -> Arc<dyn NamespaceManager> {

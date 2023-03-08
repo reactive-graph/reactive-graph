@@ -9,6 +9,7 @@ use crate::api::EntityComponentBehaviourRegistry;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::GraphQLSchemaManager;
+use crate::api::InstanceService;
 use crate::api::Lifecycle;
 use crate::api::NamespaceManager;
 use crate::api::PluginContainerManager;
@@ -69,6 +70,8 @@ pub struct GraphQLSchemaManagerImpl {
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
 
     plugin_resolver: Deferred<Wrc<dyn PluginResolver>>,
+
+    instance_service: Wrc<dyn InstanceService>,
 }
 
 impl GraphQLSchemaManagerImpl {}
@@ -96,7 +99,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.relation_component_behaviour_manager.clone())
             .data(self.plugin_container_manager.clone())
             .data(self.plugin_resolver.clone())
-            // .data(self.dynamic_graph.clone())
+            .data(self.instance_service.clone())
             .directive(directives::concat)
             .directive(directives::random_uuid)
             .finish()

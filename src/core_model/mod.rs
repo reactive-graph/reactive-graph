@@ -1,3 +1,7 @@
+pub use instance_info::*;
+
+pub mod instance_info;
+
 // TODO: Move this to a core model
 
 use crate::model::component_ty;

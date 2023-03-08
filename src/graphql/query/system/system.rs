@@ -3,8 +3,10 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
+use crate::api::InstanceService;
 use crate::api::PluginContainerManager;
 use crate::graphql::query::system::GraphQLPlugin;
+use crate::graphql::query::GraphQLInstanceInfo;
 use crate::plugins::PluginState;
 
 #[derive(Default)]
@@ -60,5 +62,12 @@ impl System {
             .map(|id| GraphQLPlugin { id })
             .collect();
         Ok(plugins)
+    }
+
+    /// Returns the instance information.
+    async fn instance_info(&self, context: &Context<'_>) -> Result<GraphQLInstanceInfo> {
+        let instance_service = context.data::<Arc<dyn InstanceService>>()?;
+        let instance_info = instance_service.get_instance_info();
+        Ok(GraphQLInstanceInfo { instance_info })
     }
 }

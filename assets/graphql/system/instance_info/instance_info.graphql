@@ -1,0 +1,17 @@
+query InstanceInfo {
+  system {
+    instanceInfo {
+      name
+      description
+      hostname
+      port
+      secure
+      version
+      buildDate
+      gitBranch
+      gitCommit
+      rustcVersion
+      pluginApiVersion
+    }
+  }
+}
