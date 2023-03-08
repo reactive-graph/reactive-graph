@@ -274,6 +274,20 @@ type FlowType {
   variables(name: String): [PropertyType!]!
 }
 
+type InstanceInfo {
+  buildDate: String!
+  description: String!
+  gitBranch: String!
+  gitCommit: String!
+  hostname: String!
+  name: String!
+  pluginApiVersion: String!
+  port: Int!
+  rustcVersion: String!
+  secure: Boolean!
+  version: String!
+}
+
 "Search for instances"
 type Instances {
   countEntityInstances(
@@ -377,6 +391,10 @@ type MutationComponents {
   removeExtension(extension: ExtensionTypeId!, type: ComponentTypeId!): Component!
   "Removes the property with the given property_name from the component with the given name."
   removeProperty(propertyName: String!, type: ComponentTypeId!): Component!
+  "Renames the component with the given type to the component with the given new type."
+  rename(newType: ComponentTypeId!, type: ComponentTypeId!): Component!
+  "Updates the property with the given name of the given component."
+  updateProperty(name: String!, property: PropertyTypeDefinition!, type: ComponentTypeId!): Component!
 }
 
 "Mutation of entity instances."
@@ -425,6 +443,13 @@ type MutationEntityInstances {
   to other properties.
   """
   tick(id: UUID!): EntityInstance!
+  "Triggers the entity instance with the given id."
+  trigger(
+    "Triggers the entity instance with the given id."
+    id: UUID,
+    "Triggers the entity instance with the given label."
+    label: String
+  ): EntityInstance!
   "Updates the properties of the entity instance with the given id."
   update(
     "Adds the given components."
@@ -690,6 +715,7 @@ type Plugin {
   path: String!
   pluginApiVersion: String!
   rustcVersion: String!
+  shortName: String!
   state: String!
   stem: String!
   unsatisfiedDependencies: [Plugin!]!
@@ -905,6 +931,8 @@ type Subscription {
 }
 
 type System {
+  "Returns the instance information."
+  instanceInfo: InstanceInfo!
   plugins(id: UUID, name: String, state: String, stem: String): [Plugin!]!
 }
 
@@ -917,6 +945,8 @@ type Types {
   Optionally the list of components can be filtered by name.
   """
   components(
+    "Searches by the namespace of the components."
+    namespace: String,
     "Searches by the name of the components. Allowed wildcards are: ? and *"
     search: String,
     "The component type"
@@ -950,6 +980,7 @@ type Types {
     "The flow type"
     type: FlowTypeId
   ): [FlowType!]!
+  namespaces: [String!]!
   "Search for relation types."
   relations(
     "Filters by inbound component"
