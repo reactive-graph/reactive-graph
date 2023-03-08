@@ -17,6 +17,11 @@ pub enum ComponentRegistrationError {
 }
 
 #[derive(Debug)]
+pub enum ComponentMergeError {
+    ComponentDoesNotExist(ComponentTypeId),
+}
+
+#[derive(Debug)]
 pub enum ComponentCreationError {
     RegistrationError(ComponentRegistrationError),
 }
@@ -106,6 +111,9 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
 
     /// Replaces the component with the given name with the given component.
     fn replace(&self, ty: &ComponentTypeId, component: Component);
+
+    /// Merges the given component_to_merge into an existing component with the same component type id.
+    fn merge(&self, component_to_merge: Component) -> Result<Component, ComponentMergeError>;
 
     /// Adds a property to the given component.
     fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<(), ComponentPropertyError>;

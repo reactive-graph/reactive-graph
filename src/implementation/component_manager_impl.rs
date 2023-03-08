@@ -15,6 +15,7 @@ use crate::api::ComponentExtensionError;
 use crate::api::ComponentExtensionUpdateError;
 use crate::api::ComponentImportError;
 use crate::api::ComponentManager;
+use crate::api::ComponentMergeError;
 use crate::api::ComponentPropertyError;
 use crate::api::ComponentPropertyUpdateError;
 use crate::api::ComponentRegistrationError;
@@ -172,6 +173,60 @@ impl ComponentManager for ComponentManagerImpl {
         }
     }
 
+    fn merge(&self, component_to_merge: crate::model::Component) -> Result<crate::model::Component, ComponentMergeError> {
+        let ty = component_to_merge.ty;
+        if !self.has(&ty) {
+            return Err(ComponentMergeError::ComponentDoesNotExist(ty));
+        }
+        let mut guard = self.components.0.write().unwrap();
+        for mut component in guard.iter_mut() {
+            if &component.ty == &ty {
+                component.description = component_to_merge.description.clone();
+                for property_to_merge in component_to_merge.properties.into_iter() {
+                    if !component.has_property(&property_to_merge.name) {
+                        component.properties.push(property_to_merge);
+                    } else {
+                        for existing_property in component.properties.iter_mut() {
+                            if &existing_property.name == &property_to_merge.name {
+                                existing_property.description = property_to_merge.description.clone();
+                                existing_property.data_type = property_to_merge.data_type;
+                                existing_property.socket_type = property_to_merge.socket_type;
+                                existing_property.mutability = property_to_merge.mutability;
+                                for property_extension_to_merge in property_to_merge.extensions.iter() {
+                                    if !existing_property.has_extension(&property_extension_to_merge.ty) {
+                                        existing_property.extensions.push(property_extension_to_merge.clone());
+                                    } else {
+                                        for existing_property_extension in existing_property.extensions.iter_mut() {
+                                            if &existing_property_extension.ty == &property_extension_to_merge.ty {
+                                                existing_property_extension.description = property_extension_to_merge.description.clone();
+                                                existing_property_extension.extension = property_extension_to_merge.extension.clone();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                for extension_to_merge in component_to_merge.extensions.into_iter() {
+                    if !component.has_extension(&extension_to_merge.ty) {
+                        component.extensions.push(extension_to_merge);
+                    } else {
+                        for existing_extension in component.extensions.iter_mut() {
+                            if &existing_extension.ty == &extension_to_merge.ty {
+                                existing_extension.description = extension_to_merge.description.clone();
+                                existing_extension.extension = extension_to_merge.extension.clone();
+                            }
+                        }
+                    }
+                }
+                // TODO: Notify about changed component -> This effects reactive instances which contains the component -> Add/remove property instances
+                return Ok(component.clone());
+            }
+        }
+        Err(ComponentMergeError::ComponentDoesNotExist(ty))
+    }
+
     fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<(), ComponentPropertyError> {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
@@ -290,7 +345,12 @@ impl ComponentManager for ComponentManagerImpl {
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>) {
         for component in component_provider.get_components() {
             trace!("Registering component: {}", component.type_definition().to_string());
-            let _ = self.register(component);
+            match self.register(component.clone()) {
+                Err(_) => {
+                    let _ = self.merge(component);
+                }
+                Ok(_) => {}
+            }
         }
     }
 
