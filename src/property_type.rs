@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use crate::extension::Extension;
 use crate::DataType;
+use crate::ExtensionTypeId;
 use crate::Mutability;
 use crate::SocketType;
 
@@ -118,6 +119,11 @@ impl PropertyType {
 
     pub fn object<S: Into<String>>(name: S) -> PropertyType {
         PropertyType::new(name, DataType::Object)
+    }
+
+    /// Returns true, if the property contains an extension with the given type.
+    pub fn has_extension(&self, ty: &ExtensionTypeId) -> bool {
+        self.extensions.iter().any(|extension| &extension.ty == ty)
     }
 }
 
