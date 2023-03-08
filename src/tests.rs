@@ -1,9 +1,10 @@
 use crate::frp::*;
+use uuid::Uuid;
 
 #[test]
 fn frp() {
-    use std::cell::RefCell;
-    use std::rc::Rc;
+    use std::sync::Arc;
+    use std::sync::Mutex;
 
     enum Button {
         Push,
@@ -33,30 +34,50 @@ fn frp() {
         })
         .filter(|x| x % 2 == 0); // get only even counters
 
-    // FIXME: this part is ugly, we need to find a better API for “inspecting” streams
-    let counter = Rc::new(RefCell::new(0));
+    let counter = Arc::new(Mutex::new(0));
     let counter_ = counter.clone();
-    label.observe(move |x| *counter_.borrow_mut() = *x);
 
-    assert_eq!(*counter.borrow(), 0);
+    let handle_id = Uuid::new_v4().as_u128();
+    let f = move |x: &i32| {
+        let mut guard = counter_.lock().unwrap();
+        *guard = x.clone();
+    };
+    label.observe_with_handle(f, handle_id);
 
-    minus_button.send(&Button::Push);
-    assert_eq!(*counter.borrow(), 0); // not -1 because -1 is odd
+    {
+        let guard = counter.lock().unwrap();
+        assert_eq!(*guard, 0);
+    }
 
-    minus_button.send(&Button::Push);
-    assert_eq!(*counter.borrow(), -2);
+    {
+        minus_button.send(&Button::Push);
+        let guard = counter.lock().unwrap();
+        assert_eq!(*guard, 0); // not -1 because -1 is odd
+    }
 
-    plus_button.send(&Button::Push);
-    assert_eq!(*counter.borrow(), -2); // not -1, it’s odd
+    {
+        minus_button.send(&Button::Push);
+        let guard = counter.lock().unwrap();
+        assert_eq!(*guard, -2);
+    }
 
-    reset_button.send(&Button::Push);
-    assert_eq!(*counter.borrow(), 0);
+    {
+        plus_button.send(&Button::Push);
+        let guard = counter.lock().unwrap();
+        assert_eq!(*guard, -2); // not -1, it’s odd
+    }
+
+    {
+        reset_button.send(&Button::Push);
+        let guard = counter.lock().unwrap();
+        assert_eq!(*guard, 0);
+    }
 }
 
 #[test]
 fn mutual_recursion() {
-    use std::cell::RefCell;
-    use std::rc::Rc;
+    use std::sync::Arc;
+    use std::sync::Mutex;
 
     #[derive(Clone, Debug, Eq, PartialEq)]
     enum Button {
@@ -73,72 +94,125 @@ fn mutual_recursion() {
 
     let (x, y) = Stream::entangled(f, f);
 
-    let x_ref = Rc::new(RefCell::new(Button::Push));
+    let x_ref = Arc::new(Mutex::new(Button::Push));
     let x_ref_ = x_ref.clone();
 
-    let y_ref = Rc::new(RefCell::new(Button::Push));
+    let y_ref = Arc::new(Mutex::new(Button::Push));
     let y_ref_ = y_ref.clone();
 
-    x.observe(move |a| *x_ref_.borrow_mut() = a.clone());
-    y.observe(move |a| *y_ref_.borrow_mut() = a.clone());
+    x.observe(move |a| {
+        let mut guard = x_ref_.lock().unwrap();
+        *guard = a.clone()
+    });
+    y.observe(move |a| {
+        let mut guard = y_ref_.lock().unwrap();
+        *guard = a.clone()
+    });
 
-    assert_eq!(*x_ref.borrow(), Button::Push);
-    assert_eq!(*y_ref.borrow(), Button::Push);
+    {
+        let x_ref_ = x_ref.lock().unwrap();
+        assert_eq!(*x_ref_, Button::Push);
+        let y_ref_ = y_ref.lock().unwrap();
+        assert_eq!(*y_ref_, Button::Push);
+    }
 
     x.send(&Button::Push);
-    assert_eq!(*x_ref.borrow(), Button::Push);
-    assert_eq!(*y_ref.borrow(), Button::ChangeLabel("foo".to_owned()));
+
+    {
+        let x_ref_ = x_ref.lock().unwrap();
+        assert_eq!(*x_ref_, Button::Push);
+        let y_ref_ = y_ref.lock().unwrap();
+        assert_eq!(*y_ref_, Button::ChangeLabel("foo".to_owned()));
+    }
 
     y.send(&Button::Push);
-    assert_eq!(*x_ref.borrow(), Button::ChangeLabel("foo".to_owned()));
-    assert_eq!(*y_ref.borrow(), Button::Push);
+
+    {
+        let x_ref_ = x_ref.lock().unwrap();
+        assert_eq!(*x_ref_, Button::ChangeLabel("foo".to_owned()));
+        let y_ref_ = y_ref.lock().unwrap();
+        assert_eq!(*y_ref_, Button::Push);
+    }
 }
 
 #[test]
 fn zip() {
-    use std::cell::RefCell;
-    use std::rc::Rc;
+    use std::sync::Arc;
+    use std::sync::Mutex;
 
     let x = Stream::new();
     let y = Stream::new();
     let z = x.zip(&y);
 
-    let z_ref = Rc::new(RefCell::new(Either::Right(3)));
+    let z_ref = Arc::new(Mutex::new(Either::Right(3)));
     let z_ref_ = z_ref.clone();
 
-    z.observe(move |a| *z_ref_.borrow_mut() = a.clone());
+    z.observe(move |a| {
+        let mut z_ref__ = z_ref_.lock().unwrap();
+        *z_ref__ = a.clone()
+    });
 
-    assert_eq!(*z_ref.borrow(), Either::Right(3));
+    {
+        let z_ref_ = z_ref.lock().unwrap();
+        assert_eq!(*z_ref_, Either::Right(3));
+    }
 
     x.send(&false);
-    assert_eq!(*z_ref.borrow(), Either::Left(false));
+
+    {
+        let z_ref_ = z_ref.lock().unwrap();
+        assert_eq!(*z_ref_, Either::Left(false));
+    }
 
     y.send(&42);
-    assert_eq!(*z_ref.borrow(), Either::Right(42));
+
+    {
+        let z_ref_ = z_ref.lock().unwrap();
+        assert_eq!(*z_ref_, Either::Right(42));
+    }
 }
 
 #[test]
 fn unzip() {
-    use std::cell::RefCell;
-    use std::rc::Rc;
+    use std::sync::Arc;
+    use std::sync::Mutex;
 
     let tuple = Stream::new();
     let (x, y) = tuple.unzip();
 
-    let x_ref = Rc::new(RefCell::new(0));
+    let x_ref = Arc::new(Mutex::new(0));
     let x_ref_ = x_ref.clone();
 
-    let y_ref = Rc::new(RefCell::new(0));
+    let y_ref = Arc::new(Mutex::new(0));
     let y_ref_ = y_ref.clone();
 
-    x.observe(move |a| *x_ref_.borrow_mut() = *a);
-    y.observe(move |a| *y_ref_.borrow_mut() = *a);
+    x.observe(move |a| {
+        let mut x_ref__ = x_ref_.lock().unwrap();
+        *x_ref__ = *a
+    });
+    y.observe(move |a| {
+        let mut y_ref__ = y_ref_.lock().unwrap();
+        *y_ref__ = *a
+    });
 
-    assert_eq!(*x_ref.borrow(), 0);
-    assert_eq!(*y_ref.borrow(), 0);
+    {
+        let x_ref_ = x_ref.lock().unwrap();
+        assert_eq!(*x_ref_, 0);
+    }
+    {
+        let y_ref_ = y_ref.lock().unwrap();
+        assert_eq!(*y_ref_, 0);
+    }
 
     tuple.send(&Either::Left(34));
     tuple.send(&Either::Right(13));
-    assert_eq!(*x_ref.borrow(), 34);
-    assert_eq!(*y_ref.borrow(), 13);
+
+    {
+        let x_ref_ = x_ref.lock().unwrap();
+        assert_eq!(*x_ref_, 34);
+    }
+    {
+        let y_ref_ = y_ref.lock().unwrap();
+        assert_eq!(*y_ref_, 13);
+    }
 }
