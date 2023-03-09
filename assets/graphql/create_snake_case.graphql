@@ -1,0 +1,38 @@
+mutation {
+  instances {
+    entities {
+      create(
+        id: "b3c4805b-9382-11ed-8000-000000000001"
+        type: {
+          namespace: "string"
+          name: "snake_case"
+        }
+        properties: [
+          {
+            name: "lhs"
+            value: "hallo welt"
+          }
+          {
+            name: "result"
+            value: ""
+          }
+        ]
+      ) {
+        id
+        type {
+          name
+        }
+        properties(
+          names: [
+            "lhs"
+            # Expected: "camel_case"
+            "result"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}

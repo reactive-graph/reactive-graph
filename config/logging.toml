@@ -220,3 +220,6 @@ level = "info"
 
 [loggers."inexor_rgf_application::implementation::dynamic_graph_schema_manager_impl"]
 level = "info"
+
+[loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
+level = "trace"

@@ -188,6 +188,17 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     fn get_outbound_relation_types(&self, outbound_ty: &ComponentOrEntityTypeId, wildcard: bool) -> Vec<RelationType> {
+        // TODO:
+        // if wildcard && outbound_ty.namespace() == "*" {
+        //     return self.get_all();
+        // } else if wildcard && outbound_ty.type_name() == "*" {
+        //     return self.get_by_namespace(outbound_ty.namespace());
+        // } else {
+        //     self.get_all()
+        //         .into_iter()
+        //         .filter(|relation_type| (wildcard && &relation_type.outbound_type.type_name() == "*") || outbound_ty == &relation_type.outbound_type)
+        //         .collect()
+        // }
         if wildcard && outbound_ty.type_name() == "*" {
             return self.get_all();
         }

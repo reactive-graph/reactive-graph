@@ -1,0 +1,33 @@
+mutation {
+  instances {
+    entities {
+      create(
+        type: {
+          namespace: "json"
+          name: "array_length"
+        }
+        properties: [
+          {
+            name: "array"
+            value: [ 10, 20, 30 ]
+          }
+        ]
+      ) {
+        id
+        type {
+          namespace
+          name
+        }
+        properties(
+          names: [
+            "array"
+            "length"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}

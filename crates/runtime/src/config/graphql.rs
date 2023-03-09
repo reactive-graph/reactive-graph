@@ -42,7 +42,7 @@ impl ToString for GraphQLServerConfig {
 
 pub(crate) fn get_graphql_server_config() -> GraphQLServerConfig {
     // TODO: resolve config file from CONFIG_LOCATION(s)
-    match std::fs::read_to_string("./config/graphql.toml") {
+    match std::fs::read_to_string("../../../../config/graphql.toml") {
         Ok(toml_string) => {
             let graphql_server_config: Result<GraphQLServerConfig, _> = toml::from_str(&toml_string);
             if graphql_server_config.is_err() {

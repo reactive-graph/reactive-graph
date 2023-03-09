@@ -1,32 +1,18 @@
-[package]
-name = "inexor-rgf-application"
-description = "Inexor - Reactive Graph Flow - Application"
+cargo-features = [ "workspace-inheritance" ]
+
+[workspace]
+
+members = [
+    "crates/runtime",
+]
+
+[workspace.package]
 version = "0.8.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
-readme = "README.md"
-keywords = [
-    "reactive",
-    "graph",
-    "flow",
-    "entity",
-    "entity system",
-    "entity component system",
-    "graph database"
-]
-categories = [
-    "desktop-automation",
-    "entity-component-system",
-    "game-engine",
-    "home-automation",
-    "iot"
-]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-
+[workspace.dependencies]
 actix = "0.13"
 actix-cors = "0.6"
 actix-http = "3.0"
@@ -68,29 +54,30 @@ toml = "0.5"
 uuid = { version = "1.1", features = ["serde", "v4"] }
 wildmatch = "2.1"
 
-inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://github.com/inexorgame/inexor-rgf-core-di.git" }
-inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
-inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
-inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
-inexor-rgf-core-reactive = { git = "https://github.com/inexorgame/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-plugins = { git = "https://github.com/inexorgame/inexor-rgf-core-plugins.git" }
+#inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://github.com/inexorgame/inexor-rgf-core-di.git" }
+#inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
+#inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
+#inexor-rgf-core-reactive = { git = "https://github.com/inexorgame/inexor-rgf-core-reactive.git" }
+#inexor-rgf-core-plugins = { git = "https://github.com/inexorgame/inexor-rgf-core-plugins.git" }
+#inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
 
-[dev-dependencies]
-futures-await-test = "0.3"
-random-string = "1.0"
-
-[build-dependencies]
-build-data = "0.1.3"
+#inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://github.com/inexorgame/inexor-rgf-core-di.git" }
+inexor-rgf-core-di = { version = "2.0", features = ["async"], path = "../inexor-rgf-core-di/crates/core/di" }
+#inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
+inexor-rgf-core-frp = { path = "../inexor-rgf-shared-bidule/crates/core/frp" }
+#inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
+inexor-rgf-core-model = { path = "../inexor-rgf-core-model/crates/core/model" }
+#inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
+inexor-rgf-core-reactive = { path = "../inexor-rgf-core-reactive/crates/core/reactive" }
+#inexor-rgf-core-reactive = { git = "https://github.com/inexorgame/inexor-rgf-core-reactive.git" }
+inexor-rgf-core-builder = { path = "../inexor-rgf-core-builder/crates/core/builder" }
+#inexor-rgf-core-plugins = { git = "https://github.com/inexorgame/inexor-rgf-core-plugins.git" }
+inexor-rgf-core-plugins = { path = "../inexor-rgf-shared-subsystem/crates/core/plugins" }
 
 [profile.dev]
 opt-level = 0
 
 [profile.release]
 opt-level = 3
-# 12MB -> 7.8MB
 lto = true
-# 7.8MB -> 4.5MB
 strip = "symbols"
-
-[[bin]]
-name = "inexor-rgf-application"

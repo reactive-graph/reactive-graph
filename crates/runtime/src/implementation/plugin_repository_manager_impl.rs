@@ -127,7 +127,7 @@ impl PluginRepositoryManagerImpl {
 impl PluginRepositoryManager for PluginRepositoryManagerImpl {
     fn scan_deploy_repository(&self) {
         trace!("Scanning folder plugins/deploy");
-        if let Ok(dir) = fs::read_dir("./plugins/deploy") {
+        if let Ok(dir) = fs::read_dir("../../../../plugins/deploy") {
             for entry in dir.flatten() {
                 if let Ok(file_type) = entry.file_type() {
                     if !file_type.is_file() {
@@ -141,7 +141,7 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
 
     fn scan_plugin_repository(&self) {
         trace!("Scanning folder plugins/installed");
-        if let Ok(dir) = fs::read_dir("./plugins/installed") {
+        if let Ok(dir) = fs::read_dir("../../../../plugins/installed") {
             for entry in dir.flatten() {
                 if let Ok(file_type) = entry.file_type() {
                     if file_type.is_file() {
@@ -157,7 +157,7 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
         if let Some(recommended_watcher) = writer.as_mut() {
             // Add a path to be watched. All files and directories at that path and
             // below will be monitored for changes.
-            let deploy_folder = Path::new("./plugins/deploy");
+            let deploy_folder = Path::new("../../../../plugins/deploy");
             let c_deploy_folder = fs::canonicalize(deploy_folder).map(|p| p.display().to_string()).unwrap_or_default();
             match recommended_watcher.watch(deploy_folder, RecursiveMode::NonRecursive) {
                 Ok(_) => {
@@ -173,7 +173,7 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
     fn unwatch_hot_deploy(&self) {
         let mut writer = self.hot_deploy_watcher.0.write().unwrap();
         if let Some(recommended_watcher) = writer.as_mut() {
-            let deploy_folder = Path::new("./plugins/deploy");
+            let deploy_folder = Path::new("../../../../plugins/deploy");
             let _ = recommended_watcher.unwatch(deploy_folder);
         }
     }

@@ -260,8 +260,8 @@ impl GraphQLServer for GraphQLServerImpl {
         }
 
         let r_http_server = if graphql_server_config.secure.unwrap_or(false) {
-            let cert_file = &mut BufReader::new(File::open("./keys/cert.pem").unwrap());
-            let key_file = &mut BufReader::new(File::open("./keys/key.pem").unwrap());
+            let cert_file = &mut BufReader::new(File::open("../../../../keys/cert.pem").unwrap());
+            let key_file = &mut BufReader::new(File::open("../../../../keys/key.pem").unwrap());
             let cert_chain = certs(cert_file).unwrap().into_iter().map(Certificate).collect();
             let mut keys: Vec<PrivateKey> = pkcs8_private_keys(key_file).unwrap().into_iter().map(PrivateKey).collect();
             if keys.is_empty() {
