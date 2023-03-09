@@ -21,7 +21,7 @@ impl Default for InstanceConfig {
 }
 
 pub(crate) fn get_instance_config() -> InstanceConfig {
-    match std::fs::read_to_string("../../../../config/instance.toml") {
+    match std::fs::read_to_string("./config/instance.toml") {
         Ok(toml_string) => {
             let instance_config: Result<InstanceConfig, _> = toml::from_str(&toml_string);
             if instance_config.is_err() {
