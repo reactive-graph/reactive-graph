@@ -1,12 +1,13 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Build" type="CargoCommandRunConfiguration" factoryName="Cargo Command" nameIsGenerated="true">
     <option name="command" value="build" />
-    <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <option name="workingDirectory" value="file://$PROJECT_DIR$/crates/core/frp" />
+    <option name="emulateTerminal" value="false" />
     <option name="channel" value="NIGHTLY" />
     <option name="requiredFeatures" value="true" />
     <option name="allFeatures" value="false" />
-    <option name="emulateTerminal" value="false" />
     <option name="withSudo" value="false" />
+    <option name="buildTarget" value="REMOTE" />
     <option name="backtrace" value="FULL" />
     <envs>
       <env name="RUSTC_WRAPPER" value="sccache" />
