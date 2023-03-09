@@ -24,9 +24,3 @@ stopwatch2 = "*"
 
 [lib]
 crate-type = ["lib"]
-
-[profile.dev]
-opt-level = 0
-
-[profile.release]
-opt-level = 3

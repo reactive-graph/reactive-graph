@@ -17,11 +17,3 @@ uuid = { version = "1.2", features = ["fast-rng", "v4"]}
 
 [lib]
 crate-type = ["lib"]
-
-[profile.dev]
-opt-level = 0
-
-[profile.release]
-opt-level = 3
-lto = true
-strip = "symbols"
