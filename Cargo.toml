@@ -54,26 +54,6 @@ toml = "0.5"
 uuid = { version = "1.1", features = ["serde", "v4"] }
 wildmatch = "2.1"
 
-#inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://github.com/inexorgame/inexor-rgf-core-di.git" }
-#inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
-#inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
-#inexor-rgf-core-reactive = { git = "https://github.com/inexorgame/inexor-rgf-core-reactive.git" }
-#inexor-rgf-core-plugins = { git = "https://github.com/inexorgame/inexor-rgf-core-plugins.git" }
-#inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
-
-#inexor-rgf-core-di = { version = "2.0", features = ["async"], git = "https://github.com/inexorgame/inexor-rgf-core-di.git" }
-inexor-rgf-core-di = { version = "2.0", features = ["async"], path = "../inexor-rgf-core-di/crates/core/di" }
-#inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
-inexor-rgf-core-frp = { path = "../inexor-rgf-shared-bidule/crates/core/frp" }
-#inexor-rgf-core-model = { git = "https://github.com/inexorgame/inexor-rgf-core-model.git" }
-inexor-rgf-core-model = { path = "../inexor-rgf-core-model/crates/core/model" }
-#inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
-inexor-rgf-core-reactive = { path = "../inexor-rgf-core-reactive/crates/core/reactive" }
-#inexor-rgf-core-reactive = { git = "https://github.com/inexorgame/inexor-rgf-core-reactive.git" }
-inexor-rgf-core-builder = { path = "../inexor-rgf-core-builder/crates/core/builder" }
-#inexor-rgf-core-plugins = { git = "https://github.com/inexorgame/inexor-rgf-core-plugins.git" }
-inexor-rgf-core-plugins = { path = "../inexor-rgf-shared-subsystem/crates/core/plugins" }
-
 [profile.dev]
 opt-level = 0
 

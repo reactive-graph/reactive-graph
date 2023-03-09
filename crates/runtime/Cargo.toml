@@ -68,12 +68,12 @@ toml = { workspace = true }
 uuid = { version = "1.1", features = ["serde", "v4"] }
 wildmatch = { workspace = true }
 
-inexor-rgf-core-di = { workspace = true }
-inexor-rgf-core-frp = { workspace = true }
-inexor-rgf-core-model = { workspace = true }
-inexor-rgf-core-reactive = { workspace = true }
-inexor-rgf-core-builder = { workspace = true }
-inexor-rgf-core-plugins = { workspace = true }
+inexor-rgf-core-di = { path = "../core/di", features = [ "async" ] }
+inexor-rgf-core-frp = { path = "../core/frp" }
+inexor-rgf-core-model = { path = "../core/model" }
+inexor-rgf-core-reactive = { path = "../core/reactive" }
+inexor-rgf-core-builder = { path = "../core/builder" }
+inexor-rgf-core-plugins = { path = "../core/plugins" }
 
 [dev-dependencies]
 futures-await-test = "0.3"
