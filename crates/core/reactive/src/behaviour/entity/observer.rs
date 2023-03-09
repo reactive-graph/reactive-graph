@@ -30,7 +30,7 @@ impl EntityPropertyObserverContainerImpl {
 impl PropertyObserverContainer for EntityPropertyObserverContainerImpl {
     fn observe_with_handle<F>(&self, name: &str, subscriber: F) -> u128
     where
-        F: FnMut(&Value) + 'static,
+        F: FnMut(&Value) + 'static + Send,
     {
         let handle_id = Uuid::new_v4().as_u128();
         match self.handles.get(name) {

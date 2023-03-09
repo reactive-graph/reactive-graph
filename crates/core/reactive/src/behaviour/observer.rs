@@ -9,7 +9,7 @@ pub trait PropertyObserverContainer {
     /// A handle will be automatically created and stored
     fn observe_with_handle<F>(&self, name: &str, subscriber: F) -> u128
     where
-        F: FnMut(&Value) + 'static;
+        F: FnMut(&Value) + 'static + Send;
 
     /// Propagates the value from the property with the given name to the target property with the given name.
     fn propagate(&self, name: &str, target_property_name: &str);
