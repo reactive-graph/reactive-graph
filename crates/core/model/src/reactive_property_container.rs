@@ -26,7 +26,7 @@ pub trait ReactivePropertyContainer {
     /// name. The handle_id allows to remove the observer again.
     fn observe_with_handle<F>(&self, name: &str, subscriber: F, handle_id: u128)
     where
-        F: FnMut(&Value) + 'static;
+        F: FnMut(&Value) + 'static + Send;
 
     /// Removes the subscriber with the given handle_id from the stream of the property with the
     /// given name.

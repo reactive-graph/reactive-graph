@@ -12,6 +12,19 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::TYPE_ID_TYPE_SEPARATOR;
 
+pub enum RelationTypeCardinality {
+    /// Exactly one relation instance of a relation type can exist between two entity instances.
+    Unique,
+
+    /// Multiple relation instances of a relation type can exist between two entity instances. The
+    /// instance_id must be specified.
+    Multiple,
+
+    /// Multiple relation instances of a relation type can exist between two entity instances. The
+    /// instance_id is generated randomly.
+    Random,
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
 pub struct RelationTypeId(NamespacedType);
 

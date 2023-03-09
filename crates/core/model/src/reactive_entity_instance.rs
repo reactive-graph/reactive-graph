@@ -1,12 +1,10 @@
-use std::collections::HashMap;
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::sync::Arc;
 
 use dashmap::DashMap;
 use dashmap::DashSet;
-use indradb::EdgeKey;
-use indradb::EdgeProperties;
+use indradb::VertexProperties;
 use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
@@ -15,6 +13,8 @@ use crate::BehaviourTypeId;
 use crate::Component;
 use crate::ComponentContainer;
 use crate::ComponentTypeId;
+use crate::EntityInstance;
+use crate::EntityTypeId;
 use crate::Mutability;
 use crate::Mutability::Mutable;
 use crate::NamespacedTypeGetter;
@@ -22,167 +22,35 @@ use crate::PropertyInstanceGetter;
 use crate::PropertyInstanceSetter;
 use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
-use crate::ReactiveEntityInstance;
 use crate::ReactiveInstance;
 use crate::ReactivePropertyContainer;
 use crate::ReactivePropertyInstance;
-use crate::RelationInstance;
-use crate::RelationInstanceTypeId;
-use crate::RelationTypeId;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 
-/// Reactive instance of a relation in the directed property graph.
-///
-/// Property Graph: The relation instance can store properties.
-///
-/// Directed Graph: The direction of the relation point from the outbound
-/// entity instance to the inbound entity instance.
-///
-/// Reactive Instance: The properties are streams with a local copies of
-/// the last result. The streams can be connected, combined, folded or zipped.
-///
-/// One example for a directed reactive relation instance is a connector which
-/// propagates changes on a property of the outbound entity to a property of
-/// the inbound entity.
-///
-/// Another example would be the velocity transformation which are also using
-/// the streams of the properties of the outbound entity, the inbound entity
-/// and/or the relation itself.
-///
-/// Last but not least relation instances can be used for semantic
-/// representations like the current camera of a player:
-/// Player--(CurrentCamera)-->Camera
-///
-pub struct ReactiveRelationInstance {
-    /// The outbound entity instance.
-    pub outbound: Arc<ReactiveEntityInstance>,
+pub struct ReactiveEntityInstance {
+    /// The type definition of the entity type.
+    pub ty: EntityTypeId,
 
-    /// The type definition of the relation type.
-    pub ty: RelationInstanceTypeId,
+    /// The unique identifier of the entity instance.
+    pub id: Uuid,
 
-    /// The outbound entity instance.
-    pub inbound: Arc<ReactiveEntityInstance>,
-
-    /// An optional description of the relation instance.
+    /// An optional description of the entity instance.
     pub description: String,
 
     /// The reactive properties.
     pub properties: DashMap<String, ReactivePropertyInstance>,
 
-    /// The names of the components which are applied on this relation instance.
+    /// The names of the components which are applied on this entity instance.
     pub components: DashSet<ComponentTypeId>,
 
-    /// The names of the behaviours which are applied on this relation instance.
+    /// The names of the behaviours which are applied on this entity instance.
     pub behaviours: DashSet<BehaviourTypeId>,
 }
 
-#[allow(clippy::result_unit_err)]
-impl ReactiveRelationInstance {
-    pub fn new_from_properties(
-        outbound: Arc<ReactiveEntityInstance>,
-        inbound: Arc<ReactiveEntityInstance>,
-        properties: EdgeProperties,
-    ) -> Result<ReactiveRelationInstance, ()> {
-        let ty = RelationInstanceTypeId::try_from(&properties.edge.key.t)?;
-        let properties = properties
-            .props
-            .iter()
-            .map(|named_property| {
-                (
-                    named_property.name.to_string(),
-                    ReactivePropertyInstance::new(
-                        Uuid::new_v4(), // or generate a combined uuid from "outbound_id + type + inbound_id"
-                        named_property.name.to_string(),
-                        Mutable,
-                        named_property.value.clone(),
-                    ),
-                )
-            })
-            .collect();
-        Ok(ReactiveRelationInstance {
-            outbound,
-            ty,
-            inbound,
-            description: String::new(),
-            properties,
-            components: DashSet::new(),
-            behaviours: DashSet::new(),
-        })
-    }
+impl ReactiveEntityInstance {}
 
-    pub fn new_from_instance(
-        outbound: Arc<ReactiveEntityInstance>,
-        inbound: Arc<ReactiveEntityInstance>,
-        instance: RelationInstance,
-    ) -> ReactiveRelationInstance {
-        let properties = instance
-            .properties
-            .iter()
-            // TODO: mutability
-            .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), Mutable, value.clone())))
-            .collect();
-        ReactiveRelationInstance {
-            outbound,
-            ty: instance.ty,
-            inbound,
-            description: instance.description,
-            properties,
-            components: DashSet::new(),
-            behaviours: DashSet::new(),
-        }
-    }
-
-    pub fn new_from_type_with_properties<S: Into<String>>(
-        namespace: S,
-        outbound: Arc<ReactiveEntityInstance>,
-        type_name: S,
-        inbound: Arc<ReactiveEntityInstance>,
-        properties: HashMap<String, Value>,
-    ) -> ReactiveRelationInstance {
-        let ty = RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name);
-        let properties = properties
-            .iter()
-            .map(|(name, value)| {
-                (
-                    name.clone(),
-                    ReactivePropertyInstance::new(
-                        Uuid::new_v4(), // or generate a combined uuid from "outbound_id + type + inbound_id"
-                        name.clone(),
-                        // TODO: mutability
-                        Mutable,
-                        value.clone(),
-                    ),
-                )
-            })
-            .collect();
-        ReactiveRelationInstance {
-            outbound,
-            ty,
-            inbound,
-            description: String::new(),
-            properties,
-            components: DashSet::new(),
-            behaviours: DashSet::new(),
-        }
-    }
-
-    /// Returns the inner relation type id.
-    pub fn relation_type_id(&self) -> RelationTypeId {
-        self.ty.relation_type_id()
-    }
-
-    /// Returns the relation instance type id.
-    pub fn instance_id(&self) -> String {
-        self.ty.instance_id()
-    }
-
-    pub fn get_key(&self) -> EdgeKey {
-        EdgeKey::new(self.outbound.id, self.type_id(), self.inbound.id)
-    }
-}
-
-impl ReactivePropertyContainer for ReactiveRelationInstance {
+impl ReactivePropertyContainer for ReactiveEntityInstance {
     fn tick_checked(&self) {
         for property_instance in &self.properties {
             property_instance.tick_checked();
@@ -201,14 +69,14 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
 
     fn add_property<S: Into<String>>(&self, name: S, mutability: Mutability, value: Value) {
         let name = name.into();
-        if !self.properties.contains_key(name.as_str()) {
-            let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), name.clone(), mutability, value);
+        if !self.properties.contains_key(&name) {
+            let property_instance = ReactivePropertyInstance::new(self.id, name.clone(), mutability, value);
             self.properties.insert(name, property_instance);
         }
     }
 
     fn add_property_by_type(&self, property: &PropertyType) {
-        let property_instance = ReactivePropertyInstance::new(Uuid::new_v4(), &property.name, property.mutability, property.data_type.default_value());
+        let property_instance = ReactivePropertyInstance::new(self.id, &property.name, property.mutability, property.data_type.default_value());
         self.properties.insert(property.name.clone(), property_instance);
     }
 
@@ -219,21 +87,21 @@ impl ReactivePropertyContainer for ReactiveRelationInstance {
 
     fn observe_with_handle<F>(&self, name: &str, subscriber: F, handle_id: u128)
     where
-        F: FnMut(&Value) + 'static,
+        F: FnMut(&Value) + 'static + Send,
     {
-        if let Some(property) = self.properties.get(name) {
-            property.stream.read().unwrap().observe_with_handle(subscriber, handle_id);
+        if let Some(property_instance) = self.properties.get(name) {
+            property_instance.stream.read().unwrap().observe_with_handle(subscriber, handle_id);
         }
     }
 
     fn remove_observer(&self, name: &str, handle_id: u128) {
-        if let Some(property) = self.properties.get(name) {
-            property.stream.read().unwrap().remove(handle_id);
+        if let Some(property_instance) = self.properties.get(name) {
+            property_instance.stream.read().unwrap().remove(handle_id);
         }
     }
 }
 
-impl ComponentContainer for ReactiveRelationInstance {
+impl ComponentContainer for ReactiveEntityInstance {
     fn get_components(&self) -> Vec<ComponentTypeId> {
         self.components.iter().map(|c| c.key().clone()).collect()
     }
@@ -260,7 +128,7 @@ impl ComponentContainer for ReactiveRelationInstance {
     }
 }
 
-impl ReactiveBehaviourContainer for ReactiveRelationInstance {
+impl ReactiveBehaviourContainer for ReactiveEntityInstance {
     fn get_behaviours(&self) -> Vec<BehaviourTypeId> {
         self.behaviours.iter().map(|b| b.key().clone()).collect()
     }
@@ -278,17 +146,61 @@ impl ReactiveBehaviourContainer for ReactiveRelationInstance {
     }
 }
 
-impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
-    fn from(instance: Arc<ReactiveRelationInstance>) -> Self {
+impl TryFrom<VertexProperties> for ReactiveEntityInstance {
+    type Error = ();
+
+    fn try_from(properties: VertexProperties) -> Result<Self, Self::Error> {
+        let ty = EntityTypeId::try_from(&properties.vertex.t)?;
+        let id = properties.vertex.id;
+        let instance_properties = properties
+            .props
+            .iter()
+            .map(|named_property| {
+                (
+                    named_property.name.to_string(),
+                    ReactivePropertyInstance::new(id, named_property.name.to_string(), Mutable, named_property.value.clone()),
+                )
+            })
+            .collect();
+        Ok(ReactiveEntityInstance {
+            ty,
+            id,
+            description: String::new(),
+            properties: instance_properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
+        })
+    }
+}
+
+impl From<EntityInstance> for ReactiveEntityInstance {
+    fn from(instance: EntityInstance) -> Self {
+        let properties = instance
+            .properties
+            .iter()
+            .map(|(name, value)| (name.clone(), ReactivePropertyInstance::new(instance.id, name.clone(), Mutable, value.clone())))
+            .collect();
+        ReactiveEntityInstance {
+            ty: instance.ty.clone(),
+            id: instance.id,
+            description: instance.description,
+            properties,
+            components: DashSet::new(),
+            behaviours: DashSet::new(),
+        }
+    }
+}
+
+impl From<Arc<ReactiveEntityInstance>> for EntityInstance {
+    fn from(instance: Arc<ReactiveEntityInstance>) -> Self {
         let properties = instance
             .properties
             .iter()
             .map(|property_instance| (property_instance.key().clone(), property_instance.get()))
             .collect();
-        RelationInstance {
-            outbound_id: instance.outbound.id,
+        EntityInstance {
             ty: instance.ty.clone(),
-            inbound_id: instance.inbound.id,
+            id: instance.id,
             description: instance.description.clone(),
             properties,
             extensions: Vec::new(),
@@ -296,7 +208,7 @@ impl From<Arc<ReactiveRelationInstance>> for RelationInstance {
     }
 }
 
-impl PropertyInstanceGetter for ReactiveRelationInstance {
+impl PropertyInstanceGetter for ReactiveEntityInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
         self.properties.get(&property_name.into()).map(|p| p.get())
     }
@@ -330,7 +242,7 @@ impl PropertyInstanceGetter for ReactiveRelationInstance {
     }
 }
 
-impl PropertyInstanceSetter for ReactiveRelationInstance {
+impl PropertyInstanceSetter for ReactiveEntityInstance {
     fn set_checked<S: Into<String>>(&self, property_name: S, value: Value) {
         if let Some(instance) = self.properties.get(&property_name.into()) {
             instance.set_checked(value);
@@ -364,9 +276,12 @@ impl PropertyInstanceSetter for ReactiveRelationInstance {
             property_instance.set_mutability(mutability);
         }
     }
+
+    // TODO: fn set(&self, Map<String, Value>
+    // TODO: Set values transactional: first set all values internally, then send all affected streams
 }
 
-impl NamespacedTypeGetter for ReactiveRelationInstance {
+impl NamespacedTypeGetter for ReactiveEntityInstance {
     fn namespace(&self) -> String {
         self.ty.namespace()
     }
@@ -376,22 +291,22 @@ impl NamespacedTypeGetter for ReactiveRelationInstance {
     }
 }
 
-impl TypeDefinitionGetter for ReactiveRelationInstance {
+impl TypeDefinitionGetter for ReactiveEntityInstance {
     fn type_definition(&self) -> TypeDefinition {
         self.ty.type_definition()
     }
 }
 
-impl Display for ReactiveRelationInstance {
+impl Display for ReactiveEntityInstance {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}--[{}]-->{}", self.outbound.id, &self.ty, self.inbound.id)
+        write!(f, "{}__{}", &self.ty, self.id)
     }
 }
 
-impl ReactiveInstance for ReactiveRelationInstance {}
+impl ReactiveInstance for ReactiveEntityInstance {}
 
 #[macro_export]
-macro_rules! relation_model {
+macro_rules! entity_model {
     (
         $ident: ident
         $(,
@@ -406,7 +321,7 @@ macro_rules! relation_model {
         // use $crate::PropertyInstanceGetter as RxPropertyInstanceGetter;
         // use $crate::PropertyInstanceSetter as RxPropertyInstanceSetter;
         pub struct $ident {
-            i: std::sync::Arc<$crate::ReactiveRelationInstance>,
+            i: std::sync::Arc<$crate::ReactiveEntityInstance>,
         }
 
         impl $ident {
@@ -415,14 +330,14 @@ macro_rules! relation_model {
             )*
         }
 
-        impl $crate::ReactiveInstanceGetter<$crate::ReactiveRelationInstance> for $ident {
-            fn get_reactive_instance(&self) -> &std::sync::Arc<$crate::ReactiveRelationInstance> {
+        impl $crate::ReactiveInstanceGetter<$crate::ReactiveEntityInstance> for $ident {
+            fn get_reactive_instance(&self) -> &std::sync::Arc<$crate::ReactiveEntityInstance> {
                 &self.i
             }
         }
 
-        impl From<std::sync::Arc<$crate::ReactiveRelationInstance>> for $ident {
-            fn from(i: std::sync::Arc<$crate::ReactiveRelationInstance>) -> Self {
+        impl From<std::sync::Arc<$crate::ReactiveEntityInstance>> for $ident {
+            fn from(i: std::sync::Arc<$crate::ReactiveEntityInstance>) -> Self {
                 $ident { i }
             }
         }
