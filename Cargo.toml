@@ -27,6 +27,7 @@ async-graphql = { version = "5.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "5.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
+config = "0.13"
 convert_case = "0.6"
 crossbeam = "0.8"
 dashmap = "5.3"
@@ -41,9 +42,13 @@ log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.1", features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 mime = "0.3"
 notify = "5.0"
+paste = "1.0"
 path-tree = "0.4"
+proc-macro2 = "1.0"
+quote = "1.0"
 rand = "0.8"
 rayon = "1.6"
+regex = "1.6"
 rustls = "0.20"
 rustls-pemfile = "1.0"
 semver = "1"
@@ -52,6 +57,7 @@ serde_json = "1.0"
 signal-hook = "0.3.13"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
+syn = { version = "1.0", features = [ "full" ] }
 tokio = { version = "1", features =  ["time", "rt"] }
 toml = "0.5"
 uuid = { version = "1.1", features = ["serde", "v4"] }

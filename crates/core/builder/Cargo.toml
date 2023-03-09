@@ -7,10 +7,10 @@ edition = "2021"
 license = "MIT"
 
 [dependencies]
-indradb-lib = "3"
-serde = { version = "1.0", features = [ "derive" ] }
-serde_json = "1.0"
-uuid = { version = "1.2", features = ["serde", "v4"] }
+indradb-lib = { workspace = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
 
 inexor-rgf-core-model = { path = "../model" }
 

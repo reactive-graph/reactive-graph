@@ -10,10 +10,10 @@ edition = "2021"
 license = "BSD-3-Clause"
 
 [dependencies]
-log = { version = "0.4", features = ["std", "serde"] }
-log4rs = { version = "1.0", features = ["console_appender", "file_appender", "toml_format"]}
-rayon = "1.6"
-uuid = { version = "1.2", features = ["fast-rng", "v4"]}
+log = { workspace = true, features = ["std", "serde"] }
+log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format"]}
+rayon = { workspace = true }
+uuid = { workspace = true, features = ["fast-rng", "v4"]}
 
 [lib]
 crate-type = ["lib"]
