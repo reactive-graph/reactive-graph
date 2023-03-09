@@ -1,0 +1,27 @@
+[package]
+name = "inexor-rgf-core-frp"
+description = "Inexor - Reactive Graph Flow - Core - FRP (Bidule Patched)"
+version = "0.7.0"
+authors = [
+    "Dimitri Sabadie <dimitri.sabadie@gmail.com>",
+    "Andreas Schaeffer <hanack@nooblounge.net",
+]
+edition = "2021"
+license = "BSD-3-Clause"
+
+[dependencies]
+log = { version = "0.4", features = ["std", "serde"] }
+log4rs = { version = "1.0", features = ["console_appender", "file_appender", "toml_format"]}
+rayon = "1.6"
+uuid = { version = "1.2", features = ["fast-rng", "v4"]}
+
+[lib]
+crate-type = ["lib"]
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = "symbols"
