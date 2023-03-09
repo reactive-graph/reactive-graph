@@ -1,0 +1,32 @@
+[package]
+name = "inexor-rgf-core-model"
+description = "Inexor - Reactive Graph Flow - Core - Model"
+version = "0.8.0"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+dashmap = "5.4"
+indradb-lib = "3"
+paste = "1.0"
+serde = { version = "1.0", features = [ "derive" ] }
+serde_json = "1.0"
+uuid = { version = "1.2", features = ["serde", "v4", "v5"] }
+
+#inexor-rgf-core-frp = { git = "https://github.com/inexorgame/inexor-rgf-core-frp.git" }
+inexor-rgf-core-frp = { path = "../../../../inexor-rgf-shared-bidule/crates/core/frp" }
+
+[dev-dependencies]
+random-string = "1.0"
+rand = "0.8"
+stopwatch2 = "*"
+
+[lib]
+crate-type = ["lib"]
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 3
