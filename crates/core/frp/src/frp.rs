@@ -192,8 +192,11 @@
 
 use std::cell::RefCell;
 use std::ops::Deref;
-use std::sync::mpsc::{channel, Receiver};
-use std::sync::{Arc, RwLock, Weak};
+use std::sync::mpsc::channel;
+use std::sync::mpsc::Receiver;
+use std::sync::Arc;
+use std::sync::RwLock;
+use std::sync::Weak;
 
 use rayon::prelude::*;
 use uuid::Uuid;

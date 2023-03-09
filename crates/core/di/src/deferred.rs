@@ -1,4 +1,5 @@
-use crate::deferred::DeferredValue::{Initialized, WaitingForValue};
+use crate::deferred::DeferredValue::Initialized;
+use crate::deferred::DeferredValue::WaitingForValue;
 use std::ops::Deref;
 use std::sync::Mutex;
 

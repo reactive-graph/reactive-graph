@@ -1,5 +1,6 @@
 use attr_parser::parse_provides_attr;
-use component::{generate_component_for_impl, generate_component_for_struct};
+use component::generate_component_for_impl;
+use component::generate_component_for_struct;
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use provider::*;

@@ -1,8 +1,15 @@
-use crate::attr_parser::{parse_prop_attr, PropAttr};
+use crate::attr_parser::parse_prop_attr;
+use crate::attr_parser::PropAttr;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::ToTokens;
 use syn::spanned::Spanned;
-use syn::{Attribute, Error, Field, FnArg, Pat, Path, Type};
+use syn::Attribute;
+use syn::Error;
+use syn::Field;
+use syn::FnArg;
+use syn::Pat;
+use syn::Path;
+use syn::Type;
 
 #[derive(Clone)]
 pub(crate) struct TypeToInject {

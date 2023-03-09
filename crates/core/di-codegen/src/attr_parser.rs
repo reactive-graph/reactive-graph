@@ -5,8 +5,11 @@ use syn::parse::Parser;
 use syn::parse_macro_input::parse;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
-use syn::{Attribute, Error, Path};
-use syn::{ExprAssign, LitStr};
+use syn::Attribute;
+use syn::Error;
+use syn::ExprAssign;
+use syn::LitStr;
+use syn::Path;
 
 pub(crate) struct ProvidesAttr {
     pub profiles: Vec<Path>,

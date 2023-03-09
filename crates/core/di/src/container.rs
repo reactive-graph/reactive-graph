@@ -1,11 +1,13 @@
-use crate::{RcAny, Wrc};
+use crate::RcAny;
+use crate::Wrc;
 use config::Config;
 use config::Environment;
 use config::File;
 use config::FileFormat;
 use lazy_static::lazy_static;
 use regex::Regex;
-use std::any::{type_name, TypeId};
+use std::any::type_name;
+use std::any::TypeId;
 use std::collections::HashMap;
 use std::env;
 use std::env::args;

@@ -2,7 +2,9 @@ use crate::component::type_to_inject::TypeToInject;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::ToTokens;
 use syn::spanned::Spanned;
-use syn::{Error, Ident, PathArguments};
+use syn::Error;
+use syn::Ident;
+use syn::PathArguments;
 
 pub(crate) trait Injector {
     fn generate_inject_code(&self, to_inject: &TypeToInject, container: &Ident) -> Option<TokenStream2>;

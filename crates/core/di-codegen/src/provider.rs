@@ -3,11 +3,19 @@ use proc_macro2::TokenStream as TokenStream2;
 use quote::ToTokens;
 
 use crate::attr_parser::ProvidesAttr;
+use crate::component::generate_dependencies_create_code;
+use crate::component::generate_inject_dependencies_tuple;
 use crate::component::type_to_inject::TypeToInject;
-use crate::component::{generate_dependencies_create_code, generate_inject_dependencies_tuple};
 use std::ops::Deref;
 use syn::spanned::Spanned;
-use syn::{Error, GenericParam, ItemFn, ItemImpl, ItemStruct, Path, ReturnType, Type};
+use syn::Error;
+use syn::GenericParam;
+use syn::ItemFn;
+use syn::ItemImpl;
+use syn::ItemStruct;
+use syn::Path;
+use syn::ReturnType;
+use syn::Type;
 
 pub(crate) fn generate_component_provider_impl_struct(component: ItemStruct) -> TokenStream {
     let comp_name = component.ident;
