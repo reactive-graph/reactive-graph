@@ -66,15 +66,15 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 #### Entity Types
 
-| Name            | Properties                               | Behaviours                                                     | Description |
-|-----------------|------------------------------------------|----------------------------------------------------------------| --- |
-| Cron Expression | expression (string)<br>activation (bool) | A cron based scheduler propagates the activation output (true) |
+| Name            | Properties                               | Behaviours                                                       | Description |
+|-----------------|------------------------------------------|------------------------------------------------------------------|-------------|
+| Cron Expression | expression (string)<br>activation (bool) | A cron based scheduler propagates the activation output (true)   |             |
 
 ### Audio
 
 | Name                    | Repository                                            |
 |-------------------------|-------------------------------------------------------|
-| inexor-rgf-plugin-audio | https://github.com/aschaeffer/inexor-rgf-plugin-sound |
+| inexor-rgf-plugin-audio | https://github.com/inexorgame/inexor-rgf-plugin-audio |
 
 #### Rust Crate / Rust Reference
 
@@ -98,6 +98,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 * color_rgb
 * color_rgba
 * color_cmyk
+* image (BASE64)
 
 #### Entity Types
 
@@ -141,7 +142,7 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 * https://docs.rs/noise/0.7.0/noise/
 * https://github.com/Razaekel/noise-rs
 
-### Scripting
+### WebAssembly / Scripting
 
 | Name                    | Repository                                           |
 |-------------------------|------------------------------------------------------|
