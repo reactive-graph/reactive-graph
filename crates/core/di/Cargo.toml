@@ -17,11 +17,11 @@ keywords = [
 ]
 repository = "https://github.com/inexorgame/inexor-rgf-core-di"
 
-[workspace]
-members = [ "crates/*" ]
+#[workspace]
+#members = ["../../*"]
 
 [dependencies]
-inexor-rgf-core-di-codegen = { path = "crates/inexor-rgf-core-di-codegen", version = "2.0.0" }
+inexor-rgf-core-di-codegen = { path = "../di-codegen", version = "2.0.0" }
 config = "0.13"
 serde = { version = "1.0", features = [ "derive" ] }
 regex = "1.5"
