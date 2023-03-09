@@ -3,6 +3,9 @@ cargo-features = [ "workspace-inheritance" ]
 [workspace]
 
 members = [
+    "crates/core/di",
+    "crates/core/di-codegen",
+    "crates/core/builder",
     "crates/runtime",
 ]
 
