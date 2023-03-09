@@ -1,0 +1,25 @@
+[package]
+name = "inexor-rgf-core-model"
+description = "Inexor - Reactive Graph Flow - Core - Model"
+version = "0.8.0"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+dashmap = { workspace = true }
+indradb-lib = { workspace = true }
+paste = { workspace = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4", "v5"] }
+
+inexor-rgf-core-frp = { path = "../frp" }
+
+[dev-dependencies]
+random-string = "1.0"
+rand = "0.8"
+stopwatch2 = "*"
+
+[lib]
+crate-type = ["lib"]

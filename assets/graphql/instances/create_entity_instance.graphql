@@ -1,0 +1,47 @@
+mutation CreateEntityInstance {
+  instances {
+    entities {
+      create(
+        type: {
+          namespace: "value"
+          name: "value_number"
+        }
+        properties: [
+          {
+            name: "value"
+            value: 0
+          }
+          {
+            name: "name"
+            value: "A value"
+          }
+        ]
+      ) {
+        ...FullEntityInstance
+      }
+    }
+  }
+}
+
+fragment FullEntityInstance on EntityInstance {
+  id
+  label
+  components {
+    name
+  }
+  behaviours {
+    namespace
+    name
+  }
+  type {
+    namespace
+    name
+    components {
+      name
+    }
+  }
+  properties {
+    name
+    value
+  }
+}

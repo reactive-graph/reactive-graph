@@ -1,0 +1,21 @@
+[package]
+name = "inexor-rgf-core-builder"
+description = "Inexor - Reactive Graph Flow - Core - Builder"
+version = "0.8.0"
+authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+indradb-lib = { workspace = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-core-model = { path = "../model" }
+
+[dev-dependencies]
+random-string = "1.0"
+
+[lib]
+crate-type = ["lib"]
