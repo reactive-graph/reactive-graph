@@ -4,7 +4,7 @@ use std::sync::Arc;
 use async_graphql::dynamic::*;
 use async_graphql::Error;
 use async_graphql::ID;
-use log::info;
+use log::trace;
 use serde_json::json;
 use serde_json::Value;
 use uuid::Uuid;
@@ -312,7 +312,7 @@ pub fn outbound_entity_to_inbound_field(
     // if field_name.is_empty() {
     //     return Vec::new();
     // }
-    info!("from outbound {} to inbound {:?} {}", &outbound_relation_type.ty, field_name, &relation_type.inbound_type);
+    trace!("from outbound {} to inbound {:?} {}", &outbound_relation_type.ty, field_name, &relation_type.inbound_type);
     let field_description = field_descriptions.from_outbound_entity_to_inbound_entity.clone();
 
     match &relation_type.inbound_type {
@@ -369,7 +369,7 @@ pub fn inbound_entity_to_outbound_field(
         return Vec::new();
     };
     let field_name = field_names.from_inbound_entity_to_outbound_entity.clone();
-    info!("from inbound {} to outbound {:?} {}", &inbound_relation_type.ty, field_name, &relation_type.outbound_type);
+    trace!("from inbound {} to outbound {:?} {}", &inbound_relation_type.ty, field_name, &relation_type.outbound_type);
     let field_description = field_descriptions.from_inbound_entity_to_outbound_entity.clone();
 
     match &relation_type.outbound_type {
