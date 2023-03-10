@@ -210,7 +210,7 @@ impl GraphQLServer for GraphQLServerImpl {
         tokio::spawn(async move {
             trace!("Waiting for shutdown signal");
             // wait for shutdown signal
-            stopper.recv().unwrap();
+            stopper.recv().unwrap_or(());
             debug!("Received shutdown signal. Stopping GraphQL server thread.");
 
             // stop server gracefully
