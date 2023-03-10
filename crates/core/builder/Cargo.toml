@@ -1,10 +1,11 @@
 [package]
 name = "inexor-rgf-core-builder"
 description = "Inexor - Reactive Graph Flow - Core - Builder"
-version = "0.8.0"
-authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
-edition = "2021"
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
 
 [dependencies]
 indradb-lib = { workspace = true }

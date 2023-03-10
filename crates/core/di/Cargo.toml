@@ -1,13 +1,14 @@
 [package]
 name = "inexor-rgf-core-di"
 description = "Inexor - Reactive Graph Flow - Dependency Injection"
-version = "2.0.0"
+version.workspace = true
 authors = [
     "dmitryb.dev@gmail.com",
     "Andreas Schaeffer <hanack@nooblounge.net>"
 ]
-edition = "2021"
-license = "MIT"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
 readme = "README.md"
 keywords = [
     "dependency-injection",
@@ -15,7 +16,6 @@ keywords = [
     "di",
     "ioc"
 ]
-repository = "https://github.com/inexorgame/inexor-rgf-core-di"
 
 [dependencies]
 inexor-rgf-core-di-codegen = { path = "../di-codegen" }

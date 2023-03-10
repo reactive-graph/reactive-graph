@@ -1,10 +1,11 @@
 [package]
 name = "inexor-rgf-core-reactive"
 description = "Inexor - Reactive Graph Flow - Core - Reactive"
-version = "0.8.0"
-authors = ["Andreas Schaeffer <hanack@nooblounge.net"]
-edition = "2021"
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
 
 [dependencies]
 dashmap = { workspace = true }

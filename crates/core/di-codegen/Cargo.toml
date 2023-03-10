@@ -1,15 +1,15 @@
 [package]
 name = "inexor-rgf-core-di-codegen"
 description = "Inexor - Reactive Graph Flow - Dependency Injection - Macro"
-version = "2.0.0"
+version.workspace = true
 authors = [
     "dmitryb.dev@gmail.com",
     "Andreas Schaeffer <hanack@nooblounge.net>"
 ]
-edition = "2021"
-license = "MIT"
-readme = "../../README.md"
-repository = "https://github.com/inexorgame/inexor-rgf-core-di"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../di/README.md"
 
 [dependencies]
 quote = { workspace = true }
