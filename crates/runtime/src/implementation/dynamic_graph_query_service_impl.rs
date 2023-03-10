@@ -1,5 +1,4 @@
 use async_trait::async_trait;
-use log::error;
 use log::trace;
 
 use crate::api::DynamicGraphQueryService;
@@ -10,7 +9,6 @@ use crate::di::component;
 use crate::di::provides;
 use crate::di::Component;
 use crate::di::Wrc;
-use async_std::task;
 
 #[component]
 pub struct DynamicGraphQueryServiceImpl {
@@ -32,30 +30,9 @@ impl DynamicGraphQueryService for DynamicGraphQueryServiceImpl {
             None => Err(DynamicQueryError::DynamicSchemaFailure),
         }
     }
-
-    fn query_thread(&self, request: String) {
-        let dynamic_graph_schema_manager = self.dynamic_graph_schema_manager.clone();
-        let _thread = task::Builder::new().name(String::from("dynamic query")).spawn(async move {
-            match dynamic_graph_schema_manager.get_dynamic_schema() {
-                Some(schema) => {
-                    trace!("Run dynamic query in new thread: {}", request.clone());
-                    let result = schema.execute(request).await;
-                    match serde_json::to_string_pretty(&result) {
-                        Ok(json) => trace!("Dynamic query result:\n{}", json),
-                        Err(e) => error!("Failed to execute dynamic query: {}", e),
-                    }
-                }
-                None => {
-                    error!("Failed to get dynamic schema");
-                }
-            }
-        });
-    }
 }
 
 impl Lifecycle for DynamicGraphQueryServiceImpl {
     fn post_init(&self) {
-        let request = "query { core { shutdown { id label } }}";
-        self.query_thread(request.to_string());
     }
 }

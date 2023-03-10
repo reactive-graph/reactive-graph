@@ -7,8 +7,8 @@ use serde_json::json;
 
 use crate::builder::EntityTypeBuilder;
 use crate::builder::ReactiveEntityInstanceBuilder;
+use crate::get_runtime;
 use crate::model::EntityTypeId;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 
@@ -19,9 +19,9 @@ fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let reactive_entity_instance_manager = application.get_reactive_entity_instance_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let reactive_entity_instance_manager = runtime.get_reactive_entity_instance_manager();
 
     let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name)
         .string_property(property_name.clone())
@@ -45,9 +45,9 @@ fn get_by_id_benchmark(bencher: &mut Bencher) -> impl Termination {
     let property_name = r_string();
     let property_value = r_json_string();
 
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let reactive_entity_instance_manager = application.get_reactive_entity_instance_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let reactive_entity_instance_manager = runtime.get_reactive_entity_instance_manager();
 
     let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name).string_property(&property_name).build();
     entity_type_manager
@@ -71,9 +71,9 @@ fn get_by_label_benchmark(bencher: &mut Bencher) -> impl Termination {
     let property_value = r_json_string();
     let label = String::from("/org/inexor/test");
 
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let reactive_entity_instance_manager = application.get_reactive_entity_instance_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let reactive_entity_instance_manager = runtime.get_reactive_entity_instance_manager();
 
     let entity_type = EntityTypeBuilder::new_from_type(&namespace, &type_name)
         .string_property(&property_name)

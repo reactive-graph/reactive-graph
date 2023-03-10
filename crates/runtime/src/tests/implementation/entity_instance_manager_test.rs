@@ -5,17 +5,17 @@ use uuid::Uuid;
 
 use crate::builder::EntityInstanceBuilder;
 use crate::builder::EntityTypeBuilder;
+use crate::get_runtime;
 use crate::model::NamespacedTypeGetter;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 
 #[test]
 fn test_entity_instance_manager() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let entity_instance_manager = application.get_entity_instance_manager();
-    let graph_database = application.get_graph_database();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let entity_instance_manager = runtime.get_entity_instance_manager();
+    let graph_database = runtime.get_graph_database();
     let datastore = graph_database.get_datastore();
 
     let namespace = r_string();
@@ -90,9 +90,9 @@ fn test_entity_instance_manager() {
 
 #[test]
 fn test_entity_instance_manager_import_export() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let entity_instance_manager = application.get_entity_instance_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let entity_instance_manager = runtime.get_entity_instance_manager();
 
     let namespace = r_string();
     let type_name = r_string();

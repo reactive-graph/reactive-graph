@@ -11,7 +11,6 @@ use dashmap::DashMap;
 use log::error;
 use path_tree::PathTree;
 use serde_json::Value;
-use tokio::runtime::Runtime;
 use tokio::time::sleep;
 use uuid::Uuid;
 
@@ -80,9 +79,6 @@ impl SystemEventChannels {
     }
 }
 
-#[wrapper]
-pub struct RuntimeContainer(Runtime);
-
 #[provides]
 fn create_reactive_entity_instances_storage() -> ReactiveEntityInstances {
     ReactiveEntityInstances(Arc::new(DashMap::new()))
@@ -108,16 +104,6 @@ fn create_system_event_channels() -> SystemEventChannels {
     SystemEventChannels(system_event_channels)
 }
 
-#[provides]
-fn create_runtime() -> RuntimeContainer {
-    let runtime = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .thread_name("inexor-reim")
-        .build()
-        .unwrap();
-    RuntimeContainer(runtime)
-}
-
 #[component]
 pub struct ReactiveEntityInstanceManagerImpl {
     event_manager: Wrc<dyn SystemEventManager>,
@@ -139,8 +125,6 @@ pub struct ReactiveEntityInstanceManagerImpl {
     running: RunningState,
 
     system_event_channels: SystemEventChannels,
-
-    runtime: RuntimeContainer,
     // TODO: Type Cache
 }
 
@@ -518,7 +502,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         let reactive_entity_instances = self.reactive_entity_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_ENTITY_TYPE_COMPONENT_ADDED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_component_event) => {
@@ -550,7 +534,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         let reactive_entity_instances = self.reactive_entity_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_ENTITY_TYPE_COMPONENT_REMOVED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_component_event) => {
@@ -581,7 +565,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         let reactive_entity_instances = self.reactive_entity_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_ENTITY_TYPE_PROPERTY_ADDED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_property_event) => {
@@ -614,7 +598,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         let reactive_entity_instances = self.reactive_entity_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_ENTITY_TYPE_PROPERTY_REMOVED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_property_event) => {

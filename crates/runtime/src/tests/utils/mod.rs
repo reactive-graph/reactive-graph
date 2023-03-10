@@ -1,5 +1,3 @@
-pub mod application;
-
 use random_string::generate;
 use serde_json::json;
 use serde_json::Value;

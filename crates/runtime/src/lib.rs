@@ -6,7 +6,9 @@
 #![register_tool(tarpaulin)]
 #![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 
-use std::alloc::System;
+use std::sync::Arc;
+use std::sync::RwLock;
+use std::time::Duration;
 
 use inexor_rgf_core_builder as builder;
 use inexor_rgf_core_di as di;
@@ -14,50 +16,50 @@ use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
 use inexor_rgf_core_reactive as reactive;
 
-use crate::application::Application;
 use crate::di::profiles;
 use crate::di::Container;
 use crate::di::Provider;
-use std::thread;
-use std::time::Duration;
+use crate::runtime::Runtime;
 
 mod api;
-mod application;
 mod config;
 mod core_model;
 mod graphql;
 mod implementation;
 mod plugin;
 mod rest;
+mod runtime;
 
-#[global_allocator]
-static ALLOCATOR: System = System;
+pub fn get_runtime() -> Arc<dyn Runtime> {
+    let mut container = di_container_get::<profiles::Default>();
+    let container = &mut container;
+    Arc::new(Provider::<dyn Runtime>::create(container))
+}
 
-#[async_std::main]
-async fn main() {
+pub fn get_rw_runtime() -> Arc<RwLock<dyn Runtime>> {
+    let mut container = di_container_get::<profiles::Default>();
+    let container = &mut container;
+    Arc::new(RwLock::new(Provider::<dyn Runtime>::create(container)))
+}
+
+pub async fn main() {
     if let Err(error) = log4rs::init_file("./config/logging.toml", Default::default()) {
-        println!("Failed to configure logger: {}", error);
+        eprintln!("Failed to configure logger: {}", error);
     }
 
     {
         let mut container = di_container_get::<profiles::Default>();
         let container = &mut container;
-        let mut application = Provider::<dyn Application>::create(container);
+        let runtime = Provider::<dyn Runtime>::create(container);
 
-        application.init();
-        application.post_init();
-        application.run().await;
-
-        // let main = async_std::future::ready(application.run);
-        // let server = application.clone().serve();
-        // let main = application.run();
-        // main.await;
-        // let futures = vec![main, server];
-        // join!(futures).await;
-        application.pre_shutdown();
-        application.shutdown();
+        // Runtime Lifecycle
+        runtime.init();
+        runtime.post_init();
+        runtime.run().await;
+        runtime.pre_shutdown();
+        runtime.shutdown();
     } // Destruct the application
-    thread::sleep(Duration::from_millis(2000));
+    tokio::time::sleep(Duration::from_millis(2000)).await;
 }
 
 pub fn di_container_get<T>() -> Container<T> {

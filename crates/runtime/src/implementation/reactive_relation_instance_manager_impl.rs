@@ -9,7 +9,6 @@ use crossbeam::channel::Sender;
 use dashmap::DashMap;
 use indradb::EdgeKey;
 use serde_json::Value;
-use tokio::runtime::Runtime;
 use tokio::time::sleep;
 use tokio::time::Duration;
 use uuid::Uuid;
@@ -77,9 +76,6 @@ impl SystemEventChannels {
     }
 }
 
-#[wrapper]
-pub struct RuntimeContainer(Runtime);
-
 #[provides]
 fn create_reactive_relation_instance_storage() -> ReactiveRelationInstances {
     ReactiveRelationInstances(Arc::new(DashMap::new()))
@@ -98,16 +94,6 @@ fn create_system_event_channels() -> SystemEventChannels {
     system_event_channels.insert(HANDLE_ID_RELATION_TYPE_PROPERTY_ADDED, crossbeam::channel::unbounded());
     system_event_channels.insert(HANDLE_ID_RELATION_TYPE_PROPERTY_REMOVED, crossbeam::channel::unbounded());
     SystemEventChannels(system_event_channels)
-}
-
-#[provides]
-fn create_runtime() -> RuntimeContainer {
-    let runtime = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .thread_name("inexor-system-event-")
-        .build()
-        .unwrap();
-    RuntimeContainer(runtime)
 }
 
 #[component]
@@ -133,8 +119,6 @@ pub struct ReactiveRelationInstanceManagerImpl {
     running: RunningState,
 
     system_event_channels: SystemEventChannels,
-
-    runtime: RuntimeContainer,
 }
 
 impl SystemEventSubscriber for ReactiveRelationInstanceManagerImpl {
@@ -545,7 +529,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         let reactive_relation_instances = self.reactive_relation_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_RELATION_TYPE_COMPONENT_ADDED) {
-            self.runtime.0.spawn(async move {
+            tokio::task::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_component_event) => {
@@ -580,7 +564,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         let reactive_relation_instances = self.reactive_relation_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_RELATION_TYPE_COMPONENT_REMOVED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_component_event) => {
@@ -614,7 +598,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         let reactive_relation_instances = self.reactive_relation_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_RELATION_TYPE_PROPERTY_ADDED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_property_event) => {
@@ -647,7 +631,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         let reactive_relation_instances = self.reactive_relation_instances.0.clone();
         let running = self.running.0.clone();
         if let Some(receiver) = self.system_event_channels.receiver(&HANDLE_ID_RELATION_TYPE_PROPERTY_REMOVED) {
-            self.runtime.0.spawn(async move {
+            tokio::spawn(async move {
                 while running.load(Ordering::Relaxed) {
                     match receiver.try_recv() {
                         Ok(type_definition_property_event) => {

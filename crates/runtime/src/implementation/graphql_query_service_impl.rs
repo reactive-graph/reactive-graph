@@ -8,7 +8,6 @@ use crate::di::component;
 use crate::di::provides;
 use crate::di::Component;
 use crate::di::Wrc;
-use async_std::task;
 
 #[component]
 pub struct GraphQLQueryServiceImpl {
@@ -26,21 +25,9 @@ impl GraphQLQueryService for GraphQLQueryServiceImpl {
         let result = schema.execute(request).await;
         serde_json::to_string(&result)
     }
-
-    fn query_thread(&self, request: String) {
-        let schema = self.graphql_schema_manager.get_schema();
-        let _thread = task::Builder::new().name(String::from("query")).spawn(async move {
-            info!("Run query in new thread: {}", request.clone());
-            let result = schema.execute(request).await;
-            let json = serde_json::to_string_pretty(&result);
-            info!("query result: {}", json.unwrap());
-        });
-    }
 }
 
 impl Lifecycle for GraphQLQueryServiceImpl {
     fn post_init(&self) {
-        let request = "query { types { countComponents countEntityTypes countRelationTypes countFlowTypes } instances { countEntityInstances countRelationInstances countFlowInstances } behaviours { countEntityBehaviours countRelationBehaviours countEntityComponentBehaviours countRelationComponentBehaviours }}";
-        self.query_thread(request.to_string());
     }
 }

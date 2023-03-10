@@ -2,19 +2,19 @@ use std::env;
 
 use serde_json::json;
 
+use crate::get_runtime;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
 
 #[test]
 fn test_register_component() {
-    let application = init_application();
-    let component_manager = application.get_component_manager();
+    let runtime = get_runtime();
+    let component_manager = runtime.get_component_manager();
     let namespace = r_string();
     let component_name = r_string();
     let description = r_string();
@@ -41,8 +41,8 @@ fn test_register_component() {
 
 #[test]
 fn test_get_components() {
-    let application = init_application();
-    let component_manager = application.get_component_manager();
+    let runtime = get_runtime();
+    let component_manager = runtime.get_component_manager();
     let components = component_manager.get_all();
     for component in components {
         assert!(component_manager.has(&component.ty));
@@ -52,8 +52,8 @@ fn test_get_components() {
 
 #[test]
 fn test_export_import_component() {
-    let application = init_application();
-    let component_manager = application.get_component_manager();
+    let runtime = get_runtime();
+    let component_manager = runtime.get_component_manager();
     let namespace = r_string();
     let component_name = r_string();
     let description = r_string();

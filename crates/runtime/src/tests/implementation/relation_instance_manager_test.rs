@@ -7,23 +7,23 @@ use crate::builder::EntityInstanceBuilder;
 use crate::builder::EntityTypeBuilder;
 use crate::builder::RelationInstanceBuilder;
 use crate::builder::RelationTypeBuilder;
+use crate::get_runtime;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::RelationInstanceTypeId;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinitionGetter;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 
 #[test]
 fn test_relation_instance_manager() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let entity_instance_manager = application.get_entity_instance_manager();
-    let relation_type_manager = application.get_relation_type_manager();
-    let relation_instance_manager = application.get_relation_instance_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let entity_instance_manager = runtime.get_entity_instance_manager();
+    let relation_type_manager = runtime.get_relation_type_manager();
+    let relation_instance_manager = runtime.get_relation_instance_manager();
 
     let namespace = r_string();
     let outbound_type_name = r_string();
@@ -155,11 +155,11 @@ fn test_relation_instance_manager() {
 
 #[test]
 fn test_relation_instance_manager_import_export() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let entity_instance_manager = application.get_entity_instance_manager();
-    let relation_type_manager = application.get_relation_type_manager();
-    let relation_instance_manager = application.get_relation_instance_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let entity_instance_manager = runtime.get_entity_instance_manager();
+    let relation_type_manager = runtime.get_relation_type_manager();
+    let relation_instance_manager = runtime.get_relation_instance_manager();
 
     let namespace = r_string();
     let outbound_type_name = r_string();

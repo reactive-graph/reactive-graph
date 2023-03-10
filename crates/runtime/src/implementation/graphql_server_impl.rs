@@ -2,13 +2,11 @@ use std::fs::File;
 use std::io::BufReader;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
-use std::sync::mpsc::Receiver;
 use std::sync::Arc;
-use std::thread;
-use std::time::Duration;
 
 use actix_cors::Cors;
 use actix_http::body::BoxBody;
+use actix_web::dev::Server;
 use actix_web::guard;
 use actix_web::post;
 use actix_web::web;
@@ -25,14 +23,15 @@ use async_graphql::ServerError;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 use async_graphql_actix_web::GraphQLSubscription;
-use async_std::task;
 use async_trait::async_trait;
+use crossbeam::channel::Receiver;
 use http::header::CONTENT_TYPE;
 use http::Request;
 use http::Response;
 use log::debug;
 use log::error;
-use log::warn;
+use log::info;
+use log::trace;
 use rustls::Certificate;
 use rustls::PrivateKey;
 use rustls::ServerConfig;
@@ -195,7 +194,41 @@ fn convert_response(response: Response<HttpBody>) -> HttpResponse {
 #[async_trait]
 #[provides]
 impl GraphQLServer for GraphQLServerImpl {
-    fn serve(&self, stopper: Receiver<()>) {
+    async fn serve(&self, stopper: Receiver<()>) {
+        trace!("Initialize GraphQL server");
+        let Ok(server) = self.setup() else {
+            error!("Failed to setup graphql server!");
+            return;
+        };
+        let server_handle = server.handle();
+        let t_server_handle = server_handle.clone();
+
+        let terminate = Arc::new(AtomicBool::new(false));
+        let t_terminate = terminate.clone();
+
+        // This thread handles the server stop routine from the main thread
+        tokio::spawn(async move {
+            trace!("Waiting for shutdown signal");
+            // wait for shutdown signal
+            stopper.recv().unwrap();
+            debug!("Received shutdown signal. Stopping GraphQL server thread.");
+
+            // stop server gracefully
+            trace!("Stopping server gracefully");
+            t_server_handle.stop(true).await;
+            debug!("Successfully stopped GraphQL server thread.");
+
+            t_terminate.store(true, Ordering::Relaxed);
+            debug!("Stopping actix system.");
+        });
+
+        let _ = server.await;
+        trace!("GraphQL server finished");
+    }
+}
+
+impl GraphQLServerImpl {
+    fn setup(&self) -> Result<Server> {
         // GraphQL Schema
         let schema = self.graphql_schema_manager.get_schema();
 
@@ -211,11 +244,9 @@ impl GraphQLServer for GraphQLServerImpl {
         let schema_data = web::Data::new(schema);
         let dynamic_graph_schema_manager = web::Data::new(self.dynamic_graph_schema_manager.clone());
 
-        let system = actix::System::new(); // actix::System::new("inexor-graphql");
-
         let graphql_server_config = crate::config::graphql::get_graphql_server_config();
 
-        let mut http_server = HttpServer::new(move || {
+        let http_server = HttpServer::new(move || {
             App::new()
                 .wrap(Cors::permissive())
                 .wrap(Condition::from_option(get_logger_middleware()))
@@ -249,15 +280,9 @@ impl GraphQLServer for GraphQLServerImpl {
                 .service(web::resource("/{web_resource_base_path}/{path:.*}").route(web::get().to(handle_web_resource)))
                 .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)))
         })
-        .disable_signals();
-
-        if graphql_server_config.shutdown_timeout.is_some() {
-            http_server = http_server.shutdown_timeout(graphql_server_config.shutdown_timeout.unwrap());
-        }
-
-        if graphql_server_config.workers.is_some() {
-            http_server = http_server.workers(graphql_server_config.workers.unwrap());
-        }
+        .disable_signals()
+        .shutdown_timeout(graphql_server_config.shutdown_timeout.unwrap_or(2))
+        .workers(graphql_server_config.workers.unwrap_or(2));
 
         let r_http_server = if graphql_server_config.secure.unwrap_or(false) {
             let cert_file = &mut BufReader::new(File::open("./keys/cert.pem").unwrap());
@@ -272,54 +297,13 @@ impl GraphQLServer for GraphQLServerImpl {
                 .with_no_client_auth()
                 .with_single_cert(cert_chain, keys.remove(0))
                 .unwrap();
-            debug!("Starting HTTP/GraphQL server on https://{}", graphql_server_config.to_string());
-            http_server.bind_rustls(graphql_server_config.to_string(), tls_config)
+            info!("Starting HTTP/GraphQL server on https://{}", graphql_server_config.to_string());
+            http_server.bind_rustls(graphql_server_config.to_string(), tls_config)?.run()
         } else {
-            debug!("Starting HTTP/GraphQL server on http://{}", graphql_server_config.to_string());
-            http_server.bind(graphql_server_config.to_string())
+            info!("Starting HTTP/GraphQL server on http://{}", graphql_server_config.to_string());
+            http_server.bind(graphql_server_config.to_string())?.run()
         };
-
-        if r_http_server.is_err() {
-            error!("Could not start HTTP/GraphQL server: Failed to bind {}", graphql_server_config.to_string());
-            return;
-        }
-        let http_server = r_http_server.unwrap();
-        let server = http_server.run();
-        let server_handle = server.handle();
-        let t_server_handle = server_handle.clone();
-
-        let terminate = Arc::new(AtomicBool::new(false));
-        let t_terminate = terminate.clone();
-
-        // This thread handles the server stop routine from the main thread
-        thread::spawn(move || {
-            // wait for shutdown signal
-            stopper.recv().unwrap();
-            debug!("Received shutdown signal. Stopping GraphQL server thread.");
-
-            // stop server gracefully
-            futures::executor::block_on(t_server_handle.stop(true));
-
-            debug!("Successfully stopped GraphQL server thread.");
-            t_terminate.store(true, Ordering::Relaxed);
-            debug!("Stopping actix system.");
-        });
-
-        // This thread runs the GraphQL server
-        match task::Builder::new().name(String::from("inexor-graphql")).spawn(server) {
-            Ok(_join_handle) => {
-                // Start the event loop
-                system.block_on(async {
-                    while !terminate.load(Ordering::Relaxed) {
-                        thread::sleep(Duration::from_millis(100));
-                    }
-                    debug!("Successfully stopped the actix system.");
-                });
-            }
-            Err(e) => {
-                warn!("Failed to run actix system: {}", e);
-            }
-        }
+        Ok(r_http_server)
     }
 }
 

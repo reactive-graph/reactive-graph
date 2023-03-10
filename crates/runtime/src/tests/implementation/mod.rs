@@ -13,3 +13,6 @@ mod reactive_entity_instance_manager_test;
 mod relation_edge_manager_test;
 mod relation_instance_manager_test;
 mod relation_type_manager_test;
+
+mod graphql_query_test;
+mod run_test;

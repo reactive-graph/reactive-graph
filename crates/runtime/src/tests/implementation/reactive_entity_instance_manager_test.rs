@@ -3,17 +3,17 @@ use serde_json::json;
 
 use crate::builder::EntityTypeBuilder;
 use crate::builder::ReactiveEntityInstanceBuilder;
+use crate::get_runtime;
 use crate::model::PropertyInstanceGetter;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_json_string;
 use crate::tests::utils::r_string;
 
 #[test]
 fn test_register_reactive_entity_instance() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let reactive_entity_instance_manager = application.get_reactive_entity_instance_manager();
-    let graph_database = application.get_graph_database();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let reactive_entity_instance_manager = runtime.get_reactive_entity_instance_manager();
+    let graph_database = runtime.get_graph_database();
     let datastore = graph_database.get_datastore();
 
     let namespace = r_string();
@@ -47,10 +47,10 @@ fn test_register_reactive_entity_instance() {
 
 #[test]
 fn test_unregister_reactive_entity_instance() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let reactive_entity_instance_manager = application.get_reactive_entity_instance_manager();
-    let graph_database = application.get_graph_database();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let reactive_entity_instance_manager = runtime.get_reactive_entity_instance_manager();
+    let graph_database = runtime.get_graph_database();
     let datastore = graph_database.get_datastore();
 
     let namespace = r_string();
@@ -78,10 +78,10 @@ fn test_unregister_reactive_entity_instance() {
 
 #[test]
 fn test_not_register_twice_reactive_entity_instance() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let reactive_entity_instance_manager = application.get_reactive_entity_instance_manager();
-    let graph_database = application.get_graph_database();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let reactive_entity_instance_manager = runtime.get_reactive_entity_instance_manager();
+    let graph_database = runtime.get_graph_database();
     let datastore = graph_database.get_datastore();
 
     let namespace = r_string();

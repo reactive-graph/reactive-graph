@@ -1,18 +1,18 @@
 use std::env;
 
+use crate::get_runtime;
 use crate::model::ComponentTypeId;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
 use crate::model::TypeContainer;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
 
 #[test]
 fn test_register_entity_type() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
 
     let namespace = r_string();
     let type_name = r_string();
@@ -31,8 +31,8 @@ fn test_register_entity_type() {
 
 #[test]
 fn test_create_and_delete_entity_type() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
 
     let namespace = r_string();
     let type_name = r_string();
@@ -54,8 +54,8 @@ fn test_create_and_delete_entity_type() {
 
 #[test]
 fn test_get_entity_types() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
     let namespace = r_string();
     let type_name = r_string();
     let description = r_string();
@@ -71,9 +71,9 @@ fn test_get_entity_types() {
 
 #[test]
 fn test_register_entity_type_has_component() {
-    let application = init_application();
-    let component_manager = application.get_component_manager();
-    let entity_type_manager = application.get_entity_type_manager();
+    let runtime = get_runtime();
+    let component_manager = runtime.get_component_manager();
+    let entity_type_manager = runtime.get_entity_type_manager();
 
     let namespace = r_string();
     let component_name = r_string();
@@ -96,8 +96,8 @@ fn test_register_entity_type_has_component() {
 
 #[test]
 fn test_register_entity_type_has_property() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
 
     let property_name = String::from("x");
     let property_type = PropertyType::string(&property_name);
@@ -113,8 +113,8 @@ fn test_register_entity_type_has_property() {
 
 #[test]
 fn test_export_import_entity_type() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
 
     let namespace = r_string();
     let type_name = r_string();

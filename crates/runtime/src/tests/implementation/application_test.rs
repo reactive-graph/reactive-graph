@@ -1,70 +1,42 @@
 use std::sync::Arc;
 use std::sync::RwLock;
-use std::thread;
 use std::time::Duration;
 
+use crate::get_rw_runtime;
 use futures_await_test::async_test;
 
-use crate::application::Application;
-use crate::tests::utils::application::rw_application;
+use crate::runtime::Runtime;
 
-// #[test]
 #[async_test]
 async fn test_dependency_injection_multi_threaded() {
-    let application = rw_application();
-    let _rw_app = application.read().unwrap();
+    let runtime = get_rw_runtime();
+    let _rw_app = runtime.read().unwrap();
 
-    // assert!(!component_manager.has(String::from("named")));
-    //
-    // assert!(!rw_app.is_running());
-
-    let r_application = application.clone();
+    let r_application = runtime.clone();
     let _runner = async move {
-        thread::sleep(Duration::from_millis(100));
+        tokio::time::sleep(Duration::from_millis(100)).await;
         r_application.read().unwrap().init();
         // "run" is the only writer
         r_application.write().unwrap().run().await;
     };
-    // run(application.clone());
-
-    // let w_application = ;
-    // let waiter = wait(application.clone());
-
-    // let handle = thread::spawn(async move || {
-    //     t_application.read().unwrap().init();
-    //     // "run" is the only writer
-    //     t_application.write().unwrap().run().await;
-    //     // run(t_application);
-    // });
-
-    // assert!(!rw_app.is_running());
-    //
-    // let runner = async_std::task::spawn(runner);
-    // let control = async_std::task::spawn(waiter);
-    // async_std::task::block_on(control);
-    // async_std::task::block_on(runner);
-    // // futures::join!(runner, waiter);
-    //
-    // // handle.join().unwrap();
-    // assert!(!rw_app.is_running());
 }
 
-async fn run(application: Arc<RwLock<dyn Application>>) {
-    thread::sleep(Duration::from_millis(100));
-    application.read().unwrap().init();
+async fn run(runtime: Arc<RwLock<dyn Runtime>>) {
+    tokio::time::sleep(Duration::from_millis(100)).await;
+    runtime.read().unwrap().init();
     // "run" is the only writer
-    application.write().unwrap().run().await;
+    runtime.write().unwrap().run().await;
 }
 
-async fn wait(application: Arc<RwLock<dyn Application>>) {
+async fn wait(runtime: Arc<RwLock<dyn Runtime>>) {
     assert!(false);
-    let application = application.read().unwrap();
-    let component_manager = application.get_component_manager();
+    let rt = runtime.read().unwrap();
+    let component_manager = rt.get_component_manager();
     assert!(!component_manager.has_by_type("core", "named"));
-    assert!(!application.is_running());
-    thread::sleep(Duration::from_millis(200));
+    assert!(!rt.is_running());
+    tokio::time::sleep(Duration::from_millis(200)).await;
     assert!(component_manager.has_by_type("core", "named"));
-    assert!(application.is_running());
-    application.stop();
-    assert!(!application.is_running());
+    assert!(rt.is_running());
+    rt.stop();
+    assert!(!rt.is_running());
 }

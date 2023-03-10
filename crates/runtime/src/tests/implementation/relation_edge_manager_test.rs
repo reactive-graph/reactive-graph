@@ -5,22 +5,22 @@ use serde_json::json;
 
 use crate::builder::EntityTypeBuilder;
 use crate::builder::RelationTypeBuilder;
+use crate::get_runtime;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
 use crate::model::RelationInstanceTypeId;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinitionGetter;
-use crate::tests::utils::application::init_application;
 use crate::tests::utils::r_string;
 
 #[test]
 fn test_relation_edge_manager() {
-    let application = init_application();
-    let entity_type_manager = application.get_entity_type_manager();
-    let relation_type_manager = application.get_relation_type_manager();
-    let entity_vertex_manager = application.get_entity_vertex_manager();
-    let relation_edge_manager = application.get_relation_edge_manager();
+    let runtime = get_runtime();
+    let entity_type_manager = runtime.get_entity_type_manager();
+    let relation_type_manager = runtime.get_relation_type_manager();
+    let entity_vertex_manager = runtime.get_entity_vertex_manager();
+    let relation_edge_manager = runtime.get_relation_edge_manager();
 
     let namespace = r_string();
     let outbound_type_name = r_string();

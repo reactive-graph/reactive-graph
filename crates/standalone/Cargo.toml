@@ -1,0 +1,17 @@
+[package]
+name = "inexor-rgf-rt-standalone"
+description = "Inexor - Reactive Graph Flow - Runtime - Standalone"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+actix-web = { workspace = true, features = ["rustls"] }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread"] }
+
+inexor-rgf-rt = { path = "../runtime" }
+
+[[bin]]
+name = "inexor-rgf-rt-standalone"

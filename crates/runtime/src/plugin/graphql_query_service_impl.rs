@@ -20,8 +20,4 @@ impl GraphQLQueryService for GraphQLQueryServiceImpl {
     async fn query(&self, request: String) -> Result<String, Error> {
         self.graphql_query_service.query(request).await
     }
-
-    fn query_thread(&self, request: String) {
-        self.graphql_query_service.query_thread(request)
-    }
 }

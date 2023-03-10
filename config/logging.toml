@@ -44,35 +44,65 @@ level = "debug"
 appenders = [ "stdout", "file-application" ]
 
 # How to configure the loggers: https://docs.rs/log4rs/1.0.0/log4rs/
-[loggers."h2::codec"]
+
+
+
+### Runtime
+
+[loggers."inexor_rgf_rt::implementation::component_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::component_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::entity_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::entity_type_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::relation_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::relation_type_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::flow_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::flow_type_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::entity_vertex_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::entity_vertex_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::entity_behaviour_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::entity_behaviour_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::relation_behaviour_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::relation_behaviour_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::reactive_flow_instance_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::reactive_flow_instance_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::web_resource_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_application::implementation::web_resource_manager_impl"]
+[loggers."inexor_rgf_rt::implementation::plugin_resolver_impl"]
+level = "debug"
+
+[loggers."inexor_rgf_rt::implementation::plugin_container_manager_impl"]
 level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_component_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::relation_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::relation_component_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::dynamic_graph_schema_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::plugin::container"]
+level = "info"
+
+
+
+### Plugins
 
 [loggers."inexor_rgf_plugin_mqtt::provider::component_provider"]
 level = "debug"
@@ -95,11 +125,6 @@ appenders = [ "file-plugin-mqtt" ]
 additive = false
 
 [loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
-level = "debug"
-appenders = [ "file-plugin-mqtt" ]
-additive = false
-
-[loggers."rumqttc::state"]
 level = "debug"
 appenders = [ "file-plugin-mqtt" ]
 additive = false
@@ -164,12 +189,6 @@ level = "info"
 [loggers."inexor_rgf_plugin_http::providers"]
 level = "info"
 
-[loggers."salsa"]
-level = "info"
-
-[loggers."salsa::derived::slot"]
-level = "warn"
-
 [loggers."inexor_rgf_core_reactive"]
 level = "trace"
 
@@ -197,29 +216,23 @@ level = "info"
 [loggers."inexor_rgf_core_frp"]
 level = "trace"
 
-[loggers."inexor_rgf_application::plugin::container"]
-level = "info"
-
-[loggers."inexor_rgf_application::implementation::plugin_resolver_impl"]
-level = "debug"
-
-[loggers."inexor_rgf_application::implementation::plugin_container_manager_impl"]
-level = "info"
-
-[loggers."inexor_rgf_application::implementation::entity_behaviour_registry_impl"]
-level = "info"
-
-[loggers."inexor_rgf_application::implementation::entity_component_behaviour_registry_impl"]
-level = "info"
-
-[loggers."inexor_rgf_application::implementation::relation_behaviour_registry_impl"]
-level = "info"
-
-[loggers."inexor_rgf_application::implementation::relation_component_behaviour_registry_impl"]
-level = "info"
-
-[loggers."inexor_rgf_application::implementation::dynamic_graph_schema_manager_impl"]
-level = "info"
-
 [loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
 level = "trace"
+
+
+
+### Libraries
+
+[loggers."h2::codec"]
+level = "info"
+
+[loggers."salsa"]
+level = "info"
+
+[loggers."salsa::derived::slot"]
+level = "warn"
+
+[loggers."rumqttc::state"]
+level = "debug"
+appenders = [ "file-plugin-mqtt" ]
+additive = false
