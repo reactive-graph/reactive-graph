@@ -1,5 +1,4 @@
 use crate::get_runtime;
-use log::info;
 use std::env;
 use std::time::Duration;
 
