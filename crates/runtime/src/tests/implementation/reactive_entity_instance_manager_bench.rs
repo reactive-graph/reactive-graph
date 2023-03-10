@@ -34,7 +34,8 @@ fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
 
     bencher.iter(move || {
         reactive_entity_instance_manager
-            .register_reactive_instance(ReactiveEntityInstanceBuilder::new(&ty).property(&property_name, property_value.clone()).build());
+            .register_reactive_instance(ReactiveEntityInstanceBuilder::new(&ty).property(&property_name, property_value.clone()).build())
+            .expect("Failed to register reactive instance");
     })
 }
 
@@ -58,7 +59,9 @@ fn get_by_id_benchmark(bencher: &mut Bencher) -> impl Termination {
 
     let reactive_entity_instance = ReactiveEntityInstanceBuilder::new(&ty).property(&property_name, property_value).build();
     let id = reactive_entity_instance.id;
-    reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance);
+    reactive_entity_instance_manager
+        .register_reactive_instance(reactive_entity_instance)
+        .expect("Failed to register reactive instance");
 
     bencher.iter(|| reactive_entity_instance_manager.get(id))
 }
@@ -89,7 +92,9 @@ fn get_by_label_benchmark(bencher: &mut Bencher) -> impl Termination {
         .property(&property_name, property_value)
         .property("label", json!(label.clone()))
         .build();
-    reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance);
+    reactive_entity_instance_manager
+        .register_reactive_instance(reactive_entity_instance)
+        .expect("Failed to register reactive instance");
 
     bencher.iter(|| reactive_entity_instance_manager.get_by_label(&label))
 }

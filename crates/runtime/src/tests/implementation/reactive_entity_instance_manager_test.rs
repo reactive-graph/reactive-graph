@@ -31,7 +31,9 @@ fn test_register_reactive_entity_instance() {
     let reactive_entity_instance = ReactiveEntityInstanceBuilder::new_from_type(&namespace, &type_name)
         .property(&property_name, property_value.clone())
         .build();
-    reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
+    reactive_entity_instance_manager
+        .register_reactive_instance(reactive_entity_instance.clone())
+        .expect("failed to register reactive instance");
     assert_eq!(1, datastore.get_vertex_count().unwrap());
     assert!(reactive_entity_instance_manager.has(reactive_entity_instance.id));
 
@@ -68,7 +70,9 @@ fn test_unregister_reactive_entity_instance() {
     let reactive_entity_instance = ReactiveEntityInstanceBuilder::new_from_type(&namespace, &type_name)
         .property(&property_name, property_value.clone())
         .build();
-    reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
+    reactive_entity_instance_manager
+        .register_reactive_instance(reactive_entity_instance.clone())
+        .expect("Failed to register reactive instance");
     assert_eq!(1, datastore.get_vertex_count().unwrap());
     assert!(reactive_entity_instance_manager.has(reactive_entity_instance.id));
     reactive_entity_instance_manager.unregister_reactive_instance(reactive_entity_instance.id);
@@ -100,9 +104,13 @@ fn test_not_register_twice_reactive_entity_instance() {
         .property(&property_name, property_value.clone())
         .build();
     assert_eq!(0, datastore.get_vertex_count().unwrap());
-    reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
+    reactive_entity_instance_manager
+        .register_reactive_instance(reactive_entity_instance.clone())
+        .expect("Failed to register reactive instance");
     assert_eq!(1, datastore.get_vertex_count().unwrap());
-    reactive_entity_instance_manager.register_reactive_instance(reactive_entity_instance.clone());
+    reactive_entity_instance_manager
+        .register_reactive_instance(reactive_entity_instance.clone())
+        .expect("Failed to register reactive instance");
     assert_eq!(1, datastore.get_vertex_count().unwrap());
 }
 
