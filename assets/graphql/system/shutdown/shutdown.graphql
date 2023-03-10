@@ -1,0 +1,17 @@
+mutation ShutdownRuntime {
+  instances {
+    entities {
+      update(
+        label: "/org/inexor/system/shutdown"
+        properties: [
+          {
+            name: "shutdown"
+            value: 2
+          }
+        ]
+      ) {
+        id
+      }
+    }
+  }
+}
