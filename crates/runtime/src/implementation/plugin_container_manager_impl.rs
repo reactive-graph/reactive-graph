@@ -596,7 +596,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn stop_all(&self) {
         for id in self.get_plugins() {
             // TODO
-            self.stop(&id);
+            let _ = self.stop(&id);
         }
     }
 
