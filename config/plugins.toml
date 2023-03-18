@@ -1,0 +1,6 @@
+disabled = false
+
+disabled_plugins = [
+#    "inexor-rgf-plugin-file",
+#    "inexor-rgf-plugin-graphql-schema-visualization"
+]
