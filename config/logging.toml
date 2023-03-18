@@ -77,9 +77,12 @@ level = "info"
 level = "info"
 
 [loggers."inexor_rgf_rt::implementation::plugin_resolver_impl"]
-level = "debug"
+level = "info"
 
 [loggers."inexor_rgf_rt::implementation::plugin_container_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::plugin_repository_manager_impl"]
 level = "info"
 
 [loggers."inexor_rgf_rt::implementation::entity_behaviour_registry_impl"]
@@ -104,44 +107,16 @@ level = "info"
 
 ### Plugins
 
-[loggers."inexor_rgf_plugin_mqtt::provider::component_provider"]
-level = "debug"
-appenders = [ "file-plugin-mqtt" ]
-additive = false
-
-[loggers."inexor_rgf_plugin_mqtt::provider::entity_type_provider"]
-level = "debug"
-appenders = [ "file-plugin-mqtt" ]
-additive = false
-
-[loggers."inexor_rgf_plugin_mqtt::provider::relation_type_provider"]
-level = "debug"
-appenders = [ "file-plugin-mqtt" ]
-additive = false
-
-[loggers."inexor_rgf_plugin_mqtt::behaviour::relation::relation_behaviour_provider"]
-level = "debug"
-appenders = [ "file-plugin-mqtt" ]
-additive = false
-
-[loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
-level = "debug"
-appenders = [ "file-plugin-mqtt" ]
-additive = false
-
 [loggers."inexor_rgf_plugin_arithmetic::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_base::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_taxonomy::providers"]
+[loggers."inexor_rgf_plugin_binary::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_metadata::providers"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_value::providers"]
+[loggers."inexor_rgf_plugin_color::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_comparison::providers"]
@@ -150,13 +125,52 @@ level = "info"
 [loggers."inexor_rgf_plugin_config::providers"]
 level = "info"
 
+[loggers."inexor_rgf_plugin_connector"]
+level = "trace"
+
 [loggers."inexor_rgf_plugin_connector::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_date_time"]
+level = "trace"
+
+[loggers."inexor_rgf_plugin_date_time::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
+level = "trace"
+
+[loggers."inexor_rgf_plugin_file::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_flow::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_git::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_http::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_input_device::provider"]
 level = "info"
 
+[loggers."inexor_rgf_plugin_json::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_logical"]
+level = "trace"
+
 [loggers."inexor_rgf_plugin_logical::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_metadata::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_mqtt::plugin"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_mqtt::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_numeric::plugin"]
@@ -165,59 +179,35 @@ level = "info"
 [loggers."inexor_rgf_plugin_numeric::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_system_environment::plugin"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_system_environment::provider"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_string::providers"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_file::providers"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_json::providers"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_binary::providers"]
-level = "info"
-
 [loggers."inexor_rgf_plugin_random::providers"]
-level = "info"
-
-[loggers."inexor_rgf_plugin_http::providers"]
-level = "info"
-
-[loggers."inexor_rgf_core_reactive"]
-level = "trace"
-
-[loggers."inexor_rgf_plugin_value"]
-level = "trace"
-
-[loggers."inexor_rgf_plugin_connector"]
-level = "trace"
-
-[loggers."inexor_rgf_plugin_logical"]
-level = "trace"
-
-[loggers."inexor_rgf_plugin_trigger"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_result"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_date_time"]
-level = "info"
-
 [loggers."inexor_rgf_plugin_state"]
 level = "info"
 
-[loggers."inexor_rgf_core_frp"]
+[loggers."inexor_rgf_plugin_string::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_system_environment::plugin"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_system_environment::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_taxonomy::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_trigger"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_value"]
 level = "trace"
 
-[loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
-level = "trace"
+[loggers."inexor_rgf_plugin_value::providers"]
+level = "info"
 
 
 
