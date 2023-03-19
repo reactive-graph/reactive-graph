@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use crate::ComponentManager;
+use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
 use crate::EntityComponentBehaviourRegistry;
 use crate::EntityInstanceManager;
@@ -65,6 +66,9 @@ pub trait PluginContext: Send + Sync {
     fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry>;
 
     // System Services
+
+    /// Returns the config manager.
+    fn get_config_manager(&self) -> Arc<dyn ConfigManager>;
 
     /// Returns the GraphQL query service.
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService>;

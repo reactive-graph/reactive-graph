@@ -8,6 +8,7 @@ use log::trace;
 use log::warn;
 
 use crate::api::ComponentManager;
+use crate::api::ConfigManager;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::Lifecycle;
@@ -52,6 +53,8 @@ pub struct PluginResolverImpl {
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
 
     plugin_context_factory: Wrc<dyn PluginContextFactory>,
+
+    config_manager: Wrc<dyn ConfigManager>,
 
     /// The mode.
     pub mode: PluginResolverModeState,

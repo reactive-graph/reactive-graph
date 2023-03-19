@@ -4,6 +4,7 @@
 
 pub use component_manager::*;
 pub use component_provider::*;
+pub use config_manager::*;
 pub use embedded_asset_provider::*;
 pub use entity_behaviour_registry::*;
 pub use entity_component_behaviour_registry::*;
@@ -36,6 +37,7 @@ use inexor_rgf_core_reactive as reactive;
 
 pub mod component_manager;
 pub mod component_provider;
+pub mod config_manager;
 pub mod embedded_asset_provider;
 pub mod entity_behaviour_registry;
 pub mod entity_component_behaviour_registry;

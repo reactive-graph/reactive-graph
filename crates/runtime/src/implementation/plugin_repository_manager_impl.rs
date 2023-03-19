@@ -19,6 +19,7 @@ use notify::RecursiveMode;
 use notify::Watcher;
 use uuid::Uuid;
 
+use crate::api::ConfigManager;
 use crate::api::Lifecycle;
 use crate::api::PluginContainerManager;
 use crate::api::PluginRepositoryManager;
@@ -45,6 +46,8 @@ pub struct PluginRepositoryManagerImpl {
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
 
     plugin_resolver: Wrc<dyn PluginResolver>,
+
+    config_manager: Wrc<dyn ConfigManager>,
 
     hot_deploy_watcher: HotDeployWatcher,
 }

@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use crate::plugins::ComponentManager;
+use crate::plugins::ConfigManager;
 use crate::plugins::EntityBehaviourRegistry;
 use crate::plugins::EntityComponentBehaviourRegistry;
 use crate::plugins::EntityInstanceManager;
@@ -27,6 +28,7 @@ pub struct PluginContextImpl {
     entity_component_behaviour_registry: Arc<dyn EntityComponentBehaviourRegistry>,
     relation_behaviour_registry: Arc<dyn RelationBehaviourRegistry>,
     relation_component_behaviour_registry: Arc<dyn RelationComponentBehaviourRegistry>,
+    config_manager: Arc<dyn ConfigManager>,
     graphql_query_service: Arc<dyn GraphQLQueryService>,
     system_event_manager: Arc<dyn SystemEventManager>,
 }
@@ -44,6 +46,7 @@ impl PluginContextImpl {
         entity_component_behaviour_registry: Arc<dyn EntityComponentBehaviourRegistry>,
         relation_behaviour_registry: Arc<dyn RelationBehaviourRegistry>,
         relation_component_behaviour_registry: Arc<dyn RelationComponentBehaviourRegistry>,
+        config_manager: Arc<dyn ConfigManager>,
         graphql_query_service: Arc<dyn GraphQLQueryService>,
         system_event_manager: Arc<dyn SystemEventManager>,
     ) -> Self {
@@ -59,6 +62,7 @@ impl PluginContextImpl {
             entity_component_behaviour_registry,
             relation_behaviour_registry,
             relation_component_behaviour_registry,
+            config_manager,
             graphql_query_service,
             system_event_manager,
         }
@@ -108,6 +112,10 @@ impl PluginContext for PluginContextImpl {
 
     fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry> {
         self.relation_component_behaviour_registry.clone()
+    }
+
+    fn get_config_manager(&self) -> Arc<dyn ConfigManager> {
+        self.config_manager.clone()
     }
 
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {

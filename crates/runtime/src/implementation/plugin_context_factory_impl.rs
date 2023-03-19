@@ -24,6 +24,7 @@ use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::di::*;
 use crate::plugin::ComponentManagerImpl;
+use crate::plugin::ConfigManagerImpl;
 use crate::plugin::EntityBehaviourRegistryImpl;
 use crate::plugin::EntityComponentBehaviourRegistryImpl;
 use crate::plugin::EntityInstanceManagerImpl;
@@ -69,6 +70,7 @@ pub struct PluginContextFactoryImpl {
     relation_behaviour_registry: Wrc<dyn RelationBehaviourRegistry>,
     relation_component_behaviour_registry: Wrc<dyn RelationComponentBehaviourRegistry>,
     // System Services
+    config_manager: Wrc<dyn ConfigManager>,
     graphql_query_service: Wrc<dyn GraphQLQueryService>,
     system_event_manager: Wrc<dyn SystemEventManager>,
 
@@ -121,6 +123,7 @@ impl PluginContextFactory for PluginContextFactoryImpl {
             self.reactive_relation_instance_manager.clone(),
         );
         // System Services
+        let config_manager = ConfigManagerImpl::new(self.config_manager.clone());
         let graphql_query_service = GraphQLQueryServiceImpl::new(self.graphql_query_service.clone());
         let system_event_manager = SystemEventManagerImpl::new(self.system_event_manager.clone());
         let plugin_context = PluginContextImpl::new(
@@ -135,6 +138,7 @@ impl PluginContextFactory for PluginContextFactoryImpl {
             Arc::new(entity_component_behaviour_registry),
             Arc::new(relation_behaviour_registry),
             Arc::new(relation_component_behaviour_registry),
+            Arc::new(config_manager),
             Arc::new(graphql_query_service),
             Arc::new(system_event_manager),
         );

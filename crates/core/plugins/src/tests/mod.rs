@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use crate::ComponentManager;
+use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
 use crate::EntityComponentBehaviourRegistry;
 use crate::EntityInstanceManager;
@@ -63,6 +64,10 @@ impl PluginContext for TestPluginContext {
     }
 
     fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry> {
+        panic!();
+    }
+
+    fn get_config_manager(&self) -> Arc<dyn ConfigManager> {
         panic!();
     }
 

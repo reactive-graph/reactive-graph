@@ -46,6 +46,8 @@ pub trait Runtime: Send + Sync {
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
+    fn get_config_manager(&self) -> Arc<dyn ConfigManager>;
+
     fn get_dynamic_graph_query_service(&self) -> Arc<dyn DynamicGraphQueryService>;
 
     fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager>;
@@ -114,6 +116,7 @@ pub struct RuntimeImpl {
     running: RunningState,
 
     component_manager: Wrc<dyn ComponentManager>,
+    config_manager: Wrc<dyn ConfigManager>,
     dynamic_graph_query_service: Wrc<dyn DynamicGraphQueryService>,
     dynamic_graph_schema_manager: Wrc<dyn DynamicGraphSchemaManager>,
     event_manager: Wrc<dyn SystemEventManager>,
@@ -152,7 +155,11 @@ pub struct RuntimeImpl {
 #[async_trait]
 #[provides]
 impl Runtime for RuntimeImpl {
-    fn init(&self) {
+    async fn config(&self) {
+        self.config_manager.init().await;
+    }
+
+    async fn init(&self) {
         // Order matters
         self.component_manager.init();
         self.entity_type_manager.init();
@@ -301,6 +308,10 @@ impl Runtime for RuntimeImpl {
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager> {
         self.component_manager.clone()
+    }
+
+    fn get_config_manager(&self) -> Arc<dyn ConfigManager> {
+        self.config_manager.clone()
     }
 
     fn get_dynamic_graph_query_service(&self) -> Arc<dyn DynamicGraphQueryService> {

@@ -1,5 +1,6 @@
 pub mod component_manager_impl;
 pub mod config;
+pub mod config_manager_impl;
 pub mod container;
 pub mod context;
 pub mod entity_behaviour_registry_impl;
@@ -21,6 +22,7 @@ pub mod transition;
 
 pub use component_manager_impl::ComponentManagerImpl;
 pub use config::PluginsConfig;
+pub use config_manager_impl::ConfigManagerImpl;
 pub use container::PluginContainer;
 pub use context::PluginContextImpl;
 pub use entity_behaviour_registry_impl::EntityBehaviourRegistryImpl;

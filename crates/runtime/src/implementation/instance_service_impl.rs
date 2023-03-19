@@ -1,5 +1,6 @@
 use async_trait::async_trait;
 
+use crate::api::ConfigManager;
 use crate::api::InstanceService;
 use crate::api::Lifecycle;
 use crate::di::*;
@@ -13,20 +14,22 @@ pub static GIT_BRANCH: &str = env!("GIT_BRANCH");
 pub static GIT_COMMIT: &str = env!("GIT_COMMIT");
 
 #[component]
-pub struct InstanceServiceImpl {}
+pub struct InstanceServiceImpl {
+    config_manager: Wrc<dyn ConfigManager>,
+}
 
 #[async_trait]
 #[provides]
 impl InstanceService for InstanceServiceImpl {
     fn get_instance_info(&self) -> InstanceInfo {
-        let instance_config = get_instance_config();
-        let graphql_server_config = get_graphql_server_config();
+        let instance_config = self.config_manager.get_instance_config();
+        let graphql_server_config = self.config_manager.get_graphql_server_config();
         InstanceInfo {
             name: instance_config.name,
             description: instance_config.description,
-            hostname: graphql_server_config.hostname,
-            port: graphql_server_config.port,
-            secure: graphql_server_config.secure.unwrap_or(false),
+            hostname: graphql_server_config.hostname(),
+            port: graphql_server_config.port(),
+            secure: graphql_server_config.is_secure(),
             version: String::from(VERSION),
             build_date: String::from(BUILD_DATE),
             git_branch: String::from(GIT_BRANCH),
