@@ -2,6 +2,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct InstanceInfo {
     /// The name of the instance.
     pub name: String,
@@ -13,7 +14,7 @@ pub struct InstanceInfo {
     pub hostname: String,
 
     /// The port.
-    pub port: i32,
+    pub port: u16,
 
     /// Secure endpoint.
     pub secure: bool,
