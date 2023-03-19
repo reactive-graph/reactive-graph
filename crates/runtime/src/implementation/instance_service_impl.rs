@@ -40,4 +40,5 @@ impl InstanceService for InstanceServiceImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for InstanceServiceImpl {}

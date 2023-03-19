@@ -366,7 +366,7 @@ impl PluginContainer {
     }
 
     /// Calls the activate method of the plugin.
-    pub fn activate(&mut self) -> PluginTransitionResult {
+    pub async fn activate(&mut self) -> PluginTransitionResult {
         if self.state != PluginState::Starting(PluginStartingState::Activating)
             && self.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating))
         {
@@ -391,7 +391,7 @@ impl PluginContainer {
     }
 
     /// Calls the deactivate method of the plugin
-    pub fn deactivate(&mut self) -> PluginTransitionResult {
+    pub async fn deactivate(&mut self) -> PluginTransitionResult {
         if self.state != PluginState::Stopping(PluginStoppingState::Deactivating)
             && self.state != PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Deactivating))
         {

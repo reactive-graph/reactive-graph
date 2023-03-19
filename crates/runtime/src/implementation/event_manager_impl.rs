@@ -277,12 +277,13 @@ impl SystemEventManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for SystemEventManagerImpl {
-    fn post_init(&self) {
+    async fn post_init(&self) {
         self.create_system_event_instances();
     }
 
-    fn pre_shutdown(&self) {
+    async fn pre_shutdown(&self) {
         self.delete_system_event_instances();
     }
 }

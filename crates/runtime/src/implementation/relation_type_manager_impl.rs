@@ -421,8 +421,9 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for RelationTypeManagerImpl {
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // TODO: remove?
         self.relation_types.0.write().unwrap().clear();
     }

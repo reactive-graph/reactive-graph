@@ -370,12 +370,13 @@ impl ComponentManager for ComponentManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for ComponentManagerImpl {
-    fn init(&self) {
+    async fn init(&self) {
         self.create_base_components();
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // TODO: remove?
         self.components.0.write().unwrap().clear();
     }

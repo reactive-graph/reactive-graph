@@ -307,12 +307,13 @@ impl GraphQLServerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for GraphQLServerImpl {
-    fn init(&self) {}
+    async fn init(&self) {}
 
-    fn post_init(&self) {}
+    async fn post_init(&self) {}
 
-    fn pre_shutdown(&self) {}
+    async fn pre_shutdown(&self) {}
 
-    fn shutdown(&self) {}
+    async fn shutdown(&self) {}
 }

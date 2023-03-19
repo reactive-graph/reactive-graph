@@ -40,7 +40,7 @@ impl DynamicGraphQueryService for DynamicGraphQueryServiceImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for DynamicGraphQueryServiceImpl {
-    fn post_init(&self) {
-    }
+    async fn post_init(&self) {}
 }

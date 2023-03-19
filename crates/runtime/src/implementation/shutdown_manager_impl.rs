@@ -58,7 +58,7 @@ impl ShutdownManager for ShutdownManagerImpl {
 
 #[async_trait]
 impl Lifecycle for ShutdownManagerImpl {
-    fn init(&self) {
+    async fn init(&self) {
         let entity_type = EntityTypeBuilder::new(&ENTITY_TYPE_SHUTDOWN.clone())
             .property(&SHUTDOWN.property_name(), DataType::Bool)
             .property(PROPERTY_TRIGGER, DataType::Bool)
@@ -109,7 +109,7 @@ impl Lifecycle for ShutdownManagerImpl {
         );
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // Disconnect reactive streams of the shutdown handler
         if let Some(shutdown_handler) = self.reactive_entity_instance_manager.get(UUID_SHUTDOWN) {
             shutdown_handler.remove_observer(PROPERTY_TRIGGER, UUID_SHUTDOWN_TRIGGER.as_u128());

@@ -433,9 +433,9 @@ impl PluginContainerManager for PluginContainerManagerImpl {
         }
     }
 
-    fn activate(&self, id: &Uuid) -> PluginTransitionResult {
+    async fn activate(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
-            Some(mut plugin_container) => plugin_container.activate(),
+            Some(mut plugin_container) => plugin_container.activate().await,
             None => NoChange,
         }
     }
@@ -459,9 +459,9 @@ impl PluginContainerManager for PluginContainerManagerImpl {
         })
     }
 
-    fn deactivate(&self, id: &Uuid) -> PluginTransitionResult {
+    async fn deactivate(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
-            Some(mut plugin_container) => plugin_container.deactivate(),
+            Some(mut plugin_container) => plugin_container.deactivate().await,
             None => NoChange,
         }
     }

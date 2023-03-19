@@ -6,11 +6,15 @@ use crate::plugin::PluginTransitionResult;
 
 #[async_trait]
 pub trait PluginResolver: Send + Sync + Lifecycle {
-    fn resolve_until_idle(&self);
+    /// Resolves plugins until no more resolve action is possible.
+    async fn resolve_until_idle(&self);
 
-    fn resolve(&self) -> PluginTransitionResult;
+    /// Runs the next resolve action.
+    async fn resolve(&self) -> PluginTransitionResult;
 
+    /// Sets the resolve mode.
     fn set_mode(&self, mode: PluginResolverMode);
 
+    /// Returns the resolve mode.
     fn get_mode(&self) -> PluginResolverMode;
 }

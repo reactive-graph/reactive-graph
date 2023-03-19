@@ -628,8 +628,9 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for ReactiveEntityInstanceManagerImpl {
-    fn post_init(&self) {
+    async fn post_init(&self) {
         for event_instance in self.event_manager.get_system_event_instances() {
             if let Err(e) = self.register_reactive_instance(event_instance) {
                 error!("Failed to register system event instance: {:?}", e);
@@ -648,7 +649,7 @@ impl Lifecycle for ReactiveEntityInstanceManagerImpl {
         self.handle_property_removed_events();
     }
 
-    fn pre_shutdown(&self) {
+    async fn pre_shutdown(&self) {
         self.running.0.store(false, Ordering::Relaxed);
 
         self.subscribe_system_event(SystemEventTypes::EntityTypePropertyRemoved, HANDLE_ID_ENTITY_TYPE_PROPERTY_REMOVED);

@@ -30,13 +30,13 @@ pub trait Runtime: Send + Sync {
     async fn config(&self);
 
     //  + Lifecycle
-    fn init(&self);
+    async fn init(&self);
 
-    fn post_init(&self);
+    async fn post_init(&self);
 
-    fn pre_shutdown(&self);
+    async fn pre_shutdown(&self);
 
-    fn shutdown(&self);
+    async fn shutdown(&self);
 
     async fn run(&self);
 
@@ -163,82 +163,82 @@ impl Runtime for RuntimeImpl {
 
     async fn init(&self) {
         // Order matters
-        self.component_manager.init();
-        self.entity_type_manager.init();
-        self.relation_type_manager.init();
-        self.plugin_context_factory.init();
-        self.plugin_repository_manager.init();
-        self.plugin_resolver.init();
-        self.reactive_flow_instance_manager.init();
-        self.web_resource_manager.init();
-        self.graphql_schema_manager.init();
-        self.graphql_query_service.init();
-        self.graphql_server.init();
-        self.shutdown_manager.init();
-        self.event_manager.init();
-        self.reactive_entity_instance_manager.init();
-        self.dynamic_graph_schema_manager.init();
-        self.dynamic_graph_query_service.init();
+        self.component_manager.init().await;
+        self.entity_type_manager.init().await;
+        self.relation_type_manager.init().await;
+        self.plugin_context_factory.init().await;
+        self.plugin_repository_manager.init().await;
+        self.plugin_resolver.init().await;
+        self.reactive_flow_instance_manager.init().await;
+        self.web_resource_manager.init().await;
+        self.graphql_schema_manager.init().await;
+        self.graphql_query_service.init().await;
+        self.graphql_server.init().await;
+        self.shutdown_manager.init().await;
+        self.event_manager.init().await;
+        self.reactive_entity_instance_manager.init().await;
+        self.dynamic_graph_schema_manager.init().await;
+        self.dynamic_graph_query_service.init().await;
     }
 
-    fn post_init(&self) {
+    async fn post_init(&self) {
         // Order matters
-        self.component_manager.post_init();
-        self.entity_type_manager.post_init();
-        self.relation_type_manager.post_init();
-        self.plugin_context_factory.post_init();
-        self.plugin_repository_manager.post_init();
-        self.plugin_resolver.post_init();
-        self.reactive_flow_instance_manager.post_init();
-        self.web_resource_manager.post_init();
-        self.graphql_schema_manager.post_init();
-        self.graphql_query_service.post_init();
-        self.graphql_server.post_init();
-        self.shutdown_manager.post_init();
-        self.event_manager.post_init();
-        self.reactive_entity_instance_manager.post_init(); // after event_manager!
-        self.dynamic_graph_schema_manager.post_init();
-        self.dynamic_graph_query_service.post_init();
+        self.component_manager.post_init().await;
+        self.entity_type_manager.post_init().await;
+        self.relation_type_manager.post_init().await;
+        self.plugin_context_factory.post_init().await;
+        self.plugin_repository_manager.post_init().await;
+        self.plugin_resolver.post_init().await;
+        self.reactive_flow_instance_manager.post_init().await;
+        self.web_resource_manager.post_init().await;
+        self.graphql_schema_manager.post_init().await;
+        self.graphql_query_service.post_init().await;
+        self.graphql_server.post_init().await;
+        self.shutdown_manager.post_init().await;
+        self.event_manager.post_init().await;
+        self.reactive_entity_instance_manager.post_init().await; // after event_manager!
+        self.dynamic_graph_schema_manager.post_init().await;
+        self.dynamic_graph_query_service.post_init().await;
     }
 
-    fn pre_shutdown(&self) {
+    async fn pre_shutdown(&self) {
         // Reverse order matters
-        self.dynamic_graph_query_service.pre_shutdown();
-        self.dynamic_graph_schema_manager.pre_shutdown();
-        self.reactive_entity_instance_manager.pre_shutdown();
-        self.event_manager.pre_shutdown();
-        self.shutdown_manager.pre_shutdown();
-        self.graphql_server.pre_shutdown();
-        self.graphql_query_service.pre_shutdown();
-        self.graphql_schema_manager.pre_shutdown();
-        self.web_resource_manager.pre_shutdown();
-        self.reactive_flow_instance_manager.pre_shutdown();
-        self.plugin_resolver.pre_shutdown();
-        self.plugin_repository_manager.pre_shutdown();
-        self.plugin_context_factory.pre_shutdown();
-        self.relation_type_manager.pre_shutdown();
-        self.entity_type_manager.pre_shutdown();
-        self.component_manager.pre_shutdown();
+        self.dynamic_graph_query_service.pre_shutdown().await;
+        self.dynamic_graph_schema_manager.pre_shutdown().await;
+        self.reactive_entity_instance_manager.pre_shutdown().await;
+        self.event_manager.pre_shutdown().await;
+        self.shutdown_manager.pre_shutdown().await;
+        self.graphql_server.pre_shutdown().await;
+        self.graphql_query_service.pre_shutdown().await;
+        self.graphql_schema_manager.pre_shutdown().await;
+        self.web_resource_manager.pre_shutdown().await;
+        self.reactive_flow_instance_manager.pre_shutdown().await;
+        self.plugin_resolver.pre_shutdown().await;
+        self.plugin_repository_manager.pre_shutdown().await;
+        self.plugin_context_factory.pre_shutdown().await;
+        self.relation_type_manager.pre_shutdown().await;
+        self.entity_type_manager.pre_shutdown().await;
+        self.component_manager.pre_shutdown().await;
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // Reverse order matters
-        self.dynamic_graph_query_service.shutdown();
-        self.dynamic_graph_schema_manager.shutdown();
-        self.reactive_entity_instance_manager.shutdown();
-        self.event_manager.shutdown();
-        self.shutdown_manager.shutdown();
-        self.graphql_server.shutdown();
-        self.graphql_query_service.shutdown();
-        self.graphql_schema_manager.shutdown();
-        self.web_resource_manager.shutdown();
-        self.reactive_flow_instance_manager.shutdown();
-        self.plugin_resolver.shutdown();
-        self.plugin_repository_manager.shutdown();
-        self.plugin_context_factory.shutdown();
-        self.relation_type_manager.shutdown();
-        self.entity_type_manager.shutdown();
-        self.component_manager.shutdown();
+        self.dynamic_graph_query_service.shutdown().await;
+        self.dynamic_graph_schema_manager.shutdown().await;
+        self.reactive_entity_instance_manager.shutdown().await;
+        self.event_manager.shutdown().await;
+        self.shutdown_manager.shutdown().await;
+        self.graphql_server.shutdown().await;
+        self.graphql_query_service.shutdown().await;
+        self.graphql_schema_manager.shutdown().await;
+        self.web_resource_manager.shutdown().await;
+        self.reactive_flow_instance_manager.shutdown().await;
+        self.plugin_resolver.shutdown().await;
+        self.plugin_repository_manager.shutdown().await;
+        self.plugin_context_factory.shutdown().await;
+        self.relation_type_manager.shutdown().await;
+        self.entity_type_manager.shutdown().await;
+        self.component_manager.shutdown().await;
     }
 
     async fn run(&self) {

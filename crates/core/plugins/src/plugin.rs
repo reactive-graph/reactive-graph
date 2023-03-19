@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use async_trait::async_trait;
+
 use crate::plugin_context::PluginContextDeinitializationError;
 use crate::ComponentProvider;
 use crate::ComponentProviderError;
@@ -48,14 +50,15 @@ pub enum PluginDeactivationError {
     DeactivationFailed,
 }
 
+#[async_trait]
 pub trait Plugin: Send + Sync {
     /// Called on initialization of the plugin.
-    fn activate(&self) -> Result<(), PluginActivationError> {
+    async fn activate(&self) -> Result<(), PluginActivationError> {
         Ok(())
     }
 
     /// Called on deactivation of the plugin.
-    fn deactivate(&self) -> Result<(), PluginDeactivationError> {
+    async fn deactivate(&self) -> Result<(), PluginDeactivationError> {
         Ok(())
     }
 

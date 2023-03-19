@@ -32,7 +32,7 @@ impl GraphQLQueryService for GraphQLQueryServiceImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for GraphQLQueryServiceImpl {
-    fn post_init(&self) {
-    }
+    async fn post_init(&self) {}
 }

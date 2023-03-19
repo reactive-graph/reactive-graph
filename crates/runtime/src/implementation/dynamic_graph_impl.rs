@@ -1594,10 +1594,11 @@ fn is_query(operation: &&OperationDefinition) -> bool {
     operation.operation_ty().is_query()
 }
 
+#[async_trait]
 impl Lifecycle for DynamicGraphImpl {
-    fn init(&self) {}
+    async fn init(&self) {}
 
-    fn post_init(&self) {
+    async fn post_init(&self) {
         if let Some(event_type_system_changed) = self.event_manager.get_system_event_instance(SystemEventTypes::TypeSystemChanged) {
             let type_system_modified_state = self.type_system_modified_state.0.clone();
             event_type_system_changed.observe_with_handle(
@@ -1614,7 +1615,7 @@ impl Lifecycle for DynamicGraphImpl {
         }
     }
 
-    fn pre_shutdown(&self) {
+    async fn pre_shutdown(&self) {
         if let Some(event_type_system_changed) = self.event_manager.get_system_event_instance(SystemEventTypes::TypeSystemChanged) {
             event_type_system_changed.remove_observer(PROPERTY_EVENT, UUID_TYPE_SYSTEM_CHANGED_EVENT.as_u128());
             // event_type_system_changed
@@ -1628,7 +1629,7 @@ impl Lifecycle for DynamicGraphImpl {
         }
     }
 
-    fn shutdown(&self) {}
+    async fn shutdown(&self) {}
 }
 
 fn component_type_name(component: &crate::model::Component) -> String {

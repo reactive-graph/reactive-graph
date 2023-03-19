@@ -80,12 +80,12 @@ impl PluginContext for TestPluginContext {
     }
 }
 
-#[test]
-fn plugin_api_default_trait_impl_test() {
+#[tokio::test(flavor = "multi_thread")]
+async fn plugin_api_default_trait_impl_test() {
     let plugin = TestPlugin {};
     let context = TestPluginContext {};
-    assert_eq!(true, plugin.activate().is_ok());
-    assert_eq!(true, plugin.deactivate().is_ok());
+    assert_eq!(true, plugin.activate().await.is_ok());
+    assert_eq!(true, plugin.deactivate().await.is_ok());
     assert_eq!(true, plugin.set_context(Arc::new(context)).is_ok());
     assert_eq!(true, plugin.remove_context().is_ok());
     // Type providers

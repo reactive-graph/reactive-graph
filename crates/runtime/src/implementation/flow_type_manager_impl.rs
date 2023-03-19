@@ -285,8 +285,9 @@ impl FlowTypeManager for FlowTypeManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for FlowTypeManagerImpl {
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // TODO: remove?
         self.flow_types.0.write().unwrap().clear();
     }

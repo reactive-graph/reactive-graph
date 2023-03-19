@@ -658,8 +658,9 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for ReactiveRelationInstanceManagerImpl {
-    fn post_init(&self) {
+    async fn post_init(&self) {
         self.subscribe_system_event(SystemEventTypes::RelationTypeComponentAdded, HANDLE_ID_RELATION_TYPE_COMPONENT_ADDED);
         self.subscribe_system_event(SystemEventTypes::RelationTypeComponentRemoved, HANDLE_ID_RELATION_TYPE_COMPONENT_REMOVED);
         self.subscribe_system_event(SystemEventTypes::RelationTypePropertyAdded, HANDLE_ID_RELATION_TYPE_PROPERTY_ADDED);
@@ -671,7 +672,7 @@ impl Lifecycle for ReactiveRelationInstanceManagerImpl {
         self.handle_property_removed_events();
     }
 
-    fn pre_shutdown(&self) {
+    async fn pre_shutdown(&self) {
         self.running.0.store(false, Ordering::Relaxed);
 
         self.unsubscribe_system_event(SystemEventTypes::RelationTypePropertyRemoved, HANDLE_ID_RELATION_TYPE_PROPERTY_REMOVED);

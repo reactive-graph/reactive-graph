@@ -7,8 +7,6 @@ use serde_json::json;
 use serde_json::Value;
 
 use crate::api::ReactiveEntityInstanceManager;
-use crate::core_model::COMPONENT_ACTION;
-use crate::core_model::PROPERTY_TRIGGER;
 use crate::graphql::dynamic::data_type_error;
 use crate::graphql::dynamic::entity_id_field;
 use crate::graphql::dynamic::entity_inbound_relation_field;
@@ -29,6 +27,8 @@ use crate::graphql::dynamic::INTERFACE_ENTITY;
 use crate::model::Mutability::Immutable;
 use crate::model::Mutability::Mutable;
 use crate::model::*;
+use crate::model_runtime::COMPONENT_ACTION;
+use crate::model_runtime::PROPERTY_TRIGGER;
 
 pub fn get_entity_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for entity_type in context.entity_type_manager.get_all() {

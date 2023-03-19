@@ -378,12 +378,13 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for EntityTypeManagerImpl {
-    fn init(&self) {
+    async fn init(&self) {
         self.create_base_entity_types();
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // TODO: remove?
         self.entity_types.0.write().unwrap().clear();
     }

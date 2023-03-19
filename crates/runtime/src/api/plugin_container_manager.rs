@@ -182,7 +182,7 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
     ) -> PluginTransitionResult;
 
     /// Calls the activate method of the plugin with the given id.
-    fn activate(&self, id: &Uuid) -> PluginTransitionResult;
+    async fn activate(&self, id: &Uuid) -> PluginTransitionResult;
 
     // Lifecycle management
 
@@ -194,7 +194,7 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
     // Transitions 3
 
     /// Calls the deactivate method of the plugin with the given id.
-    fn deactivate(&self, id: &Uuid) -> PluginTransitionResult;
+    async fn deactivate(&self, id: &Uuid) -> PluginTransitionResult;
 
     /// Unregisters the providers of the plugin with the given id.
     fn unregister(

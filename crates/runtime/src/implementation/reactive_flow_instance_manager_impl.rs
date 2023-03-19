@@ -555,8 +555,9 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for ReactiveFlowInstanceManagerImpl {
-    fn init(&self) {
+    async fn init(&self) {
         debug!("Importing provided flow instances");
         for flow_instance_provider in self.flow_instance_providers.0.iter() {
             for flow_instance in flow_instance_provider.get_flow_instances() {
@@ -583,7 +584,7 @@ impl Lifecycle for ReactiveFlowInstanceManagerImpl {
         }
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         // self.reactive_flow_instances.0.write().unwrap().clear();
         // self.flow_instance_providers.0.write().unwrap().clear();
     }

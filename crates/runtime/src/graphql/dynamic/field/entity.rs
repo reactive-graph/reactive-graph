@@ -12,7 +12,6 @@ use uuid::Uuid;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::builder::ReactiveEntityInstanceBuilder;
-use crate::core_model::PROPERTY_LABEL;
 use crate::graphql::dynamic::data_type_error;
 use crate::graphql::dynamic::entity_instance_not_found_error;
 use crate::graphql::dynamic::entity_instance_not_of_entity_type_error;
@@ -35,9 +34,11 @@ use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveEntityInstance;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
+use crate::model_runtime::LabeledProperties::LABEL;
 
 pub fn entity_query_field(entity_type: &EntityType) -> Field {
     let ty = entity_type.ty.clone();
@@ -666,7 +667,7 @@ fn get_entity_instances_by_type_filter_by_properties(
 
 fn add_entity_type_properties_as_field_arguments(mut field: Field, entity_type: &EntityType, is_optional: bool, exclude_label: bool) -> Field {
     for property in entity_type.properties.iter() {
-        if exclude_label && &property.name == PROPERTY_LABEL {
+        if exclude_label && &property.name == &LABEL.property_name() {
             continue;
         }
         if let Some(type_ref) = to_input_type_ref(&property, is_optional) {

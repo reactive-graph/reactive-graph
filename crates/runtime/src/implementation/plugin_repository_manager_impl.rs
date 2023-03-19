@@ -63,56 +63,129 @@ impl PluginRepositoryManagerImpl {
         None
     }
 
-    fn create_hot_deploy_watcher(&self) {
+    async fn create_hot_deploy_watcher(&self) {
         let plugin_container_manager = self.plugin_container_manager.clone();
         let plugin_resolver = self.plugin_resolver.clone();
-        let watcher = notify::recommended_watcher(move |r: notify::Result<Event>| match r {
-            Ok(event) => {
-                if event.kind != Access(Close(Write)) {
-                    return;
-                }
-                trace!("Hot deploy watcher detected file system activity: {:?}", event);
-                for path in event.paths {
-                    let Some(stem) = get_stem(&path) else {
-                        continue;
-                    };
-                    if plugin_container_manager.has(&stem) {
-                        // If plugin with the same stem is already installed, redeploy and start resolver
-                        if let Some(id) = plugin_container_manager.get_id(&stem) {
-                            match plugin_container_manager.redeploy(&id) {
-                                Ok(_) => {
-                                    plugin_resolver.resolve_until_idle();
-                                    // Start dependent plugins
-                                    while plugin_container_manager.start_dependent_with_satisfied_dependencies(&id) {
-                                        // Resolve until all dependent plugins are started
-                                        plugin_resolver.resolve_until_idle();
+        let (tx, mut rx) = mpsc::channel::<notify::Result<Event>>(32);
+        tokio::spawn(async move {
+            trace!("Hot Deploy Watcher started");
+            while let Some(r) = rx.recv().await {
+                match r {
+                    Ok(event) => {
+                        if event.kind != Access(Close(Write)) {
+                            continue;
+                        }
+                        trace!("Hot Deploy Watcher: Detected file system activity: {:?}", event);
+                        for path in event.paths.clone() {
+                            let Some(stem) = get_stem(&path) else {
+                                continue;
+                            };
+                            if plugin_container_manager.has(&stem) {
+                                // If plugin with the same stem is already installed, redeploy and start resolver
+                                if let Some(id) = plugin_container_manager.get_id(&stem) {
+                                    match plugin_container_manager.redeploy(&id) {
+                                        Ok(_) => {
+                                            plugin_resolver.resolve_until_idle().await;
+                                            // Start dependent plugins
+                                            while plugin_container_manager.start_dependent_with_satisfied_dependencies(&id) {
+                                                // Resolve until all dependent plugins are started
+                                                plugin_resolver.resolve_until_idle().await;
+                                            }
+                                        }
+                                        Err(e) => {
+                                            error!("Failed to redeploy plugin {} {}: {:?}", &stem, &id, e);
+                                        }
                                     }
                                 }
-                                Err(e) => {
-                                    error!("Failed to redeploy plugin {} {}: {:?}", &stem, &id, e);
+                            } else {
+                                // Deploy new plugins to the installation folder
+                                if let Ok(install_path) = deploy_plugin(path) {
+                                    // And register a new plugin container and start resolver
+                                    if let Some(id) = plugin_container_manager.create_and_register_plugin_container(stem, install_path) {
+                                        plugin_resolver.resolve_until_idle().await;
+                                        if plugin_container_manager.start(&id).is_ok() {
+                                            plugin_resolver.resolve_until_idle().await;
+                                            // Start dependent plugins
+                                            while plugin_container_manager.start_dependent_with_satisfied_dependencies(&id) {
+                                                // Resolve until all dependent plugins are started
+                                                plugin_resolver.resolve_until_idle().await;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
-                    } else {
-                        // Deploy new plugins to the installation folder
-                        if let Ok(install_path) = deploy_plugin(path) {
-                            // And register a new plugin container and start resolver
-                            if let Some(id) = plugin_container_manager.create_and_register_plugin_container(stem, install_path) {
-                                plugin_resolver.resolve_until_idle();
-                                if plugin_container_manager.start(&id).is_ok() {
-                                    plugin_resolver.resolve_until_idle();
-                                    // Start dependent plugins
-                                    while plugin_container_manager.start_dependent_with_satisfied_dependencies(&id) {
-                                        // Resolve until all dependent plugins are started
-                                        plugin_resolver.resolve_until_idle();
+                        for path in event.paths {
+                            let Some(stem) = get_stem(&path) else {
+                                continue;
+                            };
+                            let Some(id) = plugin_container_manager.get_id(&stem) else {
+                                continue;
+                            };
+                            let name = plugin_container_manager.name(&id).unwrap_or_default().replace("inexor-rgf-plugin-", "");
+                            let version = plugin_container_manager.version(&id).unwrap_or(String::from("?.?.?"));
+                            // Warn about disabled plugins
+                            if let Some(state) = plugin_container_manager.get_plugin_state(&id) {
+                                if state == PluginState::Disabled {
+                                    info!("[DISABLED] {name} {version}");
+                                }
+                            }
+                            // Warn about unsatisfied dependencies
+                            for d in plugin_container_manager.get_unsatisfied_dependencies(&id) {
+                                trace!(
+                                    "Plugin {} {} has unsatisfied dependency: {}:{}",
+                                    id,
+                                    &name,
+                                    d.name.replace("inexor-rgf-plugin-", ""),
+                                    d.version
+                                );
+                                match plugin_container_manager.get_plugin_by_dependency(&d) {
+                                    Some(dependency_id) => {
+                                        let dependency_name = plugin_container_manager
+                                            .name(&dependency_id)
+                                            .unwrap_or_default()
+                                            .replace("inexor-rgf-plugin-", "");
+                                        let dependency_version = plugin_container_manager.version(&dependency_id).unwrap_or(String::from("?.?.?"));
+                                        let dependency_state = plugin_container_manager.get_plugin_state(&dependency_id).unwrap_or(PluginState::Uninstalled);
+                                        warn!(
+                                            "Plugin {} has unsatisfied dependency: {}:{} - which exists ({} {}) but has state {:?}",
+                                            &name,
+                                            d.name.replace("inexor-rgf-plugin-", ""),
+                                            d.version,
+                                            dependency_name,
+                                            dependency_version,
+                                            dependency_state
+                                        );
+                                    }
+                                    None => {
+                                        warn!(
+                                            "Plugin {} has unsatisfied dependency: {}:{} - which doesn't exist",
+                                            &name,
+                                            d.name.replace("inexor-rgf-plugin", ""),
+                                            d.version
+                                        );
                                     }
                                 }
                             }
                         }
                     }
+                    Err(e) => {
+                        error!("Hot Deploy Watcher: Error: {}", e);
+                    }
                 }
             }
-            Err(_) => {}
+            trace!("Hot Deploy Watcher: Finished");
+        });
+        let watcher = notify::recommended_watcher(move |r: notify::Result<Event>| {
+            let tx = tx.clone();
+            futures::executor::block_on(async {
+                match tx.send(r).await {
+                    Ok(_) => {}
+                    Err(e) => {
+                        trace!("SendError {}", e);
+                    }
+                }
+            });
         })
         .ok();
         let mut writer = self.hot_deploy_watcher.0.write().unwrap();
@@ -182,8 +255,9 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for PluginRepositoryManagerImpl {
-    fn init(&self) {
+    async fn init(&self) {
         // Initially, the deploy folder will be scanned. Detected plugins will be copied to the
         // install folder before the install folder will be scanned. Eventually existing plugins
         // will be overwritten by the version in the deploy folder.
@@ -194,19 +268,19 @@ impl Lifecycle for PluginRepositoryManagerImpl {
         self.scan_plugin_repository();
 
         // Create a deploy watcher.
-        self.create_hot_deploy_watcher();
+        self.create_hot_deploy_watcher().await;
     }
 
-    fn post_init(&self) {
-        // Initiates watching the folder plugins/deploy.
+    async fn post_init(&self) {
+        // Initiates watching the hot deployment folder.
         self.watch_hot_deploy();
     }
 
-    fn pre_shutdown(&self) {
+    async fn pre_shutdown(&self) {
         self.unwatch_hot_deploy();
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         self.destroy_hot_deploy_watcher();
     }
 }

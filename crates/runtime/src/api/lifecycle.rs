@@ -1,14 +1,17 @@
 /// Dual layer runtime lifecycle for initialization and shutdown of services
-pub trait Lifecycle {
+use async_trait::async_trait;
+
+#[async_trait]
+pub trait Lifecycle: Sync {
     /// Called at initialization
-    fn init(&self) {}
+    async fn init(&self) {}
 
     /// Called after initialization
-    fn post_init(&self) {}
+    async fn post_init(&self) {}
 
     /// Called before shutdown
-    fn pre_shutdown(&self) {}
+    async fn pre_shutdown(&self) {}
 
     /// Called for shutdown
-    fn shutdown(&self) {}
+    async fn shutdown(&self) {}
 }

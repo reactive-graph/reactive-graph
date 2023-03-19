@@ -76,7 +76,7 @@ impl PluginResolver for PluginResolverImpl {
         }
     }
 
-    fn resolve(&self) -> PluginTransitionResult {
+    async fn resolve(&self) -> PluginTransitionResult {
         let mode = self.get_mode();
         trace!("Resolving plugins (mode: {:?})", mode);
         // PluginUninstallingState::UnloadDll --> PluginUninstallingState::UninstallDll
@@ -267,7 +267,7 @@ impl PluginResolver for PluginResolverImpl {
             PluginState::Starting(PluginStartingState::Activating),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating)),
         ) {
-            if self.plugin_container_manager.activate(&id) == Changed {
+            if self.plugin_container_manager.activate(&id).await == Changed {
                 return Changed;
             }
         }
@@ -276,7 +276,7 @@ impl PluginResolver for PluginResolverImpl {
             PluginState::Stopping(PluginStoppingState::Deactivating),
             PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Deactivating)),
         ) {
-            if self.plugin_container_manager.deactivate(&id) == Changed {
+            if self.plugin_container_manager.deactivate(&id).await == Changed {
                 return Changed;
             }
         }
@@ -336,10 +336,11 @@ impl PluginResolver for PluginResolverImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for PluginResolverImpl {
-    fn init(&self) {
+    async fn init(&self) {
         self.set_mode(PluginResolverMode::Starting);
-        self.resolve_until_idle();
+        self.resolve_until_idle().await;
         for id in self.plugin_container_manager.get_plugins_not_having_state(PluginState::Active) {
             let stem = self.plugin_container_manager.get_stem(&id).unwrap_or_default();
             for d in self.plugin_container_manager.get_unsatisfied_dependencies(&id) {
@@ -349,13 +350,13 @@ impl Lifecycle for PluginResolverImpl {
         self.set_mode(PluginResolverMode::Neutral);
     }
 
-    fn shutdown(&self) {
+    async fn shutdown(&self) {
         self.set_mode(PluginResolverMode::Stopping);
         self.plugin_container_manager.stop_all();
         let mut i = 0;
         while !self.plugin_container_manager.are_all_stopped() && i < 100 {
-            self.resolve_until_idle();
-            thread::sleep(Duration::from_millis(100));
+            self.resolve_until_idle().await;
+            tokio::time::sleep(Duration::from_millis(100)).await;
             i += 1;
             // TODO: force stop after timeout
         }

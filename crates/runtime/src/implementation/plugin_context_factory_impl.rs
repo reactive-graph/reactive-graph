@@ -4,6 +4,7 @@ use std::sync::RwLock;
 use async_trait::async_trait;
 
 use crate::api::ComponentManager;
+use crate::api::ConfigManager;
 use crate::api::EntityBehaviourManager;
 use crate::api::EntityBehaviourRegistry;
 use crate::api::EntityComponentBehaviourManager;
@@ -156,10 +157,11 @@ impl PluginContextFactory for PluginContextFactoryImpl {
     }
 }
 
+#[async_trait]
 impl Lifecycle for PluginContextFactoryImpl {
-    fn init(&self) {
+    async fn init(&self) {
         self.construct_plugin_context();
     }
 
-    fn shutdown(&self) {}
+    async fn shutdown(&self) {}
 }
