@@ -5,7 +5,7 @@ pub const GRAPHQL_DEFAULT_HOSTNAME: &str = "localhost";
 pub const GRAPHQL_DEFAULT_PORT: u16 = 31415;
 
 /// Configuration for the logging middleware of the GraphQL server.
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct GraphQLLoggingConfig {
     /// If true, a request logging middleware is enabled.
     pub enabled: bool,
@@ -13,12 +13,6 @@ pub struct GraphQLLoggingConfig {
     /// The log format of the request logging middleware.
     /// See: https://docs.rs/actix-web/0.6.0/actix_web/middleware/struct.Logger.html#format
     pub format: Option<String>,
-}
-
-impl Default for GraphQLLoggingConfig {
-    fn default() -> Self {
-        GraphQLLoggingConfig { enabled: false, format: None }
-    }
 }
 
 /// Configuration for the GraphQL server.
