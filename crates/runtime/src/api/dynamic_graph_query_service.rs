@@ -29,4 +29,7 @@ impl fmt::Display for DynamicQueryError {
 pub trait DynamicGraphQueryService: Send + Sync + Lifecycle {
     /// Runs the given GraphQL query.
     async fn query(&self, request: String) -> Result<String, DynamicQueryError>;
+
+    /// Runs the given GraphQL query and returns the response.
+    async fn query_response(&self, request: &str) -> Result<Response, DynamicQueryError>;
 }

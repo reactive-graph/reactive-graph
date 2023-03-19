@@ -4,5 +4,5 @@ use serde_json::Error;
 #[async_trait]
 pub trait GraphQLQueryService: Send + Sync {
     /// Runs the given GraphQL query.
-    async fn query(&self, request: String) -> Result<String, Error>;
+    async fn query(&self, request: &str) -> Result<String, Error>;
 }

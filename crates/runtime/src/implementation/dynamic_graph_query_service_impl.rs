@@ -1,3 +1,4 @@
+use async_graphql::Response;
 use async_trait::async_trait;
 use log::trace;
 
@@ -22,11 +23,18 @@ impl DynamicGraphQueryServiceImpl {}
 impl DynamicGraphQueryService for DynamicGraphQueryServiceImpl {
     async fn query(&self, request: String) -> Result<String, DynamicQueryError> {
         trace!("Run dynamic query: {}", request.clone());
-        match self.dynamic_graph_schema_manager.get_dynamic_schema() {
+        match self.dynamic_graph_schema_manager.get_dynamic_schema().await {
             Some(schema) => {
                 let result = schema.execute(request).await;
                 serde_json::to_string(&result).map_err(|e| DynamicQueryError::JsonError(e))
             }
+            None => Err(DynamicQueryError::DynamicSchemaFailure),
+        }
+    }
+
+    async fn query_response(&self, request: &str) -> Result<Response, DynamicQueryError> {
+        match self.dynamic_graph_schema_manager.get_dynamic_schema().await {
+            Some(schema) => Ok(schema.execute(request).await),
             None => Err(DynamicQueryError::DynamicSchemaFailure),
         }
     }
