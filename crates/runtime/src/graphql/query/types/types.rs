@@ -139,7 +139,7 @@ impl Types {
                 let relation_types = relation_type_manager
                     .find(&ty.type_name())
                     .iter()
-                    .filter(|relation_type| &relation_type.type_name() == &ty.type_name())
+                    .filter(|relation_type| relation_type.type_name() == ty.type_name())
                     .filter(|relation_type| {
                         outbound_component.is_none() || {
                             match &relation_type.outbound_type {
