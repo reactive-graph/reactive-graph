@@ -19,9 +19,11 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 inexor-rgf-core-frp = { path = "../frp" }
 inexor-rgf-core-model = { path = "../model" }
 inexor-rgf-core-reactive = { path = "../reactive" }
+inexor-rgf-core-config = { path = "../config" }
 
 [dev-dependencies]
 random-string = "1.0"
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 [build-dependencies]
 rustc_version = "0.4.0"

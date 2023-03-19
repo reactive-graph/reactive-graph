@@ -49,10 +49,10 @@ indradb-lib = { workspace = true }
 lazy_static = { workspace = true }
 libloading = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
-log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 mime = { workspace = true }
 notify = { workspace = true }
 path-tree = { workspace = true }
+portpicker = { workspace = true }
 rand = { workspace = true }
 rayon = { workspace = true }
 rustls = { workspace = true }
@@ -68,16 +68,26 @@ toml = { workspace = true }
 uuid = { version = "1.1", features = ["serde", "v4"] }
 wildmatch = { workspace = true }
 
+inexor-rgf-core-config = { path = "../core/config" }
 inexor-rgf-core-di = { path = "../core/di", features = [ "async" ] }
 inexor-rgf-core-frp = { path = "../core/frp" }
 inexor-rgf-core-model = { path = "../core/model" }
 inexor-rgf-core-reactive = { path = "../core/reactive" }
 inexor-rgf-core-builder = { path = "../core/builder" }
 inexor-rgf-core-plugins = { path = "../core/plugins" }
+inexor-rgf-model-dynamic-graph = { path = "../model/dynamic_graph" }
+inexor-rgf-model-flow = { path = "../model/flow" }
+inexor-rgf-model-runtime = { path = "../model/runtime" }
 
 [dev-dependencies]
+colored = "2.0.0"
 futures-await-test = "0.3"
+glob = "0.3.1"
 random-string = "1.0"
+similar = "2.2.1"
+similar-asserts = "1.4.2"
+
+log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
 
 [build-dependencies]
 build-data = "0.1.3"

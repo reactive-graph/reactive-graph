@@ -9,6 +9,9 @@ repository.workspace = true
 
 [dependencies]
 actix-web = { workspace = true, features = ["rustls"] }
+clap = { workspace = true, features = ["derive"] }
+log = { workspace = true, features = ["std", "serde"] }
+log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread"] }
 
 inexor-rgf-rt = { path = "../runtime" }

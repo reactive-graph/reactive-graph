@@ -49,23 +49,26 @@ pub fn get_rw_runtime() -> Arc<RwLock<dyn Runtime>> {
     Arc::new(RwLock::new(Provider::<dyn Runtime>::create(container)))
 }
 
-pub async fn main() {
-    if let Err(error) = log4rs::init_file("./config/logging.toml", Default::default()) {
-        eprintln!("Failed to configure logger: {}", error);
-    }
-
+pub async fn main<F1, F2, C1, C2>(pre_config: C1, post_config: C2)
+where
+    F1: Future<Output = ()>,
+    F2: Future<Output = ()>,
+    C1: FnOnce(Arc<dyn Runtime>) -> F1,
+    C2: FnOnce(Arc<dyn Runtime>) -> F2,
+{
     {
-        let mut container = di_container_get::<profiles::Default>();
-        let container = &mut container;
-        let runtime = Provider::<dyn Runtime>::create(container);
-
+        let runtime = get_runtime();
+        // Runtime Configuration Phase
+        pre_config(runtime.clone()).await;
+        runtime.config().await;
+        post_config(runtime.clone()).await;
         // Runtime Lifecycle
-        runtime.init();
-        runtime.post_init();
+        runtime.init().await;
+        runtime.post_init().await;
         runtime.run().await;
-        runtime.pre_shutdown();
-        runtime.shutdown();
-    } // Destruct the application
+        runtime.pre_shutdown().await;
+        runtime.shutdown().await;
+    } // Destruct the whole runtime
     tokio::time::sleep(Duration::from_millis(2000)).await;
 }
 
