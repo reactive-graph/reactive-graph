@@ -49,7 +49,7 @@ impl GraphQLRelationType {
                 return Ok(entity_types);
             }
             ComponentOrEntityTypeId::EntityType(entity_ty) => {
-                if let Some(entity_type) = entity_type_manager.get(&entity_ty) {
+                if let Some(entity_type) = entity_type_manager.get(entity_ty) {
                     let entity_type = entity_type.into();
                     return Ok(vec![entity_type]);
                 }
@@ -99,7 +99,7 @@ impl GraphQLRelationType {
                 return Ok(entity_types);
             }
             ComponentOrEntityTypeId::EntityType(entity_ty) => {
-                if let Some(entity_type) = entity_type_manager.get(&entity_ty) {
+                if let Some(entity_type) = entity_type_manager.get(entity_ty) {
                     let entity_type = entity_type.into();
                     return Ok(vec![entity_type]);
                 }
