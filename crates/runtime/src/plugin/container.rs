@@ -383,7 +383,7 @@ impl PluginContainer {
 
         let proxy = {
             let reader = self.proxy.read().unwrap();
-            let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) else {
+            let Some(proxy) = reader.as_ref().cloned() else {
                 return NoChange;
             };
             proxy.clone()
@@ -418,7 +418,7 @@ impl PluginContainer {
 
         let proxy = {
             let reader = self.proxy.read().unwrap();
-            let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) else {
+            let Some(proxy) = reader.as_ref().cloned() else {
                 return NoChange;
             };
             proxy.clone()
@@ -450,7 +450,7 @@ impl PluginContainer {
         }
         let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveContext));
         let reader = self.proxy.read().unwrap();
-        if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
+        if let Some(proxy) = reader.as_ref().cloned() {
             trace!("Plugin {} is removing the plugin context", self.id);
             match proxy.remove_context() {
                 Ok(_) => {
