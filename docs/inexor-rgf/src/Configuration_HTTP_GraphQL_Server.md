@@ -55,13 +55,13 @@ The URLs are prefixed with the base path of the web resource provider. For examp
 `binary` provides a `WebResourceProvider` with the base path `binary`. Therefore, the URL starts
 with `http(s)://hostname:31415/binary/`.
 
-The `default_base_path` defines which web resource provider is the default by its base path. This
+The `default_context_path` defines which web resource provider is the default by its base path. This
 means that the URL `https://hostname:31415/entities/uuid/property_name` will be handled by the
 WebResourceProvider binary and is doing the same as
 `https://hostname:31415/binary/entities/uuid/property_name`.
 
 ```toml
-default_base_path = "binary"
+default_context_path = "binary"
 ```
 
 ```admonish tip "Default Base Path"

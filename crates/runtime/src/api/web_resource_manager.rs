@@ -8,10 +8,14 @@ use crate::plugins::WebResourceProvider;
 
 #[async_trait]
 pub trait WebResourceManager: Send + Sync + Lifecycle {
-    fn has(&self, base_path: String) -> bool;
-    fn get(&self, base_path: String) -> Option<Arc<dyn WebResourceProvider>>;
+    /// Returns true, if a web resource provider exists with the given context path.
+    fn has(&self, context_path: String) -> bool;
+
+    /// Returns the web resource provider with the given context path.
+    fn get(&self, context_path: String) -> Option<Arc<dyn WebResourceProvider>>;
+
+    /// Returns the default web resource provider.
     fn get_default(&self) -> Option<Arc<dyn WebResourceProvider>>;
-    fn get_default_base_path(&self) -> Option<String>;
 
     /// Registers a web resource provider.
     fn add_provider(&self, id: Uuid, web_resource_provider: Arc<dyn WebResourceProvider>);
