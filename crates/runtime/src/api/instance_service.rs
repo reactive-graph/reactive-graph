@@ -1,7 +1,7 @@
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::core_model::InstanceInfo;
+use crate::model_runtime::InstanceInfo;
 
 #[async_trait]
 pub trait InstanceService: Send + Sync + Lifecycle {

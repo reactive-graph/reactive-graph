@@ -9,18 +9,19 @@ use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::builder::ReactiveEntityInstanceBuilder;
-use crate::core_model::ENTITY_TYPE_SYSTEM_EVENT;
-use crate::core_model::PROPERTY_EVENT;
 use crate::di::*;
 use crate::model::ComponentTypeId;
 use crate::model::ExtensionTypeId;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveEntityInstance;
 use crate::model::TypeDefinition;
 use crate::model::TypeDefinitionComponent;
 use crate::model::TypeDefinitionExtension;
 use crate::model::TypeDefinitionGetter;
 use crate::model::TypeDefinitionProperty;
+use crate::model_runtime::EventProperties::EVENT;
+use crate::model_runtime::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
 
@@ -81,13 +82,13 @@ impl SystemEventManager for SystemEventManagerImpl {
             SystemEvent::RelationTypeExtensionAdded(ty, extension_ty) | SystemEvent::RelationTypeExtensionRemoved(ty, extension_ty) => {
                 self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_ty);
             }
-            SystemEvent::TypeSystemChanged => entity_instance.set(PROPERTY_EVENT, json!(true)),
+            SystemEvent::TypeSystemChanged => entity_instance.set(&EVENT.property_name(), json!(true)),
             SystemEvent::EntityInstanceCreated(id)
             | SystemEvent::EntityInstanceDeleted(id)
             | SystemEvent::FlowInstanceCreated(id)
-            | SystemEvent::FlowInstanceDeleted(id) => entity_instance.set(PROPERTY_EVENT, json!(id)),
+            | SystemEvent::FlowInstanceDeleted(id) => entity_instance.set(&EVENT.property_name(), json!(id)),
             SystemEvent::RelationInstanceCreated(edge_key) | SystemEvent::RelationInstanceDeleted(edge_key) => {
-                entity_instance.set(PROPERTY_EVENT, json!(edge_key))
+                entity_instance.set(&EVENT.property_name(), json!(edge_key))
             }
         }
     }
@@ -106,7 +107,7 @@ impl SystemEventManager for SystemEventManagerImpl {
 impl SystemEventManagerImpl {
     fn propagate_type_definition_event(&self, entity_instance: Arc<ReactiveEntityInstance>, type_definition: TypeDefinition) {
         if let Ok(value) = serde_json::to_value(type_definition) {
-            entity_instance.set(PROPERTY_EVENT, value);
+            entity_instance.set(&EVENT.property_name(), value);
             // Also emit event that the type system has been changed
             self.emit_event(SystemEvent::TypeSystemChanged);
         };
@@ -119,7 +120,7 @@ impl SystemEventManagerImpl {
         component_ty: &ComponentTypeId,
     ) {
         if let Ok(v) = TypeDefinitionComponent::new(type_definition, component_ty.clone()).try_into() {
-            entity_instance.set(PROPERTY_EVENT, v);
+            entity_instance.set(&EVENT.property_name(), v);
         };
         // Also emit event that the type system has been changed
         self.emit_event(SystemEvent::TypeSystemChanged);
@@ -127,7 +128,7 @@ impl SystemEventManagerImpl {
 
     fn propagate_type_definition_property_event(&self, entity_instance: Arc<ReactiveEntityInstance>, type_definition: TypeDefinition, property_name: String) {
         if let Ok(v) = TypeDefinitionProperty::new(type_definition, property_name).try_into() {
-            entity_instance.set(PROPERTY_EVENT, v);
+            entity_instance.set(&EVENT.property_name(), v);
         };
         self.emit_event(SystemEvent::TypeSystemChanged);
     }
@@ -139,7 +140,7 @@ impl SystemEventManagerImpl {
         extension_ty: ExtensionTypeId,
     ) {
         if let Ok(v) = TypeDefinitionExtension::new(type_definition, extension_ty).try_into() {
-            entity_instance.set(PROPERTY_EVENT, v);
+            entity_instance.set(&EVENT.property_name(), v);
         };
         self.emit_event(SystemEvent::TypeSystemChanged);
     }
@@ -267,7 +268,7 @@ impl SystemEventManagerImpl {
     pub(crate) fn create_system_event_instance<S: Into<String>>(&self, label: S) -> Arc<ReactiveEntityInstance> {
         ReactiveEntityInstanceBuilder::new(&ENTITY_TYPE_SYSTEM_EVENT.clone())
             .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
-            .property(PROPERTY_EVENT, json!(false))
+            .property(&EVENT.property_name(), json!(false))
             .build()
     }
 

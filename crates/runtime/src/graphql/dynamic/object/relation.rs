@@ -7,8 +7,6 @@ use serde_json::json;
 use serde_json::Value;
 
 use crate::api::ReactiveRelationInstanceManager;
-use crate::core_model::COMPONENT_ACTION;
-use crate::core_model::PROPERTY_TRIGGER;
 use crate::graphql::dynamic::data_type_error;
 use crate::graphql::dynamic::field_description::get_dynamic_graph_field_descriptions;
 use crate::graphql::dynamic::field_name::get_dynamic_graph_field_names;
@@ -28,6 +26,8 @@ use crate::graphql::dynamic::INTERFACE_RELATION;
 use crate::model::Mutability::Immutable;
 use crate::model::Mutability::Mutable;
 use crate::model::*;
+use crate::model_runtime::COMPONENT_ACTION;
+use crate::model_runtime::PROPERTY_TRIGGER;
 
 pub fn get_relation_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for relation_type in context.relation_type_manager.get_all() {

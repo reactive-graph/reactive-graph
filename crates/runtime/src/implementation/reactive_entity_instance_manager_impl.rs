@@ -29,8 +29,6 @@ use crate::api::ReactiveEntityInstancePropertyRemoveError;
 use crate::api::ReactiveEntityInstanceRegistrationError;
 use crate::api::SystemEventManager;
 use crate::api::SystemEventSubscriber;
-use crate::core_model::PROPERTY_EVENT;
-use crate::core_model::PROPERTY_LABEL;
 use crate::di::*;
 use crate::model::BehaviourTypeId;
 use crate::model::ComponentBehaviourTypeId;
@@ -42,6 +40,7 @@ use crate::model::EntityTypeId;
 use crate::model::Mutability;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactivePropertyContainer;
@@ -49,6 +48,8 @@ use crate::model::TypeContainer;
 use crate::model::TypeDefinitionComponent;
 use crate::model::TypeDefinitionGetter;
 use crate::model::TypeDefinitionProperty;
+use crate::model_runtime::EventProperties::EVENT;
+use crate::model_runtime::LabeledProperties::LABEL;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
 
@@ -133,7 +134,7 @@ impl SystemEventSubscriber for ReactiveEntityInstanceManagerImpl {
         if let Some(entity_instance) = self.event_manager.get_system_event_instance(system_event_type) {
             if let Some(sender) = self.system_event_channels.sender(&handle_id) {
                 entity_instance.observe_with_handle(
-                    PROPERTY_EVENT,
+                    &EVENT.property_name(),
                     move |v| {
                         let _ = sender.send(v.clone());
                     },
@@ -145,7 +146,7 @@ impl SystemEventSubscriber for ReactiveEntityInstanceManagerImpl {
 
     fn unsubscribe_system_event(&self, system_event_type: SystemEventTypes, handle_id: u128) {
         if let Some(entity_instance) = self.event_manager.get_system_event_instance(system_event_type) {
-            entity_instance.remove_observer(PROPERTY_EVENT, handle_id);
+            entity_instance.remove_observer(&EVENT.property_name(), handle_id);
         }
     }
 }
@@ -329,7 +330,10 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 // Add entity behaviours
                 self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
                 // Register label
-                if let Some(value) = reactive_entity_instance.get(PROPERTY_LABEL).and_then(|v| v.as_str().map(|s| s.to_string())) {
+                if let Some(value) = reactive_entity_instance
+                    .get(&LABEL.property_name())
+                    .and_then(|v| v.as_str().map(|s| s.to_string()))
+                {
                     let mut writer = self.label_path_tree.0.write().unwrap();
                     writer.insert(&value, reactive_entity_instance.id);
                 }

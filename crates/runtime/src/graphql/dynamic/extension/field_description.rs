@@ -2,9 +2,9 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::from_value;
 
-use crate::core_model::EXTENSION_FIELD_DESCRIPTION;
 use crate::model::Extension;
 use crate::model::ExtensionContainer;
+use crate::model_dynamic_graph::EXTENSION_FIELD_DESCRIPTION;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct DynamicGraphFieldDescriptionExtension {

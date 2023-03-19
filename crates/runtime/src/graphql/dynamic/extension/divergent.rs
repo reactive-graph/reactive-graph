@@ -1,8 +1,8 @@
 use serde_json::json;
 
-use crate::core_model::EXTENSION_DIVERGENT;
 use crate::model::ComponentTypeId;
 use crate::model::ExtensionContainer;
+use crate::model_runtime::EXTENSION_DIVERGENT;
 
 pub fn is_divergent(extension_container: &impl ExtensionContainer, component_ty: &ComponentTypeId) -> bool {
     match extension_container.get_own_extension(&EXTENSION_DIVERGENT.clone()) {

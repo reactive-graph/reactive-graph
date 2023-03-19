@@ -30,7 +30,6 @@ use crate::api::RelationEdgeManager;
 use crate::api::RelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
-use crate::core_model::PROPERTY_EVENT;
 use crate::di::*;
 use crate::model::BehaviourTypeId;
 use crate::model::ComponentBehaviourTypeId;
@@ -39,6 +38,7 @@ use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::Mutability;
 use crate::model::NamespacedTypeGetter;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveBehaviourContainer;
 use crate::model::ReactivePropertyContainer;
 use crate::model::ReactiveRelationInstance;
@@ -49,6 +49,7 @@ use crate::model::TypeContainer;
 use crate::model::TypeDefinitionComponent;
 use crate::model::TypeDefinitionGetter;
 use crate::model::TypeDefinitionProperty;
+use crate::model_runtime::EventProperties::EVENT;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
 
@@ -126,7 +127,7 @@ impl SystemEventSubscriber for ReactiveRelationInstanceManagerImpl {
         if let Some(entity_instance) = self.event_manager.get_system_event_instance(system_event_type) {
             if let Some(sender) = self.system_event_channels.sender(&handle_id) {
                 entity_instance.observe_with_handle(
-                    PROPERTY_EVENT,
+                    &EVENT.property_name(),
                     move |v| {
                         let _ = sender.send(v.clone());
                     },
@@ -138,7 +139,7 @@ impl SystemEventSubscriber for ReactiveRelationInstanceManagerImpl {
 
     fn unsubscribe_system_event(&self, system_event_type: SystemEventTypes, handle_id: u128) {
         if let Some(entity_instance) = self.event_manager.get_system_event_instance(system_event_type) {
-            entity_instance.remove_observer(PROPERTY_EVENT, handle_id);
+            entity_instance.remove_observer(&EVENT.property_name(), handle_id);
         }
     }
 }

@@ -10,7 +10,6 @@ use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
-use crate::core_model::PROPERTY_TRIGGER;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
@@ -19,6 +18,7 @@ use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::BehaviourTypeId;
 use crate::model::PropertyInstanceSetter;
 use crate::model::ReactivePropertyContainer;
+use crate::model_runtime::PROPERTY_TRIGGER;
 
 #[derive(Default)]
 pub struct MutationEntityInstances;

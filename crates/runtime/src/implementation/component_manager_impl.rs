@@ -22,11 +22,6 @@ use crate::api::ComponentRegistrationError;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::builder::ComponentBuilder;
-use crate::core_model::COMPONENT_EVENT;
-use crate::core_model::COMPONENT_LABELED;
-use crate::core_model::EXTENSION_COMPONENT_CATEGORY;
-use crate::core_model::PROPERTY_EVENT;
-use crate::core_model::PROPERTY_LABEL;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
@@ -38,7 +33,13 @@ use crate::model::Extension;
 use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeDefinition;
 use crate::model::TypeDefinitionGetter;
+use crate::model_runtime::EventProperties::EVENT;
+use crate::model_runtime::LabeledProperties::LABEL;
+use crate::model_runtime::COMPONENT_EVENT;
+use crate::model_runtime::COMPONENT_LABELED;
+use crate::model_runtime::EXTENSION_COMPONENT_CATEGORY;
 use crate::plugins::ComponentProvider;
 use crate::plugins::SystemEvent;
 
@@ -62,13 +63,13 @@ impl ComponentManagerImpl {
         let _ = self.register(
             ComponentBuilder::new(&COMPONENT_LABELED.clone())
                 .description("The label is an hierarchical path with static segments, named parameters and catch-all parameters.")
-                .property(PROPERTY_LABEL, DataType::String)
+                .property(LABEL.property_name(), DataType::String)
                 .build(),
         );
         let _ = self.register(
             ComponentBuilder::new(&COMPONENT_EVENT.clone())
                 .description("This components spawns events.")
-                .output_property(PROPERTY_EVENT, DataType::Any)
+                .output_property(&EVENT.property_name(), DataType::Any)
                 .build(),
         );
     }

@@ -2,10 +2,8 @@ use async_trait::async_trait;
 
 use crate::api::InstanceService;
 use crate::api::Lifecycle;
-use crate::config::get_graphql_server_config;
-use crate::config::get_instance_config;
-use crate::core_model::InstanceInfo;
 use crate::di::*;
+use crate::model_runtime::InstanceInfo;
 use crate::plugins::PLUGIN_API_VERSION;
 use crate::plugins::RUSTC_VERSION;
 

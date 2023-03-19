@@ -28,10 +28,6 @@ use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::builder::FlowInstanceBuilder;
-use crate::core_model::EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE;
-use crate::core_model::EXTENSION_FLOW_UUID_TYPE_EXTENSION;
-use crate::core_model::EXTENSION_FLOW_UUID_TYPE_VARIABLE;
-use crate::core_model::PROPERTY_LABEL;
 use crate::di::*;
 use crate::model::EntityInstance;
 use crate::model::ExtensionContainer;
@@ -42,12 +38,17 @@ use crate::model::MutablePropertyInstanceSetter;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveEntityInstance;
 use crate::model::ReactiveFlowInstance;
 use crate::model::ReactivePropertyContainer;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstance;
 use crate::model::TypeDefinitionGetter;
+use crate::model_flow::EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE;
+use crate::model_flow::EXTENSION_FLOW_UUID_TYPE_EXTENSION;
+use crate::model_flow::EXTENSION_FLOW_UUID_TYPE_VARIABLE;
+use crate::model_runtime::LabeledProperties::LABEL;
 use crate::plugins::FlowInstanceProvider;
 use crate::plugins::SystemEvent;
 
@@ -447,7 +448,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
             .unwrap()
             .insert(reactive_flow_instance.id, reactive_flow_instance.clone());
         // Register label
-        if let Some(value) = reactive_flow_instance.get(PROPERTY_LABEL) {
+        if let Some(value) = reactive_flow_instance.get(&LABEL.property_name()) {
             if let Some(label) = value.as_str() {
                 let mut writer = self.label_path_tree.0.write().unwrap();
                 writer.insert(label, reactive_flow_instance.id);

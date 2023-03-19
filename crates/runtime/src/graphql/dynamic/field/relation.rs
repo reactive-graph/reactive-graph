@@ -10,7 +10,6 @@ use uuid::Uuid;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::builder::ReactiveRelationInstanceBuilder;
-use crate::core_model::PROPERTY_LABEL;
 use crate::graphql::dynamic::data_type_error;
 use crate::graphql::dynamic::entity_instance_not_found_error;
 use crate::graphql::dynamic::namespace_entities_union_type_name;
@@ -30,9 +29,11 @@ use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveRelationInstance;
 use crate::model::RelationInstanceTypeId;
 use crate::model::RelationType;
+use crate::model_runtime::LabeledProperties::LABEL;
 
 pub fn relation_query_field(relation_type: &RelationType) -> Field {
     let ty = relation_type.ty.clone();
@@ -115,7 +116,7 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
     })
     .description(relation_type.description.clone());
     for property in relation_type.properties.iter() {
-        if &property.name == PROPERTY_LABEL {
+        if &property.name == &LABEL.property_name() {
             continue;
         }
         if let Some(type_ref) = to_input_type_ref(&property, true) {
