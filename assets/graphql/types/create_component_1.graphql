@@ -12,9 +12,14 @@ mutation {
             description: "First Property"
             dataType: ANY
             socketType: NONE
+            mutability: MUTABLE
             extensions: [
               {
-                name: "sorted"
+                type: {
+                  namespace: "order"
+                  name: "sorted"
+                }
+                description: "Ordering"
                 extension: {
                   sortProperty: "first"
                 }
