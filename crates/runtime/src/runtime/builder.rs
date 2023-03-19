@@ -262,6 +262,12 @@ impl RuntimeBuilder<ConfigFilesLoaded, Shutdown> {
     }
 }
 
+impl Default for RuntimeBuilder<SetConfigLocations, NotRunning> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 pub struct OptionOption<T>(Option<T>);
 
 impl<T> OptionOption<T> {
