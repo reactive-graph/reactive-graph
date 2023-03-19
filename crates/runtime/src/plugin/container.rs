@@ -581,9 +581,7 @@ impl PluginContainer {
     pub fn name(&self) -> Option<String> {
         let reader = self.plugin_declaration.read().unwrap();
         match *reader {
-            Some(plugin_declaration) => {
-                return Some(plugin_declaration.name.to_string());
-            }
+            Some(plugin_declaration) => Some(plugin_declaration.name.to_string()),
             None => None,
         }
     }
@@ -591,9 +589,7 @@ impl PluginContainer {
     pub fn description(&self) -> Option<String> {
         let reader = self.plugin_declaration.read().unwrap();
         match *reader {
-            Some(plugin_declaration) => {
-                return Some(plugin_declaration.description.to_string());
-            }
+            Some(plugin_declaration) => Some(plugin_declaration.description.to_string()),
             None => None,
         }
     }
@@ -601,9 +597,7 @@ impl PluginContainer {
     pub fn version(&self) -> Option<String> {
         let reader = self.plugin_declaration.read().unwrap();
         match *reader {
-            Some(plugin_declaration) => {
-                return Some(plugin_declaration.version.to_string());
-            }
+            Some(plugin_declaration) => Some(plugin_declaration.version.to_string()),
             None => None,
         }
     }
@@ -611,9 +605,7 @@ impl PluginContainer {
     pub fn rustc_version(&self) -> Option<String> {
         let reader = self.plugin_declaration.read().unwrap();
         match *reader {
-            Some(plugin_declaration) => {
-                return Some(plugin_declaration.rustc_version.to_string());
-            }
+            Some(plugin_declaration) => Some(plugin_declaration.rustc_version.to_string()),
             None => None,
         }
     }
@@ -621,9 +613,7 @@ impl PluginContainer {
     pub fn plugin_api_version(&self) -> Option<String> {
         let reader = self.plugin_declaration.read().unwrap();
         match *reader {
-            Some(plugin_declaration) => {
-                return Some(plugin_declaration.plugin_api_version.to_string());
-            }
+            Some(plugin_declaration) => Some(plugin_declaration.plugin_api_version.to_string()),
             None => None,
         }
     }
