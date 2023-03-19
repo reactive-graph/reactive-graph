@@ -188,9 +188,9 @@ impl MutationRelationInstances {
         let ty = edge_key.ty();
         let relation_ty = ty.relation_type_id();
 
-        let relation_type = relation_type_manager
-            .get(&relation_ty)
-            .ok_or_else(|| Error::new(format!("Relation type {} does not exist!", edge_key)))?;
+        if relation_type_manager.get(&relation_ty).is_none() {
+            return Err(Error::new(format!("Relation type {} does not exist!", edge_key)));
+        }
 
         let edge_key: EdgeKey = edge_key.into();
         let relation_instance = relation_instance_manager
@@ -249,7 +249,7 @@ impl MutationRelationInstances {
 
     /// Deletes an relation instance.
     async fn delete(&self, context: &Context<'_>, edge_key: GraphQLEdgeKey) -> Result<bool> {
-        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        // let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
 
@@ -262,13 +262,6 @@ impl MutationRelationInstances {
         if !entity_instance_manager.has(edge_key.inbound_id) {
             return Err(Error::new(format!("Inbound entity {} does not exist!", edge_key.inbound_id)));
         }
-
-        // TODO: is this check necessary, actually?
-        let ty = edge_key.ty();
-        let relation_ty = ty.relation_type_id();
-        let relation_type = relation_type_manager
-            .get(&relation_ty)
-            .ok_or_else(|| Error::new(format!("Relation type {} does not exist!", ty.type_definition().to_string())))?;
 
         Ok(relation_instance_manager.delete(&edge_key.into()))
     }
