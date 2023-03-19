@@ -139,11 +139,18 @@ pub enum PluginUninstallError {
     NotStopped,
     InTransition,
     Uninstalled,
+    Disabled,
 }
 
 #[derive(Debug)]
 pub enum PluginDeployError {
     InTransition,
     Uninstalled,
+    Disabled,
+    NotFound,
+}
+
+#[derive(Debug)]
+pub enum PluginDisableError {
     NotFound,
 }

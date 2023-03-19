@@ -11,7 +11,7 @@ Plugins can implement the trait `WebResourceProvider` in order to register handl
 
 ```rust
 impl WebResourceProvider for ExampleWebResourceProviderImpl {
-    fn get_base_path(&self) -> String {
+    fn get_context_path(&self) -> String {
         String::from("example")
     }
 
