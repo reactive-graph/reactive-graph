@@ -26,10 +26,6 @@ impl DynamicGraphTypeDefinition {
         format!("{}{}", self.field_name(), self.ty.type_id_type.full_name())
     }
 
-    pub fn type_name_with_suffix(&self) -> String {
-        format!("{}{}", self.type_name(), self.ty.type_id_type.full_name())
-    }
-
     pub fn outbound_type_name(&self) -> String {
         format!("outbound_{}_{}", &self.ty.namespace, &self.ty.type_name)
     }
