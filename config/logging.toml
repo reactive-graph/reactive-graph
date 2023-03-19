@@ -47,6 +47,16 @@ appenders = [ "stdout", "file-application" ]
 
 
 
+### Core
+
+[loggers."inexor_rgf_core_frp"]
+level = "info"
+
+[loggers."inexor_rgf_core_reactive"]
+level = "info"
+
+
+
 ### Runtime
 
 [loggers."inexor_rgf_rt::implementation::component_manager_impl"]
