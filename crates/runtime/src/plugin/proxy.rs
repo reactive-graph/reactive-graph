@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use async_trait::async_trait;
+
 use crate::plugins::plugin_context::PluginContext;
 use crate::plugins::ComponentProvider;
 use crate::plugins::ComponentProviderError;
@@ -25,13 +27,14 @@ pub struct PluginProxy {
     pub(crate) plugin: Box<Arc<dyn Plugin>>,
 }
 
+#[async_trait]
 impl Plugin for PluginProxy {
-    fn activate(&self) -> Result<(), PluginActivationError> {
-        self.plugin.activate()
+    async fn activate(&self) -> Result<(), PluginActivationError> {
+        self.plugin.activate().await
     }
 
-    fn deactivate(&self) -> Result<(), PluginDeactivationError> {
-        self.plugin.deactivate()
+    async fn deactivate(&self) -> Result<(), PluginDeactivationError> {
+        self.plugin.deactivate().await
     }
 
     fn set_context(&self, context: Arc<dyn PluginContext>) -> Result<(), PluginContextInitializationError> {
