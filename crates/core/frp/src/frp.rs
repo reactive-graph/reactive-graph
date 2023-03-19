@@ -616,6 +616,15 @@ where
     }
 }
 
+impl<'a, Sig> Default for Stream<'a, Sig>
+where
+    Sig: 'a + Send + Sync,
+{
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<'a, SigA, SigB> Stream<'a, Either<SigA, SigB>>
 where
     SigA: 'static + Send + Sync,
