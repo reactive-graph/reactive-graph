@@ -40,9 +40,10 @@ impl Types {
     ) -> Result<Vec<GraphQLComponent>> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         if let Some(ty) = ty {
-            if let Some(component) = component_manager.get(&ty.into()) {
-                return Ok(vec![component.into()]);
-            }
+            return match component_manager.get(&ty.into()) {
+                Some(component) => Ok(vec![component.into()]),
+                None => Ok(vec![]),
+            };
         }
         if let Some(namespace) = namespace {
             let components = component_manager
