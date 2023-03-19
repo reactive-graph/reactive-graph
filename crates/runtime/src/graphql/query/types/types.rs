@@ -58,7 +58,7 @@ impl Types {
             return Ok(components);
         }
         let components = component_manager.get_all().into_iter().map(|component| component.into()).collect();
-        return Ok(components);
+        Ok(components)
     }
 
     async fn count_components(&self, context: &Context<'_>) -> usize {
@@ -97,7 +97,7 @@ impl Types {
                 entity_type
             })
             .collect();
-        return Ok(entity_types);
+        Ok(entity_types)
     }
 
     async fn count_entity_types(&self, context: &Context<'_>) -> usize {
@@ -261,7 +261,7 @@ impl Types {
             .cloned()
             .map(|r| r.into())
             .collect();
-        return Ok(relation_types);
+        Ok(relation_types)
     }
 
     async fn count_relation_types(&self, context: &Context<'_>) -> usize {
@@ -304,7 +304,7 @@ impl Types {
                 flow_type
             })
             .collect();
-        return Ok(flow_types);
+        Ok(flow_types)
     }
 
     async fn count_flow_types(&self, context: &Context<'_>) -> usize {
