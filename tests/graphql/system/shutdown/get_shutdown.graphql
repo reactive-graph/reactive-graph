@@ -1,0 +1,11 @@
+query {
+  instances {
+    entities(label: "/org/inexor/system/shutdown") {
+      id
+      properties(name: "label") {
+        name
+        value
+      }
+    }
+  }
+}

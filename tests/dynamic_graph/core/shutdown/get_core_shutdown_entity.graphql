@@ -1,0 +1,11 @@
+query GetCoreShutdownEntity {
+  core {
+    # id: "6ba7b810-9e15-11d1-50b4-00c04fd530c7"
+    shutdown(label: "/org/inexor/system/shutdown") {
+      id
+      trigger
+      label
+      shutdown
+    }
+  }
+}

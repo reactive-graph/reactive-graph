@@ -1,0 +1,12 @@
+# Query for the value of the property
+query {
+  instances {
+    entities(id: "2a69eb2d-4af2-4da8-9a87-71e60881d56a") {
+      id
+      properties(name: "hurtz") {
+        name
+        value
+      }
+    }
+  }
+}

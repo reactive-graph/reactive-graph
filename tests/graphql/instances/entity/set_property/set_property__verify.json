@@ -1,0 +1,15 @@
+{
+  "instances": {
+    "entities": [
+      {
+        "id": "2a69eb2d-4af2-4da8-9a87-71e60881d56a",
+        "properties": [
+          {
+            "name": "hurtz",
+            "value": "changed"
+          }
+        ]
+      }
+    ]
+  }
+}

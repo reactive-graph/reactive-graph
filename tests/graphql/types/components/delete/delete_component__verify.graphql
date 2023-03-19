@@ -1,0 +1,13 @@
+query {
+  types {
+    components(
+      type: {
+        namespace: "hurtz"
+        name: "hurtz"
+      }
+    ) {
+      namespace
+      name
+    }
+  }
+}

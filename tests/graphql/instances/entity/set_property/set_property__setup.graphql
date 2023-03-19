@@ -1,0 +1,56 @@
+# Create the entity type + Create an entity instance
+mutation {
+  types {
+    entities {
+      create(
+        type: {
+          namespace: "hurtz"
+          name: "hurtz"
+        }
+        properties: [
+          {
+            name: "hurtz"
+            description: "hurtz"
+            dataType: STRING
+            socketType: NONE
+            mutability: MUTABLE
+            extensions: []
+          }
+        ]
+      ) {
+        namespace
+        name
+        properties {
+          name
+          description
+          dataType
+          socketType
+          mutability
+          extensions {
+            namespace
+            name
+          }
+        }
+      }
+    }
+  }
+  instances {
+    entities {
+      create(
+        type: {
+          namespace: "hurtz"
+          name: "hurtz"
+        }
+        id: "2a69eb2d-4af2-4da8-9a87-71e60881d56a"
+        properties: [
+          {
+            name: "hurtz"
+            value: "initial"
+          }
+        ]
+      ) {
+        id
+      }
+    }
+  }
+}

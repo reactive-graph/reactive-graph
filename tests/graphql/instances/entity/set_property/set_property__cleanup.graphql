@@ -1,0 +1,18 @@
+# Delete the entity instance + delete the entity type
+mutation {
+  instances {
+    entities {
+      delete(id: "2a69eb2d-4af2-4da8-9a87-71e60881d56a")
+    }
+  }
+  types {
+    entities {
+      delete(
+        type: {
+          namespace: "hurtz"
+          name: "hurtz"
+        }
+      )
+    }
+  }
+}

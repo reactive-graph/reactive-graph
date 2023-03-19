@@ -1,0 +1,10 @@
+disabled = false
+
+disabled_plugins = [
+    "inexor-rgf-plugin-file",
+    "inexor-rgf-plugin-graphql-schema-visualization"
+]
+
+hot_deploy = true
+hot_deploy_location = "instances/second/plugins/deploy"
+install_location = "instances/second/plugins/installed"

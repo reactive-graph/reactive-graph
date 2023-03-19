@@ -1,0 +1,10 @@
+{
+  "types": {
+    "components": {
+      "create": {
+        "namespace": "hurtz",
+        "name": "hurtz"
+      }
+    }
+  }
+}
