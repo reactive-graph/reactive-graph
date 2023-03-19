@@ -140,11 +140,8 @@ impl PluginResolver for PluginResolverImpl {
         }
         // * --> PluginState::Disabled
         for id in self.plugin_container_manager.get_plugins_not_having_state(PluginState::Disabled) {
-            if self.is_plugin_disabled(id) {
-                if self.plugin_container_manager.disable(&id).is_ok() {
-                    info!("Disabled");
-                    return Changed;
-                }
+            if self.is_plugin_disabled(id) && self.plugin_container_manager.disable(&id).is_ok() {
+                return Changed;
             }
         }
         // PluginResolveState::CompilerVersionMismatch --> Uninstalling
