@@ -34,6 +34,7 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -71,10 +72,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -210,13 +213,13 @@
 </tbody></table>
 </div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="2bf0d6ea-c491-42d1-b58e-db72fff04074" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
+<graphql-playground id="2b40d90b-c300-4fc3-aa7b-bbca2359b2cf" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="75d47ab3-226d-4d7a-baba-9266c6172b14" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
+<graphql-playground id="573512b2-4aac-47cd-afa5-fe25522bb954" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="6b5b92df-0b5f-4025-a933-fe3971d388b7" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
+<graphql-playground id="d30eab66-0a14-4280-b99d-23b311916979" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
 </graphql-playground>
 
                     </main>
@@ -271,5 +274,6 @@
         <script src="graphql-playground.js"></script>
 
 
+    </div>
     </body>
 </html>

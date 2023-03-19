@@ -34,6 +34,7 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -71,10 +72,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -164,7 +167,7 @@
 </tbody></table>
 </div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="8b55d2b7-246f-4216-9f4e-e08af7898599" src="/examples/graphql/plugin-config/plugin-config.json">
+<graphql-playground id="253b8b3d-57d3-4ce3-a7ca-6662d6122780" src="/examples/graphql/plugin-config/plugin-config.json">
 </graphql-playground>
 <h2 id="usage-graphql-tabset"><a class="header" href="#usage-graphql-tabset">Usage (GraphQL) {.tabset}</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -294,5 +297,6 @@
         <script src="graphql-playground.js"></script>
 
 
+    </div>
     </body>
 </html>

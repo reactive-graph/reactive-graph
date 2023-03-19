@@ -34,6 +34,7 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -71,10 +72,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -191,11 +194,11 @@ number of physical CPU cores available.</p>
 The URLs are prefixed with the base path of the web resource provider. For example, the plugin
 <code>binary</code> provides a <code>WebResourceProvider</code> with the base path <code>binary</code>. Therefore, the URL starts
 with <code>http(s)://hostname:31415/binary/</code>.</p>
-<p>The <code>default_base_path</code> defines which web resource provider is the default by its base path. This
+<p>The <code>default_context_path</code> defines which web resource provider is the default by its base path. This
 means that the URL <code>https://hostname:31415/entities/uuid/property_name</code> will be handled by the
 WebResourceProvider binary and is doing the same as
 <code>https://hostname:31415/binary/entities/uuid/property_name</code>.</p>
-<pre><code class="language-toml">default_base_path = &quot;binary&quot;
+<pre><code class="language-toml">default_context_path = &quot;binary&quot;
 </code></pre>
 <div id="admonition-default-base-path" class="admonition tip">
 <div class="admonition-title">
@@ -276,5 +279,6 @@ format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User
         <script src="graphql-playground.js"></script>
 
 
+    </div>
     </body>
 </html>

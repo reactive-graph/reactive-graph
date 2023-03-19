@@ -34,6 +34,7 @@
 
     </head>
     <body>
+    <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
@@ -71,10 +72,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -191,7 +194,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="812871a1-ddd7-448e-b372-bfd89711c665" src="/examples/graphql/plugin-json/plugin-json.json">
+<graphql-playground id="4a2ac512-b6df-48c9-8a1d-44d9e62255b3" src="/examples/graphql/plugin-json/plugin-json.json">
 </graphql-playground>
 
                     </main>
@@ -246,5 +249,6 @@ makes it also necessary to unpack or pack these data in order to operate with it
         <script src="graphql-playground.js"></script>
 
 
+    </div>
     </body>
 </html>
