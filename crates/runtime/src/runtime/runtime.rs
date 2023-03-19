@@ -27,6 +27,8 @@ fn create_running_state_wrapper() -> RunningState {
 
 #[async_trait]
 pub trait Runtime: Send + Sync {
+    async fn config(&self);
+
     //  + Lifecycle
     fn init(&self);
 
