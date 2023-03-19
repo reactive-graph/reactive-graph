@@ -1,0 +1,226 @@
+# Scan this file for changes every 30 seconds
+refresh_rate = "30 seconds"
+
+[appenders.stdout]
+# An appender named "stdout" that writes to stdout
+kind = "console"
+
+[appenders.stdout.encoder]
+# https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html
+pattern = "{d(%H:%M:%S%.3f)} {h([{l}])} [{T}] {h({M}:{L})} {m}{n}\r"
+
+[appenders.file-application]
+kind = "file"
+path = "log/inexor-rgf-application.log"
+
+[appenders.file-application.encoder]
+pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
+
+[appenders.file-errors]
+kind = "file"
+path = "log/error.log"
+
+[appenders.file-errors.encoder]
+pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
+
+[appenders.file-plugin-connector]
+kind = "file"
+path = "log/inexor-rgf-plugin-connector.log"
+
+[appenders.file-plugin-connector.encoder]
+pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
+
+[appenders.file-plugin-mqtt]
+kind = "file"
+path = "log/inexor-rgf-plugin-mqtt.log"
+
+[appenders.file-plugin-mqtt.encoder]
+pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
+
+
+# Set the default logging level to "warn" and attach the "stdout" appender to the root
+[root]
+level = "debug"
+appenders = [ "stdout", "file-application" ]
+
+# How to configure the loggers: https://docs.rs/log4rs/1.0.0/log4rs/
+
+
+
+### Core
+
+[loggers."inexor_rgf_core_frp"]
+level = "trace"
+
+[loggers."inexor_rgf_core_reactive"]
+level = "trace"
+
+
+
+### Runtime
+
+[loggers."inexor_rgf_rt::implementation::component_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_type_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::relation_type_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::flow_type_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_vertex_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_behaviour_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::relation_behaviour_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::reactive_flow_instance_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::web_resource_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::plugin_resolver_impl"]
+level = "debug"
+
+[loggers."inexor_rgf_rt::implementation::plugin_container_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::entity_component_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::relation_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::relation_component_behaviour_registry_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::implementation::dynamic_graph_schema_manager_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::plugin::container"]
+level = "info"
+
+
+
+### Plugins
+
+[loggers."inexor_rgf_plugin_arithmetic::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_base::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_binary::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_comparison::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_config::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_connector"]
+level = "trace"
+
+[loggers."inexor_rgf_plugin_connector::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_date_time"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
+level = "trace"
+
+[loggers."inexor_rgf_plugin_file::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_git::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_http::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_input_device::provider"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_json::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_logical"]
+level = "trace"
+
+[loggers."inexor_rgf_plugin_logical::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_metadata::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_mqtt::plugin"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_mqtt::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_numeric::plugin"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_numeric::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_random::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_result"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_state"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_string::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_system_environment::plugin"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_system_environment::provider"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_taxonomy::providers"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_trigger"]
+level = "info"
+
+[loggers."inexor_rgf_plugin_value"]
+level = "trace"
+
+[loggers."inexor_rgf_plugin_value::providers"]
+level = "info"
+
+
+
+### Libraries
+
+[loggers."h2::codec"]
+level = "info"
+
+[loggers."salsa"]
+level = "info"
+
+[loggers."salsa::derived::slot"]
+level = "warn"
+
+[loggers."rumqttc::state"]
+level = "debug"
+appenders = [ "file-plugin-mqtt" ]
+additive = false

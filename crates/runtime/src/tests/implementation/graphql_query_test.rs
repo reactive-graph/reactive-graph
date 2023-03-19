@@ -12,11 +12,11 @@ async fn test_graphql_query() {
     let runtime = rt.clone();
     tokio::spawn(async move {
         let runtime = runtime;
-        runtime.init();
-        runtime.post_init();
+        runtime.init().await;
+        runtime.post_init().await;
         runtime.run().await;
-        runtime.pre_shutdown();
-        runtime.shutdown();
+        runtime.pre_shutdown().await;
+        runtime.shutdown().await;
     });
     rt.wait_for(Duration::from_secs(5)).await.expect("Runtime didn't came up");
     let query_string = String::from("query { instances { entities(label: \"/org/inexor/system/shutdown\") { id } } }");
