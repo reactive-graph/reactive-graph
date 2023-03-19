@@ -51,7 +51,7 @@ impl GraphQLPropertyType {
                 .extensions
                 .to_vec()
                 .iter()
-                .filter(|extension| &extension.ty == &extension_ty)
+                .filter(|extension| extension.ty == extension_ty)
                 .cloned()
                 .map(|extension| extension.into())
                 .collect();
