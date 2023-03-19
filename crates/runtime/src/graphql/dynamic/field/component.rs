@@ -36,12 +36,12 @@ pub fn component_query_field(component: &Component) -> Field {
 
 fn entity_instance_component<'a>(entity_instance: Arc<ReactiveEntityInstance>) -> FieldValue<'a> {
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_instance.ty);
-    FieldValue::owned_any(entity_instance.clone()).with_type(dy_ty.to_string())
+    FieldValue::owned_any(entity_instance).with_type(dy_ty.to_string())
 }
 
 fn relation_instance_component<'a>(relation_instance: Arc<ReactiveRelationInstance>) -> FieldValue<'a> {
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_instance.relation_type_id());
-    FieldValue::owned_any(relation_instance.clone()).with_type(dy_ty.to_string())
+    FieldValue::owned_any(relation_instance).with_type(dy_ty.to_string())
 }
 
 pub fn instance_component_id_field(ty: &ComponentTypeId) -> Field {
