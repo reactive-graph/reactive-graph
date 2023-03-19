@@ -484,7 +484,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
 
             // Register added relations
             for edge_key in reactive_flow_instance.relations_added.read().unwrap().iter() {
-                if let Some(relation_instance) = reactive_flow_instance.get_relation(&edge_key) {
+                if let Some(relation_instance) = reactive_flow_instance.get_relation(edge_key) {
                     // TODO: How to handle reactive if registering a relation instance wasn't successful?
                     let _ = self.reactive_relation_instance_manager.register_reactive_instance(relation_instance.clone());
                 }

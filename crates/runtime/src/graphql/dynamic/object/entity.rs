@@ -35,7 +35,7 @@ pub fn get_entity_types(mut schema: SchemaBuilder, context: &SchemaBuilderContex
         let ty = ComponentOrEntityTypeId::EntityType(entity_type.ty.clone());
         let outbound_types = context.relation_type_manager.get_outbound_relation_types(&ty, false);
         let inbound_types = context.relation_type_manager.get_inbound_relation_types(&ty, false);
-        schema = schema.register(get_entity_type(entity_type.clone(), outbound_types, inbound_types, &context));
+        schema = schema.register(get_entity_type(entity_type.clone(), outbound_types, inbound_types, context));
     }
     schema
 }
@@ -47,9 +47,9 @@ pub fn get_entity_type(entity_type: EntityType, outbound_types: Vec<RelationType
         .implement(INTERFACE_ENTITY);
     // Components
     for component_ty in entity_type.components.iter() {
-        object = object.field(instance_component_id_field(&component_ty));
+        object = object.field(instance_component_id_field(component_ty));
         let component_dy_ty = DynamicGraphTypeDefinition::from(component_ty);
-        if !is_divergent(&entity_type, &component_ty) {
+        if !is_divergent(&entity_type, component_ty) {
             object = object.implement(component_dy_ty.to_string());
         }
     }
@@ -68,7 +68,7 @@ pub fn get_entity_type(entity_type: EntityType, outbound_types: Vec<RelationType
         if let Some(entity_outbound_relation_field) = entity_outbound_relation_field(&outbound_relation_type, &field_names, &field_descriptions) {
             object = object.field(entity_outbound_relation_field);
         }
-        for field in outbound_entity_to_inbound_field(&outbound_relation_type, &field_names, &field_descriptions, &context) {
+        for field in outbound_entity_to_inbound_field(&outbound_relation_type, &field_names, &field_descriptions, context) {
             object = object.field(field);
         }
     }
@@ -81,7 +81,7 @@ pub fn get_entity_type(entity_type: EntityType, outbound_types: Vec<RelationType
         if let Some(entity_inbound_relation_field) = entity_inbound_relation_field(&inbound_relation_type, &field_names, &field_descriptions) {
             object = object.field(entity_inbound_relation_field);
         }
-        for field in inbound_entity_to_outbound_field(&inbound_relation_type, &field_names, &field_descriptions, &context) {
+        for field in inbound_entity_to_outbound_field(&inbound_relation_type, &field_names, &field_descriptions, context) {
             object = object.field(field);
         }
     }
@@ -222,7 +222,7 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
     let mut has_updatable_property = false;
     for property in entity_type.properties.iter() {
         if property.mutability == Mutable {
-            if let Some(type_ref) = to_input_type_ref(&property, true) {
+            if let Some(type_ref) = to_input_type_ref(property, true) {
                 update_field = update_field.argument(InputValue::new(&property.name, type_ref));
                 has_updatable_property = true;
             }

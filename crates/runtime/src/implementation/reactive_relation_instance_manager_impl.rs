@@ -152,7 +152,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn get(&self, edge_key: &EdgeKey) -> Option<Arc<ReactiveRelationInstance>> {
-        self.reactive_relation_instances.0.get(&edge_key).map(|r| r.value().clone())
+        self.reactive_relation_instances.0.get(edge_key).map(|r| r.value().clone())
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<Arc<ReactiveRelationInstance>> {
@@ -220,11 +220,11 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
     }
 
     fn count_by_component(&self, component_ty: &ComponentTypeId) -> usize {
-        self.reactive_relation_instances.0.iter().filter(|r| r.is_a(&component_ty)).count()
+        self.reactive_relation_instances.0.iter().filter(|r| r.is_a(component_ty)).count()
     }
 
     fn count_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> usize {
-        self.reactive_relation_instances.0.iter().filter(|r| r.behaves_as(&behaviour_ty)).count()
+        self.reactive_relation_instances.0.iter().filter(|r| r.behaves_as(behaviour_ty)).count()
     }
 
     fn get_keys(&self) -> Vec<EdgeKey> {
@@ -469,7 +469,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         for relation_instance in self.reactive_relation_instances.0.iter() {
             if relation_instance.components.contains(&component_behaviour_ty.component_ty) {
                 self.relation_component_behaviour_manager
-                    .add_behaviour_to_relation_component(relation_instance.clone(), &component_behaviour_ty);
+                    .add_behaviour_to_relation_component(relation_instance.clone(), component_behaviour_ty);
             }
         }
     }

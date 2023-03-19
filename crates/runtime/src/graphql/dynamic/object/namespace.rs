@@ -15,9 +15,9 @@ use crate::graphql::dynamic::relation_query_field;
 use crate::graphql::dynamic::SchemaBuilderContext;
 
 pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Option<Object> {
-    let components = context.component_manager.get_by_namespace(&namespace);
-    let entity_types = context.entity_type_manager.get_by_namespace(&namespace);
-    let relation_types = context.relation_type_manager.get_by_namespace(&namespace);
+    let components = context.component_manager.get_by_namespace(namespace);
+    let entity_types = context.entity_type_manager.get_by_namespace(namespace);
+    let relation_types = context.relation_type_manager.get_by_namespace(namespace);
     if components.is_empty() && entity_types.is_empty() && relation_types.is_empty() {
         warn!("Skip empty query namespace {}", &namespace);
         return None;
@@ -42,8 +42,8 @@ pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Opt
 }
 
 pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> Option<Object> {
-    let entity_types = context.entity_type_manager.get_by_namespace(&namespace);
-    let relation_types = context.relation_type_manager.get_by_namespace(&namespace);
+    let entity_types = context.entity_type_manager.get_by_namespace(namespace);
+    let relation_types = context.relation_type_manager.get_by_namespace(namespace);
     if entity_types.is_empty() && relation_types.is_empty() {
         warn!("Skip empty mutation namespace {}", &namespace);
         return None;

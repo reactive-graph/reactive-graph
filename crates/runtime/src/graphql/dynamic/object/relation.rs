@@ -31,7 +31,7 @@ use crate::model_runtime::PROPERTY_TRIGGER;
 
 pub fn get_relation_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for relation_type in context.relation_type_manager.get_all() {
-        schema = schema.register(get_relation_type(relation_type.clone(), &context));
+        schema = schema.register(get_relation_type(relation_type.clone(), context));
     }
     schema
 }
@@ -43,9 +43,9 @@ pub fn get_relation_type(relation_type: RelationType, context: &SchemaBuilderCon
         .implement(INTERFACE_RELATION);
     // Components
     for component_ty in relation_type.components.iter() {
-        object = object.field(instance_component_id_field(&component_ty));
+        object = object.field(instance_component_id_field(component_ty));
         let component_dy_ty = DynamicGraphTypeDefinition::from(component_ty);
-        if !is_divergent(&relation_type, &component_ty) {
+        if !is_divergent(&relation_type, component_ty) {
             object = object.implement(component_dy_ty.to_string());
         }
     }
@@ -63,7 +63,7 @@ pub fn get_relation_type(relation_type: RelationType, context: &SchemaBuilderCon
         &relation_type.outbound_type,
         field_names.from_relation_to_outbound_entity,
         field_descriptions.from_relation_to_outbound_entity,
-        &context,
+        context,
     ) {
         object = object.field(field);
     }
@@ -72,7 +72,7 @@ pub fn get_relation_type(relation_type: RelationType, context: &SchemaBuilderCon
         &relation_type.inbound_type,
         field_names.from_relation_to_inbound_entity,
         field_descriptions.from_relation_to_inbound_entity,
-        &context,
+        context,
     ) {
         object = object.field(field);
     }
@@ -213,7 +213,7 @@ pub fn get_relation_update_field(relation_type: &RelationType) -> Option<Field> 
     let mut has_updatable_property = false;
     for property in relation_type.properties.iter() {
         if property.mutability == Mutable {
-            if let Some(type_ref) = to_input_type_ref(&property, true) {
+            if let Some(type_ref) = to_input_type_ref(property, true) {
                 update_field = update_field.argument(InputValue::new(&property.name, type_ref));
                 has_updatable_property = true;
             }

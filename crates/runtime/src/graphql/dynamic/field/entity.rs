@@ -64,7 +64,7 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
                 }
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance.clone())])));
             }
-            let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, &entity_instance_manager);
+            let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, entity_instance_manager);
             return Ok(Some(FieldValue::list(
                 instances.into_iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
             )));
@@ -73,7 +73,7 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
     .description(entity_type.description.clone())
     .argument(InputValue::new("id", TypeRef::named(TypeRef::STRING)))
     .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)));
-    field = add_entity_type_properties_as_field_arguments(field, &entity_type, true, true);
+    field = add_entity_type_properties_as_field_arguments(field, entity_type, true, true);
     field
 }
 
@@ -149,7 +149,7 @@ pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
         })
     })
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)));
-    field = add_entity_type_properties_as_field_arguments(field, &entity_type, false, false);
+    field = add_entity_type_properties_as_field_arguments(field, entity_type, false, false);
     Some(field)
 }
 
@@ -193,7 +193,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
                 return Ok(Some(field_value));
             }
             // TODO: implement label matching
-            let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, &entity_instance_manager);
+            let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, entity_instance_manager);
             let field_value = FieldValue::owned_any(instances);
             return Ok(Some(field_value));
         })
@@ -203,7 +203,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)))
     // TODO: implement label matching
     .argument(InputValue::new("label", TypeRef::named(TypeRef::STRING)));
-    field = add_entity_type_properties_as_field_arguments(field, &entity_type, true, true);
+    field = add_entity_type_properties_as_field_arguments(field, entity_type, true, true);
     Some(field)
 }
 
@@ -321,7 +321,7 @@ pub fn outbound_entity_to_inbound_field(
             if ty.namespace() == "*" {
                 optional_field_to_vec(outbound_entity_to_inbound_entities_union_field(
                     &relation_type.ty,
-                    &UNION_ALL_ENTITIES,
+                    UNION_ALL_ENTITIES,
                     field_name,
                     field_description,
                 ))
@@ -378,7 +378,7 @@ pub fn inbound_entity_to_outbound_field(
             if ty.namespace() == "*" {
                 optional_field_to_vec(inbound_entity_to_outbound_entities_union_field(
                     &relation_type.ty,
-                    &UNION_ALL_ENTITIES,
+                    UNION_ALL_ENTITIES,
                     field_name,
                     field_description,
                 ))
@@ -670,7 +670,7 @@ fn add_entity_type_properties_as_field_arguments(mut field: Field, entity_type: 
         if exclude_label && &property.name == &LABEL.property_name() {
             continue;
         }
-        if let Some(type_ref) = to_input_type_ref(&property, is_optional) {
+        if let Some(type_ref) = to_input_type_ref(property, is_optional) {
             field = field.argument(InputValue::new(&property.name, type_ref));
         }
     }

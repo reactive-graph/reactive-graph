@@ -86,7 +86,7 @@ impl EntityBehaviourManager for EntityBehaviourManagerImpl {
     }
 
     fn get_instances_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<ReactiveEntityInstance>> {
-        self.entity_behaviour_storage.0.get_instances_by_behaviour(&ty)
+        self.entity_behaviour_storage.0.get_instances_by_behaviour(ty)
     }
 
     fn connect(&self, entity_instance: Arc<ReactiveEntityInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {

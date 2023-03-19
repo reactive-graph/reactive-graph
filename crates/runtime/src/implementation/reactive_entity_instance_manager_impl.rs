@@ -437,7 +437,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         for entity_instance in self.reactive_entity_instances.0.iter() {
             if entity_instance.components.contains(&component_behaviour_ty.component_ty) {
                 self.entity_component_behaviour_manager
-                    .add_behaviour_to_entity_component(entity_instance.clone(), &component_behaviour_ty);
+                    .add_behaviour_to_entity_component(entity_instance.clone(), component_behaviour_ty);
             }
         }
     }

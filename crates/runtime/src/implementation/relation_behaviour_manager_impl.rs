@@ -73,7 +73,7 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     }
 
     fn remove_behaviours_by_key(&self, edge_key: &EdgeKey) {
-        self.relation_behaviour_storage.0.remove_all(&edge_key);
+        self.relation_behaviour_storage.0.remove_all(edge_key);
     }
 
     fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) {
@@ -90,7 +90,7 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
     }
 
     fn get_instances_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<ReactiveRelationInstance>> {
-        self.relation_behaviour_storage.0.get_instances_by_behaviour(&ty)
+        self.relation_behaviour_storage.0.get_instances_by_behaviour(ty)
     }
 
     fn connect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {

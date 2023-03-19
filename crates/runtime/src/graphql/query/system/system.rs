@@ -38,14 +38,14 @@ impl System {
                 None => true,
             })
             .filter(|plugin_id| match &name {
-                Some(name) => match plugin_container_manager.name(&plugin_id) {
+                Some(name) => match plugin_container_manager.name(plugin_id) {
                     Some(plugin_name) => &plugin_name == name,
                     None => false,
                 },
                 None => true,
             })
             .filter(|plugin_id| match &state {
-                Some(state) => match plugin_container_manager.get_plugin_state(&plugin_id) {
+                Some(state) => match plugin_container_manager.get_plugin_state(plugin_id) {
                     Some(PluginState::Installed) => state == "Installed",
                     Some(PluginState::Resolving(_)) => state == "Resolving",
                     Some(PluginState::Resolved) => state == "Resolved",

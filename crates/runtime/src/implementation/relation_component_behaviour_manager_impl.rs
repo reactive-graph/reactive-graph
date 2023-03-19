@@ -111,7 +111,7 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
     }
 
     fn get_instances_by_behaviour(&self, ty: &BehaviourTypeId) -> Vec<Arc<ReactiveRelationInstance>> {
-        self.relation_behaviour_storage.0.get_instances_by_behaviour(&ty)
+        self.relation_behaviour_storage.0.get_instances_by_behaviour(ty)
     }
 
     fn connect(&self, relation_instance: Arc<ReactiveRelationInstance>, behaviour_ty: &BehaviourTypeId) -> Result<(), BehaviourTransitionError> {

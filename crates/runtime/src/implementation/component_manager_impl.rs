@@ -295,7 +295,7 @@ impl ComponentManager for ComponentManagerImpl {
         let mut guard = self.components.0.write().unwrap();
         for component in guard.iter_mut() {
             if &component.ty == component_ty {
-                if !component.has_extension(&extension_ty) {
+                if !component.has_extension(extension_ty) {
                     return Err(ComponentExtensionUpdateError::ExtensionDoesNotExist);
                 }
                 component.extensions.retain(|extension| &extension.ty != extension_ty);

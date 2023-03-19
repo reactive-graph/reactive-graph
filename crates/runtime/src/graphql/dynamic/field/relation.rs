@@ -119,7 +119,7 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
         if &property.name == &LABEL.property_name() {
             continue;
         }
-        if let Some(type_ref) = to_input_type_ref(&property, true) {
+        if let Some(type_ref) = to_input_type_ref(property, true) {
             field = field.argument(InputValue::new(&property.name, type_ref));
         }
     }
@@ -211,7 +211,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
     .argument(InputValue::new("instanceId", TypeRef::named(TypeRef::ID)))
     .argument(InputValue::new("inboundId", TypeRef::named(TypeRef::ID)));
     for property in relation_type.properties.iter() {
-        if let Some(type_ref) = to_input_type_ref(&property, false) {
+        if let Some(type_ref) = to_input_type_ref(property, false) {
             field = field.argument(InputValue::new(&property.name, type_ref));
         }
     }
@@ -306,7 +306,7 @@ pub fn relation_outbound_field(
     match ty {
         ComponentOrEntityTypeId::EntityType(ty) => {
             if ty.namespace() == "*" {
-                vec![relation_outbound_entity_union_field(&UNION_ALL_ENTITIES, field_name, field_description)]
+                vec![relation_outbound_entity_union_field(UNION_ALL_ENTITIES, field_name, field_description)]
             } else if ty.type_name() == "*" {
                 vec![relation_outbound_entity_union_field(
                     &namespace_entities_union_type_name(&ty.namespace()),
@@ -350,7 +350,7 @@ pub fn relation_inbound_field(
     match ty {
         ComponentOrEntityTypeId::EntityType(ty) => {
             if ty.namespace() == "*" {
-                vec![relation_inbound_entity_union_field(&UNION_ALL_ENTITIES, field_name, field_description)]
+                vec![relation_inbound_entity_union_field(UNION_ALL_ENTITIES, field_name, field_description)]
             } else if ty.type_name() == "*" {
                 vec![relation_inbound_entity_union_field(
                     &namespace_entities_union_type_name(&ty.namespace()),

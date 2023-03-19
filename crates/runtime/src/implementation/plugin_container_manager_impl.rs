@@ -304,7 +304,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn get_unsatisfied_dependencies(&self, id: &Uuid) -> DashSet<PluginDependency> {
         self.get_dependencies(id)
             .iter()
-            .filter(|d| self.get_dependency_state(&d) != PluginState::Active)
+            .filter(|d| self.get_dependency_state(d) != PluginState::Active)
             .map(|d| d.clone())
             .collect()
     }
