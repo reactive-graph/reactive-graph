@@ -100,6 +100,12 @@ level = "info"
 [loggers."inexor_rgf_rt::implementation::dynamic_graph_schema_manager_impl"]
 level = "info"
 
+[loggers."inexor_rgf_rt::implementation::graphql_server_impl"]
+level = "info"
+
+[loggers."inexor_rgf_rt::graphql::dynamic::object::namespace"]
+level = "error"
+
 [loggers."inexor_rgf_rt::plugin::container"]
 level = "info"
 
@@ -132,13 +138,13 @@ level = "trace"
 level = "info"
 
 [loggers."inexor_rgf_plugin_date_time"]
-level = "trace"
+level = "info"
 
 [loggers."inexor_rgf_plugin_date_time::providers"]
 level = "info"
 
 [loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
-level = "trace"
+level = "info"
 
 [loggers."inexor_rgf_plugin_file::providers"]
 level = "info"
