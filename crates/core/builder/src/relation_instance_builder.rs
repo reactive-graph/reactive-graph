@@ -88,7 +88,7 @@ impl RelationInstanceBuilder {
     }
 
     pub fn property_with_default(&mut self, property: Box<dyn PropertyTypeDefinition>) -> &mut RelationInstanceBuilder {
-        self.properties.insert(property.property_name().into(), property.default_value());
+        self.properties.insert(property.property_name(), property.default_value());
         self
     }
 

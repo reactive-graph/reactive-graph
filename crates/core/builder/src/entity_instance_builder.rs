@@ -40,7 +40,7 @@ impl EntityInstanceBuilder {
     }
 
     pub fn property_with_default(&mut self, property: &dyn PropertyTypeDefinition) -> &mut EntityInstanceBuilder {
-        self.properties.insert(property.property_name().into(), property.default_value());
+        self.properties.insert(property.property_name(), property.default_value());
         self
     }
 
