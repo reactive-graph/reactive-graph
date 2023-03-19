@@ -499,7 +499,7 @@ impl PluginContainer {
                 Err(PluginStartError::InTransition)
             }
             PluginState::Uninstalled | PluginState::Disabled | PluginState::Installed | PluginState::Resolving(_) => {
-                Err(PluginStartError::NotResolved(self.state.clone()))
+                Err(PluginStartError::NotResolved(self.state))
             }
             PluginState::Resolved => {
                 trace!("Starting plugin {}", self.id);
