@@ -19,14 +19,17 @@ pub enum PluginState {
     /// The plugin is being stopped. If it has a shutdown method, it is executed. When done, the plugin will become "Resolved".
     Stopping(PluginStoppingState),
 
-    /// The bundle is being uninstalled.
+    /// The plugin is being uninstalled.
     Uninstalling(PluginUninstallingState),
 
-    /// The bundle is being refreshed.
+    /// The plugin is being refreshed.
     Refreshing(PluginRefreshingState),
 
-    /// The bundle has been removed from the runtime.
+    /// The plugin has been removed from the runtime.
     Uninstalled,
+
+    /// The plugin has been disabled.
+    Disabled,
 }
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]

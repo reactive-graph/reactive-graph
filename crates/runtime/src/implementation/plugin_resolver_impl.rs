@@ -1,11 +1,11 @@
 use std::sync::RwLock;
-use std::thread;
 use std::time::Duration;
 
 use async_trait::async_trait;
 use log::info;
 use log::trace;
 use log::warn;
+use uuid::Uuid;
 
 use crate::api::ComponentManager;
 use crate::api::ConfigManager;
@@ -60,14 +60,41 @@ pub struct PluginResolverImpl {
     pub mode: PluginResolverModeState,
 }
 
-impl PluginResolverImpl {}
+impl PluginResolverImpl {
+    fn is_disabled(&self) -> bool {
+        self.config_manager.get_plugins_config().disabled.unwrap_or(false)
+    }
+
+    fn is_plugin_disabled(&self, id: Uuid) -> bool {
+        let stem = self.plugin_container_manager.get_stem(&id);
+        let name = self.plugin_container_manager.name(&id);
+
+        if let Some(disabled_plugins) = self.config_manager.get_plugins_config().disabled_plugins {
+            if let Some(stem) = stem {
+                if disabled_plugins.contains(&stem) {
+                    return true;
+                }
+            }
+            if let Some(name) = name {
+                if disabled_plugins.contains(&name) {
+                    return true;
+                }
+            }
+        }
+        false
+    }
+}
 
 #[async_trait]
 #[provides]
 impl PluginResolver for PluginResolverImpl {
-    fn resolve_until_idle(&self) {
+    async fn resolve_until_idle(&self) {
+        if self.is_disabled() {
+            trace!("Skipping all plugins");
+            return;
+        }
         let mut i = 0;
-        while self.resolve() == Changed && i < 1000 {
+        while self.resolve().await == Changed && i < 1000 {
             // TODO: timeout + circuit breaker
             i += 1;
         }
@@ -110,6 +137,15 @@ impl PluginResolver for PluginResolverImpl {
         {
             self.plugin_container_manager.remove_plugin_container(&id);
             return Changed;
+        }
+        // * --> PluginState::Disabled
+        for id in self.plugin_container_manager.get_plugins_not_having_state(PluginState::Disabled) {
+            if self.is_plugin_disabled(id) {
+                if self.plugin_container_manager.disable(&id).is_ok() {
+                    info!("Disabled");
+                    return Changed;
+                }
+            }
         }
         // PluginResolveState::CompilerVersionMismatch --> Uninstalling
         for id in self.plugin_container_manager.get_plugins_with_states(
@@ -342,9 +378,46 @@ impl Lifecycle for PluginResolverImpl {
         self.set_mode(PluginResolverMode::Starting);
         self.resolve_until_idle().await;
         for id in self.plugin_container_manager.get_plugins_not_having_state(PluginState::Active) {
-            let stem = self.plugin_container_manager.get_stem(&id).unwrap_or_default();
+            let name = self.plugin_container_manager.name(&id).unwrap_or_default().replace("inexor-rgf-plugin-", "");
             for d in self.plugin_container_manager.get_unsatisfied_dependencies(&id) {
-                warn!("Plugin {} {} has unsatisfied dependency: {}:{}", &id, &stem, d.name, d.version);
+                trace!(
+                    "Plugin {} {} has unsatisfied dependency: {}:{}",
+                    id,
+                    &name,
+                    d.name.replace("inexor-rgf-plugin-", ""),
+                    d.version
+                );
+                match self.plugin_container_manager.get_plugin_by_dependency(&d) {
+                    Some(dependency_id) => {
+                        let dependency_name = self
+                            .plugin_container_manager
+                            .name(&dependency_id)
+                            .unwrap_or_default()
+                            .replace("inexor-rgf-plugin-", "");
+                        let dependency_version = self.plugin_container_manager.version(&dependency_id).unwrap_or_default();
+                        let dependency_state = self
+                            .plugin_container_manager
+                            .get_plugin_state(&dependency_id)
+                            .unwrap_or(PluginState::Uninstalled);
+                        warn!(
+                            "Plugin {} has unsatisfied dependency: {}:{} - which exists ({} {}) but has state {:?}",
+                            &name,
+                            d.name.replace("inexor-rgf-plugin-", ""),
+                            d.version,
+                            dependency_name,
+                            dependency_version,
+                            dependency_state
+                        );
+                    }
+                    None => {
+                        warn!(
+                            "Plugin {} has unsatisfied dependency: {}:{} - which doesn't exist",
+                            &name,
+                            d.name.replace("inexor-rgf-plugin-", ""),
+                            d.version
+                        );
+                    }
+                }
             }
         }
         self.set_mode(PluginResolverMode::Neutral);

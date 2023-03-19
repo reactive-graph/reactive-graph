@@ -27,6 +27,7 @@ use crate::plugins::Plugin;
 use crate::plugins::PluginContext;
 use crate::plugins::PluginDependency;
 use crate::plugins::PluginDeployError;
+use crate::plugins::PluginDisableError;
 use crate::plugins::PluginRefreshingState;
 use crate::plugins::PluginResolveState;
 use crate::plugins::PluginStartError;
@@ -156,6 +157,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::InjectingContext)),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Registering)),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating)),
+            PluginState::Disabled,
         ];
         states.iter().map(|state| self.count_by_state_str(state)).collect()
     }
@@ -456,6 +458,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
             PluginState::Refreshing(PluginRefreshingState::Starting(_)) => false,
             PluginState::Uninstalling(_) => true,
             PluginState::Uninstalled => true,
+            PluginState::Disabled => true,
         })
     }
 
@@ -625,6 +628,14 @@ impl PluginContainerManager for PluginContainerManagerImpl {
             None => Err(PluginDeployError::NotFound),
         }
     }
+
+    fn disable(&self, id: &Uuid) -> Result<(), PluginDisableError> {
+        match self.plugin_containers.0.get_mut(id) {
+            Some(mut plugin_container) => plugin_container.disable(),
+            None => Err(PluginDisableError::NotFound),
+        }
+    }
 }
 
+#[async_trait]
 impl Lifecycle for PluginContainerManagerImpl {}

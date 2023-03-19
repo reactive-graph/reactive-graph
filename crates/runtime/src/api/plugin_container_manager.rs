@@ -16,6 +16,7 @@ use crate::plugin::PluginTransitionResult;
 use crate::plugins::PluginContext;
 use crate::plugins::PluginDependency;
 use crate::plugins::PluginDeployError;
+use crate::plugins::PluginDisableError;
 use crate::plugins::PluginStartError;
 use crate::plugins::PluginState;
 use crate::plugins::PluginStopError;
@@ -26,7 +27,7 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
     // Container Management
 
     /// Creates a new plugin container for a plugin with the given file stem. The dynamically linked
-    /// library is located at the given path which have to be in the folder plugins/installed.
+    /// library is located at the given path which have to be in the plugin installation folder.
     fn create_and_register_plugin_container(&self, stem: String, path: PathBuf) -> Option<Uuid>;
 
     /// Returns the plugin with the given id from the list of plugin containers.
@@ -99,8 +100,8 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
 
     // Transitions
 
-    /// Deploys the dynamic linked library file from the plugins/deploy folder into the
-    /// plugins/installed folder.
+    /// Deploys the dynamic linked library file from the plugin hot deploy folder into the
+    /// plugin installation folder.
     ///
     /// The target filename will contain a timestamp in order to avoid that a cached previous
     /// version of the DLL will be loaded.
@@ -250,4 +251,7 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
 
     /// Redeploys the plugin with the given id.
     fn redeploy(&self, id: &Uuid) -> Result<(), PluginDeployError>;
+
+    /// Disables the plugin with the given id.
+    fn disable(&self, id: &Uuid) -> Result<(), PluginDisableError>;
 }

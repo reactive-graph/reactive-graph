@@ -3,8 +3,6 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use crate::implementation::get_deploy_path;
-use crate::implementation::get_install_path;
 use dashmap::DashSet;
 use libloading::Library;
 use log::debug;
@@ -13,6 +11,8 @@ use log::info;
 use log::trace;
 use uuid::Uuid;
 
+use crate::implementation::get_deploy_path;
+use crate::implementation::get_install_path;
 use crate::plugin::registrar::PluginRegistrar;
 use crate::plugin::PluginProxy;
 use crate::plugin::PluginTransitionResult;
@@ -29,6 +29,7 @@ use crate::plugins::PluginContext;
 use crate::plugins::PluginDeclaration;
 use crate::plugins::PluginDependency;
 use crate::plugins::PluginDeployError;
+use crate::plugins::PluginDisableError;
 use crate::plugins::PluginState;
 use crate::plugins::PluginUninstallError;
 use crate::plugins::PluginUninstallingState;
@@ -55,7 +56,7 @@ pub struct PluginContainer {
     pub plugin_declaration: RwLock<Option<PluginDeclaration>>,
 
     /// The plugin context.
-    pub proxy: RwLock<Option<Arc<PluginProxy>>>,
+    pub proxy: Arc<RwLock<Option<Arc<PluginProxy>>>>,
 
     /// The loaded library.
     pub library: RwLock<Option<Arc<Library>>>,
@@ -72,7 +73,7 @@ impl PluginContainer {
             path,
             state: PluginState::Installed,
             plugin_declaration: RwLock::new(None),
-            proxy: RwLock::new(None),
+            proxy: Arc::new(RwLock::new(None)),
             library: RwLock::new(None),
             dependencies: DashSet::new(),
         }
@@ -145,10 +146,18 @@ impl PluginContainer {
             return NoChange;
         }
         let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll));
-        let mut writer = self.library.write().unwrap();
-        // This drops the library
-        *writer = None;
-        debug!("Plugin {} unloaded dynamic linked library located at {}", self.id, self.path.display());
+        {
+            let mut writer = self.plugin_declaration.write().unwrap();
+            // This drops the plugin declaration
+            *writer = None;
+        }
+        {
+            let mut writer = self.library.write().unwrap();
+            // This drops the library
+            *writer = None;
+            debug!("Plugin {} unloaded dynamic linked library located at {}", self.id, self.path.display());
+        }
+        self.dependencies = DashSet::new();
         if refreshing {
             self.state = PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UninstallDll));
         } else {
@@ -292,11 +301,10 @@ impl PluginContainer {
         let reader = self.plugin_declaration.read().unwrap();
         if let Some(plugin_declaration) = *reader {
             trace!("Plugin {} is loading the list of dependencies", self.id);
-            unsafe {
-                for dependency in (plugin_declaration.get_dependencies)() {
-                    trace!("Plugin {} depends on {}:{}", self.id, &dependency.name, &dependency.version);
-                    self.dependencies.insert(dependency);
-                }
+            let dependencies = unsafe { (plugin_declaration.get_dependencies)() };
+            for dependency in dependencies.clone() {
+                trace!("Plugin {} depends on {}:{}", self.id, &dependency.name, &dependency.version);
+                self.dependencies.insert(dependency);
             }
             if refreshing {
                 self.state = PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::DependenciesNotActive));
@@ -372,19 +380,28 @@ impl PluginContainer {
         {
             return NoChange;
         }
-        let reader = self.proxy.read().unwrap();
-        if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-            trace!("Plugin {} is being activated", self.id);
-            match proxy.activate() {
-                Ok(_) => {
-                    debug!("Plugin {} has been activated successfully", self.id);
-                    self.state = PluginState::Active;
-                    info!("[ACTIVE] {}:{}", self.name().unwrap_or_default(), self.version().unwrap_or_default());
-                    return Changed;
-                }
-                Err(e) => {
-                    error!("Plugin {} failed to activate: {:?}", self.id, e);
-                }
+
+        let proxy = {
+            let reader = self.proxy.read().unwrap();
+            let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) else {
+                return NoChange;
+            };
+            proxy.clone()
+        };
+        trace!("Plugin {} is being activated", self.id);
+        match proxy.activate().await {
+            Ok(_) => {
+                debug!("Plugin {} has been activated successfully", self.id);
+                self.state = PluginState::Active;
+                info!(
+                    "[ACTIVE] {} {}",
+                    self.name().unwrap_or_default().replace("inexor-rgf-plugin-", ""),
+                    self.version().unwrap_or_default()
+                );
+                return Changed;
+            }
+            Err(e) => {
+                error!("Plugin {} failed to activate: {:?}", self.id, e);
             }
         }
         NoChange
@@ -398,22 +415,27 @@ impl PluginContainer {
             return NoChange;
         }
         let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Deactivating));
-        let reader = self.proxy.read().unwrap();
-        if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
-            trace!("Plugin {} is being deactivated", self.id);
-            match proxy.deactivate() {
-                Ok(_) => {
-                    debug!("Plugin {} has been deactivated successfully", self.id);
-                    if refreshing {
-                        self.state = PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Unregistering));
-                    } else {
-                        self.state = PluginState::Stopping(PluginStoppingState::Unregistering);
-                    }
-                    return Changed;
+
+        let proxy = {
+            let reader = self.proxy.read().unwrap();
+            let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) else {
+                return NoChange;
+            };
+            proxy.clone()
+        };
+        trace!("Plugin {} is being deactivated", self.id);
+        match proxy.deactivate().await {
+            Ok(_) => {
+                debug!("Plugin {} has been deactivated successfully", self.id);
+                if refreshing {
+                    self.state = PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Unregistering));
+                } else {
+                    self.state = PluginState::Stopping(PluginStoppingState::Unregistering);
                 }
-                Err(e) => {
-                    error!("Plugin {} failed to deactivate: {:?}", self.id, e);
-                }
+                return Changed;
+            }
+            Err(e) => {
+                error!("Plugin {} failed to deactivate: {:?}", self.id, e);
             }
         }
         NoChange
@@ -476,7 +498,9 @@ impl PluginContainer {
             PluginState::Starting(_) | PluginState::Stopping(_) | PluginState::Refreshing(_) | PluginState::Uninstalling(_) => {
                 Err(PluginStartError::InTransition)
             }
-            PluginState::Uninstalled | PluginState::Installed | PluginState::Resolving(_) => Err(PluginStartError::NotResolved(self.state.clone())),
+            PluginState::Uninstalled | PluginState::Disabled | PluginState::Installed | PluginState::Resolving(_) => {
+                Err(PluginStartError::NotResolved(self.state.clone()))
+            }
             PluginState::Resolved => {
                 trace!("Starting plugin {}", self.id);
                 self.state = PluginState::Starting(PluginStartingState::ConstructingProxy);
@@ -490,7 +514,9 @@ impl PluginContainer {
             PluginState::Stopping(_) | PluginState::Starting(_) | PluginState::Refreshing(_) | PluginState::Uninstalling(_) => {
                 Err(PluginStopError::InTransition)
             }
-            PluginState::Uninstalled | PluginState::Installed | PluginState::Resolving(_) | PluginState::Resolved => Err(PluginStopError::NotActive),
+            PluginState::Uninstalled | PluginState::Disabled | PluginState::Installed | PluginState::Resolving(_) | PluginState::Resolved => {
+                Err(PluginStopError::NotActive)
+            }
             PluginState::Active => {
                 trace!("Stopping plugin {}", self.id);
                 self.state = PluginState::Stopping(PluginStoppingState::Deactivating);
@@ -505,6 +531,7 @@ impl PluginContainer {
                 Err(PluginUninstallError::InTransition)
             }
             PluginState::Uninstalled => Err(PluginUninstallError::AlreadyUninstalled),
+            PluginState::Disabled => Err(PluginUninstallError::Disabled),
             PluginState::Active => Err(PluginUninstallError::NotStopped),
             PluginState::Installed | PluginState::Resolving(_) | PluginState::Resolved => {
                 trace!("Uninstalling plugin {}", self.id);
@@ -516,9 +543,14 @@ impl PluginContainer {
 
     pub fn redeploy(&mut self) -> Result<(), PluginDeployError> {
         match self.state {
-            PluginState::Stopping(_) | PluginState::Starting(_) | PluginState::Refreshing(_) | PluginState::Uninstalling(_) => {
-                Err(PluginDeployError::InTransition)
+            PluginState::Stopping(_) | PluginState::Starting(_) | PluginState::Uninstalling(_) => Err(PluginDeployError::InTransition),
+            PluginState::Refreshing(PluginRefreshingState::Resolving(_)) => {
+                // PluginResolveState::DependenciesNotActive
+                trace!("Redeploying resolved plugin {}", self.id);
+                self.state = PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll));
+                Ok(())
             }
+            PluginState::Refreshing(_) => Err(PluginDeployError::InTransition),
             PluginState::Uninstalled => Err(PluginDeployError::Uninstalled),
             PluginState::Active => {
                 trace!("Redeploying active plugin {}", self.id);
@@ -530,12 +562,18 @@ impl PluginContainer {
                 self.state = PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll));
                 Ok(())
             }
-            PluginState::Installed | PluginState::Resolving(_) => {
+            PluginState::Installed | PluginState::Resolving(_) | PluginState::Disabled => {
                 trace!("Redeploying installed plugin {}", self.id);
                 self.state = PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll));
                 Ok(())
             }
         }
+    }
+
+    pub fn disable(&mut self) -> Result<(), PluginDisableError> {
+        trace!("Disable plugin {}", self.id);
+        self.state = PluginState::Disabled;
+        Ok(())
     }
 
     // -- Getters --

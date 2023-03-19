@@ -9,7 +9,9 @@ use std::time::UNIX_EPOCH;
 use async_trait::async_trait;
 use log::debug;
 use log::error;
+use log::info;
 use log::trace;
+use log::warn;
 use notify::event::AccessKind::Close;
 use notify::event::AccessMode::Write;
 use notify::Event;
@@ -17,6 +19,7 @@ use notify::EventKind::Access;
 use notify::RecommendedWatcher;
 use notify::RecursiveMode;
 use notify::Watcher;
+use tokio::sync::mpsc;
 use uuid::Uuid;
 
 use crate::api::ConfigManager;
@@ -25,6 +28,7 @@ use crate::api::PluginContainerManager;
 use crate::api::PluginRepositoryManager;
 use crate::api::PluginResolver;
 use crate::di::*;
+use crate::plugins::PluginState;
 
 #[derive(Debug)]
 pub enum HotDeployError {
@@ -202,26 +206,35 @@ impl PluginRepositoryManagerImpl {
 #[provides]
 impl PluginRepositoryManager for PluginRepositoryManagerImpl {
     fn scan_deploy_repository(&self) {
-        trace!("Scanning folder plugins/deploy");
-        if let Ok(dir) = fs::read_dir("./plugins/deploy") {
-            for entry in dir.flatten() {
-                if let Ok(file_type) = entry.file_type() {
-                    if !file_type.is_file() {
-                        continue;
+        let plugins_config = self.config_manager.get_plugins_config();
+        if !plugins_config.is_hot_deploy() {
+            return;
+        }
+        if let Some(hot_deploy_location) = plugins_config.get_hot_deploy_location() {
+            trace!("Scanning plugin hot deploy folder {hot_deploy_location:?}");
+            if let Ok(dir) = fs::read_dir(hot_deploy_location) {
+                for entry in dir.flatten() {
+                    if let Ok(file_type) = entry.file_type() {
+                        if !file_type.is_file() {
+                            continue;
+                        }
+                        let _ = deploy_plugin(entry.path());
                     }
-                    let _ = deploy_plugin(entry.path());
                 }
             }
         }
     }
 
     fn scan_plugin_repository(&self) {
-        trace!("Scanning folder plugins/installed");
-        if let Ok(dir) = fs::read_dir("./plugins/installed") {
-            for entry in dir.flatten() {
-                if let Ok(file_type) = entry.file_type() {
-                    if file_type.is_file() {
-                        self.create_and_register_plugin_container(entry.path());
+        let plugins_config = self.config_manager.get_plugins_config();
+        if let Some(install_location) = plugins_config.get_install_location() {
+            trace!("Scanning plugin installation folder {install_location:?}");
+            if let Ok(dir) = fs::read_dir(install_location) {
+                for entry in dir.flatten() {
+                    if let Ok(file_type) = entry.file_type() {
+                        if file_type.is_file() {
+                            self.create_and_register_plugin_container(entry.path());
+                        }
                     }
                 }
             }
@@ -229,28 +242,31 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
     }
 
     fn watch_hot_deploy(&self) {
+        let Some(hot_deploy_location) = self.config_manager.get_plugins_config().get_hot_deploy_location() else {
+            return;
+        };
         let mut writer = self.hot_deploy_watcher.0.write().unwrap();
         if let Some(recommended_watcher) = writer.as_mut() {
             // Add a path to be watched. All files and directories at that path and
             // below will be monitored for changes.
-            let deploy_folder = Path::new("./plugins/deploy");
-            let c_deploy_folder = fs::canonicalize(deploy_folder).map(|p| p.display().to_string()).unwrap_or_default();
-            match recommended_watcher.watch(deploy_folder, RecursiveMode::NonRecursive) {
+            match recommended_watcher.watch(&hot_deploy_location, RecursiveMode::NonRecursive) {
                 Ok(_) => {
-                    trace!("Watching folder {}", c_deploy_folder);
+                    trace!("Watching hot deploy folder {hot_deploy_location:?}");
                 }
                 Err(e) => {
-                    error!("Failed to watch folder {}: {}", c_deploy_folder, e);
+                    error!("Failed to watch hot deploy folder {hot_deploy_location:?}: {}", e);
                 }
             }
         }
     }
 
     fn unwatch_hot_deploy(&self) {
+        let Some(hot_deploy_location) = self.config_manager.get_plugins_config().get_hot_deploy_location() else {
+            return;
+        };
         let mut writer = self.hot_deploy_watcher.0.write().unwrap();
         if let Some(recommended_watcher) = writer.as_mut() {
-            let deploy_folder = Path::new("./plugins/deploy");
-            let _ = recommended_watcher.unwatch(deploy_folder);
+            let _ = recommended_watcher.unwatch(&hot_deploy_location);
         }
     }
 }
@@ -263,7 +279,7 @@ impl Lifecycle for PluginRepositoryManagerImpl {
         // will be overwritten by the version in the deploy folder.
         self.scan_deploy_repository();
 
-        // Initially, scans the folder plugins/installed and creates and registers plugin
+        // Initially, scans the plugin installation folder and creates and registers plugin
         // containers for each plugin.
         self.scan_plugin_repository();
 
@@ -289,6 +305,7 @@ fn get_timestamp() -> u64 {
     SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs()
 }
 
+// TODO: replace relative with absolute path replacement
 pub fn get_deploy_path(path: &Path) -> Option<PathBuf> {
     path.file_prefix().and_then(|file_prefix| {
         path.parent()
@@ -297,6 +314,7 @@ pub fn get_deploy_path(path: &Path) -> Option<PathBuf> {
     })
 }
 
+// TODO: replace relative with absolute path replacement
 pub fn get_install_path(path: &Path) -> Option<PathBuf> {
     path.file_prefix().and_then(|file_prefix| {
         path.parent().and_then(|path| path.parent()).map(|path| {

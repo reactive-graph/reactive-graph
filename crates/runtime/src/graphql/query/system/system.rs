@@ -55,6 +55,7 @@ impl System {
                     Some(PluginState::Refreshing(_)) => state == "Refreshing",
                     Some(PluginState::Uninstalling(_)) => state == "Uninstalling",
                     Some(PluginState::Uninstalled) => state == "Uninstalled",
+                    Some(PluginState::Disabled) => state == "Disabled",
                     None => false,
                 },
                 None => true,
