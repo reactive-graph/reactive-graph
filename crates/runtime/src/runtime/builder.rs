@@ -34,21 +34,21 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
 
     pub fn instance_config<P: Into<OptionOption<PathBuf>>>(self, location: P) -> RuntimeBuilder<SetConfigLocations, NotRunning> {
         if let Some(location) = location.into().get() {
-            self.runtime.get_config_manager().set_instance_config_location(location.into());
+            self.runtime.get_config_manager().set_instance_config_location(location);
         }
         self
     }
 
     pub fn graphql_server_config<P: Into<OptionOption<PathBuf>>>(self, location: P) -> RuntimeBuilder<SetConfigLocations, NotRunning> {
         if let Some(location) = location.into().get() {
-            self.runtime.get_config_manager().set_graphql_server_config_location(location.into());
+            self.runtime.get_config_manager().set_graphql_server_config_location(location);
         }
         self
     }
 
     pub fn plugins_config<P: Into<OptionOption<PathBuf>>>(self, location: P) -> RuntimeBuilder<SetConfigLocations, NotRunning> {
         if let Some(location) = location.into().get() {
-            self.runtime.get_config_manager().set_plugins_config_location(location.into());
+            self.runtime.get_config_manager().set_plugins_config_location(location);
         }
         self
     }
