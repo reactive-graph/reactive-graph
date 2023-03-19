@@ -1,0 +1,11 @@
+query {
+  system {
+    instanceInfo {
+      description
+      hostname
+      name
+      port
+      secure
+    }
+  }
+}

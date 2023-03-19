@@ -1,0 +1,11 @@
+{
+  "system": {
+    "instanceInfo": {
+      "name": "test name",
+      "description": "test description",
+      "hostname": "example.com",
+      "port": 12345,
+      "secure": false
+    }
+  }
+}

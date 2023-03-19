@@ -1,5 +1,6 @@
-use crate::core_model::InstanceInfo;
 use async_graphql::Object;
+
+use crate::model_runtime::InstanceInfo;
 
 pub struct GraphQLInstanceInfo {
     /// The instance information.
@@ -20,7 +21,7 @@ impl GraphQLInstanceInfo {
         self.instance_info.hostname.clone()
     }
 
-    async fn port(&self) -> i32 {
+    async fn port(&self) -> u16 {
         self.instance_info.port
     }
 
