@@ -141,7 +141,7 @@ pub fn generate_component_provider_impl(
         }
     )*};
 
-    return TokenStream::from(result);
+    TokenStream::from(result)
 }
 
 pub(crate) fn generate_interface_provider_impl(provides: ProvidesAttr, impl_block: ItemImpl) -> TokenStream {
@@ -177,5 +177,5 @@ pub(crate) fn generate_interface_provider_impl(provides: ProvidesAttr, impl_bloc
         }
     };
 
-    return TokenStream::from(result);
+    TokenStream::from(result)
 }

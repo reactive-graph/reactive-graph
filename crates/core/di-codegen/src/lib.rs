@@ -33,7 +33,7 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let impl_block = syn::parse::<ItemImpl>(item.clone()).expect("#[component]/#[module] cant be used only on struct or impls");
     res.extend(unwrap(generate_component_for_impl(impl_block.clone())));
-    return res;
+    res
 }
 
 #[proc_macro_attribute]
@@ -53,7 +53,7 @@ pub fn provides(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let fn_block = syn::parse::<ItemFn>(item.clone()).expect("#[provides] must be used only on impl blocks and factory functions");
     res.extend(unwrap(generate_component_provider_impl_fn(provides_attr, fn_block.clone(), TokenStream2::new())));
-    return res;
+    res
 }
 
 #[proc_macro_attribute]
@@ -73,7 +73,7 @@ pub fn wrapper(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let wrapper_name = &wrapper.ident;
 
-    return TokenStream::from(quote::quote! {
+    TokenStream::from(quote::quote! {
         #wrapper
         impl std::ops::Deref for #wrapper_name {
             type Target = #type_to_wrap;
@@ -82,7 +82,7 @@ pub fn wrapper(_attr: TokenStream, item: TokenStream) -> TokenStream {
                 return &self.0;
             }
         }
-    });
+    })
 }
 
 fn remove_attrs(item: TokenStream) -> TokenStream {
