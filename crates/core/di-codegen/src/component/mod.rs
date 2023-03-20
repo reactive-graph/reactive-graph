@@ -146,12 +146,13 @@ fn generate_dependency_create_code(to_inject: TypeToInject, pos: usize) -> Token
     let dep_var_name = quote::format_ident!("dep_{}", pos);
     let type_path = to_inject.type_path.clone();
 
-    let mut injectors: Vec<Box<dyn Injector>> = Vec::new();
-    injectors.push(Box::new(DeferredInjector));
-    injectors.push(Box::new(WrcInjector));
-    injectors.push(Box::new(BoxInjector));
-    injectors.push(Box::new(ConfigInjector));
-    injectors.push(Box::new(PropInjector));
+    let injectors: Vec<Box<dyn Injector>> = vec![
+        Box::new(DeferredInjector),
+        Box::new(WrcInjector),
+        Box::new(BoxInjector),
+        Box::new(ConfigInjector),
+        Box::new(PropInjector),
+    ];
 
     let inject_code = injectors
         .iter()
