@@ -336,7 +336,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
         }
 
         self.register_reactive_instance(relation_instance)
-            .map_err(|e| ReactiveRelationInstanceCreationError::ReactiveRelationInstanceRegistrationError(e))
+            .map_err(ReactiveRelationInstanceCreationError::ReactiveRelationInstanceRegistrationError)
     }
 
     fn register_reactive_instance(

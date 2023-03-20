@@ -26,7 +26,7 @@ impl DynamicGraphQueryService for DynamicGraphQueryServiceImpl {
         match self.dynamic_graph_schema_manager.get_dynamic_schema().await {
             Some(schema) => {
                 let result = schema.execute(request).await;
-                serde_json::to_string(&result).map_err(|e| DynamicQueryError::JsonError(e))
+                serde_json::to_string(&result).map_err(DynamicQueryError::JsonError)
             }
             None => Err(DynamicQueryError::DynamicSchemaFailure),
         }

@@ -99,7 +99,7 @@ impl RelationEdgeManager for RelationEdgeManagerImpl {
             .ok_or(RelationEdgeCreationError::RelationTypeMissing(relation_ty.clone()))?;
 
         let datastore = self.graph_database.get_datastore();
-        let _ = datastore.create_edge(edge_key).map_err(|e| RelationEdgeCreationError::GraphDatabaseError(e))?;
+        let _ = datastore.create_edge(edge_key).map_err(RelationEdgeCreationError::GraphDatabaseError)?;
         let edge_query = SpecificEdgeQuery::single(edge_key.clone());
         for property_type in relation_type.properties {
             let property_name = property_type.name;
