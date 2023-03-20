@@ -109,9 +109,7 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
                     None => false,
                 });
             }
-            return Ok(Some(FieldValue::list(
-                instances.into_iter().map(|relation_instance| FieldValue::owned_any(relation_instance)),
-            )));
+            return Ok(Some(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))));
         })
     })
     .description(relation_type.description.clone());

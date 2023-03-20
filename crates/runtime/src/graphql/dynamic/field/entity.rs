@@ -65,7 +65,7 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance)])));
             }
             let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, entity_instance_manager);
-            return Ok(Some(FieldValue::list(instances.into_iter().map(|entity_instance| FieldValue::owned_any(entity_instance)))));
+            return Ok(Some(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))));
         })
     })
     .description(entity_type.description.clone())
