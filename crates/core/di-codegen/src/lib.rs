@@ -23,9 +23,7 @@ pub fn module(_attr: TokenStream, item: TokenStream) -> TokenStream {
 pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let mut res: TokenStream = remove_attrs(item.clone());
 
-    let comp = syn::parse::<ItemStruct>(item.clone());
-    if comp.is_ok() {
-        let comp = comp.unwrap();
+    if let Ok(comp) = syn::parse::<ItemStruct>(item.clone()) {
         res.extend(unwrap(generate_component_for_struct(comp.clone())));
         res.extend(generate_component_provider_impl_struct(comp));
         return res;
