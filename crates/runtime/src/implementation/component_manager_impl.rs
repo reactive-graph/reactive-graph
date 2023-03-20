@@ -346,7 +346,7 @@ impl ComponentManager for ComponentManagerImpl {
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>) {
         for component in component_provider.get_components() {
             trace!("Registering component: {}", component.type_definition().to_string());
-            if let Err(_) = self.register(component.clone()) {
+            if self.register(component.clone()).is_err() {
                 let _ = self.merge(component);
             }
         }
