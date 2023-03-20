@@ -58,10 +58,8 @@ impl TypeToInject {
     }
 
     fn parse_attr(attrs: &Vec<Attribute>) -> Result<Option<PropAttr>, Error> {
-        let prop_attr = attrs.iter().find(|attr| attr.path.to_token_stream().to_string() == "prop".to_string());
-
-        if prop_attr.is_some() {
-            return parse_prop_attr(prop_attr.unwrap()).map(Some);
+        if let Some(prop_attr) = attrs.iter().find(|attr| attr.path.to_token_stream().to_string() == *"prop") {
+            return parse_prop_attr(prop_attr).map(Some);
         }
         Ok(None)
     }
