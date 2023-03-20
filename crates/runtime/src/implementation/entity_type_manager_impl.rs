@@ -67,14 +67,14 @@ pub struct EntityTypeManagerImpl {
 impl EntityTypeManagerImpl {
     pub(crate) fn create_base_entity_types(&self) {
         let _ = self.register(
-            EntityTypeBuilder::new(&ENTITY_TYPE_SYSTEM_EVENT.clone())
+            EntityTypeBuilder::new(ENTITY_TYPE_SYSTEM_EVENT.clone())
                 .description("Events of the type system")
                 .component(&COMPONENT_LABELED.clone())
                 .component(&COMPONENT_EVENT.clone())
                 .build(),
         );
         let _ = self.register(
-            EntityTypeBuilder::new(&ENTITY_TYPE_GENERIC_FLOW.clone())
+            EntityTypeBuilder::new(ENTITY_TYPE_GENERIC_FLOW.clone())
                 .description("Generic flow without inputs and outputs")
                 .component(&COMPONENT_LABELED.clone())
                 .build(),
@@ -136,7 +136,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         }
         entity_type
             .extensions
-            .push(Extension::new(&EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
+            .push(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
         self.entity_types.0.write().unwrap().push(entity_type.clone());
         debug!("Registered entity type {}", entity_type.type_definition().to_string());
         self.event_manager.emit_event(SystemEvent::EntityTypeCreated(entity_type.ty.clone()));

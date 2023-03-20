@@ -331,7 +331,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 self.entity_behaviour_manager.add_behaviours(reactive_entity_instance.clone());
                 // Register label
                 if let Some(value) = reactive_entity_instance
-                    .get(&LABEL.property_name())
+                    .get(LABEL.property_name())
                     .and_then(|v| v.as_str().map(|s| s.to_string()))
                 {
                     let mut writer = self.label_path_tree.0.write().unwrap();

@@ -219,7 +219,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
 pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
     let ty = relation_type.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
-    let field = Field::new(dy_ty.field_name(), TypeRef::named_nn(&dy_ty.mutation_type_name()), move |ctx| {
+    let field = Field::new(dy_ty.field_name(), TypeRef::named_nn(dy_ty.mutation_type_name()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {
             let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;

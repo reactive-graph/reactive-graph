@@ -44,7 +44,7 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
     let ty = entity_type.ty.clone();
     let entity_type_inner = entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
@@ -79,7 +79,7 @@ pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
     let ty = entity_type.ty.clone();
     let entity_type_inner = entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(&dy_ty.to_string()), move |ctx| {
+    let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
@@ -155,7 +155,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
     let ty = entity_type.ty.clone();
     let entity_type_inner = entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn(&dy_ty.mutation_type_name()), move |ctx| {
+    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn(dy_ty.mutation_type_name()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
@@ -244,7 +244,7 @@ pub fn entity_outbound_relation_field(
         .clone()
         .unwrap_or(outbound_relation_type.description.clone());
 
-    let field = Field::new(field_name, TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let outbound_ty = outbound_ty_inner.clone();
         FieldFuture::new(async move {
             let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
@@ -258,7 +258,7 @@ pub fn entity_outbound_relation_field(
             Ok(Some(FieldValue::list(relation_instances)))
         })
     })
-    .description(&field_description);
+    .description(field_description);
     Some(field)
 }
 
@@ -280,7 +280,7 @@ pub fn entity_inbound_relation_field(
         .clone()
         .unwrap_or(inbound_relation_type.description.clone());
 
-    let field = Field::new(field_name, TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let inbound_ty = inbound_ty_inner.clone();
         FieldFuture::new(async move {
             let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
@@ -294,7 +294,7 @@ pub fn entity_inbound_relation_field(
             Ok(Some(FieldValue::list(relation_instances)))
         })
     })
-    .description(&field_description);
+    .description(field_description);
     Some(field)
 }
 

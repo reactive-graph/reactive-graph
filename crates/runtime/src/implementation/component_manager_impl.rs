@@ -61,13 +61,13 @@ pub struct ComponentManagerImpl {
 impl ComponentManagerImpl {
     pub(crate) fn create_base_components(&self) {
         let _ = self.register(
-            ComponentBuilder::new(&COMPONENT_LABELED.clone())
+            ComponentBuilder::new(COMPONENT_LABELED.clone())
                 .description("The label is an hierarchical path with static segments, named parameters and catch-all parameters.")
                 .property(LABEL.property_name(), DataType::String)
                 .build(),
         );
         let _ = self.register(
-            ComponentBuilder::new(&COMPONENT_EVENT.clone())
+            ComponentBuilder::new(COMPONENT_EVENT.clone())
                 .description("This components spawns events.")
                 .output_property(&EVENT.property_name(), DataType::Any)
                 .build(),

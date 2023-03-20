@@ -97,7 +97,7 @@ pub fn get_entity_mutation_types(mut schema: SchemaBuilder, context: &SchemaBuil
 
 pub fn get_entity_mutation_type(entity_type: EntityType) -> Object {
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let mut object = Object::new(&dy_ty.mutation_type_name());
+    let mut object = Object::new(dy_ty.mutation_type_name());
     if let Some(update_field) = get_entity_update_field(&entity_type) {
         object = object.field(update_field);
     }
@@ -239,7 +239,7 @@ pub fn get_trigger_field(entity_type: &EntityType) -> Option<Field> {
         return None;
     }
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let trigger_field = Field::new("trigger", TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let trigger_field = Field::new(PROPERTY_TRIGGER, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         FieldFuture::new(async move {
             let entity_instances = ctx.parent_value.try_downcast_ref::<Vec<Arc<ReactiveEntityInstance>>>()?;
             for entity_instance in entity_instances {

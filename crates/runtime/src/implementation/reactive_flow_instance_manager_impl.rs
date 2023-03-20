@@ -448,7 +448,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
             .unwrap()
             .insert(reactive_flow_instance.id, reactive_flow_instance.clone());
         // Register label
-        if let Some(value) = reactive_flow_instance.get(&LABEL.property_name()) {
+        if let Some(value) = reactive_flow_instance.get(LABEL.property_name()) {
             if let Some(label) = value.as_str() {
                 let mut writer = self.label_path_tree.0.write().unwrap();
                 writer.insert(label, reactive_flow_instance.id);

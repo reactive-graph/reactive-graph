@@ -144,7 +144,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         }
         relation_type
             .extensions
-            .push(Extension::new(&EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
+            .push(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
         self.relation_types.0.write().unwrap().push(relation_type.clone());
         debug!("Registered relation type {}", &relation_ty);
         self.event_manager.emit_event(SystemEvent::RelationTypeCreated(relation_ty));
