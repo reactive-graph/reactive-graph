@@ -193,7 +193,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
             // TODO: implement label matching
             let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, entity_instance_manager);
             let field_value = FieldValue::owned_any(instances);
-            return Ok(Some(field_value));
+            Ok(Some(field_value))
         })
     })
     .description(entity_type.description.clone())
