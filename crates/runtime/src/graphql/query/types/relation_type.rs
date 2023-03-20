@@ -61,12 +61,9 @@ impl GraphQLRelationType {
     /// The outbound components.
     async fn outbound_components(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponent>> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
-        match &self.relation_type.outbound_type {
-            ComponentOrEntityTypeId::Component(component_ty) => {
-                let components = component_manager.get(component_ty).iter().cloned().map(|component| component.into()).collect();
-                return Ok(components);
-            }
-            _ => {}
+        if let ComponentOrEntityTypeId::Component(component_ty) = &self.relation_type.outbound_type {
+            let components = component_manager.get(component_ty).iter().cloned().map(|component| component.into()).collect();
+            return Ok(components);
         }
         Ok(Vec::new())
     }
@@ -111,12 +108,9 @@ impl GraphQLRelationType {
     /// The inbound components.
     async fn inbound_components(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponent>> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
-        match &self.relation_type.inbound_type {
-            ComponentOrEntityTypeId::Component(component_ty) => {
-                let components = component_manager.get(component_ty).iter().cloned().map(|component| component.into()).collect();
-                return Ok(components);
-            }
-            _ => {}
+        if let ComponentOrEntityTypeId::Component(component_ty) = &self.relation_type.inbound_type {
+            let components = component_manager.get(component_ty).iter().cloned().map(|component| component.into()).collect();
+            return Ok(components);
         }
         Ok(Vec::new())
     }
