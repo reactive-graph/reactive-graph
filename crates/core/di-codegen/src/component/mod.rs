@@ -32,13 +32,11 @@ pub(crate) fn generate_component_for_impl(comp_impl: ItemImpl) -> Result<TokenSt
     for item in &comp_impl.items {
         match item {
             ImplItem::Method(method) => {
-                let provides_attr = method
+                if let Some(provides_attr) = method
                     .attrs
                     .iter()
-                    .find(|attr| attr.path.to_token_stream().to_string() == "provides".to_string());
-
-                if provides_attr.is_some() {
-                    let provides_attr = provides_attr.unwrap();
+                    .find(|attr| attr.path.to_token_stream().to_string() == "provides".to_string())
+                {
                     let provides = if provides_attr.tokens.is_empty() {
                         parse_provides_attr(TokenStream::new())?
                     } else {
