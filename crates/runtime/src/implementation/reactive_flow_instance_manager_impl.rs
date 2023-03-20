@@ -149,7 +149,7 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
 
     fn get_all(&self) -> Vec<Arc<ReactiveFlowInstance>> {
         let reader = self.reactive_flow_instances.0.read().unwrap();
-        reader.values().into_iter().cloned().collect()
+        reader.values().cloned().collect()
     }
 
     fn count_flow_instances(&self) -> usize {

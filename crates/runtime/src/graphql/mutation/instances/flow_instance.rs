@@ -302,11 +302,11 @@ impl MutationFlowInstances {
 
         let relation_type = relation_type_manager
             .get(&relation_ty)
-            .ok_or::<FlowMutationError>(FlowMutationError::MissingRelationType(relation_ty).into())?;
+            .ok_or::<FlowMutationError>(FlowMutationError::MissingRelationType(relation_ty))?;
 
         let flow_instance = flow_instance_manager
             .get(flow_id)
-            .ok_or::<FlowMutationError>(FlowMutationError::MissingFlow(flow_id).into())?;
+            .ok_or::<FlowMutationError>(FlowMutationError::MissingFlow(flow_id))?;
 
         if !flow_instance.has_entity_by_id(edge_key.outbound_id) {
             return Err(FlowMutationError::MissingOutboundEntityInstance(edge_key.outbound_id).into());
