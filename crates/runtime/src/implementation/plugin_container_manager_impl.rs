@@ -305,7 +305,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
         self.get_dependencies(id)
             .iter()
             .filter(|d| self.get_dependency_state(d) != PluginState::Active)
-            .map(|d| d.clone())
+            .map(|d| *d)
             .collect()
     }
 
