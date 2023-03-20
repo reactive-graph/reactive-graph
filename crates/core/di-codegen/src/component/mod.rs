@@ -49,7 +49,7 @@ pub(crate) fn generate_component_for_impl(comp_impl: ItemImpl) -> Result<TokenSt
                     fn_tokens.extend(method.block.to_token_stream());
                     let item_fn = syn::parse::<ItemFn>(fn_tokens.into())?;
 
-                    return generate_component_provider_impl_fn(provides, item_fn, comp_impl.self_ty.to_token_stream().into());
+                    return generate_component_provider_impl_fn(provides, item_fn, comp_impl.self_ty.to_token_stream());
                 }
             }
             _ => {}
