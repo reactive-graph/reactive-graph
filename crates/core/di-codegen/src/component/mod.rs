@@ -10,7 +10,6 @@ use crate::provider::generate_component_provider_impl_fn;
 use proc_macro::TokenStream;
 use proc_macro2::Span;
 use proc_macro2::TokenStream as TokenStream2;
-use quote;
 use quote::ToTokens;
 use syn::spanned::Spanned;
 use syn::Error;
