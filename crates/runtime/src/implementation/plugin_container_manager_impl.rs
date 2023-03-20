@@ -391,7 +391,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
                 let mut changed = false;
                 {
                     let reader = plugin_container.proxy.read().unwrap();
-                    if let Some(proxy) = reader.as_ref().map(|proxy| proxy.clone()) {
+                    if let Some(proxy) = reader.as_ref().cloned() {
                         trace!("Plugin {} is registering providers", id);
 
                         //
