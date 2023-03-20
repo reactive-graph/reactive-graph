@@ -91,7 +91,7 @@ pub(crate) fn generate_component_for_struct(component: ItemStruct) -> Result<Tok
         }
     };
 
-    return Ok(result.into());
+    Ok(result.into())
 }
 
 pub(crate) fn generate_inject_dependencies_tuple(dep_number: usize) -> TokenStream2 {
