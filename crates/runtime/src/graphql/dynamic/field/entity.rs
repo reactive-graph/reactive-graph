@@ -233,7 +233,6 @@ pub fn entity_outbound_relation_field(
 ) -> Option<Field> {
     let outbound_ty = outbound_relation_type.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&outbound_ty);
-    let outbound_ty_inner = outbound_ty.clone();
 
     let field_name = field_names.from_outbound_entity_to_relation.clone().unwrap_or(dy_ty.outbound_type_name());
     if field_name.is_empty() {
@@ -245,7 +244,7 @@ pub fn entity_outbound_relation_field(
         .unwrap_or(outbound_relation_type.description.clone());
 
     let field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
-        let outbound_ty = outbound_ty_inner.clone();
+        let outbound_ty = outbound_ty.clone();
         FieldFuture::new(async move {
             let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
             let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
@@ -269,7 +268,6 @@ pub fn entity_inbound_relation_field(
 ) -> Option<Field> {
     let inbound_ty = inbound_relation_type.ty.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&inbound_ty);
-    let inbound_ty_inner = inbound_ty.clone();
 
     let field_name = field_names.from_inbound_entity_to_relation.clone().unwrap_or(dy_ty.inbound_type_name());
     if field_name.is_empty() {
@@ -281,7 +279,7 @@ pub fn entity_inbound_relation_field(
         .unwrap_or(inbound_relation_type.description.clone());
 
     let field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
-        let inbound_ty = inbound_ty_inner.clone();
+        let inbound_ty = inbound_ty.clone();
         FieldFuture::new(async move {
             let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
             let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
