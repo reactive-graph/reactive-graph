@@ -27,12 +27,12 @@ pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
     if comp.is_ok() {
         let comp = comp.unwrap();
         res.extend(unwrap(generate_component_for_struct(comp.clone())));
-        res.extend(generate_component_provider_impl_struct(comp.clone()));
+        res.extend(generate_component_provider_impl_struct(comp));
         return res;
     }
 
-    let impl_block = syn::parse::<ItemImpl>(item.clone()).expect("#[component]/#[module] cant be used only on struct or impls");
-    res.extend(unwrap(generate_component_for_impl(impl_block.clone())));
+    let impl_block = syn::parse::<ItemImpl>(item).expect("#[component]/#[module] cant be used only on struct or impls");
+    res.extend(unwrap(generate_component_for_impl(impl_block)));
     res
 }
 
@@ -47,12 +47,12 @@ pub fn provides(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let impl_block = syn::parse::<ItemImpl>(item.clone());
     if impl_block.is_ok() {
-        res.extend(generate_interface_provider_impl(provides_attr, impl_block.unwrap().clone()));
+        res.extend(generate_interface_provider_impl(provides_attr, impl_block.unwrap()));
         return res;
     }
 
-    let fn_block = syn::parse::<ItemFn>(item.clone()).expect("#[provides] must be used only on impl blocks and factory functions");
-    res.extend(unwrap(generate_component_provider_impl_fn(provides_attr, fn_block.clone(), TokenStream2::new())));
+    let fn_block = syn::parse::<ItemFn>(item).expect("#[provides] must be used only on impl blocks and factory functions");
+    res.extend(unwrap(generate_component_provider_impl_fn(provides_attr, fn_block, TokenStream2::new())));
     res
 }
 
