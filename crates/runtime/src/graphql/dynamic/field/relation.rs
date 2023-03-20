@@ -204,7 +204,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
             if let Ok(relation_instance) = relation_instance_manager.register_reactive_instance(relation_instance) {
                 return Ok(Some(FieldValue::owned_any(relation_instance)));
             }
-            return Ok(None);
+            Ok(None)
         })
     })
     .argument(InputValue::new("outboundId", TypeRef::named(TypeRef::ID)))
@@ -235,7 +235,7 @@ pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
                     let Ok(id) = Uuid::from_str(&id) else {
                         return true;
                     };
-                    return relation_instance.outbound.id == id;
+                    relation_instance.outbound.id == id
                 })
                 .filter(|relation_instance| {
                     let Ok(id) = ctx.args.try_get("inboundId").and_then(|id| id.string().map(|s|s.to_string())) else {
@@ -244,7 +244,7 @@ pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
                     let Ok(id) = Uuid::from_str(&id) else {
                         return true;
                     };
-                    return relation_instance.outbound.id == id;
+                    relation_instance.outbound.id == id
                 })
                 // TODO: implement outbound_type search
                 // TODO: implement inbound_type search
@@ -252,7 +252,7 @@ pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
                 // TODO: implement property search
                 .collect();
             let field_value = FieldValue::owned_any(relation_instances);
-            return Ok(Some(field_value));
+            Ok(Some(field_value))
         })
     })
     // .argument(InputValue::new("ids", TypeRef::named_nn_list(TypeRef::ID)))

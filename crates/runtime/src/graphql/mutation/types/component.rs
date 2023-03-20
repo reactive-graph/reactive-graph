@@ -75,7 +75,7 @@ impl MutationComponents {
         if !component_manager.has(&ty) {
             return Err(Error::new(format!("Component {} does not exist", ty)));
         }
-        return match component_manager.add_property(&ty, property.into()) {
+        match component_manager.add_property(&ty, property.into()) {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
@@ -83,7 +83,7 @@ impl MutationComponents {
             Err(ComponentPropertyError::PropertyAlreadyExists) => {
                 Err(Error::new(format!("Failed to add property to component {}: Property already exists", ty)))
             }
-        };
+        }
     }
 
     /// Updates the property with the given name of the given component.
@@ -99,7 +99,7 @@ impl MutationComponents {
         if !component_manager.has(&ty) {
             return Err(Error::new(format!("Component {} does not exist", ty)));
         }
-        return match component_manager.update_property(&ty, &property_name, property.into()) {
+        match component_manager.update_property(&ty, &property_name, property.into()) {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
@@ -108,7 +108,7 @@ impl MutationComponents {
                 "Failed to update property of component {}: Property {} does not exists",
                 ty, &property_name
             ))),
-        };
+        }
     }
 
     /// Removes the property with the given property_name from the component with the given name.
@@ -124,10 +124,10 @@ impl MutationComponents {
             return Err(Error::new(format!("Component {} does not exist", ty)));
         }
         component_manager.remove_property(&ty, property_name.as_str());
-        return component_manager
+        component_manager
             .get(&ty)
             .map(|component| component.into())
-            .ok_or_else(|| Error::new(format!("Component {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Component {} not found", ty)))
     }
 
     /// Adds an extension to the component with the given name.
@@ -142,7 +142,7 @@ impl MutationComponents {
         if !component_manager.has(&ty) {
             return Err(Error::new(format!("Component {} does not exist", ty)));
         }
-        return match component_manager.add_extension(&ty, extension.into()) {
+        match component_manager.add_extension(&ty, extension.into()) {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
@@ -150,7 +150,7 @@ impl MutationComponents {
             Err(ComponentExtensionError::ExtensionAlreadyExists) => {
                 Err(Error::new(format!("Failed to add extension to component {}: Extension already exists", ty)))
             }
-        };
+        }
     }
 
     /// Removes the extension with the given extension_name from the component with the given name.
@@ -167,10 +167,10 @@ impl MutationComponents {
         }
         let extension_ty = extension_ty.into();
         component_manager.remove_extension(&ty, &extension_ty);
-        return component_manager
+        component_manager
             .get(&ty)
             .map(|component| component.into())
-            .ok_or_else(|| Error::new(format!("Component {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Component {} not found", ty)))
     }
 
     /// Deletes the component with the given name.

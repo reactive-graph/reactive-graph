@@ -114,7 +114,7 @@ impl MutationRelationTypes {
         if !relation_type_manager.has(&ty) {
             return Err(Error::new(format!("Relation type {} does not exist", ty)));
         }
-        return match relation_type_manager.add_component(&ty, &component_ty) {
+        match relation_type_manager.add_component(&ty, &component_ty) {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
@@ -123,7 +123,7 @@ impl MutationRelationTypes {
                 Err(Error::new(format!("Relation type {} has already component {}", ty, component_ty)))
             }
             Err(RelationTypeComponentError::ComponentDoesNotExist) => Err(Error::new(format!("Component {} doesn't exist", component_ty))),
-        };
+        }
     }
 
     /// Remove the component with the given component_name from the relation type with the given name.
@@ -140,10 +140,10 @@ impl MutationRelationTypes {
             return Err(Error::new(format!("Relation type {} does not exist", ty)));
         }
         relation_type_manager.remove_component(&ty, &component_ty);
-        return relation_type_manager
+        relation_type_manager
             .get(&ty)
             .map(|relation_type| relation_type.into())
-            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)))
     }
 
     /// Adds a property to the relation type with the given name.
@@ -158,7 +158,7 @@ impl MutationRelationTypes {
         if !relation_type_manager.has(&ty) {
             return Err(Error::new(format!("Relation type {} does not exist", ty)));
         }
-        return match relation_type_manager.add_property(&ty, property.into()) {
+        match relation_type_manager.add_property(&ty, property.into()) {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
@@ -166,7 +166,7 @@ impl MutationRelationTypes {
             Err(RelationTypePropertyError::PropertyAlreadyExists) => {
                 Err(Error::new(format!("Failed to add property to relation type {}: Property already exists", ty)))
             }
-        };
+        }
     }
 
     /// Removes the property with the given property_name from the relation type with the given name.
@@ -182,10 +182,10 @@ impl MutationRelationTypes {
             return Err(Error::new(format!("Relation type {} does not exist", ty)));
         }
         relation_type_manager.remove_property(&ty, property_name.as_str());
-        return relation_type_manager
+        relation_type_manager
             .get(&ty)
             .map(|relation_type| relation_type.into())
-            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)))
     }
 
     /// Adds an extension to the relation type with the given name.
@@ -200,7 +200,7 @@ impl MutationRelationTypes {
         if !relation_type_manager.has(&ty) {
             return Err(Error::new(format!("Relation type {} does not exist", ty)));
         }
-        return match relation_type_manager.add_extension(&ty, extension.into()) {
+        match relation_type_manager.add_extension(&ty, extension.into()) {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
@@ -209,7 +209,7 @@ impl MutationRelationTypes {
                 "Failed to add extension {} to relation type {}: Extension already exists",
                 extension_ty, ty
             ))),
-        };
+        }
     }
 
     // TODO: async fn update_extension() --> see flow_type mutation
@@ -228,10 +228,10 @@ impl MutationRelationTypes {
         }
         let extension_ty = extension_ty.into();
         relation_type_manager.remove_extension(&ty, &extension_ty);
-        return relation_type_manager
+        relation_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
-            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)))
     }
 
     /// Deletes the relation type with the given name.

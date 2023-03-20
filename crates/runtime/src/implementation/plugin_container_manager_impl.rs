@@ -365,9 +365,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
 
     fn inject_context(&self, id: &Uuid, plugin_context: Arc<dyn PluginContext>) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
-            Some(mut plugin_container) => {
-                return plugin_container.inject_context(plugin_context.clone());
-            }
+            Some(mut plugin_container) => plugin_container.inject_context(plugin_context.clone()),
             None => NoChange,
         }
     }
@@ -500,7 +498,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
                 } else {
                     plugin_container.state = PluginState::Stopping(PluginStoppingState::RemoveContext);
                 }
-                return Changed;
+                Changed
             }
             None => NoChange,
         }

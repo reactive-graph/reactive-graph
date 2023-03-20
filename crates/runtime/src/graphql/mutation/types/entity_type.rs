@@ -80,14 +80,14 @@ impl MutationEntityTypes {
         if !entity_type_manager.has(&ty) {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
-        return match entity_type_manager.add_component(&ty, &component_ty) {
+        match entity_type_manager.add_component(&ty, &component_ty) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
                 .ok_or_else(|| Error::new(format!("Entity type {} not found", &ty))),
             Err(EntityTypeComponentError::ComponentAlreadyAssigned) => Err(Error::new(format!("Entity type {} already has component {}", &ty, &component_ty))),
             Err(EntityTypeComponentError::ComponentDoesNotExist) => Err(Error::new(format!("Component {} doesn't exist", component_ty))),
-        };
+        }
     }
 
     /// Remove the component with the given component_name from the entity type with the given name.
@@ -104,10 +104,10 @@ impl MutationEntityTypes {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
         entity_type_manager.remove_component(&ty, &component_ty);
-        return entity_type_manager
+        entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
-            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)))
     }
 
     /// Adds a property to the entity type with the given name.
@@ -122,7 +122,7 @@ impl MutationEntityTypes {
         if !entity_type_manager.has(&ty) {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
-        return match entity_type_manager.add_property(&ty, property.into()) {
+        match entity_type_manager.add_property(&ty, property.into()) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
@@ -130,7 +130,7 @@ impl MutationEntityTypes {
             Err(EntityTypePropertyError::PropertyAlreadyExists) => {
                 Err(Error::new(format!("Failed to add property to entity type {}: Property already exists", ty)))
             }
-        };
+        }
     }
 
     /// Removes the property with the given property_name from the entity type with the given name.
@@ -146,10 +146,10 @@ impl MutationEntityTypes {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
         entity_type_manager.remove_property(&ty, property_name.as_str());
-        return entity_type_manager
+        entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
-            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)))
     }
 
     /// Adds an extension to the entity type with the given name.
@@ -165,7 +165,7 @@ impl MutationEntityTypes {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
         let extension: Extension = extension.into();
-        return match entity_type_manager.add_extension(&ty, extension) {
+        match entity_type_manager.add_extension(&ty, extension) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
@@ -174,7 +174,7 @@ impl MutationEntityTypes {
                 "Failed to add extension {} to entity type {}: Extension already exists",
                 extension_ty, ty
             ))),
-        };
+        }
     }
 
     // TODO: async fn update_extension()
@@ -193,10 +193,10 @@ impl MutationEntityTypes {
         }
         let extension_ty = extension_ty.into();
         entity_type_manager.remove_extension(&ty, &extension_ty);
-        return entity_type_manager
+        entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
-            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)));
+            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)))
     }
 
     /// Deletes the entity type with the given name.

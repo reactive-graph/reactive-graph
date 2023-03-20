@@ -143,7 +143,7 @@ pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
             if let Ok(entity_instance) = entity_instance_manager.register_reactive_instance(entity_instance) {
                 return Ok(Some(FieldValue::owned_any(entity_instance)));
             }
-            return Ok(None);
+            Ok(None)
         })
     })
     .argument(InputValue::new("id", TypeRef::named(TypeRef::ID)));
