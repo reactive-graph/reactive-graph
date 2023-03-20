@@ -62,6 +62,12 @@ impl<P> Container<P> {
     }
 }
 
+impl<P> Default for Container<P> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 lazy_static! {
     pub static ref APP_PROFILE: String = parse_profile();
 }
