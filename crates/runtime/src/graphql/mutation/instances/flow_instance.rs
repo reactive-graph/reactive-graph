@@ -113,7 +113,7 @@ impl MutationFlowInstances {
         let ty = EntityTypeId::new_from_type(namespace, type_name);
         let entity_type = entity_type_manager.get(&ty);
         if entity_type.is_none() {
-            return Err(FlowMutationError::MissingEntityType(ty.clone()).into());
+            return Err(FlowMutationError::MissingEntityType(ty).into());
         }
 
         if flow_id.is_some() {
@@ -217,7 +217,7 @@ impl MutationFlowInstances {
         let ty = EntityTypeId::new_from_type(namespace, type_name);
         let entity_type = entity_type_manager.get(&ty);
         if entity_type.is_none() {
-            return Err(FlowMutationError::MissingEntityType(ty.clone()).into());
+            return Err(FlowMutationError::MissingEntityType(ty).into());
         }
 
         let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);

@@ -110,7 +110,7 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
                 });
             }
             return Ok(Some(FieldValue::list(
-                instances.into_iter().map(|relation_instance| FieldValue::owned_any(relation_instance.clone())),
+                instances.into_iter().map(|relation_instance| FieldValue::owned_any(relation_instance)),
             )));
         })
     })
@@ -202,7 +202,7 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
             }
             let relation_instance = builder.build();
             if let Ok(relation_instance) = relation_instance_manager.register_reactive_instance(relation_instance) {
-                return Ok(Some(FieldValue::owned_any(relation_instance.clone())));
+                return Ok(Some(FieldValue::owned_any(relation_instance)));
             }
             return Ok(None);
         })

@@ -55,7 +55,7 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
             let edge_key = relation_instance.get_key();
             if let Ok(behaviour) = factory.create(relation_instance) {
                 let behaviour_ty = behaviour.ty().clone();
-                self.relation_behaviour_storage.0.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                self.relation_behaviour_storage.0.insert(edge_key, behaviour_ty.clone(), behaviour);
                 trace!("Added relation behaviour {}", &behaviour_ty);
             }
         }

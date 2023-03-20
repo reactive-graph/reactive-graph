@@ -55,19 +55,17 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
                 if entity_instance.ty != ty {
                     return Err(Error::new(format!("Entity {} is not a {}", id, &ty)));
                 }
-                return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance.clone())])));
+                return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance)])));
             }
             if let Ok(label) = ctx.args.try_get("label") {
                 let entity_instance = entity_instance_manager.get_by_label(label.string()?).ok_or(Error::new("Label not found"))?;
                 if entity_instance.ty != ty {
                     return Err(Error::new(format!("Entity {} is not a {}", entity_instance.id, &ty)));
                 }
-                return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance.clone())])));
+                return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance)])));
             }
             let instances = get_entity_instances_by_type_filter_by_properties(&ctx, &entity_type, entity_instance_manager);
-            return Ok(Some(FieldValue::list(
-                instances.into_iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
-            )));
+            return Ok(Some(FieldValue::list(instances.into_iter().map(|entity_instance| FieldValue::owned_any(entity_instance)))));
         })
     })
     .description(entity_type.description.clone())
@@ -143,7 +141,7 @@ pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
             }
             let entity_instance = builder.build();
             if let Ok(entity_instance) = entity_instance_manager.register_reactive_instance(entity_instance) {
-                return Ok(Some(FieldValue::owned_any(entity_instance.clone())));
+                return Ok(Some(FieldValue::owned_any(entity_instance)));
             }
             return Ok(None);
         })
@@ -188,7 +186,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
                 if entity_instance.ty != ty {
                     return Err(entity_instance_not_of_entity_type_error(&id, &ty));
                 }
-                let entity_instances = vec![entity_instance.clone()];
+                let entity_instances = vec![entity_instance];
                 let field_value = FieldValue::owned_any(entity_instances);
                 return Ok(Some(field_value));
             }

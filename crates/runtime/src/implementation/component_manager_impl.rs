@@ -80,7 +80,7 @@ impl ComponentManagerImpl {
 impl ComponentManager for ComponentManagerImpl {
     fn register(&self, component: crate::model::Component) -> Result<crate::model::Component, ComponentRegistrationError> {
         if self.has(&component.ty) {
-            return Err(ComponentRegistrationError::ComponentAlreadyExists(component.ty.clone()));
+            return Err(ComponentRegistrationError::ComponentAlreadyExists(component.ty));
         }
         self.components.0.write().unwrap().push(component.clone());
         debug!("Registered component {}", component.type_definition().to_string());
@@ -364,7 +364,7 @@ impl ComponentManager for ComponentManagerImpl {
                     .extensions
                     .iter()
                     .find(|extension| extension.ty == EXTENSION_COMPONENT_CATEGORY.clone())
-                    .and_then(|extension| extension.extension.as_str().map(str::to_string).clone())
+                    .and_then(|extension| extension.extension.as_str().map(str::to_string))
             })
             .collect()
     }

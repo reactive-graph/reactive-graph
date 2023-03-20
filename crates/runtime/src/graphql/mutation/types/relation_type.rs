@@ -56,7 +56,7 @@ impl MutationRelationTypes {
             return Err(Error::new(format!("Inbound entity type {} does not exist", inbound_ty)));
         }
 
-        let mut relation_type_builder = RelationTypeBuilder::new(outbound_ty.clone(), &ty, inbound_ty.clone());
+        let mut relation_type_builder = RelationTypeBuilder::new(outbound_ty, &ty, inbound_ty);
         if components.is_some() {
             for component in components.unwrap() {
                 debug!("Add component {}", &component);

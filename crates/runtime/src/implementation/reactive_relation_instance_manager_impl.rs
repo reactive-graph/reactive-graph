@@ -264,15 +264,12 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             match &relation_type.outbound_type {
                 ComponentOrEntityTypeId::Component(component_ty) => {
                     if !outbound.components.contains(component_ty) {
-                        return Err(ReactiveRelationInstanceCreationError::OutboundEntityDoesNotHaveComponent(
-                            relation_ty.clone(),
-                            component_ty.clone(),
-                        ));
+                        return Err(ReactiveRelationInstanceCreationError::OutboundEntityDoesNotHaveComponent(relation_ty, component_ty.clone()));
                     }
                 }
                 ComponentOrEntityTypeId::EntityType(entity_ty) => {
                     if &outbound.ty != entity_ty {
-                        return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(relation_ty.clone(), entity_ty.clone()));
+                        return Err(ReactiveRelationInstanceCreationError::OutboundEntityIsNotOfType(relation_ty, entity_ty.clone()));
                     }
                 }
             }
@@ -291,15 +288,12 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
             match &relation_type.inbound_type {
                 ComponentOrEntityTypeId::Component(component_ty) => {
                     if !inbound.components.contains(component_ty) {
-                        return Err(ReactiveRelationInstanceCreationError::InboundEntityDoesNotHaveComponent(
-                            relation_ty.clone(),
-                            component_ty.clone(),
-                        ));
+                        return Err(ReactiveRelationInstanceCreationError::InboundEntityDoesNotHaveComponent(relation_ty, component_ty.clone()));
                     }
                 }
                 ComponentOrEntityTypeId::EntityType(entity_ty) => {
                     if &inbound.ty != entity_ty {
-                        return Err(ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(relation_ty.clone(), entity_ty.clone()));
+                        return Err(ReactiveRelationInstanceCreationError::InboundEntityIsNotOfType(relation_ty, entity_ty.clone()));
                     }
                 }
             }
