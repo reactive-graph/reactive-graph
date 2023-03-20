@@ -181,8 +181,8 @@ fn generate_deferred_dependencies_code(fields: Vec<&Field>) -> Result<TokenStrea
                         generic_args = Some(&typ.args);
                     }
                 }
-                if generic_args.is_some() {
-                    if let GenericArgument::Type(typ) = generic_args.unwrap().first().expect("Expected <type> arg for Deferred type") {
+                if let Some(generic_args) = generic_args {
+                    if let GenericArgument::Type(typ) = generic_args.first().expect("Expected <type> arg for Deferred type") {
                         return (i, Some(typ));
                     }
                 }
