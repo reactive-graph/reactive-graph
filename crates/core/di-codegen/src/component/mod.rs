@@ -30,27 +30,24 @@ pub(crate) mod type_to_inject;
 
 pub(crate) fn generate_component_for_impl(comp_impl: ItemImpl) -> Result<TokenStream, Error> {
     for item in &comp_impl.items {
-        match item {
-            ImplItem::Method(method) => {
-                if let Some(provides_attr) = method
-                    .attrs
-                    .iter()
-                    .find(|attr| attr.path.to_token_stream().to_string() == "provides".to_string())
-                {
-                    let provides = if provides_attr.tokens.is_empty() {
-                        parse_provides_attr(TokenStream::new())?
-                    } else {
-                        parse_provides_attr(provides_attr.parse_args::<Expr>()?.to_token_stream().into())?
-                    };
+        if let ImplItem::Method(method) = item {
+            if let Some(provides_attr) = method
+                .attrs
+                .iter()
+                .find(|attr| attr.path.to_token_stream().to_string() == "provides".to_string())
+            {
+                let provides = if provides_attr.tokens.is_empty() {
+                    parse_provides_attr(TokenStream::new())?
+                } else {
+                    parse_provides_attr(provides_attr.parse_args::<Expr>()?.to_token_stream().into())?
+                };
 
-                    let mut fn_tokens = method.sig.to_token_stream();
-                    fn_tokens.extend(method.block.to_token_stream());
-                    let item_fn = syn::parse::<ItemFn>(fn_tokens.into())?;
+                let mut fn_tokens = method.sig.to_token_stream();
+                fn_tokens.extend(method.block.to_token_stream());
+                let item_fn = syn::parse::<ItemFn>(fn_tokens.into())?;
 
-                    return generate_component_provider_impl_fn(provides, item_fn, comp_impl.self_ty.to_token_stream());
-                }
+                return generate_component_provider_impl_fn(provides, item_fn, comp_impl.self_ty.to_token_stream());
             }
-            _ => {}
         }
     }
     Err(Error::new(comp_impl.span(), "Constructor with #[provides] attribute is not found"))
