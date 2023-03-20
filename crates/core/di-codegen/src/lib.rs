@@ -43,9 +43,8 @@ pub fn provides(attr: TokenStream, item: TokenStream) -> TokenStream {
 
     let mut res = remove_attrs(item.clone());
 
-    let impl_block = syn::parse::<ItemImpl>(item.clone());
-    if impl_block.is_ok() {
-        res.extend(generate_interface_provider_impl(provides_attr, impl_block.unwrap()));
+    if let Ok(impl_block) = syn::parse::<ItemImpl>(item.clone()) {
+        res.extend(generate_interface_provider_impl(provides_attr, impl_block));
         return res;
     }
 
