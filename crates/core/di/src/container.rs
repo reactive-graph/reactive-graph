@@ -93,9 +93,7 @@ pub fn parse_args() -> Config {
 
     let mut args = args().peekable();
     loop {
-        let arg = args.next();
-        if arg.is_some() {
-            let arg = arg.unwrap();
+        if let Some(arg) = args.next() {
             if arg.starts_with("--") {
                 let value = args.peek();
                 if value.is_none() || value.unwrap().starts_with("--") {
