@@ -180,7 +180,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     }
 
     fn get_plugins(&self) -> Vec<Uuid> {
-        self.plugin_containers.0.iter().map(|p| p.key().clone()).collect()
+        self.plugin_containers.0.iter().map(|p| *p.key()).collect()
     }
 
     fn get_plugins_with_state(&self, state: PluginState) -> Vec<Uuid> {
@@ -227,7 +227,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
                     None => false,
                 }
             })
-            .map(|e| e.key().clone())
+            .map(|e| *e.key())
     }
 
     fn deploy_dll(&self, id: &Uuid) -> PluginTransitionResult {
@@ -411,10 +411,10 @@ impl PluginContainerManager for PluginContainerManagerImpl {
                             flow_type_manager.add_provider(flow_type_provider);
                         }
                         if let Ok(Some(flow_instance_provider)) = proxy.get_flow_instance_provider() {
-                            reactive_flow_instance_manager.add_provider(id.clone(), flow_instance_provider);
+                            reactive_flow_instance_manager.add_provider(*id, flow_instance_provider);
                         }
                         if let Ok(Some(web_resource_provider)) = proxy.get_web_resource_provider() {
-                            web_resource_manager.add_provider(id.clone(), web_resource_provider);
+                            web_resource_manager.add_provider(*id, web_resource_provider);
                         }
                         changed = true;
                     }
@@ -441,7 +441,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     }
 
     fn are_all_stopped(&self) -> bool {
-        self.plugin_containers.0.iter().all(|p| match p.state.clone() {
+        self.plugin_containers.0.iter().all(|p| match p.state {
             PluginState::Installed => true,
             PluginState::Resolving(_) => true,
             PluginState::Resolved => true,

@@ -235,7 +235,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     fn get_ids(&self) -> Vec<Uuid> {
-        self.reactive_entity_instances.0.iter().map(|e| e.key().clone()).collect()
+        self.reactive_entity_instances.0.iter().map(|e| *e.key()).collect()
     }
 
     fn create(&self, ty: &EntityTypeId, properties: HashMap<String, Value>) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceCreationError> {
