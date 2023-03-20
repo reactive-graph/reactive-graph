@@ -31,11 +31,7 @@ pub(crate) mod type_to_inject;
 pub(crate) fn generate_component_for_impl(comp_impl: ItemImpl) -> Result<TokenStream, Error> {
     for item in &comp_impl.items {
         if let ImplItem::Method(method) = item {
-            if let Some(provides_attr) = method
-                .attrs
-                .iter()
-                .find(|attr| attr.path.to_token_stream().to_string() == "provides".to_string())
-            {
+            if let Some(provides_attr) = method.attrs.iter().find(|attr| attr.path.to_token_stream().to_string() == *"provides") {
                 let provides = if provides_attr.tokens.is_empty() {
                     parse_provides_attr(TokenStream::new())?
                 } else {
