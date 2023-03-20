@@ -92,22 +92,17 @@ pub fn parse_args() -> Config {
     let mut builder = Config::builder();
 
     let mut args = args().peekable();
-    loop {
-        if let Some(arg) = args.next() {
-            if arg.starts_with("--") {
-                let value = args.peek();
-                if value.is_none() || value.unwrap().starts_with("--") {
-                    builder = builder.set_override(&arg[2..], true).expect("Failed to parse arg");
-                } else {
-                    let arg = args.next().unwrap();
-                    builder = builder.set_override(&arg[2..], args.next().unwrap()).expect("Failed to parse arg");
-                }
+    while let Some(arg) = args.next() {
+        if arg.starts_with("--") {
+            let value = args.peek();
+            if value.is_none() || value.unwrap().starts_with("--") {
+                builder = builder.set_override(&arg[2..], true).expect("Failed to parse arg");
+            } else {
+                let arg = args.next().unwrap();
+                builder = builder.set_override(&arg[2..], args.next().unwrap()).expect("Failed to parse arg");
             }
-        } else {
-            break;
         }
     }
-
     builder.build().expect("Failed to parse args")
 }
 
