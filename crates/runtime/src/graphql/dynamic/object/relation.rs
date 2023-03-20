@@ -205,7 +205,7 @@ pub fn get_relation_update_field(relation_type: &RelationType) -> Option<Field> 
             }
             Ok(Some(FieldValue::list(
                 relation_instances
-                    .into_iter()
+                    .iter()
                     .map(|relation_instance| FieldValue::owned_any(relation_instance.clone())),
             )))
         })
@@ -238,7 +238,7 @@ pub fn get_trigger_field(relation_type: &RelationType) -> Option<Field> {
             }
             Ok(Some(FieldValue::list(
                 relation_instances
-                    .into_iter()
+                    .iter()
                     .map(|relation_instance| FieldValue::owned_any(relation_instance.clone())),
             )))
         })

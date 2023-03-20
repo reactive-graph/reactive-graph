@@ -213,9 +213,7 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
                 }
             }
             Ok(Some(FieldValue::list(
-                entity_instances
-                    .into_iter()
-                    .map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
+                entity_instances.iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
             )))
         })
     });
@@ -246,9 +244,7 @@ pub fn get_trigger_field(entity_type: &EntityType) -> Option<Field> {
                 entity_instance.set(PROPERTY_TRIGGER, json!(true));
             }
             Ok(Some(FieldValue::list(
-                entity_instances
-                    .into_iter()
-                    .map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
+                entity_instances.iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),
             )))
         })
     });
