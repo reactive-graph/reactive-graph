@@ -75,7 +75,7 @@ impl Injector for DeferredInjector {
 pub(crate) struct ConfigInjector;
 impl Injector for ConfigInjector {
     fn generate_inject_code(&self, to_inject: &TypeToInject, container: &Ident) -> Option<TokenStream2> {
-        if to_inject.type_name == "Config".to_string() || to_inject.type_name == "config :: Config".to_string() {
+        if to_inject.type_name == *"Config" || to_inject.type_name == *"config :: Config" {
             return Some(quote::quote! { #container.config.clone() });
         }
 
