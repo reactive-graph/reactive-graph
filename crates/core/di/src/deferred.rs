@@ -23,6 +23,12 @@ impl<T> Deferred<T> {
     }
 }
 
+impl<T> Default for Deferred<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T> Deref for Deferred<T> {
     type Target = T;
 
