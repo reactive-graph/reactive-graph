@@ -61,7 +61,7 @@ impl TypeToInject {
         let prop_attr = attrs.iter().find(|attr| attr.path.to_token_stream().to_string() == "prop".to_string());
 
         if prop_attr.is_some() {
-            return parse_prop_attr(prop_attr.unwrap()).map(|parsed| Some(parsed));
+            return parse_prop_attr(prop_attr.unwrap()).map(Some);
         }
         Ok(None)
     }

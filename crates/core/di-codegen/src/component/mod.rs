@@ -62,7 +62,7 @@ pub(crate) fn generate_component_for_struct(component: ItemStruct) -> Result<Tok
     let comp_name = &component.ident;
     let comp_generics = &component.generics;
 
-    let dependencies_code = generate_dependencies_create_code(component.fields.iter().map(|f| TypeToInject::from_field(f)).collect::<Result<Vec<_>, _>>()?);
+    let dependencies_code = generate_dependencies_create_code(component.fields.iter().map(TypeToInject::from_field).collect::<Result<Vec<_>, _>>()?);
     let deferred_dependencies_code = generate_deferred_dependencies_code(component.fields.iter().collect())?;
 
     let (factory_code, deferred_inject_code) = match component.fields {

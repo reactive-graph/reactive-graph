@@ -18,7 +18,7 @@ pub(crate) struct ProvidesAttr {
 pub(crate) fn parse_provides_attr(attr: TokenStream) -> Result<ProvidesAttr, Error> {
     let profiles_syn = <Punctuated<Path, Comma>>::parse_terminated.parse(attr)?;
 
-    let profiles: Vec<Path> = profiles_syn.iter().map(|p| p.clone()).collect();
+    let profiles: Vec<Path> = profiles_syn.iter().cloned().collect();
 
     Ok(ProvidesAttr { profiles })
 }

@@ -92,7 +92,6 @@ impl Injector for PropInjector {
 
             let default_value_code = prop_attr
                 .default_value
-                .clone()
                 .map(|default_value| quote::quote! { .or_else(|| Some(#default_value)) })
                 .unwrap_or(quote::quote! {});
 
@@ -102,7 +101,7 @@ impl Injector for PropInjector {
         };
 
         let base_types_extracted = prop_name_opt.and_then(|prop_name_tokens| {
-            let prop_name = prop_name_tokens.to_string();
+            let prop_name = prop_name_tokens;
 
             let (type_path, opt_extractor) = if to_inject.type_name.starts_with("Option <") {
                 (get_type_arg(&to_inject.type_path.segments[0].arguments), quote::quote! {})
