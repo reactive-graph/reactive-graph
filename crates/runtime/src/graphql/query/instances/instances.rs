@@ -70,7 +70,7 @@ impl Instances {
             return entity_instance_manager
                 .get_all()
                 .iter()
-                .filter(|entity_instance| entity_type.is_none() || &entity_instance.ty == &EntityTypeId::from(entity_type.clone().unwrap()))
+                .filter(|entity_instance| entity_type.is_none() || entity_instance.ty == EntityTypeId::from(entity_type.clone().unwrap()))
                 .filter(|entity_instance| {
                     components.is_none() || {
                         let components = components.clone().unwrap();
@@ -139,7 +139,7 @@ impl Instances {
             return entity_instance_manager
                 .get_all()
                 .iter()
-                .filter(|e| ty.is_none() || { &e.ty == &ty.clone().unwrap() })
+                .filter(|e| ty.is_none() || { e.ty == ty.clone().unwrap() })
                 .filter(|e| component_ty.is_none() || e.is_a(&component_ty.clone().unwrap()))
                 .filter(|e| behaviour_ty.is_none() || e.behaves_as(&behaviour_ty.clone().unwrap()))
                 .count();
@@ -188,10 +188,10 @@ impl Instances {
         let relation_instances = relation_instance_manager
             .get_all()
             .iter()
-            .filter(|relation_instance| outbound_entity_ty.is_none() || &relation_instance.outbound.ty == &outbound_entity_ty.clone().unwrap())
+            .filter(|relation_instance| outbound_entity_ty.is_none() || relation_instance.outbound.ty == outbound_entity_ty.clone().unwrap())
             .filter(|relation_instance| outbound_component_ty.is_none() || relation_instance.outbound.is_a(&outbound_component_ty.clone().unwrap()))
             .filter(|relation_instance| relation_ty.is_none() || relation_instance.relation_type_id() == relation_ty.clone().unwrap())
-            .filter(|relation_instance| inbound_entity_ty.is_none() || &relation_instance.inbound.ty == &inbound_entity_ty.clone().unwrap())
+            .filter(|relation_instance| inbound_entity_ty.is_none() || relation_instance.inbound.ty == inbound_entity_ty.clone().unwrap())
             .filter(|relation_instance| inbound_component_ty.is_none() || relation_instance.inbound.is_a(&inbound_component_ty.clone().unwrap()))
             .filter(|relation_instance| outbound_id.is_none() || outbound_id.unwrap() == relation_instance.outbound.id)
             .filter(|relation_instance| inbound_id.is_none() || inbound_id.unwrap() == relation_instance.inbound.id)
@@ -272,7 +272,7 @@ impl Instances {
             .get_all()
             .iter()
             .filter(|flow_instance| match &entity_ty {
-                Some(entity_ty) => &flow_instance.ty == &entity_ty.clone().into(),
+                Some(entity_ty) => flow_instance.ty == entity_ty.clone().into(),
                 None => true,
             })
             .map(|flow| {

@@ -116,7 +116,7 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
     })
     .description(relation_type.description.clone());
     for property in relation_type.properties.iter() {
-        if &property.name == &LABEL.property_name() {
+        if property.name == LABEL.property_name() {
             continue;
         }
         if let Some(type_ref) = to_input_type_ref(property, true) {

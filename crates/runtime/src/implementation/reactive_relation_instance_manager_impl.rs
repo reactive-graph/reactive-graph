@@ -458,7 +458,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
 
     fn add_behaviour_to_all_relation_instances(&self, relation_behaviour_ty: &RelationBehaviourTypeId) {
         for relation_instance in self.reactive_relation_instances.0.iter() {
-            if &relation_instance.relation_type_id() == &relation_behaviour_ty.relation_ty {
+            if relation_instance.relation_type_id() == relation_behaviour_ty.relation_ty {
                 self.relation_behaviour_manager
                     .add_behaviour(relation_instance.clone(), &relation_behaviour_ty.behaviour_ty);
             }
@@ -539,7 +539,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                                     for reactive_relation_instance in reactive_relation_instances
                                         .iter()
                                         .filter(|relation_instance| {
-                                            &relation_instance.relation_type_id().type_definition() == &type_definition_component.type_definition
+                                            relation_instance.relation_type_id().type_definition() == type_definition_component.type_definition
                                         })
                                         .map(|relation_instance| relation_instance.value().clone())
                                     {
@@ -574,7 +574,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                                     for reactive_relation_instance in reactive_relation_instances
                                         .iter()
                                         .filter(|relation_instance| {
-                                            &relation_instance.relation_type_id().type_definition() == &type_definition_component.type_definition
+                                            relation_instance.relation_type_id().type_definition() == type_definition_component.type_definition
                                         })
                                         .map(|relation_instance| relation_instance.value().clone())
                                     {
@@ -608,7 +608,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                                     if let Some(relation_type) = relation_type_manager.get(&relation_ty) {
                                         for reactive_relation_instance in reactive_relation_instances
                                             .iter()
-                                            .filter(|relation_instance| &relation_instance.relation_type_id() == &relation_ty)
+                                            .filter(|relation_instance| relation_instance.relation_type_id() == relation_ty)
                                             .map(|relation_instance| relation_instance.value().clone())
                                         {
                                             if let Some(property_type) = relation_type.get_own_property(&type_definition_property.property) {
@@ -640,7 +640,7 @@ impl ReactiveRelationInstanceManager for ReactiveRelationInstanceManagerImpl {
                                 for reactive_relation_instance in reactive_relation_instances
                                     .iter()
                                     .filter(|relation_instance| {
-                                        &relation_instance.relation_type_id().type_definition() == &type_definition_property.type_definition
+                                        relation_instance.relation_type_id().type_definition() == type_definition_property.type_definition
                                     })
                                     .map(|relation_instance| relation_instance.value().clone())
                                 {

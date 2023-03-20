@@ -426,7 +426,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
 
     fn add_behaviour_to_all_entity_instances(&self, entity_behaviour_ty: &EntityBehaviourTypeId) {
         for entity_instance in self.reactive_entity_instances.0.iter() {
-            if &entity_instance.ty == &entity_behaviour_ty.entity_ty {
+            if entity_instance.ty == entity_behaviour_ty.entity_ty {
                 self.entity_behaviour_manager
                     .add_behaviour(entity_instance.clone(), &entity_behaviour_ty.behaviour_ty);
             }
@@ -514,7 +514,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                                 if let Some(component) = component_manager.get(&type_definition_component.component_ty) {
                                     for instance in reactive_entity_instances
                                         .iter()
-                                        .filter(|instance| &instance.ty.type_definition() == &type_definition_component.type_definition)
+                                        .filter(|instance| instance.ty.type_definition() == type_definition_component.type_definition)
                                         .map(|instance| instance.value().clone())
                                     {
                                         instance.add_component_with_properties(&component);
@@ -546,7 +546,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                                 if let Some(component) = component_manager.get(&type_definition_component.component_ty) {
                                     for reactive_entity_instance in reactive_entity_instances
                                         .iter()
-                                        .filter(|entity_instance| &entity_instance.type_definition() == &type_definition_component.type_definition)
+                                        .filter(|entity_instance| entity_instance.type_definition() == type_definition_component.type_definition)
                                         .map(|entity_instance| entity_instance.value().clone())
                                     {
                                         reactive_entity_instance.remove_component(&component.ty);
@@ -578,7 +578,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                                     if let Some(entity_type) = entity_type_manager.get(&entity_ty) {
                                         for reactive_entity_instance in reactive_entity_instances
                                             .iter()
-                                            .filter(|entity_instance| &entity_instance.ty == &entity_ty)
+                                            .filter(|entity_instance| entity_instance.ty == entity_ty)
                                             .map(|entity_instance| entity_instance.value().clone())
                                         {
                                             if let Some(property_type) = entity_type.get_own_property(&type_definition_property.property) {
@@ -610,7 +610,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                                 if let Ok(entity_ty) = EntityTypeId::try_from(&type_definition_property.type_definition) {
                                     for reactive_entity_instance in reactive_entity_instances
                                         .iter()
-                                        .filter(|entity_instance| &entity_instance.ty == &entity_ty)
+                                        .filter(|entity_instance| entity_instance.ty == entity_ty)
                                         .map(|entity_instance| entity_instance.value().clone())
                                     {
                                         reactive_entity_instance.remove_property(&type_definition_property.property);

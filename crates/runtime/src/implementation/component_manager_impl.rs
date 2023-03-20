@@ -181,14 +181,14 @@ impl ComponentManager for ComponentManagerImpl {
         }
         let mut guard = self.components.0.write().unwrap();
         for mut component in guard.iter_mut() {
-            if &component.ty == &ty {
+            if component.ty == ty {
                 component.description = component_to_merge.description.clone();
                 for property_to_merge in component_to_merge.properties.into_iter() {
                     if !component.has_property(&property_to_merge.name) {
                         component.properties.push(property_to_merge);
                     } else {
                         for existing_property in component.properties.iter_mut() {
-                            if &existing_property.name == &property_to_merge.name {
+                            if existing_property.name == property_to_merge.name {
                                 existing_property.description = property_to_merge.description.clone();
                                 existing_property.data_type = property_to_merge.data_type;
                                 existing_property.socket_type = property_to_merge.socket_type;
@@ -198,7 +198,7 @@ impl ComponentManager for ComponentManagerImpl {
                                         existing_property.extensions.push(property_extension_to_merge.clone());
                                     } else {
                                         for existing_property_extension in existing_property.extensions.iter_mut() {
-                                            if &existing_property_extension.ty == &property_extension_to_merge.ty {
+                                            if existing_property_extension.ty == property_extension_to_merge.ty {
                                                 existing_property_extension.description = property_extension_to_merge.description.clone();
                                                 existing_property_extension.extension = property_extension_to_merge.extension.clone();
                                             }
@@ -214,7 +214,7 @@ impl ComponentManager for ComponentManagerImpl {
                         component.extensions.push(extension_to_merge);
                     } else {
                         for existing_extension in component.extensions.iter_mut() {
-                            if &existing_extension.ty == &extension_to_merge.ty {
+                            if existing_extension.ty == extension_to_merge.ty {
                                 existing_extension.description = extension_to_merge.description.clone();
                                 existing_extension.extension = extension_to_merge.extension.clone();
                             }
@@ -363,7 +363,7 @@ impl ComponentManager for ComponentManagerImpl {
                 component
                     .extensions
                     .iter()
-                    .find(|extension| &extension.ty == &EXTENSION_COMPONENT_CATEGORY.clone())
+                    .find(|extension| extension.ty == EXTENSION_COMPONENT_CATEGORY.clone())
                     .and_then(|extension| extension.extension.as_str().map(str::to_string).clone())
             })
             .collect()

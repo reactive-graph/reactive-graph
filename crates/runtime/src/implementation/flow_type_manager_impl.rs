@@ -203,7 +203,7 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         let extension_ty = extension.ty.clone();
         let mut guard = self.flow_types.0.write().unwrap();
         if let Some(flow_type) = guard.iter_mut().find(|flow_type| &flow_type.ty == ty) {
-            flow_type.extensions.retain(|extension| &extension.ty == &extension_ty);
+            flow_type.extensions.retain(|extension| extension.ty == extension_ty);
             flow_type.extensions.push(extension);
         }
     }

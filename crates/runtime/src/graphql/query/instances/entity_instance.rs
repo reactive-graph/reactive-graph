@@ -142,7 +142,7 @@ impl GraphQLEntityInstance {
         let relation_instances = relation_instance_manager
             .get_by_outbound_entity(self.entity_instance.id)
             .iter()
-            .filter(|relation_instance| outbound_ty.is_none() || &outbound_ty.clone().unwrap() == &relation_instance.relation_type_id())
+            .filter(|relation_instance| outbound_ty.is_none() || outbound_ty.clone().unwrap() == relation_instance.relation_type_id())
             .map(|relation_instance| relation_instance.clone().into())
             .collect();
         Ok(relation_instances)
@@ -159,7 +159,7 @@ impl GraphQLEntityInstance {
         let relation_instances = relation_instance_manager
             .get_by_inbound_entity(self.entity_instance.id)
             .iter()
-            .filter(|relation_instance| inbound_ty.is_none() || &inbound_ty.clone().unwrap() == &relation_instance.relation_type_id())
+            .filter(|relation_instance| inbound_ty.is_none() || inbound_ty.clone().unwrap() == relation_instance.relation_type_id())
             .map(|relation_instance| relation_instance.clone().into())
             .collect();
         Ok(relation_instances)

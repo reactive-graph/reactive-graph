@@ -52,14 +52,14 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
             if let Ok(id) = ctx.args.try_get("id") {
                 let id = Uuid::from_str(id.string()?)?;
                 let entity_instance = entity_instance_manager.get(id).ok_or(Error::new("Uuid not found"))?;
-                if &entity_instance.ty != &ty {
+                if entity_instance.ty != ty {
                     return Err(Error::new(format!("Entity {} is not a {}", id, &ty)));
                 }
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance.clone())])));
             }
             if let Ok(label) = ctx.args.try_get("label") {
                 let entity_instance = entity_instance_manager.get_by_label(label.string()?).ok_or(Error::new("Label not found"))?;
-                if &entity_instance.ty != &ty {
+                if entity_instance.ty != ty {
                     return Err(Error::new(format!("Entity {} is not a {}", entity_instance.id, &ty)));
                 }
                 return Ok(Some(FieldValue::list(vec![FieldValue::owned_any(entity_instance.clone())])));
@@ -172,7 +172,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
                     .filter_map(|id| Uuid::from_str(&id).ok())
                 {
                     if let Some(entity_instance) = entity_instance_manager.get(id) {
-                        if &entity_instance.ty != &ty {
+                        if entity_instance.ty != ty {
                             return Err(entity_instance_not_of_entity_type_error(&id, &ty));
                         }
                         entity_instances.push(entity_instance);
@@ -185,7 +185,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
             if let Ok(id) = ctx.args.try_get("id") {
                 let id = Uuid::from_str(id.string()?)?;
                 let entity_instance = entity_instance_manager.get(id).ok_or(entity_instance_not_found_error(&id))?;
-                if &entity_instance.ty != &ty {
+                if entity_instance.ty != ty {
                     return Err(entity_instance_not_of_entity_type_error(&id, &ty));
                 }
                 let entity_instances = vec![entity_instance.clone()];
@@ -254,7 +254,7 @@ pub fn entity_outbound_relation_field(
             let relation_instances: Vec<FieldValue> = relation_instance_manager
                 .get_by_outbound_entity(entity_instance.id)
                 .iter()
-                .filter(|relation_instance| &outbound_ty.clone() == &relation_instance.relation_type_id())
+                .filter(|relation_instance| outbound_ty.clone() == relation_instance.relation_type_id())
                 .map(|relation_instance| FieldValue::owned_any(relation_instance.clone()))
                 .collect();
             Ok(Some(FieldValue::list(relation_instances)))
@@ -290,7 +290,7 @@ pub fn entity_inbound_relation_field(
             let relation_instances: Vec<FieldValue> = relation_instance_manager
                 .get_by_inbound_entity(entity_instance.id)
                 .iter()
-                .filter(|relation_instance| &inbound_ty.clone() == &relation_instance.relation_type_id())
+                .filter(|relation_instance| inbound_ty.clone() == relation_instance.relation_type_id())
                 .map(|relation_instance| FieldValue::owned_any(relation_instance.clone()))
                 .collect();
             Ok(Some(FieldValue::list(relation_instances)))
@@ -450,7 +450,7 @@ pub fn outbound_entity_to_inbound_entities_union_field(
                 relation_instance_manager
                     .get_by_outbound_entity(entity_instance.id)
                     .iter()
-                    .filter(|relation_instance| &relation_instance.relation_type_id() == &ty)
+                    .filter(|relation_instance| relation_instance.relation_type_id() == ty)
                     .map(|relation_instance| {
                         let inbound = relation_instance.inbound.clone();
                         let dy_ty = DynamicGraphTypeDefinition::from(&inbound.ty);
@@ -490,7 +490,7 @@ pub fn create_outbound_entity_to_inbound_field(ty: &RelationTypeId, type_name: &
                 relation_instance_manager
                     .get_by_outbound_entity(entity_instance.id)
                     .iter()
-                    .filter(|relation_instance| &relation_instance.relation_type_id() == &ty)
+                    .filter(|relation_instance| relation_instance.relation_type_id() == ty)
                     .map(|relation_instance| FieldValue::owned_any(relation_instance.inbound.clone())),
             )))
         })
@@ -534,7 +534,7 @@ pub fn inbound_entity_to_outbound_entities_union_field(
                 relation_instance_manager
                     .get_by_inbound_entity(entity_instance.id)
                     .iter()
-                    .filter(|relation_instance| &relation_instance.relation_type_id() == &ty)
+                    .filter(|relation_instance| relation_instance.relation_type_id() == ty)
                     .map(|relation_instance| {
                         let outbound = relation_instance.outbound.clone();
                         let dy_ty = DynamicGraphTypeDefinition::from(&outbound.ty);
@@ -574,7 +574,7 @@ pub fn create_inbound_entity_to_outbound_field(ty: &RelationTypeId, type_name: &
                 relation_instance_manager
                     .get_by_inbound_entity(entity_instance.id)
                     .iter()
-                    .filter(|relation_instance| &relation_instance.relation_type_id() == &ty)
+                    .filter(|relation_instance| relation_instance.relation_type_id() == ty)
                     .map(|relation_instance| FieldValue::owned_any(relation_instance.outbound.clone())),
             )))
         })
@@ -667,7 +667,7 @@ fn get_entity_instances_by_type_filter_by_properties(
 
 fn add_entity_type_properties_as_field_arguments(mut field: Field, entity_type: &EntityType, is_optional: bool, exclude_label: bool) -> Field {
     for property in entity_type.properties.iter() {
-        if exclude_label && &property.name == &LABEL.property_name() {
+        if exclude_label && property.name == LABEL.property_name() {
             continue;
         }
         if let Some(type_ref) = to_input_type_ref(property, is_optional) {

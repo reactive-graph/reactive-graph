@@ -371,7 +371,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                 entity_type
                     .extensions
                     .iter()
-                    .find(|extension| &extension.ty == &EXTENSION_ENTITY_TYPE_CATEGORY.clone())
+                    .find(|extension| extension.ty == EXTENSION_ENTITY_TYPE_CATEGORY.clone())
                     .and_then(|extension| extension.extension.as_str().map(str::to_string).clone())
             })
             .collect()
