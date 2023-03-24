@@ -20,6 +20,8 @@ authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/inexorgame/inexor-rgf-application"
+homepage = "https://inexorgame.github.io/inexor-rgf-application/"
+keywords = ["graph", "reactive", "control-flow", "inexor"]
 
 [workspace.dependencies]
 actix = "0.13"
