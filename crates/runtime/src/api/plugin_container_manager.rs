@@ -47,6 +47,12 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
     /// Returns the name of the plugin with the given id.
     fn name(&self, id: &Uuid) -> Option<String>;
 
+    /// Returns the canonicalized name of the plugin with the given id.
+    fn name_canonicalized(&self, id: &Uuid) -> Option<String>;
+
+    /// Returns the canonicalized name and version of the plugin with the given id.
+    fn name_version(&self, id: &Uuid) -> Option<String>;
+
     /// Returns the description of the plugin with the given id.
     fn description(&self, id: &Uuid) -> Option<String>;
 

@@ -1,3 +1,5 @@
+use crate::PLUGIN_NAME_PREFIX;
+
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
 pub struct PluginDependency {
     /// The name of the dependency plugin.
@@ -10,5 +12,13 @@ pub struct PluginDependency {
 impl PluginDependency {
     pub fn new(name: &'static str, version: &'static str) -> Self {
         PluginDependency { name, version }
+    }
+
+    pub fn name_canonicalized(&self) -> String {
+        self.name.replace(PLUGIN_NAME_PREFIX, "")
+    }
+
+    pub fn name_version(&self) -> String {
+        format!("{}:{}", self.name_canonicalized(), self.version)
     }
 }

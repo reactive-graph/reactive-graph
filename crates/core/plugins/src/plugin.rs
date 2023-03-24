@@ -18,6 +18,8 @@ use crate::RelationTypeProviderError;
 use crate::WebResourceProvider;
 use crate::WebResourceProviderError;
 
+pub const PLUGIN_NAME_PREFIX: &str = "inexor-rgf-plugin-";
+
 #[derive(Debug)]
 pub enum PluginLoadingError {
     LoadingDynamicLibraryFailed,

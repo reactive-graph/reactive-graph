@@ -83,6 +83,36 @@ impl PluginResolverImpl {
         }
         false
     }
+
+    fn log_unsatisfied_dependencies(&self) {
+        for id in self.plugin_container_manager.get_plugins_not_having_state(PluginState::Active) {
+            let name = self.plugin_container_manager.name_canonicalized(&id).unwrap_or(id.to_string());
+            for d in self.plugin_container_manager.get_unsatisfied_dependencies(&id) {
+                trace!("Plugin {} {} has unsatisfied dependency: {}", id, &name, d.name_version());
+                match self.plugin_container_manager.get_plugin_by_dependency(&d) {
+                    Some(dependency_id) => {
+                        let dependency_name_version = self.plugin_container_manager.name_version(&dependency_id).unwrap_or(dependency_id.to_string());
+                        // let dependency_name = self.plugin_container_manager.name_canonicalized(&dependency_id).unwrap_or_default();
+                        // let dependency_version = self.plugin_container_manager.version(&dependency_id).unwrap_or_default();
+                        let dependency_state = self
+                            .plugin_container_manager
+                            .get_plugin_state(&dependency_id)
+                            .unwrap_or(PluginState::Uninstalled);
+                        warn!(
+                            "Plugin {} has unsatisfied dependency: {} - which exists ({}) but has state {:?}",
+                            &name,
+                            d.name_version(),
+                            dependency_name_version,
+                            dependency_state
+                        );
+                    }
+                    None => {
+                        warn!("Plugin {} has unsatisfied dependency: {} - which doesn't exist", &name, d.name_version());
+                    }
+                }
+            }
+        }
+    }
 }
 
 #[async_trait]
@@ -374,49 +404,7 @@ impl Lifecycle for PluginResolverImpl {
     async fn init(&self) {
         self.set_mode(PluginResolverMode::Starting);
         self.resolve_until_idle().await;
-        for id in self.plugin_container_manager.get_plugins_not_having_state(PluginState::Active) {
-            let name = self.plugin_container_manager.name(&id).unwrap_or_default().replace("inexor-rgf-plugin-", "");
-            for d in self.plugin_container_manager.get_unsatisfied_dependencies(&id) {
-                trace!(
-                    "Plugin {} {} has unsatisfied dependency: {}:{}",
-                    id,
-                    &name,
-                    d.name.replace("inexor-rgf-plugin-", ""),
-                    d.version
-                );
-                match self.plugin_container_manager.get_plugin_by_dependency(&d) {
-                    Some(dependency_id) => {
-                        let dependency_name = self
-                            .plugin_container_manager
-                            .name(&dependency_id)
-                            .unwrap_or_default()
-                            .replace("inexor-rgf-plugin-", "");
-                        let dependency_version = self.plugin_container_manager.version(&dependency_id).unwrap_or_default();
-                        let dependency_state = self
-                            .plugin_container_manager
-                            .get_plugin_state(&dependency_id)
-                            .unwrap_or(PluginState::Uninstalled);
-                        warn!(
-                            "Plugin {} has unsatisfied dependency: {}:{} - which exists ({} {}) but has state {:?}",
-                            &name,
-                            d.name.replace("inexor-rgf-plugin-", ""),
-                            d.version,
-                            dependency_name,
-                            dependency_version,
-                            dependency_state
-                        );
-                    }
-                    None => {
-                        warn!(
-                            "Plugin {} has unsatisfied dependency: {}:{} - which doesn't exist",
-                            &name,
-                            d.name.replace("inexor-rgf-plugin-", ""),
-                            d.version
-                        );
-                    }
-                }
-            }
-        }
+        self.log_unsatisfied_dependencies();
         self.set_mode(PluginResolverMode::Neutral);
     }
 

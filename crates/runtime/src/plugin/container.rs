@@ -34,6 +34,7 @@ use crate::plugins::PluginState;
 use crate::plugins::PluginUninstallError;
 use crate::plugins::PluginUninstallingState;
 use crate::plugins::PLUGIN_API_VERSION;
+use crate::plugins::PLUGIN_NAME_PREFIX;
 use crate::plugins::RUSTC_VERSION;
 
 /// The plugin container holds the meta information and the library.
@@ -581,6 +582,16 @@ impl PluginContainer {
     pub fn name(&self) -> Option<String> {
         let reader = self.plugin_declaration.read().unwrap();
         (*reader).map(|plugin_declaration| plugin_declaration.name.to_string())
+    }
+
+    pub fn name_canonicalized(&self) -> Option<String> {
+        let reader = self.plugin_declaration.read().unwrap();
+        (*reader).map(|plugin_declaration| plugin_declaration.name.replace(PLUGIN_NAME_PREFIX, ""))
+    }
+
+    pub fn name_version(&self) -> Option<String> {
+        let reader = self.plugin_declaration.read().unwrap();
+        (*reader).map(|plugin_declaration| format!("{}:{}", plugin_declaration.name.replace(PLUGIN_NAME_PREFIX, ""), plugin_declaration.version))
     }
 
     pub fn description(&self) -> Option<String> {

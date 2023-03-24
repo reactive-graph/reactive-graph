@@ -1,6 +1,7 @@
+use std::sync::Arc;
+
 use crate::Plugin;
 use crate::PluginDependency;
-use std::sync::Arc;
 
 #[derive(Copy, Clone)]
 pub struct PluginDeclaration {
