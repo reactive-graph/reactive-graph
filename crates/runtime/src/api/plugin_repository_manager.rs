@@ -7,6 +7,10 @@ pub trait PluginRepositoryManager: Send + Sync + Lifecycle {
     /// Scans the plugin hot deploy folder. Moves plugins to the plugin installation folder.
     fn scan_deploy_repository(&self);
 
+    /// Scans the plugin installation folder and removes duplicates. If the same plugins exists
+    /// multiple times, the plugin with the highest timestamp stays while all other are deleted.
+    fn remove_duplicates(&self);
+
     /// Scans the plugin installation folder. Creates and registers new plugins to the
     /// plugin container manager.
     fn scan_plugin_repository(&self);

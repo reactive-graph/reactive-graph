@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::env::consts::DLL_EXTENSION;
 use std::fs;
 use std::path::Path;
@@ -21,6 +22,7 @@ use notify::RecursiveMode;
 use notify::Watcher;
 use tokio::sync::mpsc;
 use uuid::Uuid;
+use walkdir::WalkDir;
 
 use crate::api::ConfigManager;
 use crate::api::Lifecycle;
@@ -207,36 +209,84 @@ impl PluginRepositoryManagerImpl {
 impl PluginRepositoryManager for PluginRepositoryManagerImpl {
     fn scan_deploy_repository(&self) {
         let plugins_config = self.config_manager.get_plugins_config();
-        if !plugins_config.is_hot_deploy() {
+        let Some(hot_deploy_location) = plugins_config.get_hot_deploy_location() else {
             return;
+        };
+        trace!("Scanning plugin hot deploy folder {hot_deploy_location:?}");
+        let Ok(dir) = fs::read_dir(hot_deploy_location) else {
+            return;
+        };
+        for entry in dir.flatten() {
+            if let Ok(file_type) = entry.file_type() {
+                if !file_type.is_file() {
+                    continue;
+                }
+                let _ = deploy_plugin(entry.path());
+            }
         }
-        if let Some(hot_deploy_location) = plugins_config.get_hot_deploy_location() {
-            trace!("Scanning plugin hot deploy folder {hot_deploy_location:?}");
-            if let Ok(dir) = fs::read_dir(hot_deploy_location) {
-                for entry in dir.flatten() {
-                    if let Ok(file_type) = entry.file_type() {
-                        if !file_type.is_file() {
-                            continue;
+    }
+
+    fn remove_duplicates(&self) {
+        let plugins_config = self.config_manager.get_plugins_config();
+        let Some(install_location) = plugins_config.get_install_location() else {
+            return;
+        };
+        let mut installed_plugins: HashMap<String, (u64, PathBuf)> = HashMap::new();
+        let mut plugins_to_remove: Vec<PathBuf> = Vec::new();
+
+        for entry in WalkDir::new(install_location)
+            .into_iter()
+            .filter_map(Result::ok)
+            .filter(|e| !e.file_type().is_dir())
+        {
+            let p = entry.path();
+            if let Some((stem, timestamp)) = p
+                .file_stem()
+                .and_then(|stem| {
+                    stem.to_string_lossy()
+                        .rsplit_once('.')
+                        .map(|(stem, timestamp)| (String::from(stem), String::from(timestamp)))
+                })
+                .and_then(|(stem, timestamp)| timestamp.parse::<u64>().ok().map(|timestamp| (stem, timestamp)))
+            {
+                // let timestamp = timestamp.parse::<u64>();
+                match installed_plugins.get_mut(&stem) {
+                    Some(entry) => {
+                        // (timestamp2, p2)
+                        if entry.0 < timestamp {
+                            plugins_to_remove.push(entry.1.clone());
+                            entry.0 = timestamp;
+                            entry.1 = PathBuf::from(p);
+                            // filenames.insert(stem, (timestamp, PathBuf::from(p)));
+                        } else {
+                            plugins_to_remove.push(PathBuf::from(p));
                         }
-                        let _ = deploy_plugin(entry.path());
+                    }
+                    None => {
+                        installed_plugins.insert(stem, (timestamp, PathBuf::from(p)));
                     }
                 }
+            }
+        }
+        for plugin_to_remove in plugins_to_remove {
+            if let Ok(_) = fs::remove_file(&plugin_to_remove) {
+                trace!("Removed duplicate plugin: {}", plugin_to_remove.display());
             }
         }
     }
 
     fn scan_plugin_repository(&self) {
         let plugins_config = self.config_manager.get_plugins_config();
-        if let Some(install_location) = plugins_config.get_install_location() {
-            trace!("Scanning plugin installation folder {install_location:?}");
-            if let Ok(dir) = fs::read_dir(install_location) {
-                for entry in dir.flatten() {
-                    if let Ok(file_type) = entry.file_type() {
-                        if file_type.is_file() {
-                            self.create_and_register_plugin_container(entry.path());
-                        }
-                    }
-                }
+        let Some(install_location) = plugins_config.get_install_location() else {
+            return;
+        };
+        trace!("Scanning plugin installation folder {install_location:?}");
+        let Ok(dir) = fs::read_dir(install_location) else {
+            return;
+        };
+        for entry in dir.flatten() {
+            if entry.file_type().map(|f| f.is_file()).unwrap_or(false) {
+                self.create_and_register_plugin_container(entry.path());
             }
         }
     }
@@ -278,6 +328,8 @@ impl Lifecycle for PluginRepositoryManagerImpl {
         // install folder before the install folder will be scanned. Eventually existing plugins
         // will be overwritten by the version in the deploy folder.
         self.scan_deploy_repository();
+
+        self.remove_duplicates();
 
         // Initially, scans the plugin installation folder and creates and registers plugin
         // containers for each plugin.
