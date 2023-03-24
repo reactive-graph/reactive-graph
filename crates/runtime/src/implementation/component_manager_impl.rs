@@ -30,9 +30,11 @@ use crate::di::Wrc;
 use crate::model::ComponentTypeId;
 use crate::model::DataType;
 use crate::model::Extension;
+use crate::model::ExtensionContainer;
 use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeContainer;
 use crate::model::PropertyTypeDefinition;
 use crate::model::TypeDefinitionGetter;
 use crate::model_runtime::EventProperties::EVENT;
@@ -184,46 +186,10 @@ impl ComponentManager for ComponentManagerImpl {
             return Err(ComponentMergeError::ComponentDoesNotExist(ty));
         };
         component.description = component_to_merge.description.clone();
-        for property_to_merge in component_to_merge.properties.into_iter() {
-            if !component.has_property(&property_to_merge.name) {
-                component.properties.push(property_to_merge);
-            } else {
-                for existing_property in component.properties.iter_mut() {
-                    if existing_property.name == property_to_merge.name {
-                        existing_property.description = property_to_merge.description.clone();
-                        existing_property.data_type = property_to_merge.data_type;
-                        existing_property.socket_type = property_to_merge.socket_type;
-                        existing_property.mutability = property_to_merge.mutability;
-                        for property_extension_to_merge in property_to_merge.extensions.iter() {
-                            if !existing_property.has_extension(&property_extension_to_merge.ty) {
-                                existing_property.extensions.push(property_extension_to_merge.clone());
-                            } else {
-                                for existing_property_extension in existing_property.extensions.iter_mut() {
-                                    if existing_property_extension.ty == property_extension_to_merge.ty {
-                                        existing_property_extension.description = property_extension_to_merge.description.clone();
-                                        existing_property_extension.extension = property_extension_to_merge.extension.clone();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        for extension_to_merge in component_to_merge.extensions.into_iter() {
-            if !component.has_extension(&extension_to_merge.ty) {
-                component.extensions.push(extension_to_merge);
-            } else {
-                for existing_extension in component.extensions.iter_mut() {
-                    if existing_extension.ty == extension_to_merge.ty {
-                        existing_extension.description = extension_to_merge.description.clone();
-                        existing_extension.extension = extension_to_merge.extension.clone();
-                    }
-                }
-            }
-        }
+        component.merge_properties(component_to_merge.properties);
+        component.merge_extensions(component_to_merge.extensions);
         // TODO: Notify about changed component -> This effects reactive instances which contains the component -> Add/remove property instances
-        return Ok(component.clone());
+        Ok(component.clone())
     }
 
     fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<(), ComponentPropertyError> {
@@ -345,6 +311,7 @@ impl ComponentManager for ComponentManagerImpl {
         for component in component_provider.get_components() {
             trace!("Registering component: {}", component.type_definition().to_string());
             if self.register(component.clone()).is_err() {
+                trace!("Merging component: {}", component.type_definition().to_string());
                 let _ = self.merge(component);
             }
         }

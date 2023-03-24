@@ -223,6 +223,17 @@ impl ExtensionContainer for RelationInstance {
     fn get_own_extension(&self, extension_ty: &ExtensionTypeId) -> Option<Extension> {
         self.extensions.iter().find(|extension| &extension.ty == extension_ty).cloned()
     }
+
+    fn merge_extensions(&mut self, extensions_to_merge: Vec<Extension>) {
+        for extension_to_merge in extensions_to_merge {
+            if !self.has_own_extension(&extension_to_merge.ty) {
+                self.extensions.push(extension_to_merge);
+            } else if let Some(existing_extension) = self.extensions.iter_mut().find(|e| e.ty == extension_to_merge.ty) {
+                existing_extension.description = extension_to_merge.description.clone();
+                existing_extension.extension = extension_to_merge.extension.clone();
+            }
+        }
+    }
 }
 
 impl NamespacedTypeGetter for RelationInstance {

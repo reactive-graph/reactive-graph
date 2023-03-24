@@ -3,9 +3,11 @@ use serde::Serialize;
 
 use crate::ComponentTypeId;
 use crate::Extension;
+use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
+use crate::PropertyTypeContainer;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
@@ -80,6 +82,57 @@ impl Component {
     /// Returns true, if the component contains an extension with the given type.
     pub fn has_extension(&self, ty: &ExtensionTypeId) -> bool {
         self.extensions.iter().any(|extension| &extension.ty == ty)
+    }
+
+    fn get_extension(&self, ty: &ExtensionTypeId) -> Option<Extension> {
+        self.extensions.iter().find(|extension| &extension.ty == ty).cloned()
+    }
+}
+
+impl PropertyTypeContainer for Component {
+    fn has_own_property<S: Into<String>>(&self, property_name: S) -> bool {
+        let property_name = property_name.into();
+        self.properties.iter().any(|p| p.name == property_name)
+    }
+
+    fn get_own_property<S: Into<String>>(&self, property_name: S) -> Option<PropertyType> {
+        let property_name = property_name.into();
+        self.properties.iter().find(|p| p.name == property_name).cloned()
+    }
+
+    fn merge_properties(&mut self, properties_to_merge: Vec<PropertyType>) {
+        for property_to_merge in properties_to_merge.into_iter() {
+            if !self.has_own_property(&property_to_merge.name) {
+                self.properties.push(property_to_merge);
+            } else if let Some(existing_property) = self.properties.iter_mut().find(|p| p.name == property_to_merge.name) {
+                existing_property.description = property_to_merge.description.clone();
+                existing_property.data_type = property_to_merge.data_type;
+                existing_property.socket_type = property_to_merge.socket_type;
+                existing_property.mutability = property_to_merge.mutability;
+                existing_property.merge_extensions(property_to_merge.extensions);
+            }
+        }
+    }
+}
+
+impl ExtensionContainer for Component {
+    fn has_own_extension(&self, ty: &ExtensionTypeId) -> bool {
+        self.has_extension(ty)
+    }
+
+    fn get_own_extension(&self, ty: &ExtensionTypeId) -> Option<Extension> {
+        self.get_extension(ty)
+    }
+
+    fn merge_extensions(&mut self, extensions_to_merge: Vec<Extension>) {
+        for extension_to_merge in extensions_to_merge {
+            if !self.has_own_extension(&extension_to_merge.ty) {
+                self.extensions.push(extension_to_merge);
+            } else if let Some(existing_extension) = self.extensions.iter_mut().find(|e| e.ty == extension_to_merge.ty) {
+                existing_extension.description = extension_to_merge.description.clone();
+                existing_extension.extension = extension_to_merge.extension.clone();
+            }
+        }
     }
 }
 

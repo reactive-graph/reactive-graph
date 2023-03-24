@@ -5,6 +5,7 @@ use uuid::Uuid;
 
 use crate::extension::Extension;
 use crate::DataType;
+use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::Mutability;
 use crate::SocketType;
@@ -124,6 +125,31 @@ impl PropertyType {
     /// Returns true, if the property contains an extension with the given type.
     pub fn has_extension(&self, ty: &ExtensionTypeId) -> bool {
         self.extensions.iter().any(|extension| &extension.ty == ty)
+    }
+
+    pub fn get_extension(&self, ty: &ExtensionTypeId) -> Option<Extension> {
+        self.extensions.iter().find(|extension| &extension.ty == ty).cloned()
+    }
+}
+
+impl ExtensionContainer for PropertyType {
+    fn has_own_extension(&self, ty: &ExtensionTypeId) -> bool {
+        self.has_extension(ty)
+    }
+
+    fn get_own_extension(&self, ty: &ExtensionTypeId) -> Option<Extension> {
+        self.get_extension(ty)
+    }
+
+    fn merge_extensions(&mut self, extensions_to_merge: Vec<Extension>) {
+        for extension_to_merge in extensions_to_merge {
+            if !self.has_own_extension(&extension_to_merge.ty) {
+                self.extensions.push(extension_to_merge);
+            } else if let Some(existing_extension) = self.extensions.iter_mut().find(|e| e.ty == extension_to_merge.ty) {
+                existing_extension.description = extension_to_merge.description.clone();
+                existing_extension.extension = extension_to_merge.extension.clone();
+            }
+        }
     }
 }
 

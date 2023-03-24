@@ -24,6 +24,11 @@ pub enum RelationTypeRegistrationError {
 }
 
 #[derive(Debug)]
+pub enum RelationTypeMergeError {
+    RelationTypeDoesNotExists(RelationTypeId),
+}
+
+#[derive(Debug)]
 pub enum RelationTypeCreationError {
     RegistrationError(RelationTypeRegistrationError),
 }
@@ -117,6 +122,9 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<RelationType, RelationTypeCreationError>;
+
+    /// Merges the given relation_type_to_merge into an existing relation type with the same relation type id.
+    fn merge(&self, relation_type_to_merge: RelationType) -> Result<RelationType, RelationTypeMergeError>;
 
     /// Adds the component with the given component_name to the relation type with the given name.
     fn add_component(&self, ty: &RelationTypeId, component_ty: &ComponentTypeId) -> Result<(), RelationTypeComponentError>;

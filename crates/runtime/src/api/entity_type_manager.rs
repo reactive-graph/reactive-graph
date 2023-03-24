@@ -18,6 +18,11 @@ pub enum EntityTypeRegistrationError {
 }
 
 #[derive(Debug)]
+pub enum EntityTypeMergeError {
+    EntityTypeDoesNotExists(EntityTypeId),
+}
+
+#[derive(Debug)]
 pub enum EntityTypeCreationError {
     RegistrationError(EntityTypeRegistrationError),
 }
@@ -103,6 +108,9 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<EntityType, EntityTypeCreationError>;
+
+    /// Merges the given entity_type_to_merge into an existing entity type with the same entity type id.
+    fn merge(&self, entity_type_to_merge: EntityType) -> Result<EntityType, EntityTypeMergeError>;
 
     /// Adds the component with the given component_name to the entity type with the given name.
     fn add_component(&self, ty: &EntityTypeId, component: &ComponentTypeId) -> Result<(), EntityTypeComponentError>;

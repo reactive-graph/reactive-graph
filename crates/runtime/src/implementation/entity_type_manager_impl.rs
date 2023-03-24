@@ -18,6 +18,7 @@ use crate::api::EntityTypeCreationError;
 use crate::api::EntityTypeExtensionError;
 use crate::api::EntityTypeImportError;
 use crate::api::EntityTypeManager;
+use crate::api::EntityTypeMergeError;
 use crate::api::EntityTypePropertyError;
 use crate::api::EntityTypeRegistrationError;
 use crate::api::Lifecycle;
@@ -36,6 +37,7 @@ use crate::model::ExtensionContainer;
 use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeContainer;
 use crate::model::TypeContainer;
 use crate::model::TypeDefinitionGetter;
 use crate::model_flow::ENTITY_TYPE_GENERIC_FLOW;
@@ -227,6 +229,24 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .map_err(EntityTypeCreationError::RegistrationError)
     }
 
+    fn merge(&self, entity_type_to_merge: EntityType) -> Result<EntityType, EntityTypeMergeError> {
+        let ty = entity_type_to_merge.ty;
+        if !self.has(&ty) {
+            return Err(EntityTypeMergeError::EntityTypeDoesNotExists(ty));
+        }
+        for component_ty in entity_type_to_merge.components {
+            let _ = self.add_component(&ty, &component_ty);
+        }
+        let mut guard = self.entity_types.0.write().unwrap();
+        let Some(mut entity_type) = guard.iter_mut().find(|e| e.ty == ty) else {
+            return Err(EntityTypeMergeError::EntityTypeDoesNotExists(ty));
+        };
+        entity_type.description = entity_type_to_merge.description.clone();
+        entity_type.merge_properties(entity_type_to_merge.properties);
+        entity_type.merge_extensions(entity_type_to_merge.extensions);
+        Ok(entity_type.clone())
+    }
+
     fn add_component(&self, ty: &EntityTypeId, component_ty: &ComponentTypeId) -> Result<(), EntityTypeComponentError> {
         let mut guard = self.entity_types.0.write().unwrap();
         for entity_type in guard.iter_mut() {
@@ -237,8 +257,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                 match self.component_manager.get(component_ty) {
                     Some(component) => {
                         entity_type.components.push(component_ty.clone());
-                        // TODO: what if multiple components have the same property?
-                        entity_type.properties.append(&mut component.clone().properties)
+                        entity_type.merge_properties(component.properties);
                     }
                     None => {
                         return Err(EntityTypeComponentError::ComponentDoesNotExist);
@@ -359,7 +378,10 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>) {
         for entity_type in entity_type_provider.get_entity_types() {
             trace!("Registering entity type: {}", entity_type.type_definition().to_string());
-            let _ = self.register(entity_type);
+            if self.register(entity_type.clone()).is_err() {
+                trace!("Merging entity type: {}", entity_type.type_definition().to_string());
+                let _ = self.merge(entity_type);
+            }
         }
     }
 

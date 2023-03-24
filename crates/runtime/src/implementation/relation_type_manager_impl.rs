@@ -20,6 +20,7 @@ use crate::api::RelationTypeCreationError;
 use crate::api::RelationTypeExtensionError;
 use crate::api::RelationTypeImportError;
 use crate::api::RelationTypeManager;
+use crate::api::RelationTypeMergeError;
 use crate::api::RelationTypePropertyError;
 use crate::api::RelationTypeRegistrationError;
 use crate::api::SystemEventManager;
@@ -31,6 +32,7 @@ use crate::model::ExtensionContainer;
 use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeContainer;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::model::TypeContainer;
@@ -289,6 +291,26 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         .map_err(RelationTypeCreationError::RegistrationError)
     }
 
+    fn merge(&self, relation_type_to_merge: RelationType) -> Result<RelationType, RelationTypeMergeError> {
+        let ty = relation_type_to_merge.ty;
+        if !self.has(&ty) {
+            return Err(RelationTypeMergeError::RelationTypeDoesNotExists(ty));
+        }
+        for component_ty in relation_type_to_merge.components {
+            let _ = self.add_component(&ty, &component_ty);
+        }
+        let mut guard = self.relation_types.0.write().unwrap();
+        let Some(mut relation_type) = guard.iter_mut().find(|r| r.ty == ty) else {
+            return Err(RelationTypeMergeError::RelationTypeDoesNotExists(ty));
+        };
+        relation_type.outbound_type = relation_type_to_merge.outbound_type;
+        relation_type.inbound_type = relation_type_to_merge.inbound_type;
+        relation_type.description = relation_type_to_merge.description.clone();
+        relation_type.merge_properties(relation_type_to_merge.properties);
+        relation_type.merge_extensions(relation_type_to_merge.extensions);
+        Ok(relation_type.clone())
+    }
+
     fn add_component(&self, ty: &RelationTypeId, component_ty: &ComponentTypeId) -> Result<(), RelationTypeComponentError> {
         let mut guard = self.relation_types.0.write().unwrap();
         for relation_type in guard.iter_mut() {
@@ -296,10 +318,15 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                 if relation_type.is_a(component_ty) {
                     return Err(RelationTypeComponentError::ComponentAlreadyAssigned);
                 }
-                if !self.component_manager.has(component_ty) {
-                    return Err(RelationTypeComponentError::ComponentDoesNotExist);
+                match self.component_manager.get(component_ty) {
+                    Some(component) => {
+                        relation_type.components.push(component_ty.clone());
+                        relation_type.merge_properties(component.properties);
+                    }
+                    None => {
+                        return Err(RelationTypeComponentError::ComponentDoesNotExist);
+                    }
                 }
-                relation_type.components.push(component_ty.clone());
                 self.event_manager
                     .emit_event(SystemEvent::RelationTypeComponentAdded(relation_type.ty.clone(), component_ty.clone()));
             }
@@ -416,7 +443,10 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>) {
         for relation_type in relation_type_provider.get_relation_types() {
             trace!("Registering relation type: {}", relation_type.type_definition().to_string());
-            let _ = self.register(relation_type);
+            if self.register(relation_type.clone()).is_err() {
+                trace!("Merging relation type: {}", relation_type.type_definition().to_string());
+                let _ = self.merge(relation_type);
+            }
         }
     }
 }
