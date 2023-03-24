@@ -5,6 +5,7 @@ use async_trait::async_trait;
 use log::info;
 use log::trace;
 use log::warn;
+use tokio::task::yield_now;
 use uuid::Uuid;
 
 use crate::api::ComponentManager;
@@ -29,6 +30,8 @@ use crate::plugins::PluginStartingState;
 use crate::plugins::PluginState;
 use crate::plugins::PluginStoppingState;
 use crate::plugins::PluginUninstallingState;
+
+const MAX_ITERATIONS: u32 = 1000;
 
 #[wrapper]
 pub struct PluginResolverModeState(RwLock<PluginResolverMode>);
@@ -124,12 +127,35 @@ impl PluginResolver for PluginResolverImpl {
             return;
         }
         let mut i = 0;
-        while self.resolve().await == Changed && i < 1000 {
-            // TODO: timeout + circuit breaker
+        while self.resolve().await == Changed && i < MAX_ITERATIONS {
             i += 1;
+            if i % 50 == 0 {
+                yield_now().await
+            }
         }
-        if i == 1000 {
-            warn!("Plugin resolver stopped after {} iterations", 1000);
+
+        if i >= MAX_ITERATIONS {
+            warn!("Plugin resolver force stopped after {i} iterations");
+        } else {
+            trace!("Plugin resolver finished after {i} iterations");
+        }
+    }
+
+    async fn stop_until_all_stopped(&self) {
+        let mut i = 0;
+        while !self.plugin_container_manager.are_all_stopped() && i < MAX_ITERATIONS {
+            self.resolve_until_idle().await;
+            tokio::time::sleep(Duration::from_millis(10)).await;
+            i += 1;
+            if i % 50 == 0 {
+                yield_now().await
+            }
+            // TODO: force stop after timeout
+        }
+        if i >= MAX_ITERATIONS {
+            warn!("Plugin resolver force stopped after {i} iterations");
+        } else {
+            trace!("Plugin resolver finished after {i} iterations");
         }
     }
 
@@ -411,15 +437,6 @@ impl Lifecycle for PluginResolverImpl {
     async fn shutdown(&self) {
         self.set_mode(PluginResolverMode::Stopping);
         self.plugin_container_manager.stop_all();
-        let mut i = 0;
-        while !self.plugin_container_manager.are_all_stopped() && i < 100 {
-            self.resolve_until_idle().await;
-            tokio::time::sleep(Duration::from_millis(100)).await;
-            i += 1;
-            // TODO: force stop after timeout
-        }
-        if i == 100 {
-            warn!("Plugin resolver stopped after {} iterations", 100);
-        }
+        self.stop_until_all_stopped().await;
     }
 }

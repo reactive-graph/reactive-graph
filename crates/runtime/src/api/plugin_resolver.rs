@@ -9,6 +9,9 @@ pub trait PluginResolver: Send + Sync + Lifecycle {
     /// Resolves plugins until no more resolve action is possible.
     async fn resolve_until_idle(&self);
 
+    /// Stops all plugins until all are stopped.
+    async fn stop_until_all_stopped(&self);
+
     /// Runs the next resolve action.
     async fn resolve(&self) -> PluginTransitionResult;
 
