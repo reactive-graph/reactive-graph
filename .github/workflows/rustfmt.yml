@@ -32,4 +32,6 @@ jobs:
           components: rustfmt
       - name: Run cargo fmt
         uses: actions-rs/cargo@v1
-        run: cargo fmt --all -- --check
+        with:
+          command: "fmt"
+          args: "--all -- --check"
