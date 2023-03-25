@@ -1,6 +1,8 @@
+<div align="center">
 <a href="https://inexor.org/">
 <img src="docs/inexor-rgf/src/images/rgf_logo_k2_v4_fg_sm.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" />
 </a>
+</div>
 
 
 <h1 style="text-align: center;">Inexor Reactive Graph Flow</h1>
