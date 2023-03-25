@@ -41,8 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Plugin Lifecycle: Make plugin activate and deactivate methods async
 - GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0
 
-### Removed
-
 ## [0.8.0] - 2022-02-01
 
 ### Added
@@ -92,8 +90,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Plugin: Default trait implementations for the plugin API to reduce boilerplate
 - Plugin: Return option none if a plugin doesn't use certain functionality
 
-### Removed
-
 ## [0.6.0] - 2022-02-26
 
 ### Added
@@ -124,8 +120,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation: Convert code of conduct and changelog to markdown
 - Documentation: Added code of conduct and changelog to book
 
-### Removed
-
 ## [0.5.0] - 2022-01-20
 
 ### Added
@@ -141,3 +135,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: `actix-http`, `actix-web`, `async-std`, `query_interface`, `inexor-rgf-core-reactive`
+
+<img src="assets/public/images/rgf_logo_k1_fg.png" />
