@@ -5,9 +5,9 @@
 </div>
 
 
-<h1 style="text-align: center;">Inexor Reactive Graph Flow</h1>
+<h1 align="center" style="text-align: center;">Inexor Reactive Graph Flow</h1>
 
-<div style="text-align: center">
+<div align="center" style="text-align: center">
 
 [<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/)
 
@@ -23,7 +23,7 @@
 </div>
 
 
-<h2 style="text-align: center;">What is this?</h2>
+<h2 align="center" style="text-align: center;">What is this?</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -42,7 +42,7 @@
 </div>
 
 
-<h2 style="text-align: center;">What is it for?</h2>
+<h2 align="center" style="text-align: center;">What is it for?</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -59,7 +59,7 @@
 </div>
 
 
-<h2 style="text-align: center;">Graph</h2>
+<h2 align="center" style="text-align: center;">Graph</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -78,7 +78,7 @@ The main benefits of a graph are:
 </div>
 
 
-<h2 style="text-align: center;">Reactive</h2>
+<h2 align="center" style="text-align: center;">Reactive</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -107,7 +107,7 @@ Remember this basic concept:
 </div>
 
 
-<h2 style="text-align: center;">Behaviour driven design</h2>
+<h2 align="center" style="text-align: center;">Behaviour driven design</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -138,7 +138,7 @@ of relation instances. A behaviour can be added to entity instances and removed 
 </div>
 
 
-<h2 style="text-align: center;">Flow</h2>
+<h2 align="center" style="text-align: center;">Flow</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -160,7 +160,7 @@ emitter. The possibilities for this are endless and want to be used!
 </div>
 
 
-<h2 style="text-align: center;">Inexor</h2>
+<h2 align="center" style="text-align: center;">Inexor</h2>
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
@@ -173,9 +173,9 @@ emitter. The possibilities for this are endless and want to be used!
 </div>
 
 
-<h2 style="text-align: center;">Plugins</h2>
+<h2 align="center" style="text-align: center;">Plugins</h2>
 
-<div style="text-align: center">
+<div align="center" style="text-align: center">
 
 [The Plugin System](http://localhost:3000/Plugin_System.html)
 
@@ -184,9 +184,9 @@ emitter. The possibilities for this are endless and want to be used!
 </div>
 
 
-<h2 style="text-align: center;">Development</h2>
+<h2 align="center" style="text-align: center;">Development</h2>
 
-<div style="text-align: center">
+<div align="center" style="text-align: center">
 
 [Build Instructions](https://inexorgame.github.io/inexor-rgf-application/Development_Build.html)
 
@@ -199,33 +199,34 @@ emitter. The possibilities for this are endless and want to be used!
 </div>
 
 
-<h2 style="text-align: center;">Configuration</h2>
+<h2 align="center" style="text-align: center;">Configuration</h2>
 
-<div style="text-align: center">
+<div align="center" style="text-align: center">
 
 [Configuration](https://inexorgame.github.io/inexor-rgf-application/Configuration.html)
 
 </div>
 
 
-<h2 style="text-align: center;">GraphQL Type System</h2>
+<h2 align="center" style="text-align: center;">GraphQL Type System</h2>
 
 <img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/queries.png">
 
 <img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/mutations.png">
 
-<h2 style="text-align: center;">Flow Editor</h2>
 
-<div style="text-align: center">
+<h2 align="center" style="text-align: center;">Flow Editor</h2>
+
+<div align="center" style="text-align: center">
 
 Coming soon.
 
 </div>
 
 
-<h2 style="text-align: center;">Sponsors</h2>
+<h2 align="center" style="text-align: center;">Sponsors</h2>
 
-<div style="text-align: center">
+<div align="center" style="text-align: center">
 
 <a href="https://www.jetbrains.com/?from=github.com/inexorgame">
 <img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/icon_CLion.svg" style="width: 30%; height: 30%;">
