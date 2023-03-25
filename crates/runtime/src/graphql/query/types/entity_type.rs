@@ -55,18 +55,27 @@ impl GraphQLEntityType {
 
     /// The properties / property types which are defined by the entity type or
     /// by one of the components.
-    async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
+    async fn properties(
+        &self,
+        #[graphql(desc = "The name of the property")] name: Option<String>,
+        #[graphql(desc = "If true, the properties are sorted by name")] sort: Option<bool>,
+    ) -> Vec<GraphQLPropertyType> {
         match name {
             Some(name) => self
                 .entity_type
                 .properties
-                .to_vec()
                 .iter()
                 .filter(|property_type| property_type.name == name.clone())
                 .cloned()
                 .map(|property_type| property_type.into())
                 .collect(),
-            None => self.entity_type.properties.iter().cloned().map(|property_type| property_type.into()).collect(),
+            None => {
+                let mut properties = self.entity_type.properties.to_vec();
+                if sort.unwrap_or_default() {
+                    properties.sort_by(|a, b| a.name.cmp(&b.name));
+                }
+                properties.iter().cloned().map(|property_type| property_type.into()).collect()
+            }
         }
     }
 

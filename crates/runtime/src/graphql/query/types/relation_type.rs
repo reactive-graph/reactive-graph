@@ -135,25 +135,28 @@ impl GraphQLRelationType {
 
     /// The properties / property types which are defined by the relation type or
     /// by one of the components.
-    async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
-        if name.is_some() {
-            let name = name.unwrap();
-            return self
+    async fn properties(
+        &self,
+        #[graphql(desc = "The name of the property")] name: Option<String>,
+        #[graphql(desc = "If true, the properties are sorted by name")] sort: Option<bool>,
+    ) -> Vec<GraphQLPropertyType> {
+        match name {
+            Some(name) => self
                 .relation_type
                 .properties
-                .to_vec()
                 .iter()
                 .filter(|property_type| property_type.name == name.clone())
                 .cloned()
                 .map(|property_type| property_type.into())
-                .collect();
+                .collect(),
+            None => {
+                let mut properties = self.relation_type.properties.to_vec();
+                if sort.unwrap_or_default() {
+                    properties.sort_by(|a, b| a.name.cmp(&b.name));
+                }
+                properties.iter().cloned().map(|property_type| property_type.into()).collect()
+            }
         }
-        self.relation_type
-            .properties
-            .iter()
-            .cloned()
-            .map(|property_type| property_type.into())
-            .collect()
     }
 
     /// The extensions which are defined by the relation type.
