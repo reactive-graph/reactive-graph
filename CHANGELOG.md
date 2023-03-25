@@ -6,14 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [0.9.0]
 
 ### Added
 
+- Configuration: Configure the instance
+- Configuration: Configure the graphql server
+- Configuration: Configure the plugins
+- Configuration: Added config manager
+- Plugin Resolver: Disable all plugins
+- Plugin Resolver: Disable specific plugins
+- Plugin Repository Manager: Remove duplicate plugins in plugin installation folder
+- Executable: Added cli argument for the instance name and description
+- Executable: Added cli argument for disabling all plugins
+- Executable: Added cli argument for disabling a specific plugin
+- Executable: Added cli argument for disabling hot deployment
+- Executable: Added cli argument for configuring the hostname and port of the GraphQL server
+- Executable: Added cli argument for configuring the shutdown timeout
+- Type System: Allow merging types into existing types and plugin type providers are now merging instead of ignoring changes
 - GraphQL: Simplify trigger action by providing a dedicated GraphQL mutation
+- GraphQL: Allow sorting of type properties
+- GraphQL: Allow sorting of type extensions
 
 ### Changed
 
+- Workspace: Create mono repository
+- Workspace: Migrate repository frp into workspace
+- Workspace: Migrate repository model into workspace
+- Workspace: Migrate repository builder into workspace
+- Workspace: Migrate repository reactive into workspace
+- Runtime: Refactor into runtime and binary
+- Runtime: Use tokio as async runtime
+- Plugin Resolver: Resolving plugins asynchronously
+- Plugin Lifecycle: Make plugin activate and deactivate methods async
 - GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0
 
 ### Removed
