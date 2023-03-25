@@ -2,6 +2,8 @@
 
 ## What is Inexor?
 
+<img src="images/rgf_logo.png" style="float: right; text-align: right; width: 200px; height: 200px; margin-left: 50px;" />
+
 * Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
 * Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.
 * Inexor will be written from ground up new in C++17 and Rust.
