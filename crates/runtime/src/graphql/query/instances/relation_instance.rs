@@ -76,8 +76,10 @@ impl GraphQLRelationInstance {
         &self,
         #[graphql(desc = "Filters by property name.")] name: Option<String>,
         #[graphql(desc = "Filters by property names")] names: Option<Vec<String>>,
+        #[graphql(desc = "If true, the properties are sorted by name")] sort: Option<bool>,
     ) -> Vec<GraphQLPropertyInstance> {
-        self.relation_instance
+        let mut properties: Vec<GraphQLPropertyInstance> = self
+            .relation_instance
             .properties
             .iter()
             .filter(|property_instance| name.is_none() || name.clone().unwrap() == property_instance.key().as_str())
@@ -89,7 +91,11 @@ impl GraphQLRelationInstance {
                     property_instance.get(),
                 )
             })
-            .collect()
+            .collect();
+        if sort.unwrap_or_default() {
+            properties.sort_by(|a, b| a.name.cmp(&b.name));
+        }
+        properties
     }
 
     /// The components which have been actually applied on the relation instance including

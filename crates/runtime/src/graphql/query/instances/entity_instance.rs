@@ -67,8 +67,10 @@ impl GraphQLEntityInstance {
         &self,
         #[graphql(desc = "Filters by property name")] name: Option<String>,
         #[graphql(desc = "Filters by property names")] names: Option<Vec<String>>,
+        #[graphql(desc = "If true, the properties are sorted by name")] sort: Option<bool>,
     ) -> Vec<GraphQLPropertyInstance> {
-        self.entity_instance
+        let mut properties: Vec<GraphQLPropertyInstance> = self
+            .entity_instance
             .properties
             .iter()
             .filter(|property_instance| name.is_none() || name.clone().unwrap().as_str() == property_instance.key().as_str())
@@ -76,7 +78,11 @@ impl GraphQLEntityInstance {
             .map(|property_instance| {
                 GraphQLPropertyInstance::new_entity_property(self.entity_instance.ty.clone(), property_instance.key().clone(), property_instance.get())
             })
-            .collect()
+            .collect();
+        if sort.unwrap_or_default() {
+            properties.sort_by(|a, b| a.name.cmp(&b.name));
+        }
+        properties
     }
 
     /// The components which have been actually applied on the entity instance including
