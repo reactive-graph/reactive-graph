@@ -71,6 +71,14 @@ impl From<PropertyType> for GraphQLPropertyType {
     }
 }
 
+impl From<&PropertyType> for GraphQLPropertyType {
+    fn from(property_type: &PropertyType) -> Self {
+        GraphQLPropertyType {
+            property_type: property_type.clone(),
+        }
+    }
+}
+
 impl From<GraphQLPropertyType> for PropertyType {
     fn from(property_type: GraphQLPropertyType) -> Self {
         PropertyType::new_with_all(
@@ -80,6 +88,19 @@ impl From<GraphQLPropertyType> for PropertyType {
             property_type.property_type.socket_type,
             property_type.property_type.mutability,
             property_type.property_type.extensions,
+        )
+    }
+}
+
+impl From<&GraphQLPropertyType> for PropertyType {
+    fn from(property_type: &GraphQLPropertyType) -> Self {
+        PropertyType::new_with_all(
+            property_type.property_type.name.clone(),
+            property_type.property_type.description.clone(),
+            property_type.property_type.data_type,
+            property_type.property_type.socket_type,
+            property_type.property_type.mutability,
+            property_type.property_type.extensions.clone(),
         )
     }
 }

@@ -71,3 +71,16 @@ impl From<Extension> for GraphQLExtension {
         }
     }
 }
+
+impl From<&Extension> for GraphQLExtension {
+    fn from(extension: &Extension) -> Self {
+        GraphQLExtension {
+            ty: ExtensionTypeIdDefinition {
+                namespace: extension.namespace(),
+                type_name: extension.type_name(),
+            },
+            description: extension.description.clone(),
+            extension: extension.extension.clone(),
+        }
+    }
+}

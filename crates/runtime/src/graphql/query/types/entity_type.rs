@@ -70,11 +70,13 @@ impl GraphQLEntityType {
                 .map(|property_type| property_type.into())
                 .collect(),
             None => {
-                let mut properties = self.entity_type.properties.to_vec();
                 if sort.unwrap_or_default() {
+                    let mut properties = self.entity_type.properties.to_vec();
                     properties.sort();
+                    properties.iter().cloned().map(|property_type| property_type.into()).collect()
+                } else {
+                    self.entity_type.properties.iter().map(|property_type| property_type.into()).collect()
                 }
-                properties.iter().cloned().map(|property_type| property_type.into()).collect()
             }
         }
     }
@@ -92,7 +94,6 @@ impl GraphQLEntityType {
                     .extensions
                     .iter()
                     .filter(|extension| extension.ty == extension_ty)
-                    .cloned()
                     .map(|extension| extension.into())
                     .collect()
             }
@@ -100,9 +101,9 @@ impl GraphQLEntityType {
                 if sort.unwrap_or_default() {
                     let mut extensions = self.entity_type.extensions.to_vec();
                     extensions.sort();
-                    extensions.iter().cloned().map(|extension| extension.into()).collect()
+                    extensions.iter().map(|extension| extension.into()).collect()
                 } else {
-                    self.entity_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
+                    self.entity_type.extensions.iter().map(|extension| extension.into()).collect()
                 }
             }
         }
