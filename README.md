@@ -177,7 +177,7 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[The Plugin System](http://localhost:3000/Plugin_System.html)
+[The Plugin System](https://inexorgame.github.io/inexor-rgf-application/Plugin_System.html)
 
 [List of Plugins](https://inexorgame.github.io/inexor-rgf-application/Plugins.html)
 
