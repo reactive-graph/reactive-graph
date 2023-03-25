@@ -11,6 +11,7 @@ use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::NamespacedTypeGetter;
 use crate::PropertyType;
+use crate::PropertyTypeContainer;
 use crate::RelationType;
 use crate::RelationTypeId;
 use crate::SocketType;

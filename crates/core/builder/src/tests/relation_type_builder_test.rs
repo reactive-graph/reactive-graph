@@ -7,6 +7,7 @@ use crate::model::ExtensionContainer;
 use crate::model::ExtensionTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeContainer;
 use crate::model::RelationTypeId;
 use crate::model::SocketType;
 use crate::model::TypeContainer;

@@ -6,6 +6,7 @@ use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeContainer;
 use crate::model::TypeContainer;
 use crate::tests::utils::r_string;
 

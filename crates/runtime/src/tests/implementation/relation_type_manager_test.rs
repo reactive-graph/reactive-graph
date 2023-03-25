@@ -6,6 +6,7 @@ use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyType;
+use crate::model::PropertyTypeContainer;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::model::TypeContainer;
