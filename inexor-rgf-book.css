@@ -3,13 +3,13 @@
 }
 
 .sidebar {
-    background: url("images/inexor.png") var(--sidebar-bg) no-repeat;
-    background-size: 150px;
+    background: url("images/rgf_logo.png") var(--sidebar-bg) no-repeat;
+    background-size: 250px;
     background-position-x: center;
 }
 
 .sidebar .chapter {
-    margin-top: 175px;
+    margin-top: 300px;
     background-color: var(--sidebar-bg);
 }
 
