@@ -160,20 +160,33 @@ impl GraphQLRelationType {
     }
 
     /// The extensions which are defined by the relation type.
-    async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
-        if let Some(extension_ty) = extension_ty {
-            let extension_ty = extension_ty.into();
-            return self
-                .relation_type
-                .extensions
-                .to_vec()
-                .iter()
-                .filter(|extension| extension.ty == extension_ty)
-                .cloned()
-                .map(|extension| extension.into())
-                .collect();
+    async fn extensions(
+        &self,
+        #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>,
+        #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
+    ) -> Vec<GraphQLExtension> {
+        match extension_ty {
+            Some(extension_ty) => {
+                let extension_ty = extension_ty.into();
+                return self
+                    .relation_type
+                    .extensions
+                    .iter()
+                    .filter(|extension| extension.ty == extension_ty)
+                    .cloned()
+                    .map(|extension| extension.into())
+                    .collect();
+            }
+            None => {
+                if sort.unwrap_or_default() {
+                    let mut extensions = self.relation_type.extensions.to_vec();
+                    extensions.sort();
+                    extensions.iter().cloned().map(|extension| extension.into()).collect()
+                } else {
+                    self.relation_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
+                }
+            }
         }
-        self.relation_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 
     /// Returns true, if the relation type is valid.
