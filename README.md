@@ -1,159 +1,234 @@
-# Inexor Reactive Graph Flow
-
-| Project             | Module      | Sub-Module | Functionality                                                     | Tests                                                                                                                                                |
-|---------------------|-------------|------------|-------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Reactive Graph Flow | Application |            | <img src="https://img.shields.io/badge/state-refactoring-yellow"> | [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application) |
-
-### About Inexor
-
 <a href="https://inexor.org/">
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/inexor_2.png">
+<img src="docs/inexor-rgf/src/images/rgf_logo_k2_v4_fg_sm.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" />
 </a>
+
+
+<h1 style="text-align: center;">Inexor Reactive Graph Flow</h1>
+
+<div style="text-align: center">
+
+[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/)
+
+[<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
+[<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
+[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
+
+[<img src="https://img.shields.io/github/actions/workflow/status/inexorgame/inexor-rgf-application/rust.yml">](https://github.com/inexorgame/inexor-rgf-application/actions?query=workflow%3ARust)
+[<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
+
+[<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
+
+</div>
+
+
+<h2 style="text-align: center;">What is this?</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
+
+➔ The `Reactive Graph Flow` is a **graph database**
+
+➔ The `Reactive Graph Flow` is a **document store**
+
+➔ The `Reactive Graph Flow` is a **flow control** runtime
+
+➔ The `Reactive Graph Flow` is a **web server**
+
+➔ The `Reactive Graph Flow` is **pluggable** and **extensible**
+
+➔ The `Reactive Graph Flow` is **fast**, **secure** and **small**
+
+</div>
+
+
+<h2 style="text-align: center;">What is it for?</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
+
+➔ Game Entity Component System (ECS) - especially for [Inexor](https://inexor.org/)
+
+➔ Smart Home
+
+➔ Data Conversion Tools
+
+➔ Flow control system for card size computers and embedded devices
+
+➔ Desktop Automation
+
+</div>
+
+
+<h2 style="text-align: center;">Graph</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
+
+A **graph** organizes highly interconnected data. The state of an `Entity Component System` can be ideally represented
+with the help of the graph. Inexor is the first game engine to introduce a graph as a basis.
+
+The main benefits of a graph are:
+ 
+* A universal data structure for everything
+* Relations are first class citizens
+* Benefit from types and instances which makes things intuitive
+* Benefit from navigation which is fast and intuitive
+* Benefit from the semantics of highly connected, intuitive data
+* Properties can store not only certain primitive data but complete documents
+
+</div>
+
+
+<h2 style="text-align: center;">Reactive</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
+
+Now that we understand how data is stored, here's how data interacts. The approach is that the data itself is "alive".
+To do this, Inexor adopts a concept from reactive programming.
+
+In computing, reactive programming is a declarative programming paradigm concerned with data streams and the
+propagation of change.
+
+It is the ingenious combination of a graph with reactive programming. The property instances are not static
+and only contain data. Rather, they are streams of data. If you change the value of a property instance, you
+fill the data stream of this property instance. Data streams are linked together. For example, if the stream
+of one property instance is linked to the stream of another property instance and you change the value of the
+first property instance, the value of the second property instance will automatically change as well. Data is
+thus propagated from one station to the next, triggering a cascade of propagations.
+
+In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your
+own data stream and caching it. This allows subsequent querying of the value of a property instance.
+
+Remember this basic concept:
+
+* Every property is a stream not only data
+* Property streams can be subscribed and published
+* The streams of two properties can be connected and changes will be propagated (cascade)
+
+</div>
+
+
+<h2 style="text-align: center;">Behaviour driven design</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
+
+The data flow is therefore automatic. Building on this, Inexor applies the concept of behaviour-driven design.
+The goal is to use these data streams to simulate behaviour.
+
+Behaviors can be implemented on components, entities and relations. To do this, one or more incoming data streams
+are combined, calculations are performed and written to one or more outgoing data streams.
+
+For example, the entity type "AND gate" implements a behavior by subscribing to the two input properties, combining
+them into a combination data stream and performing an AND operation on the incoming pairs of values. The result of
+the AND operation is itself a data stream and this is linked to the output property.
+
+This example shows how an entity type is wired internally. They are all data streams that are cleverly combined
+with one another and thus depict behavior.
+
+It is interesting that this behavior also works for relations. For example, connectors are also implemented
+behaviors of streams. It is interesting that connectors connect the data stream from a property instance of the
+outgoing entity instance with the data stream from a property instance of the incoming entity instance.
+
+For example the AND-Gate accepts inputs at the properties lhs and rhs. Both streams are subscribed and zipped.
+The zipped stream is calculated with a function - in this case the AND-Operator. This results in another
+(invisible) stream which is connected with the property result. The entity type AND-Gate defines that the
+properties lhs, rhs and result have to exist. Furthermore, the socket types are defined: lhs and rhs are
+Input-Sockets and result is a Output-Socket. The behaviour is like the internal wiring of entity instances and
+of relation instances. A behaviour can be added to entity instances and removed from entity/relation instances.
+
+</div>
+
+
+<h2 style="text-align: center;">Flow</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
+
+Control flows can be implemented based on the graph, the data streams and the behavior-driven design. It is
+important here that the available modules that implement the behavior are linked with connectors.
+
+For example, a flow can consist of a logic that links several AND gates with each other using connectors. Both
+the AND gate and the connector are behaviors. But the arrangement of these behaviors within a flow makes them
+powerful.
+
+Entire game modes can be implemented with the help of flows. Or just parts of it that are used in multiple game
+modes, such as a mechanism to pick up, drop, and score flags.
+
+Flows are also useful for making maps more interactive. With the help of flows and behaviors, it can be ensured
+that a door opens in a map when you press switch 1 and switch 2. Or you determine the color of your own team's
+base based on the current score. Or you control particle emitters, depending on how many players are near the
+emitter. The possibilities for this are endless and want to be used!
+
+</div>
+
+
+<h2 style="text-align: center;">Inexor</h2>
+
+<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
 * Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
 * Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.
-* Inexor will be written from ground up new in C++17 and Rust.
+* Inexor will be written from ground up new in C++20 and Rust.
 * You can contribute anything you want: code, content, ideas..
 * Inexor and all its content is 100% open source!
 
-### About Inexor Reactive Graph Flow
+</div>
 
-The Inexor Reactive Graph Flow (RGF) manages reactive flows based on a graph database. The main interface is GraphQL.
 
-* Semantic: Graph database with entities and relationships as first class citizens
-* Reactive: entities and relationships are/can be reactive: If the input has been altered the entity processes its new state
-* Interoperable: Use GraphQL for queries and mutations
-* Extendable: Built in type system: components, entity types and relation types
-* Memory efficient: Rust
-* Fast: Rust
-* Secure: Rust
+<h2 style="text-align: center;">Plugins</h2>
 
-### About this application
+<div style="text-align: center">
 
-This repository provides the application which results in a binary.
+[The Plugin System](http://localhost:3000/Plugin_System.html)
 
-[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/)
-[<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
-[<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/actions/workflow/status/inexorgame/inexor-rgf-application/rust.yml">](https://github.com/inexorgame/inexor-rgf-application/actions?query=workflow%3ARust)
-[<img src="https://img.shields.io/github/last-commit/inexorgame/inexor-rgf-application">]()
-[<img src="https://img.shields.io/github/languages/code-size/inexorgame/inexor-rgf-application">]()
-[<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
+[List of Plugins](https://inexorgame.github.io/inexor-rgf-application/Plugins.html)
 
-[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
-[<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
+</div>
 
-#### Checkout, compile und run the application
 
-```shell
-rustup update nightly
-git clone https://github.com/inexorgame/inexor-rgf-application.git
-cd inexor-rgf-application
-cargo build
-cargo run
-```
+<h2 style="text-align: center;">Development</h2>
 
-#### Compile and configure plugins
+<div style="text-align: center">
 
-1. Checkout and build the plugin
-    ```shell
-    cd ..
-    git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
-    cd inexor-rgf-plugin-mqtt
-    cargo build
-    ```
-2. Edit `config/plugins.toml` and add a section for the plugin. The name must match the
-   crate name of the plugin. Specify the path to the dynamically linked library. The path
-   can be either absolute or relative to the working directory of the application.
+[Build Instructions](https://inexorgame.github.io/inexor-rgf-application/Development_Build.html)
 
-    ```toml
-    [[plugin]]
-    name = "inexor-rgf-plugin-mqtt"
-    active = true
-    path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
-    ```
+[Data Model](https://inexorgame.github.io/inexor-rgf-application/Model.html)
 
-#### Configure Logging
+[GraphQL API](https://inexorgame.github.io/inexor-rgf-application/GraphQL_API.html)
 
-1. Edit `config/logging.toml`
-2. In the section `loggers` add or modify the logger for a specific module
-    ```toml
-    [loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
-    level = "debug"
-    appenders = [ "file-plugin-mqtt" ]
-    additive = false
-    ```
+[Dynamic Graph API](https://inexorgame.github.io/inexor-rgf-application/Dynamic_Graph_API.html)
 
-#### Configure HTTP/GraphQL server
+</div>
 
-1. Edit `config/graphql.toml`
-2. Configure the hostname and port
 
-    ```toml
-    hostname = "localhost"
-    port = 31415
-    ```
+<h2 style="text-align: center;">Configuration</h2>
 
-#### GraphQL
+<div style="text-align: center">
 
-The most important interface for interaction with the Reactive Graph Flow is GraphQL. The GraphQL interface is useful for
-* Interaction with other instances (C2S, S2C, S2S, P2P)
-  * Because of the use of uuids synchronization is possible
-* User Interfaces
-  * In-game-menu
-  * Server admin UI
-  * Flow-Editor (Create / modify / test flows without being in-game)
-  * Websites (community, clan, content-repositories, ...)
-  * Tools (procedural-texture-editor)
-  * Third-party (export/import from/to third party software)
+[Configuration](https://inexorgame.github.io/inexor-rgf-application/Configuration.html)
 
-* As a flow designer I can define components which can be used as building block for entities using a GraphQL interface
-* As a flow designer I can create entities with properties using a GraphQL interface
-* As a flow designer I can create relations with properties using a GraphQL interface
-* As a flow designer I can connect and disconnect two properties which data flows from one to the other using a GraphQL interface
-* As a flow designer I can create flows using a GraphQL interface
+</div>
 
-##### Queries
+
+<h2 style="text-align: center;">GraphQL Type System</h2>
 
 <img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/queries.png">
 
-##### Mutations
-
 <img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/mutations.png">
 
-##### Subscriptions
+<h2 style="text-align: center;">Flow Editor</h2>
 
-<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/subscriptions.png">
+<div style="text-align: center">
 
-#### Flow Editor
+Coming soon.
 
-<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/flows/flow-editor.png">
+</div>
 
-#### Using Libraries
 
-The libraries are carefully chosen:
+<h2 style="text-align: center;">Sponsors</h2>
 
-- [Dependency Injection: waiter_di](https://crates.io/crates/waiter_di)
-- [Embedded Graph Database: indradb](https://crates.io/crates/indradb)
-- [FRP / Reactive Streams: bidule](https://crates.io/crates/bidule)
-- [Logging: log4rs](https://crates.io/crates/log4rs)
-- [HTTP Server: actix-web](https://crates.io/crates/actix-web)
-- [GraphQL Server: async-graphql](https://crates.io/crates/async-graphql)
-- [Serialization/Deserialization: serde_json](https://crates.io/crates/serde-json)
+<div style="text-align: center">
 
-### Thanks to
+<a href="https://www.jetbrains.com/?from=github.com/inexorgame">
+<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/icon_CLion.svg" style="width: 30%; height: 30%;">
+</a>
 
-* https://github.com/xd009642/tarpaulin
-* https://codecov.io/
+_Special thanks to JetBrains for providing us with CLion licenses!_
 
-### Sponsors
-
-|                                                                                                                                                                                                                            |           |                                                                   |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|-------------------------------------------------------------------|
-| <a href="https://www.jetbrains.com/?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/icon_CLion.svg"></a> | JetBrains | Special thanks to JetBrains for providing us with CLion licenses! |
-
-### Libraries
-
-|                                                                                                                                                                                                                                 | Library | Description                                                                                                                                                                                                                                                                      |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <a href="https://github.com/indradb/indradb?from=github.com/inexorgame"><img align="right" width="100" height="100" src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/indradb.png"></a> | IndraDB | The heart of the graph is the embedded graph database IndraDB:<ul><li>Graph Database<ul><li>Typed Graph</li><li>Directed Graph</li><li>Property Graph</li></ul></li><li>In Memory Storage</li><li>Embeddable<ul><li>Easier to create fully featured binaries</li></ul></li></ul> |
+</div>
