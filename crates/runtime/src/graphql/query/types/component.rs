@@ -39,36 +39,56 @@ impl GraphQLComponent {
     }
 
     /// The properties which are applied on entity or relation instances.
-    async fn properties(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
-        if let Some(name) = name {
-            return self
-                .component
-                .properties
-                .to_vec()
-                .iter()
-                .filter(|property_type| property_type.name == name.clone())
-                .cloned()
-                .map(|property_type| property_type.into())
-                .collect();
+    async fn properties(
+        &self,
+        #[graphql(desc = "The name of the property")] name: Option<String>,
+        #[graphql(desc = "If true, the properties are sorted by name")] sort: Option<bool>,
+    ) -> Vec<GraphQLPropertyType> {
+        match name {
+            Some(name) => {
+                self.component
+                    .properties
+                    .iter()
+                    .filter(|property_type| property_type.name == name.clone())
+                    // .cloned()
+                    .map(|property_type| property_type.into())
+                    .collect()
+            }
+            None => {
+                let mut properties: Vec<GraphQLPropertyType> = self.component.properties.iter().map(|property_type| property_type.into()).collect();
+                if sort.unwrap_or_default() {
+                    properties.sort();
+                }
+                properties
+            }
         }
-        self.component.properties.iter().cloned().map(|property_type| property_type.into()).collect()
     }
 
     /// The extensions which are defined by the component.
-    async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
-        if let Some(extension_ty) = extension_ty {
-            let extension_ty = extension_ty.into();
-            return self
-                .component
-                .extensions
-                .to_vec()
-                .iter()
-                .filter(|extension| extension.ty == extension_ty)
-                .cloned()
-                .map(|extension| extension.into())
-                .collect();
+    async fn extensions(
+        &self,
+        #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>,
+        #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
+    ) -> Vec<GraphQLExtension> {
+        match extension_ty {
+            Some(extension_ty) => {
+                let extension_ty = extension_ty.into();
+                return self
+                    .component
+                    .extensions
+                    .iter()
+                    .filter(|extension| extension.ty == extension_ty)
+                    .map(|extension| extension.into())
+                    .collect();
+            }
+            None => {
+                let mut extensions: Vec<GraphQLExtension> = self.component.extensions.iter().map(|extension| extension.into()).collect();
+                if sort.unwrap_or_default() {
+                    extensions.sort();
+                }
+                extensions
+            }
         }
-        self.component.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 
     /// Query which entity types are using this component

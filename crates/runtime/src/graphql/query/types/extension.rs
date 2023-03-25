@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use async_graphql::InputObject;
 use async_graphql::Object;
 use serde::Deserialize;
@@ -8,7 +10,7 @@ use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::model::Extension;
 use crate::model::NamespacedTypeGetter;
 
-#[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, InputObject)]
 #[graphql(name = "ExtensionDefinition")]
 pub struct GraphQLExtension {
     /// The namespace of the extension.
@@ -82,5 +84,17 @@ impl From<&Extension> for GraphQLExtension {
             description: extension.description.clone(),
             extension: extension.extension.clone(),
         }
+    }
+}
+
+impl PartialOrd<Self> for GraphQLExtension {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for GraphQLExtension {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.ty.cmp(&other.ty)
     }
 }

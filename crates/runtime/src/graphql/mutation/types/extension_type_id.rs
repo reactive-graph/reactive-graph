@@ -8,7 +8,7 @@ use serde::Serialize;
 use crate::model::ExtensionTypeId;
 use crate::model::TYPE_ID_TYPE_SEPARATOR;
 
-#[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, InputObject)]
 #[graphql(name = "ExtensionTypeId")]
 pub struct ExtensionTypeIdDefinition {
     /// The namespace of the extension.

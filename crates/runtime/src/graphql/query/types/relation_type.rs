@@ -146,17 +146,15 @@ impl GraphQLRelationType {
                 .properties
                 .iter()
                 .filter(|property_type| property_type.name == name.clone())
-                .cloned()
+                // .cloned()
                 .map(|property_type| property_type.into())
                 .collect(),
             None => {
+                let mut properties: Vec<GraphQLPropertyType> = self.relation_type.properties.iter().map(|property_type| property_type.into()).collect();
                 if sort.unwrap_or_default() {
-                    let mut properties = self.relation_type.properties.to_vec();
                     properties.sort();
-                    properties.iter().map(|property_type| property_type.into()).collect()
-                } else {
-                    self.relation_type.properties.iter().map(|property_type| property_type.into()).collect()
                 }
+                properties
             }
         }
     }
@@ -179,13 +177,11 @@ impl GraphQLRelationType {
                     .collect();
             }
             None => {
+                let mut extensions: Vec<GraphQLExtension> = self.relation_type.extensions.iter().map(|extension| extension.into()).collect();
                 if sort.unwrap_or_default() {
-                    let mut extensions = self.relation_type.extensions.to_vec();
                     extensions.sort();
-                    extensions.iter().map(|extension| extension.into()).collect()
-                } else {
-                    self.relation_type.extensions.iter().map(|extension| extension.into()).collect()
                 }
+                extensions
             }
         }
     }

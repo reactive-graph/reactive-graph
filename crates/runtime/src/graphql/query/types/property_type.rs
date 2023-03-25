@@ -7,6 +7,7 @@ use crate::graphql::query::GraphQLMutability;
 use crate::graphql::query::GraphQLSocketType;
 use crate::model::PropertyType;
 
+#[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct GraphQLPropertyType {
     property_type: PropertyType,
 }
@@ -43,25 +44,30 @@ impl GraphQLPropertyType {
     }
 
     /// The extensions which are defined by the entity type.
-    async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
-        if let Some(extension_ty) = extension_ty {
-            let extension_ty = extension_ty.into();
-            return self
-                .property_type
-                .extensions
-                .to_vec()
-                .iter()
-                .filter(|extension| extension.ty == extension_ty)
-                .cloned()
-                .map(|extension| extension.into())
-                .collect();
+    async fn extensions(
+        &self,
+        #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>,
+        #[graphql(desc = "If true, the extensions are sorted by type")] sort: Option<bool>,
+    ) -> Vec<GraphQLExtension> {
+        match extension_ty {
+            Some(extension_ty) => {
+                let extension_ty = extension_ty.into();
+                return self
+                    .property_type
+                    .extensions
+                    .iter()
+                    .filter(|extension| extension.ty == extension_ty)
+                    .map(|extension| extension.into())
+                    .collect();
+            }
+            None => {
+                let mut extensions: Vec<GraphQLExtension> = self.property_type.extensions.iter().map(|extension| extension.into()).collect();
+                if sort.unwrap_or_default() {
+                    extensions.sort();
+                }
+                extensions
+            }
         }
-        self.property_type
-            .extensions
-            .iter()
-            .cloned()
-            .map(|property_type| property_type.into())
-            .collect()
     }
 }
 

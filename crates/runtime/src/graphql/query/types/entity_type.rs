@@ -66,17 +66,15 @@ impl GraphQLEntityType {
                 .properties
                 .iter()
                 .filter(|property_type| property_type.name == name.clone())
-                .cloned()
+                // .cloned()
                 .map(|property_type| property_type.into())
                 .collect(),
             None => {
+                let mut properties: Vec<GraphQLPropertyType> = self.entity_type.properties.iter().map(|property_type| property_type.into()).collect();
                 if sort.unwrap_or_default() {
-                    let mut properties = self.entity_type.properties.to_vec();
                     properties.sort();
-                    properties.iter().cloned().map(|property_type| property_type.into()).collect()
-                } else {
-                    self.entity_type.properties.iter().map(|property_type| property_type.into()).collect()
                 }
+                properties
             }
         }
     }
@@ -98,13 +96,11 @@ impl GraphQLEntityType {
                     .collect()
             }
             None => {
+                let mut extensions: Vec<GraphQLExtension> = self.entity_type.extensions.iter().map(|extension| extension.into()).collect();
                 if sort.unwrap_or_default() {
-                    let mut extensions = self.entity_type.extensions.to_vec();
                     extensions.sort();
-                    extensions.iter().map(|extension| extension.into()).collect()
-                } else {
-                    self.entity_type.extensions.iter().map(|extension| extension.into()).collect()
                 }
+                extensions
             }
         }
     }
