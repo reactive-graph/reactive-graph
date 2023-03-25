@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
@@ -15,7 +17,7 @@ pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket
 /// type.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct PropertyType {
     /// The name of the property
     pub name: String,
@@ -150,6 +152,18 @@ impl ExtensionContainer for PropertyType {
                 existing_extension.extension = extension_to_merge.extension.clone();
             }
         }
+    }
+}
+
+impl PartialOrd<Self> for PropertyType {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for PropertyType {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.name.cmp(&other.name)
     }
 }
 
