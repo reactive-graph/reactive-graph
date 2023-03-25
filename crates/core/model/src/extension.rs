@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
@@ -9,7 +11,7 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 
 /// Extension on a type. The extension allows to extend information
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Extension {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
@@ -65,5 +67,17 @@ impl From<&Extension> for TypeDefinition {
             namespace: extension.namespace(),
             type_name: extension.type_name(),
         }
+    }
+}
+
+impl PartialOrd<Self> for Extension {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl Ord for Extension {
+    fn cmp(&self, other: &Self) -> Ordering {
+        self.ty.cmp(&other.ty)
     }
 }
