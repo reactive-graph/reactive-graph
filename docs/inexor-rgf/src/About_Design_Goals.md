@@ -72,3 +72,5 @@ This section explains which goals are not pursued in the core application.
 * Flow-Editor
 * Graphics-Rendering
 * Octree-Editor
+
+<img src="images/rgf_logo_k1_h1_sm.png" />

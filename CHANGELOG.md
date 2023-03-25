@@ -136,4 +136,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: `actix-http`, `actix-web`, `async-std`, `query_interface`, `inexor-rgf-core-reactive`
 
-<img src="assets/public/images/rgf_logo_k1_fg.png" />
+<img src="images/rgf_logo_k1_fg_sm.png" onerror="this.src='docs/inexor-rgf/src/images/rgf_logo_k1_fg_sm.png'" />
