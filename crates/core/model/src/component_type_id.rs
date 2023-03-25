@@ -12,7 +12,7 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::TYPE_ID_TYPE_SEPARATOR;
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct ComponentTypeId(NamespacedType);
 
 impl ComponentTypeId {

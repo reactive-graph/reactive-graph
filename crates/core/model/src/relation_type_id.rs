@@ -25,7 +25,7 @@ pub enum RelationTypeCardinality {
     Random,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct RelationTypeId(NamespacedType);
 
 impl RelationTypeId {
