@@ -152,7 +152,7 @@ impl GraphQLRelationType {
             None => {
                 let mut properties = self.relation_type.properties.to_vec();
                 if sort.unwrap_or_default() {
-                    properties.sort_by(|a, b| a.name.cmp(&b.name));
+                    properties.sort();
                 }
                 properties.iter().cloned().map(|property_type| property_type.into()).collect()
             }
