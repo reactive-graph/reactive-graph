@@ -187,6 +187,8 @@ emitter. The possibilities for this are endless and want to be used!
 
 [List of Plugins](https://inexorgame.github.io/inexor-rgf-application/Plugins.html)
 
+[Plugins Repository](https://github.com/inexorgame/inexor-rgf-plugins)
+
 </div>
 
 
