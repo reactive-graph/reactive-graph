@@ -1,0 +1,44 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - v[0-9]+.*
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v3
+      - name: Create GitHub Release
+        uses: taiki-e/create-gh-release-action@v1
+        with:
+          changelog: CHANGELOG.md
+          token: ${{ secrets.GITHUB_TOKEN }}
+  upload-assets:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: VCS Checkout
+      uses: actions/checkout@v3
+    - name: Upload Rust Binary
+      uses: taiki-e/upload-rust-binary-action@v1
+      with:
+        bin: inexor-rgf-rt-standalone
+        include: LICENSE,README.md,CHANGELOG.md,config/graphql.tom,config/instance.toml,config/logging.toml,config/plugins.toml
+        tar: unix
+        zip: windows
+        leading_dir: true
+        token: ${{ secrets.GITHUB_TOKEN }}
