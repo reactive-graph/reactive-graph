@@ -3,12 +3,16 @@ name: Rust
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - "docs/**"
+    paths:
+      - "crates/**/*.rs"
+      - "crates/**/Cargo.toml"
+      - "Cargo.toml"
   pull_request:
     branches: [ main ]
-    paths-ignore:
-      - "docs/**"
+    paths:
+      - "crates/**/*.rs"
+      - "crates/**/Cargo.toml"
+      - "Cargo.toml"
 
 env:
   CARGO_TERM_COLOR: always
@@ -20,45 +24,20 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - name: VCS Checkout
+      uses: actions/checkout@v3
     - name: Install latest nightly
       uses: actions-rs/toolchain@v1
       with:
         toolchain: nightly
         override: true
-    - name: Build
-      run: cargo build --release --verbose
-    - name: Run tests
-      run: cargo test --release --verbose
-
-  rustfmt:
-    name: Verify code formatting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: hecrj/setup-rust-action@v1
-        with:
-          rust-version: nightly
-          components: rustfmt
-      - run: cargo fmt --all -- --check
-
-  codecov-tarpaulin:
-    name: Generate code coverage
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Install nightly toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-          override: true
-      - name: Run cargo-tarpaulin
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          version: '0.22.0'
-          args: --all-features
-      # Note: closed-source code needs to provide a token,
-      # but open source code does not.
-      - name: Upload to codecov.io
-        uses: codecov/codecov-action@v1.0.2
+    - name: Build (Release Mode)
+      uses: actions-rs/cargo@v1
+      with:
+        command: "build"
+        args: "--release --verbose"
+    - name: Test (Release Mode)
+      uses: actions-rs/cargo@v1
+      with:
+        command: "test"
+        args: "--release --verbose"

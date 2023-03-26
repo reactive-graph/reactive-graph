@@ -16,6 +16,7 @@
 [<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
 
 [<img src="https://img.shields.io/github/actions/workflow/status/inexorgame/inexor-rgf-application/rust.yml">](https://github.com/inexorgame/inexor-rgf-application/actions?query=workflow%3ARust)
+[![Clippy](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/lint.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/lint.yml)
 [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
 
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
