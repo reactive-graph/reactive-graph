@@ -15,7 +15,8 @@
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
 [<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
 
-[<img src="https://img.shields.io/github/actions/workflow/status/inexorgame/inexor-rgf-application/rust.yml">](https://github.com/inexorgame/inexor-rgf-application/actions?query=workflow%3ARust)
+[![Build](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/rust.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/rust.yml)
+[![Formatting](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/fmt.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/fmt.yml)
 [![Clippy](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/lint.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/lint.yml)
 [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
 
