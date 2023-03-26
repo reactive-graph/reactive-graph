@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2011-2022 The Inexor Collective.
+Copyright (c) 2011-2023 The Inexor Collective.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
