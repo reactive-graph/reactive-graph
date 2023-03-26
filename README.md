@@ -50,13 +50,17 @@
 
 ➔ Game Entity Component System (ECS) - especially for [Inexor](https://inexor.org/)
 
-➔ Smart Home
+➔ Smart Home and Internet of Things
 
 ➔ Data Conversion Tools
 
-➔ Flow control system for card size computers and embedded devices
+➔ Flow Control System for card size computers and embedded devices
 
 ➔ Desktop Automation
+
+➔ Content Management System
+
+➔ Knowledge Graphs and Knowledge Processing
 
 </div>
 
