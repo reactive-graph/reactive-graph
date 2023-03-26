@@ -37,7 +37,7 @@ jobs:
       uses: taiki-e/upload-rust-binary-action@v1
       with:
         bin: inexor-rgf-rt-standalone
-        include: LICENSE.md,README.md,CHANGELOG.md,config/graphql.tom,config/instance.toml,config/logging.toml,config/plugins.toml
+        include: LICENSE.md,README.md,CHANGELOG.md,config/graphql.toml,config/instance.toml,config/logging.toml,config/plugins.toml
         tar: unix
         zip: windows
         leading_dir: true
