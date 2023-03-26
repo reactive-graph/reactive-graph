@@ -5,10 +5,18 @@ on:
     branches: [ main ]
     paths:
       - "docs/**"
+      - "CHANGELOG.md"
+      - "CODE_OF_CONDUCT.md"
+      - "LICENSE.md"
+      - "README.md"
   pull_request:
     branches: [ main ]
     paths:
       - "docs/**"
+      - "CHANGELOG.md"
+      - "CODE_OF_CONDUCT.md"
+      - "LICENSE.md"
+      - "README.md"
 
 env:
   CARGO_TERM_COLOR: always
