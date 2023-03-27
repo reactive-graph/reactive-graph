@@ -86,6 +86,9 @@ impl PluginRepositoryManagerImpl {
                             let Some(stem) = get_stem(&path) else {
                                 continue;
                             };
+                            if !is_dll(&path) {
+                                continue;
+                            }
                             if plugin_container_manager.has(&stem) {
                                 // If plugin with the same stem is already installed, redeploy and start resolver
                                 if let Some(id) = plugin_container_manager.get_id(&stem) {
@@ -125,6 +128,9 @@ impl PluginRepositoryManagerImpl {
                             let Some(stem) = get_stem(&path) else {
                                 continue;
                             };
+                            if !is_dll(&path) {
+                                continue;
+                            }
                             let Some(id) = plugin_container_manager.get_id(&stem) else {
                                 continue;
                             };
