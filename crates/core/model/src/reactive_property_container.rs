@@ -31,4 +31,10 @@ pub trait ReactivePropertyContainer {
     /// Removes the subscriber with the given handle_id from the stream of the property with the
     /// given name.
     fn remove_observer(&self, name: &str, handle_id: u128);
+
+    /// Removes the subscribers of the property with the given name.
+    fn remove_observers(&self, name: &str);
+
+    /// Removes all subscribers of all properties.
+    fn remove_all_observers(&self);
 }

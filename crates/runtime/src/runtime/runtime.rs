@@ -46,6 +46,8 @@ pub trait Runtime: Send + Sync {
 
     async fn wait_for(&self, timeout_duration: Duration) -> Result<(), Elapsed>;
 
+    fn get_command_manager(&self) -> Arc<dyn CommandManager>;
+
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
     fn get_config_manager(&self) -> Arc<dyn ConfigManager>;
@@ -117,6 +119,7 @@ pub trait Runtime: Send + Sync {
 pub struct RuntimeImpl {
     running: RunningState,
 
+    command_manager: Wrc<dyn CommandManager>,
     component_manager: Wrc<dyn ComponentManager>,
     config_manager: Wrc<dyn ConfigManager>,
     dynamic_graph_query_service: Wrc<dyn DynamicGraphQueryService>,
@@ -177,6 +180,7 @@ impl Runtime for RuntimeImpl {
         self.shutdown_manager.init().await;
         self.event_manager.init().await;
         self.reactive_entity_instance_manager.init().await;
+        self.command_manager.init().await;
         self.dynamic_graph_schema_manager.init().await;
         self.dynamic_graph_query_service.init().await;
     }
@@ -197,6 +201,7 @@ impl Runtime for RuntimeImpl {
         self.shutdown_manager.post_init().await;
         self.event_manager.post_init().await;
         self.reactive_entity_instance_manager.post_init().await; // after event_manager!
+        self.command_manager.post_init().await;
         self.dynamic_graph_schema_manager.post_init().await;
         self.dynamic_graph_query_service.post_init().await;
     }
@@ -205,6 +210,7 @@ impl Runtime for RuntimeImpl {
         // Reverse order matters
         self.dynamic_graph_query_service.pre_shutdown().await;
         self.dynamic_graph_schema_manager.pre_shutdown().await;
+        self.command_manager.pre_shutdown().await;
         self.reactive_entity_instance_manager.pre_shutdown().await;
         self.event_manager.pre_shutdown().await;
         self.shutdown_manager.pre_shutdown().await;
@@ -225,6 +231,7 @@ impl Runtime for RuntimeImpl {
         // Reverse order matters
         self.dynamic_graph_query_service.shutdown().await;
         self.dynamic_graph_schema_manager.shutdown().await;
+        self.command_manager.shutdown().await;
         self.reactive_entity_instance_manager.shutdown().await;
         self.event_manager.shutdown().await;
         self.shutdown_manager.shutdown().await;
@@ -306,6 +313,10 @@ impl Runtime for RuntimeImpl {
 
     async fn wait_for(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
         tokio::time::timeout(timeout_duration, self.wait_for_internal()).await
+    }
+
+    fn get_command_manager(&self) -> Arc<dyn CommandManager> {
+        self.command_manager.clone()
     }
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager> {

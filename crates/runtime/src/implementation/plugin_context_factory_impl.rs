@@ -3,6 +3,7 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 
+use crate::api::CommandManager;
 use crate::api::ComponentManager;
 use crate::api::ConfigManager;
 use crate::api::EntityBehaviourManager;
@@ -24,6 +25,7 @@ use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::di::*;
+use crate::plugin::CommandManagerImpl;
 use crate::plugin::ComponentManagerImpl;
 use crate::plugin::ConfigManagerImpl;
 use crate::plugin::EntityBehaviourRegistryImpl;
@@ -74,6 +76,7 @@ pub struct PluginContextFactoryImpl {
     config_manager: Wrc<dyn ConfigManager>,
     graphql_query_service: Wrc<dyn GraphQLQueryService>,
     system_event_manager: Wrc<dyn SystemEventManager>,
+    command_manager: Wrc<dyn CommandManager>,
 
     /// The plugin context.
     pub plugin_context: PluginContextStorage,
@@ -127,6 +130,7 @@ impl PluginContextFactory for PluginContextFactoryImpl {
         let config_manager = ConfigManagerImpl::new(self.config_manager.clone());
         let graphql_query_service = GraphQLQueryServiceImpl::new(self.graphql_query_service.clone());
         let system_event_manager = SystemEventManagerImpl::new(self.system_event_manager.clone());
+        let command_manager = CommandManagerImpl::new(self.command_manager.clone());
         let plugin_context = PluginContextImpl::new(
             Arc::new(component_manager),
             Arc::new(entity_type_manager),
@@ -142,6 +146,7 @@ impl PluginContextFactory for PluginContextFactoryImpl {
             Arc::new(config_manager),
             Arc::new(graphql_query_service),
             Arc::new(system_event_manager),
+            Arc::new(command_manager),
         );
         let plugin_context = Arc::new(plugin_context);
         let mut writer = self.plugin_context.0.write().unwrap();

@@ -242,3 +242,10 @@ level = "warn"
 level = "debug"
 appenders = [ "file-plugin-mqtt" ]
 additive = false
+
+[loggers."reqwest"]
+level = "info"
+
+[loggers."hyper"]
+level = "info"
+

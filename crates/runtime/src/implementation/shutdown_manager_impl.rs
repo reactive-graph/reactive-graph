@@ -4,6 +4,10 @@ use std::sync::RwLock;
 use std::time;
 
 use async_trait::async_trait;
+use inexor_rgf_core_model::PropertyInstanceGetter;
+use inexor_rgf_core_model::PropertyTypeDefinition;
+use inexor_rgf_model_command::builder::CommandBuilder;
+use inexor_rgf_model_command::entity::CommandArg;
 use serde_json::json;
 use tokio::task;
 
@@ -14,17 +18,15 @@ use crate::api::ShutdownManager;
 use crate::api::UUID_SHUTDOWN;
 use crate::api::UUID_SHUTDOWN_TRIGGER;
 use crate::builder::EntityTypeBuilder;
-use crate::builder::ReactiveEntityInstanceBuilder;
 use crate::di::*;
 use crate::model::DataType;
-use crate::model::PropertyTypeDefinition;
 use crate::model::ReactivePropertyContainer;
-use crate::model_runtime::LabeledProperties::LABEL;
-use crate::model_runtime::ShutdownProperties::SHUTDOWN;
+use crate::model_command::component::CommandProperties::COMMAND_NAME;
+use crate::model_command::component::COMPONENT_COMMAND;
+use crate::model_runtime::ShutdownProperties::DELAY;
 use crate::model_runtime::COMPONENT_ACTION;
 use crate::model_runtime::COMPONENT_LABELED;
 use crate::model_runtime::ENTITY_TYPE_SHUTDOWN;
-use crate::model_runtime::PROPERTY_RESULT;
 use crate::model_runtime::PROPERTY_TRIGGER;
 
 #[wrapper]
@@ -60,60 +62,63 @@ impl ShutdownManager for ShutdownManagerImpl {
 impl Lifecycle for ShutdownManagerImpl {
     async fn init(&self) {
         let entity_type = EntityTypeBuilder::new(ENTITY_TYPE_SHUTDOWN.clone())
-            .property(&SHUTDOWN.property_name(), DataType::Bool)
-            .property(PROPERTY_TRIGGER, DataType::Bool)
+            .property(&DELAY.property_name(), DataType::Number)
             .component(&COMPONENT_LABELED.clone())
             .component(&COMPONENT_ACTION.clone())
+            .property(PROPERTY_TRIGGER, DataType::Bool)
+            .component(&COMPONENT_COMMAND.clone())
+            .property(COMMAND_NAME, DataType::String)
             .build();
         let _ = self.entity_type_manager.register(entity_type);
-        let shutdown_handler = ReactiveEntityInstanceBuilder::new(ENTITY_TYPE_SHUTDOWN.clone())
-            .id(UUID_SHUTDOWN)
-            .property(&LABEL.property_name(), json!("/org/inexor/system/shutdown"))
-            .property(&SHUTDOWN.property_name(), json!(false))
-            .property(PROPERTY_TRIGGER, json!(false))
-            .property(PROPERTY_RESULT, json!(false))
-            .component(&COMPONENT_LABELED.clone())
-            .component(&COMPONENT_ACTION.clone())
-            .build();
-        let _ = self.reactive_entity_instance_manager.register_reactive_instance(shutdown_handler.clone());
+
         let shutdown_state = self.shutdown_state.0.clone();
-        shutdown_handler.observe_with_handle(
-            PROPERTY_TRIGGER,
-            move |v| {
-                if v.is_boolean() && v.as_bool().unwrap() {
-                    let mut guard = shutdown_state.write().unwrap();
-                    *guard = true;
-                }
-            },
-            UUID_SHUTDOWN_TRIGGER.as_u128(),
-        );
-        let shutdown_state = self.shutdown_state.0.clone();
-        shutdown_handler.observe_with_handle(
-            &SHUTDOWN.property_name(),
-            move |v| {
-                if v.is_boolean() && v.as_bool().unwrap() {
-                    let mut guard = shutdown_state.write().unwrap();
-                    *guard = true;
-                }
-                if v.is_number() {
-                    let shutdown_in_seconds = time::Duration::from_secs(v.as_u64().unwrap());
-                    let shutdown_state_deferred = shutdown_state.clone();
-                    task::spawn(async move {
-                        tokio::time::sleep(shutdown_in_seconds).await;
-                        let mut guard = shutdown_state_deferred.write().unwrap();
+        let handle_id = Some(UUID_SHUTDOWN_TRIGGER.as_u128());
+        if let Ok(shutdown_command) = CommandBuilder::new()
+            .singleton(&ENTITY_TYPE_SHUTDOWN.clone())
+            .help("Shutdown the application")
+            .arguments()
+            .argument(
+                CommandArg::new(DELAY)
+                    .short('d')
+                    .long("delay")
+                    .help("Delay shutdown by M seconds")
+                    .required(false),
+                json!(0),
+            )
+            .no_properties()
+            .executor_with_handle(
+                move |e| {
+                    let delay = e.as_u64(DELAY).unwrap_or(0);
+                    if delay > 0 {
+                        let shutdown_in_seconds = time::Duration::from_secs(delay);
+                        let shutdown_state_deferred = shutdown_state.clone();
+                        task::spawn(async move {
+                            tokio::time::sleep(shutdown_in_seconds).await;
+                            let mut guard = shutdown_state_deferred.write().unwrap();
+                            *guard = true;
+                        });
+                        json!(delay)
+                    } else {
+                        let mut guard = shutdown_state.write().unwrap();
                         *guard = true;
-                    });
-                }
-            },
-            UUID_SHUTDOWN.as_u128(),
-        );
+                        json!(true)
+                    }
+                },
+                handle_id,
+            )
+            .id(UUID_SHUTDOWN)
+            .build()
+        {
+            let _ = self
+                .reactive_entity_instance_manager
+                .register_reactive_instance(shutdown_command.get_instance());
+        }
     }
 
     async fn shutdown(&self) {
         // Disconnect reactive streams of the shutdown handler
         if let Some(shutdown_handler) = self.reactive_entity_instance_manager.get(UUID_SHUTDOWN) {
-            shutdown_handler.remove_observer(PROPERTY_TRIGGER, UUID_SHUTDOWN_TRIGGER.as_u128());
-            shutdown_handler.remove_observer(&SHUTDOWN.property_name(), UUID_SHUTDOWN.as_u128());
+            shutdown_handler.remove_all_observers();
         }
     }
 }

@@ -3,9 +3,11 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
+use crate::api::CommandManager;
 use crate::api::InstanceService;
 use crate::api::PluginContainerManager;
 use crate::graphql::query::system::GraphQLPlugin;
+use crate::graphql::query::GraphQLCommand;
 use crate::graphql::query::GraphQLInstanceInfo;
 use crate::plugins::PluginState;
 
@@ -70,5 +72,27 @@ impl System {
         let instance_service = context.data::<Arc<dyn InstanceService>>()?;
         let instance_info = instance_service.get_instance_info();
         Ok(GraphQLInstanceInfo { instance_info })
+    }
+
+    async fn commands(&self, context: &Context<'_>, name: Option<String>) -> Result<Vec<GraphQLCommand>> {
+        let command_manager = context.data::<Arc<dyn CommandManager>>()?;
+        Ok(command_manager
+            .get_commands()
+            .into_iter()
+            .filter_map(|command| match name.clone() {
+                Some(name) => {
+                    if let Some(command_name) = command.name() {
+                        if name == command_name {
+                            Some(GraphQLCommand { command })
+                        } else {
+                            None
+                        }
+                    } else {
+                        None
+                    }
+                }
+                None => Some(GraphQLCommand { command }),
+            })
+            .collect())
     }
 }

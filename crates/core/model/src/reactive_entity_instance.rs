@@ -99,6 +99,18 @@ impl ReactivePropertyContainer for ReactiveEntityInstance {
             property_instance.stream.read().unwrap().remove(handle_id);
         }
     }
+
+    fn remove_observers(&self, name: &str) {
+        if let Some(property_instance) = self.properties.get(name) {
+            property_instance.stream.read().unwrap().clear();
+        }
+    }
+
+    fn remove_all_observers(&self) {
+        for property_instance in &self.properties {
+            property_instance.stream.read().unwrap().clear();
+        }
+    }
 }
 
 impl ComponentContainer for ReactiveEntityInstance {

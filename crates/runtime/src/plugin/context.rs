@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use crate::plugins::CommandManager;
 use crate::plugins::ComponentManager;
 use crate::plugins::ConfigManager;
 use crate::plugins::EntityBehaviourRegistry;
@@ -31,6 +32,7 @@ pub struct PluginContextImpl {
     config_manager: Arc<dyn ConfigManager>,
     graphql_query_service: Arc<dyn GraphQLQueryService>,
     system_event_manager: Arc<dyn SystemEventManager>,
+    command_manager: Arc<dyn CommandManager>,
 }
 
 impl PluginContextImpl {
@@ -49,6 +51,7 @@ impl PluginContextImpl {
         config_manager: Arc<dyn ConfigManager>,
         graphql_query_service: Arc<dyn GraphQLQueryService>,
         system_event_manager: Arc<dyn SystemEventManager>,
+        command_manager: Arc<dyn CommandManager>,
     ) -> Self {
         PluginContextImpl {
             component_manager,
@@ -65,6 +68,7 @@ impl PluginContextImpl {
             config_manager,
             graphql_query_service,
             system_event_manager,
+            command_manager,
         }
     }
 }
@@ -124,5 +128,9 @@ impl PluginContext for PluginContextImpl {
 
     fn get_system_event_manager(&self) -> Arc<dyn SystemEventManager> {
         self.system_event_manager.clone()
+    }
+
+    fn get_command_manager(&self) -> Arc<dyn CommandManager> {
+        self.command_manager.clone()
     }
 }

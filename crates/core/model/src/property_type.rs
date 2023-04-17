@@ -33,6 +33,7 @@ pub struct PropertyType {
     #[serde(default = "SocketType::none")]
     pub socket_type: SocketType,
 
+    /// Specifies if the property is mutable.
     #[serde(default = "Mutability::mutable")]
     pub mutability: Mutability,
 

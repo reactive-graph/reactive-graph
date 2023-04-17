@@ -2,6 +2,7 @@
 #![feature(concat_idents)]
 #![register_tool(tarpaulin)]
 
+pub use command_manager::*;
 pub use component_manager::*;
 pub use component_provider::*;
 pub use config_manager::*;
@@ -34,7 +35,9 @@ pub use web_resource_provider::*;
 use inexor_rgf_core_config as config;
 use inexor_rgf_core_model as model;
 use inexor_rgf_core_reactive as reactive;
+use inexor_rgf_model_command as model_command;
 
+pub mod command_manager;
 pub mod component_manager;
 pub mod component_provider;
 pub mod config_manager;

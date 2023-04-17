@@ -1,3 +1,4 @@
+pub mod command_manager_impl;
 pub mod component_manager_impl;
 pub mod config;
 pub mod config_manager_impl;
@@ -20,6 +21,7 @@ pub mod resolver;
 pub mod system_event_manager_impl;
 pub mod transition;
 
+pub use command_manager_impl::CommandManagerImpl;
 pub use component_manager_impl::ComponentManagerImpl;
 pub use config::PluginsConfig;
 pub use config_manager_impl::ConfigManagerImpl;

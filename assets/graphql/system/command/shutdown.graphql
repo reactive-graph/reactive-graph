@@ -1,0 +1,15 @@
+mutation Shutdown {
+  system {
+    commands {
+      execute(
+        name: "shutdown",
+        args: {
+          delay: 4
+        }
+      ) {
+        name
+        value
+      }
+    }
+  }
+}

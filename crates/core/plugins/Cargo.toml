@@ -20,6 +20,7 @@ inexor-rgf-core-frp = { path = "../frp" }
 inexor-rgf-core-model = { path = "../model" }
 inexor-rgf-core-reactive = { path = "../reactive" }
 inexor-rgf-core-config = { path = "../config" }
+inexor-rgf-model-command = { path = "../../model/command" }
 
 [dev-dependencies]
 random-string = "1.0"

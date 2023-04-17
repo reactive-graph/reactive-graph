@@ -20,6 +20,7 @@ toml = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 inexor-rgf-core-model = { path = "../../core/model" }
+inexor-rgf-core-builder = { path = "../../core/builder" }
 
 [lib]
 crate-type = ["lib"]

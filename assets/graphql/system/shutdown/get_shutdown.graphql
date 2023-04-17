@@ -1,6 +1,6 @@
 query {
   instances {
-    entities(label: "/org/inexor/system/shutdown") {
+    entities(label: "/org/inexor/commands/core/shutdown") {
       id
       properties {
         name

@@ -1,10 +1,17 @@
 use clap::ArgAction::SetTrue;
 use clap::Parser;
+use clap::Subcommand;
+
+use crate::cli::args::ClientArgs;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[command(name = "inexor-rgf-rt-standalone", author, version, about, long_about = None)]
+#[command(propagate_version = true)]
 pub struct CliArguments {
+    #[command(subcommand)]
+    pub(crate) commands: Option<Commands>,
+
     /// The logging config location.
     #[arg(long)]
     pub(crate) logging_config: Option<String>,
@@ -79,4 +86,11 @@ pub struct CliArguments {
     /// If true, logging is disabled completely.
     #[arg(short = 'q', long, action = SetTrue)]
     pub(crate) quiet: Option<bool>,
+}
+
+#[derive(Subcommand, Debug)]
+pub enum Commands {
+    /// Connects to a client
+    #[non_exhaustive]
+    Client(ClientArgs),
 }

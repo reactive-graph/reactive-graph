@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use crate::CommandManager;
 use crate::ComponentManager;
 use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
@@ -75,4 +76,7 @@ pub trait PluginContext: Send + Sync {
 
     /// Returns the system event manager.
     fn get_system_event_manager(&self) -> Arc<dyn SystemEventManager>;
+
+    /// Returns the command manager.
+    fn get_command_manager(&self) -> Arc<dyn CommandManager>;
 }

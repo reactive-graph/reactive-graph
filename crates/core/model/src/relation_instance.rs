@@ -52,7 +52,7 @@ pub struct RelationInstance {
     /// Each property is represented by it's name (String) and it's value. The value is
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
-    /// https://docs.serde.rs/serde_json/value/enum.Value.html
+    /// <https://docs.serde.rs/serde_json/value/enum.Value.html>
     #[serde(default = "HashMap::new")]
     pub properties: HashMap<String, Value>,
 

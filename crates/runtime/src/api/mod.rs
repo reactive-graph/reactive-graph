@@ -1,3 +1,4 @@
+pub use command_manager::*;
 pub use component_manager::*;
 pub use config_manager::*;
 pub use dynamic_graph_query_service::*;
@@ -38,6 +39,7 @@ pub use shutdown_manager::*;
 pub use system_event_subscriber::SystemEventSubscriber;
 pub use web_resource_manager::*;
 
+pub mod command_manager;
 pub mod component_manager;
 pub mod config_manager;
 pub mod dynamic_graph_query_service;

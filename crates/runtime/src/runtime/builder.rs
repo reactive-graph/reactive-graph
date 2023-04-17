@@ -214,6 +214,17 @@ impl RuntimeBuilder<ConfigFilesLoaded, Ready> {
         }
     }
 
+    pub async fn spawn(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+        let runtime_inner = self.runtime.clone();
+        tokio::task::spawn(async move {
+            runtime_inner.run().await;
+        });
+        RuntimeBuilder {
+            runtime: self.runtime,
+            typestate: PhantomData,
+        }
+    }
+
     pub async fn run_for(self, duration: Duration) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
         let inner_runtime = self.runtime.clone();
         tokio::spawn(async move {
@@ -236,6 +247,10 @@ impl RuntimeBuilder<ConfigFilesLoaded, Ready> {
 }
 
 impl RuntimeBuilder<ConfigFilesLoaded, Finished> {
+    pub fn get(self) -> Arc<dyn Runtime> {
+        self.runtime
+    }
+
     pub async fn pre_shutdown(self) -> RuntimeBuilder<ConfigFilesLoaded, PreShutdown> {
         self.runtime.pre_shutdown().await;
         RuntimeBuilder {

@@ -76,6 +76,7 @@ inexor-rgf-core-model = { path = "../core/model" }
 inexor-rgf-core-reactive = { path = "../core/reactive" }
 inexor-rgf-core-builder = { path = "../core/builder" }
 inexor-rgf-core-plugins = { path = "../core/plugins" }
+inexor-rgf-model-command = { path = "../model/command" }
 inexor-rgf-model-dynamic-graph = { path = "../model/dynamic_graph" }
 inexor-rgf-model-flow = { path = "../model/flow" }
 inexor-rgf-model-runtime = { path = "../model/runtime" }

@@ -1,6 +1,7 @@
 use async_graphql::Schema;
 use async_trait::async_trait;
 
+use crate::api::CommandManager;
 use crate::api::ComponentManager;
 use crate::api::EntityBehaviourManager;
 use crate::api::EntityBehaviourRegistry;
@@ -72,6 +73,8 @@ pub struct GraphQLSchemaManagerImpl {
     plugin_resolver: Deferred<Wrc<dyn PluginResolver>>,
 
     instance_service: Wrc<dyn InstanceService>,
+
+    command_manager: Wrc<dyn CommandManager>,
 }
 
 impl GraphQLSchemaManagerImpl {}
@@ -100,6 +103,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.plugin_container_manager.clone())
             .data(self.plugin_resolver.clone())
             .data(self.instance_service.clone())
+            .data(self.command_manager.clone())
             .directive(directives::concat)
             .directive(directives::random_uuid)
             .finish()

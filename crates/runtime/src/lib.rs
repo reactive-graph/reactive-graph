@@ -21,6 +21,7 @@ use inexor_rgf_core_di as di;
 use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
 use inexor_rgf_core_reactive as reactive;
+use inexor_rgf_model_command as model_command;
 use inexor_rgf_model_dynamic_graph as model_dynamic_graph;
 use inexor_rgf_model_flow as model_flow;
 use inexor_rgf_model_runtime as model_runtime;

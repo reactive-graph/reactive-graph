@@ -2,11 +2,15 @@ mutation ShutdownRuntime {
   instances {
     entities {
       update(
-        label: "/org/inexor/system/shutdown"
+        label: "/org/inexor/commands/core/shutdown"
         properties: [
           {
-            name: "shutdown"
+            name: "delay"
             value: 2
+          },
+          {
+            name: "trigger"
+            value: true
           }
         ]
       ) {

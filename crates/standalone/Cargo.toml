@@ -12,9 +12,12 @@ actix-web = { workspace = true, features = ["rustls"] }
 clap = { workspace = true, features = ["derive"] }
 log = { workspace = true, features = ["std", "serde"] }
 log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
+tabled = { workspace = true }
 tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread"] }
 
 inexor-rgf-rt = { path = "../runtime" }
+inexor-rgf-core-model = { path = "../core/model" }
+inexor-rgf-client = { path = "../client" }
 
 [[bin]]
 name = "inexor-rgf-rt-standalone"

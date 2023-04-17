@@ -275,7 +275,7 @@ impl PluginRepositoryManager for PluginRepositoryManagerImpl {
             }
         }
         for plugin_to_remove in plugins_to_remove {
-            if let Ok(_) = fs::remove_file(&plugin_to_remove) {
+            if fs::remove_file(&plugin_to_remove).is_ok() {
                 trace!("Removed duplicate plugin: {}", plugin_to_remove.display());
             }
         }

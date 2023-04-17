@@ -7,10 +7,12 @@ members = [
     "crates/core/di",
     "crates/core/di-codegen",
     "crates/core/builder",
+    "crates/model/command",
     "crates/model/dynamic_graph",
     "crates/model/flow",
     "crates/model/runtime",
     "crates/runtime",
+    "crates/client",
     "crates/standalone",
 ]
 
@@ -39,6 +41,7 @@ clap = { version = "4.1", features = ["derive"] }
 config = "0.13"
 convert_case = "0.6"
 crossbeam = "0.8"
+cynic = { version = "2.2.8", features = ["http-reqwest"] }
 dashmap = "5.3"
 futures = "0.3"
 futures-timer = "3.0"
@@ -60,6 +63,7 @@ quote = "1.0"
 rand = "0.8"
 rayon = "1.6"
 regex = "1.6"
+reqwest = { version = "0.11.14", features = ["json"] }
 rustls = "0.20"
 rustls-pemfile = "1.0"
 semver = "1"
@@ -69,8 +73,10 @@ signal-hook = "0.3.13"
 strum = { version = "0.24", features = ["derive"] }
 strum_macros = "0.24"
 syn = { version = "1.0", features = [ "full" ] }
+tabled = "0.11.1"
 tokio = { version = "1", features =  ["time", "rt"] }
 toml = "0.5"
+typed-builder = "0.14"
 uuid = { version = "1.1", features = ["serde", "v4"] }
 walkdir = "2.3"
 wildmatch = "2.1"

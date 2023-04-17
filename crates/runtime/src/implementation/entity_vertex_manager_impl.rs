@@ -102,7 +102,7 @@ impl EntityVertexManager for EntityVertexManagerImpl {
                     Err(e) => Err(EntityVertexCreationError::GraphDatabaseError(e)),
                 }
             }
-            None => Err(EntityVertexCreationError::UuidTaken(id)),
+            None => Err(EntityVertexCreationError::EntityTypeMissing(ty.clone())),
         }
     }
 
