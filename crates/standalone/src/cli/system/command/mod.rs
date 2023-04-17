@@ -8,7 +8,6 @@ pub(crate) mod args;
 
 pub(crate) async fn execute_command(client: &Arc<InexorRgfClient>, command_args: ExecuteCommandArgs) {
     // TODO: parse command_args
-    command_args.command_arguments.spl
     match client.system().command().execute(command_args.command_name, None).await {
         Ok(Some(result)) => println!("{result}"),
         Ok(None) => println!("Command executed without return value"),
