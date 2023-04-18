@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use crate::CommandManager;
 use crate::ComponentManager;
 use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
@@ -76,6 +77,10 @@ impl PluginContext for TestPluginContext {
     }
 
     fn get_system_event_manager(&self) -> Arc<dyn SystemEventManager> {
+        panic!();
+    }
+
+    fn get_command_manager(&self) -> Arc<dyn CommandManager> {
         panic!();
     }
 }
