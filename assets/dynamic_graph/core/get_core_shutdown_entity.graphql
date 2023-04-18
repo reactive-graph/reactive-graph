@@ -5,7 +5,10 @@ query GetCoreShutdownEntity {
       id
       trigger
       label
-      shutdown
+      delay
+      command
+      args
+      help
     }
   }
 }

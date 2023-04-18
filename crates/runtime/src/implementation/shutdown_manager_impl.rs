@@ -7,6 +7,8 @@ use async_trait::async_trait;
 use inexor_rgf_core_model::PropertyInstanceGetter;
 use inexor_rgf_core_model::PropertyTypeDefinition;
 use inexor_rgf_model_command::builder::CommandBuilder;
+use inexor_rgf_model_command::component::CommandProperties::COMMAND_ARGS;
+use inexor_rgf_model_command::component::CommandProperties::COMMAND_HELP;
 use inexor_rgf_model_command::entity::CommandArg;
 use serde_json::json;
 use tokio::task;
@@ -68,6 +70,8 @@ impl Lifecycle for ShutdownManagerImpl {
             .property(PROPERTY_TRIGGER, DataType::Bool)
             .component(&COMPONENT_COMMAND.clone())
             .property(COMMAND_NAME, DataType::String)
+            .property(COMMAND_ARGS, DataType::Object)
+            .property(COMMAND_HELP, DataType::String)
             .build();
         let _ = self.entity_type_manager.register(entity_type);
 
@@ -81,7 +85,7 @@ impl Lifecycle for ShutdownManagerImpl {
                 CommandArg::new(DELAY)
                     .short('d')
                     .long("delay")
-                    .help("Delay shutdown by M seconds")
+                    .help("Delay shutdown by N seconds")
                     .required(false),
                 json!(0),
             )
