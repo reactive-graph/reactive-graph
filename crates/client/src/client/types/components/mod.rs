@@ -152,7 +152,6 @@ pub mod queries {
             let component = component_manager.create(&ty, "", Vec::new(), Vec::new()).expect("Failed to create component");
             // let inner_runtime = runtime.clone();
             let port = runtime.get_config_manager().get_graphql_server_config().port();
-            test_get_components_by_type()
         }
     }
 }
