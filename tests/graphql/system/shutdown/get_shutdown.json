@@ -6,7 +6,7 @@
         "properties": [
           {
             "name": "label",
-            "value": "/org/inexor/system/shutdown"
+            "value": "/org/inexor/commands/core/shutdown"
           }
         ]
       }

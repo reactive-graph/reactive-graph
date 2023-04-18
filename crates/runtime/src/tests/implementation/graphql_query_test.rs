@@ -19,7 +19,7 @@ async fn test_graphql_query() {
         runtime.shutdown().await;
     });
     rt.wait_for(Duration::from_secs(5)).await.expect("Runtime didn't came up");
-    let query_string = String::from("query { instances { entities(label: \"/org/inexor/system/shutdown\") { id } } }");
+    let query_string = String::from("query { instances { entities(label: \"/org/inexor/commands/core/shutdown\") { id } } }");
     let result = rt
         .get_graphql_query_service()
         .query(query_string)
