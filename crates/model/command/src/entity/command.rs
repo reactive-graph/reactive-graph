@@ -166,7 +166,7 @@ mod tests {
         let mut args = HashMap::new();
         args.insert(String::from("arg1"), json!(1));
         args.insert(String::from("arg2"), json!(2));
-        let result = command.execute_with_args(args).expect("Failed to execute command with args");
+        let _ = command.execute_with_args(args).expect("Failed to execute command with args");
         assert_eq!(3, e1.as_u64("result").expect("Failed to get changed result"));
     }
 }
