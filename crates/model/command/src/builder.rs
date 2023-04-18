@@ -511,7 +511,7 @@ mod tests {
             .scope_and_name("testing", "test")
             .help("A test command")
             .no_arguments()
-            .executor(|e| json!(""))
+            .executor(|_| json!(""))
             .build()
             .expect("Failed to create command");
         assert_eq!("testing", command.namespace().expect("No command namespace"));
