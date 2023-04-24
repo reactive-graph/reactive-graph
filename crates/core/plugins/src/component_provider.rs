@@ -23,7 +23,7 @@ macro_rules! component_provider {
 
 #[macro_export]
 macro_rules! component_provider_impl {
-    ($asset: ident, $path: expr) => {
+    ($asset: ident, $path: expr $(, $format: expr)*) => {
         paste::paste! {
             use inexor_rgf_core_model::Component as ModelComponent;
 
@@ -51,7 +51,7 @@ macro_rules! component_provider_impl {
 
             impl $crate::ComponentProvider for [<$asset ComponentProviderImpl>] {
                 fn get_components(&self) -> Vec<ModelComponent> {
-                    $crate::embedded_asset_provider_impl!([<$asset ComponentAsset>], ModelComponent)
+                    $crate::embedded_asset_provider_impl!([<$asset ComponentAsset>], ModelComponent $(, $format)*)
                 }
             }
         }

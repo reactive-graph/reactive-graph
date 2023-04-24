@@ -46,6 +46,7 @@ futures-timer = { workspace = true }
 futures-util = { workspace = true }
 http = { workspace = true }
 indradb-lib = { workspace = true }
+json5 = { workspace = true }
 lazy_static = { workspace = true }
 libloading = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }

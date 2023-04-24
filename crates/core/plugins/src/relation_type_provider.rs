@@ -23,7 +23,7 @@ macro_rules! relation_type_provider {
 
 #[macro_export]
 macro_rules! relation_type_provider_impl {
-    ($asset: ident, $path: expr) => {
+    ($asset: ident, $path: expr $(, $format: expr)*) => {
         paste::paste! {
             use inexor_rgf_core_model::RelationType as ModelRelationType;
 
@@ -51,7 +51,7 @@ macro_rules! relation_type_provider_impl {
 
             impl $crate::RelationTypeProvider for [<$asset RelationTypeProviderImpl>] {
                 fn get_relation_types(&self) -> Vec<ModelRelationType> {
-                    $crate::embedded_asset_provider_impl!([<$asset RelationTypeAsset>], ModelRelationType)
+                    $crate::embedded_asset_provider_impl!([<$asset RelationTypeAsset>], ModelRelationType $(, $format)*)
                 }
             }
         }

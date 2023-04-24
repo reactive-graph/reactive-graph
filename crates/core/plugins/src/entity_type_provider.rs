@@ -23,7 +23,7 @@ macro_rules! entity_type_provider {
 
 #[macro_export]
 macro_rules! entity_type_provider_impl {
-    ($asset: ident, $path: expr) => {
+    ($asset: ident, $path: expr $(, $format: expr)*) => {
         paste::paste! {
             use inexor_rgf_core_model::EntityType as ModelEntityType;
 
@@ -51,7 +51,7 @@ macro_rules! entity_type_provider_impl {
 
             impl $crate::EntityTypeProvider for [<$asset EntityTypeProviderImpl>] {
                 fn get_entity_types(&self) -> Vec<ModelEntityType> {
-                    $crate::embedded_asset_provider_impl!([<$asset EntityTypeAsset>], ModelEntityType)
+                    $crate::embedded_asset_provider_impl!([<$asset EntityTypeAsset>], ModelEntityType $(, $format)*)
                 }
             }
         }

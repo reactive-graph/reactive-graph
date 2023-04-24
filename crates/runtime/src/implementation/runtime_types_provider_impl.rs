@@ -8,10 +8,10 @@ use crate::api::RelationTypeManager;
 use crate::api::RuntimeTypesProvider;
 use crate::di::*;
 
-crate::plugins::component_provider_impl!(Core, "types/components");
-crate::plugins::entity_type_provider_impl!(Core, "types/entities");
-crate::plugins::relation_type_provider_impl!(Core, "types/relations");
-crate::plugins::flow_type_provider_impl!(Core, "types/flows");
+crate::plugins::component_provider_impl!(Core, "types/components", json5, toml);
+crate::plugins::entity_type_provider_impl!(Core, "types/entities", json5, toml);
+crate::plugins::relation_type_provider_impl!(Core, "types/relations", json5, toml);
+crate::plugins::flow_type_provider_impl!(Core, "types/flows", json5, toml);
 
 #[component]
 pub struct RuntimeTypesProviderImpl {

@@ -48,6 +48,7 @@ futures-timer = "3.0"
 futures-util = "0.3"
 http = "0.2"
 indradb-lib = "3"
+json5 = "0.4"
 lazy_static = "1.4.0"
 libloading = "0.7"
 log = { version = "0.4", features = ["std", "serde"] }

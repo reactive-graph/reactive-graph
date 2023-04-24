@@ -23,7 +23,7 @@ macro_rules! flow_type_provider {
 
 #[macro_export]
 macro_rules! flow_type_provider_impl {
-    ($asset: ident, $path: expr) => {
+    ($asset: ident, $path: expr $(, $format: expr)*) => {
         paste::paste! {
             use inexor_rgf_core_model::FlowType as ModelFlowType;
 
@@ -51,7 +51,7 @@ macro_rules! flow_type_provider_impl {
 
             impl $crate::FlowTypeProvider for [<$asset FlowTypeProviderImpl>] {
                 fn get_flow_types(&self) -> Vec<ModelFlowType> {
-                    $crate::embedded_asset_provider_impl!([<$asset FlowTypeAsset>], ModelFlowType)
+                    $crate::embedded_asset_provider_impl!([<$asset FlowTypeAsset>], ModelFlowType $(, $format)*)
                 }
             }
         }
