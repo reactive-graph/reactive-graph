@@ -4,6 +4,9 @@ macro_rules! embedded_asset_provider_impl {
         let mut entries = Vec::new();
         for file in $asset::iter() {
             let filename = file.as_ref();
+            if !filename.ends_with(".json") {
+                continue;
+            }
             log::debug!("Loading resource {}", filename);
             match $asset::get(filename) {
                 Some(asset) => match std::str::from_utf8(asset.data.as_ref()) {
