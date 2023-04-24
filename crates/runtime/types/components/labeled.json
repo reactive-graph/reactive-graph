@@ -1,0 +1,19 @@
+{
+  "namespace": "core",
+  "type_name": "labeled",
+  "description": "The label is an hierarchical path with static segments, named parameters and catch-all parameters.",
+  "properties": [
+    {
+      "name": "label",
+      "description": "Hierarchical path with static segments, named parameters and catch-all parameters",
+      "data_type": "string"
+    }
+  ],
+  "extensions": [
+    {
+      "namespace": "core",
+      "type_name": "type_category",
+      "extension": "metadata"
+    }
+  ]
+}

@@ -26,8 +26,8 @@ use crate::graphql::dynamic::INTERFACE_RELATION;
 use crate::model::Mutability::Immutable;
 use crate::model::Mutability::Mutable;
 use crate::model::*;
+use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::COMPONENT_ACTION;
-use crate::model_runtime::PROPERTY_TRIGGER;
 
 pub fn get_relation_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for relation_type in context.relation_type_manager.get_all() {
@@ -230,11 +230,11 @@ pub fn get_trigger_field(relation_type: &RelationType) -> Option<Field> {
         return None;
     }
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
-    let trigger_field = Field::new(PROPERTY_TRIGGER, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
+    let trigger_field = Field::new(&TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         FieldFuture::new(async move {
             let relation_instances = ctx.parent_value.try_downcast_ref::<Vec<Arc<ReactiveRelationInstance>>>()?;
             for relation_instance in relation_instances {
-                relation_instance.set(PROPERTY_TRIGGER, json!(true));
+                relation_instance.set(&TRIGGER.property_name(), json!(true));
             }
             Ok(Some(FieldValue::list(
                 relation_instances

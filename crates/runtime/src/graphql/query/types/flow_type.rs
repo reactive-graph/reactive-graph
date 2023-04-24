@@ -11,6 +11,9 @@ use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationInstance;
+use crate::graphql::query::GraphQLTypeCategory;
+use crate::implementation::get_type_category;
+use crate::implementation::get_type_category_extension;
 use crate::model::FlowType;
 use crate::model::NamespacedTypeGetter;
 use crate::model::ReactiveEntityInstance;
@@ -164,6 +167,13 @@ impl GraphQLFlowType {
             Ok(flow_type_manager) => flow_type_manager.validate(&self.flow_type.ty),
             Err(_) => false,
         }
+    }
+
+    /// Type category.
+    async fn type_category(&self) -> Option<GraphQLTypeCategory> {
+        get_type_category_extension(&self.flow_type)
+            .and_then(get_type_category)
+            .map(|category| category.into())
     }
 }
 

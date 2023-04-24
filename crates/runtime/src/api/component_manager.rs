@@ -150,8 +150,4 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
 
     /// Registers a component provider.
     fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>);
-
-    // TODO: move to own service ComponentCategoryManager
-    /// Returns the list of component categories
-    fn get_component_categories(&self) -> Vec<String>;
 }

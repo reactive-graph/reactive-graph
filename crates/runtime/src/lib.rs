@@ -10,6 +10,9 @@
 // TODO: #![feature(async_fn_in_trait)]
 // https://rust-lang.github.io/async-fundamentals-initiative/index.html
 
+#[macro_use]
+extern crate query_interface;
+
 use std::future::Future;
 use std::sync::Arc;
 use std::sync::RwLock;
@@ -32,6 +35,7 @@ use crate::di::Provider;
 use crate::runtime::Runtime;
 
 mod api;
+mod commands;
 mod graphql;
 mod implementation;
 mod plugin;

@@ -51,6 +51,7 @@ use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ReactiveFlowInstanceManager;
 use crate::api::ReactiveRelationInstanceManager;
 use crate::api::RelationTypeManager;
+use crate::api::TypeCategoryManager;
 use crate::api::WebResourceManager;
 use crate::di::*;
 use crate::graphql::InexorSchema;
@@ -70,6 +71,8 @@ pub struct GraphQLServerImpl {
     relation_type_manager: Wrc<dyn RelationTypeManager>,
 
     flow_type_manager: Wrc<dyn FlowTypeManager>,
+
+    type_category_manager: Wrc<dyn TypeCategoryManager>,
 
     entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
 
@@ -243,6 +246,7 @@ impl GraphQLServerImpl {
         let entity_type_manager = web::Data::new(self.entity_type_manager.clone());
         let relation_type_manager = web::Data::new(self.relation_type_manager.clone());
         let flow_type_manager = web::Data::new(self.flow_type_manager.clone());
+        let type_category_manager = web::Data::new(self.type_category_manager.clone());
         let entity_instance_manager = web::Data::new(self.entity_instance_manager.clone());
         let relation_instance_manager = web::Data::new(self.relation_instance_manager.clone());
         let flow_instance_manager = web::Data::new(self.flow_instance_manager.clone());
@@ -260,6 +264,7 @@ impl GraphQLServerImpl {
                 .app_data(entity_type_manager.clone())
                 .app_data(relation_type_manager.clone())
                 .app_data(flow_type_manager.clone())
+                .app_data(type_category_manager.clone())
                 .app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
                 .app_data(flow_instance_manager.clone())

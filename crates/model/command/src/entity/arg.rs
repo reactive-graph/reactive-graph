@@ -3,6 +3,7 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 
+use crate::error::CommandArgsError;
 use crate::error::InvalidCommandArgDefinition;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -22,6 +23,8 @@ pub struct CommandArg {
     /// The help text.
     pub help: Option<String>,
 
+    /// True, if the command argument is required.
+    #[serde(default = "bool::default")]
     pub required: bool,
 }
 
@@ -92,7 +95,7 @@ impl TryFrom<Value> for CommandArg {
     type Error = InvalidCommandArgDefinition;
 
     fn try_from(value: Value) -> Result<Self, Self::Error> {
-        let arg: CommandArg = serde_json::from_value(value).map_err(|_| InvalidCommandArgDefinition)?;
+        let arg: CommandArg = serde_json::from_value(value).map_err(|e| InvalidCommandArgDefinition(e.into()))?;
         Ok(arg)
     }
 }
@@ -109,6 +112,7 @@ impl From<&str> for CommandArg {
     }
 }
 
+#[derive(Debug)]
 pub struct CommandArgs(Vec<CommandArg>);
 
 impl CommandArgs {
@@ -143,12 +147,17 @@ impl CommandArgs {
 }
 
 impl TryFrom<Value> for CommandArgs {
-    type Error = InvalidCommandArgDefinition;
+    type Error = CommandArgsError;
 
     fn try_from(args: Value) -> Result<Self, Self::Error> {
-        match args.as_array() {
-            Some(args) => Ok(CommandArgs(args.iter().filter_map(|arg| CommandArg::try_from(arg.clone()).ok()).collect())),
-            None => Err(InvalidCommandArgDefinition),
-        }
+        args.as_array()
+            .map(|args| {
+                // let args: Result<Vec<CommandArg>, InvalidCommandArgDefinition> = args.iter().map(|arg| CommandArg::try_from(arg.clone())).collect();
+                match args.iter().map(|arg| CommandArg::try_from(arg.clone())).collect() {
+                    Ok(args) => Ok(CommandArgs(args)),
+                    Err(e) => Err(CommandArgsError::InvalidCommandArgDefinition(e)),
+                }
+            })
+            .unwrap_or(Err(CommandArgsError::CommandArgDefinitionMissing))
     }
 }

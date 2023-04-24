@@ -25,10 +25,11 @@ use crate::model::EntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactiveEntityInstance;
+use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::COMPONENT_ACTION;
 use crate::model_runtime::COMPONENT_LABELED;
-use crate::model_runtime::PROPERTY_TRIGGER;
 
 pub struct CommandBuilder<S> {
     ty: Option<EntityTypeId>,
@@ -68,7 +69,7 @@ impl CommandBuilder<command_builder_state::EntityType> {
         let mut builder = ReactiveEntityInstanceBuilder::new(ty.clone());
         builder.component(&COMPONENT_ACTION.clone());
         builder.component(&COMPONENT_COMMAND.clone());
-        builder.property(PROPERTY_TRIGGER, json!(false));
+        builder.property(TRIGGER.property_name(), json!(false));
         builder.property(COMMAND_RESULT, json!(0));
         CommandBuilder {
             ty: Some(ty.clone()),
@@ -86,7 +87,7 @@ impl CommandBuilder<command_builder_state::EntityType> {
         let mut builder = ReactiveEntityInstanceBuilder::new(ty.clone());
         builder.component(&COMPONENT_ACTION.clone());
         builder.component(&COMPONENT_COMMAND.clone());
-        builder.property(PROPERTY_TRIGGER, json!(false));
+        builder.property(TRIGGER.property_name(), json!(false));
         builder.property(COMMAND_RESULT, json!(0));
         let scope = ty.namespace();
         let name = ty.type_name();
@@ -370,7 +371,7 @@ impl CommandBuilder<command_builder_state::Finish> {
 
         let entity_instance = builder.build();
         let e = entity_instance.clone();
-        let Some(property_instance) = e.properties.get(PROPERTY_TRIGGER) else {
+        let Some(property_instance) = e.properties.get(&TRIGGER.property_name()) else {
             return Err(CommandBuilderError::MissingTrigger);
         };
 
@@ -397,7 +398,7 @@ impl CommandBuilder<command_builder_state::Finish> {
 
         let entity_instance = builder.build();
         let e = entity_instance.clone();
-        let Some(property_instance) = e.properties.get(PROPERTY_TRIGGER) else {
+        let Some(property_instance) = e.properties.get(&TRIGGER.property_name()) else {
             return Err(CommandBuilderError::MissingTrigger);
         };
 

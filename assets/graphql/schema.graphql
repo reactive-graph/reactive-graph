@@ -75,6 +75,8 @@ type Component {
   ): [PropertyType!]!
   "Query which relation types are using this component"
   relationTypes: [RelationType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 "A component behaviour."
@@ -207,6 +209,8 @@ type EntityType {
     "If true, the properties are sorted by name"
     sort: Boolean
   ): [PropertyType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 """
@@ -305,6 +309,8 @@ type FlowType {
   relationInstances: [RelationInstance!]!
   "The entity type of the flow type."
   type: EntityType
+  "Type category."
+  typeCategory: TypeCategory
   "The variables of the flow type."
   variables(name: String): [PropertyType!]!
 }
@@ -967,6 +973,8 @@ type RelationType {
     "If true, the properties are sorted by name"
     sort: Boolean
   ): [PropertyType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 "Subscriptions for the reactive property instances."
@@ -993,8 +1001,17 @@ type System {
   plugins(id: UUID, name: String, state: String, stem: String): [Plugin!]!
 }
 
+type TypeCategory {
+  components: [Component!]!
+  entityTypes: [EntityType!]!
+  flowTypes: [FlowType!]!
+  name: String!
+  relationTypes: [RelationType!]!
+}
+
 "Search for types (components, entity types or relation types)"
 type Types {
+  categories: [TypeCategory!]!
   """
 
   Search for components

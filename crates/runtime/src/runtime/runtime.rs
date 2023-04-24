@@ -150,6 +150,7 @@ pub struct RuntimeImpl {
     relation_edge_manager: Wrc<dyn RelationEdgeManager>,
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+    runtime_types_provider: Wrc<dyn RuntimeTypesProvider>,
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
     plugin_context_factory: Wrc<dyn PluginContextFactory>,
     plugin_repository_manager: Wrc<dyn PluginRepositoryManager>,
@@ -169,6 +170,7 @@ impl Runtime for RuntimeImpl {
         self.component_manager.init().await;
         self.entity_type_manager.init().await;
         self.relation_type_manager.init().await;
+        self.runtime_types_provider.init().await;
         self.plugin_context_factory.init().await;
         self.plugin_repository_manager.init().await;
         self.plugin_resolver.init().await;
@@ -189,6 +191,7 @@ impl Runtime for RuntimeImpl {
         // Order matters
         self.component_manager.post_init().await;
         self.entity_type_manager.post_init().await;
+        self.runtime_types_provider.post_init().await;
         self.relation_type_manager.post_init().await;
         self.plugin_context_factory.post_init().await;
         self.plugin_repository_manager.post_init().await;
@@ -222,6 +225,7 @@ impl Runtime for RuntimeImpl {
         self.plugin_resolver.pre_shutdown().await;
         self.plugin_repository_manager.pre_shutdown().await;
         self.plugin_context_factory.pre_shutdown().await;
+        self.runtime_types_provider.pre_shutdown().await;
         self.relation_type_manager.pre_shutdown().await;
         self.entity_type_manager.pre_shutdown().await;
         self.component_manager.pre_shutdown().await;
@@ -243,6 +247,7 @@ impl Runtime for RuntimeImpl {
         self.plugin_resolver.shutdown().await;
         self.plugin_repository_manager.shutdown().await;
         self.plugin_context_factory.shutdown().await;
+        self.runtime_types_provider.shutdown().await;
         self.relation_type_manager.shutdown().await;
         self.entity_type_manager.shutdown().await;
         self.component_manager.shutdown().await;

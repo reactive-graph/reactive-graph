@@ -1,35 +1,16 @@
 use std::ops::Deref;
 use std::sync::Arc;
 use std::sync::RwLock;
-use std::time;
 
 use async_trait::async_trait;
-use inexor_rgf_core_model::PropertyInstanceGetter;
-use inexor_rgf_core_model::PropertyTypeDefinition;
-use inexor_rgf_model_command::builder::CommandBuilder;
-use inexor_rgf_model_command::component::CommandProperties::COMMAND_ARGS;
-use inexor_rgf_model_command::component::CommandProperties::COMMAND_HELP;
-use inexor_rgf_model_command::entity::CommandArg;
-use serde_json::json;
-use tokio::task;
 
-use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityInstanceManager;
 use crate::api::ShutdownManager;
 use crate::api::UUID_SHUTDOWN;
-use crate::api::UUID_SHUTDOWN_TRIGGER;
-use crate::builder::EntityTypeBuilder;
+use crate::commands::shutdown::shutdown_command;
 use crate::di::*;
-use crate::model::DataType;
 use crate::model::ReactivePropertyContainer;
-use crate::model_command::component::CommandProperties::COMMAND_NAME;
-use crate::model_command::component::COMPONENT_COMMAND;
-use crate::model_runtime::ShutdownProperties::DELAY;
-use crate::model_runtime::COMPONENT_ACTION;
-use crate::model_runtime::COMPONENT_LABELED;
-use crate::model_runtime::ENTITY_TYPE_SHUTDOWN;
-use crate::model_runtime::PROPERTY_TRIGGER;
 
 #[wrapper]
 pub struct ShutdownStateContainer(Arc<RwLock<bool>>);
@@ -41,7 +22,6 @@ fn create_shutdown_state() -> ShutdownStateContainer {
 
 #[component]
 pub struct ShutdownManagerImpl {
-    entity_type_manager: Wrc<dyn EntityTypeManager>,
     reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
 
     shutdown_state: ShutdownStateContainer,
@@ -63,56 +43,8 @@ impl ShutdownManager for ShutdownManagerImpl {
 #[async_trait]
 impl Lifecycle for ShutdownManagerImpl {
     async fn init(&self) {
-        let entity_type = EntityTypeBuilder::new(ENTITY_TYPE_SHUTDOWN.clone())
-            .property(&DELAY.property_name(), DataType::Number)
-            .component(&COMPONENT_LABELED.clone())
-            .component(&COMPONENT_ACTION.clone())
-            .property(PROPERTY_TRIGGER, DataType::Bool)
-            .component(&COMPONENT_COMMAND.clone())
-            .property(COMMAND_NAME, DataType::String)
-            .property(COMMAND_ARGS, DataType::Object)
-            .property(COMMAND_HELP, DataType::String)
-            .build();
-        let _ = self.entity_type_manager.register(entity_type);
-
         let shutdown_state = self.shutdown_state.0.clone();
-        let handle_id = Some(UUID_SHUTDOWN_TRIGGER.as_u128());
-        if let Ok(shutdown_command) = CommandBuilder::new()
-            .singleton(&ENTITY_TYPE_SHUTDOWN.clone())
-            .help("Shutdown the application")
-            .arguments()
-            .argument(
-                CommandArg::new(DELAY)
-                    .short('d')
-                    .long("delay")
-                    .help("Delay shutdown by N seconds")
-                    .required(false),
-                json!(0),
-            )
-            .no_properties()
-            .executor_with_handle(
-                move |e| {
-                    let delay = e.as_u64(DELAY).unwrap_or(0);
-                    if delay > 0 {
-                        let shutdown_in_seconds = time::Duration::from_secs(delay);
-                        let shutdown_state_deferred = shutdown_state.clone();
-                        task::spawn(async move {
-                            tokio::time::sleep(shutdown_in_seconds).await;
-                            let mut guard = shutdown_state_deferred.write().unwrap();
-                            *guard = true;
-                        });
-                        json!(delay)
-                    } else {
-                        let mut guard = shutdown_state.write().unwrap();
-                        *guard = true;
-                        json!(true)
-                    }
-                },
-                handle_id,
-            )
-            .id(UUID_SHUTDOWN)
-            .build()
-        {
+        if let Ok(shutdown_command) = shutdown_command(shutdown_state) {
             let _ = self
                 .reactive_entity_instance_manager
                 .register_reactive_instance(shutdown_command.get_instance());

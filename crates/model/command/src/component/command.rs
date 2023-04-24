@@ -3,7 +3,7 @@ use serde_json::json;
 use crate::model::component_model;
 use crate::model::component_ty;
 use crate::model::properties;
-use crate::NAMESPACE_COMMAND;
+use crate::model_runtime::NAMESPACE_CORE;
 
 properties!(
     CommandProperties,
@@ -14,7 +14,7 @@ properties!(
     (COMMAND_RESULT, "cmd_result", "")
 );
 
-component_ty!(COMPONENT_COMMAND, NAMESPACE_COMMAND, COMPONENT_NAME_COMMAND, "command");
+component_ty!(COMPONENT_COMMAND, NAMESPACE_CORE, COMPONENT_NAME_COMMAND, "command");
 
 component_model!(
     CommandComponent,

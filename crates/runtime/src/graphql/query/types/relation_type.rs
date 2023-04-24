@@ -12,6 +12,9 @@ use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationBehaviour;
+use crate::graphql::query::GraphQLTypeCategory;
+use crate::implementation::get_type_category;
+use crate::implementation::get_type_category_extension;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::RelationType;
@@ -204,6 +207,13 @@ impl GraphQLRelationType {
             .map(|relation_behaviour_ty| GraphQLRelationBehaviour::from(relation_behaviour_ty.clone()))
             .collect();
         Ok(relation_behaviour_types)
+    }
+
+    /// Type category.
+    async fn type_category(&self) -> Option<GraphQLTypeCategory> {
+        get_type_category_extension(&self.relation_type)
+            .and_then(get_type_category)
+            .map(|category| category.into())
     }
 }
 

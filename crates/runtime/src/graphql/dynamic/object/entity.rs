@@ -27,8 +27,8 @@ use crate::graphql::dynamic::INTERFACE_ENTITY;
 use crate::model::Mutability::Immutable;
 use crate::model::Mutability::Mutable;
 use crate::model::*;
+use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::COMPONENT_ACTION;
-use crate::model_runtime::PROPERTY_TRIGGER;
 
 pub fn get_entity_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for entity_type in context.entity_type_manager.get_all() {
@@ -237,11 +237,11 @@ pub fn get_trigger_field(entity_type: &EntityType) -> Option<Field> {
         return None;
     }
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let trigger_field = Field::new(PROPERTY_TRIGGER, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
+    let trigger_field = Field::new(&TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         FieldFuture::new(async move {
             let entity_instances = ctx.parent_value.try_downcast_ref::<Vec<Arc<ReactiveEntityInstance>>>()?;
             for entity_instance in entity_instances {
-                entity_instance.set(PROPERTY_TRIGGER, json!(true));
+                entity_instance.set(&TRIGGER.property_name(), json!(true));
             }
             Ok(Some(FieldValue::list(
                 entity_instances.iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),

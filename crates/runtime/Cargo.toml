@@ -51,10 +51,13 @@ libloading = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 mime = { workspace = true }
 notify = { workspace = true }
+paste = { workspace = true }
+query_interface = { workspace = true }
 path-tree = { workspace = true }
 portpicker = { workspace = true }
 rand = { workspace = true }
 rayon = { workspace = true }
+rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 rustls = { workspace = true }
 rustls-pemfile = { workspace = true }
 semver = { workspace = true }

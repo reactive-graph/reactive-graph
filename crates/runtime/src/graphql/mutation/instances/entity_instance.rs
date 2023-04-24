@@ -17,8 +17,9 @@ use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::BehaviourTypeId;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyTypeDefinition;
 use crate::model::ReactivePropertyContainer;
-use crate::model_runtime::PROPERTY_TRIGGER;
+use crate::model_runtime::ActionProperties::TRIGGER;
 
 #[derive(Default)]
 pub struct MutationEntityInstances;
@@ -149,8 +150,8 @@ impl MutationEntityInstances {
         }) else {
             return Err("Entity instance not found!".into());
         };
-        if entity_instance.has_property(PROPERTY_TRIGGER) {
-            entity_instance.set_checked(PROPERTY_TRIGGER, json!(true));
+        if entity_instance.has_property(&TRIGGER.property_name()) {
+            entity_instance.set_checked(&TRIGGER.property_name(), json!(true));
             Ok(entity_instance.into())
         } else {
             Err(Error::new(format!("Unable to trigger {}", entity_instance.id)))

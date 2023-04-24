@@ -9,17 +9,27 @@ pub enum CommandBuilderError {
 }
 
 #[derive(Debug)]
-pub enum CommandExecutionFailed {
-    NotACommand,
+pub struct InvalidCommandArgDefinition(pub serde_json::Error);
+
+impl PartialEq for InvalidCommandArgDefinition {
+    fn eq(&self, _: &Self) -> bool {
+        return false;
+    }
 }
 
-#[derive(Debug)]
-pub struct InvalidCommandArgDefinition;
-
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum CommandArgsError {
     InvalidCommandArgDefinition(InvalidCommandArgDefinition),
     CommandArgDefinitionMissing,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum CommandExecutionFailed {
+    NotACommand,
+    CommandArgsError(CommandArgsError),
+    InvalidArgument(String),
+    MissingArgumentProperty(String),
+    MissingMandatoryArgument(String),
 }
 
 #[derive(Debug)]

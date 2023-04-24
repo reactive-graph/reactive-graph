@@ -23,6 +23,7 @@ use crate::api::RelationBehaviourRegistry;
 use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
+use crate::api::TypeCategoryManager;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::Component;
@@ -43,6 +44,8 @@ pub struct GraphQLSchemaManagerImpl {
     relation_type_manager: Wrc<dyn RelationTypeManager>,
 
     flow_type_manager: Wrc<dyn FlowTypeManager>,
+
+    type_category_manager: Wrc<dyn TypeCategoryManager>,
 
     namespace_manager: Wrc<dyn NamespaceManager>,
 
@@ -88,6 +91,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())
             .data(self.flow_type_manager.clone())
+            .data(self.type_category_manager.clone())
             .data(self.namespace_manager.clone())
             .data(self.entity_instance_manager.clone())
             .data(self.relation_instance_manager.clone())

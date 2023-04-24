@@ -7,6 +7,7 @@ pub use mutability::*;
 pub use property_type::*;
 pub use relation_type::*;
 pub use socket_type::*;
+pub use type_category::*;
 pub use types::*;
 
 pub mod component;
@@ -18,4 +19,5 @@ pub mod mutability;
 pub mod property_type;
 pub mod relation_type;
 pub mod socket_type;
+pub mod type_category;
 pub mod types;

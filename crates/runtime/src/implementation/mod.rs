@@ -34,7 +34,9 @@ pub use relation_component_behaviour_registry_impl::*;
 pub use relation_edge_manager_impl::*;
 pub use relation_instance_manager_impl::*;
 pub use relation_type_manager_impl::*;
+pub use runtime_types_provider_impl::*;
 pub use shutdown_manager_impl::*;
+pub use type_category_manager_impl::*;
 pub use web_resource_manager_impl::*;
 
 pub mod command_manager_impl;
@@ -74,5 +76,7 @@ pub mod relation_component_behaviour_registry_impl;
 pub mod relation_edge_manager_impl;
 pub mod relation_instance_manager_impl;
 pub mod relation_type_manager_impl;
+pub mod runtime_types_provider_impl;
 pub mod shutdown_manager_impl;
+pub mod type_category_manager_impl;
 pub mod web_resource_manager_impl;

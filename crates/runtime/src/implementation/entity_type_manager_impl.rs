@@ -23,7 +23,6 @@ use crate::api::EntityTypePropertyError;
 use crate::api::EntityTypeRegistrationError;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
-use crate::builder::EntityTypeBuilder;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
@@ -40,12 +39,7 @@ use crate::model::PropertyType;
 use crate::model::PropertyTypeContainer;
 use crate::model::TypeContainer;
 use crate::model::TypeDefinitionGetter;
-use crate::model_flow::ENTITY_TYPE_GENERIC_FLOW;
-use crate::model_runtime::COMPONENT_EVENT;
-use crate::model_runtime::COMPONENT_LABELED;
-use crate::model_runtime::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::model_runtime::EXTENSION_DIVERGENT;
-use crate::model_runtime::EXTENSION_ENTITY_TYPE_CATEGORY;
 use crate::plugins::EntityTypeProvider;
 use crate::plugins::SystemEvent;
 
@@ -66,23 +60,7 @@ pub struct EntityTypeManagerImpl {
     entity_types: EntityTypesStorage,
 }
 
-impl EntityTypeManagerImpl {
-    pub(crate) fn create_base_entity_types(&self) {
-        let _ = self.register(
-            EntityTypeBuilder::new(ENTITY_TYPE_SYSTEM_EVENT.clone())
-                .description("Events of the type system")
-                .component(&COMPONENT_LABELED.clone())
-                .component(&COMPONENT_EVENT.clone())
-                .build(),
-        );
-        let _ = self.register(
-            EntityTypeBuilder::new(ENTITY_TYPE_GENERIC_FLOW.clone())
-                .description("Generic flow without inputs and outputs")
-                .component(&COMPONENT_LABELED.clone())
-                .build(),
-        );
-    }
-}
+impl EntityTypeManagerImpl {}
 
 #[async_trait]
 #[provides]
@@ -384,28 +362,10 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             }
         }
     }
-
-    // TODO: Move this to a new service EntityTypeCategoryManager
-    fn get_entity_type_categories(&self) -> Vec<String> {
-        self.get_all()
-            .iter()
-            .filter_map(|entity_type| {
-                entity_type
-                    .extensions
-                    .iter()
-                    .find(|extension| extension.ty == EXTENSION_ENTITY_TYPE_CATEGORY.clone())
-                    .and_then(|extension| extension.extension.as_str().map(str::to_string))
-            })
-            .collect()
-    }
 }
 
 #[async_trait]
 impl Lifecycle for EntityTypeManagerImpl {
-    async fn init(&self) {
-        self.create_base_entity_types();
-    }
-
     async fn shutdown(&self) {
         // TODO: remove?
         self.entity_types.0.write().unwrap().clear();

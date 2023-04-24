@@ -1,6 +1,6 @@
 use crate::model::component_ty;
+use crate::model::properties;
 use crate::NAMESPACE_CORE;
-use inexor_rgf_core_model::properties;
 
 properties!(EventProperties, (EVENT, "event", ""));
 

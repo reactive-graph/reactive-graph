@@ -8,6 +8,7 @@ use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::NamespaceManager;
 use crate::api::RelationTypeManager;
+use crate::api::TypeCategoryManager;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::mutation::FlowTypeIdDefinition;
@@ -16,6 +17,7 @@ use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLFlowType;
 use crate::graphql::query::GraphQLRelationType;
+use crate::graphql::query::GraphQLTypeCategory;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
@@ -319,5 +321,15 @@ impl Types {
             return HashSet::new();
         };
         namespace_manager.get_all()
+    }
+
+    async fn categories(&self, context: &Context<'_>) -> Result<Vec<GraphQLTypeCategory>> {
+        let type_category_manager = context.data::<Arc<dyn TypeCategoryManager>>()?;
+        let categories = type_category_manager
+            .get_all_type_categories()
+            .into_iter()
+            .map(|category| category.into())
+            .collect();
+        Ok(categories)
     }
 }
