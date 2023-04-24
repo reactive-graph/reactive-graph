@@ -5,6 +5,7 @@ use uuid::Uuid;
 use crate::EntityInstance;
 use crate::EntityTypeId;
 use crate::Extension;
+use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
 use crate::FlowTypeId;
 use crate::NamespacedTypeGetter;
@@ -182,6 +183,27 @@ impl FlowType {
     /// Removes the extension with the given type from the flow type.
     pub fn remove_extension(&mut self, extension_ty: &ExtensionTypeId) {
         self.extensions.retain(|extension| &extension.ty != extension_ty)
+    }
+}
+
+impl ExtensionContainer for FlowType {
+    fn has_own_extension(&self, extension_ty: &ExtensionTypeId) -> bool {
+        self.extensions.iter().any(|extension| &extension.ty == extension_ty)
+    }
+
+    fn get_own_extension(&self, extension_ty: &ExtensionTypeId) -> Option<Extension> {
+        self.extensions.iter().find(|extension| &extension.ty == extension_ty).cloned()
+    }
+
+    fn merge_extensions(&mut self, extensions_to_merge: Vec<Extension>) {
+        for extension_to_merge in extensions_to_merge {
+            if !self.has_own_extension(&extension_to_merge.ty) {
+                self.extensions.push(extension_to_merge);
+            } else if let Some(existing_extension) = self.extensions.iter_mut().find(|e| e.ty == extension_to_merge.ty) {
+                existing_extension.description = extension_to_merge.description.clone();
+                existing_extension.extension = extension_to_merge.extension.clone();
+            }
+        }
     }
 }
 
