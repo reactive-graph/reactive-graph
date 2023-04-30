@@ -64,6 +64,6 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: workspaces
-          args: publish --from-git --token ${CRATES_IO_TOKEN}
+          args: publish --from-git
         env:
-          CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
