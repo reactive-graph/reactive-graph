@@ -58,6 +58,6 @@ impl From<crate::model::DataType> for DataType {
 
 impl Display for DataType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", crate::model::DataType::from(self.clone()))
+        write!(f, "{}", crate::model::DataType::from(*self))
     }
 }

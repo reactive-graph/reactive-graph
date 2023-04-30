@@ -266,11 +266,11 @@ pub mod api {
         }
 
         pub async fn get_all(&self) -> Result<Option<Vec<Plugin>>, InexorRgfClientExecutionError> {
-            return self.plugin_operation(get_all(), |data| data.system.plugins).await;
+            self.plugin_operation(get_all(), |data| data.system.plugins).await
         }
 
         pub async fn search(&self, vars: SearchPluginVariables) -> Result<Option<Vec<Plugin>>, InexorRgfClientExecutionError> {
-            return self.plugin_operation(search(vars), |data| data.system.plugins).await;
+            self.plugin_operation(search(vars), |data| data.system.plugins).await
         }
 
         pub async fn get_by_name(&self, name: String) -> Result<Option<Plugin>, InexorRgfClientExecutionError> {
@@ -280,31 +280,29 @@ pub mod api {
         }
 
         pub async fn get_dependencies(&self, name: String) -> Result<Option<Vec<Plugin>>, InexorRgfClientExecutionError> {
-            return self
-                .plugin_operation(get_dependencies(name), |data| data.system.plugins)
+            self.plugin_operation(get_dependencies(name), |data| data.system.plugins)
                 .await
                 .map(Plugins::get_first)
-                .map(|plugin| plugin.map(|plugin| plugin.dependencies));
+                .map(|plugin| plugin.map(|plugin| plugin.dependencies))
         }
 
         pub async fn get_dependents(&self, name: String) -> Result<Option<Vec<Plugin>>, InexorRgfClientExecutionError> {
-            return self
-                .plugin_operation(get_dependents(name), |data| data.system.plugins)
+            self.plugin_operation(get_dependents(name), |data| data.system.plugins)
                 .await
                 .map(Plugins::get_first)
-                .map(|plugin| plugin.map(|plugin| plugin.dependents));
+                .map(|plugin| plugin.map(|plugin| plugin.dependents))
         }
 
         pub async fn start(&self, name: String) -> Result<Option<Plugin>, InexorRgfClientExecutionError> {
-            return self.plugin_operation(start(name), |data| data.system.plugins.start).await;
+            self.plugin_operation(start(name), |data| data.system.plugins.start).await
         }
 
         pub async fn stop(&self, name: String) -> Result<Option<Plugin>, InexorRgfClientExecutionError> {
-            return self.plugin_operation(stop(name), |data| data.system.plugins.stop).await;
+            self.plugin_operation(stop(name), |data| data.system.plugins.stop).await
         }
 
         pub async fn restart(&self, name: String) -> Result<Option<Plugin>, InexorRgfClientExecutionError> {
-            return self.plugin_operation(restart(name), |data| data.system.plugins.restart).await;
+            self.plugin_operation(restart(name), |data| data.system.plugins.restart).await
         }
 
         fn get_first<P: Clone>(plugins: Option<Vec<P>>) -> Option<P> {

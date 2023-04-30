@@ -13,7 +13,7 @@ pub struct InvalidCommandArgDefinition(pub serde_json::Error);
 
 impl PartialEq for InvalidCommandArgDefinition {
     fn eq(&self, _: &Self) -> bool {
-        return false;
+        false
     }
 }
 

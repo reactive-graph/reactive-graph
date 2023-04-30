@@ -38,6 +38,6 @@ impl From<crate::model::SocketType> for SocketType {
 
 impl Display for SocketType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", crate::model::SocketType::from(self.clone()))
+        write!(f, "{}", crate::model::SocketType::from(*self))
     }
 }

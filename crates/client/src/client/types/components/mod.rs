@@ -172,7 +172,7 @@ impl Components {
             .post(self.client.url())
             .run_graphql(get_all_components_query())
             .await
-            .map_err(|e| InexorRgfClientExecutionError::FailedToSendRequest(e))?
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.types.components);
         Ok(components)
@@ -185,7 +185,7 @@ impl Components {
             .post(self.client.url())
             .run_graphql(get_component_by_type_query(&ty.into()))
             .await
-            .map_err(|e| InexorRgfClientExecutionError::FailedToSendRequest(e))?
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.types.components.first().cloned());
         Ok(component)
@@ -198,7 +198,7 @@ impl Components {
             .post(self.client.url())
             .run_graphql(create_component_mutation(component))
             .await
-            .map_err(|e| InexorRgfClientExecutionError::FailedToSendRequest(e))?
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.types.components.create);
         Ok(component)
@@ -211,7 +211,7 @@ impl Components {
             .post(self.client.url())
             .run_graphql(create_component(variables))
             .await
-            .map_err(|e| InexorRgfClientExecutionError::FailedToSendRequest(e))?
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.types.components.create.into());
         Ok(component)

@@ -64,7 +64,7 @@ impl Command {
             .post(self.client.url())
             .run_graphql(execute(name, args))
             .await
-            .map_err(|e| InexorRgfClientExecutionError::FailedToSendRequest(e))?
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.system.commands.execute)
             .map(|property_instance| property_instance.value.0);

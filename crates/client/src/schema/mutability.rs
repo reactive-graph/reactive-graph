@@ -33,6 +33,6 @@ impl From<crate::model::Mutability> for Mutability {
 
 impl Display for Mutability {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", crate::model::Mutability::from(self.clone()))
+        write!(f, "{}", crate::model::Mutability::from(*self))
     }
 }
