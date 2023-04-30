@@ -184,9 +184,9 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[The Plugin System](https://inexorgame.github.io/inexor-rgf-application/Plugin_System.html)
+[The Plugin System](https://inexorgame.github.io/inexor-rgf-application/book/Plugin_System.html)
 
-[List of Plugins](https://inexorgame.github.io/inexor-rgf-application/Plugins.html)
+[List of Plugins](https://inexorgame.github.io/inexor-rgf-application/book/Plugins.html)
 
 [Plugins Repository](https://github.com/inexorgame/inexor-rgf-plugins)
 
@@ -197,13 +197,13 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[Build Instructions](https://inexorgame.github.io/inexor-rgf-application/Development_Build.html)
+[Build Instructions](https://inexorgame.github.io/inexor-rgf-application/book/Development_Build.html)
 
-[Data Model](https://inexorgame.github.io/inexor-rgf-application/Model.html)
+[Data Model](https://inexorgame.github.io/inexor-rgf-application/book/Model.html)
 
-[GraphQL API](https://inexorgame.github.io/inexor-rgf-application/GraphQL_API.html)
+[GraphQL API](https://inexorgame.github.io/inexor-rgf-application/book/GraphQL_API.html)
 
-[Dynamic Graph API](https://inexorgame.github.io/inexor-rgf-application/Dynamic_Graph_API.html)
+[Dynamic Graph API](https://inexorgame.github.io/inexor-rgf-application/book/Dynamic_Graph_API.html)
 
 </div>
 
@@ -212,7 +212,7 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[Configuration](https://inexorgame.github.io/inexor-rgf-application/Configuration.html)
+[Configuration](https://inexorgame.github.io/inexor-rgf-application/book/Configuration.html)
 
 </div>
 
