@@ -133,6 +133,10 @@ impl CommandArgs {
         self.0.len()
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
+
     pub fn to_value(&self) -> Value {
         Value::Array(self.0.iter().filter_map(|arg| serde_json::to_value(arg).ok()).collect())
     }
