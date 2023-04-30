@@ -1,0 +1,19 @@
+{
+  "id": "plugin-system-environment",
+  "title": "System Environment",
+  "description": "Query for System Environment Variables",
+  "tabs": [
+    {
+      "name": "HOME",
+      "url": "/examples/graphql/plugin-system-environment/plugin-system-environment-find-env-var-home.graphql"
+    },
+    {
+      "name": "PWD",
+      "url": "/examples/graphql/plugin-system-environment/plugin-system-environment-find-env-var-pwd.graphql"
+    },
+    {
+      "name": "Get All",
+      "url": "/examples/graphql/plugin-system-environment/plugin-system-environment-get-all-env-vars.graphql"
+    }
+  ]
+}

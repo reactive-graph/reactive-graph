@@ -1,0 +1,16 @@
+{
+  "name": "InexorDynamicGraph@localhost",
+  "extensions": {
+    "endpoints": {
+      "InexorDynamicGraph@localhost": {
+        "url": "http://localhost:31415/dynamic_graph",
+        "introspect": true
+      },
+      "InexorDynamicGraph@https": {
+        "url": "https://localhost:31415/dynamic_graph",
+        "introspect": false
+      }
+    }
+  },
+  "schemaPath": "./schema.graphql"
+}

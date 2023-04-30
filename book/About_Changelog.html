@@ -1,0 +1,334 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Changelog - Inexor Reactive Graph Flow</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="././inexor-rgf-book.css">
+        <link rel="stylesheet" href="././mdbook-admonish.css">
+        <link rel="stylesheet" href="graphql-playground.css">
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="About.html"><strong aria-hidden="true">1.</strong> About</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="About_Design_Goals.html"><strong aria-hidden="true">1.1.</strong> Design Goals</a></li><li class="chapter-item expanded "><a href="About_Roadmap.html"><strong aria-hidden="true">1.2.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="About_Changelog.html" class="active"><strong aria-hidden="true">1.3.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="Development_License.html"><strong aria-hidden="true">1.4.</strong> License</a></li><li class="chapter-item expanded "><a href="Development_Code_of_Conduct.html"><strong aria-hidden="true">1.5.</strong> Code of Conduct</a></li></ol></li><li class="chapter-item expanded "><a href="Installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="Configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Configuration_Logging.html"><strong aria-hidden="true">3.1.</strong> Logging</a></li><li class="chapter-item expanded "><a href="Configuration_HTTP_GraphQL_Server.html"><strong aria-hidden="true">3.2.</strong> HTTP/GraphQL Server</a></li><li class="chapter-item expanded "><a href="Configuration_Plugins.html"><strong aria-hidden="true">3.3.</strong> Plugins</a></li></ol></li><li class="chapter-item expanded "><a href="Model.html"><strong aria-hidden="true">4.</strong> Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Model_Component.html"><strong aria-hidden="true">4.1.</strong> Component</a></li><li class="chapter-item expanded "><a href="Model_Entity_Type.html"><strong aria-hidden="true">4.2.</strong> Entity Type</a></li><li class="chapter-item expanded "><a href="Model_Relation_Type.html"><strong aria-hidden="true">4.3.</strong> Relation Type</a></li><li class="chapter-item expanded "><a href="Model_Property_Type.html"><strong aria-hidden="true">4.4.</strong> Property Type</a></li><li class="chapter-item expanded "><a href="Model_Flow_Type.html"><strong aria-hidden="true">4.5.</strong> Flow Type</a></li><li class="chapter-item expanded "><a href="Model_Extension.html"><strong aria-hidden="true">4.6.</strong> Extension</a></li><li class="chapter-item expanded "><a href="Model_Entity_Instance.html"><strong aria-hidden="true">4.7.</strong> Entity Instance</a></li><li class="chapter-item expanded "><a href="Model_Relation_Instance.html"><strong aria-hidden="true">4.8.</strong> Relation Instance</a></li><li class="chapter-item expanded "><a href="Model_Property_Instance.html"><strong aria-hidden="true">4.9.</strong> Property Instance</a></li><li class="chapter-item expanded "><a href="Model_Flow_Instances.html"><strong aria-hidden="true">4.10.</strong> Flow Instances</a></li></ol></li><li class="chapter-item expanded "><a href="GraphQL_API.html"><strong aria-hidden="true">5.</strong> GraphQL API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="GraphQL_API_Components.html"><strong aria-hidden="true">5.1.</strong> Components</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Types.html"><strong aria-hidden="true">5.2.</strong> Entity Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Types.html"><strong aria-hidden="true">5.3.</strong> Relation Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Types.html"><strong aria-hidden="true">5.4.</strong> Flow Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Extension.html"><strong aria-hidden="true">5.5.</strong> Extension</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Instances.html"><strong aria-hidden="true">5.6.</strong> Entity Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Instances.html"><strong aria-hidden="true">5.7.</strong> Relation Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Instances.html"><strong aria-hidden="true">5.8.</strong> Flow Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Property_Instance_Subscriptions.html"><strong aria-hidden="true">5.9.</strong> Property Instance Subscriptions</a></li></ol></li><li class="chapter-item expanded "><a href="Dynamic_Graph_API.html"><strong aria-hidden="true">6.</strong> Dynamic Graph API</a></li><li class="chapter-item expanded "><a href="Plugin_System.html"><strong aria-hidden="true">7.</strong> Plugin System</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugin_System_Component_Provider.html"><strong aria-hidden="true">7.1.</strong> Component Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Type_Provider.html"><strong aria-hidden="true">7.2.</strong> Entity Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Type_Provider.html"><strong aria-hidden="true">7.3.</strong> Relation Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Flow_Provider.html"><strong aria-hidden="true">7.4.</strong> Flow Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Component_Behaviour_Provider.html"><strong aria-hidden="true">7.5.</strong> Component Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Behaviour_Provider.html"><strong aria-hidden="true">7.6.</strong> Entity Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Behaviour_Provider.html"><strong aria-hidden="true">7.7.</strong> Relation Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Web_Resource_Provider.html"><strong aria-hidden="true">7.8.</strong> Web Resource Provider</a></li></ol></li><li class="chapter-item expanded "><a href="Plugins.html"><strong aria-hidden="true">8.</strong> Plugins</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugins_Arithmetic.html"><strong aria-hidden="true">8.1.</strong> Arithmetic</a></li><li class="chapter-item expanded "><a href="Plugins_Asset.html"><strong aria-hidden="true">8.2.</strong> Asset</a></li><li class="chapter-item expanded "><a href="Plugins_Base.html"><strong aria-hidden="true">8.3.</strong> Base</a></li><li class="chapter-item expanded "><a href="Plugins_Binary.html"><strong aria-hidden="true">8.4.</strong> Binary</a></li><li class="chapter-item expanded "><a href="Plugins_Comparison.html"><strong aria-hidden="true">8.5.</strong> Comparison</a></li><li class="chapter-item expanded "><a href="Plugins_Config.html"><strong aria-hidden="true">8.6.</strong> Config</a></li><li class="chapter-item expanded "><a href="Plugins_Connector.html"><strong aria-hidden="true">8.7.</strong> Connector</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Client.html"><strong aria-hidden="true">8.8.</strong> GraphQL Client</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Schema_Visualization.html"><strong aria-hidden="true">8.9.</strong> GraphQL Schema Visualization</a></li><li class="chapter-item expanded "><a href="Plugins_HTTP.html"><strong aria-hidden="true">8.10.</strong> HTTP</a></li><li class="chapter-item expanded "><a href="Plugins_Input_Device.html"><strong aria-hidden="true">8.11.</strong> Input Device</a></li><li class="chapter-item expanded "><a href="Plugins_JSON.html"><strong aria-hidden="true">8.12.</strong> JSON</a></li><li class="chapter-item expanded "><a href="Plugins_Logical.html"><strong aria-hidden="true">8.13.</strong> Logical</a></li><li class="chapter-item expanded "><a href="Plugins_Meta_Data.html"><strong aria-hidden="true">8.14.</strong> Meta Data</a></li><li class="chapter-item expanded "><a href="Plugins_Notification.html"><strong aria-hidden="true">8.15.</strong> Notification</a></li><li class="chapter-item expanded "><a href="Plugins_Numeric.html"><strong aria-hidden="true">8.16.</strong> Numeric</a></li><li class="chapter-item expanded "><a href="Plugins_Random.html"><strong aria-hidden="true">8.17.</strong> Random</a></li><li class="chapter-item expanded "><a href="Plugins_Scheduler.html"><strong aria-hidden="true">8.18.</strong> Scheduler</a></li><li class="chapter-item expanded "><a href="Plugins_String.html"><strong aria-hidden="true">8.19.</strong> String</a></li><li class="chapter-item expanded "><a href="Plugins_System_Command.html"><strong aria-hidden="true">8.20.</strong> System Command</a></li><li class="chapter-item expanded "><a href="Plugins_System_Environment.html"><strong aria-hidden="true">8.21.</strong> System Environment</a></li><li class="chapter-item expanded "><a href="Plugins_Taxonomy.html"><strong aria-hidden="true">8.22.</strong> Taxonomy</a></li><li class="chapter-item expanded "><a href="Plugins_Value.html"><strong aria-hidden="true">8.23.</strong> Value</a></li></ol></li><li class="chapter-item expanded "><a href="Events.html"><strong aria-hidden="true">9.</strong> Events</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Events_System.html"><strong aria-hidden="true">9.1.</strong> System Events</a></li><li class="chapter-item expanded "><a href="Events_Shutdown.html"><strong aria-hidden="true">9.2.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns.html"><strong aria-hidden="true">10.</strong> Reactive Graph Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Generator_Action.html"><strong aria-hidden="true">10.1.</strong> Generators & Actions</a></li></ol></li><li class="chapter-item expanded "><a href="Builders.html"><strong aria-hidden="true">11.</strong> Builders</a></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">12.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Development_Supported_Platforms.html"><strong aria-hidden="true">12.1.</strong> Supported Platforms</a></li><li class="chapter-item expanded "><a href="Development_Build.html"><strong aria-hidden="true">12.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="Development_Code_Formatting.html"><strong aria-hidden="true">12.3.</strong> Code Formatting</a></li><li class="chapter-item expanded "><a href="Development_Binaries.html"><strong aria-hidden="true">12.4.</strong> Binaries</a></li><li class="chapter-item expanded "><a href="Development_Packaging.html"><strong aria-hidden="true">12.5.</strong> Packaging</a></li><li class="chapter-item expanded "><a href="Development_Documentation.html"><strong aria-hidden="true">12.6.</strong> Documentation</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Inexor Reactive Graph Flow</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="090-4---2023-03-26"><a class="header" href="#090-4---2023-03-26">[0.9.0-4] - 2023-03-26</a></h2>
+<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>Configuration: Configure the instance</li>
+<li>Configuration: Configure the graphql server</li>
+<li>Configuration: Configure the plugins</li>
+<li>Configuration: Added config manager</li>
+<li>Plugin Resolver: Disable all plugins</li>
+<li>Plugin Resolver: Disable specific plugins</li>
+<li>Plugin Repository Manager: Remove duplicate plugins in plugin installation folder</li>
+<li>Executable: Added cli argument for the instance name and description</li>
+<li>Executable: Added cli argument for disabling all plugins</li>
+<li>Executable: Added cli argument for disabling a specific plugin</li>
+<li>Executable: Added cli argument for disabling hot deployment</li>
+<li>Executable: Added cli argument for configuring the hostname and port of the GraphQL server</li>
+<li>Executable: Added cli argument for configuring the shutdown timeout</li>
+<li>Type System: Allow merging types into existing types and plugin type providers are now merging instead of ignoring changes</li>
+<li>GraphQL: Simplify trigger action by providing a dedicated GraphQL mutation</li>
+<li>GraphQL: Allow sorting of type properties</li>
+<li>GraphQL: Allow sorting of type extensions</li>
+</ul>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li>Workspace: Create mono repository</li>
+<li>Workspace: Migrate repository frp into workspace</li>
+<li>Workspace: Migrate repository model into workspace</li>
+<li>Workspace: Migrate repository builder into workspace</li>
+<li>Workspace: Migrate repository reactive into workspace</li>
+<li>Runtime: Refactor into runtime and binary</li>
+<li>Runtime: Use tokio as async runtime</li>
+<li>Plugin Resolver: Resolving plugins asynchronously</li>
+<li>Plugin Lifecycle: Make plugin activate and deactivate methods async</li>
+<li>GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0</li>
+</ul>
+<h2 id="080---2022-02-01"><a class="header" href="#080---2022-02-01">[0.8.0] - 2022-02-01</a></h2>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<ul>
+<li>Plugins: Plugin resolver state machine</li>
+<li>Plugins: Plugin dependencies and plugin versioning</li>
+<li>Plugins: Plugin installation directory</li>
+<li>Plugins: Hot deployment</li>
+<li>Plugins: Gracefully shutdown and refresh plugins and their behaviours during deployment / hot deployment</li>
+<li>Plugins: GraphQL: List, start, stop and restart plugins</li>
+<li>Plugins: GraphQL: List unsatisfied dependencies</li>
+<li>Behaviours: Lifecycles (init, connect, disconnect, shutdown)</li>
+<li>Behaviours: A state machine manages the behaviour (connecting, disconnecting, reconnecting)</li>
+<li>Behaviours: Compute behaviour initially</li>
+<li>Behaviours: Validation layer for behaviours</li>
+<li>Behaviours: Factories can construct behaviour instances</li>
+<li>Behaviours: Handle behaviour construction errors</li>
+<li>Behaviours: Macro support for implementing behaviours</li>
+<li>Behaviours: Added GraphQL API for behaviours + Allow connecting and disconnecting behaviours manually (flow editor)</li>
+<li>Behaviours: Unit tests for lots of reactive behaviours</li>
+<li>Model: Introduce namespaces</li>
+<li>Model: Use concrete type system identifiers instead of strings</li>
+<li>API: Validate types on construction (validate that components or entity types are present)</li>
+</ul>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<ul>
+<li>Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)</li>
+<li>Behaviours: Reimplemented lots of reactive behaviours</li>
+<li>Plugins: Split most plugins into a model and plugin crate</li>
+<li>API: Make service API and plugin API more consistent (same/similar method names + use type system identifiers)</li>
+<li>Tooling: rustfmt uses separate lines per import</li>
+</ul>
+<h2 id="070---2022-09-25"><a class="header" href="#070---2022-09-25">[0.7.0] - 2022-09-25</a></h2>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<ul>
+<li>Flow Types: Replicate and instantiate flows multiple times (like flow templates)</li>
+<li>Dynamic Graph: A second GraphQL api make the access to the instance system more intuitive</li>
+<li>Plugins: Avoid boilerplate using plugin macros</li>
+<li>Plugins: Metadata about the plugin</li>
+<li>Plugins: Dependency information</li>
+<li>Plugins: Expose GraphQL query service to plugins</li>
+</ul>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<ul>
+<li>Plugin: Dedicated error messages for the plugin API</li>
+<li>Plugin: Default trait implementations for the plugin API to reduce boilerplate</li>
+<li>Plugin: Return option none if a plugin doesn't use certain functionality</li>
+</ul>
+<h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<ul>
+<li>Documentation: Added initial documentation as book (using mdBook)</li>
+<li>GraphQL: Navigate from components to entity types and to relation types</li>
+<li>GraphQL: Navigate from a property instance to the property type</li>
+<li>GraphQL: Shortcut labels</li>
+<li>GraphQL: Filter flows by flow type</li>
+<li>GraphQL: Get flow by label</li>
+<li>GraphQL: Search instances by property value</li>
+<li>GraphQL: Added method to add/remove component to/from an existing instances</li>
+<li>GraphQL: Added filters for instances for applied components/behaviours</li>
+<li>Model: Components can have extensions</li>
+<li>Core: Provide required components and entity types in the application core</li>
+<li>Core: Event System for Type System and Instance System</li>
+</ul>
+<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<ul>
+<li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
+<li>GraphQL: Rename type_name to type</li>
+<li>GraphQL: Stream property instances in subscriptions instead of handcrafted JSONs</li>
+<li>GraphQL: Simplified label resolver</li>
+<li>GraphQL: Removed behaviour resolver from types</li>
+<li>Model: Make extensions a separate type (used in components, entity types and relation types)</li>
+<li>Model: Removed behaviours from types</li>
+<li>Model: Added list of applied components and behaviours to reactive instances</li>
+<li>Documentation: Convert code of conduct and changelog to markdown</li>
+<li>Documentation: Added code of conduct and changelog to book</li>
+</ul>
+<h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
+<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
+<ul>
+<li>Plugin API: Added find, import &amp; export methods for all managers</li>
+<li>Core: Search for type names with wildcards</li>
+</ul>
+<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
+<ul>
+<li>Refactored dependency injection library</li>
+<li>Updated dependencies of the dependency injection library</li>
+</ul>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<ul>
+<li>Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
+</ul>
+<img src="images/rgf_logo_k1_fg_sm.png" />
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="About_Roadmap.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="Development_License.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="About_Roadmap.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="Development_License.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="mermaid.min.js"></script>
+        <script src="mermaid-init.js"></script>
+        <script src="graphql-playground-react-middleware.js"></script>
+        <script src="graphql-playground.js"></script>
+
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,49 @@
+mutation {
+  instances {
+    entities {
+      update(
+        id: "24f1e42f-1072-4c39-a239-774af89286c6",
+        properties: [
+          {
+            name: "trigger",
+            value: true
+          }
+        ]
+      ) {
+        ...RandomNumber
+      }
+    }
+  }
+}
+
+fragment RandomNumber on EntityInstance {
+  id
+  type {
+    name
+  }
+  properties(names: [ "result" ]) {
+    name
+    value
+  }
+  outbound(type: "default_connector--result--lhs") {
+    type {
+      namespace
+      name
+      instanceTypeName
+    }
+    inbound {
+      ...ArithmeticGate
+    }
+  }
+}
+
+fragment ArithmeticGate on EntityInstance {
+  id
+  type {
+    name
+  }
+  properties(names: [ "lhs", "rhs", "result" ]) {
+    name
+    value
+  }
+}

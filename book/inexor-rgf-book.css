@@ -1,0 +1,18 @@
+.float-left {
+    float: left;
+}
+
+.sidebar {
+    background: url("images/rgf_logo.png") var(--sidebar-bg) no-repeat;
+    background-size: 250px;
+    background-position-x: center;
+}
+
+.sidebar .chapter {
+    margin-top: 300px;
+    background-color: var(--sidebar-bg);
+}
+
+/*:root {*/
+/*    --content-max-width: 850px;*/
+/*}*/

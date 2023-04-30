@@ -1,0 +1,19 @@
+query GetMultiplicationResult {
+  instances {
+    # Select the entity
+    entities(id: "cfe0b988-4a7f-47c4-b334-ff41709aa0f4") {
+      ...ArithmeticGate
+    }
+  }
+}
+
+fragment ArithmeticGate on EntityInstance {
+  id
+  type {
+    name
+  }
+  properties(names: [ "lhs", "rhs", "result" ]) {
+    name
+    value
+  }
+}

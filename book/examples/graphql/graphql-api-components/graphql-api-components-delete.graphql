@@ -1,0 +1,12 @@
+mutation {
+  types {
+    components {
+      delete(
+        type: {
+          namespace: "book"
+          name: "component1"
+        }
+      )
+    }
+  }
+}

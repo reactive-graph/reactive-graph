@@ -1,0 +1,4210 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+}
+
+"Computes the absolute value"
+type Abs {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Computes the arccosine of a number"
+type Acos {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Inverse hyperbolic cosine function"
+type Acosh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Adds two integer numbers"
+type Add {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"AND"
+type And {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Array Contains"
+type ArrayContains {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  search: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Array Get By Index"
+type ArrayGetByIndex {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  index: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Array Length"
+type ArrayLength {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  length: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Array Pop"
+type ArrayPop {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  value: JSON
+}
+
+"Array Push"
+type ArrayPush {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  value: JSON
+}
+
+"Array Reverse"
+type ArrayReverse {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  array: JSON
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Computes the arcsine of a number"
+type Asin {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Inverse hyperbolic sine function"
+type Asinh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Asset"
+type Asset {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a description."
+  describable: cDescribable
+  dublin_core: cDublinCore
+  "The entity is licensed."
+  licensed: cLicensed
+  "The entity or relation has a name."
+  named: cNamed
+  path: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "The entity is versioned."
+  versioned: cVersioned
+}
+
+"Asset Collection"
+type AssetCollection {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  trigger: JSON
+}
+
+"Asset repository"
+type AssetRepository {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The entity or relation has a name."
+  named: cNamed
+  path: JSON
+  source_url: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  trigger: JSON
+}
+
+"Computes the arctangent of a number"
+type Atan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Computes the four quadrant arctangent in radians"
+type Atan2 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Inverse hyperbolic tangent function"
+type Atanh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property with a other property and buffers the values in a FIFO buffer before propagation"
+type BufferedFifoConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "A buffer of the given size"
+  buffer: cBuffer
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Converts the input to camel case"
+type CamelCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the first character of the input to upper case and convert the rest of the input to lower case"
+type Capitalize {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"The outbound entity is categorized as the inbound category"
+type CategorizedAs {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The category which categorizes an entity"
+  category: Category
+  weighted: cWeighted
+}
+
+"A category is a fundamental and distinct class to which entities or concepts belong"
+type Category {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorizes: [CategorizedAs]
+  "The outbound category has the inbound entity as sub category"
+  child_categories: [HasSubcategory]
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound category has the inbound entity as sub category"
+  parent_categories: [HasSubcategory]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the cube root of a number"
+type Cbrt {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the smallest integer greater than or equal to a number"
+type Ceil {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Counts the characters"
+type CharCount {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_number_operation: cStringNumberOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Counts the graphemes in the input string taking care of surrogate pairs and combining marks"
+type CharCountGraphemes {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_number_operation: cStringNumberOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns everything after the given search"
+type ChopAfter {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns everything after the last given search"
+type ChopAfterLast {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns everything before the given search"
+type ChopBefore {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns everything before the last given search"
+type ChopBeforeLast {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Extracts the prefix from the input"
+type ChopRemovePrefix {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Extracts the suffix from the input"
+type ChopRemoveSuffix {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"A simple comment"
+type Comment {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a description."
+  describable: cDescribable
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Concat"
+type Concat {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_gate: cStringGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Loads a configuration file"
+type ConfigFile {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Loads a configuration file"
+  config_file: cConfigFile
+  "Represents a file in the file system"
+  file: cFile
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Contains"
+type Contains {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_comparison: cStringComparison
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Computes the cosine of a number (in radians)"
+type Cos {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Hyperbolic cosine function"
+type Cosh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Counts the number of substring appearances in the input string"
+type CountSubstrings {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_string_number_gate: cStringStringNumberGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Counting occurrences of unique words in the input string. This function respects unicode"
+type CountUniqueWords {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_string_number_gate: cStringStringNumberGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Counts the number of words in the input string"
+type CountWords {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_string_number_gate: cStringStringNumberGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"If triggered the counter will be increased"
+type Counter {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property with a other property and propagates the value if and only if the value is different"
+type DebounceConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Connects a property with a other property and logs changes to the debug logger"
+type DebugConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Converts the first character of the input to lower case and convert the rest of the input to lower case"
+type Decapitalize {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Decrements a number"
+type Decrement {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with one input and one result"
+  arithmetic_operation: cArithmeticOperation
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a outbound property with another property. The value of the outbound property will be subtracted from the value of the inbound property."
+type DecrementByConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Connects a property of an entity instance with a other property of another entity instance"
+type DefaultConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Connects a property with a other property after the given milli seconds"
+type DelayConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+  "The delay in milli seconds"
+  delay: JSON
+}
+
+"Divides two integer numbers"
+type Div {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Ends With"
+type EndsWith {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_comparison: cStringComparison
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks if lhs is equal to rhs"
+type Equals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Escapes HTML special characters"
+type EscapeHtml {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Escapes the regular expression special characters"
+type EscapeRegexp {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns e^(input), (the exponential function)"
+type Exp {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns 2^(input)"
+type Exp2 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the largest integer less than or equal to a number"
+type Floor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the fractional part of a number"
+type Fract {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Generic flow without inputs and outputs"
+type GenericFlow {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks if lhs is greater than rhs"
+type GreaterThan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks if lhs is greater than or equal to rhs"
+type GreaterThanOrEquals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"The outbound category has the inbound entity as sub category"
+type HasSubcategory {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The child category"
+  child_category: Category
+  "The parent category"
+  parent_category: Category
+  weighted: cWeighted
+}
+
+"Sends HTTP request to a given URL"
+type Http {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Sends HTTP request to a given URL"
+  http: cHttp
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
+type Hypot {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Each time it's triggered, either the then-payload or the else-payload gets propagated"
+type IfThenElse {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Depending on the given condition outputs a result"
+  condition: cCondition
+  "If the condition is false, the else_payload gets propagated"
+  else_payload: JSON
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "If the condition is true, the then_payload gets propagated"
+  then_payload: JSON
+}
+
+"Increments a number"
+type Increment {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with one input and one result"
+  arithmetic_operation: cArithmeticOperation
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a outbound property with another property. The value of the outbound property will be added to the value of the inbound property."
+type IncrementByConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Checks whether the input string contains only alpha characters"
+type IsAlpha {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string contains contains only alpha and digit characters"
+type IsAlphaDigit {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is empty or contains only whitespaces"
+type IsBlank {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is camelCased"
+type IsCamelCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is capitalized and the rest of the input string is lower case"
+type IsCapitalize {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is decapitalized and the rest of the input string is converted to lower case"
+type IsDecapitalize {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string contains only digit characters"
+type IsDigit {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is empty"
+type IsEmpty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is kebab-cased"
+type IsKebabCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string has the first character in lower case"
+type IsLowerFirst {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string has only lower case characters"
+type IsLowercase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is numeric"
+type IsNumeric {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is PascalCased"
+type IsPascalCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is SHOUTY-KEBAB-CASED"
+type IsShoutyKebabCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is SHOUTY_SNAKE_CASED"
+type IsShoutySnakeCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is snake_cased"
+type IsSnakeCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is a titlecased string and there is at least one character"
+type IsTitleCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string is Train-Cased"
+type IsTrainCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string has the first character in upper case"
+type IsUpperFirst {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks whether the input string has only upper case characters"
+type IsUppercase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_bool_operation: cStringBoolOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Sends JSON-RPC request to a given URL"
+type JsonRpc {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Sends JSON-RPC request to a given URL"
+  json_rpc: cJsonRpc
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the input to kebab case"
+type KebabCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the natural logarithm of the number"
+type Ln {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Loads binary data"
+type LoadBinaryData {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  binary_data: cBinaryData
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Represents a file in the file system"
+  file: cFile
+  "Loads binary data"
+  load_binary_data: cLoadBinaryData
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Loads a JSON file"
+type LoadJson {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Represents a file in the file system"
+  file: cFile
+  "Loads a JSON file"
+  load_json: cLoadJson
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the logarithm of the number with respect to an arbitrary base"
+type Log {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the base 10 logarithm of the number"
+type Log10 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the base 2 logarithm of the number"
+type Log2 {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the first character of the input to lower case"
+type LowerFirst {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks if lhs is lower than rhs"
+type LowerThan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks if lhs is lower than or equal to rhs"
+type LowerThanOrEquals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Lowercase"
+type Lowercase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the maximum value of two inputs"
+type Max {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the minimum value of two inputs"
+type Min {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Modulo"
+type Mod {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"MQTT Broker"
+type MqttBroker {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  hostname: JSON
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "Publishes packages on a topic"
+  mqtt_publishes: [MqttPublishes]
+  "Receives and extracts packages from a topic"
+  mqtt_subscribes: [MqttSubscribes]
+  port: JSON
+  received_package: JSON
+  send_package: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Publishes to a MQTT endpoint"
+type MqttPublisher {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  mqtt_endpoint: cMqttEndpoint
+  "Publishes packages on a topic"
+  mqtt_publishes: [MqttPublishes]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Publishes packages on a topic"
+type MqttPublishes {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "MQTT Broker"
+  mqtt_broker: MqttBroker
+  "Publishes to a MQTT endpoint"
+  mqtt_publisher: MqttPublisher
+  mqtt_topic: cMqttTopic
+}
+
+"Subscribes to a MQTT endpoint"
+type MqttSubscriber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  mqtt_endpoint: cMqttEndpoint
+  "Receives and extracts packages from a topic"
+  mqtt_subscribes: [MqttSubscribes]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Receives and extracts packages from a topic"
+type MqttSubscribes {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "MQTT Broker"
+  mqtt_broker: MqttBroker
+  "Subscribes to a MQTT endpoint"
+  mqtt_subscriber: MqttSubscriber
+  mqtt_topic: cMqttTopic
+}
+
+"Multiply two integer numbers"
+type Mul {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"NAND"
+type Nand {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"NOR"
+type Nor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"NOT"
+type Not {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Checks if lhs not equal to rhs"
+type NotEquals {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  comparison_gate: cComparisonGate
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property with a other property and interpolate the numeric values before propagation"
+type NumericInterpolationConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "A buffer of the given size"
+  buffer: cBuffer
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Object Get Property"
+type ObjectGetProperty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  property_name: JSON
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Object Keys"
+type ObjectKeys {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  keys: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Object Remove Property"
+type ObjectRemoveProperty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  property_name: JSON
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Object Set Property"
+type ObjectSetProperty {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The entity or relation has a name."
+  named: cNamed
+  object: JSON
+  property_name: JSON
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  value: JSON
+}
+
+"OR"
+type Or {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects an string property of an entity instance with a number property of another entity instance. Outgoing string point values gets converted to floating point numbers if possible"
+type ParseFloatConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Connects an string property of an entity instance with a number property of another entity instance. Outgoing string values gets converted to integer numbers if possible"
+type ParseIntConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Converts the input to pascal case"
+type PascalCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Raises a number to a power"
+type Pow {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_gate: cNumericGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Pseudo Random Number"
+type PseudoRandomNumber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  seed: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+type Query {
+  "Computes the absolute value"
+  abs: [Abs]
+  "Computes the arccosine of a number"
+  acos: [Acos]
+  "Inverse hyperbolic cosine function"
+  acosh: [Acosh]
+  "Adds two integer numbers"
+  add: [Add]
+  "AND"
+  and: [And]
+  "Array Contains"
+  array_contains: [ArrayContains]
+  "Array Get By Index"
+  array_get_by_index: [ArrayGetByIndex]
+  "Array Length"
+  array_length: [ArrayLength]
+  "Array Pop"
+  array_pop: [ArrayPop]
+  "Array Push"
+  array_push: [ArrayPush]
+  "Array Reverse"
+  array_reverse: [ArrayReverse]
+  "Computes the arcsine of a number"
+  asin: [Asin]
+  "Inverse hyperbolic sine function"
+  asinh: [Asinh]
+  "Asset"
+  asset: [Asset]
+  "Asset Collection"
+  asset_collection: [AssetCollection]
+  "Asset repository"
+  asset_repository: [AssetRepository]
+  "Computes the arctangent of a number"
+  atan: [Atan]
+  "Computes the four quadrant arctangent in radians"
+  atan2: [Atan2]
+  "Inverse hyperbolic tangent function"
+  atanh: [Atanh]
+  "Connects a property with a other property and buffers the values in a FIFO buffer before propagation"
+  buffered_fifo_connector: [BufferedFifoConnector]
+  "Converts the input to camel case"
+  camel_case: [CamelCase]
+  "Converts the first character of the input to upper case and convert the rest of the input to lower case"
+  capitalize: [Capitalize]
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "A category is a fundamental and distinct class to which entities or concepts belong"
+  category: [Category]
+  "Returns the cube root of a number"
+  cbrt: [Cbrt]
+  "Returns the smallest integer greater than or equal to a number"
+  ceil: [Ceil]
+  "Counts the characters"
+  char_count: [CharCount]
+  "Counts the graphemes in the input string taking care of surrogate pairs and combining marks"
+  char_count_graphemes: [CharCountGraphemes]
+  "Returns everything after the given search"
+  chop_after: [ChopAfter]
+  "Returns everything after the last given search"
+  chop_after_last: [ChopAfterLast]
+  "Returns everything before the given search"
+  chop_before: [ChopBefore]
+  "Returns everything before the last given search"
+  chop_before_last: [ChopBeforeLast]
+  "Extracts the prefix from the input"
+  chop_remove_prefix: [ChopRemovePrefix]
+  "Extracts the suffix from the input"
+  chop_remove_suffix: [ChopRemoveSuffix]
+  "A simple comment"
+  comment: [Comment]
+  "Concat"
+  concat: [Concat]
+  "Loads a configuration file"
+  config_file: [ConfigFile]
+  "Contains"
+  contains: [Contains]
+  "Computes the cosine of a number (in radians)"
+  cos: [Cos]
+  "Hyperbolic cosine function"
+  cosh: [Cosh]
+  "Counts the number of substring appearances in the input string"
+  count_substrings: [CountSubstrings]
+  "Counting occurrences of unique words in the input string. This function respects unicode"
+  count_unique_words: [CountUniqueWords]
+  "Counts the number of words in the input string"
+  count_words: [CountWords]
+  "If triggered the counter will be increased"
+  counter: [Counter]
+  "Connects a property with a other property and propagates the value if and only if the value is different"
+  debounce_connector: [DebounceConnector]
+  "Connects a property with a other property and logs changes to the debug logger"
+  debug_connector: [DebugConnector]
+  "Converts the first character of the input to lower case and convert the rest of the input to lower case"
+  decapitalize: [Decapitalize]
+  "Decrements a number"
+  decrement: [Decrement]
+  "Connects a outbound property with another property. The value of the outbound property will be subtracted from the value of the inbound property."
+  decrement_by_connector: [DecrementByConnector]
+  "Connects a property of an entity instance with a other property of another entity instance"
+  default_connector: [DefaultConnector]
+  "Connects a property with a other property after the given milli seconds"
+  delay_connector: [DelayConnector]
+  "Divides two integer numbers"
+  div: [Div]
+  "Ends With"
+  ends_with: [EndsWith]
+  "Checks if lhs is equal to rhs"
+  equals: [Equals]
+  "Escapes HTML special characters"
+  escape_html: [EscapeHtml]
+  "Escapes the regular expression special characters"
+  escape_regexp: [EscapeRegexp]
+  "Returns e^(input), (the exponential function)"
+  exp: [Exp]
+  "Returns 2^(input)"
+  exp2: [Exp2]
+  "Returns the largest integer less than or equal to a number"
+  floor: [Floor]
+  "Returns the fractional part of a number"
+  fract: [Fract]
+  "Generic flow without inputs and outputs"
+  generic_flow: [GenericFlow]
+  "Checks if lhs is greater than rhs"
+  greater_than: [GreaterThan]
+  "Checks if lhs is greater than or equal to rhs"
+  greater_than_or_equals: [GreaterThanOrEquals]
+  "The outbound category has the inbound entity as sub category"
+  has_subcategory: [HasSubcategory]
+  "Sends HTTP request to a given URL"
+  http: [Http]
+  "Calculates the length of the hypotenuse of a right-angle triangle given legs of length x and y"
+  hypot: [Hypot]
+  "Each time it's triggered, either the then-payload or the else-payload gets propagated"
+  if_then_else: [IfThenElse]
+  "Increments a number"
+  increment: [Increment]
+  "Connects a outbound property with another property. The value of the outbound property will be added to the value of the inbound property."
+  increment_by_connector: [IncrementByConnector]
+  "Checks whether the input string contains only alpha characters"
+  is_alpha: [IsAlpha]
+  "Checks whether the input string contains contains only alpha and digit characters"
+  is_alpha_digit: [IsAlphaDigit]
+  "Checks whether the input string is empty or contains only whitespaces"
+  is_blank: [IsBlank]
+  "Checks whether the input string is camelCased"
+  is_camel_case: [IsCamelCase]
+  "Checks whether the input string is capitalized and the rest of the input string is lower case"
+  is_capitalize: [IsCapitalize]
+  "Checks whether the input string is decapitalized and the rest of the input string is converted to lower case"
+  is_decapitalize: [IsDecapitalize]
+  "Checks whether the input string contains only digit characters"
+  is_digit: [IsDigit]
+  "Checks whether the input string is empty"
+  is_empty: [IsEmpty]
+  "Checks whether the input string is kebab-cased"
+  is_kebab_case: [IsKebabCase]
+  "Checks whether the input string has the first character in lower case"
+  is_lower_first: [IsLowerFirst]
+  "Checks whether the input string has only lower case characters"
+  is_lowercase: [IsLowercase]
+  "Checks whether the input string is numeric"
+  is_numeric: [IsNumeric]
+  "Checks whether the input string is PascalCased"
+  is_pascal_case: [IsPascalCase]
+  "Checks whether the input string is SHOUTY-KEBAB-CASED"
+  is_shouty_kebab_case: [IsShoutyKebabCase]
+  "Checks whether the input string is SHOUTY_SNAKE_CASED"
+  is_shouty_snake_case: [IsShoutySnakeCase]
+  "Checks whether the input string is snake_cased"
+  is_snake_case: [IsSnakeCase]
+  "Checks whether the input string is a titlecased string and there is at least one character"
+  is_title_case: [IsTitleCase]
+  "Checks whether the input string is Train-Cased"
+  is_train_case: [IsTrainCase]
+  "Checks whether the input string has the first character in upper case"
+  is_upper_first: [IsUpperFirst]
+  "Checks whether the input string has only upper case characters"
+  is_uppercase: [IsUppercase]
+  "Sends JSON-RPC request to a given URL"
+  json_rpc: [JsonRpc]
+  "Converts the input to kebab case"
+  kebab_case: [KebabCase]
+  "Returns the natural logarithm of the number"
+  ln: [Ln]
+  "Loads binary data"
+  load_binary_data: [LoadBinaryData]
+  "Loads a JSON file"
+  load_json: [LoadJson]
+  "Returns the logarithm of the number with respect to an arbitrary base"
+  log: [Log]
+  "Returns the base 10 logarithm of the number"
+  log10: [Log10]
+  "Returns the base 2 logarithm of the number"
+  log2: [Log2]
+  "Converts the first character of the input to lower case"
+  lower_first: [LowerFirst]
+  "Checks if lhs is lower than rhs"
+  lower_than: [LowerThan]
+  "Checks if lhs is lower than or equal to rhs"
+  lower_than_or_equals: [LowerThanOrEquals]
+  "Lowercase"
+  lowercase: [Lowercase]
+  "Returns the maximum value of two inputs"
+  max: [Max]
+  "Returns the minimum value of two inputs"
+  min: [Min]
+  "Modulo"
+  mod: [Mod]
+  "MQTT Broker"
+  mqtt_broker: [MqttBroker]
+  "Publishes to a MQTT endpoint"
+  mqtt_publisher: [MqttPublisher]
+  "Publishes packages on a topic"
+  mqtt_publishes: [MqttPublishes]
+  "Subscribes to a MQTT endpoint"
+  mqtt_subscriber: [MqttSubscriber]
+  "Receives and extracts packages from a topic"
+  mqtt_subscribes: [MqttSubscribes]
+  "Multiply two integer numbers"
+  mul: [Mul]
+  "NAND"
+  nand: [Nand]
+  "NOR"
+  nor: [Nor]
+  "NOT"
+  not: [Not]
+  "Checks if lhs not equal to rhs"
+  not_equals: [NotEquals]
+  "Connects a property with a other property and interpolate the numeric values before propagation"
+  numeric_interpolation_connector: [NumericInterpolationConnector]
+  "Object Get Property"
+  object_get_property: [ObjectGetProperty]
+  "Object Keys"
+  object_keys: [ObjectKeys]
+  "Object Remove Property"
+  object_remove_property: [ObjectRemoveProperty]
+  "Object Set Property"
+  object_set_property: [ObjectSetProperty]
+  "OR"
+  or: [Or]
+  "Connects an string property of an entity instance with a number property of another entity instance. Outgoing string point values gets converted to floating point numbers if possible"
+  parse_float_connector: [ParseFloatConnector]
+  "Connects an string property of an entity instance with a number property of another entity instance. Outgoing string values gets converted to integer numbers if possible"
+  parse_int_connector: [ParseIntConnector]
+  "Converts the input to pascal case"
+  pascal_case: [PascalCase]
+  "Raises a number to a power"
+  pow: [Pow]
+  "Pseudo Random Number"
+  pseudo_random_number: [PseudoRandomNumber]
+  "Random Bool"
+  random_bool: [RandomBool]
+  "Random Integer Within Range"
+  random_integer_within_range: [RandomIntegerWithinRange]
+  "Random Number"
+  random_number: [RandomNumber]
+  "Random String"
+  random_string: [RandomString]
+  "Random UUID"
+  random_uuid: [RandomUuid]
+  "Takes the reciprocal (inverse) of a number, 1/x"
+  recip: [Recip]
+  "Returns the nearest integer to a number. Round half-way cases away from 0.0"
+  round: [Round]
+  "Saves binary data"
+  save_binary_data: [SaveBinaryData]
+  "Saves an object as JSON file"
+  save_json: [SaveJson]
+  "Scheduled Job"
+  scheduled_job: [ScheduledJob]
+  "Converts the input to SHOUTY kebab case"
+  shouty_kebab_case: [ShoutyKebabCase]
+  "Converts the title to SHOUTY snake case"
+  shouty_snake_case: [ShoutySnakeCase]
+  shutdown: [Shutdown]
+  "Returns a number that represents the sign of the input"
+  signum: [Signum]
+  "Computes the sine of a number (in radians)"
+  sin: [Sin]
+  "Hyperbolic sine function"
+  sinh: [Sinh]
+  "Converts the subject to snake case"
+  snake_case: [SnakeCase]
+  "Returns the square root of a number"
+  sqrt: [Sqrt]
+  "Starts With"
+  starts_with: [StartsWith]
+  "State of type array"
+  state_array: [StateArray]
+  "State of type boolean"
+  state_boolean: [StateBoolean]
+  "State of type number"
+  state_number: [StateNumber]
+  "State of type object"
+  state_object: [StateObject]
+  "Returns the length of the input string"
+  string_length: [StringLength]
+  "Strips all HTML tags"
+  strip_html_tags: [StripHtmlTags]
+  "Subtract an integer number from another number"
+  sub: [Sub]
+  "Converts the uppercase alpha characters of the input to lowercase and lowercase characters to uppercase"
+  swap_case: [SwapCase]
+  "Executes a system command"
+  system_command: [SystemCommand]
+  "System Environment Variable"
+  system_env: [SystemEnv]
+  "Events of the type system"
+  system_event: [SystemEvent]
+  "A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
+  tag: [Tag]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Computes the tangent of a number (in radians)"
+  tan: [Tan]
+  "Hyperbolic tangent function"
+  tanh: [Tanh]
+  "Renders a template"
+  templating: [Templating]
+  "Connects a property with a other property. The propagation will run in a new thread"
+  threaded_connector: [ThreadedConnector]
+  "Timer"
+  timer: [Timer]
+  "Converts the input to title case"
+  title_case: [TitleCase]
+  "Converts radians to degrees"
+  to_degrees: [ToDegrees]
+  "Converts degrees to radians"
+  to_radians: [ToRadians]
+  "Connects an number property of an entity instance with a string property of another entity instance. Outgoing integer values gets converted to string"
+  to_string_connector: [ToStringConnector]
+  "If triggered the state will toggled"
+  toggle: [Toggle]
+  "Connects a property with a other property and logs changes to the trace logger"
+  trace_connector: [TraceConnector]
+  "Converts the input to train case"
+  train_case: [TrainCase]
+  "Tray"
+  tray: [Tray]
+  "Tray has menu item"
+  tray_has_menu_item: [TrayHasMenuItem]
+  "Tray Menu Item"
+  tray_menu_item: [TrayMenuItem]
+  "If triggered the payload will be copied to the output"
+  trigger: [Trigger]
+  "Trim"
+  trim: [Trim]
+  "Trim  End"
+  trim_end: [TrimEnd]
+  "Trim  Start"
+  trim_start: [TrimStart]
+  "Returns the integer part of a number"
+  trunc: [Trunc]
+  "Unescapes HTML special characters"
+  unescape_html: [UnescapeHtml]
+  "Converts the first character of the title to upper case"
+  upper_first: [UpperFirst]
+  "Uppercase"
+  uppercase: [Uppercase]
+  "Value of type array"
+  value_array: [ValueArray]
+  "Value of type boolean"
+  value_boolean: [ValueBoolean]
+  "Value of type number"
+  value_number: [ValueNumber]
+  "Value of type object"
+  value_object: [ValueObject]
+  "Value of type string"
+  value_string: [ValueString]
+  "XNOR"
+  xnor: [Xnor]
+  "XOR"
+  xor: [Xor]
+}
+
+"Random Bool"
+type RandomBool {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Random Integer Within Range"
+type RandomIntegerWithinRange {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  high: JSON
+  low: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Random Number"
+type RandomNumber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Random String"
+type RandomString {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  length: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Random UUID"
+type RandomUuid {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Takes the reciprocal (inverse) of a number, 1/x"
+type Recip {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the nearest integer to a number. Round half-way cases away from 0.0"
+type Round {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Saves binary data"
+type SaveBinaryData {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  binary_data: cBinaryData
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Represents a file in the file system"
+  file: cFile
+  "The entity or relation has a name."
+  named: cNamed
+  "Saves binary data"
+  save_binary_data: cSaveBinaryData
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Saves an object as JSON file"
+type SaveJson {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "Represents a file in the file system"
+  file: cFile
+  "The entity or relation has a name."
+  named: cNamed
+  "Saves an object as JSON file"
+  save_json: cSaveJson
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Scheduled Job"
+type ScheduledJob {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "A generator sends a trigger"
+  generator: cGenerator
+  schedule: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the input to SHOUTY kebab case"
+type ShoutyKebabCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the title to SHOUTY snake case"
+type ShoutySnakeCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+type Shutdown {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns a number that represents the sign of the input"
+type Signum {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Computes the sine of a number (in radians)"
+type Sin {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Hyperbolic sine function"
+type Sinh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the subject to snake case"
+type SnakeCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the square root of a number"
+type Sqrt {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Starts With"
+type StartsWith {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_comparison: cStringComparison
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"State of type array"
+type StateArray {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "State of type array"
+  state_array: cStateArray
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type array"
+  value_array: cValueArray
+}
+
+"State of type boolean"
+type StateBoolean {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "State of type boolean"
+  state_boolean: cStateBoolean
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type boolean"
+  value_boolean: cValueBoolean
+}
+
+"State of type number"
+type StateNumber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "State of type number"
+  state_number: cStateNumber
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type number"
+  value_number: cValueNumber
+}
+
+"State of type object"
+type StateObject {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "State of type object"
+  state_object: cStateObject
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type object"
+  value_object: cValueObject
+}
+
+"Returns the length of the input string"
+type StringLength {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_number_operation: cStringNumberOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Strips all HTML tags"
+type StripHtmlTags {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Subtract an integer number from another number"
+type Sub {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "Arithmetic operation with two inputs and one result"
+  arithmetic_gate: cArithmeticGate
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the uppercase alpha characters of the input to lowercase and lowercase characters to uppercase"
+type SwapCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Executes a system command"
+type SystemCommand {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "Executes a system command"
+  system_command: cSystemCommand
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"System Environment Variable"
+type SystemEnv {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  value: JSON
+}
+
+"Events of the type system"
+type SystemEvent {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "This components spawns events."
+  event: cEvent
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeled: cLabeled
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
+type Tag {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The outbound entity is tagged with the inbound tag"
+  inbound_tagged_with: [TaggedWith]
+  "The entity or relation has a name."
+  named: cNamed
+}
+
+"The outbound entity is tagged with the inbound tag"
+type TaggedWith {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "The tag which is applied to the entity"
+  tag: Tag
+  weighted: cWeighted
+}
+
+"Computes the tangent of a number (in radians)"
+type Tan {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Hyperbolic tangent function"
+type Tanh {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Renders a template"
+type Templating {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  context: JSON
+  result: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  template: JSON
+}
+
+"Connects a property with a other property. The propagation will run in a new thread"
+type ThreadedConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Timer"
+type Timer {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  duration: JSON
+  "A generator sends a trigger"
+  generator: cGenerator
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the input to title case"
+type TitleCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts radians to degrees"
+type ToDegrees {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts degrees to radians"
+type ToRadians {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects an number property of an entity instance with a string property of another entity instance. Outgoing integer values gets converted to string"
+type ToStringConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"If triggered the state will toggled"
+type Toggle {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Connects a property with a other property and logs changes to the trace logger"
+type TraceConnector {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Connects a property of an entity instance with a other property of another entity instance"
+  connector: cConnector
+}
+
+"Converts the input to train case"
+type TrainCase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Tray"
+type Tray {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  icon: JSON
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  title: JSON
+  "Tray has menu item"
+  tray_has_menu_item: [TrayHasMenuItem]
+}
+
+"Tray has menu item"
+type TrayHasMenuItem {
+  "The edge key of the relation instance"
+  _edge_key: String
+  "The label of the relation instance"
+  _label: String
+  "The type is always relation_type"
+  _type: TypeType
+  "Tray"
+  tray: Tray
+  "Tray Menu Item"
+  tray_menu_item: TrayMenuItem
+}
+
+"Tray Menu Item"
+type TrayMenuItem {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "A generator sends a trigger"
+  generator: cGenerator
+  "Tray has menu item"
+  inbound_tray_has_menu_item: [TrayHasMenuItem]
+  "The entity or relation has a name."
+  named: cNamed
+  "Tray has menu item"
+  outbound_tray_has_menu_item: [TrayHasMenuItem]
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Tray Menu Item"
+  tray_menu_item: cTrayMenuItem
+}
+
+"If triggered the payload will be copied to the output"
+type Trigger {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "An action can be triggered"
+  action: cAction
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  payload: JSON
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Trim"
+type Trim {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Trim  End"
+type TrimEnd {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Trim  Start"
+type TrimStart {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Returns the integer part of a number"
+type Trunc {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  numeric_operation: cNumericOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Unescapes HTML special characters"
+type UnescapeHtml {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Converts the first character of the title to upper case"
+type UpperFirst {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Uppercase"
+type Uppercase {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  string_operation: cStringOperation
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"Value of type array"
+type ValueArray {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type array"
+  value_array: cValueArray
+}
+
+"Value of type boolean"
+type ValueBoolean {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type boolean"
+  value_boolean: cValueBoolean
+}
+
+"Value of type number"
+type ValueNumber {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type number"
+  value_number: cValueNumber
+}
+
+"Value of type object"
+type ValueObject {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type object"
+  value_object: cValueObject
+}
+
+"Value of type string"
+type ValueString {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The entity or relation has a name."
+  named: cNamed
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+  "Value of type string"
+  value_string: cValueString
+}
+
+"XNOR"
+type Xnor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"XOR"
+type Xor {
+  "The unique identifier of the entity instance"
+  _id: UUID
+  "The label of the entity instance"
+  _label: String
+  "The meta type is always entity_type"
+  _type: TypeType
+  "The outbound entity is categorized as the inbound category"
+  categorized_as: [CategorizedAs]
+  "The position (x,y) of the entity or relation on a two dimensional flow."
+  flow_2d: cFlow2D
+  "The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+  flow_3d: cFlow3D
+  "Executes a logical operation on the inputs lhs and rhs and outputs the result"
+  logical_gate: cLogicalGate
+  "The outbound entity is tagged with the inbound tag"
+  tagged_with: [TaggedWith]
+}
+
+"An action can be triggered"
+type cAction {
+  "The type is always component"
+  _type: TypeType
+  "The result"
+  result: JSON
+  "On receiving a boolean trigger the action will be executed"
+  trigger: JSON
+}
+
+"Arithmetic operation with two inputs and one result"
+type cArithmeticGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Arithmetic operation with one input and one result"
+type cArithmeticOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+type cBinaryData {
+  "The type is always component"
+  _type: TypeType
+  data_url: JSON
+}
+
+"A buffer of the given size"
+type cBuffer {
+  "The type is always component"
+  _type: TypeType
+  "The buffer with up to buffer_size elements"
+  buffer: JSON
+  "The number of elements of the buffer"
+  buffer_size: JSON
+}
+
+type cColor {
+  "The type is always component"
+  _type: TypeType
+  "Alpha-Channel"
+  color_a: JSON
+  "Blue Channel"
+  color_b: JSON
+  "Green Channel"
+  color_g: JSON
+  "Red"
+  color_r: JSON
+}
+
+type cComparisonGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Depending on the given condition outputs a result"
+type cCondition {
+  "The type is always component"
+  _type: TypeType
+  "A boolean condition"
+  condition: JSON
+  "The result"
+  result: JSON
+}
+
+"Loads a configuration file"
+type cConfigFile {
+  "The type is always component"
+  _type: TypeType
+  result: JSON
+}
+
+"Connects a property of an entity instance with a other property of another entity instance"
+type cConnector {
+  "The type is always component"
+  _type: TypeType
+  "The name of the inbound property"
+  inbound_property_name: JSON
+  "The name of the outbound property"
+  outbound_property_name: JSON
+}
+
+"Crosshair Asset"
+type cCrosshairAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"The entity or relation has a description."
+type cDescribable {
+  "The type is always component"
+  _type: TypeType
+  "The description of an entity or a relation"
+  description: JSON
+}
+
+type cDublinCore {
+  "The type is always component"
+  _type: TypeType
+  "An entity responsible for making contributions to the resource."
+  dc_contributor: JSON
+  "The spatial or temporal topic of the resource, the spatial applicability of the resource, or the jurisdiction under which the resource is relevant"
+  dc_coverage: JSON
+  "An entity primarily responsible for making the resource"
+  dc_creator: JSON
+  "A point or period of time associated with an event in the lifecycle of the resource"
+  dc_date: JSON
+  "An account of the resource"
+  dc_description: JSON
+  "The file format, physical medium, or dimensions of the resource"
+  dc_format: JSON
+  "An unambiguous reference to the resource within a given context"
+  dc_identifier: JSON
+  "A language of the resource"
+  dc_language: JSON
+  "An entity responsible for making the resource available"
+  dc_publisher: JSON
+  "A related resource"
+  dc_relation: JSON
+  "Information about rights held in and over the resource"
+  dc_rights: JSON
+  "A related resource from which the described resource is derived"
+  dc_source: JSON
+  "The topic of the resource"
+  dc_subject: JSON
+  "A name given to the resource"
+  dc_title: JSON
+  "The nature or genre of the resource"
+  dc_type: JSON
+}
+
+"This components spawns events."
+type cEvent {
+  "The type is always component"
+  _type: TypeType
+  event: JSON
+}
+
+"Represents a file in the file system"
+type cFile {
+  "The type is always component"
+  _type: TypeType
+  "The filename"
+  filename: JSON
+}
+
+"The position (x,y) of the entity or relation on a two dimensional flow."
+type cFlow2D {
+  "The type is always component"
+  _type: TypeType
+  "The height in a 2D flow"
+  f2dh: JSON
+  "The width in a 2D flow"
+  f2dw: JSON
+  "The X position in a 2D flow"
+  f2dx: JSON
+  "The Y position in a 2D flow"
+  f2dy: JSON
+}
+
+"The position (x,y,z) of the entity or relation on a three dimensional flow (in-game visual scripting)."
+type cFlow3D {
+  "The type is always component"
+  _type: TypeType
+  "The depth (z-axis) in a 3D flow"
+  f3dd: JSON
+  "The height (y-axis) in a 3D flow"
+  f3dh: JSON
+  "The width (x-axis) in a 3D flow"
+  f3dw: JSON
+  "The X position in a 3D flow"
+  f3dx: JSON
+  "The Y position in a 3D flow"
+  f3dy: JSON
+  "The Z position in a 3D flow"
+  f3dz: JSON
+}
+
+"Font Asset"
+type cFontAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Triggers if the file with the given filename has been changed"
+type cFsNotify {
+  "The type is always component"
+  _type: TypeType
+  "The filename"
+  filename: JSON
+  "Triggers if the file with the given filename has been changed"
+  trigger: JSON
+}
+
+"A generator sends a trigger"
+type cGenerator {
+  "The type is always component"
+  _type: TypeType
+  "Sends a boolean trigger"
+  trigger: JSON
+}
+
+"Sends HTTP request to a given URL"
+type cHttp {
+  "The type is always component"
+  _type: TypeType
+  method: JSON
+  payload: JSON
+  request_headers: JSON
+  response_headers: JSON
+  result: JSON
+  status: JSON
+  url: JSON
+}
+
+"Icon Asset"
+type cIconAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cId3 {
+  "The type is always component"
+  _type: TypeType
+  id3_talb: JSON
+}
+
+"Image Asset"
+type cImageAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Sends JSON-RPC request to a given URL"
+type cJsonRpc {
+  "The type is always component"
+  _type: TypeType
+  error: JSON
+  json_rpc_version: JSON
+  method: JSON
+  params: JSON
+  result: JSON
+  url: JSON
+}
+
+"The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+type cLabeled {
+  "The type is always component"
+  _type: TypeType
+  label: JSON
+}
+
+"The entity is licensed."
+type cLicensed {
+  "The type is always component"
+  _type: TypeType
+  "Title, author, source and license. Best practices for attribution: https://wiki.creativecommons.org/wiki/best_practices_for_attribution"
+  attribution: JSON
+  "The SPDX license identifier. See: https://spdx.org/licenses/"
+  license: JSON
+}
+
+"Loads binary data"
+type cLoadBinaryData {
+  "The type is always component"
+  _type: TypeType
+  data_url: JSON
+}
+
+"Loads a JSON file"
+type cLoadJson {
+  "The type is always component"
+  _type: TypeType
+  result: JSON
+}
+
+"Executes a logical operation on the inputs lhs and rhs and outputs the result"
+type cLogicalGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Executes a logical operation on the input lhs and outputs the result"
+type cLogicalOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+"Model Asset"
+type cModelAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cMqttEndpoint {
+  "The type is always component"
+  _type: TypeType
+  payload: JSON
+}
+
+type cMqttTopic {
+  "The type is always component"
+  _type: TypeType
+  mode: JSON
+  topic: JSON
+}
+
+"The entity or relation has a name."
+type cNamed {
+  "The type is always component"
+  _type: TypeType
+  "The name of an entity or a relation"
+  name: JSON
+}
+
+type cNumericGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+type cNumericOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+"The relations between two entities are ordered using a ordinal number associated with sibling relations"
+type cOrdered {
+  "The type is always component"
+  _type: TypeType
+  "The relation ordinal number associated with sibling relations"
+  order: JSON
+}
+
+"Counts the number of propagations"
+type cPropagationCounter {
+  "The type is always component"
+  _type: TypeType
+  "The count of propagations"
+  propagation_count: JSON
+}
+
+"Saves binary data"
+type cSaveBinaryData {
+  "The type is always component"
+  _type: TypeType
+  data_url: JSON
+}
+
+"Saves an object as JSON file"
+type cSaveJson {
+  "The type is always component"
+  _type: TypeType
+  payload: JSON
+}
+
+"Skybox Asset"
+type cSkyboxAsset {
+  "The type is always component"
+  _type: TypeType
+  "The filename of the texture on the back side"
+  back_side: JSON
+  "The filename of the texture on the down side"
+  down_side: JSON
+  "The filename of the texture on the front side"
+  front_side: JSON
+  "The filename of the texture on the left side"
+  left_side: JSON
+  "The filename of the texture on the right side"
+  right_side: JSON
+  "The filename of the texture on the upper side"
+  upper_side: JSON
+}
+
+"Sound Effect Asset"
+type cSoundEffectAsset {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Sound Track Asset"
+type cSoundTrackAsset {
+  "The type is always component"
+  _type: TypeType
+  "The filenames of the tracks"
+  tracks: JSON
+}
+
+"State of type array"
+type cStateArray {
+  "The type is always component"
+  _type: TypeType
+  set_state: JSON
+  state: JSON
+}
+
+"State of type boolean"
+type cStateBoolean {
+  "The type is always component"
+  _type: TypeType
+  set_state: JSON
+  state: JSON
+}
+
+type cStateDebuggerDebug {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cStateDebuggerTrace {
+  "The type is always component"
+  _type: TypeType
+}
+
+"State of type number"
+type cStateNumber {
+  "The type is always component"
+  _type: TypeType
+  set_state: JSON
+  state: JSON
+}
+
+"State of type object"
+type cStateObject {
+  "The type is always component"
+  _type: TypeType
+  set_state: JSON
+  state: JSON
+}
+
+"State of type string"
+type cStateString {
+  "The type is always component"
+  _type: TypeType
+  set_state: JSON
+  state: JSON
+}
+
+type cStringBoolOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+type cStringComparison {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+type cStringGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+type cStringNumberOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+type cStringOperation {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+}
+
+type cStringStringNumberGate {
+  "The type is always component"
+  _type: TypeType
+  lhs: JSON
+  result: JSON
+  rhs: JSON
+}
+
+"Executes a system command"
+type cSystemCommand {
+  "The type is always component"
+  _type: TypeType
+  command: JSON
+  current_dir: JSON
+  parameters: JSON
+  stderr: JSON
+  stdin: JSON
+  stdout: JSON
+}
+
+"Texture Asset"
+type cTextureAsset {
+  "The type is always component"
+  _type: TypeType
+  "The depth map"
+  depth_map: JSON
+  "The glow map"
+  glow_map: JSON
+  "The normal map"
+  normal_map: JSON
+  "The primary texture"
+  primary_texture: JSON
+  "The specularity map"
+  specularity_map: JSON
+}
+
+"Tray Menu Item"
+type cTrayMenuItem {
+  "The type is always component"
+  _type: TypeType
+  title: JSON
+}
+
+"Value of type array"
+type cValueArray {
+  "The type is always component"
+  _type: TypeType
+  value: JSON
+}
+
+"Value of type boolean"
+type cValueBoolean {
+  "The type is always component"
+  _type: TypeType
+  value: JSON
+}
+
+type cValueDebuggerDebug {
+  "The type is always component"
+  _type: TypeType
+}
+
+type cValueDebuggerTrace {
+  "The type is always component"
+  _type: TypeType
+}
+
+"Value of type number"
+type cValueNumber {
+  "The type is always component"
+  _type: TypeType
+  value: JSON
+}
+
+"Value of type object"
+type cValueObject {
+  "The type is always component"
+  _type: TypeType
+  value: JSON
+}
+
+"Value of type string"
+type cValueString {
+  "The type is always component"
+  _type: TypeType
+  value: JSON
+}
+
+"The entity is versioned."
+type cVersioned {
+  "The type is always component"
+  _type: TypeType
+  "The version number. Use semantic versioning. See: https://semver.org/"
+  version: JSON
+}
+
+type cWeighted {
+  "The type is always component"
+  _type: TypeType
+  weight: JSON
+}
+
+enum TypeType {
+  COMPONENT
+  ENTITY_TYPE
+  RELATION_TYPE
+}
+
+scalar JSON
+
+scalar UUID

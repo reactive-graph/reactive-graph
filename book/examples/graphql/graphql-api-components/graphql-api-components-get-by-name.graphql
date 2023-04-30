@@ -1,0 +1,34 @@
+query {
+  types {
+    components(namespace: "book", name: "component1") {
+      ...FullComponent
+      ...ComponentExtensions
+    }
+  }
+}
+
+fragment FullComponent on Component {
+  namespace
+  name
+  description
+  properties {
+    name
+    dataType
+    socketType
+    ...PropertyTypeExtensions
+  }
+}
+
+fragment ComponentExtensions on Component {
+  extensions {
+    name
+    extension
+  }
+}
+
+fragment PropertyTypeExtensions on PropertyType {
+  extensions {
+    name
+    extension
+  }
+}

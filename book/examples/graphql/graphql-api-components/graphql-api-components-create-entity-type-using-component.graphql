@@ -1,0 +1,30 @@
+mutation {
+  types {
+    entities {
+      create(
+        type: {
+          namespace: "book"
+          name: "example1"
+        }
+        components: [
+          {
+            namespace: "book"
+            name: "component1"
+          }
+        ]
+      ) {
+        ...FullEntityType
+      }
+    }
+  }
+}
+
+fragment FullEntityType on EntityType {
+  name
+  description
+  properties {
+    name
+    dataType
+    socketType
+  }
+}

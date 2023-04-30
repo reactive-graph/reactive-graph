@@ -1,0 +1,10 @@
+query {
+  types {
+    components(name: "component1") {
+      entityTypes {
+        namespace
+        name
+      }
+    }
+  }
+}

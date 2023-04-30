@@ -1,0 +1,33 @@
+query GetTaggedEntities {
+  instances {
+    # Get the tag with the name 'inexor'
+    entities(
+      type: "tag"
+      properties: [
+        {
+          name: "name"
+          value: "inexor"
+        }
+      ]
+    ) {
+      ...FullEntityInstance
+      # Get all entities which are tagged with
+      inbound(type: "tagged_with") {
+        outbound {
+          ...FullEntityInstance
+        }
+      }
+    }
+  }
+}
+
+fragment FullEntityInstance on EntityInstance {
+  type {
+    name
+  }
+  id
+  properties(names: [ "name", "description" ]) {
+    name
+    value
+  }
+}
