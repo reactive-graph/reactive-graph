@@ -9,6 +9,7 @@ authors = [
 edition.workspace = true
 license = "BSD-3-Clause"
 repository.workspace = true
+readme = "../../../README.md"
 
 [dependencies]
 log = { workspace = true, features = ["std", "serde"] }

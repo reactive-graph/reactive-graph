@@ -21,6 +21,7 @@ version = "0.9.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
+readme = "README.md"
 repository = "https://github.com/inexorgame/inexor-rgf-application"
 homepage = "https://inexorgame.github.io/inexor-rgf-application/"
 keywords = ["graph", "reactive", "control-flow", "inexor"]

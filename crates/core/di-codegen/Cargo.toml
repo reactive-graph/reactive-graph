@@ -9,7 +9,7 @@ authors = [
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-readme = "../di/README.md"
+readme = "../../../README.md"
 
 [dependencies]
 quote = { workspace = true }
