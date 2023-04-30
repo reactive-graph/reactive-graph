@@ -113,6 +113,9 @@ level = "info"
 [loggers."inexor_rgf_rt::implementation::graphql_server_impl"]
 level = "info"
 
+[loggers."inexor_rgf_rt::implementation::runtime_types_provider_impl"]
+level = "info"
+
 [loggers."inexor_rgf_rt::graphql::dynamic::object::namespace"]
 level = "error"
 
