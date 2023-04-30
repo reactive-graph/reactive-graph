@@ -171,7 +171,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
         let reader = self.label_path_tree.0.read().unwrap();
         reader.find(label).and_then(|result| match self.get(*result.0) {
             Some(instance) => {
-                let params: HashMap<String, String> = result.1.into_iter().map(|(a, b)| (String::from(a), String::from(b))).collect();
+                let params = result.1.params_iter().map(|param| (param.0.to_string(), param.1.to_string())).collect();
                 Some((instance, params))
             }
             None => None,
