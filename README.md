@@ -9,7 +9,8 @@
 
 <div align="center" style="text-align: center">
 
-[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/)
+[<img src="https://img.shields.io/badge/Docs-mdBook-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/book/)
+[<img src="https://img.shields.io/badge/Docs-api-brightgreen">](https://inexorgame.github.io/inexor-rgf-application/docs/)
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
