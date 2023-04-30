@@ -20,7 +20,7 @@ inexor-rgf-core-frp = { version = "0.9.0", path = "../frp" }
 [dev-dependencies]
 random-string = "1.0"
 rand = "0.8"
-stopwatch2 = "*"
+stopwatch2 = "2.0"
 
 [lib]
 crate-type = ["lib"]
