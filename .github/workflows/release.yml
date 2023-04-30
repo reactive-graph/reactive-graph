@@ -42,3 +42,10 @@ jobs:
         zip: windows
         leading_dir: true
         token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish on crates.io
+      uses: actions-rs/cargo@v1
+      with:
+        command: publish
+        args: --token ${CRATES_IO_TOKEN}
+      env:
+        CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
