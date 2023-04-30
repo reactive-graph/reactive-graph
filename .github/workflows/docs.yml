@@ -40,6 +40,8 @@ jobs:
         with:
           command: doc
           args: --all --no-deps
+        env:
+          RUSTDOCFLAGS: --enable-index-page -Zunstable-options
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
