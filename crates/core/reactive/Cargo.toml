@@ -18,8 +18,8 @@ strum = { workspace = true, features = ["derive"] }
 strum_macros = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-core-frp = { path = "../frp" }
-inexor-rgf-core-model = { path = "../model" }
+inexor-rgf-core-frp = { version = "0.9.0", path = "../frp" }
+inexor-rgf-core-model = { version = "0.9.0", path = "../model" }
 
 [dev-dependencies]
 random-string = "1.0"

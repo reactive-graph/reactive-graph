@@ -16,11 +16,11 @@ serde = { workspace = true, features = [ "derive" ] }
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-core-frp = { path = "../frp" }
-inexor-rgf-core-model = { path = "../model" }
-inexor-rgf-core-reactive = { path = "../reactive" }
-inexor-rgf-core-config = { path = "../config" }
-inexor-rgf-model-command = { path = "../../model/command" }
+inexor-rgf-core-frp = { version = "0.9.0", path = "../frp" }
+inexor-rgf-core-model = { version = "0.9.0", path = "../model" }
+inexor-rgf-core-reactive = { version = "0.9.0", path = "../reactive" }
+inexor-rgf-core-config = { version = "0.9.0", path = "../config" }
+inexor-rgf-model-command = { version = "0.9.0", path = "../../model/command" }
 
 [dev-dependencies]
 random-string = "1.0"
