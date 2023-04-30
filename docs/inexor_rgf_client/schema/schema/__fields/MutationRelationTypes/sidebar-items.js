@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["_add_component_arguments","_add_extension_arguments","_add_property_arguments","_create_arguments","_delete_arguments","_remove_component_arguments","_remove_extension_arguments","_remove_property_arguments"],"struct":["__typename","addComponent","addExtension","addProperty","create","delete","removeComponent","removeExtension","removeProperty"]};

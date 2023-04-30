@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["plugins","print_plugin","print_plugins"],"mod":["args","commands"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ENTITY_TYPE_NAME_SHUTDOWN"],"enum":["ShutdownProperties"],"struct":["ENTITY_TYPE_SHUTDOWN"]};

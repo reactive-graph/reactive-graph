@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_all","get_by_name","get_dependencies","get_dependents","search"]};

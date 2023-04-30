@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["parse_args","profile_name"],"mod":["profiles"],"struct":["APP_PROFILE","Container"],"trait":["Component","Provider"]};

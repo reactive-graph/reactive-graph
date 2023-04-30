@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["display_extensions"],"struct":["Extension","ExtensionDefinition","ExtensionDefinitions","ExtensionTypeId","Extensions"]};

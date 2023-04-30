@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CommandArgsError","CommandBuilderError","CommandExecutionFailed","NoSuchCommand"],"struct":["InvalidCommandArgDefinition","NotACommand"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["EXTENSION_NAME_DIVERGENT"],"struct":["EXTENSION_DIVERGENT"]};

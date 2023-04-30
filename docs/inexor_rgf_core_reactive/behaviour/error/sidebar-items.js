@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BehaviourCreationError","BehaviourInvalid","BehaviourPropertyInvalid","BehaviourReconnectFailed","BehaviourTransitionError"],"struct":["BehaviourConnectFailed","BehaviourDisconnectFailed","BehaviourInitializationFailed","BehaviourShutdownFailed"]};

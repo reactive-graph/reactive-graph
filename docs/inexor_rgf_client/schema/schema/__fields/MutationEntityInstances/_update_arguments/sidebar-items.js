@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["addComponents","id","label","properties","removeComponents"]};

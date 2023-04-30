@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["divergent","type_category"]};

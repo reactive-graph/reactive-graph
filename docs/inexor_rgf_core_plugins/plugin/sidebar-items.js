@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PLUGIN_NAME_PREFIX"],"enum":["PluginActivationError","PluginDeactivationError","PluginLoadingError","PluginUnloadingError"],"trait":["Plugin"]};
