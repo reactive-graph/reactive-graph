@@ -54,10 +54,16 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
+      - name: Install Cargo Workspaces
+        uses: actions-rs/install@v0.1
+        with:
+          crate: cargo-workspaces
+          version: latest
+          use-tool-cache: true
       - name: Publish on crates.io
         uses: actions-rs/cargo@v1
         with:
-          command: publish
-          args: --token ${CRATES_IO_TOKEN}
+          command: workspaces
+          args: publish --from-git --token ${CRATES_IO_TOKEN}
         env:
           CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
