@@ -42,10 +42,22 @@ jobs:
         zip: windows
         leading_dir: true
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Publish on crates.io
-      uses: actions-rs/cargo@v1
-      with:
-        command: publish
-        args: --token ${CRATES_IO_TOKEN}
-      env:
-        CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
+  crates-io:
+    name: Publish on crates.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v3
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Publish on crates.io
+        uses: actions-rs/cargo@v1
+        with:
+          command: publish
+          args: --token ${CRATES_IO_TOKEN}
+        env:
+          CRATES_IO_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
