@@ -12,9 +12,9 @@ keywords = [
     "graph",
     "flow",
     "entity",
-    "entity system",
-    "entity component system",
-    "graph database"
+    "entity-system",
+    "ecs",
+    "graph-database"
 ]
 categories = [
     "desktop-automation",
