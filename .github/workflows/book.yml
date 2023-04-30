@@ -9,6 +9,7 @@ on:
       - "CODE_OF_CONDUCT.md"
       - "LICENSE.md"
       - "README.md"
+      - ".github/workflows/book.yml"
   pull_request:
     branches: [ main ]
     paths:
@@ -17,15 +18,18 @@ on:
       - "CODE_OF_CONDUCT.md"
       - "LICENSE.md"
       - "README.md"
+      - ".github/workflows/book.yml"
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  deploy:
+  book:
+    name: Book
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: VCS Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -65,3 +69,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/inexor-rgf/book
+          destination_dir: book
