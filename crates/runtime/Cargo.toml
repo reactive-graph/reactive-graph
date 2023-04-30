@@ -11,10 +11,8 @@ keywords = [
     "reactive",
     "graph",
     "flow",
-    "entity",
     "entity-system",
-    "ecs",
-    "graph-database"
+    "ecs"
 ]
 categories = [
     "desktop-automation",
