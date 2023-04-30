@@ -834,7 +834,7 @@
         <span class="kw">let </span>reader = <span class="self">self</span>.label_path_tree.<span class="number">0</span>.read().unwrap();
         reader.find(label).and_then(|result| <span class="kw">match </span><span class="self">self</span>.get(<span class="kw-2">*</span>result.<span class="number">0</span>) {
             <span class="prelude-val">Some</span>(instance) =&gt; {
-                <span class="kw">let </span>params: HashMap&lt;String, String&gt; = result.<span class="number">1</span>.into_iter().map(|(a, b)| (String::from(a), String::from(b))).collect();
+                <span class="kw">let </span>params = result.<span class="number">1</span>.params_iter().map(|param| (param.<span class="number">0</span>.to_string(), param.<span class="number">1</span>.to_string())).collect();
                 <span class="prelude-val">Some</span>((instance, params))
             }
             <span class="prelude-val">None </span>=&gt; <span class="prelude-val">None</span>,
