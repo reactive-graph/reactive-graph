@@ -11,7 +11,7 @@ pub struct GraphQLLoggingConfig {
     pub enabled: bool,
 
     /// The log format of the request logging middleware.
-    /// See: https://docs.rs/actix-web/0.6.0/actix_web/middleware/struct.Logger.html#format
+    /// See: <https://docs.rs/actix-web/0.6.0/actix_web/middleware/struct.Logger.html#format>
     pub format: Option<String>,
 }
 
