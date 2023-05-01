@@ -16,7 +16,7 @@ serde = { workspace = true, features = [ "derive" ] }
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4", "v5"] }
 
-inexor-rgf-core-frp = { version = "0.9.0", path = "../frp" }
+inexor-rgf-core-frp = { version = "0.9.1", path = "../frp" }
 
 [dev-dependencies]
 random-string = "1.0"
