@@ -1,6 +1,8 @@
-fn main() {
-    build_data::set_BUILD_DATE();
-    build_data::set_GIT_BRANCH();
-    build_data::set_GIT_COMMIT();
-    build_data::set_SOURCE_TIMESTAMP();
+use std::error::Error;
+use vergen::EmitBuilder;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    // Generate environment variables
+    EmitBuilder::builder().build_date().git_branch().git_sha(false).rustc_semver().emit()?;
+    Ok(())
 }

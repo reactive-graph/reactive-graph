@@ -67,3 +67,4 @@ jobs:
           args: publish --from-git
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          VERGEN_IDEMPOTENT: true

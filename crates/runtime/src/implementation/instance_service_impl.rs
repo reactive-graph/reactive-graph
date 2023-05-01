@@ -6,12 +6,12 @@ use crate::api::Lifecycle;
 use crate::di::*;
 use crate::model_runtime::InstanceInfo;
 use crate::plugins::PLUGIN_API_VERSION;
-use crate::plugins::RUSTC_VERSION;
 
 pub static VERSION: &str = env!("CARGO_PKG_VERSION");
-pub static BUILD_DATE: &str = env!("BUILD_DATE");
-pub static GIT_BRANCH: &str = env!("GIT_BRANCH");
-pub static GIT_COMMIT: &str = env!("GIT_COMMIT");
+pub static BUILD_DATE: &str = env!("VERGEN_BUILD_DATE");
+pub static GIT_BRANCH: &str = env!("VERGEN_GIT_BRANCH");
+pub static GIT_COMMIT: &str = env!("VERGEN_GIT_SHA");
+pub static RUSTC_VERSION: &str = env!("VERGEN_RUSTC_SEMVER");
 
 #[component]
 pub struct InstanceServiceImpl {
