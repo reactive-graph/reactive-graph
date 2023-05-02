@@ -7,12 +7,14 @@ on:
       - "crates/**/*.rs"
       - "crates/**/Cargo.toml"
       - "Cargo.toml"
+      - ".github/workflows/coverage.yml"
   pull_request:
     branches: [ main ]
     paths:
       - "crates/**/*.rs"
       - "crates/**/Cargo.toml"
       - "Cargo.toml"
+      - ".github/workflows/coverage.yml"
 
 env:
   CARGO_TERM_COLOR: always
