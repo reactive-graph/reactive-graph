@@ -150,6 +150,12 @@ impl CommandArgs {
     }
 }
 
+impl Default for CommandArgs {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl TryFrom<Value> for CommandArgs {
     type Error = CommandArgsError;
 
