@@ -44,7 +44,7 @@ pub struct PropertyTypeDefinitions(pub Vec<PropertyTypeDefinition>);
 
 impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
     fn from(property_types: PropertyTypeDefinitions) -> Self {
-        property_types.0.into_iter().map(|property_type| property_type.into()).collect()
+        property_types.0.into_iter().collect()
     }
 }
 
