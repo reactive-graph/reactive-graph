@@ -41,3 +41,9 @@ impl InexorClientConfigBuilder {
         self.0
     }
 }
+
+impl Default for InexorClientConfigBuilder {
+    fn default() -> Self {
+        Self::new()
+    }
+}
