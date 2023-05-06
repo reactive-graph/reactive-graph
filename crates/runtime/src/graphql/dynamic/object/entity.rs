@@ -237,7 +237,7 @@ pub fn get_trigger_field(entity_type: &EntityType) -> Option<Field> {
         return None;
     }
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let trigger_field = Field::new(&TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
+    let trigger_field = Field::new(TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         FieldFuture::new(async move {
             let entity_instances = ctx.parent_value.try_downcast_ref::<Vec<Arc<ReactiveEntityInstance>>>()?;
             for entity_instance in entity_instances {

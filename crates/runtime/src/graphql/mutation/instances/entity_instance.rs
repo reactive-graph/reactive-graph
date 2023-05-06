@@ -151,7 +151,7 @@ impl MutationEntityInstances {
             return Err("Entity instance not found!".into());
         };
         if entity_instance.has_property(&TRIGGER.property_name()) {
-            entity_instance.set_checked(&TRIGGER.property_name(), json!(true));
+            entity_instance.set_checked(TRIGGER.property_name(), json!(true));
             Ok(entity_instance.into())
         } else {
             Err(Error::new(format!("Unable to trigger {}", entity_instance.id)))

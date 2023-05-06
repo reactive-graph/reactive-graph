@@ -230,7 +230,7 @@ pub fn get_trigger_field(relation_type: &RelationType) -> Option<Field> {
         return None;
     }
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
-    let trigger_field = Field::new(&TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
+    let trigger_field = Field::new(TRIGGER.property_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         FieldFuture::new(async move {
             let relation_instances = ctx.parent_value.try_downcast_ref::<Vec<Arc<ReactiveRelationInstance>>>()?;
             for relation_instance in relation_instances {
