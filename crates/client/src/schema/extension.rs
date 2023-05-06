@@ -52,7 +52,7 @@ pub struct ExtensionDefinitions(pub Vec<ExtensionDefinition>);
 
 impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
     fn from(extensions: ExtensionDefinitions) -> Self {
-        extensions.0.into_iter().map(|extension| extension.into()).collect()
+        extensions.0.into_iter().collect()
     }
 }
 
