@@ -292,6 +292,7 @@ impl PluginContainer {
         }
     }
 
+    #[allow(clippy::redundant_clone)]
     pub fn load_plugin_dependencies(&mut self) -> PluginTransitionResult {
         if self.state != PluginState::Resolving(PluginResolveState::PluginCompatible)
             && self.state != PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::PluginCompatible))
