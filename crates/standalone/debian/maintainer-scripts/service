@@ -7,8 +7,8 @@ Environment="INEXOR_RGF_LOGGING_CONFIG=/etc/inexor-rgf/%i/logging.toml"
 Environment="INEXOR_RGF_INSTANCE_CONFIG=/etc/inexor-rgf/%i/instance.toml"
 Environment="INEXOR_RGF_GRAPHQL_CONFIG=/etc/inexor-rgf/%i/graphql.toml"
 Environment="INEXOR_RGF_PLUGINS_CONFIG=/etc/inexor-rgf/%i/plugins.toml"
-Environment="INEXOR_RGF_HOT_DEPLOY_LOCATION=/var/lib/inexor-rgf/%i/plugins/deploy"
-Environment="INEXOR_RGF_INSTALL_LOCATION=/var/lib/inexor-rgf/%i/plugins/installed"
+Environment="INEXOR_RGF_HOT_DEPLOY_LOCATION=/usr/share/inexor-rgf/%i/plugins/deploy"
+Environment="INEXOR_RGF_INSTALL_LOCATION=/usr/share/inexor-rgf/%i/plugins/installed"
 
 EnvironmentFile=/etc/inexor-rgf/%i/var_file
 
