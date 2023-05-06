@@ -38,7 +38,7 @@ async-graphql = { version = "5.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "5.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
-clap = { version = "4.1", features = ["derive"] }
+clap = { version = "4.1", features = ["derive", "env"] }
 config = "0.13"
 convert_case = "0.6"
 crossbeam = "0.8"
