@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["command_builder_state"],"struct":["CommandBuilder"]};
+window.SIDEBAR_ITEMS = {"mod":["command_builder_state"],"struct":["CommandBuilder"],"type":["CommandExecutor"]};
