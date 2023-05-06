@@ -54,7 +54,7 @@ impl Command {
                 }
                 for command_arg in command_args.to_vec() {
                     if command_arg.required && !args.contains_key(&command_arg.name) {
-                        return Err(CommandExecutionFailed::MissingMandatoryArgument(command_arg.name.clone()));
+                        return Err(CommandExecutionFailed::MissingMandatoryArgument(command_arg.name));
                     }
                 }
             }
