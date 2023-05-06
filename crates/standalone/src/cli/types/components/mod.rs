@@ -40,7 +40,7 @@ pub(crate) async fn components(client: &Arc<InexorRgfClient>, component_args: Co
                 // .properties(None)
                 // .extensions(None)
                 .build();
-            match client.types().components().create_component_2(variables).await {
+            match client.types().components().create_component_with_variables(variables).await {
                 Ok(Some(component)) => print_component(component),
                 Ok(None) => println!("Component not found"),
                 Err(e) => {

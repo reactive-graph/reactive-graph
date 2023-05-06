@@ -3,8 +3,8 @@ use std::sync::Arc;
 use cynic::http::ReqwestExt;
 use inexor_rgf_core_model::ComponentTypeId;
 
-use crate::client::types::components::queries::create_component;
 use crate::client::types::components::queries::create_component_mutation;
+use crate::client::types::components::queries::create_component_with_variables;
 use crate::client::types::components::queries::get_all_components_query;
 use crate::client::types::components::queries::get_component_by_type_query;
 use crate::client::types::components::queries::CreateComponentVariables;
@@ -128,7 +128,7 @@ pub mod queries {
         CreateComponent::build(vars)
     }
 
-    pub fn create_component(variables: CreateComponentVariables) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
+    pub fn create_component_with_variables(variables: CreateComponentVariables) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
         use cynic::MutationBuilder;
         CreateComponent::build(variables)
     }
@@ -204,16 +204,16 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn create_component_2(&self, variables: CreateComponentVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+    pub async fn create_component_with_variables(&self, variables: CreateComponentVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
         let component = self
             .client
             .client
             .post(self.client.url())
-            .run_graphql(create_component(variables))
+            .run_graphql(create_component_with_variables(variables))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.components.create.into());
+            .map(|data| data.types.components.create);
         Ok(component)
     }
 }
