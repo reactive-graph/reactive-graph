@@ -154,6 +154,20 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    pub fn hot_deploy_location<S: Into<OptionOption<String>>>(self, hot_deploy_location: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+        if let Some(hot_deploy_location) = hot_deploy_location.into().get() {
+            self.runtime.get_config_manager().set_hot_deploy_location(Some(hot_deploy_location))
+        }
+        self
+    }
+
+    pub fn install_location<S: Into<OptionOption<String>>>(self, install_location: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+        if let Some(install_location) = install_location.into().get() {
+            self.runtime.get_config_manager().set_install_location(Some(install_location))
+        }
+        self
+    }
+
     pub fn get(self) -> Arc<dyn Runtime> {
         self.runtime
     }

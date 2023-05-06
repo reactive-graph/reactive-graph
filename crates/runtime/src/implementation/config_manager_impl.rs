@@ -255,6 +255,16 @@ impl ConfigManager for ConfigManagerImpl {
         let mut writer = self.plugins_config.0.write().unwrap();
         writer.hot_deploy = Some(!disable_hot_deploy);
     }
+
+    fn set_hot_deploy_location(&self, hot_deploy_location: Option<String>) {
+        let mut writer = self.plugins_config.0.write().unwrap();
+        writer.hot_deploy_location = hot_deploy_location;
+    }
+
+    fn set_install_location(&self, install_location: Option<String>) {
+        let mut writer = self.plugins_config.0.write().unwrap();
+        writer.install_location = install_location;
+    }
 }
 
 #[async_trait]

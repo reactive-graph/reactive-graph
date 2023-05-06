@@ -79,6 +79,14 @@ pub struct CliArguments {
     #[arg(long, action = SetTrue, env = "INEXOR_RGF_DISABLE_HOT_DEPLOY")]
     pub(crate) disable_hot_deploy: Option<bool>,
 
+    /// The folder which is watched for hot deployment.
+    #[arg(long, env = "INEXOR_RGF_HOT_DEPLOY_LOCATION")]
+    pub(crate) hot_deploy_location: Option<String>,
+
+    /// The folder which plugins are installed permanently.
+    #[arg(long, env = "INEXOR_RGF_INSTALL_LOCATION")]
+    pub(crate) install_location: Option<String>,
+
     /// If true, the runtime does not wait before exiting.
     #[arg(long, action = SetTrue, env = "INEXOR_RGF_STOP_IMMEDIATELY")]
     pub(crate) stop_immediately: Option<bool>,

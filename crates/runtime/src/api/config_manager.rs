@@ -86,4 +86,10 @@ pub trait ConfigManager: Send + Sync + Lifecycle {
 
     /// Enables / disables hot deploy.
     fn set_disable_hot_deploy(&self, disable_hot_deploy: bool);
+
+    /// Sets the plugins hot deploy location.
+    fn set_hot_deploy_location(&self, hot_deploy_location: Option<String>);
+
+    /// Sets the plugins install location.
+    fn set_install_location(&self, install_location: Option<String>);
 }
