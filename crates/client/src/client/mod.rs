@@ -33,10 +33,10 @@ impl Display for InexorRgfClientExecutionError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             InexorRgfClientExecutionError::FailedToSendRequest(e) => {
-                writeln!(f, "{}", e.to_string())
+                writeln!(f, "{}", e)
             }
             InexorRgfClientExecutionError::FailedToParseResponse(e) => {
-                writeln!(f, "{}", e.to_string())
+                writeln!(f, "{}", e)
             }
         }
     }
