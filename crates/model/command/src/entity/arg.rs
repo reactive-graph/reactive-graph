@@ -95,7 +95,7 @@ impl TryFrom<Value> for CommandArg {
     type Error = InvalidCommandArgDefinition;
 
     fn try_from(value: Value) -> Result<Self, Self::Error> {
-        let arg: CommandArg = serde_json::from_value(value).map_err(|e| InvalidCommandArgDefinition(e))?;
+        let arg: CommandArg = serde_json::from_value(value).map_err(InvalidCommandArgDefinition)?;
         Ok(arg)
     }
 }
