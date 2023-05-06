@@ -142,7 +142,7 @@ impl CommandArgs {
     }
 
     pub fn as_args(&self) -> Vec<Arg> {
-        self.0.iter().map(|arg| arg.as_arg()).into_iter().collect()
+        self.0.iter().map(|arg| arg.as_arg()).collect()
     }
 
     pub fn to_vec(&self) -> Vec<CommandArg> {
