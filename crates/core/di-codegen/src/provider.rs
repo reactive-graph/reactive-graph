@@ -17,6 +17,7 @@ use syn::Path;
 use syn::ReturnType;
 use syn::Type;
 
+#[allow(clippy::redundant_clone)]
 pub(crate) fn generate_component_provider_impl_struct(component: ItemStruct) -> TokenStream {
     let comp_name = component.ident;
     let comp_generics = component.generics.clone();
