@@ -18,6 +18,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
 
 jobs:
   build:
@@ -33,6 +35,8 @@ jobs:
       with:
         toolchain: nightly
         override: true
+    - name: Run sccache-cache
+      uses: mozilla-actions/sccache-action@v0.0.3
     - name: Build (Release Mode)
       uses: actions-rs/cargo@v1
       with:
