@@ -126,7 +126,7 @@ impl CommandArgs {
 
     pub fn contains<S: Into<String>>(&self, name: S) -> bool {
         let name = name.into();
-        self.0.iter().find(|arg| arg.name == name).is_some()
+        self.0.iter().any(|arg| arg.name == name)
     }
 
     pub fn len(&self) -> usize {
