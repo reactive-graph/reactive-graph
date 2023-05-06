@@ -13,19 +13,19 @@ pub struct CliArguments {
     pub(crate) commands: Option<Commands>,
 
     /// The logging config location.
-    #[arg(long)]
+    #[arg(long, env = "INEXOR_RGF_LOGGING_CONFIG")]
     pub(crate) logging_config: Option<String>,
 
     /// The instance config location.
-    #[arg(long)]
+    #[arg(long, env = "INEXOR_RGF_INSTANCE_CONFIG")]
     pub(crate) instance_config: Option<String>,
 
     /// The GraphQL config location.
-    #[arg(long)]
+    #[arg(long, env = "INEXOR_RGF_GRAPHQL_CONFIG")]
     pub(crate) graphql_config: Option<String>,
 
     /// The plugins config location.
-    #[arg(long)]
+    #[arg(long, env = "INEXOR_RGF_PLUGINS_CONFIG")]
     pub(crate) plugins_config: Option<String>,
 
     // Instance
