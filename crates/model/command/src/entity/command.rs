@@ -45,7 +45,7 @@ impl Command {
         // Check that all given arguments are valid arguments and the properties exists
         match self.args() {
             Ok(command_args) => {
-                for (property_name, _) in &args {
+                for property_name in args.keys() {
                     if !command_args.contains(property_name.clone()) {
                         return Err(CommandExecutionFailed::InvalidArgument(property_name.clone()));
                     } else if !self.0.has_property(property_name) {
