@@ -53,6 +53,12 @@ pub mod command_builder_state {
     pub enum Finish {}
 }
 
+impl Default for CommandBuilder<command_builder_state::EntityType> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl CommandBuilder<command_builder_state::EntityType> {
     pub fn new() -> CommandBuilder<command_builder_state::EntityType> {
         Self {
