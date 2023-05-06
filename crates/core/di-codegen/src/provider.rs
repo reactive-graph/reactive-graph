@@ -82,13 +82,7 @@ pub(crate) fn generate_component_provider_impl_fn(provides: ProvidesAttr, factor
 
     Ok(generate_component_provider_impl(
         comp_name,
-        factory
-            .sig
-            .generics
-            .params
-            .iter()
-            .filter(|p| if let GenericParam::Lifetime(_) = p { true } else { false })
-            .collect(),
+        factory.sig.generics.params.iter().filter(|p| matches!(p, GenericParam::Lifetime(_))).collect(),
         provides.profiles,
         create_component_code,
         inject_deferred_code,
