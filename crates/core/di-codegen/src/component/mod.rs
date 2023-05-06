@@ -142,6 +142,7 @@ pub(crate) fn generate_dependencies_create_code(args: Vec<TypeToInject>) -> Toke
     }
 }
 
+#[allow(clippy::redundant_clone)]
 fn generate_dependency_create_code(to_inject: TypeToInject, pos: usize) -> TokenStream2 {
     let dep_var_name = quote::format_ident!("dep_{}", pos);
     let type_path = to_inject.type_path.clone();
