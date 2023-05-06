@@ -90,14 +90,6 @@ impl From<Extension> for crate::model::Extension {
     }
 }
 
-// impl fmt::Display for Extension {
-//     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-//         let t = Table::new(self.clone());
-//         let t = self.table();
-//         writeln!(f, "{}", self.clone().table().to_string())
-//     }
-// }
-
 #[derive(Clone, Debug)]
 pub struct Extensions(pub Vec<Extension>);
 
@@ -112,7 +104,3 @@ impl fmt::Display for Extensions {
         writeln!(f, "{}", Table::new(self.0.iter().cloned()).to_string())
     }
 }
-
-// self.0
-//     .iter()
-//     .fold(Ok(()), |result, extension| result.and_then(|_| writeln!(f, "{}", extension)))
