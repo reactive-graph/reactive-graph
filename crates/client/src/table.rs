@@ -6,6 +6,7 @@ use tabled::settings::style::VerticalLine;
 use tabled::settings::style::VerticalLineIter;
 use tabled::settings::Style;
 
+#[allow(clippy::type_complexity)]
 pub(crate) fn modern_inline() -> Style<
     (),
     (),
