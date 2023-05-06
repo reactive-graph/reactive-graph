@@ -32,7 +32,7 @@ impl CommandManager for CommandManagerImpl {
             .iter()
             .find(|e| e.as_string(COMMAND_NAME).map_or(false, |command_name| command_name == name))
         {
-            Some(e) => Command::try_from(e.clone()).map_err(|e| NoSuchCommand::NotACommand(e)),
+            Some(e) => Command::try_from(e.clone()).map_err(NoSuchCommand::NotACommand),
             None => Err(NoSuchCommand::CommandNotFound(name)),
         }
     }
@@ -53,7 +53,7 @@ impl CommandManager for CommandManagerImpl {
         let _ = self
             .entity_instance_manager
             .register_reactive_instance(command.get_instance())
-            .map_err(|e| CommandRegistrationError::ReactiveEntityInstanceRegistrationError(e));
+            .map_err(CommandRegistrationError::ReactiveEntityInstanceRegistrationError);
         Ok(())
     }
 
@@ -61,11 +61,11 @@ impl CommandManager for CommandManagerImpl {
         let _ = self
             .entity_type_manager
             .register(entity_type)
-            .map_err(|e| CommandRegistrationError::EntityTypeRegistrationError(e))?;
+            .map_err(CommandRegistrationError::EntityTypeRegistrationError)?;
         let _ = self
             .entity_instance_manager
             .register_reactive_instance(command.get_instance())
-            .map_err(|e| CommandRegistrationError::ReactiveEntityInstanceRegistrationError(e));
+            .map_err(CommandRegistrationError::ReactiveEntityInstanceRegistrationError);
         Ok(())
     }
 }
