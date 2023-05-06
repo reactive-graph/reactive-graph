@@ -98,7 +98,7 @@ pub fn parse_args() -> Config {
             if value.is_none() || value.unwrap().starts_with("--") {
                 builder = builder.set_override(arg_name, true).expect("Failed to parse arg");
             } else {
-                let arg = args.next().unwrap();
+                let arg_name = args.next().unwrap();
                 builder = builder.set_override(arg_name, args.next().unwrap()).expect("Failed to parse arg");
             }
         }
