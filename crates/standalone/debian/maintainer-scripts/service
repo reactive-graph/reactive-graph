@@ -22,6 +22,7 @@ ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/plugins.toml /etc/inexor-rgf/
 ExecStartPre=/bin/mkdir -m 710 -p /var/lib/inexor-rgf/%i/plugins/deploy
 ExecStartPre=/bin/mkdir -m 710 -p /var/lib/inexor-rgf/%i/plugins/installed
 ExecStartPre=/bin/mkdir -m 710 -p /var/lib/inexor-rgf/%i/repositories/flows
+ExecStartPre=/bin/mkdir -m 710 -p /var/log/inexor-rgf/%i
 
 [Install]
 WantedBy=multi-user.target
