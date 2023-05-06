@@ -31,11 +31,13 @@ use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::COMPONENT_ACTION;
 use crate::model_runtime::COMPONENT_LABELED;
 
+pub type CommandExecutor = dyn FnMut(&Arc<ReactiveEntityInstance>) -> Value + 'static + Send;
+
 pub struct CommandBuilder<S> {
     ty: Option<EntityTypeId>,
     builder: Option<ReactiveEntityInstanceBuilder>,
     arguments: CommandArgs,
-    subscriber: Option<Box<dyn FnMut(&Arc<ReactiveEntityInstance>) -> Value + 'static + Send>>,
+    subscriber: Option<Box<CommandExecutor>>,
     handle_id: Option<u128>,
     state: PhantomData<S>,
 }
