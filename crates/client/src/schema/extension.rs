@@ -101,6 +101,6 @@ impl From<Extensions> for Vec<crate::model::Extension> {
 
 impl fmt::Display for Extensions {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        writeln!(f, "{}", Table::new(self.0.iter().cloned()).to_string())
+        writeln!(f, "{}", Table::new(self.0.iter().cloned()))
     }
 }
