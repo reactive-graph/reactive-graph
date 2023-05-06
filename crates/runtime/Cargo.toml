@@ -1,6 +1,6 @@
 [package]
 name = "inexor-rgf-rt"
-description = "Inexor - Reactive Graph Flow - Application"
+description = "Inexor - Reactive Graph Flow - Runtime"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

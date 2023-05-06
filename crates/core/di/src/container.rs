@@ -93,13 +93,13 @@ pub fn parse_args() -> Config {
 
     let mut args = args().peekable();
     while let Some(arg) = args.next() {
-        if arg.starts_with("--") {
+        if let Some(arg_name) = arg.strip_prefix("--") {
             let value = args.peek();
             if value.is_none() || value.unwrap().starts_with("--") {
-                builder = builder.set_override(&arg[2..], true).expect("Failed to parse arg");
+                builder = builder.set_override(arg_name, true).expect("Failed to parse arg");
             } else {
                 let arg = args.next().unwrap();
-                builder = builder.set_override(&arg[2..], args.next().unwrap()).expect("Failed to parse arg");
+                builder = builder.set_override(arg_name, args.next().unwrap()).expect("Failed to parse arg");
             }
         }
     }
