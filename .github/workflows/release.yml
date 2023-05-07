@@ -90,7 +90,10 @@ jobs:
         run: |
           cd ./crates/standalone
           cargo deb -p inexor-rgf-rt-standalone
-      - uses: actions/upload-artifact@v3
+      - name: Upload debian package to release
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: inexor-rgf.deb
-          path: target/debian/inexor-rgf_*_*.deb
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/debian/inexor-rgf_*_*.deb
+          file_glob: true
+          tag: ${{ github.ref }}
