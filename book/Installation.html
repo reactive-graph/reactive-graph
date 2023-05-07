@@ -149,30 +149,55 @@
                         <h1 id="2-installation"><a class="header" href="#2-installation">2. Installation</a></h1>
 <p>For now please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
+<h3 id="install-debian-package"><a class="header" href="#install-debian-package">Install Debian Package</a></h3>
+<ol>
+<li>Download the debian package from <a href="https://github.com/inexorgame/inexor-rgf-application/releases">GitHub</a></li>
+<li>Install the package via <code>dpkg</code></li>
+<li>Reload systemctl units</li>
+<li>Start the <code>default</code> instance</li>
+</ol>
+<pre><code class="language-shell">mkdir -p /tmp/inexor-rgf
+cd /tmp/inexor-rgf
+wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v0.9.2/inexor-rgf_0.9.2_amd64.deb
+sudo dpkg -i inexor-rgf_0.9.1_amd64.deb
+</code></pre>
+<h4 id="start-the-default-instance-system-wide"><a class="header" href="#start-the-default-instance-system-wide">Start the default instance (system wide)</a></h4>
+<pre><code class="language-shell">sudo systemctl daemon-reload
+sudo systemctl start inexor-rgf@default
+</code></pre>
+<h4 id="start-the-default-instance-system-wide-1"><a class="header" href="#start-the-default-instance-system-wide-1">Start the default instance (system wide)</a></h4>
+<pre><code class="language-shell">sudo systemctl daemon-reload
+sudo systemctl start inexor-rgf@default
+</code></pre>
+<h4 id="configure-an-instance"><a class="header" href="#configure-an-instance">Configure an instance</a></h4>
+<pre><code class="language-shell">nano /etc/inexor-rgf/instance-name/instance.toml
+nano /etc/inexor-rgf/instance-name/graphql.toml
+nano /etc/inexor-rgf/instance-name/logging.toml
+nano /etc/inexor-rgf/instance-name/plugins.toml
+sudo systemctl restart inexor-rgf@instance-name
+</code></pre>
+<h4 id="create-a-new-instance-system-wide"><a class="header" href="#create-a-new-instance-system-wide">Create a new instance (system wide)</a></h4>
+<p>Create a new instance by using a new instance name:</p>
+<pre><code class="language-shell">sudo systemctl start inexor-rgf@instance-name
+</code></pre>
+<p>Adjust the GraphQL configuration (port, hostname) and the instance configuration (name). Then restart</p>
+<pre><code class="language-shell">sudo systemctl restart inexor-rgf@instance-name
+</code></pre>
+<h2 id="raspberry-pi"><a class="header" href="#raspberry-pi">Raspberry Pi</a></h2>
 <div id="admonition-todo" class="admonition warning">
 <div class="admonition-title">
 <p>TODO</p>
 <p><a class="admonition-anchor-link" href="#admonition-todo"></a></p>
 </div>
 <div>
-<p>Describe how to install Inexor Reactive Graph Flow on linux</p>
-</div>
-</div>
-<h2 id="raspberry-pi"><a class="header" href="#raspberry-pi">Raspberry Pi</a></h2>
-<div id="admonition-todo-1" class="admonition warning">
-<div class="admonition-title">
-<p>TODO</p>
-<p><a class="admonition-anchor-link" href="#admonition-todo-1"></a></p>
-</div>
-<div>
 <p>Describe how to install Inexor Reactive Graph Flow on a raspberry pi</p>
 </div>
 </div>
 <h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
-<div id="admonition-todo-2" class="admonition warning">
+<div id="admonition-todo-1" class="admonition warning">
 <div class="admonition-title">
 <p>TODO</p>
-<p><a class="admonition-anchor-link" href="#admonition-todo-2"></a></p>
+<p><a class="admonition-anchor-link" href="#admonition-todo-1"></a></p>
 </div>
 <div>
 <p>Describe how to install Inexor Reactive Graph Flow on windows</p>
