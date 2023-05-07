@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Bundle Deb" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="deb" />
+    <option name="command" value="deb -p inexor-rgf-rt-standalone" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$/crates/standalone" />
     <option name="emulateTerminal" value="false" />
     <option name="channel" value="NIGHTLY" />
