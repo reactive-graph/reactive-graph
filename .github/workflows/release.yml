@@ -58,8 +58,8 @@ jobs:
     - name: Install packages
       uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        packages: pkg-config, libssl-dev
-        version: 1.0
+        packages: pkg-config, openssl, libssl-dev
+        version: 1.1
       if: matrix.os == 'ubuntu-latest'
     - name: Upload Rust Binary
       uses: taiki-e/upload-rust-binary-action@v1
