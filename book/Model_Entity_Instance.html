@@ -162,7 +162,14 @@ also on the server and on clients connected to it.</p>
 <p><a class="admonition-anchor-link" href="#admonition-error-rendering-admonishment"></a></p>
 </div>
 <div>
-<p>Failed with: TOML parsing error: expected an equals, found an identifier at line 1 column 6</p>
+<p>Failed with:</p>
+<pre><code>TOML parsing error: TOML parse error at line 1, column 6
+  |
+1 | info UUIDs
+  |      ^
+expected `.`, `=`
+
+</code></pre>
 <p>Original markdown input:</p>
 <pre><code>```admonish info UUIDs
 * UUIDs are unique and unique across distributed systems
