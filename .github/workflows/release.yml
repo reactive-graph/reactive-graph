@@ -60,6 +60,7 @@ jobs:
       with:
         packages: libssl-dev
         version: 1.0
+      if: matrix.os == 'ubuntu-latest'
     - name: Upload Rust Binary
       uses: taiki-e/upload-rust-binary-action@v1
       with:
