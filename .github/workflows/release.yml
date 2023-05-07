@@ -101,6 +101,14 @@ jobs:
           VERGEN_IDEMPOTENT: true
   debian-package:
     name: Publish debian package
+    matrix:
+      include:
+        - target: x86_64-unknown-linux-gnu
+          os: ubuntu-latest
+        - target: aarch64-unknown-linux-gnu
+          os: ubuntu-latest
+        - target: armv7-unknown-linux-gnueabihf
+          os: ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
@@ -120,13 +128,13 @@ jobs:
       - name: Create Debian Package
         run: |
           cd ./crates/standalone
-          cargo deb -p inexor-rgf-rt-standalone
+          cargo deb -p inexor-rgf-rt-standalone --target=${{ matrix.target }}
         env:
           VERGEN_IDEMPOTENT: true
       - name: Upload debian package to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/debian/inexor-rgf_*_*.deb
+          file: target/${{ matrix.target }}/debian/inexor-rgf_*_*.deb
           file_glob: true
           tag: ${{ github.ref }}
