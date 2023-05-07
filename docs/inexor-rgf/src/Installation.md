@@ -14,7 +14,7 @@ For now please follow the [Build Instructions](./Development_Build.md).
 ```shell
 mkdir -p /tmp/inexor-rgf
 cd /tmp/inexor-rgf
-wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v0.9.2/inexor-rgf_0.9.2_amd64.deb
+wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v0.9.2/inexor-rgf_0.9.1_amd64.deb
 sudo dpkg -i inexor-rgf_0.9.1_amd64.deb
 ```
 
