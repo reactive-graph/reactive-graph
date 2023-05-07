@@ -87,11 +87,9 @@ jobs:
           version: latest
           use-tool-cache: true
       - name: Create Debian Package
-        uses: actions-rs/cargo@v1
-        with:
-          cwd: ./crates/standalone
-          command: deb
-          args: -p inexor-rgf-rt-standalone
+        run: |
+          cd ./crates/standalone
+          cargo deb -p inexor-rgf-rt-standalone
       - uses: actions/upload-artifact@v3
         with:
           name: inexor-rgf.deb
