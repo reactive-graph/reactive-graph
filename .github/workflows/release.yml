@@ -37,7 +37,7 @@ jobs:
           # Universal macOS binary is supported as universal-apple-darwin.
           - target: universal-apple-darwin
             os: macos-latest
-          - target: armv7-unknown-linux-gnuabihf
+          - target: armv7-unknown-linux-gnueabihf
             os: ubuntu-latest
           - target: x86_64-pc-windows-msvc
             os: windows-latest
