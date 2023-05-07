@@ -42,6 +42,8 @@
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
 <a href="#44" id="44">44</a>
+<a href="#45" id="45">45</a>
+<a href="#46" id="46">46</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::time::Duration;
 
 <span class="kw">use </span>inexor_rgf_rt::runtime::RuntimeBuilder;
@@ -68,6 +70,8 @@
         .disable_all_plugins(cli_args.disable_all_plugins)
         .disabled_plugins(cli_args.disabled_plugins)
         .disable_hot_deploy(cli_args.disable_hot_deploy)
+        .hot_deploy_location(cli_args.hot_deploy_location)
+        .install_location(cli_args.install_location)
         .init()
         .<span class="kw">await
         </span>.post_init()

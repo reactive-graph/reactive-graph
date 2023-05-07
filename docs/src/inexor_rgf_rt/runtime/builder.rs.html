@@ -363,6 +363,20 @@
 <a href="#363" id="363">363</a>
 <a href="#364" id="364">364</a>
 <a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::future::Future;
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>std::path::PathBuf;
@@ -515,6 +529,20 @@
     <span class="kw">pub fn </span>disable_hot_deploy&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, disabled: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(disabled) = disabled.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_disable_hot_deploy(disabled);
+        }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>hot_deploy_location&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, hot_deploy_location: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(hot_deploy_location) = hot_deploy_location.into().get() {
+            <span class="self">self</span>.runtime.get_config_manager().set_hot_deploy_location(<span class="prelude-val">Some</span>(hot_deploy_location))
+        }
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>install_location&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, install_location: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(install_location) = install_location.into().get() {
+            <span class="self">self</span>.runtime.get_config_manager().set_install_location(<span class="prelude-val">Some</span>(install_location))
         }
         <span class="self">self
     </span>}

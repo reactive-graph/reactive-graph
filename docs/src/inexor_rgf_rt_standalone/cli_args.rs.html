@@ -94,6 +94,14 @@
 <a href="#94" id="94">94</a>
 <a href="#95" id="95">95</a>
 <a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::ArgAction::SetTrue;
 <span class="kw">use </span>clap::Parser;
 <span class="kw">use </span>clap::Subcommand;
@@ -109,62 +117,62 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) commands: <span class="prelude-ty">Option</span>&lt;Commands&gt;,
 
     <span class="doccomment">/// The logging config location.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_LOGGING_CONFIG&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) logging_config: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="doccomment">/// The instance config location.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_INSTANCE_CONFIG&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) instance_config: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="doccomment">/// The GraphQL config location.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_GRAPHQL_CONFIG&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) graphql_config: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="doccomment">/// The plugins config location.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_PLUGINS_CONFIG&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) plugins_config: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="comment">// Instance
     </span><span class="doccomment">/// The name of the instance.
-    </span><span class="attr">#[arg(short = <span class="string">&#39;n&#39;</span>, long)]
+    </span><span class="attr">#[arg(short = <span class="string">&#39;n&#39;</span>, long, env = <span class="string">&quot;INEXOR_RGF_INSTANCE_NAME&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) instance_name: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="doccomment">/// The description of the instance.
-    </span><span class="attr">#[arg(short = <span class="string">&#39;d&#39;</span>, long)]
+    </span><span class="attr">#[arg(short = <span class="string">&#39;d&#39;</span>, long, env = <span class="string">&quot;INEXOR_RGF_INSTANCE_DESCRIPTION&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) instance_description: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="comment">// GraphQL Server
     </span><span class="doccomment">/// The hostname to bind the GraphQL HTTP server.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_HOSTNAME&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) hostname: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="doccomment">/// The port to bind the GraphQL HTTP server.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_PORT&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) port: <span class="prelude-ty">Option</span>&lt;u16&gt;,
 
     <span class="doccomment">/// If true, HTTPS is enabled.
-    </span><span class="attr">#[arg(long, action = SetTrue)]
+    </span><span class="attr">#[arg(long, action = SetTrue, env = <span class="string">&quot;INEXOR_RGF_SECURE&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) secure: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 
     <span class="doccomment">/// Timeout for graceful workers shutdown in seconds.
     /// After receiving a stop signal, workers have this much time to finish serving requests.
     /// Workers still alive after the timeout are force dropped.
     /// By default shutdown timeout sets to 30 seconds.
-    </span><span class="attr">#[arg(long)]
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_INSTANCE_SHUTDOWN_TIMEOUT&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) shutdown_timeout: <span class="prelude-ty">Option</span>&lt;u64&gt;,
 
     <span class="doccomment">/// The number of workers to start.
     /// The default worker count is the number of physical CPU cores available.
-    </span><span class="attr">#[arg(short = <span class="string">&#39;w&#39;</span>, long)]
+    </span><span class="attr">#[arg(short = <span class="string">&#39;w&#39;</span>, long, env = <span class="string">&quot;INEXOR_RGF_WORKERS&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) workers: <span class="prelude-ty">Option</span>&lt;usize&gt;,
 
     <span class="doccomment">/// The default context path which redirects the root context to a web resource provider.
-    </span><span class="attr">#[arg(short = <span class="string">&#39;c&#39;</span>, long)]
+    </span><span class="attr">#[arg(short = <span class="string">&#39;c&#39;</span>, long, env = <span class="string">&quot;INEXOR_RGF_DEFAULT_CONTEXT_PATH&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) default_context_path: <span class="prelude-ty">Option</span>&lt;String&gt;,
 
     <span class="comment">// Plugins
     </span><span class="doccomment">/// If true, all plugins will be disabled.
-    </span><span class="attr">#[arg(short = <span class="string">&#39;x&#39;</span>, long, action = SetTrue)]
+    </span><span class="attr">#[arg(short = <span class="string">&#39;x&#39;</span>, long, action = SetTrue, env = <span class="string">&quot;INEXOR_RGF_DISABLE_ALL_PLUGINS&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) disable_all_plugins: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 
     <span class="doccomment">/// The list of plugins to disable.
@@ -172,15 +180,23 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) disabled_plugins: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
 
     <span class="doccomment">/// If true, hot deployment will be disabled.
-    </span><span class="attr">#[arg(long, action = SetTrue)]
+    </span><span class="attr">#[arg(long, action = SetTrue, env = <span class="string">&quot;INEXOR_RGF_DISABLE_HOT_DEPLOY&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) disable_hot_deploy: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 
+    <span class="doccomment">/// The folder which is watched for hot deployment.
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_HOT_DEPLOY_LOCATION&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) hot_deploy_location: <span class="prelude-ty">Option</span>&lt;String&gt;,
+
+    <span class="doccomment">/// The folder which plugins are installed permanently.
+    </span><span class="attr">#[arg(long, env = <span class="string">&quot;INEXOR_RGF_INSTALL_LOCATION&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) install_location: <span class="prelude-ty">Option</span>&lt;String&gt;,
+
     <span class="doccomment">/// If true, the runtime does not wait before exiting.
-    </span><span class="attr">#[arg(long, action = SetTrue)]
+    </span><span class="attr">#[arg(long, action = SetTrue, env = <span class="string">&quot;INEXOR_RGF_STOP_IMMEDIATELY&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) stop_immediately: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 
     <span class="doccomment">/// If true, logging is disabled completely.
-    </span><span class="attr">#[arg(short = <span class="string">&#39;q&#39;</span>, long, action = SetTrue)]
+    </span><span class="attr">#[arg(short = <span class="string">&#39;q&#39;</span>, long, action = SetTrue, env = <span class="string">&quot;INEXOR_RGF_QUIET&quot;</span>)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) quiet: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 

@@ -87,6 +87,12 @@
 <a href="#87" id="87">87</a>
 <a href="#88" id="88">88</a>
 <a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::path::PathBuf;
 
 <span class="kw">use </span><span class="kw">crate</span>::api::Lifecycle;
@@ -175,5 +181,11 @@
 
     <span class="doccomment">/// Enables / disables hot deploy.
     </span><span class="kw">fn </span>set_disable_hot_deploy(<span class="kw-2">&amp;</span><span class="self">self</span>, disable_hot_deploy: bool);
+
+    <span class="doccomment">/// Sets the plugins hot deploy location.
+    </span><span class="kw">fn </span>set_hot_deploy_location(<span class="kw-2">&amp;</span><span class="self">self</span>, hot_deploy_location: <span class="prelude-ty">Option</span>&lt;String&gt;);
+
+    <span class="doccomment">/// Sets the plugins install location.
+    </span><span class="kw">fn </span>set_install_location(<span class="kw-2">&amp;</span><span class="self">self</span>, install_location: <span class="prelude-ty">Option</span>&lt;String&gt;);
 }
 </code></pre></div></section></main></body></html>
