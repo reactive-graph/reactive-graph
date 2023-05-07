@@ -14,7 +14,7 @@ EnvironmentFile=/etc/inexor-rgf/%i/var_file
 
 ExecStart=/usr/bin/inexor-rgf
 
-ExecStartPre=/bin/mkdir -m 710 -p /etc/inexor-rgf/instances/%i
+ExecStartPre=/bin/mkdir -m 710 -p /etc/inexor-rgf/%i
 ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/graphql.toml /etc/inexor-rgf/%i/graphql.toml
 ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/instance.toml /etc/inexor-rgf/%i/instance.toml
 ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/logging.toml /etc/inexor-rgf/%i/logging.toml
