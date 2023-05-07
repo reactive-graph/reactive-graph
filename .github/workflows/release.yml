@@ -101,14 +101,15 @@ jobs:
           VERGEN_IDEMPOTENT: true
   debian-package:
     name: Publish debian package
-    matrix:
-      include:
-        - target: x86_64-unknown-linux-gnu
-          os: ubuntu-latest
-        - target: aarch64-unknown-linux-gnu
-          os: ubuntu-latest
-        - target: armv7-unknown-linux-gnueabihf
-          os: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: aarch64-unknown-linux-gnu
+            os: ubuntu-latest
+          - target: armv7-unknown-linux-gnueabihf
+            os: ubuntu-latest
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
