@@ -51,6 +51,7 @@ jobs:
       uses: taiki-e/upload-rust-binary-action@v1
       with:
         bin: inexor-rgf-rt-standalone
+        target: ${{ matrix.target }}
         include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
         tar: unix
         zip: windows
