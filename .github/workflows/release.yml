@@ -54,6 +54,12 @@ jobs:
     steps:
     - name: VCS Checkout
       uses: actions/checkout@v3
+    # Required by arm targets
+    - name: Install packages
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: libssl-dev
+        version: 1.0
     - name: Upload Rust Binary
       uses: taiki-e/upload-rust-binary-action@v1
       with:
