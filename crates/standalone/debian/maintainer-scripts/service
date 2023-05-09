@@ -19,8 +19,8 @@ ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/graphql.toml /etc/inexor-rgf/
 ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/instance.toml /etc/inexor-rgf/%i/instance.toml
 ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/logging.toml /etc/inexor-rgf/%i/logging.toml
 ExecStartPre=/bin/cp -a -n /etc/inexor-rgf/default/plugins.toml /etc/inexor-rgf/%i/plugins.toml
-ExecStartPre=/bin/mkdir -m 710 -p /var/lib/inexor-rgf/%i/plugins/deploy
-ExecStartPre=/bin/mkdir -m 710 -p /var/lib/inexor-rgf/%i/plugins/installed
+ExecStartPre=/bin/mkdir -m 710 -p /usr/share/inexor-rgf/%i/plugins/deploy
+ExecStartPre=/bin/mkdir -m 710 -p /usr/share/inexor-rgf/%i/plugins/installed
 ExecStartPre=/bin/mkdir -m 710 -p /var/lib/inexor-rgf/%i/repositories/flows
 ExecStartPre=/bin/mkdir -m 710 -p /var/log/inexor-rgf/%i
 
