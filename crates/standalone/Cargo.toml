@@ -23,8 +23,8 @@ assets = [
   ["debian/etc/inexor-rgf/instance.toml", "etc/inexor-rgf/default/instance.toml", "644"],
   ["debian/etc/inexor-rgf/logging.toml", "etc/inexor-rgf/default/logging.toml", "644"],
   ["debian/etc/inexor-rgf/plugins.toml", "etc/inexor-rgf/default/plugins.toml", "644"],
-  ["debian/usr/share/inexor-rgf/plugins/deploy/.gitkeep", "usr/share/inexor-rgf/plugins/deploy/.gitkeep", "644"],
-  ["debian/usr/share/inexor-rgf/plugins/installed/.gitkeep", "usr/share/inexor-rgf/plugins/installed/.gitkeep", "644"],
+  ["debian/usr/share/inexor-rgf/plugins/deploy/.gitkeep", "usr/share/inexor-rgf/default/plugins/deploy/.gitkeep", "644"],
+  ["debian/usr/share/inexor-rgf/plugins/installed/.gitkeep", "usr/share/inexor-rgf/default/plugins/installed/.gitkeep", "644"],
   ["debian/var/lib/inexor-rgf/repositories/flows/.gitkeep", "var/lib/inexor-rgf/default/repositories/flows/.gitkeep", "644"],
 ]
 
