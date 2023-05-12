@@ -149,7 +149,18 @@
                         <h1 id="2-installation"><a class="header" href="#2-installation">2. Installation</a></h1>
 <p>For now please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
-<h3 id="install-debian-package"><a class="header" href="#install-debian-package">Install Debian Package</a></h3>
+<h3 id="ubuntu--debian"><a class="header" href="#ubuntu--debian">Ubuntu / Debian</a></h3>
+<pre><code class="language-shell">echo &quot;deb https://apt.rgf.app/ focal main&quot; | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
+gpg --recv-keys --keyserver keyserver.ubuntu.com 1F7F762FFE6BF816DB4C41D218D6C25399307BA5
+gpg --recv-keys --keyserver keyserver.ubuntu.com 18D6C25399307BA5
+gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.rgf.app.gpg
+gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/inexor-rgf.gpg
+sudo apt update
+sudo apt install inexor-rgf &quot;libinexor-rgf-plugin-*&quot;
+sudo systemctl daemon-reload
+sudo systemctl start inexor-rgf@default
+</code></pre>
+<h3 id="manually-install-debian-package"><a class="header" href="#manually-install-debian-package">Manually Install Debian Package</a></h3>
 <ol>
 <li>Download the debian package from <a href="https://github.com/inexorgame/inexor-rgf-application/releases">GitHub</a></li>
 <li>Install the package via <code>dpkg</code></li>
