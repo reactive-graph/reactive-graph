@@ -4,7 +4,21 @@ For now please follow the [Build Instructions](./Development_Build.md).
 
 ## Linux
 
-### Install Debian Package
+### Ubuntu / Debian
+
+```shell
+echo "deb https://apt.rgf.app/ focal main" | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
+gpg --recv-keys --keyserver keyserver.ubuntu.com 1F7F762FFE6BF816DB4C41D218D6C25399307BA5
+gpg --recv-keys --keyserver keyserver.ubuntu.com 18D6C25399307BA5
+gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.rgf.app.gpg
+gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/inexor-rgf.gpg
+sudo apt update
+sudo apt install inexor-rgf "libinexor-rgf-plugin-*"
+sudo systemctl daemon-reload
+sudo systemctl start inexor-rgf@default
+```
+
+### Manually Install Debian Package
 
 1. Download the debian package from [GitHub](https://github.com/inexorgame/inexor-rgf-application/releases)
 2. Install the package via `dpkg`
