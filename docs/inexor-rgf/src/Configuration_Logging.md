@@ -13,11 +13,15 @@ Writes to stdout.
 kind = "console"
 
 [appenders.stdout.encoder]
-pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r"
+pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 ```
 
 ```admonish tip "Documentation of the date format library"
 [Date Formatting Syntax](https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html)
+```
+
+```admonish tip "systemd"
+On linux the systemd unit captures the stdout. Do not use any special characters or colors.
 ```
 
 ### File

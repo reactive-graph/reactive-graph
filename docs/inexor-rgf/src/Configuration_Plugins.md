@@ -2,55 +2,27 @@
 
 Edit `config/plugins.toml`
 
-```admonish bug "Order of initialization"
-The plugins are initialized in the order of definition!
-```
+### Disable the plugin system
 
-```admonish tip "Deactive plugins"
-You can activate or deactivate plugins with the setting `active`. Remember that some plugins depend on
-other plugins.
-```
-
-```admonish tip "Path"
-The path can be either relative to the working directory or absolute.
-```
-
-## Linux
+You can disable / enable the plugin system entirely:
 
 ```toml
-[[plugin]]
-name = "inexor-rgf-plugin-base"
-active = true
-path = "../inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so"
-
-[[plugin]]
-name = "inexor-rgf-plugin-mqtt"
-active = true
-path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+disabled = false
 ```
 
-```admonish tip "Please note"
-* The filename of the linked library is prefixed with `lib`
-* On linux the file extension is `.so`
-* The path separators are forward slashes `/`
-```
+### Disable specific plugins
 
-## Windows
+You can disable specific plugins
 
 ```toml
-[[plugin]]
-name = "inexor-rgf-plugin-base"
-active = true
-path = "..\\inexor-rgf-plugin-base\\target\\debug\\inexor_rgf_plugin_base.dll"
-
-[[plugin]]
-name = "inexor-rgf-plugin-mqtt"
-active = true
-path = "..\\inexor-rgf-plugin-mqtt\\target/debug\\inexor_rgf_plugin_mqtt.dll"
+disabled_plugins = [
+    "inexor-rgf-plugin-arithmetic",
+    "inexor-rgf-plugin-numeric"
+]
 ```
 
-```admonish tip "Please note"
-* The filename of the linked library is **not** prefixed with `lib`
-* On Windows the file extension is `.dll`
-* The path separators are backslashes and **must be escaped** `\\`
+```admonish bug "Plugin Dependencies"
+Some plugins depends on other plugins.
+
+Please note, that disabling a plugin may cause that other plugins cannot start!
 ```
