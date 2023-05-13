@@ -6,7 +6,10 @@ mutation CreateConnectorFromRandomNumberToMultiplication {
         outboundId: "24f1e42f-1072-4c39-a239-774af89286c6"
         outboundPropertyName: "result"
         # The connector type
-        typeName: "default_connector"
+        type: {
+          namespace: "connector"
+          name: "default_connector"
+        }
         # Inbound: The multiplication gateway
         inboundId: "cfe0b988-4a7f-47c4-b334-ff41709aa0f4"
         inboundPropertyName: "lhs"
@@ -21,8 +24,8 @@ fragment DefaultConnector on RelationInstance {
   type {
     namespace
     name
-    instanceTypeName
   }
+  instanceId
   properties(names: ["outbound_property_name", "inbound_property_name"]) {
     name
     value

@@ -1,6 +1,11 @@
 query {
   types {
-    components(name: "component1") {
+    components(
+      type: {
+        namespace: "book",
+        name: "component1"
+      }
+    ) {
       entityTypes {
         namespace
         name

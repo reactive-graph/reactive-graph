@@ -2,6 +2,7 @@
   "id": "plugin-arithmetic-add",
   "title": "Add Operation",
   "description": "This example shows how to create an add operation. Play with the inputs lhs and rhs.",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create add",

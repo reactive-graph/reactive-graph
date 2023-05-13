@@ -2,6 +2,7 @@
   "id": "graphql-api-entity-types",
   "title": "Entity Types",
   "description": "Create, read, find, navigate and delete entity types",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create Entity Type",

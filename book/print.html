@@ -619,45 +619,155 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 </div>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="2-installation"><a class="header" href="#2-installation">2. Installation</a></h1>
-<p>For now please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
-<h3 id="ubuntu--debian"><a class="header" href="#ubuntu--debian">Ubuntu / Debian</a></h3>
+<h3 id="ubuntu--debian--raspberry-pi-os"><a class="header" href="#ubuntu--debian--raspberry-pi-os">Ubuntu / Debian / Raspberry Pi OS</a></h3>
+<div id="admonition-supported-distributions" class="admonition info">
+<div class="admonition-title">
+<p>Supported Distributions</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-supported-distributions"></a></p>
+</div>
+<div>
+<p>The installation instructions below are tested on:</p>
+<ul>
+<li>Ubuntu 23.04</li>
+<li>Ubuntu 22.04</li>
+<li>Ubuntu 20.04</li>
+<li>Raspberry Pi OS (Bullseye)</li>
+</ul>
+<p>Other debian based distributions will also work if the following requirement is satisfied:</p>
+<ul>
+<li>libc6 (&gt;= 2.31)</li>
+</ul>
+</div>
+</div>
+<div id="admonition-apt-repository" class="admonition info">
+<div class="admonition-title">
+<p>APT Repository</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-apt-repository"></a></p>
+</div>
+<div>
+<p>An APT repository is available at <a href="https://apt.rgf.app/">https://apt.rgf.app/</a>.</p>
+<p>Packages are currently available for these architectures:</p>
+<ul>
+<li>amd64</li>
+<li>arm64</li>
+<li>armhf</li>
+</ul>
+</div>
+</div>
+<h4 id="setup-apt-repository-and-download-gpg-keys"><a class="header" href="#setup-apt-repository-and-download-gpg-keys">Setup APT repository and download GPG keys</a></h4>
 <pre><code class="language-shell">echo &quot;deb https://apt.rgf.app/ focal main&quot; | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
 gpg --recv-keys --keyserver keyserver.ubuntu.com 1F7F762FFE6BF816DB4C41D218D6C25399307BA5
 gpg --recv-keys --keyserver keyserver.ubuntu.com 18D6C25399307BA5
 gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.rgf.app.gpg
 gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/inexor-rgf.gpg
 sudo apt update
-sudo apt install inexor-rgf &quot;libinexor-rgf-plugin-*&quot;
-sudo systemctl daemon-reload
+</code></pre>
+<h3 id="install-the-runtime"><a class="header" href="#install-the-runtime">Install the runtime</a></h3>
+<pre><code class="language-shell">sudo apt install inexor-rgf
+</code></pre>
+<h3 id="create-the-first-default-instance-of-the-runtime"><a class="header" href="#create-the-first-default-instance-of-the-runtime">Create the first (default) instance of the runtime</a></h3>
+<pre><code class="language-shell">sudo systemctl daemon-reload
 sudo systemctl start inexor-rgf@default
 </code></pre>
+<h3 id="configure-the-default-instance"><a class="header" href="#configure-the-default-instance">Configure the default instance</a></h3>
+<div id="admonition-configuration-files" class="admonition info">
+<div class="admonition-title">
+<p>Configuration Files</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-configuration-files"></a></p>
+</div>
+<div>
+<p>The configuration files are located at <code>/etc/inexor-rgf/{instance-name}/</code>.</p>
+</div>
+</div>
+<pre><code class="language-shell">sudo nano /etc/inexor-rgf/default/graphql.toml
+sudo systemctl restart inexor-rgf@default
+</code></pre>
+<h3 id="optional-create-further-instances"><a class="header" href="#optional-create-further-instances">Optional: Create further instances</a></h3>
+<div id="admonition-multi-tenancy" class="admonition info">
+<div class="admonition-title">
+<p>Multi tenancy</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-multi-tenancy"></a></p>
+</div>
+<div>
+<p>It's possible to run multiple instances by starting another instance with a different name. The necessary
+configuration files are created at the first start. You propaply want to change the configuration files
+since they are copied from the default instance.</p>
+</div>
+</div>
+<pre><code class="language-shell">sudo systemctl start inexor-rgf@second
+sudo nano /etc/inexor-rgf/second/graphql.toml
+</code></pre>
+<h3 id="optional-install-plugins"><a class="header" href="#optional-install-plugins">Optional: Install plugins</a></h3>
+<p>Once you have the runtime running you can install the plugins.</p>
+<p>The package names starts with <code>libinexor-rgf-plugin</code>.</p>
+<p>To get a list of available plugins, you can search for it like so:</p>
+<pre><code class="language-shell">apt search libinexor-rgf-plugin
+</code></pre>
+<p>To install a plugin for the default instance you just have to install the package and restart the service:</p>
+<pre><code class="language-shell">sudo apt install libinexor-rgf-plugin-base
+sudo systemctl start inexor-rgf@default
+</code></pre>
+<p>Similarly, you can just install all available plugins:</p>
+<pre><code class="language-shell">sudo apt install &quot;libinexor-rgf-plugin-*&quot;
+sudo systemctl start inexor-rgf@default
+</code></pre>
+<div id="admonition-plugins-and-multi-tenancy" class="admonition info">
+<div class="admonition-title">
+<p>Plugins and multi tenancy</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-plugins-and-multi-tenancy"></a></p>
+</div>
+<div>
+<p>If you want to run multiple instances, each instance has it's own set of plugins.</p>
+<p>The installed plugins for the default instance are located at:
+<code>/usr/share/inexor-rgf/default/plugins/installed</code></p>
+<p>Likewise plugins for another instance are located at:
+<code>/usr/share/inexor-rgf/{instance-name}/plugins/installed</code></p>
+<p>To install a plugin you can copy it from the default instance install folder into the deploy folder
+of the other instance like so:
+<code>cp /usr/share/inexor-rgf/default/plugins/installed/{plugin.so} /usr/share/inexor-rgf/{instance-name}/plugins/deploy</code></p>
+<p>If the other instance is already running, it's not necessary to restart the instance runtime,
+because the runtime is able to hot deploy plugins.</p>
+</div>
+</div>
 <h3 id="manually-install-debian-package"><a class="header" href="#manually-install-debian-package">Manually Install Debian Package</a></h3>
+<p>Another way is to install the debian packages manually:</p>
 <ol>
-<li>Download the debian package from <a href="https://github.com/inexorgame/inexor-rgf-application/releases">GitHub</a></li>
-<li>Install the package via <code>dpkg</code></li>
-<li>Reload systemctl units</li>
-<li>Start the <code>default</code> instance</li>
-</ol>
+<li>
+<p>Download the debian package from <a href="https://github.com/inexorgame/inexor-rgf-application/releases">GitHub</a></p>
 <pre><code class="language-shell">mkdir -p /tmp/inexor-rgf
 cd /tmp/inexor-rgf
-wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v0.9.2/inexor-rgf_0.9.1_amd64.deb
-sudo dpkg -i inexor-rgf_0.9.1_amd64.deb
+wget https://github.com/inexorgame/inexor-rgf-application/releases/download/{version}/inexor-rgf_{version}_amd64.deb
 </code></pre>
-<h4 id="start-the-default-instance-system-wide"><a class="header" href="#start-the-default-instance-system-wide">Start the default instance (system wide)</a></h4>
+</li>
+<li>
+<p>Install the package via <code>dpkg</code></p>
+<pre><code class="language-shell">sudo dpkg -i inexor-rgf_0.9.1_amd64.deb
+</code></pre>
+</li>
+<li>
+<p>Reload systemctl units</p>
 <pre><code class="language-shell">sudo systemctl daemon-reload
-sudo systemctl start inexor-rgf@default
 </code></pre>
-<h4 id="start-the-default-instance-system-wide-1"><a class="header" href="#start-the-default-instance-system-wide-1">Start the default instance (system wide)</a></h4>
-<pre><code class="language-shell">sudo systemctl daemon-reload
-sudo systemctl start inexor-rgf@default
+</li>
+<li>
+<p>Start the <code>default</code> instance</p>
+<pre><code class="language-shell">sudo systemctl start inexor-rgf@default
 </code></pre>
+</li>
+</ol>
 <h4 id="configure-an-instance"><a class="header" href="#configure-an-instance">Configure an instance</a></h4>
-<pre><code class="language-shell">nano /etc/inexor-rgf/instance-name/instance.toml
-nano /etc/inexor-rgf/instance-name/graphql.toml
-nano /etc/inexor-rgf/instance-name/logging.toml
-nano /etc/inexor-rgf/instance-name/plugins.toml
-sudo systemctl restart inexor-rgf@instance-name
+<pre><code class="language-shell"># Name, Description
+sudo nano /etc/inexor-rgf/instance-name/instance.toml
+# Port
+sudo nano /etc/inexor-rgf/instance-name/graphql.toml
+# Log levels
+sudo nano /etc/inexor-rgf/instance-name/logging.toml
+# Enable / disable plugin(s)
+sudo nano /etc/inexor-rgf/instance-name/plugins.toml
+</code></pre>
+<p>Then restart the service:</p>
+<pre><code class="language-shell">sudo systemctl restart inexor-rgf@instance-name
 </code></pre>
 <h4 id="create-a-new-instance-system-wide"><a class="header" href="#create-a-new-instance-system-wide">Create a new instance (system wide)</a></h4>
 <p>Create a new instance by using a new instance name:</p>
@@ -666,26 +776,58 @@ sudo systemctl restart inexor-rgf@instance-name
 <p>Adjust the GraphQL configuration (port, hostname) and the instance configuration (name). Then restart</p>
 <pre><code class="language-shell">sudo systemctl restart inexor-rgf@instance-name
 </code></pre>
-<h2 id="raspberry-pi"><a class="header" href="#raspberry-pi">Raspberry Pi</a></h2>
-<div id="admonition-todo" class="admonition warning">
-<div class="admonition-title">
-<p>TODO</p>
-<p><a class="admonition-anchor-link" href="Installation.html#admonition-todo"></a></p>
-</div>
-<div>
-<p>Describe how to install Inexor Reactive Graph Flow on a raspberry pi</p>
-</div>
-</div>
+<h3 id="other-distributions--manually-install-binary"><a class="header" href="#other-distributions--manually-install-binary">Other distributions / Manually Install Binary</a></h3>
+<p>You can install the binary packages manually:</p>
+<ol>
+<li>
+<p>Download the binary from https://github.com/inexorgame/inexor-rgf-application/releases</p>
+<pre><code class="language-shell">wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v{version}/inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
+</code></pre>
+</li>
+<li>
+<p>Extract the binary</p>
+<pre><code class="language-shell">tar xvf inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
+</code></pre>
+</li>
+<li>
+<p>Start the binary</p>
+<pre><code class="language-shell">cd inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu
+./inexor-rgf-rt-standalone
+</code></pre>
+</li>
+</ol>
+<h3 id="from-source"><a class="header" href="#from-source">From Source</a></h3>
+<p>Please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
-<div id="admonition-todo-1" class="admonition warning">
+<h3 id="windows-installer"><a class="header" href="#windows-installer">Windows Installer</a></h3>
+<div id="admonition-coming-soomtm" class="admonition warning">
 <div class="admonition-title">
-<p>TODO</p>
-<p><a class="admonition-anchor-link" href="Installation.html#admonition-todo-1"></a></p>
+<p>Coming soom(tm)</p>
+<p><a class="admonition-anchor-link" href="Installation.html#admonition-coming-soomtm"></a></p>
 </div>
 <div>
-<p>Describe how to install Inexor Reactive Graph Flow on windows</p>
+<p>We plan to provide an installer for windows.</p>
 </div>
 </div>
+<h3 id="manually-install-binaries"><a class="header" href="#manually-install-binaries">Manually install binaries</a></h3>
+<ol>
+<li>Download the latest binary from https://github.com/inexorgame/inexor-rgf-application/releases</li>
+<li>Unzip the archive</li>
+<li>Change into the directory</li>
+<li>Execute <code>inexor-rgf-rt-standalone.exe</code></li>
+</ol>
+<h3 id="from-source-1"><a class="header" href="#from-source-1">From Source</a></h3>
+<p>Please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
+<h2 id="macos"><a class="header" href="#macos">MacOS</a></h2>
+<h3 id="manually-install-binaries-1"><a class="header" href="#manually-install-binaries-1">Manually install binaries</a></h3>
+<ol>
+<li>Download the latest binary from https://github.com/inexorgame/inexor-rgf-application/releases</li>
+<li>Extract the archive</li>
+<li>Change into the directory</li>
+<li>Execute <code>inexor-rgf-rt-standalone</code></li>
+</ol>
+<h3 id="from-source-2"><a class="header" href="#from-source-2">From Source</a></h3>
+<p>Please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
 <ul>
 <li><a href="./Configuration_Logging.html">Configure Logging</a></li>
@@ -701,7 +843,7 @@ sudo systemctl restart inexor-rgf@instance-name
 kind = &quot;console&quot;
 
 [appenders.stdout.encoder]
-pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r&quot;
+pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}&quot;
 </code></pre>
 <div id="admonition-documentation-of-the-date-format-library" class="admonition tip">
 <div class="admonition-title">
@@ -710,6 +852,15 @@ pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}\r&quot;
 </div>
 <div>
 <p><a href="https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html">Date Formatting Syntax</a></p>
+</div>
+</div>
+<div id="admonition-systemd" class="admonition tip">
+<div class="admonition-title">
+<p>systemd</p>
+<p><a class="admonition-anchor-link" href="Configuration_Logging.html#admonition-systemd"></a></p>
+</div>
+<div>
+<p>On linux the systemd unit captures the stdout. Do not use any special characters or colors.</p>
 </div>
 </div>
 <h3 id="file"><a class="header" href="#file">File</a></h3>
@@ -831,80 +982,25 @@ format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-plugins"><a class="header" href="#configure-plugins">Configure Plugins</a></h1>
 <p>Edit <code>config/plugins.toml</code></p>
-<div id="admonition-order-of-initialization" class="admonition bug">
-<div class="admonition-title">
-<p>Order of initialization</p>
-<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-order-of-initialization"></a></p>
-</div>
-<div>
-<p>The plugins are initialized in the order of definition!</p>
-</div>
-</div>
-<div id="admonition-deactive-plugins" class="admonition tip">
-<div class="admonition-title">
-<p>Deactive plugins</p>
-<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-deactive-plugins"></a></p>
-</div>
-<div>
-<p>You can activate or deactivate plugins with the setting <code>active</code>. Remember that some plugins depend on
-other plugins.</p>
-</div>
-</div>
-<div id="admonition-path" class="admonition tip">
-<div class="admonition-title">
-<p>Path</p>
-<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-path"></a></p>
-</div>
-<div>
-<p>The path can be either relative to the working directory or absolute.</p>
-</div>
-</div>
-<h2 id="linux-1"><a class="header" href="#linux-1">Linux</a></h2>
-<pre><code class="language-toml">[[plugin]]
-name = &quot;inexor-rgf-plugin-base&quot;
-active = true
-path = &quot;../inexor-rgf-plugin-base/target/debug/libinexor_rgf_plugin_base.so&quot;
-
-[[plugin]]
-name = &quot;inexor-rgf-plugin-mqtt&quot;
-active = true
-path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so&quot;
+<h3 id="disable-the-plugin-system"><a class="header" href="#disable-the-plugin-system">Disable the plugin system</a></h3>
+<p>You can disable / enable the plugin system entirely:</p>
+<pre><code class="language-toml">disabled = false
 </code></pre>
-<div id="admonition-please-note" class="admonition tip">
-<div class="admonition-title">
-<p>Please note</p>
-<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-please-note"></a></p>
-</div>
-<div>
-<ul>
-<li>The filename of the linked library is prefixed with <code>lib</code></li>
-<li>On linux the file extension is <code>.so</code></li>
-<li>The path separators are forward slashes <code>/</code></li>
-</ul>
-</div>
-</div>
-<h2 id="windows-1"><a class="header" href="#windows-1">Windows</a></h2>
-<pre><code class="language-toml">[[plugin]]
-name = &quot;inexor-rgf-plugin-base&quot;
-active = true
-path = &quot;..\\inexor-rgf-plugin-base\\target\\debug\\inexor_rgf_plugin_base.dll&quot;
-
-[[plugin]]
-name = &quot;inexor-rgf-plugin-mqtt&quot;
-active = true
-path = &quot;..\\inexor-rgf-plugin-mqtt\\target/debug\\inexor_rgf_plugin_mqtt.dll&quot;
+<h3 id="disable-specific-plugins"><a class="header" href="#disable-specific-plugins">Disable specific plugins</a></h3>
+<p>You can disable specific plugins</p>
+<pre><code class="language-toml">disabled_plugins = [
+    &quot;inexor-rgf-plugin-arithmetic&quot;,
+    &quot;inexor-rgf-plugin-numeric&quot;
+]
 </code></pre>
-<div id="admonition-please-note-1" class="admonition tip">
+<div id="admonition-plugin-dependencies" class="admonition bug">
 <div class="admonition-title">
-<p>Please note</p>
-<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-please-note-1"></a></p>
+<p>Plugin Dependencies</p>
+<p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-plugin-dependencies"></a></p>
 </div>
 <div>
-<ul>
-<li>The filename of the linked library is <strong>not</strong> prefixed with <code>lib</code></li>
-<li>On Windows the file extension is <code>.dll</code></li>
-<li>The path separators are backslashes and <strong>must be escaped</strong> <code>\\</code></li>
-</ul>
+<p>Some plugins depends on other plugins.</p>
+<p>Please note, that disabling a plugin may cause that other plugins cannot start!</p>
 </div>
 </div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model"><a class="header" href="#model">Model</a></h1>
@@ -1828,10 +1924,10 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="dca3e67e-4025-4f27-a4e1-6150e5c233d7" src="/examples/graphql/graphql-api-components/graphql-api-components.json">
+<graphql-playground id="a30edf62-ca2f-4fab-815a-68820d8e25b3" src="/examples/graphql/graphql-api-components/graphql-api-components.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="6b6aee64-8bde-49f2-9978-f8d0e1eea601" src="/examples/graphql/graphql-api-entity-types/graphql-api-entity-types.json">
+<graphql-playground id="af9bbd8b-4c8f-4a97-9e10-45e36183cb02" src="/examples/graphql/graphql-api-entity-types/graphql-api-entity-types.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
 <h2 id="get-relation-type-by-name"><a class="header" href="#get-relation-type-by-name">Get Relation Type by Name</a></h2>
@@ -2286,7 +2382,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="6550d381-5bef-4ad6-b1d2-40df43a77812" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="96b5928e-630e-487e-a444-fb43bbfe7940" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -2768,13 +2864,13 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="bb8e24a1-8946-4571-8ed5-8de62efccfbe" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
+<graphql-playground id="55c8de2c-0665-4689-980e-2b6a7135f703" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="9cd59b55-5960-4d01-9029-c4db75101af7" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
+<graphql-playground id="24097125-b9ce-4ba8-92a4-7620e88d22ba" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="e08e3613-479c-4a3a-a38b-bdca3f70585d" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
+<graphql-playground id="f2eb910f-f6a9-4172-bdde-15f7eca8fd6b" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -2790,7 +2886,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="c818128c-5a76-40a9-8770-e30068f77d53" src="/examples/graphql/plugin-asset/plugin-asset.json">
+<graphql-playground id="261b21f5-2cfb-4ab2-b708-4d9c0f54380b" src="/examples/graphql/plugin-asset/plugin-asset.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -2889,7 +2985,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="b289bd30-e152-4eb6-9065-9cfc1114194d" src="/examples/graphql/plugin-binary/plugin-binary.json">
+<graphql-playground id="c6f42611-19b8-4816-bc7e-b26b592aa771" src="/examples/graphql/plugin-binary/plugin-binary.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -2922,7 +3018,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="8b1bec6d-356b-4873-99ac-b2a88574ab78" src="/examples/graphql/plugin-comparison/plugin-comparison.json">
+<graphql-playground id="ec2d112d-f699-49ee-9d22-eeb04f4610ee" src="/examples/graphql/plugin-comparison/plugin-comparison.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -2945,7 +3041,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="96846016-8be2-486a-bd6f-d2da6a3defd2" src="/examples/graphql/plugin-config/plugin-config.json">
+<graphql-playground id="a28fcb1d-71c6-4ed3-82ce-535f5fc36820" src="/examples/graphql/plugin-config/plugin-config.json">
 </graphql-playground>
 <h2 id="usage-graphql-tabset"><a class="header" href="#usage-graphql-tabset">Usage (GraphQL) {.tabset}</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3093,7 +3189,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="956a8960-ebcc-450f-89b0-ff9855f33579" src="/examples/graphql/plugin-connector/plugin-connector.json">
+<graphql-playground id="585b6ae9-de32-452e-b6ea-d59de4cca176" src="/examples/graphql/plugin-connector/plugin-connector.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3224,7 +3320,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="420441c3-d6f5-47bd-a1e4-3e85654e2c50" src="/examples/graphql/plugin-http/plugin-http.json">
+<graphql-playground id="f1422b40-0b1a-46f8-8339-5753887f75f5" src="/examples/graphql/plugin-http/plugin-http.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-7"><a class="header" href="#graphql-7">GraphQL</a></h3>
@@ -4165,7 +4261,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="c16ae67e-578e-4e51-95a0-f8e1132051ce" src="/examples/graphql/plugin-json/plugin-json.json">
+<graphql-playground id="82df2d30-2c25-4a1c-bceb-11faae0d54da" src="/examples/graphql/plugin-json/plugin-json.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4276,7 +4372,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="9e93dc0f-550b-4724-8fb0-86f83c268023" src="/examples/graphql/plugin-metadata/plugin-metadata.json">
+<graphql-playground id="1be7e1d0-12b7-4585-aca9-694a5da299e5" src="/examples/graphql/plugin-metadata/plugin-metadata.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4459,7 +4555,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-13"><a class="header" href="#usage-13">Usage</a></h2>
-<graphql-playground id="39d36070-c926-472a-818b-4cdeb7f280dd" src="/examples/graphql/plugin-numeric/plugin-numeric.json">
+<graphql-playground id="e4c53d19-0c84-480d-a0ee-8405368d5857" src="/examples/graphql/plugin-numeric/plugin-numeric.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4502,9 +4598,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="e23d8e48-8679-4f0f-951f-c4bc251a13dc" src="/examples/graphql/plugin-random/plugin-random-number.json">
+<graphql-playground id="7b2dd01b-da94-4f83-a8a7-d7eab274c7f0" src="/examples/graphql/plugin-random/plugin-random-number.json">
 </graphql-playground>
-<graphql-playground id="4fcfa091-886c-40a2-8773-90f87e5999e8" src="/examples/graphql/plugin-random/plugin-random-string.json">
+<graphql-playground id="ab54b33d-f14a-4449-ada3-1db0a188eac2" src="/examples/graphql/plugin-random/plugin-random-string.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-scheduler"><a class="header" href="#plugin-scheduler">Plugin: Scheduler</a></h1>
 <p>Timers and scheduled jobs</p>
@@ -4592,7 +4688,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="51612a0e-7244-40c1-a078-074eee5c9d08" src="/examples/graphql/plugin-scheduler/plugin-scheduler.json">
+<graphql-playground id="1eb65ae0-0740-446e-960b-bd956081bbf2" src="/examples/graphql/plugin-scheduler/plugin-scheduler.json">
 </graphql-playground>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4765,7 +4861,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
-<graphql-playground id="820b36b6-b553-4225-b994-8709d7d775fe" src="/examples/graphql/plugin-string/plugin-string.json">
+<graphql-playground id="e2c22789-c22b-4973-9ade-2b2aaf1a6601" src="/examples/graphql/plugin-string/plugin-string.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4945,7 +5041,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-19"><a class="header" href="#usage-19">Usage</a></h2>
-<graphql-playground id="515c3105-8fcf-4ed3-816e-30443f73dbf4" src="/examples/graphql/plugin-system-environment/plugin-system-environment.json">
+<graphql-playground id="a9c4c33b-0cf7-47b7-80b6-9058d4c7416e" src="/examples/graphql/plugin-system-environment/plugin-system-environment.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -4993,9 +5089,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="133cc820-e516-4487-8180-36f6404d9021" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json">
+<graphql-playground id="16dca447-6687-4d47-b7a3-7a7c9ad8bcd4" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json">
 </graphql-playground>
-<graphql-playground id="93deda61-cbd7-46ff-aaeb-f02bab41f522" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json">
+<graphql-playground id="c47ec4ab-3c07-4dcc-be9f-ff9c9c75afa5" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value and state components. States extends values with debounce mechanism. States are important for
@@ -5445,7 +5541,7 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 <h3 id="microsoft-windows"><a class="header" href="#microsoft-windows">Microsoft Windows</a></h3>
 <p>We support x64 Microsoft Windows 8, 8.1 and 10.</p>
 <p>We have build instructions for Windows.</p>
-<h3 id="linux-2"><a class="header" href="#linux-2">Linux</a></h3>
+<h3 id="linux-1"><a class="header" href="#linux-1">Linux</a></h3>
 <p>We support x64/arm7 Linux.</p>
 <p>We have specific build instructions for Ubuntu and Raspberry Pi 2-4.</p>
 <p>If you have found a way to set it up for other Linux distributions, please open a pull request and let us know!</p>
@@ -5467,7 +5563,7 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 <p><a href="https://rustup.rs/">rustup</a> is an installer for the systems programming language Rust.</p>
 </div>
 </div>
-<h3 id="windows-2"><a class="header" href="#windows-2">Windows</a></h3>
+<h3 id="windows-1"><a class="header" href="#windows-1">Windows</a></h3>
 <p>Please follow the instructions for <a href="https://rust-lang.github.io/rustup/installation/other.html">Installing rustup on Windows</a></p>
 <h2 id="install-nightly-toolchain"><a class="header" href="#install-nightly-toolchain">Install nightly toolchain</a></h2>
 <p>Once you have rustup up and running, please install the <code>nightly</code> toolchain.</p>
@@ -5703,7 +5799,7 @@ strip = &quot;symbols&quot;
 <ul>
 <li>https://crates.io/crates/cargo-arch</li>
 </ul>
-<h2 id="windows-3"><a class="header" href="#windows-3">(Windows)</a></h2>
+<h2 id="windows-2"><a class="header" href="#windows-2">(Windows)</a></h2>
 <p>(TODO)</p>
 <ul>
 <li>https://crates.io/crates/msi</li>

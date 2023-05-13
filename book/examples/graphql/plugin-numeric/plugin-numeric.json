@@ -2,6 +2,7 @@
   "id": "plugin-numeric",
   "title": "Numeric",
   "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Add Binary",

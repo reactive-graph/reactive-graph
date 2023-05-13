@@ -2,6 +2,7 @@
   "id": "graphql-api-components",
   "title": "Components",
   "description": "Create, read, find, navigate and delete components",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create Component",

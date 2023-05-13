@@ -2,6 +2,7 @@
   "id": "plugin-system-environment",
   "title": "System Environment",
   "description": "Query for System Environment Variables",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "HOME",

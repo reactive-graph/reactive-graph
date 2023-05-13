@@ -2,6 +2,7 @@
   "id": "plugin-binary",
   "title": "Binary",
   "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Add Binary",

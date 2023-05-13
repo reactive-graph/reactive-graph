@@ -2,6 +2,7 @@
   "id": "plugin-metadata",
   "title": "Meta Data",
   "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Add Binary",

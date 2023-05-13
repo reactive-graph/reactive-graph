@@ -1,12 +1,14 @@
 query {
-  add {
-    arithmetic_gate {
+  arithmeticF64 {
+    add {
       lhs
       rhs
       result
     }
   }
-  random_number {
-    result
+  random {
+    randomU64 {
+      result
+    }
   }
 }

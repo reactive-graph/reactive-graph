@@ -2,6 +2,7 @@
   "id": "plugin-taxonomy-tags",
   "title": "Tags",
   "description": "Create and connect tags",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create Tag",

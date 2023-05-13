@@ -1,4 +1,4 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+# This file was generated. Do not edit manually.
 
 schema {
   query: Query
@@ -30,6 +30,21 @@ type Behaviours {
   relations: [RelationBehaviour!]!
 }
 
+type Command {
+  arguments(name: String): [CommandArgument!]!
+  help: String
+  name: String
+  namespace: String
+}
+
+type CommandArgument {
+  help: String
+  long: String
+  name: String!
+  required: Boolean!
+  short: String
+}
+
 "Components are composable parts which can be used by types (entity type, relation type)."
 type Component {
   behaviours: [ComponentBehaviour!]!
@@ -38,7 +53,11 @@ type Component {
   "Query which entity types are using this component"
   entityTypes: [EntityType!]!
   "The extensions which are defined by the component."
-  extensions(type: ExtensionTypeId): [Extension!]!
+  extensions(
+    "If true, the extensions are sorted by type"
+    sort: Boolean,
+    type: ExtensionTypeId
+  ): [Extension!]!
   "Query which relation types are using this component as inbound type"
   inboundOf: [RelationType!]!
   "The name of the component."
@@ -48,9 +67,16 @@ type Component {
   "Query which relation types are using this component as outbound type"
   outboundOf: [RelationType!]!
   "The properties which are applied on entity or relation instances."
-  properties(name: String): [PropertyType!]!
+  properties(
+    "The name of the property"
+    name: String,
+    "If true, the properties are sorted by name"
+    sort: Boolean
+  ): [PropertyType!]!
   "Query which relation types are using this component"
   relationTypes: [RelationType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 "A component behaviour."
@@ -136,7 +162,9 @@ type EntityInstance {
     "Filters by property name"
     name: String,
     "Filters by property names"
-    names: [String!]
+    names: [String!],
+    "If true, the properties are sorted by name"
+    sort: Boolean
   ): [PropertyInstance!]!
   "The entity type of the entity instance."
   type: EntityType
@@ -150,7 +178,11 @@ type EntityType {
   "Textual description of the entity type."
   description: String!
   "The extensions which are defined by the entity type."
-  extensions(type: ExtensionTypeId): [Extension!]!
+  extensions(
+    "If true, the extensions are sorted by type"
+    sort: Boolean,
+    type: ExtensionTypeId
+  ): [Extension!]!
   "List of relation types which has this entity type as inbound."
   inboundRelations: [RelationType!]!
   "Returns true, if the entity type is valid. This means all components exists."
@@ -171,7 +203,14 @@ type EntityType {
   The properties / property types which are defined by the entity type or
   by one of the components.
   """
-  properties(name: String): [PropertyType!]!
+  properties(
+    "The name of the property"
+    name: String,
+    "If true, the properties are sorted by name"
+    sort: Boolean
+  ): [PropertyType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 """
@@ -270,8 +309,24 @@ type FlowType {
   relationInstances: [RelationInstance!]!
   "The entity type of the flow type."
   type: EntityType
+  "Type category."
+  typeCategory: TypeCategory
   "The variables of the flow type."
   variables(name: String): [PropertyType!]!
+}
+
+type InstanceInfo {
+  buildDate: String!
+  description: String!
+  gitBranch: String!
+  gitCommit: String!
+  hostname: String!
+  name: String!
+  pluginApiVersion: String!
+  port: Int!
+  rustcVersion: String!
+  secure: Boolean!
+  version: String!
 }
 
 "Search for instances"
@@ -363,6 +418,11 @@ type Mutation {
   types: MutationTypes!
 }
 
+"Mutations for plugins."
+type MutationCommands {
+  execute(args: JSONObject, name: String!): PropertyInstance
+}
+
 "Mutations for components"
 type MutationComponents {
   "Adds an extension to the component with the given name."
@@ -377,6 +437,10 @@ type MutationComponents {
   removeExtension(extension: ExtensionTypeId!, type: ComponentTypeId!): Component!
   "Removes the property with the given property_name from the component with the given name."
   removeProperty(propertyName: String!, type: ComponentTypeId!): Component!
+  "Renames the component with the given type to the component with the given new type."
+  rename(newType: ComponentTypeId!, type: ComponentTypeId!): Component!
+  "Updates the property with the given name of the given component."
+  updateProperty(name: String!, property: PropertyTypeDefinition!, type: ComponentTypeId!): Component!
 }
 
 "Mutation of entity instances."
@@ -425,6 +489,13 @@ type MutationEntityInstances {
   to other properties.
   """
   tick(id: UUID!): EntityInstance!
+  "Triggers the entity instance with the given id."
+  trigger(
+    "Triggers the entity instance with the given id."
+    id: UUID,
+    "Triggers the entity instance with the given label."
+    label: String
+  ): EntityInstance!
   "Updates the properties of the entity instance with the given id."
   update(
     "Adds the given components."
@@ -668,6 +739,7 @@ type MutationRelationTypes {
 }
 
 type MutationSystem {
+  commands: MutationCommands!
   plugins: MutationPlugins!
 }
 
@@ -690,6 +762,7 @@ type Plugin {
   path: String!
   pluginApiVersion: String!
   rustcVersion: String!
+  shortName: String!
   state: String!
   stem: String!
   unsatisfiedDependencies: [Plugin!]!
@@ -727,7 +800,11 @@ type PropertyType {
   "Textual description of the component."
   description: String!
   "The extensions which are defined by the entity type."
-  extensions(type: ExtensionTypeId): [Extension!]!
+  extensions(
+    "If true, the extensions are sorted by type"
+    sort: Boolean,
+    type: ExtensionTypeId
+  ): [Extension!]!
   "The property instance is mutable or immutable."
   mutability: Mutability!
   "The name of the component."
@@ -831,7 +908,9 @@ type RelationInstance {
     "Filters by property name."
     name: String,
     "Filters by property names"
-    names: [String!]
+    names: [String!],
+    "If true, the properties are sorted by name"
+    sort: Boolean
   ): [PropertyInstance!]!
   "The relation type."
   type: RelationType
@@ -851,7 +930,11 @@ type RelationType {
   "Textual description of the relation type."
   description: String!
   "The extensions which are defined by the relation type."
-  extensions(type: ExtensionTypeId): [Extension!]!
+  extensions(
+    "If true, the extensions are sorted by type"
+    sort: Boolean,
+    type: ExtensionTypeId
+  ): [Extension!]!
   "The inbound components."
   inboundComponents: [Component!]!
   "The inbound entity type(s)."
@@ -884,7 +967,14 @@ type RelationType {
   The properties / property types which are defined by the relation type or
   by one of the components.
   """
-  properties(name: String): [PropertyType!]!
+  properties(
+    "The name of the property"
+    name: String,
+    "If true, the properties are sorted by name"
+    sort: Boolean
+  ): [PropertyType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 "Subscriptions for the reactive property instances."
@@ -905,11 +995,23 @@ type Subscription {
 }
 
 type System {
+  commands(name: String): [Command!]!
+  "Returns the instance information."
+  instanceInfo: InstanceInfo!
   plugins(id: UUID, name: String, state: String, stem: String): [Plugin!]!
+}
+
+type TypeCategory {
+  components: [Component!]!
+  entityTypes: [EntityType!]!
+  flowTypes: [FlowType!]!
+  name: String!
+  relationTypes: [RelationType!]!
 }
 
 "Search for types (components, entity types or relation types)"
 type Types {
+  categories: [TypeCategory!]!
   """
 
   Search for components
@@ -917,6 +1019,8 @@ type Types {
   Optionally the list of components can be filtered by name.
   """
   components(
+    "Searches by the namespace of the components."
+    namespace: String,
     "Searches by the name of the components. Allowed wildcards are: ? and *"
     search: String,
     "The component type"
@@ -950,6 +1054,7 @@ type Types {
     "The flow type"
     type: FlowTypeId
   ): [FlowType!]!
+  namespaces: [String!]!
   "Search for relation types."
   relations(
     "Filters by inbound component"
@@ -1012,6 +1117,9 @@ enum SocketType {
 
 "A scalar that can represent any JSON value."
 scalar JSON
+
+"A scalar that can represent any JSON Object value."
+scalar JSONObject
 
 """
 

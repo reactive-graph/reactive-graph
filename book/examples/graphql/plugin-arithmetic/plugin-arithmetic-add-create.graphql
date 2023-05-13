@@ -2,7 +2,10 @@ mutation {
   instances {
     entities {
       create(
-        type: "add",
+        type: {
+          namespace: "arithmetic_f64"
+          name: "add"
+        }
         id: "08e65d5d-b015-4c1f-9c8d-25a8080d44b7",
         properties: [
           {

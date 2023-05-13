@@ -1,7 +1,12 @@
 mutation {
   types {
     entities {
-      delete(name: "example")
+      delete(
+        type: {
+          namespace: "book"
+          name: "example"
+        }
+      )
     }
   }
 }
