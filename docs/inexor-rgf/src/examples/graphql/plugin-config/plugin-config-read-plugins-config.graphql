@@ -2,7 +2,10 @@ mutation CreateConfigReader {
   instances {
     entities {
       create(
-        type: "config_file"
+        type: {
+          namespace: "config"
+          name: "config_file"
+        }
         id: "aed6c9b0-e495-4423-baeb-5597b66416f4"
         properties: [
           {

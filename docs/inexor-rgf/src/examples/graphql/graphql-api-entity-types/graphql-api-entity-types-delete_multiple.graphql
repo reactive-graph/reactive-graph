@@ -1,8 +1,18 @@
 mutation {
   types {
     entities {
-      DeleteFirst: delete(name: "example")
-      DeleteSecond: delete(name: "example2")
+      DeleteFirst: delete(
+        type: {
+          namespace: "book"
+          name: "example1"
+        }
+      )
+      DeleteSecond: delete(
+        type: {
+          namespace: "book"
+          name: "example2"
+        }
+      )
     }
   }
 }

@@ -1,6 +1,11 @@
 query {
   types {
-    components(namespace: "book", name: "component1") {
+    components(
+      type: {
+        namespace: "book",
+        name: "component1"
+      }
+    ) {
       ...FullComponent
       ...ComponentExtensions
     }

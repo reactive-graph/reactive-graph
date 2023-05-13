@@ -4,7 +4,12 @@ query GetEntityTags {
     entities(id: "418df3a2-55db-4fc9-a7b2-dbce928c9a03") {
       ...FullEntityInstance
       # and get all tags for it
-      outbound(type: "tagged_with") {
+      outbound(
+        type: {
+          namespace: "taxonomy"
+          name: "tagged_with"
+        }
+      ) {
         inbound {
           ...FullEntityInstance
         }

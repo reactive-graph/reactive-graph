@@ -2,15 +2,18 @@ mutation CreateCategory {
   instances {
     entities {
       create(
-        type: "category",
-        id: "ff0ac91d-3534-4987-8d5f-7488972cbbc8",
+        type: {
+          namespace: "taxonomy"
+          name: "category"
+        }
+        id: "ff0ac91d-3534-4987-8d5f-7488972cbbc8"
         properties: [
           {
-            name: "name",
+            name: "name"
             value: "Root Category"
           }
           {
-            name: "description",
+            name: "description"
             value: "Level 0"
           }
         ]

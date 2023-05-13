@@ -2,7 +2,10 @@ mutation CreateTag {
   instances {
     entities {
       create(
-        type: "tag",
+        type: {
+          namespace: "taxonomy"
+          name: "tag"
+        }
         id: "8e6ab5a8-8367-40e2-8a19-391664c39042",
         properties: [
           {

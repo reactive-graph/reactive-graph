@@ -19,22 +19,22 @@ fragment Category on EntityInstance {
 }
 
 fragment CategoryTree on EntityInstance {
-  outbound(type: "has_subcategory") {
+  outbound(type: { namespace: "taxonomy" name: "has_subcategory" }) {
     inbound {
       ...Category
-      outbound(type: "has_subcategory") {
+      outbound(type: { namespace: "taxonomy" name: "has_subcategory" }) {
         inbound {
           ...Category
-          outbound(type: "has_subcategory") {
+          outbound(type: { namespace: "taxonomy" name: "has_subcategory" }) {
             inbound {
               ...Category
-              outbound(type: "has_subcategory") {
+              outbound(type: { namespace: "taxonomy" name: "has_subcategory" }) {
                 inbound {
                   ...Category
-                  outbound(type: "has_subcategory") {
+                  outbound(type: { namespace: "taxonomy" name: "has_subcategory" }) {
                     inbound {
                       ...Category
-                      outbound(type: "has_subcategory") {
+                      outbound(type: { namespace: "taxonomy" name: "has_subcategory" }) {
                         inbound {
                           ...Category
                         }

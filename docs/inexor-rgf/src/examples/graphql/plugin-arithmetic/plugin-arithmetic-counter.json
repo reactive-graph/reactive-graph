@@ -2,6 +2,7 @@
   "id": "plugin-arithmetic-counter",
   "title": "Counter",
   "description": "This example shows how to create a counter.",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create counter",

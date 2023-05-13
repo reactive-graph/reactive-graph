@@ -2,6 +2,7 @@
   "id": "plugin-random-number",
   "title": "Random Number",
   "description": "The random number generator can be triggered (boolean 'true' on property 'trigger'). Connect the result with a multiplication gateway.",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create Random Number Generator",

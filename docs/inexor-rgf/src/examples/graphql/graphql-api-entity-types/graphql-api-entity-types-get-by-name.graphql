@@ -1,6 +1,11 @@
 query {
   types {
-    entities(name: "example") {
+    entities(
+      type: {
+        namespace: "book"
+        name: "example"
+      }
+    ) {
       ...FullEntityType
       ...EntityTypeExtensions
     }

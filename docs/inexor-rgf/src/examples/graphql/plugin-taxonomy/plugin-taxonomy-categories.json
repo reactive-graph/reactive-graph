@@ -2,6 +2,7 @@
   "id": "plugin-taxonomy-categories",
   "title": "Categories",
   "description": "Create and connect categories to an hierarchical category tree",
+  "endpoint": "https://demo.rgf.app/graphql",
   "tabs": [
     {
       "name": "Create root category",

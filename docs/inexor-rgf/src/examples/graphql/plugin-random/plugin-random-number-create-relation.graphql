@@ -4,20 +4,23 @@ mutation CreateConnectorFromRandomNumberToMultiplication {
       create(
         edgeKey: {
           # Outbound: The random number generator
-          outboundId: "24f1e42f-1072-4c39-a239-774af89286c6",
-          typeName: "default_connector--result--lhs",
+          outboundId: "24f1e42f-1072-4c39-a239-774af89286c6"
+          namespace: "connector"
+          typeName: "default_connector"
+          # Unique id for the relation of type default_connector between outboundId and inboundId
+          instanceId: "result--lhs"
           # Inbound: The multiplication gateway
           inboundId: "cfe0b988-4a7f-47c4-b334-ff41709aa0f4"
         },
         properties: [
           {
             # Outbound: The name of the source
-            name: "outbound_property_name",
+            name: "outbound_property_name"
             value: "result"
           },
           {
             # Outbound: The name of the target
-            name: "inbound_property_name",
+            name: "inbound_property_name"
             value: "lhs"
           }
         ]
@@ -25,8 +28,8 @@ mutation CreateConnectorFromRandomNumberToMultiplication {
         type {
           namespace
           name
-          instanceTypeName
         }
+        instanceId
         outbound {
           id
         }

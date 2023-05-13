@@ -2,7 +2,7 @@
   "id": "dynamic_graph",
   "title": "Dynamic Graph",
   "description": "Test",
-  "endpoint": "http://localhost:31415/dynamic_graph",
+  "endpoint": "https://demo.rgf.app/dynamic_graph",
   "tabs": [
     {
       "name": "Test",

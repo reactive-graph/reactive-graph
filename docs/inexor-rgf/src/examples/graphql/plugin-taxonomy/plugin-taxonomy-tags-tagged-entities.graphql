@@ -2,7 +2,10 @@ query GetTaggedEntities {
   instances {
     # Get the tag with the name 'inexor'
     entities(
-      type: "tag"
+      type: {
+        namespace: "taxonomy"
+        name: "tag"
+      }
       properties: [
         {
           name: "name"
@@ -12,7 +15,12 @@ query GetTaggedEntities {
     ) {
       ...FullEntityInstance
       # Get all entities which are tagged with
-      inbound(type: "tagged_with") {
+      inbound(
+        type: {
+          namespace: "taxonomy"
+          name: "tagged_with"
+        }
+      ) {
         outbound {
           ...FullEntityInstance
         }

@@ -2,10 +2,15 @@ mutation {
   types {
     entities {
       create(
-        namespace: "book"
-        name: "example"
+        type: {
+          namespace: "book"
+          name: "example"
+        }
         components: [
-          "example_component"
+          {
+            namespace: "book"
+            name: "example_component"
+          }
         ]
         properties: [
           {
@@ -13,6 +18,7 @@ mutation {
             description: "Example Input Property"
             dataType: STRING
             socketType: INPUT
+            mutability: MUTABLE
             extensions: []
           }
         ]
