@@ -6,26 +6,6 @@ use crate::model_runtime::InstanceInfo;
 use crate::runtime::Runtime;
 use crate::runtime::RuntimeBuilder;
 
-const QUERY_INSTANCE_INFO: &str = r#"
-query InstanceInfo {
-  system {
-    instanceInfo {
-      name
-      description
-      hostname
-      port
-      secure
-      version
-      buildDate
-      gitBranch
-      gitCommit
-      rustcVersion
-      pluginApiVersion
-    }
-  }
-}
-"#;
-
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 struct System {
@@ -51,6 +31,9 @@ async fn test_get_instance_info() {
         .await
         .with_runtime(|runtime: Arc<dyn Runtime>| async move {
             let query_service = runtime.get_graphql_query_service();
+
+            const QUERY_INSTANCE_INFO: &str = include_str!("../../../../graphql/system/instance/get_instance_info.graphql");
+
             let response = query_service.query_response(QUERY_INSTANCE_INFO).await;
             assert!(response.errors.is_empty());
             let data = response.data.into_json().expect("Failed to get json data from graphql response");
