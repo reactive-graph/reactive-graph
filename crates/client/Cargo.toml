@@ -35,3 +35,6 @@ tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-threa
 
 [lib]
 crate-type = ["lib"]
+
+[[example]]
+name = "simple"
