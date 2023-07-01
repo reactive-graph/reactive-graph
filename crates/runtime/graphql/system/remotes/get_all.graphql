@@ -1,0 +1,9 @@
+query {
+  system {
+    remotes {
+      hostname
+      port
+      secure
+    }
+  }
+}
