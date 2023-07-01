@@ -19,12 +19,13 @@ The properties of all components are merged.
 
 ## Data Model
 
-| Field       | DataType                                        | Description                                                       | Example                                                                                            |
-|-------------|-------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
-| Name        | String                                          | The name of the component                                         | labeled                                                                                            |
-| Description | String                                          | Textual description of the component                              | The label is an hierarchical path with static segments, named parameters and catch-all parameters. | 
-| Properties  | Vec<[Property Type](./Model_Property_Type.md)>  | The properties which are applied on entity or relation instances. |                                                                                                    |
-|
+| Field       | DataType                                       | Description                                                       | Example                                                                                            |
+|-------------|------------------------------------------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|
+| Namespace   | String                                         | The namespace                                                     | core                                                                                               |
+| Name        | String                                         | The name of the component                                         | labeled                                                                                            |
+| Description | String                                         | Textual description of the component                              | The label is an hierarchical path with static segments, named parameters and catch-all parameters. | 
+| Properties  | Vec<[Property Type](./Model_Property_Type.md)> | The properties which are applied on entity or relation instances. |                                                                                                    |
+| Extensions  | Vec<[Extension](./Model_Extension.md)>         | A list of extensions which contains additional information        |                                                                                                    |
 
 ## ER Diagram
 

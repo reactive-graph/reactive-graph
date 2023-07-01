@@ -13,7 +13,7 @@ Entity instances can be uniquely identified via a UUID. This is particularly imp
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.
 
-```admonish info UUIDs
+```admonish info title="UUIDs"
 * UUIDs are unique and unique across distributed systems
 * UUIDs can be represented as string and as a 128 bit unsigned integer
 ```
@@ -85,32 +85,27 @@ graph LR;
 ```mermaid
 erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
+        string instanceId
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -123,10 +118,10 @@ erDiagram
     Relation-Instance o{--|| Relation-Type : is-a
     Property-Instance o{--|| Property-Type : is-a
     Entity-Instance o{--|| Entity-Type : is-a
-    Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Entity-Type ||--}o Relation-Type : outbound
     Entity-Type ||--}o Relation-Type : inbound
+    Entity-Type ||--}o Property-Type : defines
 ```
 
 ## GraphQL

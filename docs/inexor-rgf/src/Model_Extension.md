@@ -20,6 +20,7 @@ activated, the extension is present but not used.
 
 | Field     | DataType | Description                        |
 |-----------|----------|------------------------------------|
+| Namespace | String   | The namespace                      |
 | Name      | String   | The name of the extension          |
 | Extension | JSON     | The extension as schema-less JSON. |
 
@@ -28,12 +29,16 @@ activated, the extension is present but not used.
 ```mermaid
 erDiagram
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Entity-Type ||--}o Extension : has
     Relation-Type ||--}o Extension : has
+    Flow-Type ||--}o Extension : has
     Property-Type ||--}o Extension : has
+    Entity-Instance ||--}o Extension : has
+    Relation-Instance ||--}o Extension : has
 ```
 
 ## List of known extensions

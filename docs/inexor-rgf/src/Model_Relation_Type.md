@@ -15,10 +15,9 @@ appearance of a connector of this type in the flow editor.
 | Field         | DataType                                       | Description                                                                           |
 |---------------|------------------------------------------------|---------------------------------------------------------------------------------------|
 | Outbound Type | [EntityType](./Model_Entity_Type.md)           | The entity type of the outbound entity instance                                       |
-| Name          | String                                         | The name of the relation type                                                         |
-| Full Name     | String                                         | The full name of the relation type                                                    |
-| Inbound Type  | [EntityType](./Model_Entity_Type.md)           | The entity type of the inbound entity instance                                        |
 | Namespace     | String                                         | The namespace                                                                         |
+| Name          | String                                         | The name of the relation type                                                         |
+| Inbound Type  | [EntityType](./Model_Entity_Type.md)           | The entity type of the inbound entity instance                                        |
 | Description   | String                                         | Textual description of the entity type                                                |
 | Components    | Vec<[Component](./Model_Component.md)>         | The components which composes the relation type. These provides additional properties |
 | Properties    | Vec<[Property Type](./Model_Property_Type.md)> | The additional properties on relation instances                                       |
@@ -36,32 +35,31 @@ graph LR;
 ```mermaid
 erDiagram
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string uuid
+        string instanceId
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Component {
+        string namespace
         string name
-        string description
     }
     Property-Type {
+        string namespace
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Relation-Type ||--}o Component : composes
     Relation-Type o{--|| Entity-Type : outbound

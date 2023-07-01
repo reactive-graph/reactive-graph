@@ -24,6 +24,13 @@ graph TD;
     EI(Entity Instance)--->PI1;
     EI(Entity Instance)--->PI2;
     EI(Entity Instance)--->PI3;
+
+    PI4(Property Instance);
+    PI5(Property Instance);
+    PI6(Property Instance);
+    RI(Relation Instance)--->PI4;
+    RI(Relation Instance)--->PI5;
+    RI(Relation Instance)--->PI6;
 ```
 
 ## ER Diagram
@@ -32,9 +39,9 @@ graph TD;
 erDiagram
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -43,13 +50,9 @@ erDiagram
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
-        string namespace
-        string description
+        string instanceId
     }
     Property-Type ||--}o Property-Instance : is-a
     Entity-Instance ||--}o Property-Instance : stores

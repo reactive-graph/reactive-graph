@@ -5,13 +5,14 @@ the name, the data type and whether the property is an input or an output.
 
 ## Data Model
 
-| Field       | DataType                               | Description                                                            | Example |
-|-------------|----------------------------------------|------------------------------------------------------------------------|---------|
-| Name        | String                                 | The name of the property                                               | name    |
-| Description | String                                 | Textual description of the property                                    |         |
-| DataType    | DataType                               | The data type of the property                                          |         |
-| SocketType  | SocketType                             | The socket type                                                        |         |
-| Extensions  | Vec<[Extension](./Model_Extension.md)> | The extensions contains additional information about the property type |         |
+| Field       | DataType                               | Description                                                            | Example                |
+|-------------|----------------------------------------|------------------------------------------------------------------------|------------------------|
+| Name        | String                                 | The name of the property                                               | name                   |
+| Description | String                                 | Textual description of the property                                    | The name of something. |
+| DataType    | DataType                               | The data type of the property                                          | string                 |
+| SocketType  | SocketType                             | The socket type                                                        | input                  |
+| Mutability  | Mutability                             | Defines if the property is mutable or immutable                        | immutable              |
+| Extensions  | Vec<[Extension](./Model_Extension.md)> | The extensions contains additional information about the property type |                        |
 
 ## ER Diagram
 
@@ -22,8 +23,10 @@ erDiagram
         string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
@@ -31,6 +34,7 @@ erDiagram
     Component ||--}o Property-Type : defines
     Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
+    Flow-Type ||--}o Property-Type : defines
 ```
 
 ## Enum Data Type
@@ -58,6 +62,15 @@ is used as an input.
 | None    | The property doesn't act as input or output socket                   | 
 | Input   | The property acts as input socket and accepts incoming connections   |
 | Output  | The property acts as output socket and accepts outgoing connections  |
+
+## Enum Mutability
+
+Defines if the property is either mutable or immutable.
+
+| Value     | Description               |
+|-----------|---------------------------|
+| Mutable   | The property is mutable   |
+| Immutable | The property is immutable |
 
 ## Where is the value???
 
