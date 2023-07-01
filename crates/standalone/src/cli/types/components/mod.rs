@@ -9,9 +9,9 @@ use tabled::Table;
 
 use crate::cli::types::components::args::ComponentsArgs;
 use crate::cli::types::components::commands::ComponentsCommands;
-use crate::client::schema::component::Component;
 use crate::client::types::components::queries::CreateComponentVariables;
 use crate::client::InexorRgfClient;
+use crate::model::Component;
 
 pub(crate) mod args;
 pub(crate) mod commands;
@@ -56,6 +56,7 @@ fn print_component(component: Component) {
 }
 
 fn print_components(components: Vec<Component>) {
+    let components: Vec<crate::table_model::types::component::Component> = components.into_iter().map(|p| p.into()).collect();
     let table = Table::new(components)
         .with(Style::extended())
         .with(

@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::api::CommandManager;
 use crate::api::InstanceService;
 use crate::api::PluginContainerManager;
+use crate::api::RemotesManager;
 use crate::graphql::query::system::GraphQLPlugin;
 use crate::graphql::query::GraphQLCommand;
 use crate::graphql::query::GraphQLInstanceInfo;
@@ -74,6 +75,13 @@ impl System {
         Ok(GraphQLInstanceInfo { instance_info })
     }
 
+    /// Returns the list of remotes.
+    async fn remotes(&self, context: &Context<'_>) -> Result<Vec<GraphQLInstanceInfo>> {
+        let remotes_manager = context.data::<Arc<dyn RemotesManager>>()?;
+        Ok(remotes_manager.get_all().into_iter().map(GraphQLInstanceInfo::from).collect())
+    }
+
+    /// Returns the commands.
     async fn commands(&self, context: &Context<'_>, name: Option<String>) -> Result<Vec<GraphQLCommand>> {
         let command_manager = context.data::<Arc<dyn CommandManager>>()?;
         Ok(command_manager

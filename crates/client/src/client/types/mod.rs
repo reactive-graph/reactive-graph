@@ -1,4 +1,4 @@
-use crate::client::types::components::Components;
+use crate::client::types::components::api::Components;
 use crate::client::InexorRgfClient;
 use std::sync::Arc;
 

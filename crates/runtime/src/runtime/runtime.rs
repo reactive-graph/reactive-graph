@@ -110,6 +110,8 @@ pub trait Runtime: Send + Sync {
 
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager>;
 
+    fn get_remotes_manager(&self) -> Arc<dyn RemotesManager>;
+
     fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager>;
 
     fn get_web_resource_manager(&self) -> Arc<dyn WebResourceManager>;
@@ -150,6 +152,7 @@ pub struct RuntimeImpl {
     relation_edge_manager: Wrc<dyn RelationEdgeManager>,
     relation_instance_manager: Wrc<dyn RelationInstanceManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+    remotes_manager: Wrc<dyn RemotesManager>,
     runtime_types_provider: Wrc<dyn RuntimeTypesProvider>,
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
     plugin_context_factory: Wrc<dyn PluginContextFactory>,
@@ -446,6 +449,10 @@ impl Runtime for RuntimeImpl {
 
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager> {
         self.relation_type_manager.clone()
+    }
+
+    fn get_remotes_manager(&self) -> Arc<dyn RemotesManager> {
+        self.remotes_manager.clone()
     }
 
     fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager> {

@@ -52,4 +52,15 @@ impl GraphQLInstanceInfo {
     async fn plugin_api_version(&self) -> String {
         self.instance_info.plugin_api_version.clone()
     }
+
+    /// When the remote instance was last seen (ISO8601 / RFC3339).
+    async fn last_seen(&self) -> String {
+        self.instance_info.last_seen.to_rfc3339()
+    }
+}
+
+impl From<InstanceInfo> for GraphQLInstanceInfo {
+    fn from(instance_info: InstanceInfo) -> Self {
+        GraphQLInstanceInfo { instance_info }
+    }
 }

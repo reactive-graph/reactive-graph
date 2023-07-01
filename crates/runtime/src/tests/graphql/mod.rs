@@ -1,2 +1,4 @@
-mod instance_info;
+mod instances;
 mod snapshots;
+mod system;
+mod types;

@@ -265,6 +265,16 @@ impl RuntimeBuilder<ConfigFilesLoaded, Finished> {
         self.runtime
     }
 
+    pub async fn with_runtime<F, C>(self, f: C) -> RuntimeBuilder<ConfigFilesLoaded, Finished>
+    where
+        F: Future<Output = ()>,
+        C: FnOnce(Arc<dyn Runtime>) -> F,
+    {
+        let runtime = self.runtime.clone();
+        f(runtime).await;
+        self
+    }
+
     pub async fn pre_shutdown(self) -> RuntimeBuilder<ConfigFilesLoaded, PreShutdown> {
         self.runtime.pre_shutdown().await;
         RuntimeBuilder {

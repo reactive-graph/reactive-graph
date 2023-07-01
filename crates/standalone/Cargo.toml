@@ -38,11 +38,14 @@ actix-web = { workspace = true, features = ["rustls"] }
 clap = { workspace = true, features = ["derive", "env"] }
 log = { workspace = true, features = ["std", "serde"] }
 log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
 tabled = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread"] }
 
 inexor-rgf-rt = { version = "0.9.1", path = "../runtime" }
 inexor-rgf-core-model = { version = "0.9.1", path = "../core/model" }
+inexor-rgf-model-runtime = { version = "0.9.1", path = "../model/runtime" }
 inexor-rgf-client = { version = "0.9.1", path = "../client" }
 
 [[bin]]

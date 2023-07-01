@@ -15,10 +15,12 @@ use crate::server::server;
 
 use inexor_rgf_client as client;
 use inexor_rgf_core_model as model;
+use inexor_rgf_model_runtime as model_runtime;
 
 mod cli;
 mod cli_args;
 mod server;
+mod table_model;
 
 #[global_allocator]
 static ALLOCATOR: System = System;

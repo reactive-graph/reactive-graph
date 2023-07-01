@@ -2,11 +2,10 @@ use clap::ArgAction::SetTrue;
 use clap::Args;
 
 use crate::cli::commands::ClientCommands;
-use crate::client::InexorClientConfig;
-use crate::client::DEFAULT_ENDPOINT;
-use crate::client::DEFAULT_HOSTNAME;
-use crate::client::DEFAULT_PORT;
-use crate::client::DEFAULT_USER_AGENT;
+use crate::model_runtime::InstanceAddress;
+use crate::model_runtime::DEFAULT_ENDPOINT;
+use crate::model_runtime::DEFAULT_HOSTNAME;
+use crate::model_runtime::DEFAULT_PORT;
 
 #[derive(Args, Debug, Clone)]
 pub struct ClientArgs {
@@ -34,15 +33,14 @@ pub struct ClientArgs {
     pub(crate) commands: Option<ClientCommands>,
 }
 
-impl From<&ClientArgs> for InexorClientConfig {
+impl From<&ClientArgs> for InstanceAddress {
     fn from(client_args: &ClientArgs) -> Self {
-        InexorClientConfig {
-            hostname: client_args.hostname.clone().unwrap_or(DEFAULT_HOSTNAME.to_string()),
-            port: client_args.port.unwrap_or(DEFAULT_PORT),
-            secure: client_args.secure.unwrap_or(false),
-            endpoint: client_args.endpoint.clone().unwrap_or(DEFAULT_ENDPOINT.to_string()),
-            user_agent: DEFAULT_USER_AGENT.to_string(),
-            bearer: client_args.bearer.clone(),
-        }
+        InstanceAddress::builder()
+            .hostname(client_args.hostname.clone().unwrap_or(DEFAULT_HOSTNAME.to_string()))
+            .port(client_args.port.unwrap_or(DEFAULT_PORT))
+            .secure(client_args.secure.unwrap_or_default())
+            .endpoint(client_args.endpoint.clone().unwrap_or(DEFAULT_ENDPOINT.to_string()))
+            .bearer(client_args.bearer.clone())
+            .build()
     }
 }

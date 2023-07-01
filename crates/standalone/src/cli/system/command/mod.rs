@@ -18,6 +18,10 @@ pub(crate) async fn execute_command(client: &Arc<InexorRgfClient>, command_args:
             InexorRgfClientExecutionError::FailedToParseResponse(e) => {
                 eprintln!("[ERROR] Failed to parse result\n{e:?}");
             }
+            InexorRgfClientExecutionError::GraphQlError(e) => {
+                let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{}", graphql_error)).collect();
+                eprintln!("[ERROR] Failed to parse result\n{}", graphql_errors.join("\n"))
+            }
         },
     }
 }

@@ -1,7 +1,10 @@
+use crate::InstanceAddress;
+use chrono::DateTime;
+use chrono::Utc;
 use serde::Deserialize;
 use serde::Serialize;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InstanceInfo {
     /// The name of the instance.
@@ -36,4 +39,31 @@ pub struct InstanceInfo {
 
     /// The plugin api version.
     pub plugin_api_version: String,
+
+    /// When the remote instance was last seen.
+    pub last_seen: DateTime<Utc>,
+}
+
+impl InstanceInfo {
+    pub fn address(&self) -> InstanceAddress {
+        InstanceAddress::new(self.hostname.clone(), self.port, self.secure)
+    }
+}
+
+impl PartialEq for InstanceInfo {
+    fn eq(&self, other: &Self) -> bool {
+        self.hostname == other.hostname && self.port == other.port && self.secure == other.secure
+    }
+}
+
+impl PartialEq<InstanceAddress> for InstanceInfo {
+    fn eq(&self, other: &InstanceAddress) -> bool {
+        self.hostname == other.hostname && self.port == other.port && self.secure == other.secure
+    }
+}
+
+impl From<InstanceInfo> for InstanceAddress {
+    fn from(instance_info: InstanceInfo) -> Self {
+        InstanceAddress::new(instance_info.hostname, instance_info.port, instance_info.secure)
+    }
 }

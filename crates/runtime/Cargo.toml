@@ -36,12 +36,14 @@ actix-web-extras = { workspace = true }
 async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { workspace = true }
 async-trait = { workspace = true }
+chrono = { workspace = true }
 convert_case = { workspace = true }
 crossbeam = { workspace = true }
 dashmap = { workspace = true }
 futures = { workspace = true }
 futures-timer = { workspace = true }
 futures-util = { workspace = true }
+gql_client = "1.0.7"
 http = { workspace = true }
 indradb-lib = { workspace = true }
 json5 = { workspace = true }
@@ -56,6 +58,7 @@ path-tree = { workspace = true }
 portpicker = { workspace = true }
 rand = { workspace = true }
 rayon = { workspace = true }
+reqwest = { workspace = true }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 rustls = { workspace = true }
 rustls-pemfile = { workspace = true }

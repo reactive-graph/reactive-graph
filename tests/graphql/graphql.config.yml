@@ -1,0 +1,15 @@
+schema: ./schema.graphql
+extensions:
+  endpoints:
+    InexorReactiveGraphFlow@localhost:
+      url: http://localhost:31415/graphql
+      introspect: true
+    InexorReactiveGraphFlow@localhost2:
+      url: http://localhost:31416/graphql
+      introspect: true
+    InexorReactiveGraphFlow@localhost3:
+      url: http://localhost:31417/graphql
+      introspect: true
+    InexorReactiveGraphFlow@https:
+      url: https://localhost:31415/graphql
+      introspect: false

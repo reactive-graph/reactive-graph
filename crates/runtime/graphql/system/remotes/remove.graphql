@@ -1,0 +1,11 @@
+mutation RemoveRemote($hostname: String!, $port: Int!, $secure: Boolean!) {
+  system {
+    remotes {
+      remove(
+        hostname: $hostname
+        port: $port
+        secure: $secure
+      )
+    }
+  }
+}

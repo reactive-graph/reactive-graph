@@ -1,4 +1,4 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+# This file was generated. Do not edit manually.
 
 schema {
   query: Query
@@ -75,6 +75,8 @@ type Component {
   ): [PropertyType!]!
   "Query which relation types are using this component"
   relationTypes: [RelationType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 "A component behaviour."
@@ -207,6 +209,8 @@ type EntityType {
     "If true, the properties are sorted by name"
     sort: Boolean
   ): [PropertyType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 """
@@ -305,6 +309,8 @@ type FlowType {
   relationInstances: [RelationInstance!]!
   "The entity type of the flow type."
   type: EntityType
+  "Type category."
+  typeCategory: TypeCategory
   "The variables of the flow type."
   variables(name: String): [PropertyType!]!
 }
@@ -315,6 +321,8 @@ type InstanceInfo {
   gitBranch: String!
   gitCommit: String!
   hostname: String!
+  "When the remote instance was last seen (ISO8601 / RFC3339)."
+  lastSeen: String!
   name: String!
   pluginApiVersion: String!
   port: Int!
@@ -732,9 +740,22 @@ type MutationRelationTypes {
   removeProperty(propertyName: String!, type: RelationTypeId!): RelationType!
 }
 
+"Mutations for managing remote instances."
+type MutationRemotes {
+  "Adds a remote."
+  add(hostname: String!, port: Int!, secure: Boolean): InstanceInfo!
+  "Fetches the remotes which are available on the given remote."
+  fetchRemotesFromRemote(hostname: String!, port: Int!, secure: Boolean): [InstanceInfo!]!
+  "Removes a remote."
+  remove(hostname: String!, port: Int!, secure: Boolean): Boolean!
+  "Updates a remote."
+  update(hostname: String!, port: Int!, secure: Boolean): InstanceInfo!
+}
+
 type MutationSystem {
   commands: MutationCommands!
   plugins: MutationPlugins!
+  remotes: MutationRemotes!
 }
 
 "Mutations for types (components, entity types, relation types)."
@@ -967,6 +988,8 @@ type RelationType {
     "If true, the properties are sorted by name"
     sort: Boolean
   ): [PropertyType!]!
+  "Type category."
+  typeCategory: TypeCategory
 }
 
 "Subscriptions for the reactive property instances."
@@ -987,14 +1010,26 @@ type Subscription {
 }
 
 type System {
+  "Returns the commands."
   commands(name: String): [Command!]!
   "Returns the instance information."
   instanceInfo: InstanceInfo!
   plugins(id: UUID, name: String, state: String, stem: String): [Plugin!]!
+  "Returns the list of remotes."
+  remotes: [InstanceInfo!]!
+}
+
+type TypeCategory {
+  components: [Component!]!
+  entityTypes: [EntityType!]!
+  flowTypes: [FlowType!]!
+  name: String!
+  relationTypes: [RelationType!]!
 }
 
 "Search for types (components, entity types or relation types)"
 type Types {
+  categories: [TypeCategory!]!
   """
 
   Search for components

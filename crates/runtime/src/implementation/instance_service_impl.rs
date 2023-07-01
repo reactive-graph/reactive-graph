@@ -1,4 +1,5 @@
 use async_trait::async_trait;
+use chrono::Utc;
 
 use crate::api::ConfigManager;
 use crate::api::InstanceService;
@@ -36,6 +37,7 @@ impl InstanceService for InstanceServiceImpl {
             git_commit: String::from(GIT_COMMIT),
             rustc_version: String::from(RUSTC_VERSION),
             plugin_api_version: String::from(PLUGIN_API_VERSION),
+            last_seen: Utc::now(),
         }
     }
 }
