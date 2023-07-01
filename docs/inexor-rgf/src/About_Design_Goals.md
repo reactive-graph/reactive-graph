@@ -24,12 +24,12 @@ In addition, only what is actually used is loaded. Plugins that are not required
 * [Building Plugins](./Development_Build.md#build-plugins)
 ```
 
-## Core Application
+## Runtime
 
-The core application consists of a few central building blocks. As already mentioned in the introduction, this includes
-a built-in graph database.
+The **Inexor RGF Runtime** (`inexor_rgf_rt`) consists of a few central building blocks. As already mentioned in the
+introduction, this includes a built-in graph database.
 
-Based on this, the type system is managed by the core application. This means that in the business logic layer there is
+Based on this, the type system is managed by the runtime. This means that in the business logic layer there is
 a management service to edit the type system. With the help of these services, new types can be created, queried,
 searched for and deleted.
 
@@ -44,7 +44,10 @@ Finally, the two main approaches to the Reactive Graph Flow are provided.
 One access to the Reactive Graph Flow is the plugin system, which is granted access to the business logic layer of the
 core application via the plugin API. Type system and reactive instance system are available to every (Rust) plugin.
 
-Second access is the GraphQL server, which also provides access to the type system and the reactive instance system.
+Second access is the GraphQL server, which also provides access to the type system and the reactive instance system. It
+is possible to instantiate the runtime without an HTTP/GraphQL server. But still you can use the internal
+**GraphQL Query Service** to execute GraphQL queries and mutations. For more information about the possible use cases,
+please take a look at the [System Architecture](./System_Architecture.md).
 
 In addition, there are cross-sectional functionalities such as lifecycle management, logging and configuration.
 
@@ -56,13 +59,13 @@ The application should be able to be adapted to the application by means of conf
 * [GraphQL API](./GraphQL_API.md)
 * [Plugin API](./Plugin_System.md)
 * [Data Model](./Model.md)
+* [System Architecture](./System_Architecture.md)
 ```
 
-## Core Application Non-Goals
+## Runtime Non-Goals
 
-This section explains which goals are not pursued in the core application.
+This section explains which goals are not pursued in the runtime.
 
-* Commands
 * Configurations for purposes other than logging, plugins, GraphQL server
 * System-Variables
 * Meta data
@@ -72,5 +75,19 @@ This section explains which goals are not pursued in the core application.
 * Flow-Editor
 * Graphics-Rendering
 * Octree-Editor
+
+## Usage Goals
+
+The application should be able to be used as required in the specific case:
+
+* Just run and use it
+* Let two or multiple instances talk to each other 
+* Use the runtime as integration bus for different applications or systems
+* Embed the runtime in your own application which empowers you have a platform
+  for an embedded zero code flow control and an embedded graph database
+* Embed any number of runtimes in your simulation application
+* Use either the CLI, the flow editor or any other tool to manipulate the type system and/or the instance system
+
+[System Architecture](./System_Architecture.md)
 
 <img src="images/rgf_logo_k1_h1_sm.png" />
