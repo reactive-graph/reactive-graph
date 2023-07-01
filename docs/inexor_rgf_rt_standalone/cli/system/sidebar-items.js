@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["command","plugin"]};
+window.SIDEBAR_ITEMS = {"mod":["command","instance","plugin","remotes"]};

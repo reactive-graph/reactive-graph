@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["_components_arguments","_entities_arguments","_flows_arguments","_relations_arguments"],"struct":["__typename","components","countComponents","countEntityTypes","countFlowTypes","countRelationTypes","entities","flows","namespaces","relations"]};
+window.SIDEBAR_ITEMS = {"mod":["_components_arguments","_entities_arguments","_flows_arguments","_relations_arguments"],"struct":["__typename","categories","components","countComponents","countEntityTypes","countFlowTypes","countRelationTypes","entities","flows","namespaces","relations"]};

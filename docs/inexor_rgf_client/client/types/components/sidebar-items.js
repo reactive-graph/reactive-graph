@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["queries"],"struct":["Components"]};
+window.SIDEBAR_ITEMS = {"mod":["api","queries"]};

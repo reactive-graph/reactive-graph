@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["PropertyType","PropertyTypeDefinition","PropertyTypeDefinitions","PropertyTypes"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["AddRemote","AddRemoteMutationRemotes","AddRemoteMutationSystem","AddRemoteVariables","AddRemoteVariablesFields","GetAllRemotes","GetAllRemotesSystem"]};
