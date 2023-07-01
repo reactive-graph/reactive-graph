@@ -72,6 +72,7 @@
 - [Reactive Graph Patterns](./Reactive_Graph_Patterns.md)
   - [Generators & Actions](./Reactive_Graph_Patterns_Generator_Action.md)
 - [Builders](./Builders.md)
+- [System Architecture](./System_Architecture.md)
 - [Development](./Development.md)
   - [Supported Platforms](./Development_Supported_Platforms.md)
   - [Build](./Development_Build.md)
