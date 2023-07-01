@@ -23,11 +23,13 @@ pub struct InstanceAddress {
     pub secure: bool,
 
     /// The relative URL of the GraphQL endpoint, by default "/graphql".
-    #[builder(default=DEFAULT_ENDPOINT.to_owned())]
+    #[builder(default = DEFAULT_ENDPOINT.to_owned())]
+    #[serde(default = "default_endpoint")]
     pub endpoint: String,
 
     /// The user agent.
-    #[builder(default=DEFAULT_USER_AGENT.to_owned())]
+    #[builder(default = DEFAULT_USER_AGENT.to_owned())]
+    #[serde(default = "default_user_agent")]
     pub user_agent: String,
 
     /// The authentication token.
@@ -71,4 +73,12 @@ impl Default for InstanceAddress {
             bearer: None,
         }
     }
+}
+
+fn default_endpoint() -> String {
+    DEFAULT_ENDPOINT.to_owned()
+}
+
+fn default_user_agent() -> String {
+    DEFAULT_USER_AGENT.to_owned()
 }
