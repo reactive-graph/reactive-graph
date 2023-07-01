@@ -48,8 +48,6 @@ async fn test_get_all_remotes() {
             // GQL: Expect that one remote exist
             assert_eq!(query_get_all_remotes(&query_service).await.len(), 1);
         })
-        // .await
-        // .do_not_run()
         .await
         .pre_shutdown()
         .await
