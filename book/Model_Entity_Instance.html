@@ -178,26 +178,16 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
-<div id="admonition-error-rendering-admonishment" class="admonition bug">
+<div id="admonition-uuids" class="admonition info">
 <div class="admonition-title">
-<p>Error rendering admonishment</p>
-<p><a class="admonition-anchor-link" href="#admonition-error-rendering-admonishment"></a></p>
+<p>UUIDs</p>
+<p><a class="admonition-anchor-link" href="#admonition-uuids"></a></p>
 </div>
 <div>
-<p>Failed with:</p>
-<pre><code>TOML parsing error: TOML parse error at line 1, column 6
-  |
-1 | info UUIDs
-  |      ^
-expected `.`, `=`
-
-</code></pre>
-<p>Original markdown input:</p>
-<pre><code>```admonish info UUIDs
-* UUIDs are unique and unique across distributed systems
-* UUIDs can be represented as string and as a 128 bit unsigned integer
-```
-</code></pre>
+<ul>
+<li>UUIDs are unique and unique across distributed systems</li>
+<li>UUIDs can be represented as string and as a 128 bit unsigned integer</li>
+</ul>
 </div>
 </div>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
@@ -258,32 +248,27 @@ label and transports significantly more information about what is actually happe
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
+        string instanceId
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -296,10 +281,10 @@ label and transports significantly more information about what is actually happe
     Relation-Instance o{--|| Relation-Type : is-a
     Property-Instance o{--|| Property-Type : is-a
     Entity-Instance o{--|| Entity-Type : is-a
-    Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Entity-Type ||--}o Relation-Type : outbound
     Entity-Type ||--}o Relation-Type : inbound
+    Entity-Type ||--}o Property-Type : defines
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">

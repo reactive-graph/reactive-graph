@@ -174,9 +174,10 @@ the name, the data type and whether the property is an input or an output.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td><td>name</td></tr>
-<tr><td>Description</td><td>String</td><td>Textual description of the property</td><td></td></tr>
-<tr><td>DataType</td><td>DataType</td><td>The data type of the property</td><td></td></tr>
-<tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td></td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the property</td><td>The name of something.</td></tr>
+<tr><td>DataType</td><td>DataType</td><td>The data type of the property</td><td>string</td></tr>
+<tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td>input</td></tr>
+<tr><td>Mutability</td><td>Mutability</td><td>Defines if the property is mutable or immutable</td><td>immutable</td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>The extensions contains additional information about the property type</td><td></td></tr>
 </tbody></table>
 </div>
@@ -187,8 +188,10 @@ the name, the data type and whether the property is an input or an output.</p>
         string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
@@ -196,6 +199,7 @@ the name, the data type and whether the property is an input or an output.</p>
     Component ||--}o Property-Type : defines
     Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
+    Flow-Type ||--}o Property-Type : defines
 </pre>
 <h2 id="enum-data-type"><a class="header" href="#enum-data-type">Enum Data Type</a></h2>
 <p>A property has a data type. This is derived from serde_json::Value and maps JSON values or documents.</p>
@@ -217,6 +221,13 @@ is used as an input.</p>
 <tr><td>None</td><td>The property doesn't act as input or output socket</td></tr>
 <tr><td>Input</td><td>The property acts as input socket and accepts incoming connections</td></tr>
 <tr><td>Output</td><td>The property acts as output socket and accepts outgoing connections</td></tr>
+</tbody></table>
+</div>
+<h2 id="enum-mutability"><a class="header" href="#enum-mutability">Enum Mutability</a></h2>
+<p>Defines if the property is either mutable or immutable.</p>
+<div class="table-wrapper"><table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
+<tr><td>Mutable</td><td>The property is mutable</td></tr>
+<tr><td>Immutable</td><td>The property is immutable</td></tr>
 </tbody></table>
 </div>
 <h2 id="where-is-the-value"><a class="header" href="#where-is-the-value">Where is the value???</a></h2>

@@ -183,10 +183,11 @@ each have a position. But here, too, they have little in common. And yet they ha
 The properties of all components are merged.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>core</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the component</td><td>labeled</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the component</td><td>The label is an hierarchical path with static segments, named parameters and catch-all parameters.</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The properties which are applied on entity or relation instances.</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
 </tbody></table>
 </div>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>

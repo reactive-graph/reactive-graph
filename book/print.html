@@ -1180,10 +1180,11 @@ each have a position. But here, too, they have little in common. And yet they ha
 The properties of all components are merged.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>core</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the component</td><td>labeled</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the component</td><td>The label is an hierarchical path with static segments, named parameters and catch-all parameters.</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The properties which are applied on entity or relation instances.</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
 </tbody></table>
 </div>
 <h2 id="er-diagram-1"><a class="header" href="#er-diagram-1">ER Diagram</a></h2>
@@ -1222,8 +1223,8 @@ The properties of all components are merged.</p>
 defines which components it is combined from. Additional properties can also be defined.</p>
 <h2 id="data-model-1"><a class="header" href="#data-model-1">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>core</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the entity type</td><td>player</td></tr>
-<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>logical_gates</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td><td></td></tr>
 <tr><td>Components</td><td>Vec&lt;<a href="./Model_Component.html">Component</a>&gt;</td><td>The components which composes the entity type. These provides additional properties</td><td></td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on entity instances</td><td></td></tr>
@@ -1233,36 +1234,32 @@ defines which components it is combined from. Additional properties can also be 
 <h2 id="er-diagram-2"><a class="header" href="#er-diagram-2">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Component {
+        string namespace
         string name
-        string description
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
-    Entity-Type o{--}o Component : composes
     Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Component ||--}o Property-Type : defines
@@ -1273,6 +1270,7 @@ defines which components it is combined from. Additional properties can also be 
     Relation-Type ||--}o Extension : has
     Property-Type ||--}o Extension : has
     Entity-Instance ||--}o Entity-Type : is-a
+    Entity-Type o{--}o Component : composes
 </pre>
 <h2 id="graphql-1"><a class="header" href="#graphql-1">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">
@@ -1297,10 +1295,9 @@ appearance of a connector of this type in the flow editor.</p>
 <h2 id="data-model-2"><a class="header" href="#data-model-2">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the outbound entity instance</td></tr>
-<tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
-<tr><td>Full Name</td><td>String</td><td>The full name of the relation type</td></tr>
-<tr><td>Inbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the inbound entity instance</td></tr>
 <tr><td>Namespace</td><td>String</td><td>The namespace</td></tr>
+<tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
+<tr><td>Inbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the inbound entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
 <tr><td>Components</td><td>Vec&lt;<a href="./Model_Component.html">Component</a>&gt;</td><td>The components which composes the relation type. These provides additional properties</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on relation instances</td></tr>
@@ -1314,32 +1311,31 @@ appearance of a connector of this type in the flow editor.</p>
 <h2 id="er-diagram-3"><a class="header" href="#er-diagram-3">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string uuid
+        string instanceId
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Component {
+        string namespace
         string name
-        string description
     }
     Property-Type {
+        string namespace
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Relation-Type ||--}o Component : composes
     Relation-Type o{--|| Entity-Type : outbound
@@ -1372,9 +1368,10 @@ the name, the data type and whether the property is an input or an output.</p>
 <h2 id="data-model-3"><a class="header" href="#data-model-3">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td><td>name</td></tr>
-<tr><td>Description</td><td>String</td><td>Textual description of the property</td><td></td></tr>
-<tr><td>DataType</td><td>DataType</td><td>The data type of the property</td><td></td></tr>
-<tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td></td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the property</td><td>The name of something.</td></tr>
+<tr><td>DataType</td><td>DataType</td><td>The data type of the property</td><td>string</td></tr>
+<tr><td>SocketType</td><td>SocketType</td><td>The socket type</td><td>input</td></tr>
+<tr><td>Mutability</td><td>Mutability</td><td>Defines if the property is mutable or immutable</td><td>immutable</td></tr>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>The extensions contains additional information about the property type</td><td></td></tr>
 </tbody></table>
 </div>
@@ -1385,8 +1382,10 @@ the name, the data type and whether the property is an input or an output.</p>
         string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
@@ -1394,6 +1393,7 @@ the name, the data type and whether the property is an input or an output.</p>
     Component ||--}o Property-Type : defines
     Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
+    Flow-Type ||--}o Property-Type : defines
 </pre>
 <h2 id="enum-data-type"><a class="header" href="#enum-data-type">Enum Data Type</a></h2>
 <p>A property has a data type. This is derived from serde_json::Value and maps JSON values or documents.</p>
@@ -1417,13 +1417,120 @@ is used as an input.</p>
 <tr><td>Output</td><td>The property acts as output socket and accepts outgoing connections</td></tr>
 </tbody></table>
 </div>
+<h2 id="enum-mutability"><a class="header" href="#enum-mutability">Enum Mutability</a></h2>
+<p>Defines if the property is either mutable or immutable.</p>
+<div class="table-wrapper"><table><thead><tr><th>Value</th><th>Description</th></tr></thead><tbody>
+<tr><td>Mutable</td><td>The property is mutable</td></tr>
+<tr><td>Immutable</td><td>The property is immutable</td></tr>
+</tbody></table>
+</div>
 <h2 id="where-is-the-value"><a class="header" href="#where-is-the-value">Where is the value???</a></h2>
 <p>A property type only contains the definition of a property, but no data, since it is a type.</p>
 <p>When an entity instance or a relation instance is created, the property types are used to create
 <a href="./Model_Property_Instance.html">property instances</a>. The property instances then contain a data stream and the last
 value.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model-flow-type"><a class="header" href="#model-flow-type">Model: Flow Type</a></h1>
-<p>TODO</p>
+<p>A flow type consists of entity instances and relation instances. Flow types are not runnable by itself, but you can
+create flow instances out of them.</p>
+<h2 id="wrapper-entity-instance"><a class="header" href="#wrapper-entity-instance">Wrapper Entity Instance</a></h2>
+<p>Flow types can have input and output properties. These are provided by a so-called wrapper-entity-instance. The wrapper
+entity instance is the only mandatory entity instance of a flow type.</p>
+<p>For the outside view, the <strong>input properties</strong> of the wrapper entity instance are the inputs. Inside the flow the
+<strong>input properties</strong> are <strong>output properties</strong> which can be consumed by the entity instances and relation instances
+within the flow type.</p>
+<p>On the other hand, the <strong>output properties</strong> of the wrapper entity instance are outputs for the outside view. But
+inside the flow the <strong>output properties</strong> of the wrapper entity instance are inputs for the entity instances and
+relation instances within the flow type.</p>
+<h2 id="nested-flow-types--subflows--subprograms"><a class="header" href="#nested-flow-types--subflows--subprograms">Nested Flow Types / Subflows / Subprograms</a></h2>
+<p>Nested flow types are possible. The outer flow type contains entity instances and relation
+instances which can interact with the wrapper entity instance and their properties of the inner flow type. This way it
+is possible to &quot;call&quot; subprograms / subflows / subactivities. The entity instances and relation instances of the inner
+flow type are hidden for the outer flow type.</p>
+<h2 id="data-model-4"><a class="header" href="#data-model-4">Data Model</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>logical</td></tr>
+<tr><td>Name</td><td>String</td><td>The name of the flow type</td><td>and3</td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the flow type</td><td>If all three input booleans are true, the output is true.</td></tr>
+<tr><td>Wrapper Entity Instance</td><td><a href="./Model_Entity_Instance.html">Entity Instance</a></td><td>The wrapper entity instance</td><td></td></tr>
+<tr><td>Entity Instances</td><td>Vec&lt;<a href="./Model_Entity_Instance.html">Entity Instance</a>&gt;</td><td>The entity instances which are contained in this flow</td><td></td></tr>
+<tr><td>Relation Instances</td><td>Vec&lt;<a href="./Model_Relation_Instance.html">Relation Instance</a>&gt;</td><td>The relation instances which are contained in this flow</td><td></td></tr>
+<tr><td>Variables</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The variables. Variables will be replaced by instantiation of a flow instance</td><td></td></tr>
+<tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="er-diagram-5"><a class="header" href="#er-diagram-5">ER Diagram</a></h2>
+<pre class="mermaid">erDiagram
+    Flow-Type {
+        string namespace
+        string name
+    }
+    Entity-Type {
+        string namespace
+        string name
+    }
+    Entity-Instance {
+        string id
+        string label
+    }
+    Extension {
+        string namespace
+        string name
+        JSON extension
+    }
+    Component {
+        string namespace
+        string name
+    }
+    Property-Type {
+        string name
+        enum DataType
+        enum SocketType
+    }
+    Relation-Type {
+        string namespace
+        string name
+    }
+    Relation-Instance {
+        string instanceId
+    }
+    Property-Instance {
+        string name
+        JSON value
+    }
+    Component ||--}o Property-Type : defines
+    Entity-Type o{--}o Component : composes
+    Entity-Type ||--}o Property-Type : defines
+    Entity-Type ||--}o Extension : has
+    Entity-Type ||--}o Relation-Type : outbound
+    Entity-Type ||--}o Relation-Type : inbound
+    Component ||--}o Extension : has
+    Relation-Type ||--}o Property-Type : defines
+    Relation-Type o{--}o Component : composes
+    Relation-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
+    Entity-Instance ||--}o Entity-Type : is-a
+    Relation-Instance ||--}o Property-Instance : stores
+    Entity-Instance ||--}o Property-Instance : stores
+    Relation-Instance o{--|| Relation-Type : is-a
+    Property-Instance o{--|| Property-Type : is-a
+    Flow-Type ||--|| Entity-Instance : has-wrapper
+    Flow-Type o{--}o Entity-Instance : has
+    Flow-Type o{--}o Relation-Instance : has
+    Flow-Type ||--}o Property-Type : has-variables
+    Flow-Type ||--}o Extension : has
+</pre>
+<h2 id="graphql-3"><a class="header" href="#graphql-3">GraphQL</a></h2>
+<div id="admonition-graphql" class="admonition tip">
+<div class="admonition-title">
+<p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="Model_Flow_Type.html#admonition-graphql"></a></p>
+</div>
+<div>
+<ul>
+<li><a href="./GraphQL_API_Flow_Types.html">GraphQL Queries and Mutations</a></li>
+</ul>
+</div>
+</div>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model-extension"><a class="header" href="#model-extension">Model: Extension</a></h1>
 <p>There is information about a type that is useful for certain cases, but at the same time is not needed in every case.
 The data model of the types should remain lean and not be overloaded. Nevertheless, future changes and new
@@ -1438,21 +1545,26 @@ is called &quot;flow_shape&quot; and contains information about the color, size,
 shows that an extension can potentially contain very complex data structures and at the same time that an extension
 covers a case that is not relevant in all cases. For example, if the &quot;Flow Editor&quot; plugin is not installed or not
 activated, the extension is present but not used.</p>
-<h2 id="data-model-4"><a class="header" href="#data-model-4">Data Model</a></h2>
+<h2 id="data-model-5"><a class="header" href="#data-model-5">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the extension</td></tr>
 <tr><td>Extension</td><td>JSON</td><td>The extension as schema-less JSON.</td></tr>
 </tbody></table>
 </div>
-<h2 id="er-diagram-5"><a class="header" href="#er-diagram-5">ER Diagram</a></h2>
+<h2 id="er-diagram-6"><a class="header" href="#er-diagram-6">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Entity-Type ||--}o Extension : has
     Relation-Type ||--}o Extension : has
+    Flow-Type ||--}o Extension : has
     Property-Type ||--}o Extension : has
+    Entity-Instance ||--}o Extension : has
+    Relation-Instance ||--}o Extension : has
 </pre>
 <h2 id="list-of-known-extensions"><a class="header" href="#list-of-known-extensions">List of known extensions</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Extension</th><th>Description</th></tr></thead><tbody>
@@ -1551,7 +1663,7 @@ activated, the extension is present but not used.</p>
   }
 }
 </code></pre>
-<h2 id="graphql-3"><a class="header" href="#graphql-3">GraphQL</a></h2>
+<h2 id="graphql-4"><a class="header" href="#graphql-4">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
@@ -1573,26 +1685,16 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
-<div id="admonition-error-rendering-admonishment" class="admonition bug">
+<div id="admonition-uuids" class="admonition info">
 <div class="admonition-title">
-<p>Error rendering admonishment</p>
-<p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-error-rendering-admonishment"></a></p>
+<p>UUIDs</p>
+<p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-uuids"></a></p>
 </div>
 <div>
-<p>Failed with:</p>
-<pre><code>TOML parsing error: TOML parse error at line 1, column 6
-  |
-1 | info UUIDs
-  |      ^
-expected `.`, `=`
-
-</code></pre>
-<p>Original markdown input:</p>
-<pre><code>```admonish info UUIDs
-* UUIDs are unique and unique across distributed systems
-* UUIDs can be represented as string and as a 128 bit unsigned integer
-```
-</code></pre>
+<ul>
+<li>UUIDs are unique and unique across distributed systems</li>
+<li>UUIDs can be represented as string and as a 128 bit unsigned integer</li>
+</ul>
 </div>
 </div>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
@@ -1629,7 +1731,7 @@ label and transports significantly more information about what is actually happe
   }
 }
 </code></pre>
-<h2 id="data-model-5"><a class="header" href="#data-model-5">Data Model</a></h2>
+<h2 id="data-model-6"><a class="header" href="#data-model-6">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The type of the entity instance</td></tr>
 <tr><td>ID</td><td>UUID</td><td>The unique identifier of the entity instance</td></tr>
@@ -1650,35 +1752,30 @@ label and transports significantly more information about what is actually happe
     EI===&gt;|&quot;Relation Instance&quot;|O2(Entity Instance);
     EI===&gt;|&quot;Relation Instance&quot;|O3(Entity Instance);
 </pre>
-<h2 id="er-diagram-6"><a class="header" href="#er-diagram-6">ER Diagram</a></h2>
+<h2 id="er-diagram-7"><a class="header" href="#er-diagram-7">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
+        string instanceId
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -1691,12 +1788,12 @@ label and transports significantly more information about what is actually happe
     Relation-Instance o{--|| Relation-Type : is-a
     Property-Instance o{--|| Property-Type : is-a
     Entity-Instance o{--|| Entity-Type : is-a
-    Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Entity-Type ||--}o Relation-Type : outbound
     Entity-Type ||--}o Relation-Type : inbound
+    Entity-Type ||--}o Property-Type : defines
 </pre>
-<h2 id="graphql-4"><a class="header" href="#graphql-4">GraphQL</a></h2>
+<h2 id="graphql-5"><a class="header" href="#graphql-5">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
@@ -1712,10 +1809,49 @@ label and transports significantly more information about what is actually happe
 <p>A relation instance is a connection between an outbound <a href="./Model_Entity_Instance.html">entity instance</a> and an inbound
 entity instance. The relation instance has a type, the relation type. The <a href="./Model_Relation_Type.html">relation type</a>
 defines which entity type the outbound entity type and which entity type the inbound entity type must have.</p>
-<h2 id="data-model-6"><a class="header" href="#data-model-6">Data Model</a></h2>
+<h2 id="instance-id--cardinality"><a class="header" href="#instance-id--cardinality">Instance Id / Cardinality</a></h2>
+<p>The relation instance is a unique link for the following combination:</p>
+<ul>
+<li>Outbound Entity Instance</li>
+<li>Inbound Entity Instance</li>
+<li>Relation Type</li>
+<li>Instance Id</li>
+</ul>
+<div id="admonition-warning" class="admonition warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-warning"></a></p>
+</div>
+<div>
+<p>It's not possible to add a relation instance with the same outbound, inbound, type and instance_id.</p>
+</div>
+</div>
+<p>There are multiple types of instance ids:</p>
+<ol>
+<li>Only one instance of the same relation type is allowed between the outbound entity instance and the inbound entity
+instance (Cardinality: 0..1). In this case the instance id is an empty string.</li>
+<li>The relation instance depends on properties. For example, only one connector can exist between an output
+property of the outbound entity instance and an input property of the inbound entity instance. In this case the
+instance id is a string calculated by the property names of the output property and the input property. This
+will prevent that multiple connectors of the same type exist between the same properties.</li>
+<li>There is no restriction for a relation instance between the outbound entity instance and the inbound entity
+instance (Cardinality: 0..N). In this case a random string will be generated as instance id. This allows to create
+multiple relation instances of the same type between the same outbound entity instance and inbound entity instance.</li>
+</ol>
+<div id="admonition-info" class="admonition info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-info"></a></p>
+</div>
+<div>
+<p>The uniqueness of entity instances is much simpler: A simple UUID is sufficient.</p>
+</div>
+</div>
+<h2 id="data-model-7"><a class="header" href="#data-model-7">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The outbound entity instance</td></tr>
 <tr><td>Type</td><td><a href="./Model_Relation_Type.html">RelationType</a></td><td>The relation type</td></tr>
+<tr><td>Instance Id</td><td>String</td><td>The instance id</td></tr>
 <tr><td>Inbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The inbound entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the relation instance</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties</td></tr>
@@ -1727,35 +1863,28 @@ defines which entity type the outbound entity type and which entity type the inb
 <pre class="mermaid">graph LR;
     A(Outbound Entity Instance)===&gt;|&quot;Relation Instance&quot;|B(Inbound Entity Instance);
 </pre>
-<h2 id="er-diagram-7"><a class="header" href="#er-diagram-7">ER Diagram</a></h2>
+<h2 id="er-diagram-8"><a class="header" href="#er-diagram-8">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
-        string namespace
-        string description
+        string instanceId
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -1768,12 +1897,12 @@ defines which entity type the outbound entity type and which entity type the inb
     Relation-Instance o{--|| Relation-Type : is-a
     Property-Instance o{--|| Property-Type : is-a
     Entity-Instance o{--|| Entity-Type : is-a
-    Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Entity-Type ||--}o Relation-Type : outbound
     Entity-Type ||--}o Relation-Type : inbound
+    Entity-Type ||--}o Property-Type : defines
 </pre>
-<h2 id="graphql-5"><a class="header" href="#graphql-5">GraphQL</a></h2>
+<h2 id="graphql-6"><a class="header" href="#graphql-6">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
@@ -1790,7 +1919,7 @@ defines which entity type the outbound entity type and which entity type the inb
 connected to each other (both within an instance and to data streams from property instances of other entity or relation
 instances).</p>
 <p>The property type defines the name, data type and socket type of the property instance.</p>
-<h2 id="data-model-7"><a class="header" href="#data-model-7">Data Model</a></h2>
+<h2 id="data-model-8"><a class="header" href="#data-model-8">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Name</td><td>String</td><td>The name of the property</td></tr>
 <tr><td>Value</td><td><a href="https://docs.serde.rs/serde_json/value/enum.Value.html">Value</a></td><td>The value of the property</td></tr>
@@ -1805,14 +1934,21 @@ instances).</p>
     EI(Entity Instance)---&gt;PI1;
     EI(Entity Instance)---&gt;PI2;
     EI(Entity Instance)---&gt;PI3;
+
+    PI4(Property Instance);
+    PI5(Property Instance);
+    PI6(Property Instance);
+    RI(Relation Instance)---&gt;PI4;
+    RI(Relation Instance)---&gt;PI5;
+    RI(Relation Instance)---&gt;PI6;
 </pre>
-<h2 id="er-diagram-8"><a class="header" href="#er-diagram-8">ER Diagram</a></h2>
+<h2 id="er-diagram-9"><a class="header" href="#er-diagram-9">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -1821,13 +1957,9 @@ instances).</p>
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
-        string namespace
-        string description
+        string instanceId
     }
     Property-Type ||--}o Property-Instance : is-a
     Entity-Instance ||--}o Property-Instance : stores
@@ -1839,7 +1971,7 @@ instances).</p>
 <h2 id="what-is-a-flow-instance"><a class="header" href="#what-is-a-flow-instance">What is a flow instance?</a></h2>
 <p>A flow instance is a collection of entity instances and relation instances. Most of the time, a flow instance serves a
 specific purpose.</p>
-<h2 id="wrapper-entity-instance"><a class="header" href="#wrapper-entity-instance">Wrapper Entity Instance</a></h2>
+<h2 id="wrapper-entity-instance-1"><a class="header" href="#wrapper-entity-instance-1">Wrapper Entity Instance</a></h2>
 <p>A flow instance is itself an entity instance. The properties of the entity instance can be viewed as inputs and outputs
 for the entire flow instance. The entity instance which is the flow instance is called <code>wrapper entity instance</code>.</p>
 <pre class="mermaid">graph LR;
@@ -1884,7 +2016,7 @@ an entity instance can be used in multiple flow instances.</p>
         IF2E2---&gt;|connector|E3
     end
 </pre>
-<h2 id="graphql-6"><a class="header" href="#graphql-6">GraphQL</a></h2>
+<h2 id="graphql-7"><a class="header" href="#graphql-7">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">
 <div class="admonition-title">
 <p>GraphQL</p>
@@ -1961,10 +2093,10 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="f22d1618-11f0-4dfe-bc8e-cd84f4a7bdf2" src="/examples/graphql/graphql-api-components/graphql-api-components.json">
+<graphql-playground id="999cf817-ddf9-4756-8770-55519fbfb9a7" src="/examples/graphql/graphql-api-components/graphql-api-components.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="c6e33a3a-b587-4eb3-894a-0b9f74e5b108" src="/examples/graphql/graphql-api-entity-types/graphql-api-entity-types.json">
+<graphql-playground id="ec5c8bae-1c6b-47a7-a759-4ddca0094ffa" src="/examples/graphql/graphql-api-entity-types/graphql-api-entity-types.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
 <h2 id="get-relation-type-by-name"><a class="header" href="#get-relation-type-by-name">Get Relation Type by Name</a></h2>
@@ -2419,7 +2551,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="5fb065be-14e0-410c-b033-cb818fbe66e6" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="aa6eac7b-58c2-40b2-924e-a33625494f26" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -2901,13 +3033,13 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="c109201b-ebc8-4e01-96fe-1cb6404b8bfa" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
+<graphql-playground id="39ba5c37-fe96-49fe-bf82-2a32a6df6d8d" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-add.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="18147781-6921-4e3d-b179-7baba2f28ecc" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
+<graphql-playground id="1360aeb5-0d22-4b80-a9c7-705ffdafc561" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-counter.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="bbeeb3dd-7059-44f9-9e4b-32f88ad8b1e8" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
+<graphql-playground id="575099dd-68e0-412e-97d6-fae629dcd603" src="/examples/graphql/plugin-arithmetic/plugin-arithmetic-decrement.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -2923,7 +3055,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="29dd0834-761c-4ce6-962c-043c09c51290" src="/examples/graphql/plugin-asset/plugin-asset.json">
+<graphql-playground id="778254a9-1d1c-4adf-9a14-3fe169d15ab1" src="/examples/graphql/plugin-asset/plugin-asset.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3022,7 +3154,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="bda32207-5704-40dd-a33f-3339f1d9e8c0" src="/examples/graphql/plugin-binary/plugin-binary.json">
+<graphql-playground id="16772581-e032-461c-ae93-c39199532e2a" src="/examples/graphql/plugin-binary/plugin-binary.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3055,7 +3187,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="4c20ba7d-8154-4e34-bd88-929c4b74295f" src="/examples/graphql/plugin-comparison/plugin-comparison.json">
+<graphql-playground id="a4356b00-65f7-40bf-b845-e17eead59461" src="/examples/graphql/plugin-comparison/plugin-comparison.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3078,7 +3210,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="24bcfed7-ebcd-4fbb-808a-100f5c902ada" src="/examples/graphql/plugin-config/plugin-config.json">
+<graphql-playground id="7189321b-6b51-4d6c-b8b2-3dca07882f2c" src="/examples/graphql/plugin-config/plugin-config.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3226,7 +3358,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="511f2cc0-bcbb-4bbd-b543-a422f49dbf5c" src="/examples/graphql/plugin-connector/plugin-connector.json">
+<graphql-playground id="79411496-d6d5-4d3f-b2b6-ba447b3fbfa0" src="/examples/graphql/plugin-connector/plugin-connector.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3357,10 +3489,10 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="5d3a88fc-18e3-4fca-9baf-58f00796b035" src="/examples/graphql/plugin-http/plugin-http.json">
+<graphql-playground id="0aa807c7-232c-4fdd-9d20-1a56cdcefcf0" src="/examples/graphql/plugin-http/plugin-http.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
-<h3 id="graphql-7"><a class="header" href="#graphql-7">GraphQL</a></h3>
+<h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
 <h4 id="create-http-request"><a class="header" href="#create-http-request">Create HTTP Request</a></h4>
 <p>First create an entity instance of type <code>http</code> and specify the URL and the method. </p>
 <div id="admonition-how-to-execute-the-http-request" class="admonition tip">
@@ -4298,7 +4430,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="755482b4-f21f-42fd-851f-00a64a870761" src="/examples/graphql/plugin-json/plugin-json.json">
+<graphql-playground id="26a670f7-7f4a-45ab-a2cc-0622af0b2893" src="/examples/graphql/plugin-json/plugin-json.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4409,7 +4541,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="b7a64c92-66a6-44a2-b7f6-6a036b1da2ca" src="/examples/graphql/plugin-metadata/plugin-metadata.json">
+<graphql-playground id="f4cdc32e-2db4-4e5d-901e-0ca88dbaf4b6" src="/examples/graphql/plugin-metadata/plugin-metadata.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4436,7 +4568,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
+<h3 id="graphql-9"><a class="header" href="#graphql-9">GraphQL</a></h3>
 <h4 id="create-desktop-notification"><a class="header" href="#create-desktop-notification">Create Desktop Notification</a></h4>
 <pre><code class="language-graphql">mutation {
   instances {
@@ -4592,7 +4724,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-13"><a class="header" href="#usage-13">Usage</a></h2>
-<graphql-playground id="6d5b538a-2001-4838-85dd-42a2ebbe428b" src="/examples/graphql/plugin-numeric/plugin-numeric.json">
+<graphql-playground id="0ca9d051-f233-4c8b-81ca-baa65654737e" src="/examples/graphql/plugin-numeric/plugin-numeric.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4635,9 +4767,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="17036eda-0a1d-4303-a94e-957d1f9410a0" src="/examples/graphql/plugin-random/plugin-random-number.json">
+<graphql-playground id="6a1ad0c3-94cf-40c5-97e2-aa2eb641fa38" src="/examples/graphql/plugin-random/plugin-random-number.json">
 </graphql-playground>
-<graphql-playground id="f81361a6-6552-4e06-9f83-b668ae660f3d" src="/examples/graphql/plugin-random/plugin-random-string.json">
+<graphql-playground id="ce682779-845a-496b-addd-7326a15bf7f6" src="/examples/graphql/plugin-random/plugin-random-string.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-scheduler"><a class="header" href="#plugin-scheduler">Plugin: Scheduler</a></h1>
 <p>Timers and scheduled jobs</p>
@@ -4725,7 +4857,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="1178c956-e9ff-4d47-ade2-5b673f379f1d" src="/examples/graphql/plugin-scheduler/plugin-scheduler.json">
+<graphql-playground id="5341bae4-fdc5-4ec2-a6a1-284ff8ee9934" src="/examples/graphql/plugin-scheduler/plugin-scheduler.json">
 </graphql-playground>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4898,7 +5030,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
-<graphql-playground id="d015e6e3-585d-4960-b004-740304387fc8" src="/examples/graphql/plugin-string/plugin-string.json">
+<graphql-playground id="02c467a0-4edd-4c03-9ccd-22046bae704a" src="/examples/graphql/plugin-string/plugin-string.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -5078,7 +5210,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-19"><a class="header" href="#usage-19">Usage</a></h2>
-<graphql-playground id="096366bc-d585-437d-b52d-e2a79c94dd3d" src="/examples/graphql/plugin-system-environment/plugin-system-environment.json">
+<graphql-playground id="2c72d628-a461-4180-9fcb-bd3b38110bd9" src="/examples/graphql/plugin-system-environment/plugin-system-environment.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -5126,9 +5258,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="49934fd0-7b5a-4ac6-8800-561153cfea2a" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json">
+<graphql-playground id="816f523e-6f2a-4bc3-9f87-ae6ba74f4154" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json">
 </graphql-playground>
-<graphql-playground id="44b57267-e783-4e55-9cdf-91711c75904d" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json">
+<graphql-playground id="11afbb96-1afa-44b4-a95f-33cbc510d169" src="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value and state components. States extends values with debounce mechanism. States are important for
@@ -5314,7 +5446,7 @@ through these events.</p>
 <tr><td>shutdown</td><td><code>5</code></td><td>Numeric: Shutdown in <code>5</code> seconds</td></tr>
 </tbody></table>
 </div>
-<h2 id="graphql-9"><a class="header" href="#graphql-9">GraphQL</a></h2>
+<h2 id="graphql-10"><a class="header" href="#graphql-10">GraphQL</a></h2>
 <pre><code class="language-graphql">mutation {
   instances {
     entities {

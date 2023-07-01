@@ -188,14 +188,21 @@ instances).</p>
     EI(Entity Instance)---&gt;PI1;
     EI(Entity Instance)---&gt;PI2;
     EI(Entity Instance)---&gt;PI3;
+
+    PI4(Property Instance);
+    PI5(Property Instance);
+    PI6(Property Instance);
+    RI(Relation Instance)---&gt;PI4;
+    RI(Relation Instance)---&gt;PI5;
+    RI(Relation Instance)---&gt;PI6;
 </pre>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -204,13 +211,9 @@ instances).</p>
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
-        string namespace
-        string description
+        string instanceId
     }
     Property-Type ||--}o Property-Instance : is-a
     Entity-Instance ||--}o Property-Instance : stores

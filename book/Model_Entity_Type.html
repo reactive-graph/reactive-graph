@@ -173,8 +173,8 @@
 defines which components it is combined from. Additional properties can also be defined.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>core</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the entity type</td><td>player</td></tr>
-<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>logical_gates</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td><td></td></tr>
 <tr><td>Components</td><td>Vec&lt;<a href="./Model_Component.html">Component</a>&gt;</td><td>The components which composes the entity type. These provides additional properties</td><td></td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on entity instances</td><td></td></tr>
@@ -184,36 +184,32 @@ defines which components it is combined from. Additional properties can also be 
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Component {
+        string namespace
         string name
-        string description
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
-    Entity-Type o{--}o Component : composes
     Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Component ||--}o Property-Type : defines
@@ -224,6 +220,7 @@ defines which components it is combined from. Additional properties can also be 
     Relation-Type ||--}o Extension : has
     Property-Type ||--}o Extension : has
     Entity-Instance ||--}o Entity-Type : is-a
+    Entity-Type o{--}o Component : composes
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">

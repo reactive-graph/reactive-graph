@@ -172,10 +172,49 @@
 <p>A relation instance is a connection between an outbound <a href="./Model_Entity_Instance.html">entity instance</a> and an inbound
 entity instance. The relation instance has a type, the relation type. The <a href="./Model_Relation_Type.html">relation type</a>
 defines which entity type the outbound entity type and which entity type the inbound entity type must have.</p>
+<h2 id="instance-id--cardinality"><a class="header" href="#instance-id--cardinality">Instance Id / Cardinality</a></h2>
+<p>The relation instance is a unique link for the following combination:</p>
+<ul>
+<li>Outbound Entity Instance</li>
+<li>Inbound Entity Instance</li>
+<li>Relation Type</li>
+<li>Instance Id</li>
+</ul>
+<div id="admonition-warning" class="admonition warning">
+<div class="admonition-title">
+<p>Warning</p>
+<p><a class="admonition-anchor-link" href="#admonition-warning"></a></p>
+</div>
+<div>
+<p>It's not possible to add a relation instance with the same outbound, inbound, type and instance_id.</p>
+</div>
+</div>
+<p>There are multiple types of instance ids:</p>
+<ol>
+<li>Only one instance of the same relation type is allowed between the outbound entity instance and the inbound entity
+instance (Cardinality: 0..1). In this case the instance id is an empty string.</li>
+<li>The relation instance depends on properties. For example, only one connector can exist between an output
+property of the outbound entity instance and an input property of the inbound entity instance. In this case the
+instance id is a string calculated by the property names of the output property and the input property. This
+will prevent that multiple connectors of the same type exist between the same properties.</li>
+<li>There is no restriction for a relation instance between the outbound entity instance and the inbound entity
+instance (Cardinality: 0..N). In this case a random string will be generated as instance id. This allows to create
+multiple relation instances of the same type between the same outbound entity instance and inbound entity instance.</li>
+</ol>
+<div id="admonition-info" class="admonition info">
+<div class="admonition-title">
+<p>Info</p>
+<p><a class="admonition-anchor-link" href="#admonition-info"></a></p>
+</div>
+<div>
+<p>The uniqueness of entity instances is much simpler: A simple UUID is sufficient.</p>
+</div>
+</div>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The outbound entity instance</td></tr>
 <tr><td>Type</td><td><a href="./Model_Relation_Type.html">RelationType</a></td><td>The relation type</td></tr>
+<tr><td>Instance Id</td><td>String</td><td>The instance id</td></tr>
 <tr><td>Inbound</td><td><a href="./Model_Entity_Instance.html">EntityInstance</a></td><td>The inbound entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the relation instance</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Instance.html">Property Instance</a>&gt;</td><td>The properties</td></tr>
@@ -190,32 +229,25 @@ defines which entity type the outbound entity type and which entity type the inb
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Entity-Instance {
         string id
         string label
-        string description
     }
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string name
-        string instanceTypeName
-        string namespace
-        string description
+        string instanceId
     }
     Property-Type {
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Property-Instance {
         string name
@@ -228,10 +260,10 @@ defines which entity type the outbound entity type and which entity type the inb
     Relation-Instance o{--|| Relation-Type : is-a
     Property-Instance o{--|| Property-Type : is-a
     Entity-Instance o{--|| Entity-Type : is-a
-    Entity-Type ||--}o Property-Type : defines
     Relation-Type ||--}o Property-Type : defines
     Entity-Type ||--}o Relation-Type : outbound
     Entity-Type ||--}o Relation-Type : inbound
+    Entity-Type ||--}o Property-Type : defines
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
 <div id="admonition-graphql" class="admonition tip">

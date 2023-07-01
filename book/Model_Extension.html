@@ -184,6 +184,7 @@ covers a case that is not relevant in all cases. For example, if the &quot;Flow 
 activated, the extension is present but not used.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td></tr>
 <tr><td>Name</td><td>String</td><td>The name of the extension</td></tr>
 <tr><td>Extension</td><td>JSON</td><td>The extension as schema-less JSON.</td></tr>
 </tbody></table>
@@ -191,12 +192,16 @@ activated, the extension is present but not used.</p>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Entity-Type ||--}o Extension : has
     Relation-Type ||--}o Extension : has
+    Flow-Type ||--}o Extension : has
     Property-Type ||--}o Extension : has
+    Entity-Instance ||--}o Extension : has
+    Relation-Instance ||--}o Extension : has
 </pre>
 <h2 id="list-of-known-extensions"><a class="header" href="#list-of-known-extensions">List of known extensions</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Extension</th><th>Description</th></tr></thead><tbody>

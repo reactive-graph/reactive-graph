@@ -169,7 +169,107 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="model-flow-type"><a class="header" href="#model-flow-type">Model: Flow Type</a></h1>
-<p>TODO</p>
+<p>A flow type consists of entity instances and relation instances. Flow types are not runnable by itself, but you can
+create flow instances out of them.</p>
+<h2 id="wrapper-entity-instance"><a class="header" href="#wrapper-entity-instance">Wrapper Entity Instance</a></h2>
+<p>Flow types can have input and output properties. These are provided by a so-called wrapper-entity-instance. The wrapper
+entity instance is the only mandatory entity instance of a flow type.</p>
+<p>For the outside view, the <strong>input properties</strong> of the wrapper entity instance are the inputs. Inside the flow the
+<strong>input properties</strong> are <strong>output properties</strong> which can be consumed by the entity instances and relation instances
+within the flow type.</p>
+<p>On the other hand, the <strong>output properties</strong> of the wrapper entity instance are outputs for the outside view. But
+inside the flow the <strong>output properties</strong> of the wrapper entity instance are inputs for the entity instances and
+relation instances within the flow type.</p>
+<h2 id="nested-flow-types--subflows--subprograms"><a class="header" href="#nested-flow-types--subflows--subprograms">Nested Flow Types / Subflows / Subprograms</a></h2>
+<p>Nested flow types are possible. The outer flow type contains entity instances and relation
+instances which can interact with the wrapper entity instance and their properties of the inner flow type. This way it
+is possible to &quot;call&quot; subprograms / subflows / subactivities. The entity instances and relation instances of the inner
+flow type are hidden for the outer flow type.</p>
+<h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
+<tr><td>Namespace</td><td>String</td><td>The namespace</td><td>logical</td></tr>
+<tr><td>Name</td><td>String</td><td>The name of the flow type</td><td>and3</td></tr>
+<tr><td>Description</td><td>String</td><td>Textual description of the flow type</td><td>If all three input booleans are true, the output is true.</td></tr>
+<tr><td>Wrapper Entity Instance</td><td><a href="./Model_Entity_Instance.html">Entity Instance</a></td><td>The wrapper entity instance</td><td></td></tr>
+<tr><td>Entity Instances</td><td>Vec&lt;<a href="./Model_Entity_Instance.html">Entity Instance</a>&gt;</td><td>The entity instances which are contained in this flow</td><td></td></tr>
+<tr><td>Relation Instances</td><td>Vec&lt;<a href="./Model_Relation_Instance.html">Relation Instance</a>&gt;</td><td>The relation instances which are contained in this flow</td><td></td></tr>
+<tr><td>Variables</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The variables. Variables will be replaced by instantiation of a flow instance</td><td></td></tr>
+<tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td><td></td></tr>
+</tbody></table>
+</div>
+<h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
+<pre class="mermaid">erDiagram
+    Flow-Type {
+        string namespace
+        string name
+    }
+    Entity-Type {
+        string namespace
+        string name
+    }
+    Entity-Instance {
+        string id
+        string label
+    }
+    Extension {
+        string namespace
+        string name
+        JSON extension
+    }
+    Component {
+        string namespace
+        string name
+    }
+    Property-Type {
+        string name
+        enum DataType
+        enum SocketType
+    }
+    Relation-Type {
+        string namespace
+        string name
+    }
+    Relation-Instance {
+        string instanceId
+    }
+    Property-Instance {
+        string name
+        JSON value
+    }
+    Component ||--}o Property-Type : defines
+    Entity-Type o{--}o Component : composes
+    Entity-Type ||--}o Property-Type : defines
+    Entity-Type ||--}o Extension : has
+    Entity-Type ||--}o Relation-Type : outbound
+    Entity-Type ||--}o Relation-Type : inbound
+    Component ||--}o Extension : has
+    Relation-Type ||--}o Property-Type : defines
+    Relation-Type o{--}o Component : composes
+    Relation-Type ||--}o Extension : has
+    Property-Type ||--}o Extension : has
+    Entity-Instance ||--}o Entity-Type : is-a
+    Relation-Instance ||--}o Property-Instance : stores
+    Entity-Instance ||--}o Property-Instance : stores
+    Relation-Instance o{--|| Relation-Type : is-a
+    Property-Instance o{--|| Property-Type : is-a
+    Flow-Type ||--|| Entity-Instance : has-wrapper
+    Flow-Type o{--}o Entity-Instance : has
+    Flow-Type o{--}o Relation-Instance : has
+    Flow-Type ||--}o Property-Type : has-variables
+    Flow-Type ||--}o Extension : has
+</pre>
+<h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
+<div id="admonition-graphql" class="admonition tip">
+<div class="admonition-title">
+<p>GraphQL</p>
+<p><a class="admonition-anchor-link" href="#admonition-graphql"></a></p>
+</div>
+<div>
+<ul>
+<li><a href="./GraphQL_API_Flow_Types.html">GraphQL Queries and Mutations</a></li>
+</ul>
+</div>
+</div>
 
                     </main>
 

@@ -179,10 +179,9 @@ appearance of a connector of this type in the flow editor.</p>
 <h2 id="data-model"><a class="header" href="#data-model">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
 <tr><td>Outbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the outbound entity instance</td></tr>
-<tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
-<tr><td>Full Name</td><td>String</td><td>The full name of the relation type</td></tr>
-<tr><td>Inbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the inbound entity instance</td></tr>
 <tr><td>Namespace</td><td>String</td><td>The namespace</td></tr>
+<tr><td>Name</td><td>String</td><td>The name of the relation type</td></tr>
+<tr><td>Inbound Type</td><td><a href="./Model_Entity_Type.html">EntityType</a></td><td>The entity type of the inbound entity instance</td></tr>
 <tr><td>Description</td><td>String</td><td>Textual description of the entity type</td></tr>
 <tr><td>Components</td><td>Vec&lt;<a href="./Model_Component.html">Component</a>&gt;</td><td>The components which composes the relation type. These provides additional properties</td></tr>
 <tr><td>Properties</td><td>Vec&lt;<a href="./Model_Property_Type.html">Property Type</a>&gt;</td><td>The additional properties on relation instances</td></tr>
@@ -196,32 +195,31 @@ appearance of a connector of this type in the flow editor.</p>
 <h2 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h2>
 <pre class="mermaid">erDiagram
     Relation-Type {
-        string name
-        string instanceTypeName
         string namespace
-        string description
+        string name
     }
     Entity-Type {
-        string name
         string namespace
-        string description
+        string name
     }
     Relation-Instance {
-        string uuid
+        string instanceId
     }
     Extension {
+        string namespace
         string name
         JSON extension
     }
     Component {
+        string namespace
         string name
-        string description
     }
     Property-Type {
+        string namespace
         string name
-        string description
         enum DataType
         enum SocketType
+        enum Mutability
     }
     Relation-Type ||--}o Component : composes
     Relation-Type o{--|| Entity-Type : outbound
