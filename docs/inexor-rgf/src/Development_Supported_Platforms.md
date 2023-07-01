@@ -10,7 +10,7 @@ We have build instructions for Windows.
 
 ### Linux
 
-We support x64/arm7 Linux.
+We support x64/arm7/aarch Linux.
 
 We have specific build instructions for Ubuntu and Raspberry Pi 2-4.
 
@@ -19,6 +19,8 @@ If you have found a way to set it up for other Linux distributions, please open 
 ### macOS and iOS
 
 We do not support macOS or iOS yet.
+
+Though continuous integration builds are run and release artifacts are published.
 
 ### Android
 
