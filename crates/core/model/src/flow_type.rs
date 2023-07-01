@@ -19,6 +19,12 @@ use crate::TypeIdType;
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
 
+/// Flow types defines the type of an flow instance like a template
+/// for flow instances.
+///
+/// They contain entity instances and relation instances. The wrapper
+/// entity instance is mandatory and used for input and outputs.
+///
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FlowType {
     /// The type definition of the entity type.
