@@ -1,3 +1,4 @@
+use async_graphql::Request;
 use async_graphql::Response;
 use async_trait::async_trait;
 use log::info;
@@ -28,6 +29,10 @@ impl GraphQLQueryService for GraphQLQueryServiceImpl {
     }
 
     async fn query_response(&self, request: &str) -> Response {
+        self.graphql_schema_manager.get_schema().execute(request).await
+    }
+
+    async fn execute(&self, request: Request) -> Response {
         self.graphql_schema_manager.get_schema().execute(request).await
     }
 }
