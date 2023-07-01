@@ -72,6 +72,16 @@
 <a href="#72" id="72">72</a>
 <a href="#73" id="73">73</a>
 <a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>typed_builder::TypedBuilder;
@@ -97,11 +107,13 @@
     </span><span class="kw">pub </span>secure: bool,
 
     <span class="doccomment">/// The relative URL of the GraphQL endpoint, by default &quot;/graphql&quot;.
-    </span><span class="attr">#[builder(default=DEFAULT_ENDPOINT.to_owned())]
+    </span><span class="attr">#[builder(default = DEFAULT_ENDPOINT.to_owned())]
+    #[serde(default = <span class="string">&quot;default_endpoint&quot;</span>)]
     </span><span class="kw">pub </span>endpoint: String,
 
     <span class="doccomment">/// The user agent.
-    </span><span class="attr">#[builder(default=DEFAULT_USER_AGENT.to_owned())]
+    </span><span class="attr">#[builder(default = DEFAULT_USER_AGENT.to_owned())]
+    #[serde(default = <span class="string">&quot;default_user_agent&quot;</span>)]
     </span><span class="kw">pub </span>user_agent: String,
 
     <span class="doccomment">/// The authentication token.
@@ -145,5 +157,13 @@
             bearer: <span class="prelude-val">None</span>,
         }
     }
+}
+
+<span class="kw">fn </span>default_endpoint() -&gt; String {
+    DEFAULT_ENDPOINT.to_owned()
+}
+
+<span class="kw">fn </span>default_user_agent() -&gt; String {
+    DEFAULT_USER_AGENT.to_owned()
 }
 </code></pre></div></section></main></body></html>
