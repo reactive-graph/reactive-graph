@@ -490,6 +490,13 @@
 <a href="#490" id="490">490</a>
 <a href="#491" id="491">491</a>
 <a href="#492" id="492">492</a>
+<a href="#493" id="493">493</a>
+<a href="#494" id="494">494</a>
+<a href="#495" id="495">495</a>
+<a href="#496" id="496">496</a>
+<a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::Deref;
 <span class="kw">use </span>std::sync::atomic::AtomicBool;
 <span class="kw">use </span>std::sync::atomic::Ordering;
@@ -807,6 +814,13 @@
         <span class="comment">// Be sure that the GraphQL server thread is gone
         </span><span class="kw">let _ </span>= graphql_server_handle.<span class="kw">await</span>;
         <span class="macro">info!</span>(<span class="string">&quot;Bye.&quot;</span>);
+
+        <span class="comment">// Ensure the running state is now set to false even if the loop was terminated
+        // externally because the running state is checked from outside.
+        </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>running = <span class="self">self</span>.running.<span class="number">0</span>.write().unwrap();
+            <span class="kw-2">*</span>running = <span class="bool-val">false</span>;
+        }
     }
 
     <span class="kw">fn </span>stop(<span class="kw-2">&amp;</span><span class="self">self</span>) {
