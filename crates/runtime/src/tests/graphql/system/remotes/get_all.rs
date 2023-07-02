@@ -49,6 +49,8 @@ async fn test_get_all_remotes() {
             assert_eq!(query_get_all_remotes(&query_service).await.len(), 1);
         })
         .await
+        .stop()
+        .await
         .pre_shutdown()
         .await
         .shutdown()

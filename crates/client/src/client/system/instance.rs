@@ -86,6 +86,8 @@ pub mod test {
                 assert_eq!(instance_info, rt_instance_info);
             })
             .await
+            .stop()
+            .await
             .pre_shutdown()
             .await
             .shutdown()

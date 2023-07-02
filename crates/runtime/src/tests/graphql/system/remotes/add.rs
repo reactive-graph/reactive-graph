@@ -59,6 +59,8 @@ async fn test_add_remote() {
             assert_eq!(remotes_manager.get_all().len(), 1);
         })
         .await
+        .stop()
+        .await
         .pre_shutdown()
         .await
         .shutdown()

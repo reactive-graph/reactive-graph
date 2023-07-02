@@ -59,6 +59,8 @@ async fn test_remove_all_remotes() {
             assert_eq!(remotes_manager.get_all().len(), 0, "Expected that no remotes exists anymore");
         })
         .await
+        .stop()
+        .await
         .pre_shutdown()
         .await
         .shutdown()

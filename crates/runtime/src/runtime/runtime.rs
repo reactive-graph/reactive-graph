@@ -44,7 +44,16 @@ pub trait Runtime: Send + Sync {
 
     fn is_running(&self) -> bool;
 
-    async fn wait_for(&self, timeout_duration: Duration) -> Result<(), Elapsed>;
+    /// Waits for the GraphQL server to be started.
+    /// Times out if the GraphQL server is not running after the given duration.
+    async fn wait_for_started(&self, timeout_duration: Duration) -> Result<(), Elapsed>;
+
+    /// Waits for the GraphQL server has been stopped.
+    async fn wait_for_stopped(&self);
+
+    /// Waits for the GraphQL server has been stopped.
+    /// Times out if the GraphQL server is still running after the given duration.
+    async fn wait_for_stopped_with_timeout(&self, timeout_duration: Duration) -> Result<(), Elapsed>;
 
     fn get_command_manager(&self) -> Arc<dyn CommandManager>;
 
@@ -319,8 +328,18 @@ impl Runtime for RuntimeImpl {
         *self.running.0.read().unwrap().deref()
     }
 
-    async fn wait_for(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
-        tokio::time::timeout(timeout_duration, self.wait_for_internal()).await
+    async fn wait_for_started(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
+        tokio::time::timeout(timeout_duration, self.wait_for_started_internal()).await
+    }
+
+    async fn wait_for_stopped(&self) {
+        while self.is_running() {
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+    }
+
+    async fn wait_for_stopped_with_timeout(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
+        tokio::time::timeout(timeout_duration, self.wait_for_stopped()).await
     }
 
     fn get_command_manager(&self) -> Arc<dyn CommandManager> {
@@ -465,7 +484,7 @@ impl Runtime for RuntimeImpl {
 }
 
 impl RuntimeImpl {
-    async fn wait_for_internal(&self) {
+    async fn wait_for_started_internal(&self) {
         while !self.is_running() {
             tokio::time::sleep(Duration::from_millis(100)).await;
         }

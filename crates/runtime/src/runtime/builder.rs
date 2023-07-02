@@ -14,6 +14,7 @@ pub enum ConfigFilesLoaded {}
 pub enum NotRunning {}
 pub enum Initialized {}
 pub enum Ready {}
+pub enum Running {}
 pub enum Finished {}
 pub enum PreShutdown {}
 pub enum Shutdown {}
@@ -220,7 +221,21 @@ impl RuntimeBuilder<ConfigFilesLoaded, Ready> {
         self
     }
 
-    pub async fn run(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+    /// Starts the GraphQL server (non-blocking).
+    pub async fn spawn(self) -> RuntimeBuilder<ConfigFilesLoaded, Running> {
+        let runtime_inner = self.runtime.clone();
+        tokio::task::spawn(async move {
+            runtime_inner.run().await;
+        });
+        let _ = self.runtime.wait_for_started(Duration::from_secs(5)).await;
+        RuntimeBuilder {
+            runtime: self.runtime,
+            typestate: PhantomData,
+        }
+    }
+
+    /// Starts the GraphQL server (blocking).
+    pub async fn spawn_blocking(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
         self.runtime.run().await;
         RuntimeBuilder {
             runtime: self.runtime,
@@ -228,17 +243,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, Ready> {
         }
     }
 
-    pub async fn spawn(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
-        let runtime_inner = self.runtime.clone();
-        tokio::task::spawn(async move {
-            runtime_inner.run().await;
-        });
-        RuntimeBuilder {
-            runtime: self.runtime,
-            typestate: PhantomData,
-        }
-    }
-
+    /// Runs starts the GraphQL server. Stops the GraphQL server after the given duration.
     pub async fn run_for(self, duration: Duration) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
         let inner_runtime = self.runtime.clone();
         tokio::spawn(async move {
@@ -252,7 +257,63 @@ impl RuntimeBuilder<ConfigFilesLoaded, Ready> {
         }
     }
 
+    /// Do not start the GraphQL server but shutdown the runtime.
     pub async fn do_not_run(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+        RuntimeBuilder {
+            runtime: self.runtime,
+            typestate: PhantomData,
+        }
+    }
+}
+
+impl RuntimeBuilder<ConfigFilesLoaded, Running> {
+    pub fn get(self) -> Arc<dyn Runtime> {
+        self.runtime
+    }
+
+    pub async fn with_runtime<F, C>(self, f: C) -> RuntimeBuilder<ConfigFilesLoaded, Running>
+    where
+        F: Future<Output = ()>,
+        C: FnOnce(Arc<dyn Runtime>) -> F,
+    {
+        let runtime = self.runtime.clone();
+        f(runtime).await;
+        self
+    }
+
+    /// Stops the runtime. Waits for the GraphQL server has been stopped.
+    pub async fn stop(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+        self.runtime.stop();
+        self.runtime.wait_for_stopped().await;
+        RuntimeBuilder {
+            runtime: self.runtime,
+            typestate: PhantomData,
+        }
+    }
+
+    /// Stops the runtime. Waits for the GraphQL server has been stopped or the given timeout has
+    /// been reached.
+    pub async fn stop_with_timeout(self, timeout_duration: Duration) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+        self.runtime.stop();
+        let _ = self.runtime.wait_for_stopped_with_timeout(timeout_duration).await;
+        RuntimeBuilder {
+            runtime: self.runtime,
+            typestate: PhantomData,
+        }
+    }
+
+    /// Waits for the GraphQL server has been stopped.
+    pub async fn wait_for_stopped(self) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+        self.runtime.wait_for_stopped().await;
+        RuntimeBuilder {
+            runtime: self.runtime,
+            typestate: PhantomData,
+        }
+    }
+
+    /// Waits for the GraphQL server has been stopped.
+    pub async fn wait_for_stopped_with_timeout(self, timeout_duration: Duration) -> RuntimeBuilder<ConfigFilesLoaded, Finished> {
+        let _ = self.runtime.wait_for_stopped_with_timeout(timeout_duration).await;
         RuntimeBuilder {
             runtime: self.runtime,
             typestate: PhantomData,

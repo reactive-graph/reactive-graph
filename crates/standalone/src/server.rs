@@ -30,7 +30,9 @@ pub(crate) async fn server(cli_args: CliArguments) {
         .await
         .post_init()
         .await
-        .run()
+        .spawn()
+        .await
+        .wait_for_stopped()
         .await
         .pre_shutdown()
         .await
