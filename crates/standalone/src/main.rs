@@ -38,7 +38,8 @@ async fn main() {
             let stdout = ConsoleAppender::builder().build();
             let Ok(config) = Config::builder()
                 .appender(Appender::builder().build("stdout", Box::new(stdout)))
-                .build(Root::builder().appender("stdout").build(LevelFilter::Info)) else {
+                .build(Root::builder().appender("stdout").build(LevelFilter::Info))
+            else {
                 eprintln!("Failed to create fallback logger! Exiting with error");
                 exit(1);
             };

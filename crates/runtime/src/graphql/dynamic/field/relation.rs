@@ -227,7 +227,7 @@ pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
                 .get_by_type(&ty)
                 .into_iter()
                 .filter(|relation_instance| {
-                    let Ok(id) = ctx.args.try_get("outboundId").and_then(|id| id.string().map(|s|s.to_string())) else {
+                    let Ok(id) = ctx.args.try_get("outboundId").and_then(|id| id.string().map(|s| s.to_string())) else {
                         return true;
                     };
                     let Ok(id) = Uuid::from_str(&id) else {
@@ -236,7 +236,7 @@ pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
                     relation_instance.outbound.id == id
                 })
                 .filter(|relation_instance| {
-                    let Ok(id) = ctx.args.try_get("inboundId").and_then(|id| id.string().map(|s|s.to_string())) else {
+                    let Ok(id) = ctx.args.try_get("inboundId").and_then(|id| id.string().map(|s| s.to_string())) else {
                         return true;
                     };
                     let Ok(id) = Uuid::from_str(&id) else {
