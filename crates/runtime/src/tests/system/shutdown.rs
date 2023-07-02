@@ -22,8 +22,7 @@ async fn test_shutdown() {
             let inner_runtime = runtime.clone();
             tokio::spawn(async move {
                 tokio::time::sleep(Duration::from_millis(500)).await;
-                inner_runtime.stop();
-                // inner_runtime.get_shutdown_manager().do_shutdown();
+                inner_runtime.get_shutdown_manager().do_shutdown();
             });
         })
         .await
@@ -34,7 +33,8 @@ async fn test_shutdown() {
         .shutdown()
         .await;
     let elapsed = start.elapsed();
-    // Shutdown
+    // It takes up to 100ms for the GraphQL server to shutdown and after that
+    // up to 100ms for the runtime to shutdown plus some millis (500+100+100+x < 800).
     assert!(elapsed > Duration::from_millis(500), "Shutdown at earliest after 500ms");
-    assert!(elapsed < Duration::from_millis(700), "Shutdown at latest after 700ms");
+    assert!(elapsed < Duration::from_millis(800), "Shutdown at latest after 800ms");
 }

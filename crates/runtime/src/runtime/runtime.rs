@@ -315,6 +315,13 @@ impl Runtime for RuntimeImpl {
         // Be sure that the GraphQL server thread is gone
         let _ = graphql_server_handle.await;
         info!("Bye.");
+
+        // Ensure the running state is now set to false even if the loop was terminated
+        // externally because the running state is checked from outside.
+        {
+            let mut running = self.running.0.write().unwrap();
+            *running = false;
+        }
     }
 
     fn stop(&self) {
