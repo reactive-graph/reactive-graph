@@ -54,6 +54,7 @@
 <a href="#54" id="54">54</a>
 <a href="#55" id="55">55</a>
 <a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::alloc::System;
 <span class="kw">use </span>std::process::exit;
 
@@ -94,7 +95,8 @@
             <span class="kw">let </span>stdout = ConsoleAppender::builder().build();
             <span class="kw">let </span><span class="prelude-val">Ok</span>(config) = Config::builder()
                 .appender(Appender::builder().build(<span class="string">&quot;stdout&quot;</span>, Box::new(stdout)))
-                .build(Root::builder().appender(<span class="string">&quot;stdout&quot;</span>).build(LevelFilter::Info)) <span class="kw">else </span>{
+                .build(Root::builder().appender(<span class="string">&quot;stdout&quot;</span>).build(LevelFilter::Info))
+            <span class="kw">else </span>{
                 <span class="macro">eprintln!</span>(<span class="string">&quot;Failed to create fallback logger! Exiting with error&quot;</span>);
                 exit(<span class="number">1</span>);
             };

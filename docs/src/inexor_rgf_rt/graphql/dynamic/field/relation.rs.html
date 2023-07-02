@@ -691,7 +691,7 @@
                 .get_by_type(<span class="kw-2">&amp;</span>ty)
                 .into_iter()
                 .filter(|relation_instance| {
-                    <span class="kw">let </span><span class="prelude-val">Ok</span>(id) = ctx.args.try_get(<span class="string">&quot;outboundId&quot;</span>).and_then(|id| id.string().map(|s|s.to_string())) <span class="kw">else </span>{
+                    <span class="kw">let </span><span class="prelude-val">Ok</span>(id) = ctx.args.try_get(<span class="string">&quot;outboundId&quot;</span>).and_then(|id| id.string().map(|s| s.to_string())) <span class="kw">else </span>{
                         <span class="kw">return </span><span class="bool-val">true</span>;
                     };
                     <span class="kw">let </span><span class="prelude-val">Ok</span>(id) = Uuid::from_str(<span class="kw-2">&amp;</span>id) <span class="kw">else </span>{
@@ -700,7 +700,7 @@
                     relation_instance.outbound.id == id
                 })
                 .filter(|relation_instance| {
-                    <span class="kw">let </span><span class="prelude-val">Ok</span>(id) = ctx.args.try_get(<span class="string">&quot;inboundId&quot;</span>).and_then(|id| id.string().map(|s|s.to_string())) <span class="kw">else </span>{
+                    <span class="kw">let </span><span class="prelude-val">Ok</span>(id) = ctx.args.try_get(<span class="string">&quot;inboundId&quot;</span>).and_then(|id| id.string().map(|s| s.to_string())) <span class="kw">else </span>{
                         <span class="kw">return </span><span class="bool-val">true</span>;
                     };
                     <span class="kw">let </span><span class="prelude-val">Ok</span>(id) = Uuid::from_str(<span class="kw-2">&amp;</span>id) <span class="kw">else </span>{
