@@ -216,7 +216,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             let _ = self.add_component(&ty, &component_ty);
         }
         let mut guard = self.entity_types.0.write().unwrap();
-        let Some(mut entity_type) = guard.iter_mut().find(|e| e.ty == ty) else {
+        let Some(entity_type) = guard.iter_mut().find(|e| e.ty == ty) else {
             return Err(EntityTypeMergeError::EntityTypeDoesNotExists(ty));
         };
         entity_type.description = entity_type_to_merge.description.clone();

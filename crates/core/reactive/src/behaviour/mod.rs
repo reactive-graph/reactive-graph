@@ -1,5 +1,10 @@
 pub use container::*;
-pub use entity::*;
+pub use entity::behaviour::*;
+pub use entity::container::*;
+pub use entity::observer::*;
+pub use entity::transition::*;
+pub use entity::EntityBehaviourReactiveInstanceContainerImpl;
+pub use entity::EntityPropertyObserverContainerImpl;
 pub use error::*;
 pub use factory::*;
 pub use fsm::*;

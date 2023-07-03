@@ -300,7 +300,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             let _ = self.add_component(&ty, &component_ty);
         }
         let mut guard = self.relation_types.0.write().unwrap();
-        let Some(mut relation_type) = guard.iter_mut().find(|r| r.ty == ty) else {
+        let Some(relation_type) = guard.iter_mut().find(|r| r.ty == ty) else {
             return Err(RelationTypeMergeError::RelationTypeDoesNotExists(ty));
         };
         relation_type.outbound_type = relation_type_to_merge.outbound_type;

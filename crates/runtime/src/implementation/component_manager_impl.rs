@@ -142,7 +142,7 @@ impl ComponentManager for ComponentManagerImpl {
 
     fn replace(&self, ty: &ComponentTypeId, r_component: crate::model::Component) {
         let mut guard = self.components.0.write().unwrap();
-        for mut component in guard.iter_mut() {
+        for component in guard.iter_mut() {
             if &component.ty == ty {
                 component.ty = r_component.ty.clone();
                 component.description = r_component.description.clone();
@@ -159,7 +159,7 @@ impl ComponentManager for ComponentManagerImpl {
             return Err(ComponentMergeError::ComponentDoesNotExist(ty));
         }
         let mut guard = self.components.0.write().unwrap();
-        let Some(mut component) = guard.iter_mut().find(|component| component.ty == ty) else {
+        let Some(component) = guard.iter_mut().find(|component| component.ty == ty) else {
             return Err(ComponentMergeError::ComponentDoesNotExist(ty));
         };
         component.description = component_to_merge.description.clone();
