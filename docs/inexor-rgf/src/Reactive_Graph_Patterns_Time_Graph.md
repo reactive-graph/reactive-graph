@@ -5,33 +5,30 @@ flowchart TB
 
   subgraph g2024[ ]
     direction TB
-    2024
-    2024_jan(Jan)
-    2024_feb(Feb)
-    2024_next(...)
-    2024_nov(Nov)
-    2024_dec(Dec)
-  end
 
-  subgraph m2023[ ]
-    direction TB
-    2023
-    2023_jan(Jan)
-    2023_feb(Feb)
-    2023_next(...)
-    2023_nov(Nov)
-    2023_dec(Dec)
-  end
-
-  subgraph m2022[ ]
-    direction TB
     2022
     2022_jan(Jan)
     2022_feb(Feb)
     2022_next(...)
     2022_nov(Nov)
     2022_dec(Dec)
+
+    2023
+    2023_jan(Jan)
+    2023_feb(Feb)
+    2023_next(...)
+    2023_nov(Nov)
+    2023_dec(Dec)
+
+    2024
+    2024_jan(Jan)
+    2024_feb(Feb)
+    2024_next(...)
+    2024_nov(Nov)
+    2024_dec(Dec)
+
   end
+
 
   2022 -->|next_year| 2023
   2023 -->|next_year| 2024
