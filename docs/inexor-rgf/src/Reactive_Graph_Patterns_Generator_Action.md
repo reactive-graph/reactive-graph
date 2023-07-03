@@ -1,5 +1,16 @@
 # Generators and Actions
 
+```mermaid
+flowchart LR
+    subgraph Generator
+      trigger_1(trigger)
+    end
+    subgraph Action
+      trigger_2(trigger)
+    end
+    trigger_1--->trigger_2
+```
+
 ## What is a generator?
 
 A [generator](./Plugins_Logical.md) produces boolean `true`s and **sends** them via the `output` property `trigger`.
@@ -35,3 +46,21 @@ the same time a `flow` is more compact.
 
 Another example is to combine a `user-interface-button` as `generator` with an `update-the-asset-repository` as
 an action.
+
+```mermaid
+flowchart LR
+    subgraph entity[Entity]
+        direction LR
+        subgraph action
+          trigger
+        end
+        subgraph fs_notify
+          file[(File)]
+        end
+        subgraph load_binary
+          binary_data
+        end
+    end
+    file -->|behaviour: fs_notify| trigger
+    trigger -->|behaviour: load_binary_data| binary_data
+```
