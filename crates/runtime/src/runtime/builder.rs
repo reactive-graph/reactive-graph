@@ -33,6 +33,7 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
         }
     }
 
+    /// Sets the location of the instance configuration.
     pub fn instance_config<P: Into<OptionOption<PathBuf>>>(self, location: P) -> RuntimeBuilder<SetConfigLocations, NotRunning> {
         if let Some(location) = location.into().get() {
             self.runtime.get_config_manager().set_instance_config_location(location);
@@ -40,6 +41,7 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
         self
     }
 
+    /// Sets the location of the graphql server configuration.
     pub fn graphql_server_config<P: Into<OptionOption<PathBuf>>>(self, location: P) -> RuntimeBuilder<SetConfigLocations, NotRunning> {
         if let Some(location) = location.into().get() {
             self.runtime.get_config_manager().set_graphql_server_config_location(location);
@@ -47,6 +49,7 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
         self
     }
 
+    /// Sets the location of the plugins configuration.
     pub fn plugins_config<P: Into<OptionOption<PathBuf>>>(self, location: P) -> RuntimeBuilder<SetConfigLocations, NotRunning> {
         if let Some(location) = location.into().get() {
             self.runtime.get_config_manager().set_plugins_config_location(location);
@@ -54,6 +57,7 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
         self
     }
 
+    /// Loads the config files and transits to state `ConfigFilesLoaded`.
     pub async fn load_config_files(self) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self.runtime.config().await;
         RuntimeBuilder {
@@ -62,6 +66,7 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
         }
     }
 
+    /// Doesn't load the config files. Transits to state `ConfigFilesLoaded`.
     pub fn ignore_config_files(self) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         RuntimeBuilder {
             runtime: self.runtime,
@@ -71,6 +76,7 @@ impl RuntimeBuilder<SetConfigLocations, NotRunning> {
 }
 
 impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+    /// Sets the name of the instance.
     pub fn instance_name<S: Into<OptionOption<String>>>(self, name: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(name) = name.into().get() {
             self.runtime.get_config_manager().set_instance_name(&name);
@@ -78,6 +84,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the description of the instance.
     pub fn instance_description<S: Into<OptionOption<String>>>(self, description: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(description) = description.into().get() {
             self.runtime.get_config_manager().set_instance_description(&description);
@@ -85,6 +92,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the hostname of the GraphQL server.
     pub fn hostname<S: Into<OptionOption<String>>>(self, hostname: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(hostname) = hostname.into().get() {
             self.runtime.get_config_manager().set_graphql_hostname(&hostname);
@@ -92,6 +100,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the port number of the GraphQL server.
     pub fn port<S: Into<OptionOption<u16>>>(self, port: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(port) = port.into().get() {
             self.runtime.get_config_manager().set_graphql_port(port);
@@ -99,6 +108,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Picks a free port instead of a fixed port number.
     pub fn pick_free_port(self) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(port) = portpicker::pick_unused_port() {
             self.runtime.get_config_manager().set_graphql_port(port);
@@ -106,6 +116,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets if the GraphQL server shall use https or http.
     pub fn secure<S: Into<OptionOption<bool>>>(self, secure: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(secure) = secure.into().get() {
             self.runtime.get_config_manager().set_graphql_secure(secure);
@@ -113,6 +124,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets timeout of the shutdown of the GraphQL server.
     pub fn shutdown_timeout<S: Into<OptionOption<u64>>>(self, shutdown_timeout: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(shutdown_timeout) = shutdown_timeout.into().get() {
             self.runtime.get_config_manager().set_graphql_shutdown_timeout(shutdown_timeout);
@@ -120,6 +132,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the number of workers of the GraphQL server.
     pub fn workers<S: Into<OptionOption<usize>>>(self, workers: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(workers) = workers.into().get() {
             self.runtime.get_config_manager().set_graphql_workers(workers);
@@ -127,6 +140,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets context path of a web resource provider which shall be used as default context path.
     pub fn default_context_path<S: Into<OptionOption<String>>>(self, default_context_path: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(default_context_path) = default_context_path.into().get() {
             self.runtime.get_config_manager().set_graphql_default_context_path(default_context_path);
@@ -134,6 +148,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Disables all plugins.
     pub fn disable_all_plugins<S: Into<OptionOption<bool>>>(self, disabled: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(disabled) = disabled.into().get() {
             self.runtime.get_config_manager().set_disable_all_plugins(disabled);
@@ -141,6 +156,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets which plugins will be disabled.
     pub fn disabled_plugins<S: Into<OptionOption<Vec<String>>>>(self, disabled_plugins: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(disabled_plugins) = disabled_plugins.into().get() {
             self.runtime.get_config_manager().set_disabled_plugins(disabled_plugins);
@@ -148,6 +164,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Disables hot deployment of plugins.
     pub fn disable_hot_deploy<S: Into<OptionOption<bool>>>(self, disabled: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(disabled) = disabled.into().get() {
             self.runtime.get_config_manager().set_disable_hot_deploy(disabled);
@@ -155,6 +172,7 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the directory where plugins can be hot deployed.
     pub fn hot_deploy_location<S: Into<OptionOption<String>>>(self, hot_deploy_location: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(hot_deploy_location) = hot_deploy_location.into().get() {
             self.runtime.get_config_manager().set_hot_deploy_location(Some(hot_deploy_location))
@@ -162,6 +180,8 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the directory where plugins are located.
+    /// During hot deployment new plugins will be moved into this directory.
     pub fn install_location<S: Into<OptionOption<String>>>(self, install_location: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(install_location) = install_location.into().get() {
             self.runtime.get_config_manager().set_install_location(Some(install_location))
