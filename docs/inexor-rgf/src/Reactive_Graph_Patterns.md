@@ -9,4 +9,4 @@
 |-----------------------------------------------------------------------|------------------------|
 | [Generators & Actions](./Reactive_Graph_Patterns_Generator_Action.md) | Generators and Actions |
 | Conditions                                                            | Conditions             |
-| Time Series                                                           | Time Series            |
+| [Time Graph](./Reactive_Graph_Patterns_Time_Graph.md)                 | Time Graph             |
