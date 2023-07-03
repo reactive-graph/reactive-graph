@@ -4,7 +4,7 @@ pub mod mapping {
     use typed_builder::TypedBuilder;
 
     #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
-    pub struct AddRemoteVariables {
+    pub struct InstanceAddressVariables {
         pub hostname: String,
         pub port: i32,
         pub secure: Option<bool>,
@@ -23,22 +23,59 @@ pub mod mapping {
     }
 
     #[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = "Mutation", variables = "AddRemoteVariables")]
+    #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]
     pub struct AddRemote {
         pub system: AddRemoteMutationSystem,
     }
 
     #[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = "MutationSystem", variables = "AddRemoteVariables")]
+    #[cynic(graphql_type = "MutationSystem", variables = "InstanceAddressVariables")]
     pub struct AddRemoteMutationSystem {
         pub remotes: AddRemoteMutationRemotes,
     }
 
     #[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = "MutationRemotes", variables = "AddRemoteVariables")]
+    #[cynic(graphql_type = "MutationRemotes", variables = "InstanceAddressVariables")]
     pub struct AddRemoteMutationRemotes {
         #[arguments(hostname: $hostname, port: $port, secure: $secure)]
         pub add: InstanceInfo,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]
+    pub struct RemoveRemote {
+        pub system: RemoveRemoteMutationSystem,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "MutationSystem", variables = "InstanceAddressVariables")]
+    pub struct RemoveRemoteMutationSystem {
+        pub remotes: RemoveRemoteMutationRemotes,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "MutationRemotes", variables = "InstanceAddressVariables")]
+    pub struct RemoveRemoteMutationRemotes {
+        #[arguments(hostname: $hostname, port: $port, secure: $secure)]
+        pub remove: bool,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "Mutation")]
+    pub struct RemoveAllRemotes {
+        pub system: RemoveAllRemotesMutationSystem,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "MutationSystem")]
+    pub struct RemoveAllRemotesMutationSystem {
+        pub remotes: RemoveAllRemotesMutationRemotes,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "MutationRemotes")]
+    pub struct RemoveAllRemotesMutationRemotes {
+        pub remove_all: bool,
     }
 }
 
@@ -53,11 +90,23 @@ pub mod queries {
 
 pub mod operations {
     use crate::client::system::remotes::mapping::AddRemote;
-    use crate::system::remotes::mapping::AddRemoteVariables;
+    use crate::system::remotes::mapping::InstanceAddressVariables;
+    use crate::system::remotes::mapping::RemoveAllRemotes;
+    use crate::system::remotes::mapping::RemoveRemote;
 
-    pub fn add(vars: AddRemoteVariables) -> cynic::Operation<AddRemote, AddRemoteVariables> {
+    pub fn add(vars: InstanceAddressVariables) -> cynic::Operation<AddRemote, InstanceAddressVariables> {
         use cynic::MutationBuilder;
         AddRemote::build(vars)
+    }
+
+    pub fn remove(vars: InstanceAddressVariables) -> cynic::Operation<RemoveRemote, InstanceAddressVariables> {
+        use cynic::MutationBuilder;
+        RemoveRemote::build(vars)
+    }
+
+    pub fn remove_all() -> cynic::Operation<RemoveAllRemotes, ()> {
+        use cynic::MutationBuilder;
+        RemoveAllRemotes::build(())
     }
 }
 
