@@ -24,6 +24,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
   upload-assets:
     strategy:
+      fail-fast: false
       matrix:
         include:
           # Tier 1
@@ -102,6 +103,7 @@ jobs:
   debian-package:
     name: Publish debian package
     strategy:
+      fail-fast: false
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
