@@ -25,6 +25,7 @@ pub struct PluginDeclaration {
     pub register: unsafe extern "C" fn(&mut dyn PluginRegistrar),
 
     /// Function to get the dependencies of the plugin.
+    #[allow(improper_ctypes_definitions)]
     pub get_dependencies: unsafe extern "C" fn() -> Vec<PluginDependency>,
 }
 
