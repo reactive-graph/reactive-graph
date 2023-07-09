@@ -23,22 +23,22 @@ pub struct InexorQuery;
 impl InexorQuery {
     /// Search for types (components, entity types, relation types).
     async fn types(&self) -> Types {
-        Types::default()
+        Types
     }
 
     /// Search for instances (entity instances, relation instances).
     async fn instances(&self) -> Instances {
-        Instances::default()
+        Instances
     }
 
     /// Search for behaviours (entity behaviours, entity component behaviours, relation behaviours,
     /// relation component behaviours).
     async fn behaviours(&self) -> Behaviours {
-        Behaviours::default()
+        Behaviours
     }
 
     async fn system(&self) -> System {
-        System::default()
+        System
     }
 
     async fn random_uuid(&self, _context: &Context<'_>) -> String {
