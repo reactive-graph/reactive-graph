@@ -125,7 +125,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     }
 
     fn count_by_states(&self) -> String {
-        let states = vec![
+        let states = [
             PluginState::Installed,
             PluginState::Resolving(PluginResolveState::Loaded),
             PluginState::Resolving(PluginResolveState::PluginDeclarationLoaded),
