@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/runtime/src/runtime/builder.rs`."><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-a23c9d150ad85d8b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="inexor_rgf_rt" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0-nightly (6162f6f12 2023-07-01)" data-channel="nightly" data-search-js="search-91b58767224854cb.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../inexor_rgf_rt/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/runtime/src/runtime/builder.rs`."><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9bb858ba049f1f21.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="inexor_rgf_rt" data-themes="" data-resource-suffix="" data-rustdoc-version="1.72.0-nightly (83964c156 2023-07-08)" data-channel="nightly" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ><script src="../../../static.files/storage-59fd9b8ccb335783.js"></script><script defer src="../../../static.files/source-script-106908c7a7964ba4.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../inexor_rgf_rt/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -448,6 +448,36 @@
 <a href="#448" id="448">448</a>
 <a href="#449" id="449">449</a>
 <a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::future::Future;
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>std::path::PathBuf;
@@ -456,6 +486,7 @@
 <span class="kw">use </span>tokio::time::Duration;
 
 <span class="kw">use </span><span class="kw">crate</span>::get_runtime;
+<span class="kw">use </span><span class="kw">crate</span>::model_runtime::InstanceAddress;
 <span class="kw">use </span><span class="kw">crate</span>::runtime::Runtime;
 
 <span class="kw">pub enum </span>SetConfigLocations {}
@@ -483,28 +514,32 @@
         }
     }
 
-    <span class="kw">pub fn </span>instance_config&lt;P: Into&lt;OptionOption&lt;PathBuf&gt;&gt;&gt;(<span class="self">self</span>, location: P) -&gt; RuntimeBuilder&lt;SetConfigLocations, NotRunning&gt; {
+    <span class="doccomment">/// Sets the location of the instance configuration.
+    </span><span class="kw">pub fn </span>instance_config&lt;P: Into&lt;OptionOption&lt;PathBuf&gt;&gt;&gt;(<span class="self">self</span>, location: P) -&gt; RuntimeBuilder&lt;SetConfigLocations, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(location) = location.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_instance_config_location(location);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>graphql_server_config&lt;P: Into&lt;OptionOption&lt;PathBuf&gt;&gt;&gt;(<span class="self">self</span>, location: P) -&gt; RuntimeBuilder&lt;SetConfigLocations, NotRunning&gt; {
+    <span class="doccomment">/// Sets the location of the graphql server configuration.
+    </span><span class="kw">pub fn </span>graphql_server_config&lt;P: Into&lt;OptionOption&lt;PathBuf&gt;&gt;&gt;(<span class="self">self</span>, location: P) -&gt; RuntimeBuilder&lt;SetConfigLocations, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(location) = location.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_server_config_location(location);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>plugins_config&lt;P: Into&lt;OptionOption&lt;PathBuf&gt;&gt;&gt;(<span class="self">self</span>, location: P) -&gt; RuntimeBuilder&lt;SetConfigLocations, NotRunning&gt; {
+    <span class="doccomment">/// Sets the location of the plugins configuration.
+    </span><span class="kw">pub fn </span>plugins_config&lt;P: Into&lt;OptionOption&lt;PathBuf&gt;&gt;&gt;(<span class="self">self</span>, location: P) -&gt; RuntimeBuilder&lt;SetConfigLocations, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(location) = location.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_plugins_config_location(location);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub async fn </span>load_config_files(<span class="self">self</span>) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Loads the config files and transits to state `ConfigFilesLoaded`.
+    </span><span class="kw">pub async fn </span>load_config_files(<span class="self">self</span>) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="self">self</span>.runtime.config().<span class="kw">await</span>;
         RuntimeBuilder {
             runtime: <span class="self">self</span>.runtime,
@@ -512,7 +547,8 @@
         }
     }
 
-    <span class="kw">pub fn </span>ignore_config_files(<span class="self">self</span>) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Doesn&#39;t load the config files. Transits to state `ConfigFilesLoaded`.
+    </span><span class="kw">pub fn </span>ignore_config_files(<span class="self">self</span>) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         RuntimeBuilder {
             runtime: <span class="self">self</span>.runtime,
             typestate: PhantomData,
@@ -521,98 +557,122 @@
 }
 
 <span class="kw">impl </span>RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
-    <span class="kw">pub fn </span>instance_name&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, name: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the name of the instance.
+    </span><span class="kw">pub fn </span>instance_name&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, name: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = name.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_instance_name(<span class="kw-2">&amp;</span>name);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>instance_description&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, description: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the description of the instance.
+    </span><span class="kw">pub fn </span>instance_description&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, description: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(description) = description.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_instance_description(<span class="kw-2">&amp;</span>description);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>hostname&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, hostname: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the hostname of the GraphQL server.
+    </span><span class="kw">pub fn </span>hostname&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, hostname: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(hostname) = hostname.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_hostname(<span class="kw-2">&amp;</span>hostname);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>port&lt;S: Into&lt;OptionOption&lt;u16&gt;&gt;&gt;(<span class="self">self</span>, port: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the port number of the GraphQL server.
+    </span><span class="kw">pub fn </span>port&lt;S: Into&lt;OptionOption&lt;u16&gt;&gt;&gt;(<span class="self">self</span>, port: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(port) = port.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_port(port);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>pick_free_port(<span class="self">self</span>) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Picks a free port instead of a fixed port number.
+    </span><span class="kw">pub fn </span>pick_free_port(<span class="self">self</span>) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(port) = portpicker::pick_unused_port() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_port(port);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>secure&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, secure: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets if the GraphQL server shall use https or http.
+    </span><span class="kw">pub fn </span>secure&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, secure: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(secure) = secure.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_secure(secure);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>shutdown_timeout&lt;S: Into&lt;OptionOption&lt;u64&gt;&gt;&gt;(<span class="self">self</span>, shutdown_timeout: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the hostname, port and secure of the GraphQL server.
+    </span><span class="kw">pub fn </span>address(<span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+        <span class="kw">let </span>config_manager = <span class="self">self</span>.runtime.get_config_manager();
+        config_manager.set_graphql_hostname(<span class="kw-2">&amp;</span>address.hostname);
+        config_manager.set_graphql_port(address.port);
+        config_manager.set_graphql_secure(address.secure);
+        <span class="self">self
+    </span>}
+
+    <span class="doccomment">/// Sets timeout of the shutdown of the GraphQL server.
+    </span><span class="kw">pub fn </span>shutdown_timeout&lt;S: Into&lt;OptionOption&lt;u64&gt;&gt;&gt;(<span class="self">self</span>, shutdown_timeout: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(shutdown_timeout) = shutdown_timeout.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_shutdown_timeout(shutdown_timeout);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>workers&lt;S: Into&lt;OptionOption&lt;usize&gt;&gt;&gt;(<span class="self">self</span>, workers: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the number of workers of the GraphQL server.
+    </span><span class="kw">pub fn </span>workers&lt;S: Into&lt;OptionOption&lt;usize&gt;&gt;&gt;(<span class="self">self</span>, workers: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(workers) = workers.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_workers(workers);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>default_context_path&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, default_context_path: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets context path of a web resource provider which shall be used as default context path.
+    </span><span class="kw">pub fn </span>default_context_path&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, default_context_path: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(default_context_path) = default_context_path.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_graphql_default_context_path(default_context_path);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>disable_all_plugins&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, disabled: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Disables all plugins.
+    </span><span class="kw">pub fn </span>disable_all_plugins&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, disabled: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(disabled) = disabled.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_disable_all_plugins(disabled);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>disabled_plugins&lt;S: Into&lt;OptionOption&lt;Vec&lt;String&gt;&gt;&gt;&gt;(<span class="self">self</span>, disabled_plugins: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets which plugins will be disabled.
+    </span><span class="kw">pub fn </span>disabled_plugins&lt;S: Into&lt;OptionOption&lt;Vec&lt;String&gt;&gt;&gt;&gt;(<span class="self">self</span>, disabled_plugins: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(disabled_plugins) = disabled_plugins.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_disabled_plugins(disabled_plugins);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>disable_hot_deploy&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, disabled: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Disables hot deployment of plugins.
+    </span><span class="kw">pub fn </span>disable_hot_deploy&lt;S: Into&lt;OptionOption&lt;bool&gt;&gt;&gt;(<span class="self">self</span>, disabled: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(disabled) = disabled.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_disable_hot_deploy(disabled);
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>hot_deploy_location&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, hot_deploy_location: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the directory where plugins can be hot deployed.
+    </span><span class="kw">pub fn </span>hot_deploy_location&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, hot_deploy_location: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(hot_deploy_location) = hot_deploy_location.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_hot_deploy_location(<span class="prelude-val">Some</span>(hot_deploy_location))
         }
         <span class="self">self
     </span>}
 
-    <span class="kw">pub fn </span>install_location&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, install_location: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
+    <span class="doccomment">/// Sets the directory where plugins are located.
+    /// During hot deployment new plugins will be moved into this directory.
+    </span><span class="kw">pub fn </span>install_location&lt;S: Into&lt;OptionOption&lt;String&gt;&gt;&gt;(<span class="self">self</span>, install_location: S) -&gt; RuntimeBuilder&lt;ConfigFilesLoaded, NotRunning&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(install_location) = install_location.into().get() {
             <span class="self">self</span>.runtime.get_config_manager().set_install_location(<span class="prelude-val">Some</span>(install_location))
         }
