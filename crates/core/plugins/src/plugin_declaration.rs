@@ -21,6 +21,7 @@ pub struct PluginDeclaration {
     pub version: &'static str,
 
     /// The library registrar function.
+    #[allow(improper_ctypes_definitions)]
     pub register: unsafe extern "C" fn(&mut dyn PluginRegistrar),
 
     /// Function to get the dependencies of the plugin.
