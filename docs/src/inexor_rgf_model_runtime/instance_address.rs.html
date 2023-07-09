@@ -91,7 +91,7 @@
 <span class="kw">pub const </span>DEFAULT_ENDPOINT: <span class="kw-2">&amp;</span>str = <span class="string">&quot;/graphql&quot;</span>;
 <span class="kw">pub const </span>DEFAULT_USER_AGENT: <span class="kw-2">&amp;</span>str = <span class="string">&quot;inexor_rgf_client&quot;</span>;
 
-<span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize, TypedBuilder)]
+<span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash, Deserialize, Serialize, TypedBuilder)]
 #[serde(rename_all = <span class="string">&quot;camelCase&quot;</span>)]
 </span><span class="kw">pub struct </span>InstanceAddress {
     <span class="doccomment">/// The hostname of the GraphQL server.
