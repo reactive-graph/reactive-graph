@@ -7,7 +7,7 @@ pub const DEFAULT_PORT: u16 = 31415;
 pub const DEFAULT_ENDPOINT: &str = "/graphql";
 pub const DEFAULT_USER_AGENT: &str = "inexor_rgf_client";
 
-#[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize, TypedBuilder)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Deserialize, Serialize, TypedBuilder)]
 #[serde(rename_all = "camelCase")]
 pub struct InstanceAddress {
     /// The hostname of the GraphQL server.
