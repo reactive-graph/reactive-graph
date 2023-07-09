@@ -748,6 +748,8 @@ type MutationRemotes {
   fetchRemotesFromRemote(hostname: String!, port: Int!, secure: Boolean): [InstanceInfo!]!
   "Removes a remote."
   remove(hostname: String!, port: Int!, secure: Boolean): Boolean!
+  "Removes all remotes."
+  removeAll: Boolean!
   "Updates a remote."
   update(hostname: String!, port: Int!, secure: Boolean): InstanceInfo!
 }
