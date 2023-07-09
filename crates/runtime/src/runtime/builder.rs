@@ -6,6 +6,7 @@ use std::sync::Arc;
 use tokio::time::Duration;
 
 use crate::get_runtime;
+use crate::model_runtime::InstanceAddress;
 use crate::runtime::Runtime;
 
 pub enum SetConfigLocations {}
@@ -121,6 +122,15 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(secure) = secure.into().get() {
             self.runtime.get_config_manager().set_graphql_secure(secure);
         }
+        self
+    }
+
+    /// Sets the hostname, port and secure of the GraphQL server.
+    pub fn address(self, address: &InstanceAddress) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+        let config_manager = self.runtime.get_config_manager();
+        config_manager.set_graphql_hostname(&address.hostname);
+        config_manager.set_graphql_port(address.port);
+        config_manager.set_graphql_secure(address.secure);
         self
     }
 
