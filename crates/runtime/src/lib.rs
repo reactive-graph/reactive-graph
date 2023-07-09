@@ -32,7 +32,8 @@ use inexor_rgf_model_runtime as model_runtime;
 use crate::di::profiles;
 use crate::di::Container;
 use crate::di::Provider;
-use crate::runtime::Runtime;
+pub use crate::runtime::builder::RuntimeBuilder;
+pub use crate::runtime::Runtime;
 
 mod api;
 mod commands;
