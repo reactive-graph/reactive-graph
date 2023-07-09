@@ -15,16 +15,16 @@ pub struct InexorMutation;
 impl InexorMutation {
     /// Mutations for types (components, entity types, relation types).
     async fn types(&self) -> MutationTypes {
-        MutationTypes::default()
+        MutationTypes
     }
 
     /// Mutations for instances (entity instances, relation instances).
     async fn instances(&self) -> MutationInstances {
-        MutationInstances::default()
+        MutationInstances
     }
 
     /// Mutations for instances (entity instances, relation instances).
     async fn system(&self) -> MutationSystem {
-        MutationSystem::default()
+        MutationSystem
     }
 }

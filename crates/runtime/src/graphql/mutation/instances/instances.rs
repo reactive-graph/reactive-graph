@@ -12,16 +12,16 @@ pub struct MutationInstances;
 impl MutationInstances {
     /// Mutations on entity instances.
     async fn entities(&self) -> MutationEntityInstances {
-        MutationEntityInstances::default()
+        MutationEntityInstances
     }
 
     /// Mutations on relation instances.
     async fn relations(&self) -> MutationRelationInstances {
-        MutationRelationInstances::default()
+        MutationRelationInstances
     }
 
     /// Mutations for flows and their contained instances.
     async fn flows(&self) -> MutationFlowInstances {
-        MutationFlowInstances::default()
+        MutationFlowInstances
     }
 }

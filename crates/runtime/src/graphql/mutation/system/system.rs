@@ -9,14 +9,14 @@ pub struct MutationSystem;
 #[Object]
 impl MutationSystem {
     async fn commands(&self) -> MutationCommands {
-        MutationCommands::default()
+        MutationCommands
     }
 
     async fn remotes(&self) -> MutationRemotes {
-        MutationRemotes::default()
+        MutationRemotes
     }
 
     async fn plugins(&self) -> MutationPlugins {
-        MutationPlugins::default()
+        MutationPlugins
     }
 }

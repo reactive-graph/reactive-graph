@@ -12,16 +12,16 @@ pub struct MutationTypes;
 impl MutationTypes {
     /// Mutations for components
     async fn components(&self) -> MutationComponents {
-        MutationComponents::default()
+        MutationComponents
     }
 
     /// Mutations for entity types
     async fn entities(&self) -> MutationEntityTypes {
-        MutationEntityTypes::default()
+        MutationEntityTypes
     }
 
     /// Mutations for relation types
     async fn relations(&self) -> MutationRelationTypes {
-        MutationRelationTypes::default()
+        MutationRelationTypes
     }
 }
