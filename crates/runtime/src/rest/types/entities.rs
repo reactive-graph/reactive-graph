@@ -4,8 +4,10 @@ use actix_web::get;
 use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
+use schemars::schema_for;
 
 use crate::api::EntityTypeManager;
+use crate::model::EntityType;
 
 #[get("/types/entities")]
 pub async fn get_entity_types(entity_type_manager: web::Data<Arc<dyn EntityTypeManager>>) -> HttpResponse {
@@ -28,4 +30,10 @@ pub async fn get_entity_type(
             .content_type(APPLICATION_JSON.to_string())
             .body(format!("Entity Type {}__{} not found", namespace, type_name)),
     }
+}
+
+#[get("/types/entities/schema")]
+pub async fn schema_entity_types() -> HttpResponse {
+    let schema = schema_for!(EntityType);
+    HttpResponse::Ok().content_type("application/schema+json".to_string()).json(schema)
 }

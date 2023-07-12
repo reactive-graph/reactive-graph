@@ -282,10 +282,17 @@ impl GraphQLServerImpl {
                 .service(query_dynamic_graph)
                 // REST API
                 .service(crate::rest::types::components::get_components)
+                .service(crate::rest::types::components::get_component)
+                .service(crate::rest::types::components::schema_components)
                 .service(crate::rest::types::entities::get_entity_types)
                 .service(crate::rest::types::entities::get_entity_type)
+                .service(crate::rest::types::entities::schema_entity_types)
                 .service(crate::rest::types::relations::get_relation_types)
                 .service(crate::rest::types::relations::get_relation_type)
+                .service(crate::rest::types::relations::schema_relation_types)
+                .service(crate::rest::types::flows::get_flow_types)
+                .service(crate::rest::types::flows::get_flow_type)
+                .service(crate::rest::types::flows::schema_flow_types)
                 // Web Resource API
                 .service(web::resource("/{web_resource_context_path}/{path:.*}").route(web::get().to(handle_web_resource)))
                 .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)))

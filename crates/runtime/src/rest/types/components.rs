@@ -1,9 +1,11 @@
 use std::sync::Arc;
 
+use crate::model::Component;
 use actix_web::get;
 use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
+use schemars::schema_for;
 
 use crate::api::ComponentManager;
 
@@ -26,4 +28,10 @@ pub async fn get_component(
             .content_type(APPLICATION_JSON.to_string())
             .body(format!("Component {}__{} not found", namespace, type_name)),
     }
+}
+
+#[get("/types/components/schema")]
+pub async fn schema_components() -> HttpResponse {
+    let schema = schema_for!(Component);
+    HttpResponse::Ok().content_type("application/schema+json".to_string()).json(schema)
 }

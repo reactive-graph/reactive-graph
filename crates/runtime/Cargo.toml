@@ -62,6 +62,7 @@ reqwest = { workspace = true }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 rustls = { workspace = true }
 rustls-pemfile = { workspace = true }
+schemars = { workspace = true, features = ["uuid1"] }
 semver = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

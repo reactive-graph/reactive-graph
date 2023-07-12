@@ -4,8 +4,10 @@ use actix_web::get;
 use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
+use schemars::schema_for;
 
 use crate::api::RelationTypeManager;
+use crate::model::RelationType;
 
 #[get("/types/relations")]
 pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn RelationTypeManager>>) -> HttpResponse {
@@ -28,4 +30,10 @@ pub async fn get_relation_type(
             .content_type(APPLICATION_JSON.to_string())
             .body(format!("Relation Type {}__{} not found", namespace, type_name)),
     }
+}
+
+#[get("/types/relations/schema")]
+pub async fn schema_relation_types() -> HttpResponse {
+    let schema = schema_for!(RelationType);
+    HttpResponse::Ok().content_type("application/schema+json".to_string()).json(schema)
 }
