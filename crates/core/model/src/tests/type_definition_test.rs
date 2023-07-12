@@ -1,4 +1,5 @@
 use indradb::Identifier;
+use schemars::schema_for;
 
 use crate::tests::utils::r_string;
 use crate::NamespacedType;
@@ -108,4 +109,10 @@ fn type_definition_component_from_identifier_test() {
     assert_eq!(namespace, td.namespace());
     assert_eq!(type_name, td.type_name());
     assert_eq!(format!("c__{namespace}__{type_name}"), td.to_string());
+}
+
+#[test]
+fn type_definition_json_schema() {
+    let schema = schema_for!(TypeDefinition);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

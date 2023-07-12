@@ -1,4 +1,5 @@
 use indradb::Identifier;
+use schemars::schema_for;
 use serde_json::json;
 
 use crate::tests::utils::r_string;
@@ -148,4 +149,10 @@ fn entity_type_de_test() {
     assert_eq!("ext_namespace", extension.ty.namespace());
     assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("ext_value"), extension.extension);
+}
+
+#[test]
+fn entity_type_json_schema() {
+    let schema = schema_for!(EntityType);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use std::convert::TryFrom;
 use std::sync::Arc;
 
@@ -30,7 +31,7 @@ pub struct FlowInstanceCreationError;
 /// It's even possible to connect entity instances from different flows with relation
 /// instances.
 ///
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct FlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///
@@ -56,13 +57,13 @@ pub struct FlowInstance {
     ///
     /// It can't have a default because the wrapper entity instance must be
     /// present in the list of entities.
-    #[serde(default = "Vec::new", alias = "entities")]
+    #[serde(default = "Vec::<EntityInstance>::new", alias = "entities")]
     pub entity_instances: Vec<EntityInstance>,
 
     /// The relation instances which are contained in this flow instance.
     ///
     /// By default, no relation instances are contained in this flow instance.
-    #[serde(default = "Vec::new", alias = "relations")]
+    #[serde(default = "Vec::<RelationInstance>::new", alias = "relations")]
     pub relation_instances: Vec<RelationInstance>,
 }
 

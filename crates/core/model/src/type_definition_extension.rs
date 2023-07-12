@@ -9,7 +9,7 @@ use crate::ExtensionTypeId;
 use crate::TypeDefinition;
 
 /// References an extension of a type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TypeDefinitionExtension {
     /// The type definition.
     #[serde(alias = "type")]

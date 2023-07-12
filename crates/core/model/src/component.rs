@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -14,7 +15,7 @@ use crate::TypeIdType;
 
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct Component {
     /// The type definition of the component.
     #[serde(flatten)]
@@ -25,11 +26,11 @@ pub struct Component {
     pub description: String,
 
     /// The properties which are applied on entity or relation instances.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<PropertyType>::new")]
     pub properties: Vec<PropertyType>,
 
     /// Component specific extensions
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 

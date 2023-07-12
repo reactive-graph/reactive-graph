@@ -4,6 +4,7 @@ use std::ops::Index;
 use indradb::NamedProperty;
 use indradb::Vertex;
 use indradb::VertexProperties;
+use schemars::schema_for;
 use serde_json::json;
 use uuid::Uuid;
 
@@ -236,4 +237,10 @@ fn entity_instance_de_test() {
     assert_eq!("ext_namespace", extension.ty.namespace());
     assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("extension_value"), extension.extension);
+}
+
+#[test]
+fn entity_instance_json_schema() {
+    let schema = schema_for!(EntityInstance);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

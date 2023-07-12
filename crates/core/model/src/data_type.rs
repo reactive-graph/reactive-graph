@@ -1,5 +1,6 @@
 use core::fmt;
 use fmt::Display;
+use schemars::JsonSchema;
 use std::collections::HashMap;
 use std::fmt::Formatter;
 
@@ -9,7 +10,7 @@ use serde_json::json;
 use serde_json::Value;
 
 /// Derived from serde_json::Value but without value payload.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Copy, Eq)]
+#[derive(Clone, Debug, PartialEq, Copy, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum DataType {
     /// Represents a JSON null value.

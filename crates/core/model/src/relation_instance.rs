@@ -4,6 +4,7 @@ use std::fmt::Formatter;
 
 use indradb::EdgeKey;
 use indradb::EdgeProperties;
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Map;
@@ -31,7 +32,7 @@ use crate::TypeDefinitionGetter;
 ///
 /// In contrast to the relation type, the relation instance stores values/
 /// documents in it's properties.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct RelationInstance {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
@@ -53,11 +54,11 @@ pub struct RelationInstance {
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// <https://docs.serde.rs/serde_json/value/enum.Value.html>
-    #[serde(default = "HashMap::new")]
+    #[serde(default = "HashMap::<String, Value>::new")]
     pub properties: HashMap<String, Value>,
 
     /// Relation instance specific extensions.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 

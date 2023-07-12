@@ -1,4 +1,5 @@
 use core::fmt;
+use schemars::JsonSchema;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
@@ -6,7 +7,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 /// The mutability of a property.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Copy, Eq)]
+#[derive(Clone, Debug, PartialEq, Copy, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum Mutability {
     /// The property is mutable.

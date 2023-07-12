@@ -2,6 +2,7 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 
 use indradb::Identifier;
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -25,7 +26,7 @@ pub enum RelationTypeCardinality {
     Random,
 }
 
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 pub struct RelationTypeId(NamespacedType);
 
 impl RelationTypeId {

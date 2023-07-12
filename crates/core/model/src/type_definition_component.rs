@@ -9,7 +9,7 @@ use crate::ComponentTypeId;
 use crate::TypeDefinition;
 
 /// References a component of a type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TypeDefinitionComponent {
     /// The type definition.
     #[serde(alias = "type")]

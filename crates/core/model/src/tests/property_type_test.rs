@@ -3,6 +3,7 @@ use crate::DataType;
 use crate::Mutability;
 use crate::PropertyType;
 use crate::SocketType;
+use schemars::schema_for;
 
 #[test]
 fn property_type_test() {
@@ -142,4 +143,10 @@ fn property_type_object_test() {
     assert_eq!(property_name, property_type.name);
     assert_eq!(DataType::Object, property_type.data_type);
     assert_eq!(SocketType::None, property_type.socket_type);
+}
+
+#[test]
+fn property_type_json_schema() {
+    let schema = schema_for!(PropertyType);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

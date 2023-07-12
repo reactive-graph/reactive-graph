@@ -1,4 +1,5 @@
 use indradb::Identifier;
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
@@ -9,7 +10,7 @@ use crate::TypeIdType;
 use crate::TYPE_ID_TYPE_SEPARATOR;
 
 /// Definition of a type with the type of the type, the namespace and the name of the type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct TypeDefinition {
     pub type_id_type: TypeIdType,
     pub namespace: String,

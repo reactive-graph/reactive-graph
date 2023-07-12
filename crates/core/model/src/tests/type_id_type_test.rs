@@ -5,6 +5,7 @@ use crate::TYPE_ID_TYPE_NAMESPACE_ENTITY_TYPE;
 use crate::TYPE_ID_TYPE_NAMESPACE_EXTENSION;
 use crate::TYPE_ID_TYPE_NAMESPACE_FLOW_TYPE;
 use crate::TYPE_ID_TYPE_NAMESPACE_RELATION_TYPE;
+use schemars::schema_for;
 
 #[test]
 fn type_id_type_to_string_test() {
@@ -58,4 +59,10 @@ fn type_id_type_from_str_test() {
     assert_eq!(TypeIdType::FlowType, TypeIdType::try_from("f").unwrap());
     assert!(TypeIdType::try_from("a").is_err());
     assert!(TypeIdType::try_from("abc").is_err());
+}
+
+#[test]
+fn type_id_type_json_schema() {
+    let schema = schema_for!(TypeIdType);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
@@ -31,7 +32,7 @@ pub static TYPE_ID_TYPE_NAMESPACE_RELATION_TYPE: Uuid = Uuid::from_u128(0x1ab7c8
 pub static TYPE_ID_TYPE_NAMESPACE_FLOW_TYPE: Uuid = Uuid::from_u128(0x62b7c5106d3d18c189f468202fd45230);
 
 /// The type of a type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Copy, Eq)]
+#[derive(Clone, Debug, PartialEq, Copy, Eq, Serialize, Deserialize, JsonSchema)]
 pub enum TypeIdType {
     Behaviour,
     Component,

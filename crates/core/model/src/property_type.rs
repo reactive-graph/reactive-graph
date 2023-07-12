@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
@@ -17,7 +18,7 @@ pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b
 /// Definition of a property. The definition contains
 /// the name of the property, the data type and the socket
 /// type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct PropertyType {
     /// The name of the property
     pub name: String,
@@ -38,7 +39,7 @@ pub struct PropertyType {
     pub mutability: Mutability,
 
     /// Property specific extensions
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 

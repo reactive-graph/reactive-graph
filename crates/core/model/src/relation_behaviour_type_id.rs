@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::fmt::Display;
@@ -8,7 +9,7 @@ use crate::NamespacedType;
 use crate::RelationTypeId;
 
 /// The behaviour of a relation type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
 pub struct RelationBehaviourTypeId {
     /// The relation type.
     pub relation_ty: RelationTypeId,

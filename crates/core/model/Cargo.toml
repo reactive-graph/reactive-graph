@@ -12,6 +12,7 @@ readme = "../../../README.md"
 dashmap = { workspace = true }
 indradb-lib = { workspace = true }
 paste = { workspace = true }
+schemars = { workspace = true, features = [ "uuid1" ] }
 serde = { workspace = true, features = [ "derive" ] }
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4", "v5"] }

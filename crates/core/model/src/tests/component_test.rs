@@ -1,3 +1,4 @@
+use schemars::schema_for;
 use serde_json::json;
 
 use crate::tests::utils::r_string;
@@ -191,4 +192,10 @@ fn component_ser_test() {
     assert_eq!("d", component.description);
     assert_eq!(1, component.properties.len());
     assert_eq!(0, component.extensions.len());
+}
+
+#[test]
+fn component_json_schema() {
+    let schema = schema_for!(Component);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

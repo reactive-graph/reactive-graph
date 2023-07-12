@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
@@ -14,7 +15,7 @@ pub trait NamespacedTypeGetter {
 }
 
 /// Defines the namespace and the name of a type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 pub struct NamespacedType {
     /// The namespace the component belongs to.
     #[serde(default = "String::new")]

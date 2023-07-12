@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
@@ -25,7 +26,7 @@ pub struct FlowTypeCreationError;
 /// They contain entity instances and relation instances. The wrapper
 /// entity instance is mandatory and used for input and outputs.
 ///
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct FlowType {
     /// The type definition of the entity type.
     #[serde(flatten)]
@@ -41,23 +42,23 @@ pub struct FlowType {
     /// The entity instances which are contained in this flow.
     ///
     /// By default, no relation instances are contained in this flow type.
-    #[serde(default = "Vec::new", alias = "entities")]
+    #[serde(default = "Vec::<EntityInstance>::new", alias = "entities")]
     pub entity_instances: Vec<EntityInstance>,
 
     /// The relation instances which are contained in this flow.
     ///
     /// By default, no relation instances are contained in this flow type.
-    #[serde(default = "Vec::new", alias = "relations")]
+    #[serde(default = "Vec::<RelationInstance>::new", alias = "relations")]
     pub relation_instances: Vec<RelationInstance>,
 
     /// The variables. Variables will be replaced by instantiation of a flow instance.
     ///
     /// By default, the flow type has no variables.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<PropertyType>::new")]
     pub variables: Vec<PropertyType>,
 
     /// Flow type specific extensions.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 

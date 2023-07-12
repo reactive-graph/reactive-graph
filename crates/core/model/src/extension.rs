@@ -1,5 +1,6 @@
 use std::cmp::Ordering;
 
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
@@ -11,7 +12,7 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 
 /// Extension on a type. The extension allows to extend information
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct Extension {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]

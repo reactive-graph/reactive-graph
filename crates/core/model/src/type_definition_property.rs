@@ -8,7 +8,7 @@ use serde_json::Value;
 use crate::TypeDefinition;
 
 /// References a property of a type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TypeDefinitionProperty {
     /// The type definition.
     #[serde(alias = "type")]

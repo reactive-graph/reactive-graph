@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -19,7 +20,7 @@ use crate::TypeIdType;
 ///
 /// The relation type defines the entity types of the outbound and inbound entity instances.
 /// Also the relation type defines the properties of the relation instance.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct RelationType {
     /// The outbound component or entity type.
     #[serde(rename = "outbound", alias = "outbound")]
@@ -38,15 +39,15 @@ pub struct RelationType {
     pub description: String,
 
     /// The names of the components of the relation type.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<ComponentTypeId>::new")]
     pub components: Vec<ComponentTypeId>,
 
     /// The properties which are defined by the relation type.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<PropertyType>::new")]
     pub properties: Vec<PropertyType>,
 
     /// Relation type specific extensions.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 

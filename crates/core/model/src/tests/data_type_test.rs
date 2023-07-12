@@ -1,3 +1,4 @@
+use schemars::schema_for;
 use serde_json::Value;
 
 use crate::tests::utils::r_string;
@@ -65,4 +66,10 @@ fn data_type_display() {
     assert_eq!("String", format!("{}", DataType::String));
     assert_eq!("Array", format!("{}", DataType::Array));
     assert_eq!("Object", format!("{}", DataType::Object));
+}
+
+#[test]
+fn data_type_json_schema() {
+    let schema = schema_for!(DataType);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

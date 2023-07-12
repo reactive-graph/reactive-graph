@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -5,7 +6,7 @@ use crate::ComponentTypeId;
 use crate::RelationTypeId;
 
 /// Addresses the component of a relation type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
 pub struct RelationComponentTypeId {
     /// The relation type.
     pub relation_ty: RelationTypeId,

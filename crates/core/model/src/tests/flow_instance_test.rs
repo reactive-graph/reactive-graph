@@ -1,3 +1,4 @@
+use schemars::schema_for;
 use uuid::Uuid;
 
 use crate::tests::utils::create_entity_instance_from_type;
@@ -56,4 +57,10 @@ fn flow_instance_from_entity_instance_with_name_test() {
     assert_eq!(type_name.clone(), flow_instance.type_name());
     assert_eq!(wrapper_entity_instance.id, flow_instance.id);
     assert_eq!(flow_name, flow_instance.name);
+}
+
+#[test]
+fn flow_instance_json_schema() {
+    let schema = schema_for!(FlowInstance);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

@@ -1,3 +1,4 @@
+use schemars::schema_for;
 use serde_json::json;
 use std::collections::HashMap;
 use uuid::Uuid;
@@ -155,4 +156,10 @@ fn create_flow_type_test() {
     flow_type.remove_extension(&extension_3_ty);
     assert_eq!(2, flow_type.extensions.len());
     assert!(!flow_type.has_extension(&extension_3_ty));
+}
+
+#[test]
+fn flow_type_json_schema() {
+    let schema = schema_for!(FlowType);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

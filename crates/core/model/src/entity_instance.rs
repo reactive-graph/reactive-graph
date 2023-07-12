@@ -3,6 +3,7 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 
 use indradb::VertexProperties;
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Map;
@@ -25,7 +26,7 @@ use crate::TypeDefinitionGetter;
 ///
 /// In contrast to the entity type the entity instance stores values in it's
 /// properties.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct EntityInstance {
     /// The type definition of the entity type.
     #[serde(flatten)]
@@ -44,11 +45,11 @@ pub struct EntityInstance {
     /// a representation of a JSON. Therefore the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// <https://docs.serde.rs/serde_json/value/enum.Value.html>
-    #[serde(default = "HashMap::new")]
+    #[serde(default = "HashMap::<String, Value>::new")]
     pub properties: HashMap<String, Value>,
 
     /// Entity instance specific extensions.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 

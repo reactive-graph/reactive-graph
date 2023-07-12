@@ -1,4 +1,5 @@
 use core::fmt;
+use schemars::JsonSchema;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
@@ -7,7 +8,7 @@ use serde::Serialize;
 
 /// The socket type defines if the property acts as an input or output socket
 /// or is an hidden property
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Copy, Eq)]
+#[derive(Clone, Debug, PartialEq, Copy, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "lowercase")]
 pub enum SocketType {
     /// The property doesn't act as input or output socket.

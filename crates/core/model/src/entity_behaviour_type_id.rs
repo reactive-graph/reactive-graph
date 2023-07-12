@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::fmt::Display;
@@ -8,7 +9,7 @@ use crate::EntityTypeId;
 use crate::NamespacedType;
 
 /// The behaviour of an entity type.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
 pub struct EntityBehaviourTypeId {
     /// The entity type.
     pub entity_ty: EntityTypeId,

@@ -1,4 +1,5 @@
 use indradb::Identifier;
+use schemars::schema_for;
 
 use crate::tests::utils::r_string;
 use crate::FlowTypeId;
@@ -118,4 +119,10 @@ fn flow_type_id_from_string_test() {
     let s7 = String::from("f__ns__ty__xx");
     let ty7 = FlowTypeId::try_from(&s7);
     assert!(ty7.is_err());
+}
+
+#[test]
+fn flow_type_id_json_schema() {
+    let schema = schema_for!(FlowTypeId);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

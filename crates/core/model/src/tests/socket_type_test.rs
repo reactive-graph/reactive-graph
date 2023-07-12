@@ -1,5 +1,6 @@
 use crate::tests::utils::r_string;
 use crate::SocketType;
+use schemars::schema_for;
 
 #[test]
 fn socket_type_should_be_created_using_static_method_call() {
@@ -29,4 +30,10 @@ fn socket_type_display() {
     assert_eq!("None", format!("{}", SocketType::None));
     assert_eq!("Input", format!("{}", SocketType::Input));
     assert_eq!("Output", format!("{}", SocketType::Output));
+}
+
+#[test]
+fn socket_type_json_schema() {
+    let schema = schema_for!(SocketType);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

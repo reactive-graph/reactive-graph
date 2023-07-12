@@ -1,4 +1,5 @@
 use indradb::Identifier;
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::fmt::Display;
@@ -14,7 +15,7 @@ use crate::TypeIdType;
 use crate::TYPE_ID_TYPE_SEPARATOR;
 
 /// Type identifier of a relation instance.
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]
 pub struct RelationInstanceTypeId {
     /// The type definition of the relation type.
     #[serde(flatten)]

@@ -1,4 +1,5 @@
 use indradb::Identifier;
+use schemars::schema_for;
 
 use crate::tests::utils::r_string;
 use crate::EntityTypeId;
@@ -118,4 +119,10 @@ fn entity_type_id_from_string_test() {
     let s7 = String::from("e__ns__ty__xx");
     let ty7 = EntityTypeId::try_from(&s7);
     assert!(ty7.is_err());
+}
+
+#[test]
+fn entity_type_id_json_schema() {
+    let schema = schema_for!(EntityTypeId);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

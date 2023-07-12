@@ -4,6 +4,7 @@ use indradb::Edge;
 use indradb::EdgeKey;
 use indradb::EdgeProperties;
 use indradb::NamedProperty;
+use schemars::schema_for;
 use serde_json::json;
 use uuid::Uuid;
 
@@ -395,4 +396,10 @@ fn relation_instance_de_test() {
     assert_eq!("ext_namespace", extension.ty.namespace());
     assert_eq!("ext_name", extension.ty.type_name());
     assert_eq!(json!("ext_value"), extension.extension);
+}
+
+#[test]
+fn relation_instance_json_schema() {
+    let schema = schema_for!(RelationInstance);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

@@ -7,6 +7,7 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use indradb::Identifier;
+use schemars::schema_for;
 
 #[test]
 fn relation_instance_type_id_unique_id_test() {
@@ -220,4 +221,10 @@ fn relation_instance_type_id_from_string_test() {
     let t7 = String::from("r__ns__");
     let ty7 = RelationInstanceTypeId::try_from(&t7);
     assert!(ty7.is_err());
+}
+
+#[test]
+fn relation_instance_type_id_json_schema() {
+    let schema = schema_for!(RelationInstanceTypeId);
+    println!("{}", serde_json::to_string_pretty(&schema).unwrap());
 }

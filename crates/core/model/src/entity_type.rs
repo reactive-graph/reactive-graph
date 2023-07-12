@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -15,7 +16,7 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 
 /// Entity types defines the type of an entity instance.
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema)]
 pub struct EntityType {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
@@ -26,15 +27,15 @@ pub struct EntityType {
     pub description: String,
 
     /// The names of the components of the entity type.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<ComponentTypeId>::new")]
     pub components: Vec<ComponentTypeId>,
 
     /// The properties which are defined by the entity type.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<PropertyType>::new")]
     pub properties: Vec<PropertyType>,
 
     /// Entity type specific extensions.
-    #[serde(default = "Vec::new")]
+    #[serde(default = "Vec::<Extension>::new")]
     pub extensions: Vec<Extension>,
 }
 
