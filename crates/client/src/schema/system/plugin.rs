@@ -1,4 +1,4 @@
-#[derive(cynic::QueryFragment, Clone, Debug)]
+#[derive(Clone, Debug, cynic::QueryFragment)]
 #[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema")]
 pub struct Plugin {
     pub name: String,
@@ -12,13 +12,13 @@ pub struct Plugin {
     pub rustc_version: String,
 }
 
-#[derive(cynic::QueryFragment, Clone, Debug)]
+#[derive(Clone, Debug, cynic::QueryFragment)]
 #[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema", graphql_type = "Plugin")]
 pub struct PluginDependencies {
     pub dependencies: Vec<Plugin>,
 }
 
-#[derive(cynic::QueryFragment, Clone, Debug)]
+#[derive(Clone, Debug, cynic::QueryFragment)]
 #[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema", graphql_type = "Plugin")]
 pub struct PluginDependents {
     pub dependents: Vec<Plugin>,

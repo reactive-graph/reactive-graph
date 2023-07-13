@@ -1,81 +1,165 @@
 #[cynic::schema_for_derives(file = r#"schema.graphql"#, module = "crate::schema::schema")]
 pub mod mapping {
-    use crate::schema::system::instance::InstanceInfo;
-    use typed_builder::TypedBuilder;
+    use crate::schema::system::InstanceAddress;
+    use crate::schema::system::InstanceInfo;
 
-    #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
+    #[derive(Debug, cynic::QueryVariables)]
     pub struct InstanceAddressVariables {
-        pub hostname: String,
-        pub port: i32,
-        pub secure: Option<bool>,
+        pub address: InstanceAddress,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    impl From<&crate::model_runtime::InstanceAddress> for InstanceAddressVariables {
+        fn from(address: &crate::model_runtime::InstanceAddress) -> Self {
+            InstanceAddressVariables {
+                address: InstanceAddress {
+                    hostname: address.hostname.clone(),
+                    port: address.port as i32,
+                    secure: address.secure,
+                },
+            }
+        }
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "Query")]
     pub struct GetAllRemotes {
         pub system: GetAllRemotesSystem,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "System")]
     pub struct GetAllRemotesSystem {
         pub remotes: Vec<InstanceInfo>,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]
     pub struct AddRemote {
         pub system: AddRemoteMutationSystem,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "MutationSystem", variables = "InstanceAddressVariables")]
     pub struct AddRemoteMutationSystem {
         pub remotes: AddRemoteMutationRemotes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "MutationRemotes", variables = "InstanceAddressVariables")]
     pub struct AddRemoteMutationRemotes {
-        #[arguments(hostname: $hostname, port: $port, secure: $secure)]
+        #[arguments(address: $address)]
         pub add: InstanceInfo,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]
     pub struct RemoveRemote {
         pub system: RemoveRemoteMutationSystem,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "MutationSystem", variables = "InstanceAddressVariables")]
     pub struct RemoveRemoteMutationSystem {
         pub remotes: RemoveRemoteMutationRemotes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "MutationRemotes", variables = "InstanceAddressVariables")]
     pub struct RemoveRemoteMutationRemotes {
-        #[arguments(hostname: $hostname, port: $port, secure: $secure)]
+        #[arguments(address: $address)]
         pub remove: bool,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "Mutation")]
     pub struct RemoveAllRemotes {
         pub system: RemoveAllRemotesMutationSystem,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "MutationSystem")]
     pub struct RemoveAllRemotesMutationSystem {
         pub remotes: RemoveAllRemotesMutationRemotes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "MutationRemotes")]
     pub struct RemoveAllRemotesMutationRemotes {
         pub remove_all: bool,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]
+    pub struct UpdateRemote {
+        pub system: UpdateRemoteMutationSystem,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationSystem", variables = "InstanceAddressVariables")]
+    pub struct UpdateRemoteMutationSystem {
+        pub remotes: UpdateRemoteMutationRemotes,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationRemotes", variables = "InstanceAddressVariables")]
+    pub struct UpdateRemoteMutationRemotes {
+        #[arguments(address: $address)]
+        pub update: InstanceInfo,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "Mutation")]
+    pub struct UpdateAllRemotes {
+        pub system: UpdateAllRemotesMutationSystem,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationSystem")]
+    pub struct UpdateAllRemotesMutationSystem {
+        pub remotes: UpdateAllRemotesMutationRemotes,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationRemotes")]
+    pub struct UpdateAllRemotesMutationRemotes {
+        pub update_all: Vec<InstanceInfo>,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]
+    pub struct FetchRemotesFromRemote {
+        pub system: FetchRemotesFromRemoteMutationSystem,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationSystem", variables = "InstanceAddressVariables")]
+    pub struct FetchRemotesFromRemoteMutationSystem {
+        pub remotes: FetchRemotesFromRemoteMutationRemotes,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationRemotes", variables = "InstanceAddressVariables")]
+    pub struct FetchRemotesFromRemoteMutationRemotes {
+        #[arguments(address: $address)]
+        pub fetch_remotes_from_remote: Vec<InstanceInfo>,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "Mutation")]
+    pub struct FetchRemotesFromAllRemotes {
+        pub system: FetchRemotesFromAllRemotesMutationSystem,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationSystem")]
+    pub struct FetchRemotesFromAllRemotesMutationSystem {
+        pub remotes: FetchRemotesFromAllRemotesMutationRemotes,
+    }
+
+    #[derive(Debug, cynic::QueryFragment)]
+    #[cynic(graphql_type = "MutationRemotes")]
+    pub struct FetchRemotesFromAllRemotesMutationRemotes {
+        pub fetch_remotes_from_all_remotes: Vec<InstanceInfo>,
     }
 }
 
@@ -90,9 +174,13 @@ pub mod queries {
 
 pub mod operations {
     use crate::client::system::remotes::mapping::AddRemote;
+    use crate::client::system::remotes::mapping::UpdateRemote;
+    use crate::system::remotes::mapping::FetchRemotesFromAllRemotes;
+    use crate::system::remotes::mapping::FetchRemotesFromRemote;
     use crate::system::remotes::mapping::InstanceAddressVariables;
     use crate::system::remotes::mapping::RemoveAllRemotes;
     use crate::system::remotes::mapping::RemoveRemote;
+    use crate::system::remotes::mapping::UpdateAllRemotes;
 
     pub fn add(vars: InstanceAddressVariables) -> cynic::Operation<AddRemote, InstanceAddressVariables> {
         use cynic::MutationBuilder;
@@ -108,13 +196,41 @@ pub mod operations {
         use cynic::MutationBuilder;
         RemoveAllRemotes::build(())
     }
+
+    pub fn update(vars: InstanceAddressVariables) -> cynic::Operation<UpdateRemote, InstanceAddressVariables> {
+        use cynic::MutationBuilder;
+        UpdateRemote::build(vars)
+    }
+
+    pub fn update_all() -> cynic::Operation<UpdateAllRemotes, ()> {
+        use cynic::MutationBuilder;
+        UpdateAllRemotes::build(())
+    }
+
+    pub fn fetch_remotes_from_remote(vars: InstanceAddressVariables) -> cynic::Operation<FetchRemotesFromRemote, InstanceAddressVariables> {
+        use cynic::MutationBuilder;
+        FetchRemotesFromRemote::build(vars)
+    }
+
+    pub fn fetch_remotes_from_all_remotes() -> cynic::Operation<FetchRemotesFromAllRemotes, ()> {
+        use cynic::MutationBuilder;
+        FetchRemotesFromAllRemotes::build(())
+    }
 }
 
 pub mod api {
     use std::sync::Arc;
 
-    use crate::client::system::remotes::queries::get_all;
+    use crate::model_runtime::InstanceAddress;
     use crate::model_runtime::InstanceInfo;
+    use crate::system::remotes::operations::add;
+    use crate::system::remotes::operations::fetch_remotes_from_all_remotes;
+    use crate::system::remotes::operations::fetch_remotes_from_remote;
+    use crate::system::remotes::operations::remove;
+    use crate::system::remotes::operations::remove_all;
+    use crate::system::remotes::operations::update;
+    use crate::system::remotes::operations::update_all;
+    use crate::system::remotes::queries::get_all;
     use crate::InexorRgfClient;
     use crate::InexorRgfClientExecutionError;
     use crate::InstanceInfos;
@@ -131,5 +247,97 @@ pub mod api {
         pub async fn get_all(&self) -> Result<Vec<InstanceInfo>, InexorRgfClientExecutionError> {
             self.client.run_graphql(get_all(), |data| InstanceInfos(data.system.remotes).into()).await
         }
+
+        pub async fn add(&self, address: &InstanceAddress) -> Result<InstanceInfo, InexorRgfClientExecutionError> {
+            self.client.run_graphql(add(address.into()), |data| data.system.remotes.add.into()).await
+        }
+
+        pub async fn remove(&self, address: &InstanceAddress) -> Result<bool, InexorRgfClientExecutionError> {
+            self.client.run_graphql(remove(address.into()), |data| data.system.remotes.remove).await
+        }
+
+        pub async fn remove_all(&self) -> Result<bool, InexorRgfClientExecutionError> {
+            self.client.run_graphql(remove_all(), |data| data.system.remotes.remove_all).await
+        }
+
+        pub async fn update(&self, address: &InstanceAddress) -> Result<InstanceInfo, InexorRgfClientExecutionError> {
+            self.client.run_graphql(update(address.into()), |data| data.system.remotes.update.into()).await
+        }
+
+        pub async fn update_all(&self) -> Result<Vec<InstanceInfo>, InexorRgfClientExecutionError> {
+            self.client
+                .run_graphql(update_all(), |data| InstanceInfos(data.system.remotes.update_all).into())
+                .await
+        }
+
+        pub async fn fetch_remotes_from_remote(&self, address: &InstanceAddress) -> Result<Vec<InstanceInfo>, InexorRgfClientExecutionError> {
+            self.client
+                .run_graphql(fetch_remotes_from_remote(address.into()), |data| {
+                    InstanceInfos(data.system.remotes.fetch_remotes_from_remote).into()
+                })
+                .await
+        }
+
+        pub async fn fetch_remotes_from_all_remotes(&self) -> Result<Vec<InstanceInfo>, InexorRgfClientExecutionError> {
+            self.client
+                .run_graphql(fetch_remotes_from_all_remotes(), |data| {
+                    InstanceInfos(data.system.remotes.fetch_remotes_from_all_remotes).into()
+                })
+                .await
+        }
+    }
+}
+
+#[cfg(test)]
+pub mod test {
+
+    use crate::InexorRgfClient;
+    use inexor_rgf_rt::runtime::Runtime;
+    use inexor_rgf_rt::runtime::RuntimeBuilder;
+    use std::sync::Arc;
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_get_all_remotes() {
+        RuntimeBuilder::new()
+            .ignore_config_files()
+            .disable_all_plugins(true)
+            .pick_free_port()
+            .init()
+            .await
+            .post_init()
+            .await
+            .spawn()
+            .await
+            .with_runtime(|runtime: Arc<dyn Runtime>| async move {
+                let instance_service = runtime.get_instance_service();
+                let remotes_manager = runtime.get_remotes_manager();
+
+                // Get instance info from the runtime
+                let rt_instance_info = instance_service.get_instance_info();
+                let rt_address = rt_instance_info.address();
+
+                // RT: Create remote
+                remotes_manager
+                    .add(&instance_service.get_instance_info().into())
+                    .await
+                    .expect("Failed to add self to list of remotes");
+
+                let rt_remotes = remotes_manager.get_all();
+
+                // Client: Connect to self and get all remotes
+                let client = InexorRgfClient::new(rt_address.clone()).expect("Cannot create client");
+                let remotes = client.system().remotes().get_all().await.expect("Failed to get all remotes");
+
+                // Expect that the remotes of the runtime are the same
+                assert_eq!(remotes.len(), 1);
+                assert_eq!(remotes, rt_remotes);
+            })
+            .await
+            .stop()
+            .await
+            .pre_shutdown()
+            .await
+            .shutdown()
+            .await;
     }
 }
