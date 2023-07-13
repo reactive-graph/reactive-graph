@@ -1,4 +1,4 @@
-query {
+query GetAllRemotes {
   system {
     remotes {
       hostname

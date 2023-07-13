@@ -743,15 +743,18 @@ type MutationRelationTypes {
 "Mutations for managing remote instances."
 type MutationRemotes {
   "Adds a remote."
-  add(hostname: String!, port: Int!, secure: Boolean): InstanceInfo!
+  add(address: InstanceAddress!): InstanceInfo!
+  fetchRemotesFromAllRemotes: [InstanceInfo!]!
   "Fetches the remotes which are available on the given remote."
-  fetchRemotesFromRemote(hostname: String!, port: Int!, secure: Boolean): [InstanceInfo!]!
+  fetchRemotesFromRemote(address: InstanceAddress!): [InstanceInfo!]!
   "Removes a remote."
-  remove(hostname: String!, port: Int!, secure: Boolean): Boolean!
+  remove(address: InstanceAddress!): Boolean!
   "Removes all remotes."
   removeAll: Boolean!
   "Updates a remote."
-  update(hostname: String!, port: Int!, secure: Boolean): InstanceInfo!
+  update(address: InstanceAddress!): InstanceInfo!
+  "Updates all remotes."
+  updateAll: [InstanceInfo!]!
 }
 
 type MutationSystem {
@@ -1282,6 +1285,15 @@ input FlowTypeId {
   name: String!
   "The namespace of the flow type."
   namespace: String!
+}
+
+input InstanceAddress {
+  "The hostname."
+  hostname: String!
+  "The port."
+  port: Int!
+  "Secure endpoint."
+  secure: Boolean
 }
 
 input PropertyInstanceDefinition {

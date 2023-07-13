@@ -1,11 +1,7 @@
-mutation AddRemote($hostname: String!, $port: Int!, $secure: Boolean!) {
+mutation AddRemote($address: InstanceAddress!) {
   system {
     remotes {
-      add(
-        hostname: $hostname
-        port: $port
-        secure: $secure
-      ) {
+      add(address: $address) {
         buildDate
         description
         gitBranch

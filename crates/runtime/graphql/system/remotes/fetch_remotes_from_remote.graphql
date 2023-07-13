@@ -1,7 +1,7 @@
-mutation AddRemote($address: InstanceAddress!) {
+mutation FetchRemotesFromRemote($address: InstanceAddress!) {
   system {
     remotes {
-      update(address: $address) {
+      fetchRemotesFromRemote(address: $address) {
         buildDate
         description
         gitBranch
