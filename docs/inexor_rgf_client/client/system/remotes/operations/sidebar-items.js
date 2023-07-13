@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["add","remove","remove_all"]};
+window.SIDEBAR_ITEMS = {"fn":["add","fetch_remotes_from_all_remotes","fetch_remotes_from_remote","remove","remove_all","update","update_all"]};

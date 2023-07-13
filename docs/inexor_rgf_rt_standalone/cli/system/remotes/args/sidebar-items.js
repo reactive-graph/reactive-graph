@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RemotesArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["InstanceAddressArgs","RemotesArgs"]};
