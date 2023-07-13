@@ -3,7 +3,7 @@ use chrono::FixedOffset;
 use chrono::Utc;
 use std::ops::Deref;
 
-#[derive(cynic::QueryFragment, Clone, Debug)]
+#[derive(Clone, Debug, cynic::QueryFragment)]
 #[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema")]
 pub struct InstanceInfo {
     pub name: String,

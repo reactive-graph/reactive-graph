@@ -94,6 +94,9 @@ pub trait RemotesManager: Send + Sync + Lifecycle {
     /// Returns true if the given address is registered.
     fn has(&self, address: &InstanceAddress) -> bool;
 
+    /// Returns a list of the addresses of the remote instances.
+    fn get_all_addresses(&self) -> Vec<InstanceAddress>;
+
     /// Adds a remote instance.
     async fn add(&self, address: &InstanceAddress) -> Result<InstanceInfo, FailedToAddInstance>;
 
@@ -106,6 +109,12 @@ pub trait RemotesManager: Send + Sync + Lifecycle {
     /// Updates a remote instance.
     async fn update(&self, address: &InstanceAddress) -> Result<InstanceInfo, FailedToUpdateInstance>;
 
+    /// Removes all remote instances.
+    async fn update_all(&self) -> Vec<InstanceInfo>;
+
     /// Fetches and adds all remote instances of the given remote instance.
     async fn fetch_and_add_remotes_from_remote(&self, address: &InstanceAddress) -> Result<Vec<InstanceInfo>, FailedToFetchRemoteInstances>;
+
+    /// Fetches and adds all remote instances of all remote instances.
+    async fn fetch_and_add_remotes_from_all_remotes(&self) -> Vec<InstanceInfo>;
 }

@@ -49,6 +49,10 @@ impl RemotesManager for RemotesManagerImpl {
         self.remote_instances.0.read().unwrap().iter().any(|i| i == address)
     }
 
+    fn get_all_addresses(&self) -> Vec<InstanceAddress> {
+        self.remote_instances.0.read().unwrap().iter().map(|i| i.address()).collect()
+    }
+
     async fn add(&self, address: &InstanceAddress) -> Result<InstanceInfo, FailedToAddInstance> {
         if self.has(address) {
             return Err(FailedToAddInstance::InstanceAddressAlreadyExists);
@@ -89,6 +93,20 @@ impl RemotesManager for RemotesManagerImpl {
         }
     }
 
+    async fn update_all(&self) -> Vec<InstanceInfo> {
+        let mut updated_remotes = vec![];
+        for address in self.get_all_addresses().iter() {
+            match self.update(address).await {
+                Ok(instance) => {
+                    self.replace(instance.clone());
+                    updated_remotes.push(instance);
+                }
+                Err(_) => {}
+            };
+        }
+        updated_remotes
+    }
+
     async fn fetch_and_add_remotes_from_remote(&self, address: &InstanceAddress) -> Result<Vec<InstanceInfo>, FailedToFetchRemoteInstances> {
         let remote_instances = self.fetch_remotes_from_remote(address).await?;
         let mut added_instances = Vec::new();
@@ -99,6 +117,19 @@ impl RemotesManager for RemotesManagerImpl {
             }
         }
         Ok(added_instances)
+    }
+
+    async fn fetch_and_add_remotes_from_all_remotes(&self) -> Vec<InstanceInfo> {
+        let mut all_added_instances = Vec::new();
+        for address in self.get_all_addresses().iter() {
+            match self.fetch_and_add_remotes_from_remote(address).await {
+                Ok(mut added_instances) => {
+                    all_added_instances.append(&mut added_instances);
+                }
+                Err(_) => {}
+            };
+        }
+        all_added_instances
     }
 }
 
@@ -120,9 +151,9 @@ impl RemotesManagerImpl {
     async fn fetch_remotes_from_remote(&self, address: &InstanceAddress) -> Result<Vec<InstanceAddress>, FailedToFetchRemoteInstances> {
         let query = include_str!("../../graphql/system/remotes/get_all.graphql");
         let client = Client::new(address.url());
-        let data = client.query::<RemoveInstancesQuery>(query).await;
+        let data = client.query::<FetchRemotesFromRemoteQuery>(query).await;
         match data {
-            Ok(Some(query)) => Ok(query.system.remote_instances),
+            Ok(Some(query)) => Ok(query.system.remotes),
             Ok(None) => Err(FailedToFetchRemoteInstances::InvalidResponseData),
             Err(e) => {
                 error!("{}", e);
@@ -166,12 +197,12 @@ struct InstanceInfoSystem {
 }
 
 #[derive(Deserialize)]
-struct RemoveInstancesQuery {
-    system: RemoveInstancesSystem,
+struct FetchRemotesFromRemoteQuery {
+    system: FetchRemotesFromRemoteSystem,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct RemoveInstancesSystem {
-    remote_instances: Vec<InstanceAddress>,
+struct FetchRemotesFromRemoteSystem {
+    remotes: Vec<InstanceAddress>,
 }
