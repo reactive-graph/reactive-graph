@@ -12,9 +12,9 @@ macro_rules! entity_behaviour {
         /// The ident of the property validator of the behaviour.
         $validator: ty
         $(,
-            /// Function name.
+            // Function name.
             $fn_name: ident,
-            /// Function.
+            // Function.
             $fn_ident: ident
         )*
     ) => {
