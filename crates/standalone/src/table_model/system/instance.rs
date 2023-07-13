@@ -57,6 +57,18 @@ impl From<Vec<crate::model_runtime::InstanceInfo>> for InstanceInfos {
     }
 }
 
+impl From<InstanceInfo> for InstanceInfos {
+    fn from(instance_info: InstanceInfo) -> Self {
+        InstanceInfos(vec![instance_info])
+    }
+}
+
+impl From<crate::model_runtime::InstanceInfo> for InstanceInfos {
+    fn from(instance_info: crate::model_runtime::InstanceInfo) -> Self {
+        InstanceInfos(vec![instance_info.into()])
+    }
+}
+
 impl ToString for InstanceInfos {
     fn to_string(&self) -> String {
         self.table().to_string()
