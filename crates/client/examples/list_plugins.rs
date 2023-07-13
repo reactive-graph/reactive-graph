@@ -8,9 +8,9 @@ enum SimpleClientError {
     InexorRgfClientExecutionError(InexorRgfClientExecutionError),
 }
 
-/// This simple example shows how to connect to a runtime and query all plugins.
+/// This simple example shows how to connect to a runtime and list all plugins.
 ///
-/// Note: A runtime must running at the port
+/// Note: A runtime must running at the default port (31415).
 #[tokio::main]
 async fn main() -> Result<(), SimpleClientError> {
     // Connect to localhost:31415 (default port)
@@ -23,6 +23,10 @@ async fn main() -> Result<(), SimpleClientError> {
         .await
         .map_err(SimpleClientError::InexorRgfClientExecutionError)?;
     // Print the list of plugins
+    if plugins.len() == 0 {
+        println!("No plugins found.");
+        return Ok(());
+    }
     plugins
         .iter()
         .for_each(|plugin| println!("| {:<50} | {:<70} |", plugin.name, plugin.description));
