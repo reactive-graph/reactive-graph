@@ -93,12 +93,32 @@
 <a href="#93" id="93">93</a>
 <a href="#94" id="94">94</a>
 <a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::path::PathBuf;
 
 <span class="kw">use </span><span class="kw">crate</span>::api::Lifecycle;
 <span class="kw">use </span><span class="kw">crate</span>::config::GraphQLServerConfig;
 <span class="kw">use </span><span class="kw">crate</span>::config::InstanceConfig;
 <span class="kw">use </span><span class="kw">crate</span>::config::PluginsConfig;
+<span class="kw">use </span><span class="kw">crate</span>::config::RemotesConfig;
 
 <span class="kw">pub trait </span>ConfigManager: Send + Sync + Lifecycle {
     <span class="doccomment">/// Returns the location of the configuration of the instance.
@@ -118,6 +138,12 @@
 
     <span class="doccomment">/// Sets the location of the plugins configuration.
     </span><span class="kw">fn </span>set_plugins_config_location(<span class="kw-2">&amp;</span><span class="self">self</span>, plugins_config_location: PathBuf);
+
+    <span class="doccomment">/// Returns the location of the remotes configuration.
+    </span><span class="kw">fn </span>get_remotes_config_location(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PathBuf;
+
+    <span class="doccomment">/// Sets the location of the remotes configuration.
+    </span><span class="kw">fn </span>set_remotes_config_location(<span class="kw-2">&amp;</span><span class="self">self</span>, remotes_config_location: PathBuf);
 
     <span class="doccomment">/// Returns the configuration of the instance.
     </span><span class="kw">fn </span>get_instance_config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InstanceConfig;
@@ -187,5 +213,17 @@
 
     <span class="doccomment">/// Sets the plugins install location.
     </span><span class="kw">fn </span>set_install_location(<span class="kw-2">&amp;</span><span class="self">self</span>, install_location: <span class="prelude-ty">Option</span>&lt;String&gt;);
+
+    <span class="doccomment">/// Returns the remotes.
+    </span><span class="kw">fn </span>get_remotes_config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RemotesConfig;
+
+    <span class="doccomment">/// Sets the remotes configuration.
+    </span><span class="kw">fn </span>set_remotes_config(<span class="kw-2">&amp;</span><span class="self">self</span>, remotes: RemotesConfig);
+
+    <span class="doccomment">/// Reads the remotes configuration from file.
+    </span><span class="kw">fn </span>read_remotes_config(<span class="kw-2">&amp;</span><span class="self">self</span>);
+
+    <span class="doccomment">/// Writes the remotes configuration to file.
+    </span><span class="kw">fn </span>write_remotes_config(<span class="kw-2">&amp;</span><span class="self">self</span>);
 }
 </code></pre></div></section></main></body></html>

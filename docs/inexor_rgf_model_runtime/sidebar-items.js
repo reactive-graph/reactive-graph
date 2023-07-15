@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["NAMESPACE_CORE"],"mod":["component","entity","extension","instance_address","instance_info"]};
+window.SIDEBAR_ITEMS = {"constant":["NAMESPACE_CORE"],"mod":["component","entity","extension","instance_info"]};

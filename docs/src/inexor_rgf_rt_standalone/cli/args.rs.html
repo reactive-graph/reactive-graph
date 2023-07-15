@@ -48,10 +48,10 @@
 <span class="kw">use </span>clap::Args;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::commands::ClientCommands;
-<span class="kw">use </span><span class="kw">crate</span>::model_runtime::InstanceAddress;
-<span class="kw">use </span><span class="kw">crate</span>::model_runtime::DEFAULT_ENDPOINT;
-<span class="kw">use </span><span class="kw">crate</span>::model_runtime::DEFAULT_HOSTNAME;
-<span class="kw">use </span><span class="kw">crate</span>::model_runtime::DEFAULT_PORT;
+<span class="kw">use </span><span class="kw">crate</span>::config::InstanceAddress;
+<span class="kw">use </span><span class="kw">crate</span>::config::DEFAULT_ENDPOINT;
+<span class="kw">use </span><span class="kw">crate</span>::config::DEFAULT_HOSTNAME;
+<span class="kw">use </span><span class="kw">crate</span>::config::DEFAULT_PORT;
 
 <span class="attr">#[derive(Args, Debug, Clone)]
 </span><span class="kw">pub struct </span>ClientArgs {

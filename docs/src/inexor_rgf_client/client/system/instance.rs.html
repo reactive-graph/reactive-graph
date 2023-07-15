@@ -175,9 +175,9 @@
                 <span class="comment">// Fetch instance info via client &amp; graphql
                 </span><span class="kw">let </span>instance_info = client.system().instance().get_instance_info().<span class="kw">await</span>.expect(<span class="string">&quot;Cannot fetch instance info&quot;</span>);
 
-                <span class="macro">assert_eq!</span>(instance_info.hostname, rt_address.hostname);
-                <span class="macro">assert_eq!</span>(u16::try_from(instance_info.port).expect(<span class="string">&quot;invalid port number&quot;</span>), rt_address.port);
-                <span class="macro">assert_eq!</span>(instance_info.secure, rt_address.secure);
+                <span class="macro">assert_eq!</span>(instance_info.address.hostname, rt_address.hostname);
+                <span class="macro">assert_eq!</span>(u16::try_from(instance_info.address.port).expect(<span class="string">&quot;invalid port number&quot;</span>), rt_address.port);
+                <span class="macro">assert_eq!</span>(instance_info.address.secure, rt_address.secure);
                 <span class="macro">assert_eq!</span>(instance_info.name, rt_instance_info.name);
                 <span class="macro">assert_eq!</span>(instance_info, rt_instance_info);
             })

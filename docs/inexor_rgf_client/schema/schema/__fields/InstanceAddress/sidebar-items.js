@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["hostname","port","secure"]};
+window.SIDEBAR_ITEMS = {"struct":["bearer","endpoint","hostname","port","secure","userAgent"]};

@@ -84,15 +84,15 @@
     }
 
     <span class="kw">async fn </span>hostname(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="self">self</span>.instance_info.hostname.clone()
+        <span class="self">self</span>.instance_info.address.hostname.clone()
     }
 
     <span class="kw">async fn </span>port(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u16 {
-        <span class="self">self</span>.instance_info.port
+        <span class="self">self</span>.instance_info.address.port
     }
 
     <span class="kw">async fn </span>secure(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.instance_info.secure
+        <span class="self">self</span>.instance_info.address.secure
     }
 
     <span class="kw">async fn </span>version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {

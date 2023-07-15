@@ -32,7 +32,7 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::Args;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::remotes::commands::RemotesCommands;
-<span class="kw">use </span><span class="kw">crate</span>::model_runtime::InstanceAddress;
+<span class="kw">use </span><span class="kw">crate</span>::config::InstanceAddress;
 
 <span class="attr">#[derive(Args, Debug, Clone)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>RemotesArgs {

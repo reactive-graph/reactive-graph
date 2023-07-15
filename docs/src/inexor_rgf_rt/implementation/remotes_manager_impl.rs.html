@@ -206,6 +206,28 @@
 <a href="#206" id="206">206</a>
 <a href="#207" id="207">207</a>
 <a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::RwLock;
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -215,17 +237,20 @@
 <span class="kw">use </span>log::info;
 <span class="kw">use </span>serde::Deserialize;
 
+<span class="kw">use </span><span class="kw">crate</span>::api::ConfigManager;
 <span class="kw">use </span><span class="kw">crate</span>::api::FailedToAddInstance;
 <span class="kw">use </span><span class="kw">crate</span>::api::FailedToFetchInstanceInfo;
 <span class="kw">use </span><span class="kw">crate</span>::api::FailedToFetchRemoteInstances;
 <span class="kw">use </span><span class="kw">crate</span>::api::FailedToUpdateInstance;
 <span class="kw">use </span><span class="kw">crate</span>::api::Lifecycle;
 <span class="kw">use </span><span class="kw">crate</span>::api::RemotesManager;
+<span class="kw">use </span><span class="kw">crate</span>::config::InstanceAddress;
+<span class="kw">use </span><span class="kw">crate</span>::config::RemotesConfig;
 <span class="kw">use </span><span class="kw">crate</span>::di::component;
 <span class="kw">use </span><span class="kw">crate</span>::di::provides;
 <span class="kw">use </span><span class="kw">crate</span>::di::wrapper;
 <span class="kw">use </span><span class="kw">crate</span>::di::Component;
-<span class="kw">use </span><span class="kw">crate</span>::model_runtime::InstanceAddress;
+<span class="kw">use </span><span class="kw">crate</span>::di::Wrc;
 <span class="kw">use </span><span class="kw">crate</span>::model_runtime::InstanceInfo;
 
 <span class="attr">#[wrapper]
@@ -238,6 +263,8 @@
 
 <span class="attr">#[component]
 </span><span class="kw">pub struct </span>RemotesManagerImpl {
+    config_manager: Wrc&lt;<span class="kw">dyn </span>ConfigManager&gt;,
+
     remote_instances: RemoteInstancesStorage,
 }
 
@@ -390,7 +417,24 @@
 
 <span class="attr">#[async_trait]
 </span><span class="kw">impl </span>Lifecycle <span class="kw">for </span>RemotesManagerImpl {
-    <span class="kw">async fn </span>post_init(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
+    <span class="kw">async fn </span>post_init(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">for </span>address <span class="kw">in </span><span class="self">self</span>.config_manager.get_remotes_config().into_iter() {
+            <span class="kw">match </span><span class="self">self</span>.add(<span class="kw-2">&amp;</span>address).<span class="kw">await </span>{
+                <span class="prelude-val">Ok</span>(instance_info) =&gt; {
+                    <span class="macro">info!</span>(<span class="string">&quot;Added remote instance {} from {}&quot;</span>, instance_info.name, instance_info.address().url());
+                }
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
+                    <span class="macro">error!</span>(<span class="string">&quot;Failed to add remote instance {}&quot;</span>, address.url())
+                }
+            }
+        }
+    }
+
+    <span class="kw">async fn </span>pre_shutdown(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">let </span>remotes_config = RemotesConfig::new(<span class="self">self</span>.get_all_addresses());
+        <span class="self">self</span>.config_manager.set_remotes_config(remotes_config);
+        <span class="self">self</span>.config_manager.write_remotes_config();
+    }
 }
 
 <span class="attr">#[derive(Deserialize)]

@@ -497,6 +497,10 @@
 <a href="#497" id="497">497</a>
 <a href="#498" id="498">498</a>
 <a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::Deref;
 <span class="kw">use </span>std::sync::atomic::AtomicBool;
 <span class="kw">use </span>std::sync::atomic::Ordering;
@@ -693,6 +697,7 @@
         <span class="self">self</span>.shutdown_manager.init().<span class="kw">await</span>;
         <span class="self">self</span>.event_manager.init().<span class="kw">await</span>;
         <span class="self">self</span>.reactive_entity_instance_manager.init().<span class="kw">await</span>;
+        <span class="self">self</span>.remotes_manager.init().<span class="kw">await</span>;
         <span class="self">self</span>.command_manager.init().<span class="kw">await</span>;
         <span class="self">self</span>.dynamic_graph_schema_manager.init().<span class="kw">await</span>;
         <span class="self">self</span>.dynamic_graph_query_service.init().<span class="kw">await</span>;
@@ -715,7 +720,8 @@
         <span class="self">self</span>.shutdown_manager.post_init().<span class="kw">await</span>;
         <span class="self">self</span>.event_manager.post_init().<span class="kw">await</span>;
         <span class="self">self</span>.reactive_entity_instance_manager.post_init().<span class="kw">await</span>; <span class="comment">// after event_manager!
-        </span><span class="self">self</span>.command_manager.post_init().<span class="kw">await</span>;
+        </span><span class="self">self</span>.remotes_manager.post_init().<span class="kw">await</span>;
+        <span class="self">self</span>.command_manager.post_init().<span class="kw">await</span>;
         <span class="self">self</span>.dynamic_graph_schema_manager.post_init().<span class="kw">await</span>;
         <span class="self">self</span>.dynamic_graph_query_service.post_init().<span class="kw">await</span>;
     }
@@ -725,6 +731,7 @@
         </span><span class="self">self</span>.dynamic_graph_query_service.pre_shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.dynamic_graph_schema_manager.pre_shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.command_manager.pre_shutdown().<span class="kw">await</span>;
+        <span class="self">self</span>.remotes_manager.pre_shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.reactive_entity_instance_manager.pre_shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.event_manager.pre_shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.shutdown_manager.pre_shutdown().<span class="kw">await</span>;
@@ -747,6 +754,7 @@
         </span><span class="self">self</span>.dynamic_graph_query_service.shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.dynamic_graph_schema_manager.shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.command_manager.shutdown().<span class="kw">await</span>;
+        <span class="self">self</span>.remotes_manager.shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.reactive_entity_instance_manager.shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.event_manager.shutdown().<span class="kw">await</span>;
         <span class="self">self</span>.shutdown_manager.shutdown().<span class="kw">await</span>;

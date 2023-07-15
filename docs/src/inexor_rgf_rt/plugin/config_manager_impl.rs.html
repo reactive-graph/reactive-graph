@@ -28,11 +28,17 @@
 <a href="#28" id="28">28</a>
 <a href="#29" id="29">29</a>
 <a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::config::GraphQLServerConfig;
 <span class="kw">use </span><span class="kw">crate</span>::config::InstanceConfig;
 <span class="kw">use </span><span class="kw">crate</span>::config::PluginsConfig;
+<span class="kw">use </span><span class="kw">crate</span>::config::RemotesConfig;
 <span class="kw">use </span><span class="kw">crate</span>::plugins::ConfigManager;
 
 <span class="kw">pub struct </span>ConfigManagerImpl {
@@ -56,6 +62,10 @@
 
     <span class="kw">fn </span>get_plugins_config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PluginsConfig {
         <span class="self">self</span>.config_manager.get_plugins_config()
+    }
+
+    <span class="kw">fn </span>get_remotes_config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RemotesConfig {
+        <span class="self">self</span>.config_manager.get_remotes_config()
     }
 }
 </code></pre></div></section></main></body></html>
