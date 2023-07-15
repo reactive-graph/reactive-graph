@@ -1,5 +1,7 @@
 use serde::Deserialize;
 use serde::Serialize;
+use std::hash::Hash;
+use std::hash::Hasher;
 use typed_builder::TypedBuilder;
 
 pub const DEFAULT_HOSTNAME: &str = "localhost";
@@ -7,7 +9,7 @@ pub const DEFAULT_PORT: u16 = 31415;
 pub const DEFAULT_ENDPOINT: &str = "/graphql";
 pub const DEFAULT_USER_AGENT: &str = "inexor_rgf_client";
 
-#[derive(Clone, Debug, Eq, Hash, Deserialize, Serialize, TypedBuilder)]
+#[derive(Clone, Debug, Eq, Deserialize, Serialize, TypedBuilder)]
 #[serde(rename_all = "camelCase")]
 pub struct InstanceAddress {
     /// The hostname of the GraphQL server.
@@ -68,6 +70,14 @@ impl InstanceAddress {
 impl PartialEq<InstanceAddress> for InstanceAddress {
     fn eq(&self, other: &InstanceAddress) -> bool {
         self.hostname == other.hostname && self.port == other.port && self.secure == other.secure
+    }
+}
+
+impl Hash for InstanceAddress {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.hostname.hash(state);
+        self.port.hash(state);
+        self.secure.hash(state);
     }
 }
 
