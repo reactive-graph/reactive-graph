@@ -1,0 +1,7 @@
+mutation UninstallPlugin {
+  system {
+    plugins {
+      uninstall(name: "inexor-rgf-plugin-numeric")
+    }
+  }
+}

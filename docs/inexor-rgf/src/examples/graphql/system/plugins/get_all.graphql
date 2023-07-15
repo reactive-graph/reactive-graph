@@ -1,0 +1,9 @@
+query GetAllPlugins {
+  system {
+    plugins {
+      name
+      description
+      state
+    }
+  }
+}

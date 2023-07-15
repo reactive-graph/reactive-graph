@@ -1,0 +1,12 @@
+query DependenciesOfAPlugin {
+  system {
+    plugins(name: "inexor-rgf-plugin-comparison") {
+      name
+      state
+      dependencies {
+        name
+        state
+      }
+    }
+  }
+}

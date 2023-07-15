@@ -1,0 +1,31 @@
+mutation AddRemote($hostname: String!, $port: Int!, $secure: Boolean!) {
+  system {
+    remotes {
+      add(
+        address: {
+          hostname: $hostname
+          port: $port
+          secure: $secure
+        }
+      ) {
+        hostname
+        port
+        secure
+
+        name
+        description
+
+        version
+        pluginApiVersion
+        rustcVersion
+
+        gitBranch
+        gitCommit
+        buildDate
+
+        lastSeen
+      }
+    }
+  }
+}
+#http://localhost:31415/graphql

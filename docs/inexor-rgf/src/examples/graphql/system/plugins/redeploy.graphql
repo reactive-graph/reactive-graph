@@ -1,0 +1,11 @@
+mutation RedeployPlugin {
+  system {
+    plugins {
+      redeploy(name: "inexor-rgf-plugin-numeric") {
+        name
+        description
+        state
+      }
+    }
+  }
+}

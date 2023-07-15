@@ -1,0 +1,12 @@
+query UnsatisfiedDependenciesOfAPlugin {
+  system {
+    plugins {
+      name
+      state
+      unsatisfiedDependencies {
+        name
+        state
+      }
+    }
+  }
+}

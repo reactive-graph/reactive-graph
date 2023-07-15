@@ -1,0 +1,56 @@
+{
+  "id": "graphql-api-system-remotes",
+  "title": "Remotes",
+  "description": "Query and manage remote instances",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/system/remotes/get_all.graphql"
+    },
+    {
+      "name": "Add",
+      "url": "/examples/graphql/system/remotes/add.graphql",
+      "variables": "{\"hostname\": \"demo.rgf.app\",\"port\": 31415,\"secure\": true}",
+      "headers": {
+        "authorization": "Bearer 123"
+      }
+    },
+    {
+      "name": "Remove",
+      "url": "/examples/graphql/system/remotes/remove.graphql",
+      "variables": "{\"hostname\": \"demo.rgf.app\",\"port\": 31415,\"secure\": true}",
+      "headers": {
+        "authorization": "Bearer 123"
+      }
+    },
+    {
+      "name": "Remove All",
+      "url": "/examples/graphql/system/remotes/remove_all.graphql"
+    },
+    {
+      "name": "Update",
+      "url": "/examples/graphql/system/remotes/update.graphql",
+      "variables": "{\"hostname\": \"demo.rgf.app\",\"port\": 31415,\"secure\": true}",
+      "headers": {
+        "authorization": "Bearer 123"
+      }
+    },
+    {
+      "name": "Update All",
+      "url": "/examples/graphql/system/remotes/update_all.graphql"
+    },
+    {
+      "name": "Fetch remotes from remote",
+      "url": "/examples/graphql/system/remotes/fetch_remotes_from_remote.graphql",
+      "variables": "{\"hostname\": \"demo.rgf.app\",\"port\": 31415,\"secure\": true}",
+      "headers": {
+        "authorization": "Bearer 123"
+      }
+    },
+    {
+      "name": "Fetch remotes from all remotes",
+      "url": "/examples/graphql/system/remotes/fetch_remotes_from_remote.graphql"
+    }
+  ]
+}

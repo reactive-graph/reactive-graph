@@ -1,0 +1,11 @@
+mutation StopPlugin {
+  system {
+    plugins {
+      stop(name: "inexor-rgf-plugin-numeric") {
+        name
+        description
+        state
+      }
+    }
+  }
+}

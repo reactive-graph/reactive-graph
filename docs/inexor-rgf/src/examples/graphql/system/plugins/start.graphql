@@ -1,0 +1,11 @@
+mutation StartPlugin {
+  system {
+    plugins {
+      start(name: "inexor-rgf-plugin-numeric") {
+        name
+        description
+        state
+      }
+    }
+  }
+}

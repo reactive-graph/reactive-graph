@@ -1,0 +1,12 @@
+{
+  "id": "graphql-api-system-instance-info",
+  "title": "Instance Info",
+  "description": "Self-description of the instance",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Get Instance Info",
+      "url": "/examples/graphql/system/instance_info/instance_info.graphql"
+    }
+  ]
+}
