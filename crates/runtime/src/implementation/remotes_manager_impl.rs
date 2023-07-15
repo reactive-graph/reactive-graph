@@ -78,12 +78,18 @@ impl RemotesManager for RemotesManagerImpl {
         }
         let mut writer = self.remote_instances.0.write().unwrap();
         writer.retain(|i| i != address);
+        let mut remotes = self.config_manager.get_remotes_config();
+        remotes.remove(address);
+        self.config_manager.set_remotes_config(remotes);
+        self.config_manager.write_remotes_config();
         true
     }
 
     fn remove_all(&self) {
         let mut writer = self.remote_instances.0.write().unwrap();
         writer.clear();
+        self.config_manager.set_remotes_config(RemotesConfig::new(HashSet::new()));
+        self.config_manager.write_remotes_config();
     }
 
     async fn update(&self, address: &InstanceAddress) -> Result<InstanceInfo, FailedToUpdateInstance> {
@@ -174,8 +180,13 @@ impl RemotesManagerImpl {
         }
         let mut instance = instance;
         instance.last_seen = Utc::now();
+        let address = instance.address.clone();
         let mut writer = self.remote_instances.0.write().unwrap();
         writer.push(instance);
+        let mut remotes = self.config_manager.get_remotes_config();
+        remotes.insert(address);
+        self.config_manager.set_remotes_config(remotes);
+        self.config_manager.write_remotes_config();
     }
 
     fn replace(&self, instance: InstanceInfo) {
@@ -199,12 +210,6 @@ impl Lifecycle for RemotesManagerImpl {
                 }
             }
         }
-    }
-
-    async fn pre_shutdown(&self) {
-        let remotes_config = RemotesConfig::new(self.get_all_addresses());
-        self.config_manager.set_remotes_config(remotes_config);
-        self.config_manager.write_remotes_config();
     }
 }
 
