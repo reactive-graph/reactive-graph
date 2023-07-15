@@ -100,3 +100,9 @@ erDiagram
 ```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Relation_Instances.md)
 ```
+
+## JSON Schema
+
+```admonish tip "JSON Schema"
+http://hostname:port/instances/relations/schema
+```

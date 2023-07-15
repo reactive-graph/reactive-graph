@@ -54,3 +54,9 @@ erDiagram
 ```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Components.md)
 ```
+
+## JSON Schema
+
+```admonish tip "JSON Schema"
+http://hostname:port/types/components/schema
+```

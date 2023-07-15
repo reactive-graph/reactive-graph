@@ -105,3 +105,9 @@ erDiagram
 ```admonish tip "GraphQL"
 * [GraphQL Queries and Mutations](./GraphQL_API_Flow_Types.md)
 ```
+
+## JSON Schema
+
+```admonish tip "JSON Schema"
+http://hostname:port/types/flows/schema
+```
