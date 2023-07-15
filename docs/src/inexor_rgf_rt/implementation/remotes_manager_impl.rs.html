@@ -228,7 +228,8 @@
 <a href="#228" id="228">228</a>
 <a href="#229" id="229">229</a>
 <a href="#230" id="230">230</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::RwLock;
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashSet;
+<span class="kw">use </span>std::sync::RwLock;
 
 <span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>chrono::Utc;
@@ -284,7 +285,7 @@
         <span class="self">self</span>.remote_instances.<span class="number">0</span>.read().unwrap().iter().any(|i| i == address)
     }
 
-    <span class="kw">fn </span>get_all_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;InstanceAddress&gt; {
+    <span class="kw">fn </span>get_all_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HashSet&lt;InstanceAddress&gt; {
         <span class="self">self</span>.remote_instances.<span class="number">0</span>.read().unwrap().iter().map(|i| i.address()).collect()
     }
 
@@ -307,12 +308,18 @@
         }
         <span class="kw">let </span><span class="kw-2">mut </span>writer = <span class="self">self</span>.remote_instances.<span class="number">0</span>.write().unwrap();
         writer.retain(|i| i != address);
+        <span class="kw">let </span><span class="kw-2">mut </span>remotes = <span class="self">self</span>.config_manager.get_remotes_config();
+        remotes.remove(address);
+        <span class="self">self</span>.config_manager.set_remotes_config(remotes);
+        <span class="self">self</span>.config_manager.write_remotes_config();
         <span class="bool-val">true
     </span>}
 
     <span class="kw">fn </span>remove_all(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">let </span><span class="kw-2">mut </span>writer = <span class="self">self</span>.remote_instances.<span class="number">0</span>.write().unwrap();
         writer.clear();
+        <span class="self">self</span>.config_manager.set_remotes_config(RemotesConfig::new(HashSet::new()));
+        <span class="self">self</span>.config_manager.write_remotes_config();
     }
 
     <span class="kw">async fn </span>update(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, FailedToUpdateInstance&gt; {
@@ -331,13 +338,10 @@
     <span class="kw">async fn </span>update_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;InstanceInfo&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>updated_remotes = <span class="macro">vec!</span>[];
         <span class="kw">for </span>address <span class="kw">in </span><span class="self">self</span>.get_all_addresses().iter() {
-            <span class="kw">match </span><span class="self">self</span>.update(address).<span class="kw">await </span>{
-                <span class="prelude-val">Ok</span>(instance) =&gt; {
-                    <span class="self">self</span>.replace(instance.clone());
-                    updated_remotes.push(instance);
-                }
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {}
-            };
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(instance) = <span class="self">self</span>.update(address).<span class="kw">await </span>{
+                <span class="self">self</span>.replace(instance.clone());
+                updated_remotes.push(instance);
+            }
         }
         updated_remotes
     }
@@ -357,11 +361,8 @@
     <span class="kw">async fn </span>fetch_and_add_remotes_from_all_remotes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;InstanceInfo&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>all_added_instances = Vec::new();
         <span class="kw">for </span>address <span class="kw">in </span><span class="self">self</span>.get_all_addresses().iter() {
-            <span class="kw">match </span><span class="self">self</span>.fetch_and_add_remotes_from_remote(address).<span class="kw">await </span>{
-                <span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>added_instances) =&gt; {
-                    all_added_instances.append(<span class="kw-2">&amp;mut </span>added_instances);
-                }
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {}
+            <span class="kw">if let </span><span class="prelude-val">Ok</span>(<span class="kw-2">mut </span>added_instances) = <span class="self">self</span>.fetch_and_add_remotes_from_remote(address).<span class="kw">await </span>{
+                all_added_instances.append(<span class="kw-2">&amp;mut </span>added_instances);
             };
         }
         all_added_instances
@@ -403,8 +404,13 @@
         }
         <span class="kw">let </span><span class="kw-2">mut </span>instance = instance;
         instance.last_seen = Utc::now();
+        <span class="kw">let </span>address = instance.address.clone();
         <span class="kw">let </span><span class="kw-2">mut </span>writer = <span class="self">self</span>.remote_instances.<span class="number">0</span>.write().unwrap();
         writer.push(instance);
+        <span class="kw">let </span><span class="kw-2">mut </span>remotes = <span class="self">self</span>.config_manager.get_remotes_config();
+        remotes.insert(address);
+        <span class="self">self</span>.config_manager.set_remotes_config(remotes);
+        <span class="self">self</span>.config_manager.write_remotes_config();
     }
 
     <span class="kw">fn </span>replace(<span class="kw-2">&amp;</span><span class="self">self</span>, instance: InstanceInfo) {
@@ -428,12 +434,6 @@
                 }
             }
         }
-    }
-
-    <span class="kw">async fn </span>pre_shutdown(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">let </span>remotes_config = RemotesConfig::new(<span class="self">self</span>.get_all_addresses());
-        <span class="self">self</span>.config_manager.set_remotes_config(remotes_config);
-        <span class="self">self</span>.config_manager.write_remotes_config();
     }
 }
 

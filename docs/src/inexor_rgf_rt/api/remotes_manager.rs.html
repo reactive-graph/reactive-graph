@@ -118,7 +118,9 @@
 <a href="#118" id="118">118</a>
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::error::Error;
+<a href="#121" id="121">121</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashSet;
+<span class="kw">use </span>std::error::Error;
 <span class="kw">use </span>std::fmt;
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -215,7 +217,7 @@
     </span><span class="kw">fn </span>has(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; bool;
 
     <span class="doccomment">/// Returns a list of the addresses of the remote instances.
-    </span><span class="kw">fn </span>get_all_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;InstanceAddress&gt;;
+    </span><span class="kw">fn </span>get_all_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HashSet&lt;InstanceAddress&gt;;
 
     <span class="doccomment">/// Adds a remote instance.
     </span><span class="kw">async fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, FailedToAddInstance&gt;;

@@ -69,6 +69,9 @@
 <a href="#69" id="69">69</a>
 <a href="#70" id="70">70</a>
 <a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::<span class="kw-2">*</span>;
@@ -84,9 +87,12 @@
 </span><span class="attr">#[Object]
 </span><span class="kw">impl </span>MutationRemotes {
     <span class="doccomment">/// Adds a remote.
-    </span><span class="kw">async fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;, address: InstanceAddressDefinition) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLInstanceInfo&gt; {
+    </span><span class="kw">async fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">&#39;_</span>&gt;, address: InstanceAddressDefinition, fetch_remotes_from_remote: <span class="prelude-ty">Option</span>&lt;bool&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLInstanceInfo&gt; {
         <span class="kw">let </span>remotes_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RemotesManager&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>instance = remotes_manager.add(<span class="kw-2">&amp;</span>address.into()).<span class="kw">await</span><span class="question-mark">?</span>;
+        <span class="kw">if </span>fetch_remotes_from_remote.unwrap_or(<span class="bool-val">false</span>) {
+            <span class="kw">let _ </span>= remotes_manager.fetch_and_add_remotes_from_remote(<span class="kw-2">&amp;</span>instance.address).<span class="kw">await</span>;
+        }
         <span class="prelude-val">Ok</span>(instance.into())
     }
 
