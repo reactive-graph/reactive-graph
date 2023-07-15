@@ -79,9 +79,9 @@ pub mod test {
                 // Fetch instance info via client & graphql
                 let instance_info = client.system().instance().get_instance_info().await.expect("Cannot fetch instance info");
 
-                assert_eq!(instance_info.hostname, rt_address.hostname);
-                assert_eq!(u16::try_from(instance_info.port).expect("invalid port number"), rt_address.port);
-                assert_eq!(instance_info.secure, rt_address.secure);
+                assert_eq!(instance_info.address.hostname, rt_address.hostname);
+                assert_eq!(u16::try_from(instance_info.address.port).expect("invalid port number"), rt_address.port);
+                assert_eq!(instance_info.address.secure, rt_address.secure);
                 assert_eq!(instance_info.name, rt_instance_info.name);
                 assert_eq!(instance_info, rt_instance_info);
             })

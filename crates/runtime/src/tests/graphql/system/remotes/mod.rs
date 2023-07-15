@@ -11,7 +11,7 @@ mod util {
     use async_graphql::Variables;
     use serde_json::json;
 
-    use crate::model_runtime::InstanceAddress;
+    use crate::config::InstanceAddress;
 
     pub fn address_to_vars(address: &InstanceAddress) -> Variables {
         Variables::from_json(json!({

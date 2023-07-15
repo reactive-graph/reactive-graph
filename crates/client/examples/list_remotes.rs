@@ -27,8 +27,11 @@ async fn main() -> Result<(), SimpleClientError> {
         println!("No remotes found.");
         return Ok(());
     }
-    remotes
-        .iter()
-        .for_each(|remote| println!("| {:<30} | {:<5} | {:<50} | {:<70} |", remote.hostname, remote.port, remote.name, remote.description));
+    remotes.iter().for_each(|remote| {
+        println!(
+            "| {:<30} | {:<5} | {:<50} | {:<70} |",
+            remote.address.hostname, remote.address.port, remote.name, remote.description
+        )
+    });
     Ok(())
 }

@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use serde::Deserialize;
 
+use crate::config::DEFAULT_HOSTNAME;
 use crate::model_runtime::InstanceInfo;
 use crate::runtime::Runtime;
 use crate::runtime::RuntimeBuilder;
@@ -40,7 +41,9 @@ async fn test_get_instance_info() {
             let data: Data = serde_json::from_value(data).expect("Failed to deserialize json into target data model");
             assert_eq!(data.system.instance_info.name, "iojasdf");
             assert_eq!(data.system.instance_info.description, "oijasdfnmei");
-            assert_eq!(data.system.instance_info.port, 7839);
+            assert_eq!(data.system.instance_info.address.hostname, DEFAULT_HOSTNAME);
+            assert_eq!(data.system.instance_info.address.port, 7839);
+            assert_eq!(data.system.instance_info.address.secure, false);
         })
         .await
         .do_not_run()

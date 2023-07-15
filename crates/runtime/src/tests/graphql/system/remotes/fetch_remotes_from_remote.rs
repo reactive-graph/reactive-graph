@@ -4,7 +4,7 @@ use std::sync::Arc;
 use serde::Deserialize;
 
 use crate::api::GraphQLQueryService;
-use crate::model_runtime::InstanceAddress;
+use crate::config::InstanceAddress;
 use crate::model_runtime::InstanceInfo;
 use crate::runtime::Runtime;
 use crate::runtime::RuntimeBuilder;
