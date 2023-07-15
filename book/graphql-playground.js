@@ -75,19 +75,21 @@ function fetchQuery(url) {
   return fetch(url).then((response) => response.text())
 }
 
-function getTabConfig(name, url, endpoint) {
+function getTabConfig(endpoint, name, url, variables, headers) {
   return fetchQuery(url).then(query => {
     return {
       endpoint,
       name,
-      query
+      query,
+      variables,
+      headers
     }
   })
 }
 
 function getTabConfigs(config, endpoint) {
   return Promise.all(
-    config.tabs.map(tab => getTabConfig(tab.name, tab.url, endpoint))
+    config.tabs.map(tab => getTabConfig(endpoint, tab.name, tab.url, tab.variables, tab.headers))
   )
 }
 

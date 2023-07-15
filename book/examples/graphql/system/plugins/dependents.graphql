@@ -1,0 +1,12 @@
+query Dependents {
+  system {
+    plugins(name: "inexor-rgf-plugin-trigger") {
+      name
+      state
+      dependents {
+        name
+        state
+      }
+    }
+  }
+}

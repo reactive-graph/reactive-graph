@@ -1,0 +1,30 @@
+mutation UpdateRemote($hostname: String!, $port: Int!, $secure: Boolean!) {
+  system {
+    remotes {
+      update(
+        address: {
+          hostname: $hostname
+          port: $port
+          secure: $secure
+        }
+      ) {
+        hostname
+        port
+        secure
+
+        name
+        description
+
+        version
+        pluginApiVersion
+        rustcVersion
+
+        gitBranch
+        gitCommit
+        buildDate
+
+        lastSeen
+      }
+    }
+  }
+}

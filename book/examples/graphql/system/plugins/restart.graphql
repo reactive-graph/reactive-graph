@@ -1,0 +1,11 @@
+mutation RestartPlugin {
+  system {
+    plugins {
+      restart(name: "inexor-rgf-plugin-numeric") {
+        name
+        description
+        state
+      }
+    }
+  }
+}

@@ -321,6 +321,8 @@ type InstanceInfo {
   gitBranch: String!
   gitCommit: String!
   hostname: String!
+  "When the remote instance was last seen (ISO8601 / RFC3339)."
+  lastSeen: String!
   name: String!
   pluginApiVersion: String!
   port: Int!
@@ -738,9 +740,27 @@ type MutationRelationTypes {
   removeProperty(propertyName: String!, type: RelationTypeId!): RelationType!
 }
 
+"Mutations for managing remote instances."
+type MutationRemotes {
+  "Adds a remote."
+  add(address: InstanceAddress!): InstanceInfo!
+  fetchRemotesFromAllRemotes: [InstanceInfo!]!
+  "Fetches the remotes which are available on the given remote."
+  fetchRemotesFromRemote(address: InstanceAddress!): [InstanceInfo!]!
+  "Removes a remote."
+  remove(address: InstanceAddress!): Boolean!
+  "Removes all remotes."
+  removeAll: Boolean!
+  "Updates a remote."
+  update(address: InstanceAddress!): InstanceInfo!
+  "Updates all remotes."
+  updateAll: [InstanceInfo!]!
+}
+
 type MutationSystem {
   commands: MutationCommands!
   plugins: MutationPlugins!
+  remotes: MutationRemotes!
 }
 
 "Mutations for types (components, entity types, relation types)."
@@ -995,10 +1015,13 @@ type Subscription {
 }
 
 type System {
+  "Returns the commands."
   commands(name: String): [Command!]!
   "Returns the instance information."
   instanceInfo: InstanceInfo!
   plugins(id: UUID, name: String, state: String, stem: String): [Plugin!]!
+  "Returns the list of remotes."
+  remotes: [InstanceInfo!]!
 }
 
 type TypeCategory {
@@ -1262,6 +1285,15 @@ input FlowTypeId {
   name: String!
   "The namespace of the flow type."
   namespace: String!
+}
+
+input InstanceAddress {
+  "The hostname."
+  hostname: String!
+  "The port."
+  port: Int!
+  "Secure endpoint."
+  secure: Boolean
 }
 
 input PropertyInstanceDefinition {

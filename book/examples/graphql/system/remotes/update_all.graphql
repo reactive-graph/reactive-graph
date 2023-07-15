@@ -1,0 +1,24 @@
+mutation UpdateAllRemotes {
+  system {
+    remotes {
+      updateAll {
+        hostname
+        port
+        secure
+
+        name
+        description
+
+        version
+        pluginApiVersion
+        rustcVersion
+
+        gitBranch
+        gitCommit
+        buildDate
+
+        lastSeen
+      }
+    }
+  }
+}

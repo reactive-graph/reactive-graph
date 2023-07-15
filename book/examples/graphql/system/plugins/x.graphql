@@ -1,0 +1,8 @@
+mutation X {
+  system {
+    plugins {
+      uninstall(name: )
+      redeploy(name: )
+    }
+  }
+}

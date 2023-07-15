@@ -1,0 +1,22 @@
+query GetAllRemotes {
+  system {
+    remotes {
+      hostname
+      port
+      secure
+
+      name
+      description
+
+      version
+      pluginApiVersion
+      rustcVersion
+
+      gitBranch
+      gitCommit
+      buildDate
+
+      lastSeen
+    }
+  }
+}

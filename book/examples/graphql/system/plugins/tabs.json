@@ -1,0 +1,44 @@
+{
+  "id": "graphql-api-system-plugins",
+  "title": "Plugins",
+  "description": "Manage plugins",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/system/plugins/get_all.graphql"
+    },
+    {
+      "name": "Start",
+      "url": "/examples/graphql/system/plugins/start.graphql"
+    },
+    {
+      "name": "Stop",
+      "url": "/examples/graphql/system/plugins/stop.graphql"
+    },
+    {
+      "name": "Restart",
+      "url": "/examples/graphql/system/plugins/restart.graphql"
+    },
+    {
+      "name": "Redeploy",
+      "url": "/examples/graphql/system/plugins/redeploy.graphql"
+    },
+    {
+      "name": "Uninstall",
+      "url": "/examples/graphql/system/plugins/uninstall.graphql"
+    },
+    {
+      "name": "Dependencies",
+      "url": "/examples/graphql/system/plugins/dependencies.graphql"
+    },
+    {
+      "name": "Dependents",
+      "url": "/examples/graphql/system/plugins/dependents.graphql"
+    },
+    {
+      "name": "Unsatisfied Dependencies",
+      "url": "/examples/graphql/system/plugins/unsatisfied.graphql"
+    }
+  ]
+}
