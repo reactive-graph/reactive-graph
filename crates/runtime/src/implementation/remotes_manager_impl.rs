@@ -108,13 +108,10 @@ impl RemotesManager for RemotesManagerImpl {
     async fn update_all(&self) -> Vec<InstanceInfo> {
         let mut updated_remotes = vec![];
         for address in self.get_all_addresses().iter() {
-            match self.update(address).await {
-                Ok(instance) => {
-                    self.replace(instance.clone());
-                    updated_remotes.push(instance);
-                }
-                Err(_) => {}
-            };
+            if let Ok(instance) = self.update(address).await {
+                self.replace(instance.clone());
+                updated_remotes.push(instance);
+            }
         }
         updated_remotes
     }
@@ -134,11 +131,8 @@ impl RemotesManager for RemotesManagerImpl {
     async fn fetch_and_add_remotes_from_all_remotes(&self) -> Vec<InstanceInfo> {
         let mut all_added_instances = Vec::new();
         for address in self.get_all_addresses().iter() {
-            match self.fetch_and_add_remotes_from_remote(address).await {
-                Ok(mut added_instances) => {
-                    all_added_instances.append(&mut added_instances);
-                }
-                Err(_) => {}
+            if let Ok(mut added_instances) = self.fetch_and_add_remotes_from_remote(address).await {
+                all_added_instances.append(&mut added_instances);
             };
         }
         all_added_instances
