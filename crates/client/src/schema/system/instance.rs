@@ -1,7 +1,10 @@
+use std::ops::Deref;
+
 use chrono::DateTime;
 use chrono::FixedOffset;
 use chrono::Utc;
-use std::ops::Deref;
+
+use crate::config::InstanceAddress;
 
 #[derive(Clone, Debug, cynic::QueryFragment)]
 #[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema")]
@@ -31,9 +34,7 @@ impl From<InstanceInfo> for crate::model_runtime::InstanceInfo {
             version: instance_info.version,
             plugin_api_version: instance_info.plugin_api_version,
             rustc_version: instance_info.rustc_version,
-            hostname: instance_info.hostname,
-            port: u16::try_from(instance_info.port).unwrap_or(0),
-            secure: instance_info.secure,
+            address: InstanceAddress::new(instance_info.hostname, u16::try_from(instance_info.port).unwrap_or(0), instance_info.secure),
             git_branch: instance_info.git_branch,
             git_commit: instance_info.git_commit,
             build_date: instance_info.build_date,

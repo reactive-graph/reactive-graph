@@ -1288,12 +1288,18 @@ input FlowTypeId {
 }
 
 input InstanceAddress {
+  "The authentication token."
+  bearer: String
+  "The relative URL of the GraphQL endpoint, by default \"/graphql\"."
+  endpoint: String
   "The hostname."
   hostname: String!
   "The port."
   port: Int!
   "Secure endpoint."
   secure: Boolean
+  "The user agent."
+  userAgent: String
 }
 
 input PropertyInstanceDefinition {

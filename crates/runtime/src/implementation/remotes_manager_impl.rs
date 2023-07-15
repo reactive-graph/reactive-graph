@@ -15,6 +15,7 @@ use crate::api::FailedToUpdateInstance;
 use crate::api::Lifecycle;
 use crate::api::RemotesManager;
 use crate::config::InstanceAddress;
+use crate::config::RemotesConfig;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
@@ -197,6 +198,12 @@ impl Lifecycle for RemotesManagerImpl {
                 }
             }
         }
+    }
+
+    async fn pre_shutdown(&self) {
+        let remotes_config = RemotesConfig::new(self.get_all_addresses());
+        self.config_manager.set_remotes_config(remotes_config);
+        self.config_manager.write_remotes_config();
     }
 }
 

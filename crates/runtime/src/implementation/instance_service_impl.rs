@@ -28,9 +28,7 @@ impl InstanceService for InstanceServiceImpl {
         InstanceInfo {
             name: instance_config.name,
             description: instance_config.description,
-            hostname: graphql_server_config.hostname(),
-            port: graphql_server_config.port(),
-            secure: graphql_server_config.is_secure(),
+            address: graphql_server_config.address(),
             version: String::from(VERSION),
             build_date: String::from(BUILD_DATE),
             git_branch: String::from(GIT_BRANCH),

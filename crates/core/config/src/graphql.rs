@@ -1,3 +1,4 @@
+use crate::InstanceAddress;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -59,6 +60,10 @@ impl GraphQLServerConfig {
 
     pub fn port(&self) -> u16 {
         self.port.unwrap_or(GRAPHQL_DEFAULT_PORT)
+    }
+
+    pub fn address(&self) -> InstanceAddress {
+        InstanceAddress::new(self.hostname(), self.port(), self.is_secure())
     }
 
     pub fn addr(&self) -> String {

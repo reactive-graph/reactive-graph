@@ -18,15 +18,15 @@ impl GraphQLInstanceInfo {
     }
 
     async fn hostname(&self) -> String {
-        self.instance_info.hostname.clone()
+        self.instance_info.address.hostname.clone()
     }
 
     async fn port(&self) -> u16 {
-        self.instance_info.port
+        self.instance_info.address.port
     }
 
     async fn secure(&self) -> bool {
-        self.instance_info.secure
+        self.instance_info.address.secure
     }
 
     async fn version(&self) -> String {

@@ -13,14 +13,9 @@ pub struct InstanceInfo {
     /// A description text about the instance.
     pub description: String,
 
-    /// The hostname.
-    pub hostname: String,
-
-    /// The port.
-    pub port: u16,
-
-    /// Secure endpoint.
-    pub secure: bool,
+    /// The instance address.
+    #[serde(flatten)]
+    pub address: InstanceAddress,
 
     /// The version of the runtime (version field in Cargo.toml).
     pub version: String,
@@ -46,24 +41,25 @@ pub struct InstanceInfo {
 
 impl InstanceInfo {
     pub fn address(&self) -> InstanceAddress {
-        InstanceAddress::new(self.hostname.clone(), self.port, self.secure)
+        self.address.clone()
     }
 }
 
+// An InstanceInfo is equal if the InstanceAddress is equal
 impl PartialEq for InstanceInfo {
     fn eq(&self, other: &Self) -> bool {
-        self.hostname == other.hostname && self.port == other.port && self.secure == other.secure
+        self.address == other.address
     }
 }
 
 impl PartialEq<InstanceAddress> for InstanceInfo {
     fn eq(&self, other: &InstanceAddress) -> bool {
-        self.hostname == other.hostname && self.port == other.port && self.secure == other.secure
+        &self.address == other
     }
 }
 
 impl From<InstanceInfo> for InstanceAddress {
     fn from(instance_info: InstanceInfo) -> Self {
-        InstanceAddress::new(instance_info.hostname, instance_info.port, instance_info.secure)
+        instance_info.address.clone()
     }
 }

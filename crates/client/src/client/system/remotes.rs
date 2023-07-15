@@ -15,6 +15,9 @@ pub mod mapping {
                     hostname: address.hostname.clone(),
                     port: address.port as i32,
                     secure: address.secure,
+                    endpoint: Some(address.endpoint.clone()),
+                    user_agent: Some(address.user_agent.clone()),
+                    bearer: address.bearer.clone(),
                 },
             }
         }

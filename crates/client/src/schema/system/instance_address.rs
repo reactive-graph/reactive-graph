@@ -4,6 +4,9 @@ pub struct InstanceAddress {
     pub hostname: String,
     pub port: i32,
     pub secure: bool,
+    pub endpoint: Option<String>,
+    pub user_agent: Option<String>,
+    pub bearer: Option<String>,
 }
 
 impl From<crate::config::InstanceAddress> for InstanceAddress {
@@ -12,6 +15,9 @@ impl From<crate::config::InstanceAddress> for InstanceAddress {
             hostname: address.hostname,
             port: address.port as i32,
             secure: address.secure,
+            endpoint: Some(address.endpoint),
+            user_agent: Some(address.user_agent),
+            bearer: address.bearer,
         }
     }
 }
