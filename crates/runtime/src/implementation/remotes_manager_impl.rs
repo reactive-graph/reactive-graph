@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::sync::RwLock;
 
 use async_trait::async_trait;
@@ -54,7 +55,7 @@ impl RemotesManager for RemotesManagerImpl {
         self.remote_instances.0.read().unwrap().iter().any(|i| i == address)
     }
 
-    fn get_all_addresses(&self) -> Vec<InstanceAddress> {
+    fn get_all_addresses(&self) -> HashSet<InstanceAddress> {
         self.remote_instances.0.read().unwrap().iter().map(|i| i.address()).collect()
     }
 

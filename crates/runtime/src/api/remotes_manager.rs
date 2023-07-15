@@ -1,3 +1,4 @@
+use std::collections::HashSet;
 use std::error::Error;
 use std::fmt;
 
@@ -95,7 +96,7 @@ pub trait RemotesManager: Send + Sync + Lifecycle {
     fn has(&self, address: &InstanceAddress) -> bool;
 
     /// Returns a list of the addresses of the remote instances.
-    fn get_all_addresses(&self) -> Vec<InstanceAddress>;
+    fn get_all_addresses(&self) -> HashSet<InstanceAddress>;
 
     /// Adds a remote instance.
     async fn add(&self, address: &InstanceAddress) -> Result<InstanceInfo, FailedToAddInstance>;
