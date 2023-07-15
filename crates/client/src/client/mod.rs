@@ -12,7 +12,7 @@ use reqwest::Error;
 
 use crate::client::system::System;
 use crate::client::types::Types;
-use crate::model_runtime::InstanceAddress;
+use crate::config::InstanceAddress;
 
 pub mod system;
 pub mod types;

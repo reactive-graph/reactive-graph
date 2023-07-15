@@ -6,8 +6,8 @@ pub struct InstanceAddress {
     pub secure: bool,
 }
 
-impl From<crate::model_runtime::InstanceAddress> for InstanceAddress {
-    fn from(address: crate::model_runtime::InstanceAddress) -> Self {
+impl From<crate::config::InstanceAddress> for InstanceAddress {
+    fn from(address: crate::config::InstanceAddress) -> Self {
         InstanceAddress {
             hostname: address.hostname,
             port: address.port as i32,

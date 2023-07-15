@@ -2,7 +2,7 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::model_runtime::InstanceAddress;
+use crate::config::InstanceAddress;
 
 #[derive(Clone, Debug, Serialize, Deserialize, InputObject)]
 #[graphql(name = "InstanceAddress")]

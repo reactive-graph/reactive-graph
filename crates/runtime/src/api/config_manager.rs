@@ -4,6 +4,7 @@ use crate::api::Lifecycle;
 use crate::config::GraphQLServerConfig;
 use crate::config::InstanceConfig;
 use crate::config::PluginsConfig;
+use crate::config::RemotesConfig;
 
 pub trait ConfigManager: Send + Sync + Lifecycle {
     /// Returns the location of the configuration of the instance.
@@ -23,6 +24,12 @@ pub trait ConfigManager: Send + Sync + Lifecycle {
 
     /// Sets the location of the plugins configuration.
     fn set_plugins_config_location(&self, plugins_config_location: PathBuf);
+
+    /// Returns the location of the remotes configuration.
+    fn get_remotes_config_location(&self) -> PathBuf;
+
+    /// Sets the location of the remotes configuration.
+    fn set_remotes_config_location(&self, remotes_config_location: PathBuf);
 
     /// Returns the configuration of the instance.
     fn get_instance_config(&self) -> InstanceConfig;
@@ -92,4 +99,16 @@ pub trait ConfigManager: Send + Sync + Lifecycle {
 
     /// Sets the plugins install location.
     fn set_install_location(&self, install_location: Option<String>);
+
+    /// Returns the remotes.
+    fn get_remotes_config(&self) -> RemotesConfig;
+
+    /// Sets the remotes configuration.
+    fn set_remotes_config(&self, remotes: RemotesConfig);
+
+    /// Reads the remotes configuration from file.
+    fn read_remotes_config(&self);
+
+    /// Writes the remotes configuration to file.
+    fn write_remotes_config(&self);
 }

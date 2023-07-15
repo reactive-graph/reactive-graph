@@ -8,8 +8,8 @@ pub mod mapping {
         pub address: InstanceAddress,
     }
 
-    impl From<&crate::model_runtime::InstanceAddress> for InstanceAddressVariables {
-        fn from(address: &crate::model_runtime::InstanceAddress) -> Self {
+    impl From<&crate::config::InstanceAddress> for InstanceAddressVariables {
+        fn from(address: &crate::config::InstanceAddress) -> Self {
             InstanceAddressVariables {
                 address: InstanceAddress {
                     hostname: address.hostname.clone(),
@@ -221,7 +221,7 @@ pub mod operations {
 pub mod api {
     use std::sync::Arc;
 
-    use crate::model_runtime::InstanceAddress;
+    use crate::config::InstanceAddress;
     use crate::model_runtime::InstanceInfo;
     use crate::system::remotes::operations::add;
     use crate::system::remotes::operations::fetch_remotes_from_all_remotes;

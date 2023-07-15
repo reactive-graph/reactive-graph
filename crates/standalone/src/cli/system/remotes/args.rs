@@ -1,7 +1,7 @@
 use clap::Args;
 
 use crate::cli::system::remotes::commands::RemotesCommands;
-use crate::model_runtime::InstanceAddress;
+use crate::config::InstanceAddress;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RemotesArgs {

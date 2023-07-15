@@ -7,17 +7,19 @@ use log::error;
 use log::info;
 use serde::Deserialize;
 
+use crate::api::ConfigManager;
 use crate::api::FailedToAddInstance;
 use crate::api::FailedToFetchInstanceInfo;
 use crate::api::FailedToFetchRemoteInstances;
 use crate::api::FailedToUpdateInstance;
 use crate::api::Lifecycle;
 use crate::api::RemotesManager;
+use crate::config::InstanceAddress;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
-use crate::model_runtime::InstanceAddress;
+use crate::di::Wrc;
 use crate::model_runtime::InstanceInfo;
 
 #[wrapper]
@@ -30,6 +32,8 @@ fn create_remote_instances_storage() -> RemoteInstancesStorage {
 
 #[component]
 pub struct RemotesManagerImpl {
+    config_manager: Wrc<dyn ConfigManager>,
+
     remote_instances: RemoteInstancesStorage,
 }
 
@@ -182,7 +186,18 @@ impl RemotesManagerImpl {
 
 #[async_trait]
 impl Lifecycle for RemotesManagerImpl {
-    async fn post_init(&self) {}
+    async fn post_init(&self) {
+        for address in self.config_manager.get_remotes_config().into_iter() {
+            match self.add(&address).await {
+                Ok(instance_info) => {
+                    info!("Added remote instance {} from {}", instance_info.name, instance_info.address().url());
+                }
+                Err(_) => {
+                    error!("Failed to add remote instance {}", address.url())
+                }
+            }
+        }
+    }
 }
 
 #[derive(Deserialize)]

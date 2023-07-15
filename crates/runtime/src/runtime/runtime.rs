@@ -194,6 +194,7 @@ impl Runtime for RuntimeImpl {
         self.shutdown_manager.init().await;
         self.event_manager.init().await;
         self.reactive_entity_instance_manager.init().await;
+        self.remotes_manager.init().await;
         self.command_manager.init().await;
         self.dynamic_graph_schema_manager.init().await;
         self.dynamic_graph_query_service.init().await;
@@ -216,6 +217,7 @@ impl Runtime for RuntimeImpl {
         self.shutdown_manager.post_init().await;
         self.event_manager.post_init().await;
         self.reactive_entity_instance_manager.post_init().await; // after event_manager!
+        self.remotes_manager.post_init().await;
         self.command_manager.post_init().await;
         self.dynamic_graph_schema_manager.post_init().await;
         self.dynamic_graph_query_service.post_init().await;
@@ -226,6 +228,7 @@ impl Runtime for RuntimeImpl {
         self.dynamic_graph_query_service.pre_shutdown().await;
         self.dynamic_graph_schema_manager.pre_shutdown().await;
         self.command_manager.pre_shutdown().await;
+        self.remotes_manager.pre_shutdown().await;
         self.reactive_entity_instance_manager.pre_shutdown().await;
         self.event_manager.pre_shutdown().await;
         self.shutdown_manager.pre_shutdown().await;
@@ -248,6 +251,7 @@ impl Runtime for RuntimeImpl {
         self.dynamic_graph_query_service.shutdown().await;
         self.dynamic_graph_schema_manager.shutdown().await;
         self.command_manager.shutdown().await;
+        self.remotes_manager.shutdown().await;
         self.reactive_entity_instance_manager.shutdown().await;
         self.event_manager.shutdown().await;
         self.shutdown_manager.shutdown().await;

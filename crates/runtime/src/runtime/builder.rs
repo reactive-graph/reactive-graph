@@ -5,8 +5,8 @@ use std::sync::Arc;
 
 use tokio::time::Duration;
 
+use crate::config::InstanceAddress;
 use crate::get_runtime;
-use crate::model_runtime::InstanceAddress;
 use crate::runtime::Runtime;
 
 pub enum SetConfigLocations {}

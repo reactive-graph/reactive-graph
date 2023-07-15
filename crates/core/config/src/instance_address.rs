@@ -20,6 +20,7 @@ pub struct InstanceAddress {
 
     /// If true, HTTPS will be used.
     #[builder(default = false)]
+    #[serde(default = "bool::default")]
     pub secure: bool,
 
     /// The relative URL of the GraphQL endpoint, by default "/graphql".

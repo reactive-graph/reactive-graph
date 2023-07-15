@@ -3,6 +3,7 @@ use std::sync::Arc;
 use crate::config::GraphQLServerConfig;
 use crate::config::InstanceConfig;
 use crate::config::PluginsConfig;
+use crate::config::RemotesConfig;
 use crate::plugins::ConfigManager;
 
 pub struct ConfigManagerImpl {
@@ -26,5 +27,9 @@ impl ConfigManager for ConfigManagerImpl {
 
     fn get_plugins_config(&self) -> PluginsConfig {
         self.config_manager.get_plugins_config()
+    }
+
+    fn get_remotes_config(&self) -> RemotesConfig {
+        self.config_manager.get_remotes_config()
     }
 }

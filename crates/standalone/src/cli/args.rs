@@ -2,10 +2,10 @@ use clap::ArgAction::SetTrue;
 use clap::Args;
 
 use crate::cli::commands::ClientCommands;
-use crate::model_runtime::InstanceAddress;
-use crate::model_runtime::DEFAULT_ENDPOINT;
-use crate::model_runtime::DEFAULT_HOSTNAME;
-use crate::model_runtime::DEFAULT_PORT;
+use crate::config::InstanceAddress;
+use crate::config::DEFAULT_ENDPOINT;
+use crate::config::DEFAULT_HOSTNAME;
+use crate::config::DEFAULT_PORT;
 
 #[derive(Args, Debug, Clone)]
 pub struct ClientArgs {

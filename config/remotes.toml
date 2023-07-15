@@ -1,0 +1,12 @@
+[[remotes]]
+hostname = "localhost"
+port = 31416
+
+[[remotes]]
+hostname = "localhost"
+port = 31417
+
+[[remotes]]
+hostname = "demo.rgf.app"
+port = 443
+secure = true

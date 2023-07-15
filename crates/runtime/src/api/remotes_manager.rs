@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use gql_client::GraphQLError;
 
 use crate::api::Lifecycle;
-use crate::model_runtime::InstanceAddress;
+use crate::config::InstanceAddress;
 use crate::model_runtime::InstanceInfo;
 
 #[derive(Debug)]

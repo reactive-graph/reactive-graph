@@ -1,4 +1,4 @@
-use crate::InstanceAddress;
+use crate::config::InstanceAddress;
 use chrono::DateTime;
 use chrono::Utc;
 use serde::Deserialize;

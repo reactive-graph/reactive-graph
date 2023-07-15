@@ -3,12 +3,14 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 use log::error;
+use log::info;
 
 use crate::api::ConfigManager;
 use crate::api::Lifecycle;
 use crate::config::GraphQLServerConfig;
 use crate::config::InstanceConfig;
 use crate::config::PluginsConfig;
+use crate::config::RemotesConfig;
 use crate::di::*;
 
 const DEFAULT_CONFIG_LOCATION: &str = "./config";
@@ -18,6 +20,8 @@ const DEFAULT_INSTANCE_CONFIG_FILENAME: &str = "instance.toml";
 const DEFAULT_GRAPHQL_CONFIG_FILENAME: &str = "graphql.toml";
 
 const DEFAULT_PLUGINS_CONFIG_FILENAME: &str = "plugins.toml";
+
+const DEFAULT_REMOTES_CONFIG_FILENAME: &str = "remotes.toml";
 
 #[wrapper]
 pub struct InstanceConfigLocation(RwLock<PathBuf>);
@@ -50,6 +54,16 @@ fn create_plugins_config_location() -> PluginsConfigLocation {
 }
 
 #[wrapper]
+pub struct RemotesConfigLocation(RwLock<PathBuf>);
+
+#[provides]
+fn create_remotes_config_location() -> RemotesConfigLocation {
+    let mut p = PathBuf::from(DEFAULT_CONFIG_LOCATION);
+    p.push(DEFAULT_REMOTES_CONFIG_FILENAME);
+    RemotesConfigLocation(RwLock::new(p))
+}
+
+#[wrapper]
 pub struct InstanceConfigStorage(RwLock<InstanceConfig>);
 
 #[provides]
@@ -73,14 +87,24 @@ fn create_plugins_config_storage() -> PluginsConfigStorage {
     PluginsConfigStorage(RwLock::new(PluginsConfig::default()))
 }
 
+#[wrapper]
+pub struct RemotesConfigStorage(RwLock<RemotesConfig>);
+
+#[provides]
+fn create_remotes_config_storage() -> RemotesConfigStorage {
+    RemotesConfigStorage(RwLock::new(RemotesConfig::default()))
+}
+
 #[component]
 pub struct ConfigManagerImpl {
     instance_config_location: InstanceConfigLocation,
     graphql_server_config_location: GraphQLServerConfigLocation,
     plugins_config_location: PluginsConfigLocation,
+    remotes_config_location: RemotesConfigLocation,
     instance_config: InstanceConfigStorage,
     graphql_server_config: GraphQLServerConfigStorage,
     plugins_config: PluginsConfigStorage,
+    remotes_config: RemotesConfigStorage,
 }
 
 #[async_trait]
@@ -114,6 +138,16 @@ impl ConfigManager for ConfigManagerImpl {
     fn set_plugins_config_location(&self, plugins_config_location: PathBuf) {
         let mut writer = self.plugins_config_location.0.write().unwrap();
         *writer = plugins_config_location;
+    }
+
+    fn get_remotes_config_location(&self) -> PathBuf {
+        let reader = self.remotes_config_location.0.read().unwrap();
+        reader.clone()
+    }
+
+    fn set_remotes_config_location(&self, remotes_config_location: PathBuf) {
+        let mut writer = self.remotes_config_location.0.write().unwrap();
+        *writer = remotes_config_location;
     }
 
     fn get_instance_config(&self) -> InstanceConfig {
@@ -228,8 +262,8 @@ impl ConfigManager for ConfigManagerImpl {
         let location = self.get_plugins_config_location();
         match std::fs::read_to_string(&location) {
             Ok(toml_string) => match toml::from_str(&toml_string) {
-                Ok(instance_config) => {
-                    self.set_plugins_config(instance_config);
+                Ok(plugins_config) => {
+                    self.set_plugins_config(plugins_config);
                 }
                 Err(_) => {
                     error!("Failed to load the plugins configuration from {}: Invalid TOML", location.to_str().unwrap_or(""));
@@ -265,6 +299,45 @@ impl ConfigManager for ConfigManagerImpl {
         let mut writer = self.plugins_config.0.write().unwrap();
         writer.install_location = install_location;
     }
+
+    fn get_remotes_config(&self) -> RemotesConfig {
+        let reader = self.remotes_config.0.read().unwrap();
+        reader.clone()
+    }
+
+    fn set_remotes_config(&self, remotes_config: RemotesConfig) {
+        let mut writer = self.remotes_config.0.write().unwrap();
+        *writer = remotes_config;
+    }
+
+    fn read_remotes_config(&self) {
+        let location = self.get_remotes_config_location();
+        match std::fs::read_to_string(&location) {
+            Ok(toml_string) => match toml::from_str(&toml_string) {
+                Ok(remotes_config) => {
+                    self.set_remotes_config(remotes_config);
+                }
+                Err(e) => {
+                    error!("Failed to load the remotes configuration from {}: Invalid TOML: {}", location.to_str().unwrap_or(""), e);
+                }
+            },
+            Err(e) => {
+                error!("Failed to load the remotes configuration from {}: {}", location.to_str().unwrap_or(""), e);
+            }
+        }
+    }
+
+    fn write_remotes_config(&self) {
+        let location = self.get_remotes_config_location();
+        let remotes_config = self.get_remotes_config();
+        match toml::to_string(&remotes_config) {
+            Ok(toml_string) => match std::fs::write(location.clone(), toml_string) {
+                Ok(_) => info!("Saved remote configuration to {}", location.to_str().unwrap_or("")),
+                Err(e) => error!("Failed to save remote configuration to {}: {}", location.to_str().unwrap_or(""), e),
+            },
+            Err(e) => error!("Failed to save remote configuration to {}: {}", location.to_str().unwrap_or(""), e),
+        }
+    }
 }
 
 #[async_trait]
@@ -273,5 +346,6 @@ impl Lifecycle for ConfigManagerImpl {
         self.read_graphql_server_config();
         self.read_instance_config();
         self.read_plugins_config();
+        self.read_remotes_config();
     }
 }

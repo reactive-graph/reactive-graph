@@ -1,6 +1,7 @@
 use crate::config::GraphQLServerConfig;
 use crate::config::InstanceConfig;
 use crate::config::PluginsConfig;
+use crate::config::RemotesConfig;
 
 pub trait ConfigManager: Send + Sync {
     /// Returns the instance configuration.
@@ -11,4 +12,7 @@ pub trait ConfigManager: Send + Sync {
 
     /// Returns the plugins configuration.
     fn get_plugins_config(&self) -> PluginsConfig;
+
+    /// Returns the remotes configuration.
+    fn get_remotes_config(&self) -> RemotesConfig;
 }

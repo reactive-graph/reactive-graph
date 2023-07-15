@@ -19,6 +19,7 @@ pub use schema::types::property_instance::*;
 pub use schema::types::property_type::*;
 pub use schema::types::socket_type::*;
 
+use inexor_rgf_core_config as config;
 use inexor_rgf_core_model as model;
 use inexor_rgf_model_runtime as model_runtime;
 
