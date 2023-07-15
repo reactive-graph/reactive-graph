@@ -13,9 +13,12 @@ pub struct MutationRemotes;
 #[Object]
 impl MutationRemotes {
     /// Adds a remote.
-    async fn add(&self, context: &Context<'_>, address: InstanceAddressDefinition) -> Result<GraphQLInstanceInfo> {
+    async fn add(&self, context: &Context<'_>, address: InstanceAddressDefinition, fetch_remotes_from_remote: Option<bool>) -> Result<GraphQLInstanceInfo> {
         let remotes_manager = context.data::<Arc<dyn RemotesManager>>()?;
         let instance = remotes_manager.add(&address.into()).await?;
+        if fetch_remotes_from_remote.unwrap_or(false) {
+            let _ = remotes_manager.fetch_and_add_remotes_from_remote(&instance.address).await;
+        }
         Ok(instance.into())
     }
 
