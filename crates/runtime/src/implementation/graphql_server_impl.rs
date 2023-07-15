@@ -293,6 +293,9 @@ impl GraphQLServerImpl {
                 .service(crate::rest::types::flows::get_flow_types)
                 .service(crate::rest::types::flows::get_flow_type)
                 .service(crate::rest::types::flows::schema_flow_types)
+                .service(crate::rest::instances::entities::schema_entity_instances)
+                .service(crate::rest::instances::relations::schema_relation_instances)
+                .service(crate::rest::instances::flows::schema_flow_instances)
                 // Web Resource API
                 .service(web::resource("/{web_resource_context_path}/{path:.*}").route(web::get().to(handle_web_resource)))
                 .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)))
