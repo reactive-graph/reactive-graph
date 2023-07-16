@@ -71,10 +71,11 @@ impl PluginResolverImpl {
     fn is_plugin_disabled(&self, id: Uuid) -> bool {
         let stem = self.plugin_container_manager.get_stem(&id);
         let name = self.plugin_container_manager.name(&id);
+        let short_name = self.plugin_container_manager.name_canonicalized(&id);
 
         if let Some(enabled_plugins) = self.config_manager.get_plugins_config().enabled_plugins {
-            if let Some(name) = name.clone() {
-                if !enabled_plugins.contains(&name) {
+            if let (Some(name), Some(short_name)) = (name.clone(), short_name.clone()) {
+                if !enabled_plugins.contains(&name) && !enabled_plugins.contains(&short_name) {
                     return true;
                 }
             }
@@ -89,6 +90,11 @@ impl PluginResolverImpl {
             }
             if let Some(name) = name {
                 if disabled_plugins.contains(&name) {
+                    return true;
+                }
+            }
+            if let Some(short_name) = short_name {
+                if disabled_plugins.contains(&short_name) {
                     return true;
                 }
             }

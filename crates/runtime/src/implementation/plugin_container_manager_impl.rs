@@ -92,6 +92,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     fn name(&self, id: &Uuid) -> Option<String> {
         self.plugin_containers.0.get(id).and_then(|p| p.value().name())
     }
+
     fn name_canonicalized(&self, id: &Uuid) -> Option<String> {
         self.plugin_containers.0.get(id).and_then(|p| p.value().name_canonicalized())
     }
