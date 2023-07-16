@@ -408,7 +408,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>writer = <span class="self">self</span>.remote_instances.<span class="number">0</span>.write().unwrap();
         writer.push(instance);
         <span class="kw">let </span><span class="kw-2">mut </span>remotes = <span class="self">self</span>.config_manager.get_remotes_config();
-        remotes.insert(address);
+        remotes.merge(address);
         <span class="self">self</span>.config_manager.set_remotes_config(remotes);
         <span class="self">self</span>.config_manager.write_remotes_config();
     }
