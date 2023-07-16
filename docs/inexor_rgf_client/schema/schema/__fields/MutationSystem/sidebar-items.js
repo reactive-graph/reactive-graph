@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["__typename","commands","plugins","remotes"]};
+window.SIDEBAR_ITEMS = {"struct":["__typename","commands","plugins","remotes","shutdown"]};
