@@ -449,6 +449,12 @@
 <a href="#449" id="449">449</a>
 <a href="#450" id="450">450</a>
 <a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::RwLock;
 <span class="kw">use </span>std::time::Duration;
 
@@ -522,10 +528,11 @@
     <span class="kw">fn </span>is_plugin_disabled(<span class="kw-2">&amp;</span><span class="self">self</span>, id: Uuid) -&gt; bool {
         <span class="kw">let </span>stem = <span class="self">self</span>.plugin_container_manager.get_stem(<span class="kw-2">&amp;</span>id);
         <span class="kw">let </span>name = <span class="self">self</span>.plugin_container_manager.name(<span class="kw-2">&amp;</span>id);
+        <span class="kw">let </span>short_name = <span class="self">self</span>.plugin_container_manager.name_canonicalized(<span class="kw-2">&amp;</span>id);
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(enabled_plugins) = <span class="self">self</span>.config_manager.get_plugins_config().enabled_plugins {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = name.clone() {
-                <span class="kw">if </span>!enabled_plugins.contains(<span class="kw-2">&amp;</span>name) {
+            <span class="kw">if let </span>(<span class="prelude-val">Some</span>(name), <span class="prelude-val">Some</span>(short_name)) = (name.clone(), short_name.clone()) {
+                <span class="kw">if </span>!enabled_plugins.contains(<span class="kw-2">&amp;</span>name) &amp;&amp; !enabled_plugins.contains(<span class="kw-2">&amp;</span>short_name) {
                     <span class="kw">return </span><span class="bool-val">true</span>;
                 }
             }
@@ -540,6 +547,11 @@
             }
             <span class="kw">if let </span><span class="prelude-val">Some</span>(name) = name {
                 <span class="kw">if </span>disabled_plugins.contains(<span class="kw-2">&amp;</span>name) {
+                    <span class="kw">return </span><span class="bool-val">true</span>;
+                }
+            }
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(short_name) = short_name {
+                <span class="kw">if </span>disabled_plugins.contains(<span class="kw-2">&amp;</span>short_name) {
                     <span class="kw">return </span><span class="bool-val">true</span>;
                 }
             }

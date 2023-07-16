@@ -644,6 +644,7 @@
 <a href="#644" id="644">644</a>
 <a href="#645" id="645">645</a>
 <a href="#646" id="646">646</a>
+<a href="#647" id="647">647</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::path::PathBuf;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -738,6 +739,7 @@
     <span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         <span class="self">self</span>.plugin_containers.<span class="number">0</span>.get(id).and_then(|p| p.value().name())
     }
+
     <span class="kw">fn </span>name_canonicalized(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>Uuid) -&gt; <span class="prelude-ty">Option</span>&lt;String&gt; {
         <span class="self">self</span>.plugin_containers.<span class="number">0</span>.get(id).and_then(|p| p.value().name_canonicalized())
     }
