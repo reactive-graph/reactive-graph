@@ -1,6 +1,6 @@
 query UnsatisfiedDependenciesOfAPlugin {
   system {
-    plugins {
+    plugins(hasUnsatisfiedDependencies: true) {
       name
       state
       unsatisfiedDependencies {

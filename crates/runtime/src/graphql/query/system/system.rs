@@ -24,6 +24,7 @@ impl System {
         stem: Option<String>,
         name: Option<String>,
         state: Option<String>,
+        has_unsatisfied_dependencies: Option<bool>,
     ) -> Result<Vec<GraphQLPlugin>> {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager>>()?;
         let plugins = plugin_container_manager
@@ -61,6 +62,11 @@ impl System {
                     Some(PluginState::Disabled) => state == "Disabled",
                     None => false,
                 },
+                None => true,
+            })
+            .filter(|plugin_id| match &has_unsatisfied_dependencies {
+                Some(true) => plugin_container_manager.has_unsatisfied_dependencies(plugin_id),
+                Some(false) => true,
                 None => true,
             })
             .map(|id| GraphQLPlugin { id })
