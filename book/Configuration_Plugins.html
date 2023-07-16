@@ -191,6 +191,18 @@
 <p>Please note, that disabling a plugin may cause that other plugins cannot start!</p>
 </div>
 </div>
+<h3 id="enable-specific-plugins"><a class="header" href="#enable-specific-plugins">Enable specific plugins</a></h3>
+<p>You can enable specific plugins. This take precedence over <code>disabled_plugins</code> (which will have no effect).</p>
+<pre><code class="language-toml">enabled_plugins = [
+    &quot;inexor-rgf-plugin-base&quot;,
+    &quot;inexor-rgf-plugin-trigger&quot;,
+    &quot;inexor-rgf-plugin-result&quot;,
+    &quot;inexor-rgf-plugin-file&quot;,
+    &quot;inexor-rgf-plugin-connector&quot;,
+    &quot;inexor-rgf-plugin-json&quot;,
+    &quot;inexor-rgf-plugin-taxonomy&quot;,
+]
+</code></pre>
 
                     </main>
 
