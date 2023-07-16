@@ -761,6 +761,7 @@ type MutationSystem {
   commands: MutationCommands!
   plugins: MutationPlugins!
   remotes: MutationRemotes!
+  shutdown: Boolean!
 }
 
 "Mutations for types (components, entity types, relation types)."

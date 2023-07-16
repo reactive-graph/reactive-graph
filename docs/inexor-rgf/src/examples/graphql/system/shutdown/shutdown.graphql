@@ -1,0 +1,5 @@
+mutation Shutdown {
+  system {
+    shutdown
+  }
+}

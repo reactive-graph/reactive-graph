@@ -36,6 +36,7 @@
   - [Instance Info](./GraphQL_API_Instance_info.md)
   - [Plugins](./GraphQL_API_Plugins.md)
   - [Remotes](./GraphQL_API_Remotes.md)
+  - [Shutdown](./GraphQL_API_Shutdown.md)
 - [Dynamic Graph API](./Dynamic_Graph_API.md)
 - [Plugin System](./Plugin_System.md)
   - [Component Provider](./Plugin_System_Component_Provider.md)
