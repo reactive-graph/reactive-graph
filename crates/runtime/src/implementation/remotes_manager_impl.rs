@@ -178,7 +178,7 @@ impl RemotesManagerImpl {
         let mut writer = self.remote_instances.0.write().unwrap();
         writer.push(instance);
         let mut remotes = self.config_manager.get_remotes_config();
-        remotes.insert(address);
+        remotes.merge(address);
         self.config_manager.set_remotes_config(remotes);
         self.config_manager.write_remotes_config();
     }
