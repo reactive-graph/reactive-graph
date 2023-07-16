@@ -285,6 +285,11 @@ impl ConfigManager for ConfigManagerImpl {
         writer.disabled_plugins = Some(disabled_plugins);
     }
 
+    fn set_enabled_plugins(&self, enabled_plugins: Vec<String>) {
+        let mut writer = self.plugins_config.0.write().unwrap();
+        writer.enabled_plugins = Some(enabled_plugins);
+    }
+
     fn set_disable_hot_deploy(&self, disable_hot_deploy: bool) {
         let mut writer = self.plugins_config.0.write().unwrap();
         writer.hot_deploy = Some(!disable_hot_deploy);

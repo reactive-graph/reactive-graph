@@ -72,6 +72,15 @@ impl PluginResolverImpl {
         let stem = self.plugin_container_manager.get_stem(&id);
         let name = self.plugin_container_manager.name(&id);
 
+        if let Some(enabled_plugins) = self.config_manager.get_plugins_config().enabled_plugins {
+            if let Some(name) = name.clone() {
+                if !enabled_plugins.contains(&name) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         if let Some(disabled_plugins) = self.config_manager.get_plugins_config().disabled_plugins {
             if let Some(stem) = stem {
                 if disabled_plugins.contains(&stem) {

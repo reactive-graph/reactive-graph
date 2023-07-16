@@ -174,6 +174,14 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets which plugins will be enabled. If set, disabled_plugins will have no effect.
+    pub fn enabled_plugins<S: Into<OptionOption<Vec<String>>>>(self, enabled_plugins: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+        if let Some(enabled_plugins) = enabled_plugins.into().get() {
+            self.runtime.get_config_manager().set_enabled_plugins(enabled_plugins);
+        }
+        self
+    }
+
     /// Disables hot deployment of plugins.
     pub fn disable_hot_deploy<S: Into<OptionOption<bool>>>(self, disabled: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         if let Some(disabled) = disabled.into().get() {

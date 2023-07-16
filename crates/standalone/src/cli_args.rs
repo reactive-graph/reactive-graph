@@ -75,6 +75,10 @@ pub struct CliArguments {
     #[arg(short = 'p', long)]
     pub(crate) disabled_plugins: Option<Vec<String>>,
 
+    /// The list of plugins to enable.
+    #[arg(short = 'P', long)]
+    pub(crate) enabled_plugins: Option<Vec<String>>,
+
     /// If true, hot deployment will be disabled.
     #[arg(long, action = SetTrue, env = "INEXOR_RGF_DISABLE_HOT_DEPLOY")]
     pub(crate) disable_hot_deploy: Option<bool>,

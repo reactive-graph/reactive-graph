@@ -91,6 +91,9 @@ pub trait ConfigManager: Send + Sync + Lifecycle {
     /// Sets the plugins to disable.
     fn set_disabled_plugins(&self, disabled_plugins: Vec<String>);
 
+    /// Sets the plugins to enable. If set, set_disabled_plugins will have no effect.
+    fn set_enabled_plugins(&self, enabled_plugins: Vec<String>);
+
     /// Enables / disables hot deploy.
     fn set_disable_hot_deploy(&self, disable_hot_deploy: bool);
 

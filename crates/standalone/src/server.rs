@@ -23,6 +23,7 @@ pub(crate) async fn server(cli_args: CliArguments) {
         .default_context_path(cli_args.default_context_path)
         .disable_all_plugins(cli_args.disable_all_plugins)
         .disabled_plugins(cli_args.disabled_plugins)
+        .enabled_plugins(cli_args.enabled_plugins)
         .disable_hot_deploy(cli_args.disable_hot_deploy)
         .hot_deploy_location(cli_args.hot_deploy_location)
         .install_location(cli_args.install_location)

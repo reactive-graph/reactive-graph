@@ -16,6 +16,9 @@ pub struct PluginsConfig {
     /// The plugins which are disabled.
     pub disabled_plugins: Option<Vec<String>>,
 
+    /// The plugins which are enabled. If set, disabled_plugins will be ignored.
+    pub enabled_plugins: Option<Vec<String>>,
+
     /// If true, hot deployment is enabled.
     pub hot_deploy: Option<bool>,
 
@@ -48,6 +51,7 @@ impl Default for PluginsConfig {
         PluginsConfig {
             disabled: Some(false),
             disabled_plugins: Some(Vec::new()),
+            enabled_plugins: None,
             hot_deploy: Some(true),
             hot_deploy_location: Some(DEFAULT_HOT_DEPLOY_LOCATION.to_string()),
             install_location: Some(DEFAULT_INSTALL_LOCATION.to_string()),
