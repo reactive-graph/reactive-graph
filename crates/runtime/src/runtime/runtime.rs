@@ -314,7 +314,7 @@ impl Runtime for RuntimeImpl {
 
         // Stop GraphQL server thread, if it is still running
         debug!("Stopping the GraphQL server thread");
-        let _graphql_server_stop_result = graphql_server_stop_sender.send(());
+        let _graphql_server_stop_result = graphql_server_stop_sender.send_timeout((), Duration::from_millis(100));
 
         // Be sure that the GraphQL server thread is gone
         let _ = graphql_server_handle.await;
