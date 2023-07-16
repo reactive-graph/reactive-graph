@@ -743,7 +743,7 @@ type MutationRelationTypes {
 "Mutations for managing remote instances."
 type MutationRemotes {
   "Adds a remote."
-  add(address: InstanceAddress!): InstanceInfo!
+  add(address: InstanceAddress!, fetchRemotesFromRemote: Boolean): InstanceInfo!
   fetchRemotesFromAllRemotes: [InstanceInfo!]!
   "Fetches the remotes which are available on the given remote."
   fetchRemotesFromRemote(address: InstanceAddress!): [InstanceInfo!]!
@@ -1289,12 +1289,18 @@ input FlowTypeId {
 }
 
 input InstanceAddress {
+  "The authentication token."
+  bearer: String
+  "The relative URL of the GraphQL endpoint, by default \"/graphql\"."
+  endpoint: String
   "The hostname."
   hostname: String!
   "The port."
   port: Int!
   "Secure endpoint."
   secure: Boolean
+  "The user agent."
+  userAgent: String
 }
 
 input PropertyInstanceDefinition {

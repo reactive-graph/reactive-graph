@@ -743,7 +743,7 @@ type MutationRelationTypes {
 "Mutations for managing remote instances."
 type MutationRemotes {
   "Adds a remote."
-  add(address: InstanceAddress!): InstanceInfo!
+  add(address: InstanceAddress!, fetchRemotesFromRemote: Boolean): InstanceInfo!
   fetchRemotesFromAllRemotes: [InstanceInfo!]!
   "Fetches the remotes which are available on the given remote."
   fetchRemotesFromRemote(address: InstanceAddress!): [InstanceInfo!]!
