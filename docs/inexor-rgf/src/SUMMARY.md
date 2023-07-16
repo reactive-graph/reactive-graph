@@ -12,6 +12,7 @@
   - [Instance](./Configuration_Instance.md)
   - [HTTP/GraphQL Server](./Configuration_HTTP_GraphQL_Server.md)
   - [Plugins](./Configuration_Plugins.md)
+  - [Remotes](./Configuration_Remotes.md)
 - [Model](./Model.md)
   - [Component](./Model_Component.md)
   - [Entity Type](./Model_Entity_Type.md)
