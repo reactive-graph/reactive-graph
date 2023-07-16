@@ -102,6 +102,10 @@
 <a href="#102" id="102">102</a>
 <a href="#103" id="103">103</a>
 <a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::ArgAction::SetTrue;
 <span class="kw">use </span>clap::Parser;
 <span class="kw">use </span>clap::Subcommand;
@@ -178,6 +182,10 @@
     <span class="doccomment">/// The list of plugins to disable.
     </span><span class="attr">#[arg(short = <span class="string">&#39;p&#39;</span>, long)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) disabled_plugins: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
+
+    <span class="doccomment">/// The list of plugins to enable.
+    </span><span class="attr">#[arg(short = <span class="string">&#39;P&#39;</span>, long)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) enabled_plugins: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
 
     <span class="doccomment">/// If true, hot deployment will be disabled.
     </span><span class="attr">#[arg(long, action = SetTrue, env = <span class="string">&quot;INEXOR_RGF_DISABLE_HOT_DEPLOY&quot;</span>)]

@@ -54,6 +54,10 @@
 <a href="#54" id="54">54</a>
 <a href="#55" id="55">55</a>
 <a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>std::fs;
@@ -71,6 +75,9 @@
 
     <span class="doccomment">/// The plugins which are disabled.
     </span><span class="kw">pub </span>disabled_plugins: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
+
+    <span class="doccomment">/// The plugins which are enabled. If set, disabled_plugins will be ignored.
+    </span><span class="kw">pub </span>enabled_plugins: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
 
     <span class="doccomment">/// If true, hot deployment is enabled.
     </span><span class="kw">pub </span>hot_deploy: <span class="prelude-ty">Option</span>&lt;bool&gt;,
@@ -104,6 +111,7 @@
         PluginsConfig {
             disabled: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
             disabled_plugins: <span class="prelude-val">Some</span>(Vec::new()),
+            enabled_plugins: <span class="prelude-val">None</span>,
             hot_deploy: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
             hot_deploy_location: <span class="prelude-val">Some</span>(DEFAULT_HOT_DEPLOY_LOCATION.to_string()),
             install_location: <span class="prelude-val">Some</span>(DEFAULT_INSTALL_LOCATION.to_string()),

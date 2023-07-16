@@ -112,6 +112,9 @@
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
 <a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::path::PathBuf;
 
 <span class="kw">use </span><span class="kw">crate</span>::api::Lifecycle;
@@ -204,6 +207,9 @@
 
     <span class="doccomment">/// Sets the plugins to disable.
     </span><span class="kw">fn </span>set_disabled_plugins(<span class="kw-2">&amp;</span><span class="self">self</span>, disabled_plugins: Vec&lt;String&gt;);
+
+    <span class="doccomment">/// Sets the plugins to enable. If set, set_disabled_plugins will have no effect.
+    </span><span class="kw">fn </span>set_enabled_plugins(<span class="kw-2">&amp;</span><span class="self">self</span>, enabled_plugins: Vec&lt;String&gt;);
 
     <span class="doccomment">/// Enables / disables hot deploy.
     </span><span class="kw">fn </span>set_disable_hot_deploy(<span class="kw-2">&amp;</span><span class="self">self</span>, disable_hot_deploy: bool);
