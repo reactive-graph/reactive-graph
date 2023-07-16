@@ -4,12 +4,14 @@ use crate::client::system::command::api::Command;
 use crate::client::system::instance::api::Instance;
 use crate::client::system::plugin::api::Plugins;
 use crate::client::system::remotes::api::Remotes;
+use crate::client::system::shutdown::api::Shutdown;
 use crate::client::InexorRgfClient;
 
 pub mod command;
 pub mod instance;
 pub mod plugin;
 pub mod remotes;
+pub mod shutdown;
 
 pub struct System {
     client: Arc<InexorRgfClient>,
@@ -34,5 +36,9 @@ impl System {
 
     pub fn instance(&self) -> Instance {
         Instance::new(self.client.clone())
+    }
+
+    pub fn shutdown(&self) -> Shutdown {
+        Shutdown::new(self.client.clone())
     }
 }

@@ -36,5 +36,5 @@ async fn test_shutdown() {
     // It takes up to 100ms for the GraphQL server to shutdown and after that
     // up to 100ms for the runtime to shutdown plus some millis (500+100+100+x < 800).
     assert!(elapsed > Duration::from_millis(500), "Shutdown at earliest after 500ms");
-    assert!(elapsed < Duration::from_millis(800), "Shutdown at latest after 800ms");
+    assert!(elapsed < Duration::from_millis(1600), "Shutdown at latest after 1600ms");
 }

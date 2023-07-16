@@ -24,6 +24,7 @@ use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::api::RemotesManager;
+use crate::api::ShutdownManager;
 use crate::api::TypeCategoryManager;
 use crate::di::component;
 use crate::di::provides;
@@ -81,6 +82,8 @@ pub struct GraphQLSchemaManagerImpl {
     remotes_manager: Wrc<dyn RemotesManager>,
 
     command_manager: Wrc<dyn CommandManager>,
+
+    shutdown_manager: Wrc<dyn ShutdownManager>,
 }
 
 impl GraphQLSchemaManagerImpl {}
@@ -112,6 +115,7 @@ impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
             .data(self.instance_service.clone())
             .data(self.remotes_manager.clone())
             .data(self.command_manager.clone())
+            .data(self.shutdown_manager.clone())
             .directive(directives::concat)
             .directive(directives::random_uuid)
             .finish()

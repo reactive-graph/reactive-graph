@@ -1,7 +1,11 @@
+use std::sync::Arc;
+
+use async_graphql::*;
+
+use crate::api::ShutdownManager;
 use crate::graphql::mutation::MutationCommands;
 use crate::graphql::mutation::MutationPlugins;
 use crate::graphql::mutation::MutationRemotes;
-use async_graphql::*;
 
 #[derive(Default)]
 pub struct MutationSystem;
@@ -18,5 +22,11 @@ impl MutationSystem {
 
     async fn plugins(&self) -> MutationPlugins {
         MutationPlugins
+    }
+
+    async fn shutdown(&self, context: &Context<'_>) -> Result<bool> {
+        let shutdown_manager = context.data::<Arc<dyn ShutdownManager>>()?;
+        shutdown_manager.do_shutdown();
+        Ok(true)
     }
 }
