@@ -1,6 +1,9 @@
-use inexor_rgf_client::InexorRgfClient;
-use inexor_rgf_client::InexorRgfClientError;
-use inexor_rgf_client::InexorRgfClientExecutionError;
+use inexor_rgf_client as client;
+
+use client::InexorRgfClient;
+use client::InexorRgfClientError;
+use client::InexorRgfClientExecutionError;
+use client::Plugin;
 
 #[derive(Debug)]
 enum SimpleClientError {
@@ -27,8 +30,27 @@ async fn main() -> Result<(), SimpleClientError> {
         println!("No plugins found.");
         return Ok(());
     }
-    plugins
-        .iter()
-        .for_each(|plugin| println!("| {:<50} | {:<70} |", plugin.name, plugin.description));
+    let table: String = plugins.iter().map(row).collect();
+    println!("{}{}{}{}{}", top(), header("Name", "State", "Description"), line(), table, bottom(),);
     Ok(())
+}
+
+fn row(plugin: &Plugin) -> String {
+    format!("║ {:<40} ║ {:<8} ║ {:<70} ║\n", plugin.short_name, plugin.state, plugin.description)
+}
+
+fn header(c1: &str, c2: &str, c3: &str) -> String {
+    format!("║{: ^42}║{: ^10}║{: ^72}║\n", c1, c2, c3)
+}
+
+fn top() -> String {
+    format!("╔{}╦{}╦{}╗\n", "═".repeat(42), "═".repeat(10), "═".repeat(72))
+}
+
+fn line() -> String {
+    format!("╠{}╬{}╬{}╣\n", "═".repeat(42), "═".repeat(10), "═".repeat(72))
+}
+
+fn bottom() -> String {
+    format!("╚{}╩{}╩{}╝\n", "═".repeat(42), "═".repeat(10), "═".repeat(72))
 }
