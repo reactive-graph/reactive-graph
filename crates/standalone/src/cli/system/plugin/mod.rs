@@ -57,6 +57,11 @@ pub(crate) async fn plugins(client: &Arc<InexorRgfClient>, plugins_args: Plugins
             Ok(plugin) => print_plugin(plugin),
             Err(e) => eprintln!("[ERROR] Failed to restart plugin:\n{e}"),
         },
+        PluginsCommands::Uninstall(args) => match client.system().plugins().uninstall(args.name).await {
+            Ok(true) => println!("Uninstalled plugin"),
+            Ok(false) => println!("Failed to uninstall plugin"),
+            Err(e) => eprintln!("[ERROR] Failed to uninstall plugin:\n{e}"),
+        },
     }
 }
 

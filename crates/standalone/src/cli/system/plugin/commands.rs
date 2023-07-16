@@ -29,4 +29,7 @@ pub(crate) enum PluginsCommands {
     /// Restarts a plugin.
     #[non_exhaustive]
     Restart(PluginByNameArgs),
+    /// Uninstall a plugin.
+    #[non_exhaustive]
+    Uninstall(PluginByNameArgs),
 }

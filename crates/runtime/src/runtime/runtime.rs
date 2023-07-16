@@ -5,17 +5,18 @@ use std::sync::Arc;
 use std::sync::RwLock;
 use std::time::Duration;
 
-use crate::di::module;
-use crate::di::provides;
-use crate::di::wrapper;
-use crate::di::Component;
-use crate::di::Wrc;
 use async_trait::async_trait;
 use log::debug;
 use log::info;
 use tokio::time::error::Elapsed;
 
 use crate::api::*;
+use crate::config::InstanceAddress;
+use crate::di::module;
+use crate::di::provides;
+use crate::di::wrapper;
+use crate::di::Component;
+use crate::di::Wrc;
 
 #[wrapper]
 pub struct RunningState(RwLock<bool>);
@@ -54,6 +55,9 @@ pub trait Runtime: Send + Sync {
     /// Waits for the GraphQL server has been stopped.
     /// Times out if the GraphQL server is still running after the given duration.
     async fn wait_for_stopped_with_timeout(&self, timeout_duration: Duration) -> Result<(), Elapsed>;
+
+    /// Returns the address of the runtime.
+    fn address(&self) -> InstanceAddress;
 
     fn get_command_manager(&self) -> Arc<dyn CommandManager>;
 
@@ -351,6 +355,10 @@ impl Runtime for RuntimeImpl {
 
     async fn wait_for_stopped_with_timeout(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
         tokio::time::timeout(timeout_duration, self.wait_for_stopped()).await
+    }
+
+    fn address(&self) -> InstanceAddress {
+        self.instance_service.get_instance_info().address()
     }
 
     fn get_command_manager(&self) -> Arc<dyn CommandManager> {

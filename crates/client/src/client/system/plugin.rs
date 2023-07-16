@@ -156,6 +156,25 @@ pub mod mapping {
         #[arguments(name: $name)]
         pub restart: Plugin,
     }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "Mutation", variables = "PluginByNameVariables")]
+    pub struct UninstallPlugin {
+        pub system: UninstallPluginMutationSystem,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "MutationSystem", variables = "PluginByNameVariables")]
+    pub struct UninstallPluginMutationSystem {
+        pub plugins: UninstallPluginMutationPlugins,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "MutationPlugins", variables = "PluginByNameVariables")]
+    pub struct UninstallPluginMutationPlugins {
+        #[arguments(name: $name)]
+        pub uninstall: bool,
+    }
 }
 
 pub mod queries {
@@ -199,6 +218,7 @@ pub mod operations {
     use crate::client::system::plugin::mapping::RestartPlugin;
     use crate::client::system::plugin::mapping::StartPlugin;
     use crate::client::system::plugin::mapping::StopPlugin;
+    use crate::client::system::plugin::mapping::UninstallPlugin;
 
     pub fn start(name: String) -> cynic::Operation<StartPlugin, PluginByNameVariables> {
         use cynic::MutationBuilder;
@@ -214,6 +234,11 @@ pub mod operations {
         use cynic::MutationBuilder;
         RestartPlugin::build(name.into())
     }
+
+    pub fn uninstall(name: String) -> cynic::Operation<UninstallPlugin, PluginByNameVariables> {
+        use cynic::MutationBuilder;
+        UninstallPlugin::build(name.into())
+    }
 }
 
 pub mod api {
@@ -223,6 +248,7 @@ pub mod api {
     use crate::client::system::plugin::operations::restart;
     use crate::client::system::plugin::operations::start;
     use crate::client::system::plugin::operations::stop;
+    use crate::client::system::plugin::operations::uninstall;
     use crate::client::system::plugin::queries::get_all;
     use crate::client::system::plugin::queries::get_by_name;
     use crate::client::system::plugin::queries::get_dependencies;
@@ -290,8 +316,51 @@ pub mod api {
             self.client.run_graphql(restart(name), |data| data.system.plugins.restart).await
         }
 
+        pub async fn uninstall(&self, name: String) -> Result<bool, InexorRgfClientExecutionError> {
+            self.client.run_graphql(uninstall(name), |data| data.system.plugins.uninstall).await
+        }
+
         fn get_first<P: Clone>(plugins: Vec<P>) -> Option<P> {
             plugins.first().cloned()
         }
+    }
+}
+
+#[cfg(test)]
+pub mod test {
+
+    use crate::InexorRgfClient;
+    use inexor_rgf_rt::runtime::Runtime;
+    use inexor_rgf_rt::runtime::RuntimeBuilder;
+    use std::sync::Arc;
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_get_all_plugins() {
+        RuntimeBuilder::new()
+            .ignore_config_files()
+            .disable_all_plugins(true)
+            .pick_free_port()
+            .init()
+            .await
+            .post_init()
+            .await
+            .spawn()
+            .await
+            .with_runtime(|runtime: Arc<dyn Runtime>| async move {
+                let plugin_container_manager = runtime.get_plugin_container_manager();
+                assert_eq!(plugin_container_manager.get_plugins().len(), 0);
+
+                // Client: Connect to self and get all remotes
+                let client = InexorRgfClient::new(runtime.address()).expect("Cannot create client");
+                let plugins = client.system().plugins().get_all().await.expect("Failed to get list of plugins");
+                assert_eq!(plugins.len(), 0);
+            })
+            .await
+            .stop()
+            .await
+            .pre_shutdown()
+            .await
+            .shutdown()
+            .await;
     }
 }
