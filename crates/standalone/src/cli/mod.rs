@@ -16,8 +16,7 @@ pub(crate) mod system;
 pub(crate) mod types;
 
 pub(crate) async fn client(client_args: ClientArgs) {
-    let remote = (&client_args).into();
-    let client = match InexorRgfClient::new(remote) {
+    let client = match InexorRgfClient::new(&client_args) {
         Ok(client) => client,
         Err(e) => {
             eprintln!("[ERROR] Failed to create client: {}", e);

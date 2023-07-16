@@ -312,23 +312,17 @@ pub mod test {
             .spawn()
             .await
             .with_runtime(|runtime: Arc<dyn Runtime>| async move {
-                let instance_service = runtime.get_instance_service();
                 let remotes_manager = runtime.get_remotes_manager();
 
-                // Get instance info from the runtime
-                let rt_instance_info = instance_service.get_instance_info();
-                let rt_address = rt_instance_info.address();
+                let rt_address = runtime.address();
 
                 // RT: Create remote
-                remotes_manager
-                    .add(&instance_service.get_instance_info().into())
-                    .await
-                    .expect("Failed to add self to list of remotes");
+                remotes_manager.add(&rt_address).await.expect("Failed to add self to list of remotes");
 
                 let rt_remotes = remotes_manager.get_all();
 
                 // Client: Connect to self and get all remotes
-                let client = InexorRgfClient::new(rt_address.clone()).expect("Cannot create client");
+                let client = InexorRgfClient::new(rt_address).expect("Cannot create client");
                 let remotes = client.system().remotes().get_all().await.expect("Failed to get all remotes");
 
                 // Expect that the remotes of the runtime are the same
@@ -357,12 +351,10 @@ pub mod test {
             .spawn()
             .await
             .with_runtime(|runtime: Arc<dyn Runtime>| async move {
-                let instance_service = runtime.get_instance_service();
                 let remotes_manager = runtime.get_remotes_manager();
 
                 // Get instance info from the runtime
-                let rt_instance_info = instance_service.get_instance_info();
-                let rt_address = rt_instance_info.address();
+                let rt_address = runtime.address();
 
                 // Check that there are no remotes
                 assert_eq!(remotes_manager.get_all().len(), 0);

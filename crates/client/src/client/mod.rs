@@ -80,7 +80,8 @@ impl InexorRgfClient {
         InexorRgfClient::new(InstanceAddress::default())
     }
 
-    pub fn new(remote: InstanceAddress) -> Result<Arc<Self>, InexorRgfClientError> {
+    pub fn new<A: Into<InstanceAddress>>(remote: A) -> Result<Arc<Self>, InexorRgfClientError> {
+        let remote = remote.into();
         let mut client_builder = Client::builder().user_agent(remote.user_agent.clone());
         if let Some(bearer) = remote.bearer.clone() {
             let header_value = reqwest::header::HeaderValue::from_str(&format!("Bearer {}", bearer)).map_err(InexorRgfClientError::InvalidBearer)?;
