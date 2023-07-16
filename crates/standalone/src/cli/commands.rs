@@ -25,6 +25,10 @@ pub(crate) enum ClientCommands {
     #[non_exhaustive]
     Remotes(RemotesArgs),
 
+    /// Shutdown the runtime.
+    #[non_exhaustive]
+    Shutdown,
+
     // --- Types ---
     /// Manage components.
     #[non_exhaustive]
