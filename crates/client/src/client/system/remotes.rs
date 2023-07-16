@@ -343,4 +343,44 @@ pub mod test {
             .shutdown()
             .await;
     }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_add_remote() {
+        RuntimeBuilder::new()
+            .ignore_config_files()
+            .disable_all_plugins(true)
+            .pick_free_port()
+            .init()
+            .await
+            .post_init()
+            .await
+            .spawn()
+            .await
+            .with_runtime(|runtime: Arc<dyn Runtime>| async move {
+                let instance_service = runtime.get_instance_service();
+                let remotes_manager = runtime.get_remotes_manager();
+
+                // Get instance info from the runtime
+                let rt_instance_info = instance_service.get_instance_info();
+                let rt_address = rt_instance_info.address();
+
+                // Check that there are no remotes
+                assert_eq!(remotes_manager.get_all().len(), 0);
+
+                // Client: Connect to self and get all remotes
+                let client = InexorRgfClient::new(rt_address.clone()).expect("Cannot create client");
+                let remote = client.system().remotes().add(&rt_address).await.expect("Failed to add remote");
+
+                // Check that there is a new remote
+                assert_eq!(remotes_manager.get_all().len(), 1);
+                assert_eq!(rt_address, remote.address);
+            })
+            .await
+            .stop()
+            .await
+            .pre_shutdown()
+            .await
+            .shutdown()
+            .await;
+    }
 }
