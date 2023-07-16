@@ -1020,7 +1020,7 @@ type System {
   commands(name: String): [Command!]!
   "Returns the instance information."
   instanceInfo: InstanceInfo!
-  plugins(hasUnsatisfiedDependencies: Boolean, id: UUID, name: String, state: String, stem: String): [Plugin!]!
+  plugins(hasDependencies: Boolean, hasUnsatisfiedDependencies: Boolean, id: UUID, name: String, state: String, stem: String): [Plugin!]!
   "Returns the list of remotes."
   remotes: [InstanceInfo!]!
 }
