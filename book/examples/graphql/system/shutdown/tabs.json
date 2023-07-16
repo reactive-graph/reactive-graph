@@ -1,0 +1,12 @@
+{
+  "id": "graphql-api-system-shutdown",
+  "title": "Shutdown",
+  "description": "Shutdown the runtime",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Shutdown",
+      "url": "/examples/graphql/system/shutdown/shutdown.graphql"
+    }
+  ]
+}
