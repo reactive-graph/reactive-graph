@@ -20,8 +20,28 @@ graphql-playground {
     display: flow-root;
 }
 
+.light :is(.graphql-playground-heading) {
+    background-color: #e535ab;
+}
+
+.rust :is(.graphql-playground-heading) {
+    background-color: #e535ab;
+}
+
+.coal :is(.graphql-playground-heading) {
+    background-color: #e535ab;
+}
+
 .navy :is(.graphql-playground-heading) {
     background-color: #e535ab;
+}
+
+.ayu :is(.graphql-playground-heading) {
+    background-color: #e535ab;
+}
+
+:is(.graphql-playground-heading) {
+    /*background-color: #e535ab;*/
     border-color: #9e9e9e;
     border-radius: 0.6rem 0.6rem 0 0;
     -moz-border-radius: 0.6rem 0.6rem 0 0;
