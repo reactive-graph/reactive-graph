@@ -1,0 +1,12 @@
+{
+  "id": "plugin-binary-save-binary",
+  "title": "Save Binary",
+  "description": "Save binary data to file",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/binary/save-binary/get_all.graphql"
+    }
+  ]
+}

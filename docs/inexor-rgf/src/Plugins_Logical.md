@@ -75,6 +75,10 @@ This plugin provides logical gates and operations.
 
 ## Repository
 
-| Name                      | Repository                                                                                                         |
-|---------------------------|--------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-logical | [https://github.com/inexorgame/inexor-rgf-plugin-logical](https://github.com/inexorgame/inexor-rgf-plugin-logical) |
+| Name                      | Repository                                                                                                                                               |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-logical | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/logical](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/logical) |
+
+## Usage
+
+{{ graphql_playground(config="/examples/graphql/plugins/logical/tabs.json") }}

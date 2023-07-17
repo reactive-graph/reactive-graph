@@ -1,0 +1,8 @@
+query GetAllComponents {
+  types {
+    components {
+      namespace
+      name
+    }
+  }
+}

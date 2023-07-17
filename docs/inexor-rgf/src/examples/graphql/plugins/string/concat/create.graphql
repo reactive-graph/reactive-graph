@@ -1,0 +1,43 @@
+mutation {
+  instances {
+    entities {
+      create(
+        type: {
+          namespace: "string"
+          name: "concat"
+        }
+        id: "ac89b8c1-3588-45b1-af76-7e1bdfc0fbfe"
+        properties: [
+          {
+            name: "lhs"
+            value: "Hello, "
+          },
+          {
+            name: "rhs"
+            value: "World"
+          },
+          {
+            name: "result"
+            value: ""
+          }
+        ]
+      ) {
+        id
+        type {
+          namespace
+          name
+        }
+        properties(
+          names: [
+            "lhs"
+            "rhs"
+            "result"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}

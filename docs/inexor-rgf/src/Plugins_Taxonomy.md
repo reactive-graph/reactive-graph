@@ -48,12 +48,12 @@ This plugin provides a generic [taxonomy](https://en.wikipedia.org/wiki/Taxonomy
 
 ## Repositories
 
-| Name                       | Repository                                                                                                            |
-|----------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-taxonomy | [https://github.com/inexorgame/inexor-rgf-plugin-taxonomy](https://github.com/inexorgame/inexor-rgf-plugin-taxonomy)  |
+| Name                       | Repository                                                                                                                                                 |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-taxonomy | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/taxonomy](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/taxonomy) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-taxonomy/plugin-taxonomy-categories.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/taxonomy/categories/tabs.json") }}
 
-{{ graphql_playground(config="/examples/graphql/plugin-taxonomy/plugin-taxonomy-tags.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/taxonomy/tags/tabs.json") }}

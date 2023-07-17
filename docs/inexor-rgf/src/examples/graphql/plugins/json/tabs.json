@@ -1,0 +1,12 @@
+{
+  "id": "plugin-json",
+  "title": "JSON",
+  "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/json/get_all.graphql"
+    }
+  ]
+}

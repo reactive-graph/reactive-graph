@@ -1,3 +1,3 @@
 # Flow Types
 
-TODO
+{{ graphql_playground(config="/examples/graphql/types/flows/tabs.json") }}

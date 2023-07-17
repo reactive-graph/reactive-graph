@@ -1,0 +1,16 @@
+query GetAllConcat {
+  instances {
+    entities(
+      type: {
+        namespace: "string"
+        name: "concat"
+      }
+    ) {
+      id
+      properties {
+        name
+        value
+      }
+    }
+  }
+}

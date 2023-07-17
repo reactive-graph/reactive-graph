@@ -1,0 +1,23 @@
+query {
+  types {
+    relations(
+      type: {
+        namespace: "book"
+        name: "example"
+      }
+    ) {
+      namespace
+      name
+      description
+      outboundTypes {
+        namespace
+        name
+      }
+      inboundTypes {
+        namespace
+        name
+      }
+    }
+  }
+}
+

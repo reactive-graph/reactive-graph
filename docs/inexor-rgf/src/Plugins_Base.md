@@ -38,6 +38,6 @@ Basic components and entity types.
 
 ## Repository
 
-| Name                   | Repository                                                                                                   |
-|------------------------|--------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-base | [https://github.com/inexorgame/inexor-rgf-plugin-base](https://github.com/inexorgame/inexor-rgf-plugin-base) |
+| Name                   | Repository                                                                                                                                         |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-base | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/base](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/base) |

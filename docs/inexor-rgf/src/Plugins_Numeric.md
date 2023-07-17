@@ -62,10 +62,10 @@ Numeric operations
 
 ## Repository
 
-| Name                      | Repository                                                                                                         |
-|---------------------------|--------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-numeric | [https://github.com/inexorgame/inexor-rgf-plugin-numeric](https://github.com/inexorgame/inexor-rgf-plugin-numeric) |
+| Name                      | Repository                                                                                                                                               |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-numeric | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/numeric](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/numeric) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-numeric/plugin-numeric.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/numeric/tabs.json") }}

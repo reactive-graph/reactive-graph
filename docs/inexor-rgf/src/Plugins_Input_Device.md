@@ -133,9 +133,9 @@ This allows you to address a key/led/... event on a specific device or the key/l
 
 ## Repository
 
-| Name                           | Repository                                                                                                                   |
-|--------------------------------|------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-input-device | [https://github.com/inexorgame/inexor-rgf-plugin-input-device](https://github.com/inexorgame/inexor-rgf-plugin-input-device) |
+| Name                           | Repository                                                                                                                                                         |
+|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-input-device | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/input-device](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/input-device) |
 
 ## Appendix: Input Device Types
 

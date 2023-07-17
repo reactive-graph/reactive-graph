@@ -1,0 +1,17 @@
+query {
+    types {
+        entities(
+            type: {
+                namespace: "book"
+                name: "example"
+            }
+        ) {
+            namespace
+            name
+            inboundRelations {
+                namespace
+                name
+            }
+        }
+    }
+}

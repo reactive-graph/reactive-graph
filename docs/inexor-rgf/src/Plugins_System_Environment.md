@@ -20,11 +20,11 @@ Each entity instance which represents a system environment variable has a label.
 
 ## Entity Types
 
-| Name   | Properties | Data Type | Socket Type |
-|--------|------------|-----------|-------------|
-| EnvVar | name       | string    | none        |
-|        | label      | string    | none        |
-|        | value      | string    | output      |
+| Name       | Properties | Data Type | Socket Type |
+|------------|------------|-----------|-------------|
+| system_env | name       | string    | none        |
+|            | label      | string    | none        |
+|            | value      | string    | output      |
 
 ## Platform Compatibility
 
@@ -36,10 +36,10 @@ Each entity instance which represents a system environment variable has a label.
 
 ## Repository
 
-| Name                                 | Repository                                                                                                                               |
-|--------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-system-environment | [https://github.com/inexorgame/inexor-rgf-plugin-system-environment](https://github.com/inexorgame/inexor-rgf-plugin-system-environment) |
+| Name                                 | Repository                                                                                                                                                                     |
+|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-system-environment | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-environment](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-environment) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-system-environment/plugin-system-environment.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/system-environment/tabs.json") }}

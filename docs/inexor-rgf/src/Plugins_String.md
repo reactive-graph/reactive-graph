@@ -105,10 +105,14 @@
 
 ## Repository
 
-| Name                     | Repository                                                                                                       |
-|--------------------------|------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-string | [https://github.com/inexorgame/inexor-rgf-plugin-string](https://github.com/inexorgame/inexor-rgf-plugin-string) |
+| Name                     | Repository                                                                                                                                             |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-string | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/string](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/string) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-string/plugin-string.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/string/concat/tabs.json") }}
+
+{{ graphql_playground(config="/examples/graphql/plugins/string/pascal_case/tabs.json") }}
+
+{{ graphql_playground(config="/examples/graphql/plugins/string/trim/tabs.json") }}

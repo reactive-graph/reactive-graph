@@ -12,8 +12,8 @@
 
 | Name                    | Repository                                                                                                     |
 |-------------------------|----------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-asset | [https://github.com/inexorgame/inexor-rgf-plugin-asset](https://github.com/inexorgame/inexor-rgf-plugin-asset) |
+| inexor-rgf-plugin-asset | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/asset](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/asset) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-asset/plugin-asset.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/asset/tabs.json") }}

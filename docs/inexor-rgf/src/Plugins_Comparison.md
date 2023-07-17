@@ -29,10 +29,10 @@
 
 ## Repository
 
-| Name                         | Repository                                                                                                               |
-|------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-comparison | [https://github.com/inexorgame/inexor-rgf-plugin-comparison](https://github.com/inexorgame/inexor-rgf-plugin-comparison) |
+| Name                         | Repository                                                                                                                                                     |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-comparison | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/comparison](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/comparison) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-comparison/plugin-comparison.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/comparison/tabs.json") }}

@@ -1,0 +1,12 @@
+{
+  "id": "plugin-binary-load-binary",
+  "title": "Load Binary",
+  "description": "Loads binary data from file",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/binary/load-binary/get_all.graphql"
+    }
+  ]
+}

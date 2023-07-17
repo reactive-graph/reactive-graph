@@ -1,0 +1,16 @@
+query GetAllPascalCase {
+  instances {
+    entities(
+      type: {
+        namespace: "string"
+        name: "pascal_case"
+      }
+    ) {
+      id
+      properties {
+        name
+        value
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "plugin-string-concat",
+  "title": "String Concat",
+  "description": "Concatenates two strings",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/string/concat/get_all.graphql"
+    },
+    {
+      "name": "Create",
+      "url": "/examples/graphql/plugins/string/concat/create.graphql"
+    },
+    {
+      "name": "Change Left",
+      "url": "/examples/graphql/plugins/string/concat/update_lhs.graphql"
+    },
+    {
+      "name": "Change Right",
+      "url": "/examples/graphql/plugins/string/concat/update_rhs.graphql"
+    }
+  ]
+}

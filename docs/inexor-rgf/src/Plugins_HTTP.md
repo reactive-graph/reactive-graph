@@ -33,13 +33,13 @@ With this plugin it's possible to integrate external services into your home aut
 
 ## Repository
 
-| Name                   | Repository                                                                                                   |
-|------------------------|--------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-http | [https://github.com/inexorgame/inexor-rgf-plugin-http](https://github.com/inexorgame/inexor-rgf-plugin-http) |
+| Name                   | Repository                                                                                                                                         |
+|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-http | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/http](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/http) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-http/plugin-http.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/http/tabs.json") }}
 
 ## Usage
 

@@ -1,0 +1,8 @@
+query GetAllFlowTypes {
+  types {
+    flows {
+      namespace
+      name
+    }
+  }
+}

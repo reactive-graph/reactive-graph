@@ -81,13 +81,13 @@ On destruction of the connector, the stream will be removed.
 
 ## Repository
 
-| Name                        | Repository                                                                                                             |
-|-----------------------------|------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-connector | [https://github.com/inexorgame/inexor-rgf-plugin-connector](https://github.com/inexorgame/inexor-rgf-plugin-connector) |
+| Name                        | Repository                                                                                                                                                   |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-connector | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/connector](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/connector) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-connector/plugin-connector.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/connector/tabs.json") }}
 
 ## Usage
 

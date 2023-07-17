@@ -90,16 +90,16 @@ and time elements and are not replaced.
 
 ## Repositories
 
-| Name                        | Repository                                                                                                             |
-|-----------------------------|------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-scheduler | [https://github.com/inexorgame/inexor-rgf-plugin-scheduler](https://github.com/inexorgame/inexor-rgf-plugin-scheduler) |
-| tokio-cron-scheduler        | [https://github.com/mvniekerk/tokio-cron-scheduler](https://github.com/mvniekerk/tokio-cron-scheduler)                 |
-| cron expression parser      | [https://github.com/zslayton/cron](https://github.com/zslayton/cron)                                                   |
-| ISO8601 duration parser     | [https://github.com/PoiScript/iso8601-duration](https://github.com/PoiScript/iso8601-duration)                         |
+| Name                        | Repository                                                                                                                                                   |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-scheduler | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/scheduler](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/scheduler) |
+| tokio-cron-scheduler        | [https://github.com/mvniekerk/tokio-cron-scheduler](https://github.com/mvniekerk/tokio-cron-scheduler)                                                       |
+| cron expression parser      | [https://github.com/zslayton/cron](https://github.com/zslayton/cron)                                                                                         |
+| ISO8601 duration parser     | [https://github.com/PoiScript/iso8601-duration](https://github.com/PoiScript/iso8601-duration)                                                               |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-scheduler/plugin-scheduler.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/scheduler/tabs.json") }}
 
 ## Usage
 

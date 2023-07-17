@@ -1,0 +1,38 @@
+mutation {
+  instances {
+    entities {
+      create(
+        type: {
+          namespace: "string"
+          name: "pascal_case"
+        }
+        id: "5be610e9-6493-4f85-95f0-ca15ddb3d8ed"
+        properties: [
+          {
+            name: "lhs"
+            value: "kebab-case"
+          },
+          {
+            name: "result"
+            value: ""
+          }
+        ]
+      ) {
+        id
+        type {
+          namespace
+          name
+        }
+        properties(
+          names: [
+            "lhs"
+            "result"
+          ]
+        ) {
+          name
+          value
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "graphql-api-types-relations",
+  "title": "Relation Types",
+  "description": "Create, read, find, navigate and delete relation types",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/types/relations/get_all.graphql"
+    },
+    {
+      "name": "Create",
+      "url": "/examples/graphql/types/relations/create.graphql"
+    },
+    {
+      "name": "Create with multiple components",
+      "url": "/examples/graphql/types/relations/create-with-multiple-components.graphql"
+    },
+    {
+      "name": "Get by Name",
+      "url": "/examples/graphql/types/relations/get-by-name.graphql"
+    },
+    {
+      "name": "Find by Name (Pattern)",
+      "url": "/examples/graphql/types/relations/find-by-name.graphql"
+    },
+    {
+      "name": "Delete",
+      "url": "/examples/graphql/types/relations/delete.graphql"
+    },
+    {
+      "name": "Delete Multiple",
+      "url": "/examples/graphql/types/relations/delete-multiple.graphql"
+    }
+  ]
+}

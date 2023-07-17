@@ -39,12 +39,12 @@ Generate random numbers, strings, UUIDs or booleans.
 
 ## Repository
 
-| Name                     | Repository                                                                                                       |
-|--------------------------|------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-random | [https://github.com/inexorgame/inexor-rgf-plugin-random](https://github.com/inexorgame/inexor-rgf-plugin-random) |
+| Name                     | Repository                                                                                                                                             |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-random | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/random](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/random) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-random/plugin-random-number.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/random/number/tabs.json") }}
 
-{{ graphql_playground(config="/examples/graphql/plugin-random/plugin-random-string.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/random/string/tabs.json") }}

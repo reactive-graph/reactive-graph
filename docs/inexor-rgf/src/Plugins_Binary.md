@@ -30,13 +30,13 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 
 Feed the streams with binary data from files.
 
-| Name       | Component   | Property | Data Type | Socket Type | Description                                |
-|------------|-------------|----------|-----------|-------------|--------------------------------------------|
-|            |             |          |           |             |                                            |
-| LoadBinary |             | filename | string    | input       | The filename to load the binary data from  |
-|            | binary_data | data_url | string    | output      | Data-URL, BASE64 encoded                   |
-| SaveBinary |             | filename | string    | input       | The filename to store the binary data into |
-|            | binary_data | data_url | string    | input       | Data-URL, BASE64 encoded                   |
+| Name        | Component   | Property | Data Type | Socket Type | Description                                |
+|-------------|-------------|----------|-----------|-------------|--------------------------------------------|
+|             |             |          |           |             |                                            |
+| load_binary |             | filename | string    | input       | The filename to load the binary data from  |
+|             | binary_data | data_url | string    | output      | Data-URL, BASE64 encoded                   |
+| save_binary |             | filename | string    | input       | The filename to store the binary data into |
+|             | binary_data | data_url | string    | input       | Data-URL, BASE64 encoded                   |
 
 ## Web Resources
 
@@ -65,9 +65,9 @@ Download binary resources via HTTP.
 
 ## Repository
 
-| Name                     | Repository                                                                                                       |
-|--------------------------|------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-binary | [https://github.com/inexorgame/inexor-rgf-plugin-binary](https://github.com/inexorgame/inexor-rgf-plugin-binary) |
+| Name                     | Repository                                                                                                                                             |
+|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-binary | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/binary](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/binary) |
 
 ## Resources
 
@@ -75,4 +75,6 @@ Download binary resources via HTTP.
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-binary/plugin-binary.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/binary/load-binary/tabs.json") }}
+
+{{ graphql_playground(config="/examples/graphql/plugins/binary/save-binary/tabs.json") }}

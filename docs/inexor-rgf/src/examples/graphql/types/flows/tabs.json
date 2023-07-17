@@ -1,0 +1,16 @@
+{
+  "id": "graphql-api-types-flows",
+  "title": "Flow Types",
+  "description": "Manage Flow Types",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/types/flows/get_all.graphql"
+    },
+    {
+      "name": "Delete",
+      "url": "/examples/graphql/types/flows/delete.graphql"
+    }
+  ]
+}

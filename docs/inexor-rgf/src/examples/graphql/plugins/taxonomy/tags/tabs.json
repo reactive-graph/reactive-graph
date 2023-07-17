@@ -1,0 +1,28 @@
+{
+  "id": "plugin-taxonomy-tags",
+  "title": "Tags",
+  "description": "Create and connect tags",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Create Tag",
+      "url": "/examples/graphql/plugins/taxonomy/tags/create.graphql"
+    },
+    {
+      "name": "Create Another Entity",
+      "url": "/examples/graphql/plugins/taxonomy/tags/create-another-entity.graphql"
+    },
+    {
+      "name": "Create TaggedWith Relation",
+      "url": "/examples/graphql/plugins/taxonomy/tags/create-relation.graphql"
+    },
+    {
+      "name": "Get Entity Tags",
+      "url": "/examples/graphql/plugins/taxonomy/tags/get-entity-tags.graphql"
+    },
+    {
+      "name": "Get Tags Entities",
+      "url": "/examples/graphql/plugins/taxonomy/tags/tagged-entities.graphql"
+    }
+  ]
+}

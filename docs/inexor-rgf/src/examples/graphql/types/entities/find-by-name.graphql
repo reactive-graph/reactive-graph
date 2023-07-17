@@ -1,0 +1,42 @@
+query {
+  types {
+    entities(search: "*xamp*") {
+      ...FullEntityType
+      ...EntityTypeExtensions
+    }
+  }
+}
+
+fragment FullEntityType on EntityType {
+  namespace
+  name
+  description
+  ...EntityTypeComponents
+  properties {
+    name
+    dataType
+    socketType
+    ...PropertyTypeExtensions
+  }
+}
+
+fragment EntityTypeComponents on EntityType {
+  components {
+    namespace
+    name
+  }
+}
+
+fragment EntityTypeExtensions on EntityType {
+  extensions {
+    name
+    extension
+  }
+}
+
+fragment PropertyTypeExtensions on PropertyType {
+  extensions {
+    name
+    extension
+  }
+}

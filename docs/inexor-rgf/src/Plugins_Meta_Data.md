@@ -33,10 +33,10 @@ This plugin provides generic components for meta data.
 
 ## Repositories
 
-| Name                       | Repository                                                                                                            |
-|----------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-metadata | [https://github.com/inexorgame/inexor-rgf-plugin-metadata](https://github.com/inexorgame/inexor-rgf-plugin-metadata)  |
+| Name                       | Repository                                                                                                                                                 |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-metadata | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/metadata](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/metadata) |
 
 ## Usage
 
-{{ graphql_playground(config="/examples/graphql/plugin-metadata/plugin-metadata.json") }}
+{{ graphql_playground(config="/examples/graphql/plugins/metadata/tabs.json") }}

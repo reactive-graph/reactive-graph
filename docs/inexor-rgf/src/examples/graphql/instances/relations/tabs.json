@@ -1,0 +1,12 @@
+{
+  "id": "graphql-api-instances-relations",
+  "title": "Relation Instances",
+  "description": "Manage Relation Instances",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/instances/relations/get_all.graphql"
+    }
+  ]
+}

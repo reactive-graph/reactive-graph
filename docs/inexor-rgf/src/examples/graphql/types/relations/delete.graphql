@@ -1,0 +1,12 @@
+mutation {
+  types {
+    relations {
+      delete(
+        type: {
+          namespace: "book"
+          name: "example"
+        }
+      )
+    }
+  }
+}

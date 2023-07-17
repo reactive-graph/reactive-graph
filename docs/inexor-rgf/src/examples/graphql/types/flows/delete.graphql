@@ -1,0 +1,12 @@
+mutation {
+  types {
+    flows {
+      delete(
+        type: {
+          namespace: "book"
+          name: "example"
+        }
+      )
+    }
+  }
+}

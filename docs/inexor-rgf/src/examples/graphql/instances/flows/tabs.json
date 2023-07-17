@@ -1,0 +1,12 @@
+{
+  "id": "graphql-api-instances-flows",
+  "title": "Flow Instances",
+  "description": "Manage Flow Instances",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/instances/flows/get_all.graphql"
+    }
+  ]
+}
