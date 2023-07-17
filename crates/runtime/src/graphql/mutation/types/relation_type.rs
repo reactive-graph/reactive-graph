@@ -58,8 +58,8 @@ impl MutationRelationTypes {
         }
 
         let mut relation_type_builder = RelationTypeBuilder::new(outbound_ty, &ty, inbound_ty);
-        if description.is_some() {
-            relation_type_builder.description(description.get());
+        if let Some(description) = description {
+            relation_type_builder.description(description);
         }
         if components.is_some() {
             for component in components.unwrap() {

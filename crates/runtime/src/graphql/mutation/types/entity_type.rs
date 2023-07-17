@@ -41,8 +41,8 @@ impl MutationEntityTypes {
             return Err(Error::new(format!("Entity type {} already exists", &ty)));
         }
         let mut entity_type_builder = EntityTypeBuilder::new(&ty);
-        if description.is_some() {
-            entity_type_builder.description(description.unwrap_or_default());
+        if let Some(description) = description {
+            entity_type_builder.description(description);
         }
         if let Some(components) = components {
             for component in components {
