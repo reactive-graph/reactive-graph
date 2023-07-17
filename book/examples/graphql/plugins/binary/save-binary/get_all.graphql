@@ -1,0 +1,18 @@
+query GetAllSaveBinary {
+  instances {
+    entities(
+      type: {
+        namespace: "binary"
+        name: "save_binary"
+      }
+    ) {
+      id
+      label
+      description
+      properties {
+        name
+        value
+      }
+    }
+  }
+}

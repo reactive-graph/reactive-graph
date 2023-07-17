@@ -1,0 +1,20 @@
+{
+  "id": "plugin-string-pascal-case",
+  "title": "String Pascal Case",
+  "description": "Converts a string to PascalCase",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/string/pascal_case/get_all.graphql"
+    },
+    {
+      "name": "Create",
+      "url": "/examples/graphql/plugins/string/pascal_case/create.graphql"
+    },
+    {
+      "name": "Change Input",
+      "url": "/examples/graphql/plugins/string/pascal_case/update.graphql"
+    }
+  ]
+}

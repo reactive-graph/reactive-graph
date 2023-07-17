@@ -1,0 +1,11 @@
+query GetAllFlowInstances {
+  instances {
+    flows {
+      type {
+        namespace
+        name
+      }
+      id
+    }
+  }
+}

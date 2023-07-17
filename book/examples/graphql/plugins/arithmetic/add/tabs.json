@@ -1,0 +1,24 @@
+{
+  "id": "plugin-arithmetic-add",
+  "title": "Add Operation",
+  "description": "This example shows how to create an add operation. Play with the inputs lhs and rhs.",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Create add",
+      "url": "/examples/graphql/plugins/arithmetic/add/create.graphql"
+    },
+    {
+      "name": "Change LHS",
+      "url": "/examples/graphql/plugins/arithmetic/add/change-lhs.graphql"
+    },
+    {
+      "name": "Change RHS",
+      "url": "/examples/graphql/plugins/arithmetic/add/change-rhs.graphql"
+    },
+    {
+      "name": "Delete add",
+      "url": "/examples/graphql/plugins/arithmetic/add/delete.graphql"
+    }
+  ]
+}

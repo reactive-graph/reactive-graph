@@ -1,0 +1,12 @@
+{
+  "id": "plugin-comparison",
+  "title": "Comparison",
+  "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/comparison/get_all.graphql"
+    }
+  ]
+}

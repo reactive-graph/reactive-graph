@@ -1,0 +1,19 @@
+query {
+  types {
+    relations(
+      search: "*xamp*"
+    ) {
+      namespace
+      name
+      description
+      outboundTypes {
+        namespace
+        name
+      }
+      inboundTypes {
+        namespace
+        name
+      }
+    }
+  }
+}

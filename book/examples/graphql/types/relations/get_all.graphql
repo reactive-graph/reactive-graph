@@ -1,0 +1,8 @@
+query GetAllRelationTypes {
+  types {
+    relations {
+      namespace
+      name
+    }
+  }
+}

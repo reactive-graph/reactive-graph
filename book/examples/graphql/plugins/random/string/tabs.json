@@ -1,0 +1,16 @@
+{
+  "id": "plugin-random-string",
+  "title": "Random String",
+  "description": "The string number generator can be triggered (boolean 'true' on property 'trigger')",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Create Random String Generator",
+      "url": "/examples/graphql/plugins/random/string/create.graphql"
+    },
+    {
+      "name": "Generate New Random String",
+      "url": "/examples/graphql/plugins/random/string/generate.graphql"
+    }
+  ]
+}

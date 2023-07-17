@@ -1,0 +1,18 @@
+mutation {
+  types {
+    relations {
+      DeleteFirst: delete(
+        type: {
+          namespace: "book"
+          name: "example1"
+        }
+      )
+      DeleteSecond: delete(
+        type: {
+          namespace: "book"
+          name: "example2"
+        }
+      )
+    }
+  }
+}

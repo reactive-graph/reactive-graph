@@ -1,0 +1,20 @@
+{
+  "id": "plugin-string-trim",
+  "title": "String Trim",
+  "description": "Removes the whitespace at the start and end of a string",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/string/trim/get_all.graphql"
+    },
+    {
+      "name": "Create",
+      "url": "/examples/graphql/plugins/string/trim/create.graphql"
+    },
+    {
+      "name": "Change Input",
+      "url": "/examples/graphql/plugins/string/trim/update.graphql"
+    }
+  ]
+}

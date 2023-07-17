@@ -1,0 +1,17 @@
+query GetAllRelationInstances {
+  instances {
+    relations {
+      type {
+        namespace
+        name
+      }
+      outbound {
+        id
+      }
+      inbound {
+        id
+      }
+      instanceId
+    }
+  }
+}

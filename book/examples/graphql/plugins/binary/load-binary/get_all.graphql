@@ -1,0 +1,18 @@
+query GetAllLoadBinary {
+  instances {
+    entities(
+      type: {
+        namespace: "binary"
+        name: "load_binary"
+      }
+    ) {
+      id
+      label
+      description
+      properties {
+        name
+        value
+      }
+    }
+  }
+}

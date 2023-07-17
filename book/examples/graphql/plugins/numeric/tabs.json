@@ -1,0 +1,12 @@
+{
+  "id": "plugin-numeric",
+  "title": "Numeric",
+  "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/numeric/get_all.graphql"
+    }
+  ]
+}

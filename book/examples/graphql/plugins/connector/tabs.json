@@ -1,0 +1,12 @@
+{
+  "id": "plugin-connector",
+  "title": "Connector",
+  "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/connector/get_all.graphql"
+    }
+  ]
+}

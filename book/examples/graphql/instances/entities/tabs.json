@@ -1,0 +1,12 @@
+{
+  "id": "graphql-api-instances-entities",
+  "title": "Entity Instances",
+  "description": "Manage Entity Instances",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/instances/entities/get_all.graphql"
+    }
+  ]
+}

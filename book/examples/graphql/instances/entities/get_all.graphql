@@ -1,0 +1,11 @@
+query GetAllEntityInstances {
+  instances {
+    entities {
+      type {
+        namespace
+        name
+      }
+      id
+    }
+  }
+}

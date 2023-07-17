@@ -1,0 +1,24 @@
+{
+  "id": "plugin-arithmetic-counter",
+  "title": "Counter",
+  "description": "This example shows how to create a counter.",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Create counter",
+      "url": "/examples/graphql/plugins/arithmetic/counter/create.graphql"
+    },
+    {
+      "name": "Increase counter",
+      "url": "/examples/graphql/plugins/arithmetic/counter/increase.graphql"
+    },
+    {
+      "name": "Reset counter",
+      "url": "/examples/graphql/plugins/arithmetic/counter/reset.graphql"
+    },
+    {
+      "name": "Delete counter",
+      "url": "/examples/graphql/plugins/arithmetic/counter/delete.graphql"
+    }
+  ]
+}

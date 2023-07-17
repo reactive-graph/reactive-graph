@@ -1,0 +1,12 @@
+{
+  "id": "plugin-http",
+  "title": "HTTP",
+  "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/http/get_all.graphql"
+    }
+  ]
+}

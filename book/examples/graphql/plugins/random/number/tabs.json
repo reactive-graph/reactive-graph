@@ -1,0 +1,32 @@
+{
+  "id": "plugin-random-number",
+  "title": "Random Number",
+  "description": "The random number generator can be triggered (boolean 'true' on property 'trigger'). Connect the result with a multiplication gateway.",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "Create Random Number Generator",
+      "url": "/examples/graphql/plugins/random/number/create.graphql"
+    },
+    {
+      "name": "Generate Random Number",
+      "url": "/examples/graphql/plugins/random/number/generate.graphql"
+    },
+    {
+      "name": "Create Multiplication",
+      "url": "/examples/graphql/plugins/random/number/create-mul.graphql"
+    },
+    {
+      "name": "Create Relation",
+      "url": "/examples/graphql/plugins/random/number/create-relation.graphql"
+    },
+    {
+      "name": "Get Multiplication Result",
+      "url": "/examples/graphql/plugins/random/number/get-mul.graphql"
+    },
+    {
+      "name": "Change Multiplication Factor",
+      "url": "/examples/graphql/plugins/random/number/change-multiplication-factor.graphql"
+    }
+  ]
+}

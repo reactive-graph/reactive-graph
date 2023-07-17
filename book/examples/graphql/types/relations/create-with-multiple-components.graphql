@@ -1,0 +1,63 @@
+mutation {
+  types {
+    relations {
+      create(
+        type: {
+          namespace: "book"
+          name: "example2"
+        }
+        outboundType: {
+          namespace: "book"
+          name: "example"
+        }
+        inboundType: {
+          namespace: "book"
+          name: "example"
+        }
+        components: [
+          {
+            namespace: "book"
+            name: "component1"
+          }
+          {
+            namespace: "book"
+            name: "component2"
+          }
+          {
+            namespace: "book"
+            name: "component3"
+          }
+        ]
+        properties: [
+          {
+            name: "extra"
+            description: "Extra Property"
+            dataType: ANY
+            socketType: NONE
+            mutability: MUTABLE
+            extensions: []
+          }
+        ]
+      ) {
+        namespace
+        name
+        description
+        outboundTypes {
+          name
+        }
+        inboundTypes {
+          name
+        }
+        components {
+          name
+        }
+        properties {
+          name
+          dataType
+          socketType
+          mutability
+        }
+      }
+    }
+  }
+}

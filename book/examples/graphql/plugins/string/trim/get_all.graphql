@@ -1,0 +1,16 @@
+query GetAllTrim {
+  instances {
+    entities(
+      type: {
+        namespace: "string"
+        name: "trim"
+      }
+    ) {
+      id
+      properties {
+        name
+        value
+      }
+    }
+  }
+}

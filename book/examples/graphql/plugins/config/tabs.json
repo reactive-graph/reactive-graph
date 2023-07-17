@@ -1,0 +1,20 @@
+{
+  "id": "plugin-config",
+  "title": "Config",
+  "description": "Reads TOML configuration files",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/config/get_all.graphql"
+    },
+    {
+      "name": "Create Config Reader plugins.toml",
+      "url": "/examples/graphql/plugins/config/read-plugins-config.graphql"
+    },
+    {
+      "name": "Reload Plugins Config",
+      "url": "/examples/graphql/plugins/config/reload-plugins-config.graphql"
+    }
+  ]
+}

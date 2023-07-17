@@ -1,0 +1,8 @@
+query GetAllEntityTypes {
+  types {
+    entities {
+      namespace
+      name
+    }
+  }
+}

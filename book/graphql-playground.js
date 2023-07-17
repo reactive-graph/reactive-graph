@@ -1,4 +1,4 @@
-const DEFAULT_ENDPOINT = 'http://localhost:31415/graphql'
+const DEFAULT_ENDPOINT = 'https://demo.rgf.app/graphql'
 
 function getBaseURL() {
   return window.location.href.substring(0, window.location.href.lastIndexOf('/'))

@@ -1,0 +1,29 @@
+mutation {
+  instances {
+    entities {
+      update(
+        id: "c687a360-1223-4957-89b8-9c8fe69b954a",
+        properties: [
+          {
+            name: "trigger",
+            value: true
+          }
+        ]
+      ) {
+        ...RandomString
+      }
+    }
+  }
+}
+
+fragment RandomString on EntityInstance {
+  id
+  type {
+    name
+  }
+  properties(names: [ "result" ]) {
+    name
+    value
+  }
+}
+

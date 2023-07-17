@@ -1,0 +1,12 @@
+{
+  "id": "plugin-scheduler",
+  "title": "Scheduler",
+  "description": "TODO",
+  "endpoint": "https://demo.rgf.app/graphql",
+  "tabs": [
+    {
+      "name": "List",
+      "url": "/examples/graphql/plugins/scheduler/get_all.graphql"
+    }
+  ]
+}
