@@ -33,6 +33,7 @@ impl MutationRelationTypes {
         outbound_type: EntityTypeIdDefinition, // TODO: ComponentOrEntityTypeIdDefinition
         #[graphql(name = "type", desc = "The relation type.")] relation_type: RelationTypeIdDefinition,
         inbound_type: EntityTypeIdDefinition, // TODO: ComponentOrEntityTypeIdDefinition
+        #[graphql(desc = "Describes the relation type.")] description: Option<String>,
         #[graphql(desc = "Adds the given components to the newly created relation type.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,
@@ -57,6 +58,9 @@ impl MutationRelationTypes {
         }
 
         let mut relation_type_builder = RelationTypeBuilder::new(outbound_ty, &ty, inbound_ty);
+        if description.is_some() {
+            relation_type_builder.description(description.get());
+        }
         if components.is_some() {
             for component in components.unwrap() {
                 debug!("Add component {}", &component);

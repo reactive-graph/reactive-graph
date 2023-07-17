@@ -28,6 +28,7 @@ impl MutationEntityTypes {
         &self,
         context: &Context<'_>,
         #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        #[graphql(desc = "Describes the entity type.")] description: Option<String>,
         components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "The definitions of properties. These are added additionally to the properties provided by the given components.")] properties: Option<
             Vec<PropertyTypeDefinition>,
@@ -40,6 +41,9 @@ impl MutationEntityTypes {
             return Err(Error::new(format!("Entity type {} already exists", &ty)));
         }
         let mut entity_type_builder = EntityTypeBuilder::new(&ty);
+        if description.is_some() {
+            entity_type_builder.description(description.unwrap_or_default());
+        }
         if let Some(components) = components {
             for component in components {
                 entity_type_builder.component(component);
