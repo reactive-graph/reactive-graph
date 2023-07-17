@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["restart","start","stop"]};
+window.SIDEBAR_ITEMS = {"fn":["restart","start","stop","uninstall"]};

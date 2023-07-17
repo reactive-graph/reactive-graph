@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["id","name","state","stem"]};
+window.SIDEBAR_ITEMS = {"struct":["hasDependencies","hasUnsatisfiedDependencies","id","name","state","stem"]};
