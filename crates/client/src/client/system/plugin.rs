@@ -5,6 +5,7 @@ pub mod mapping {
     use crate::schema::system::plugin::Plugin;
     use crate::schema::system::plugin::PluginDependencies;
     use crate::schema::system::plugin::PluginDependents;
+    use crate::schema::system::plugin::PluginUnsatisfiedDependencies;
 
     #[derive(cynic::QueryVariables, Debug)]
     pub struct PluginByNameVariables {
@@ -101,6 +102,25 @@ pub mod mapping {
     }
 
     #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "Query", variables = "PluginByNameVariables")]
+    pub struct GetUnsatisfiedDependencies {
+        pub system: GetUnsatisfiedDependenciesSystem,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "System", variables = "PluginByNameVariables")]
+    pub struct GetUnsatisfiedDependenciesSystem {
+        #[arguments(name: $name)]
+        pub plugins: Vec<PluginUnsatisfiedDependencies>,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
+    #[cynic(graphql_type = "Plugin", variables = "PluginByNameVariables")]
+    pub struct GetUnsatisfiedDependenciesPlugin {
+        pub unsatisfied_dependencies: Vec<Plugin>,
+    }
+
+    #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "PluginByNameVariables")]
     pub struct StartPlugin {
         pub system: StartPluginMutationSystem,
@@ -182,6 +202,7 @@ pub mod queries {
     use crate::client::system::plugin::mapping::GetDependencies;
     use crate::client::system::plugin::mapping::GetDependents;
     use crate::client::system::plugin::mapping::GetPluginByName;
+    use crate::client::system::plugin::mapping::GetUnsatisfiedDependencies;
     use crate::client::system::plugin::mapping::PluginByNameVariables;
     use crate::client::system::plugin::mapping::SearchPluginVariables;
     use crate::client::system::plugin::mapping::SearchPlugins;
@@ -210,6 +231,11 @@ pub mod queries {
     pub fn get_dependents(name: String) -> cynic::Operation<GetDependents, PluginByNameVariables> {
         use cynic::QueryBuilder;
         GetDependents::build(name.into())
+    }
+
+    pub fn get_unsatisfied_dependencies(name: String) -> cynic::Operation<GetUnsatisfiedDependencies, PluginByNameVariables> {
+        use cynic::QueryBuilder;
+        GetUnsatisfiedDependencies::build(name.into())
     }
 }
 
@@ -255,6 +281,7 @@ pub mod api {
     use crate::client::system::plugin::queries::get_dependents;
     use crate::client::system::plugin::queries::search;
     use crate::schema::system::plugin::Plugin;
+    use crate::system::plugin::queries::get_unsatisfied_dependencies;
     use crate::InexorRgfClient;
     use crate::InexorRgfClientExecutionError;
 
@@ -302,6 +329,16 @@ pub mod api {
                 .await
                 .map(Plugins::get_first)
                 .map(|plugin| plugin.map(|plugin| plugin.dependents))
+        }
+
+        /// Returns the unsatisfied dependencies of the plugin with the given name.
+        /// If no plugin was found an empty optional will be returned.
+        pub async fn get_unsatisfied_dependencies(&self, name: String) -> Result<Option<Vec<Plugin>>, InexorRgfClientExecutionError> {
+            self.client
+                .run_graphql(get_unsatisfied_dependencies(name), |data| data.system.plugins)
+                .await
+                .map(Plugins::get_first)
+                .map(|plugin| plugin.map(|plugin| plugin.unsatisfied_dependencies))
         }
 
         pub async fn start(&self, name: String) -> Result<Plugin, InexorRgfClientExecutionError> {

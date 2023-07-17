@@ -23,3 +23,9 @@ pub struct PluginDependencies {
 pub struct PluginDependents {
     pub dependents: Vec<Plugin>,
 }
+
+#[derive(Clone, Debug, cynic::QueryFragment)]
+#[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema", graphql_type = "Plugin")]
+pub struct PluginUnsatisfiedDependencies {
+    pub unsatisfied_dependencies: Vec<Plugin>,
+}
