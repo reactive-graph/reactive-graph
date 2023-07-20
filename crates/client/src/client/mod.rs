@@ -55,14 +55,14 @@ impl Display for InexorRgfClientExecutionError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             InexorRgfClientExecutionError::FailedToSendRequest(e) => {
-                writeln!(f, "{}", e)
+                writeln!(f, "Failed to send request:\n{e:?}")
             }
             InexorRgfClientExecutionError::FailedToParseResponse(e) => {
-                writeln!(f, "{}", e)
+                writeln!(f, "Failed to parse response:\n{e:?}")
             }
             InexorRgfClientExecutionError::GraphQlError(e) => {
                 let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{}", graphql_error)).collect();
-                writeln!(f, "{}", graphql_errors.join("\n"))
+                writeln!(f, "The response returned errors:\n{}", graphql_errors.join("\n"))
             }
         }
     }

@@ -251,3 +251,6 @@ level = "info"
 
 [loggers."hyper"]
 level = "info"
+
+[loggers."rustyline"]
+level = "info"

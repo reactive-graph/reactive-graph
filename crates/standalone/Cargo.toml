@@ -36,10 +36,13 @@ restart-after-upgrade = true
 [dependencies]
 actix-web = { workspace = true, features = ["rustls"] }
 clap = { workspace = true, features = ["derive", "env"] }
+colored = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
+rustyline = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
+shellwords = { workspace = true }
 tabled = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread"] }
 

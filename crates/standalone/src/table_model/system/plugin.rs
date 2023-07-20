@@ -1,7 +1,14 @@
+use tabled::settings::object::Rows;
+use tabled::settings::Modify;
+use tabled::settings::Style;
+use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
-#[derive(Tabled)]
+use crate::table_model::container::DefaultTableContainer;
+use crate::table_model::container::TableOptions;
+
+#[derive(Clone, Debug, Tabled)]
 pub(crate) struct Plugin {
     pub name: String,
     pub short_name: String,
@@ -11,13 +18,13 @@ pub(crate) struct Plugin {
     pub rustc_version: String,
 }
 
-#[derive(Tabled)]
+#[derive(Clone, Debug, Tabled)]
 pub(crate) struct PluginDependencies {
     #[tabled(display_with("display_plugins"))]
     pub dependencies: Vec<Plugin>,
 }
 
-#[derive(Tabled)]
+#[derive(Clone, Debug, Tabled)]
 pub(crate) struct PluginDependents {
     #[tabled(display_with("display_plugins"))]
     pub dependents: Vec<Plugin>,
@@ -37,5 +44,19 @@ impl From<crate::client::Plugin> for Plugin {
             plugin_api_version: plugin.plugin_api_version,
             rustc_version: plugin.rustc_version,
         }
+    }
+}
+
+pub(crate) type Plugins = DefaultTableContainer<crate::client::Plugin, Plugin, PluginsTableOptions>;
+
+pub(crate) struct PluginsTableOptions;
+
+impl TableOptions for PluginsTableOptions {
+    fn options(table: &mut Table) -> &mut Table {
+        table.with(Style::extended()).with(
+            Modify::new(Rows::new(1..))
+                .with(Width::increase(10).priority())
+                .with(Width::truncate(40).suffix("...")),
+        )
     }
 }

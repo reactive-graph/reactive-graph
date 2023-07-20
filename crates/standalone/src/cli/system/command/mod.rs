@@ -1,27 +1,17 @@
 use std::sync::Arc;
 
+use crate::cli::error::CommandError;
+use crate::cli::result::CommandResult;
 use crate::cli::system::command::args::ExecuteCommandArgs;
 use crate::client::InexorRgfClient;
-use crate::client::InexorRgfClientExecutionError;
 
 pub(crate) mod args;
 
-pub(crate) async fn execute_command(client: &Arc<InexorRgfClient>, command_args: ExecuteCommandArgs) {
+pub(crate) async fn execute_command(client: &Arc<InexorRgfClient>, command_args: ExecuteCommandArgs) -> CommandResult {
     // TODO: parse command_args
     match client.system().command().execute(command_args.command_name, None).await {
-        Ok(Some(result)) => println!("{result}"),
-        Ok(None) => println!("Command executed without return value"),
-        Err(e) => match e {
-            InexorRgfClientExecutionError::FailedToSendRequest(e) => {
-                eprintln!("[ERROR] Failed to send request to {}\n{e:?}", client.url());
-            }
-            InexorRgfClientExecutionError::FailedToParseResponse(e) => {
-                eprintln!("[ERROR] Failed to parse result\n{e:?}");
-            }
-            InexorRgfClientExecutionError::GraphQlError(e) => {
-                let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{}", graphql_error)).collect();
-                eprintln!("[ERROR] Failed to parse result\n{}", graphql_errors.join("\n"))
-            }
-        },
+        Ok(Some(result)) => Ok(result.into()),
+        Ok(None) => Err(CommandError::NoContent("Command executed without return value".to_string())),
+        Err(e) => Err(e.into()),
     }
 }

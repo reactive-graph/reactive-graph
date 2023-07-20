@@ -1,6 +1,6 @@
 use std::fmt;
 use std::fmt::Formatter;
-use tabled::settings::object::Rows;
+use tabled::settings::object::Columns;
 use tabled::settings::Modify;
 use tabled::settings::Width;
 use tabled::Table;
@@ -110,10 +110,13 @@ pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> Stri
     if property_types.is_empty() {
         return String::from("No properties");
     }
+
     Table::new(property_types)
         .with(modern_inline())
-        // .with(Style::modern().remove_top().remove_left().remove_bottom().remove_right())
-        .with(Modify::new(Rows::new(1..)).with(Width::truncate(15).suffix("...")).with(Width::increase(15)))
+        .with(Modify::new(Columns::new(0..1)).with(Width::increase(35)))
+        .with(Modify::new(Columns::new(1..2)).with(Width::increase(9)))
+        .with(Modify::new(Columns::new(2..3)).with(Width::increase(11)))
+        .with(Modify::new(Columns::new(3..4)).with(Width::increase(10)))
         .to_string()
 }
 

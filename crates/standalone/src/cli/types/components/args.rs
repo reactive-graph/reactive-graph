@@ -4,6 +4,7 @@ use crate::cli::types::components::commands::ComponentsCommands;
 use crate::model::ComponentTypeId;
 
 #[derive(Args, Debug, Clone)]
+#[clap(subcommand_required = true)]
 pub(crate) struct ComponentsArgs {
     #[command(subcommand)]
     pub(crate) commands: Option<ComponentsCommands>,

@@ -4,6 +4,7 @@ use crate::cli::system::plugin::commands::PluginsCommands;
 use crate::client::system::plugin::mapping::SearchPluginVariables;
 
 #[derive(Args, Debug, Clone)]
+#[clap(subcommand_required = true)]
 pub(crate) struct PluginsArgs {
     #[command(subcommand)]
     pub(crate) commands: Option<PluginsCommands>,

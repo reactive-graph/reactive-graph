@@ -48,6 +48,10 @@ type CommandArgument {
 "Components are composable parts which can be used by types (entity type, relation type)."
 type Component {
   behaviours: [ComponentBehaviour!]!
+  "The count of extensions."
+  countExtensions: Int!
+  "The count of properties."
+  countProperties: Int!
   "Textual description of the component."
   description: String!
   "Query which entity types are using this component"
@@ -175,6 +179,14 @@ type EntityType {
   behaviours: [EntityBehaviour!]!
   "The components of the entity type."
   components: [Component!]!
+  "The count of components."
+  countComponents: Int!
+  "The count of extensions."
+  countExtensions: Int!
+  countInboundRelations: Int!
+  countOutboundRelations: Int!
+  "The count of properties."
+  countProperties: Int!
   "Textual description of the entity type."
   description: String!
   "The extensions which are defined by the entity type."
@@ -270,8 +282,16 @@ type FlowInstance {
 
 "Flow types are templates for flow instances."
 type FlowType {
+  "The count of entity instances."
   countEntityInstances: Int!
+  "The count of extensions."
+  countExtensions: Int!
+  "The count of properties."
+  countProperties: Int!
+  "The count of relation instances."
   countRelationInstances: Int!
+  "The count of variables."
+  countVariables: Int!
   "Textual description of the flow type."
   description: String!
   "The entity instances contained by the flow type"
@@ -524,6 +544,8 @@ type MutationEntityTypes {
   "Creates a new entity type with the given name and components and properties."
   create(
     components: [ComponentTypeId!],
+    "Describes the entity type."
+    description: String,
     "The extension on the entity type."
     extensions: [ExtensionDefinition!],
     "The definitions of properties. These are added additionally to the properties provided by the given components."
@@ -721,6 +743,8 @@ type MutationRelationTypes {
   create(
     "Adds the given components to the newly created relation type."
     components: [ComponentTypeId!],
+    "Describes the relation type."
+    description: String,
     "The extension on the relation type."
     extensions: [ExtensionDefinition!],
     inboundType: EntityTypeId!,
@@ -948,6 +972,12 @@ type RelationType {
   behaviours: [RelationBehaviour!]!
   "The relation type composes it's properties by these components."
   components: [Component!]!
+  "The count of components."
+  countComponents: Int!
+  "The count of extensions."
+  countExtensions: Int!
+  "The count of properties."
+  countProperties: Int!
   "Textual description of the relation type."
   description: String!
   "The extensions which are defined by the relation type."
@@ -1043,8 +1073,12 @@ type Types {
   Optionally the list of components can be filtered by name.
   """
   components(
+    "Filters by having all of these extensions."
+    extensions: [ExtensionTypeId!],
     "Searches by the namespace of the components."
     namespace: String,
+    "Filters by having all of these properties."
+    properties: [String!],
     "Searches by the name of the components. Allowed wildcards are: ? and *"
     search: String,
     "The component type"
@@ -1061,6 +1095,12 @@ type Types {
   Optionally the list of entity types can be filtered by name.
   """
   entities(
+    "Filters by having all of these components."
+    components: [ComponentTypeId!],
+    "Filters by having all of these extensions."
+    extensions: [ExtensionTypeId!],
+    "Filters by having all of these properties."
+    properties: [String!],
     "Searches by the name of the entity types. Allowed wildcards are: ? and *"
     search: String,
     "The entity type"
@@ -1073,6 +1113,8 @@ type Types {
   Optionally the list of flow types can be filtered by name.
   """
   flows(
+    "Filters by having all of these extensions."
+    extensions: [ExtensionTypeId!],
     "Searches by the name of the flow types. Allowed wildcards are: ? and *"
     search: String,
     "The flow type"
@@ -1081,6 +1123,10 @@ type Types {
   namespaces: [String!]!
   "Search for relation types."
   relations(
+    "Filters by having all of these components."
+    components: [ComponentTypeId!],
+    "Filters by having all of these extensions."
+    extensions: [ExtensionTypeId!],
     "Filters by inbound component"
     inboundComponent: ComponentTypeId,
     "Filters by inbound entity type"
@@ -1089,6 +1135,10 @@ type Types {
     outboundComponent: ComponentTypeId,
     "Filters by outbound entity type"
     outboundEntityType: EntityTypeId,
+    "Filters by having all of these properties."
+    properties: [String!],
+    "Searches by the name of the relation types. Allowed wildcards are: ? and *"
+    search: String,
     "The relation type."
     type: RelationTypeId
   ): [RelationType!]!

@@ -3,12 +3,17 @@ use std::fmt::Formatter;
 use std::ops::Deref;
 
 use serde_json::Value;
+use tabled::settings::object::Columns;
+use tabled::settings::Modify;
+use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
 use crate::model::NamespacedTypeGetter;
+use crate::table_model::styles::modern_inline::modern_inline;
+use crate::table_model::types::json_value::pretty_json;
 
-#[derive(Tabled)]
+#[derive(Clone, Debug, Tabled)]
 pub struct ExtensionTypeId {
     pub name: String,
     pub namespace: String,
@@ -43,6 +48,20 @@ pub fn display_extensions(extensions: &Vec<Extension>) -> String {
     Table::new(extensions).to_string()
 }
 
+pub fn display_extensions_inline(extensions: &Vec<Extension>) -> String {
+    if extensions.is_empty() {
+        return String::from("No extensions");
+    }
+
+    Table::new(extensions)
+        .with(modern_inline())
+        .with(Modify::new(Columns::new(0..1)).with(Width::increase(22)))
+        .with(Modify::new(Columns::new(1..2)).with(Width::increase(22)))
+        .with(Modify::new(Columns::new(2..3)).with(Width::wrap(40)))
+        .with(Modify::new(Columns::new(3..4)).with(Width::wrap(80)))
+        .to_string()
+}
+
 pub struct ExtensionDefinitions(pub Vec<ExtensionDefinition>);
 
 impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
@@ -69,6 +88,7 @@ pub struct Extension {
     pub description: String,
 
     /// The extension as JSON representation.
+    #[tabled(display_with("pretty_json"))]
     pub extension: Value,
 }
 

@@ -1,6 +1,7 @@
-use tabled::settings::Style;
-use tabled::Table;
 use tabled::Tabled;
+
+use crate::table_model::container::DefaultTableContainer;
+use crate::table_model::container::DefaultTableOptions;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct InstanceInfo {
@@ -43,34 +44,4 @@ impl From<crate::model_runtime::InstanceInfo> for InstanceInfo {
     }
 }
 
-pub(crate) struct InstanceInfos(pub(crate) Vec<InstanceInfo>);
-
-impl InstanceInfos {
-    pub fn table(&self) -> Table {
-        Table::new(self.0.to_vec().iter()).with(Style::extended()).to_owned()
-    }
-}
-
-impl From<Vec<crate::model_runtime::InstanceInfo>> for InstanceInfos {
-    fn from(instance_info: Vec<crate::model_runtime::InstanceInfo>) -> Self {
-        InstanceInfos(instance_info.into_iter().map(From::from).collect())
-    }
-}
-
-impl From<InstanceInfo> for InstanceInfos {
-    fn from(instance_info: InstanceInfo) -> Self {
-        InstanceInfos(vec![instance_info])
-    }
-}
-
-impl From<crate::model_runtime::InstanceInfo> for InstanceInfos {
-    fn from(instance_info: crate::model_runtime::InstanceInfo) -> Self {
-        InstanceInfos(vec![instance_info.into()])
-    }
-}
-
-impl ToString for InstanceInfos {
-    fn to_string(&self) -> String {
-        self.table().to_string()
-    }
-}
+pub(crate) type InstanceInfos = DefaultTableContainer<crate::model_runtime::InstanceInfo, InstanceInfo, DefaultTableOptions>;
