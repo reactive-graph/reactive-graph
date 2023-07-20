@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["search","type"]};
+window.SIDEBAR_ITEMS = {"struct":["extensions","search","type"]};

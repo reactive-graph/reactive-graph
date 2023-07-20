@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/standalone/src/cli/system/plugin/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-07416f8512e0e04c.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="inexor_rgf_rt_standalone" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (0e8e857b1 2023-07-16)" data-channel="nightly" data-search-js="search-f6292fe389d70017.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../inexor_rgf_rt_standalone/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/standalone/src/cli/system/plugin/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="inexor_rgf_rt_standalone" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../inexor_rgf_rt_standalone/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -76,92 +76,82 @@
 <a href="#76" id="76">76</a>
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a>
-<a href="#81" id="81">81</a>
-<a href="#82" id="82">82</a>
-<a href="#83" id="83">83</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::process::exit;
-<span class="kw">use </span>std::sync::Arc;
-<span class="kw">use </span>tabled::settings::object::Rows;
-<span class="kw">use </span>tabled::settings::Modify;
-<span class="kw">use </span>tabled::settings::Style;
-<span class="kw">use </span>tabled::settings::Width;
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span>tabled::Table;
-
+<span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError;
+<span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NoChange;
+<span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NotFound;
+<span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::plugin::args::PluginsArgs;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::plugin::commands::PluginsCommands;
-<span class="kw">use </span><span class="kw">crate</span>::client::schema::system::plugin::Plugin;
 <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
+<span class="kw">use </span><span class="kw">crate</span>::table_model::system::plugin::Plugins;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>args;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>commands;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>plugins(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, plugins_args: PluginsArgs) {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>plugins(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, plugins_args: PluginsArgs) -&gt; CommandResult {
     <span class="kw">let </span><span class="prelude-val">Some</span>(command) = plugins_args.commands <span class="kw">else </span>{
-        <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Missing sub command&quot;</span>);
-        exit(<span class="number">255</span>);
+        <span class="kw">return </span><span class="prelude-val">Err</span>(CommandError::MissingSubCommand);
     };
     <span class="kw">match </span>command {
         PluginsCommands::List =&gt; <span class="kw">match </span>client.system().plugins().get_all().<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugins) =&gt; print_plugins(plugins),
-            <span class="comment">// TODO: interpret / standardize errors
-            </span><span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to get all plugins:\n{e}&quot;</span>),
+            <span class="prelude-val">Ok</span>(plugins) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Search(args) =&gt; <span class="kw">match </span>client.system().plugins().search(args.into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugins) =&gt; print_plugins(plugins),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to get plugin:\n{e}&quot;</span>),
+            <span class="prelude-val">Ok</span>(plugins) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
-        PluginsCommands::Get(args) =&gt; <span class="kw">match </span>client.system().plugins().get_by_name(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugin)) =&gt; print_plugin(plugin),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Plugin doesn&#39;t exist&quot;</span>),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to get plugin:\n{e}&quot;</span>),
+        PluginsCommands::Get(args) =&gt; <span class="kw">match </span>client.system().plugins().get_by_name(args.name.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugin)) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">&quot;No plugin exists with name {}&quot;</span>, args.name).to_string())),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
-        PluginsCommands::Dependencies(args) =&gt; <span class="kw">match </span>client.system().plugins().get_dependencies(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; print_plugins(plugins),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Plugin doesn&#39;t exist&quot;</span>),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to get dependencies:\n{e}&quot;</span>),
+        PluginsCommands::Dependencies(args) =&gt; <span class="kw">match </span>client.system().plugins().get_dependencies(args.name.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">&quot;No plugin exists with name {}&quot;</span>, args.name).to_string())),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
-        PluginsCommands::Dependents(args) =&gt; <span class="kw">match </span>client.system().plugins().get_dependents(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; print_plugins(plugins),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Plugin doesn&#39;t exist&quot;</span>),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to get dependent plugins:\n{e}&quot;</span>),
+        PluginsCommands::Dependents(args) =&gt; <span class="kw">match </span>client.system().plugins().get_dependents(args.name.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">&quot;No plugin exists with name {}&quot;</span>, args.name).to_string())),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Start(args) =&gt; <span class="kw">match </span>client.system().plugins().start(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugin) =&gt; print_plugin(plugin),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to start plugin:\n{e}&quot;</span>),
+            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Stop(args) =&gt; <span class="kw">match </span>client.system().plugins().stop(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugin) =&gt; print_plugin(plugin),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to stop plugin:\n{e}&quot;</span>),
+            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Restart(args) =&gt; <span class="kw">match </span>client.system().plugins().restart(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugin) =&gt; print_plugin(plugin),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to restart plugin:\n{e}&quot;</span>),
+            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Uninstall(args) =&gt; <span class="kw">match </span>client.system().plugins().uninstall(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Uninstalled plugin&quot;</span>),
-            <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>) =&gt; <span class="macro">println!</span>(<span class="string">&quot;Failed to uninstall plugin&quot;</span>),
-            <span class="prelude-val">Err</span>(e) =&gt; <span class="macro">eprintln!</span>(<span class="string">&quot;[ERROR] Failed to uninstall plugin:\n{e}&quot;</span>),
+            <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="string">&quot;Uninstalled plugin&quot;</span>.into()),
+            <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>) =&gt; <span class="prelude-val">Err</span>(NoChange(<span class="string">&quot;Plugin wasn&#39;t uninstalled.&quot;</span>.to_string())),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
     }
 }
 
-<span class="kw">fn </span>print_plugin(plugin: Plugin) {
-    print_plugins(<span class="macro">vec!</span>[plugin]);
-}
-
-<span class="kw">fn </span>print_plugins(plugins: Vec&lt;Plugin&gt;) {
-    <span class="kw">let </span>plugins: Vec&lt;<span class="kw">crate</span>::table_model::system::plugin::Plugin&gt; = plugins.into_iter().map(|p| p.into()).collect();
-    <span class="kw">let </span>table = Table::new(plugins)
-        .with(Style::extended())
-        .with(
-            Modify::new(Rows::new(<span class="number">1</span>..))
-                .with(Width::increase(<span class="number">10</span>).priority())
-                .with(Width::truncate(<span class="number">40</span>).suffix(<span class="string">&quot;...&quot;</span>)),
-        )
-        .to_string();
-    <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, table);
-}
-</code></pre></div></section></main></body></html>
+<span class="comment">// fn print_plugin(plugin: Plugin) {
+//     print_plugins(vec![plugin]);
+// }
+//
+// fn print_plugins(plugins: Vec&lt;Plugin&gt;) {
+//     let plugins: Vec&lt;crate::table_model::system::plugin::Plugin&gt; = plugins.into_iter().map(|p| p.into()).collect();
+//     let table = Table::new(plugins)
+//         .with(Style::extended())
+//         .with(
+//             Modify::new(Rows::new(1..))
+//                 .with(Width::increase(10).priority())
+//                 .with(Width::truncate(40).suffix(&quot;...&quot;)),
+//         )
+//         .to_string();
+//     println!(&quot;{}&quot;, table);
+// }
+</span></code></pre></div></section></main></body></html>

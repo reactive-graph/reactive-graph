@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["InstanceInfo","InstanceInfos"]};
+window.SIDEBAR_ITEMS = {"struct":["InstanceInfo"],"type":["InstanceInfos"]};

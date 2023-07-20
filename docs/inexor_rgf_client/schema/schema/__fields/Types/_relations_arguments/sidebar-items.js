@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["inboundComponent","inboundEntityType","outboundComponent","outboundEntityType","type"]};
+window.SIDEBAR_ITEMS = {"struct":["components","extensions","inboundComponent","inboundEntityType","outboundComponent","outboundEntityType","properties","search","type"]};

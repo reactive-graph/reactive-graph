@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["_extensions_arguments","_properties_arguments"],"struct":["__typename","behaviours","description","entityTypes","extensions","inboundOf","name","namespace","outboundOf","properties","relationTypes","typeCategory"]};
+window.SIDEBAR_ITEMS = {"mod":["_extensions_arguments","_properties_arguments"],"struct":["__typename","behaviours","countExtensions","countProperties","description","entityTypes","extensions","inboundOf","name","namespace","outboundOf","properties","relationTypes","typeCategory"]};
