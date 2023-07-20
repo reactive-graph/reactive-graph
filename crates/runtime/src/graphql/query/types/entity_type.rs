@@ -124,45 +124,79 @@ impl GraphQLEntityType {
     }
 
     /// List of relation types which has this entity type as outbound.
-    async fn outbound_relations(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
-        match context.data::<Arc<dyn RelationTypeManager>>() {
-            Ok(relation_type_manager) => relation_type_manager
-                .get_all()
-                .iter()
-                .filter(|relation_type| {
-                    relation_type.outbound_type.type_name() == "*"
-                        || relation_type.outbound_type.eq_entity_type(&self.entity_type.ty)
-                        || self
-                            .entity_type
-                            .components
-                            .iter()
-                            .any(|component_ty| relation_type.outbound_type.eq_component(component_ty))
-                })
-                .map(|relation_type| relation_type.clone().into())
-                .collect(),
-            Err(_) => Vec::new(),
-        }
+    async fn outbound_relations(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let relation_types = relation_type_manager
+            .get_all()
+            .iter()
+            .filter(|relation_type| {
+                relation_type.outbound_type.type_name() == "*"
+                    || relation_type.outbound_type.eq_entity_type(&self.entity_type.ty)
+                    || self
+                        .entity_type
+                        .components
+                        .iter()
+                        .any(|component_ty| relation_type.outbound_type.eq_component(component_ty))
+            })
+            .map(|relation_type| relation_type.clone().into())
+            .collect();
+        Ok(relation_types)
+    }
+
+    async fn count_outbound_relations(&self, context: &Context<'_>) -> Result<usize> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let count = relation_type_manager
+            .get_all()
+            .iter()
+            .filter(|relation_type| {
+                relation_type.outbound_type.type_name() == "*"
+                    || relation_type.outbound_type.eq_entity_type(&self.entity_type.ty)
+                    || self
+                        .entity_type
+                        .components
+                        .iter()
+                        .any(|component_ty| relation_type.outbound_type.eq_component(component_ty))
+            })
+            .count();
+        Ok(count)
     }
 
     /// List of relation types which has this entity type as inbound.
-    async fn inbound_relations(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
-        match context.data::<Arc<dyn RelationTypeManager>>() {
-            Ok(relation_type_manager) => relation_type_manager
-                .get_all()
-                .iter()
-                .filter(|relation_type| {
-                    relation_type.inbound_type.type_name() == "*"
-                        || relation_type.inbound_type.eq_entity_type(&self.entity_type.ty)
-                        || self
-                            .entity_type
-                            .components
-                            .iter()
-                            .any(|component_ty| relation_type.inbound_type.eq_component(component_ty))
-                })
-                .map(|relation_type| relation_type.clone().into())
-                .collect(),
-            Err(_) => Vec::new(),
-        }
+    async fn inbound_relations(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let relation_types = relation_type_manager
+            .get_all()
+            .iter()
+            .filter(|relation_type| {
+                relation_type.inbound_type.type_name() == "*"
+                    || relation_type.inbound_type.eq_entity_type(&self.entity_type.ty)
+                    || self
+                        .entity_type
+                        .components
+                        .iter()
+                        .any(|component_ty| relation_type.inbound_type.eq_component(component_ty))
+            })
+            .map(|relation_type| relation_type.clone().into())
+            .collect();
+        Ok(relation_types)
+    }
+
+    async fn count_inbound_relations(&self, context: &Context<'_>) -> Result<usize> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
+        let count = relation_type_manager
+            .get_all()
+            .iter()
+            .filter(|relation_type| {
+                relation_type.inbound_type.type_name() == "*"
+                    || relation_type.inbound_type.eq_entity_type(&self.entity_type.ty)
+                    || self
+                        .entity_type
+                        .components
+                        .iter()
+                        .any(|component_ty| relation_type.inbound_type.eq_component(component_ty))
+            })
+            .count();
+        Ok(count)
     }
 
     /// Returns true, if the entity type is valid. This means all components exists.
