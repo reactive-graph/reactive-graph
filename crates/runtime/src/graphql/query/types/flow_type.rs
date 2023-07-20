@@ -149,6 +149,11 @@ impl GraphQLFlowType {
         self.flow_type.variables.iter().cloned().map(|property_type| property_type.into()).collect()
     }
 
+    /// The count of variables.
+    async fn count_variables(&self) -> usize {
+        self.flow_type.variables.len()
+    }
+
     /// The extensions which are defined by the flow type.
     async fn extensions(&self, #[graphql(name = "type")] extension_ty: Option<ExtensionTypeIdDefinition>) -> Vec<GraphQLExtension> {
         if let Some(extension_ty) = extension_ty {
