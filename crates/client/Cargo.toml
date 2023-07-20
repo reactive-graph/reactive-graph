@@ -12,6 +12,7 @@ readme = "../../README.md"
 chrono = { workspace = true }
 cynic = { workspace = true, features = ["http-reqwest"] }
 lazy_static = { workspace = true }
+openssl = { version = "0.10", features = ["vendored"] }
 portpicker = { workspace = true }
 reqwest = { workspace = true, features = ["json"] }
 serde = { workspace = true, features = [ "derive" ] }
@@ -23,18 +24,6 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 inexor-rgf-core-config = { version = "0.9.1", path = "../core/config" }
 inexor-rgf-core-model = { version = "0.9.1", path = "../core/model" }
 inexor-rgf-model-runtime = { version = "0.9.1", path = "../model/runtime" }
-
-[target.'cfg(target = "armv7-unknown-linux-gnueabihf")'.dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
-
-[target.'cfg(target = "aarch64-unknown-linux-gnu")'.dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
-
-[target.'cfg(target = "x86_64-unknown-linux-musl")'.dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
-
-[target.'cfg(target = "i686-unknown-linux-musl")'.dependencies]
-openssl = { version = "0.10", features = ["vendored"] }
 
 [dev-dependencies]
 inexor-rgf-rt = { version = "0.9.1", path = "../runtime" }
