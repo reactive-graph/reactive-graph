@@ -71,5 +71,5 @@ pub trait EntityInstanceManager: Send + Sync {
     fn remove_component(&self, id: Uuid, component: &ComponentTypeId);
 
     /// Deletes the reactive entity instance with the given id.
-    fn delete(&self, id: Uuid);
+    fn delete(&self, id: Uuid) -> bool;
 }

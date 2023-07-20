@@ -72,7 +72,7 @@ pub trait ComponentManager: Send + Sync {
     fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the component with the given name.
-    fn delete(&self, ty: &ComponentTypeId);
+    fn delete(&self, ty: &ComponentTypeId) -> bool;
 
     /// Imports a component from a JSON file located at the given path.
     fn import(&self, path: &str) -> Result<Component, ComponentImportError>;

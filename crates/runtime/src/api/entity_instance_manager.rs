@@ -76,7 +76,7 @@ pub trait EntityInstanceManager: Send + Sync {
     fn commit(&self, entity_instance: EntityInstance);
 
     /// Deletes the entity instance with the given id.
-    fn delete(&self, id: Uuid);
+    fn delete(&self, id: Uuid) -> bool;
 
     fn import(&self, path: &str) -> Result<Uuid, EntityInstanceImportError>;
 

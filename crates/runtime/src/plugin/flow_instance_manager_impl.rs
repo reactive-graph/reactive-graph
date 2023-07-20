@@ -56,7 +56,7 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
         }
     }
 
-    fn delete(&self, id: Uuid) {
-        self.reactive_flow_instance_manager.delete(id);
+    fn delete(&self, id: Uuid) -> bool {
+        self.reactive_flow_instance_manager.delete(id)
     }
 }

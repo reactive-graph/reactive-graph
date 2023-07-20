@@ -224,7 +224,6 @@ impl MutationFlowTypes {
     async fn delete(&self, context: &Context<'_>, #[graphql(name = "type", desc = "The flow type.")] ty: FlowTypeIdDefinition) -> Result<bool> {
         let flow_type_manager = context.data::<Arc<dyn FlowTypeManager>>()?;
         let ty: FlowTypeId = ty.into();
-        flow_type_manager.delete(&ty);
-        Ok(true)
+        Ok(flow_type_manager.delete(&ty))
     }
 }

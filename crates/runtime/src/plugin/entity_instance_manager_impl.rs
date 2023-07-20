@@ -121,8 +121,8 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         self.reactive_entity_instance_manager.remove_component(id, component);
     }
 
-    fn delete(&self, id: Uuid) {
-        self.reactive_entity_instance_manager.delete(id);
+    fn delete(&self, id: Uuid) -> bool {
+        self.reactive_entity_instance_manager.delete(id)
     }
 }
 

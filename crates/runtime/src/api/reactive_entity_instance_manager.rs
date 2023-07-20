@@ -184,14 +184,14 @@ pub trait ReactiveEntityInstanceManager: Send + Sync + Lifecycle {
     // TODO: return result
     fn commit(&self, id: Uuid);
 
-    fn delete(&self, id: Uuid);
+    fn delete(&self, id: Uuid) -> bool;
 
     // TODO: fn delete_and_delete_relations(&self, id: Uuid);
 
     /// Unregisters the reactive entity instance. Also removes all behaviours. If there are any
     /// references to the reactive entity instance, their reactive streams still work but the
     /// applied behaviours are gone.
-    fn unregister_reactive_instance(&self, id: Uuid);
+    fn unregister_reactive_instance(&self, id: Uuid) -> bool;
 
     // TODO: rename import_from_file
     fn import(&self, path: &str) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError>;

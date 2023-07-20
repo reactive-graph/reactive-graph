@@ -19,6 +19,6 @@ fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
     let entity_type = EntityTypeBuilder::new(&ty).string_property(property_name.as_str()).build();
     bencher.iter(move || {
         let _ = entity_type_manager.register(entity_type.clone());
-        entity_type_manager.delete(&ty);
+        let _ = entity_type_manager.delete(&ty);
     })
 }

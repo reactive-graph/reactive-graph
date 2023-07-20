@@ -259,9 +259,13 @@ impl ComponentManager for ComponentManagerImpl {
         }
     }
 
-    fn delete(&self, ty: &ComponentTypeId) {
+    fn delete(&self, ty: &ComponentTypeId) -> bool {
+        if !self.has(ty) {
+            return false;
+        }
         self.components.0.write().unwrap().retain(|component| &component.ty != ty);
         self.event_manager.emit_event(SystemEvent::ComponentDeleted(ty.clone()));
+        true
     }
 
     fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {

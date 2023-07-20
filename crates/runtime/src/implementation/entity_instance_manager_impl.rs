@@ -72,8 +72,8 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         self.entity_vertex_manager.commit(entity_instance.id, entity_instance.properties);
     }
 
-    fn delete(&self, id: Uuid) {
-        self.entity_vertex_manager.delete(id);
+    fn delete(&self, id: Uuid) -> bool {
+        self.entity_vertex_manager.delete(id)
     }
 
     fn import(&self, path: &str) -> Result<Uuid, EntityInstanceImportError> {

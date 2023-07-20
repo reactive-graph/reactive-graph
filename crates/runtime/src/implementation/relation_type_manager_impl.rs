@@ -400,9 +400,13 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         }
     }
 
-    fn delete(&self, ty: &RelationTypeId) {
+    fn delete(&self, ty: &RelationTypeId) -> bool {
+        if !self.has(ty) {
+            return false;
+        }
         self.relation_types.0.write().unwrap().retain(|relation_type| &relation_type.ty != ty);
         self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
+        true
     }
 
     fn validate(&self, ty: &RelationTypeId) -> bool {

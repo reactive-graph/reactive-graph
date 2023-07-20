@@ -320,9 +320,13 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 
     /// TODO: first delete the entity instance of this type, then delete the entity type itself.
-    fn delete(&self, ty: &EntityTypeId) {
+    fn delete(&self, ty: &EntityTypeId) -> bool {
+        if !self.has(ty) {
+            return false;
+        }
         self.entity_types.0.write().unwrap().retain(|entity_type| &entity_type.ty != ty);
         self.event_manager.emit_event(SystemEvent::EntityTypeDeleted(ty.clone()));
+        true
     }
 
     fn validate(&self, ty: &EntityTypeId) -> bool {

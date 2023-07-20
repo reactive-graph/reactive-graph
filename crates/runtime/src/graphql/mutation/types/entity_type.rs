@@ -206,7 +206,6 @@ impl MutationEntityTypes {
     /// Deletes the entity type with the given name.
     async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] ty: EntityTypeIdDefinition) -> Result<bool> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
-        entity_type_manager.delete(&ty.into());
-        Ok(true)
+        Ok(entity_type_manager.delete(&ty.into()))
     }
 }

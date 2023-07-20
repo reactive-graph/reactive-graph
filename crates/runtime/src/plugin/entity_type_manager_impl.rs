@@ -93,7 +93,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         self.entity_type_manager.remove_extension(ty, extension_ty)
     }
 
-    fn delete(&self, ty: &EntityTypeId) {
+    fn delete(&self, ty: &EntityTypeId) -> bool {
         self.entity_type_manager.delete(ty)
     }
 

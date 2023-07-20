@@ -52,5 +52,5 @@ pub trait EntityVertexManager: Send + Sync {
     fn commit(&self, id: Uuid, properties: HashMap<String, Value>);
 
     /// Deletes the vertex with the given id.
-    fn delete(&self, id: Uuid);
+    fn delete(&self, id: Uuid) -> bool;
 }

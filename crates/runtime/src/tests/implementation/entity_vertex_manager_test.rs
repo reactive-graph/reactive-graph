@@ -64,7 +64,7 @@ fn test_entity_vertex_manager() {
     assert_eq!(property_name.clone(), property.name.to_string());
     assert_eq!(property_value.clone(), property.value);
     // Delete vertex
-    entity_vertex_manager.delete(uuid);
+    assert!(entity_vertex_manager.delete(uuid));
     // Check if vertex is gone
     assert!(!entity_vertex_manager.has(uuid));
     let vertex = entity_vertex_manager.get(uuid);
@@ -122,7 +122,7 @@ fn test_entity_vertex_manager_with_id() {
     assert_eq!(property_name.clone(), property.name.to_string());
     assert_eq!(property_value.clone(), property.value);
     // Delete vertex
-    entity_vertex_manager.delete(vertex_uuid);
+    assert!(entity_vertex_manager.delete(vertex_uuid));
     // Check if vertex is gone
     assert!(!entity_vertex_manager.has(vertex_uuid));
     let vertex = entity_vertex_manager.get(vertex_uuid);

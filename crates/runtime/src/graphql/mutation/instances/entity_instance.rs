@@ -194,8 +194,7 @@ impl MutationEntityInstances {
                 relation_instance_manager.delete(&r.get_key());
             });
         }
-        entity_instance_manager.delete(id);
-        Ok(true)
+        Ok(entity_instance_manager.delete(id))
     }
 
     async fn connect(

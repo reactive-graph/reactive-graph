@@ -113,9 +113,13 @@ impl EntityVertexManager for EntityVertexManagerImpl {
         }
     }
 
-    fn delete(&self, id: Uuid) {
-        if self.has(id) {
-            let _result = self.graph_database.get_datastore().delete_vertices(SpecificVertexQuery::single(id).into());
+    fn delete(&self, id: Uuid) -> bool {
+        if !self.has(id) {
+            return false;
         }
+        self.graph_database
+            .get_datastore()
+            .delete_vertices(SpecificVertexQuery::single(id).into())
+            .is_ok()
     }
 }

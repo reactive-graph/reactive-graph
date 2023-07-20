@@ -147,7 +147,7 @@ pub trait ReactiveFlowInstanceManager: Send + Sync + Lifecycle {
     fn commit(&self, id: Uuid);
 
     /// Deletes the flow instance with the given id.
-    fn delete(&self, id: Uuid);
+    fn delete(&self, id: Uuid) -> bool;
 
     fn import(&self, path: &str) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceImportError>;
 

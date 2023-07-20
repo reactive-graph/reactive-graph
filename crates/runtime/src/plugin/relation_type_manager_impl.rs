@@ -96,7 +96,7 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.remove_extension(relation_ty, extension_ty)
     }
 
-    fn delete(&self, ty: &RelationTypeId) {
+    fn delete(&self, ty: &RelationTypeId) -> bool {
         self.relation_type_manager.delete(ty)
     }
 

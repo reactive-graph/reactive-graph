@@ -77,7 +77,7 @@ pub trait EntityTypeManager: Send + Sync {
     fn remove_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the entity type.
-    fn delete(&self, ty: &EntityTypeId);
+    fn delete(&self, ty: &EntityTypeId) -> bool;
 
     /// Validates the entity type with the given name.
     /// Tests that all components exists.

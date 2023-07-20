@@ -241,7 +241,6 @@ impl MutationRelationTypes {
     /// Deletes the relation type with the given name.
     async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] relation_type: RelationTypeIdDefinition) -> Result<bool> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
-        relation_type_manager.delete(&relation_type.into());
-        Ok(true)
+        Ok(relation_type_manager.delete(&relation_type.into()))
     }
 }

@@ -87,7 +87,7 @@ impl ComponentManager for ComponentManagerImpl {
         self.component_manager.remove_extension(component_ty, extension_ty)
     }
 
-    fn delete(&self, ty: &ComponentTypeId) {
+    fn delete(&self, ty: &ComponentTypeId) -> bool {
         self.component_manager.delete(ty)
     }
 

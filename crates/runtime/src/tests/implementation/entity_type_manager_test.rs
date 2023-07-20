@@ -48,7 +48,7 @@ fn test_create_and_delete_entity_type() {
 
     assert_eq!(type_name, entity_type_manager.get_by_type(&namespace, &type_name).unwrap().type_name());
 
-    entity_type_manager.delete(&ty);
+    assert!(entity_type_manager.delete(&ty));
     assert!(!entity_type_manager.has(&ty));
     assert!(entity_type_manager.get(&ty).is_none());
 }
@@ -131,7 +131,7 @@ fn test_export_import_entity_type() {
     assert!(result.is_ok());
     entity_type_manager.export(&entity_ty, path.as_str());
     assert!(entity_type_manager.has(&entity_ty));
-    entity_type_manager.delete(&entity_ty);
+    assert!(entity_type_manager.delete(&entity_ty));
     assert!(!entity_type_manager.has(&entity_ty));
     let result = entity_type_manager.import(path.as_str());
     assert!(result.is_ok());

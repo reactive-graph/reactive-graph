@@ -512,20 +512,21 @@ impl ReactiveFlowInstanceManager for ReactiveFlowInstanceManagerImpl {
         }
     }
 
-    fn delete(&self, id: Uuid) {
-        if self.has(id) {
-            let reactive_flow_instance = self.get(id).unwrap();
-            for (_, entity_instance) in reactive_flow_instance.entity_instances.read().unwrap().iter() {
-                self.reactive_entity_instance_manager.unregister_reactive_instance(entity_instance.id);
-            }
-            for (_, relation_instance) in reactive_flow_instance.relation_instances.read().unwrap().iter() {
-                self.reactive_relation_instance_manager
-                    .unregister_reactive_instance(&relation_instance.get_key());
-            }
-            self.reactive_flow_instances.0.write().unwrap().remove(&id);
-            // TODO: remove label
-            self.event_manager.emit_event(SystemEvent::FlowInstanceDeleted(id))
+    fn delete(&self, id: Uuid) -> bool {
+        let Some(reactive_flow_instance) = self.get(id) else {
+            return false;
+        };
+        for (_, entity_instance) in reactive_flow_instance.entity_instances.read().unwrap().iter() {
+            self.reactive_entity_instance_manager.unregister_reactive_instance(entity_instance.id);
         }
+        for (_, relation_instance) in reactive_flow_instance.relation_instances.read().unwrap().iter() {
+            self.reactive_relation_instance_manager
+                .unregister_reactive_instance(&relation_instance.get_key());
+        }
+        let result = self.reactive_flow_instances.0.write().unwrap().remove(&id).is_some();
+        // TODO: remove label
+        self.event_manager.emit_event(SystemEvent::FlowInstanceDeleted(id));
+        result
     }
 
     fn import(&self, path: &str) -> Result<Arc<ReactiveFlowInstance>, ReactiveFlowInstanceImportError> {

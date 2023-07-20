@@ -449,20 +449,21 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
     }
 
     // TODO: Important: Check if the entity is part of relations
-    // TODO: Return true only if the entity instance has been deleted successfully
-    fn delete(&self, id: Uuid) {
+    fn delete(&self, id: Uuid) -> bool {
+        let mut result = false;
         if self.has(id) {
             // TODO: check for relations
-            self.unregister_reactive_instance(id);
+            result = self.unregister_reactive_instance(id);
         }
         // TODO: remove label
         self.entity_instance_manager.delete(id);
-        self.event_manager.emit_event(SystemEvent::EntityInstanceDeleted(id))
+        self.event_manager.emit_event(SystemEvent::EntityInstanceDeleted(id));
+        result
     }
 
     // TODO: fn delete_and_delete_relations(&self, id: Uuid) {}
 
-    fn unregister_reactive_instance(&self, id: Uuid) {
+    fn unregister_reactive_instance(&self, id: Uuid) -> bool {
         match self.get(id) {
             Some(entity_instance) => {
                 // Remove entity behaviours
@@ -477,7 +478,7 @@ impl ReactiveEntityInstanceManager for ReactiveEntityInstanceManagerImpl {
                 self.entity_component_behaviour_manager.remove_behaviours_by_id(&id);
             }
         }
-        self.reactive_entity_instances.0.remove(&id);
+        self.reactive_entity_instances.0.remove(&id).is_some()
     }
 
     fn import(&self, path: &str) -> Result<Arc<ReactiveEntityInstance>, ReactiveEntityInstanceImportError> {

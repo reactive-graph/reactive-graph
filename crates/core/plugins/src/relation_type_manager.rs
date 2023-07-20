@@ -81,7 +81,7 @@ pub trait RelationTypeManager: Send + Sync {
     fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId);
 
     /// Deletes the given relation type.
-    fn delete(&self, ty: &RelationTypeId);
+    fn delete(&self, ty: &RelationTypeId) -> bool;
 
     /// Validates the relation type with the given name.
     /// Tests that all components, the outbound and inbound entity type exists.

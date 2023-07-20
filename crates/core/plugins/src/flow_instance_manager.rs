@@ -54,5 +54,5 @@ pub trait FlowInstanceManager: Send + Sync {
     ) -> Result<Arc<ReactiveFlowInstance>, FlowInstanceCreationError>;
 
     /// Deletes the flow instance with the given id.
-    fn delete(&self, id: Uuid);
+    fn delete(&self, id: Uuid) -> bool;
 }
