@@ -107,7 +107,7 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_type_manager.remove_variable(ty, variable_name);
     }
 
-    fn delete(&self, ty: &FlowTypeId) {
+    fn delete(&self, ty: &FlowTypeId) -> bool {
         self.flow_type_manager.delete(ty)
     }
 

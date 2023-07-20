@@ -106,7 +106,7 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     fn remove_variable(&self, ty: &FlowTypeId, variable_name: &str);
 
     /// Deletes the flow type with the given name.
-    fn delete(&self, ty: &FlowTypeId);
+    fn delete(&self, ty: &FlowTypeId) -> bool;
 
     /// Validates the flow type with the given name.
     /// Tests that all entity types and relation types exists and are valid.

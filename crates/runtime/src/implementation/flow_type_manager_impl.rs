@@ -237,9 +237,13 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         }
     }
 
-    fn delete(&self, ty: &FlowTypeId) {
+    fn delete(&self, ty: &FlowTypeId) -> bool {
+        if !self.has(ty) {
+            return false;
+        }
         self.flow_types.0.write().unwrap().retain(|flow_type| &flow_type.ty != ty);
         self.event_manager.emit_event(SystemEvent::FlowTypeDeleted(ty.clone()));
+        true
     }
 
     fn validate(&self, ty: &FlowTypeId) -> bool {
