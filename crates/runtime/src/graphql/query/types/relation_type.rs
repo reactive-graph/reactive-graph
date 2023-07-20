@@ -136,6 +136,11 @@ impl GraphQLRelationType {
         Ok(components)
     }
 
+    /// The count of components.
+    async fn count_components(&self) -> usize {
+        self.relation_type.components.len()
+    }
+
     /// The properties / property types which are defined by the relation type or
     /// by one of the components.
     async fn properties(

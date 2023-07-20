@@ -56,6 +56,11 @@ impl GraphQLEntityType {
         }
     }
 
+    /// The count of components.
+    async fn count_components(&self) -> usize {
+        self.entity_type.components.len()
+    }
+
     /// The properties / property types which are defined by the entity type or
     /// by one of the components.
     async fn properties(
