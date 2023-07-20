@@ -6,6 +6,46 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.9.1-24] - 2023-07-20
+
+### Highlights
+
+- Remotes Management
+- JSON-Schemas
+- CLI REPL + Improved CLI
+- Documentation
+
+### Added
+
+- Remotes Management
+- JSON-Schemas for all types and instances
+- CLI REPL
+- GraphQL: Filter types by properties, extensions and/or components
+- GraphQL: Added counts in types
+- GraphQL: Filter plugins by dependencies or unsatisfied dependencies
+- GraphQL: Uninstall plugin
+- GraphQL: Test getting all plugins
+- Plugin System: Whitelist plugins with new configuration enabled_plugins
+- Documentation: New chapter about the system architecture
+- Documentation: New chapter about the RuntimeBuilder
+- Documentation: New chapter limitations
+- Documentation: Cross compilation and supported platforms
+- Documentation: Packaging for debian
+
+### Changed
+
+- All APIs: Delete methods returns boolean
+- CLI: refactored CLI tables from the client to the CLI crate
+- Runtime: Improved state management in runtime and RuntimeBuilder
+- Plugin System: Configuration file accepts short names
+- Documentation: Updated sections about the model
+- Documentation: Updated lots of GraphQL examples
+- Documentation: Updated installation instructions
+
+### Fixed
+
+- Don't block runtime shutdown at a specific situation
+
 ## [0.9.1-22] - 2023-05-07
 
 ### Added
