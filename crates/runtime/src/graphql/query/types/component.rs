@@ -67,6 +67,11 @@ impl GraphQLComponent {
         }
     }
 
+    /// The count of properties.
+    async fn count_properties(&self) -> usize {
+        self.component.properties.len()
+    }
+
     /// The extensions which are defined by the component.
     async fn extensions(
         &self,

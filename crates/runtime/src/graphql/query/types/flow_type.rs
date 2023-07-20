@@ -125,6 +125,11 @@ impl GraphQLFlowType {
             .collect()
     }
 
+    /// The count of properties.
+    async fn count_properties(&self) -> usize {
+        self.flow_type.wrapper_entity_instance.properties.len()
+    }
+
     /// The variables of the flow type.
     async fn variables(&self, name: Option<String>) -> Vec<GraphQLPropertyType> {
         if name.is_some() {

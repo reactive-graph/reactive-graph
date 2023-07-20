@@ -162,6 +162,11 @@ impl GraphQLRelationType {
         }
     }
 
+    /// The count of properties.
+    async fn count_properties(&self) -> usize {
+        self.relation_type.properties.len()
+    }
+
     /// The extensions which are defined by the relation type.
     async fn extensions(
         &self,

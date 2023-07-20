@@ -82,6 +82,11 @@ impl GraphQLEntityType {
         }
     }
 
+    /// The count of properties.
+    async fn count_properties(&self) -> usize {
+        self.entity_type.properties.len()
+    }
+
     /// The extensions which are defined by the entity type.
     async fn extensions(
         &self,
