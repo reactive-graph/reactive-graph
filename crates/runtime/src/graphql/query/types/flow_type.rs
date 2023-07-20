@@ -65,6 +65,7 @@ impl GraphQLFlowType {
             .collect()
     }
 
+    /// The count of entity instances.
     async fn count_entity_instances(&self) -> usize {
         self.flow_type.entity_instances.len()
     }
@@ -101,6 +102,7 @@ impl GraphQLFlowType {
             .collect()
     }
 
+    /// The count of relation instances.
     async fn count_relation_instances(&self) -> usize {
         self.flow_type.relation_instances.len()
     }
