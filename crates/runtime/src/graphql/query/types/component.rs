@@ -99,6 +99,11 @@ impl GraphQLComponent {
         }
     }
 
+    /// The count of extensions.
+    async fn count_extensions(&self) -> usize {
+        self.component.extensions.len()
+    }
+
     /// Query which entity types are using this component
     async fn entity_types(&self, context: &Context<'_>) -> Vec<GraphQLEntityType> {
         if let Ok(entity_type_manager) = context.data::<Arc<dyn EntityTypeManager>>() {

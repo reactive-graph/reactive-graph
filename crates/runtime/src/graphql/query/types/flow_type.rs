@@ -171,6 +171,11 @@ impl GraphQLFlowType {
         self.flow_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
     }
 
+    /// The count of extensions.
+    async fn count_extensions(&self) -> usize {
+        self.flow_type.extensions.len()
+    }
+
     /// Returns true, if the relation type is valid.
     ///
     /// This means all components exists and the outbound and inbound entity types are valid.

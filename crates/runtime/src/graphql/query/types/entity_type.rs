@@ -113,6 +113,11 @@ impl GraphQLEntityType {
         }
     }
 
+    /// The count of extensions.
+    async fn count_extensions(&self) -> usize {
+        self.entity_type.extensions.len()
+    }
+
     /// List of relation types which has this entity type as outbound.
     async fn outbound_relations(&self, context: &Context<'_>) -> Vec<GraphQLRelationType> {
         match context.data::<Arc<dyn RelationTypeManager>>() {

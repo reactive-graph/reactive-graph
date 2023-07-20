@@ -194,6 +194,11 @@ impl GraphQLRelationType {
         }
     }
 
+    /// The count of extensions.
+    async fn count_extensions(&self) -> usize {
+        self.relation_type.extensions.len()
+    }
+
     /// Returns true, if the relation type is valid.
     ///
     /// This means all components exists and the outbound and inbound entity types are valid.
