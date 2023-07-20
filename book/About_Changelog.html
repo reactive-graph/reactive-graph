@@ -172,29 +172,68 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="091-22---2023-05-07"><a class="header" href="#091-22---2023-05-07">[0.9.1-22] - 2023-05-07</a></h2>
+<h2 id="091-24---2023-07-20"><a class="header" href="#091-24---2023-07-20">[0.9.1-24] - 2023-07-20</a></h2>
+<h3 id="highlights"><a class="header" href="#highlights">Highlights</a></h3>
+<ul>
+<li>Remotes Management</li>
+<li>JSON-Schemas</li>
+<li>CLI REPL + Improved CLI</li>
+<li>Documentation</li>
+</ul>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>Remotes Management</li>
+<li>JSON-Schemas for all types and instances</li>
+<li>CLI REPL</li>
+<li>GraphQL: Filter types by properties, extensions and/or components</li>
+<li>GraphQL: Added counts in types</li>
+<li>GraphQL: Filter plugins by dependencies or unsatisfied dependencies</li>
+<li>GraphQL: Uninstall plugin</li>
+<li>GraphQL: Test getting all plugins</li>
+<li>Plugin System: Whitelist plugins with new configuration enabled_plugins</li>
+<li>Documentation: New chapter about the system architecture</li>
+<li>Documentation: New chapter about the RuntimeBuilder</li>
+<li>Documentation: New chapter limitations</li>
+<li>Documentation: Cross compilation and supported platforms</li>
+<li>Documentation: Packaging for debian</li>
+</ul>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li>All APIs: Delete methods returns boolean</li>
+<li>CLI: refactored CLI tables from the client to the CLI crate</li>
+<li>Runtime: Improved state management in runtime and RuntimeBuilder</li>
+<li>Plugin System: Configuration file accepts short names</li>
+<li>Documentation: Updated sections about the model</li>
+<li>Documentation: Updated lots of GraphQL examples</li>
+<li>Documentation: Updated installation instructions</li>
+</ul>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<ul>
+<li>Don't block runtime shutdown at a specific situation</li>
+</ul>
+<h2 id="091-22---2023-05-07"><a class="header" href="#091-22---2023-05-07">[0.9.1-22] - 2023-05-07</a></h2>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>Publish debian package for x86_64, aarch64 and armv7</li>
 </ul>
 <h2 id="091-14---2023-05-07"><a class="header" href="#091-14---2023-05-07">[0.9.1-14] - 2023-05-07</a></h2>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>Publish binaries for more targets, including Raspberry Pi</li>
 </ul>
 <h2 id="091-4---2023-05-07"><a class="header" href="#091-4---2023-05-07">[0.9.1-4] - 2023-05-07</a></h2>
-<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
 <ul>
 <li>Configure the application using environment variables</li>
 <li>Generate Debian Package</li>
 </ul>
 <h2 id="091---2023-05-01"><a class="header" href="#091---2023-05-01">[0.9.1] - 2023-05-01</a></h2>
-<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
 <ul>
 <li>First public release on crates.io</li>
 </ul>
 <h2 id="090-15---2023-03-26"><a class="header" href="#090-15---2023-03-26">[0.9.0-15] - 2023-03-26</a></h2>
-<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
+<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
 <ul>
 <li>Configuration: Configure the instance</li>
 <li>Configuration: Configure the graphql server</li>
@@ -214,7 +253,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>GraphQL: Allow sorting of type properties</li>
 <li>GraphQL: Allow sorting of type extensions</li>
 </ul>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
 <ul>
 <li>Workspace: Create mono repository</li>
 <li>Workspace: Migrate repository frp into workspace</li>
@@ -228,7 +267,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0</li>
 </ul>
 <h2 id="080---2022-02-01"><a class="header" href="#080---2022-02-01">[0.8.0] - 2022-02-01</a></h2>
-<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
+<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
 <ul>
 <li>Plugins: Plugin resolver state machine</li>
 <li>Plugins: Plugin dependencies and plugin versioning</li>
@@ -250,7 +289,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Model: Use concrete type system identifiers instead of strings</li>
 <li>API: Validate types on construction (validate that components or entity types are present)</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)</li>
 <li>Behaviours: Reimplemented lots of reactive behaviours</li>
@@ -259,7 +298,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Tooling: rustfmt uses separate lines per import</li>
 </ul>
 <h2 id="070---2022-09-25"><a class="header" href="#070---2022-09-25">[0.7.0] - 2022-09-25</a></h2>
-<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
+<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
 <ul>
 <li>Flow Types: Replicate and instantiate flows multiple times (like flow templates)</li>
 <li>Dynamic Graph: A second GraphQL api make the access to the instance system more intuitive</li>
@@ -268,14 +307,14 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Plugins: Dependency information</li>
 <li>Plugins: Expose GraphQL query service to plugins</li>
 </ul>
-<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
 <ul>
 <li>Plugin: Dedicated error messages for the plugin API</li>
 <li>Plugin: Default trait implementations for the plugin API to reduce boilerplate</li>
 <li>Plugin: Return option none if a plugin doesn't use certain functionality</li>
 </ul>
 <h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
-<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
+<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
 <ul>
 <li>Documentation: Added initial documentation as book (using mdBook)</li>
 <li>GraphQL: Navigate from components to entity types and to relation types</li>
@@ -290,7 +329,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Core: Provide required components and entity types in the application core</li>
 <li>Core: Event System for Type System and Instance System</li>
 </ul>
-<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
 <ul>
 <li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
 <li>GraphQL: Rename type_name to type</li>
@@ -304,12 +343,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation: Added code of conduct and changelog to book</li>
 </ul>
 <h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
-<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
+<h3 id="added-9"><a class="header" href="#added-9">Added</a></h3>
 <ul>
 <li>Plugin API: Added find, import &amp; export methods for all managers</li>
 <li>Core: Search for type names with wildcards</li>
 </ul>
-<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
+<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
