@@ -1,11 +1,12 @@
-use inexor_rgf_core_builder::EntityTypeBuilder;
-use inexor_rgf_core_builder::ReactiveEntityInstanceBuilder;
-use inexor_rgf_core_model::DataType;
+use std::sync::Arc;
+
+use inexor_rgf_core_model::PropertyType;
+use inexor_rgf_core_model::PropertyTypes;
+use inexor_rgf_core_model::EntityType;
 use inexor_rgf_core_model::EntityTypeId;
+use inexor_rgf_reactive::ReactiveEntity;
 use inexor_rgf_rt::runtime::Runtime;
 use inexor_rgf_rt::runtime::RuntimeBuilder;
-use serde_json::json;
-use std::sync::Arc;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {
@@ -34,9 +35,13 @@ async fn main() -> Result<(), ()> {
             let ty = EntityTypeId::new_from_type("example", "example");
 
             // Now use a builder to construct an entity type for the type id
-            let entity_type = EntityTypeBuilder::new(ty)
+            let entity_type = EntityType::builder()
+                .ty(ty)
                 .description("An example entity type")
-                .input_property("your_name", DataType::String)
+                .properties(
+                    PropertyTypes::new()
+                        .property(PropertyType::string_input("your_name"))
+                )
                 .build();
 
             // Before we can use the entity type it has to be registered on the entity type manager.
@@ -51,20 +56,19 @@ async fn main() -> Result<(), ()> {
             // Now we want to create an entity instance based on the entity type.
 
             // First: we need the REACTIVE entity instance manager:
-            let entity_instance_manager = runtime.get_reactive_entity_instance_manager();
+            let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
             // Based on the entity type we can use the builder pattern to initialize the entity instance
-            let entity_instance = ReactiveEntityInstanceBuilder::from(entity_type)
-                .property("your_name", json!("Peter Penacka"))
-                .build();
-            // The entity instance is reactive but not yet registered and unknown to the system.
+            let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
+
+            // The entity instance is reactive but not yet registered and unknown to the runtime.
             // Therefore we have to register it
-            let entity_instance = entity_instance_manager
-                .register_reactive_instance(entity_instance)
+            let reactive_entity = reactive_entity_manager
+                .register_reactive_instance(reactive_entity)
                 .expect("Failed to register reactive entity instance");
 
             // Check if it has been registered
-            if entity_instance_manager.has(entity_instance.id) {
+            if reactive_entity_manager.has(reactive_entity.id) {
                 println!("Successfully registered entity instance!");
             }
 

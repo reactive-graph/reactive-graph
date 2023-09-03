@@ -23,27 +23,27 @@
     - [x] Setter
     - [x] Send (Send but not set)
     - [x] Tick (Resend)
-- [x] `ReactiveEntityInstance`
+- [x] `ReactiveEntity`
     - [x] Not serializable
-    - [x] Construct ReactiveEntityInstance from Vertex
+    - [x] Construct ReactiveEntity from Vertex
     - [x] Construct Properties
     - [x] Typed Getters
     - [x] Setter
-- [x] `ReactiveRelationInstance`
+- [x] `ReactiveRelation`
     - [x] Not serializable
-    - [x] Construct ReactiveRelationInstance from Edge
+    - [x] Construct ReactiveRelation from Edge
     - [x] Construct Properties
     - [x] Typed Getters
     - [x] Setter
 - [x] `ReactiveFlow`
-    - [x] List of `ReactiveEntityInstance`
-    - [x] List of `ReactiveRelationInstance`
+    - [x] List of `ReactiveEntity`
+    - [x] List of `ReactiveRelation`
 
 ## Behaviours
 
-The idea is to wrap functionality around `ReactiveEntityInstance`s and `ReactiveRelationInstance`s.
+The idea is to wrap functionality around `ReactiveEntity`s and `ReactiveRelation`s.
 
-A `ReactiveEntityInstance` has properties with streams but doesn't do anything yet.
+A `ReactiveEntity` has properties with streams but doesn't do anything yet.
 
 The reactive behaviour implements the behaviour of a type. For example the AND
 
@@ -56,7 +56,7 @@ The reactive behaviour implements the behaviour of a type. For example the AND
 ### `RelationInstanceBehaviour`s
 
 - [x] `Connector`
-    - [x] `Connector::from_relation(ReactiveRelationInstance)`
+    - [x] `Connector::from_relation(ReactiveRelation)`
     - [x] `Connector::new(OutboundEntity, OutboundPropName, InboundEntity, InboundPropName)`
     - [x] `Connector::connect`
     - [x] `Connector::disconnect`
@@ -69,11 +69,11 @@ The reactive behaviour implements the behaviour of a type. For example the AND
 - [x] `EntityTypeManager`
 - [x] `EntityVertexManager`
 - [x] `EntityInstanceManager`
-- [x] `ReactiveEntityInstanceManager`
+- [x] `ReactiveEntityManager`
 - [x] `RelationTypeManager`
 - [x] `RelationEdgeManager`
 - [x] `RelationInstanceManager`
-- [x] `ReactiveRelationInstanceManager`
+- [x] `ReactiveRelationManager`
     - [x] Resolves which behaviour(s) should be applied on an entity
     - [x] Delegation to Registry
 - [x] `ReactiveEntityManager` delegates to `EntityBehaviourManager`
@@ -158,19 +158,19 @@ The reactive behaviour implements the behaviour of a type. For example the AND
     - [x] Import Relation Instance from JSON
     - [x] Export Relation Instance to JSON
     - [x] Unit Tests
-- [x] `ReactiveEntityInstanceManagerImpl`
-    - [x] Central registry of all `ReactiveEntityInstance`s
-    - [x] Create `ReactiveEntityInstance` by UUID
+- [x] `ReactiveEntityManagerImpl`
+    - [x] Central registry of all `ReactiveEntity`s
+    - [x] Create `ReactiveEntity` by UUID
     - [x] On Instantiation: Instantiate `EntityBehaviour`
     - [x] Check if id exists in HashMap (must not exist)
     - [x] Check if id exists in Datastore -> Manager
     - [x] Unit Tests
-- [x] `ReactiveRelationInstanceManagerImpl`
-    - [x] Central registry of all `ReactiveRelationInstance`s
+- [x] `ReactiveRelationManagerImpl`
+    - [x] Central registry of all `ReactiveRelation`s
         * These are the actually "running" / "living" instances
-    - [x] Create `ReactiveRelationInstance` by UUID
+    - [x] Create `ReactiveRelation` by UUID
         - [x] Get Relation Instance by EdgeKey from `RelationInstanceManager`
-        - [ ] On Instantiation: Instantiate `ReactiveRelationInstanceBehaviour` by TYPE
+        - [ ] On Instantiation: Instantiate `ReactiveRelationBehaviour` by TYPE
             - [ ] Connector
     - [x] Unit Tests
 - [x] `EntityInstanceBehaviourManager`

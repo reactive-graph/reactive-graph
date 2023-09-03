@@ -13,11 +13,11 @@ pub const DEFAULT_USER_AGENT: &str = "inexor_rgf_client";
 #[serde(rename_all = "camelCase")]
 pub struct InstanceAddress {
     /// The hostname of the GraphQL server.
-    #[builder(default=DEFAULT_HOSTNAME.to_owned())]
+    #[builder(default = DEFAULT_HOSTNAME.to_owned())]
     pub hostname: String,
 
     /// The port of the GraphQL server.
-    #[builder(default=DEFAULT_PORT)]
+    #[builder(default = DEFAULT_PORT)]
     #[serde(default = "default_port", skip_serializing_if = "is_default_port")]
     pub port: u16,
 

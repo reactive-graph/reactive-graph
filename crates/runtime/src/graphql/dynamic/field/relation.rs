@@ -2,18 +2,17 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 use async_graphql::dynamic::*;
-use async_graphql::ID;
-use serde_json::json;
+use async_graphql::{Error, ID};
 use serde_json::Value;
 use uuid::Uuid;
+use inexor_rgf_core_model::{RelationInstanceId, RelationTypeId};
+use inexor_rgf_reactive::ReactiveProperties;
 
-use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveRelationInstanceManager;
-use crate::builder::ReactiveRelationInstanceBuilder;
-use crate::graphql::dynamic::data_type_error;
+use crate::api::ReactiveEntityManager;
+use crate::api::ReactiveRelationManager;
+use crate::graphql::dynamic::{create_properties_from_field_arguments};
 use crate::graphql::dynamic::entity_instance_not_found_error;
 use crate::graphql::dynamic::namespace_entities_union_type_name;
-use crate::graphql::dynamic::number_error;
 use crate::graphql::dynamic::to_field_value;
 use crate::graphql::dynamic::to_input_type_ref;
 use crate::graphql::dynamic::to_type_ref;
@@ -30,20 +29,20 @@ use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyType;
 use crate::model::PropertyTypeDefinition;
-use crate::model::ReactiveRelationInstance;
+use crate::reactive::ReactiveRelation;
 use crate::model::RelationInstanceTypeId;
 use crate::model::RelationType;
 use crate::model_runtime::LabeledProperties::LABEL;
 
-pub fn relation_query_field(relation_type: &RelationType) -> Field {
-    let ty = relation_type.ty.clone();
+pub fn relation_query_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Field {
+    let ty = relation_ty.clone();
     let relation_type_inner = relation_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
     let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let relation_type = relation_type_inner.clone();
         FieldFuture::new(async move {
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
             let mut instances = relation_instance_manager.get_by_type(&ty);
             for property in relation_type.properties.iter() {
                 let Some(expected_value) = ctx.args.get(&property.name) else {
@@ -117,90 +116,54 @@ pub fn relation_query_field(relation_type: &RelationType) -> Field {
         if property.name == LABEL.property_name() {
             continue;
         }
-        if let Some(type_ref) = to_input_type_ref(property, true) {
+        if let Some(type_ref) = to_input_type_ref(property.value(), true) {
             field = field.argument(InputValue::new(&property.name, type_ref));
         }
     }
     field
 }
 
-pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
-    let ty = relation_type.ty.clone();
+pub fn relation_creation_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Option<Field> {
+    let ty = relation_ty.clone();
     let relation_type_inner = relation_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
     let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(&dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let relation_type = relation_type_inner.clone();
         FieldFuture::new(async move {
-            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityManager>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
+
             let outbound_id = Uuid::from_str(ctx.args.try_get("outboundId")?.string()?)?;
             let outbound = entity_instance_manager.get(outbound_id).ok_or(entity_instance_not_found_error(&outbound_id))?;
+
             let inbound_id = Uuid::from_str(ctx.args.try_get("inboundId")?.string()?)?;
             let inbound = entity_instance_manager.get(inbound_id).ok_or(entity_instance_not_found_error(&inbound_id))?;
+
             let rty = match ctx.args.get("instanceId").and_then(|s| s.string().map(|s| s.to_string()).ok()) {
                 Some(instance_id) => RelationInstanceTypeId::new_unique_for_instance_id(ty, instance_id),
                 None => RelationInstanceTypeId::new_with_random_instance_id(ty),
             };
-            // if let Some(instance_id) = ctx.args.get("instanceId").and_then(|s| s.string().map(|s| s.to_string()).ok()) {
-            //     let x = RelationInstanceTypeId::new_unique_for_instance_id(ty, instance_id);
-            // } else {
-            //     RelationInstanceTypeId::new_with_random_instance_id(ty);
-            // }
-            // builder = builder.id(id);
 
-            let mut builder = ReactiveRelationInstanceBuilder::new(outbound, &rty, inbound);
-            let mut builder = builder.set_properties_defaults(relation_type.clone());
-            // builder.set_properties_defaults(relation_type.clone());
-            // let mut builder = builder.;
-            for property in relation_type.properties.iter() {
-                let value = ctx.args.try_get(&property.name)?;
-                match &property.data_type {
-                    DataType::Null => {
-                        return Err(data_type_error(property));
-                    }
-                    DataType::Bool => {
-                        builder = builder.property(&property.name, Value::Bool(value.boolean()?));
-                    }
-                    DataType::Number => {
-                        if let Ok(value) = value.i64() {
-                            builder = builder.property(&property.name, json!(value));
-                        } else if let Ok(value) = value.u64() {
-                            builder = builder.property(&property.name, json!(value));
-                        } else if let Ok(value) = value.f64() {
-                            builder = builder.property(&property.name, json!(value));
-                        } else {
-                            return Err(number_error(property));
-                        }
-                    }
-                    DataType::String => {
-                        builder = builder.property(&property.name, Value::String(value.string()?.to_string()));
-                    }
-                    DataType::Array => {
-                        let _ = value.list()?;
-                        let value = value.deserialize::<Value>()?;
-                        if !value.is_array() {
-                            return Err(data_type_error(property));
-                        }
-                        builder = builder.property(&property.name, value);
-                    }
-                    DataType::Object => {
-                        let value = value.deserialize::<Value>()?;
-                        if !value.is_object() {
-                            return Err(data_type_error(property));
-                        }
-                        builder = builder.property(&property.name, value);
-                    }
-                    DataType::Any => {
-                        if let Ok(value) = value.deserialize() {
-                            builder = builder.property(&property.name, value);
-                        }
-                    }
-                }
+            let id = RelationInstanceId::builder()
+                .outbound_id(outbound_id)
+                .ty(&rty)
+                .inbound_id(inbound_id)
+                .build();
+            if relation_instance_manager.has(&id) {
+                return Err(Error::new(format!("Relation instance {id} already exists")));
             }
-            let relation_instance = builder.build();
-            if let Ok(relation_instance) = relation_instance_manager.register_reactive_instance(relation_instance) {
-                return Ok(Some(FieldValue::owned_any(relation_instance)));
+
+            let properties = create_properties_from_field_arguments(&ctx, &relation_type.properties)?;
+            let properties = ReactiveProperties::new_with_id_from_properties(id, properties);
+            let reactive_relation = ReactiveRelation::builder()
+                .outbound(outbound)
+                .ty(&rty)
+                .inbound(inbound)
+                .properties(properties)
+                .build();
+            if let Ok(reactive_relation) = relation_instance_manager.register_reactive_instance(reactive_relation) {
+                return Ok(Some(FieldValue::owned_any(reactive_relation)));
             }
             Ok(None)
         })
@@ -209,21 +172,21 @@ pub fn relation_creation_field(relation_type: &RelationType) -> Option<Field> {
     .argument(InputValue::new("instanceId", TypeRef::named(TypeRef::ID)))
     .argument(InputValue::new("inboundId", TypeRef::named(TypeRef::ID)));
     for property in relation_type.properties.iter() {
-        if let Some(type_ref) = to_input_type_ref(property, false) {
+        if let Some(type_ref) = to_input_type_ref(property.value(), false) {
             field = field.argument(InputValue::new(&property.name, type_ref));
         }
     }
     Some(field)
 }
 
-pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
-    let ty = relation_type.ty.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
+pub fn relation_mutation_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Option<Field> {
+    let ty = relation_ty.clone();
+    let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
     let field = Field::new(dy_ty.field_name(), TypeRef::named_nn(dy_ty.mutation_type_name()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
-            let relation_instances: Vec<Arc<ReactiveRelationInstance>> = relation_instance_manager
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
+            let relation_instances: Vec<ReactiveRelation> = relation_instance_manager
                 .get_by_type(&ty)
                 .into_iter()
                 .filter(|relation_instance| {
@@ -268,7 +231,7 @@ pub fn relation_mutation_field(relation_type: &RelationType) -> Option<Field> {
 pub fn relation_key_field() -> Field {
     Field::new(INTERFACE_RELATION_FIELD_KEY, TypeRef::named_nn(TypeRef::ID), |ctx| {
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             Ok(Some(FieldValue::value(ID(format!("{}", relation_instance.ty)))))
         })
     })
@@ -277,7 +240,7 @@ pub fn relation_key_field() -> Field {
 pub fn relation_instance_id_field() -> Field {
     Field::new(INTERFACE_RELATION_FIELD_INSTANCE_ID, TypeRef::named_nn(TypeRef::ID), |ctx| {
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             Ok(Some(FieldValue::value(ID(relation_instance.instance_id()))))
         })
     })
@@ -288,7 +251,7 @@ pub fn relation_property_field(property_type: &PropertyType) -> Field {
     Field::new(&property_type.name, to_type_ref(&property_type.data_type), move |ctx| {
         let property_type = property_type_inner.clone();
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             Ok(relation_instance.get(&property_type.name).and_then(to_field_value))
         })
     })
@@ -319,19 +282,27 @@ pub fn relation_outbound_field(
             if ty.namespace() == "*" {
                 context
                     .component_manager
-                    .get_all()
-                    .into_iter()
-                    .map(|component| component.ty)
-                    .map(|ty| relation_outbound_component_field(&ty, None, None))
+                    .get_type_ids()
+                    .iter()
+                    .map(|ty| relation_outbound_component_field(ty.key(), None, None))
                     .collect()
+                    // .get_all()
+                    // .into_iter()
+                    // // .map(|component| component.ty)
+                    // .map(|(component_ty, component)| relation_outbound_component_field(&component_ty, None, None))
+                    // .collect()
             } else if ty.type_name() == "*" {
                 context
                     .component_manager
-                    .get_by_namespace(&ty.namespace())
-                    .into_iter()
-                    .map(|component| component.ty)
-                    .map(|ty| relation_outbound_component_field(&ty, None, None))
+                    .get_types_by_namespace(&ty.namespace())
+                    .iter()
+                    .map(|ty| relation_outbound_component_field(ty.key(), None, None))
                     .collect()
+                    // .get_by_namespace(&ty.namespace())
+                    // .into_iter()
+                    // // .map(|component| component.ty)
+                    // .map(|(component_ty, component)| relation_outbound_component_field(&component_ty, None, None))
+                    // .collect()
             } else {
                 vec![relation_outbound_component_field(ty, field_name, field_description)]
             }
@@ -363,19 +334,25 @@ pub fn relation_inbound_field(
             if ty.namespace() == "*" {
                 context
                     .component_manager
-                    .get_all()
-                    .into_iter()
-                    .map(|component| component.ty)
-                    .map(|ty| relation_inbound_component_field(&ty, None, None))
+                    .get_type_ids()
+                    .iter()
+                    .map(|ty| relation_inbound_component_field(ty.key(), None, None))
                     .collect()
+                    // .get_all()
+                    // .into_iter()
+                    // .map(|(component_ty, component)| relation_inbound_component_field(&component_ty, None, None))
+                    // .collect()
             } else if ty.type_name() == "*" {
                 context
                     .component_manager
-                    .get_by_namespace(&ty.namespace())
-                    .into_iter()
-                    .map(|component| component.ty)
-                    .map(|ty| relation_inbound_component_field(&ty, None, None))
+                    .get_types_by_namespace(&ty.namespace())
+                    .iter()
+                    .map(|ty| relation_inbound_component_field(ty.key(), None, None))
                     .collect()
+                    // .get_by_namespace(&ty.namespace())
+                    // .into_iter()
+                    // .map(|(component_ty, component)| relation_inbound_component_field(&component_ty, None, None))
+                    // .collect()
             } else {
                 vec![relation_inbound_component_field(ty, field_name, field_description)]
             }
@@ -393,7 +370,7 @@ pub fn relation_outbound_entity_union_field(type_name: &str, field_name: Option<
     let field_name = field_name.unwrap_or("outbound".to_string());
     let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             let dy_ty = DynamicGraphTypeDefinition::from(&relation_instance.outbound.ty);
             Ok(Some(FieldValue::owned_any(relation_instance.outbound.clone()).with_type(dy_ty.to_string())))
         })
@@ -413,7 +390,7 @@ pub fn relation_outbound_component_field(ty: &ComponentTypeId, field_name: Optio
 pub fn create_relation_outbound_field(type_name: &str, field_name: &str, field_description: Option<String>) -> Field {
     let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             Ok(Some(FieldValue::owned_any(relation_instance.outbound.clone())))
         })
     });
@@ -433,7 +410,7 @@ pub fn relation_inbound_entity_union_field(type_name: &str, field_name: Option<S
     let field_name = field_name.unwrap_or("inbound".to_string());
     let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             let dy_ty = DynamicGraphTypeDefinition::from(&relation_instance.inbound.ty);
             Ok(Some(FieldValue::owned_any(relation_instance.inbound.clone()).with_type(dy_ty.to_string())))
         })
@@ -453,7 +430,7 @@ pub fn relation_inbound_component_field(ty: &ComponentTypeId, field_name: Option
 pub fn create_relation_inbound_field(type_name: &str, field_name: &str, field_description: Option<String>) -> Field {
     let mut field = Field::new(field_name, TypeRef::named_nn(type_name), move |ctx| {
         FieldFuture::new(async move {
-            let relation_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveRelationInstance>>()?;
+            let relation_instance = ctx.parent_value.try_downcast_ref::<ReactiveRelation>()?;
             Ok(Some(FieldValue::owned_any(relation_instance.inbound.clone())))
         })
     });

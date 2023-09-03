@@ -10,7 +10,6 @@ readme = "../../../README.md"
 
 [dependencies]
 clap = { workspace = true, features = ["string"] }
-indradb-lib = { workspace = true }
 lazy_static = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format"]}
@@ -19,11 +18,13 @@ serde_json = { workspace = true }
 strum = { workspace = true, features = ["derive"] }
 strum_macros = { workspace = true }
 toml = { workspace = true }
+typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-core-builder = { version = "0.9.1", path = "../../core/builder" }
-inexor-rgf-core-model = { version = "0.9.1", path = "../../core/model" }
-inexor-rgf-model-runtime = { version = "0.9.1", path = "../runtime" }
+#inexor-rgf-core-builder = { version = "0.10.0", path = "../../core/builder" }
+inexor-rgf-core-model = { version = "0.10.0", path = "../../core/model" }
+inexor-rgf-model-runtime = { version = "0.10.0", path = "../runtime" }
+inexor-rgf-reactive = { version = "0.10.0", path = "../../reactive" }
 
 [dev-dependencies]
 

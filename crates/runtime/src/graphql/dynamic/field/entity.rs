@@ -5,26 +5,25 @@ use async_graphql::dynamic::*;
 use async_graphql::Error;
 use async_graphql::ID;
 use log::trace;
-use serde_json::json;
 use serde_json::Value;
 use uuid::Uuid;
 
-use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveRelationInstanceManager;
-use crate::builder::ReactiveEntityInstanceBuilder;
-use crate::graphql::dynamic::data_type_error;
+use inexor_rgf_reactive::ReactiveProperties;
+
+use crate::api::ReactiveEntityManager;
+use crate::api::ReactiveRelationManager;
+use crate::graphql::dynamic::create_properties_from_field_arguments;
+use crate::graphql::dynamic::DynamicGraphTypeDefinition;
 use crate::graphql::dynamic::entity_instance_not_found_error;
 use crate::graphql::dynamic::entity_instance_not_of_entity_type_error;
 use crate::graphql::dynamic::field_description::DynamicGraphFieldDescriptionExtension;
 use crate::graphql::dynamic::field_name::DynamicGraphFieldNameExtension;
 use crate::graphql::dynamic::interface::entity::INTERFACE_ENTITY_FIELD_ID;
 use crate::graphql::dynamic::namespace_entities_union_type_name;
-use crate::graphql::dynamic::number_error;
+use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::graphql::dynamic::to_field_value;
 use crate::graphql::dynamic::to_input_type_ref;
 use crate::graphql::dynamic::to_type_ref;
-use crate::graphql::dynamic::DynamicGraphTypeDefinition;
-use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::graphql::dynamic::UNION_ALL_ENTITIES;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
@@ -35,20 +34,20 @@ use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyType;
 use crate::model::PropertyTypeDefinition;
-use crate::model::ReactiveEntityInstance;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::model_runtime::LabeledProperties::LABEL;
+use crate::reactive::ReactiveEntity;
 
-pub fn entity_query_field(entity_type: &EntityType) -> Field {
-    let ty = entity_type.ty.clone();
+pub fn entity_query_field(entity_ty: &EntityTypeId, entity_type: &EntityType) -> Field {
+    let ty = entity_ty.clone();
     let entity_type_inner = entity_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(entity_ty);
     let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
-            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityManager>>()?;
             if let Ok(id) = ctx.args.try_get("id") {
                 let id = Uuid::from_str(id.string()?)?;
                 let entity_instance = entity_instance_manager.get(id).ok_or(Error::new("Uuid not found"))?;
@@ -75,73 +74,33 @@ pub fn entity_query_field(entity_type: &EntityType) -> Field {
     field
 }
 
-pub fn entity_creation_field(entity_type: &EntityType) -> Option<Field> {
-    let ty = entity_type.ty.clone();
+pub fn entity_creation_field(entity_ty: &EntityTypeId, entity_type: &EntityType) -> Option<Field> {
+    let ty = entity_ty.clone();
     let entity_type_inner = entity_type.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
+    let dy_ty = DynamicGraphTypeDefinition::from(entity_ty);
     let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
-            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
-            let mut builder = ReactiveEntityInstanceBuilder::new(&ty);
-            let mut builder = builder.id(Uuid::new_v4());
-            builder = builder.set_properties_defaults(entity_type.clone());
-            for property in entity_type.properties.iter() {
-                let value = ctx.args.try_get(&property.name)?;
-                match &property.data_type {
-                    DataType::Null => {
-                        return Err(data_type_error(property));
-                    }
-                    DataType::Bool => {
-                        builder = builder.property(&property.name, Value::Bool(value.boolean()?));
-                    }
-                    DataType::Number => {
-                        if let Ok(value) = value.i64() {
-                            builder = builder.property(&property.name, json!(value));
-                        } else if let Ok(value) = value.u64() {
-                            builder = builder.property(&property.name, json!(value));
-                        } else if let Ok(value) = value.f64() {
-                            builder = builder.property(&property.name, json!(value));
-                        } else {
-                            return Err(number_error(property));
-                        }
-                    }
-                    DataType::String => {
-                        builder = builder.property(&property.name, Value::String(value.string()?.to_string()));
-                    }
-                    DataType::Array => {
-                        let _ = value.list()?;
-                        let value = value.deserialize::<Value>()?;
-                        if !value.is_array() {
-                            return Err(data_type_error(property));
-                        }
-                        builder = builder.property(&property.name, value);
-                    }
-                    DataType::Object => {
-                        let value = value.deserialize::<Value>()?;
-                        if !value.is_object() {
-                            return Err(data_type_error(property));
-                        }
-                        builder = builder.property(&property.name, value);
-                    }
-                    DataType::Any => {
-                        if let Ok(value) = value.deserialize() {
-                            builder = builder.property(&property.name, value);
-                        }
-                    }
-                }
-            }
-            if let Some(id) = ctx.args.get("id") {
+            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityManager>>()?;
+            let id = if let Some(id) = ctx.args.get("id") {
                 let id = Uuid::from_str(id.string()?)?;
                 if entity_instance_manager.has(id) {
                     return Err(Error::new(format!("Uuid {} is already taken", id)));
                 }
-                builder = builder.id(id);
-            }
-            let entity_instance = builder.build();
-            if let Ok(entity_instance) = entity_instance_manager.register_reactive_instance(entity_instance) {
-                return Ok(Some(FieldValue::owned_any(entity_instance)));
+                id
+            } else {
+                Uuid::new_v4()
+            };
+            let properties = create_properties_from_field_arguments(&ctx, &entity_type.properties)?;
+            let properties = ReactiveProperties::new_with_id_from_properties(id, properties);
+            let reactive_entity = ReactiveEntity::builder()
+                .ty(&ty)
+                .id(id)
+                .properties(properties)
+                .build();
+            if let Ok(reactive_entity) = entity_instance_manager.register_reactive_instance(reactive_entity) {
+                return Ok(Some(FieldValue::owned_any(reactive_entity)));
             }
             Ok(None)
         })
@@ -159,7 +118,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
         let ty = ty.clone();
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
-            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityManager>>()?;
             // Multiple ids
             if let Ok(ids) = ctx.args.try_get("ids") {
                 let mut entity_instances = Vec::new();
@@ -208,7 +167,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
 pub fn entity_id_field() -> Field {
     Field::new(INTERFACE_ENTITY_FIELD_ID, TypeRef::named_nn(TypeRef::ID), |ctx| {
         FieldFuture::new(async move {
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
             Ok(Some(FieldValue::value(ID(entity_instance.id.to_string()))))
         })
     })
@@ -219,7 +178,7 @@ pub fn entity_property_field(property_type: &PropertyType) -> Field {
     Field::new(&property_type.name, to_type_ref(&property_type.data_type), move |ctx| {
         let property_type = property_type_inner.clone();
         FieldFuture::new(async move {
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
             Ok(entity_instance.get(&property_type.name).and_then(to_field_value))
         })
     })
@@ -246,8 +205,8 @@ pub fn entity_outbound_relation_field(
     let field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let outbound_ty = outbound_ty.clone();
         FieldFuture::new(async move {
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
             let relation_instances: Vec<FieldValue> = relation_instance_manager
                 .get_by_outbound_entity(entity_instance.id)
                 .iter()
@@ -281,8 +240,8 @@ pub fn entity_inbound_relation_field(
     let field = Field::new(field_name, TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let inbound_ty = inbound_ty.clone();
         FieldFuture::new(async move {
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
             let relation_instances: Vec<FieldValue> = relation_instance_manager
                 .get_by_inbound_entity(entity_instance.id)
                 .iter()
@@ -336,17 +295,15 @@ pub fn outbound_entity_to_inbound_field(
             if ty.namespace() == "*" {
                 context
                     .component_manager
-                    .get_all()
+                    .get_type_ids()
                     .into_iter()
-                    .map(|component| component.ty)
                     .filter_map(|ty| outbound_entity_to_inbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else if ty.type_name() == "*" {
                 context
                     .component_manager
-                    .get_by_namespace(&ty.namespace())
+                    .get_types_by_namespace(&ty.namespace())
                     .into_iter()
-                    .map(|component| component.ty)
                     .filter_map(|ty| outbound_entity_to_inbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else {
@@ -393,17 +350,15 @@ pub fn inbound_entity_to_outbound_field(
             if ty.namespace() == "*" {
                 context
                     .component_manager
-                    .get_all()
+                    .get_type_ids()
                     .into_iter()
-                    .map(|component| component.ty)
                     .filter_map(|ty| inbound_entity_to_outbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else if ty.type_name() == "*" {
                 context
                     .component_manager
-                    .get_by_namespace(&ty.namespace())
+                    .get_types_by_namespace(&ty.namespace())
                     .into_iter()
-                    .map(|component| component.ty)
                     .filter_map(|ty| inbound_entity_to_outbound_components_field(&relation_type.ty, &ty, None, None))
                     .collect()
             } else {
@@ -440,8 +395,8 @@ pub fn outbound_entity_to_inbound_entities_union_field(
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
         FieldFuture::new(async move {
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
             Ok(Some(FieldValue::list(
                 relation_instance_manager
                     .get_by_outbound_entity(entity_instance.id)
@@ -480,8 +435,8 @@ pub fn create_outbound_entity_to_inbound_field(ty: &RelationTypeId, type_name: &
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
         FieldFuture::new(async move {
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
             Ok(Some(FieldValue::list(
                 relation_instance_manager
                     .get_by_outbound_entity(entity_instance.id)
@@ -524,8 +479,8 @@ pub fn inbound_entity_to_outbound_entities_union_field(
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
         FieldFuture::new(async move {
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
             Ok(Some(FieldValue::list(
                 relation_instance_manager
                     .get_by_inbound_entity(entity_instance.id)
@@ -564,8 +519,8 @@ pub fn create_inbound_entity_to_outbound_field(ty: &RelationTypeId, type_name: &
     let mut field = Field::new(field_name, TypeRef::named_nn_list_nn(type_name), move |ctx| {
         let ty = relation_ty_inner.clone();
         FieldFuture::new(async move {
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
-            let entity_instance = ctx.parent_value.try_downcast_ref::<Arc<ReactiveEntityInstance>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
+            let entity_instance = ctx.parent_value.try_downcast_ref::<ReactiveEntity>()?;
             Ok(Some(FieldValue::list(
                 relation_instance_manager
                     .get_by_inbound_entity(entity_instance.id)
@@ -591,8 +546,8 @@ fn optional_field_to_vec(field: Option<Field>) -> Vec<Field> {
 fn get_entity_instances_by_type_filter_by_properties(
     ctx: &ResolverContext,
     entity_type: &EntityType,
-    entity_instance_manager: &Arc<dyn ReactiveEntityInstanceManager>,
-) -> Vec<Arc<ReactiveEntityInstance>> {
+    entity_instance_manager: &Arc<dyn ReactiveEntityManager>,
+) -> Vec<ReactiveEntity> {
     let mut instances = entity_instance_manager.get_by_type(&entity_type.ty);
     for property in entity_type.properties.iter() {
         let Some(expected_value) = ctx.args.get(&property.name) else {
@@ -666,7 +621,7 @@ fn add_entity_type_properties_as_field_arguments(mut field: Field, entity_type: 
         if exclude_label && property.name == LABEL.property_name() {
             continue;
         }
-        if let Some(type_ref) = to_input_type_ref(property, is_optional) {
+        if let Some(type_ref) = to_input_type_ref(property.value(), is_optional) {
             field = field.argument(InputValue::new(&property.name, type_ref));
         }
     }

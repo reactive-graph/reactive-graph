@@ -1,34 +1,35 @@
 use std::sync::Arc;
+use inexor_rgf_core_model::RelationInstanceId;
 
-use crate::model::ComponentBehaviourTypeId;
-use crate::model::ReactiveRelationInstance;
+use crate::reactive::ComponentBehaviourTypeId;
+use crate::reactive::ReactiveRelation;
 use crate::plugins::RelationComponentBehaviourRegistry;
-use crate::reactive::BehaviourFactory;
+use crate::behaviour::BehaviourFactory;
 
 pub struct RelationComponentBehaviourRegistryImpl {
     relation_component_behaviour_manager: Arc<dyn crate::api::RelationComponentBehaviourManager>,
     relation_component_behaviour_registry: Arc<dyn crate::api::RelationComponentBehaviourRegistry>,
-    reactive_relation_instance_manager: Arc<dyn crate::api::ReactiveRelationInstanceManager>,
+    reactive_relation_manager: Arc<dyn crate::api::ReactiveRelationManager>,
 }
 
 impl RelationComponentBehaviourRegistryImpl {
     pub fn new(
         relation_component_behaviour_manager: Arc<dyn crate::api::RelationComponentBehaviourManager>,
         relation_component_behaviour_registry: Arc<dyn crate::api::RelationComponentBehaviourRegistry>,
-        reactive_relation_instance_manager: Arc<dyn crate::api::ReactiveRelationInstanceManager>,
+        reactive_relation_manager: Arc<dyn crate::api::ReactiveRelationManager>,
     ) -> Self {
         Self {
             relation_component_behaviour_manager,
             relation_component_behaviour_registry,
-            reactive_relation_instance_manager,
+            reactive_relation_manager,
         }
     }
 }
 
 impl RelationComponentBehaviourRegistry for RelationComponentBehaviourRegistryImpl {
-    fn register(&self, component_behaviour_ty: ComponentBehaviourTypeId, factory: Arc<dyn BehaviourFactory<ReactiveRelationInstance> + Send + Sync>) {
+    fn register(&self, component_behaviour_ty: ComponentBehaviourTypeId, factory: Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>) {
         self.relation_component_behaviour_registry.register(component_behaviour_ty.clone(), factory);
-        self.reactive_relation_instance_manager
+        self.reactive_relation_manager
             .add_behaviour_to_all_relation_components(&component_behaviour_ty);
     }
 

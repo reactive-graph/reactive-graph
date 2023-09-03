@@ -2,14 +2,13 @@ use std::fmt;
 use std::sync::Arc;
 
 use async_graphql::*;
-use indradb::EdgeKey;
 use uuid::Uuid;
+use crate::model::RelationInstanceId;
 
 use crate::api::EntityTypeManager;
-use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveFlowInstanceManager;
-use crate::api::ReactiveRelationInstanceCreationError;
-use crate::api::ReactiveRelationInstanceManager;
+use crate::api::ReactiveEntityManager;
+use crate::api::ReactiveFlowManager;
+use crate::api::ReactiveRelationManager;
 use crate::api::RelationTypeManager;
 use crate::graphql::mutation::GraphQLEdgeKey;
 use crate::graphql::mutation::GraphQLFlowInstanceDefinition;
@@ -17,7 +16,7 @@ use crate::graphql::query::GraphQLFlowInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::EntityTypeId;
 use crate::model::FlowTypeId;
-use crate::model::ReactiveFlowInstance;
+use crate::reactive::ReactiveFlow;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinitionGetter;
 
@@ -32,11 +31,11 @@ pub enum FlowMutationError {
     MissingEntityType(EntityTypeId),
     MissingRelationType(RelationTypeId),
     MissingEntityInstance(Uuid),
-    MissingRelationInstance(EdgeKey),
+    MissingRelationInstance(RelationInstanceId),
     MissingOutboundEntityInstance(Uuid),
     MissingInboundEntityInstance(Uuid),
     FlowInstanceDoesNotContainEntityInstance(Uuid),
-    FlowInstanceDoesNotContainRelationInstance(EdgeKey),
+    FlowInstanceDoesNotContainRelationInstance(RelationInstanceId),
 }
 
 impl fmt::Display for FlowMutationError {
@@ -106,9 +105,9 @@ impl MutationFlowInstances {
         flow_id: Option<Uuid>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager>>()?;
 
         let ty = EntityTypeId::new_from_type(namespace, type_name);
         let entity_type = entity_type_manager.get(&ty);
@@ -126,7 +125,7 @@ impl MutationFlowInstances {
             }
         }
 
-        let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
+        let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.unwrap().properties);
 
         let wrapper_entity_instance = match flow_id {
             Some(id) => entity_instance_manager.create_with_id(&ty, id, properties),
@@ -138,7 +137,7 @@ impl MutationFlowInstances {
         }
         let wrapper_entity_instance = wrapper_entity_instance.unwrap();
 
-        let flow_instance: Arc<ReactiveFlowInstance> = Arc::new(wrapper_entity_instance.into());
+        let flow_instance: ReactiveFlow = ReactiveFlow::new(wrapper_entity_instance); // Arc::new(wrapper_entity_instance.into());
         flow_instance_manager.register_flow_instance(flow_instance.clone());
 
         Ok(flow_instance.into())
@@ -164,7 +163,7 @@ impl MutationFlowInstances {
         variables: Option<Vec<GraphQLPropertyInstance>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
         let variables = GraphQLPropertyInstance::to_map(variables);
         let properties = GraphQLPropertyInstance::to_map(properties);
         let ty = FlowTypeId::new_from_type(&namespace, &type_name);
@@ -174,25 +173,25 @@ impl MutationFlowInstances {
         }
     }
 
-    /// Manually ticks all entity instances and relation instances of this flow. This means, for
-    /// each property of each entity instance and relation instance the corresponding reactive
-    /// stream will be activated with it's last value.
-    ///
-    /// This leads to a recalculation if the instance is controlled by an behaviour which
-    /// consumes the reactive streams.
-    ///
-    /// In case of entity instances, it furthermore leads to a new value propagation if the output
-    /// property is connected to other properties.
-    async fn commit(&self, context: &Context<'_>, id: Uuid) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
-        let flow_instance = flow_instance_manager.get(id);
-        if flow_instance.is_none() {
-            return Err(FlowMutationError::MissingFlow(id).into());
-        }
-        let flow_instance = flow_instance.unwrap();
-        flow_instance_manager.commit(flow_instance.id);
-        Ok(flow_instance.into())
-    }
+    // /// Manually ticks all entity instances and relation instances of this flow. This means, for
+    // /// each property of each entity instance and relation instance the corresponding reactive
+    // /// stream will be activated with it's last value.
+    // ///
+    // /// This leads to a recalculation if the instance is controlled by an behaviour which
+    // /// consumes the reactive streams.
+    // ///
+    // /// In case of entity instances, it furthermore leads to a new value propagation if the output
+    // /// property is connected to other properties.
+    // async fn commit(&self, context: &Context<'_>, id: Uuid) -> Result<GraphQLFlowInstance> {
+    //     let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
+    //     let flow_instance = flow_instance_manager.get(id);
+    //     if flow_instance.is_none() {
+    //         return Err(FlowMutationError::MissingFlow(id).into());
+    //     }
+    //     let flow_instance = flow_instance.unwrap();
+    //     flow_instance_manager.commit(flow_instance.id);
+    //     Ok(flow_instance.into())
+    // }
 
     /// Creates a new entity instance and adds the entity instance to the given flow by id.
     async fn create_entity(
@@ -204,9 +203,9 @@ impl MutationFlowInstances {
         entity_id: Option<Uuid>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager>>()?;
 
         let flow_instance = flow_instance_manager.get(flow_id);
         if flow_instance.is_none() {
@@ -220,7 +219,7 @@ impl MutationFlowInstances {
             return Err(FlowMutationError::MissingEntityType(ty).into());
         }
 
-        let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, entity_type.unwrap().properties);
+        let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.unwrap().properties);
 
         let entity_instance = match entity_id {
             Some(id) => entity_instance_manager.create_with_id(&ty, id, properties),
@@ -235,8 +234,8 @@ impl MutationFlowInstances {
 
     /// Adds an existing entity instance by id to the given flow by id
     async fn add_entity(&self, context: &Context<'_>, flow_id: Uuid, entity_id: Uuid) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager>>()?;
 
         let flow_instance = flow_instance_manager.get(flow_id);
         if flow_instance.is_none() {
@@ -251,15 +250,15 @@ impl MutationFlowInstances {
         let entity_instance = entity_instance.unwrap();
 
         flow_instance.add_entity(entity_instance);
-        // No commit necessary _> The entity_instance is registered in the reactive_entity_instance_manager
+        // No commit necessary _> The entity_instance is registered in the reactive_entity_manager
 
         Ok(flow_instance.into())
     }
 
     /// Removes an entity instance from flow.
     async fn remove_entity(&self, context: &Context<'_>, flow_id: Uuid, entity_id: Uuid) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager>>()?;
 
         let flow_instance = flow_instance_manager.get(flow_id);
         if flow_instance.is_none() {
@@ -293,9 +292,9 @@ impl MutationFlowInstances {
         edge_key: GraphQLEdgeKey,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
 
         let ty = edge_key.ty();
         let relation_ty = ty.relation_type_id();
@@ -318,15 +317,9 @@ impl MutationFlowInstances {
 
         // TODO: optionally we could check if the entity_instance_manager contains the outbound_id and inbound_id
 
-        let properties = GraphQLPropertyInstance::to_map_with_defaults(properties, relation_type.properties);
+        let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, relation_type.properties);
 
-        let relation_instance = match indradb::Identifier::new(edge_key.type_name.clone()) {
-            Ok(_) => {
-                // let edge_key: EdgeKey = edge_key.into();
-                relation_instance_manager.create(&edge_key.into(), properties)
-            }
-            Err(err) => Err(ReactiveRelationInstanceCreationError::ValidationError(err)),
-        };
+        let relation_instance = relation_instance_manager.create(&edge_key.into(), properties);
 
         if relation_instance.is_err() {
             return Err(FlowMutationError::RelationInstanceCreationError().into());
@@ -342,8 +335,8 @@ impl MutationFlowInstances {
 
     /// Adds an existing relation instance by edge_key to the given flow by id
     async fn add_relation(&self, context: &Context<'_>, flow_id: Uuid, edge_key: GraphQLEdgeKey) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
 
         let flow_instance = flow_instance_manager.get(flow_id);
         if flow_instance.is_none() {
@@ -351,7 +344,7 @@ impl MutationFlowInstances {
         }
         let flow_instance = flow_instance.unwrap();
 
-        let edge_key: EdgeKey = edge_key.into();
+        let edge_key: RelationInstanceId = edge_key.into();
         let relation_instance = relation_instance_manager.get(&edge_key);
         if relation_instance.is_none() {
             return Err(FlowMutationError::MissingRelationInstance(edge_key).into());
@@ -365,7 +358,7 @@ impl MutationFlowInstances {
 
     /// Removes an existing relation instance by edge_key from the given flow by id
     async fn remove_relation(&self, context: &Context<'_>, flow_id: Uuid, edge_key: GraphQLEdgeKey) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
 
         let flow_instance = flow_instance_manager.get(flow_id);
         if flow_instance.is_none() {
@@ -373,7 +366,7 @@ impl MutationFlowInstances {
         }
         let flow_instance = flow_instance.unwrap();
 
-        let edge_key: EdgeKey = edge_key.into();
+        let edge_key: RelationInstanceId = edge_key.into();
 
         if !flow_instance.has_relation_by_key(&edge_key) {
             return Err(FlowMutationError::FlowInstanceDoesNotContainRelationInstance(edge_key).into());
@@ -390,7 +383,7 @@ impl MutationFlowInstances {
     /// Imports the given flow. Creates entity instances and relation instances which are contained
     /// in the given flow.
     async fn import(&self, context: &Context<'_>, flow: GraphQLFlowInstanceDefinition) -> Result<GraphQLFlowInstance> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
         let flow_instance = flow_instance_manager.create(flow.into())?;
         Ok(flow_instance.into())
     }

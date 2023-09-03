@@ -5,9 +5,12 @@ use uuid::Uuid;
 
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
+use crate::model::Extensions;
 use crate::model::EntityInstance;
+use crate::model::EntityInstances;
 use crate::model::EntityTypeId;
 use crate::model::Extension;
+use crate::model::PropertyInstances;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -45,16 +48,40 @@ pub struct GraphQLEntityInstanceDefinition {
 
 impl From<GraphQLEntityInstanceDefinition> for EntityInstance {
     fn from(entity_instance: GraphQLEntityInstanceDefinition) -> Self {
-        EntityInstance {
-            ty: EntityTypeId::new_from_type(entity_instance.namespace, entity_instance.type_name),
-            id: entity_instance.id,
-            description: entity_instance.description.clone(),
-            properties: entity_instance
-                .properties
-                .iter()
-                .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
-                .collect(),
-            extensions: entity_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect(),
-        }
+        let properties: PropertyInstances = entity_instance.properties
+            .iter()
+            .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
+            .collect();
+        let extensions: Extensions = entity_instance.extensions
+            .iter()
+            .map(|e| Extension::from(e.clone()))
+            .collect();
+        EntityInstance::builder()
+            .ty(EntityTypeId::new_from_type(entity_instance.namespace, entity_instance.type_name))
+            .id(entity_instance.id)
+            .description(&entity_instance.description)
+            .properties(properties)
+            .extensions(extensions)
+            .build()
+    }
+}
+
+pub struct GraphQLEntityInstanceDefinitions(pub Vec<GraphQLEntityInstanceDefinition>);
+
+impl GraphQLEntityInstanceDefinitions {
+    pub fn new(entity_instances: Vec<GraphQLEntityInstanceDefinition>) -> Self {
+        Self(entity_instances)
+    }
+}
+
+impl Default for GraphQLEntityInstanceDefinitions {
+    fn default() -> Self {
+        Self(Vec::new())
+    }
+}
+
+impl From<GraphQLEntityInstanceDefinitions> for EntityInstances {
+    fn from(entity_instances: GraphQLEntityInstanceDefinitions) -> Self {
+        entity_instances.0.into_iter().map(|entity_instance| entity_instance.into()).collect()
     }
 }

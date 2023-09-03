@@ -9,20 +9,32 @@ repository.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
-dashmap = { workspace = true }
-indradb-lib = { workspace = true }
+dashmap = { workspace = true, features = [ "serde" ] }
+default-test = { workspace = true, optional = true }
 paste = { workspace = true }
+rand = { workspace = true, optional = true }
+rand_derive2 = { workspace = true, optional = true }
 schemars = { workspace = true, features = [ "uuid1" ] }
 serde = { workspace = true, features = [ "derive" ] }
 serde_json = { workspace = true }
-uuid = { workspace = true, features = ["serde", "v4", "v5"] }
+thiserror = { workspace = true }
+typed-builder = { workspace = true }
+uuid = { workspace = true, features = [ "serde", "v4", "v5" ] }
+wildmatch = { workspace = true }
 
-inexor-rgf-core-frp = { version = "0.9.1", path = "../frp" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils", optional = true }
+#inexor-rgf-core-frp = { version = "0.10.0", path = "../frp" }
 
 [dev-dependencies]
-random-string = "1.0"
-rand = "0.8"
-stopwatch2 = "2.0"
+default-test = { workspace = true }
+random-string = { workspace = true }
+rand = { workspace = true }
+rand_derive2 = { workspace = true }
+
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+
+[features]
+test = [ "default-test", "rand", "rand_derive2", "inexor-rgf-test-utils" ]
 
 [lib]
 crate-type = ["lib"]

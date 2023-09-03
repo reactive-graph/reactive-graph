@@ -1,7 +1,8 @@
 use std::sync::Arc;
 
-use crate::CommandManager;
+use crate::{CommandManager, EntityTypeImportExportManager, FlowTypeImportExportManager, RelationTypeImportExportManager};
 use crate::ComponentManager;
+use crate::ComponentImportExportManager;
 use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
 use crate::EntityComponentBehaviourRegistry;
@@ -32,14 +33,26 @@ pub trait PluginContext: Send + Sync {
     /// Returns the component manager.
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
+    /// Returns the component import export manager.
+    fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager>;
+
     /// Returns the entity type manager.
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager>;
+
+    /// Returns the entity type import export manager.
+    fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager>;
 
     /// Returns the relation type manager.
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager>;
 
+    /// Returns the relation type import export manager.
+    fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager>;
+
     /// Returns the flow type manager.
     fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager>;
+
+    /// Returns the flow type import export manager.
+    fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager>;
 
     // Instance System
 

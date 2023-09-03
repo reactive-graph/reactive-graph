@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use inexor_rgf_core_plugins::{ComponentImportExportManager, EntityTypeImportExportManager, FlowTypeImportExportManager, RelationTypeImportExportManager};
 
 use crate::plugins::CommandManager;
 use crate::plugins::ComponentManager;
@@ -19,9 +20,13 @@ use crate::plugins::SystemEventManager;
 
 pub struct PluginContextImpl {
     component_manager: Arc<dyn ComponentManager>,
+    component_import_export_manager: Arc<dyn ComponentImportExportManager>,
     entity_type_manager: Arc<dyn EntityTypeManager>,
+    entity_type_import_export_manager: Arc<dyn EntityTypeImportExportManager>,
     relation_type_manager: Arc<dyn RelationTypeManager>,
+    relation_type_import_export_manager: Arc<dyn RelationTypeImportExportManager>,
     flow_type_manager: Arc<dyn FlowTypeManager>,
+    flow_type_import_export_manager: Arc<dyn FlowTypeImportExportManager>,
     entity_instance_manager: Arc<dyn EntityInstanceManager>,
     relation_instance_manager: Arc<dyn RelationInstanceManager>,
     flow_instance_manager: Arc<dyn FlowInstanceManager>,
@@ -38,9 +43,13 @@ pub struct PluginContextImpl {
 impl PluginContextImpl {
     pub fn new(
         component_manager: Arc<dyn ComponentManager>,
+        component_import_export_manager: Arc<dyn ComponentImportExportManager>,
         entity_type_manager: Arc<dyn EntityTypeManager>,
+        entity_type_import_export_manager: Arc<dyn EntityTypeImportExportManager>,
         relation_type_manager: Arc<dyn RelationTypeManager>,
+        relation_type_import_export_manager: Arc<dyn RelationTypeImportExportManager>,
         flow_type_manager: Arc<dyn FlowTypeManager>,
+        flow_type_import_export_manager: Arc<dyn FlowTypeImportExportManager>,
         entity_instance_manager: Arc<dyn EntityInstanceManager>,
         relation_instance_manager: Arc<dyn RelationInstanceManager>,
         flow_instance_manager: Arc<dyn FlowInstanceManager>,
@@ -55,9 +64,13 @@ impl PluginContextImpl {
     ) -> Self {
         PluginContextImpl {
             component_manager,
+            component_import_export_manager,
             entity_type_manager,
+            entity_type_import_export_manager,
             relation_type_manager,
+            relation_type_import_export_manager,
             flow_type_manager,
+            flow_type_import_export_manager,
             entity_instance_manager,
             relation_instance_manager,
             flow_instance_manager,
@@ -78,16 +91,32 @@ impl PluginContext for PluginContextImpl {
         self.component_manager.clone()
     }
 
+    fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager> {
+        self.component_import_export_manager.clone()
+    }
+
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager> {
         self.entity_type_manager.clone()
+    }
+
+    fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager> {
+        self.entity_type_import_export_manager.clone()
     }
 
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager> {
         self.relation_type_manager.clone()
     }
 
+    fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager> {
+        self.relation_type_import_export_manager.clone()
+    }
+
     fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager> {
         self.flow_type_manager.clone()
+    }
+
+    fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager> {
+        self.flow_type_import_export_manager.clone()
     }
 
     fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager> {

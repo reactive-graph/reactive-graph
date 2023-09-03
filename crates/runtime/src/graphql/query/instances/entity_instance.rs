@@ -7,7 +7,7 @@ use crate::api::ComponentManager;
 use crate::api::EntityBehaviourRegistry;
 use crate::api::EntityComponentBehaviourRegistry;
 use crate::api::EntityTypeManager;
-use crate::api::ReactiveRelationInstanceManager;
+use crate::api::ReactiveRelationManager;
 use crate::graphql::mutation::RelationTypeIdDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLComponentBehaviour;
@@ -15,11 +15,11 @@ use crate::graphql::query::GraphQLEntityBehaviour;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
-use crate::model::ReactiveEntityInstance;
+use crate::reactive::ReactiveEntity;
 use crate::model::RelationTypeId;
 
 pub struct GraphQLEntityInstance {
-    entity_instance: Arc<ReactiveEntityInstance>,
+    entity_instance: ReactiveEntity,
 }
 
 /// Entity instances represents an typed objects which contains properties.
@@ -143,7 +143,7 @@ impl GraphQLEntityInstance {
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The outbound relation type")] outbound_ty: Option<RelationTypeIdDefinition>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
         let outbound_ty: Option<RelationTypeId> = outbound_ty.map(|outbound_ty| outbound_ty.into());
         let relation_instances = relation_instance_manager
             .get_by_outbound_entity(self.entity_instance.id)
@@ -160,7 +160,7 @@ impl GraphQLEntityInstance {
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The inbound relation type")] inbound_ty: Option<RelationTypeIdDefinition>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
         let inbound_ty: Option<RelationTypeId> = inbound_ty.map(|inbound_ty| inbound_ty.into());
         let relation_instances = relation_instance_manager
             .get_by_inbound_entity(self.entity_instance.id)
@@ -172,8 +172,8 @@ impl GraphQLEntityInstance {
     }
 }
 
-impl From<Arc<ReactiveEntityInstance>> for GraphQLEntityInstance {
-    fn from(entity_instance: Arc<ReactiveEntityInstance>) -> Self {
+impl From<ReactiveEntity> for GraphQLEntityInstance {
+    fn from(entity_instance: ReactiveEntity) -> Self {
         GraphQLEntityInstance { entity_instance }
     }
 }

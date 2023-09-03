@@ -7,6 +7,7 @@ use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLMutability;
 use crate::graphql::query::GraphQLSocketType;
 use crate::model::PropertyType;
+use crate::model::PropertyTypes;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "PropertyTypeDefinition")]
@@ -43,5 +44,25 @@ impl From<PropertyTypeDefinition> for PropertyType {
             mutability: property_type.mutability.into(),
             extensions: property_type.extensions.iter().map(|extension| extension.clone().into()).collect(),
         }
+    }
+}
+
+pub struct PropertyTypeDefinitions(pub Vec<PropertyTypeDefinition>);
+
+impl PropertyTypeDefinitions {
+    pub fn new(tys: Vec<PropertyTypeDefinition>) -> Self {
+        Self(tys)
+    }
+}
+
+impl Default for PropertyTypeDefinitions {
+    fn default() -> Self {
+        Self(Vec::new())
+    }
+}
+
+impl From<PropertyTypeDefinitions> for PropertyTypes {
+    fn from(tys: PropertyTypeDefinitions) -> Self {
+        tys.0.into_iter().map(|ty| ty.into()).collect()
     }
 }

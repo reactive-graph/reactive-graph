@@ -45,7 +45,6 @@ futures-timer = { workspace = true }
 futures-util = { workspace = true }
 gql_client = "1.0.7"
 http = { workspace = true }
-indradb-lib = { workspace = true }
 json5 = { workspace = true }
 lazy_static = { workspace = true }
 libloading = { workspace = true }
@@ -75,30 +74,38 @@ uuid = { version = "1.1", features = ["serde", "v4"] }
 walkdir = { workspace = true }
 wildmatch = { workspace = true }
 
-inexor-rgf-core-config = { version = "0.9.1", path = "../core/config" }
-inexor-rgf-core-di = { version = "0.9.1", path = "../core/di", features = [ "async" ] }
-inexor-rgf-core-frp = { version = "0.9.1", path = "../core/frp" }
-inexor-rgf-core-model = { version = "0.9.1", path = "../core/model" }
-inexor-rgf-core-reactive = { version = "0.9.1", path = "../core/reactive" }
-inexor-rgf-core-builder = { version = "0.9.1", path = "../core/builder" }
-inexor-rgf-core-plugins = { version = "0.9.1", path = "../core/plugins" }
-inexor-rgf-model-command = { version = "0.9.1", path = "../model/command" }
-inexor-rgf-model-dynamic-graph = { version = "0.9.1", path = "../model/dynamic_graph" }
-inexor-rgf-model-flow = { version = "0.9.1", path = "../model/flow" }
-inexor-rgf-model-runtime = { version = "0.9.1", path = "../model/runtime" }
+inexor-rgf-behaviour = { version = "0.10.0", path = "../behaviour" }
+inexor-rgf-core-config = { version = "0.10.0", path = "../core/config" }
+inexor-rgf-core-di = { version = "0.10.0", path = "../core/di", features = [ "async" ] }
+inexor-rgf-core-frp = { version = "0.10.0", path = "../core/frp" }
+inexor-rgf-core-model = { version = "0.10.0", path = "../core/model" }
+inexor-rgf-reactive = { version = "0.10.0", path = "../reactive" }
+inexor-rgf-core-plugins = { version = "0.10.0", path = "../core/plugins" }
+inexor-rgf-model-command = { version = "0.10.0", path = "../model/command" }
+inexor-rgf-model-dynamic-graph = { version = "0.10.0", path = "../model/dynamic_graph" }
+inexor-rgf-model-flow = { version = "0.10.0", path = "../model/flow" }
+inexor-rgf-model-runtime = { version = "0.10.0", path = "../model/runtime" }
 
 [dev-dependencies]
-colored = "2.0.0"
-futures-await-test = "0.3"
-glob = "0.3.1"
-random-string = "1.0"
-similar = "2.2.1"
-similar-asserts = "1.4.2"
-
+colored = { workspace = true }
+default-test = { workspace = true }
+futures-await-test = { workspace = true }
+glob = { workspace = true }
 log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
+similar = { workspace = true }
+similar-asserts = { workspace = true }
+
+inexor-rgf-core-model = { version = "0.10.0", path = "../core/model", features = ["test"] }
+inexor-rgf-rt = { version = "0.10.0", path = ".", features = ["test"] }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../test-utils" }
+#my-crate = {path = "../my-crate", features = ["test-utils"]}
+
 
 [build-dependencies]
 vergen = { version = "8.1.3", features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
+
+[features]
+test = []
 
 [lib]
 crate-type = ["lib"]

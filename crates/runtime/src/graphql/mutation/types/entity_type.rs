@@ -1,20 +1,24 @@
 use std::sync::Arc;
 
 use async_graphql::*;
-use log::debug;
 
-use crate::api::EntityTypeComponentError;
-use crate::api::EntityTypeExtensionError;
 use crate::api::EntityTypeManager;
-use crate::api::EntityTypePropertyError;
-use crate::api::EntityTypeRegistrationError;
-use crate::builder::EntityTypeBuilder;
+use crate::error::types::entity::EntityTypeRegistrationError;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
+use crate::graphql::mutation::ComponentTypeIdDefinitions;
+use crate::graphql::mutation::PropertyTypeDefinitions;
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
+use crate::graphql::query::GraphQLExtensions;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
+use crate::model::AddExtensionError;
+use crate::model::AddPropertyError;
+use crate::model::EntityType;
+use crate::model::EntityTypeAddComponentError;
+use crate::model::EntityTypeAddExtensionError;
+use crate::model::EntityTypeAddPropertyError;
 use crate::model::Extension;
 
 #[derive(Default)]
@@ -40,29 +44,13 @@ impl MutationEntityTypes {
         if entity_type_manager.has(&ty) {
             return Err(Error::new(format!("Entity type {} already exists", &ty)));
         }
-        let mut entity_type_builder = EntityTypeBuilder::new(&ty);
-        if let Some(description) = description {
-            entity_type_builder.description(description);
-        }
-        if let Some(components) = components {
-            for component in components {
-                entity_type_builder.component(component);
-            }
-        }
-        if let Some(properties) = properties {
-            for property in properties {
-                debug!("{} {}", property.name, property.data_type.to_string());
-                entity_type_builder.property_from(property.clone());
-            }
-        }
-        if let Some(extensions) = extensions {
-            for extension in extensions {
-                debug!("{} {}", &extension.ty, extension.extension.to_string());
-                entity_type_builder.extension(extension.ty.namespace, extension.ty.type_name, extension.extension.clone());
-            }
-        }
-
-        let entity_type = entity_type_builder.build();
+        let entity_type = EntityType::builder()
+            .ty(&ty)
+            .description(description.unwrap_or_default())
+            .components(ComponentTypeIdDefinitions::new(components.unwrap_or_default()))
+            .properties(PropertyTypeDefinitions::new(properties.unwrap_or_default()))
+            .extensions(GraphQLExtensions::new(extensions.unwrap_or_default()))
+            .build();
         match entity_type_manager.register(entity_type) {
             Ok(entity_type) => Ok(entity_type.into()),
             Err(EntityTypeRegistrationError::EntityTypeAlreadyExists(ty)) => {
@@ -81,16 +69,17 @@ impl MutationEntityTypes {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         let component_ty = component.into();
-        if !entity_type_manager.has(&ty) {
-            return Err(Error::new(format!("Entity type {} does not exist", ty)));
-        }
+        // if !entity_type_manager.has(&ty) {
+        //     return Err(Error::new(format!("Entity type {ty} does not exist")));
+        // }
         match entity_type_manager.add_component(&ty, &component_ty) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
-                .ok_or_else(|| Error::new(format!("Entity type {} not found", &ty))),
-            Err(EntityTypeComponentError::ComponentAlreadyAssigned) => Err(Error::new(format!("Entity type {} already has component {}", &ty, &component_ty))),
-            Err(EntityTypeComponentError::ComponentDoesNotExist) => Err(Error::new(format!("Component {} doesn't exist", component_ty))),
+                .ok_or_else(|| Error::new(format!("Entity type {ty} not found"))),
+            Err(EntityTypeAddComponentError::IsAlreadyA(component_ty)) => Err(Error::new(format!("Entity type {ty} already has component {component_ty}"))),
+            Err(EntityTypeAddComponentError::EntityTypeDoesNotExist(entity_ty)) => Err(Error::new(format!("Entity type {entity_ty} doesn't exist"))),
+            Err(EntityTypeAddComponentError::ComponentDoesNotExist(component_ty)) => Err(Error::new(format!("Component {component_ty} doesn't exist"))),
         }
     }
 
@@ -107,7 +96,9 @@ impl MutationEntityTypes {
         if !entity_type_manager.has(&ty) {
             return Err(Error::new(format!("Entity type {} does not exist", ty)));
         }
-        entity_type_manager.remove_component(&ty, &component_ty);
+        if let Err(e) = entity_type_manager.remove_component(&ty, &component_ty) {
+            return Err(Error::new(format!("Failed to remove component {component_ty} from entity type {ty}")));
+        }
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
@@ -123,16 +114,19 @@ impl MutationEntityTypes {
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
-        if !entity_type_manager.has(&ty) {
-            return Err(Error::new(format!("Entity type {} does not exist", ty)));
-        }
+        // if !entity_type_manager.has(&ty) {
+        //     return Err(Error::new(format!("Entity type {} does not exist", ty)));
+        // }
         match entity_type_manager.add_property(&ty, property.into()) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
-                .ok_or_else(|| Error::new(format!("Entity type {} not found", ty))),
-            Err(EntityTypePropertyError::PropertyAlreadyExists) => {
-                Err(Error::new(format!("Failed to add property to entity type {}: Property already exists", ty)))
+                .ok_or_else(|| Error::new(format!("Entity type {ty} not found"))),
+            Err(EntityTypeAddPropertyError::EntityTypeDoesNotExist(entity_ty)) => {
+                Err(Error::new(format!("Entity type {entity_ty} does not exist")))
+            }
+            Err(EntityTypeAddPropertyError::AddPropertyError(AddPropertyError::PropertyAlreadyExist(property_name))) => {
+                Err(Error::new(format!("Failed to add property to entity type {ty}: Property {property_name} already exists")))
             }
         }
     }
@@ -147,9 +141,11 @@ impl MutationEntityTypes {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
-            return Err(Error::new(format!("Entity type {} does not exist", ty)));
+            return Err(Error::new(format!("Entity type {ty} does not exist")));
         }
-        entity_type_manager.remove_property(&ty, property_name.as_str());
+        if entity_type_manager.remove_property(&ty, property_name.as_str()).is_err() {
+            return Err(Error::new(format!("Failed to remove property {property_name} from entity type {ty}")));
+        }
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
@@ -165,18 +161,18 @@ impl MutationEntityTypes {
     ) -> Result<GraphQLEntityType> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
-        if !entity_type_manager.has(&ty) {
-            return Err(Error::new(format!("Entity type {} does not exist", ty)));
-        }
+        // if !entity_type_manager.has(&ty) {
+        //     return Err(Error::new(format!("Entity type {} does not exist", ty)));
+        // }
         let extension: Extension = extension.into();
         match entity_type_manager.add_extension(&ty, extension) {
             Ok(_) => entity_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
                 .ok_or_else(|| Error::new(format!("Entity type {} not found", ty))),
-            Err(EntityTypeExtensionError::ExtensionAlreadyExists(extension_ty)) => Err(Error::new(format!(
-                "Failed to add extension {} to entity type {}: Extension already exists",
-                extension_ty, ty
+            Err(EntityTypeAddExtensionError::EntityTypeDoesNotExist(entity_ty)) => Err(Error::new(format!("Entity type {entity_ty} does not exist"))),
+            Err(EntityTypeAddExtensionError::AddExtensionError(AddExtensionError::ExtensionAlreadyExist(extension_ty))) => Err(Error::new(format!(
+                "Failed to add extension {extension_ty} to entity type {ty}: Extension already exists"
             ))),
         }
     }
@@ -193,19 +189,21 @@ impl MutationEntityTypes {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         let ty = ty.into();
         if !entity_type_manager.has(&ty) {
-            return Err(Error::new(format!("Entity type {} does not exist", ty)));
+            return Err(Error::new(format!("Entity type {ty} does not exist")));
         }
         let extension_ty = extension_ty.into();
-        entity_type_manager.remove_extension(&ty, &extension_ty);
+        if entity_type_manager.remove_extension(&ty, &extension_ty).is_err() {
+            return Err(Error::new(format!("Failed to remove extension {extension_ty} from entity type {ty}")));
+        }
         entity_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
-            .ok_or_else(|| Error::new(format!("Entity type {} not found", ty)))
+            .ok_or_else(|| Error::new(format!("Entity type {ty} not found")))
     }
 
     /// Deletes the entity type with the given name.
     async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] ty: EntityTypeIdDefinition) -> Result<bool> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
-        Ok(entity_type_manager.delete(&ty.into()))
+        Ok(entity_type_manager.delete(&ty.into()).is_some())
     }
 }

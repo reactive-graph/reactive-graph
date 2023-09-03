@@ -11,8 +11,8 @@ use log::info;
 use log::trace;
 use uuid::Uuid;
 
-use crate::implementation::get_deploy_path;
-use crate::implementation::get_install_path;
+use crate::implementation::plugins::get_deploy_path;
+use crate::implementation::plugins::get_install_path;
 use crate::plugin::registrar::PluginRegistrar;
 use crate::plugin::PluginProxy;
 use crate::plugin::PluginTransitionResult;

@@ -1,4 +1,5 @@
 use uuid::Uuid;
+use inexor_rgf_core_model::{EntityInstances, Extensions, FlowTypeAddEntityInstanceError, FlowTypeAddExtensionError, FlowTypeAddVariableError, FlowTypeRemoveEntityInstanceError, FlowTypeRemoveExtensionError, FlowTypeRemoveVariableError, FlowTypes, FlowTypeUpdateEntityInstanceError, FlowTypeUpdateExtensionError, FlowTypeUpdateVariableError, PropertyTypes, RelationInstances, Variable};
 
 use crate::model::EntityInstance;
 use crate::model::Extension;
@@ -6,7 +7,6 @@ use crate::model::ExtensionTypeId;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::PropertyType;
-use crate::model::RelationInstance;
 
 #[derive(Debug)]
 pub enum FlowTypeManagerError {
@@ -14,16 +14,14 @@ pub enum FlowTypeManagerError {
 }
 
 #[derive(Debug)]
-pub enum FlowTypeCreationError {
-    Failed,
-}
+pub struct FlowTypeCreationError;
 
 pub trait FlowTypeManager: Send + Sync {
     /// Returns all flow types.
-    fn get_all(&self) -> Vec<FlowType>;
+    fn get_all(&self) -> FlowTypes;
 
     /// Returns all flow types.
-    fn get_by_namespace(&self, namespace: &str) -> Vec<FlowType>;
+    fn get_by_namespace(&self, namespace: &str) -> FlowTypes;
 
     /// Returns true, if a flow type with the given name exists.
     fn has(&self, ty: &FlowTypeId) -> bool;
@@ -38,7 +36,7 @@ pub trait FlowTypeManager: Send + Sync {
     fn get_by_type(&self, namespace: &str, name: &str) -> Option<FlowType>;
 
     /// Returns all flow types whose names matches the given search string.
-    fn find(&self, search: &str) -> Vec<FlowType>;
+    fn find_by_type_name(&self, search: &str) -> FlowTypes;
 
     /// Returns the count of flow types.
     fn count(&self) -> usize;
@@ -53,49 +51,43 @@ pub trait FlowTypeManager: Send + Sync {
         ty: &FlowTypeId,
         description: &str,
         wrapper_entity_instance: EntityInstance,
-        entity_instances: Vec<EntityInstance>,
-        relation_instances: Vec<RelationInstance>,
-        variables: Vec<PropertyType>,
-        extensions: Vec<Extension>,
-    );
+        entity_instances: EntityInstances,
+        relation_instances: RelationInstances,
+        variables: PropertyTypes,
+        extensions: Extensions,
+    ) -> Result<FlowType, FlowTypeCreationError>;
 
     /// Adds the given entity instance to the flow type with the given name.
-    fn add_entity_instance(&self, ty: &FlowTypeId, entity_instance: EntityInstance);
+    fn add_entity_instance(&self, ty: &FlowTypeId, entity_instance: EntityInstance) -> Result<(), FlowTypeAddEntityInstanceError>;
 
     /// Updates the entity instance with the given id of the flow type with the given name.
-    fn update_entity_instance(&self, ty: &FlowTypeId, id: Uuid, entity_instance: EntityInstance);
+    fn update_entity_instance(&self, ty: &FlowTypeId, id: Uuid, entity_instance: EntityInstance) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError>;
 
     /// Removes the entity instance with the given id from the flow type with the given name.
-    fn remove_entity_instance(&self, ty: &FlowTypeId, id: Uuid);
+    fn remove_entity_instance(&self, ty: &FlowTypeId, id: Uuid) -> Result<Option<(Uuid, EntityInstance)>, FlowTypeRemoveEntityInstanceError>;
 
     /// Adds the given extension to the given flow type.
-    fn add_extension(&self, ty: &FlowTypeId, extension: Extension);
+    fn add_extension(&self, ty: &FlowTypeId, extension: Extension) -> Result<ExtensionTypeId, FlowTypeAddExtensionError>;
 
     /// Updates the extension with the given type of the given flow type.
-    fn update_extension(&self, ty: &FlowTypeId, extension: Extension);
+    fn update_extension(&self, ty: &FlowTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, FlowTypeUpdateExtensionError>;
 
     /// Removes the extension with the given type from the given flow type.
-    fn remove_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId);
+    fn remove_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, FlowTypeRemoveExtensionError>;
 
     /// Adds the given variable to the given flow type.
-    fn add_variable(&self, ty: &FlowTypeId, variable: PropertyType);
+    fn add_variable(&self, ty: &FlowTypeId, variable: PropertyType) -> Result<Variable, FlowTypeAddVariableError>;
 
     /// Updates the variable with the given name of the flow type with the given name.
-    fn update_variable(&self, ty: &FlowTypeId, variable_name: &str, variable: PropertyType);
+    fn update_variable(&self, ty: &FlowTypeId, variable_name: &str, variable: PropertyType) -> Result<Variable, FlowTypeUpdateVariableError>;
 
     /// Removes the variable with the given name from the flow type with the given name.
-    fn remove_variable(&self, ty: &FlowTypeId, variable_name: &str);
+    fn remove_variable(&self, ty: &FlowTypeId, variable_name: &str) -> Result<Variable, FlowTypeRemoveVariableError>;
 
     /// Deletes the flow type with the given name.
-    fn delete(&self, ty: &FlowTypeId) -> bool;
+    fn delete(&self, ty: &FlowTypeId) -> Option<FlowType>;
 
     /// Validates the flow type with the given name.
     /// Tests that all entity types and relation types exists and are valid.
     fn validate(&self, ty: &FlowTypeId) -> bool;
-
-    /// Imports an flow type from a JSON file file located at the given path.
-    fn import(&self, path: &str);
-
-    /// Exports the flow type with the given name to a JSON file located at the given path.
-    fn export(&self, ty: &FlowTypeId, path: &str);
 }

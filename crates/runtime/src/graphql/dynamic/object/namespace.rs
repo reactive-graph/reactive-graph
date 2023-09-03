@@ -26,16 +26,16 @@ pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Opt
     let mut namespace =
         Object::new(&type_name).description(format!("Queries for components, entities and relations on the namespace {}", &namespace.to_case(Pascal)));
 
-    for component in components {
-        namespace = namespace.field(component_query_field(&component));
+    for (component_ty, component) in components {
+        namespace = namespace.field(component_query_field(&component_ty, &component));
     }
 
-    for entity_type in entity_types {
-        namespace = namespace.field(entity_query_field(&entity_type));
+    for (entity_ty, entity_type) in entity_types {
+        namespace = namespace.field(entity_query_field(&entity_ty, &entity_type));
     }
 
-    for relation_type in relation_types {
-        namespace = namespace.field(relation_query_field(&relation_type));
+    for (relation_ty, relation_type) in relation_types {
+        namespace = namespace.field(relation_query_field(&relation_ty, &relation_type));
     }
 
     Some(namespace)
@@ -53,8 +53,8 @@ pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> 
 
     let mut contains_field = false;
 
-    for entity_type in entity_types {
-        if let Some(field) = entity_creation_field(&entity_type) {
+    for (entity_ty, entity_type) in entity_types {
+        if let Some(field) = entity_creation_field(&entity_ty, &entity_type) {
             namespace = namespace.field(field);
             contains_field = true;
         }
@@ -64,12 +64,12 @@ pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> 
         }
     }
 
-    for relation_type in relation_types {
-        if let Some(field) = relation_creation_field(&relation_type) {
+    for relation_type in relation_types.iter() {
+        if let Some(field) = relation_creation_field(relation_type.key(), relation_type.value()) {
             namespace = namespace.field(field);
             contains_field = true;
         }
-        if let Some(field) = relation_mutation_field(&relation_type) {
+        if let Some(field) = relation_mutation_field(relation_type.key(), relation_type.value()) {
             namespace = namespace.field(field);
             contains_field = true;
         }

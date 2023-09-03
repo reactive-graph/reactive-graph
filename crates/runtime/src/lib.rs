@@ -3,6 +3,7 @@
 #![feature(register_tool)]
 #![feature(test)]
 #![feature(path_file_prefix)]
+#![feature(result_option_inspect)]
 #![register_tool(tarpaulin)]
 #![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 
@@ -18,16 +19,19 @@ use std::sync::Arc;
 use std::sync::RwLock;
 use std::time::Duration;
 
-use inexor_rgf_core_builder as builder;
+use inexor_rgf_behaviour as behaviour;
 use inexor_rgf_core_config as config;
 use inexor_rgf_core_di as di;
 use inexor_rgf_core_model as model;
 use inexor_rgf_core_plugins as plugins;
-use inexor_rgf_core_reactive as reactive;
+use inexor_rgf_reactive as reactive;
 use inexor_rgf_model_command as model_command;
 use inexor_rgf_model_dynamic_graph as model_dynamic_graph;
 use inexor_rgf_model_flow as model_flow;
 use inexor_rgf_model_runtime as model_runtime;
+
+#[cfg(test)]
+use inexor_rgf_test_utils as test_utils;
 
 use crate::di::profiles;
 use crate::di::Container;
@@ -37,6 +41,7 @@ pub use crate::runtime::Runtime;
 
 mod api;
 mod commands;
+mod error;
 mod graphql;
 mod implementation;
 mod plugin;

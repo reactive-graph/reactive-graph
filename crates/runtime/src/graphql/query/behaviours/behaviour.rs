@@ -1,6 +1,6 @@
 use async_graphql::*;
 
-use crate::model::BehaviourTypeId;
+use crate::reactive::BehaviourTypeId;
 use crate::model::NamespacedTypeGetter;
 
 pub struct GraphQLBehaviour {

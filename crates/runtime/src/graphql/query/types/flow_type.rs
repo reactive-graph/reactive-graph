@@ -11,13 +11,11 @@ use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationInstance;
-use crate::graphql::query::GraphQLTypeCategory;
-use crate::implementation::get_type_category;
-use crate::implementation::get_type_category_extension;
 use crate::model::FlowType;
+// use crate::model::NamespacedTypeContainer;
 use crate::model::NamespacedTypeGetter;
-use crate::model::ReactiveEntityInstance;
-use crate::model::ReactiveRelationInstance;
+use crate::reactive::ReactiveEntity;
+use crate::reactive::ReactiveRelation;
 
 pub struct GraphQLFlowType {
     flow_type: FlowType,
@@ -59,7 +57,7 @@ impl GraphQLFlowType {
             .iter()
             .map(|entity_instance| {
                 // Construct a temporary instance, do not register!
-                let entity_instance: GraphQLEntityInstance = Arc::new(ReactiveEntityInstance::from(entity_instance.clone())).into();
+                let entity_instance: GraphQLEntityInstance = ReactiveEntity::from(entity_instance.clone()).into();
                 entity_instance
             })
             .collect()
@@ -78,24 +76,24 @@ impl GraphQLFlowType {
             .filter_map(|relation_instance| {
                 // Construct temporary entity instances and a temporary relation instance, do not register!
                 let outbound = if relation_instance.outbound_id == self.flow_type.wrapper_entity_instance.id {
-                    Arc::new(ReactiveEntityInstance::from(self.flow_type.wrapper_entity_instance.clone()))
+                    ReactiveEntity::from(self.flow_type.wrapper_entity_instance.clone())
                 } else {
                     self.flow_type
                         .entity_instances
                         .iter()
                         .find(|e| e.id == relation_instance.outbound_id)
-                        .map(|e| Arc::new(ReactiveEntityInstance::from(e.clone())))?
+                        .map(|e| ReactiveEntity::from(e.clone()))?
                 };
                 let inbound = if relation_instance.inbound_id == self.flow_type.wrapper_entity_instance.id {
-                    Arc::new(ReactiveEntityInstance::from(self.flow_type.wrapper_entity_instance.clone()))
+                    ReactiveEntity::from(self.flow_type.wrapper_entity_instance.clone())
                 } else {
                     self.flow_type
                         .entity_instances
                         .iter()
                         .find(|e| e.id == relation_instance.inbound_id)
-                        .map(|e| Arc::new(ReactiveEntityInstance::from(e.clone())))?
+                        .map(|e| ReactiveEntity::from(e.clone()))?
                 };
-                let relation_instance = Arc::new(ReactiveRelationInstance::new_from_instance(outbound, inbound, relation_instance.clone()));
+                let relation_instance = ReactiveRelation::new_from_instance(outbound, inbound, relation_instance.clone());
                 let relation_instance: GraphQLRelationInstance = relation_instance.into();
                 Some(relation_instance)
             })
@@ -118,11 +116,11 @@ impl GraphQLFlowType {
             .wrapper_entity_instance
             .properties
             .iter()
-            .filter(|(property_name, _)| name.is_none() || name.clone().unwrap().as_str() == property_name.as_str())
-            .filter(|(property_name, _)| names.is_none() || names.clone().unwrap().contains(property_name))
-            .map(|(property_name, property_value)| {
+            .filter(|property| name.is_none() || name.clone().unwrap().as_str() == property.key())
+            .filter(|property| names.is_none() || names.clone().unwrap().contains(property.key()))
+            .map(|property| {
                 // TODO: Resolve mutability using entity_type_manager and property_name
-                GraphQLPropertyInstance::new_entity_property(self.flow_type.wrapper_entity_instance.ty.clone(), property_name.clone(), property_value.clone())
+                GraphQLPropertyInstance::new_entity_property(self.flow_type.wrapper_entity_instance.ty.clone(), property.key().clone(), property.value().clone())
             })
             .collect()
     }
@@ -146,7 +144,7 @@ impl GraphQLFlowType {
                 .map(|property_type| property_type.into())
                 .collect();
         }
-        self.flow_type.variables.iter().cloned().map(|property_type| property_type.into()).collect()
+        self.flow_type.variables.iter().map(|property_type| property_type.value().clone().into()).collect()
     }
 
     /// The count of variables.
@@ -161,14 +159,13 @@ impl GraphQLFlowType {
             return self
                 .flow_type
                 .extensions
-                .to_vec()
+                // .to_vec()
                 .iter()
                 .filter(|extension| extension.ty == extension_ty)
-                .cloned()
-                .map(|extension| extension.into())
+                .map(|extension| extension.value().clone().into())
                 .collect();
         }
-        self.flow_type.extensions.iter().cloned().map(|extension| extension.into()).collect()
+        self.flow_type.extensions.iter().map(|extension| extension.value().into()).collect()
     }
 
     /// The count of extensions.
@@ -186,12 +183,12 @@ impl GraphQLFlowType {
         }
     }
 
-    /// Type category.
-    async fn type_category(&self) -> Option<GraphQLTypeCategory> {
-        get_type_category_extension(&self.flow_type)
-            .and_then(get_type_category)
-            .map(|category| category.into())
-    }
+    // /// Type category.
+    // async fn type_category(&self) -> Option<GraphQLTypeCategory> {
+    //     get_type_category_extension(&self.flow_type)
+    //         .and_then(get_type_category)
+    //         .map(|category| category.into())
+    // }
 }
 
 impl From<FlowType> for GraphQLFlowType {

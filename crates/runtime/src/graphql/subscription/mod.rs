@@ -14,8 +14,8 @@ use uuid::Uuid;
 pub use entity_instance::*;
 pub use relation_instance::*;
 
-use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveRelationInstanceManager;
+use crate::api::ReactiveEntityManager;
+use crate::api::ReactiveRelationManager;
 use crate::graphql::mutation::GraphQLEdgeKey;
 use crate::graphql::query::GraphQLPropertyInstance;
 
@@ -34,7 +34,7 @@ impl InexorSubscription {
         #[graphql(desc = "The label of the entity instance")] label: Option<String>,
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
-        match context.data::<Arc<dyn ReactiveEntityInstanceManager>>() {
+        match context.data::<Arc<dyn ReactiveEntityManager>>() {
             Ok(entity_instance_manager) => {
                 let entity_instance;
                 if id.is_some() {
@@ -79,7 +79,7 @@ impl InexorSubscription {
         edge_key: GraphQLEdgeKey,
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
-        match context.data::<Arc<dyn ReactiveRelationInstanceManager>>() {
+        match context.data::<Arc<dyn ReactiveRelationManager>>() {
             Ok(relation_instance_manager) => match relation_instance_manager.get(&edge_key.into()) {
                 Some(relation_instance) => {
                     if !relation_instance.properties.contains_key(&property_name) {

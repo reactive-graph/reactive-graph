@@ -1,3 +1,4 @@
+use inexor_rgf_core_model::{ComponentTypeIds, Extensions, PropertyTypes, RelationTypeAddComponentError, RelationTypeAddExtensionError, RelationTypeAddPropertyError, RelationTypeRemoveComponentError, RelationTypeRemoveExtensionError, RelationTypeRemovePropertyError, RelationTypes, RelationTypeUpdateExtensionError, RelationTypeUpdatePropertyError};
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
@@ -12,21 +13,14 @@ pub enum RelationTypeManagerError {
 }
 
 #[derive(Debug)]
-pub enum RelationTypeCreationError {
-    Failed,
-}
-
-#[derive(Debug)]
-pub enum RelationTypeImportError {
-    Failed,
-}
+pub struct RelationTypeCreationError;
 
 pub trait RelationTypeManager: Send + Sync {
     /// Returns all relation types.
-    fn get_all(&self) -> Vec<RelationType>;
+    fn get_all(&self) -> RelationTypes;
 
     /// Returns all relation types of the given namespace.
-    fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType>;
+    fn get_by_namespace(&self, namespace: &str) -> RelationTypes;
 
     /// Returns true, if a relation type with the given name exists.
     fn has(&self, ty: &RelationTypeId) -> bool;
@@ -41,7 +35,7 @@ pub trait RelationTypeManager: Send + Sync {
     fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<RelationType>;
 
     /// Returns all relation types whose names matches the given search string.
-    fn find(&self, search: &str) -> Vec<RelationType>;
+    fn find_by_type_name(&self, search: &str) -> RelationTypes;
 
     /// Returns the count of relation types.
     fn count(&self) -> usize;
@@ -57,39 +51,39 @@ pub trait RelationTypeManager: Send + Sync {
         ty: &RelationTypeId,
         inbound_type: &ComponentOrEntityTypeId,
         description: &str,
-        components: Vec<ComponentTypeId>,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
+        components: ComponentTypeIds,
+        properties: PropertyTypes,
+        extensions: Extensions,
     ) -> Result<RelationType, RelationTypeCreationError>;
 
     /// Adds the component with the given type to the given relation type.
-    fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId);
+    fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) -> Result<(), RelationTypeAddComponentError>;
 
     /// Remove the component with the given type from the given relation type.
-    fn remove_component(&self, ty: &RelationTypeId, component: &ComponentTypeId);
+    fn remove_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) -> Result<ComponentTypeId, RelationTypeRemoveComponentError>;
 
     /// Adds a property to the given relation type.
-    fn add_property(&self, ty: &RelationTypeId, property: PropertyType);
+    fn add_property(&self, ty: &RelationTypeId, property: PropertyType) -> Result<PropertyType, RelationTypeAddPropertyError>;
+
+    /// Updates the property with the given property_name.
+    /// It's possible to rename the property by using another name in the new property than the provided property_name.
+    fn update_property(&self, relation_ty: &RelationTypeId, property_name: &str, property_type: PropertyType) -> Result<PropertyType, RelationTypeUpdatePropertyError>;
 
     /// Removes the property with the given property_name from the given relation type.
-    fn remove_property(&self, ty: &RelationTypeId, property_name: &str);
+    fn remove_property(&self, ty: &RelationTypeId, property_name: &str) -> Result<PropertyType, RelationTypeRemovePropertyError>;
 
     /// Adds an extension to the given relation type.
-    fn add_extension(&self, ty: &RelationTypeId, extension: Extension);
+    fn add_extension(&self, ty: &RelationTypeId, extension: Extension) -> Result<ExtensionTypeId, RelationTypeAddExtensionError>;
+
+    fn update_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, RelationTypeUpdateExtensionError>;
 
     /// Removes the extension with the given type from the given relation type.
-    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId);
+    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, RelationTypeRemoveExtensionError>;
 
     /// Deletes the given relation type.
-    fn delete(&self, ty: &RelationTypeId) -> bool;
+    fn delete(&self, ty: &RelationTypeId) -> Option<RelationType>;
 
     /// Validates the relation type with the given name.
     /// Tests that all components, the outbound and inbound entity type exists.
     fn validate(&self, ty: &RelationTypeId) -> bool;
-
-    /// Imports a relation type from a JSON file located at the given path.
-    fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError>;
-
-    /// Exports the relation type with the given name to a JSON file located at the given path.
-    fn export(&self, ty: &RelationTypeId, path: &str);
 }

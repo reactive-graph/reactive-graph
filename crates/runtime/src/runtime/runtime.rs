@@ -63,6 +63,8 @@ pub trait Runtime: Send + Sync {
 
     fn get_component_manager(&self) -> Arc<dyn ComponentManager>;
 
+    fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager>;
+
     fn get_config_manager(&self) -> Arc<dyn ConfigManager>;
 
     fn get_dynamic_graph_query_service(&self) -> Arc<dyn DynamicGraphQueryService>;
@@ -77,17 +79,21 @@ pub trait Runtime: Send + Sync {
 
     fn get_entity_component_behaviour_registry(&self) -> Arc<dyn EntityComponentBehaviourRegistry>;
 
-    fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager>;
+    fn get_entity_instance_import_export_manager(&self) -> Arc<dyn EntityInstanceImportExportManager>;
 
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager>;
 
-    fn get_entity_vertex_manager(&self) -> Arc<dyn EntityVertexManager>;
+    fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager>;
 
     fn get_event_manager(&self) -> Arc<dyn SystemEventManager>;
 
-    fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager>;
+    fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager>;
 
-    fn get_graph_database(&self) -> Arc<dyn GraphDatabase>;
+    fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager>;
+
+    // TODO: fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager>;
+
+    // TODO: fn get_flow_instance_import_export_manager(&self) -> Arc<dyn FlowInstanceImportExportManager>;
 
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService>;
 
@@ -103,11 +109,11 @@ pub trait Runtime: Send + Sync {
 
     fn get_plugin_repository_manager(&self) -> Arc<dyn PluginRepositoryManager>;
 
-    fn get_reactive_entity_instance_manager(&self) -> Arc<dyn ReactiveEntityInstanceManager>;
+    fn get_reactive_entity_manager(&self) -> Arc<dyn ReactiveEntityManager>;
 
-    fn get_reactive_flow_instance_manager(&self) -> Arc<dyn ReactiveFlowInstanceManager>;
+    fn get_reactive_flow_manager(&self) -> Arc<dyn ReactiveFlowManager>;
 
-    fn get_reactive_relation_instance_manager(&self) -> Arc<dyn ReactiveRelationInstanceManager>;
+    fn get_reactive_relation_manager(&self) -> Arc<dyn ReactiveRelationManager>;
 
     fn get_relation_behaviour_manager(&self) -> Arc<dyn RelationBehaviourManager>;
 
@@ -117,11 +123,11 @@ pub trait Runtime: Send + Sync {
 
     fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry>;
 
-    fn get_relation_edge_manager(&self) -> Arc<dyn RelationEdgeManager>;
-
-    fn get_relation_instance_manager(&self) -> Arc<dyn RelationInstanceManager>;
+    fn get_relation_instance_import_export_manager(&self) -> Arc<dyn RelationInstanceImportExportManager>;
 
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager>;
+
+    fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager>;
 
     fn get_remotes_manager(&self) -> Arc<dyn RemotesManager>;
 
@@ -136,6 +142,7 @@ pub struct RuntimeImpl {
 
     command_manager: Wrc<dyn CommandManager>,
     component_manager: Wrc<dyn ComponentManager>,
+    component_import_export_manager: Wrc<dyn ComponentImportExportManager>,
     config_manager: Wrc<dyn ConfigManager>,
     dynamic_graph_query_service: Wrc<dyn DynamicGraphQueryService>,
     dynamic_graph_schema_manager: Wrc<dyn DynamicGraphSchemaManager>,
@@ -144,27 +151,29 @@ pub struct RuntimeImpl {
     entity_behaviour_registry: Wrc<dyn EntityBehaviourRegistry>,
     entity_component_behaviour_manager: Wrc<dyn EntityComponentBehaviourManager>,
     entity_component_behaviour_registry: Wrc<dyn EntityComponentBehaviourRegistry>,
-    entity_instance_manager: Wrc<dyn EntityInstanceManager>,
+    entity_instance_import_export_manager: Wrc<dyn EntityInstanceImportExportManager>,
     entity_type_manager: Wrc<dyn EntityTypeManager>,
-    entity_vertex_manager: Wrc<dyn EntityVertexManager>,
-    flow_instance_manager: Wrc<dyn FlowInstanceManager>,
-    graph_database: Wrc<dyn GraphDatabase>,
+    entity_type_import_export_manager: Wrc<dyn EntityTypeImportExportManager>,
+    flow_type_manager: Wrc<dyn FlowTypeManager>,
+    flow_type_import_export_manager: Wrc<dyn FlowTypeImportExportManager>,
+    // TODO: flow_instance_manager: Wrc<dyn FlowInstanceManager>,
+    // TODO: flow_instance_import_export_manager: Wrc<dyn FlowInstanceImportExportManager>,
     graphql_query_service: Wrc<dyn GraphQLQueryService>,
     graphql_schema_manager: Wrc<dyn GraphQLSchemaManager>,
     graphql_server: Wrc<dyn GraphQLServer>,
     instance_service: Wrc<dyn InstanceService>,
     namespace_manager: Wrc<dyn NamespaceManager>,
     shutdown_manager: Wrc<dyn ShutdownManager>,
-    reactive_entity_instance_manager: Wrc<dyn ReactiveEntityInstanceManager>,
-    reactive_relation_instance_manager: Wrc<dyn ReactiveRelationInstanceManager>,
-    reactive_flow_instance_manager: Wrc<dyn ReactiveFlowInstanceManager>,
+    reactive_entity_manager: Wrc<dyn ReactiveEntityManager>,
+    reactive_relation_manager: Wrc<dyn ReactiveRelationManager>,
+    reactive_flow_manager: Wrc<dyn ReactiveFlowManager>,
     relation_behaviour_manager: Wrc<dyn RelationBehaviourManager>,
     relation_behaviour_registry: Wrc<dyn RelationBehaviourRegistry>,
     relation_component_behaviour_manager: Wrc<dyn RelationComponentBehaviourManager>,
     relation_component_behaviour_registry: Wrc<dyn RelationComponentBehaviourRegistry>,
-    relation_edge_manager: Wrc<dyn RelationEdgeManager>,
-    relation_instance_manager: Wrc<dyn RelationInstanceManager>,
+    relation_instance_import_export_manager: Wrc<dyn RelationInstanceImportExportManager>,
     relation_type_manager: Wrc<dyn RelationTypeManager>,
+    relation_type_import_export_manager: Wrc<dyn RelationTypeImportExportManager>,
     remotes_manager: Wrc<dyn RemotesManager>,
     runtime_types_provider: Wrc<dyn RuntimeTypesProvider>,
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
@@ -190,14 +199,14 @@ impl Runtime for RuntimeImpl {
         self.plugin_context_factory.init().await;
         self.plugin_repository_manager.init().await;
         self.plugin_resolver.init().await;
-        self.reactive_flow_instance_manager.init().await;
+        self.reactive_flow_manager.init().await;
         self.web_resource_manager.init().await;
         self.graphql_schema_manager.init().await;
         self.graphql_query_service.init().await;
         self.graphql_server.init().await;
         self.shutdown_manager.init().await;
         self.event_manager.init().await;
-        self.reactive_entity_instance_manager.init().await;
+        self.reactive_entity_manager.init().await;
         self.remotes_manager.init().await;
         self.command_manager.init().await;
         self.dynamic_graph_schema_manager.init().await;
@@ -213,14 +222,14 @@ impl Runtime for RuntimeImpl {
         self.plugin_context_factory.post_init().await;
         self.plugin_repository_manager.post_init().await;
         self.plugin_resolver.post_init().await;
-        self.reactive_flow_instance_manager.post_init().await;
+        self.reactive_flow_manager.post_init().await;
         self.web_resource_manager.post_init().await;
         self.graphql_schema_manager.post_init().await;
         self.graphql_query_service.post_init().await;
         self.graphql_server.post_init().await;
         self.shutdown_manager.post_init().await;
         self.event_manager.post_init().await;
-        self.reactive_entity_instance_manager.post_init().await; // after event_manager!
+        self.reactive_entity_manager.post_init().await; // after event_manager!
         self.remotes_manager.post_init().await;
         self.command_manager.post_init().await;
         self.dynamic_graph_schema_manager.post_init().await;
@@ -233,14 +242,14 @@ impl Runtime for RuntimeImpl {
         self.dynamic_graph_schema_manager.pre_shutdown().await;
         self.command_manager.pre_shutdown().await;
         self.remotes_manager.pre_shutdown().await;
-        self.reactive_entity_instance_manager.pre_shutdown().await;
+        self.reactive_entity_manager.pre_shutdown().await;
         self.event_manager.pre_shutdown().await;
         self.shutdown_manager.pre_shutdown().await;
         self.graphql_server.pre_shutdown().await;
         self.graphql_query_service.pre_shutdown().await;
         self.graphql_schema_manager.pre_shutdown().await;
         self.web_resource_manager.pre_shutdown().await;
-        self.reactive_flow_instance_manager.pre_shutdown().await;
+        self.reactive_flow_manager.pre_shutdown().await;
         self.plugin_resolver.pre_shutdown().await;
         self.plugin_repository_manager.pre_shutdown().await;
         self.plugin_context_factory.pre_shutdown().await;
@@ -256,14 +265,14 @@ impl Runtime for RuntimeImpl {
         self.dynamic_graph_schema_manager.shutdown().await;
         self.command_manager.shutdown().await;
         self.remotes_manager.shutdown().await;
-        self.reactive_entity_instance_manager.shutdown().await;
+        self.reactive_entity_manager.shutdown().await;
         self.event_manager.shutdown().await;
         self.shutdown_manager.shutdown().await;
         self.graphql_server.shutdown().await;
         self.graphql_query_service.shutdown().await;
         self.graphql_schema_manager.shutdown().await;
         self.web_resource_manager.shutdown().await;
-        self.reactive_flow_instance_manager.shutdown().await;
+        self.reactive_flow_manager.shutdown().await;
         self.plugin_resolver.shutdown().await;
         self.plugin_repository_manager.shutdown().await;
         self.plugin_context_factory.shutdown().await;
@@ -369,6 +378,10 @@ impl Runtime for RuntimeImpl {
         self.component_manager.clone()
     }
 
+    fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager> {
+        self.component_import_export_manager.clone()
+    }
+
     fn get_config_manager(&self) -> Arc<dyn ConfigManager> {
         self.config_manager.clone()
     }
@@ -397,29 +410,39 @@ impl Runtime for RuntimeImpl {
         self.entity_component_behaviour_registry.clone()
     }
 
-    fn get_entity_instance_manager(&self) -> Arc<dyn EntityInstanceManager> {
-        self.entity_instance_manager.clone()
+    fn get_entity_instance_import_export_manager(&self) -> Arc<dyn EntityInstanceImportExportManager> {
+        self.entity_instance_import_export_manager.clone()
     }
 
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager> {
         self.entity_type_manager.clone()
     }
 
-    fn get_entity_vertex_manager(&self) -> Arc<dyn EntityVertexManager> {
-        self.entity_vertex_manager.clone()
+    fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager> {
+        self.entity_type_import_export_manager.clone()
     }
 
     fn get_event_manager(&self) -> Arc<dyn SystemEventManager> {
         self.event_manager.clone()
     }
 
-    fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager> {
-        self.flow_instance_manager.clone()
+    fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager> {
+        self.flow_type_manager.clone()
     }
 
-    fn get_graph_database(&self) -> Arc<dyn GraphDatabase> {
-        self.graph_database.clone()
+    fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager> {
+        self.flow_type_import_export_manager.clone()
     }
+
+    // TODO: get_flow_instance_manager
+    // fn get_flow_instance_manager(&self) -> Arc<dyn FlowInstanceManager> {
+    //     self.flow_instance_manager.clone()
+    // }
+
+    // TODO: get_flow_instance_import_export_manager
+    // fn get_flow_instance_import_export_manager(&self) -> Arc<dyn FlowInstanceImportExportManager> {
+    //     self.flow_instance_import_export_manager.clone()
+    // }
 
     fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService> {
         self.graphql_query_service.clone()
@@ -449,16 +472,16 @@ impl Runtime for RuntimeImpl {
         self.plugin_repository_manager.clone()
     }
 
-    fn get_reactive_entity_instance_manager(&self) -> Arc<dyn ReactiveEntityInstanceManager> {
-        self.reactive_entity_instance_manager.clone()
+    fn get_reactive_entity_manager(&self) -> Arc<dyn ReactiveEntityManager> {
+        self.reactive_entity_manager.clone()
     }
 
-    fn get_reactive_flow_instance_manager(&self) -> Arc<dyn ReactiveFlowInstanceManager> {
-        self.reactive_flow_instance_manager.clone()
+    fn get_reactive_flow_manager(&self) -> Arc<dyn ReactiveFlowManager> {
+        self.reactive_flow_manager.clone()
     }
 
-    fn get_reactive_relation_instance_manager(&self) -> Arc<dyn ReactiveRelationInstanceManager> {
-        self.reactive_relation_instance_manager.clone()
+    fn get_reactive_relation_manager(&self) -> Arc<dyn ReactiveRelationManager> {
+        self.reactive_relation_manager.clone()
     }
 
     fn get_relation_behaviour_manager(&self) -> Arc<dyn RelationBehaviourManager> {
@@ -477,16 +500,16 @@ impl Runtime for RuntimeImpl {
         self.relation_component_behaviour_registry.clone()
     }
 
-    fn get_relation_edge_manager(&self) -> Arc<dyn RelationEdgeManager> {
-        self.relation_edge_manager.clone()
-    }
-
-    fn get_relation_instance_manager(&self) -> Arc<dyn RelationInstanceManager> {
-        self.relation_instance_manager.clone()
+    fn get_relation_instance_import_export_manager(&self) -> Arc<dyn RelationInstanceImportExportManager> {
+        self.relation_instance_import_export_manager.clone()
     }
 
     fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager> {
         self.relation_type_manager.clone()
+    }
+
+    fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager> {
+        self.relation_type_import_export_manager.clone()
     }
 
     fn get_remotes_manager(&self) -> Arc<dyn RemotesManager> {
@@ -507,5 +530,44 @@ impl RuntimeImpl {
         while !self.is_running() {
             tokio::time::sleep(Duration::from_millis(100)).await;
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::get_runtime;
+    use log::LevelFilter;
+    use log4rs::append::console::ConsoleAppender;
+    use log4rs::config::Appender;
+    use log4rs::config::Root;
+    use log4rs::Config;
+    use std::time::Duration;
+
+    /// This starts the runtime in an async environment.
+    ///
+    /// The runtime will be started including GraphQL server and fully
+    /// initialized. After 2 seconds the runtime will be stopped.
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_run() {
+        let stdout = ConsoleAppender::builder().build();
+        let config = Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(stdout)))
+            .build(Root::builder().appender("stdout").build(LevelFilter::Trace))
+            .expect("Failed to create logger");
+        if let Err(error) = log4rs::init_config(config) {
+            eprintln!("Failed to configure logger: {}", error);
+        }
+        let rt = get_runtime();
+        let runtime = rt.clone();
+        tokio::spawn(async move {
+            let runtime = runtime;
+            runtime.init().await;
+            runtime.post_init().await;
+            runtime.run().await;
+            runtime.pre_shutdown().await;
+            runtime.shutdown().await;
+        });
+        tokio::time::sleep(Duration::from_secs(2)).await;
+        rt.stop();
     }
 }

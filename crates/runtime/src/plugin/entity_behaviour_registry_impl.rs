@@ -1,34 +1,35 @@
 use std::sync::Arc;
+use uuid::Uuid;
 
-use crate::model::EntityBehaviourTypeId;
-use crate::model::ReactiveEntityInstance;
+use crate::reactive::EntityBehaviourTypeId;
+use crate::reactive::ReactiveEntity;
 use crate::plugins::EntityBehaviourRegistry;
-use crate::reactive::BehaviourFactory;
+use crate::behaviour::BehaviourFactory;
 
 pub struct EntityBehaviourRegistryImpl {
     entity_behaviour_manager: Arc<dyn crate::api::EntityBehaviourManager>,
     entity_behaviour_registry: Arc<dyn crate::api::EntityBehaviourRegistry>,
-    reactive_entity_instance_manager: Arc<dyn crate::api::ReactiveEntityInstanceManager>,
+    reactive_entity_manager: Arc<dyn crate::api::ReactiveEntityManager>,
 }
 
 impl EntityBehaviourRegistryImpl {
     pub fn new(
         entity_behaviour_manager: Arc<dyn crate::api::EntityBehaviourManager>,
         entity_behaviour_registry: Arc<dyn crate::api::EntityBehaviourRegistry>,
-        reactive_entity_instance_manager: Arc<dyn crate::api::ReactiveEntityInstanceManager>,
+        reactive_entity_manager: Arc<dyn crate::api::ReactiveEntityManager>,
     ) -> Self {
         Self {
             entity_behaviour_manager,
             entity_behaviour_registry,
-            reactive_entity_instance_manager,
+            reactive_entity_manager,
         }
     }
 }
 
 impl EntityBehaviourRegistry for EntityBehaviourRegistryImpl {
-    fn register(&self, entity_behaviour_ty: EntityBehaviourTypeId, factory: Arc<dyn BehaviourFactory<ReactiveEntityInstance> + Send + Sync>) {
+    fn register(&self, entity_behaviour_ty: EntityBehaviourTypeId, factory: Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>) {
         self.entity_behaviour_registry.register(entity_behaviour_ty.clone(), factory);
-        self.reactive_entity_instance_manager
+        self.reactive_entity_manager
             .add_behaviour_to_all_entity_instances(&entity_behaviour_ty);
     }
 

@@ -1,7 +1,10 @@
 use std::collections::HashMap;
-use std::sync::Arc;
+use std::ops::{Deref, DerefMut};
 
-use serde_json::Value;
+use serde_json::{Value};
+use inexor_rgf_core_model::{ComponentTypeIds, DataType, EntityType, Mutability, PropertyType, SocketType};
+use inexor_rgf_model_runtime::{COMPONENT_LABELED};
+use crate::builder::{CommandDefinition, CommandDefinitionBuilder};
 
 use crate::component::command::COMPONENT_COMMAND;
 use crate::component::CommandProperties::COMMAND_ARGS;
@@ -9,24 +12,74 @@ use crate::component::CommandProperties::COMMAND_HELP;
 use crate::component::CommandProperties::COMMAND_NAME;
 use crate::component::CommandProperties::COMMAND_NAMESPACE;
 use crate::component::CommandProperties::COMMAND_RESULT;
+use crate::component::COMMAND_PROPERTIES;
 use crate::entity::arg::CommandArgs;
 use crate::error::CommandArgsError;
 use crate::error::CommandExecutionFailed;
 use crate::error::NotACommand;
-use crate::model::ComponentContainer;
+use crate::reactive::ComponentContainer;
 use crate::model::EntityTypeId;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
 use crate::model::PropertyTypeDefinition;
-use crate::model::ReactiveEntityInstance;
-use crate::model::ReactivePropertyContainer;
+use crate::reactive::ReactiveEntity;
+use crate::reactive::ReactivePropertyContainer;
 use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::LabeledProperties::LABEL;
 use crate::model_runtime::COMPONENT_ACTION;
 
-pub struct Command(Arc<ReactiveEntityInstance>);
+pub struct Command(ReactiveEntity);
 
 impl Command {
+}
+
+impl Command {
+    pub fn new(entity: ReactiveEntity) -> Result<Self, NotACommand> {
+        if !entity.is_a(&COMPONENT_ACTION) || !entity.is_a(&COMPONENT_COMMAND) {
+            return Err(NotACommand);
+        }
+        Ok(Command(entity))
+    }
+
+    pub fn new_unchecked(entity: ReactiveEntity) -> Self {
+        Self(entity)
+    }
+
+    pub fn builder() -> CommandDefinitionBuilder {
+        CommandDefinition::builder()
+    }
+
+    pub fn get_entity_type(&self) -> EntityType {
+        let components = ComponentTypeIds::new()
+            .component(COMPONENT_LABELED.deref())
+            .component(COMPONENT_ACTION.deref())
+            .component(COMPONENT_COMMAND.deref());
+        let properties = COMMAND_PROPERTIES.clone();
+        if let Some(args) = self.get(COMMAND_ARGS).and_then(|args| CommandArgs::try_from(args).ok()) {
+            for arg in args.to_vec() {
+                if !properties.contains_key(&arg.name) {
+                    properties.insert(
+                        arg.name.clone(),
+                        PropertyType::builder()
+                            .name(arg.name.clone())
+                            .description(arg.help.unwrap_or_default())
+                            .data_type(DataType::Any)
+                            .socket_type(SocketType::Input)
+                            .mutability(Mutability::Mutable)
+                            .build()
+                    );
+                }
+            }
+        }
+        let entity_type = EntityType::builder()
+            .ty(self.0.ty.clone())
+            .description(self.0.description.clone())
+            .components(components)
+            .properties(COMMAND_PROPERTIES.clone())
+            .build();
+        entity_type
+    }
+
     /// Executes a command
     pub fn execute(&self) -> Result<Option<Value>, CommandExecutionFailed> {
         if !self.0.is_a(&COMPONENT_ACTION) || !self.0.is_a(&COMPONENT_COMMAND) {
@@ -114,29 +167,83 @@ impl Command {
         self.0.ty.clone()
     }
 
-    pub fn get_instance(&self) -> Arc<ReactiveEntityInstance> {
+    // TODO: impl Deref instead
+    pub fn get_instance(&self) -> ReactiveEntity {
         self.0.clone()
     }
 }
 
-impl TryFrom<Arc<ReactiveEntityInstance>> for Command {
-    type Error = NotACommand;
+impl Deref for Command {
+    type Target = ReactiveEntity;
 
-    fn try_from(entity_instance: Arc<ReactiveEntityInstance>) -> Result<Self, Self::Error> {
-        if !entity_instance.is_a(&COMPONENT_ACTION) || !entity_instance.is_a(&COMPONENT_COMMAND) {
-            return Err(NotACommand);
-        }
-        Ok(Command(entity_instance))
+    fn deref(&self) -> &Self::Target {
+        &self.0
     }
 }
+
+impl DerefMut for Command {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.0
+    }
+}
+
+impl TryFrom<ReactiveEntity> for Command {
+    type Error = NotACommand;
+
+    fn try_from(entity: ReactiveEntity) -> Result<Self, Self::Error> {
+        Command::new(entity)
+    }
+}
+
+// pub fn command_property_types() -> PropertyTypes {
+//     PropertyTypes::new()
+//         .property(
+//             PropertyType::builder()
+//                 .name(LABEL.property_name())
+//                 .data_type(DataType::String)
+//                 .mutability(Immutable)
+//                 .build()
+//         )
+//         .property(PropertyType::bool(TRIGGER.property_name()))
+//         .property(
+//             PropertyType::builder()
+//                 .name(COMMAND_NAMESPACE.property_name())
+//                 .data_type(DataType::String)
+//                 .mutability(Immutable)
+//                 .build()
+//         )
+//         .property(
+//             PropertyType::builder()
+//                 .name(COMMAND_NAME.property_name())
+//                 .data_type(DataType::String)
+//                 .mutability(Immutable)
+//                 .build()
+//         )
+//         .property(PropertyType::object(COMMAND_ARGS.property_name()))
+//         .property(
+//             PropertyType::builder()
+//                 .name(COMMAND_HELP.property_name())
+//                 .data_type(DataType::String)
+//                 .mutability(Immutable)
+//                 .build()
+//         )
+//         .property(
+//             PropertyType::builder()
+//                 .name(COMMAND_RESULT.property_name())
+//                 .data_type(DataType::Any)
+//                 .build()
+//         )
+// }
 
 #[cfg(test)]
 mod tests {
     use std::collections::HashMap;
+    use std::ops::Deref;
 
     use serde_json::json;
-
-    use inexor_rgf_core_builder::ReactiveEntityInstanceBuilder;
+    use uuid::Uuid;
+    use inexor_rgf_core_model::{ComponentTypeIds, PropertyInstances};
+    use inexor_rgf_reactive::{ReactiveEntity, ReactiveProperties};
 
     use crate::component::CommandProperties::COMMAND_ARGS;
     use crate::component::CommandProperties::COMMAND_HELP;
@@ -148,7 +255,7 @@ mod tests {
     use crate::model::PropertyInstanceGetter;
     use crate::model::PropertyInstanceSetter;
     use crate::model::PropertyTypeDefinition;
-    use crate::model::ReactivePropertyContainer;
+    use crate::reactive::ReactivePropertyContainer;
     use crate::model_runtime::ActionProperties::TRIGGER;
     use crate::model_runtime::COMPONENT_ACTION;
     use crate::CommandProperties::COMMAND_RESULT;
@@ -156,12 +263,15 @@ mod tests {
     #[test]
     fn test_command() {
         let ty = EntityTypeId::new_from_type("test", "test");
-        let e = ReactiveEntityInstanceBuilder::new(&ty).build();
-        assert!(Command::try_from(e).is_err());
+        let reactive_entity = ReactiveEntity::builder()
+            .ty(&ty)
+            .build();
+        assert!(Command::try_from(reactive_entity).is_err());
 
-        let e = ReactiveEntityInstanceBuilder::new(&ty)
-            .component(COMPONENT_ACTION.clone())
-            .component(COMPONENT_COMMAND.clone())
+        let components = ComponentTypeIds::new()
+            .component(COMPONENT_ACTION.deref())
+            .component(COMPONENT_COMMAND.deref());
+        let properties = PropertyInstances::new()
             .property(&TRIGGER.property_name(), json!(false))
             .property("arg1", json!(0))
             .property("arg2", json!(1))
@@ -179,10 +289,38 @@ mod tests {
                     }
                 ]),
             )
-            .property(COMMAND_HELP, json!("Help text"))
+            .property(COMMAND_HELP, json!("Help text"));
+
+        let id = Uuid::new_v4();
+        let reactive_properties = ReactiveProperties::new_with_id_from_properties(id, properties);
+        let reactive_entity = ReactiveEntity::builder()
+            .ty(&ty)
+            .id(id)
+            .components(components)
+            .properties(reactive_properties)
+            // .component(COMPONENT_ACTION.clone())
+            // .component(COMPONENT_COMMAND.clone())
+            // .property(&TRIGGER.property_name(), json!(false))
+            // .property("arg1", json!(0))
+            // .property("arg2", json!(1))
+            // .property(COMMAND_RESULT, json!(0))
+            // .property(COMMAND_NAME, json!("hello_command"))
+            // .property(
+            //     COMMAND_ARGS,
+            //     json!([
+            //         {
+            //             "name": "arg1"
+            //         },
+            //         {
+            //             "name": "arg2",
+            //             "required": true
+            //         }
+            //     ]),
+            // )
+            // .property(COMMAND_HELP, json!("Help text"))
             .build();
-        let e1 = e.clone();
-        let e2 = e.clone();
+        let e1 = reactive_entity.clone();
+        let e2 = reactive_entity.clone();
         e1.observe_with_handle(
             &TRIGGER.property_name(),
             move |_| {
@@ -192,7 +330,7 @@ mod tests {
             },
             0,
         );
-        let command = Command::try_from(e).expect("Failed to create a command");
+        let command = Command::new(reactive_entity).expect("Failed to create a command");
         assert_eq!("hello_command", command.name().expect("Failed to get command name"));
         assert_eq!("Help text", command.help().expect("Failed to get help text"));
         assert_eq!(0, e1.as_u64(COMMAND_RESULT).expect("Failed to get initial result"));

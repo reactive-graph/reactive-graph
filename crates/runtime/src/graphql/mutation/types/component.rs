@@ -2,16 +2,25 @@ use std::sync::Arc;
 
 use async_graphql::*;
 
-use crate::api::ComponentExtensionError;
 use crate::api::ComponentManager;
-use crate::api::ComponentPropertyError;
-use crate::api::ComponentPropertyUpdateError;
-use crate::api::ComponentRegistrationError;
+use crate::error::types::component::ComponentRegistrationError;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLExtension;
+use crate::model::AddPropertyError;
+use crate::model::UpdatePropertyError;
+use crate::model::UpdateExtensionError;
+use crate::model::RemovePropertyError;
+use crate::model::RemoveExtensionError;
+use crate::model::ComponentAddExtensionError;
+use crate::model::ComponentAddPropertyError;
+use crate::model::ComponentRemoveExtensionError;
+use crate::model::ComponentRemovePropertyError;
+use crate::model::ComponentUpdateExtensionError;
+use crate::model::ComponentUpdatePropertyError;
+use crate::model::AddExtensionError;
 
 #[derive(Default)]
 pub struct MutationComponents;
@@ -56,7 +65,7 @@ impl MutationComponents {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
         let Some(mut component) = component_manager.get(&ty) else {
-            return Err(Error::new(format!("Failed to rename component {}: Component does not exist", ty)));
+            return Err(Error::new(format!("Failed to rename component {ty}: Component does not exist")));
         };
         component.ty = new_ty.into();
         component_manager.replace(&ty, component.clone());
@@ -72,16 +81,16 @@ impl MutationComponents {
     ) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
-        if !component_manager.has(&ty) {
-            return Err(Error::new(format!("Component {} does not exist", ty)));
-        }
         match component_manager.add_property(&ty, property.into()) {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
                 .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
-            Err(ComponentPropertyError::PropertyAlreadyExists) => {
-                Err(Error::new(format!("Failed to add property to component {}: Property already exists", ty)))
+            Err(ComponentAddPropertyError::ComponentDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to add property to component {ty}: Component does not exist")))
+            }
+            Err(ComponentAddPropertyError::AddPropertyError(AddPropertyError::PropertyAlreadyExist(property_name))) => {
+                Err(Error::new(format!("Failed to add property to component {ty}: Property {property_name} already exists")))
             }
         }
     }
@@ -96,18 +105,17 @@ impl MutationComponents {
     ) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
-        if !component_manager.has(&ty) {
-            return Err(Error::new(format!("Component {} does not exist", ty)));
-        }
         match component_manager.update_property(&ty, &property_name, property.into()) {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
                 .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
-            Err(ComponentPropertyUpdateError::PropertyDoesNotExist) => Err(Error::new(format!(
-                "Failed to update property of component {}: Property {} does not exists",
-                ty, &property_name
-            ))),
+            Err(ComponentUpdatePropertyError::ComponentDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to update property of component {ty}: Component does not exist")))
+            }
+            Err(ComponentUpdatePropertyError::UpdatePropertyError(UpdatePropertyError::PropertyDoesNotExist(property_name))) => {
+                Err(Error::new(format!("Failed to update property of component {ty}: Property {property_name} does not exist")))
+            }
         }
     }
 
@@ -120,14 +128,20 @@ impl MutationComponents {
     ) -> Result<GraphQLComponent> {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
-        if !component_manager.has(&ty) {
-            return Err(Error::new(format!("Component {} does not exist", ty)));
+        match component_manager.remove_property(&ty, property_name.as_str()) {
+            Ok(_) => {
+                component_manager
+                    .get(&ty)
+                    .map(|component| component.into())
+                    .ok_or_else(|| Error::new(format!("Component {} not found", ty)))
+            }
+            Err(ComponentRemovePropertyError::ComponentDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to update property of component {ty}: Component does not exist")))
+            }
+            Err(ComponentRemovePropertyError::RemovePropertyError(RemovePropertyError::PropertyDoesNotExist(property_name))) => {
+                Err(Error::new(format!("Failed to remove property of component {ty}: Property {property_name} does not exist")))
+            }
         }
-        component_manager.remove_property(&ty, property_name.as_str());
-        component_manager
-            .get(&ty)
-            .map(|component| component.into())
-            .ok_or_else(|| Error::new(format!("Component {} not found", ty)))
     }
 
     /// Adds an extension to the component with the given name.
@@ -139,16 +153,41 @@ impl MutationComponents {
     ) -> Result<GraphQLComponent> {
         let ty = ty.into();
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
-        if !component_manager.has(&ty) {
-            return Err(Error::new(format!("Component {} does not exist", ty)));
-        }
         match component_manager.add_extension(&ty, extension.into()) {
             Ok(_) => component_manager
                 .get(&ty)
                 .map(|component| component.into())
                 .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
-            Err(ComponentExtensionError::ExtensionAlreadyExists) => {
-                Err(Error::new(format!("Failed to add extension to component {}: Extension already exists", ty)))
+            Err(ComponentAddExtensionError::ComponentDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to add extension to component {ty}: Component does not exist")))
+            }
+            Err(ComponentAddExtensionError::AddExtensionError(AddExtensionError::ExtensionAlreadyExist(extension_ty))) => {
+                Err(Error::new(format!("Failed to add extension to component {ty}: Extension {extension_ty} already exists")))
+            }
+        }
+    }
+
+    /// Updates the extension with the given id of the given component.
+    async fn update_extension(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] component_ty: ComponentTypeIdDefinition,
+        #[graphql(name = "extension_type")] extension_ty: ExtensionTypeIdDefinition,
+        extension: GraphQLExtension,
+    ) -> Result<GraphQLComponent> {
+        let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
+        let component_ty = component_ty.into();
+        let extension_ty = extension_ty.into();
+        match component_manager.update_extension(&component_ty, &extension_ty, extension.into()) {
+            Ok(_) => component_manager
+                .get(&component_ty)
+                .map(|component| component.into())
+                .ok_or_else(|| Error::new(format!("Component {component_ty} not found"))),
+            Err(ComponentUpdateExtensionError::ComponentDoesNotExist(component_ty)) => {
+                Err(Error::new(format!("Failed to update extension of component {component_ty}: Component does not exist")))
+            }
+            Err(ComponentUpdateExtensionError::UpdateExtensionError(UpdateExtensionError::ExtensionDoesNotExist(extension_ty))) => {
+                Err(Error::new(format!("Failed to update extension of component {component_ty}: Extension {extension_ty} does not exist")))
             }
         }
     }
@@ -162,15 +201,21 @@ impl MutationComponents {
     ) -> Result<GraphQLComponent> {
         let ty = ty.into();
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
-        if !component_manager.has(&ty) {
-            return Err(Error::new(format!("Component {} does not exist", ty)));
-        }
         let extension_ty = extension_ty.into();
-        component_manager.remove_extension(&ty, &extension_ty);
-        component_manager
-            .get(&ty)
-            .map(|component| component.into())
-            .ok_or_else(|| Error::new(format!("Component {} not found", ty)))
+        match component_manager.remove_extension(&ty, &extension_ty) {
+            Ok(_) => {
+                component_manager
+                    .get(&ty)
+                    .map(|component| component.into())
+                    .ok_or_else(|| Error::new(format!("Component {ty} not found")))
+            }
+            Err(ComponentRemoveExtensionError::ComponentDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to remove extension of component {ty}: Component does not exist")))
+            }
+            Err(ComponentRemoveExtensionError::RemoveExtensionError(RemoveExtensionError::ExtensionDoesNotExist(extension_ty))) => {
+                Err(Error::new(format!("Failed to remove extension of component {ty}: Extension {extension_ty} does not exist")))
+            }
+        }
     }
 
     /// Deletes the component with the given name.

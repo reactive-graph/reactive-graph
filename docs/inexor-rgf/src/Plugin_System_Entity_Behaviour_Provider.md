@@ -15,9 +15,9 @@ fn create_example_storage() -> ExampleStorage {
 
 #[async_trait]
 pub trait ExampleEntityBehaviourProvider: EntityBehaviourProvider + Send + Sync {
-    fn create_example(&self, entity_instance: Arc<ReactiveEntityInstance>);
+    fn create_example(&self, entity_instance: ReactiveEntity);
 
-    fn remove_example(&self, entity_instance: Arc<ReactiveEntityInstance>);
+    fn remove_example(&self, entity_instance: ReactiveEntity);
 
     fn remove_by_id(&self, id: Uuid);
 }
@@ -41,7 +41,7 @@ impl ExampleEntityBehaviourProviderImpl {
 #[async_trait]
 #[provides]
 impl ExampleEntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
-    fn create_example(&self, entity_instance: Arc<ReactiveEntityInstance>) {
+    fn create_example(&self, entity_instance: ReactiveEntity) {
         let id = entity_instance.id;
         let example_behaviour = Example::new(entity_instance);
         if example_behaviour.is_ok() {
@@ -51,7 +51,7 @@ impl ExampleEntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
         }
     }
 
-    fn remove_example(&self, entity_instance: Arc<ReactiveEntityInstance>) {
+    fn remove_example(&self, entity_instance: ReactiveEntity) {
         self.example_behaviours.0.write().unwrap().remove(&entity_instance.id);
         debug!("Removed behaviour {} from entity instance {}", EXAMPLE, entity_instance.id);
     }
@@ -65,14 +65,14 @@ impl ExampleEntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 }
 
 impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
-    fn add_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
+    fn add_behaviours(&self, entity_instance: ReactiveEntity) {
         match entity_instance.clone().type_name.as_str() {
             EXAMPLE => self.create_example(entity_instance),
             _ => {}
         }
     }
 
-    fn remove_behaviours(&self, entity_instance: Arc<ReactiveEntityInstance>) {
+    fn remove_behaviours(&self, entity_instance: ReactiveEntity) {
         match entity_instance.clone().type_name.as_str() {
             EXAMPLE => self.remove_example(entity_instance),
             _ => {}

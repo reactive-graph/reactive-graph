@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use inexor_rgf_core_model::{ComponentTypeIds, Extensions, PropertyTypes, RelationTypeAddComponentError, RelationTypeAddExtensionError, RelationTypeAddPropertyError, RelationTypeRemoveComponentError, RelationTypeRemoveExtensionError, RelationTypeRemovePropertyError, RelationTypes, RelationTypeUpdateExtensionError, RelationTypeUpdatePropertyError};
 
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
@@ -8,7 +9,6 @@ use crate::model::PropertyType;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::plugins::RelationTypeCreationError;
-use crate::plugins::RelationTypeImportError;
 use crate::plugins::RelationTypeManager;
 
 pub struct RelationTypeManagerImpl {
@@ -21,11 +21,11 @@ impl RelationTypeManagerImpl {
     }
 }
 impl RelationTypeManager for RelationTypeManagerImpl {
-    fn get_all(&self) -> Vec<RelationType> {
+    fn get_all(&self) -> RelationTypes {
         self.relation_type_manager.get_all()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Vec<RelationType> {
+    fn get_by_namespace(&self, namespace: &str) -> RelationTypes {
         self.relation_type_manager.get_by_namespace(namespace)
     }
 
@@ -45,8 +45,8 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.get_by_type(namespace, type_name)
     }
 
-    fn find(&self, search: &str) -> Vec<RelationType> {
-        self.relation_type_manager.find(search)
+    fn find_by_type_name(&self, search: &str) -> RelationTypes {
+        self.relation_type_manager.find_by_type_name(search)
     }
 
     fn count(&self) -> usize {
@@ -63,40 +63,48 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         ty: &RelationTypeId,
         inbound_type: &ComponentOrEntityTypeId,
         description: &str,
-        components: Vec<ComponentTypeId>,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
+        components: ComponentTypeIds,
+        properties: PropertyTypes,
+        extensions: Extensions,
     ) -> Result<RelationType, RelationTypeCreationError> {
         self.relation_type_manager
             .create(outbound_type, ty, inbound_type, description, components, properties, extensions)
-            .map_err(|_| RelationTypeCreationError::Failed)
+            .map_err(|_| RelationTypeCreationError {})
     }
 
-    fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) {
-        let _ = self.relation_type_manager.add_component(ty, component);
+    fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) -> Result<(), RelationTypeAddComponentError> {
+        self.relation_type_manager.add_component(ty, component)
     }
 
-    fn remove_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) {
-        self.relation_type_manager.remove_component(ty, component);
+    fn remove_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) -> Result<ComponentTypeId, RelationTypeRemoveComponentError> {
+        self.relation_type_manager.remove_component(ty, component)
     }
 
-    fn add_property(&self, ty: &RelationTypeId, property: PropertyType) {
-        let _ = self.relation_type_manager.add_property(ty, property);
+    fn add_property(&self, relation_ty: &RelationTypeId, property: PropertyType) -> Result<PropertyType, RelationTypeAddPropertyError> {
+        self.relation_type_manager.add_property(relation_ty, property)
     }
 
-    fn remove_property(&self, ty: &RelationTypeId, property_name: &str) {
-        self.relation_type_manager.remove_property(ty, property_name)
+    fn update_property(&self, relation_ty: &RelationTypeId, property_name: &str, property_type: PropertyType) -> Result<PropertyType, RelationTypeUpdatePropertyError> {
+        self.relation_type_manager.update_property(relation_ty, property_name, property_type)
     }
 
-    fn add_extension(&self, ty: &RelationTypeId, extension: Extension) {
-        let _ = self.relation_type_manager.add_extension(ty, extension);
+    fn remove_property(&self, relation_ty: &RelationTypeId, property_name: &str) -> Result<PropertyType, RelationTypeRemovePropertyError> {
+        self.relation_type_manager.remove_property(relation_ty, property_name)
     }
 
-    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId) {
+    fn add_extension(&self, relation_ty: &RelationTypeId, extension: Extension) -> Result<ExtensionTypeId, RelationTypeAddExtensionError> {
+        self.relation_type_manager.add_extension(relation_ty, extension)
+    }
+
+    fn update_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, RelationTypeUpdateExtensionError> {
+        self.relation_type_manager.update_extension(relation_ty, extension_ty, extension)
+    }
+
+    fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, RelationTypeRemoveExtensionError> {
         self.relation_type_manager.remove_extension(relation_ty, extension_ty)
     }
 
-    fn delete(&self, ty: &RelationTypeId) -> bool {
+    fn delete(&self, ty: &RelationTypeId) -> Option<RelationType> {
         self.relation_type_manager.delete(ty)
     }
 
@@ -104,11 +112,11 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.validate(ty)
     }
 
-    fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
-        self.relation_type_manager.import(path).map_err(|_| RelationTypeImportError::Failed)
-    }
-
-    fn export(&self, ty: &RelationTypeId, path: &str) {
-        self.relation_type_manager.export(ty, path)
-    }
+    // fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
+    //     self.relation_type_manager.import(path).map_err(|_| RelationTypeImportError {})
+    // }
+    //
+    // fn export(&self, ty: &RelationTypeId, path: &str) {
+    //     self.relation_type_manager.export(ty, path)
+    // }
 }

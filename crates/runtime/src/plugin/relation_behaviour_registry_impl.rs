@@ -1,34 +1,35 @@
 use std::sync::Arc;
+use inexor_rgf_core_model::RelationInstanceId;
 
-use crate::model::ReactiveRelationInstance;
-use crate::model::RelationBehaviourTypeId;
+use crate::reactive::ReactiveRelation;
+use crate::reactive::RelationBehaviourTypeId;
 use crate::plugins::RelationBehaviourRegistry;
-use crate::reactive::BehaviourFactory;
+use crate::behaviour::BehaviourFactory;
 
 pub struct RelationBehaviourRegistryImpl {
     relation_behaviour_manager: Arc<dyn crate::api::RelationBehaviourManager>,
     relation_behaviour_registry: Arc<dyn crate::api::RelationBehaviourRegistry>,
-    reactive_relation_instance_manager: Arc<dyn crate::api::ReactiveRelationInstanceManager>,
+    reactive_relation_manager: Arc<dyn crate::api::ReactiveRelationManager>,
 }
 
 impl RelationBehaviourRegistryImpl {
     pub fn new(
         relation_behaviour_manager: Arc<dyn crate::api::RelationBehaviourManager>,
         relation_behaviour_registry: Arc<dyn crate::api::RelationBehaviourRegistry>,
-        reactive_relation_instance_manager: Arc<dyn crate::api::ReactiveRelationInstanceManager>,
+        reactive_relation_manager: Arc<dyn crate::api::ReactiveRelationManager>,
     ) -> Self {
         Self {
             relation_behaviour_manager,
             relation_behaviour_registry,
-            reactive_relation_instance_manager,
+            reactive_relation_manager,
         }
     }
 }
 
 impl RelationBehaviourRegistry for RelationBehaviourRegistryImpl {
-    fn register(&self, relation_behaviour_ty: RelationBehaviourTypeId, factory: Arc<dyn BehaviourFactory<ReactiveRelationInstance> + Send + Sync>) {
+    fn register(&self, relation_behaviour_ty: RelationBehaviourTypeId, factory: Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>) {
         self.relation_behaviour_registry.register(relation_behaviour_ty.clone(), factory);
-        self.reactive_relation_instance_manager
+        self.reactive_relation_manager
             .add_behaviour_to_all_relation_instances(&relation_behaviour_ty);
     }
 

@@ -3,9 +3,9 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
-use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveFlowInstanceManager;
-use crate::api::ReactiveRelationInstanceManager;
+use crate::api::ReactiveEntityManager;
+use crate::api::ReactiveFlowManager;
+use crate::api::ReactiveRelationManager;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
@@ -14,11 +14,11 @@ use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLFlowInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
-use crate::model::BehaviourTypeId;
-use crate::model::ComponentContainer;
+use crate::reactive::BehaviourTypeId;
+use crate::reactive::ComponentContainer;
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
-use crate::model::ReactiveBehaviourContainer;
+use crate::reactive::ReactiveBehaviourContainer;
 use crate::model::RelationTypeId;
 
 #[derive(Default)]
@@ -42,7 +42,7 @@ impl Instances {
         #[graphql(desc = "Filters the entity instances by applied behaviours.")] behaviours: Option<Vec<BehaviourTypeIdDefinition>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Vec<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityInstanceManager>>();
+        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager>>();
         if entity_instance_manager.is_ok() {
             let entity_instance_manager = entity_instance_manager.unwrap();
             if id.is_some() {
@@ -120,7 +120,7 @@ impl Instances {
             BehaviourTypeIdDefinition,
         >,
     ) -> usize {
-        if let Ok(entity_instance_manager) = context.data::<Arc<dyn ReactiveEntityInstanceManager>>() {
+        if let Ok(entity_instance_manager) = context.data::<Arc<dyn ReactiveEntityManager>>() {
             let ty: Option<EntityTypeId> = ty.map(|ty| ty.into());
             let component_ty: Option<ComponentTypeId> = component_ty.map(|component_ty| component_ty.into());
             let behaviour_ty: Option<BehaviourTypeId> = behaviour_ty.map(|behaviour_ty| behaviour_ty.into());
@@ -175,7 +175,7 @@ impl Instances {
         #[graphql(desc = "Filters the relation instances by applied behaviours.")] behaviours: Option<Vec<BehaviourTypeIdDefinition>>,
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
-        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+        let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
         let outbound_entity_ty: Option<EntityTypeId> = outbound_entity_ty.map(|outbound_entity_ty| outbound_entity_ty.into());
         let outbound_component_ty: Option<ComponentTypeId> = outbound_component_ty.map(|outbound_component_ty| outbound_component_ty.into());
         let relation_ty: Option<RelationTypeId> = relation_ty.map(|relation_ty| relation_ty.into());
@@ -238,7 +238,7 @@ impl Instances {
         #[graphql(name = "type", desc = "Counts the entity instances of the given type only.")] ty: Option<RelationTypeIdDefinition>,
     ) -> usize {
         context
-            .data::<Arc<dyn ReactiveRelationInstanceManager>>()
+            .data::<Arc<dyn ReactiveRelationManager>>()
             .map(|relation_instance_manager| match ty {
                 Some(ty) => relation_instance_manager.count_by_type(&ty.into()),
                 None => relation_instance_manager.count(),
@@ -254,7 +254,7 @@ impl Instances {
         #[graphql(desc = "Filters by the label of the flow")] label: Option<String>,
         #[graphql(name = "type", desc = "Filters by the flow type")] entity_ty: Option<EntityTypeIdDefinition>,
     ) -> Result<Vec<GraphQLFlowInstance>> {
-        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowInstanceManager>>()?;
+        let flow_instance_manager = context.data::<Arc<dyn ReactiveFlowManager>>()?;
         if id.is_some() {
             return match flow_instance_manager.get(id.unwrap()).map(|flow| flow.into()) {
                 Some(flow) => Ok(vec![flow]),
@@ -285,7 +285,7 @@ impl Instances {
 
     async fn count_flow_instances(&self, context: &Context<'_>) -> usize {
         context
-            .data::<Arc<dyn ReactiveFlowInstanceManager>>()
+            .data::<Arc<dyn ReactiveFlowManager>>()
             .map(|flow_instance_manager| flow_instance_manager.count_flow_instances())
             .unwrap_or(0)
     }

@@ -48,17 +48,15 @@ pub struct GraphQLFlowInstanceDefinition {
 
 impl From<GraphQLFlowInstanceDefinition> for FlowInstance {
     fn from(flow: GraphQLFlowInstanceDefinition) -> Self {
+        let entity_instances = flow.entity_instances.iter().map(|entity_instance| entity_instance.clone().into()).collect();
+        let relation_instances = flow.relation_instances.iter().map(|relation_instance| relation_instance.clone().into()).collect();
         FlowInstance {
             id: flow.id,
             ty: EntityTypeId::new_from_type(flow.namespace, flow.type_name),
             name: flow.name.clone(),
             description: flow.description.clone(),
-            entity_instances: flow.entity_instances.iter().map(|entity_instance| entity_instance.clone().into()).collect(),
-            relation_instances: flow
-                .relation_instances
-                .iter()
-                .map(|relation_instance| relation_instance.clone().into())
-                .collect(),
+            entity_instances,
+            relation_instances,
         }
     }
 }

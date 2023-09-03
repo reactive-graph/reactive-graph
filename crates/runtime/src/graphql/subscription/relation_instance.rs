@@ -1,5 +1,4 @@
 use std::pin::Pin;
-use std::sync::Arc;
 use std::task::Poll;
 use std::time::Duration;
 
@@ -9,18 +8,18 @@ use log::debug;
 use rand::Rng;
 use serde_json::Value;
 
-use crate::model::ReactiveRelationInstance;
 use crate::model::TypeDefinitionGetter;
+use crate::reactive::ReactiveRelation;
 
 pub struct RelationPropertyInstanceStream {
-    relation_instance: Arc<ReactiveRelationInstance>,
+    relation_instance: ReactiveRelation,
     property_name: String,
     handle_id: u128,
     receiver: Receiver<Value>,
 }
 
 impl RelationPropertyInstanceStream {
-    pub fn new(relation_instance: Arc<ReactiveRelationInstance>, property_name: String) -> RelationPropertyInstanceStream {
+    pub fn new(relation_instance: ReactiveRelation, property_name: String) -> RelationPropertyInstanceStream {
         debug!(
             "Opened subscription relation({}__{}__{})[{}]",
             relation_instance.inbound.id,

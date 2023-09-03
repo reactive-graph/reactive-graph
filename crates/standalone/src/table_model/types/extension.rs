@@ -70,9 +70,9 @@ impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
     }
 }
 
-impl From<Vec<crate::model::Extension>> for ExtensionDefinitions {
-    fn from(extensions: Vec<crate::model::Extension>) -> Self {
-        ExtensionDefinitions(extensions.into_iter().map(|extension| extension.into()).collect())
+impl From<crate::model::Extensions> for ExtensionDefinitions {
+    fn from(extensions: crate::model::Extensions) -> Self {
+        ExtensionDefinitions(extensions.into_iter().map(|(extension_ty, extension)| extension.into()).collect())
     }
 }
 
@@ -125,7 +125,7 @@ impl Deref for Extensions {
     }
 }
 
-impl From<Extensions> for Vec<crate::model::Extension> {
+impl From<Extensions> for crate::model::Extensions {
     fn from(extensions: Extensions) -> Self {
         extensions.0.into_iter().map(|extension| extension.into()).collect()
     }
@@ -137,9 +137,9 @@ impl From<Extensions> for Vec<Extension> {
     }
 }
 
-impl From<Vec<crate::model::Extension>> for Extensions {
-    fn from(extensions: Vec<crate::model::Extension>) -> Self {
-        Extensions(extensions.into_iter().map(Into::into).collect())
+impl From<crate::model::Extensions> for Extensions {
+    fn from(extensions: crate::model::Extensions) -> Self {
+        Extensions(extensions.into_iter().map(|(extension_ty, extension)| extension.into()).collect())
     }
 }
 

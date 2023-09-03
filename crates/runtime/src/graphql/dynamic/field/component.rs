@@ -7,24 +7,24 @@ use async_graphql::dynamic::InterfaceField;
 use async_graphql::dynamic::TypeRef;
 use async_graphql::ID;
 
-use crate::api::ReactiveEntityInstanceManager;
-use crate::api::ReactiveRelationInstanceManager;
+use crate::api::ReactiveEntityManager;
+use crate::api::ReactiveRelationManager;
 use crate::graphql::dynamic::to_type_ref;
 use crate::graphql::dynamic::DynamicGraphTypeDefinition;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::PropertyType;
-use crate::model::ReactiveEntityInstance;
-use crate::model::ReactiveRelationInstance;
+use crate::reactive::ReactiveEntity;
+use crate::reactive::ReactiveRelation;
 
-pub fn component_query_field(component: &Component) -> Field {
-    let ty = component.ty.clone();
-    let dy_ty = DynamicGraphTypeDefinition::from(&component.ty);
+pub fn component_query_field(component_ty: &ComponentTypeId, component: &Component) -> Field {
+    let ty = component_ty.clone();
+    let dy_ty = DynamicGraphTypeDefinition::from(component_ty);
     Field::new(dy_ty.field_name_with_suffix(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         FieldFuture::new(async move {
-            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityInstanceManager>>()?;
-            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationInstanceManager>>()?;
+            let entity_instance_manager = ctx.data::<Arc<dyn ReactiveEntityManager>>()?;
+            let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
             let entity_instances = entity_instance_manager.get_by_component(&ty).into_iter().map(entity_instance_component);
             let relation_instances = relation_instance_manager.get_by_component(&ty).into_iter().map(relation_instance_component);
             let field_values = entity_instances.chain(relation_instances);
@@ -34,12 +34,12 @@ pub fn component_query_field(component: &Component) -> Field {
     .description(component.description.clone())
 }
 
-fn entity_instance_component<'a>(entity_instance: Arc<ReactiveEntityInstance>) -> FieldValue<'a> {
+fn entity_instance_component<'a>(entity_instance: ReactiveEntity) -> FieldValue<'a> {
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_instance.ty);
     FieldValue::owned_any(entity_instance).with_type(dy_ty.to_string())
 }
 
-fn relation_instance_component<'a>(relation_instance: Arc<ReactiveRelationInstance>) -> FieldValue<'a> {
+fn relation_instance_component<'a>(relation_instance: ReactiveRelation) -> FieldValue<'a> {
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_instance.relation_type_id());
     FieldValue::owned_any(relation_instance).with_type(dy_ty.to_string())
 }

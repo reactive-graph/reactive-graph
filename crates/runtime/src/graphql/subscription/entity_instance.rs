@@ -1,23 +1,24 @@
-use crate::model::ReactiveEntityInstance;
+use std::pin::Pin;
+use std::task::Poll;
+use std::time::Duration;
+
 use crossbeam::channel::Receiver;
 use futures_util::Stream;
 use log::debug;
 use rand::Rng;
 use serde_json::Value;
-use std::pin::Pin;
-use std::sync::Arc;
-use std::task::Poll;
-use std::time::Duration;
+
+use crate::reactive::ReactiveEntity;
 
 pub struct EntityPropertyInstanceStream {
-    entity_instance: Arc<ReactiveEntityInstance>,
+    entity_instance: ReactiveEntity,
     property_name: String,
     handle_id: u128,
     receiver: Receiver<Value>,
 }
 
 impl EntityPropertyInstanceStream {
-    pub fn new(entity_instance: Arc<ReactiveEntityInstance>, property_name: String) -> EntityPropertyInstanceStream {
+    pub fn new(entity_instance: ReactiveEntity, property_name: String) -> EntityPropertyInstanceStream {
         debug!("Opened subscription entity({})[{}]", entity_instance.id, property_name);
         let mut rng = rand::thread_rng();
         let handle_id = rng.gen::<u128>();
