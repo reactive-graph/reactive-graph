@@ -1,7 +1,7 @@
 use inexor_rgf_core_model as model;
 use inexor_rgf_model_runtime as model_runtime;
+use inexor_rgf_reactive as reactive;
 
-pub use crate::builder::CommandBuilder;
 pub use crate::component::CommandProperties;
 pub use crate::component::COMPONENT_COMMAND;
 pub use crate::component::COMPONENT_NAME_COMMAND;

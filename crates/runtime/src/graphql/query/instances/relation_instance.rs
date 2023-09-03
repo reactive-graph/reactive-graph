@@ -12,10 +12,10 @@ use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationBehaviour;
 use crate::graphql::query::GraphQLRelationType;
-use crate::model::ReactiveRelationInstance;
+use crate::reactive::ReactiveRelation;
 
 pub struct GraphQLRelationInstance {
-    relation_instance: Arc<ReactiveRelationInstance>,
+    relation_instance: ReactiveRelation,
 }
 
 /// Relation instances are edges from an outbound entity instance to an
@@ -153,8 +153,8 @@ impl GraphQLRelationInstance {
     }
 }
 
-impl From<Arc<ReactiveRelationInstance>> for GraphQLRelationInstance {
-    fn from(relation_instance: Arc<ReactiveRelationInstance>) -> Self {
+impl From<ReactiveRelation> for GraphQLRelationInstance {
+    fn from(relation_instance: ReactiveRelation) -> Self {
         GraphQLRelationInstance { relation_instance }
     }
 }

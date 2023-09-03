@@ -40,15 +40,31 @@ impl From<crate::model::Extension> for ExtensionDefinition {
 
 pub struct ExtensionDefinitions(pub Vec<ExtensionDefinition>);
 
+impl ExtensionDefinitions {
+    pub fn new() -> Self {
+        Self(Vec::new())
+    }
+}
+
 impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
     fn from(extensions: ExtensionDefinitions) -> Self {
         extensions.0.into_iter().collect()
     }
 }
 
-impl From<Vec<crate::model::Extension>> for ExtensionDefinitions {
-    fn from(extensions: Vec<crate::model::Extension>) -> Self {
-        ExtensionDefinitions(extensions.into_iter().map(|extension| extension.into()).collect())
+impl From<crate::model::Extensions> for ExtensionDefinitions {
+    fn from(extensions: crate::model::Extensions) -> Self {
+        extensions.into_iter().map(|(_, extension) | extension).collect()
+    }
+}
+
+impl FromIterator<crate::model::Extension> for ExtensionDefinitions {
+    fn from_iter<I: IntoIterator<Item=crate::model::Extension>>(iter: I) -> Self {
+        let mut extensions = ExtensionDefinitions::new();
+        for extension in iter {
+            extensions.0.push(extension.into());
+        }
+        extensions
     }
 }
 
@@ -82,7 +98,7 @@ impl From<Extension> for crate::model::Extension {
 #[derive(Clone, Debug)]
 pub struct Extensions(pub Vec<Extension>);
 
-impl From<Extensions> for Vec<crate::model::Extension> {
+impl From<Extensions> for crate::model::Extensions {
     fn from(extensions: Extensions) -> Self {
         extensions.0.into_iter().map(|extension| extension.into()).collect()
     }

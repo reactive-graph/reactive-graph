@@ -36,15 +36,31 @@ impl From<crate::model::PropertyType> for PropertyTypeDefinition {
 
 pub struct PropertyTypeDefinitions(pub Vec<PropertyTypeDefinition>);
 
+impl PropertyTypeDefinitions {
+    pub fn new() -> Self {
+        Self(Vec::new())
+    }
+}
+
 impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
     fn from(property_types: PropertyTypeDefinitions) -> Self {
         property_types.0.into_iter().collect()
     }
 }
 
-impl From<Vec<crate::model::PropertyType>> for PropertyTypeDefinitions {
-    fn from(property_types: Vec<crate::model::PropertyType>) -> Self {
-        PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
+impl From<crate::model::PropertyTypes> for PropertyTypeDefinitions {
+    fn from(property_types: crate::model::PropertyTypes) -> Self {
+        property_types.into_iter().map(|(_, property_type)| property_type.into()).collect()
+    }
+}
+
+impl FromIterator<crate::model::PropertyType> for PropertyTypeDefinitions {
+    fn from_iter<I: IntoIterator<Item=crate::model::PropertyType>>(iter: I) -> Self {
+        let mut property_types = PropertyTypeDefinitions::new();
+        for property_type in iter {
+            property_types.0.push(property_type.into());
+        }
+        property_types
     }
 }
 
@@ -86,7 +102,7 @@ impl From<PropertyType> for crate::model::PropertyType {
 #[derive(Clone, Debug)]
 pub struct PropertyTypes(pub Vec<PropertyType>);
 
-impl From<PropertyTypes> for Vec<crate::model::PropertyType> {
+impl From<PropertyTypes> for crate::model::PropertyTypes {
     fn from(property_types: PropertyTypes) -> Self {
         property_types.0.into_iter().map(|property_type| property_type.into()).collect()
     }

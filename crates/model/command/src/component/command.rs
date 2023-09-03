@@ -4,6 +4,14 @@ use crate::model::component_model;
 use crate::model::component_ty;
 use crate::model::properties;
 use crate::model_runtime::NAMESPACE_CORE;
+use crate::model::PropertyType;
+use crate::model::PropertyTypeDefinition;
+use crate::model::PropertyTypes;
+use crate::model::DataType;
+use crate::model::Mutability::Immutable;
+use crate::model::SocketType;
+use crate::model_runtime::LabeledProperties::LABEL;
+use crate::model_runtime::ActionProperties::TRIGGER;
 
 properties!(
     CommandProperties,
@@ -22,3 +30,42 @@ component_model!(
     get command string,
     get help string,
 );
+
+lazy_static::lazy_static! {
+    pub static ref COMMAND_PROPERTIES: PropertyTypes = PropertyTypes::new()
+        .property(
+            PropertyType::builder()
+                .name(LABEL.property_name())
+                .data_type(DataType::String)
+                .mutability(Immutable)
+                .socket_type(SocketType::None)
+                .build()
+        )
+        .property(PropertyType::input(TRIGGER.property_name(), DataType::Bool))
+        .property(
+            PropertyType::builder()
+                .name(CommandProperties::COMMAND_NAMESPACE.property_name())
+                .data_type(DataType::String)
+                .mutability(Immutable)
+                .socket_type(SocketType::None)
+                .build()
+        )
+        .property(
+            PropertyType::builder()
+                .name(CommandProperties::COMMAND_NAME.property_name())
+                .data_type(DataType::String)
+                .mutability(Immutable)
+                .socket_type(SocketType::None)
+                .build()
+        )
+        .property(PropertyType::input(CommandProperties::COMMAND_ARGS.property_name(), DataType::Array))
+        .property(
+            PropertyType::builder()
+                .name(CommandProperties::COMMAND_HELP.property_name())
+                .data_type(DataType::String)
+                .mutability(Immutable)
+                .socket_type(SocketType::None)
+                .build()
+        )
+        .property(PropertyType::output(CommandProperties::COMMAND_RESULT.property_name(), DataType::Any));
+}

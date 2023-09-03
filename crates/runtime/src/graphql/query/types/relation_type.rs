@@ -1,20 +1,19 @@
+use std::ops::Deref;
 use std::sync::Arc;
 
 use async_graphql::*;
+use inexor_rgf_core_model::RelationTypes;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::RelationBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
-use crate::graphql::query::GraphQLComponent;
+use crate::graphql::query::{GraphQLComponent, GraphQLEntityTypes};
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationBehaviour;
-use crate::graphql::query::GraphQLTypeCategory;
-use crate::implementation::get_type_category;
-use crate::implementation::get_type_category_extension;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::NamespacedTypeGetter;
 use crate::model::RelationType;
@@ -38,18 +37,18 @@ impl GraphQLRelationType {
     async fn outbound_types(&self, context: &Context<'_>) -> Result<Vec<GraphQLEntityType>> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         if self.relation_type.outbound_type.type_name() == "*" {
-            let entity_types = entity_type_manager.get_all().iter().cloned().map(|entity_type| entity_type.into()).collect();
-            return Ok(entity_types);
+            let entity_types: GraphQLEntityTypes = entity_type_manager.get_all().into();
+            return Ok(entity_types.into());
         }
         match &self.relation_type.outbound_type {
             ComponentOrEntityTypeId::Component(component_ty) => {
-                let entity_types = entity_type_manager
-                    .get_by_having_component(component_ty)
-                    .iter()
-                    .cloned()
-                    .map(|entity_type| entity_type.into())
-                    .collect();
-                return Ok(entity_types);
+                let entity_types: GraphQLEntityTypes = entity_type_manager.get_by_having_component(component_ty).into();
+                // let entity_types = entity_type_manager
+                //     .get_by_having_component(component_ty)
+                //     .iter()
+                //     .map(|entity_type| entity_type.value().into())
+                //     .collect();
+                return Ok(entity_types.into());
             }
             ComponentOrEntityTypeId::EntityType(entity_ty) => {
                 if let Some(entity_type) = entity_type_manager.get(entity_ty) {
@@ -85,18 +84,19 @@ impl GraphQLRelationType {
     async fn inbound_types(&self, context: &Context<'_>) -> Result<Vec<GraphQLEntityType>> {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager>>()?;
         if self.relation_type.inbound_type.type_name() == "*" {
-            let entity_types = entity_type_manager.get_all().iter().cloned().map(|entity_type| entity_type.into()).collect();
-            return Ok(entity_types);
+            let entity_types: GraphQLEntityTypes = entity_type_manager.get_all().into();
+            return Ok(entity_types.into());
         }
         match &self.relation_type.inbound_type {
             ComponentOrEntityTypeId::Component(component_ty) => {
-                let entity_types = entity_type_manager
-                    .get_by_having_component(component_ty)
-                    .iter()
-                    .cloned()
-                    .map(|entity_type| entity_type.into())
-                    .collect();
-                return Ok(entity_types);
+                let entity_types: GraphQLEntityTypes = entity_type_manager.get_by_having_component(component_ty).into();
+                // let entity_types = entity_type_manager
+                //     .get_by_having_component(component_ty)
+                //     .iter()
+                //     .cloned()
+                //     .map(|entity_type| entity_type.into())
+                //     .collect();
+                return Ok(entity_types.into());
             }
             ComponentOrEntityTypeId::EntityType(entity_ty) => {
                 if let Some(entity_type) = entity_type_manager.get(entity_ty) {
@@ -130,7 +130,7 @@ impl GraphQLRelationType {
             .relation_type
             .components
             .iter()
-            .filter_map(|component_ty| component_manager.get(component_ty))
+            .filter_map(|component_ty| component_manager.get(&component_ty))
             .map(|component| component.into())
             .collect();
         Ok(components)
@@ -155,10 +155,10 @@ impl GraphQLRelationType {
                 .iter()
                 .filter(|property_type| property_type.name == name.clone())
                 // .cloned()
-                .map(|property_type| property_type.into())
+                .map(|property_type| property_type.value().into())
                 .collect(),
             None => {
-                let mut properties: Vec<GraphQLPropertyType> = self.relation_type.properties.iter().map(|property_type| property_type.into()).collect();
+                let mut properties: Vec<GraphQLPropertyType> = self.relation_type.properties.iter().map(|property_type| property_type.value().into()).collect();
                 if sort.unwrap_or_default() {
                     properties.sort();
                 }
@@ -186,11 +186,11 @@ impl GraphQLRelationType {
                     .extensions
                     .iter()
                     .filter(|extension| extension.ty == extension_ty)
-                    .map(|extension| extension.into())
+                    .map(|extension| extension.value().into())
                     .collect();
             }
             None => {
-                let mut extensions: Vec<GraphQLExtension> = self.relation_type.extensions.iter().map(|extension| extension.into()).collect();
+                let mut extensions: Vec<GraphQLExtension> = self.relation_type.extensions.iter().map(|extension| extension.value().into()).collect();
                 if sort.unwrap_or_default() {
                     extensions.sort();
                 }
@@ -223,17 +223,36 @@ impl GraphQLRelationType {
             .collect();
         Ok(relation_behaviour_types)
     }
-
-    /// Type category.
-    async fn type_category(&self) -> Option<GraphQLTypeCategory> {
-        get_type_category_extension(&self.relation_type)
-            .and_then(get_type_category)
-            .map(|category| category.into())
-    }
 }
 
 impl From<RelationType> for GraphQLRelationType {
     fn from(relation_type: RelationType) -> Self {
         GraphQLRelationType { relation_type }
+    }
+}
+
+pub struct GraphQLRelationTypes(Vec<GraphQLRelationType>);
+
+impl Deref for GraphQLRelationTypes {
+    type Target = Vec<GraphQLRelationType>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl From<GraphQLRelationTypes> for Vec<GraphQLRelationType> {
+    fn from(value: GraphQLRelationTypes) -> Self {
+        value.0
+    }
+}
+
+impl From<RelationTypes> for GraphQLRelationTypes {
+    fn from(relation_types: RelationTypes) -> Self {
+        let relation_types = relation_types
+            .into_iter()
+            .map(|(_, relation_type)| relation_type.into())
+            .collect();
+        GraphQLRelationTypes(relation_types)
     }
 }

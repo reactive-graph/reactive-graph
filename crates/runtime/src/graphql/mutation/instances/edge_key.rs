@@ -1,12 +1,12 @@
 use std::fmt;
 
 use async_graphql::*;
-use indradb::EdgeKey;
-use indradb::Identifier;
 use uuid::Uuid;
+use crate::model::RelationInstanceId;
+use inexor_rgf_core_model::TYPE_ID_TYPE_SEPARATOR;
 
 use crate::model::RelationInstanceTypeId;
-use crate::model::TypeDefinitionGetter;
+// use crate::model::TypeDefinitionGetter;
 
 /// The primary key of an edge consists of the outbound id, the
 /// type name and the inbound id.
@@ -31,10 +31,6 @@ pub struct GraphQLEdgeKey {
 }
 
 impl GraphQLEdgeKey {
-    pub fn t(&self) -> Identifier {
-        self.ty().type_id()
-    }
-
     pub fn ty(&self) -> RelationInstanceTypeId {
         RelationInstanceTypeId::new_from_type_unique_for_instance_id(&self.namespace, &self.type_name, &self.instance_id)
     }
@@ -42,26 +38,18 @@ impl GraphQLEdgeKey {
 
 impl fmt::Display for GraphQLEdgeKey {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self.t())
+        write!(f, "{}--{}{}{}__{}--{}", self.outbound_id, self.namespace, &TYPE_ID_TYPE_SEPARATOR, self.type_name, self.instance_id, self.outbound_id)
     }
 }
 
-impl From<GraphQLEdgeKey> for EdgeKey {
+impl From<GraphQLEdgeKey> for RelationInstanceId {
     fn from(edge_key: GraphQLEdgeKey) -> Self {
-        EdgeKey {
-            outbound_id: edge_key.outbound_id,
-            t: edge_key.ty().type_id(),
-            inbound_id: edge_key.inbound_id,
-        }
+        RelationInstanceId::new(edge_key.outbound_id, edge_key.ty().clone(), edge_key.inbound_id)
     }
 }
 
-impl From<&GraphQLEdgeKey> for EdgeKey {
+impl From<&GraphQLEdgeKey> for RelationInstanceId {
     fn from(edge_key: &GraphQLEdgeKey) -> Self {
-        EdgeKey {
-            outbound_id: edge_key.outbound_id,
-            t: edge_key.t(),
-            inbound_id: edge_key.inbound_id,
-        }
+        RelationInstanceId::new(edge_key.outbound_id, edge_key.ty().clone(), edge_key.inbound_id)
     }
 }

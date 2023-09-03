@@ -57,11 +57,11 @@ impl GraphQLPropertyType {
                     .extensions
                     .iter()
                     .filter(|extension| extension.ty == extension_ty)
-                    .map(|extension| extension.into())
+                    .map(|extension| extension.value().into())
                     .collect();
             }
             None => {
-                let mut extensions: Vec<GraphQLExtension> = self.property_type.extensions.iter().map(|extension| extension.into()).collect();
+                let mut extensions: Vec<GraphQLExtension> = self.property_type.extensions.iter().map(|extension| extension.value().into()).collect();
                 if sort.unwrap_or_default() {
                     extensions.sort();
                 }

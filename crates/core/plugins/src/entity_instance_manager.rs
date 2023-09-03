@@ -1,13 +1,12 @@
 use std::collections::HashMap;
-use std::sync::Arc;
 
 use uuid::Uuid;
 
-use crate::model::BehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
-use crate::model::ReactiveEntityInstance;
+use crate::reactive::BehaviourTypeId;
+use crate::reactive::ReactiveEntity;
 
 #[derive(Debug)]
 pub enum EntityInstanceManagerError {
@@ -30,21 +29,21 @@ pub trait EntityInstanceManager: Send + Sync {
     fn has(&self, id: Uuid) -> bool;
 
     /// Returns the reactive entity instance with the given UUID or None.
-    fn get(&self, id: Uuid) -> Option<Arc<ReactiveEntityInstance>>;
+    fn get(&self, id: Uuid) -> Option<ReactiveEntity>;
 
     /// Returns the reactive entity instance with the given label or None.
-    fn get_by_label(&self, label: &str) -> Option<Arc<ReactiveEntityInstance>>;
+    fn get_by_label(&self, label: &str) -> Option<ReactiveEntity>;
 
     /// Returns the reactive entity instance and the matched path parameters that matches the given label or None.
     /// /org/inexor/local/users/:user_id
     /// /org/inexor/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
-    fn get_by_label_with_params(&self, label: &str) -> Option<(Arc<ReactiveEntityInstance>, HashMap<String, String>)>;
+    fn get_by_label_with_params(&self, label: &str) -> Option<(ReactiveEntity, HashMap<String, String>)>;
 
     /// Returns all reactive entity instances.
-    fn get_all(&self) -> Vec<Arc<ReactiveEntityInstance>>;
+    fn get_all(&self) -> Vec<ReactiveEntity>;
 
     /// Returns all reactive entity instances of the given type.
-    fn get_by_type(&self, ty: &EntityTypeId) -> Vec<Arc<ReactiveEntityInstance>>;
+    fn get_by_type(&self, ty: &EntityTypeId) -> Vec<ReactiveEntity>;
 
     /// Returns all ids.
     fn get_ids(&self) -> Vec<Uuid>;
@@ -62,7 +61,7 @@ pub trait EntityInstanceManager: Send + Sync {
     fn count_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) -> usize;
 
     /// Creates a new reactive entity instance.
-    fn create(&self, entity_instance: EntityInstance) -> Result<Arc<ReactiveEntityInstance>, EntityInstanceCreationError>;
+    fn create(&self, entity_instance: EntityInstance) -> Result<ReactiveEntity, EntityInstanceCreationError>;
 
     /// Adds the component with the given name to the entity instance with the given id.
     fn add_component(&self, id: Uuid, component: &ComponentTypeId) -> Result<(), EntityInstanceComponentAddError>;

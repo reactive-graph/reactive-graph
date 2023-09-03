@@ -2,7 +2,7 @@ use async_graphql::*;
 use serde::Deserialize;
 use serde::Serialize;
 
-use crate::model::BehaviourTypeId;
+use crate::reactive::BehaviourTypeId;
 use crate::model::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]

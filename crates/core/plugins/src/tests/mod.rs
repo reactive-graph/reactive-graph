@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::CommandManager;
+use crate::{CommandManager, ComponentImportExportManager, EntityTypeImportExportManager, FlowTypeImportExportManager, RelationTypeImportExportManager};
 use crate::ComponentManager;
 use crate::ConfigManager;
 use crate::EntityBehaviourRegistry;
@@ -28,7 +28,15 @@ impl PluginContext for TestPluginContext {
         panic!();
     }
 
+    fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager> {
+        panic!();
+    }
+
     fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager> {
+        panic!();
+    }
+
+    fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager> {
         panic!();
     }
 
@@ -36,7 +44,15 @@ impl PluginContext for TestPluginContext {
         panic!();
     }
 
+    fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager> {
+        panic!();
+    }
+
     fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager> {
+        panic!();
+    }
+
+    fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager> {
         panic!();
     }
 

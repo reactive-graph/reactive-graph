@@ -4,8 +4,8 @@ use serde::Serialize;
 
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
-use crate::model::BehaviourTypeId;
-use crate::model::EntityBehaviourTypeId;
+use crate::reactive::BehaviourTypeId;
+use crate::reactive::EntityBehaviourTypeId;
 use crate::model::EntityTypeId;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]

@@ -8,7 +8,7 @@ use crate::graphql::query::GraphQLBehaviour;
 use crate::graphql::query::GraphQLRelationInstance;
 use crate::graphql::query::GraphQLRelationType;
 use crate::model::NamespacedTypeGetter;
-use crate::model::RelationBehaviourTypeId;
+use crate::reactive::RelationBehaviourTypeId;
 
 pub struct GraphQLRelationBehaviour {
     relation_behaviour_ty: RelationBehaviourTypeId,

@@ -7,7 +7,7 @@ use crate::api::EntityTypeManager;
 use crate::graphql::query::GraphQLBehaviour;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLEntityType;
-use crate::model::EntityBehaviourTypeId;
+use crate::reactive::EntityBehaviourTypeId;
 use crate::model::NamespacedTypeGetter;
 
 pub struct GraphQLEntityBehaviour {

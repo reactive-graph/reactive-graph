@@ -8,6 +8,7 @@ use serde_json::Value;
 
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::model::Extension;
+use crate::model::Extensions;
 use crate::model::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, InputObject)]
@@ -96,5 +97,25 @@ impl PartialOrd<Self> for GraphQLExtension {
 impl Ord for GraphQLExtension {
     fn cmp(&self, other: &Self) -> Ordering {
         self.ty.cmp(&other.ty)
+    }
+}
+
+pub struct GraphQLExtensions(pub Vec<GraphQLExtension>);
+
+impl GraphQLExtensions {
+    pub fn new(tys: Vec<GraphQLExtension>) -> Self {
+        Self(tys)
+    }
+}
+
+impl Default for GraphQLExtensions {
+    fn default() -> Self {
+        Self(Vec::new())
+    }
+}
+
+impl From<GraphQLExtensions> for Extensions {
+    fn from(extensions: GraphQLExtensions) -> Self {
+        extensions.0.into_iter().map(|extension| extension.into()).collect()
     }
 }

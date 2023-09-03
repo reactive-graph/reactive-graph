@@ -7,10 +7,10 @@ use crate::api::EntityTypeManager;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLRelationInstance;
-use crate::model::ReactiveFlowInstance;
+use crate::reactive::ReactiveFlow;
 
 pub struct GraphQLFlowInstance {
-    flow_instance: Arc<ReactiveFlowInstance>,
+    flow_instance: ReactiveFlow,
 }
 
 /// A flow is a container for entity instances and relation instances.
@@ -88,8 +88,8 @@ impl GraphQLFlowInstance {
     }
 }
 
-impl From<Arc<ReactiveFlowInstance>> for GraphQLFlowInstance {
-    fn from(flow: Arc<ReactiveFlowInstance>) -> Self {
+impl From<ReactiveFlow> for GraphQLFlowInstance {
+    fn from(flow: ReactiveFlow) -> Self {
         GraphQLFlowInstance { flow_instance: flow }
     }
 }

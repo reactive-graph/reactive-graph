@@ -7,12 +7,13 @@ use async_graphql::Object;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
+use inexor_rgf_core_model::PropertyInstances;
 
 use crate::api::EntityTypeManager;
 use crate::api::RelationTypeManager;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::model::EntityTypeId;
-use crate::model::PropertyType;
+use crate::model::PropertyTypes;
 use crate::model::RelationTypeId;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
@@ -67,8 +68,7 @@ impl GraphQLPropertyInstance {
                             .properties
                             .iter()
                             .find(|property_type| property_type.name == property_name)
-                            .cloned()
-                            .map(|property_type| property_type.into());
+                            .map(|property_type| property_type.value().clone().into());
                         property_type
                     }
                     None => None,
@@ -82,8 +82,7 @@ impl GraphQLPropertyInstance {
                             .properties
                             .iter()
                             .find(|property_type| property_type.name == property_name)
-                            .cloned()
-                            .map(|property_type| property_type.into());
+                            .map(|property_type| property_type.value().clone().into());
                         property_type
                     }
                     None => None,
@@ -125,9 +124,9 @@ impl GraphQLPropertyInstance {
         }
     }
 
-    pub fn to_map_with_defaults(properties: Option<Vec<GraphQLPropertyInstance>>, property_types: Vec<PropertyType>) -> HashMap<String, Value> {
+    pub fn to_map_with_defaults(properties: Option<Vec<GraphQLPropertyInstance>>, property_types: PropertyTypes) -> HashMap<String, Value> {
         let mut props = HashMap::new();
-        for property_type in property_types {
+        for property_type in property_types.iter() {
             props.insert(property_type.name.clone(), property_type.data_type.default_value());
         }
         if let Some(properties) = properties {
@@ -137,4 +136,18 @@ impl GraphQLPropertyInstance {
         }
         props
     }
+
+    pub fn to_property_instances_with_defaults(properties: Option<Vec<GraphQLPropertyInstance>>, property_types: PropertyTypes) -> PropertyInstances {
+        let property_instances = PropertyInstances::new();
+        for property_type in property_types.iter() {
+            property_instances.insert(property_type.name.clone(), property_type.data_type.default_value());
+        }
+        if let Some(properties) = properties {
+            for property in properties {
+                property_instances.insert(property.name.clone(), property.value.clone());
+            }
+        }
+        property_instances
+    }
+
 }

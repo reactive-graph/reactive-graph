@@ -1,12 +1,18 @@
 use std::sync::Arc;
 
+use crate::model::ComponentAddExtensionError;
+use crate::model::ComponentAddPropertyError;
+use crate::model::ComponentRemoveExtensionError;
+use crate::model::ComponentRemovePropertyError;
+use crate::model::Components;
+use crate::model::ComponentUpdateExtensionError;
+use crate::model::ComponentUpdatePropertyError;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
 use crate::plugins::ComponentCreationError;
-use crate::plugins::ComponentImportError;
 use crate::plugins::ComponentManager;
 
 pub struct ComponentManagerImpl {
@@ -19,11 +25,11 @@ impl ComponentManagerImpl {
     }
 }
 impl ComponentManager for ComponentManagerImpl {
-    fn get_all(&self) -> Vec<Component> {
+    fn get_all(&self) -> Components {
         self.component_manager.get_all()
     }
 
-    fn get_by_namespace(&self, namespace: &str) -> Vec<Component> {
+    fn get_by_namespace(&self, namespace: &str) -> Components {
         self.component_manager.get_by_namespace(namespace)
     }
 
@@ -43,8 +49,8 @@ impl ComponentManager for ComponentManagerImpl {
         self.component_manager.get_by_type(namespace, type_name)
     }
 
-    fn find(&self, search: &str) -> Vec<Component> {
-        self.component_manager.find(search)
+    fn find_by_type_name(&self, search: &str) -> Components {
+        self.component_manager.find_by_type_name(search)
     }
 
     fn count(&self) -> usize {
@@ -64,38 +70,43 @@ impl ComponentManager for ComponentManagerImpl {
     ) -> Result<Component, ComponentCreationError> {
         self.component_manager
             .create(ty, description, properties, extensions)
-            .map_err(|_| ComponentCreationError::Failed)
+            .map_err(|_| ComponentCreationError {})
     }
 
     fn replace(&self, ty: &ComponentTypeId, component: Component) {
         self.component_manager.replace(ty, component)
     }
 
-    fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) {
-        let _ = self.component_manager.add_property(ty, property);
+    fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<PropertyType, ComponentAddPropertyError> {
+        self.component_manager.add_property(ty, property)
     }
 
-    fn remove_property(&self, ty: &ComponentTypeId, property_name: &str) {
+    fn update_property(&self, ty: &ComponentTypeId, property_name: &str, property: PropertyType) -> Result<PropertyType, ComponentUpdatePropertyError> {
+        self.component_manager.update_property(ty, property_name, property)
+    }
+
+    fn remove_property(&self, ty: &ComponentTypeId, property_name: &str) -> Result<PropertyType, ComponentRemovePropertyError> {
         self.component_manager.remove_property(ty, property_name)
     }
 
-    fn add_extension(&self, ty: &ComponentTypeId, extension: Extension) {
-        let _ = self.component_manager.add_extension(ty, extension);
+    fn add_extension(&self, ty: &ComponentTypeId, extension: Extension) -> Result<ExtensionTypeId, ComponentAddExtensionError> {
+        self.component_manager.add_extension(ty, extension)
     }
 
-    fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId) {
+    fn update_extension(
+        &self,
+        component_ty: &ComponentTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<Extension, ComponentUpdateExtensionError> {
+        self.component_manager.update_extension(component_ty, extension_ty, extension)
+    }
+
+    fn remove_extension(&self, component_ty: &ComponentTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, ComponentRemoveExtensionError> {
         self.component_manager.remove_extension(component_ty, extension_ty)
     }
 
     fn delete(&self, ty: &ComponentTypeId) -> bool {
         self.component_manager.delete(ty)
-    }
-
-    fn import(&self, path: &str) -> Result<Component, ComponentImportError> {
-        self.component_manager.import(path).map_err(|_| ComponentImportError::Failed)
-    }
-
-    fn export(&self, ty: &ComponentTypeId, path: &str) {
-        self.component_manager.export(ty, path)
     }
 }

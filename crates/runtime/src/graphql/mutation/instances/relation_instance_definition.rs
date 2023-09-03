@@ -7,6 +7,7 @@ use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::Extension;
 use crate::model::RelationInstance;
+use crate::model::RelationInstances;
 use crate::model::RelationInstanceTypeId;
 
 /// Relation instances are edges from an outbound entity instance to an
@@ -71,5 +72,25 @@ impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
                 .collect(),
             extensions: relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect(),
         }
+    }
+}
+
+pub struct GraphQLRelationInstanceDefinitions(pub Vec<GraphQLRelationInstanceDefinition>);
+
+impl GraphQLRelationInstanceDefinitions {
+    pub fn new(relation_instances: Vec<GraphQLRelationInstanceDefinition>) -> Self {
+        Self(relation_instances)
+    }
+}
+
+impl Default for GraphQLRelationInstanceDefinitions {
+    fn default() -> Self {
+        Self(Vec::new())
+    }
+}
+
+impl From<GraphQLRelationInstanceDefinitions> for RelationInstances {
+    fn from(relation_instances: GraphQLRelationInstanceDefinitions) -> Self {
+        relation_instances.0.into_iter().map(|entity_instance| entity_instance.into()).collect()
     }
 }

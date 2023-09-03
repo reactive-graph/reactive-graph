@@ -8,7 +8,6 @@ use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::NamespaceManager;
 use crate::api::RelationTypeManager;
-use crate::api::TypeCategoryManager;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
@@ -18,7 +17,6 @@ use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLFlowType;
 use crate::graphql::query::GraphQLRelationType;
-use crate::graphql::query::GraphQLTypeCategory;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityTypeId;
@@ -26,7 +24,7 @@ use crate::model::ExtensionContainer;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyTypeContainer;
 use crate::model::RelationTypeId;
-use crate::model::TypeContainer;
+use crate::model::ComponentTypeIdContainer;
 
 #[derive(Default)]
 pub struct Types;
@@ -58,58 +56,60 @@ impl Types {
             let components = component_manager
                 .get_by_namespace(&namespace)
                 .into_iter()
-                .filter(|component| {
+                .filter(|(_, component)| {
                     properties
                         .as_ref()
-                        .map(|properties| component.has_all_own_properties(properties))
+                        .map(|properties| {
+                            component.has_all_own_properties(properties)
+                        })
                         .unwrap_or(true)
                 })
-                .filter(|component| {
+                .filter(|(_, component)| {
                     extensions
                         .as_ref()
                         .map(|extensions| component.has_all_own_extensions(extensions))
                         .unwrap_or(true)
                 })
-                .map(|component| component.into())
+                .map(|(_, component)| component.into())
                 .collect();
             return Ok(components);
         }
         if let Some(search) = search {
             let components = component_manager
-                .find(&search)
+                .find_by_type_name(&search)
                 .into_iter()
-                .filter(|component| {
+                .filter(|(_, component)| {
                     properties
                         .as_ref()
                         .map(|properties| component.has_all_own_properties(properties))
                         .unwrap_or(true)
                 })
-                .filter(|component| {
+                .filter(|(_, component)| {
                     extensions
                         .as_ref()
                         .map(|extensions| component.has_all_own_extensions(extensions))
                         .unwrap_or(true)
                 })
-                .map(|component| component.into())
+                .map(|(_, component)| component.into())
                 .collect();
             return Ok(components);
         }
         let components = component_manager
             .get_all()
             .into_iter()
-            .filter(|component| {
+            .filter(|(_, component)| {
                 properties
                     .as_ref()
                     .map(|properties| component.has_all_own_properties(properties))
                     .unwrap_or(true)
             })
-            .filter(|component| {
+            .filter(|(_, component)| {
                 extensions
                     .as_ref()
                     .map(|extensions| component.has_all_own_extensions(extensions))
                     .unwrap_or(true)
             })
-            .map(|component| component.into())
+            .map(|(_, component)| component.into())
             .collect();
         Ok(components)
     }
@@ -145,22 +145,22 @@ impl Types {
         let extensions = extensions.map(|extensions| extensions.into_iter().map(|ty| ty.into()).collect());
         if let Some(search) = search {
             let entity_types = entity_type_manager
-                .find(&search)
+                .find_by_type_name(&search)
                 .into_iter()
-                .filter(|entity_type| {
+                .filter(|(_, entity_type)| {
                     properties
                         .as_ref()
                         .map(|properties| entity_type.has_all_own_properties(properties))
                         .unwrap_or(true)
                 })
-                .filter(|entity_type| components.as_ref().map(|components| entity_type.is_all(components)).unwrap_or(true))
-                .filter(|entity_type| {
+                .filter(|(_, entity_type)| components.as_ref().map(|components| entity_type.is_all(components)).unwrap_or(true))
+                .filter(|(_, entity_type)| {
                     extensions
                         .as_ref()
                         .map(|extensions| entity_type.has_all_own_extensions(extensions))
                         .unwrap_or(true)
                 })
-                .map(|entity_type| entity_type.into())
+                .map(|(_, entity_type)| entity_type.into())
                 .collect();
             return Ok(entity_types);
         }
@@ -231,7 +231,7 @@ impl Types {
             // Search by type name
             if !ty.type_name().is_empty() {
                 let relation_types = relation_type_manager
-                    .find(&ty.type_name())
+                    .find_by_type_name(&ty.type_name())
                     .iter()
                     .filter(|relation_type| relation_type.type_name() == ty.type_name())
                     .filter(|relation_type| {
@@ -279,8 +279,7 @@ impl Types {
                             .map(|extensions| relation_type.has_all_own_extensions(extensions))
                             .unwrap_or(true)
                     })
-                    .cloned()
-                    .map(|r| r.into())
+                    .map(|relation_type| relation_type.value().clone().into())
                     .collect();
                 return Ok(relation_types);
             }
@@ -335,8 +334,7 @@ impl Types {
                             .map(|extensions| relation_type.has_all_own_extensions(extensions))
                             .unwrap_or(true)
                     })
-                    .cloned()
-                    .map(|r| r.into())
+                    .map(|relation_type| relation_type.value().clone().into())
                     .collect();
                 return Ok(relation_types);
             }
@@ -344,9 +342,9 @@ impl Types {
 
         if let Some(search) = search {
             let relation_types = relation_type_manager
-                .find(&search)
+                .find_by_type_name(&search)
                 .into_iter()
-                .map(|relation_type| relation_type.into())
+                .map(|(_, relation_type)| relation_type.clone().into())
                 .collect();
             return Ok(relation_types);
         }
@@ -400,8 +398,7 @@ impl Types {
                     .map(|extensions| relation_type.has_all_own_extensions(extensions))
                     .unwrap_or(true)
             })
-            .cloned()
-            .map(|r| r.into())
+            .map(|relation_type| relation_type.value().clone().into())
             .collect();
         Ok(relation_types)
     }
@@ -434,9 +431,9 @@ impl Types {
         let extensions = extensions.map(|extensions| extensions.into_iter().map(|ty| ty.into()).collect());
         if search.is_some() {
             let flow_types = flow_type_manager
-                .find(search.unwrap().as_str())
+                .find_by_type_name(search.unwrap().as_str())
                 .into_iter()
-                .map(|flow_type| flow_type.into())
+                .map(|(_, flow_type)| flow_type.clone().into())
                 .collect();
             return Ok(flow_types);
         }
@@ -471,13 +468,13 @@ impl Types {
         namespace_manager.get_all()
     }
 
-    async fn categories(&self, context: &Context<'_>) -> Result<Vec<GraphQLTypeCategory>> {
-        let type_category_manager = context.data::<Arc<dyn TypeCategoryManager>>()?;
-        let categories = type_category_manager
-            .get_all_type_categories()
-            .into_iter()
-            .map(|category| category.into())
-            .collect();
-        Ok(categories)
-    }
+    // async fn categories(&self, context: &Context<'_>) -> Result<Vec<GraphQLTypeCategory>> {
+    //     let type_category_manager = context.data::<Arc<dyn TypeCategoryManager>>()?;
+    //     let categories = type_category_manager
+    //         .get_all_type_categories()
+    //         .into_iter()
+    //         .map(|category| category.into())
+    //         .collect();
+    //     Ok(categories)
+    // }
 }

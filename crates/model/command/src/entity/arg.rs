@@ -5,6 +5,10 @@ use serde_json::Value;
 
 use crate::error::CommandArgsError;
 use crate::error::InvalidCommandArgDefinition;
+use crate::model::DataType;
+use crate::model::PropertyType;
+use crate::model::PropertyTypes;
+use crate::model::SocketType;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CommandArg {
@@ -112,12 +116,28 @@ impl From<&str> for CommandArg {
     }
 }
 
-#[derive(Debug)]
+impl From<CommandArg> for PropertyType {
+    fn from(arg: CommandArg) -> Self {
+        PropertyType::builder()
+            .name(arg.name)
+            .description(arg.help.unwrap_or_default())
+            .data_type(DataType::Any)
+            .socket_type(SocketType::Input)
+            .build()
+    }
+}
+
+#[derive(Debug, Clone)]
 pub struct CommandArgs(Vec<CommandArg>);
 
 impl CommandArgs {
     pub fn new() -> Self {
         CommandArgs(Vec::new())
+    }
+
+    pub fn arg<A: Into<CommandArg>>(mut self, arg: A) -> Self {
+        self.0.push(arg.into());
+        self
     }
 
     pub fn push(&mut self, arg: CommandArg) {
@@ -147,6 +167,10 @@ impl CommandArgs {
 
     pub fn to_vec(&self) -> Vec<CommandArg> {
         self.0.to_vec()
+    }
+
+    pub fn to_property_types(&self) -> PropertyTypes {
+        self.to_vec().iter().map(|arg| arg.clone().into()).collect::<Vec<_>>().into()
     }
 }
 

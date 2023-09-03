@@ -123,15 +123,15 @@ pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> Stri
 #[derive(Clone, Debug)]
 pub struct PropertyTypes(pub Vec<PropertyType>);
 
-impl From<PropertyTypes> for Vec<crate::model::PropertyType> {
+impl From<PropertyTypes> for crate::model::PropertyTypes {
     fn from(property_types: PropertyTypes) -> Self {
         property_types.0.into_iter().map(|property_type| property_type.into()).collect()
     }
 }
 
-impl From<Vec<crate::model::PropertyType>> for PropertyTypes {
-    fn from(property_types: Vec<crate::model::PropertyType>) -> Self {
-        PropertyTypes(property_types.into_iter().map(|property_type| property_type.into()).collect())
+impl From<crate::model::PropertyTypes> for PropertyTypes {
+    fn from(property_types: crate::model::PropertyTypes) -> Self {
+        PropertyTypes(property_types.into_iter().map(|(property_name, property_type)| property_type.into()).collect())
     }
 }
 

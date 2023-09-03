@@ -4,6 +4,10 @@ use uuid::Uuid;
 use crate::model::EntityTypeId;
 use crate::model::PropertyType;
 
+// pub fn property_does_not_exist_error(property_name: &String) -> Error {
+//     Error::new(format!("Property {property_name} does not exist"))
+// }
+
 pub fn data_type_error(property: &PropertyType) -> Error {
     Error::new(format!("Invalid datatype: Property {} is of datatype {}!", &property.name, &property.data_type))
 }

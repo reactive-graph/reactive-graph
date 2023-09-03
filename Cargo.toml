@@ -3,14 +3,16 @@ cargo-features = [ "workspace-inheritance" ]
 [workspace]
 
 members = [
+    "crates/test-utils",
+    "crates/behaviour",
     "crates/core/config",
     "crates/core/di",
     "crates/core/di-codegen",
-    "crates/core/builder",
     "crates/model/command",
     "crates/model/dynamic_graph",
     "crates/model/flow",
     "crates/model/runtime",
+    "crates/reactive",
     "crates/runtime",
     "crates/client",
     "crates/standalone",
@@ -18,7 +20,7 @@ members = [
 resolver = "2"
 
 [workspace.package]
-version = "0.9.1"
+version = "0.10.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
 edition = "2021"
 license = "MIT"
@@ -40,25 +42,27 @@ async-graphql-actix-web = { version = "5.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 clap = { version = "4.1", features = ["derive", "env"] }
-chrono = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
 colored = "2.0"
 config = "0.13"
 convert_case = "0.6"
 crossbeam = "0.8"
-cynic = { version = "2.2.8", features = ["http-reqwest"] }
-dashmap = "5.3"
+cynic = { version = "3.2", features = ["http-reqwest"] }
+dashmap = { version = "5.5", features = [ "serde" ] }
+default-test = "0.1"
 futures = "0.3"
+futures-await-test = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
+glob = "0.3.1"
 http = "0.2"
-indradb-lib = "3"
 json5 = "0.4"
 lazy_static = "1.4.0"
 libloading = "0.7"
 log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.2", features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 mime = "0.3"
-notify = "5.0"
+notify = "6.0"
 num_cpus = "1.15"
 paste = "1.0"
 path-tree = "0.7"
@@ -67,8 +71,10 @@ proc-macro2 = "1.0"
 query_interface = "0.3"
 quote = "1.0"
 rand = "0.8"
+rand_derive2 = "0.1"
+random-string = "1.0"
 rayon = "1.6"
-regex = "1.6"
+regex = "1.9"
 reqwest = { version = "0.11.14", features = ["json"] }
 rust-embed = { version = "6.6", features = ["debug-embed", "compression"] }
 rustls = "0.20"
@@ -80,14 +86,18 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 shellwords = "1.1"
 signal-hook = "0.3.13"
-strum = { version = "0.24", features = ["derive"] }
-strum_macros = "0.24"
+similar = "2.2.1"
+similar-asserts = "1.4.2"
+stopwatch2 = "2.0"
+strum = { version = "0.25", features = ["derive"] }
+strum_macros = "0.25"
 syn = { version = "1.0", features = [ "full" ] }
-tabled = "0.12"
+tabled = "0.14"
+thiserror = "1.0"
 tokio = { version = "1", features =  ["time", "rt"] }
 toml = "0.7"
-typed-builder = "0.14"
-uuid = { version = "1.1", features = ["serde", "v4"] }
+typed-builder = "0.15"
+uuid = { version = "1.4", features = ["serde", "v4"] }
 walkdir = "2.3"
 wildmatch = "2.1"
 

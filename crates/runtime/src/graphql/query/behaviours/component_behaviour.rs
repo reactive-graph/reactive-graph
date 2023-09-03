@@ -5,7 +5,7 @@ use async_graphql::*;
 use crate::api::ComponentManager;
 use crate::graphql::query::GraphQLBehaviour;
 use crate::graphql::query::GraphQLComponent;
-use crate::model::ComponentBehaviourTypeId;
+use crate::reactive::ComponentBehaviourTypeId;
 use crate::model::NamespacedTypeGetter;
 
 pub struct GraphQLComponentBehaviour {

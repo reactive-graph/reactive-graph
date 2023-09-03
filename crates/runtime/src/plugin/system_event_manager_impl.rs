@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::model::ReactiveEntityInstance;
+use crate::reactive::ReactiveEntity;
 use crate::plugins::SystemEventTypes;
 
 use crate::plugins::SystemEventManager;
@@ -16,7 +16,7 @@ impl SystemEventManagerImpl {
 }
 
 impl SystemEventManager for SystemEventManagerImpl {
-    fn get_system_event_instance(&self, event_type: SystemEventTypes) -> Option<Arc<ReactiveEntityInstance>> {
+    fn get_system_event_instance(&self, event_type: SystemEventTypes) -> Option<ReactiveEntity> {
         self.system_event_manager.get_system_event_instance(event_type)
     }
 }

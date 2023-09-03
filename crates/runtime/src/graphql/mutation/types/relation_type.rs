@@ -1,22 +1,23 @@
 use std::sync::Arc;
 
 use async_graphql::*;
-use log::debug;
 
 use crate::api::EntityTypeManager;
-use crate::api::RelationTypeComponentError;
-use crate::api::RelationTypeExtensionError;
 use crate::api::RelationTypeManager;
-use crate::api::RelationTypePropertyError;
-use crate::api::RelationTypeRegistrationError;
-use crate::builder::RelationTypeBuilder;
-use crate::graphql::mutation::ComponentTypeIdDefinition;
+use crate::error::types::relation::RelationTypeRegistrationError;
+use crate::graphql::mutation::{ComponentTypeIdDefinition, ComponentTypeIdDefinitions, PropertyTypeDefinitions};
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::mutation::RelationTypeIdDefinition;
-use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::{GraphQLExtension, GraphQLExtensions};
 use crate::graphql::query::GraphQLRelationType;
+use crate::model::AddExtensionError;
+use crate::model::AddPropertyError;
+use crate::model::RelationType;
+use crate::model::RelationTypeAddComponentError;
+use crate::model::RelationTypeAddExtensionError;
+use crate::model::RelationTypeAddPropertyError;
 
 #[derive(Default)]
 pub struct MutationRelationTypes;
@@ -57,30 +58,39 @@ impl MutationRelationTypes {
             return Err(Error::new(format!("Inbound entity type {} does not exist", inbound_ty)));
         }
 
-        let mut relation_type_builder = RelationTypeBuilder::new(outbound_ty, &ty, inbound_ty);
-        if let Some(description) = description {
-            relation_type_builder.description(description);
-        }
-        if components.is_some() {
-            for component in components.unwrap() {
-                debug!("Add component {}", &component);
-                relation_type_builder.component(component);
-            }
-        }
-        if properties.is_some() {
-            for property in properties.unwrap() {
-                debug!("Add property {} {} {}", property.name, property.data_type.to_string(), property.socket_type.to_string());
-                relation_type_builder.property_from(property.clone());
-            }
-        }
-        if extensions.is_some() {
-            for extension in extensions.unwrap() {
-                debug!("Add extension {} {}", &extension.ty, extension.extension.to_string());
-                relation_type_builder.extension(extension.ty.namespace, extension.ty.type_name, extension.extension.clone());
-            }
-        }
-
-        let relation_type = relation_type_builder.build();
+        let relation_type = RelationType::builder()
+            .outbound_type(outbound_ty)
+            .ty(&ty)
+            .inbound_type(inbound_ty)
+            .description(description.unwrap_or_default())
+            .components(ComponentTypeIdDefinitions::new(components.unwrap_or_default()))
+            .properties(PropertyTypeDefinitions::new(properties.unwrap_or_default()))
+            .extensions(GraphQLExtensions::new(extensions.unwrap_or_default()))
+            .build();
+        // new(outbound_ty, &ty, inbound_ty);
+        // if let Some(description) = description {
+        //     relation_type_builder.description(description);
+        // }
+        // if components.is_some() {
+        //     for component in components.unwrap() {
+        //         debug!("Add component {}", &component);
+        //         relation_type_builder.component(component);
+        //     }
+        // }
+        // if properties.is_some() {
+        //     for property in properties.unwrap() {
+        //         debug!("Add property {} {} {}", property.name, property.data_type.to_string(), property.socket_type.to_string());
+        //         relation_type_builder.property_from(property.clone());
+        //     }
+        // }
+        // if extensions.is_some() {
+        //     for extension in extensions.unwrap() {
+        //         debug!("Add extension {} {}", &extension.ty, extension.extension.to_string());
+        //         relation_type_builder.extension(extension.ty.namespace, extension.ty.type_name, extension.extension.clone());
+        //     }
+        // }
+        //
+        // let relation_type = relation_type_builder.build();
         match relation_type_manager.register(relation_type) {
             Ok(relation_type) => Ok(relation_type.into()),
             Err(RelationTypeRegistrationError::RelationTypeAlreadyExists(ty)) => {
@@ -115,18 +125,18 @@ impl MutationRelationTypes {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         let component_ty = component.into();
-        if !relation_type_manager.has(&ty) {
-            return Err(Error::new(format!("Relation type {} does not exist", ty)));
-        }
         match relation_type_manager.add_component(&ty, &component_ty) {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypeComponentError::ComponentAlreadyAssigned) => {
-                Err(Error::new(format!("Relation type {} has already component {}", ty, component_ty)))
+            Err(RelationTypeAddComponentError::RelationTypeDoesNotExist(relation_ty)) => {
+                Err(Error::new(format!("Relation type {relation_ty} does not exist")))
             }
-            Err(RelationTypeComponentError::ComponentDoesNotExist) => Err(Error::new(format!("Component {} doesn't exist", component_ty))),
+            Err(RelationTypeAddComponentError::IsAlreadyA(component_ty)) => {
+                Err(Error::new(format!("Relation type {ty} has already component {component_ty}")))
+            }
+            Err(RelationTypeAddComponentError::ComponentDoesNotExist(component_ty)) => Err(Error::new(format!("Component {component_ty} doesn't exist"))),
         }
     }
 
@@ -141,13 +151,15 @@ impl MutationRelationTypes {
         let ty = relation_type.into();
         let component_ty = component.into();
         if !relation_type_manager.has(&ty) {
-            return Err(Error::new(format!("Relation type {} does not exist", ty)));
+            return Err(Error::new(format!("Relation type {ty} does not exist")));
         }
-        relation_type_manager.remove_component(&ty, &component_ty);
+        if relation_type_manager.remove_component(&ty, &component_ty).is_err() {
+            return Err(Error::new(format!("Failed to remove component {component_ty} from relation type {ty}")));
+        };
         relation_type_manager
             .get(&ty)
             .map(|relation_type| relation_type.into())
-            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)))
+            .ok_or_else(|| Error::new(format!("Relation type {ty} not found")))
     }
 
     /// Adds a property to the relation type with the given name.
@@ -159,16 +171,16 @@ impl MutationRelationTypes {
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
-        if !relation_type_manager.has(&ty) {
-            return Err(Error::new(format!("Relation type {} does not exist", ty)));
-        }
         match relation_type_manager.add_property(&ty, property.into()) {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypePropertyError::PropertyAlreadyExists) => {
-                Err(Error::new(format!("Failed to add property to relation type {}: Property already exists", ty)))
+            Err(RelationTypeAddPropertyError::RelationTypeDoesNotExist(ty)) => {
+                Err(Error::new(format!("Relation type {ty} does not exist")))
+            }
+            Err(RelationTypeAddPropertyError::AddPropertyError(AddPropertyError::PropertyAlreadyExist(property_name))) => {
+                Err(Error::new(format!("Failed to add property to relation type {ty}: Property {property_name} already exists")))
             }
         }
     }
@@ -183,13 +195,15 @@ impl MutationRelationTypes {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         if !relation_type_manager.has(&ty) {
-            return Err(Error::new(format!("Relation type {} does not exist", ty)));
+            return Err(Error::new(format!("Relation type {ty} does not exist")));
         }
-        relation_type_manager.remove_property(&ty, property_name.as_str());
+        if relation_type_manager.remove_property(&ty, property_name.as_str()).is_err() {
+            return Err(Error::new(format!("Failed to remove property {property_name} from relation type {ty}")));
+        }
         relation_type_manager
             .get(&ty)
             .map(|relation_type| relation_type.into())
-            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)))
+            .ok_or_else(|| Error::new(format!("Relation type {ty} not found")))
     }
 
     /// Adds an extension to the relation type with the given name.
@@ -201,17 +215,16 @@ impl MutationRelationTypes {
     ) -> Result<GraphQLRelationType> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
-        if !relation_type_manager.has(&ty) {
-            return Err(Error::new(format!("Relation type {} does not exist", ty)));
-        }
         match relation_type_manager.add_extension(&ty, extension.into()) {
             Ok(_) => relation_type_manager
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypeExtensionError::ExtensionAlreadyExists(extension_ty)) => Err(Error::new(format!(
-                "Failed to add extension {} to relation type {}: Extension already exists",
-                extension_ty, ty
+            Err(RelationTypeAddExtensionError::RelationTypeDoesNotExist(_)) => {
+                Err(Error::new(format!("Relation type {ty} does not exist")))
+            }
+            Err(RelationTypeAddExtensionError::AddExtensionError(AddExtensionError::ExtensionAlreadyExist(extension_ty))) => Err(Error::new(format!(
+                "Failed to add extension {extension_ty} to relation type {ty}: Extension already exists"
             ))),
         }
     }
@@ -228,19 +241,21 @@ impl MutationRelationTypes {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let ty = relation_type.into();
         if !relation_type_manager.has(&ty) {
-            return Err(Error::new(format!("Relation type {} does not exist", ty)));
+            return Err(Error::new(format!("Relation type {ty} does not exist")));
         }
         let extension_ty = extension_ty.into();
-        relation_type_manager.remove_extension(&ty, &extension_ty);
+        if relation_type_manager.remove_extension(&ty, &extension_ty).is_err() {
+            return Err(Error::new(format!("Failed to remove extension {extension_ty} from relation type {ty}")));
+        }
         relation_type_manager
             .get(&ty)
             .map(|entity_type| entity_type.into())
-            .ok_or_else(|| Error::new(format!("Relation type {} not found", ty)))
+            .ok_or_else(|| Error::new(format!("Relation type {ty} not found")))
     }
 
     /// Deletes the relation type with the given name.
     async fn delete(&self, context: &Context<'_>, #[graphql(name = "type")] relation_type: RelationTypeIdDefinition) -> Result<bool> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
-        Ok(relation_type_manager.delete(&relation_type.into()))
+        Ok(relation_type_manager.delete(&relation_type.into()).is_some())
     }
 }

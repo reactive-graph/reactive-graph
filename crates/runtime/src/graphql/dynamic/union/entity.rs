@@ -15,8 +15,8 @@ pub fn namespace_entities_union_type_name(namespace: &str) -> String {
 pub fn get_namespace_entities_union(schema: SchemaBuilder, context: &SchemaBuilderContext, namespace: &String) -> SchemaBuilder {
     let type_name = namespace_entities_union_type_name(namespace);
     let mut union = Union::new(type_name).description(format!("Any entity of the namespace {}", namespace));
-    for entity_type in context.entity_type_manager.get_by_namespace(namespace) {
-        let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
+    for entity_tys in context.entity_type_manager.get_types_by_namespace(namespace) {
+        let dy_ty = DynamicGraphTypeDefinition::from(&entity_tys);
         union = union.possible_type(&dy_ty.to_string());
     }
     schema.register(union)
@@ -24,8 +24,8 @@ pub fn get_namespace_entities_union(schema: SchemaBuilder, context: &SchemaBuild
 
 pub fn get_all_entities_union(schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     let mut union = Union::new(UNION_ALL_ENTITIES).description("Any entity.");
-    for entity_type in context.entity_type_manager.get_all() {
-        let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
+    for entity_ty in context.entity_type_manager.get_type_ids() {
+        let dy_ty = DynamicGraphTypeDefinition::from(&entity_ty);
         union = union.possible_type(&dy_ty.to_string());
     }
     schema.register(union)
