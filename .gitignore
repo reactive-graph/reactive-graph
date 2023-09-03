@@ -36,3 +36,5 @@ cobertura.xml
 
 /repositories/assets/*
 /repositories/flows/*
+
+history.txt
