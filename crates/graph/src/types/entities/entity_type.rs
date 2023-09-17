@@ -248,58 +248,11 @@ impl From<&EntityType> for TypeDefinition {
     }
 }
 
-// impl<
-//     __description,
-//     __components,
-//     __properties,
-//     __extensions,
-// > EntityTypeBuilder<((), __description, __components, __properties, __extensions)> {
-//     pub fn ty(
-//         self,
-//         ty: impl ::core::convert::Into<EntityTypeId>,
-//     ) -> EntityTypeBuilder<
-//         ((EntityTypeId,), __description, __components, __properties, __extensions),
-//     > {
-//         let ty = (ty.into(),);
-//         let (_, description, components, properties, extensions) = self.fields;
-//         EntityTypeBuilder {
-//             fields: (ty, description, components, properties, extensions),
-//             phantom: self.phantom,
-//         }
-//     }
-// }
-
-// #[derive(PartialEq, TypedBuilder)]
-// struct Foo<X: Default, Y> {
-//     x: X,
-//     y: Y,
-// }
-
-// impl<X: Default, Y, Y_> EntityTypeBuilder<X, Y, ((), Y_)> {
-//     fn x_default(self) -> EntityTypeBuilder<X, Y, ((X,), Y_)> {
-//         self.x(X::default())
-//     }
-// }
-
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 // #[derive(Clone, Debug, Default, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct EntityTypes(DashMap<EntityTypeId, EntityType>);
 
 impl EntityTypes {
-    // pub fn new() -> Self {
-    //     Self(DashMap::new())
-    // }
-
-    // pub fn to_vec(&self) -> Vec<EntityType> {
-    //     // let i1 = self.0.iter();
-    //     // let i2 = self.iter();
-    //     let mut entity_types: Vec<EntityType> = self.0.iter()
-    //         .map(|entity_type| entity_type.value().clone())
-    //         .collect();
-    //     entity_types.sort();
-    //     entity_types
-    // }
-
     pub fn merge<C: Into<EntityType>>(&self, entity_type_to_merge: C) -> Result<EntityType, EntityTypeMergeError> {
         let entity_type_to_merge = entity_type_to_merge.into();
         let Some(mut entity_type) = self.get_mut(&entity_type_to_merge.ty) else {
@@ -311,38 +264,6 @@ impl EntityTypes {
         entity_type.merge_extensions(entity_type_to_merge.extensions);
         Ok(entity_type.clone())
     }
-
-    // pub fn namespaces(&self) -> Namespaces {
-    //     self.0.iter().map(|entity_type| entity_type.namespace()).collect()
-    // }
-
-    // pub fn get_by_namespace(&self, namespace: &str) -> Self {
-    //     self.0.iter()
-    //         .filter(|entity_type| entity_type.namespace() == namespace)
-    //         .map(|entity_type| entity_type.value().clone())
-    //         .collect()
-    // }
-
-    // pub fn get_by_having_component(&self, component_ty: &ComponentTypeId) -> Self {
-    //     self.0.iter()
-    //         .filter(|entity_type| entity_type.is_a(component_ty))
-    //         .map(|entity_type| entity_type.value().clone())
-    //         .collect()
-    // }
-
-    // pub fn find_by_type_name(&self, search: &str) -> Self {
-    //     let matcher = WildMatch::new(search);
-    //     self.0.iter()
-    //         .filter(|entity_type| matcher.matches(entity_type.type_name().as_str()))
-    //         .map(|entity_type| entity_type.value().clone())
-    //         .collect()
-    // }
-    //
-    // pub fn count_by_namespace(&self, namespace: &str) -> usize {
-    //     self.0.iter()
-    //         .filter(|entity_type| entity_type.namespace() == namespace)
-    //         .count()
-    // }
 }
 
 impl NamespacedTypeContainer for EntityTypes {

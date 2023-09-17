@@ -150,10 +150,6 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         }
         divergent.sort();
         let _ = relation_type.add_extension(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
-        // relation_type
-        //     .extensions
-        //     .push();
-        // self.relation_types.0.write().unwrap().push(relation_type.clone());
         self.relation_types.push(relation_type.clone());
         debug!("Registered relation type {}", &relation_ty);
         self.event_manager.emit_event(SystemEvent::RelationTypeCreated(relation_ty));
