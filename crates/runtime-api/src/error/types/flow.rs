@@ -1,7 +1,9 @@
 use inexor_rgf_graph::FlowTypeId;
+use thiserror::Error;
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum FlowTypeRegistrationError {
+    #[error("The flow type {0} already exists")]
     FlowTypeAlreadyExists(FlowTypeId),
     // OutboundComponentDoesNotExist(RelationTypeId, ComponentTypeId),
     // OutboundEntityTypeDoesNotExist(RelationTypeId, EntityTypeId),
@@ -9,33 +11,28 @@ pub enum FlowTypeRegistrationError {
     // InboundEntityTypeDoesNotExist(RelationTypeId, EntityTypeId),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum FlowTypeCreationError {
-    RegistrationError(FlowTypeRegistrationError),
+    #[error("Failed to create flow type because registration failed: {0}")]
+    RegistrationError(#[from] FlowTypeRegistrationError),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum FlowTypeImportError {
-    Io(std::io::Error),
-    Deserialization(serde_json::Error),
-    RegistrationError(FlowTypeRegistrationError),
+    #[error("Failed to import flow type because reading failed: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("Failed to import flow type because deserialization failed: {0}")]
+    Deserialization(#[from] serde_json::Error),
+    #[error("Failed to import flow type because registration failed: {0}")]
+    RegistrationError(#[from] FlowTypeRegistrationError),
 }
 
-impl From<std::io::Error> for FlowTypeImportError {
-    fn from(e: std::io::Error) -> Self {
-        FlowTypeImportError::Io(e)
-    }
-}
-
-impl From<serde_json::Error> for FlowTypeImportError {
-    fn from(e: serde_json::Error) -> Self {
-        FlowTypeImportError::Deserialization(e)
-    }
-}
-
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum FlowTypeExportError {
+    #[error("Failed to export non-existing flow type {0}")]
     FlowTypeNotFound(FlowTypeId),
-    Io(std::io::Error),
-    Serialization(serde_json::Error),
+    #[error("Failed to export flow type because write failed: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("Failed to export flow type because serialization failed: {0}")]
+    Serialization(#[from] serde_json::Error),
 }

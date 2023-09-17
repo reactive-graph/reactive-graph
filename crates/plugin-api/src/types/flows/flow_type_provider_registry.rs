@@ -13,17 +13,3 @@ pub trait FlowTypeProviderRegistry: Send + Sync {
     /// Unregisters a flow type provider.
     async fn unregister_provider(&self, id: &str);
 }
-
-#[macro_export]
-macro_rules! register_flow_type_provider {
-    ($context: expr, $provider: expr) => {
-        $context.get_flow_type_provider_registry().register_provider($provider.clone()).await;
-    };
-}
-
-#[macro_export]
-macro_rules! unregister_flow_type_provider {
-    ($context: expr, $id: expr) => {
-        $context.get_flow_type_provider_registry().unregister_provider(&$id).await;
-    };
-}

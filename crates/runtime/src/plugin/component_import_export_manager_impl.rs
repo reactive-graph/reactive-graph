@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use std::sync::Arc;
 
 use crate::model::Component;
@@ -17,12 +18,14 @@ impl ComponentImportExportManagerImpl {
         }
     }
 }
+
+#[async_trait]
 impl ComponentImportExportManager for ComponentImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<Component, ComponentImportError> {
-        self.component_import_export_manager.import(path)
+    async fn import(&self, path: &str) -> Result<Component, ComponentImportError> {
+        self.component_import_export_manager.import(path).await
     }
 
-    fn export(&self, ty: &ComponentTypeId, path: &str) -> Result<(), ComponentExportError> {
-        self.component_import_export_manager.export(ty, path)
+    async fn export(&self, ty: &ComponentTypeId, path: &str) -> Result<(), ComponentExportError> {
+        self.component_import_export_manager.export(ty, path).await
     }
 }

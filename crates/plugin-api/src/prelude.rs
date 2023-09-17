@@ -11,14 +11,6 @@ pub mod plugin {
     pub use crate::component_alias;
     pub use crate::export_plugin;
     pub use crate::injectable;
-    pub use crate::register_component_provider;
-    pub use crate::register_entity_type_provider;
-    pub use crate::register_flow_type_provider;
-    pub use crate::register_relation_type_provider;
-    pub use crate::unregister_component_provider;
-    pub use crate::unregister_entity_type_provider;
-    pub use crate::unregister_flow_type_provider;
-    pub use crate::unregister_relation_type_provider;
     pub use crate::Component;
     pub use crate::Plugin;
     pub use crate::PluginActivationError;

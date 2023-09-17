@@ -22,7 +22,7 @@ pub struct RelationTypeImportExportManagerImpl {
 #[async_trait]
 #[provides]
 impl RelationTypeImportExportManager for RelationTypeImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
+    async fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let relation_type: RelationType = serde_json::from_reader(reader)?;
@@ -31,7 +31,7 @@ impl RelationTypeImportExportManager for RelationTypeImportExportManagerImpl {
             .map_err(RelationTypeImportError::RegistrationError)
     }
 
-    fn export(&self, ty: &RelationTypeId, path: &str) -> Result<(), RelationTypeExportError> {
+    async fn export(&self, ty: &RelationTypeId, path: &str) -> Result<(), RelationTypeExportError> {
         let Some(relation_type) = self.relation_type_manager.get(ty) else {
             return Err(RelationTypeExportError::RelationTypeNotFound(ty.clone()));
         };

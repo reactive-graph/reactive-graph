@@ -22,14 +22,14 @@ pub struct EntityTypeImportExportManagerImpl {
 #[async_trait]
 #[provides]
 impl EntityTypeImportExportManager for EntityTypeImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
+    async fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let entity_type: EntityType = serde_json::from_reader(reader)?;
         self.entity_type_manager.register(entity_type).map_err(EntityTypeImportError::RegistrationError)
     }
 
-    fn export(&self, ty: &EntityTypeId, path: &str) -> Result<(), EntityTypeExportError> {
+    async fn export(&self, ty: &EntityTypeId, path: &str) -> Result<(), EntityTypeExportError> {
         let Some(entity_type) = self.entity_type_manager.get(ty) else {
             return Err(EntityTypeExportError::EntityTypeNotFound(ty.clone()));
         };
