@@ -352,7 +352,7 @@ impl
             .map_err(|e| EntityTypeRemovePropertyError::RemovePropertyError(e))
     }
 
-    fn merge_properties<P: Into<PropertyTypes>>(&mut self, entity_ty: &EntityTypeId, properties_to_merge: P) -> Result<(), EntityTypeMergePropertiesError> {
+    fn merge_properties<P: Into<PropertyTypes>>(&self, entity_ty: &EntityTypeId, properties_to_merge: P) -> Result<(), EntityTypeMergePropertiesError> {
         let Some(mut entity_type) = self.0.get_mut(entity_ty) else {
             return Err(EntityTypeMergePropertiesError::EntityTypeDoesNotExist(entity_ty.clone()));
         };

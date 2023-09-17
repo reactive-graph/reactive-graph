@@ -53,5 +53,5 @@ pub trait NamespacedTypePropertyTypeContainer<T, AddPropertyError, UpdatePropert
     fn remove_property<N: Into<String>>(&self, ty: &T, property_name: N) -> Result<PropertyType, RemovePropertyError>;
 
     /// Merges the given properties into the properties of the given type.
-    fn merge_properties<P: Into<PropertyTypes>>(&mut self, ty: &T, properties_to_merge: P) -> Result<(), MergePropertiesError>;
+    fn merge_properties<P: Into<PropertyTypes>>(&self, ty: &T, properties_to_merge: P) -> Result<(), MergePropertiesError>;
 }

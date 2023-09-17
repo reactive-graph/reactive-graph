@@ -265,79 +265,54 @@ impl RelationTypeManager for RelationTypeManagerImpl {
     }
 
     fn merge(&self, relation_type_to_merge: RelationType) -> Result<RelationType, RelationTypeMergeError> {
-        self.relation_types.merge(relation_type_to_merge)
-        // let ty = relation_type_to_merge.ty;
-        // if !self.has(&ty) {
-        //     return Err(RelationTypeMergeError::RelationTypeDoesNotExists(ty));
-        // }
-        // for component_ty in relation_type_to_merge.components {
-        //     let _ = self.add_component(&ty, &component_ty);
-        // }
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // let Some(relation_type) = guard.iter_mut().find(|r| r.ty == ty) else {
-        //     return Err(RelationTypeMergeError::RelationTypeDoesNotExists(ty));
-        // };
-        // relation_type.outbound_type = relation_type_to_merge.outbound_type;
-        // relation_type.inbound_type = relation_type_to_merge.inbound_type;
-        // relation_type.description = relation_type_to_merge.description.clone();
-        // relation_type.merge_properties(relation_type_to_merge.properties);
-        // relation_type.merge_extensions(relation_type_to_merge.extensions);
-        // Ok(relation_type.clone())
+        let components = relation_type_to_merge.components.clone();
+        let relation_type = self.relation_types.merge(relation_type_to_merge)?;
+        let ty = relation_type.ty;
+        // Also populate properties from new components
+        for component_ty in components.iter() {
+            if let Some(component) = self.component_manager.get(&component_ty) {
+                for property_type in component.properties.iter() {
+                    let _ = self.add_property(&ty, property_type.value().clone());
+                }
+            }
+        }
+        self.relation_types
+            .get(&ty)
+            .map(|relation_type| relation_type.value().clone())
+            .ok_or(RelationTypeMergeError::RelationTypeDoesNotExist(ty))
     }
 
     fn add_component(&self, relation_ty: &RelationTypeId, component_ty: &ComponentTypeId) -> Result<(), RelationTypeAddComponentError> {
-        if !self.component_manager.has(component_ty) {
+        let Some(component) = self.component_manager.get(component_ty) else {
             return Err(RelationTypeAddComponentError::ComponentDoesNotExist(component_ty.clone()));
-        }
-        self.relation_types.add_component(relation_ty, component_ty)
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // for relation_type in guard.iter_mut() {
-        //     if &relation_type.ty == ty {
-        //         if relation_type.is_a(component_ty) {
-        //             return Err(RelationTypeComponentError::ComponentAlreadyAssigned);
-        //         }
-        //         match self.component_manager.get(component_ty) {
-        //             Some(component) => {
-        //                 relation_type.components.push(component_ty.clone());
-        //                 relation_type.merge_properties(component.properties);
-        //             }
-        //             None => {
-        //                 return Err(RelationTypeComponentError::ComponentDoesNotExist);
-        //             }
-        //         }
-        //         self.event_manager
-        //             .emit_event(SystemEvent::RelationTypeComponentAdded(relation_type.ty.clone(), component_ty.clone()));
-        //     }
-        // }
-        // Ok(())
+        };
+        self.relation_types.add_component(relation_ty, component_ty)?;
+        let _ = self.relation_types.merge_properties(relation_ty, component.properties.clone());
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypeComponentAdded(relation_ty.clone(), component_ty.clone()));
+        Ok(())
     }
 
     fn remove_component(&self, relation_ty: &RelationTypeId, component_ty: &ComponentTypeId) -> Result<ComponentTypeId, RelationTypeRemoveComponentError> {
-        self.relation_types.remove_component(relation_ty, component_ty)
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // for relation_type in guard.iter_mut() {
-        //     if &relation_type.ty == ty {
-        //         relation_type.components.retain(|c| c != component_ty);
-        //         self.event_manager
-        //             .emit_event(SystemEvent::RelationTypeComponentRemoved(relation_type.ty.clone(), component_ty.clone()));
-        //     }
-        // }
+        self.relation_types.remove_component(relation_ty, component_ty)?;
+        if let Some(component) = self.component_manager.get(component_ty) {
+            // TODO: what if multiple components have the same property?
+            component.properties.iter().for_each(|property| {
+                let _ = self.relation_types.remove_property(relation_ty, property.key());
+                self.event_manager
+                    .emit_event(SystemEvent::RelationTypePropertyRemoved(relation_ty.clone(), property.key().clone()));
+            });
+        }
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypeComponentRemoved(relation_ty.clone(), component_ty.clone()));
+        Ok(component_ty.clone())
     }
 
     fn add_property(&self, relation_ty: &RelationTypeId, property: PropertyType) -> Result<PropertyType, RelationTypeAddPropertyError> {
-        self.relation_types.add_property(relation_ty, property)
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // for relation_type in guard.iter_mut() {
-        //     if &relation_type.ty == ty {
-        //         if relation_type.has_own_property(property.name.clone()) {
-        //             return Err(RelationTypePropertyError::PropertyAlreadyExists);
-        //         }
-        //         relation_type.properties.push(property.clone());
-        //         self.event_manager
-        //             .emit_event(SystemEvent::RelationTypePropertyAdded(relation_type.ty.clone(), property.name.clone()));
-        //     }
-        // }
-        // Ok(())
+        let property_type = self.relation_types.add_property(relation_ty, property)?;
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypePropertyAdded(relation_ty.clone(), property_type.name.clone()));
+        Ok(property_type)
     }
 
     fn update_property(
@@ -346,36 +321,31 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         property_name: &str,
         property_type: PropertyType,
     ) -> Result<PropertyType, RelationTypeUpdatePropertyError> {
-        self.relation_types.update_property(relation_ty, property_name, property_type)
+        let property_type = self.relation_types.update_property(relation_ty, property_name, property_type)?;
+        if property_name == property_type.name {
+            self.event_manager.emit_event(SystemEvent::RelationTypePropertyRenamed(
+                relation_ty.clone(),
+                property_name.to_string(),
+                property_type.name.clone(),
+            ));
+        }
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypePropertyUpdated(relation_ty.clone(), property_name.to_string()));
+        Ok(property_type)
     }
 
     fn remove_property(&self, relation_ty: &RelationTypeId, property_name: &str) -> Result<PropertyType, RelationTypeRemovePropertyError> {
-        self.relation_types.remove_property(relation_ty, property_name)
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // for relation_type in guard.iter_mut() {
-        //     if &relation_type.ty == ty {
-        //         relation_type.properties.retain(|property| property.name != property_name);
-        //         self.event_manager
-        //             .emit_event(SystemEvent::RelationTypePropertyRemoved(relation_type.ty.clone(), property_name.to_string()));
-        //     }
-        // }
+        let property_type = self.relation_types.remove_property(relation_ty, property_name)?;
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypePropertyRemoved(relation_ty.clone(), property_name.to_string()));
+        Ok(property_type)
     }
 
     fn add_extension(&self, relation_ty: &RelationTypeId, extension: Extension) -> Result<ExtensionTypeId, RelationTypeAddExtensionError> {
-        self.relation_types.add_extension(relation_ty, extension)
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // for relation_type in guard.iter_mut() {
-        //     if &relation_type.ty == ty {
-        //         let extension_ty = extension.ty.clone();
-        //         if relation_type.has_own_extension(&extension_ty) {
-        //             return Err(RelationTypeExtensionError::ExtensionAlreadyExists(extension_ty));
-        //         }
-        //         relation_type.extensions.push(extension.clone());
-        //         self.event_manager
-        //             .emit_event(SystemEvent::RelationTypeExtensionAdded(relation_type.ty.clone(), extension_ty));
-        //     }
-        // }
-        // Ok(())
+        let extension_ty = self.relation_types.add_extension(relation_ty, extension)?;
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypeExtensionAdded(relation_ty.clone(), extension_ty.clone()));
+        Ok(extension_ty)
     }
 
     fn update_extension(
@@ -384,37 +354,29 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         extension_ty: &ExtensionTypeId,
         extension: Extension,
     ) -> Result<Extension, RelationTypeUpdateExtensionError> {
-        self.relation_types.update_extension(relation_ty, extension_ty, extension)
+        let extension = self.relation_types.update_extension(relation_ty, extension_ty, extension)?;
+        if extension_ty == &extension.ty {
+            self.event_manager
+                .emit_event(SystemEvent::RelationTypeExtensionRenamed(relation_ty.clone(), extension_ty.clone(), extension.ty.clone()));
+        }
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypeExtensionUpdated(relation_ty.clone(), extension.ty.clone()));
+        Ok(extension)
     }
 
     fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, RelationTypeRemoveExtensionError> {
-        self.relation_types.remove_extension(relation_ty, extension_ty)
-        // let mut guard = self.relation_types.0.write().unwrap();
-        // for relation_type in guard.iter_mut() {
-        //     if &relation_type.ty == ty {
-        //         relation_type.extensions.retain(|extension| &extension.ty != extension_ty);
-        //         self.event_manager
-        //             .emit_event(SystemEvent::RelationTypeExtensionRemoved(relation_type.ty.clone(), extension_ty.clone()));
-        //     }
-        // }
+        let extension = self.relation_types.remove_extension(relation_ty, extension_ty)?;
+        self.event_manager
+            .emit_event(SystemEvent::RelationTypeExtensionRemoved(relation_ty.clone(), extension_ty.clone()));
+        Ok(extension)
     }
 
     // TODO: parameter "cascade": flow types and relation instances (and their dependencies) depends on a relation type
     fn delete(&self, ty: &RelationTypeId) -> Option<RelationType> {
-        self.relation_types.remove(ty).map(|(ty, entity_type)| {
+        self.relation_types.remove(ty).map(|(ty, relation_type)| {
             self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
-            entity_type
+            relation_type
         })
-        // .inspect(|x| {
-        //     self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
-        // })
-        // .map(|(_, relation_type)| relation_type)
-        // if !self.has(ty) {
-        //     return false;
-        // }
-        // self.relation_types.0.write().unwrap().retain(|relation_type| &relation_type.ty != ty);
-        // self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
-        // true
     }
 
     fn validate(&self, ty: &RelationTypeId) -> bool {
