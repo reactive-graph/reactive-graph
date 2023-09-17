@@ -43,7 +43,7 @@ where
     where
         F: Fn(f64) -> f64,
     {
-        if let Some(v) = self.reactive_instance.as_i64(&self.property_name) {
+        if let Some(v) = self.reactive_instance.as_f64(&self.property_name) {
             self.reactive_instance.set(&self.property_name, json!(f(v)));
         }
     }
