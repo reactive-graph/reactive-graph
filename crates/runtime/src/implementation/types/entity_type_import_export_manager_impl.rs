@@ -1,7 +1,12 @@
 use std::fs::File;
 use std::io::BufReader;
+use std::io::Read;
+use std::io::Write;
+use std::path::Path;
 
 use async_trait::async_trait;
+use inexor_rgf_rt_api::error::types::serde::DeserializationError;
+use inexor_rgf_rt_api::error::types::serde::SerializationError;
 
 use crate::api::EntityTypeImportExportManager;
 use crate::api::EntityTypeManager;
@@ -23,9 +28,18 @@ pub struct EntityTypeImportExportManagerImpl {
 #[provides]
 impl EntityTypeImportExportManager for EntityTypeImportExportManagerImpl {
     async fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
+        let path = Path::new(path);
         let file = File::open(path)?;
-        let reader = BufReader::new(file);
-        let entity_type: EntityType = serde_json::from_reader(reader)?;
+        let mut reader = BufReader::new(file);
+        let mut content = String::new();
+        reader.read_to_string(&mut content)?;
+        let entity_type = match path.extension().and_then(|ext| ext.to_str()) {
+            Some("json") => serde_json::from_str::<EntityType>(&content).map_err(|e| DeserializationError::Json(e).into()),
+            Some("json5") => json5::from_str::<EntityType>(&content).map_err(|e| DeserializationError::Json5(e).into()),
+            Some("toml") => toml::from_str::<EntityType>(&content).map_err(|e| DeserializationError::Toml(e).into()),
+            Some(ext) => Err(EntityTypeImportError::UnsupportedFormat(ext.to_string())),
+            None => Err(EntityTypeImportError::UnsupportedFormat(Default::default())),
+        }?;
         self.entity_type_manager.register(entity_type).map_err(EntityTypeImportError::RegistrationError)
     }
 
@@ -33,9 +47,28 @@ impl EntityTypeImportExportManager for EntityTypeImportExportManagerImpl {
         let Some(entity_type) = self.entity_type_manager.get(ty) else {
             return Err(EntityTypeExportError::EntityTypeNotFound(ty.clone()));
         };
-        match File::create(path) {
-            Ok(file) => serde_json::to_writer_pretty(&file, &entity_type).map_err(EntityTypeExportError::Serialization),
-            Err(e) => Err(EntityTypeExportError::Io(e)),
+        let path = Path::new(path);
+        match path.extension().and_then(|ext| ext.to_str()) {
+            Some("json") => match File::create(path) {
+                Ok(file) => serde_json::to_writer_pretty(&file, &entity_type).map_err(|e| SerializationError::Json(e).into()),
+                Err(e) => Err(EntityTypeExportError::Io(e)),
+            },
+            Some("json5") => match File::create(path) {
+                Ok(mut file) => {
+                    let content = json5::to_string(&entity_type).map_err(|e| EntityTypeExportError::Serialization(SerializationError::Json5(e)))?;
+                    file.write_all(content.as_bytes()).map_err(EntityTypeExportError::Io)
+                }
+                Err(e) => Err(EntityTypeExportError::Io(e)),
+            },
+            Some("toml") => match File::create(path) {
+                Ok(mut file) => {
+                    let content = toml::to_string_pretty(&entity_type).map_err(|e| EntityTypeExportError::Serialization(SerializationError::Toml(e)))?;
+                    file.write_all(content.as_bytes()).map_err(EntityTypeExportError::Io)
+                }
+                Err(e) => Err(EntityTypeExportError::Io(e)),
+            },
+            Some(ext) => Err(EntityTypeExportError::UnsupportedFormat(ext.to_string())),
+            None => Err(EntityTypeExportError::UnsupportedFormat(Default::default())),
         }
     }
 }

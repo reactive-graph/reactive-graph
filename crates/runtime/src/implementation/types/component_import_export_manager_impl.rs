@@ -1,7 +1,12 @@
 use std::fs::File;
 use std::io::BufReader;
+use std::io::Read;
+use std::io::Write;
+use std::path::Path;
 
 use async_trait::async_trait;
+use inexor_rgf_rt_api::error::types::serde::DeserializationError;
+use inexor_rgf_rt_api::error::types::serde::SerializationError;
 
 use crate::api::ComponentImportExportManager;
 use crate::api::ComponentManager;
@@ -22,9 +27,18 @@ pub struct ComponentImportExportManagerImpl {
 #[provides]
 impl ComponentImportExportManager for ComponentImportExportManagerImpl {
     async fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {
+        let path = Path::new(path);
         let file = File::open(path)?;
-        let reader = BufReader::new(file);
-        let component: crate::model::Component = serde_json::from_reader(reader)?;
+        let mut reader = BufReader::new(file);
+        let mut content = String::new();
+        reader.read_to_string(&mut content)?;
+        let component = match path.extension().and_then(|ext| ext.to_str()) {
+            Some("json") => serde_json::from_str::<crate::model::Component>(&content).map_err(|e| DeserializationError::Json(e).into()),
+            Some("json5") => json5::from_str::<crate::model::Component>(&content).map_err(|e| DeserializationError::Json5(e).into()),
+            Some("toml") => toml::from_str::<crate::model::Component>(&content).map_err(|e| DeserializationError::Toml(e).into()),
+            Some(ext) => Err(ComponentImportError::UnsupportedFormat(ext.to_string())),
+            None => Err(ComponentImportError::UnsupportedFormat(Default::default())),
+        }?;
         self.component_manager.register(component).map_err(ComponentImportError::RegistrationError)
     }
 
@@ -32,9 +46,28 @@ impl ComponentImportExportManager for ComponentImportExportManagerImpl {
         let Some(component) = self.component_manager.get(ty) else {
             return Err(ComponentExportError::ComponentNotFound(ty.clone()));
         };
-        match File::create(path) {
-            Ok(file) => serde_json::to_writer_pretty(&file, &component).map_err(ComponentExportError::Serialization),
-            Err(e) => Err(ComponentExportError::Io(e)),
+        let path = Path::new(path);
+        match path.extension().and_then(|ext| ext.to_str()) {
+            Some("json") => match File::create(path) {
+                Ok(file) => serde_json::to_writer_pretty(&file, &component).map_err(|e| SerializationError::Json(e).into()),
+                Err(e) => Err(ComponentExportError::Io(e)),
+            },
+            Some("json5") => match File::create(path) {
+                Ok(mut file) => {
+                    let content = json5::to_string(&component).map_err(|e| ComponentExportError::Serialization(SerializationError::Json5(e)))?;
+                    file.write_all(content.as_bytes()).map_err(ComponentExportError::Io)
+                }
+                Err(e) => Err(ComponentExportError::Io(e)),
+            },
+            Some("toml") => match File::create(path) {
+                Ok(mut file) => {
+                    let content = toml::to_string_pretty(&component).map_err(|e| ComponentExportError::Serialization(SerializationError::Toml(e)))?;
+                    file.write_all(content.as_bytes()).map_err(ComponentExportError::Io)
+                }
+                Err(e) => Err(ComponentExportError::Io(e)),
+            },
+            Some(ext) => Err(ComponentExportError::UnsupportedFormat(ext.to_string())),
+            None => Err(ComponentExportError::UnsupportedFormat(Default::default())),
         }
     }
 }

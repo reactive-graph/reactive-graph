@@ -1,7 +1,12 @@
 use std::fs::File;
 use std::io::BufReader;
+use std::io::Read;
+use std::io::Write;
+use std::path::Path;
 
 use async_trait::async_trait;
+use inexor_rgf_rt_api::error::types::serde::DeserializationError;
+use inexor_rgf_rt_api::error::types::serde::SerializationError;
 
 use crate::api::RelationTypeImportExportManager;
 use crate::api::RelationTypeManager;
@@ -23,9 +28,18 @@ pub struct RelationTypeImportExportManagerImpl {
 #[provides]
 impl RelationTypeImportExportManager for RelationTypeImportExportManagerImpl {
     async fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
+        let path = Path::new(path);
         let file = File::open(path)?;
-        let reader = BufReader::new(file);
-        let relation_type: RelationType = serde_json::from_reader(reader)?;
+        let mut reader = BufReader::new(file);
+        let mut content = String::new();
+        reader.read_to_string(&mut content)?;
+        let relation_type = match path.extension().and_then(|ext| ext.to_str()) {
+            Some("json") => serde_json::from_str::<RelationType>(&content).map_err(|e| DeserializationError::Json(e).into()),
+            Some("json5") => json5::from_str::<RelationType>(&content).map_err(|e| DeserializationError::Json5(e).into()),
+            Some("toml") => toml::from_str::<RelationType>(&content).map_err(|e| DeserializationError::Toml(e).into()),
+            Some(ext) => Err(RelationTypeImportError::UnsupportedFormat(ext.to_string())),
+            None => Err(RelationTypeImportError::UnsupportedFormat(Default::default())),
+        }?;
         self.relation_type_manager
             .register(relation_type)
             .map_err(RelationTypeImportError::RegistrationError)
@@ -35,9 +49,28 @@ impl RelationTypeImportExportManager for RelationTypeImportExportManagerImpl {
         let Some(relation_type) = self.relation_type_manager.get(ty) else {
             return Err(RelationTypeExportError::RelationTypeNotFound(ty.clone()));
         };
-        match File::create(path) {
-            Ok(file) => serde_json::to_writer_pretty(&file, &relation_type).map_err(RelationTypeExportError::Serialization),
-            Err(e) => Err(RelationTypeExportError::Io(e)),
+        let path = Path::new(path);
+        match path.extension().and_then(|ext| ext.to_str()) {
+            Some("json") => match File::create(path) {
+                Ok(file) => serde_json::to_writer_pretty(&file, &relation_type).map_err(|e| SerializationError::Json(e).into()),
+                Err(e) => Err(RelationTypeExportError::Io(e)),
+            },
+            Some("json5") => match File::create(path) {
+                Ok(mut file) => {
+                    let content = json5::to_string(&relation_type).map_err(|e| RelationTypeExportError::Serialization(SerializationError::Json5(e)))?;
+                    file.write_all(content.as_bytes()).map_err(RelationTypeExportError::Io)
+                }
+                Err(e) => Err(RelationTypeExportError::Io(e)),
+            },
+            Some("toml") => match File::create(path) {
+                Ok(mut file) => {
+                    let content = toml::to_string_pretty(&relation_type).map_err(|e| RelationTypeExportError::Serialization(SerializationError::Toml(e)))?;
+                    file.write_all(content.as_bytes()).map_err(RelationTypeExportError::Io)
+                }
+                Err(e) => Err(RelationTypeExportError::Io(e)),
+            },
+            Some(ext) => Err(RelationTypeExportError::UnsupportedFormat(ext.to_string())),
+            None => Err(RelationTypeExportError::UnsupportedFormat(Default::default())),
         }
     }
 }
