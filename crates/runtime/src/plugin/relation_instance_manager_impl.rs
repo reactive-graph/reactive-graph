@@ -7,6 +7,7 @@ use inexor_rgf_rt_api::ReactiveRelationComponentRemoveError;
 use inexor_rgf_rt_api::ReactiveRelationCreationError;
 use inexor_rgf_rt_api::ReactiveRelationPropertyAddError;
 use inexor_rgf_rt_api::ReactiveRelationPropertyRemoveError;
+use inexor_rgf_rt_api::ReactiveRelationRegistrationError;
 use uuid::Uuid;
 
 use crate::api::ComponentManager;
@@ -121,6 +122,10 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
             }
             None => Err(ReactiveRelationCreationError::UnknownRelationType(relation_ty.clone())),
         }
+    }
+
+    fn register(&self, reactive_relation: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError> {
+        self.reactive_relation_manager.register_reactive_instance(reactive_relation)
     }
 
     fn add_component(&self, id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
