@@ -13,6 +13,7 @@ use inexor_rgf_graph::Mutability;
 use inexor_rgf_graph::RelationInstance;
 use inexor_rgf_graph::RelationInstanceId;
 use inexor_rgf_graph::RelationTypeId;
+use inexor_rgf_rt_api::ReactiveRelationRegistrationError;
 
 #[derive(Debug)]
 pub enum RelationInstanceManagerError {
@@ -60,6 +61,9 @@ pub trait RelationInstanceManager: Send + Sync {
 
     /// Creates a new reactive relation instance.
     fn create(&self, relation_instance: RelationInstance) -> Result<ReactiveRelation, ReactiveRelationCreationError>;
+
+    /// Registers the given reactive relation instance and applies components and behaviours.
+    fn register(&self, reactive_relation: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
 
     /// Adds the component with the given name to the relation instance with the given edge key.
     fn add_component(&self, edge_key: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError>;
