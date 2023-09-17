@@ -13,9 +13,9 @@ use crate::graphql::query::GraphQLEntityBehaviour;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationType;
-use crate::model::EntityType;
-use crate::model::EntityTypes;
-use crate::model::NamespacedTypeGetter;
+use inexor_rgf_graph::EntityType;
+use inexor_rgf_graph::EntityTypes;
+use inexor_rgf_graph::NamespacedTypeGetter;
 
 pub struct GraphQLEntityType {
     entity_type: EntityType,
@@ -248,10 +248,7 @@ impl From<GraphQLEntityTypes> for Vec<GraphQLEntityType> {
 
 impl From<EntityTypes> for GraphQLEntityTypes {
     fn from(entity_types: EntityTypes) -> Self {
-        let entity_types = entity_types
-            .into_iter()
-            .map(|(_, entity_type)| entity_type.into())
-            .collect();
+        let entity_types = entity_types.into_iter().map(|(_, entity_type)| entity_type.into()).collect();
         GraphQLEntityTypes(entity_types)
     }
 }

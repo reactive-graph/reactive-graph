@@ -8,6 +8,7 @@ use std::time::SystemTime;
 use std::time::UNIX_EPOCH;
 
 use async_trait::async_trait;
+use inexor_rgf_plugin_api::HotDeployError;
 use log::debug;
 use log::error;
 use log::info;
@@ -31,13 +32,6 @@ use crate::api::PluginRepositoryManager;
 use crate::api::PluginResolver;
 use crate::di::*;
 use crate::plugins::PluginState;
-
-#[derive(Debug)]
-pub enum HotDeployError {
-    NoDynamicLinkLibrary,
-    InvalidInstallPath,
-    MoveError,
-}
 
 #[wrapper]
 pub struct HotDeployWatcher(RwLock<Option<RecommendedWatcher>>);
@@ -100,6 +94,7 @@ impl PluginRepositoryManagerImpl {
                                                 // Resolve until all dependent plugins are started
                                                 plugin_resolver.resolve_until_idle().await;
                                             }
+                                            plugin_resolver.transition_to_fallback_states().await;
                                         }
                                         Err(e) => {
                                             error!("Failed to redeploy plugin {} {}: {:?}", &stem, &id, e);
@@ -120,6 +115,7 @@ impl PluginRepositoryManagerImpl {
                                                 plugin_resolver.resolve_until_idle().await;
                                             }
                                         }
+                                        plugin_resolver.transition_to_fallback_states().await;
                                     }
                                 }
                             }

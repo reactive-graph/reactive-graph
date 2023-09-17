@@ -4,26 +4,24 @@ use std::sync::Arc;
 use async_graphql::dynamic::*;
 use async_graphql::Error;
 use async_graphql::ID;
+use inexor_rgf_rt_api::EntityInstanceIsNotOfType;
+use inexor_rgf_rt_api::EntityInstanceNotFound;
 use log::trace;
 use serde_json::Value;
 use uuid::Uuid;
 
-use inexor_rgf_reactive::ReactiveProperties;
-
 use crate::api::ReactiveEntityManager;
 use crate::api::ReactiveRelationManager;
 use crate::graphql::dynamic::create_properties_from_field_arguments;
-use crate::graphql::dynamic::DynamicGraphTypeDefinition;
-use crate::graphql::dynamic::entity_instance_not_found_error;
-use crate::graphql::dynamic::entity_instance_not_of_entity_type_error;
 use crate::graphql::dynamic::field_description::DynamicGraphFieldDescriptionExtension;
 use crate::graphql::dynamic::field_name::DynamicGraphFieldNameExtension;
 use crate::graphql::dynamic::interface::entity::INTERFACE_ENTITY_FIELD_ID;
 use crate::graphql::dynamic::namespace_entities_union_type_name;
-use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::graphql::dynamic::to_field_value;
 use crate::graphql::dynamic::to_input_type_ref;
 use crate::graphql::dynamic::to_type_ref;
+use crate::graphql::dynamic::DynamicGraphTypeDefinition;
+use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::graphql::dynamic::UNION_ALL_ENTITIES;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
@@ -38,6 +36,7 @@ use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::model_runtime::LabeledProperties::LABEL;
 use crate::reactive::ReactiveEntity;
+use crate::reactive::ReactiveProperties;
 
 pub fn entity_query_field(entity_ty: &EntityTypeId, entity_type: &EntityType) -> Field {
     let ty = entity_ty.clone();
@@ -94,11 +93,7 @@ pub fn entity_creation_field(entity_ty: &EntityTypeId, entity_type: &EntityType)
             };
             let properties = create_properties_from_field_arguments(&ctx, &entity_type.properties)?;
             let properties = ReactiveProperties::new_with_id_from_properties(id, properties);
-            let reactive_entity = ReactiveEntity::builder()
-                .ty(&ty)
-                .id(id)
-                .properties(properties)
-                .build();
+            let reactive_entity = ReactiveEntity::builder().ty(&ty).id(id).properties(properties).build();
             if let Ok(reactive_entity) = entity_instance_manager.register_reactive_instance(reactive_entity) {
                 return Ok(Some(FieldValue::owned_any(reactive_entity)));
             }
@@ -130,7 +125,7 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
                 {
                     if let Some(entity_instance) = entity_instance_manager.get(id) {
                         if entity_instance.ty != ty {
-                            return Err(entity_instance_not_of_entity_type_error(&id, &ty));
+                            return Err(EntityInstanceIsNotOfType(id, ty.clone()).into());
                         }
                         entity_instances.push(entity_instance);
                     }
@@ -141,9 +136,9 @@ pub fn entity_mutation_field(entity_type: &EntityType) -> Option<Field> {
             // Single ids
             if let Ok(id) = ctx.args.try_get("id") {
                 let id = Uuid::from_str(id.string()?)?;
-                let entity_instance = entity_instance_manager.get(id).ok_or(entity_instance_not_found_error(&id))?;
+                let entity_instance = entity_instance_manager.get(id).ok_or(EntityInstanceNotFound(id.clone()))?;
                 if entity_instance.ty != ty {
-                    return Err(entity_instance_not_of_entity_type_error(&id, &ty));
+                    return Err(EntityInstanceIsNotOfType(id, ty.clone()).into());
                 }
                 let entity_instances = vec![entity_instance];
                 let field_value = FieldValue::owned_any(entity_instances);

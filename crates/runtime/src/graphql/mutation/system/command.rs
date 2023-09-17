@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 
 use async_graphql::*;
-use inexor_rgf_core_model::EntityTypeId;
+use inexor_rgf_graph::EntityTypeId;
 
 use crate::api::CommandManager;
 use crate::graphql::query::GraphQLPropertyInstance;

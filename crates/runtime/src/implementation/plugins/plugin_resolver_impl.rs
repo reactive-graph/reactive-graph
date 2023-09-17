@@ -8,18 +8,16 @@ use log::warn;
 use tokio::task::yield_now;
 use uuid::Uuid;
 
-use crate::api::ComponentManager;
 use crate::api::ConfigManager;
-use crate::api::EntityTypeManager;
-use crate::api::FlowTypeManager;
 use crate::api::Lifecycle;
 use crate::api::PluginContainerManager;
 use crate::api::PluginContextFactory;
 use crate::api::PluginResolver;
-use crate::api::ReactiveFlowManager;
-use crate::api::RelationTypeManager;
-use crate::api::WebResourceManager;
-use crate::di::*;
+use crate::di::component;
+use crate::di::provides;
+use crate::di::wrapper;
+use crate::di::Component;
+use crate::di::Wrc;
 use crate::plugin::PluginResolverMode;
 use crate::plugin::PluginTransitionResult;
 use crate::plugin::PluginTransitionResult::Changed;
@@ -43,16 +41,6 @@ fn create_plugin_registry_mode() -> PluginResolverModeState {
 
 #[component]
 pub struct PluginResolverImpl {
-    // Type System
-    component_manager: Wrc<dyn ComponentManager>,
-    entity_type_manager: Wrc<dyn EntityTypeManager>,
-    relation_type_manager: Wrc<dyn RelationTypeManager>,
-    flow_type_manager: Wrc<dyn FlowTypeManager>,
-    // Instance System
-    reactive_flow_manager: Wrc<dyn ReactiveFlowManager>,
-    // System Services
-    web_resource_manager: Wrc<dyn WebResourceManager>,
-
     plugin_container_manager: Wrc<dyn PluginContainerManager>,
 
     plugin_context_factory: Wrc<dyn PluginContextFactory>,
@@ -157,6 +145,7 @@ impl PluginResolver for PluginResolverImpl {
     }
 
     async fn stop_until_all_stopped(&self) {
+        self.transition_to_fallback_states().await;
         let mut i = 0;
         while !self.plugin_container_manager.are_all_stopped() && i < MAX_ITERATIONS {
             self.resolve_until_idle().await;
@@ -328,22 +317,13 @@ impl PluginResolver for PluginResolverImpl {
             }
             PluginResolverMode::Stopping => {}
         }
-        // Starting(ConstructingProxy) --> Starting(InjectingContext)
+        // Starting(ConstructingProxy) --> Starting(Registering)
         for id in self.plugin_container_manager.get_plugins_with_states(
             PluginState::Starting(PluginStartingState::ConstructingProxy),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy)),
         ) {
-            if self.plugin_container_manager.construct_proxy(&id) == Changed {
-                return Changed;
-            }
-        }
-        // Starting(InjectingContext) --> Starting(Registering)
-        for id in self.plugin_container_manager.get_plugins_with_states(
-            PluginState::Starting(PluginStartingState::InjectingContext),
-            PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::InjectingContext)),
-        ) {
             if let Some(plugin_context) = self.plugin_context_factory.get() {
-                if self.plugin_container_manager.inject_context(&id, plugin_context) == Changed {
+                if self.plugin_container_manager.construct_proxy(&id, plugin_context) == Changed {
                     return Changed;
                 }
             }
@@ -353,16 +333,7 @@ impl PluginResolver for PluginResolverImpl {
             PluginState::Starting(PluginStartingState::Registering),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Registering)),
         ) {
-            if self.plugin_container_manager.register(
-                &id,
-                self.component_manager.clone(),
-                self.entity_type_manager.clone(),
-                self.relation_type_manager.clone(),
-                self.flow_type_manager.clone(),
-                self.reactive_flow_manager.clone(),
-                self.web_resource_manager.clone(),
-            ) == Changed
-            {
+            if self.plugin_container_manager.register(&id) == Changed {
                 return Changed;
             }
         }
@@ -384,25 +355,12 @@ impl PluginResolver for PluginResolverImpl {
                 return Changed;
             }
         }
-        // Stopping(Unregistering) --> Stopping(RemoveContext)
+        // Stopping(Unregistering) --> Stopping(RemoveProxy)
         for id in self.plugin_container_manager.get_plugins_with_states(
             PluginState::Stopping(PluginStoppingState::Unregistering),
             PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Unregistering)),
         ) {
-            if self
-                .plugin_container_manager
-                .unregister(&id, self.reactive_flow_manager.clone(), self.web_resource_manager.clone())
-                == Changed
-            {
-                return Changed;
-            }
-        }
-        // Stopping(RemoveContext) --> Stopping(RemoveProxy)
-        for id in self.plugin_container_manager.get_plugins_with_states(
-            PluginState::Stopping(PluginStoppingState::RemoveContext),
-            PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveContext)),
-        ) {
-            if self.plugin_container_manager.remove_context(&id) == Changed {
+            if self.plugin_container_manager.unregister(&id) == Changed {
                 return Changed;
             }
         }
@@ -427,6 +385,18 @@ impl PluginResolver for PluginResolverImpl {
         // No more actions possible
         info!("Plugin resolver finished\n{}\n", self.plugin_container_manager.count_by_states());
         NoChange
+    }
+
+    async fn transition_to_fallback_states(&self) {
+        // Stop any failed transitions
+        for id in self.plugin_container_manager.get_plugins() {
+            if let Some(PluginState::Starting(_) | PluginState::Refreshing(PluginRefreshingState::Starting(_))) =
+                self.plugin_container_manager.get_plugin_state(&id)
+            {
+                info!("Plugin {id} Starting -> Resolved");
+                self.plugin_container_manager.set_state(&id, PluginState::Resolved);
+            }
+        }
     }
 
     fn set_mode(&self, mode: PluginResolverMode) {

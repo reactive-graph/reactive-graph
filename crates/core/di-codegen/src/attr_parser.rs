@@ -1,8 +1,8 @@
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::ToTokens;
+use syn::parse;
 use syn::parse::Parser;
-use syn::parse_macro_input::parse;
 use syn::punctuated::Punctuated;
 use syn::token::Comma;
 use syn::Attribute;
@@ -30,7 +30,7 @@ pub(crate) struct PropAttr {
 }
 
 pub(crate) fn parse_prop_attr(attr: &Attribute) -> Result<PropAttr, Error> {
-    if attr.tokens.is_empty() {
+    if attr.to_token_stream().is_empty() {
         Ok(PropAttr {
             name: None,
             default_value: None,

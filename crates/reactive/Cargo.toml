@@ -21,7 +21,10 @@ typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 inexor-rgf-core-frp = { version = "0.10.0", path = "../core/frp" }
-inexor-rgf-core-model = { version = "0.10.0", path = "../core/model" }
+inexor-rgf-graph = { version = "0.10.0", path = "../graph" }
+inexor-rgf-behaviour-api = { version = "0.10.0", path = "../behaviour-api" }
+inexor-rgf-reactive-api = { version = "0.10.0", path = "../reactive-api" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../test-utils", optional = true }
 
 [dev-dependencies]
 default-test = { workspace = true }
@@ -29,6 +32,8 @@ random-string = { workspace = true }
 rand = { workspace = true }
 rand_derive2 = { workspace = true }
 stopwatch2 = { workspace = true }
+
+inexor-rgf-test-utils = { version = "0.10.0", path = "../test-utils" }
 
 [lib]
 crate-type = ["lib"]

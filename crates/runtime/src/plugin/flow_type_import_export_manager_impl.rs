@@ -12,7 +12,9 @@ pub struct FlowTypeImportExportManagerImpl {
 
 impl FlowTypeImportExportManagerImpl {
     pub fn new(flow_type_manager: Arc<dyn crate::api::FlowTypeImportExportManager>) -> Self {
-        Self { flow_type_import_export_manager: flow_type_manager }
+        Self {
+            flow_type_import_export_manager: flow_type_manager,
+        }
     }
 }
 impl FlowTypeImportExportManager for FlowTypeImportExportManagerImpl {

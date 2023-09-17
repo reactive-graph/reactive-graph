@@ -1,3 +1,5 @@
+#![feature(lazy_cell)]
+
 pub mod container;
 pub mod deferred;
 

@@ -7,13 +7,15 @@ use crate::api::EntityTypeManager;
 use crate::api::RelationComponentBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
-use crate::graphql::query::{GraphQLComponentBehaviour, GraphQLEntityTypes, GraphQLRelationTypes};
+use crate::graphql::query::GraphQLComponentBehaviour;
 use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLEntityTypes;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationType;
-use crate::model::Component;
-use crate::model::NamespacedTypeGetter;
+use crate::graphql::query::GraphQLRelationTypes;
+use inexor_rgf_graph::Component;
+use inexor_rgf_graph::NamespacedTypeGetter;
 
 pub struct GraphQLComponent {
     component: Component,

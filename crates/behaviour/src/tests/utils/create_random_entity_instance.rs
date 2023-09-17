@@ -7,9 +7,9 @@ use crate::model::PropertyInstances;
 use crate::reactive::ReactiveEntity;
 use crate::tests::utils::r_string;
 
-pub fn create_random_entity_instance <S: Into<String>> (property_name: S) -> ReactiveEntity {
-    let properties = PropertyInstances::new()
-        .property(property_name, json!(r_string()));
+// TODO: replace with default_test()
+pub fn create_random_entity_instance<S: Into<String>>(property_name: S) -> ReactiveEntity {
+    let properties = PropertyInstances::new().property(property_name, json!(r_string()));
     let ty = EntityTypeId::new_from_type(r_string(), r_string());
     let entity_instance = EntityInstance::builder()
         .ty(ty)

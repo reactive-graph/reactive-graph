@@ -1,6 +1,6 @@
-use crate::model::NamespacedTypeGetter;
-use async_trait::async_trait;
 use std::collections::HashSet;
+
+use async_trait::async_trait;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
@@ -10,6 +10,7 @@ use crate::di::component;
 use crate::di::provides;
 use crate::di::Component;
 use crate::di::Wrc;
+use crate::model::NamespacedTypeGetter;
 
 #[component]
 pub struct NamespaceManagerImpl {

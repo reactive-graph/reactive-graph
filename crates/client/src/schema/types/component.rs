@@ -1,8 +1,8 @@
-use crate::model::NamespacedTypeGetter;
 use crate::schema::types::extension::Extension;
 use crate::schema::types::extension::Extensions;
 use crate::schema::types::property_type::PropertyType;
 use crate::schema::types::property_type::PropertyTypes;
+use inexor_rgf_graph::NamespacedTypeGetter;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]

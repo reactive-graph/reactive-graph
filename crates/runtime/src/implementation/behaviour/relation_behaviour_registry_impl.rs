@@ -4,7 +4,8 @@ use async_trait::async_trait;
 use dashmap::DashMap;
 use log::debug;
 use log::warn;
-use inexor_rgf_core_model::RelationInstanceId;
+
+use inexor_rgf_behaviour_api::prelude::*;
 
 use crate::api::RelationBehaviourRegistry;
 use crate::api::RelationTypeManager;
@@ -13,11 +14,9 @@ use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ReactiveRelation;
-use crate::reactive::RelationBehaviourTypeId;
+use crate::model::RelationInstanceId;
 use crate::model::RelationTypeId;
-use crate::behaviour::BehaviourFactory;
+use crate::reactive::ReactiveRelation;
 
 #[wrapper]
 pub struct RelationBehaviourFactories(DashMap<RelationBehaviourTypeId, Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>>);
@@ -72,7 +71,10 @@ impl RelationBehaviourRegistry for RelationBehaviourRegistryImpl {
             .collect()
     }
 
-    fn get_factory_by_behaviour_type(&self, behaviour_ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>> {
+    fn get_factory_by_behaviour_type(
+        &self,
+        behaviour_ty: &BehaviourTypeId,
+    ) -> Option<Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>> {
         self.factories
             .0
             .iter()

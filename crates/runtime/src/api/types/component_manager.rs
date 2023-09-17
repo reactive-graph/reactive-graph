@@ -1,26 +1,23 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::error::types::component::ComponentCreationError;
-use crate::error::types::component::ComponentRegistrationError;
 use crate::model::Component;
 use crate::model::ComponentAddExtensionError;
 use crate::model::ComponentAddPropertyError;
 use crate::model::ComponentMergeError;
 use crate::model::ComponentRemoveExtensionError;
 use crate::model::ComponentRemovePropertyError;
-use crate::model::Components;
 use crate::model::ComponentTypeId;
 use crate::model::ComponentTypeIds;
 use crate::model::ComponentUpdateExtensionError;
 use crate::model::ComponentUpdatePropertyError;
+use crate::model::Components;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
 use crate::model::Namespaces;
 use crate::model::PropertyType;
-use crate::plugins::ComponentProvider;
+use crate::rt_api::ComponentCreationError;
+use crate::rt_api::ComponentRegistrationError;
 
 #[async_trait]
 pub trait ComponentManager: Send + Sync + Lifecycle {
@@ -107,7 +104,4 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
 
     /// Deletes the component with the given name.
     fn delete(&self, ty: &ComponentTypeId) -> bool;
-
-    /// Registers a component provider.
-    fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>);
 }

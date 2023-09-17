@@ -1,50 +1,47 @@
 use std::collections::HashMap;
 use std::ops::Deref;
-use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
+use std::sync::Arc;
 
 use async_trait::async_trait;
 use crossbeam::channel::Receiver;
 use crossbeam::channel::Sender;
 use dashmap::DashMap;
 use dashmap::DashSet;
+use inexor_rgf_rt_api::ReactiveRelationComponentAddError;
+use inexor_rgf_rt_api::ReactiveRelationComponentRemoveError;
+use inexor_rgf_rt_api::ReactiveRelationCreationError;
+use inexor_rgf_rt_api::ReactiveRelationPropertyAddError;
+use inexor_rgf_rt_api::ReactiveRelationPropertyRemoveError;
+use inexor_rgf_rt_api::ReactiveRelationRegistrationError;
 use serde_json::Value;
-use tokio::time::Duration;
 use tokio::time::sleep;
+use tokio::time::Duration;
 use uuid::Uuid;
-use inexor_rgf_core_model::{PropertyInstances, PropertyTypeContainer};
-use inexor_rgf_reactive::ReactiveInstance;
 
+use crate::api::system_event_subscriber::SystemEventSubscriber;
 use crate::api::ComponentManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityManager;
-use crate::api::ReactiveRelationComponentAddError;
-use crate::api::ReactiveRelationCreationError;
 use crate::api::ReactiveRelationManager;
-use crate::api::ReactiveRelationPropertyAddError;
-use crate::api::ReactiveRelationPropertyRemoveError;
-use crate::api::ReactiveRelationRegistrationError;
 use crate::api::RelationBehaviourManager;
 use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationTypeManager;
-use crate::api::system_event_subscriber::SystemEventSubscriber;
 use crate::api::SystemEventManager;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
+use crate::behaviour_api::RelationBehaviourTypeId;
 use crate::di::*;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
-use crate::reactive::ComponentContainer;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::Mutability;
 use crate::model::NamespacedTypeGetter;
+use crate::model::PropertyInstances;
+use crate::model::PropertyTypeContainer;
 use crate::model::PropertyTypeDefinition;
-use crate::reactive::ReactiveBehaviourContainer;
-use crate::reactive::ReactivePropertyContainer;
-use crate::reactive::ReactiveRelation;
-use crate::model::RelationInstanceId;
-use crate::reactive::RelationBehaviourTypeId;
 use crate::model::RelationInstance;
+use crate::model::RelationInstanceId;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinitionComponent;
 use crate::model::TypeDefinitionGetter;
@@ -52,6 +49,10 @@ use crate::model::TypeDefinitionProperty;
 use crate::model_runtime::EventProperties::EVENT;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
+use crate::reactive::BehaviourTypesContainer;
+use crate::reactive::ReactivePropertyContainer;
+use crate::reactive::ReactiveRelation;
+use inexor_rgf_reactive_api::prelude::*;
 
 static HANDLE_ID_RELATION_TYPE_COMPONENT_ADDED: u128 = 0x6ba7b9210e1513d350b300c04fe530c7;
 static HANDLE_ID_RELATION_TYPE_COMPONENT_REMOVED: u128 = 0x6ba8b8119e1513ee59b300c04fe630c7;
@@ -211,11 +212,17 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<ReactiveRelation> {
-        self.outbound_instances.get(&outbound_entity_id).and_then(|outbound_instances| outbound_instances.value().iter().map(|id| self.get(id.deref())).collect()).unwrap_or(Vec::new())
+        self.outbound_instances
+            .get(&outbound_entity_id)
+            .and_then(|outbound_instances| outbound_instances.value().iter().map(|id| self.get(id.deref())).collect())
+            .unwrap_or(Vec::new())
     }
 
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<ReactiveRelation> {
-        self.inbound_instances.get(&inbound_entity_id).and_then(|inbound_instances| inbound_instances.value().iter().map(|id| self.get(id.deref())).collect()).unwrap_or(Vec::new())
+        self.inbound_instances
+            .get(&inbound_entity_id)
+            .and_then(|inbound_instances| inbound_instances.value().iter().map(|id| self.get(id.deref())).collect())
+            .unwrap_or(Vec::new())
     }
 
     fn get_all(&self) -> Vec<ReactiveRelation> {
@@ -279,7 +286,12 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
     }
 
     fn create(&self, id: &RelationInstanceId, properties: PropertyInstances) -> Result<ReactiveRelation, ReactiveRelationCreationError> {
-        let relation_instance = RelationInstance::builder().outbound_id(id.outbound_id).ty(id.ty.clone()).inbound_id(id.inbound_id).properties(properties).build();
+        let relation_instance = RelationInstance::builder()
+            .outbound_id(id.outbound_id)
+            .ty(id.ty.clone())
+            .inbound_id(id.inbound_id)
+            .properties(properties)
+            .build();
         self.create_reactive_instance(relation_instance)
         // match self.relation_instance_manager.create(edge_key, properties) {
         //     Ok(edge_key) => match self.relation_instance_manager.get(&edge_key) {
@@ -290,10 +302,7 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         // }
     }
 
-    fn create_reactive_instance(
-        &self,
-        reactive_relation_instance: RelationInstance,
-    ) -> Result<ReactiveRelation, ReactiveRelationCreationError> {
+    fn create_reactive_instance(&self, reactive_relation_instance: RelationInstance) -> Result<ReactiveRelation, ReactiveRelationCreationError> {
         let outbound = self
             .reactive_entity_manager
             .get(reactive_relation_instance.outbound_id)
@@ -313,12 +322,12 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             match &relation_type.outbound_type {
                 ComponentOrEntityTypeId::Component(component_ty) => {
                     if !outbound.components.contains(component_ty) {
-                        return Err(ReactiveRelationCreationError::OutboundEntityDoesNotHaveComponent(relation_ty, component_ty.clone()));
+                        return Err(ReactiveRelationCreationError::OutboundEntityDoesNotHaveComponent(outbound.id, component_ty.clone()));
                     }
                 }
                 ComponentOrEntityTypeId::EntityType(entity_ty) => {
                     if &outbound.ty != entity_ty {
-                        return Err(ReactiveRelationCreationError::OutboundEntityIsNotOfType(relation_ty, entity_ty.clone()));
+                        return Err(ReactiveRelationCreationError::OutboundEntityIsNotOfType(outbound.id, outbound.ty.clone(), entity_ty.clone()));
                     }
                 }
             }
@@ -337,12 +346,12 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             match &relation_type.inbound_type {
                 ComponentOrEntityTypeId::Component(component_ty) => {
                     if !inbound.components.contains(component_ty) {
-                        return Err(ReactiveRelationCreationError::InboundEntityDoesNotHaveComponent(relation_ty, component_ty.clone()));
+                        return Err(ReactiveRelationCreationError::InboundEntityDoesNotHaveComponent(inbound.id, component_ty.clone()));
                     }
                 }
                 ComponentOrEntityTypeId::EntityType(entity_ty) => {
                     if &inbound.ty != entity_ty {
-                        return Err(ReactiveRelationCreationError::InboundEntityIsNotOfType(relation_ty, entity_ty.clone()));
+                        return Err(ReactiveRelationCreationError::InboundEntityIsNotOfType(inbound.id, inbound.ty.clone(), entity_ty.clone()));
                     }
                 }
             }
@@ -382,24 +391,15 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             .map_err(ReactiveRelationCreationError::ReactiveRelationRegistrationError)
     }
 
-    fn register_reactive_instance(
-        &self,
-        reactive_relation: ReactiveRelation,
-    ) -> Result<ReactiveRelation, ReactiveRelationRegistrationError> {
+    fn register_reactive_instance(&self, reactive_relation: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError> {
         let id = reactive_relation.id();
+        if self.reactive_relation_instances.contains_key(&id) {
+            return Err(ReactiveRelationRegistrationError::RelationInstanceAlreadyExists(id.clone()));
+        }
+        // TODO: check if id already exists
         self.reactive_relation_instances.0.insert(id.clone(), reactive_relation.clone());
         self.outbound_instances.insert(&id);
         self.inbound_instances.insert(&id);
-        // match self.outbound_instances.0.get(&id.outbound) {
-        //     Some(outbound_instances) => {
-        //         outbound_instances.insert(id);
-        //     }
-        //     None => {
-        //         let mut outbound_instances = DashSet::new();
-        //         outbound_instances.insert(id.clone());
-        //         self.outbound_instances.0.insert(id.outbound, outbound_instances);
-        //     }
-        // }
         // Apply all components that are predefined in the relation type
         let relation_ty = reactive_relation.relation_type_id();
         if let Some(components) = self.relation_type_manager.get(&relation_ty).map(|relation_type| relation_type.components) {
@@ -408,13 +408,11 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             });
         }
         // Add component behaviours
-        self.relation_component_behaviour_manager
-            .add_behaviours_to_relation(reactive_relation.clone());
+        self.relation_component_behaviour_manager.add_behaviours_to_relation(reactive_relation.clone());
         // Add relation behaviours
         self.relation_behaviour_manager.add_behaviours(reactive_relation.clone());
         self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(id));
         Ok(reactive_relation)
-
 
         // match self
         //     .relation_instance_manager
@@ -441,10 +439,7 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         // }
     }
 
-    fn register_or_merge_reactive_instance(
-        &self,
-        relation_instance: ReactiveRelation,
-    ) -> Result<ReactiveRelation, ReactiveRelationRegistrationError> {
+    fn register_or_merge_reactive_instance(&self, relation_instance: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError> {
         let id = relation_instance.id();
         match self.get(&id) {
             // No instance with the given edge key exists yet, try to register the given reactive instance
@@ -454,39 +449,44 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         }
     }
 
-    fn add_component(&self, edge_key: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
-        match self.component_manager.get(component_ty) {
-            Some(component) => {
-                match self.get(edge_key) {
-                    Some(relation_instance) => {
-                        // Add components with properties
-                        relation_instance.add_component_with_properties(&component);
-                        // Add component behaviours
-                        self.relation_component_behaviour_manager
-                            .add_behaviours_to_relation_component(relation_instance, component);
-                        Ok(())
-                    }
-                    None => Err(ReactiveRelationComponentAddError::MissingInstance(edge_key.clone())),
-                }
-            }
-            None => Err(ReactiveRelationComponentAddError::MissingComponent(component_ty.clone())),
+    fn add_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
+        let Some(component) = self.component_manager.get(component_ty) else {
+            return Err(ReactiveRelationComponentAddError::ComponentNotRegistered(component_ty.clone()));
+        };
+        let Some(reactive_relation) = self.get(id) else {
+            return Err(ReactiveRelationComponentAddError::MissingInstance(id.clone()));
+        };
+        if reactive_relation.is_a(component_ty) {
+            return Err(ReactiveRelationComponentAddError::IsAlreadyA(component_ty.clone()));
         }
+        // Add components with properties
+        reactive_relation.add_component_with_properties(&component);
+        // Add component behaviours
+        self.relation_component_behaviour_manager
+            .add_behaviours_to_relation_component(reactive_relation, component);
+        Ok(())
     }
 
-    fn remove_component(&self, edge_key: &RelationInstanceId, component_ty: &ComponentTypeId) {
-        if let Some(component) = self.component_manager.get(component_ty) {
-            if let Some(reactive_relation_instance) = self.get(edge_key) {
-                // Remove component
-                reactive_relation_instance.remove_component(component_ty);
-                //
-                // We do not remove properties because we cannot ensure that the removal is intended
-                // (At least yet)
-                //
-                // Remove component behaviours
-                self.relation_component_behaviour_manager
-                    .remove_behaviours_from_relation_component(reactive_relation_instance, component);
-            }
+    fn remove_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError> {
+        let Some(reactive_relation) = self.get(id) else {
+            return Err(ReactiveRelationComponentRemoveError::MissingInstance(id.clone()));
+        };
+        if !reactive_relation.is_a(component_ty) {
+            return Err(ReactiveRelationComponentRemoveError::IsNotA(component_ty.clone()));
         }
+        let Some(component) = self.component_manager.get(component_ty) else {
+            return Err(ReactiveRelationComponentRemoveError::ComponentNotRegistered(component_ty.clone()));
+        };
+        // Remove component
+        reactive_relation.remove_component(component_ty);
+        //
+        // We do not remove properties because we cannot ensure that the removal is intended
+        // (At least yet)
+        //
+        // Remove component behaviours
+        self.relation_component_behaviour_manager
+            .remove_behaviours_from_relation_component(reactive_relation, component);
+        Ok(())
     }
 
     fn add_property(

@@ -7,9 +7,9 @@ use serde::Serialize;
 use serde_json::Value;
 
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
-use crate::model::Extension;
-use crate::model::Extensions;
-use crate::model::NamespacedTypeGetter;
+use inexor_rgf_graph::Extension;
+use inexor_rgf_graph::Extensions;
+use inexor_rgf_graph::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, InputObject)]
 #[graphql(name = "ExtensionDefinition")]

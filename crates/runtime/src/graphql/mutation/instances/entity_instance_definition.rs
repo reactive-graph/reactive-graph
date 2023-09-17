@@ -5,12 +5,12 @@ use uuid::Uuid;
 
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
-use crate::model::Extensions;
-use crate::model::EntityInstance;
-use crate::model::EntityInstances;
-use crate::model::EntityTypeId;
-use crate::model::Extension;
-use crate::model::PropertyInstances;
+use inexor_rgf_graph::EntityInstance;
+use inexor_rgf_graph::EntityInstances;
+use inexor_rgf_graph::EntityTypeId;
+use inexor_rgf_graph::Extension;
+use inexor_rgf_graph::Extensions;
+use inexor_rgf_graph::PropertyInstances;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -48,14 +48,12 @@ pub struct GraphQLEntityInstanceDefinition {
 
 impl From<GraphQLEntityInstanceDefinition> for EntityInstance {
     fn from(entity_instance: GraphQLEntityInstanceDefinition) -> Self {
-        let properties: PropertyInstances = entity_instance.properties
+        let properties: PropertyInstances = entity_instance
+            .properties
             .iter()
             .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
             .collect();
-        let extensions: Extensions = entity_instance.extensions
-            .iter()
-            .map(|e| Extension::from(e.clone()))
-            .collect();
+        let extensions: Extensions = entity_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect();
         EntityInstance::builder()
             .ty(EntityTypeId::new_from_type(entity_instance.namespace, entity_instance.type_name))
             .id(entity_instance.id)

@@ -2,6 +2,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::ops::Deref;
 
+use inexor_rgf_graph::NamespacedTypeContainer;
 use serde_json::Value;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
@@ -9,9 +10,9 @@ use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
-use crate::model::NamespacedTypeGetter;
 use crate::table_model::styles::modern_inline::modern_inline;
 use crate::table_model::types::json_value::pretty_json;
+use inexor_rgf_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct ExtensionTypeId {
@@ -19,8 +20,8 @@ pub struct ExtensionTypeId {
     pub namespace: String,
 }
 
-impl From<crate::model::ExtensionTypeId> for ExtensionTypeId {
-    fn from(ty: crate::model::ExtensionTypeId) -> Self {
+impl From<inexor_rgf_graph::ExtensionTypeId> for ExtensionTypeId {
+    fn from(ty: inexor_rgf_graph::ExtensionTypeId) -> Self {
         ExtensionTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
@@ -34,8 +35,8 @@ pub struct ExtensionDefinition {
     pub extension: Value,
 }
 
-impl From<crate::model::Extension> for ExtensionDefinition {
-    fn from(extension: crate::model::Extension) -> Self {
+impl From<inexor_rgf_graph::Extension> for ExtensionDefinition {
+    fn from(extension: inexor_rgf_graph::Extension) -> Self {
         ExtensionDefinition {
             type_: extension.ty.into(),
             description: extension.description,
@@ -70,8 +71,8 @@ impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
     }
 }
 
-impl From<crate::model::Extensions> for ExtensionDefinitions {
-    fn from(extensions: crate::model::Extensions) -> Self {
+impl From<inexor_rgf_graph::Extensions> for ExtensionDefinitions {
+    fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
         ExtensionDefinitions(extensions.into_iter().map(|(extension_ty, extension)| extension.into()).collect())
     }
 }
@@ -92,10 +93,10 @@ pub struct Extension {
     pub extension: Value,
 }
 
-impl From<Extension> for crate::model::Extension {
+impl From<Extension> for inexor_rgf_graph::Extension {
     fn from(extension: Extension) -> Self {
-        let ty = crate::model::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
-        crate::model::Extension {
+        let ty = inexor_rgf_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
+        inexor_rgf_graph::Extension {
             ty,
             description: extension.description,
             extension: extension.extension,
@@ -103,8 +104,8 @@ impl From<Extension> for crate::model::Extension {
     }
 }
 
-impl From<crate::model::Extension> for Extension {
-    fn from(extension: crate::model::Extension) -> Self {
+impl From<inexor_rgf_graph::Extension> for Extension {
+    fn from(extension: inexor_rgf_graph::Extension) -> Self {
         Extension {
             namespace: extension.namespace(),
             name: extension.type_name(),
@@ -125,7 +126,7 @@ impl Deref for Extensions {
     }
 }
 
-impl From<Extensions> for crate::model::Extensions {
+impl From<Extensions> for inexor_rgf_graph::Extensions {
     fn from(extensions: Extensions) -> Self {
         extensions.0.into_iter().map(|extension| extension.into()).collect()
     }
@@ -137,8 +138,8 @@ impl From<Extensions> for Vec<Extension> {
     }
 }
 
-impl From<crate::model::Extensions> for Extensions {
-    fn from(extensions: crate::model::Extensions) -> Self {
+impl From<inexor_rgf_graph::Extensions> for Extensions {
+    fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
         Extensions(extensions.into_iter().map(|(extension_ty, extension)| extension.into()).collect())
     }
 }

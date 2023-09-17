@@ -1,7 +1,5 @@
 use async_trait::async_trait;
 use serde_json::json;
-use inexor_rgf_core_model::EntityTypeId;
-use inexor_rgf_reactive::ReactiveEntity;
 
 use crate::api::CommandManager;
 use crate::api::CommandRegistrationError;
@@ -10,11 +8,13 @@ use crate::api::Lifecycle;
 use crate::api::ReactiveEntityManager;
 use crate::di::*;
 use crate::model::EntityType;
+use crate::model::EntityTypeId;
 use crate::model::PropertyInstanceGetter;
 use crate::model_command::component::CommandProperties::COMMAND_NAME;
 use crate::model_command::component::COMPONENT_COMMAND;
 use crate::model_command::entity::Command;
 use crate::model_command::error::NoSuchCommand;
+use crate::reactive::ReactiveEntity;
 
 #[component]
 pub struct CommandManagerImpl {

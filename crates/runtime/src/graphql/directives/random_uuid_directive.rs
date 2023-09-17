@@ -15,7 +15,7 @@ impl CustomDirective for RandomUuidDirective {
     }
 }
 
-#[Directive(location = "field")]
+#[Directive(location = "Field")]
 pub fn random_uuid() -> impl CustomDirective {
     RandomUuidDirective {}
 }

@@ -5,20 +5,20 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::api::Lifecycle;
-use crate::error::reactive::entity::ReactiveEntityRegistrationError;
-use crate::error::reactive::entity::ReactiveEntityPropertyAddError;
-use crate::error::reactive::entity::ReactiveEntityComponentAddError;
-use crate::error::reactive::entity::ReactiveEntityCreationError;
-use crate::error::reactive::entity::ReactiveEntityPropertyRemoveError;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
+use crate::behaviour_api::EntityBehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
 use crate::model::Mutability;
 use crate::model::PropertyInstances;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
-use crate::reactive::EntityBehaviourTypeId;
 use crate::reactive::ReactiveEntity;
+use crate::rt_api::ReactiveEntityComponentAddError;
+use crate::rt_api::ReactiveEntityCreationError;
+use crate::rt_api::ReactiveEntityPropertyAddError;
+use crate::rt_api::ReactiveEntityPropertyRemoveError;
+use crate::rt_api::ReactiveEntityRegistrationError;
 
 #[async_trait]
 pub trait ReactiveEntityManager: Send + Sync + Lifecycle {
@@ -72,30 +72,19 @@ pub trait ReactiveEntityManager: Send + Sync + Lifecycle {
 
     /// Creates a new reactive entity instance of the given type, with the given id and initialized
     /// with the given properties and values.
-    fn create_with_id(
-        &self,
-        ty: &EntityTypeId,
-        id: Uuid,
-        properties: PropertyInstances,
-    ) -> Result<ReactiveEntity, ReactiveEntityCreationError>;
+    fn create_with_id(&self, ty: &EntityTypeId, id: Uuid, properties: PropertyInstances) -> Result<ReactiveEntity, ReactiveEntityCreationError>;
 
     /// Creates a reactive entity instance from the given non-reactive entity instance. The
     /// reactive entity instance will be registered.
     fn create_reactive_instance(&self, entity_instance: EntityInstance) -> Result<ReactiveEntity, ReactiveEntityCreationError>;
 
     /// Registers a reactive entity instance and applies components and behaviours.
-    fn register_reactive_instance(
-        &self,
-        reactive_entity: ReactiveEntity,
-    ) -> Result<ReactiveEntity, ReactiveEntityRegistrationError>;
+    fn register_reactive_instance(&self, reactive_entity: ReactiveEntity) -> Result<ReactiveEntity, ReactiveEntityRegistrationError>;
 
     /// Registers a reactive entity instance if and only if the given instance doesn't exist.
     ///
     /// No properties are merged if the given entity instance already exists.
-    fn register_or_merge_reactive_instance(
-        &self,
-        reactive_entity: ReactiveEntity,
-    ) -> Result<ReactiveEntity, ReactiveEntityRegistrationError>;
+    fn register_or_merge_reactive_instance(&self, reactive_entity: ReactiveEntity) -> Result<ReactiveEntity, ReactiveEntityRegistrationError>;
 
     /// Adds the component with the given name to the entity instance with the given id.
     fn add_component(&self, id: Uuid, component_ty: &ComponentTypeId) -> Result<(), ReactiveEntityComponentAddError>;

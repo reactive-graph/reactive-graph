@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use async_graphql::dynamic::*;
 use async_graphql::ID;
+use inexor_rgf_rt_api::ImmutablePropertyError;
+use inexor_rgf_rt_api::PropertyDataTypeError;
 use log::trace;
 use serde_json::json;
 use serde_json::Value;
 
 use crate::api::ReactiveEntityManager;
-use crate::graphql::dynamic::data_type_error;
-use crate::graphql::dynamic::DynamicGraphTypeDefinition;
 use crate::graphql::dynamic::entity_id_field;
 use crate::graphql::dynamic::entity_inbound_relation_field;
 use crate::graphql::dynamic::entity_outbound_relation_field;
@@ -17,23 +17,22 @@ use crate::graphql::dynamic::field_description::get_dynamic_graph_field_descript
 use crate::graphql::dynamic::field_name::get_dynamic_graph_field_names;
 use crate::graphql::dynamic::inbound_entity_to_outbound_field;
 use crate::graphql::dynamic::instance_component_id_field;
-use crate::graphql::dynamic::INTERFACE_ENTITY;
 use crate::graphql::dynamic::is_divergent;
-use crate::graphql::dynamic::mutability_error;
-use crate::graphql::dynamic::number_error;
 use crate::graphql::dynamic::outbound_entity_to_inbound_field;
-use crate::graphql::dynamic::SchemaBuilderContext;
 use crate::graphql::dynamic::to_input_type_ref;
-use crate::model::EntityTypeId;
-use crate::model::RelationTypes;
+use crate::graphql::dynamic::DynamicGraphTypeDefinition;
+use crate::graphql::dynamic::SchemaBuilderContext;
+use crate::graphql::dynamic::INTERFACE_ENTITY;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeIdContainer;
 use crate::model::DataType;
 use crate::model::EntityType;
+use crate::model::EntityTypeId;
 use crate::model::Mutability::Immutable;
 use crate::model::Mutability::Mutable;
 use crate::model::PropertyInstanceSetter;
 use crate::model::PropertyTypeDefinition;
+use crate::model::RelationTypes;
 use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::COMPONENT_ACTION;
 use crate::reactive::ReactiveEntity;
@@ -130,41 +129,60 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
                     if let Ok(value) = ctx.args.try_get(&property.name) {
                         // Fail on every property which is immutable
                         if property.mutability == Immutable {
-                            return Err(mutability_error(property.value()));
+                            return Err(ImmutablePropertyError(property.key().clone()).into());
                         }
                         match &property.data_type {
                             DataType::Null => {
-                                // Fail on properties with the null datatype
-                                return Err(data_type_error(property.value()));
+                                return Err(PropertyDataTypeError::NullIsNotAValidDataType(property.key().clone()).into());
                             }
                             DataType::Bool => {
                                 if value.boolean().is_err() {
-                                    // Fail if no boolean was set for a boolean property
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Bool,
+                                    )
+                                    .into());
                                 }
                             }
                             DataType::Number => {
                                 if value.f64().is_err() && value.i64().is_err() && value.u64().is_err() {
-                                    // Fail if no number was set for a number property
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Number,
+                                    )
+                                    .into());
                                 }
                             }
                             DataType::String => {
                                 if value.string().is_err() {
-                                    // Fail if no string was set for a string property
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::String,
+                                    )
+                                    .into());
                                 }
                             }
                             DataType::Array => {
                                 if value.list().is_err() {
-                                    // Fail if no list was set for a array property
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Array,
+                                    )
+                                    .into());
                                 }
                             }
                             DataType::Object => {
                                 if value.object().is_err() {
-                                    // Fail if no object was set for a object property
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Object,
+                                    )
+                                    .into());
                                 }
                             }
                             DataType::Any => {
@@ -178,7 +196,7 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
                     if let Ok(value) = ctx.args.try_get(&property.name) {
                         match &property.data_type {
                             DataType::Null => {
-                                return Err(data_type_error(property.value()));
+                                return Err(PropertyDataTypeError::NullIsNotAValidDataType(property.key().clone()).into());
                             }
                             DataType::Bool => {
                                 entity_instance.set_checked(&property.name, Value::Bool(value.boolean()?));
@@ -191,7 +209,12 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
                                 } else if let Ok(value) = value.f64() {
                                     entity_instance.set_checked(&property.name, json!(value));
                                 } else {
-                                    return Err(number_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Number,
+                                    )
+                                    .into());
                                 }
                             }
                             DataType::String => {
@@ -201,14 +224,24 @@ pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
                                 let _list = value.list()?;
                                 let value = value.deserialize::<Value>()?;
                                 if !value.is_array() {
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Array,
+                                    )
+                                    .into());
                                 }
                                 entity_instance.set_checked(&property.name, value);
                             }
                             DataType::Object => {
                                 let value = value.deserialize::<Value>()?;
                                 if !value.is_object() {
-                                    return Err(data_type_error(property.value()));
+                                    return Err(PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(
+                                        property.name.clone(),
+                                        property.data_type.clone(),
+                                        DataType::Object,
+                                    )
+                                    .into());
                                 }
                                 entity_instance.set_checked(&property.name, value);
                             }

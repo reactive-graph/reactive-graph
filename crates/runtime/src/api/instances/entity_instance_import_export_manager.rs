@@ -1,8 +1,9 @@
 use async_trait::async_trait;
 use uuid::Uuid;
 
-use crate::error::instances::entity::{EntityInstanceExportError, EntityInstanceImportError};
 use crate::reactive::ReactiveEntity;
+use crate::rt_api::EntityInstanceExportError;
+use crate::rt_api::EntityInstanceImportError;
 
 #[async_trait]
 pub trait EntityInstanceImportExportManager: Send + Sync {

@@ -1,17 +1,17 @@
 use serde_json::json;
 
-use crate::model::component_model;
-use crate::model::component_ty;
-use crate::model::properties;
-use crate::model_runtime::NAMESPACE_CORE;
-use crate::model::PropertyType;
-use crate::model::PropertyTypeDefinition;
-use crate::model::PropertyTypes;
-use crate::model::DataType;
-use crate::model::Mutability::Immutable;
-use crate::model::SocketType;
-use crate::model_runtime::LabeledProperties::LABEL;
 use crate::model_runtime::ActionProperties::TRIGGER;
+use crate::model_runtime::LabeledProperties::LABEL;
+use crate::model_runtime::NAMESPACE_CORE;
+use inexor_rgf_graph::component_model;
+use inexor_rgf_graph::component_ty;
+use inexor_rgf_graph::properties;
+use inexor_rgf_graph::DataType;
+use inexor_rgf_graph::Mutability::Immutable;
+use inexor_rgf_graph::PropertyType;
+use inexor_rgf_graph::PropertyTypeDefinition;
+use inexor_rgf_graph::PropertyTypes;
+use inexor_rgf_graph::SocketType;
 
 properties!(
     CommandProperties,

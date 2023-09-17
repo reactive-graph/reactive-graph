@@ -14,10 +14,10 @@ mod attr_parser;
 mod component;
 mod provider;
 
-#[proc_macro_attribute]
-pub fn module(_attr: TokenStream, item: TokenStream) -> TokenStream {
-    component(_attr, item)
-}
+// #[proc_macro_attribute]
+// pub fn module(_attr: TokenStream, item: TokenStream) -> TokenStream {
+//     component(_attr, item)
+// }
 
 #[proc_macro_attribute]
 pub fn component(_attr: TokenStream, item: TokenStream) -> TokenStream {
@@ -84,7 +84,7 @@ pub fn wrapper(_attr: TokenStream, item: TokenStream) -> TokenStream {
 
 fn remove_attrs(item: TokenStream) -> TokenStream {
     fn attr_filter(attr: &Attribute) -> bool {
-        let attr_name = attr.path.to_token_stream().to_string();
+        let attr_name = attr.path().to_token_stream().to_string();
         attr_name.as_str() != "prop" && attr_name.as_str() != "provides"
     }
 
@@ -106,7 +106,7 @@ fn remove_attrs(item: TokenStream) -> TokenStream {
 
             for impl_item in impl_.items {
                 let impl_item = match impl_item {
-                    ImplItem::Method(method) => {
+                    ImplItem::Fn(method) => {
                         let mut method_filtered = method.clone();
                         method_filtered.attrs.retain(attr_filter);
                         method_filtered.sig.inputs.clear();
@@ -122,7 +122,7 @@ fn remove_attrs(item: TokenStream) -> TokenStream {
                             method_filtered.sig.inputs.push(filtered);
                         }
 
-                        ImplItem::Method(method_filtered)
+                        ImplItem::Fn(method_filtered)
                     }
                     other => other,
                 };

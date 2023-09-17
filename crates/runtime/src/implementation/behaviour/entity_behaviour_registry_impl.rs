@@ -6,6 +6,8 @@ use log::debug;
 use log::warn;
 use uuid::Uuid;
 
+use inexor_rgf_behaviour_api::prelude::*;
+
 use crate::api::EntityBehaviourRegistry;
 use crate::api::EntityTypeManager;
 use crate::di::component;
@@ -13,11 +15,8 @@ use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
 use crate::di::Wrc;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::EntityBehaviourTypeId;
 use crate::model::EntityTypeId;
 use crate::reactive::ReactiveEntity;
-use crate::behaviour::BehaviourFactory;
 
 #[wrapper]
 pub struct EntityBehaviourFactories(DashMap<EntityBehaviourTypeId, Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>>);

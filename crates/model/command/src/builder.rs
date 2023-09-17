@@ -13,19 +13,19 @@ use crate::component::CommandProperties::COMMAND_RESULT;
 use crate::component::COMPONENT_COMMAND;
 use crate::entity::Command;
 use crate::entity::CommandArgs;
-use crate::model::PropertyInstances;
-use crate::model::ComponentTypeIds;
-use crate::model::EntityTypeId;
-use crate::model::NamespacedTypeGetter;
-// use crate::model::PropertyInstanceGetter;
-use crate::model::PropertyInstanceSetter;
-use crate::model::PropertyTypeDefinition;
+use inexor_rgf_graph::ComponentTypeIds;
+use inexor_rgf_graph::EntityTypeId;
+use inexor_rgf_graph::NamespacedTypeGetter;
+use inexor_rgf_graph::PropertyInstances;
+// use inexor_rgf_graph::PropertyInstanceGetter;
 use crate::model_runtime::ActionProperties::TRIGGER;
+use crate::model_runtime::LabeledProperties::LABEL;
 use crate::model_runtime::COMPONENT_ACTION;
 use crate::model_runtime::COMPONENT_LABELED;
-use crate::model_runtime::LabeledProperties::LABEL;
 use crate::reactive::ReactiveEntity;
 use crate::reactive::ReactiveProperties;
+use inexor_rgf_graph::PropertyInstanceSetter;
+use inexor_rgf_graph::PropertyTypeDefinition;
 
 pub type CommandExecutor = dyn FnMut(&ReactiveEntity) -> Value + 'static + Send;
 
@@ -52,7 +52,6 @@ pub struct CommandDefinition {
     arguments: CommandArgs,
     // #[builder(setter(into))]
     executor: Box<CommandExecutor>,
-
     // #[builder(setter(into))]
     // scope: String,
     // #[builder(setter(into))]
@@ -65,7 +64,6 @@ pub struct CommandDefinition {
 
 impl From<CommandDefinition> for Command {
     fn from(definition: CommandDefinition) -> Self {
-
         let handle_id = Uuid::new_v4().as_u128();
 
         let namespace = definition.namespace.unwrap_or_else(|| definition.ty.namespace());
@@ -84,11 +82,9 @@ impl From<CommandDefinition> for Command {
         //     .property(PropertyType::string("help"));
 
         //         let label = format!("/org/inexor/commands/{scope}/{name}");
-//         builder.property(COMMAND_NAMESPACE, json!(scope));
-//         builder.property(COMMAND_NAME, json!(name));
-//         builder.component(&COMPONENT_LABELED.clone());
-
-
+        //         builder.property(COMMAND_NAMESPACE, json!(scope));
+        //         builder.property(COMMAND_NAME, json!(name));
+        //         builder.component(&COMPONENT_LABELED.clone());
 
         let properties = PropertyInstances::new()
             .property(LABEL.property_name(), json!(label))
@@ -104,8 +100,6 @@ impl From<CommandDefinition> for Command {
                 properties.insert(arg.name.clone(), json!(0));
             }
         }
-
-
 
         let reactive_entity = ReactiveEntity::builder()
             .ty(definition.ty)
@@ -146,11 +140,7 @@ fn command_builder_test() {
 
     assert_eq!(command.ty(), EntityTypeId::new_from_type("core", "num_commands"));
     // assert!(command.get
-
 }
-
-
-
 
 // pub struct CommandBuilder<S> {
 //     ty: Option<EntityTypeId>,
@@ -577,9 +567,9 @@ fn command_builder_test() {
 //
 //     use crate::builder::CommandBuilder;
 //     use crate::entity::CommandArg;
-//     use crate::model::ComponentTypeId;
-//     use crate::model::EntityTypeId;
-//     use crate::model::PropertyInstanceGetter;
+//     use inexor_rgf_graph::ComponentTypeId;
+//     use inexor_rgf_graph::EntityTypeId;
+//     use inexor_rgf_graph::PropertyInstanceGetter;
 //     use crate::reactive::ReactivePropertyContainer;
 //
 //     #[test]

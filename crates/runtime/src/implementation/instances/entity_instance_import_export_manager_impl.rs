@@ -7,12 +7,13 @@ use uuid::Uuid;
 use crate::api::EntityInstanceImportExportManager;
 use crate::api::ReactiveEntityManager;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::error::instances::entity::{EntityInstanceExportError, EntityInstanceImportError};
 use crate::model::EntityInstance;
 use crate::reactive::ReactiveEntity;
+use crate::rt_api::EntityInstanceExportError;
+use crate::rt_api::EntityInstanceImportError;
 
 #[component]
 pub struct EntityInstanceImportExportManagerImpl {
@@ -29,7 +30,9 @@ impl EntityInstanceImportExportManager for EntityInstanceImportExportManagerImpl
         if self.reactive_entity_manager.has(entity_instance.id) {
             return Err(EntityInstanceImportError::EntityAlreadyExists(entity_instance.id));
         }
-        self.reactive_entity_manager.create_reactive_instance(entity_instance).map_err(EntityInstanceImportError::ReactiveEntityCreationError)
+        self.reactive_entity_manager
+            .create_reactive_instance(entity_instance)
+            .map_err(EntityInstanceImportError::ReactiveEntityCreationError)
     }
 
     async fn export(&self, id: Uuid, path: &str) -> Result<(), EntityInstanceExportError> {
@@ -47,6 +50,7 @@ impl EntityInstanceImportExportManager for EntityInstanceImportExportManagerImpl
 #[cfg(test)]
 mod tests {
     use std::env;
+
     use default_test::DefaultTest;
 
     use crate::get_runtime;
@@ -62,7 +66,9 @@ mod tests {
         let reactive_entity_manager = runtime.get_reactive_entity_manager();
         let entity_instance_import_export_manager = runtime.get_entity_instance_import_export_manager();
 
-        let entity_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register entity type");
+        let entity_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register entity type");
 
         let mut path = env::temp_dir();
         path.push(format!("{}.json", entity_type.type_name()));
@@ -70,14 +76,22 @@ mod tests {
 
         let entity_instance = EntityInstance::default_from(&entity_type);
 
-        let reactive_entity = reactive_entity_manager.create_reactive_instance(entity_instance.clone()).expect("Failed to create reactive instance");
+        let reactive_entity = reactive_entity_manager
+            .create_reactive_instance(entity_instance.clone())
+            .expect("Failed to create reactive instance");
         let uuid = reactive_entity.id;
 
-        entity_instance_import_export_manager.export(uuid, &path).await.expect("Failed to export entity instance");
+        entity_instance_import_export_manager
+            .export(uuid, &path)
+            .await
+            .expect("Failed to export entity instance");
         assert!(reactive_entity_manager.has(uuid), "Missing reactive entity with uuid!");
         assert!(reactive_entity_manager.delete(uuid), "Failed to delete reactive entity!");
         assert!(!reactive_entity_manager.has(uuid), "Reactive entity should have been deleted!");
-        let imported_reactive_entity = entity_instance_import_export_manager.import(&path).await.expect("Failed to import entity instance");
+        let imported_reactive_entity = entity_instance_import_export_manager
+            .import(&path)
+            .await
+            .expect("Failed to import entity instance");
         assert_eq!(uuid, imported_reactive_entity.id, "The imported reactive entity's id doesn't match");
         assert!(reactive_entity_manager.has(uuid), "The reactive entity should have been registered during import");
     }

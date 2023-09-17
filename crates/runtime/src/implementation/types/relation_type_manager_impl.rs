@@ -1,12 +1,9 @@
 use std::ops::Deref;
-use std::sync::Arc;
 
 use async_trait::async_trait;
 use log::debug;
-use log::trace;
 use log::warn;
 use serde_json::json;
-use inexor_rgf_core_model::ExtensionContainer;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
@@ -14,15 +11,13 @@ use crate::api::Lifecycle;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::di::*;
-use crate::error::types::relation::RelationTypeRegistrationError;
-use crate::error::types::relation::RelationTypeCreationError;
-use crate::model::PropertyTypes;
-use crate::model::Extensions;
-use crate::model::ComponentTypeIds;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
+use crate::model::ComponentTypeIds;
 use crate::model::Extension;
+use crate::model::ExtensionContainer;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::NamespacedTypeComponentTypeIdContainer;
 use crate::model::NamespacedTypeContainer;
 use crate::model::NamespacedTypeExtensionContainer;
@@ -31,6 +26,7 @@ use crate::model::NamespacedTypePropertyTypeContainer;
 use crate::model::Namespaces;
 use crate::model::PropertyType;
 use crate::model::PropertyTypeContainer;
+use crate::model::PropertyTypes;
 use crate::model::RelationType;
 use crate::model::RelationTypeAddComponentError;
 use crate::model::RelationTypeAddExtensionError;
@@ -41,13 +37,13 @@ use crate::model::RelationTypeMergeError;
 use crate::model::RelationTypeRemoveComponentError;
 use crate::model::RelationTypeRemoveExtensionError;
 use crate::model::RelationTypeRemovePropertyError;
-use crate::model::RelationTypes;
 use crate::model::RelationTypeUpdateExtensionError;
 use crate::model::RelationTypeUpdatePropertyError;
-use crate::model::TypeDefinitionGetter;
+use crate::model::RelationTypes;
 use crate::model_runtime::EXTENSION_DIVERGENT;
-use crate::plugins::RelationTypeProvider;
 use crate::plugins::SystemEvent;
+use crate::rt_api::RelationTypeCreationError;
+use crate::rt_api::RelationTypeRegistrationError;
 
 #[wrapper]
 pub struct RelationTypesStorage(RelationTypes);
@@ -348,9 +344,13 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         // Ok(())
     }
 
-    fn update_property(&self, relation_ty: &RelationTypeId, property_name: &str, property_type: PropertyType) -> Result<PropertyType, RelationTypeUpdatePropertyError> {
+    fn update_property(
+        &self,
+        relation_ty: &RelationTypeId,
+        property_name: &str,
+        property_type: PropertyType,
+    ) -> Result<PropertyType, RelationTypeUpdatePropertyError> {
         self.relation_types.update_property(relation_ty, property_name, property_type)
-
     }
 
     fn remove_property(&self, relation_ty: &RelationTypeId, property_name: &str) -> Result<PropertyType, RelationTypeRemovePropertyError> {
@@ -382,7 +382,12 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         // Ok(())
     }
 
-    fn update_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, RelationTypeUpdateExtensionError> {
+    fn update_extension(
+        &self,
+        relation_ty: &RelationTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<Extension, RelationTypeUpdateExtensionError> {
         self.relation_types.update_extension(relation_ty, extension_ty, extension)
     }
 
@@ -400,16 +405,14 @@ impl RelationTypeManager for RelationTypeManagerImpl {
 
     // TODO: parameter "cascade": flow types and relation instances (and their dependencies) depends on a relation type
     fn delete(&self, ty: &RelationTypeId) -> Option<RelationType> {
-        self.relation_types
-            .remove(ty)
-            .map(|(ty, entity_type)| {
-                self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
-                entity_type
-            })
-            // .inspect(|x| {
-            //     self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
-            // })
-            // .map(|(_, relation_type)| relation_type)
+        self.relation_types.remove(ty).map(|(ty, entity_type)| {
+            self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
+            entity_type
+        })
+        // .inspect(|x| {
+        //     self.event_manager.emit_event(SystemEvent::RelationTypeDeleted(ty.clone()));
+        // })
+        // .map(|(_, relation_type)| relation_type)
         // if !self.has(ty) {
         //     return false;
         // }
@@ -431,16 +434,6 @@ impl RelationTypeManager for RelationTypeManagerImpl {
                 };
         }
         false
-    }
-
-    fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>) {
-        for relation_type in relation_type_provider.get_relation_types() {
-            trace!("Registering relation type: {}", relation_type.type_definition().to_string());
-            if self.register(relation_type.clone()).is_err() {
-                trace!("Merging relation type: {}", relation_type.type_definition().to_string());
-                let _ = self.merge(relation_type);
-            }
-        }
     }
 }
 
@@ -477,10 +470,14 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let relation_type_manager = runtime.get_relation_type_manager();
 
-        let outbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register outbound entity type");
+        let outbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register outbound entity type");
         let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
 
-        let inbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register inbound entity type");
+        let inbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register inbound entity type");
         let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
 
         let relation_ty = RelationTypeId::default_test();
@@ -506,10 +503,14 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let relation_type_manager = runtime.get_relation_type_manager();
 
-        let outbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register outbound entity type");
+        let outbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register outbound entity type");
         let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
 
-        let inbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register inbound entity type");
+        let inbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register inbound entity type");
         let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
 
         let namespace = r_string();
@@ -531,7 +532,10 @@ mod tests {
         assert_eq!(type_name, relation_type_2.type_name(), "The relation type's type_name mismatches");
         relation_type_manager.delete(&relation_ty).expect("Failed to delete relation type by type id");
         assert!(!relation_type_manager.has(&relation_ty), "Relation type should not be registered anymore");
-        assert!(relation_type_manager.get(&relation_ty).is_none(), "It shouldn't be possible to get the relation type anymore because it's no more registered");
+        assert!(
+            relation_type_manager.get(&relation_ty).is_none(),
+            "It shouldn't be possible to get the relation type anymore because it's no more registered"
+        );
     }
 
     #[test]
@@ -540,10 +544,14 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let relation_type_manager = runtime.get_relation_type_manager();
 
-        let outbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register outbound entity type");
+        let outbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register outbound entity type");
         let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
 
-        let inbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register inbound entity type");
+        let inbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register inbound entity type");
         let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
 
         let namespace = r_string();
@@ -572,10 +580,14 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let relation_type_manager = runtime.get_relation_type_manager();
 
-        let outbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register outbound entity type");
+        let outbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register outbound entity type");
         let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
 
-        let inbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register inbound entity type");
+        let inbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register inbound entity type");
         let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
 
         let component = component_manager.register(Component::default_test()).expect("Failed to register component");
@@ -605,10 +617,14 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let relation_type_manager = runtime.get_relation_type_manager();
 
-        let outbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register outbound entity type");
+        let outbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register outbound entity type");
         let outbound_ty: ComponentOrEntityTypeId = (&outbound_type).into();
 
-        let inbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register inbound entity type");
+        let inbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register inbound entity type");
         let inbound_ty: ComponentOrEntityTypeId = (&inbound_type).into();
 
         let property_type = PropertyType::default_test();
@@ -631,5 +647,4 @@ mod tests {
         assert!(relation_type.has_own_property(&property_name), "The property is missing in the relation type!");
         assert!(!relation_type.has_own_property(r_string()), "The relation type should not have a non-existent property!");
     }
-
 }

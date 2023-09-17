@@ -21,7 +21,7 @@ impl CustomDirective for ConcatDirective {
     }
 }
 
-#[Directive(location = "field")]
+#[Directive(location = "Field")]
 pub fn concat(value: String) -> impl CustomDirective {
     ConcatDirective { value }
 }

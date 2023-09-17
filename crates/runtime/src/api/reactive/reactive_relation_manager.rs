@@ -1,132 +1,23 @@
-use std::fmt;
-
 use async_trait::async_trait;
+use inexor_rgf_rt_api::ReactiveRelationComponentRemoveError;
 use serde_json::Value;
 use uuid::Uuid;
 
-// TODO: this is wrong?
-use inexor_rgf_core_plugins::RelationInstanceCreationError;
-
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
+use crate::behaviour_api::RelationBehaviourTypeId;
 use crate::model::ComponentTypeId;
-use crate::model::EntityTypeId;
 use crate::model::Mutability;
 use crate::model::PropertyInstances;
 use crate::model::RelationInstance;
 use crate::model::RelationInstanceId;
 use crate::model::RelationTypeId;
-use crate::model::TypeDefinitionGetter;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
 use crate::reactive::ReactiveRelation;
-use crate::reactive::RelationBehaviourTypeId;
-
-#[derive(Debug)]
-pub enum ReactiveRelationCreationError {
-    InvalidEdgeKey,
-    OutboundEntityDoesNotHaveComponent(RelationTypeId, ComponentTypeId),
-    OutboundEntityIsNotOfType(RelationTypeId, EntityTypeId),
-    InboundEntityDoesNotHaveComponent(RelationTypeId, ComponentTypeId),
-    InboundEntityIsNotOfType(RelationTypeId, EntityTypeId),
-    MissingOutboundEntityInstance(Uuid),
-    MissingInboundEntityInstance(Uuid),
-    /// No reactive relation instance with the given edge key exists.
-    MissingInstance(RelationInstanceId),
-    RelationInstanceCreationError(RelationInstanceCreationError),
-    UnknownRelationType(RelationTypeId),
-    // ValidationError(ValidationError),
-    ReactiveRelationRegistrationError(ReactiveRelationRegistrationError),
-}
-
-impl fmt::Display for ReactiveRelationCreationError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match &self {
-            // ReactiveRelationCreationError::UuidTaken(id) => write!(f, "The UUID {} has been already taken!", id),
-            ReactiveRelationCreationError::InvalidEdgeKey => {
-                write!(f, "The edge key is invalid")
-            }
-            ReactiveRelationCreationError::OutboundEntityDoesNotHaveComponent(relation_ty, component_ty) => {
-                write!(f, "Relation type {} outbound relation instance doesn't have component {}", relation_ty, component_ty)
-            }
-            ReactiveRelationCreationError::OutboundEntityIsNotOfType(expected_ty, actual_ty) => {
-                write!(
-                    f,
-                    "Unknown relation type: {} (expected: {})",
-                    expected_ty.type_definition().to_string(),
-                    actual_ty.type_definition().to_string()
-                )
-            }
-            ReactiveRelationCreationError::InboundEntityDoesNotHaveComponent(relation_ty, component_ty) => {
-                write!(f, "Relation type {} inbound relation instance doesn't have component {}", relation_ty, component_ty)
-            }
-            ReactiveRelationCreationError::InboundEntityIsNotOfType(expected_ty, actual_ty) => {
-                write!(
-                    f,
-                    "Unknown relation type: {} (expected: {})",
-                    expected_ty.type_definition().to_string(),
-                    actual_ty.type_definition().to_string()
-                )
-            }
-            ReactiveRelationCreationError::MissingOutboundEntityInstance(id) => {
-                write!(f, "The outbound entity instance {id} cannot be found")
-            }
-            ReactiveRelationCreationError::MissingInboundEntityInstance(id) => {
-                write!(f, "The inbound entity instance {id} cannot be found")
-            }
-            ReactiveRelationCreationError::MissingInstance(id) => {
-                write!(f, "The created instance cannot be found with id {}", id)
-            }
-            ReactiveRelationCreationError::RelationInstanceCreationError(e) => {
-                write!(f, "Failed to create reactive relation instance: {}", e)
-            }
-            ReactiveRelationCreationError::UnknownRelationType(ty) => {
-                write!(f, "Unknown relation type: {}", ty.type_definition().to_string())
-            }
-            ReactiveRelationCreationError::ReactiveRelationRegistrationError(e) => {
-                write!(f, "Registration Error: {:?}", e)
-            }
-        }
-    }
-}
-
-#[derive(Debug)]
-pub enum ReactiveRelationRegistrationError {
-    /// The reactive relation instance cannot be created.
-    RelationInstanceCreationError(RelationInstanceCreationError),
-}
-
-// #[derive(Debug)]
-// pub enum ReactiveRelationImportError {
-//     /// The reactive relation instance cannot be imported.
-//     RelationInstanceImport(RelationInstanceImportError),
-//     /// The reactive relation instance cannot be created.
-//     ReactiveRelationCreation(ReactiveRelationCreationError),
-// }
-
-#[derive(Debug)]
-pub enum ReactiveRelationComponentAddError {
-    /// The given component doesn't exist.
-    MissingComponent(ComponentTypeId),
-    /// No reactive relation instance with the given edge key exists.
-    MissingInstance(RelationInstanceId),
-}
-
-#[derive(Debug)]
-pub enum ReactiveRelationPropertyAddError {
-    /// No reactive relation instance with the given edge key exists.
-    MissingInstance(RelationInstanceId),
-    /// The property with the given name already exists.
-    PropertyAlreadyExists(String),
-}
-
-#[derive(Debug)]
-pub enum ReactiveRelationPropertyRemoveError {
-    /// The property with the given name doesn't exist in the given relation instance.
-    MissingProperty(String),
-    /// No reactive entity relation with the given edge key exists.
-    MissingInstance(RelationInstanceId),
-    /// The property with the given name is in use by a component.
-    PropertyInUseByComponent(ComponentTypeId),
-}
+use crate::rt_api::ReactiveRelationComponentAddError;
+use crate::rt_api::ReactiveRelationCreationError;
+use crate::rt_api::ReactiveRelationPropertyAddError;
+use crate::rt_api::ReactiveRelationPropertyRemoveError;
+use crate::rt_api::ReactiveRelationRegistrationError;
 
 #[async_trait]
 pub trait ReactiveRelationManager: Send + Sync {
@@ -180,30 +71,18 @@ pub trait ReactiveRelationManager: Send + Sync {
     fn create_reactive_instance(&self, relation_instance: RelationInstance) -> Result<ReactiveRelation, ReactiveRelationCreationError>;
 
     /// Registers the given reactive relation instance and applies components and behaviours.
-    fn register_reactive_instance(
-        &self,
-        relation_instance: ReactiveRelation,
-    ) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
+    fn register_reactive_instance(&self, relation_instance: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
 
-    fn register_or_merge_reactive_instance(
-        &self,
-        relation_instance: ReactiveRelation,
-    ) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
+    fn register_or_merge_reactive_instance(&self, relation_instance: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
 
     /// Adds the component with the given name to the relation instance with the given edge key.
     fn add_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError>;
 
     /// Removes the component with the given name from the relation instance with the given edge key.
-    fn remove_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId);
+    fn remove_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError>;
 
     /// Adds the property with the given name and initial value to the relation instance with the given id.
-    fn add_property(
-        &self,
-        id: &RelationInstanceId,
-        property_name: &str,
-        mutability: Mutability,
-        value: Value,
-    ) -> Result<(), ReactiveRelationPropertyAddError>;
+    fn add_property(&self, id: &RelationInstanceId, property_name: &str, mutability: Mutability, value: Value) -> Result<(), ReactiveRelationPropertyAddError>;
 
     /// Removes the property with the given name from the relation instance with the given id.
     fn remove_property(&self, id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError>;

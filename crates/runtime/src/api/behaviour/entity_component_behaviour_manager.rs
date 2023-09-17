@@ -2,9 +2,9 @@ use async_trait::async_trait;
 use uuid::Uuid;
 
 use crate::behaviour::BehaviourTransitionError;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
 use crate::model::Component;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
 use crate::reactive::ReactiveEntity;
 
 #[async_trait]

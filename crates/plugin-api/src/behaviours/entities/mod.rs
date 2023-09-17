@@ -1,0 +1,2 @@
+pub mod entity_behaviour_registry;
+pub mod entity_component_behaviour_registry;

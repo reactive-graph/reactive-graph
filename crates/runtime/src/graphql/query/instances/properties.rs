@@ -7,12 +7,12 @@ use async_graphql::Object;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
-use inexor_rgf_core_model::PropertyInstances;
 
 use crate::api::EntityTypeManager;
 use crate::api::RelationTypeManager;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::model::EntityTypeId;
+use crate::model::PropertyInstances;
 use crate::model::PropertyTypes;
 use crate::model::RelationTypeId;
 
@@ -149,5 +149,4 @@ impl GraphQLPropertyInstance {
         }
         property_instances
     }
-
 }

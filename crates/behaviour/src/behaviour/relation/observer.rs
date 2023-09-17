@@ -5,9 +5,9 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::model::PropertyInstanceSetter;
-use crate::PropertyObserverContainer;
 use crate::reactive::ReactivePropertyContainer;
 use crate::reactive::ReactiveRelation;
+use crate::PropertyObserverContainer;
 
 /// Container which manages the observers of a reactive relation instance.
 pub struct RelationPropertyObserverContainerImpl {

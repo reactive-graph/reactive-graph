@@ -20,15 +20,17 @@ use std::sync::RwLock;
 use std::time::Duration;
 
 use inexor_rgf_behaviour as behaviour;
-use inexor_rgf_core_config as config;
+use inexor_rgf_behaviour_api as behaviour_api;
+use inexor_rgf_config as config;
 use inexor_rgf_core_di as di;
-use inexor_rgf_core_model as model;
-use inexor_rgf_core_plugins as plugins;
-use inexor_rgf_reactive as reactive;
+use inexor_rgf_graph as model;
 use inexor_rgf_model_command as model_command;
 use inexor_rgf_model_dynamic_graph as model_dynamic_graph;
 use inexor_rgf_model_flow as model_flow;
 use inexor_rgf_model_runtime as model_runtime;
+use inexor_rgf_plugin_api as plugins;
+use inexor_rgf_reactive as reactive;
+use inexor_rgf_rt_api as rt_api;
 
 #[cfg(test)]
 use inexor_rgf_test_utils as test_utils;
@@ -41,7 +43,7 @@ pub use crate::runtime::Runtime;
 
 mod api;
 mod commands;
-mod error;
+// mod error;
 mod graphql;
 mod implementation;
 mod plugin;

@@ -17,14 +17,14 @@ use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLFlowType;
 use crate::graphql::query::GraphQLRelationType;
-use crate::model::ComponentOrEntityTypeId;
-use crate::model::ComponentTypeId;
-use crate::model::EntityTypeId;
-use crate::model::ExtensionContainer;
-use crate::model::NamespacedTypeGetter;
-use crate::model::PropertyTypeContainer;
-use crate::model::RelationTypeId;
-use crate::model::ComponentTypeIdContainer;
+use inexor_rgf_graph::ComponentOrEntityTypeId;
+use inexor_rgf_graph::ComponentTypeId;
+use inexor_rgf_graph::ComponentTypeIdContainer;
+use inexor_rgf_graph::EntityTypeId;
+use inexor_rgf_graph::ExtensionContainer;
+use inexor_rgf_graph::NamespacedTypeGetter;
+use inexor_rgf_graph::PropertyTypeContainer;
+use inexor_rgf_graph::RelationTypeId;
 
 #[derive(Default)]
 pub struct Types;
@@ -59,9 +59,7 @@ impl Types {
                 .filter(|(_, component)| {
                     properties
                         .as_ref()
-                        .map(|properties| {
-                            component.has_all_own_properties(properties)
-                        })
+                        .map(|properties| component.has_all_own_properties(properties))
                         .unwrap_or(true)
                 })
                 .filter(|(_, component)| {

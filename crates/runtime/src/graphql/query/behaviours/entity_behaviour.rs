@@ -4,10 +4,10 @@ use async_graphql::*;
 
 use crate::api::EntityBehaviourManager;
 use crate::api::EntityTypeManager;
+use crate::behaviour_api::EntityBehaviourTypeId;
 use crate::graphql::query::GraphQLBehaviour;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLEntityType;
-use crate::reactive::EntityBehaviourTypeId;
 use crate::model::NamespacedTypeGetter;
 
 pub struct GraphQLEntityBehaviour {

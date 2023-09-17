@@ -1,19 +1,24 @@
+use serde_json::Value;
 use std::sync::Arc;
 
+use inexor_rgf_graph::Mutability;
+use inexor_rgf_rt_api::ReactiveRelationComponentAddError;
+use inexor_rgf_rt_api::ReactiveRelationComponentRemoveError;
+use inexor_rgf_rt_api::ReactiveRelationCreationError;
+use inexor_rgf_rt_api::ReactiveRelationPropertyAddError;
+use inexor_rgf_rt_api::ReactiveRelationPropertyRemoveError;
 use uuid::Uuid;
-use crate::model::RelationInstanceId;
 
 use crate::api::ComponentManager;
 use crate::api::ReactiveRelationManager;
 use crate::api::RelationTypeManager;
-use crate::reactive::BehaviourTypeId;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::model::ComponentTypeId;
-use crate::reactive::ReactiveRelation;
 use crate::model::RelationInstance;
+use crate::model::RelationInstanceId;
 use crate::model::RelationTypeId;
-use crate::plugins::relation_instance_manager::ReactiveRelationComponentAddError;
-use crate::plugins::relation_instance_manager::RelationInstanceCreationError;
 use crate::plugins::RelationInstanceManager;
+use crate::reactive::ReactiveRelation;
 
 pub struct RelationInstanceManagerImpl {
     component_manager: Arc<dyn ComponentManager>,
@@ -83,7 +88,7 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
         self.reactive_relation_manager.count_by_behaviour(behaviour_ty)
     }
 
-    fn create(&self, relation_instance: RelationInstance) -> Result<ReactiveRelation, RelationInstanceCreationError> {
+    fn create(&self, relation_instance: RelationInstance) -> Result<ReactiveRelation, ReactiveRelationCreationError> {
         let relation_ty = relation_instance.relation_type_id();
         let relation_type = self.relation_type_manager.get(&relation_ty);
         // let relation_type = self.relation_type_manager.get_starts_with(&relation_instance.ty);
@@ -112,27 +117,29 @@ impl RelationInstanceManager for RelationInstanceManagerImpl {
                         }
                     }
                 }
-                let reactive_relation_instance = self.reactive_relation_manager.create_reactive_instance(relation_instance);
-                match reactive_relation_instance {
-                    Ok(reactive_relation_instance) => Ok(reactive_relation_instance),
-                    Err(_) => Err(RelationInstanceCreationError::Failed),
-                }
+                self.reactive_relation_manager.create_reactive_instance(relation_instance)
             }
-            None => Err(RelationInstanceCreationError::Failed),
+            None => Err(ReactiveRelationCreationError::UnknownRelationType(relation_ty.clone())),
         }
     }
 
-    fn add_component(&self, edge_key: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
-        self.reactive_relation_manager
-            .add_component(edge_key, component)
-            .map_err(|_| ReactiveRelationComponentAddError::Failed)
+    fn add_component(&self, id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
+        self.reactive_relation_manager.add_component(id, component)
     }
 
-    fn remove_component(&self, edge_key: &RelationInstanceId, component: &ComponentTypeId) {
-        self.reactive_relation_manager.remove_component(edge_key, component);
+    fn remove_component(&self, id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError> {
+        self.reactive_relation_manager.remove_component(id, component)
     }
 
-    fn delete(&self, edge_key: &RelationInstanceId) -> bool {
-        self.reactive_relation_manager.delete(edge_key)
+    fn add_property(&self, id: &RelationInstanceId, property_name: &str, mutability: Mutability, value: Value) -> Result<(), ReactiveRelationPropertyAddError> {
+        self.reactive_relation_manager.add_property(id, property_name, mutability, value)
+    }
+
+    fn remove_property(&self, id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError> {
+        self.reactive_relation_manager.remove_property(id, property_name)
+    }
+
+    fn delete(&self, id: &RelationInstanceId) -> bool {
+        self.reactive_relation_manager.delete(id)
     }
 }

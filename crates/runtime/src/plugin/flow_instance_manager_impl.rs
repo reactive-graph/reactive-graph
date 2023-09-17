@@ -7,9 +7,9 @@ use uuid::Uuid;
 use crate::api::ReactiveFlowManager;
 use crate::model::FlowInstance;
 use crate::model::FlowTypeId;
-use crate::reactive::ReactiveFlow;
-use crate::plugins::FlowInstanceCreationError;
 use crate::plugins::FlowInstanceManager;
+use crate::reactive::ReactiveFlow;
+use crate::rt_api::ReactiveFlowCreationError;
 
 pub struct FlowInstanceManagerImpl {
     reactive_flow_manager: Arc<dyn ReactiveFlowManager>,
@@ -17,9 +17,7 @@ pub struct FlowInstanceManagerImpl {
 
 impl FlowInstanceManagerImpl {
     pub fn new(reactive_flow_manager: Arc<dyn ReactiveFlowManager>) -> Self {
-        Self {
-            reactive_flow_manager,
-        }
+        Self { reactive_flow_manager }
     }
 }
 
@@ -36,12 +34,8 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
         self.reactive_flow_manager.get_by_label(label)
     }
 
-    fn create(&self, flow_instance: FlowInstance) -> Result<ReactiveFlow, FlowInstanceCreationError> {
-        let reactive_flow_instance = self.reactive_flow_manager.create(flow_instance);
-        match reactive_flow_instance {
-            Ok(reactive_flow_instance) => Ok(reactive_flow_instance),
-            Err(_) => Err(FlowInstanceCreationError::Failed),
-        }
+    fn create(&self, flow_instance: FlowInstance) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
+        self.reactive_flow_manager.create(flow_instance)
     }
 
     fn create_from_type(
@@ -49,11 +43,8 @@ impl FlowInstanceManager for FlowInstanceManagerImpl {
         ty: &FlowTypeId,
         variables: HashMap<String, Value>,
         properties: HashMap<String, Value>,
-    ) -> Result<ReactiveFlow, FlowInstanceCreationError> {
-        match self.reactive_flow_manager.create_from_type(ty, variables, properties) {
-            Ok(reactive_flow_instance) => Ok(reactive_flow_instance),
-            Err(_) => Err(FlowInstanceCreationError::Failed),
-        }
+    ) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
+        self.reactive_flow_manager.create_from_type(ty, variables, properties)
     }
 
     fn delete(&self, id: Uuid) -> bool {

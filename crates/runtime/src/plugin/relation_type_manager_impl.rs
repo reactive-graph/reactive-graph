@@ -1,13 +1,24 @@
 use std::sync::Arc;
-use inexor_rgf_core_model::{ComponentTypeIds, Extensions, PropertyTypes, RelationTypeAddComponentError, RelationTypeAddExtensionError, RelationTypeAddPropertyError, RelationTypeRemoveComponentError, RelationTypeRemoveExtensionError, RelationTypeRemovePropertyError, RelationTypes, RelationTypeUpdateExtensionError, RelationTypeUpdatePropertyError};
 
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
+use crate::model::ComponentTypeIds;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::PropertyType;
+use crate::model::PropertyTypes;
 use crate::model::RelationType;
+use crate::model::RelationTypeAddComponentError;
+use crate::model::RelationTypeAddExtensionError;
+use crate::model::RelationTypeAddPropertyError;
 use crate::model::RelationTypeId;
+use crate::model::RelationTypeRemoveComponentError;
+use crate::model::RelationTypeRemoveExtensionError;
+use crate::model::RelationTypeRemovePropertyError;
+use crate::model::RelationTypeUpdateExtensionError;
+use crate::model::RelationTypeUpdatePropertyError;
+use crate::model::RelationTypes;
 use crate::plugins::RelationTypeCreationError;
 use crate::plugins::RelationTypeManager;
 
@@ -84,7 +95,12 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.add_property(relation_ty, property)
     }
 
-    fn update_property(&self, relation_ty: &RelationTypeId, property_name: &str, property_type: PropertyType) -> Result<PropertyType, RelationTypeUpdatePropertyError> {
+    fn update_property(
+        &self,
+        relation_ty: &RelationTypeId,
+        property_name: &str,
+        property_type: PropertyType,
+    ) -> Result<PropertyType, RelationTypeUpdatePropertyError> {
         self.relation_type_manager.update_property(relation_ty, property_name, property_type)
     }
 
@@ -96,7 +112,12 @@ impl RelationTypeManager for RelationTypeManagerImpl {
         self.relation_type_manager.add_extension(relation_ty, extension)
     }
 
-    fn update_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, RelationTypeUpdateExtensionError> {
+    fn update_extension(
+        &self,
+        relation_ty: &RelationTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<Extension, RelationTypeUpdateExtensionError> {
         self.relation_type_manager.update_extension(relation_ty, extension_ty, extension)
     }
 

@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use crate::model::Component;
 use actix_web::get;
 use actix_web::web;
 use actix_web::HttpResponse;
+use inexor_rgf_graph::Component;
 use mime::APPLICATION_JSON;
 use schemars::schema_for;
 

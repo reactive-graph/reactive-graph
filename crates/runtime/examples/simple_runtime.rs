@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use inexor_rgf_core_model::PropertyType;
-use inexor_rgf_core_model::PropertyTypes;
-use inexor_rgf_core_model::EntityType;
-use inexor_rgf_core_model::EntityTypeId;
+use inexor_rgf_graph::EntityType;
+use inexor_rgf_graph::EntityTypeId;
+use inexor_rgf_graph::PropertyType;
+use inexor_rgf_graph::PropertyTypes;
 use inexor_rgf_reactive::ReactiveEntity;
 use inexor_rgf_rt::runtime::Runtime;
 use inexor_rgf_rt::runtime::RuntimeBuilder;
@@ -38,10 +38,7 @@ async fn main() -> Result<(), ()> {
             let entity_type = EntityType::builder()
                 .ty(ty)
                 .description("An example entity type")
-                .properties(
-                    PropertyTypes::new()
-                        .property(PropertyType::string_input("your_name"))
-                )
+                .properties(PropertyTypes::new().property(PropertyType::string_input("your_name")))
                 .build();
 
             // Before we can use the entity type it has to be registered on the entity type manager.

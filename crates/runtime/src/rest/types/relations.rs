@@ -7,7 +7,7 @@ use mime::APPLICATION_JSON;
 use schemars::schema_for;
 
 use crate::api::RelationTypeManager;
-use crate::model::RelationType;
+use inexor_rgf_graph::RelationType;
 
 #[get("/types/relations")]
 pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn RelationTypeManager>>) -> HttpResponse {

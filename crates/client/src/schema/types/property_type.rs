@@ -20,8 +20,8 @@ pub struct PropertyTypeDefinition {
     pub socket_type: SocketType,
 }
 
-impl From<crate::model::PropertyType> for PropertyTypeDefinition {
-    fn from(property_type: crate::model::PropertyType) -> Self {
+impl From<inexor_rgf_graph::PropertyType> for PropertyTypeDefinition {
+    fn from(property_type: inexor_rgf_graph::PropertyType) -> Self {
         let extensions: ExtensionDefinitions = property_type.extensions.into();
         PropertyTypeDefinition {
             name: property_type.name,
@@ -48,14 +48,14 @@ impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
     }
 }
 
-impl From<crate::model::PropertyTypes> for PropertyTypeDefinitions {
-    fn from(property_types: crate::model::PropertyTypes) -> Self {
+impl From<inexor_rgf_graph::PropertyTypes> for PropertyTypeDefinitions {
+    fn from(property_types: inexor_rgf_graph::PropertyTypes) -> Self {
         property_types.into_iter().map(|(_, property_type)| property_type.into()).collect()
     }
 }
 
-impl FromIterator<crate::model::PropertyType> for PropertyTypeDefinitions {
-    fn from_iter<I: IntoIterator<Item=crate::model::PropertyType>>(iter: I) -> Self {
+impl FromIterator<inexor_rgf_graph::PropertyType> for PropertyTypeDefinitions {
+    fn from_iter<I: IntoIterator<Item = inexor_rgf_graph::PropertyType>>(iter: I) -> Self {
         let mut property_types = PropertyTypeDefinitions::new();
         for property_type in iter {
             property_types.0.push(property_type.into());

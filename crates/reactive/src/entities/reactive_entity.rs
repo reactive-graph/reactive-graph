@@ -7,28 +7,28 @@ use serde_json::Map;
 use serde_json::Value;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
-use inexor_rgf_core_model::EntityType;
 
-use crate::BehaviourTypeId;
-use crate::BehaviourTypeIds;
-use crate::ComponentContainer;
+use inexor_rgf_reactive_api::prelude::*;
+
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::BehaviourTypeIds;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::ComponentTypeIds;
 use crate::model::EntityInstance;
+use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model::Extensions;
 use crate::model::Mutability;
 use crate::model::Mutability::Mutable;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
-use crate::model::PropertyInstances;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyInstances;
 use crate::model::PropertyType;
 use crate::model::TypeDefinition;
 use crate::model::TypeDefinitionGetter;
-use crate::ReactiveBehaviourContainer;
-use crate::ReactiveInstance;
+use crate::BehaviourTypesContainer;
 use crate::ReactiveProperties;
 use crate::ReactiveProperty;
 use crate::ReactivePropertyContainer;
@@ -76,14 +76,13 @@ impl ReactiveEntity {
     /// Creates a builder from the given entity type.
     /// Generates an id for the reactive entity.
     /// Converts property types into reactive properties and initializes the properties with default values.
-    pub fn builder_from_entity_type(entity_type: &EntityType) -> ReactiveEntityInstanceBuilder<((EntityTypeId, ), (Uuid, ), (), (ReactiveProperties<Uuid>, ), (), ())> {
+    pub fn builder_from_entity_type(
+        entity_type: &EntityType,
+    ) -> ReactiveEntityInstanceBuilder<((EntityTypeId,), (Uuid,), (), (ReactiveProperties<Uuid>,), (), ())> {
         let id = Uuid::new_v4();
         let properties = PropertyInstances::new_from_property_types_with_defaults(&entity_type.properties);
         let reactive_properties = ReactiveProperties::new_with_id_from_properties(id, properties);
-        ReactiveEntity::builder()
-            .ty(&entity_type.ty)
-            .id(id)
-            .properties(reactive_properties)
+        ReactiveEntity::builder().ty(&entity_type.ty).id(id).properties(reactive_properties)
     }
 }
 
@@ -192,7 +191,7 @@ impl ComponentContainer for ReactiveEntity {
     }
 }
 
-impl ReactiveBehaviourContainer for ReactiveEntity {
+impl BehaviourTypesContainer for ReactiveEntity {
     fn get_behaviours(&self) -> Vec<BehaviourTypeId> {
         self.behaviours.iter().map(|b| b.key().clone()).collect()
     }
@@ -353,125 +352,4 @@ impl From<EntityInstance> for ReactiveEntity {
         };
         entity_instance.into()
     }
-}
-
-#[macro_export]
-macro_rules! entity_model {
-    (
-        $ident: ident
-        $(,
-            $accessor_type: tt
-            $(
-            $accessor_name: ident
-            $accessor_data_type: tt
-            )?
-        )*
-        $(,)?
-    ) => {
-        // use $crate::PropertyInstanceGetter as RxPropertyInstanceGetter;
-        // use $crate::PropertyInstanceSetter as RxPropertyInstanceSetter;
-        pub struct $ident {
-            i: std::sync::Arc<$crate::ReactiveEntity>,
-        }
-
-        impl $ident {
-            $(
-                $crate::rx_accessor!(pub $accessor_type $($accessor_name $accessor_data_type)?);
-            )*
-        }
-
-        impl $crate::ReactiveInstanceGetter<$crate::ReactiveEntity> for $ident {
-            fn get_reactive_instance(&self) -> &std::sync::Arc<$crate::ReactiveEntity> {
-                &self.i
-            }
-        }
-
-        impl From<std::sync::Arc<$crate::ReactiveEntity>> for $ident {
-            fn from(i: std::sync::Arc<$crate::ReactiveEntity>) -> Self {
-                $ident { i }
-            }
-        }
-
-        impl $crate::PropertyInstanceGetter for $ident {
-            fn get<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Value> {
-                self.i.get(property_name)
-            }
-
-            fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-                self.i.as_bool(property_name)
-            }
-
-            fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-                self.i.as_u64(property_name)
-            }
-
-            fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-                self.i.as_i64(property_name)
-            }
-
-            fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-                self.i.as_f64(property_name)
-            }
-
-            fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-                self.i.as_string(property_name)
-            }
-
-            fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<serde_json::Value>> {
-                self.i.as_array(property_name)
-            }
-
-            fn as_object<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Map<String, serde_json::Value>> {
-                self.i.as_object(property_name)
-            }
-        }
-
-        impl $crate::PropertyInstanceSetter for $ident {
-            fn set_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set_checked(property_name, value);
-            }
-
-            fn set<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set(property_name, value);
-            }
-
-            fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set_no_propagate_checked(property_name, value);
-            }
-
-            fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set_no_propagate(property_name, value);
-            }
-
-            fn mutability<S: Into<String>>(&self, property_name: S) -> Option<$crate::Mutability> {
-                self.i.mutability(property_name)
-            }
-
-            fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: $crate::Mutability) {
-                self.i.set_mutability(property_name, mutability);
-            }
-        }
-
-        impl $crate::NamespacedTypeGetter for $ident {
-            fn namespace(&self) -> String {
-                self.i.ty.namespace()
-            }
-
-            fn type_name(&self) -> String {
-                self.i.ty.type_name()
-            }
-        }
-
-        impl $crate::TypeDefinitionGetter for $ident {
-            fn type_definition(&self) -> $crate::TypeDefinition {
-                self.i.ty.type_definition()
-            }
-        }
-
-        impl std::fmt::Display for $ident {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                write!(f, "{}", &self.i)
-            }
-        }
-    };
 }

@@ -10,20 +10,16 @@ use semver::Version;
 use semver::VersionReq;
 use uuid::Uuid;
 
-use crate::api::ComponentManager;
-use crate::api::EntityTypeManager;
-use crate::api::FlowTypeManager;
 use crate::api::Lifecycle;
 use crate::api::PluginContainerManager;
-use crate::api::ReactiveFlowManager;
-use crate::api::RelationTypeManager;
-use crate::api::WebResourceManager;
-use crate::di::*;
+use crate::di::component;
+use crate::di::provides;
+use crate::di::wrapper;
+use crate::di::Component;
 use crate::plugin::PluginContainer;
 use crate::plugin::PluginTransitionResult;
 use crate::plugin::PluginTransitionResult::Changed;
 use crate::plugin::PluginTransitionResult::NoChange;
-use crate::plugins::Plugin;
 use crate::plugins::PluginContext;
 use crate::plugins::PluginDependency;
 use crate::plugins::PluginDeployError;
@@ -136,20 +132,18 @@ impl PluginContainerManager for PluginContainerManagerImpl {
             PluginState::Resolving(PluginResolveState::PluginCompatible),
             PluginState::Resolved,
             PluginState::Starting(PluginStartingState::ConstructingProxy),
-            PluginState::Starting(PluginStartingState::InjectingContext),
             PluginState::Starting(PluginStartingState::Registering),
             PluginState::Starting(PluginStartingState::Activating),
+            PluginState::Starting(PluginStartingState::ActivationFailed),
             PluginState::Active,
             PluginState::Stopping(PluginStoppingState::Deactivating),
             PluginState::Stopping(PluginStoppingState::Unregistering),
-            PluginState::Stopping(PluginStoppingState::RemoveContext),
             PluginState::Stopping(PluginStoppingState::RemoveProxy),
             PluginState::Uninstalling(PluginUninstallingState::UnloadDll),
             PluginState::Uninstalling(PluginUninstallingState::UninstallDll),
             PluginState::Uninstalled,
             PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Deactivating)),
             PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Unregistering)),
-            PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveContext)),
             PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveProxy)),
             PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UnloadDll)),
             PluginState::Refreshing(PluginRefreshingState::Uninstalling(PluginUninstallingState::UninstallDll)),
@@ -162,7 +156,6 @@ impl PluginContainerManager for PluginContainerManagerImpl {
             PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::DependenciesNotActive)),
             PluginState::Refreshing(PluginRefreshingState::Resolving(PluginResolveState::PluginCompatible)),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy)),
-            PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::InjectingContext)),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Registering)),
             PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating)),
             PluginState::Disabled,
@@ -364,30 +357,14 @@ impl PluginContainerManager for PluginContainerManagerImpl {
         }
     }
 
-    fn construct_proxy(&self, id: &Uuid) -> PluginTransitionResult {
+    fn construct_proxy(&self, id: &Uuid, plugin_context: Arc<dyn PluginContext + Send + Sync>) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
-            Some(mut plugin_container) => plugin_container.construct_proxy(),
+            Some(mut plugin_container) => plugin_container.construct_proxy(plugin_context.clone()),
             None => NoChange,
         }
     }
 
-    fn inject_context(&self, id: &Uuid, plugin_context: Arc<dyn PluginContext>) -> PluginTransitionResult {
-        match self.plugin_containers.0.get_mut(id) {
-            Some(mut plugin_container) => plugin_container.inject_context(plugin_context.clone()),
-            None => NoChange,
-        }
-    }
-
-    fn register(
-        &self,
-        id: &Uuid,
-        component_manager: Arc<dyn ComponentManager>,
-        entity_type_manager: Arc<dyn EntityTypeManager>,
-        relation_type_manager: Arc<dyn RelationTypeManager>,
-        flow_type_manager: Arc<dyn FlowTypeManager>,
-        reactive_flow_manager: Arc<dyn ReactiveFlowManager>,
-        web_resource_manager: Arc<dyn WebResourceManager>,
-    ) -> PluginTransitionResult {
+    fn register(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
             Some(mut plugin_container) => {
                 if plugin_container.state != PluginState::Starting(PluginStartingState::Registering)
@@ -396,46 +373,12 @@ impl PluginContainerManager for PluginContainerManagerImpl {
                     return NoChange;
                 }
                 let refreshing = plugin_container.state == PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Registering));
-                let mut changed = false;
-                {
-                    let reader = plugin_container.proxy.read().unwrap();
-                    if let Some(proxy) = reader.as_ref().cloned() {
-                        trace!("Plugin {} is registering providers", id);
-
-                        //
-                        // TODO: Move "add_provider" calls to the "activate" or a new "register" method of each plugin?
-                        //
-
-                        if let Ok(Some(component_provider)) = proxy.get_component_provider() {
-                            component_manager.add_provider(component_provider);
-                        }
-                        if let Ok(Some(entity_type_provider)) = proxy.get_entity_type_provider() {
-                            entity_type_manager.add_provider(entity_type_provider);
-                        }
-                        if let Ok(Some(relation_type_provider)) = proxy.get_relation_type_provider() {
-                            relation_type_manager.add_provider(relation_type_provider);
-                        }
-                        if let Ok(Some(flow_type_provider)) = proxy.get_flow_type_provider() {
-                            flow_type_manager.add_provider(flow_type_provider);
-                        }
-                        if let Ok(Some(flow_instance_provider)) = proxy.get_flow_instance_provider() {
-                            reactive_flow_manager.add_provider(*id, flow_instance_provider);
-                        }
-                        if let Ok(Some(web_resource_provider)) = proxy.get_web_resource_provider() {
-                            web_resource_manager.add_provider(*id, web_resource_provider);
-                        }
-                        changed = true;
-                    }
+                if refreshing {
+                    plugin_container.state = PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating));
+                } else {
+                    plugin_container.state = PluginState::Starting(PluginStartingState::Activating);
                 }
-                if changed {
-                    if refreshing {
-                        plugin_container.state = PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating));
-                    } else {
-                        plugin_container.state = PluginState::Starting(PluginStartingState::Activating);
-                    }
-                    return Changed;
-                }
-                NoChange
+                Changed
             }
             None => NoChange,
         }
@@ -475,12 +418,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
         }
     }
 
-    fn unregister(
-        &self,
-        id: &Uuid,
-        reactive_flow_manager: Arc<dyn ReactiveFlowManager>,
-        web_resource_manager: Arc<dyn WebResourceManager>,
-    ) -> PluginTransitionResult {
+    fn unregister(&self, id: &Uuid) -> PluginTransitionResult {
         match self.plugin_containers.0.get_mut(id) {
             Some(mut plugin_container) => {
                 if plugin_container.state != PluginState::Stopping(PluginStoppingState::Unregistering)
@@ -489,32 +427,13 @@ impl PluginContainerManager for PluginContainerManagerImpl {
                     return NoChange;
                 }
                 let refreshing = plugin_container.state == PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::Unregistering));
-
-                //
-                // TODO: Move "add_provider" calls to the "deactivate" or a new "unregister" method of each plugin?
-                //
-
-                // self.component_manager.remove_provider(id);
-                // self.component_manager.remove_provider(id);
-                // self.entity_type_manager.remove_provider(id);
-                // self.relation_type_manager.remove_provider(id);
-                // self.flow_type_manager.remove_provider(id);
-                reactive_flow_manager.remove_provider(id);
-                web_resource_manager.remove_provider(id);
                 if refreshing {
-                    plugin_container.state = PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveContext));
+                    plugin_container.state = PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveProxy));
                 } else {
-                    plugin_container.state = PluginState::Stopping(PluginStoppingState::RemoveContext);
+                    plugin_container.state = PluginState::Stopping(PluginStoppingState::RemoveProxy);
                 }
                 Changed
             }
-            None => NoChange,
-        }
-    }
-
-    fn remove_context(&self, id: &Uuid) -> PluginTransitionResult {
-        match self.plugin_containers.0.get_mut(id) {
-            Some(mut plugin_container) => plugin_container.remove_context(),
             None => NoChange,
         }
     }

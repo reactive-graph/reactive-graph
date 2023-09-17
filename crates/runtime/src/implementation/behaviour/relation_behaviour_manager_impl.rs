@@ -1,6 +1,5 @@
 use async_trait::async_trait;
 use log::trace;
-use inexor_rgf_reactive::ReactiveInstance;
 
 use crate::api::RelationBehaviourManager;
 use crate::api::RelationBehaviourRegistry;
@@ -9,14 +8,15 @@ use crate::behaviour::BehaviourDisconnectFailed;
 use crate::behaviour::BehaviourState;
 use crate::behaviour::BehaviourTransitionError;
 use crate::behaviour::RelationBehaviourStorage;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
 use crate::di::wrapper;
+use crate::di::Component;
 use crate::di::Wrc;
 use crate::model::RelationInstanceId;
-use crate::reactive::BehaviourTypeId;
 use crate::reactive::ReactiveRelation;
+use inexor_rgf_reactive_api::prelude::*;
 
 #[wrapper]
 pub struct RelationBehaviourStorageWrapper(RelationBehaviourStorage);
@@ -41,9 +41,7 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
         let relation_ty = relation_instance.relation_type_id();
         for factory in self.relation_behaviour_registry.get(&relation_ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
-                self.relation_behaviour_storage
-                    .0
-                    .insert(id.clone(), behaviour.ty().clone(), behaviour.clone());
+                self.relation_behaviour_storage.0.insert(id.clone(), behaviour.ty().clone(), behaviour.clone());
                 trace!("Added relation behaviour {}", behaviour.ty());
             }
         }

@@ -2,16 +2,15 @@ use std::str::FromStr;
 use std::sync::Arc;
 
 use async_graphql::dynamic::*;
-use async_graphql::{Error, ID};
+use async_graphql::Error;
+use async_graphql::ID;
+use inexor_rgf_rt_api::ReactiveRelationRegistrationError;
 use serde_json::Value;
 use uuid::Uuid;
-use inexor_rgf_core_model::{RelationInstanceId, RelationTypeId};
-use inexor_rgf_reactive::ReactiveProperties;
 
 use crate::api::ReactiveEntityManager;
 use crate::api::ReactiveRelationManager;
-use crate::graphql::dynamic::{create_properties_from_field_arguments};
-use crate::graphql::dynamic::entity_instance_not_found_error;
+use crate::graphql::dynamic::create_properties_from_field_arguments;
 use crate::graphql::dynamic::namespace_entities_union_type_name;
 use crate::graphql::dynamic::to_field_value;
 use crate::graphql::dynamic::to_input_type_ref;
@@ -29,10 +28,14 @@ use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyType;
 use crate::model::PropertyTypeDefinition;
-use crate::reactive::ReactiveRelation;
+use crate::model::RelationInstanceId;
 use crate::model::RelationInstanceTypeId;
 use crate::model::RelationType;
+use crate::model::RelationTypeId;
 use crate::model_runtime::LabeledProperties::LABEL;
+use crate::reactive::ReactiveProperties;
+use crate::reactive::ReactiveRelation;
+use crate::rt_api::ReactiveRelationCreationError;
 
 pub fn relation_query_field(relation_ty: &RelationTypeId, relation_type: &RelationType) -> Field {
     let ty = relation_ty.clone();
@@ -135,24 +138,24 @@ pub fn relation_creation_field(relation_ty: &RelationTypeId, relation_type: &Rel
             let relation_instance_manager = ctx.data::<Arc<dyn ReactiveRelationManager>>()?;
 
             let outbound_id = Uuid::from_str(ctx.args.try_get("outboundId")?.string()?)?;
-            let outbound = entity_instance_manager.get(outbound_id).ok_or(entity_instance_not_found_error(&outbound_id))?;
-
             let inbound_id = Uuid::from_str(ctx.args.try_get("inboundId")?.string()?)?;
-            let inbound = entity_instance_manager.get(inbound_id).ok_or(entity_instance_not_found_error(&inbound_id))?;
-
             let rty = match ctx.args.get("instanceId").and_then(|s| s.string().map(|s| s.to_string()).ok()) {
                 Some(instance_id) => RelationInstanceTypeId::new_unique_for_instance_id(ty, instance_id),
                 None => RelationInstanceTypeId::new_with_random_instance_id(ty),
             };
+            let id = RelationInstanceId::builder().outbound_id(outbound_id).ty(&rty).inbound_id(inbound_id).build();
 
-            let id = RelationInstanceId::builder()
-                .outbound_id(outbound_id)
-                .ty(&rty)
-                .inbound_id(inbound_id)
-                .build();
             if relation_instance_manager.has(&id) {
-                return Err(Error::new(format!("Relation instance {id} already exists")));
+                return Err(ReactiveRelationRegistrationError::RelationInstanceAlreadyExists(id.clone()).into());
             }
+
+            let outbound = entity_instance_manager
+                .get(outbound_id)
+                .ok_or::<Error>(ReactiveRelationCreationError::MissingOutboundEntityInstance(outbound_id).into())?;
+
+            let inbound = entity_instance_manager
+                .get(inbound_id)
+                .ok_or::<Error>(ReactiveRelationCreationError::MissingInboundEntityInstance(inbound_id).into())?;
 
             let properties = create_properties_from_field_arguments(&ctx, &relation_type.properties)?;
             let properties = ReactiveProperties::new_with_id_from_properties(id, properties);
@@ -286,11 +289,11 @@ pub fn relation_outbound_field(
                     .iter()
                     .map(|ty| relation_outbound_component_field(ty.key(), None, None))
                     .collect()
-                    // .get_all()
-                    // .into_iter()
-                    // // .map(|component| component.ty)
-                    // .map(|(component_ty, component)| relation_outbound_component_field(&component_ty, None, None))
-                    // .collect()
+                // .get_all()
+                // .into_iter()
+                // // .map(|component| component.ty)
+                // .map(|(component_ty, component)| relation_outbound_component_field(&component_ty, None, None))
+                // .collect()
             } else if ty.type_name() == "*" {
                 context
                     .component_manager
@@ -298,11 +301,11 @@ pub fn relation_outbound_field(
                     .iter()
                     .map(|ty| relation_outbound_component_field(ty.key(), None, None))
                     .collect()
-                    // .get_by_namespace(&ty.namespace())
-                    // .into_iter()
-                    // // .map(|component| component.ty)
-                    // .map(|(component_ty, component)| relation_outbound_component_field(&component_ty, None, None))
-                    // .collect()
+                // .get_by_namespace(&ty.namespace())
+                // .into_iter()
+                // // .map(|component| component.ty)
+                // .map(|(component_ty, component)| relation_outbound_component_field(&component_ty, None, None))
+                // .collect()
             } else {
                 vec![relation_outbound_component_field(ty, field_name, field_description)]
             }
@@ -338,10 +341,10 @@ pub fn relation_inbound_field(
                     .iter()
                     .map(|ty| relation_inbound_component_field(ty.key(), None, None))
                     .collect()
-                    // .get_all()
-                    // .into_iter()
-                    // .map(|(component_ty, component)| relation_inbound_component_field(&component_ty, None, None))
-                    // .collect()
+                // .get_all()
+                // .into_iter()
+                // .map(|(component_ty, component)| relation_inbound_component_field(&component_ty, None, None))
+                // .collect()
             } else if ty.type_name() == "*" {
                 context
                     .component_manager
@@ -349,10 +352,10 @@ pub fn relation_inbound_field(
                     .iter()
                     .map(|ty| relation_inbound_component_field(ty.key(), None, None))
                     .collect()
-                    // .get_by_namespace(&ty.namespace())
-                    // .into_iter()
-                    // .map(|(component_ty, component)| relation_inbound_component_field(&component_ty, None, None))
-                    // .collect()
+                // .get_by_namespace(&ty.namespace())
+                // .into_iter()
+                // .map(|(component_ty, component)| relation_inbound_component_field(&component_ty, None, None))
+                // .collect()
             } else {
                 vec![relation_inbound_component_field(ty, field_name, field_description)]
             }

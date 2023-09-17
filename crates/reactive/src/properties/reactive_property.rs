@@ -3,8 +3,8 @@ use std::ops::DerefMut;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use dashmap::DashMap;
 use dashmap::iter::OwningIter;
+use dashmap::DashMap;
 use serde_json::Map;
 use serde_json::Value;
 
@@ -32,7 +32,7 @@ pub struct ReactiveProperty<IdType: Clone> {
     pub value: RwLock<Value>,
 }
 
-impl <IdType: Clone> ReactiveProperty<IdType> {
+impl<IdType: Clone> ReactiveProperty<IdType> {
     pub fn new<S: Into<String>>(id: IdType, name: S, mutability: Mutability, value: Value) -> ReactiveProperty<IdType> {
         ReactiveProperty {
             id,
@@ -122,20 +122,20 @@ impl <IdType: Clone> ReactiveProperty<IdType> {
     }
 }
 
-impl <IdType: Clone> PartialEq for ReactiveProperty<IdType> {
+impl<IdType: Clone> PartialEq for ReactiveProperty<IdType> {
     fn eq(&self, other: &Self) -> bool {
         self.value.read().unwrap().deref() == other.value.read().unwrap().deref()
     }
 }
 
-impl <IdType: Clone> From<ReactiveProperty<IdType>> for ContainerPropertyInstance<IdType> {
+impl<IdType: Clone> From<ReactiveProperty<IdType>> for ContainerPropertyInstance<IdType> {
     fn from(property: ReactiveProperty<IdType>) -> Self {
         let reader = property.value.read().unwrap();
         ContainerPropertyInstance::new(property.id, property.name, reader.clone())
     }
 }
 
-impl <IdType: Clone> From<&ReactiveProperty<IdType>> for ContainerPropertyInstance<IdType> {
+impl<IdType: Clone> From<&ReactiveProperty<IdType>> for ContainerPropertyInstance<IdType> {
     fn from(property: &ReactiveProperty<IdType>) -> Self {
         let reader = property.value.read().unwrap();
         ContainerPropertyInstance::new(property.id.clone(), property.name.clone(), reader.clone())
@@ -145,8 +145,7 @@ impl <IdType: Clone> From<&ReactiveProperty<IdType>> for ContainerPropertyInstan
 // #[derive(Default)]
 pub struct ReactiveProperties<IdType: Clone>(DashMap<String, ReactiveProperty<IdType>>);
 
-impl <IdType: Clone> ReactiveProperties<IdType> {
-
+impl<IdType: Clone> ReactiveProperties<IdType> {
     /// Constructs an empty reactive properties container.
     pub fn new() -> Self {
         ReactiveProperties(DashMap::new())
@@ -169,13 +168,13 @@ impl <IdType: Clone> ReactiveProperties<IdType> {
     }
 }
 
-impl <IdType: Clone> Default for ReactiveProperties<IdType> {
+impl<IdType: Clone> Default for ReactiveProperties<IdType> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl <IdType: Clone> Deref for ReactiveProperties<IdType> {
+impl<IdType: Clone> Deref for ReactiveProperties<IdType> {
     type Target = DashMap<String, ReactiveProperty<IdType>>;
 
     fn deref(&self) -> &Self::Target {
@@ -183,13 +182,13 @@ impl <IdType: Clone> Deref for ReactiveProperties<IdType> {
     }
 }
 
-impl <IdType: Clone> DerefMut for ReactiveProperties<IdType> {
+impl<IdType: Clone> DerefMut for ReactiveProperties<IdType> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
-impl <IdType: Clone> IntoIterator for ReactiveProperties<IdType> {
+impl<IdType: Clone> IntoIterator for ReactiveProperties<IdType> {
     type Item = (String, ReactiveProperty<IdType>);
     type IntoIter = OwningIter<String, ReactiveProperty<IdType>>;
 
@@ -198,8 +197,8 @@ impl <IdType: Clone> IntoIterator for ReactiveProperties<IdType> {
     }
 }
 
-impl <IdType: Clone> FromIterator<ReactiveProperty<IdType>> for ReactiveProperties<IdType> {
-    fn from_iter<I: IntoIterator<Item=ReactiveProperty<IdType>>>(iter: I) -> Self {
+impl<IdType: Clone> FromIterator<ReactiveProperty<IdType>> for ReactiveProperties<IdType> {
+    fn from_iter<I: IntoIterator<Item = ReactiveProperty<IdType>>>(iter: I) -> Self {
         let properties = ReactiveProperties::new();
         for property in iter {
             properties.insert(property.name.clone(), property.into());
@@ -208,7 +207,7 @@ impl <IdType: Clone> FromIterator<ReactiveProperty<IdType>> for ReactiveProperti
     }
 }
 
-impl <IdType: Clone> From<ReactiveProperties<IdType>> for PropertyInstances {
+impl<IdType: Clone> From<ReactiveProperties<IdType>> for PropertyInstances {
     fn from(properties: ReactiveProperties<IdType>) -> Self {
         let property_instances = PropertyInstances::new();
         for (property_name, property) in properties.into_iter() {
@@ -218,7 +217,7 @@ impl <IdType: Clone> From<ReactiveProperties<IdType>> for PropertyInstances {
     }
 }
 
-impl <IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
+impl<IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
     fn from(properties: &ReactiveProperties<IdType>) -> Self {
         let property_instances = PropertyInstances::new();
         for property in properties.0.iter() {
@@ -227,7 +226,6 @@ impl <IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
         property_instances
     }
 }
-
 
 // impl Add for ReactiveProperty {
 //     type Output = Self;
@@ -267,9 +265,9 @@ pub mod tests {
     use std::ops::DerefMut;
     use std::ops::Index;
     use std::process::Termination;
-    use std::sync::Arc;
     use std::sync::atomic::AtomicU64;
     use std::sync::atomic::Ordering;
+    use std::sync::Arc;
     use std::sync::RwLock;
     use std::thread;
     use test::Bencher;
@@ -282,8 +280,8 @@ pub mod tests {
     use inexor_rgf_core_frp::Stream;
 
     use crate::model::Mutability::Mutable;
-    use crate::ReactiveProperty;
     use crate::test_utils::r_string;
+    use crate::ReactiveProperty;
 
     #[test]
     fn reactive_property_instance_test() {
@@ -411,36 +409,19 @@ pub mod tests {
         );
 
         let u64 = json!(123);
-        assert_eq!(
-            123,
-            ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, u64)
-                .as_u64()
-                .unwrap()
-        );
+        assert_eq!(123, ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, u64).as_u64().unwrap());
 
         let i64 = json!(-123);
-        assert_eq!(
-            -123,
-            ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, i64)
-                .as_i64()
-                .unwrap()
-        );
+        assert_eq!(-123, ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, i64).as_i64().unwrap());
 
         let f64 = json!(-1.23);
-        assert_eq!(
-            -1.23,
-            ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, f64)
-                .as_f64()
-                .unwrap()
-        );
+        assert_eq!(-1.23, ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, f64).as_f64().unwrap());
 
         let rand_str = r_string();
         let s = json!(rand_str.clone());
         assert_eq!(
             rand_str.clone(),
-            ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, s)
-                .as_string()
-                .unwrap()
+            ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, s).as_string().unwrap()
         );
 
         let a = json!([1, 2, 3]);
@@ -450,8 +431,8 @@ pub mod tests {
         assert_eq!(json!(3), i.as_array().unwrap().index(2).clone());
 
         let o = json!({
-        "k": "v"
-    });
+            "k": "v"
+        });
         let i = ReactiveProperty::new(Uuid::new_v4(), property_name.clone(), Mutable, o);
         assert_eq!(json!("v"), i.as_object().unwrap().index("k").clone());
     }
@@ -699,5 +680,4 @@ pub mod tests {
             s1.elapsed()
         );
     }
-
 }

@@ -3,11 +3,10 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use uuid::Uuid;
 
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::EntityBehaviourTypeId;
+use inexor_rgf_behaviour_api::prelude::*;
+
 use crate::model::EntityTypeId;
 use crate::reactive::ReactiveEntity;
-use crate::behaviour::BehaviourFactory;
 
 #[async_trait]
 pub trait EntityBehaviourRegistry: Send + Sync {

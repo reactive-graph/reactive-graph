@@ -1,5 +1,5 @@
-use crate::model::extension_ty;
 use crate::NAMESPACE_FLOW;
+use inexor_rgf_graph::extension_ty;
 
 extension_ty!(
     EXTENSION_FLOW_UUID_TYPE_EXTENSION,

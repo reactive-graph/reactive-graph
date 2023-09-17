@@ -16,7 +16,7 @@ use crate::graphql::query::GraphQLEntityType;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
 use crate::reactive::ReactiveEntity;
-use crate::model::RelationTypeId;
+use inexor_rgf_graph::RelationTypeId;
 
 pub struct GraphQLEntityInstance {
     entity_instance: ReactiveEntity,

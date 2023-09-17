@@ -1,0 +1,21 @@
+[package]
+name = "inexor-rgf-rt-api"
+description = "Inexor - Reactive Graph Flow - Runtime - API"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../README.md"
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../graph" }
+inexor-rgf-reactive-api = { version = "0.10.0", path = "../reactive-api" }
+
+[lib]
+crate-type = ["lib"]

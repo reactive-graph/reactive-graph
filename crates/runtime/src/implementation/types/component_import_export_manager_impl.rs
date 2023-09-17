@@ -6,12 +6,12 @@ use async_trait::async_trait;
 use crate::api::ComponentImportExportManager;
 use crate::api::ComponentManager;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::error::types::component::ComponentExportError;
-use crate::error::types::component::ComponentImportError;
 use crate::model::ComponentTypeId;
+use crate::rt_api::ComponentExportError;
+use crate::rt_api::ComponentImportError;
 
 #[component]
 pub struct ComponentImportExportManagerImpl {
@@ -21,7 +21,6 @@ pub struct ComponentImportExportManagerImpl {
 #[async_trait]
 #[provides]
 impl ComponentImportExportManager for ComponentImportExportManagerImpl {
-
     fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
@@ -66,14 +65,18 @@ mod test {
         path.push(format!("{}__{}.json", component_ty.namespace(), component_ty.type_name()));
         let path = path.into_os_string().into_string().unwrap();
 
-
-        component_import_export_manager.export(&component_ty, path.as_str()).expect("Failed to export component");
+        component_import_export_manager
+            .export(&component_ty, path.as_str())
+            .expect("Failed to export component");
         assert!(component_manager.has(&component_ty), "Component should be registered!");
         assert!(component_manager.delete(&component_ty), "Failed to delete component!");
         assert!(!component_manager.has(&component_ty), "Component shouldn't be registered anymore!");
         let _component = component_import_export_manager.import(path.as_str()).expect("Failed to import component");
         assert!(component_manager.has(&component_ty), "Component not registered!");
-        assert_eq!(component_orig, component_manager.get(&component_ty).unwrap(), "The imported component should match the constructed component!");
+        assert_eq!(
+            component_orig,
+            component_manager.get(&component_ty).unwrap(),
+            "The imported component should match the constructed component!"
+        );
     }
-
 }

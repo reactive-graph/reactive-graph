@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 
-use crate::error::types::flow::FlowTypeExportError;
-use crate::error::types::flow::FlowTypeImportError;
 use crate::model::FlowType;
 use crate::model::FlowTypeId;
+use crate::rt_api::FlowTypeExportError;
+use crate::rt_api::FlowTypeImportError;
 
 #[async_trait]
 pub trait FlowTypeImportExportManager: Send + Sync {

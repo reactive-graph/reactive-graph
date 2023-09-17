@@ -1,26 +1,26 @@
 use std::sync::Arc;
 
 use async_graphql::*;
+use inexor_rgf_rt_api::ComponentRegistrationError;
 
 use crate::api::ComponentManager;
-use crate::error::types::component::ComponentRegistrationError;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
 use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLExtension;
-use crate::model::AddPropertyError;
-use crate::model::UpdatePropertyError;
-use crate::model::UpdateExtensionError;
-use crate::model::RemovePropertyError;
-use crate::model::RemoveExtensionError;
-use crate::model::ComponentAddExtensionError;
-use crate::model::ComponentAddPropertyError;
-use crate::model::ComponentRemoveExtensionError;
-use crate::model::ComponentRemovePropertyError;
-use crate::model::ComponentUpdateExtensionError;
-use crate::model::ComponentUpdatePropertyError;
-use crate::model::AddExtensionError;
+use inexor_rgf_graph::AddExtensionError;
+use inexor_rgf_graph::AddPropertyError;
+use inexor_rgf_graph::ComponentAddExtensionError;
+use inexor_rgf_graph::ComponentAddPropertyError;
+use inexor_rgf_graph::ComponentRemoveExtensionError;
+use inexor_rgf_graph::ComponentRemovePropertyError;
+use inexor_rgf_graph::ComponentUpdateExtensionError;
+use inexor_rgf_graph::ComponentUpdatePropertyError;
+use inexor_rgf_graph::RemoveExtensionError;
+use inexor_rgf_graph::RemovePropertyError;
+use inexor_rgf_graph::UpdateExtensionError;
+use inexor_rgf_graph::UpdatePropertyError;
 
 #[derive(Default)]
 pub struct MutationComponents;
@@ -46,7 +46,7 @@ impl MutationComponents {
             Some(extensions) => extensions.iter().map(|extension| extension.clone().into()).collect(),
             None => Vec::new(),
         };
-        let component = crate::model::Component::new(ty, description.unwrap_or_default(), property_types, extensions);
+        let component = inexor_rgf_graph::Component::new(ty, description.unwrap_or_default(), property_types, extensions);
         match component_manager.register(component) {
             Ok(component) => Ok(component.into()),
             Err(ComponentRegistrationError::ComponentAlreadyExists(ty)) => {
@@ -129,12 +129,10 @@ impl MutationComponents {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let ty = ty.into();
         match component_manager.remove_property(&ty, property_name.as_str()) {
-            Ok(_) => {
-                component_manager
-                    .get(&ty)
-                    .map(|component| component.into())
-                    .ok_or_else(|| Error::new(format!("Component {} not found", ty)))
-            }
+            Ok(_) => component_manager
+                .get(&ty)
+                .map(|component| component.into())
+                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
             Err(ComponentRemovePropertyError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to update property of component {ty}: Component does not exist")))
             }
@@ -186,9 +184,9 @@ impl MutationComponents {
             Err(ComponentUpdateExtensionError::ComponentDoesNotExist(component_ty)) => {
                 Err(Error::new(format!("Failed to update extension of component {component_ty}: Component does not exist")))
             }
-            Err(ComponentUpdateExtensionError::UpdateExtensionError(UpdateExtensionError::ExtensionDoesNotExist(extension_ty))) => {
-                Err(Error::new(format!("Failed to update extension of component {component_ty}: Extension {extension_ty} does not exist")))
-            }
+            Err(ComponentUpdateExtensionError::UpdateExtensionError(UpdateExtensionError::ExtensionDoesNotExist(extension_ty))) => Err(Error::new(format!(
+                "Failed to update extension of component {component_ty}: Extension {extension_ty} does not exist"
+            ))),
         }
     }
 
@@ -203,12 +201,10 @@ impl MutationComponents {
         let component_manager = context.data::<Arc<dyn ComponentManager>>()?;
         let extension_ty = extension_ty.into();
         match component_manager.remove_extension(&ty, &extension_ty) {
-            Ok(_) => {
-                component_manager
-                    .get(&ty)
-                    .map(|component| component.into())
-                    .ok_or_else(|| Error::new(format!("Component {ty} not found")))
-            }
+            Ok(_) => component_manager
+                .get(&ty)
+                .map(|component| component.into())
+                .ok_or_else(|| Error::new(format!("Component {ty} not found"))),
             Err(ComponentRemoveExtensionError::ComponentDoesNotExist(ty)) => {
                 Err(Error::new(format!("Failed to remove extension of component {ty}: Component does not exist")))
             }

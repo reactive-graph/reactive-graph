@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 
-use crate::error::types::component::ComponentImportError;
-use crate::error::types::component::ComponentExportError;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
+use crate::rt_api::ComponentExportError;
+use crate::rt_api::ComponentImportError;
 
 #[async_trait]
 pub trait ComponentImportExportManager: Send + Sync {

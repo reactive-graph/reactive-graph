@@ -1,14 +1,23 @@
 use std::sync::Arc;
-use inexor_rgf_core_model::{ComponentTypeIds, EntityTypeAddComponentError, EntityTypeAddExtensionError, EntityTypeAddPropertyError, EntityTypeRemoveComponentError, EntityTypeRemoveExtensionError, EntityTypeRemovePropertyError, EntityTypes, Extensions, PropertyTypes};
 
 use crate::model::ComponentTypeId;
+use crate::model::ComponentTypeIds;
 use crate::model::EntityType;
+use crate::model::EntityTypeAddComponentError;
+use crate::model::EntityTypeAddExtensionError;
+use crate::model::EntityTypeAddPropertyError;
 use crate::model::EntityTypeId;
+use crate::model::EntityTypeRemoveComponentError;
+use crate::model::EntityTypeRemoveExtensionError;
+use crate::model::EntityTypeRemovePropertyError;
+use crate::model::EntityTypes;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::PropertyType;
-use crate::plugins::EntityTypeCreationError;
+use crate::model::PropertyTypes;
 use crate::plugins::EntityTypeManager;
+use crate::rt_api::EntityTypeCreationError;
 
 pub struct EntityTypeManagerImpl {
     entity_type_manager: Arc<dyn crate::api::EntityTypeManager>,
@@ -64,9 +73,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         properties: PropertyTypes,
         extensions: Extensions,
     ) -> Result<EntityType, EntityTypeCreationError> {
-        self.entity_type_manager
-            .create(ty, description, components, properties, extensions)
-            .map_err(|_| EntityTypeCreationError {})
+        self.entity_type_manager.create(ty, description, components, properties, extensions)
     }
 
     fn add_component(&self, entity_ty: &EntityTypeId, component_ty: &ComponentTypeId) -> Result<(), EntityTypeAddComponentError> {

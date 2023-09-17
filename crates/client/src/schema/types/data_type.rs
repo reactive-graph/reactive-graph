@@ -26,7 +26,7 @@ pub enum DataType {
     Any,
 }
 
-impl From<DataType> for crate::model::DataType {
+impl From<DataType> for inexor_rgf_graph::DataType {
     fn from(data_type: DataType) -> Self {
         match data_type {
             DataType::Null => crate::model::DataType::Null,

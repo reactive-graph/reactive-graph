@@ -7,7 +7,7 @@ use mime::APPLICATION_JSON;
 use schemars::schema_for;
 
 use crate::api::EntityTypeManager;
-use crate::model::EntityType;
+use inexor_rgf_graph::EntityType;
 
 #[get("/types/entities")]
 pub async fn get_entity_types(entity_type_manager: web::Data<Arc<dyn EntityTypeManager>>) -> HttpResponse {

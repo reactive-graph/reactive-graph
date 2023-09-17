@@ -2,16 +2,21 @@ use std::sync::Arc;
 
 use async_graphql::*;
 use uuid::Uuid;
-use inexor_rgf_core_model::{Extension, FlowType};
 
 use crate::api::FlowTypeManager;
-use crate::graphql::mutation::{ExtensionTypeIdDefinition, GraphQLEntityInstanceDefinitions, GraphQLRelationInstanceDefinitions, PropertyTypeDefinitions};
+use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::FlowTypeIdDefinition;
 use crate::graphql::mutation::GraphQLEntityInstanceDefinition;
+use crate::graphql::mutation::GraphQLEntityInstanceDefinitions;
 use crate::graphql::mutation::GraphQLRelationInstanceDefinition;
+use crate::graphql::mutation::GraphQLRelationInstanceDefinitions;
 use crate::graphql::mutation::PropertyTypeDefinition;
-use crate::graphql::query::{GraphQLExtension, GraphQLExtensions};
+use crate::graphql::mutation::PropertyTypeDefinitions;
+use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLExtensions;
 use crate::graphql::query::GraphQLFlowType;
+use crate::model::Extension;
+use crate::model::FlowType;
 use crate::model::FlowTypeId;
 use crate::model::FlowTypeUpdateExtensionError;
 use crate::model::UpdateExtensionError;
@@ -163,9 +168,7 @@ impl MutationFlowTypes {
         let extension: Extension = extension.into();
         match flow_type_manager.update_extension(&flow_ty, &extension.ty.clone(), extension) {
             Ok(_extension) => Ok(true),
-            Err(FlowTypeUpdateExtensionError::FlowTypeDoesNotExist(flow_ty)) => {
-                Err(Error::new(format!("Flow type {flow_ty} does not exist")))
-            }
+            Err(FlowTypeUpdateExtensionError::FlowTypeDoesNotExist(flow_ty)) => Err(Error::new(format!("Flow type {flow_ty} does not exist"))),
             Err(FlowTypeUpdateExtensionError::UpdateExtensionError(UpdateExtensionError::ExtensionDoesNotExist(extension_ty))) => {
                 Err(Error::new(format!("Extension {extension_ty} does not exist")))
             }

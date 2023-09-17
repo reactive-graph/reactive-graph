@@ -1,5 +1,3 @@
-use inexor_rgf_core_model as model;
-
 pub use extension::*;
 
 pub mod extension;

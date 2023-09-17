@@ -4,20 +4,20 @@ use uuid::Uuid;
 
 use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityComponentBehaviourRegistry;
-use crate::di::component;
-use crate::di::provides;
-use crate::di::wrapper;
-use crate::di::Component;
-use crate::di::Wrc;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
-use crate::reactive::ComponentContainer;
-use crate::reactive::ReactiveEntity;
 use crate::behaviour::BehaviourConnectFailed;
 use crate::behaviour::BehaviourDisconnectFailed;
 use crate::behaviour::BehaviourState;
 use crate::behaviour::BehaviourTransitionError;
 use crate::behaviour::EntityBehaviourStorage;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
+use crate::di::component;
+use crate::di::provides;
+use crate::di::wrapper;
+use crate::di::Component;
+use crate::di::Wrc;
+use crate::reactive::ReactiveEntity;
+use inexor_rgf_reactive_api::prelude::*;
 
 #[wrapper]
 pub struct EntityComponentBehaviourStorageWrapper(EntityBehaviourStorage);

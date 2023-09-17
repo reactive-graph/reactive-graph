@@ -6,13 +6,13 @@ use async_trait::async_trait;
 use crate::api::EntityTypeImportExportManager;
 use crate::api::EntityTypeManager;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::error::types::entity::EntityTypeExportError;
-use crate::error::types::entity::EntityTypeImportError;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
+use crate::rt_api::EntityTypeExportError;
+use crate::rt_api::EntityTypeImportError;
 
 #[component]
 pub struct EntityTypeImportExportManagerImpl {
@@ -56,7 +56,9 @@ mod test {
         let entity_type_manager = runtime.get_entity_type_manager();
         let entity_type_import_export_manager = runtime.get_entity_type_import_export_manager();
 
-        let entity_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register entity type!");
+        let entity_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register entity type!");
         let entity_type_orig = entity_type.clone();
         let entity_ty = entity_type.ty.clone();
         // println!("{}", serde_json::to_string_pretty(&entity_type_orig).unwrap());
@@ -66,16 +68,23 @@ mod test {
         let path = path.into_os_string().into_string().unwrap();
 
         assert!(entity_type_manager.has(&entity_ty), "The entity type must exist in order to export it");
-        entity_type_import_export_manager.export(&entity_ty, path.as_str()).expect("Failed to export the entity type!");
+        entity_type_import_export_manager
+            .export(&entity_ty, path.as_str())
+            .expect("Failed to export the entity type!");
         assert!(entity_type_manager.has(&entity_ty), "The entity type should be registered!");
         entity_type_manager.delete(&entity_ty).expect("Failed to delete the entity type!");
         assert!(!entity_type_manager.has(&entity_ty), "The entity type shouldn't be registered anymore!");
-        entity_type_import_export_manager.import(path.as_str()).expect("Failed to import the entity type!");
+        entity_type_import_export_manager
+            .import(path.as_str())
+            .expect("Failed to import the entity type!");
         assert!(entity_type_manager.has(&entity_ty), "The entity type should be registered again!");
 
         // let entity_type_imported = entity_type_manager.get(&entity_ty).unwrap();
         // println!("{}", serde_json::to_string_pretty(&entity_type_imported).unwrap());
-        assert_eq!(entity_type_orig, entity_type_manager.get(&entity_ty).unwrap(), "The imported entity type should match with the constructed entity type!");
+        assert_eq!(
+            entity_type_orig,
+            entity_type_manager.get(&entity_ty).unwrap(),
+            "The imported entity type should match with the constructed entity type!"
+        );
     }
-
 }

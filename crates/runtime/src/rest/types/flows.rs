@@ -7,8 +7,8 @@ use mime::APPLICATION_JSON;
 use schemars::schema_for;
 
 use crate::api::FlowTypeManager;
-use crate::model::FlowType;
 use crate::model::FlowTypeId;
+use inexor_rgf_graph::FlowType;
 
 #[get("/types/flows")]
 pub async fn get_flow_types(flow_type_manager: web::Data<Arc<dyn FlowTypeManager>>) -> HttpResponse {

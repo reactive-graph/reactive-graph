@@ -7,8 +7,8 @@ use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::model::Extension;
 use crate::model::RelationInstance;
-use crate::model::RelationInstances;
 use crate::model::RelationInstanceTypeId;
+use crate::model::RelationInstances;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.

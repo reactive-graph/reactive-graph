@@ -4,11 +4,11 @@ use async_graphql::*;
 
 use crate::api::RelationBehaviourManager;
 use crate::api::RelationTypeManager;
+use crate::behaviour_api::RelationBehaviourTypeId;
 use crate::graphql::query::GraphQLBehaviour;
 use crate::graphql::query::GraphQLRelationInstance;
 use crate::graphql::query::GraphQLRelationType;
 use crate::model::NamespacedTypeGetter;
-use crate::reactive::RelationBehaviourTypeId;
 
 pub struct GraphQLRelationBehaviour {
     relation_behaviour_ty: RelationBehaviourTypeId,

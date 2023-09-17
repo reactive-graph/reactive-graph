@@ -1,13 +1,18 @@
 use std::collections::HashMap;
-use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
+use std::sync::Arc;
 use std::sync::RwLock;
 
 use async_trait::async_trait;
 use crossbeam::channel::Receiver;
 use crossbeam::channel::Sender;
 use dashmap::DashMap;
+use inexor_rgf_rt_api::ReactiveEntityComponentAddError;
+use inexor_rgf_rt_api::ReactiveEntityCreationError;
+use inexor_rgf_rt_api::ReactiveEntityPropertyAddError;
+use inexor_rgf_rt_api::ReactiveEntityPropertyRemoveError;
+use inexor_rgf_rt_api::ReactiveEntityRegistrationError;
 use log::error;
 use path_tree::PathTree;
 use serde_json::Value;
@@ -22,12 +27,10 @@ use crate::api::Lifecycle;
 use crate::api::ReactiveEntityManager;
 use crate::api::SystemEventManager;
 use crate::api::SystemEventSubscriber;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
+use crate::behaviour_api::EntityBehaviourTypeId;
 use crate::di::*;
-use crate::error::reactive::entity::ReactiveEntityComponentAddError;
-use crate::error::reactive::entity::ReactiveEntityCreationError;
-use crate::error::reactive::entity::ReactiveEntityPropertyAddError;
-use crate::error::reactive::entity::ReactiveEntityPropertyRemoveError;
-use crate::error::reactive::entity::ReactiveEntityRegistrationError;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
@@ -44,13 +47,10 @@ use crate::model_runtime::EventProperties::EVENT;
 use crate::model_runtime::LabeledProperties::LABEL;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
-use crate::reactive::ComponentContainer;
-use crate::reactive::EntityBehaviourTypeId;
-use crate::reactive::ReactiveBehaviourContainer;
+use crate::reactive::BehaviourTypesContainer;
 use crate::reactive::ReactiveEntity;
 use crate::reactive::ReactivePropertyContainer;
+use inexor_rgf_reactive_api::prelude::*;
 
 static HANDLE_ID_ENTITY_TYPE_COMPONENT_ADDED: u128 = 0x6ba7b8109e1513d350b300c04fe530c7;
 static HANDLE_ID_ENTITY_TYPE_COMPONENT_REMOVED: u128 = 0x6ba8b8119e1513d350b300c04fe630c7;
@@ -113,7 +113,6 @@ pub struct ReactiveEntityManagerImpl {
     entity_type_manager: Wrc<dyn EntityTypeManager>,
 
     // entity_instance_manager: Wrc<dyn EntityInstanceManager>,
-
     entity_behaviour_manager: Wrc<dyn EntityBehaviourManager>,
 
     entity_component_behaviour_manager: Wrc<dyn EntityComponentBehaviourManager>,
@@ -238,10 +237,7 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
     }
 
     fn create(&self, ty: &EntityTypeId, properties: PropertyInstances) -> Result<ReactiveEntity, ReactiveEntityCreationError> {
-        let entity_instance = EntityInstance::builder()
-            .ty(ty.clone())
-            .properties(properties)
-            .build();
+        let entity_instance = EntityInstance::builder().ty(ty.clone()).properties(properties).build();
         return self.create_reactive_instance(entity_instance);
         // let result = self.entity_instance_manager.create(ty, properties);
         // if result.is_err() {
@@ -253,19 +249,13 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
         // Err(ReactiveEntityCreationError::MissingInstance)
     }
 
-    fn create_with_id(
-        &self,
-        ty: &EntityTypeId,
-        id: Uuid,
-        properties: PropertyInstances,
-    ) -> Result<ReactiveEntity, ReactiveEntityCreationError> {
+    fn create_with_id(&self, ty: &EntityTypeId, id: Uuid, properties: PropertyInstances) -> Result<ReactiveEntity, ReactiveEntityCreationError> {
         if self.has(id) {
             return Err(ReactiveEntityCreationError::UuidTaken(id));
         }
 
         let entity_instance = EntityInstance::builder().ty(ty.clone()).id(id).properties(properties).build();
         return self.create_reactive_instance(entity_instance);
-
 
         // let entity_instance = self.entity_instance_manager.get(id);
         // match entity_instance {
@@ -311,39 +301,26 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
             .map_err(ReactiveEntityCreationError::ReactiveEntityRegistrationError)
     }
 
-    fn register_reactive_instance(
-        &self,
-        reactive_entity: ReactiveEntity,
-    ) -> Result<ReactiveEntity, ReactiveEntityRegistrationError> {
+    fn register_reactive_instance(&self, reactive_entity: ReactiveEntity) -> Result<ReactiveEntity, ReactiveEntityRegistrationError> {
         if self.reactive_entity_instances.contains_key(&reactive_entity.id) {
             return Err(ReactiveEntityRegistrationError::UuidTaken(reactive_entity.id));
         }
         if !self.entity_type_manager.has(&reactive_entity.ty) {
             return Err(ReactiveEntityRegistrationError::UnknownEntityType(reactive_entity.ty.clone()));
         }
-        self.reactive_entity_instances
-            .0
-            .insert(reactive_entity.id, reactive_entity.clone());
+        self.reactive_entity_instances.0.insert(reactive_entity.id, reactive_entity.clone());
         // Apply all components that are predefined in the entity type
-        if let Some(components) = self
-            .entity_type_manager
-            .get(&reactive_entity.ty)
-            .map(|entity_type| entity_type.components)
-        {
+        if let Some(components) = self.entity_type_manager.get(&reactive_entity.ty).map(|entity_type| entity_type.components) {
             components.iter().for_each(|component_ty| {
                 reactive_entity.components.insert(component_ty.clone());
             });
         }
         // Add component behaviours
-        self.entity_component_behaviour_manager
-            .add_behaviours_to_entity(reactive_entity.clone());
+        self.entity_component_behaviour_manager.add_behaviours_to_entity(reactive_entity.clone());
         // Add entity behaviours
         self.entity_behaviour_manager.add_behaviours(reactive_entity.clone());
         // Register label
-        if let Some(value) = reactive_entity
-            .get(LABEL.property_name())
-            .and_then(|v| v.as_str().map(|s| s.to_string()))
-        {
+        if let Some(value) = reactive_entity.get(LABEL.property_name()).and_then(|v| v.as_str().map(|s| s.to_string())) {
             let mut writer = self.label_path_tree.0.write().unwrap();
             let _ = writer.insert(&value, reactive_entity.id);
         }
@@ -388,10 +365,7 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
         // }
     }
 
-    fn register_or_merge_reactive_instance(
-        &self,
-        entity_instance: ReactiveEntity,
-    ) -> Result<ReactiveEntity, ReactiveEntityRegistrationError> {
+    fn register_or_merge_reactive_instance(&self, entity_instance: ReactiveEntity) -> Result<ReactiveEntity, ReactiveEntityRegistrationError> {
         match self.get(entity_instance.id) {
             // No instance with the given id exists: register as new instance and return it
             None => self.register_reactive_instance(entity_instance),
@@ -454,10 +428,7 @@ impl ReactiveEntityManager for ReactiveEntityManagerImpl {
                 for component_ty in entity_instance.get_components() {
                     if let Some(component) = self.component_manager.get(&component_ty) {
                         if component.has_own_property(property_name) {
-                            return Err(ReactiveEntityPropertyRemoveError::PropertyInUseByComponent(
-                                property_name.to_string(),
-                                component_ty.clone(),
-                            ));
+                            return Err(ReactiveEntityPropertyRemoveError::PropertyInUseByComponent(property_name.to_string(), component_ty.clone()));
                         }
                     }
                 }
@@ -747,10 +718,15 @@ mod tests {
             .register_reactive_instance(reactive_entity)
             .expect("Failed to register the reactive entity");
         // Register the reactive entity
-        assert!(reactive_entity_manager.has(reactive_entity.id), "The reactive entity with the id should be known by the reactive_entity_manager!");
+        assert!(
+            reactive_entity_manager.has(reactive_entity.id),
+            "The reactive entity with the id should be known by the reactive_entity_manager!"
+        );
         // Get the reactive entity by id
         let id = reactive_entity.id;
-        let reactive_entity = reactive_entity_manager.get(reactive_entity.id).expect("Failed to get the reactive entity by id!");
+        let reactive_entity = reactive_entity_manager
+            .get(reactive_entity.id)
+            .expect("Failed to get the reactive entity by id!");
         assert_eq!(id, reactive_entity.id, "The id of the reactive entity doesn't match!");
         assert_eq!(entity_type.ty, reactive_entity.ty, "The entity type id doesn't match!");
     }
@@ -766,9 +742,7 @@ mod tests {
             .properties(PropertyTypes::new_with_string_property(r_string()))
             .build();
         // Register entity type
-        let entity_type = entity_type_manager
-            .register(entity_type)
-            .expect("Failed to register entity type");
+        let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
 
         let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
         let id = reactive_entity.id;
@@ -798,15 +772,16 @@ mod tests {
         let id = reactive_entity.id;
 
         // Check that we cannot create an entity instance with a type which doesn't exist
-        assert!(reactive_entity_manager.register_reactive_instance(reactive_entity.clone()).is_err(), "The reactive entity shouldn't have been registered because the entity type was not registered!");
+        assert!(
+            reactive_entity_manager.register_reactive_instance(reactive_entity.clone()).is_err(),
+            "The reactive entity shouldn't have been registered because the entity type was not registered!"
+        );
 
         assert!(!reactive_entity_manager.has(id), "There shouldn't be a reactive entity with id!");
         assert_eq!(reactive_entity_manager.count(), 0);
 
         // Register entity type
-        let _entity_type = entity_type_manager
-            .register(entity_type)
-            .expect("Failed to register entity type");
+        let _entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
 
         let reactive_entity = reactive_entity_manager
             .register_reactive_instance(reactive_entity)
@@ -815,7 +790,10 @@ mod tests {
         assert!(reactive_entity_manager.has(id), "The reactive entity with id should be registered!");
         assert_eq!(reactive_entity_manager.count(), 1);
 
-        assert!(reactive_entity_manager.register_reactive_instance(reactive_entity).is_err(), "The reactive entity was registered twice!");
+        assert!(
+            reactive_entity_manager.register_reactive_instance(reactive_entity).is_err(),
+            "The reactive entity was registered twice!"
+        );
 
         assert!(reactive_entity_manager.has(id), "The reactive entity with id should be registered!");
         assert_eq!(reactive_entity_manager.count(), 1);
@@ -827,7 +805,9 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let entity_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register entity type");
+        let entity_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register entity type");
 
         bencher.iter(move || {
             let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
@@ -843,12 +823,16 @@ mod tests {
         let entity_type_manager = runtime.get_entity_type_manager();
         let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let entity_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register entity type");
+        let entity_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register entity type");
 
         let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
         let id = reactive_entity.id;
 
-        reactive_entity_manager.register_reactive_instance(reactive_entity).expect("Failed to register reactive instance");
+        reactive_entity_manager
+            .register_reactive_instance(reactive_entity)
+            .expect("Failed to register reactive instance");
 
         bencher.iter(|| reactive_entity_manager.get(id))
     }
@@ -868,9 +852,10 @@ mod tests {
 
         let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
         reactive_entity.set("label", json!(label.clone()));
-        reactive_entity_manager.register_reactive_instance(reactive_entity).expect("Failed to register reactive entity");
+        reactive_entity_manager
+            .register_reactive_instance(reactive_entity)
+            .expect("Failed to register reactive entity");
 
         bencher.iter(|| reactive_entity_manager.get_by_label(&label))
     }
-
 }

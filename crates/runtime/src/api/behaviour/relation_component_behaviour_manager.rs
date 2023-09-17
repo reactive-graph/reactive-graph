@@ -1,11 +1,10 @@
 use async_trait::async_trait;
 
-use crate::model::RelationInstanceId;
-
 use crate::behaviour::BehaviourTransitionError;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
 use crate::model::Component;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
+use crate::model::RelationInstanceId;
 use crate::reactive::ReactiveRelation;
 
 #[async_trait]

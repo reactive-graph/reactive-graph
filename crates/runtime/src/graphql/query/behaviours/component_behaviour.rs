@@ -3,9 +3,9 @@ use std::sync::Arc;
 use async_graphql::*;
 
 use crate::api::ComponentManager;
+use crate::behaviour_api::ComponentBehaviourTypeId;
 use crate::graphql::query::GraphQLBehaviour;
 use crate::graphql::query::GraphQLComponent;
-use crate::reactive::ComponentBehaviourTypeId;
 use crate::model::NamespacedTypeGetter;
 
 pub struct GraphQLComponentBehaviour {

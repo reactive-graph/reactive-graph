@@ -1,0 +1,51 @@
+[package]
+name = "inexor-rgf-plugin-api"
+description = "Inexor - Reactive Graph Flow - Core - Plugins"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+http = { workspace = true }
+json5 = { workspace = true, optional = true }
+paste = { workspace = true }
+rust-embed = { workspace = true, features = ["debug-embed", "compression"], optional = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+toml = { workspace = true, optional = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ], optional = true }
+tokio-stream = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-behaviour = { version = "0.10.0", path = "../behaviour" }
+inexor-rgf-core-frp = { version = "0.10.0", path = "../core/frp" }
+inexor-rgf-graph = { version = "0.10.0", path = "../graph" }
+inexor-rgf-reactive = { version = "0.10.0", path = "../reactive" }
+inexor-rgf-config = { version = "0.10.0", path = "../config" }
+inexor-rgf-model-command = { version = "0.10.0", path = "../model/command" }
+inexor-rgf-rt-api = { version = "0.10.0", path = "../runtime-api" }
+inexor-rgf-behaviour-api = { version = "0.10.0", path = "../behaviour-api" }
+inexor-rgf-plugin-derive = { version = "0.10.0", path = "../plugin-derive", optional = true }
+
+[dev-dependencies]
+random-string = "1.0"
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+[build-dependencies]
+rustc_version = "0.4.0"
+
+[features]
+default = [ "derive", "springtime" ]
+derive = [ "inexor-rgf-plugin-derive", "rust-embed" ]
+springtime = [ "springtime-di/threadsafe", "springtime-di/derive" ]
+json5 = [ "dep:json5", "inexor-rgf-plugin-derive/json5" ]
+toml = [ "dep:toml", "inexor-rgf-plugin-derive/toml" ]
+full = [ "derive", "springtime", "json5", "toml" ]
+
+[lib]
+crate-type = ["lib"]

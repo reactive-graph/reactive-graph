@@ -2,7 +2,7 @@ use actix_web::get;
 use actix_web::HttpResponse;
 use schemars::schema_for;
 
-use crate::model::EntityInstance;
+use inexor_rgf_graph::EntityInstance;
 
 #[get("/instances/entities/schema")]
 pub async fn schema_entity_instances() -> HttpResponse {

@@ -10,7 +10,6 @@ use std::sync::RwLock;
 use serde_json::Map;
 use serde_json::Value;
 use uuid::Uuid;
-use inexor_rgf_core_model::RelationInstance;
 
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
@@ -20,32 +19,15 @@ use crate::model::Mutability;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
+use crate::model::RelationInstance;
 use crate::model::RelationInstanceId;
 use crate::model::TypeDefinition;
 use crate::model::TypeDefinitionGetter;
-use crate::{ReactiveEntity, ReactiveInstance};
+use crate::reactive_api::ReactiveFlowConstructionError;
+use crate::ReactiveEntity;
 use crate::ReactivePropertyContainer;
 use crate::ReactiveRelation;
-
-#[derive(Debug)]
-pub enum ReactiveFlowConstructionError {
-    MissingWrapperInstance,
-    MissingOutboundEntityInstance(Uuid),
-    MissingInboundEntityInstance(Uuid),
-}
-
-impl Display for ReactiveFlowConstructionError {
-    #[cfg(not(tarpaulin_include))]
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match *self {
-            ReactiveFlowConstructionError::MissingWrapperInstance => {
-                write!(f, "Missing the wrapper entity instance. Check if an entity instance exists with the same id as the flow id")
-            }
-            ReactiveFlowConstructionError::MissingOutboundEntityInstance(id) => write!(f, "The outbound entity instance {} cannot be found", id),
-            ReactiveFlowConstructionError::MissingInboundEntityInstance(id) => write!(f, "The inbound entity instance {} cannot be found", id),
-        }
-    }
-}
+use inexor_rgf_reactive_api::prelude::*;
 
 pub struct ReactiveFlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance.
@@ -324,7 +306,6 @@ impl Display for ReactiveFlowInstance {
     }
 }
 
-
 impl TryFrom<ReactiveFlowInstance> for FlowInstance {
     type Error = FlowInstanceCreationError;
 
@@ -412,6 +393,5 @@ impl TryFrom<ReactiveFlow> for FlowInstance {
 
     fn try_from(reactive_flow: ReactiveFlow) -> Result<Self, FlowInstanceCreationError> {
         FlowInstance::try_from(reactive_flow.0.deref())
-
     }
 }

@@ -5,25 +5,24 @@ use std::time;
 
 use serde_json::json;
 use tokio::task;
-use crate::model::PropertyInstanceGetter;
-use crate::reactive::ReactiveEntity;
-
-use crate::model_command::CommandArgs;
 
 use crate::api::UUID_SHUTDOWN;
+use crate::model::PropertyInstanceGetter;
 use crate::model_command::entity::Command;
 use crate::model_command::entity::CommandArg;
-use crate::model_runtime::ENTITY_TYPE_SHUTDOWN;
+use crate::model_command::CommandArgs;
 use crate::model_runtime::ShutdownProperties::DELAY;
+use crate::model_runtime::ENTITY_TYPE_SHUTDOWN;
+use crate::reactive::ReactiveEntity;
 
 pub(crate) fn shutdown_command(shutdown_state: Arc<RwLock<bool>>) -> Command {
-    let args = CommandArgs::new()
-        .arg(CommandArg::new(DELAY)
-                 .short('d')
-                 .long("delay")
-                 .help("Delay shutdown by N seconds")
-                 .required(false)
-        );
+    let args = CommandArgs::new().arg(
+        CommandArg::new(DELAY)
+            .short('d')
+            .long("delay")
+            .help("Delay shutdown by N seconds")
+            .required(false),
+    );
     let executor = Box::new(move |e: &ReactiveEntity| {
         let delay = e.as_u64(DELAY).unwrap_or(0);
         if delay > 0 {

@@ -1,5 +1,6 @@
-use inexor_rgf_core_config as config;
-use inexor_rgf_core_model as model;
+#![feature(lazy_cell)]
+
+use inexor_rgf_config as config;
 
 pub use component::*;
 pub use entity::*;

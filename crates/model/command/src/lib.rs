@@ -1,4 +1,5 @@
-use inexor_rgf_core_model as model;
+#![feature(lazy_cell)]
+
 use inexor_rgf_model_runtime as model_runtime;
 use inexor_rgf_reactive as reactive;
 

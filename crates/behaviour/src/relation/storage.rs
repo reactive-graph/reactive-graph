@@ -1,11 +1,12 @@
 use std::sync::Arc;
 
 use dashmap::DashMap;
-use crate::model::RelationInstanceId;
 
-use crate::reactive::BehaviourTypeId;
+use inexor_rgf_behaviour_api::prelude::*;
+
+use crate::behaviour_api::BehaviourTypeId;
+use crate::model::RelationInstanceId;
 use crate::reactive::ReactiveRelation;
-use crate::BehaviourFsm;
 use crate::BehaviourStorage;
 
 pub struct RelationBehaviourStorage(BehaviourStorage<RelationInstanceId, ReactiveRelation>);
@@ -30,7 +31,11 @@ impl RelationBehaviourStorage {
         None
     }
 
-    pub fn remove(&self, key: &RelationInstanceId, ty: &BehaviourTypeId) -> Option<(BehaviourTypeId, Arc<dyn BehaviourFsm<RelationInstanceId, ReactiveRelation> + Send + Sync>)> {
+    pub fn remove(
+        &self,
+        key: &RelationInstanceId,
+        ty: &BehaviourTypeId,
+    ) -> Option<(BehaviourTypeId, Arc<dyn BehaviourFsm<RelationInstanceId, ReactiveRelation> + Send + Sync>)> {
         if let Some(instance_behaviours) = self.0.get(key) {
             return instance_behaviours.value().remove(ty);
         }
