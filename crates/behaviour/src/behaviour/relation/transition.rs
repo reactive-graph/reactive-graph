@@ -35,7 +35,7 @@ macro_rules! relation_behaviour_transitions {
             }
         }
 
-        impl inexor_rgf_reactive_api::ReactiveInstanceContainer<inexor_rgf_reactive::ReactiveRelation> for $transitions {
+        impl inexor_rgf_reactive_api::ReactiveInstanceContainer<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation> for $transitions {
             fn get_reactive_instance(&self) -> &inexor_rgf_reactive::ReactiveRelation {
                 &self.reactive_instance
             }
