@@ -364,11 +364,7 @@ impl
             .map_err(|e| RelationTypeRemovePropertyError::RemovePropertyError(e))
     }
 
-    fn merge_properties<P: Into<PropertyTypes>>(
-        &mut self,
-        relation_ty: &RelationTypeId,
-        properties_to_merge: P,
-    ) -> Result<(), RelationTypeMergePropertiesError> {
+    fn merge_properties<P: Into<PropertyTypes>>(&self, relation_ty: &RelationTypeId, properties_to_merge: P) -> Result<(), RelationTypeMergePropertiesError> {
         let Some(mut relation_type) = self.0.get_mut(relation_ty) else {
             return Err(RelationTypeMergePropertiesError::RelationTypeDoesNotExist(relation_ty.clone()));
         };

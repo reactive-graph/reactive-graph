@@ -199,88 +199,58 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .properties(properties)
             .extensions(extensions)
             .build();
-        self.register(entity_type)
-            // self.register(EntityType::new(ty.clone(), description, components.to_vec(), properties.to_vec(), extensions.to_vec()))
-            .map_err(EntityTypeCreationError::RegistrationError)
+        self.register(entity_type).map_err(EntityTypeCreationError::RegistrationError)
     }
 
     fn merge(&self, entity_type_to_merge: EntityType) -> Result<EntityType, EntityTypeMergeError> {
-        self.entity_types.merge(entity_type_to_merge)
-        // let ty = entity_type_to_merge.ty;
-        // if !self.has(&ty) {
-        //     return Err(EntityTypeMergeError::EntityTypeDoesNotExists(ty));
-        // }
-        // for component_ty in entity_type_to_merge.components {
-        //     let _ = self.add_component(&ty, &component_ty);
-        // }
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // let Some(entity_type) = guard.iter_mut().find(|e| e.ty == ty) else {
-        //     return Err(EntityTypeMergeError::EntityTypeDoesNotExists(ty));
-        // };
-        // entity_type.description = entity_type_to_merge.description.clone();
-        // entity_type.merge_properties(entity_type_to_merge.properties);
-        // entity_type.merge_extensions(entity_type_to_merge.extensions);
-        // Ok(entity_type.clone())
+        let components = entity_type_to_merge.components.clone();
+        let entity_type = self.entity_types.merge(entity_type_to_merge)?;
+        let ty = entity_type.ty;
+        // Also populate properties from new components
+        for component_ty in components.iter() {
+            if let Some(component) = self.component_manager.get(&component_ty) {
+                for property_type in component.properties.iter() {
+                    let _ = self.add_property(&ty, property_type.value().clone());
+                }
+            }
+        }
+        self.entity_types
+            .get(&ty)
+            .map(|entity_type| entity_type.value().clone())
+            .ok_or(EntityTypeMergeError::EntityTypeDoesNotExist(ty))
     }
 
     fn add_component(&self, entity_ty: &EntityTypeId, component_ty: &ComponentTypeId) -> Result<(), EntityTypeAddComponentError> {
-        if !self.component_manager.has(component_ty) {
+        let Some(component) = self.component_manager.get(component_ty) else {
             return Err(EntityTypeAddComponentError::ComponentDoesNotExist(component_ty.clone()));
-        }
-        self.entity_types.add_component(entity_ty, component_ty)
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // for entity_type in guard.iter_mut() {
-        //     if &entity_type.ty == ty {
-        //         if entity_type.is_a(component_ty) {
-        //             return Err(EntityTypeComponentError::ComponentAlreadyAssigned);
-        //         }
-        //         match self.component_manager.get(component_ty) {
-        //             Some(component) => {
-        //                 entity_type.components.push(component_ty.clone());
-        //                 entity_type.merge_properties(component.properties);
-        //             }
-        //             None => {
-        //                 return Err(EntityTypeComponentError::ComponentDoesNotExist);
-        //             }
-        //         }
-        //         self.event_manager
-        //             .emit_event(SystemEvent::EntityTypeComponentAdded(ty.clone(), component_ty.clone()));
-        //     }
-        // }
-        // Ok(())
+        };
+        self.entity_types.add_component(entity_ty, component_ty)?;
+        let _ = self.entity_types.merge_properties(entity_ty, component.properties.clone());
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypeComponentAdded(entity_ty.clone(), component_ty.clone()));
+        Ok(())
     }
 
     fn remove_component(&self, entity_ty: &EntityTypeId, component_ty: &ComponentTypeId) -> Result<ComponentTypeId, EntityTypeRemoveComponentError> {
-        self.entity_types.remove_component(entity_ty, component_ty)
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // for entity_type in guard.iter_mut() {
-        //     if &entity_type.ty == ty {
-        //         entity_type.components.retain(|c| c != component_ty);
-        //         // TODO: what if multiple components have the same property?
-        //         if let Some(component) = self.component_manager.get(component_ty) {
-        //             let properties_to_remove: Vec<String> = component.properties.iter().map(|property| property.name.clone()).collect();
-        //             entity_type.properties.retain(|property| !properties_to_remove.contains(&property.name));
-        //         }
-        //         self.event_manager
-        //             .emit_event(SystemEvent::EntityTypeComponentRemoved(ty.clone(), component_ty.clone()));
-        //     }
-        // }
+        self.entity_types.remove_component(entity_ty, component_ty)?;
+        if let Some(component) = self.component_manager.get(component_ty) {
+            // TODO: what if multiple components have the same property?
+            component.properties.iter().for_each(|property| {
+                let _ = self.entity_types.remove_property(entity_ty, property.key());
+                self.event_manager
+                    .emit_event(SystemEvent::EntityTypePropertyRemoved(entity_ty.clone(), property.key().clone()));
+            });
+        }
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypeComponentRemoved(entity_ty.clone(), component_ty.clone()));
+        Ok(component_ty.clone())
     }
 
     fn add_property(&self, entity_ty: &EntityTypeId, property_type: PropertyType) -> Result<PropertyType, EntityTypeAddPropertyError> {
-        self.entity_types.add_property(entity_ty, property_type)
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // for entity_type in guard.iter_mut() {
-        //     if &entity_type.ty == ty {
-        //         if entity_type.has_own_property(property.name.clone()) {
-        //             return Err(EntityTypePropertyError::PropertyAlreadyExists);
-        //         }
-        //         entity_type.properties.push(property.clone());
-        //         self.event_manager
-        //             .emit_event(SystemEvent::EntityTypePropertyAdded(ty.clone(), property.name.clone()));
-        //     }
-        // }
-        // Ok(())
+        let property_type = self.entity_types.add_property(entity_ty, property_type)?;
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypePropertyAdded(entity_ty.clone(), property_type.name.clone()));
+        Ok(property_type)
     }
 
     fn update_property(
@@ -289,36 +259,31 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         property_name: &str,
         property_type: PropertyType,
     ) -> Result<PropertyType, EntityTypeUpdatePropertyError> {
-        self.entity_types.update_property(entity_ty, property_name, property_type)
+        let property_type = self.entity_types.update_property(entity_ty, property_name, property_type)?;
+        if property_name == property_type.name {
+            self.event_manager.emit_event(SystemEvent::EntityTypePropertyRenamed(
+                entity_ty.clone(),
+                property_name.to_string(),
+                property_type.name.clone(),
+            ));
+        }
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypePropertyUpdated(entity_ty.clone(), property_name.to_string()));
+        Ok(property_type)
     }
 
     fn remove_property(&self, entity_ty: &EntityTypeId, property_name: &str) -> Result<PropertyType, EntityTypeRemovePropertyError> {
-        self.entity_types.remove_property(entity_ty, property_name)
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // for entity_type in guard.iter_mut() {
-        //     if &entity_type.ty == ty {
-        //         entity_type.properties.retain(|property| property.name != property_name);
-        //         self.event_manager
-        //             .emit_event(SystemEvent::EntityTypePropertyRemoved(ty.clone(), property_name.to_string()));
-        //     }
-        // }
+        let property_type = self.entity_types.remove_property(entity_ty, property_name)?;
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypePropertyRemoved(entity_ty.clone(), property_name.to_string()));
+        Ok(property_type)
     }
 
     fn add_extension(&self, entity_ty: &EntityTypeId, extension: Extension) -> Result<ExtensionTypeId, EntityTypeAddExtensionError> {
-        self.entity_types.add_extension(entity_ty, extension)
-        // let extension_ty = extension.ty.clone();
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // for entity_type in guard.iter_mut() {
-        //     if &entity_type.ty == ty {
-        //         if entity_type.has_own_extension(&extension_ty) {
-        //             return Err(EntityTypeExtensionError::ExtensionAlreadyExists(extension_ty));
-        //         }
-        //         entity_type.extensions.push(extension.clone());
-        //         self.event_manager
-        //             .emit_event(SystemEvent::EntityTypeExtensionAdded(ty.clone(), extension_ty.clone()));
-        //     }
-        // }
-        // Ok(())
+        let extension_ty = self.entity_types.add_extension(entity_ty, extension)?;
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypeExtensionAdded(entity_ty.clone(), extension_ty.clone()));
+        Ok(extension_ty)
     }
 
     fn update_extension(
@@ -327,19 +292,21 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         extension_ty: &ExtensionTypeId,
         extension: Extension,
     ) -> Result<Extension, EntityTypeUpdateExtensionError> {
-        self.entity_types.update_extension(entity_ty, extension_ty, extension)
+        let extension = self.entity_types.update_extension(entity_ty, extension_ty, extension)?;
+        if extension_ty == &extension.ty {
+            self.event_manager
+                .emit_event(SystemEvent::EntityTypeExtensionRenamed(entity_ty.clone(), extension_ty.clone(), extension.ty.clone()));
+        }
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypeExtensionUpdated(entity_ty.clone(), extension.ty.clone()));
+        Ok(extension)
     }
 
     fn remove_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, EntityTypeRemoveExtensionError> {
-        self.entity_types.remove_extension(entity_ty, extension_ty)
-        // let mut guard = self.entity_types.0.write().unwrap();
-        // for entity_type in guard.iter_mut() {
-        //     if &entity_type.ty == ty {
-        //         entity_type.extensions.retain(|extension| &extension.ty != extension_ty);
-        //         self.event_manager
-        //             .emit_event(SystemEvent::EntityTypeExtensionRemoved(ty.clone(), extension_ty.clone()));
-        //     }
-        // }
+        let extension = self.entity_types.remove_extension(entity_ty, extension_ty)?;
+        self.event_manager
+            .emit_event(SystemEvent::EntityTypeExtensionRemoved(entity_ty.clone(), extension_ty.clone()));
+        Ok(extension)
     }
 
     // TODO: parameter "cascade": relation types, flow types and entity instances (and their dependencies) depends on a entity type
