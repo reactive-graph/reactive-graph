@@ -51,8 +51,8 @@ mod test {
     use crate::model::Component;
     use crate::model::NamespacedTypeGetter;
 
-    #[test]
-    fn test_export_import_component() {
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_export_import_component() {
         let runtime = get_runtime();
         let component_manager = runtime.get_component_manager();
         let component_import_export_manager = runtime.get_component_import_export_manager();
@@ -67,11 +67,12 @@ mod test {
 
         component_import_export_manager
             .export(&component_ty, path.as_str())
+            .await
             .expect("Failed to export component");
         assert!(component_manager.has(&component_ty), "Component should be registered!");
         assert!(component_manager.delete(&component_ty), "Failed to delete component!");
         assert!(!component_manager.has(&component_ty), "Component shouldn't be registered anymore!");
-        let _component = component_import_export_manager.import(path.as_str()).expect("Failed to import component");
+        let _component = component_import_export_manager.import(path.as_str()).await.expect("Failed to import component");
         assert!(component_manager.has(&component_ty), "Component not registered!");
         assert_eq!(
             component_orig,
