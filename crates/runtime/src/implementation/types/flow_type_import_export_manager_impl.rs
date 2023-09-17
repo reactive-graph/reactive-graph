@@ -22,14 +22,14 @@ pub struct FlowTypeImportExportManagerImpl {
 #[async_trait]
 #[provides]
 impl FlowTypeImportExportManager for FlowTypeImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<FlowType, FlowTypeImportError> {
+    async fn import(&self, path: &str) -> Result<FlowType, FlowTypeImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let flow_type: FlowType = serde_json::from_reader(reader)?;
         self.flow_type_manager.register(flow_type).map_err(FlowTypeImportError::RegistrationError)
     }
 
-    fn export(&self, ty: &FlowTypeId, path: &str) -> Result<(), FlowTypeExportError> {
+    async fn export(&self, ty: &FlowTypeId, path: &str) -> Result<(), FlowTypeExportError> {
         let Some(flow_type) = self.flow_type_manager.get(ty) else {
             return Err(FlowTypeExportError::FlowTypeNotFound(ty.clone()));
         };

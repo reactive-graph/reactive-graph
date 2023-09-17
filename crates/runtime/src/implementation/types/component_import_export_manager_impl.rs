@@ -21,14 +21,14 @@ pub struct ComponentImportExportManagerImpl {
 #[async_trait]
 #[provides]
 impl ComponentImportExportManager for ComponentImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {
+    async fn import(&self, path: &str) -> Result<crate::model::Component, ComponentImportError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         let component: crate::model::Component = serde_json::from_reader(reader)?;
         self.component_manager.register(component).map_err(ComponentImportError::RegistrationError)
     }
 
-    fn export(&self, ty: &ComponentTypeId, path: &str) -> Result<(), ComponentExportError> {
+    async fn export(&self, ty: &ComponentTypeId, path: &str) -> Result<(), ComponentExportError> {
         let Some(component) = self.component_manager.get(ty) else {
             return Err(ComponentExportError::ComponentNotFound(ty.clone()));
         };

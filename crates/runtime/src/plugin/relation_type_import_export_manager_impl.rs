@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use inexor_rgf_rt_api::RelationTypeExportError;
 use inexor_rgf_rt_api::RelationTypeImportError;
 use std::sync::Arc;
@@ -17,12 +18,14 @@ impl RelationTypeImportExportManagerImpl {
         }
     }
 }
+
+#[async_trait]
 impl RelationTypeImportExportManager for RelationTypeImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
-        self.relation_type_import_export_manager.import(path)
+    async fn import(&self, path: &str) -> Result<RelationType, RelationTypeImportError> {
+        self.relation_type_import_export_manager.import(path).await
     }
 
-    fn export(&self, ty: &RelationTypeId, path: &str) -> Result<(), RelationTypeExportError> {
-        self.relation_type_import_export_manager.export(ty, path)
+    async fn export(&self, ty: &RelationTypeId, path: &str) -> Result<(), RelationTypeExportError> {
+        self.relation_type_import_export_manager.export(ty, path).await
     }
 }

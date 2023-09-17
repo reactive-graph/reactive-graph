@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use std::sync::Arc;
 
 use crate::model::EntityType;
@@ -17,12 +18,14 @@ impl EntityTypeImportExportManagerImpl {
         }
     }
 }
+
+#[async_trait]
 impl EntityTypeImportExportManager for EntityTypeImportExportManagerImpl {
-    fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
-        self.entity_type_import_export_manager.import(path)
+    async fn import(&self, path: &str) -> Result<EntityType, EntityTypeImportError> {
+        self.entity_type_import_export_manager.import(path).await
     }
 
-    fn export(&self, ty: &EntityTypeId, path: &str) -> Result<(), EntityTypeExportError> {
-        self.entity_type_import_export_manager.export(ty, path)
+    async fn export(&self, ty: &EntityTypeId, path: &str) -> Result<(), EntityTypeExportError> {
+        self.entity_type_import_export_manager.export(ty, path).await
     }
 }
