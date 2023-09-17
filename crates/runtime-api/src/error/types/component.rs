@@ -1,37 +1,42 @@
-use crate::model::ComponentTypeId;
+use thiserror::Error;
 
-#[derive(Debug)]
+use inexor_rgf_graph::prelude::*;
+
+use crate::error::types::serde::DeserializationError;
+use crate::error::types::serde::SerializationError;
+
+#[derive(Debug, Error)]
 pub enum ComponentRegistrationError {
+    #[error("Failed to register component {0} because it already exists!")]
     ComponentAlreadyExists(ComponentTypeId),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ComponentCreationError {
-    RegistrationError(ComponentRegistrationError),
+    #[error("Failed to create component because registration failed: {0}")]
+    RegistrationError(#[from] ComponentRegistrationError),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ComponentImportError {
-    Io(std::io::Error),
-    Deserialization(serde_json::Error),
-    RegistrationError(ComponentRegistrationError),
+    #[error("Failed to import component because reading failed: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("Failed to import component because format {0} is not supported!")]
+    UnsupportedFormat(String),
+    #[error("Failed to import component because deserialization failed: {0}")]
+    Deserialization(#[from] DeserializationError),
+    #[error("Failed to import component because registration failed: {0}")]
+    RegistrationError(#[from] ComponentRegistrationError),
 }
 
-impl From<std::io::Error> for ComponentImportError {
-    fn from(e: std::io::Error) -> Self {
-        ComponentImportError::Io(e)
-    }
-}
-
-impl From<serde_json::Error> for ComponentImportError {
-    fn from(e: serde_json::Error) -> Self {
-        ComponentImportError::Deserialization(e)
-    }
-}
-
-#[derive(Debug)]
+#[derive(Debug, Error)]
 pub enum ComponentExportError {
+    #[error("Failed to export non existent component {0}!")]
     ComponentNotFound(ComponentTypeId),
-    Io(std::io::Error),
-    Serialization(serde_json::Error),
+    #[error("Failed to export component because writing failed: {0}")]
+    Io(#[from] std::io::Error),
+    #[error("Failed to export component because format {0} is not supported!")]
+    UnsupportedFormat(String),
+    #[error("Failed to export component because serialization failed: {0}")]
+    Serialization(#[from] SerializationError),
 }

@@ -1,5 +1,9 @@
-use inexor_rgf_graph::FlowTypeId;
 use thiserror::Error;
+
+use inexor_rgf_graph::prelude::*;
+
+use crate::error::types::serde::DeserializationError;
+use crate::error::types::serde::SerializationError;
 
 #[derive(Debug, Error)]
 pub enum FlowTypeRegistrationError {
@@ -21,8 +25,10 @@ pub enum FlowTypeCreationError {
 pub enum FlowTypeImportError {
     #[error("Failed to import flow type because reading failed: {0}")]
     Io(#[from] std::io::Error),
+    #[error("Failed to import flow type because format {0} is not supported!")]
+    UnsupportedFormat(String),
     #[error("Failed to import flow type because deserialization failed: {0}")]
-    Deserialization(#[from] serde_json::Error),
+    Deserialization(#[from] DeserializationError),
     #[error("Failed to import flow type because registration failed: {0}")]
     RegistrationError(#[from] FlowTypeRegistrationError),
 }
@@ -33,6 +39,8 @@ pub enum FlowTypeExportError {
     FlowTypeNotFound(FlowTypeId),
     #[error("Failed to export flow type because write failed: {0}")]
     Io(#[from] std::io::Error),
+    #[error("Failed to export flow type because format {0} is not supported!")]
+    UnsupportedFormat(String),
     #[error("Failed to export flow type because serialization failed: {0}")]
-    Serialization(#[from] serde_json::Error),
+    Serialization(#[from] SerializationError),
 }

@@ -1,5 +1,9 @@
-use crate::model::EntityTypeId;
 use thiserror::Error;
+
+use inexor_rgf_graph::prelude::*;
+
+use crate::error::types::serde::DeserializationError;
+use crate::error::types::serde::SerializationError;
 
 #[derive(Debug, Error)]
 pub enum EntityTypeRegistrationError {
@@ -10,25 +14,29 @@ pub enum EntityTypeRegistrationError {
 #[derive(Debug, Error)]
 pub enum EntityTypeCreationError {
     #[error("Failed to create entity type: {0}")]
-    RegistrationError(EntityTypeRegistrationError),
+    RegistrationError(#[from] EntityTypeRegistrationError),
 }
 
 #[derive(Debug, Error)]
 pub enum EntityTypeImportError {
-    #[error("Failed to read entity type during import: {0}")]
+    #[error("Failed to import entity type because reading failed: {0}")]
     Io(#[from] std::io::Error),
-    #[error("Failed to deserialize entity type during import: {0}")]
-    Deserialization(#[from] serde_json::Error),
-    #[error("Failed to register entity type during import: {0}")]
-    RegistrationError(EntityTypeRegistrationError),
+    #[error("Failed to import entity type because format {0} is not supported!")]
+    UnsupportedFormat(String),
+    #[error("Failed to import entity type because deserialization failed: {0}")]
+    Deserialization(#[from] DeserializationError),
+    #[error("Failed to import entity type because registration failed: {0}")]
+    RegistrationError(#[from] EntityTypeRegistrationError),
 }
 
 #[derive(Debug, Error)]
 pub enum EntityTypeExportError {
-    #[error("The entity type {0} doesn't exist!")]
+    #[error("Failed to export non existent entity type {0}!")]
     EntityTypeNotFound(EntityTypeId),
-    #[error("Failed to write entity type during export: {0}")]
+    #[error("Failed to export entity type because writing failed: {0}")]
     Io(#[from] std::io::Error),
-    #[error("Failed to serialize entity type during export: {0}")]
-    Serialization(#[from] serde_json::Error),
+    #[error("Failed to export entity type because format {0} is not supported!")]
+    UnsupportedFormat(String),
+    #[error("Failed to export entity type because serialization failed: {0}")]
+    Serialization(#[from] SerializationError),
 }
