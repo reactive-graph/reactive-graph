@@ -50,8 +50,8 @@ mod test {
     use crate::model::EntityType;
     use crate::model::NamespacedTypeGetter;
 
-    #[test]
-    fn test_export_import_entity_type() {
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_export_import_entity_type() {
         let runtime = get_runtime();
         let entity_type_manager = runtime.get_entity_type_manager();
         let entity_type_import_export_manager = runtime.get_entity_type_import_export_manager();
@@ -70,17 +70,17 @@ mod test {
         assert!(entity_type_manager.has(&entity_ty), "The entity type must exist in order to export it");
         entity_type_import_export_manager
             .export(&entity_ty, path.as_str())
+            .await
             .expect("Failed to export the entity type!");
         assert!(entity_type_manager.has(&entity_ty), "The entity type should be registered!");
         entity_type_manager.delete(&entity_ty).expect("Failed to delete the entity type!");
         assert!(!entity_type_manager.has(&entity_ty), "The entity type shouldn't be registered anymore!");
         entity_type_import_export_manager
             .import(path.as_str())
+            .await
             .expect("Failed to import the entity type!");
         assert!(entity_type_manager.has(&entity_ty), "The entity type should be registered again!");
 
-        // let entity_type_imported = entity_type_manager.get(&entity_ty).unwrap();
-        // println!("{}", serde_json::to_string_pretty(&entity_type_imported).unwrap());
         assert_eq!(
             entity_type_orig,
             entity_type_manager.get(&entity_ty).unwrap(),

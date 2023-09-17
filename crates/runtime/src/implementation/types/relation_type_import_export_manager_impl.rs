@@ -54,8 +54,8 @@ mod tests {
     use crate::model::RelationType;
     use crate::model::RelationTypeId;
 
-    #[test]
-    fn test_export_import_relation_type() {
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_export_import_relation_type() {
         let runtime = get_runtime();
         let entity_type_manager = runtime.get_entity_type_manager();
         let relation_type_manager = runtime.get_relation_type_manager();
@@ -81,22 +81,21 @@ mod tests {
             .register(RelationType::builder_with_ty(outbound_ty, &relation_ty, inbound_ty).build_with_defaults())
             .expect("Failed to register relation type!");
         let relation_type_orig = relation_type.clone();
-        // println!("{}", serde_json::to_string_pretty(&relation_type_orig).unwrap());
 
         assert!(relation_type_manager.has(&relation_ty), "The relation type must exist in order to export it");
         relation_type_import_export_manager
             .export(&relation_ty, path.as_str())
+            .await
             .expect("Failed to export the relation type!");
         assert!(relation_type_manager.has(&relation_ty), "The relation type should be registered!");
         relation_type_manager.delete(&relation_ty).expect("Failed to delete the relation type!");
         assert!(!relation_type_manager.has(&relation_ty), "The relation type shouldn't be registered anymore!");
         let _relation_type = relation_type_import_export_manager
             .import(path.as_str())
+            .await
             .expect("Failed to import the relation type!");
         assert!(relation_type_manager.has(&relation_ty), "The relation type should be registered again!");
 
-        // let relation_type_imported = relation_type_manager.get(&relation_ty).unwrap();
-        // println!("{}", serde_json::to_string_pretty(&relation_type_imported).unwrap());
         assert_eq!(
             relation_type_orig,
             relation_type_manager.get(&relation_ty).unwrap(),
