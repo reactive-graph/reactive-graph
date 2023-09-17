@@ -42,7 +42,7 @@ macro_rules! behaviour_validator {
 
         impl BehaviourValidator<$id, $reactive_instance> for $validator {}
 
-        impl ReactiveInstanceContainer<$id, $reactive_instance> for $validator {
+        impl inexor_rgf_reactive_api::ReactiveInstanceContainer<$id, $reactive_instance> for $validator {
             fn get_reactive_instance(&self) -> &$reactive_instance {
                 &self.reactive_instance
             }
