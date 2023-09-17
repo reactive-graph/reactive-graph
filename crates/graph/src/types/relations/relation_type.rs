@@ -120,10 +120,6 @@ impl RelationType {
         properties: P,
         extensions: E,
     ) -> RelationType {
-        // let x = RelationType::builder()
-        //     .outbound_type(outbound_type)
-        //     .ty(RelationTypeId::default_test())
-        //     .inbound_type(inbound_type);
         RelationType {
             outbound_type: outbound_type.into(),
             ty: ty.into(),
