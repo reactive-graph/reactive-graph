@@ -133,12 +133,6 @@ impl PluginContext for TestPluginContext {
 #[tokio::test(flavor = "multi_thread")]
 async fn plugin_api_default_trait_impl_test() {
     let plugin = TestPlugin {};
-    let context = TestPluginContext {};
     assert_eq!(true, plugin.activate().await.is_ok());
     assert_eq!(true, plugin.deactivate().await.is_ok());
-    // assert_eq!(true, plugin.set_context(Arc::new(context)).is_ok());
-    // assert_eq!(true, plugin.remove_context().is_ok());
-    // Instance providers
-    // assert_eq!(true, plugin.get_flow_instance_provider().is_ok());
-    // assert_eq!(true, plugin.get_web_resource_provider().is_ok());
 }

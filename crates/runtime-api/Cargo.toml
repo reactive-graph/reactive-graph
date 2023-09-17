@@ -9,9 +9,11 @@ repository.workspace = true
 readme = "../../README.md"
 
 [dependencies]
+json5 = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
+toml = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 inexor-rgf-graph = { version = "0.10.0", path = "../graph" }

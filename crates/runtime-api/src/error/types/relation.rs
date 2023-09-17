@@ -28,7 +28,7 @@ pub enum RelationTypeCreationError {
 #[derive(Debug, Error)]
 pub enum RelationTypeImportError {
     #[error("Failed to import relation type because reading failed: {0}")]
-    Io(std::io::Error),
+    Io(#[from] std::io::Error),
     #[error("Failed to import relation type because format {0} is not supported!")]
     UnsupportedFormat(String),
     #[error("Failed to import relation type because deserialization failed: {0}")]
