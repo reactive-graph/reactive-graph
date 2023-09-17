@@ -12,9 +12,9 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::property_identifier;
+use crate::tests::r_string;
 use crate::tests::utils::create_random_entity_instance::create_random_entity_instance;
 use crate::tests::utils::r_json_string;
-use crate::tests::r_string;
 use crate::BehaviourTypeId;
 use crate::Component;
 use crate::ComponentContainer;
@@ -28,8 +28,8 @@ use crate::PropertyInstanceSetter;
 use crate::PropertyType;
 use crate::ReactiveBehaviourContainer;
 use crate::ReactiveEntity;
-use crate::ReactivePropertyContainer;
 use crate::ReactiveProperty;
+use crate::ReactivePropertyContainer;
 use crate::ReactiveRelation;
 use crate::RelationInstance;
 use crate::RelationInstanceTypeId;
@@ -251,11 +251,7 @@ fn reactive_relation_instance_with_properties_typed_getter_test() {
     assert_eq!(s, i.as_string(property_name.clone()).unwrap());
 }
 
-fn create_random_relation_instance(
-    outbound_entity: ReactiveEntity,
-    inbound_entity: ReactiveEntity,
-    property_name: String,
-) -> ReactiveRelation {
+fn create_random_relation_instance(outbound_entity: ReactiveEntity, inbound_entity: ReactiveEntity, property_name: String) -> ReactiveRelation {
     let namespace = r_string();
     let type_name = r_string();
     let ty = RelationTypeId::new_from_type(namespace, type_name);

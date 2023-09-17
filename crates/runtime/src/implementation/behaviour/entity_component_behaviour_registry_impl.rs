@@ -2,10 +2,11 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use dashmap::DashMap;
-use inexor_rgf_core_di::Wrc;
 use log::debug;
 use log::warn;
 use uuid::Uuid;
+
+use inexor_rgf_behaviour_api::prelude::*;
 
 use crate::api::ComponentManager;
 use crate::api::EntityComponentBehaviourRegistry;
@@ -13,11 +14,9 @@ use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
+use crate::di::Wrc;
 use crate::model::ComponentTypeId;
 use crate::reactive::ReactiveEntity;
-use crate::behaviour::BehaviourFactory;
 
 #[wrapper]
 pub struct EntityComponentBehaviourFactories(DashMap<ComponentBehaviourTypeId, Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>>);

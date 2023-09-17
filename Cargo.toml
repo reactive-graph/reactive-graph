@@ -5,14 +5,21 @@ cargo-features = [ "workspace-inheritance" ]
 members = [
     "crates/test-utils",
     "crates/behaviour",
-    "crates/core/config",
+    "crates/behaviour-api",
+    "crates/config",
     "crates/core/di",
     "crates/core/di-codegen",
+    "crates/graph",
     "crates/model/command",
     "crates/model/dynamic_graph",
     "crates/model/flow",
     "crates/model/runtime",
+    "crates/plugin-api",
+    "crates/plugin-derive",
+    "crates/reactive-api",
+    "crates/reactive-derive",
     "crates/reactive",
+    "crates/runtime-api",
     "crates/runtime",
     "crates/client",
     "crates/standalone",
@@ -34,11 +41,11 @@ actix = "0.13"
 actix-cors = "0.6"
 actix-http = "3.0"
 actix-rt = "2.6"
-actix-web = { version = "4.0", features = ["rustls"] }
+actix-web = { version = "4.4", features = ["rustls-0_21"] }
 actix-web-extras = "0.1"
 # async-graphql features: uuid, chrono, url, log
-async-graphql = { version = "5.0", features = ["uuid", "dynamic-schema"] }
-async-graphql-actix-web = { version = "5.0" }
+async-graphql = { version = "6.0", features = ["uuid", "dynamic-schema"] }
+async-graphql-actix-web = { version = "6.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 clap = { version = "4.1", features = ["derive", "env"] }
@@ -48,6 +55,7 @@ config = "0.13"
 convert_case = "0.6"
 crossbeam = "0.8"
 cynic = { version = "3.2", features = ["http-reqwest"] }
+darling = "0.20"
 dashmap = { version = "5.5", features = [ "serde" ] }
 default-test = "0.1"
 futures = "0.3"
@@ -55,6 +63,7 @@ futures-await-test = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
 glob = "0.3.1"
+gql_client = "1.0.7"
 http = "0.2"
 json5 = "0.4"
 lazy_static = "1.4.0"
@@ -76,8 +85,8 @@ random-string = "1.0"
 rayon = "1.6"
 regex = "1.9"
 reqwest = { version = "0.11.14", features = ["json"] }
-rust-embed = { version = "6.6", features = ["debug-embed", "compression"] }
-rustls = "0.20"
+rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
+rustls = "0.21"
 rustls-pemfile = "1.0"
 rustyline = "12.0"
 schemars = { version = "0.8", features = [ "uuid1" ] }
@@ -88,15 +97,19 @@ shellwords = "1.1"
 signal-hook = "0.3.13"
 similar = "2.2.1"
 similar-asserts = "1.4.2"
+springtime = "1.0"
+springtime-di = { version = "1.0", features = [ "threadsafe", "derive" ]}
 stopwatch2 = "2.0"
 strum = { version = "0.25", features = ["derive"] }
 strum_macros = "0.25"
-syn = { version = "1.0", features = [ "full" ] }
+#syn = { version = "1.0", features = [ "full" ] }
+syn = { version = "2.0", features = [ "full" ] }
 tabled = "0.14"
 thiserror = "1.0"
 tokio = { version = "1", features =  ["time", "rt"] }
+tokio-stream = "0.1"
 toml = "0.7"
-typed-builder = "0.15"
+typed-builder = "0.16"
 uuid = { version = "1.4", features = ["serde", "v4"] }
 walkdir = "2.3"
 wildmatch = "2.1"

@@ -1,13 +1,12 @@
 use async_graphql::dynamic::ResolverContext;
 use async_graphql::Error;
+use inexor_rgf_rt_api::PropertyDataTypeError;
 use serde_json::json;
 use serde_json::Value;
 
-use crate::graphql::dynamic::number_error;
-use crate::graphql::dynamic::data_type_error;
 use crate::model::DataType;
-use crate::model::PropertyTypes;
 use crate::model::PropertyInstances;
+use crate::model::PropertyTypes;
 
 /// Returns a list of property instances from the field arguments.
 ///
@@ -27,7 +26,7 @@ pub fn create_properties_from_field_arguments(ctx: &ResolverContext, property_ty
         let field_arg_value = ctx.args.try_get(property.key())?;
         match &property.data_type {
             DataType::Null => {
-                return Err(data_type_error(property.value()));
+                return Err(PropertyDataTypeError::NullIsNotAValidDataType(property.key().clone()).into());
             }
             DataType::Bool => {
                 properties.insert(property.key().clone(), Value::Bool(field_arg_value.boolean()?));
@@ -40,7 +39,9 @@ pub fn create_properties_from_field_arguments(ctx: &ResolverContext, property_ty
                 } else if let Ok(value) = field_arg_value.f64() {
                     properties.insert(property.key().clone(), json!(value));
                 } else {
-                    return Err(number_error(property.value()));
+                    return Err(
+                        PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(property.name.clone(), property.data_type.clone(), DataType::Number).into(),
+                    );
                 }
             }
             DataType::String => {
@@ -50,14 +51,18 @@ pub fn create_properties_from_field_arguments(ctx: &ResolverContext, property_ty
                 let _ = field_arg_value.list()?;
                 let value = field_arg_value.deserialize::<Value>()?;
                 if !value.is_array() {
-                    return Err(data_type_error(property.value()));
+                    return Err(
+                        PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(property.name.clone(), property.data_type.clone(), DataType::Array).into(),
+                    );
                 }
                 properties.insert(property.key().clone(), value);
             }
             DataType::Object => {
                 let value = field_arg_value.deserialize::<Value>()?;
                 if !value.is_object() {
-                    return Err(data_type_error(property.value()));
+                    return Err(
+                        PropertyDataTypeError::ValueIsNotOfTheExpectedDataType(property.name.clone(), property.data_type.clone(), DataType::Object).into(),
+                    );
                 }
                 properties.insert(property.key().clone(), value);
             }

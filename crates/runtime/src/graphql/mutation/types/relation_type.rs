@@ -1,16 +1,19 @@
 use std::sync::Arc;
 
 use async_graphql::*;
+use inexor_rgf_rt_api::RelationTypeRegistrationError;
 
 use crate::api::EntityTypeManager;
 use crate::api::RelationTypeManager;
-use crate::error::types::relation::RelationTypeRegistrationError;
-use crate::graphql::mutation::{ComponentTypeIdDefinition, ComponentTypeIdDefinitions, PropertyTypeDefinitions};
+use crate::graphql::mutation::ComponentTypeIdDefinition;
+use crate::graphql::mutation::ComponentTypeIdDefinitions;
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
 use crate::graphql::mutation::PropertyTypeDefinition;
+use crate::graphql::mutation::PropertyTypeDefinitions;
 use crate::graphql::mutation::RelationTypeIdDefinition;
-use crate::graphql::query::{GraphQLExtension, GraphQLExtensions};
+use crate::graphql::query::GraphQLExtension;
+use crate::graphql::query::GraphQLExtensions;
 use crate::graphql::query::GraphQLRelationType;
 use crate::model::AddExtensionError;
 use crate::model::AddPropertyError;
@@ -130,12 +133,8 @@ impl MutationRelationTypes {
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypeAddComponentError::RelationTypeDoesNotExist(relation_ty)) => {
-                Err(Error::new(format!("Relation type {relation_ty} does not exist")))
-            }
-            Err(RelationTypeAddComponentError::IsAlreadyA(component_ty)) => {
-                Err(Error::new(format!("Relation type {ty} has already component {component_ty}")))
-            }
+            Err(RelationTypeAddComponentError::RelationTypeDoesNotExist(relation_ty)) => Err(Error::new(format!("Relation type {relation_ty} does not exist"))),
+            Err(RelationTypeAddComponentError::IsAlreadyA(component_ty)) => Err(Error::new(format!("Relation type {ty} has already component {component_ty}"))),
             Err(RelationTypeAddComponentError::ComponentDoesNotExist(component_ty)) => Err(Error::new(format!("Component {component_ty} doesn't exist"))),
         }
     }
@@ -176,9 +175,7 @@ impl MutationRelationTypes {
                 .get(&ty)
                 .map(|entity_type| entity_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypeAddPropertyError::RelationTypeDoesNotExist(ty)) => {
-                Err(Error::new(format!("Relation type {ty} does not exist")))
-            }
+            Err(RelationTypeAddPropertyError::RelationTypeDoesNotExist(ty)) => Err(Error::new(format!("Relation type {ty} does not exist"))),
             Err(RelationTypeAddPropertyError::AddPropertyError(AddPropertyError::PropertyAlreadyExist(property_name))) => {
                 Err(Error::new(format!("Failed to add property to relation type {ty}: Property {property_name} already exists")))
             }
@@ -220,12 +217,10 @@ impl MutationRelationTypes {
                 .get(&ty)
                 .map(|relation_type| relation_type.into())
                 .ok_or_else(|| Error::new(format!("Relation type {} not found", ty))),
-            Err(RelationTypeAddExtensionError::RelationTypeDoesNotExist(_)) => {
-                Err(Error::new(format!("Relation type {ty} does not exist")))
+            Err(RelationTypeAddExtensionError::RelationTypeDoesNotExist(_)) => Err(Error::new(format!("Relation type {ty} does not exist"))),
+            Err(RelationTypeAddExtensionError::AddExtensionError(AddExtensionError::ExtensionAlreadyExist(extension_ty))) => {
+                Err(Error::new(format!("Failed to add extension {extension_ty} to relation type {ty}: Extension already exists")))
             }
-            Err(RelationTypeAddExtensionError::AddExtensionError(AddExtensionError::ExtensionAlreadyExist(extension_ty))) => Err(Error::new(format!(
-                "Failed to add extension {extension_ty} to relation type {ty}: Extension already exists"
-            ))),
         }
     }
 

@@ -1,12 +1,12 @@
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::error::reactive::entity::ReactiveEntityRegistrationError;
-use crate::error::types::entity::EntityTypeRegistrationError;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
 use crate::model_command::entity::Command;
 use crate::model_command::error::NoSuchCommand;
+use crate::rt_api::EntityTypeRegistrationError;
+use crate::rt_api::ReactiveEntityRegistrationError;
 
 #[derive(Debug)]
 pub enum CommandRegistrationError {

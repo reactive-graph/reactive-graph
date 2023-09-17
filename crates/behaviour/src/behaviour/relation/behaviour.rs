@@ -18,15 +18,15 @@ macro_rules! relation_behaviour {
             $fn_ident: ident
         )*
     ) => {
-        use inexor_rgf_core_model::ReactiveRelation as ModelReactiveRelation;
+        // use inexor_rgf_reactive::ReactiveRelation as ModelReactiveRelation;
 
         pub struct $behaviour {
-            pub reactive_instance: std::sync::Arc<ModelReactiveRelation>,
+            pub reactive_instance: inexor_rgf_reactive::ReactiveRelation,
             pub fsm: $fsm,
         }
 
         impl $behaviour {
-            pub fn new(reactive_instance: std::sync::Arc<ModelReactiveRelation>, ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
+            pub fn new(reactive_instance: inexor_rgf_reactive::ReactiveRelation, ty: inexor_rgf_behaviour_api::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
                 let transitions = <$transitions>::new(reactive_instance.clone(), ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance.clone());
                 let fsm = <$fsm>::new(reactive_instance.clone(), ty, validator, transitions);
@@ -40,8 +40,8 @@ macro_rules! relation_behaviour {
             }
         }
 
-        impl $crate::BehaviourFsm<ModelReactiveRelation> for $behaviour {
-            fn ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
+        impl $crate::BehaviourFsm<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation> for $behaviour {
+            fn ty(&self) -> &inexor_rgf_behaviour_api::BehaviourTypeId {
                 &self.fsm.ty
             }
 
@@ -53,17 +53,17 @@ macro_rules! relation_behaviour {
                 self.fsm.set_state(state);
             }
 
-            fn get_validator(&self) -> &dyn $crate::BehaviourValidator<ModelReactiveRelation> {
+            fn get_validator(&self) -> &dyn $crate::BehaviourValidator<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation> {
                 &self.fsm.validator
             }
 
-            fn get_transitions(&self) -> &dyn $crate::BehaviourTransitions<ModelReactiveRelation> {
+            fn get_transitions(&self) -> &dyn $crate::BehaviourTransitions<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation> {
                 &self.fsm.transitions
             }
         }
 
-        impl $crate::BehaviourReactiveInstanceContainer<ModelReactiveRelation> for $behaviour {
-            fn get_reactive_instance(&self) -> &std::sync::Arc<ModelReactiveRelation> {
+        impl inexor_rgf_reactive_api::ReactiveInstanceContainer<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation> for $behaviour {
+            fn get_reactive_instance(&self) -> &inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation {
                 &self.reactive_instance
             }
 
@@ -82,9 +82,9 @@ macro_rules! relation_behaviour {
             }
         }
 
-        $crate::behaviour_factory!($factory, $behaviour, ModelReactiveRelation $(, $fn_name, $fn_ident)*);
+        $crate::behaviour_factory!($factory, $behaviour, inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation $(, $fn_name, $fn_ident)*);
 
-        $crate::behaviour_fsm!($fsm, $validator, $transitions, ModelReactiveRelation);
+        $crate::behaviour_fsm!($fsm, $validator, $transitions, inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive::ReactiveRelation);
 
         $crate::relation_behaviour_transitions!($transitions $(, $fn_name, $fn_ident)*);
     };

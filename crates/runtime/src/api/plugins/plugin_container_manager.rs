@@ -5,13 +5,7 @@ use async_trait::async_trait;
 use dashmap::DashSet;
 use uuid::Uuid;
 
-use crate::api::ComponentManager;
-use crate::api::EntityTypeManager;
-use crate::api::FlowTypeManager;
 use crate::api::Lifecycle;
-use crate::api::ReactiveFlowManager;
-use crate::api::RelationTypeManager;
-use crate::api::WebResourceManager;
 use crate::plugin::PluginTransitionResult;
 use crate::plugins::PluginContext;
 use crate::plugins::PluginDependency;
@@ -168,25 +162,10 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
     /// Constructs a plugin proxy object for the plugin with the given id.
     ///
     /// The plugin proxy makes sure it can't outlive the library it came from.
-    fn construct_proxy(&self, id: &Uuid) -> PluginTransitionResult;
-
-    /// Injects the plugin context into the plugin with the given id.
-    ///
-    /// The plugin context enables the plugin to call services from the host system.
-    fn inject_context(&self, id: &Uuid, plugin_context: Arc<dyn PluginContext>) -> PluginTransitionResult;
+    fn construct_proxy(&self, id: &Uuid, plugin_context: Arc<dyn PluginContext + Send + Sync>) -> PluginTransitionResult;
 
     /// Registers providers of the plugin with the given id.
-    fn register(
-        &self,
-        id: &Uuid,
-        // TODO: inject?
-        component_manager: Arc<dyn ComponentManager>,
-        entity_type_manager: Arc<dyn EntityTypeManager>,
-        relation_type_manager: Arc<dyn RelationTypeManager>,
-        flow_type_manager: Arc<dyn FlowTypeManager>,
-        reactive_flow_manager: Arc<dyn ReactiveFlowManager>,
-        web_resource_manager: Arc<dyn WebResourceManager>,
-    ) -> PluginTransitionResult;
+    fn register(&self, id: &Uuid) -> PluginTransitionResult;
 
     /// Calls the activate method of the plugin with the given id.
     async fn activate(&self, id: &Uuid) -> PluginTransitionResult;
@@ -204,19 +183,7 @@ pub trait PluginContainerManager: Send + Sync + Lifecycle {
     async fn deactivate(&self, id: &Uuid) -> PluginTransitionResult;
 
     /// Unregisters the providers of the plugin with the given id.
-    fn unregister(
-        &self,
-        id: &Uuid,
-        // TODO: inject?
-        reactive_flow_manager: Arc<dyn ReactiveFlowManager>,
-        web_resource_manager: Arc<dyn WebResourceManager>,
-    ) -> PluginTransitionResult;
-
-    /// Removes the plugin context from the plugin with the given id.
-    ///
-    /// After removing the plugin context, the plugin is no more able to call methods of the
-    /// services of the host system.
-    fn remove_context(&self, id: &Uuid) -> PluginTransitionResult;
+    fn unregister(&self, id: &Uuid) -> PluginTransitionResult;
 
     /// Removes the plugin proxy of the plugin with the given id.
     fn remove_proxy(&self, id: &Uuid) -> PluginTransitionResult;

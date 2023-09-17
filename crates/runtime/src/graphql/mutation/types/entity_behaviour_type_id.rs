@@ -2,10 +2,10 @@ use async_graphql::*;
 use serde::Deserialize;
 use serde::Serialize;
 
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::EntityBehaviourTypeId;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::EntityBehaviourTypeId;
 use crate::model::EntityTypeId;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]

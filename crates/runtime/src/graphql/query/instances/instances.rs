@@ -6,6 +6,7 @@ use uuid::Uuid;
 use crate::api::ReactiveEntityManager;
 use crate::api::ReactiveFlowManager;
 use crate::api::ReactiveRelationManager;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
@@ -14,12 +15,11 @@ use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLFlowInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentContainer;
-use crate::model::ComponentTypeId;
-use crate::model::EntityTypeId;
-use crate::reactive::ReactiveBehaviourContainer;
-use crate::model::RelationTypeId;
+use crate::reactive::BehaviourTypesContainer;
+use inexor_rgf_graph::ComponentTypeId;
+use inexor_rgf_graph::EntityTypeId;
+use inexor_rgf_graph::RelationTypeId;
+use inexor_rgf_reactive_api::prelude::*;
 
 #[derive(Default)]
 pub struct Instances;

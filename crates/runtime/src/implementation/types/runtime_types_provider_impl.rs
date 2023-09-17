@@ -1,28 +1,50 @@
 use async_trait::async_trait;
 
-use crate::api::ComponentManager;
-use crate::api::EntityTypeManager;
-use crate::api::FlowTypeManager;
-use crate::api::Lifecycle;
-use crate::api::RelationTypeManager;
-use crate::api::RuntimeTypesProvider;
-use crate::di::*;
+use crate::plugins::TypeProvider;
 
-crate::plugins::component_provider_impl!(Core, "types/components", json5, toml);
-crate::plugins::entity_type_provider_impl!(Core, "types/entities", json5, toml);
-crate::plugins::relation_type_provider_impl!(Core, "types/relations", json5, toml);
-crate::plugins::flow_type_provider_impl!(Core, "types/flows", json5, toml);
+use crate::api::ComponentProviderRegistry;
+use crate::api::EntityTypeProviderRegistry;
+use crate::api::FlowTypeProviderRegistry;
+use crate::api::Lifecycle;
+use crate::api::RelationTypeProviderRegistry;
+use crate::api::RuntimeTypesProvider;
+use crate::di::component;
+use crate::di::provides;
+use crate::di::Component;
+use crate::di::Wrc;
+#[allow(unused)]
+use crate::plugins::TypeProvider as TypeProvider1;
+
+#[component]
+#[derive(TypeProvider)]
+#[type_provider(tys = "crate::model::Components", path = "types/components", component_alias = false)]
+pub struct CoreComponentsProvider {}
+
+#[component]
+#[derive(TypeProvider)]
+#[type_provider(tys = "crate::model::EntityTypes", path = "types/entities", component_alias = false)]
+pub struct CoreEntityTypesProvider {}
+
+#[component]
+#[derive(TypeProvider)]
+#[type_provider(tys = "crate::model::RelationTypes", path = "types/relations", component_alias = false)]
+pub struct CoreRelationTypesProvider {}
+
+#[component]
+#[derive(TypeProvider)]
+#[type_provider(tys = "crate::model::FlowTypes", path = "types/flows", component_alias = false)]
+pub struct CoreFlowTypesProvider {}
 
 #[component]
 pub struct RuntimeTypesProviderImpl {
-    component_manager: Wrc<dyn ComponentManager>,
-    entity_type_manager: Wrc<dyn EntityTypeManager>,
-    relation_type_manager: Wrc<dyn RelationTypeManager>,
-    flow_type_manager: Wrc<dyn FlowTypeManager>,
-    component_provider: Wrc<CoreComponentProviderImpl>,
-    entity_type_provider: Wrc<CoreEntityTypeProviderImpl>,
-    relation_type_provider: Wrc<CoreRelationTypeProviderImpl>,
-    flow_type_provider: Wrc<CoreFlowTypeProviderImpl>,
+    component_provider_registry: Wrc<dyn ComponentProviderRegistry>,
+    entity_type_provider_registry: Wrc<dyn EntityTypeProviderRegistry>,
+    relation_type_provider_registry: Wrc<dyn RelationTypeProviderRegistry>,
+    flow_type_provider_registry: Wrc<dyn FlowTypeProviderRegistry>,
+    component_provider: Wrc<CoreComponentsProvider>,
+    entity_type_provider: Wrc<CoreEntityTypesProvider>,
+    relation_type_provider: Wrc<CoreRelationTypesProvider>,
+    flow_type_provider: Wrc<CoreFlowTypesProvider>,
 }
 
 #[async_trait]
@@ -30,11 +52,23 @@ pub struct RuntimeTypesProviderImpl {
 impl RuntimeTypesProvider for RuntimeTypesProviderImpl {}
 
 #[async_trait]
+#[provides]
 impl Lifecycle for RuntimeTypesProviderImpl {
     async fn init(&self) {
-        self.component_manager.add_provider(self.component_provider.clone());
-        self.entity_type_manager.add_provider(self.entity_type_provider.clone());
-        self.relation_type_manager.add_provider(self.relation_type_provider.clone());
-        self.flow_type_manager.add_provider(self.flow_type_provider.clone());
+        self.component_provider_registry.register_provider(self.component_provider.clone()).await;
+        self.entity_type_provider_registry.register_provider(self.entity_type_provider.clone()).await;
+        self.relation_type_provider_registry
+            .register_provider(self.relation_type_provider.clone())
+            .await;
+        self.flow_type_provider_registry.register_provider(self.flow_type_provider.clone()).await;
+    }
+
+    async fn shutdown(&self) {
+        self.flow_type_provider_registry.unregister_provider(&self.flow_type_provider.id()).await;
+        self.relation_type_provider_registry
+            .unregister_provider(&self.relation_type_provider.id())
+            .await;
+        self.entity_type_provider_registry.unregister_provider(&self.entity_type_provider.id()).await;
+        self.component_provider_registry.unregister_provider(&self.component_provider.id()).await;
     }
 }

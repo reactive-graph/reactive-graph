@@ -4,12 +4,12 @@ use log::trace;
 
 use crate::api::DynamicGraphQueryService;
 use crate::api::DynamicGraphSchemaManager;
-use crate::api::DynamicQueryError;
 use crate::api::Lifecycle;
 use crate::di::component;
 use crate::di::provides;
 use crate::di::Component;
 use crate::di::Wrc;
+use crate::rt_api::DynamicQueryError;
 
 #[component]
 pub struct DynamicGraphQueryServiceImpl {

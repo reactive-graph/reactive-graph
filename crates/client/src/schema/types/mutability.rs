@@ -11,17 +11,17 @@ pub enum Mutability {
     Immutable,
 }
 
-impl From<Mutability> for crate::model::Mutability {
+impl From<Mutability> for inexor_rgf_graph::Mutability {
     fn from(mutability: Mutability) -> Self {
         match mutability {
-            Mutability::Mutable => crate::model::Mutability::Mutable,
-            Mutability::Immutable => crate::model::Mutability::Immutable,
+            Mutability::Mutable => inexor_rgf_graph::Mutability::Mutable,
+            Mutability::Immutable => inexor_rgf_graph::Mutability::Immutable,
         }
     }
 }
 
-impl From<crate::model::Mutability> for Mutability {
-    fn from(mutability: crate::model::Mutability) -> Self {
+impl From<inexor_rgf_graph::Mutability> for Mutability {
+    fn from(mutability: inexor_rgf_graph::Mutability) -> Self {
         match mutability {
             crate::model::Mutability::Mutable => Mutability::Mutable,
             crate::model::Mutability::Immutable => Mutability::Immutable,

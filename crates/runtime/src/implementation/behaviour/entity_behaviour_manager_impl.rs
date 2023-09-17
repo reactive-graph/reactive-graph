@@ -9,12 +9,12 @@ use crate::behaviour::BehaviourDisconnectFailed;
 use crate::behaviour::BehaviourState;
 use crate::behaviour::BehaviourTransitionError;
 use crate::behaviour::EntityBehaviourStorage;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
 use crate::di::wrapper;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::reactive::BehaviourTypeId;
 use crate::reactive::ReactiveEntity;
 
 #[wrapper]

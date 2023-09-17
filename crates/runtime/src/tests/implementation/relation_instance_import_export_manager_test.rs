@@ -1,7 +1,7 @@
 // use std::env;
 //
 // use uuid::Uuid;
-// use inexor_rgf_core_model::RelationInstanceId;
+// use inexor_rgf_graph::RelationInstanceId;
 //
 // use crate::get_runtime;
 // use crate::model::ComponentOrEntityTypeId;

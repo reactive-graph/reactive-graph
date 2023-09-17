@@ -3,9 +3,9 @@ use std::sync::Arc;
 use dashmap::DashMap;
 use uuid::Uuid;
 
-use crate::reactive::BehaviourTypeId;
+use inexor_rgf_behaviour_api::prelude::*;
+
 use crate::reactive::ReactiveEntity;
-use crate::BehaviourFsm;
 use crate::BehaviourStorage;
 
 pub struct EntityBehaviourStorage(BehaviourStorage<Uuid, ReactiveEntity>);

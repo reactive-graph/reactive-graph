@@ -45,9 +45,7 @@ impl Lifecycle for ShutdownManagerImpl {
     async fn init(&self) {
         let shutdown_state = self.shutdown_state.0.clone();
         let shutdown_command = shutdown_command(shutdown_state);
-        let _ = self
-            .reactive_entity_manager
-            .register_reactive_instance(shutdown_command.get_instance());
+        let _ = self.reactive_entity_manager.register_reactive_instance(shutdown_command.get_instance());
     }
 
     async fn shutdown(&self) {

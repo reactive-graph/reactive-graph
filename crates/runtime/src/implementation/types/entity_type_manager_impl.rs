@@ -1,9 +1,7 @@
 use std::ops::Deref;
-use std::sync::Arc;
 
 use async_trait::async_trait;
 use log::debug;
-use log::trace;
 use log::warn;
 use serde_json::json;
 
@@ -12,12 +10,10 @@ use crate::api::EntityTypeManager;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
 use crate::di::wrapper;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::error::types::entity::EntityTypeCreationError;
-use crate::error::types::entity::EntityTypeRegistrationError;
 use crate::model::ComponentTypeId;
 use crate::model::ComponentTypeIds;
 use crate::model::EntityType;
@@ -30,13 +26,13 @@ use crate::model::EntityTypeMergeError;
 use crate::model::EntityTypeRemoveComponentError;
 use crate::model::EntityTypeRemoveExtensionError;
 use crate::model::EntityTypeRemovePropertyError;
-use crate::model::EntityTypes;
 use crate::model::EntityTypeUpdateExtensionError;
 use crate::model::EntityTypeUpdatePropertyError;
+use crate::model::EntityTypes;
 use crate::model::Extension;
 use crate::model::ExtensionContainer;
-use crate::model::Extensions;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::NamespacedTypeComponentTypeIdContainer;
 use crate::model::NamespacedTypeContainer;
 use crate::model::NamespacedTypeExtensionContainer;
@@ -47,8 +43,9 @@ use crate::model::PropertyTypeContainer;
 use crate::model::PropertyTypes;
 use crate::model::TypeDefinitionGetter;
 use crate::model_runtime::EXTENSION_DIVERGENT;
-use crate::plugins::EntityTypeProvider;
 use crate::plugins::SystemEvent;
+use crate::rt_api::EntityTypeCreationError;
+use crate::rt_api::EntityTypeRegistrationError;
 
 #[wrapper]
 pub struct EntityTypesStorage(EntityTypes);
@@ -168,8 +165,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     }
 
     fn get(&self, ty: &EntityTypeId) -> Option<EntityType> {
-        self.entity_types.get(ty)
-            .map(|entity_type| entity_type.value().clone())
+        self.entity_types.get(ty).map(|entity_type| entity_type.value().clone())
     }
 
     fn get_by_type(&self, namespace: &str, type_name: &str) -> Option<EntityType> {
@@ -204,7 +200,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .extensions(extensions)
             .build();
         self.register(entity_type)
-        // self.register(EntityType::new(ty.clone(), description, components.to_vec(), properties.to_vec(), extensions.to_vec()))
+            // self.register(EntityType::new(ty.clone(), description, components.to_vec(), properties.to_vec(), extensions.to_vec()))
             .map_err(EntityTypeCreationError::RegistrationError)
     }
 
@@ -287,9 +283,13 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         // Ok(())
     }
 
-    fn update_property(&self, entity_ty: &EntityTypeId, property_name: &str, property_type: PropertyType) -> Result<PropertyType, EntityTypeUpdatePropertyError> {
+    fn update_property(
+        &self,
+        entity_ty: &EntityTypeId,
+        property_name: &str,
+        property_type: PropertyType,
+    ) -> Result<PropertyType, EntityTypeUpdatePropertyError> {
         self.entity_types.update_property(entity_ty, property_name, property_type)
-
     }
 
     fn remove_property(&self, entity_ty: &EntityTypeId, property_name: &str) -> Result<PropertyType, EntityTypeRemovePropertyError> {
@@ -321,7 +321,12 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         // Ok(())
     }
 
-    fn update_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, EntityTypeUpdateExtensionError> {
+    fn update_extension(
+        &self,
+        entity_ty: &EntityTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<Extension, EntityTypeUpdateExtensionError> {
         self.entity_types.update_extension(entity_ty, extension_ty, extension)
     }
 
@@ -340,12 +345,10 @@ impl EntityTypeManager for EntityTypeManagerImpl {
     // TODO: parameter "cascade": relation types, flow types and entity instances (and their dependencies) depends on a entity type
     // TODO: first delete the entity instance of this type, then delete the entity type itself.
     fn delete(&self, entity_ty: &EntityTypeId) -> Option<EntityType> {
-        self.entity_types
-            .remove(entity_ty)
-            .map(|(entity_ty, entity_type)| {
-                self.event_manager.emit_event(SystemEvent::EntityTypeDeleted(entity_ty.clone()));
-                entity_type
-            })
+        self.entity_types.remove(entity_ty).map(|(entity_ty, entity_type)| {
+            self.event_manager.emit_event(SystemEvent::EntityTypeDeleted(entity_ty.clone()));
+            entity_type
+        })
     }
 
     fn validate(&self, ty: &EntityTypeId) -> bool {
@@ -353,16 +356,6 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             return entity_type.components.iter().all(|component| self.component_manager.has(&component));
         }
         false
-    }
-
-    fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>) {
-        for entity_type in entity_type_provider.get_entity_types() {
-            trace!("Registering entity type: {}", entity_type.ty);
-            if self.register(entity_type.clone()).is_err() {
-                trace!("Merging entity type: {}", entity_type.ty);
-                let _ = self.merge(entity_type);
-            }
-        }
     }
 }
 
@@ -377,21 +370,22 @@ impl Lifecycle for EntityTypeManagerImpl {
 mod test {
     extern crate test;
 
+    use std::process::Termination;
+    use test::Bencher;
+
+    use default_test::DefaultTest;
+
     use crate::get_runtime;
     use crate::model::Component;
     use crate::model::ComponentTypeId;
     use crate::model::ComponentTypeIdContainer;
+    use crate::model::ComponentTypeIds;
     use crate::model::EntityType;
     use crate::model::EntityTypeId;
     use crate::model::NamespacedTypeGetter;
     use crate::model::PropertyType;
     use crate::model::PropertyTypeContainer;
     use crate::test_utils::r_string;
-
-    use std::process::Termination;
-    use test::Bencher;
-    use default_test::DefaultTest;
-    use crate::model::ComponentTypeIds;
 
     #[test]
     fn test_register_entity_type() {
@@ -418,7 +412,9 @@ mod test {
         let runtime = get_runtime();
         let entity_type_manager = runtime.get_entity_type_manager();
 
-        let entity_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register the entity type!");
+        let entity_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register the entity type!");
         let ty = entity_type.ty.clone();
 
         assert!(entity_type_manager.has(&ty), "The entity type should be registered!");
@@ -432,13 +428,20 @@ mod test {
         let runtime = get_runtime();
         let entity_type_manager = runtime.get_entity_type_manager();
 
-        let entity_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register the entity type!");
+        let entity_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register the entity type!");
         assert!(entity_type_manager.has(&entity_type.ty), "The entity type should be registered!");
         let entity_types = entity_type_manager.get_all();
         assert_eq!(1, entity_types.len(), "There should be exactly one entity type!");
         for entity_type in entity_types.iter() {
-            assert!(entity_type_manager.has(&entity_type.ty), "It should be possible to check if the returned entity types are registered!");
-            let _ = entity_type_manager.get(&entity_type.ty).expect("It should be possible to get the returned entity types by type id!");
+            assert!(
+                entity_type_manager.has(&entity_type.ty),
+                "It should be possible to check if the returned entity types are registered!"
+            );
+            let _ = entity_type_manager
+                .get(&entity_type.ty)
+                .expect("It should be possible to get the returned entity types by type id!");
         }
     }
 
@@ -451,12 +454,12 @@ mod test {
         let component = component_manager.register(Component::default_test()).expect("Failed to register component!");
 
         let entity_ty = EntityTypeId::default_test();
-        let entity_type = EntityType::builder_from_ty(&entity_ty)
-            .component(&component.ty)
-            .build();
+        let entity_type = EntityType::builder_from_ty(&entity_ty).component(&component.ty).build();
 
         let _entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type!");
-        let entity_type = entity_type_manager.get(&entity_ty).expect("It should be possible to get the entity type by type id!");
+        let entity_type = entity_type_manager
+            .get(&entity_ty)
+            .expect("It should be possible to get the entity type by type id!");
         assert!(entity_type.is_a(&component.ty), "The entity type should contain the component!");
         assert!(entity_type.components.contains(&component.ty), "The entity type should contain the component!");
     }
@@ -475,7 +478,9 @@ mod test {
             .build();
 
         let _entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type!");
-        let entity_type = entity_type_manager.get(&entity_ty).expect("It should be possible to get the entity type by type id!");
+        let entity_type = entity_type_manager
+            .get(&entity_ty)
+            .expect("It should be possible to get the entity type by type id!");
         assert!(entity_type.has_own_property(&property_type.name));
         assert!(entity_type.properties.contains_key(&property_type.name));
 
@@ -502,5 +507,4 @@ mod test {
             let _ = entity_type_manager.delete(&ty);
         })
     }
-
 }

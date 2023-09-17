@@ -1,11 +1,11 @@
 use std::collections::HashMap;
-use std::ops::{Deref, DerefMut};
+use std::ops::Deref;
+use std::ops::DerefMut;
 
-use serde_json::{Value};
-use inexor_rgf_core_model::{ComponentTypeIds, DataType, EntityType, Mutability, PropertyType, SocketType};
-use inexor_rgf_model_runtime::{COMPONENT_LABELED};
-use crate::builder::{CommandDefinition, CommandDefinitionBuilder};
+use serde_json::Value;
 
+use crate::builder::CommandDefinition;
+use crate::builder::CommandDefinitionBuilder;
 use crate::component::command::COMPONENT_COMMAND;
 use crate::component::CommandProperties::COMMAND_ARGS;
 use crate::component::CommandProperties::COMMAND_HELP;
@@ -17,21 +17,27 @@ use crate::entity::arg::CommandArgs;
 use crate::error::CommandArgsError;
 use crate::error::CommandExecutionFailed;
 use crate::error::NotACommand;
-use crate::reactive::ComponentContainer;
-use crate::model::EntityTypeId;
-use crate::model::PropertyInstanceGetter;
-use crate::model::PropertyInstanceSetter;
-use crate::model::PropertyTypeDefinition;
-use crate::reactive::ReactiveEntity;
-use crate::reactive::ReactivePropertyContainer;
 use crate::model_runtime::ActionProperties::TRIGGER;
 use crate::model_runtime::LabeledProperties::LABEL;
 use crate::model_runtime::COMPONENT_ACTION;
+use crate::model_runtime::COMPONENT_LABELED;
+use crate::reactive::ReactiveEntity;
+use crate::reactive::ReactivePropertyContainer;
+use inexor_rgf_graph::ComponentTypeIds;
+use inexor_rgf_graph::DataType;
+use inexor_rgf_graph::EntityType;
+use inexor_rgf_graph::EntityTypeId;
+use inexor_rgf_graph::Mutability;
+use inexor_rgf_graph::PropertyInstanceGetter;
+use inexor_rgf_graph::PropertyInstanceSetter;
+use inexor_rgf_graph::PropertyType;
+use inexor_rgf_graph::PropertyTypeDefinition;
+use inexor_rgf_graph::SocketType;
+use inexor_rgf_reactive_api::prelude::*;
 
 pub struct Command(ReactiveEntity);
 
-impl Command {
-}
+impl Command {}
 
 impl Command {
     pub fn new(entity: ReactiveEntity) -> Result<Self, NotACommand> {
@@ -66,7 +72,7 @@ impl Command {
                             .data_type(DataType::Any)
                             .socket_type(SocketType::Input)
                             .mutability(Mutability::Mutable)
-                            .build()
+                            .build(),
                     );
                 }
             }
@@ -242,8 +248,11 @@ mod tests {
 
     use serde_json::json;
     use uuid::Uuid;
-    use inexor_rgf_core_model::{ComponentTypeIds, PropertyInstances};
-    use inexor_rgf_reactive::{ReactiveEntity, ReactiveProperties};
+
+    use inexor_rgf_graph::ComponentTypeIds;
+    use inexor_rgf_graph::PropertyInstances;
+    use inexor_rgf_reactive::ReactiveEntity;
+    use inexor_rgf_reactive::ReactiveProperties;
 
     use crate::component::CommandProperties::COMMAND_ARGS;
     use crate::component::CommandProperties::COMMAND_HELP;
@@ -251,26 +260,22 @@ mod tests {
     use crate::component::COMPONENT_COMMAND;
     use crate::entity::Command;
     use crate::error::CommandExecutionFailed;
-    use crate::model::EntityTypeId;
-    use crate::model::PropertyInstanceGetter;
-    use crate::model::PropertyInstanceSetter;
-    use crate::model::PropertyTypeDefinition;
-    use crate::reactive::ReactivePropertyContainer;
     use crate::model_runtime::ActionProperties::TRIGGER;
     use crate::model_runtime::COMPONENT_ACTION;
+    use crate::reactive::ReactivePropertyContainer;
     use crate::CommandProperties::COMMAND_RESULT;
+    use inexor_rgf_graph::EntityTypeId;
+    use inexor_rgf_graph::PropertyInstanceGetter;
+    use inexor_rgf_graph::PropertyInstanceSetter;
+    use inexor_rgf_graph::PropertyTypeDefinition;
 
     #[test]
     fn test_command() {
         let ty = EntityTypeId::new_from_type("test", "test");
-        let reactive_entity = ReactiveEntity::builder()
-            .ty(&ty)
-            .build();
+        let reactive_entity = ReactiveEntity::builder().ty(&ty).build();
         assert!(Command::try_from(reactive_entity).is_err());
 
-        let components = ComponentTypeIds::new()
-            .component(COMPONENT_ACTION.deref())
-            .component(COMPONENT_COMMAND.deref());
+        let components = ComponentTypeIds::new().component(COMPONENT_ACTION.deref()).component(COMPONENT_COMMAND.deref());
         let properties = PropertyInstances::new()
             .property(&TRIGGER.property_name(), json!(false))
             .property("arg1", json!(0))

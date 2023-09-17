@@ -15,6 +15,8 @@ pub trait PluginResolver: Send + Sync + Lifecycle {
     /// Runs the next resolve action.
     async fn resolve(&self) -> PluginTransitionResult;
 
+    async fn transition_to_fallback_states(&self);
+
     /// Sets the resolve mode.
     fn set_mode(&self, mode: PluginResolverMode);
 

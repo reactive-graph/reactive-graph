@@ -1,5 +1,4 @@
 pub use context::*;
-pub use error::*;
 pub use extension::*;
 pub use field::*;
 pub use interface::*;
@@ -9,7 +8,6 @@ pub use scalar::*;
 pub use union::*;
 
 pub mod context;
-pub mod error;
 pub mod extension;
 pub mod field;
 pub mod interface;

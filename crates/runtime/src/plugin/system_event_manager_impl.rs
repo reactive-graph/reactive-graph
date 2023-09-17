@@ -1,9 +1,8 @@
 use std::sync::Arc;
 
-use crate::reactive::ReactiveEntity;
-use crate::plugins::SystemEventTypes;
-
 use crate::plugins::SystemEventManager;
+use crate::plugins::SystemEventTypes;
+use crate::reactive::ReactiveEntity;
 
 pub struct SystemEventManagerImpl {
     system_event_manager: Arc<dyn crate::api::SystemEventManager>,

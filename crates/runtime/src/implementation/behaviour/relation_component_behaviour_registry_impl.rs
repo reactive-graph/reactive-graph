@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use dashmap::DashMap;
-use inexor_rgf_core_di::Wrc;
 use log::debug;
 use log::warn;
-use inexor_rgf_core_model::RelationInstanceId;
+
+use inexor_rgf_behaviour_api::prelude::*;
 
 use crate::api::ComponentManager;
 use crate::api::RelationComponentBehaviourRegistry;
@@ -13,14 +13,15 @@ use crate::di::component;
 use crate::di::provides;
 use crate::di::wrapper;
 use crate::di::Component;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
+use crate::di::Wrc;
 use crate::model::ComponentTypeId;
+use crate::model::RelationInstanceId;
 use crate::reactive::ReactiveRelation;
-use crate::behaviour::BehaviourFactory;
 
 #[wrapper]
-pub struct RelationComponentBehaviourFactories(DashMap<ComponentBehaviourTypeId, Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>>);
+pub struct RelationComponentBehaviourFactories(
+    DashMap<ComponentBehaviourTypeId, Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>>,
+);
 
 #[provides]
 fn create_entity_component_behaviour_factory_storage() -> RelationComponentBehaviourFactories {
@@ -37,7 +38,11 @@ pub struct RelationComponentBehaviourRegistryImpl {
 #[async_trait]
 #[provides]
 impl RelationComponentBehaviourRegistry for RelationComponentBehaviourRegistryImpl {
-    fn register(&self, component_behaviour_ty: ComponentBehaviourTypeId, factory: Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>) {
+    fn register(
+        &self,
+        component_behaviour_ty: ComponentBehaviourTypeId,
+        factory: Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>,
+    ) {
         debug!(
             "Registering relation component behaviour {} {}",
             &component_behaviour_ty.component_ty, &component_behaviour_ty.behaviour_ty

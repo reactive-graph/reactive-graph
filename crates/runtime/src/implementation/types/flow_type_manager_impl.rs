@@ -1,8 +1,5 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 use log::debug;
-use log::trace;
 use log::warn;
 use uuid::Uuid;
 
@@ -12,17 +9,15 @@ use crate::api::Lifecycle;
 use crate::api::RelationTypeManager;
 use crate::api::SystemEventManager;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
 use crate::di::wrapper;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::error::types::flow::FlowTypeCreationError;
-use crate::error::types::flow::FlowTypeRegistrationError;
 use crate::model::EntityInstance;
 use crate::model::EntityInstances;
 use crate::model::Extension;
-use crate::model::Extensions;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::FlowType;
 use crate::model::FlowTypeAddEntityInstanceError;
 use crate::model::FlowTypeAddExtensionError;
@@ -34,11 +29,11 @@ use crate::model::FlowTypeRemoveEntityInstanceError;
 use crate::model::FlowTypeRemoveExtensionError;
 use crate::model::FlowTypeRemoveRelationInstanceError;
 use crate::model::FlowTypeRemoveVariableError;
-use crate::model::FlowTypes;
 use crate::model::FlowTypeUpdateEntityInstanceError;
 use crate::model::FlowTypeUpdateExtensionError;
 use crate::model::FlowTypeUpdateRelationInstanceError;
 use crate::model::FlowTypeUpdateVariableError;
+use crate::model::FlowTypes;
 use crate::model::NamespacedTypeContainer;
 use crate::model::NamespacedTypeEntityInstanceContainer;
 use crate::model::NamespacedTypeExtensionContainer;
@@ -51,8 +46,9 @@ use crate::model::RelationInstance;
 use crate::model::RelationInstanceId;
 use crate::model::RelationInstances;
 use crate::model::Variable;
-use crate::plugins::FlowTypeProvider;
 use crate::plugins::SystemEvent;
+use crate::rt_api::FlowTypeCreationError;
+use crate::rt_api::FlowTypeRegistrationError;
 
 #[wrapper]
 pub struct FlowTypesStorage(FlowTypes);
@@ -178,7 +174,12 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.add_entity_instance(ty, entity_instance)
     }
 
-    fn update_entity_instance(&self, ty: &FlowTypeId, id: Uuid, entity_instance: EntityInstance) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError> {
+    fn update_entity_instance(
+        &self,
+        ty: &FlowTypeId,
+        id: Uuid,
+        entity_instance: EntityInstance,
+    ) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError> {
         self.flow_types.update_entity_instance(ty, id, entity_instance)
     }
 
@@ -190,11 +191,20 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.add_relation_instance(flow_ty, relation_instance)
     }
 
-    fn update_relation_instance(&self, flow_ty: &FlowTypeId, id: &RelationInstanceId, relation_instance: RelationInstance) -> Result<(RelationInstanceId, RelationInstance), FlowTypeUpdateRelationInstanceError> {
+    fn update_relation_instance(
+        &self,
+        flow_ty: &FlowTypeId,
+        id: &RelationInstanceId,
+        relation_instance: RelationInstance,
+    ) -> Result<(RelationInstanceId, RelationInstance), FlowTypeUpdateRelationInstanceError> {
         self.flow_types.update_relation_instance(flow_ty, id, relation_instance)
     }
 
-    fn remove_relation_instance(&self, flow_ty: &FlowTypeId, id: &RelationInstanceId) -> Result<Option<(RelationInstanceId, RelationInstance)>, FlowTypeRemoveRelationInstanceError> {
+    fn remove_relation_instance(
+        &self,
+        flow_ty: &FlowTypeId,
+        id: &RelationInstanceId,
+    ) -> Result<Option<(RelationInstanceId, RelationInstance)>, FlowTypeRemoveRelationInstanceError> {
         self.flow_types.remove_relation_instance(flow_ty, id)
     }
 
@@ -202,7 +212,7 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         self.flow_types.add_extension(flow_ty, extension)
     }
 
-    fn update_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId, extension: Extension)  -> Result<Extension, FlowTypeUpdateExtensionError> {
+    fn update_extension(&self, flow_ty: &FlowTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, FlowTypeUpdateExtensionError> {
         self.flow_types.update_extension(flow_ty, extension_ty, extension)
     }
 
@@ -237,12 +247,10 @@ impl FlowTypeManager for FlowTypeManagerImpl {
     }
 
     fn delete(&self, flow_ty: &FlowTypeId) -> Option<FlowType> {
-        self.flow_types
-            .remove(flow_ty)
-            .map(|(flow_ty, flow_type)| {
-                self.event_manager.emit_event(SystemEvent::FlowTypeDeleted(flow_ty.clone()));
-                flow_type
-            })
+        self.flow_types.remove(flow_ty).map(|(flow_ty, flow_type)| {
+            self.event_manager.emit_event(SystemEvent::FlowTypeDeleted(flow_ty.clone()));
+            flow_type
+        })
     }
 
     fn validate(&self, ty: &FlowTypeId) -> bool {
@@ -257,13 +265,6 @@ impl FlowTypeManager for FlowTypeManagerImpl {
                     .all(|relation_instance| self.relation_type_manager.validate(&relation_instance.relation_type_id()));
         }
         false
-    }
-
-    fn add_provider(&self, flow_type_provider: Arc<dyn FlowTypeProvider>) {
-        for flow_type in flow_type_provider.get_flow_types() {
-            trace!("Registering flow type: {}", flow_type.ty);
-            self.register(flow_type);
-        }
     }
 }
 

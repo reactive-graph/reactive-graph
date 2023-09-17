@@ -9,10 +9,12 @@ query {
         dataType
         socketType
         extensions {
+          namespace
           name
         }
       }
       extensions {
+        namespace
         name
       }
     }

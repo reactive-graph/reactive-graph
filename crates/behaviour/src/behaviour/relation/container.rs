@@ -1,11 +1,12 @@
-use inexor_rgf_core_model::RelationInstanceId;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ReactiveBehaviourContainer;
+use inexor_rgf_behaviour_api::prelude::*;
+use inexor_rgf_reactive_api::prelude::*;
+
+use crate::model::RelationInstanceId;
+use crate::reactive::BehaviourTypesContainer;
 use crate::reactive::ReactiveEntity;
 use crate::reactive::ReactiveRelation;
-use crate::BehaviourReactiveInstanceContainer;
 
-pub trait BehaviourRelationInstanceContainer: BehaviourReactiveInstanceContainer<RelationInstanceId, ReactiveRelation> {
+pub trait BehaviourRelationInstanceContainer: ReactiveInstanceContainer<RelationInstanceId, ReactiveRelation> {
     /// Returns the outbound instance of the behaviour.
     fn get_outbound(&self) -> &ReactiveEntity;
 
@@ -13,17 +14,17 @@ pub trait BehaviourRelationInstanceContainer: BehaviourReactiveInstanceContainer
     fn get_inbound(&self) -> &ReactiveEntity;
 }
 
-pub struct RelationBehaviourReactiveInstanceContainerImpl {
+pub struct RelationReactiveInstanceContainerImpl {
     pub reactive_instance: ReactiveRelation,
 }
 
-impl BehaviourReactiveInstanceContainer<RelationInstanceId, ReactiveRelation> for RelationBehaviourReactiveInstanceContainerImpl {
+impl ReactiveInstanceContainer<RelationInstanceId, ReactiveRelation> for RelationReactiveInstanceContainerImpl {
     fn get_reactive_instance(&self) -> &ReactiveRelation {
         &self.reactive_instance
     }
 }
 
-impl ReactiveBehaviourContainer for RelationBehaviourReactiveInstanceContainerImpl {
+impl BehaviourTypesContainer for RelationReactiveInstanceContainerImpl {
     fn get_behaviours(&self) -> Vec<BehaviourTypeId> {
         self.reactive_instance.get_behaviours()
     }
@@ -41,7 +42,7 @@ impl ReactiveBehaviourContainer for RelationBehaviourReactiveInstanceContainerIm
     }
 }
 
-impl BehaviourRelationInstanceContainer for RelationBehaviourReactiveInstanceContainerImpl {
+impl BehaviourRelationInstanceContainer for RelationReactiveInstanceContainerImpl {
     fn get_outbound(&self) -> &ReactiveEntity {
         &self.reactive_instance.outbound
     }

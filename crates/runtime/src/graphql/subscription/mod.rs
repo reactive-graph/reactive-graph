@@ -16,7 +16,7 @@ pub use relation_instance::*;
 
 use crate::api::ReactiveEntityManager;
 use crate::api::ReactiveRelationManager;
-use crate::graphql::mutation::GraphQLEdgeKey;
+use crate::graphql::mutation::GraphQLRelationInstanceId;
 use crate::graphql::query::GraphQLPropertyInstance;
 
 pub mod entity_instance;
@@ -76,7 +76,7 @@ impl InexorSubscription {
     async fn relation(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLEdgeKey,
+        edge_key: GraphQLRelationInstanceId,
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
         match context.data::<Arc<dyn ReactiveRelationManager>>() {

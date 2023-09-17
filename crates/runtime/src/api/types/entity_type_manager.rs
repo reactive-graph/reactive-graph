@@ -1,10 +1,6 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::error::types::entity::EntityTypeCreationError;
-use crate::error::types::entity::EntityTypeRegistrationError;
 use crate::model::ComponentTypeId;
 use crate::model::ComponentTypeIds;
 use crate::model::EntityType;
@@ -17,16 +13,17 @@ use crate::model::EntityTypeMergeError;
 use crate::model::EntityTypeRemoveComponentError;
 use crate::model::EntityTypeRemoveExtensionError;
 use crate::model::EntityTypeRemovePropertyError;
-use crate::model::EntityTypes;
 use crate::model::EntityTypeUpdateExtensionError;
 use crate::model::EntityTypeUpdatePropertyError;
+use crate::model::EntityTypes;
 use crate::model::Extension;
-use crate::model::Extensions;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::Namespaces;
 use crate::model::PropertyType;
 use crate::model::PropertyTypes;
-use crate::plugins::EntityTypeProvider;
+use crate::rt_api::EntityTypeCreationError;
+use crate::rt_api::EntityTypeRegistrationError;
 
 #[async_trait]
 pub trait EntityTypeManager: Send + Sync + Lifecycle {
@@ -108,7 +105,12 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
 
     /// Updates the property with the given property_name.
     /// It's possible to rename the property by using another name in the new property than the provided property_name.
-    fn update_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, EntityTypeUpdateExtensionError>;
+    fn update_extension(
+        &self,
+        entity_ty: &EntityTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<Extension, EntityTypeUpdateExtensionError>;
 
     /// Removes the extension with the given extension_name from the entity type with the given name.
     fn remove_extension(&self, entity_ty: &EntityTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, EntityTypeRemoveExtensionError>;
@@ -119,7 +121,4 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
     /// Validates the entity type with the given name.
     /// Tests that all components exists.
     fn validate(&self, ty: &EntityTypeId) -> bool;
-
-    /// Registers an entity type provider.
-    fn add_provider(&self, entity_type_provider: Arc<dyn EntityTypeProvider>);
 }

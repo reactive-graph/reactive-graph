@@ -2,13 +2,13 @@
 pub mod queries {
     use typed_builder::TypedBuilder;
 
-    use crate::model::ComponentTypeId;
-    use crate::model::NamespacedTypeGetter;
     use crate::schema::types::component::Component;
     use crate::schema::types::extension::ExtensionDefinition;
     use crate::schema::types::extension::ExtensionDefinitions;
     use crate::schema::types::property_type::PropertyTypeDefinition;
     use crate::schema::types::property_type::PropertyTypeDefinitions;
+    use inexor_rgf_graph::ComponentTypeId;
+    use inexor_rgf_graph::NamespacedTypeGetter;
 
     #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
     pub struct ComponentTypeIdVariables {
@@ -96,7 +96,7 @@ pub mod queries {
         GetComponentByType::build(ty.clone().into())
     }
 
-    pub fn create_component_mutation(component: crate::model::Component) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
+    pub fn create_component_mutation(component: inexor_rgf_graph::Component) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
         use cynic::MutationBuilder;
         // let component = component.into();
         let namespace = component.namespace();
@@ -123,7 +123,7 @@ pub mod queries {
     mod tests {
         use inexor_rgf_rt::runtime::RuntimeBuilder;
 
-        use crate::model::ComponentTypeId;
+        use inexor_rgf_graph::ComponentTypeId;
 
         #[tokio::test(flavor = "multi_thread")]
         async fn test_get_components_by_type() {
@@ -154,9 +154,9 @@ pub mod api {
     use crate::client::types::components::queries::CreateComponentVariables;
     use crate::client::InexorRgfClient;
     use crate::client::InexorRgfClientExecutionError;
-    use crate::model::Component;
-    use crate::model::ComponentTypeId;
     use crate::schema::types::component::Components as ComponentsVec;
+    use inexor_rgf_graph::Component;
+    use inexor_rgf_graph::ComponentTypeId;
 
     pub struct Components {
         client: Arc<InexorRgfClient>,

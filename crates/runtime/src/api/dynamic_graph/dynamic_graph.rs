@@ -21,7 +21,7 @@ use async_graphql::Value;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 use async_trait::async_trait;
-use inexor_rgf_core_model::ReactiveRelation;
+use inexor_rgf_reactive::ReactiveRelation;
 
 use crate::api::Lifecycle;
 
@@ -64,13 +64,7 @@ pub trait DynamicGraph: Send + Sync + Lifecycle {
 
     fn resolve_relation_instances(&self, compiler: &ApolloCompiler, field: &Field) -> Vec<Value>;
 
-    fn resolve_relation_instance(
-        &self,
-        compiler: &ApolloCompiler,
-        field: &Field,
-        relation_instance: &ReactiveRelation,
-        in_component: bool,
-    ) -> Value;
+    fn resolve_relation_instance(&self, compiler: &ApolloCompiler, field: &Field, relation_instance: &ReactiveRelation, in_component: bool) -> Value;
 
     fn resolve_relation_instance_index_map(
         &self,

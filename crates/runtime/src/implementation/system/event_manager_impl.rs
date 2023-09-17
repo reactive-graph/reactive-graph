@@ -6,22 +6,22 @@ use async_trait::async_trait;
 use serde_json::json;
 
 use crate::api::Lifecycle;
-use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::api::SystemEventManager;
+use crate::api::SYSTEM_EVENT_PROPERTY_LABEL;
 use crate::di::*;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::ExtensionTypeId;
-use crate::model::PropertyInstances;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyInstances;
 use crate::model::PropertyTypeDefinition;
 use crate::model::TypeDefinition;
 use crate::model::TypeDefinitionComponent;
 use crate::model::TypeDefinitionExtension;
 use crate::model::TypeDefinitionGetter;
 use crate::model::TypeDefinitionProperty;
-use crate::model_runtime::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::model_runtime::EventProperties::EVENT;
+use crate::model_runtime::ENTITY_TYPE_SYSTEM_EVENT;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
 use crate::reactive::ReactiveEntity;
@@ -50,13 +50,17 @@ impl SystemEventManager for SystemEventManagerImpl {
             SystemEvent::ComponentCreated(ty) | SystemEvent::ComponentDeleted(ty) => {
                 self.propagate_type_definition_event(entity_instance, ty.type_definition());
             }
-            SystemEvent::ComponentPropertyAdded(ty, property_name) | SystemEvent::ComponentPropertyUpdated(ty, property_name) | SystemEvent::ComponentPropertyRemoved(ty, property_name) => {
+            SystemEvent::ComponentPropertyAdded(ty, property_name)
+            | SystemEvent::ComponentPropertyUpdated(ty, property_name)
+            | SystemEvent::ComponentPropertyRemoved(ty, property_name) => {
                 self.propagate_type_definition_property_event(entity_instance, ty.type_definition(), property_name);
             }
             SystemEvent::ComponentPropertyRenamed(ty, old_property_name, new_property_name) => {
                 self.propagate_type_definition_property_renamed_event(entity_instance, ty.type_definition(), old_property_name, new_property_name);
             }
-            SystemEvent::ComponentExtensionAdded(ty, extension_ty) | SystemEvent::ComponentExtensionUpdated(ty, extension_ty) | SystemEvent::ComponentExtensionRemoved(ty, extension_ty) => {
+            SystemEvent::ComponentExtensionAdded(ty, extension_ty)
+            | SystemEvent::ComponentExtensionUpdated(ty, extension_ty)
+            | SystemEvent::ComponentExtensionRemoved(ty, extension_ty) => {
                 self.propagate_type_definition_extension_event(entity_instance, ty.type_definition(), extension_ty);
             }
             SystemEvent::ComponentExtensionRenamed(ty, old_extension_ty, new_extension_ty) => {
@@ -153,7 +157,13 @@ impl SystemEventManagerImpl {
     }
 
     // TODO: make this better!
-    fn propagate_type_definition_property_renamed_event(&self, entity_instance: ReactiveEntity, type_definition: TypeDefinition, old_property_name: String, new_property_name: String) {
+    fn propagate_type_definition_property_renamed_event(
+        &self,
+        entity_instance: ReactiveEntity,
+        type_definition: TypeDefinition,
+        old_property_name: String,
+        new_property_name: String,
+    ) {
         if let Ok(v) = TypeDefinitionProperty::new(type_definition.clone(), old_property_name).try_into() {
             entity_instance.set(EVENT.property_name(), v);
         };
@@ -164,12 +174,7 @@ impl SystemEventManagerImpl {
         self.emit_event(SystemEvent::TypeSystemChanged);
     }
 
-    fn propagate_type_definition_extension_event(
-        &self,
-        entity_instance: ReactiveEntity,
-        type_definition: TypeDefinition,
-        extension_ty: ExtensionTypeId,
-    ) {
+    fn propagate_type_definition_extension_event(&self, entity_instance: ReactiveEntity, type_definition: TypeDefinition, extension_ty: ExtensionTypeId) {
         if let Ok(v) = TypeDefinitionExtension::new(type_definition, extension_ty).try_into() {
             entity_instance.set(EVENT.property_name(), v);
         };
@@ -368,7 +373,7 @@ impl SystemEventManagerImpl {
             .properties(
                 PropertyInstances::new()
                     .property(SYSTEM_EVENT_PROPERTY_LABEL, json!(label.into()))
-                    .property(&EVENT.property_name(), json!(false))
+                    .property(&EVENT.property_name(), json!(false)),
             )
             .build()
             .into()

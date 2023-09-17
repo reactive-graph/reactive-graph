@@ -1,18 +1,18 @@
+use inexor_rgf_rt_api::ComponentCreationError;
 use std::sync::Arc;
 
+use crate::model::Component;
 use crate::model::ComponentAddExtensionError;
 use crate::model::ComponentAddPropertyError;
 use crate::model::ComponentRemoveExtensionError;
 use crate::model::ComponentRemovePropertyError;
-use crate::model::Components;
+use crate::model::ComponentTypeId;
 use crate::model::ComponentUpdateExtensionError;
 use crate::model::ComponentUpdatePropertyError;
-use crate::model::Component;
-use crate::model::ComponentTypeId;
+use crate::model::Components;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
 use crate::model::PropertyType;
-use crate::plugins::ComponentCreationError;
 use crate::plugins::ComponentManager;
 
 pub struct ComponentManagerImpl {
@@ -68,9 +68,7 @@ impl ComponentManager for ComponentManagerImpl {
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
     ) -> Result<Component, ComponentCreationError> {
-        self.component_manager
-            .create(ty, description, properties, extensions)
-            .map_err(|_| ComponentCreationError {})
+        self.component_manager.create(ty, description, properties, extensions)
     }
 
     fn replace(&self, ty: &ComponentTypeId, component: Component) {

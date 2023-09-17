@@ -1,16 +1,12 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 use uuid::Uuid;
 
 use crate::api::Lifecycle;
-use crate::error::types::flow::FlowTypeCreationError;
-use crate::error::types::flow::FlowTypeRegistrationError;
 use crate::model::EntityInstance;
 use crate::model::EntityInstances;
 use crate::model::Extension;
-use crate::model::Extensions;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::FlowType;
 use crate::model::FlowTypeAddEntityInstanceError;
 use crate::model::FlowTypeAddExtensionError;
@@ -22,11 +18,11 @@ use crate::model::FlowTypeRemoveEntityInstanceError;
 use crate::model::FlowTypeRemoveExtensionError;
 use crate::model::FlowTypeRemoveRelationInstanceError;
 use crate::model::FlowTypeRemoveVariableError;
-use crate::model::FlowTypes;
 use crate::model::FlowTypeUpdateEntityInstanceError;
 use crate::model::FlowTypeUpdateExtensionError;
 use crate::model::FlowTypeUpdateRelationInstanceError;
 use crate::model::FlowTypeUpdateVariableError;
+use crate::model::FlowTypes;
 use crate::model::Namespaces;
 use crate::model::PropertyType;
 use crate::model::PropertyTypes;
@@ -34,7 +30,8 @@ use crate::model::RelationInstance;
 use crate::model::RelationInstanceId;
 use crate::model::RelationInstances;
 use crate::model::Variable;
-use crate::plugins::FlowTypeProvider;
+use crate::rt_api::FlowTypeCreationError;
+use crate::rt_api::FlowTypeRegistrationError;
 
 #[async_trait]
 pub trait FlowTypeManager: Send + Sync + Lifecycle {
@@ -91,7 +88,12 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     fn add_entity_instance(&self, ty: &FlowTypeId, entity_instance: EntityInstance) -> Result<(), FlowTypeAddEntityInstanceError>;
 
     /// Updates the entity instance with the given id of the given flow type.
-    fn update_entity_instance(&self, ty: &FlowTypeId, id: Uuid, entity_instance: EntityInstance) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError>;
+    fn update_entity_instance(
+        &self,
+        ty: &FlowTypeId,
+        id: Uuid,
+        entity_instance: EntityInstance,
+    ) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError>;
 
     /// Removes the entity instance with the given id from the given flow type.
     fn remove_entity_instance(&self, ty: &FlowTypeId, id: Uuid) -> Result<Option<(Uuid, EntityInstance)>, FlowTypeRemoveEntityInstanceError>;
@@ -100,10 +102,19 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     fn add_relation_instance(&self, ty: &FlowTypeId, relation_instance: RelationInstance) -> Result<(), FlowTypeAddRelationInstanceError>;
 
     /// Updates the relation instance with the given id of the given flow type.
-    fn update_relation_instance(&self, ty: &FlowTypeId, id: &RelationInstanceId, relation_instance: RelationInstance) -> Result<(RelationInstanceId, RelationInstance), FlowTypeUpdateRelationInstanceError>;
+    fn update_relation_instance(
+        &self,
+        ty: &FlowTypeId,
+        id: &RelationInstanceId,
+        relation_instance: RelationInstance,
+    ) -> Result<(RelationInstanceId, RelationInstance), FlowTypeUpdateRelationInstanceError>;
 
     /// Removes the relation instance with the given id from the given flow type.
-    fn remove_relation_instance(&self, ty: &FlowTypeId, id: &RelationInstanceId) -> Result<Option<(RelationInstanceId, RelationInstance)>, FlowTypeRemoveRelationInstanceError>;
+    fn remove_relation_instance(
+        &self,
+        ty: &FlowTypeId,
+        id: &RelationInstanceId,
+    ) -> Result<Option<(RelationInstanceId, RelationInstance)>, FlowTypeRemoveRelationInstanceError>;
 
     /// Adds the given extension to the given flow type.
     fn add_extension(&self, ty: &FlowTypeId, extension: Extension) -> Result<ExtensionTypeId, FlowTypeAddExtensionError>;
@@ -129,7 +140,4 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     /// Validates the given flow type.
     /// Tests that all entity types and relation types exists and are valid.
     fn validate(&self, ty: &FlowTypeId) -> bool;
-
-    /// Registers an flow type provider.
-    fn add_provider(&self, flow_type_provider: Arc<dyn FlowTypeProvider>);
 }

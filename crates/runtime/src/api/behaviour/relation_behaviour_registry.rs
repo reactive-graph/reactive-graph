@@ -1,13 +1,12 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_core_model::RelationInstanceId;
 
-use crate::behaviour::BehaviourFactory;
+use inexor_rgf_behaviour_api::prelude::*;
+
+use crate::model::RelationInstanceId;
 use crate::model::RelationTypeId;
-use crate::reactive::BehaviourTypeId;
 use crate::reactive::ReactiveRelation;
-use crate::reactive::RelationBehaviourTypeId;
 
 #[async_trait]
 pub trait RelationBehaviourRegistry: Send + Sync {
@@ -24,7 +23,10 @@ pub trait RelationBehaviourRegistry: Send + Sync {
     fn get(&self, relation_ty: &RelationTypeId) -> Vec<Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>>;
 
     /// Returns the relation behaviour for the given behaviour type if the relation behaviour exists.
-    fn get_factory_by_behaviour_type(&self, behaviour_ty: &BehaviourTypeId) -> Option<Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>>;
+    fn get_factory_by_behaviour_type(
+        &self,
+        behaviour_ty: &BehaviourTypeId,
+    ) -> Option<Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>>;
 
     /// Returns the relation behaviours for the given entity type.
     fn get_behaviour_types(&self, relation_ty: &RelationTypeId) -> Vec<RelationBehaviourTypeId>;

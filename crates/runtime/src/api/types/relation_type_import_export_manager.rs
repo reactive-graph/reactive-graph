@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 
-use crate::error::types::relation::RelationTypeExportError;
-use crate::error::types::relation::RelationTypeImportError;
 use crate::model::RelationType;
 use crate::model::RelationTypeId;
+use crate::rt_api::RelationTypeExportError;
+use crate::rt_api::RelationTypeImportError;
 
 #[async_trait]
 pub trait RelationTypeImportExportManager: Send + Sync {

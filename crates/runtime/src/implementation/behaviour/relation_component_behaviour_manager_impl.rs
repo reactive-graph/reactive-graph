@@ -1,6 +1,5 @@
 use async_trait::async_trait;
 use log::trace;
-use inexor_rgf_reactive::ReactiveInstance;
 
 use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationComponentBehaviourRegistry;
@@ -9,16 +8,16 @@ use crate::behaviour::BehaviourDisconnectFailed;
 use crate::behaviour::BehaviourState;
 use crate::behaviour::BehaviourTransitionError;
 use crate::behaviour::RelationBehaviourStorage;
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::ComponentBehaviourTypeId;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
 use crate::di::wrapper;
+use crate::di::Component;
 use crate::di::Wrc;
 use crate::model::RelationInstanceId;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
-use crate::reactive::ComponentContainer;
 use crate::reactive::ReactiveRelation;
+use inexor_rgf_reactive_api::prelude::*;
 
 #[wrapper]
 pub struct RelationComponentBehaviourStorageWrapper(RelationBehaviourStorage);

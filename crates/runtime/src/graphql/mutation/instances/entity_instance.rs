@@ -4,23 +4,23 @@ use async_graphql::*;
 use log::debug;
 use serde_json::json;
 use uuid::Uuid;
-use inexor_rgf_reactive::ReactiveInstance;
 
 use crate::api::EntityBehaviourManager;
 use crate::api::EntityComponentBehaviourManager;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveEntityManager;
 use crate::api::ReactiveRelationManager;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
 use crate::graphql::mutation::EntityTypeIdDefinition;
 use crate::graphql::query::GraphQLEntityInstance;
 use crate::graphql::query::GraphQLPropertyInstance;
-use crate::reactive::BehaviourTypeId;
 use crate::model::PropertyInstanceSetter;
 use crate::model::PropertyTypeDefinition;
-use crate::reactive::ReactivePropertyContainer;
 use crate::model_runtime::ActionProperties::TRIGGER;
+use crate::reactive::ReactivePropertyContainer;
+use inexor_rgf_reactive_api::prelude::*;
 
 #[derive(Default)]
 pub struct MutationEntityInstances;
@@ -72,7 +72,7 @@ impl MutationEntityInstances {
                 }
                 Ok(entity_instance.into())
             }
-            Err(e) => Err(Error::new(format!("Failed to create entity instance: {}", e))),
+            Err(e) => Err(e.into()),
         }
     }
 

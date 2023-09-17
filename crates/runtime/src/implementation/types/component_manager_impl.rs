@@ -1,29 +1,24 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 use log::debug;
-use log::trace;
 
 use crate::api::ComponentManager;
 use crate::api::Lifecycle;
 use crate::api::SystemEventManager;
 use crate::di::component;
-use crate::di::Component;
 use crate::di::provides;
 use crate::di::wrapper;
+use crate::di::Component;
 use crate::di::Wrc;
-use crate::error::types::component::ComponentCreationError;
-use crate::error::types::component::ComponentRegistrationError;
 use crate::model::ComponentAddExtensionError;
 use crate::model::ComponentAddPropertyError;
 use crate::model::ComponentMergeError;
 use crate::model::ComponentRemoveExtensionError;
 use crate::model::ComponentRemovePropertyError;
-use crate::model::Components;
 use crate::model::ComponentTypeId;
 use crate::model::ComponentTypeIds;
 use crate::model::ComponentUpdateExtensionError;
 use crate::model::ComponentUpdatePropertyError;
+use crate::model::Components;
 use crate::model::Extension;
 use crate::model::ExtensionContainer;
 use crate::model::ExtensionTypeId;
@@ -31,9 +26,9 @@ use crate::model::NamespacedTypeContainer;
 use crate::model::Namespaces;
 use crate::model::PropertyType;
 use crate::model::PropertyTypeContainer;
-use crate::model::TypeDefinitionGetter;
-use crate::plugins::ComponentProvider;
 use crate::plugins::SystemEvent;
+use crate::rt_api::ComponentCreationError;
+use crate::rt_api::ComponentRegistrationError;
 
 #[wrapper]
 pub struct ComponentsStorage(Components);
@@ -49,8 +44,6 @@ pub struct ComponentManagerImpl {
 
     components: ComponentsStorage,
 }
-
-impl ComponentManagerImpl {}
 
 #[async_trait]
 #[provides]
@@ -105,7 +98,6 @@ impl ComponentManager for ComponentManagerImpl {
 
     fn get_by_types(&self, tys: ComponentTypeIds) -> Components {
         self.components.get_by_types(tys)
-
     }
 
     fn find_by_type_name(&self, search: &str) -> Components {
@@ -153,22 +145,29 @@ impl ComponentManager for ComponentManagerImpl {
         let Some(component) = self.components.get_mut(ty) else {
             return Err(ComponentAddPropertyError::ComponentDoesNotExist(ty.clone()));
         };
-        component.add_property(property)
+        component
+            .add_property(property)
             .map_err(ComponentAddPropertyError::AddPropertyError)
-            .inspect(|property_type| self.event_manager.emit_event(SystemEvent::ComponentPropertyAdded(ty.clone(), property_type.name.clone())))
+            .inspect(|property_type| {
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentPropertyAdded(ty.clone(), property_type.name.clone()))
+            })
     }
 
     fn update_property(&self, ty: &ComponentTypeId, property_name: &str, property: PropertyType) -> Result<PropertyType, ComponentUpdatePropertyError> {
         let Some(component) = self.components.get_mut(ty) else {
             return Err(ComponentUpdatePropertyError::ComponentDoesNotExist(ty.clone()));
         };
-        component.update_property(property_name, property)
+        component
+            .update_property(property_name, property)
             .map_err(ComponentUpdatePropertyError::UpdatePropertyError)
             .inspect(|property| {
                 if property.name != property_name {
-                    self.event_manager.emit_event(SystemEvent::ComponentPropertyRenamed(ty.clone(), property_name.to_string(), property.name.clone()))
+                    self.event_manager
+                        .emit_event(SystemEvent::ComponentPropertyRenamed(ty.clone(), property_name.to_string(), property.name.clone()))
                 }
-                self.event_manager.emit_event(SystemEvent::ComponentPropertyUpdated(ty.clone(), property.name.clone()))
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentPropertyUpdated(ty.clone(), property.name.clone()))
             })
     }
 
@@ -176,18 +175,26 @@ impl ComponentManager for ComponentManagerImpl {
         let Some(component) = self.components.get_mut(ty) else {
             return Err(ComponentRemovePropertyError::ComponentDoesNotExist(ty.clone()));
         };
-        component.remove_property(property_name)
+        component
+            .remove_property(property_name)
             .map_err(ComponentRemovePropertyError::RemovePropertyError)
-            .inspect(|property_type| self.event_manager.emit_event(SystemEvent::ComponentPropertyRemoved(ty.clone(), property_type.name.clone())))
+            .inspect(|property_type| {
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentPropertyRemoved(ty.clone(), property_type.name.clone()))
+            })
     }
 
     fn add_extension(&self, component_ty: &ComponentTypeId, extension: Extension) -> Result<ExtensionTypeId, ComponentAddExtensionError> {
         let Some(component) = self.components.get_mut(component_ty) else {
             return Err(ComponentAddExtensionError::ComponentDoesNotExist(component_ty.clone()));
         };
-        component.add_extension(extension)
+        component
+            .add_extension(extension)
             .map_err(ComponentAddExtensionError::AddExtensionError)
-            .inspect(|extension_ty| self.event_manager.emit_event(SystemEvent::ComponentExtensionAdded(component_ty.clone(), extension_ty.clone())))
+            .inspect(|extension_ty| {
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentExtensionAdded(component_ty.clone(), extension_ty.clone()))
+            })
     }
 
     fn update_extension(
@@ -199,13 +206,16 @@ impl ComponentManager for ComponentManagerImpl {
         let Some(component) = self.components.get_mut(component_ty) else {
             return Err(ComponentUpdateExtensionError::ComponentDoesNotExist(component_ty.clone()));
         };
-        component.update_extension(extension_ty, extension)
+        component
+            .update_extension(extension_ty, extension)
             .map_err(ComponentUpdateExtensionError::UpdateExtensionError)
             .inspect(|extension| {
                 if extension_ty != &extension.ty {
-                    self.event_manager.emit_event(SystemEvent::ComponentExtensionRenamed(component_ty.clone(), extension_ty.clone(), extension.ty.clone()))
+                    self.event_manager
+                        .emit_event(SystemEvent::ComponentExtensionRenamed(component_ty.clone(), extension_ty.clone(), extension.ty.clone()))
                 }
-                self.event_manager.emit_event(SystemEvent::ComponentExtensionUpdated(component_ty.clone(), extension.ty.clone()))
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentExtensionUpdated(component_ty.clone(), extension.ty.clone()))
             })
     }
 
@@ -213,26 +223,31 @@ impl ComponentManager for ComponentManagerImpl {
         let Some(component) = self.components.get_mut(component_ty) else {
             return Err(ComponentRemoveExtensionError::ComponentDoesNotExist(component_ty.clone()));
         };
-        component.remove_extension(extension_ty)
+        component
+            .remove_extension(extension_ty)
             .map_err(ComponentRemoveExtensionError::RemoveExtensionError)
-            .inspect(|extension| self.event_manager.emit_event(SystemEvent::ComponentExtensionRemoved(component_ty.clone(), extension.ty.clone())))
+            .inspect(|extension| {
+                self.event_manager
+                    .emit_event(SystemEvent::ComponentExtensionRemoved(component_ty.clone(), extension.ty.clone()))
+            })
     }
 
     fn delete(&self, ty: &ComponentTypeId) -> bool {
-        self.components.remove(ty)
+        self.components
+            .remove(ty)
             .inspect(|(ty, _)| self.event_manager.emit_event(SystemEvent::ComponentDeleted(ty.clone())))
             .is_some()
     }
 
-    fn add_provider(&self, component_provider: Arc<dyn ComponentProvider>) {
-        for component in component_provider.get_components() {
-            trace!("Registering component: {}", component.type_definition().to_string());
-            if self.register(component.clone()).is_err() {
-                trace!("Merging component: {}", component.type_definition().to_string());
-                let _ = self.merge(component);
-            }
-        }
-    }
+    // fn register_provider(&self, component_provider: Arc<dyn ComponentProvider>) {
+    //     for component in component_provider.get_components().iter() {
+    //         trace!("Registering component: {}", component.key());
+    //         if self.register(component.clone()).is_err() {
+    //             trace!("Merging component: {}", component.key());
+    //             let _ = self.merge(component.clone());
+    //         }
+    //     }
+    // }
 }
 
 #[async_trait]
@@ -313,5 +328,4 @@ mod test {
             component_manager.delete(&ty);
         })
     }
-
 }

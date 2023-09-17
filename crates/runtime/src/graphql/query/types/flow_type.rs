@@ -12,7 +12,6 @@ use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationInstance;
 use crate::model::FlowType;
-// use crate::model::NamespacedTypeContainer;
 use crate::model::NamespacedTypeGetter;
 use crate::reactive::ReactiveEntity;
 use crate::reactive::ReactiveRelation;
@@ -120,7 +119,11 @@ impl GraphQLFlowType {
             .filter(|property| names.is_none() || names.clone().unwrap().contains(property.key()))
             .map(|property| {
                 // TODO: Resolve mutability using entity_type_manager and property_name
-                GraphQLPropertyInstance::new_entity_property(self.flow_type.wrapper_entity_instance.ty.clone(), property.key().clone(), property.value().clone())
+                GraphQLPropertyInstance::new_entity_property(
+                    self.flow_type.wrapper_entity_instance.ty.clone(),
+                    property.key().clone(),
+                    property.value().clone(),
+                )
             })
             .collect()
     }
@@ -144,7 +147,11 @@ impl GraphQLFlowType {
                 .map(|property_type| property_type.into())
                 .collect();
         }
-        self.flow_type.variables.iter().map(|property_type| property_type.value().clone().into()).collect()
+        self.flow_type
+            .variables
+            .iter()
+            .map(|property_type| property_type.value().clone().into())
+            .collect()
     }
 
     /// The count of variables.

@@ -17,17 +17,15 @@ macro_rules! entity_behaviour {
             // Function.
             $fn_ident: ident
         )*
+        $(,)?
     ) => {
-        use inexor_rgf_core_model::ReactiveEntity as ModelReactiveEntity;
-        use inexor_rgf_core_model::PropertyInstanceGetter as EntityBehaviourPropertyInstanceGetter;
-
         pub struct $behaviour {
-            pub reactive_instance: std::sync::Arc<ModelReactiveEntity>,
+            pub reactive_instance: inexor_rgf_reactive::ReactiveEntity,
             pub fsm: $fsm,
         }
 
         impl $behaviour {
-            pub fn new(reactive_instance: std::sync::Arc<ModelReactiveEntity>, ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
+            pub fn new(reactive_instance: inexor_rgf_reactive::ReactiveEntity, ty: inexor_rgf_behaviour_api::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
                 let transitions = <$transitions>::new(reactive_instance.clone(), ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance.clone());
                 let fsm = <$fsm>::new(reactive_instance.clone(), ty, validator, transitions);
@@ -40,38 +38,40 @@ macro_rules! entity_behaviour {
             }
         }
 
-        impl $crate::BehaviourFsm<ModelReactiveEntity> for $behaviour {
-            fn ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
+        impl inexor_rgf_behaviour_api::BehaviourFsm<uuid::Uuid, inexor_rgf_reactive::ReactiveEntity> for $behaviour {
+            fn ty(&self) -> &inexor_rgf_behaviour_api::BehaviourTypeId {
                 &self.fsm.ty
             }
 
-            fn get_state(&self) -> $crate::BehaviourState {
+            fn get_state(&self) -> inexor_rgf_behaviour_api::BehaviourState {
                 self.fsm.get_state()
             }
 
-            fn set_state(&self, state: $crate::BehaviourState) {
+            fn set_state(&self, state: inexor_rgf_behaviour_api::BehaviourState) {
                 self.fsm.set_state(state);
             }
 
-            fn get_validator(&self) -> &dyn $crate::BehaviourValidator<ModelReactiveEntity> {
+            fn get_validator(&self) -> &dyn inexor_rgf_behaviour_api::BehaviourValidator<uuid::Uuid, inexor_rgf_reactive::ReactiveEntity> {
                 &self.fsm.validator
             }
 
-            fn get_transitions(&self) -> &dyn $crate::BehaviourTransitions<ModelReactiveEntity> {
+            fn get_transitions(&self) -> &dyn inexor_rgf_behaviour_api::BehaviourTransitions<uuid::Uuid, inexor_rgf_reactive::ReactiveEntity> {
                 &self.fsm.transitions
             }
         }
 
-        impl $crate::BehaviourReactiveInstanceContainer<ModelReactiveEntity> for $behaviour {
-            fn get_reactive_instance(&self) -> &std::sync::Arc<ModelReactiveEntity> {
+        impl inexor_rgf_reactive_api::ReactiveInstanceContainer<uuid::Uuid, inexor_rgf_reactive::ReactiveEntity> for $behaviour {
+            fn get_reactive_instance(&self) -> &inexor_rgf_reactive::ReactiveEntity {
                 &self.reactive_instance
             }
 
             fn get(&self, property_name: &str) -> Option<serde_json::Value> {
+                // inexor_rgf_graph::PropertyInstanceGetter::get(self, property_name)
                 self.reactive_instance.get(property_name)
             }
 
             fn set(&self, property_name: &str, value: serde_json::Value) {
+                // inexor_rgf_graph::PropertyInstanceSetter::get(self, property_name, value)
                 self.reactive_instance.set(property_name, value);
             }
         }
@@ -82,9 +82,9 @@ macro_rules! entity_behaviour {
             }
         }
 
-        $crate::behaviour_factory!($factory, $behaviour, ModelReactiveEntity $(, $fn_name, $fn_ident)*);
+        inexor_rgf_behaviour_api::behaviour_factory!($factory, $behaviour, uuid::Uuid, inexor_rgf_reactive::ReactiveEntity $(, $fn_name, $fn_ident)*);
 
-        $crate::behaviour_fsm!($fsm, $validator, $transitions, ModelReactiveEntity);
+        inexor_rgf_behaviour_api::behaviour_fsm!($fsm, $validator, $transitions, uuid::Uuid, inexor_rgf_reactive::ReactiveEntity);
 
         $crate::entity_behaviour_transitions!($transitions $(, $fn_name, $fn_ident)*);
     };

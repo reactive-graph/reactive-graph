@@ -1,63 +1,65 @@
-use std::sync::Arc;
+// use dashmap::DashSet;
+// use dashmap::ReadOnlyView;
+// use std::ops::Deref;
+// use std::sync::Arc;
+//
+// use inexor_rgf_behaviour_api::prelude::*;
+// use inexor_rgf_reactive_api::prelude::*;
 
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ReactiveInstance;
-use crate::BehaviourCreationError;
-use crate::BehaviourFsm;
+// pub trait BehaviourFactory<ID: Clone, T: ReactiveInstance<ID>> {
+//     /// Creates a new behaviour in the given reactive instance and returns the created state machine.
+//     fn create(&self, reactive_instance: T) -> Result<Arc<dyn BehaviourFsm<ID, T> + Send + Sync>, BehaviourCreationError>;
+//
+//     /// Returns the behaviour type of the behaviour factory.
+//     fn behaviour_ty(&self) -> &BehaviourTypeId;
+// }
 
-pub trait BehaviourFactory<ID: Clone, T: ReactiveInstance<ID>> {
-    /// Creates a new behaviour in the given reactive instance and returns the created state machine.
-    fn create(&self, reactive_instance: T) -> Result<Arc<dyn BehaviourFsm<ID, T> + Send + Sync>, BehaviourCreationError>;
+// pub struct BehaviourFactories<ID: Clone, T: ReactiveInstance<ID>>(DashSet<Arc<dyn BehaviourFactory<ID, T>>>);
+//
+// impl<ID: Clone, T: ReactiveInstance<ID>> BehaviourFactories<ID, T> {
+//     pub fn new() -> Self {
+//         Self(DashSet::new())
+//     }
+//
+//     pub fn factory(self, factory: Arc<dyn BehaviourFactory<ID, T>>) -> Self {
+//         self.0.insert(factory);
+//         self
+//     }
+//
+//     fn push(&self, factory: Arc<dyn BehaviourFactory<ID, T>>) {
+//         self.0.insert(factory);
+//     }
+// }
+//
+// impl<ID: Clone, T: ReactiveInstance<ID>> Deref for BehaviourFactories<ID, T> {
+//     type Target = DashSet<Box<dyn BehaviourFactory<ID, T>>>;
+//
+//     fn deref(&self) -> &Self::Target {
+//         &self.0
+//     }
+// }
+//
+// impl<ID: Clone, T: ReactiveInstance<ID>, F> From<BehaviourFunctionsReadOnlyView<F>> for BehaviourFactories<ID, T> {
+//     fn from(fns: BehaviourFunctionsReadOnlyView<F>) -> Self {
+//         let mut factories = BehaviourFactories::new();
+//         // let x = F::new();
+//         fns.iter().map(|(ty, f)| {
+//             let a = Arc::new();
+//             factories.push()
+//             let x = Arc::new(T::new(behaviour_ty.clone(), *f));
+//             BehaviourFactory<ID, T>
+//         }).collect()
+//         for f in fns.iter() {
+//             factories.
+//         }
+//         factories
+//     }
+// }
 
-    /// Returns the behaviour type of the behaviour factory.
-    fn behaviour_ty(&self) -> &BehaviourTypeId;
-}
-
-#[macro_export]
-macro_rules! behaviour_factory {
-    (
-        $factory: ident,
-        $behaviour: ty,
-        $reactive_instance: ty
-        $(, $fn_name:ident, $fn_ident: ident)*
-    ) => {
-        use inexor_rgf_core_model::ReactiveBehaviourContainer as ModelReactiveBehaviourContainer;
-
-        pub struct $factory {
-            pub ty: inexor_rgf_core_model::BehaviourTypeId,
-            $(pub $fn_name: $fn_ident,)*
-        }
-
-        impl $factory {
-            pub fn new(ty: inexor_rgf_core_model::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Self {
-                $factory {
-                    ty,
-                    $($fn_name,)*
-                }
-            }
-        }
-
-        impl $crate::BehaviourFactory<$reactive_instance> for $factory {
-            fn create(
-                &self,
-                reactive_instance: std::sync::Arc<$reactive_instance>,
-            ) -> Result<std::sync::Arc<dyn $crate::BehaviourFsm<$reactive_instance> + Send + Sync>, $crate::BehaviourCreationError> {
-                // Prevent that the same behaviour can be applied twice / multiple times.
-                if reactive_instance.behaves_as(&self.ty) {
-                    return Err($crate::BehaviourCreationError::BehaviourAlreadyApplied(self.ty.clone()));
-                }
-                match <$behaviour>::new(reactive_instance, self.ty.clone() $(, self.$fn_name)*) {
-                    Ok(state) => {
-                        let state = state as std::sync::Arc<dyn $crate::BehaviourFsm<$reactive_instance> + Send + Sync>;
-                        Ok(state)
-                    }
-                    Err(e) => Err(e),
-                }
-            }
-
-            fn behaviour_ty(&self) -> &inexor_rgf_core_model::BehaviourTypeId {
-                &self.ty
-            }
-        }
-    };
-}
+// impl<ID: Clone, T: ReactiveInstance<ID>, F> FromIterator<BehaviourFunctionsReadOnlyView<F>> for BehaviourFactories<ID, T> {
+//     fn from_iter<T: IntoIterator<Item = BehaviourFunctionsReadOnlyView<F>>>(iter: T) -> Self {
+//         for x in iter {
+//
+//         }
+//     }
+// }

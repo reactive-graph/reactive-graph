@@ -1,0 +1,19 @@
+query {
+  types {
+    components
+      (
+        extensions: [
+          {
+            namespace: "metadata"
+            name: "dublin-core"
+          }
+        ]
+      )
+    {
+      namespace
+      name
+      countProperties
+      countExtensions
+    }
+  }
+}

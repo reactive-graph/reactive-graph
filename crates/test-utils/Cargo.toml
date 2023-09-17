@@ -13,23 +13,7 @@ default-test = { workspace = true }
 random-string = { workspace = true }
 rand = { workspace = true }
 rand_derive2 = { workspace = true }
-#serde = { workspace = true, features = [ "derive" ] }
 serde_json = { workspace = true }
-
-#dashmap = { workspace = true, features = [ "serde" ] }
-#paste = { workspace = true }
-#schemars = { workspace = true, features = [ "uuid1" ] }
-#typed-builder = { workspace = true }
-#uuid = { workspace = true, features = ["serde", "v4", "v5"] }
-#wildmatch = { workspace = true }
-
-#inexor-rgf-core-frp = { version = "0.10.0", path = "../frp" }
-#
-#[dev-dependencies]
-#default-test = { workspace = true }
-#random-string = { workspace = true }
-#rand = { workspace = true }
-#rand_derive2 = { workspace = true }
 
 [lib]
 crate-type = ["lib"]

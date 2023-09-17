@@ -34,9 +34,9 @@ use crate::graphql::dynamic::get_relation_types;
 use crate::graphql::dynamic::get_scalars;
 use crate::graphql::dynamic::get_unions;
 use crate::graphql::dynamic::SchemaBuilderContext;
-use crate::reactive::ReactivePropertyContainer;
 use crate::model_runtime::EventProperties::EVENT;
 use crate::plugins::SystemEventTypes;
+use crate::reactive::ReactivePropertyContainer;
 
 static UUID_TYPE_SYSTEM_CHANGED_EVENT: Uuid = Uuid::from_u128(0x6ba7b8109e1511d150b900c04fe530c7);
 

@@ -9,5 +9,5 @@ use crate::plugins::PluginContext;
 pub trait PluginContextFactory: Send + Sync + Lifecycle {
     fn construct_plugin_context(&self);
 
-    fn get(&self) -> Option<Arc<dyn PluginContext>>;
+    fn get(&self) -> Option<Arc<dyn PluginContext + Send + Sync>>;
 }

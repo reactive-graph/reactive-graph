@@ -1,10 +1,12 @@
+use async_trait::async_trait;
 use std::sync::Arc;
+
 use uuid::Uuid;
 
-use crate::reactive::EntityBehaviourTypeId;
-use crate::reactive::ReactiveEntity;
+use inexor_rgf_behaviour_api::prelude::*;
+
 use crate::plugins::EntityBehaviourRegistry;
-use crate::behaviour::BehaviourFactory;
+use crate::reactive::ReactiveEntity;
 
 pub struct EntityBehaviourRegistryImpl {
     entity_behaviour_manager: Arc<dyn crate::api::EntityBehaviourManager>,
@@ -26,14 +28,14 @@ impl EntityBehaviourRegistryImpl {
     }
 }
 
+#[async_trait]
 impl EntityBehaviourRegistry for EntityBehaviourRegistryImpl {
-    fn register(&self, entity_behaviour_ty: EntityBehaviourTypeId, factory: Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>) {
+    async fn register(&self, entity_behaviour_ty: EntityBehaviourTypeId, factory: Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>) {
         self.entity_behaviour_registry.register(entity_behaviour_ty.clone(), factory);
-        self.reactive_entity_manager
-            .add_behaviour_to_all_entity_instances(&entity_behaviour_ty);
+        self.reactive_entity_manager.add_behaviour_to_all_entity_instances(&entity_behaviour_ty);
     }
 
-    fn unregister(&self, entity_behaviour_ty: &EntityBehaviourTypeId) {
+    async fn unregister(&self, entity_behaviour_ty: &EntityBehaviourTypeId) {
         self.entity_behaviour_registry.unregister(entity_behaviour_ty);
         self.entity_behaviour_manager.remove_behaviours_by_behaviour(&entity_behaviour_ty.behaviour_ty);
     }

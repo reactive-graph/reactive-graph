@@ -3,6 +3,7 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::RwLock;
 
+use crate::plugins::PluginLoadingError;
 use dashmap::DashSet;
 use libloading::Library;
 use log::debug;
@@ -10,6 +11,8 @@ use log::error;
 use log::info;
 use log::trace;
 use uuid::Uuid;
+
+use springtime_di::instance_provider::ComponentInstanceProviderError;
 
 use crate::implementation::plugins::get_deploy_path;
 use crate::implementation::plugins::get_install_path;
@@ -319,69 +322,59 @@ impl PluginContainer {
     }
 
     /// Constructs the proxy for the plugin.
-    pub fn construct_proxy(&mut self) -> PluginTransitionResult {
+    pub fn construct_proxy(&mut self, plugin_context: Arc<dyn PluginContext + Send + Sync>) -> PluginTransitionResult {
         if self.state != PluginState::Starting(PluginStartingState::ConstructingProxy)
             && self.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
         {
             return NoChange;
         }
         let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy));
+
         let reader = self.plugin_declaration.read().unwrap();
         if let Some(plugin_declaration) = *reader {
             trace!("Plugin {} is constructing proxy", self.id);
-            let mut registrar = PluginRegistrar::new();
+            let mut registrar = PluginRegistrar::new(plugin_context);
             unsafe {
-                (plugin_declaration.register)(&mut registrar);
+                if let Err(e) = (plugin_declaration.register)(&mut registrar) {
+                    error!("Dependency injection error in plugin {}:\n\n  {e}\n", self.id);
+                    if let PluginLoadingError::ComponentInstanceProviderError(ComponentInstanceProviderError::NoPrimaryInstance { type_name, .. }) = e {
+                        if let Some(type_name) = type_name {
+                            let type_name_stripped = type_name.replace("dyn ", "").replace(" + core::marker::Send + core::marker::Sync", "");
+                            let notice = if type_name_stripped == "inexor_rgf_plugin_api::plugin::Plugin" {
+                                "\n  Notice:    Every plugin must provide a component that implements inexor_rgf_plugin_api::Plugin!"
+                            } else {
+                                ""
+                            };
+                            error!("Missing component\n\n  Plugin:    {}\n  Component: {type_name_stripped}{notice}\n", plugin_declaration.name);
+                        }
+                    }
+                    self.state = PluginState::Resolved;
+                    return NoChange;
+                }
+                self.state = PluginState::Starting(PluginStartingState::Registering);
             }
             let mut writer = self.proxy.write().unwrap();
             *writer = registrar.plugin;
             debug!("Plugin {} successfully constructed proxy", self.id);
             if refreshing {
-                self.state = PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::InjectingContext));
+                self.state = PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Registering));
             } else {
-                self.state = PluginState::Starting(PluginStartingState::InjectingContext);
+                self.state = PluginState::Starting(PluginStartingState::Registering);
             }
             return Changed;
         }
         NoChange
     }
 
-    /// Injects the context into the plugin.
-    pub fn inject_context(&mut self, plugin_context: Arc<dyn PluginContext>) -> PluginTransitionResult {
-        if self.state != PluginState::Starting(PluginStartingState::InjectingContext)
-            && self.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::InjectingContext))
-        {
-            return NoChange;
-        }
-        let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::InjectingContext));
-        let reader = self.proxy.read().unwrap();
-        if let Some(proxy) = reader.as_ref().cloned() {
-            trace!("Plugin {} is injecting context", self.id);
-            match proxy.set_context(plugin_context) {
-                Ok(_) => {
-                    debug!("Plugin {} successfully injected context", self.id);
-                    if refreshing {
-                        self.state = PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Registering));
-                    } else {
-                        self.state = PluginState::Starting(PluginStartingState::Registering);
-                    }
-                    return Changed;
-                }
-                Err(e) => {
-                    error!("Failed to inject context {}: {:?}", self.id, e);
-                }
-            }
-        }
-        NoChange
-    }
-
     /// Calls the activate method of the plugin.
     pub async fn activate(&mut self) -> PluginTransitionResult {
+        // info!("{:?}", self.state);
         if self.state != PluginState::Starting(PluginStartingState::Activating)
             && self.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating))
         {
             return NoChange;
         }
+        let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::Activating));
 
         let proxy = {
             let reader = self.proxy.read().unwrap();
@@ -400,13 +393,22 @@ impl PluginContainer {
                     self.name().unwrap_or_default().replace("inexor-rgf-plugin-", ""),
                     self.version().unwrap_or_default()
                 );
-                return Changed;
             }
             Err(e) => {
-                error!("Plugin {} failed to activate: {:?}", self.id, e);
+                error!(
+                    "[FAILED] {} {}: {}",
+                    self.name().unwrap_or_default().replace("inexor-rgf-plugin-", ""),
+                    self.version().unwrap_or_default(),
+                    e
+                );
+                if refreshing {
+                    self.state = PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ActivationFailed));
+                } else {
+                    self.state = PluginState::Starting(PluginStartingState::ActivationFailed);
+                }
             }
         }
-        NoChange
+        Changed
     }
 
     /// Calls the deactivate method of the plugin
@@ -438,35 +440,6 @@ impl PluginContainer {
             }
             Err(e) => {
                 error!("Plugin {} failed to deactivate: {:?}", self.id, e);
-            }
-        }
-        NoChange
-    }
-
-    /// Removes the plugin context from the plugin.
-    pub fn remove_context(&mut self) -> PluginTransitionResult {
-        if self.state != PluginState::Stopping(PluginStoppingState::RemoveContext)
-            && self.state != PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveContext))
-        {
-            return NoChange;
-        }
-        let refreshing = self.state == PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveContext));
-        let reader = self.proxy.read().unwrap();
-        if let Some(proxy) = reader.as_ref().cloned() {
-            trace!("Plugin {} is removing the plugin context", self.id);
-            match proxy.remove_context() {
-                Ok(_) => {
-                    debug!("Plugin {} successfully removed the plugin context", self.id);
-                    if refreshing {
-                        self.state = PluginState::Refreshing(PluginRefreshingState::Stopping(PluginStoppingState::RemoveProxy));
-                    } else {
-                        self.state = PluginState::Stopping(PluginStoppingState::RemoveProxy);
-                    }
-                    return Changed;
-                }
-                Err(e) => {
-                    error!("Plugin {} failed to remove plugin context: {:?}", self.id, e);
-                }
             }
         }
         NoChange

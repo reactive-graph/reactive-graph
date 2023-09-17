@@ -1,18 +1,21 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_core_model::RelationInstanceId;
 
-use crate::behaviour::BehaviourFactory;
+use inexor_rgf_behaviour_api::prelude::*;
+
 use crate::model::ComponentTypeId;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
+use crate::model::RelationInstanceId;
 use crate::reactive::ReactiveRelation;
 
 #[async_trait]
 pub trait RelationComponentBehaviourRegistry: Send + Sync {
     /// Registers a factory for creating relation component behaviours.
-    fn register(&self, component_behaviour_ty: ComponentBehaviourTypeId, factory: Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>);
+    fn register(
+        &self,
+        component_behaviour_ty: ComponentBehaviourTypeId,
+        factory: Arc<dyn BehaviourFactory<RelationInstanceId, ReactiveRelation> + Send + Sync>,
+    );
 
     /// Unregisters a factory for creating relation component behaviours.
     fn unregister(&self, component_behaviour_ty: &ComponentBehaviourTypeId);

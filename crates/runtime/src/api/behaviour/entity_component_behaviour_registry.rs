@@ -3,10 +3,9 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use uuid::Uuid;
 
-use crate::behaviour::BehaviourFactory;
+use inexor_rgf_behaviour_api::prelude::*;
+
 use crate::model::ComponentTypeId;
-use crate::reactive::BehaviourTypeId;
-use crate::reactive::ComponentBehaviourTypeId;
 use crate::reactive::ReactiveEntity;
 
 #[async_trait]

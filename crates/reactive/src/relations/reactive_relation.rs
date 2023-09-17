@@ -8,10 +8,10 @@ use serde_json::Map;
 use serde_json::Value;
 use typed_builder::TypedBuilder;
 
-use crate::BehaviourTypeId;
-use crate::BehaviourTypeIds;
-use crate::ReactiveProperties;
-use crate::ComponentContainer;
+use inexor_rgf_reactive_api::prelude::*;
+
+use crate::behaviour_api::BehaviourTypeId;
+use crate::behaviour_api::BehaviourTypeIds;
 use crate::model::Component;
 use crate::model::ComponentTypeId;
 use crate::model::ComponentTypeIds;
@@ -19,8 +19,8 @@ use crate::model::Extensions;
 use crate::model::Mutability;
 use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
-use crate::model::PropertyInstances;
 use crate::model::PropertyInstanceSetter;
+use crate::model::PropertyInstances;
 use crate::model::PropertyType;
 use crate::model::PropertyTypes;
 use crate::model::RelationInstance;
@@ -30,9 +30,9 @@ use crate::model::RelationType;
 use crate::model::RelationTypeId;
 use crate::model::TypeDefinition;
 use crate::model::TypeDefinitionGetter;
-use crate::ReactiveBehaviourContainer;
+use crate::BehaviourTypesContainer;
 use crate::ReactiveEntity;
-use crate::ReactiveInstance;
+use crate::ReactiveProperties;
 use crate::ReactiveProperty;
 use crate::ReactivePropertyContainer;
 
@@ -65,10 +65,8 @@ use crate::ReactivePropertyContainer;
     builder_type(vis="pub", name=ReactiveRelationInstanceBuilder),
 )]
 pub struct ReactiveRelationInstance {
-
     // Possible optimization: Final field id would speed up getting the id
     // pub id: RelationInstanceId,
-
     /// The outbound entity instance.
     pub outbound: ReactiveEntity,
 
@@ -118,11 +116,7 @@ impl ReactiveRelationInstance {
         }
     }
 
-    pub fn new_from_instance(
-        outbound: ReactiveEntity,
-        inbound: ReactiveEntity,
-        instance: RelationInstance,
-    ) -> ReactiveRelationInstance {
+    pub fn new_from_instance(outbound: ReactiveEntity, inbound: ReactiveEntity, instance: RelationInstance) -> ReactiveRelationInstance {
         let id = instance.id();
         let properties = ReactiveProperties::new_with_id_from_properties(id.clone(), instance.properties);
         // let properties = instance.properties;
@@ -202,36 +196,85 @@ impl ReactiveRelation {
         ReactiveRelationInstance::builder()
     }
 
-    pub fn builder_with_entities(outbound: ReactiveEntity, ty: &RelationInstanceTypeId, inbound: ReactiveEntity) -> ReactiveRelationInstanceBuilder<((ReactiveEntity, ), (RelationInstanceTypeId, ), (ReactiveEntity, ), (), (), (), ())> {
-        ReactiveRelation::builder()
-            .outbound(outbound)
-            .ty(ty)
-            .inbound(inbound)
+    pub fn builder_with_entities(
+        outbound: ReactiveEntity,
+        ty: &RelationInstanceTypeId,
+        inbound: ReactiveEntity,
+    ) -> ReactiveRelationInstanceBuilder<((ReactiveEntity,), (RelationInstanceTypeId,), (ReactiveEntity,), (), (), (), ())> {
+        ReactiveRelation::builder().outbound(outbound).ty(ty).inbound(inbound)
     }
 
     /// Creates a builder for the given relation instance type id.
     /// Generates an id for the reactive relation.
     /// Converts property types into reactive properties and initializes the properties with default values.
-    pub fn builder_with_entities_and_properties(outbound: ReactiveEntity, ty: &RelationInstanceTypeId, inbound: ReactiveEntity, properties: &PropertyTypes) -> ReactiveRelationInstanceBuilder<((ReactiveEntity, ), (RelationInstanceTypeId, ), (ReactiveEntity, ), (), (ReactiveProperties<RelationInstanceId>, ), (), ())> {
+    pub fn builder_with_entities_and_properties(
+        outbound: ReactiveEntity,
+        ty: &RelationInstanceTypeId,
+        inbound: ReactiveEntity,
+        properties: &PropertyTypes,
+    ) -> ReactiveRelationInstanceBuilder<(
+        (ReactiveEntity,),
+        (RelationInstanceTypeId,),
+        (ReactiveEntity,),
+        (),
+        (ReactiveProperties<RelationInstanceId>,),
+        (),
+        (),
+    )> {
         let id = RelationInstanceId::new(outbound.id, ty, inbound.id);
         let properties = PropertyInstances::new_from_property_types_with_defaults(properties);
         let reactive_properties: ReactiveProperties<RelationInstanceId> = ReactiveProperties::new_with_id_from_properties(id, properties);
-        ReactiveRelation::builder_with_entities(outbound, &ty, inbound)
-            .properties(reactive_properties)
-
+        ReactiveRelation::builder_with_entities(outbound, &ty, inbound).properties(reactive_properties)
     }
 
-    pub fn builder_from_type_with_unique_id(outbound: ReactiveEntity, relation_type: &RelationType, inbound: ReactiveEntity) -> ReactiveRelationInstanceBuilder<((ReactiveEntity, ), (RelationInstanceTypeId, ), (ReactiveEntity, ), (), (ReactiveProperties<RelationInstanceId>, ), (), ())> {
+    pub fn builder_from_type_with_unique_id(
+        outbound: ReactiveEntity,
+        relation_type: &RelationType,
+        inbound: ReactiveEntity,
+    ) -> ReactiveRelationInstanceBuilder<(
+        (ReactiveEntity,),
+        (RelationInstanceTypeId,),
+        (ReactiveEntity,),
+        (),
+        (ReactiveProperties<RelationInstanceId>,),
+        (),
+        (),
+    )> {
         let ty = RelationInstanceTypeId::new_unique_id(&relation_type.ty);
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
 
-    pub fn builder_from_type_with_unique_instance_id(outbound: ReactiveEntity, relation_type: &RelationType, instance_id: String, inbound: ReactiveEntity) -> ReactiveRelationInstanceBuilder<((ReactiveEntity, ), (RelationInstanceTypeId, ), (ReactiveEntity, ), (), (ReactiveProperties<RelationInstanceId>, ), (), ())> {
+    pub fn builder_from_type_with_unique_instance_id(
+        outbound: ReactiveEntity,
+        relation_type: &RelationType,
+        instance_id: String,
+        inbound: ReactiveEntity,
+    ) -> ReactiveRelationInstanceBuilder<(
+        (ReactiveEntity,),
+        (RelationInstanceTypeId,),
+        (ReactiveEntity,),
+        (),
+        (ReactiveProperties<RelationInstanceId>,),
+        (),
+        (),
+    )> {
         let ty = RelationInstanceTypeId::new_unique_for_instance_id(&relation_type.ty, instance_id);
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
 
-    pub fn builder_from_type_with_random_instance_id(outbound: ReactiveEntity, relation_type: &RelationType, inbound: ReactiveEntity) -> ReactiveRelationInstanceBuilder<((ReactiveEntity, ), (RelationInstanceTypeId, ), (ReactiveEntity, ), (), (ReactiveProperties<RelationInstanceId>, ), (), ())> {
+    pub fn builder_from_type_with_random_instance_id(
+        outbound: ReactiveEntity,
+        relation_type: &RelationType,
+        inbound: ReactiveEntity,
+    ) -> ReactiveRelationInstanceBuilder<(
+        (ReactiveEntity,),
+        (RelationInstanceTypeId,),
+        (ReactiveEntity,),
+        (),
+        (ReactiveProperties<RelationInstanceId>,),
+        (),
+        (),
+    )> {
         let ty = RelationInstanceTypeId::new_with_random_instance_id(&relation_type.ty);
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
@@ -254,13 +297,8 @@ impl ReactiveRelation {
         ReactiveRelationInstance::new_from_properties(outbound, ty, inbound, properties).into()
     }
 
-    pub fn new_from_instance(
-        outbound: ReactiveEntity,
-        inbound: ReactiveEntity,
-        instance: RelationInstance,
-    ) -> ReactiveRelation {
+    pub fn new_from_instance(outbound: ReactiveEntity, inbound: ReactiveEntity, instance: RelationInstance) -> ReactiveRelation {
         ReactiveRelationInstance::new_from_instance(outbound, inbound, instance).into()
-
     }
 
     // pub fn new_from_type_with_properties<S: Into<String>>(
@@ -374,7 +412,7 @@ impl ComponentContainer for ReactiveRelation {
     }
 }
 
-impl ReactiveBehaviourContainer for ReactiveRelation {
+impl BehaviourTypesContainer for ReactiveRelation {
     fn get_behaviours(&self) -> Vec<BehaviourTypeId> {
         self.behaviours.iter().map(|b| b.key().clone()).collect()
     }
@@ -514,125 +552,4 @@ impl From<ReactiveRelationInstance> for ReactiveRelation {
     fn from(relation_instance: ReactiveRelationInstance) -> Self {
         ReactiveRelation(Arc::new(relation_instance))
     }
-}
-
-#[macro_export]
-macro_rules! relation_model {
-    (
-        $ident: ident
-        $(,
-            $accessor_type: tt
-            $(
-            $accessor_name: ident
-            $accessor_data_type: tt
-            )?
-        )*
-        $(,)?
-    ) => {
-        // use $crate::PropertyInstanceGetter as RxPropertyInstanceGetter;
-        // use $crate::PropertyInstanceSetter as RxPropertyInstanceSetter;
-        pub struct $ident {
-            i: std::sync::Arc<$crate::ReactiveRelation>,
-        }
-
-        impl $ident {
-            $(
-                $crate::rx_accessor!(pub $accessor_type $($accessor_name $accessor_data_type)?);
-            )*
-        }
-
-        impl $crate::ReactiveInstanceGetter<$crate::ReactiveRelation> for $ident {
-            fn get_reactive_instance(&self) -> &std::sync::Arc<$crate::ReactiveRelation> {
-                &self.i
-            }
-        }
-
-        impl From<std::sync::Arc<$crate::ReactiveRelation>> for $ident {
-            fn from(i: std::sync::Arc<$crate::ReactiveRelation>) -> Self {
-                $ident { i }
-            }
-        }
-
-        impl $crate::PropertyInstanceGetter for $ident {
-            fn get<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Value> {
-                self.i.get(property_name)
-            }
-
-            fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-                self.i.as_bool(property_name)
-            }
-
-            fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-                self.i.as_u64(property_name)
-            }
-
-            fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-                self.i.as_i64(property_name)
-            }
-
-            fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-                self.i.as_f64(property_name)
-            }
-
-            fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-                self.i.as_string(property_name)
-            }
-
-            fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<serde_json::Value>> {
-                self.i.as_array(property_name)
-            }
-
-            fn as_object<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Map<String, serde_json::Value>> {
-                self.i.as_object(property_name)
-            }
-        }
-
-        impl $crate::PropertyInstanceSetter for $ident {
-            fn set_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set_checked(property_name, value);
-            }
-
-            fn set<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set(property_name, value);
-            }
-
-            fn set_no_propagate_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set_no_propagate_checked(property_name, value);
-            }
-
-            fn set_no_propagate<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
-                self.i.set_no_propagate(property_name, value);
-            }
-
-            fn mutability<S: Into<String>>(&self, property_name: S) -> Option<$crate::Mutability> {
-                self.i.mutability(property_name)
-            }
-
-            fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: $crate::Mutability) {
-                self.i.set_mutability(property_name, mutability);
-            }
-        }
-
-        impl $crate::NamespacedTypeGetter for $ident {
-            fn namespace(&self) -> String {
-                self.i.ty.namespace()
-            }
-
-            fn type_name(&self) -> String {
-                self.i.ty.type_name()
-            }
-        }
-
-        impl $crate::TypeDefinitionGetter for $ident {
-            fn type_definition(&self) -> $crate::TypeDefinition {
-                self.i.ty.type_definition()
-            }
-        }
-
-        impl std::fmt::Display for $ident {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-                write!(f, "{}", &self.i)
-            }
-        }
-    };
 }

@@ -7,22 +7,19 @@ use std::sync::RwLock;
 
 use async_trait::async_trait;
 use dashmap::DashMap;
+use inexor_rgf_rt_api::ReactiveFlowCreationError;
 use log::debug;
 use log::error;
 use log::trace;
 use path_tree::PathTree;
 use serde_json::Value;
 use uuid::Uuid;
-use inexor_rgf_core_model::{EntityInstances, RelationInstances};
-use inexor_rgf_reactive::ReactiveInstance;
-use crate::model::RelationInstanceId;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::FlowTypeManager;
 use crate::api::Lifecycle;
 use crate::api::ReactiveEntityManager;
-use crate::api::ReactiveFlowCreationError;
 use crate::api::ReactiveFlowManager;
 use crate::api::ReactiveRelationManager;
 use crate::api::RelationTypeManager;
@@ -30,6 +27,7 @@ use crate::api::SystemEventManager;
 // use crate::builder::FlowInstanceBuilder;
 use crate::di::*;
 use crate::model::EntityInstance;
+use crate::model::EntityInstances;
 use crate::model::ExtensionContainer;
 use crate::model::FlowInstance;
 use crate::model::FlowTypeId;
@@ -39,11 +37,9 @@ use crate::model::NamespacedTypeGetter;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
 use crate::model::PropertyTypeDefinition;
-use crate::reactive::ReactiveEntity;
-use crate::reactive::ReactiveFlow;
-use crate::reactive::ReactivePropertyContainer;
-use crate::reactive::ReactiveRelation;
 use crate::model::RelationInstance;
+use crate::model::RelationInstanceId;
+use crate::model::RelationInstances;
 use crate::model::TypeDefinitionGetter;
 use crate::model_flow::EXTENSION_FLOW_RESOLVE_EXISTING_INSTANCE;
 use crate::model_flow::EXTENSION_FLOW_UUID_TYPE_EXTENSION;
@@ -51,6 +47,11 @@ use crate::model_flow::EXTENSION_FLOW_UUID_TYPE_VARIABLE;
 use crate::model_runtime::LabeledProperties::LABEL;
 use crate::plugins::FlowInstanceProvider;
 use crate::plugins::SystemEvent;
+use crate::reactive::ReactiveEntity;
+use crate::reactive::ReactiveFlow;
+use crate::reactive::ReactivePropertyContainer;
+use crate::reactive::ReactiveRelation;
+use inexor_rgf_reactive_api::prelude::*;
 
 #[wrapper]
 pub struct ReactiveFlowsStorage(RwLock<BTreeMap<Uuid, ReactiveFlow>>);
@@ -89,7 +90,6 @@ pub struct ReactiveFlowManagerImpl {
     flow_type_manager: Wrc<dyn FlowTypeManager>,
 
     // flow_instance_manager: Wrc<dyn FlowInstanceManager>,
-
     reactive_entity_manager: Wrc<dyn ReactiveEntityManager>,
 
     reactive_relation_manager: Wrc<dyn ReactiveRelationManager>,
@@ -159,9 +159,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     fn create(&self, flow_instance: FlowInstance) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
         let reactive_flow_instance = ReactiveFlow::try_from(flow_instance);
         if reactive_flow_instance.is_err() {
-            return Err(ReactiveFlowCreationError::ReactiveFlowConstructionError(
-                reactive_flow_instance.err().unwrap(),
-            ));
+            return Err(ReactiveFlowCreationError::ReactiveFlowConstructionError(reactive_flow_instance.err().unwrap()));
         }
         let reactive_flow_instance = reactive_flow_instance.unwrap();
         self.register_flow_instance_and_reactive_instances(reactive_flow_instance.clone());
@@ -274,7 +272,6 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
         let relation_instances = RelationInstances::new();
 
-
         for relation_instance in flow_type.relation_instances.iter() {
             let relation_ty = relation_instance.relation_type_id();
             trace!("Relation instance type: {}", &relation_instance.ty);
@@ -371,10 +368,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                     // if let Some(entity_type) = self.entity_type_manager.get(&entity_instance.type_name) {
                     //     for property in entity_type.properties.iter() {}
                     // }
-                    match self
-                        .reactive_entity_manager
-                        .register_or_merge_reactive_instance(entity_instance.clone())
-                    {
+                    match self.reactive_entity_manager.register_or_merge_reactive_instance(entity_instance.clone()) {
                         Ok(entity_instance) => {
                             // Replace the entity instance with the actual registered instance instead
                             replaced_entity_instances.insert(*uuid, entity_instance);
@@ -424,10 +418,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                 // Step 5: Register all (recreated) relation instances (if not already registered by edge_key)
                 let mut replaced_relation_instances = HashMap::<RelationInstanceId, ReactiveRelation>::new();
                 for (edge_key, relation_instance) in relation_instances.iter() {
-                    match self
-                        .reactive_relation_manager
-                        .register_or_merge_reactive_instance(relation_instance.clone())
-                    {
+                    match self.reactive_relation_manager.register_or_merge_reactive_instance(relation_instance.clone()) {
                         Ok(relation_instance) => {
                             // Replace the relation instance with the actual registered instance
                             replaced_relation_instances.insert(edge_key.clone(), relation_instance);
@@ -535,8 +526,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             self.reactive_entity_manager.unregister_reactive_instance(entity_instance.id);
         }
         for (_, relation_instance) in reactive_flow_instance.relation_instances.read().unwrap().iter() {
-            self.reactive_relation_manager
-                .unregister_reactive_instance(&relation_instance.id());
+            self.reactive_relation_manager.unregister_reactive_instance(&relation_instance.id());
         }
         let result = self.reactive_flow_instances.0.write().unwrap().remove(&id).is_some();
         // TODO: remove label
@@ -562,11 +552,11 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     //     }
     // }
 
-    fn add_provider(&self, id: Uuid, provider: Arc<dyn FlowInstanceProvider>) {
+    fn register_provider(&self, id: Uuid, provider: Arc<dyn FlowInstanceProvider>) {
         self.flow_instance_providers.0.insert(id, provider);
     }
 
-    fn remove_provider(&self, id: &Uuid) {
+    fn unregister_provider(&self, id: &Uuid) {
         self.flow_instance_providers.0.remove(id);
     }
 }

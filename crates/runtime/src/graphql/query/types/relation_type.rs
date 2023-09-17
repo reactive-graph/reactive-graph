@@ -2,21 +2,22 @@ use std::ops::Deref;
 use std::sync::Arc;
 
 use async_graphql::*;
-use inexor_rgf_core_model::RelationTypes;
 
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::RelationBehaviourRegistry;
 use crate::api::RelationTypeManager;
 use crate::graphql::mutation::ExtensionTypeIdDefinition;
-use crate::graphql::query::{GraphQLComponent, GraphQLEntityTypes};
+use crate::graphql::query::GraphQLComponent;
 use crate::graphql::query::GraphQLEntityType;
+use crate::graphql::query::GraphQLEntityTypes;
 use crate::graphql::query::GraphQLExtension;
 use crate::graphql::query::GraphQLPropertyType;
 use crate::graphql::query::GraphQLRelationBehaviour;
-use crate::model::ComponentOrEntityTypeId;
-use crate::model::NamespacedTypeGetter;
-use crate::model::RelationType;
+use inexor_rgf_graph::ComponentOrEntityTypeId;
+use inexor_rgf_graph::NamespacedTypeGetter;
+use inexor_rgf_graph::RelationType;
+use inexor_rgf_graph::RelationTypes;
 
 pub struct GraphQLRelationType {
     relation_type: RelationType,
@@ -249,10 +250,7 @@ impl From<GraphQLRelationTypes> for Vec<GraphQLRelationType> {
 
 impl From<RelationTypes> for GraphQLRelationTypes {
     fn from(relation_types: RelationTypes) -> Self {
-        let relation_types = relation_types
-            .into_iter()
-            .map(|(_, relation_type)| relation_type.into())
-            .collect();
+        let relation_types = relation_types.into_iter().map(|(_, relation_type)| relation_type.into()).collect();
         GraphQLRelationTypes(relation_types)
     }
 }

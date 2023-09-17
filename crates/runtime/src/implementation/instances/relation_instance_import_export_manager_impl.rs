@@ -6,11 +6,11 @@ use async_trait::async_trait;
 use crate::api::ReactiveRelationManager;
 use crate::api::RelationInstanceImportExportManager;
 use crate::di::*;
-use crate::error::instances::relation::RelationInstanceExportError;
-use crate::error::instances::relation::RelationInstanceImportError;
 use crate::model::RelationInstance;
 use crate::model::RelationInstanceId;
 use crate::reactive::ReactiveRelation;
+use crate::rt_api::RelationInstanceExportError;
+use crate::rt_api::RelationInstanceImportError;
 
 #[component]
 pub struct RelationInstanceImportExportManagerImpl {
@@ -29,7 +29,9 @@ impl RelationInstanceImportExportManager for RelationInstanceImportExportManager
         if self.reactive_relation_manager.has(&id) {
             return Err(RelationInstanceImportError::RelationAlreadyExists(id));
         }
-        self.reactive_relation_manager.create_reactive_instance(relation_instance).map_err(RelationInstanceImportError::ReactiveRelationCreationError)
+        self.reactive_relation_manager
+            .create_reactive_instance(relation_instance)
+            .map_err(RelationInstanceImportError::ReactiveRelationCreationError)
     }
 
     async fn export(&self, id: &RelationInstanceId, path: &str) -> Result<(), RelationInstanceExportError> {
@@ -56,8 +58,8 @@ mod tests {
     use crate::model::RelationType;
     use crate::model::RelationTypeId;
     use crate::reactive::ReactiveEntity;
-    use crate::reactive::ReactiveInstance;
     use crate::reactive::ReactiveRelation;
+    use inexor_rgf_reactive_api::ReactiveInstance;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_relation_instance_import_export_manager() {
@@ -68,8 +70,12 @@ mod tests {
         let reactive_relation_manager = runtime.get_reactive_relation_manager();
         let relation_instance_import_export_manager = runtime.get_relation_instance_import_export_manager();
 
-        let outbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register outbound entity type");
-        let inbound_type = entity_type_manager.register(EntityType::default_test()).expect("Failed to register inbound entity type");
+        let outbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register outbound entity type");
+        let inbound_type = entity_type_manager
+            .register(EntityType::default_test())
+            .expect("Failed to register inbound entity type");
 
         let relation_ty = RelationTypeId::default_test();
         let relation_type = relation_type_manager
@@ -78,13 +84,17 @@ mod tests {
         println!("Registered {relation_ty} -> {}", relation_type.ty);
 
         let outbound = ReactiveEntity::builder_from_entity_type(&outbound_type).build();
-        reactive_entity_manager.register_reactive_instance(outbound.clone()).expect("Failed to register reactive outbound entity!");
+        reactive_entity_manager
+            .register_reactive_instance(outbound.clone())
+            .expect("Failed to register reactive outbound entity!");
         let inbound = ReactiveEntity::builder_from_entity_type(&inbound_type).build();
-        reactive_entity_manager.register_reactive_instance(inbound.clone()).expect("Failed to register reactive inbound entity!");
+        reactive_entity_manager
+            .register_reactive_instance(inbound.clone())
+            .expect("Failed to register reactive inbound entity!");
 
         let reactive_relation = ReactiveRelation::builder_from_type_with_unique_id(outbound.clone(), &relation_type, inbound.clone()).build();
         let relation_instance_id = reactive_relation.id();
-            // let relation_instance_ty = RelationInstanceTypeId::new_with_random_instance_id(&relation_ty);
+        // let relation_instance_ty = RelationInstanceTypeId::new_with_random_instance_id(&relation_ty);
         // let relation_instance_id = RelationInstanceId::new_with_random_instance_id(outbound_entity.id, &relation_ty, inbound_entity.id);
         // RelationInstance::builder()
         //     .outbound_id(outbound_entity.id)
@@ -92,20 +102,36 @@ mod tests {
         //     .inbound_id(inbound_entity.id)
         //     .properties(PropertyInstances::default_test())
         // let relation_instance = ReactiveRelation::new_from_instance(outbound.clone(), inbound.clone(), );
-        reactive_relation_manager.register_reactive_instance(reactive_relation.clone()).expect("Failed to register reactive relation!");
+        reactive_relation_manager
+            .register_reactive_instance(reactive_relation.clone())
+            .expect("Failed to register reactive relation!");
         println!("Relation instance id {relation_instance_id}");
 
         let mut path = env::temp_dir();
-        path.push(format!("{}--{}__{}--{}.json", relation_instance_id.outbound_id, relation_instance_id.namespace(), relation_instance_id.type_name(), relation_instance_id.inbound_id));
+        path.push(format!(
+            "{}--{}__{}--{}.json",
+            relation_instance_id.outbound_id,
+            relation_instance_id.namespace(),
+            relation_instance_id.type_name(),
+            relation_instance_id.inbound_id
+        ));
         let path = path.into_os_string().into_string().unwrap();
 
-        relation_instance_import_export_manager.export(&relation_instance_id, &path).await.expect("Failed to export relation instance");
+        relation_instance_import_export_manager
+            .export(&relation_instance_id, &path)
+            .await
+            .expect("Failed to export relation instance");
         assert!(reactive_relation_manager.has(&relation_instance_id), "Reactive relation should still exist!");
         assert!(reactive_relation_manager.delete(&relation_instance_id), "Failed to delete reactive relation!");
         assert!(!reactive_relation_manager.has(&relation_instance_id), "Reactive relation should have been deleted!");
-        let imported_reactive_relation = relation_instance_import_export_manager.import(&path).await.expect("Failed to import relation instance");
+        let imported_reactive_relation = relation_instance_import_export_manager
+            .import(&path)
+            .await
+            .expect("Failed to import relation instance");
         assert_eq!(relation_instance_id, imported_reactive_relation.id(), "The imported reactive relation's id doesn't match");
-        assert!(reactive_relation_manager.has(&relation_instance_id), "The reactive relation should have been registered during import");
+        assert!(
+            reactive_relation_manager.has(&relation_instance_id),
+            "The reactive relation should have been registered during import"
+        );
     }
-
 }

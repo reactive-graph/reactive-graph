@@ -125,12 +125,12 @@ pub async fn handle_web_resource(
     let uri = request.uri().clone();
     let http_request = convert_request(request);
     match web_resource_manager.get(context_path.clone()) {
-        Some(web_resource) => match web_resource.handle_web_resource(path, http_request) {
+        Some(web_resource) => match web_resource.handle_web_resource(path, http_request).await {
             Ok(response) => convert_response(response),
             Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
         },
         None => match web_resource_manager.get_default() {
-            Some(web_resource) => match web_resource.handle_web_resource(format!("{}/{}", context_path, path), http_request) {
+            Some(web_resource) => match web_resource.handle_web_resource(format!("{}/{}", context_path, path), http_request).await {
                 Ok(response) => convert_response(response),
                 Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
             },
@@ -154,7 +154,7 @@ pub async fn handle_root_web_resource(
     debug!("path: {} uri: {}", path, uri);
     let http_request = convert_request(request);
     match web_resource_manager.get_default() {
-        Some(web_resource) => match web_resource.handle_web_resource(path, http_request) {
+        Some(web_resource) => match web_resource.handle_web_resource(path, http_request).await {
             Ok(response) => convert_response(response),
             Err(err) => HttpResponse::InternalServerError().body(format!("500 Internal Server Error: {}", err)),
         },
@@ -313,7 +313,7 @@ impl GraphQLServerImpl {
                 .with_single_cert(cert_chain, keys.remove(0))
                 .unwrap();
             info!("Starting HTTP/GraphQL server on {}", graphql_server_config.url());
-            http_server.bind_rustls(graphql_server_config.addr(), tls_config)?.run()
+            http_server.bind_rustls_021(graphql_server_config.addr(), tls_config)?.run()
         } else {
             info!("Starting HTTP/GraphQL server on {}", graphql_server_config.url());
             http_server.bind(graphql_server_config.addr())?.run()

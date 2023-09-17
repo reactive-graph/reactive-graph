@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 
-use crate::error::types::entity::EntityTypeExportError;
-use crate::error::types::entity::EntityTypeImportError;
 use crate::model::EntityType;
 use crate::model::EntityTypeId;
+use crate::rt_api::EntityTypeExportError;
+use crate::rt_api::EntityTypeImportError;
 
 #[async_trait]
 pub trait EntityTypeImportExportManager: Send + Sync {

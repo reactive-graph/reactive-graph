@@ -1,19 +1,15 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::error::types::relation::RelationTypeCreationError;
-use crate::error::types::relation::RelationTypeRegistrationError;
-use crate::model::PropertyTypes;
-use crate::model::Extensions;
-use crate::model::ComponentTypeIds;
 use crate::model::ComponentOrEntityTypeId;
 use crate::model::ComponentTypeId;
+use crate::model::ComponentTypeIds;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::Namespaces;
 use crate::model::PropertyType;
+use crate::model::PropertyTypes;
 use crate::model::RelationType;
 use crate::model::RelationTypeAddComponentError;
 use crate::model::RelationTypeAddExtensionError;
@@ -24,10 +20,11 @@ use crate::model::RelationTypeMergeError;
 use crate::model::RelationTypeRemoveComponentError;
 use crate::model::RelationTypeRemoveExtensionError;
 use crate::model::RelationTypeRemovePropertyError;
-use crate::model::RelationTypes;
 use crate::model::RelationTypeUpdateExtensionError;
 use crate::model::RelationTypeUpdatePropertyError;
-use crate::plugins::RelationTypeProvider;
+use crate::model::RelationTypes;
+use crate::rt_api::RelationTypeCreationError;
+use crate::rt_api::RelationTypeRegistrationError;
 
 #[async_trait]
 pub trait RelationTypeManager: Send + Sync + Lifecycle {
@@ -104,7 +101,12 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
 
     /// Updates the property with the given property_name.
     /// It's possible to rename the property by using another name in the new property than the provided property_name.
-    fn update_property(&self, relation_ty: &RelationTypeId, property_name: &str, property_type: PropertyType) -> Result<PropertyType, RelationTypeUpdatePropertyError>;
+    fn update_property(
+        &self,
+        relation_ty: &RelationTypeId,
+        property_name: &str,
+        property_type: PropertyType,
+    ) -> Result<PropertyType, RelationTypeUpdatePropertyError>;
 
     /// Removes the property with the given property_name from the relation type with the given name.
     fn remove_property(&self, ty: &RelationTypeId, property_name: &str) -> Result<PropertyType, RelationTypeRemovePropertyError>;
@@ -114,7 +116,12 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
 
     /// Updates the extension with the given extension type.
     /// It's possible to rename the extension by using another extension type in the new extension than the provided extension type.
-    fn update_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId, extension: Extension) -> Result<Extension, RelationTypeUpdateExtensionError>;
+    fn update_extension(
+        &self,
+        relation_ty: &RelationTypeId,
+        extension_ty: &ExtensionTypeId,
+        extension: Extension,
+    ) -> Result<Extension, RelationTypeUpdateExtensionError>;
 
     /// Removes the extension with the given extension_name from the relation type with the given name.
     fn remove_extension(&self, relation_ty: &RelationTypeId, extension_ty: &ExtensionTypeId) -> Result<Extension, RelationTypeRemoveExtensionError>;
@@ -125,7 +132,4 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     /// Validates the relation type with the given name.
     /// Tests that all components, the outbound and inbound entity type exists.
     fn validate(&self, ty: &RelationTypeId) -> bool;
-
-    /// Registers a relation type provider.
-    fn add_provider(&self, relation_type_provider: Arc<dyn RelationTypeProvider>);
 }

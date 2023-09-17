@@ -4,24 +4,24 @@ use async_graphql::*;
 use log::debug;
 use serde_json::json;
 use uuid::Uuid;
-use crate::model::RelationInstanceId;
 
 use crate::api::ReactiveEntityManager;
 use crate::api::ReactiveRelationManager;
 use crate::api::RelationBehaviourManager;
 use crate::api::RelationComponentBehaviourManager;
 use crate::api::RelationTypeManager;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::graphql::mutation::BehaviourTypeIdDefinition;
 use crate::graphql::mutation::ComponentTypeIdDefinition;
-use crate::graphql::mutation::GraphQLEdgeKey;
+use crate::graphql::mutation::GraphQLRelationInstanceId;
 use crate::graphql::mutation::RelationTypeIdDefinition;
 use crate::graphql::query::GraphQLPropertyInstance;
 use crate::graphql::query::GraphQLRelationInstance;
-use crate::reactive::BehaviourTypeId;
 use crate::model::PropertyInstanceGetter;
 use crate::model::PropertyInstanceSetter;
-use crate::reactive::ReactivePropertyContainer;
+use crate::model::RelationInstanceId;
 use crate::model::RelationInstanceTypeId;
+use crate::reactive::ReactivePropertyContainer;
 
 #[derive(Default)]
 pub struct MutationRelationInstances;
@@ -47,7 +47,7 @@ impl MutationRelationInstances {
     async fn create(
         &self,
         context: &Context<'_>,
-        #[graphql(desc = "Specifies the outbound id, the inbound id, the relation type and the instance_id.")] edge_key: GraphQLEdgeKey,
+        #[graphql(desc = "Specifies the outbound id, the inbound id, the relation type and the instance_id.")] edge_key: GraphQLRelationInstanceId,
         #[graphql(desc = "Creates the relation instance with the given components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLRelationInstance> {
@@ -165,7 +165,7 @@ impl MutationRelationInstances {
     async fn update(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLEdgeKey,
+        edge_key: GraphQLRelationInstanceId,
         #[graphql(desc = "Adds the components with the given name")] add_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Removes the components with the given name")] remove_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
@@ -202,7 +202,8 @@ impl MutationRelationInstances {
         }
         if let Some(components) = remove_components {
             for component in components {
-                relation_instance_manager.remove_component(&id, &component.into());
+                // TODO: handle components which have not been removed
+                let _ = relation_instance_manager.remove_component(&id, &component.into());
             }
         }
         if let Some(properties) = properties {
@@ -234,7 +235,7 @@ impl MutationRelationInstances {
     ///
     /// In case of the default_connector it does NOT lead to a new value propagation, because the
     /// reactive streams are not consumed by the default_connector behaviour.
-    async fn tick(&self, context: &Context<'_>, edge_key: GraphQLEdgeKey) -> Result<GraphQLRelationInstance> {
+    async fn tick(&self, context: &Context<'_>, edge_key: GraphQLRelationInstanceId) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
         let id = edge_key.into();
         let relation_instance = relation_instance_manager
@@ -245,7 +246,7 @@ impl MutationRelationInstances {
     }
 
     /// Deletes an relation instance.
-    async fn delete(&self, context: &Context<'_>, edge_key: GraphQLEdgeKey) -> Result<bool> {
+    async fn delete(&self, context: &Context<'_>, edge_key: GraphQLRelationInstanceId) -> Result<bool> {
         // let relation_type_manager = context.data::<Arc<dyn RelationTypeManager>>()?;
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager>>()?;
@@ -266,7 +267,7 @@ impl MutationRelationInstances {
     async fn connect(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLEdgeKey,
+        edge_key: GraphQLRelationInstanceId,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
@@ -291,7 +292,7 @@ impl MutationRelationInstances {
     async fn disconnect(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLEdgeKey,
+        edge_key: GraphQLRelationInstanceId,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;
@@ -316,7 +317,7 @@ impl MutationRelationInstances {
     async fn reconnect(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLEdgeKey,
+        edge_key: GraphQLRelationInstanceId,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager>>()?;

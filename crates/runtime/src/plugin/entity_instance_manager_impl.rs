@@ -6,15 +6,15 @@ use uuid::Uuid;
 use crate::api::ComponentManager;
 use crate::api::EntityTypeManager;
 use crate::api::ReactiveEntityManager;
-use crate::error::reactive::entity::ReactiveEntityComponentAddError;
-use crate::reactive::BehaviourTypeId;
+use crate::behaviour_api::BehaviourTypeId;
 use crate::model::ComponentTypeId;
 use crate::model::EntityInstance;
 use crate::model::EntityTypeId;
-use crate::reactive::ReactiveEntity;
-use crate::plugins::entity_instance_manager::EntityInstanceComponentAddError;
-use crate::plugins::entity_instance_manager::EntityInstanceCreationError;
 use crate::plugins::EntityInstanceManager;
+use crate::reactive::ReactiveEntity;
+use crate::rt_api::ReactiveEntityComponentAddError;
+use crate::rt_api::ReactiveEntityCreationError;
+use crate::rt_api::ReactiveEntityRegistrationError;
 
 pub struct EntityInstanceManagerImpl {
     component_manager: Arc<dyn ComponentManager>,
@@ -81,14 +81,16 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
         self.reactive_entity_manager.count_by_behaviour(behaviour_ty)
     }
 
-    fn create(&self, entity_instance: EntityInstance) -> Result<ReactiveEntity, EntityInstanceCreationError> {
+    fn create(&self, entity_instance: EntityInstance) -> Result<ReactiveEntity, ReactiveEntityCreationError> {
         match self.entity_type_manager.get(&entity_instance.ty) {
             Some(entity_type) => {
                 let entity_instance = entity_instance;
                 // Add properties from entity type if not existing
                 for (property_name, property_type) in entity_type.properties {
                     if !entity_instance.properties.contains_key(&property_name) {
-                        entity_instance.properties.insert(property_name.clone(), property_type.data_type.default_value());
+                        entity_instance
+                            .properties
+                            .insert(property_name.clone(), property_type.data_type.default_value());
                     }
                 }
                 // Add properties from components if not existing
@@ -96,25 +98,28 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
                     if let Some(component) = self.component_manager.get(component.key()) {
                         for (property_name, property_type) in component.properties {
                             if !entity_instance.properties.contains_key(&property_name) {
-                                entity_instance.properties.insert(property_name.clone(), property_type.data_type.default_value());
+                                entity_instance
+                                    .properties
+                                    .insert(property_name.clone(), property_type.data_type.default_value());
                             }
                         }
                     }
                 }
-                let reactive_entity_instance =
-                    self.reactive_entity_manager
-                        .create_with_id(&entity_instance.ty, entity_instance.id, entity_instance.properties);
-                match reactive_entity_instance {
-                    Ok(reactive_entity_instance) => Ok(reactive_entity_instance),
-                    Err(_) => Err(EntityInstanceCreationError::Failed),
-                }
+                self.reactive_entity_manager
+                    .create_with_id(&entity_instance.ty, entity_instance.id, entity_instance.properties)
             }
-            None => Err(EntityInstanceCreationError::Failed),
+            None => Err(ReactiveEntityCreationError::ReactiveEntityRegistrationError(
+                ReactiveEntityRegistrationError::UnknownEntityType(entity_instance.ty.clone()),
+            )),
         }
     }
 
-    fn add_component(&self, id: Uuid, component: &ComponentTypeId) -> Result<(), EntityInstanceComponentAddError> {
-        self.reactive_entity_manager.add_component(id, component).map_err(|e| e.into())
+    fn register(&self, reactive_entity: ReactiveEntity) -> Result<ReactiveEntity, ReactiveEntityRegistrationError> {
+        self.reactive_entity_manager.register_reactive_instance(reactive_entity)
+    }
+
+    fn add_component(&self, id: Uuid, component: &ComponentTypeId) -> Result<(), ReactiveEntityComponentAddError> {
+        self.reactive_entity_manager.add_component(id, component)
     }
 
     fn remove_component(&self, id: Uuid, component: &ComponentTypeId) {
@@ -123,14 +128,5 @@ impl EntityInstanceManager for EntityInstanceManagerImpl {
 
     fn delete(&self, id: Uuid) -> bool {
         self.reactive_entity_manager.delete(id)
-    }
-}
-
-impl From<ReactiveEntityComponentAddError> for EntityInstanceComponentAddError {
-    fn from(e: ReactiveEntityComponentAddError) -> Self {
-        match e {
-            ReactiveEntityComponentAddError::MissingComponent(component_ty) => EntityInstanceComponentAddError::MissingComponent(component_ty),
-            ReactiveEntityComponentAddError::MissingInstance(id) => EntityInstanceComponentAddError::MissingInstance(id),
-        }
     }
 }

@@ -1,15 +1,29 @@
 use std::sync::Arc;
 
 use uuid::Uuid;
-use inexor_rgf_core_model::{EntityInstances, Extensions, FlowTypeAddEntityInstanceError, FlowTypeAddExtensionError, FlowTypeAddVariableError, FlowTypeRemoveEntityInstanceError, FlowTypeRemoveExtensionError, FlowTypeRemoveVariableError, FlowTypes, FlowTypeUpdateEntityInstanceError, FlowTypeUpdateExtensionError, FlowTypeUpdateVariableError, PropertyTypes, RelationInstances, Variable};
-use inexor_rgf_core_plugins::FlowTypeCreationError;
 
 use crate::model::EntityInstance;
+use crate::model::EntityInstances;
 use crate::model::Extension;
 use crate::model::ExtensionTypeId;
+use crate::model::Extensions;
 use crate::model::FlowType;
+use crate::model::FlowTypeAddEntityInstanceError;
+use crate::model::FlowTypeAddExtensionError;
+use crate::model::FlowTypeAddVariableError;
 use crate::model::FlowTypeId;
+use crate::model::FlowTypeRemoveEntityInstanceError;
+use crate::model::FlowTypeRemoveExtensionError;
+use crate::model::FlowTypeRemoveVariableError;
+use crate::model::FlowTypeUpdateEntityInstanceError;
+use crate::model::FlowTypeUpdateExtensionError;
+use crate::model::FlowTypeUpdateVariableError;
+use crate::model::FlowTypes;
 use crate::model::PropertyType;
+use crate::model::PropertyTypes;
+use crate::model::RelationInstances;
+use crate::model::Variable;
+use crate::plugins::FlowTypeCreationError;
 use crate::plugins::FlowTypeManager;
 
 pub struct FlowTypeManagerImpl {
@@ -68,14 +82,21 @@ impl FlowTypeManager for FlowTypeManagerImpl {
         variables: PropertyTypes,
         extensions: Extensions,
     ) -> Result<FlowType, FlowTypeCreationError> {
-        self.flow_type_manager.create(ty, description, wrapper_entity_instance, entity_instances, relation_instances, variables, extensions).map_err(|_| FlowTypeCreationError {})
+        self.flow_type_manager
+            .create(ty, description, wrapper_entity_instance, entity_instances, relation_instances, variables, extensions)
+            .map_err(|_| FlowTypeCreationError {})
     }
 
     fn add_entity_instance(&self, flow_ty: &FlowTypeId, entity_instance: EntityInstance) -> Result<(), FlowTypeAddEntityInstanceError> {
         self.flow_type_manager.add_entity_instance(flow_ty, entity_instance)
     }
 
-    fn update_entity_instance(&self, flow_ty: &FlowTypeId, id: Uuid, entity_instance: EntityInstance) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError> {
+    fn update_entity_instance(
+        &self,
+        flow_ty: &FlowTypeId,
+        id: Uuid,
+        entity_instance: EntityInstance,
+    ) -> Result<(Uuid, EntityInstance), FlowTypeUpdateEntityInstanceError> {
         self.flow_type_manager.update_entity_instance(flow_ty, id, entity_instance)
     }
 

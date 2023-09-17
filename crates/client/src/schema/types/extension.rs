@@ -1,7 +1,7 @@
 use serde_json::Value;
 
-use crate::model::NamespacedTypeGetter;
 use crate::schema::scalar::Json;
+use inexor_rgf_graph::NamespacedTypeGetter;
 
 #[derive(cynic::InputObject, Clone, Debug)]
 #[cynic(schema_path = "schema.graphql", schema_module = "crate::schema::schema")]
@@ -10,8 +10,8 @@ pub struct ExtensionTypeId {
     pub namespace: String,
 }
 
-impl From<crate::model::ExtensionTypeId> for ExtensionTypeId {
-    fn from(ty: crate::model::ExtensionTypeId) -> Self {
+impl From<inexor_rgf_graph::ExtensionTypeId> for ExtensionTypeId {
+    fn from(ty: inexor_rgf_graph::ExtensionTypeId) -> Self {
         ExtensionTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
@@ -28,8 +28,8 @@ pub struct ExtensionDefinition {
     pub extension: Json,
 }
 
-impl From<crate::model::Extension> for ExtensionDefinition {
-    fn from(extension: crate::model::Extension) -> Self {
+impl From<inexor_rgf_graph::Extension> for ExtensionDefinition {
+    fn from(extension: inexor_rgf_graph::Extension) -> Self {
         ExtensionDefinition {
             type_: extension.ty.into(),
             description: extension.description,
@@ -52,14 +52,14 @@ impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
     }
 }
 
-impl From<crate::model::Extensions> for ExtensionDefinitions {
-    fn from(extensions: crate::model::Extensions) -> Self {
-        extensions.into_iter().map(|(_, extension) | extension).collect()
+impl From<inexor_rgf_graph::Extensions> for ExtensionDefinitions {
+    fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
+        extensions.into_iter().map(|(_, extension)| extension).collect()
     }
 }
 
-impl FromIterator<crate::model::Extension> for ExtensionDefinitions {
-    fn from_iter<I: IntoIterator<Item=crate::model::Extension>>(iter: I) -> Self {
+impl FromIterator<inexor_rgf_graph::Extension> for ExtensionDefinitions {
+    fn from_iter<I: IntoIterator<Item = inexor_rgf_graph::Extension>>(iter: I) -> Self {
         let mut extensions = ExtensionDefinitions::new();
         for extension in iter {
             extensions.0.push(extension.into());
@@ -84,7 +84,7 @@ pub struct Extension {
     pub extension: Value,
 }
 
-impl From<Extension> for crate::model::Extension {
+impl From<Extension> for inexor_rgf_graph::Extension {
     fn from(extension: Extension) -> Self {
         let ty = crate::model::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
         crate::model::Extension {

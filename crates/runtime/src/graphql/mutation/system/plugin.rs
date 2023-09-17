@@ -22,6 +22,7 @@ impl MutationPlugins {
             .map_err(|e| Error::new(format!("Failed to start {}: {:?}", &id, e)))?;
         // Make all transitions until the plugin and all dependent plugins have stopped
         plugin_resolver.resolve_until_idle().await;
+        plugin_resolver.transition_to_fallback_states().await;
         Ok(GraphQLPlugin { id })
     }
 
@@ -40,6 +41,7 @@ impl MutationPlugins {
             // Resolve until all dependent plugins are started
             plugin_resolver.resolve_until_idle().await;
         }
+        plugin_resolver.transition_to_fallback_states().await;
         Ok(GraphQLPlugin { id })
     }
 
@@ -64,6 +66,7 @@ impl MutationPlugins {
             // Resolve until all dependent plugins are started
             plugin_resolver.resolve_until_idle().await;
         }
+        plugin_resolver.transition_to_fallback_states().await;
         Ok(GraphQLPlugin { id })
     }
 
@@ -77,6 +80,7 @@ impl MutationPlugins {
             .uninstall(&id)
             .map_err(|e| Error::new(format!("Failed to uninstall {}: {:?}", &id, e)))?;
         plugin_resolver.resolve_until_idle().await;
+        plugin_resolver.transition_to_fallback_states().await;
         Ok(true)
     }
 
@@ -89,6 +93,7 @@ impl MutationPlugins {
             .redeploy(&id)
             .map_err(|e| Error::new(format!("Failed to start {}: {:?}", &id, e)))?;
         plugin_resolver.resolve_until_idle().await;
+        plugin_resolver.transition_to_fallback_states().await;
         Ok(GraphQLPlugin { id })
     }
 }

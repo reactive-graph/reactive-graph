@@ -18,8 +18,8 @@ pub trait WebResourceManager: Send + Sync + Lifecycle {
     fn get_default(&self) -> Option<Arc<dyn WebResourceProvider>>;
 
     /// Registers a web resource provider.
-    fn add_provider(&self, id: Uuid, web_resource_provider: Arc<dyn WebResourceProvider>);
+    async fn register_provider(&self, web_resource_provider: Arc<dyn WebResourceProvider>);
 
     /// Unregisters a web resource provider.
-    fn remove_provider(&self, id: &Uuid);
+    async fn unregister_provider(&self, id: Uuid);
 }

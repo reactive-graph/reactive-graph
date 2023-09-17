@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 
 use crate::api::Lifecycle;
-use crate::reactive::ReactiveEntity;
 use crate::plugins::SystemEvent;
 use crate::plugins::SystemEventTypes;
+use crate::reactive::ReactiveEntity;
 
 pub const SYSTEM_EVENT_PROPERTY_LABEL: &str = "label";
 

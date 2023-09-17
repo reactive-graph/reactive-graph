@@ -5,10 +5,10 @@ use serde_json::Value;
 
 use crate::error::CommandArgsError;
 use crate::error::InvalidCommandArgDefinition;
-use crate::model::DataType;
-use crate::model::PropertyType;
-use crate::model::PropertyTypes;
-use crate::model::SocketType;
+use inexor_rgf_graph::DataType;
+use inexor_rgf_graph::PropertyType;
+use inexor_rgf_graph::PropertyTypes;
+use inexor_rgf_graph::SocketType;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct CommandArg {

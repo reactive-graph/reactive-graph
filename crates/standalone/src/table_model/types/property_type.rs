@@ -24,8 +24,8 @@ pub struct PropertyTypeDefinition {
     pub socket_type: SocketType,
 }
 
-impl From<crate::model::PropertyType> for PropertyTypeDefinition {
-    fn from(property_type: crate::model::PropertyType) -> Self {
+impl From<inexor_rgf_graph::PropertyType> for PropertyTypeDefinition {
+    fn from(property_type: inexor_rgf_graph::PropertyType) -> Self {
         let extensions: ExtensionDefinitions = property_type.extensions.into();
         PropertyTypeDefinition {
             name: property_type.name,
@@ -46,8 +46,8 @@ impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
     }
 }
 
-impl From<Vec<crate::model::PropertyType>> for PropertyTypeDefinitions {
-    fn from(property_types: Vec<crate::model::PropertyType>) -> Self {
+impl From<Vec<inexor_rgf_graph::PropertyType>> for PropertyTypeDefinitions {
+    fn from(property_types: Vec<inexor_rgf_graph::PropertyType>) -> Self {
         PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
     }
 }
@@ -76,9 +76,9 @@ pub struct PropertyType {
     pub extensions: Vec<Extension>,
 }
 
-impl From<PropertyType> for crate::model::PropertyType {
+impl From<PropertyType> for inexor_rgf_graph::PropertyType {
     fn from(property_type: PropertyType) -> Self {
-        crate::model::PropertyType {
+        inexor_rgf_graph::PropertyType {
             name: property_type.name,
             description: property_type.description,
             data_type: property_type.data_type.into(),
@@ -89,8 +89,8 @@ impl From<PropertyType> for crate::model::PropertyType {
     }
 }
 
-impl From<crate::model::PropertyType> for PropertyType {
-    fn from(property_type: crate::model::PropertyType) -> Self {
+impl From<inexor_rgf_graph::PropertyType> for PropertyType {
+    fn from(property_type: inexor_rgf_graph::PropertyType) -> Self {
         PropertyType {
             name: property_type.name,
             description: property_type.description,
@@ -123,14 +123,14 @@ pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> Stri
 #[derive(Clone, Debug)]
 pub struct PropertyTypes(pub Vec<PropertyType>);
 
-impl From<PropertyTypes> for crate::model::PropertyTypes {
+impl From<PropertyTypes> for inexor_rgf_graph::PropertyTypes {
     fn from(property_types: PropertyTypes) -> Self {
         property_types.0.into_iter().map(|property_type| property_type.into()).collect()
     }
 }
 
-impl From<crate::model::PropertyTypes> for PropertyTypes {
-    fn from(property_types: crate::model::PropertyTypes) -> Self {
+impl From<inexor_rgf_graph::PropertyTypes> for PropertyTypes {
+    fn from(property_types: inexor_rgf_graph::PropertyTypes) -> Self {
         PropertyTypes(property_types.into_iter().map(|(property_name, property_type)| property_type.into()).collect())
     }
 }
