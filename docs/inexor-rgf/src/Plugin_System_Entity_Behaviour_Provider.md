@@ -5,7 +5,6 @@
 ```rust
 const EXAMPLE: &'static str = "example";
 
-#[wrapper]
 pub struct ExampleStorage(std::sync::RwLock<std::collections::HashMap<Uuid, std::sync::Arc<Example>>>);
 
 #[provides]

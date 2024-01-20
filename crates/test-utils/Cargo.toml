@@ -9,7 +9,10 @@ repository.workspace = true
 readme = "../../README.md"
 
 [dependencies]
+colored = { workspace = true }
 default-test = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
 random-string = { workspace = true }
 rand = { workspace = true }
 rand_derive2 = { workspace = true }

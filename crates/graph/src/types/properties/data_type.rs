@@ -16,7 +16,7 @@ use serde_json::json;
 use serde_json::Value;
 
 #[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
+use inexor_rgf_test_utils::r_string;
 
 /// Derived from serde_json::Value but without value payload.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]
@@ -150,8 +150,8 @@ mod tests {
     use schemars::schema_for;
     use serde_json::Value;
 
-    use crate::test_utils::r_string;
     use crate::DataType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn data_type_should_be_created_using_static_method_call() {

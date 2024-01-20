@@ -130,11 +130,11 @@ pub trait TypeDefinitionGetter {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
     use crate::TypeDefinition;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn type_definition_component_test() {

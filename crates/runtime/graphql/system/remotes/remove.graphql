@@ -1,7 +1,0 @@
-mutation RemoveRemote($address: InstanceAddress!) {
-  system {
-    remotes {
-      remove(address: $address)
-    }
-  }
-}

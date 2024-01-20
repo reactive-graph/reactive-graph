@@ -1,0 +1,28 @@
+[package]
+name = "inexor-rgf-command-model"
+description = "Inexor - Reactive Graph Flow - Command - Model"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+clap = { workspace = true, features = ["string"] }
+lazy_static = { workspace = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+strum_macros = { workspace = true }
+typed-builder = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+
+[dev-dependencies]
+
+[lib]
+crate-type = ["lib"]

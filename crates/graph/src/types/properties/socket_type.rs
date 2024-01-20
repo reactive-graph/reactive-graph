@@ -68,8 +68,8 @@ impl DefaultTest for SocketType {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::SocketType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn socket_type_should_be_created_using_static_method_call() {

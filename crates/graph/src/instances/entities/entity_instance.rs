@@ -29,8 +29,6 @@ use uuid::Uuid;
 
 #[cfg(any(test, feature = "test"))]
 use crate::test_utils::default_from::DefaultFrom;
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
 use crate::AddExtensionError;
 #[cfg(any(test, feature = "test"))]
 use crate::EntityType;
@@ -48,6 +46,8 @@ use crate::RemoveExtensionError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -125,35 +125,35 @@ impl EntityInstance {
 
 impl PropertyInstanceGetter for EntityInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties.get(&property_name.into())
+        self.properties.get(property_name.into())
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties.as_bool(&property_name.into())
+        self.properties.as_bool(property_name.into())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties.as_u64(&property_name.into())
+        self.properties.as_u64(property_name.into())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties.as_i64(&property_name.into())
+        self.properties.as_i64(property_name.into())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties.as_f64(&property_name.into())
+        self.properties.as_f64(property_name.into())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties.as_string(&property_name.into())
+        self.properties.as_string(property_name.into())
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties.as_array(&property_name.into())
+        self.properties.as_array(property_name.into())
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties.as_object(&property_name.into())
+        self.properties.as_object(property_name.into())
     }
 }
 
@@ -430,7 +430,6 @@ pub mod entity_instance_tests {
     use serde_json::json;
     use uuid::Uuid;
 
-    use crate::test_utils::r_string;
     use crate::EntityInstance;
     use crate::EntityTypeId;
     use crate::Extension;
@@ -441,6 +440,7 @@ pub mod entity_instance_tests {
     use crate::NamespacedTypeGetter;
     use crate::PropertyInstanceGetter;
     use crate::PropertyInstances;
+    use inexor_rgf_test_utils::r_string;
 
     pub fn create_entity_instance_with_property<S: Into<String>>(property_name: S) -> EntityInstance {
         let properties = PropertyInstances::new().property(property_name, json!(r_string()));

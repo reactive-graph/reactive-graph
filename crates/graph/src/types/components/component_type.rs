@@ -419,9 +419,9 @@ macro_rules! component_model {
 }
 
 #[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
-#[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 
@@ -453,7 +453,6 @@ mod component_type_tests {
     use schemars::schema_for;
     use serde_json::json;
 
-    use crate::test_utils::r_string;
     use crate::Component;
     use crate::ComponentTypeId;
     use crate::DataType;
@@ -466,6 +465,7 @@ mod component_type_tests {
     use crate::PropertyTypeContainer;
     use crate::PropertyTypes;
     use crate::TypeDefinitionGetter;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn build_component() {

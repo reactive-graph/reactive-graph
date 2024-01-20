@@ -35,7 +35,7 @@ pub(crate) async fn repl(client: &Arc<InexorRgfClient>) -> Result<(), i32> {
         println!("No previous history.");
     }
 
-    let mut return_state = ReturnState::NEUTRAL;
+    let mut return_state = ReturnState::Neutral;
     let mut break_state = false;
     loop {
         let prompt = format!("{} {} {} ", CHAR_PROMPT, client.remote().url().cyan().bold(), return_state.to_string());
@@ -53,27 +53,27 @@ pub(crate) async fn repl(client: &Arc<InexorRgfClient>) -> Result<(), i32> {
                     {
                         Ok(Ok(cli_args)) => {
                             let command = cli_args.commands;
-                            match handle_command(&client, command).await {
+                            match handle_command(client, command).await {
                                 Ok(response) => {
                                     println!("{}", response);
                                     // input was executed (successful or not)
-                                    return_state = ReturnState::SUCCESS;
+                                    return_state = ReturnState::Success;
                                     break_state = false;
                                 }
                                 Err(e) => {
                                     eprintln!("{}: {}", "Command failed with error".red(), e);
                                     // input errored
-                                    return_state = ReturnState::ERROR;
+                                    return_state = ReturnState::Error;
                                 }
                             }
                         }
                         Ok(Err(e)) => {
                             eprintln!("{}", e);
-                            return_state = ReturnState::ERROR;
+                            return_state = ReturnState::Error;
                         }
                         Err(r) => {
                             eprintln!("{}: {}", "Mismatched Quotes".red(), r);
-                            return_state = ReturnState::ERROR;
+                            return_state = ReturnState::Error;
                         }
                     },
                 }
@@ -103,7 +103,7 @@ pub fn longest_common_prefix(s: &Vec<&String>) -> String {
     let mut result = "".to_string();
     let mut count = 0;
     let mut found = false;
-    if s.len() == 0 || s[0].len() == 0 {
+    if s.is_empty() || s[0].is_empty() {
         return result;
     }
     loop {

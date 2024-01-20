@@ -18,8 +18,6 @@ use serde::Deserialize;
 use serde::Serialize;
 use typed_builder::TypedBuilder;
 
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
 use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentOrEntityTypeId;
@@ -58,6 +56,8 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 
 /// A relation type defines the type of an relation instance.
 ///
@@ -338,7 +338,7 @@ impl
         };
         relation_type
             .add_property(property_type)
-            .map_err(|e| RelationTypeAddPropertyError::AddPropertyError(e))
+            .map_err(RelationTypeAddPropertyError::AddPropertyError)
     }
 
     fn update_property<N: Into<String>, P: Into<PropertyType>>(
@@ -352,7 +352,7 @@ impl
         };
         relation_type
             .update_property(property_name, property_type)
-            .map_err(|e| RelationTypeUpdatePropertyError::UpdatePropertyError(e))
+            .map_err(RelationTypeUpdatePropertyError::UpdatePropertyError)
     }
 
     fn remove_property<P: Into<String>>(&self, relation_ty: &RelationTypeId, property_name: P) -> Result<PropertyType, RelationTypeRemovePropertyError> {
@@ -361,7 +361,7 @@ impl
         };
         relation_type
             .remove_property(property_name)
-            .map_err(|e| RelationTypeRemovePropertyError::RemovePropertyError(e))
+            .map_err(RelationTypeRemovePropertyError::RemovePropertyError)
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&self, relation_ty: &RelationTypeId, properties_to_merge: P) -> Result<(), RelationTypeMergePropertiesError> {
@@ -386,9 +386,7 @@ impl
         let Some(relation_type) = self.0.get_mut(relation_ty) else {
             return Err(RelationTypeAddExtensionError::RelationTypeDoesNotExist(relation_ty.clone()));
         };
-        relation_type
-            .add_extension(extension)
-            .map_err(|e| RelationTypeAddExtensionError::AddExtensionError(e))
+        relation_type.add_extension(extension).map_err(RelationTypeAddExtensionError::AddExtensionError)
     }
 
     fn update_extension<T: Into<ExtensionTypeId>, E: Into<Extension>>(
@@ -402,7 +400,7 @@ impl
         };
         relation_type
             .update_extension(extension_ty, extension)
-            .map_err(|e| RelationTypeUpdateExtensionError::UpdateExtensionError(e))
+            .map_err(RelationTypeUpdateExtensionError::UpdateExtensionError)
     }
 
     fn remove_extension<T: Into<ExtensionTypeId>>(&self, relation_ty: &RelationTypeId, extension_ty: T) -> Result<Extension, RelationTypeRemoveExtensionError> {
@@ -411,7 +409,7 @@ impl
         };
         relation_type
             .remove_extension(extension_ty)
-            .map_err(|e| RelationTypeRemoveExtensionError::RemoveExtensionError(e))
+            .map_err(RelationTypeRemoveExtensionError::RemoveExtensionError)
     }
 
     fn merge_extensions<E: Into<Extensions>>(&mut self, relation_ty: &RelationTypeId, extensions_to_merge: E) -> Result<(), RelationTypeMergeExtensionsError> {
@@ -653,7 +651,6 @@ mod tests {
     use schemars::schema_for;
     use serde_json::json;
 
-    use crate::test_utils::r_string;
     use crate::ComponentTypeId;
     use crate::ComponentTypeIdContainer;
     use crate::DataType;
@@ -669,6 +666,7 @@ mod tests {
     use crate::SocketType;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn create_relation_type_test() {

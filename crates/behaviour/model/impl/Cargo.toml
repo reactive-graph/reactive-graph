@@ -1,0 +1,29 @@
+[package]
+name = "inexor-rgf-behaviour-model-impl"
+description = "Inexor - Reactive Graph Flow - Reactive Behaviours"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+dashmap = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+strum = { workspace = true, features = ["derive"] }
+strum_macros = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../../reactive/model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../../reactive/model/impl" }
+inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../api" }
+
+[dev-dependencies]
+random-string = "1.0"
+
+[lib]
+crate-type = ["lib"]

@@ -1,9 +1,0 @@
-query GetAllRemotes {
-  system {
-    remotes {
-      hostname
-      port
-      secure
-    }
-  }
-}

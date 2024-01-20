@@ -1,3 +1,5 @@
+#![feature(lazy_cell)]
+
 pub use component::*;
 pub use entity::*;
 pub use extension::*;

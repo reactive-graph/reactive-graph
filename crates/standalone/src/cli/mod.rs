@@ -1,10 +1,12 @@
-use colored::Colorize;
 use std::process::exit;
+
+use colored::Colorize;
+
+use inexor_rgf_client::InexorRgfClient;
 
 use crate::cli::args::ClientArgs;
 use crate::cli::handler::handle_command;
 use crate::cli::repl::repl;
-use crate::client::client::InexorRgfClient;
 
 pub(crate) mod args;
 pub(crate) mod commands;

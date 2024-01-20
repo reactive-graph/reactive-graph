@@ -1,0 +1,11 @@
+projects:
+  default:
+    schema: ./schema.graphql
+    extensions:
+      endpoints:
+        Runtime http:
+          url: http://localhost:31415/graphql
+          introspect: true
+        Runtime https:
+          url: https://localhost:31415/graphql
+          introspect: true

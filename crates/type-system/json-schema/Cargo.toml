@@ -1,0 +1,18 @@
+[package]
+name = "inexor-rgf-type-system-json-schema"
+description = "Inexor - Reactive Graph Flow - Type System - JSON Schema"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+actix-web = { workspace = true, features = ["rustls-0_21"] }
+schemars = { workspace = true, features = ["uuid1"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+
+[lib]
+crate-type = ["lib"]

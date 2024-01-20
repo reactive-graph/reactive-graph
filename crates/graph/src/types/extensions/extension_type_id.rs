@@ -255,15 +255,13 @@ macro_rules! extension_ty {
         $extension_name: expr
     ) => {
         pub const $extension_name_const: &str = $extension_name;
-        lazy_static::lazy_static! {
-            pub static ref $extension_type_id: $crate::ExtensionTypeId = $crate::ExtensionTypeId::new_from_type($namespace, $extension_name_const);
-        }
+        pub static $extension_type_id: std::sync::LazyLock<$crate::ExtensionTypeId> =
+            std::sync::LazyLock::new(|| $crate::ExtensionTypeId::new_from_type($namespace, $extension_name_const));
     };
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::test_utils::r_string;
     use crate::ExtensionTypeId;
     use crate::ExtensionTypeIds;
     use crate::NamespacedType;
@@ -272,6 +270,7 @@ mod tests {
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
     use default_test::DefaultTest;
+    use inexor_rgf_test_utils::r_string;
     use rand::Rng;
     use schemars::schema_for;
 

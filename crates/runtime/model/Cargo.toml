@@ -1,0 +1,21 @@
+[package]
+name = "inexor-rgf-runtime-model"
+description = "Inexor - Reactive Graph Flow - Runtime - Model"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+strum_macros = { workspace = true }
+typed-builder = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+
+[lib]
+crate-type = ["lib"]

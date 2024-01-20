@@ -3,7 +3,7 @@ use inexor_rgf_client as client;
 use client::InexorRgfClient;
 use client::InexorRgfClientError;
 use client::InexorRgfClientExecutionError;
-use client::Plugin;
+use inexor_rgf_client::schema_plugin::Plugin;
 
 #[derive(Debug)]
 enum SimpleClientError {
@@ -19,12 +19,7 @@ async fn main() -> Result<(), SimpleClientError> {
     // Connect to localhost:31415 (default port)
     let client = InexorRgfClient::new_default().map_err(SimpleClientError::InexorRgfClientError)?;
     // Use inexor_rgf_client to fetch the list of plugins
-    let plugins = client
-        .system()
-        .plugins()
-        .get_all()
-        .await
-        .map_err(SimpleClientError::InexorRgfClientExecutionError)?;
+    let plugins = client.plugins().get_all().await.map_err(SimpleClientError::InexorRgfClientExecutionError)?;
     // Print the list of plugins
     if plugins.len() == 0 {
         println!("No plugins found.");

@@ -26,36 +26,36 @@ pub enum DataType {
     Any,
 }
 
-impl From<DataType> for crate::model::DataType {
+impl From<DataType> for inexor_rgf_graph::DataType {
     fn from(data_type: DataType) -> Self {
         match data_type {
-            DataType::Null => crate::model::DataType::Null,
-            DataType::Bool => crate::model::DataType::Bool,
-            DataType::Number => crate::model::DataType::Number,
-            DataType::String => crate::model::DataType::String,
-            DataType::Array => crate::model::DataType::Array,
-            DataType::Object => crate::model::DataType::Object,
-            DataType::Any => crate::model::DataType::Any,
+            DataType::Null => inexor_rgf_graph::DataType::Null,
+            DataType::Bool => inexor_rgf_graph::DataType::Bool,
+            DataType::Number => inexor_rgf_graph::DataType::Number,
+            DataType::String => inexor_rgf_graph::DataType::String,
+            DataType::Array => inexor_rgf_graph::DataType::Array,
+            DataType::Object => inexor_rgf_graph::DataType::Object,
+            DataType::Any => inexor_rgf_graph::DataType::Any,
         }
     }
 }
 
-impl From<crate::model::DataType> for DataType {
-    fn from(data_type: crate::model::DataType) -> Self {
+impl From<inexor_rgf_graph::DataType> for DataType {
+    fn from(data_type: inexor_rgf_graph::DataType) -> Self {
         match data_type {
-            crate::model::DataType::Null => DataType::Null,
-            crate::model::DataType::Bool => DataType::Bool,
-            crate::model::DataType::Number => DataType::Number,
-            crate::model::DataType::String => DataType::String,
-            crate::model::DataType::Array => DataType::Array,
-            crate::model::DataType::Object => DataType::Object,
-            crate::model::DataType::Any => DataType::Any,
+            inexor_rgf_graph::DataType::Null => DataType::Null,
+            inexor_rgf_graph::DataType::Bool => DataType::Bool,
+            inexor_rgf_graph::DataType::Number => DataType::Number,
+            inexor_rgf_graph::DataType::String => DataType::String,
+            inexor_rgf_graph::DataType::Array => DataType::Array,
+            inexor_rgf_graph::DataType::Object => DataType::Object,
+            inexor_rgf_graph::DataType::Any => DataType::Any,
         }
     }
 }
 
 impl Display for DataType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", crate::model::DataType::from(*self))
+        write!(f, "{}", inexor_rgf_graph::DataType::from(*self))
     }
 }

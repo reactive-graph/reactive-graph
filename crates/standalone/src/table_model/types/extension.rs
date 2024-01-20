@@ -2,7 +2,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::ops::Deref;
 
-use inexor_rgf_graph::NamespacedTypeContainer;
+// use inexor_rgf_graph::NamespacedTypeContainer;
 use serde_json::Value;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
@@ -45,9 +45,9 @@ impl From<inexor_rgf_graph::Extension> for ExtensionDefinition {
     }
 }
 
-pub fn display_extensions(extensions: &Vec<Extension>) -> String {
-    Table::new(extensions).to_string()
-}
+// pub fn display_extensions(extensions: &Vec<Extension>) -> String {
+//     Table::new(extensions).to_string()
+// }
 
 pub fn display_extensions_inline(extensions: &Vec<Extension>) -> String {
     if extensions.is_empty() {
@@ -73,7 +73,7 @@ impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
 
 impl From<inexor_rgf_graph::Extensions> for ExtensionDefinitions {
     fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
-        ExtensionDefinitions(extensions.into_iter().map(|(extension_ty, extension)| extension.into()).collect())
+        ExtensionDefinitions(extensions.into_iter().map(|(_extension_ty, extension)| extension.into()).collect())
     }
 }
 
@@ -140,7 +140,7 @@ impl From<Extensions> for Vec<Extension> {
 
 impl From<inexor_rgf_graph::Extensions> for Extensions {
     fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
-        Extensions(extensions.into_iter().map(|(extension_ty, extension)| extension.into()).collect())
+        Extensions(extensions.into_iter().map(|(_extension_ty, extension)| extension.into()).collect())
     }
 }
 

@@ -1,8 +1,8 @@
 use clap::Args;
 
 use crate::cli::system::remotes::commands::RemotesCommands;
-use crate::config::InstanceAddress;
-use crate::config::DEFAULT_PORT;
+use inexor_rgf_remotes_model::InstanceAddress;
+use inexor_rgf_remotes_model::DEFAULT_PORT;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]

@@ -1,5 +1,0 @@
-mutation Shutdown {
-  system {
-    shutdown
-  }
-}

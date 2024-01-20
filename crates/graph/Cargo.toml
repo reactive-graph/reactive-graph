@@ -6,12 +6,12 @@ authors.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
-readme = "../../../README.md"
+readme = "../../README.md"
 
 [dependencies]
 dashmap = { workspace = true, features = [ "serde" ] }
 default-test = { workspace = true, optional = true }
-paste = { workspace = true }
+##paste = { workspace = true }
 rand = { workspace = true, optional = true }
 rand_derive2 = { workspace = true, optional = true }
 schemars = { workspace = true, features = [ "uuid1" ] }

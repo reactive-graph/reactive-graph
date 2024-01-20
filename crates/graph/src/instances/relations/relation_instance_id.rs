@@ -35,9 +35,9 @@ pub struct RelationInstanceId {
 impl RelationInstanceId {
     pub fn new<RIT: Into<RelationInstanceTypeId>>(outbound_id: Uuid, ty: RIT, inbound_id: Uuid) -> Self {
         RelationInstanceId {
-            outbound_id: outbound_id.into(),
+            outbound_id,
             ty: ty.into(),
-            inbound_id: inbound_id.into(),
+            inbound_id,
         }
     }
 
@@ -130,7 +130,7 @@ impl TryFrom<&String> for RelationInstanceId {
         let outbound_id = s.next().ok_or(())?.try_into().map_err(|_| ())?;
         let ty: RelationInstanceTypeId = s.next().ok_or(())?.to_string().try_into().map_err(|_| ())?;
         let inbound_id = s.next().ok_or(())?.try_into().map_err(|_| ())?;
-        return Ok(RelationInstanceId::new(outbound_id, ty, inbound_id));
+        Ok(RelationInstanceId::new(outbound_id, ty, inbound_id))
     }
 }
 

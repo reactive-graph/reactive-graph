@@ -1,0 +1,19 @@
+[package]
+name = "inexor-rgf-type-system-rest"
+description = "Inexor - Reactive Graph Flow - Type System - REST API"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+actix-web = { workspace = true, features = ["rustls-0_21"] }
+mime = { workspace = true }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../api" }
+
+[lib]
+crate-type = ["lib"]

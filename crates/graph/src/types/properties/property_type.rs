@@ -454,9 +454,9 @@ impl FromIterator<PropertyType> for PropertyTypes {
 }
 
 #[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
-#[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 
@@ -499,12 +499,12 @@ impl PropertyTypes {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::DataType;
     use crate::Extensions;
     use crate::Mutability;
     use crate::PropertyType;
     use crate::SocketType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn property_type_test() {

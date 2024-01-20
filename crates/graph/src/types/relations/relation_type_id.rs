@@ -281,9 +281,8 @@ macro_rules! relation_ty {
         $relation_type_name: expr
     ) => {
         pub const $relation_type_name_const: &str = $relation_type_name;
-        lazy_static::lazy_static! {
-            pub static ref $relation_type_id: $crate::RelationTypeId = $crate::RelationTypeId::new_from_type($namespace, $relation_type_name_const);
-        }
+        pub static $relation_type_id: std::sync::LazyLock<$crate::RelationTypeId> =
+            std::sync::LazyLock::new(|| $crate::RelationTypeId::new_from_type($namespace, $relation_type_name_const));
     };
 }
 
@@ -310,13 +309,13 @@ impl DefaultTest for RelationTypeIds {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
     use crate::RelationTypeId;
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn relation_type_id_test() {

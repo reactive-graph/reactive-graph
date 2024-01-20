@@ -35,7 +35,7 @@ appenders = [ "stdout", "file-application" ]
 
 ### Core
 
-[loggers."inexor_rgf_core_frp"]
+[loggers."inexor_rgf_frp"]
 level = "info"
 
 [loggers."inexor_rgf_core_reactive"]

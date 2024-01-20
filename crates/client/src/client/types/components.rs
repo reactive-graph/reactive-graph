@@ -1,12 +1,12 @@
-#[cynic::schema_for_derives(file = r#"schema.graphql"#, module = "crate::schema::schema")]
+#[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
     use typed_builder::TypedBuilder;
 
-    use crate::schema::types::component::Component;
-    use crate::schema::types::extension::ExtensionDefinition;
-    use crate::schema::types::extension::ExtensionDefinitions;
-    use crate::schema::types::property_type::PropertyTypeDefinition;
-    use crate::schema::types::property_type::PropertyTypeDefinitions;
+    use crate::schema_graphql::types::component::Component;
+    use crate::schema_graphql::types::extension::ExtensionDefinition;
+    use crate::schema_graphql::types::extension::ExtensionDefinitions;
+    use crate::schema_graphql::types::property_type::PropertyTypeDefinition;
+    use crate::schema_graphql::types::property_type::PropertyTypeDefinitions;
     use inexor_rgf_graph::ComponentTypeId;
     use inexor_rgf_graph::NamespacedTypeGetter;
 
@@ -121,7 +121,7 @@ pub mod queries {
 
     #[cfg(test)]
     mod tests {
-        use inexor_rgf_rt::runtime::RuntimeBuilder;
+        use inexor_rgf_runtime_impl::RuntimeBuilder;
 
         use inexor_rgf_graph::ComponentTypeId;
 
@@ -135,7 +135,9 @@ pub mod queries {
                 .get();
             let ty = ComponentTypeId::new_from_type("test", "test");
             let component_manager = runtime.get_component_manager();
-            let _component = component_manager.create(&ty, "", Vec::new(), Vec::new()).expect("Failed to create component");
+            let _component = component_manager
+                .create_component(&ty, "", Vec::new(), Vec::new())
+                .expect("Failed to create component");
             // let inner_runtime = runtime.clone();
             let _port = runtime.get_config_manager().get_graphql_server_config().port();
         }
@@ -154,7 +156,7 @@ pub mod api {
     use crate::client::types::components::queries::CreateComponentVariables;
     use crate::client::InexorRgfClient;
     use crate::client::InexorRgfClientExecutionError;
-    use crate::schema::types::component::Components as ComponentsVec;
+    use crate::schema_graphql::types::component::Components as ComponentsVec;
     use inexor_rgf_graph::Component;
     use inexor_rgf_graph::ComponentTypeId;
 
@@ -171,7 +173,7 @@ pub mod api {
             let components = self
                 .client
                 .client
-                .post(self.client.url())
+                .post(self.client.url_graphql())
                 .run_graphql(get_all_components_query())
                 .await
                 .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
@@ -185,7 +187,7 @@ pub mod api {
             let component = self
                 .client
                 .client
-                .post(self.client.url())
+                .post(self.client.url_graphql())
                 .run_graphql(get_component_by_type_query(&ty.into()))
                 .await
                 .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
@@ -199,7 +201,7 @@ pub mod api {
             let component = self
                 .client
                 .client
-                .post(self.client.url())
+                .post(self.client.url_graphql())
                 .run_graphql(create_component_mutation(component))
                 .await
                 .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
@@ -213,7 +215,7 @@ pub mod api {
             let component = self
                 .client
                 .client
-                .post(self.client.url())
+                .post(self.client.url_graphql())
                 .run_graphql(create_component_with_variables(variables))
                 .await
                 .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?

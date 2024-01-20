@@ -1,0 +1,19 @@
+[package]
+name = "inexor-rgf-dynamic-graph-web"
+description = "Inexor - Reactive Graph Flow - Dynamic Graph - Web"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+actix-web = { workspace = true }
+async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
+async-graphql-actix-web = { workspace = true }
+
+inexor-rgf-dynamic-graph-api = { version = "0.10.0", path = "../api" }
+
+[lib]
+crate-type = ["lib"]

@@ -21,8 +21,6 @@ use serde::Serialize;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
 use crate::AddEntityInstanceError;
 use crate::AddExtensionError;
 use crate::AddRelationInstanceError;
@@ -80,6 +78,8 @@ use crate::UpdateVariableError;
 use crate::Variable;
 use crate::Variables;
 use crate::VariablesContainer;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
@@ -286,7 +286,7 @@ impl RelationInstanceContainer for FlowType {
         id: &RelationInstanceId,
         relation_instance: RelationInstance,
     ) -> Result<(RelationInstanceId, RelationInstance), UpdateRelationInstanceError> {
-        let Some(old_relation_instance) = self.relation_instances.remove(&id) else {
+        let Some(old_relation_instance) = self.relation_instances.remove(id) else {
             return Err(UpdateRelationInstanceError::RelationInstanceDoesNotExist(id.clone()));
         };
         self.relation_instances.push(relation_instance);
@@ -294,7 +294,7 @@ impl RelationInstanceContainer for FlowType {
     }
 
     fn remove_relation_instance(&self, id: &RelationInstanceId) -> Result<Option<(RelationInstanceId, RelationInstance)>, RemoveRelationInstanceError> {
-        if !self.relation_instances.contains_key(&id) {
+        if !self.relation_instances.contains_key(id) {
             return Err(RemoveRelationInstanceError::RelationInstanceDoesNotExist(id.clone()));
         }
         Ok(self.relation_instances.remove(id))
@@ -448,7 +448,7 @@ impl
         };
         flow_type
             .add_entity_instance(entity_instance)
-            .map_err(|e| FlowTypeAddEntityInstanceError::AddEntityInstanceError(e))
+            .map_err(FlowTypeAddEntityInstanceError::AddEntityInstanceError)
     }
 
     fn update_entity_instance(
@@ -462,7 +462,7 @@ impl
         };
         flow_type
             .update_entity_instance(id, entity_instance)
-            .map_err(|e| FlowTypeUpdateEntityInstanceError::UpdateEntityInstanceError(e))
+            .map_err(FlowTypeUpdateEntityInstanceError::UpdateEntityInstanceError)
     }
 
     fn remove_entity_instance(&self, flow_ty: &FlowTypeId, id: Uuid) -> Result<Option<(Uuid, EntityInstance)>, FlowTypeRemoveEntityInstanceError> {
@@ -471,7 +471,7 @@ impl
         };
         flow_type
             .remove_entity_instance(id)
-            .map_err(|e| FlowTypeRemoveEntityInstanceError::RemoveEntityInstanceError(e))
+            .map_err(FlowTypeRemoveEntityInstanceError::RemoveEntityInstanceError)
     }
 }
 
@@ -511,7 +511,7 @@ impl
         };
         flow_type
             .add_relation_instance(relation_instance)
-            .map_err(|e| FlowTypeAddRelationInstanceError::AddRelationInstanceError(e))
+            .map_err(FlowTypeAddRelationInstanceError::AddRelationInstanceError)
     }
 
     fn update_relation_instance(
@@ -525,7 +525,7 @@ impl
         };
         flow_type
             .update_relation_instance(id, relation_instance)
-            .map_err(|e| FlowTypeUpdateRelationInstanceError::UpdateRelationInstanceError(e))
+            .map_err(FlowTypeUpdateRelationInstanceError::UpdateRelationInstanceError)
     }
 
     fn remove_relation_instance(
@@ -538,7 +538,7 @@ impl
         };
         flow_type
             .remove_relation_instance(id)
-            .map_err(|e| FlowTypeRemoveRelationInstanceError::RemoveRelationInstanceError(e))
+            .map_err(FlowTypeRemoveRelationInstanceError::RemoveRelationInstanceError)
     }
 }
 
@@ -555,7 +555,7 @@ impl
         let Some(flow_type) = self.0.get_mut(flow_ty) else {
             return Err(FlowTypeAddVariableError::FlowTypeDoesNotExist(flow_ty.clone()));
         };
-        flow_type.add_variable(variable).map_err(|e| FlowTypeAddVariableError::AddVariableError(e))
+        flow_type.add_variable(variable).map_err(FlowTypeAddVariableError::AddVariableError)
     }
 
     fn update_variable<N: Into<String>, V: Into<Variable>>(
@@ -569,7 +569,7 @@ impl
         };
         flow_type
             .update_variable(variable_name, variable)
-            .map_err(|e| FlowTypeUpdateVariableError::UpdateVariableError(e))
+            .map_err(FlowTypeUpdateVariableError::UpdateVariableError)
     }
 
     fn remove_variable<N: Into<String>>(&self, flow_ty: &FlowTypeId, variable_name: N) -> Result<Variable, FlowTypeRemoveVariableError> {
@@ -578,7 +578,7 @@ impl
         };
         flow_type
             .remove_variable(variable_name)
-            .map_err(|e| FlowTypeRemoveVariableError::RemoveVariableError(e))
+            .map_err(FlowTypeRemoveVariableError::RemoveVariableError)
     }
 
     fn merge_variables<V: Into<Variables>>(&mut self, flow_ty: &FlowTypeId, variables_to_merge: V) -> Result<(), FlowTypeMergeVariablesError> {
@@ -603,7 +603,7 @@ impl
         let Some(flow_type) = self.0.get_mut(flow_ty) else {
             return Err(FlowTypeAddExtensionError::FlowTypeDoesNotExist(flow_ty.clone()));
         };
-        flow_type.add_extension(extension).map_err(|e| FlowTypeAddExtensionError::AddExtensionError(e))
+        flow_type.add_extension(extension).map_err(FlowTypeAddExtensionError::AddExtensionError)
     }
 
     fn update_extension<T: Into<ExtensionTypeId>, E: Into<Extension>>(
@@ -617,7 +617,7 @@ impl
         };
         flow_type
             .update_extension(extension_ty, extension)
-            .map_err(|e| FlowTypeUpdateExtensionError::UpdateExtensionError(e))
+            .map_err(FlowTypeUpdateExtensionError::UpdateExtensionError)
     }
 
     fn remove_extension<T: Into<ExtensionTypeId>>(&self, flow_ty: &FlowTypeId, extension_ty: T) -> Result<Extension, FlowTypeRemoveExtensionError> {
@@ -626,7 +626,7 @@ impl
         };
         flow_type
             .remove_extension(extension_ty)
-            .map_err(|e| FlowTypeRemoveExtensionError::RemoveExtensionError(e))
+            .map_err(FlowTypeRemoveExtensionError::RemoveExtensionError)
     }
 
     fn merge_extensions<E: Into<Extensions>>(&mut self, flow_ty: &FlowTypeId, extensions_to_merge: E) -> Result<(), FlowTypeMergeExtensionsError> {
@@ -775,7 +775,6 @@ mod tests {
     use uuid::Uuid;
 
     use crate::entity_instance_tests::create_entity_instance_with_property;
-    use crate::test_utils::r_string;
     use crate::DataType;
     use crate::EntityInstanceContainer;
     use crate::Extension;
@@ -792,6 +791,7 @@ mod tests {
     use crate::Variable;
     use crate::Variables;
     use crate::VariablesContainer;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn create_flow_type_test() {

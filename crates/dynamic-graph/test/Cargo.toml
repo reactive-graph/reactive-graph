@@ -1,0 +1,32 @@
+[package]
+name = "inexor-rgf-dynamic-graph-test"
+description = "Inexor - Reactive Graph Flow - Dynamic Graph - Service - Integration Test"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+
+[dev-dependencies]
+colored = { workspace = true }
+convert_case = { workspace = true }
+default-test = { workspace = true }
+glob = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
+serde_json = { workspace = true }
+similar = { workspace = true }
+similar-asserts = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+inexor-rgf-runtime-api = { version = "0.10.0", path = "../../runtime/api" }
+inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+
+[lib]
+crate-type = ["lib"]

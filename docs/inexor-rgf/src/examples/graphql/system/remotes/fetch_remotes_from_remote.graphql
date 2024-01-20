@@ -1,5 +1,4 @@
-mutation FetchRemotesFromRemote($hostname: String!, $port: Int!, $secure: Boolean!) {
-  system {
+mutation FetchRemotesFromRemote($address: InstanceAddress!) {
     remotes {
       fetchRemotesFromRemote(
         address: {
@@ -26,5 +25,4 @@ mutation FetchRemotesFromRemote($hostname: String!, $port: Int!, $secure: Boolea
         lastSeen
       }
     }
-  }
 }

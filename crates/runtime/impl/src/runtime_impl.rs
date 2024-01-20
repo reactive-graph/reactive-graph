@@ -1,0 +1,625 @@
+use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering;
+use std::sync::Arc;
+use std::time::Duration;
+
+use async_trait::async_trait;
+use log::debug;
+use log::info;
+use springtime_di::component_alias;
+use springtime_di::Component;
+use tokio::time::error::Elapsed;
+
+use inexor_rgf_behaviour_service_api::BehaviourSystem;
+use inexor_rgf_behaviour_service_api::EntityBehaviourManager;
+use inexor_rgf_behaviour_service_api::EntityBehaviourRegistry;
+use inexor_rgf_behaviour_service_api::EntityComponentBehaviourManager;
+use inexor_rgf_behaviour_service_api::EntityComponentBehaviourRegistry;
+use inexor_rgf_behaviour_service_api::RelationBehaviourManager;
+use inexor_rgf_behaviour_service_api::RelationBehaviourRegistry;
+use inexor_rgf_behaviour_service_api::RelationComponentBehaviourManager;
+use inexor_rgf_behaviour_service_api::RelationComponentBehaviourRegistry;
+use inexor_rgf_command_api::CommandManager;
+use inexor_rgf_command_api::CommandSystem;
+use inexor_rgf_command_api::CommandTypeProvider;
+use inexor_rgf_command_impl::CommandSystemImpl;
+use inexor_rgf_config_api::ConfigManager;
+use inexor_rgf_config_api::ConfigSystem;
+use inexor_rgf_config_impl::ConfigSystemImpl;
+use inexor_rgf_dynamic_graph_api::DynamicGraphQueryService;
+use inexor_rgf_dynamic_graph_api::DynamicGraphSchemaManager;
+use inexor_rgf_dynamic_graph_api::DynamicGraphSystem;
+use inexor_rgf_graphql_api::GraphQLQueryService;
+use inexor_rgf_graphql_api::GraphQLSchemaManager;
+use inexor_rgf_graphql_api::GraphQLSystem;
+use inexor_rgf_instance_system_api::EntityInstanceImportExportManager;
+use inexor_rgf_instance_system_api::InstanceSystem;
+use inexor_rgf_instance_system_api::RelationInstanceImportExportManager;
+use inexor_rgf_lifecycle::Lifecycle;
+use inexor_rgf_plugin_graphql_api::PluginGraphQLSystem;
+use inexor_rgf_plugin_graphql_api::PluginQueryService;
+use inexor_rgf_plugin_graphql_api::PluginSchemaManager;
+use inexor_rgf_plugin_service_api::PluginContainerManager;
+use inexor_rgf_plugin_service_api::PluginContextFactory;
+use inexor_rgf_plugin_service_api::PluginRepositoryManager;
+use inexor_rgf_plugin_service_api::PluginResolver;
+use inexor_rgf_plugin_service_api::PluginSystem;
+use inexor_rgf_reactive_service_api::ReactiveEntityManager;
+use inexor_rgf_reactive_service_api::ReactiveFlowManager;
+use inexor_rgf_reactive_service_api::ReactiveInstanceEventManager;
+use inexor_rgf_reactive_service_api::ReactiveRelationManager;
+use inexor_rgf_reactive_service_api::ReactiveSystem;
+use inexor_rgf_remotes_api::InstanceService;
+use inexor_rgf_remotes_api::RemotesManager;
+use inexor_rgf_remotes_api::RemotesSystem;
+use inexor_rgf_remotes_impl::RemotesSystemImpl;
+use inexor_rgf_remotes_model::InstanceAddress;
+use inexor_rgf_runtime_api::Runtime;
+use inexor_rgf_runtime_graphql_api::RuntimeGraphQLSystem;
+use inexor_rgf_runtime_graphql_api::RuntimeQueryService;
+use inexor_rgf_runtime_graphql_api::RuntimeSchemaManager;
+use inexor_rgf_runtime_service_api::RuntimeSystem;
+use inexor_rgf_runtime_service_api::ShutdownManager;
+use inexor_rgf_runtime_web_api::GraphQLServer;
+use inexor_rgf_runtime_web_api::WebResourceManager;
+use inexor_rgf_runtime_web_api::WebSystem;
+use inexor_rgf_type_system_api::ComponentImportExportManager;
+use inexor_rgf_type_system_api::ComponentManager;
+use inexor_rgf_type_system_api::ComponentProviderRegistry;
+use inexor_rgf_type_system_api::EntityTypeImportExportManager;
+use inexor_rgf_type_system_api::EntityTypeManager;
+use inexor_rgf_type_system_api::EntityTypeProviderRegistry;
+use inexor_rgf_type_system_api::FlowTypeImportExportManager;
+use inexor_rgf_type_system_api::FlowTypeManager;
+use inexor_rgf_type_system_api::FlowTypeProviderRegistry;
+use inexor_rgf_type_system_api::NamespaceManager;
+use inexor_rgf_type_system_api::RelationTypeImportExportManager;
+use inexor_rgf_type_system_api::RelationTypeManager;
+use inexor_rgf_type_system_api::RelationTypeProviderRegistry;
+use inexor_rgf_type_system_api::TypeSystem;
+use inexor_rgf_type_system_api::TypeSystemEventManager;
+
+pub struct RunningState(Arc<AtomicBool>);
+
+fn create_running_state() -> Arc<AtomicBool> {
+    Arc::new(AtomicBool::new(true))
+}
+
+#[derive(Component)]
+pub struct RuntimeImpl {
+    #[component(default = "create_running_state")]
+    running: Arc<AtomicBool>,
+    type_system: Arc<dyn TypeSystem + Send + Sync>,
+    reactive_system: Arc<dyn ReactiveSystem + Send + Sync>,
+    behaviour_system: Arc<dyn BehaviourSystem + Send + Sync>,
+    instance_system: Arc<dyn InstanceSystem + Send + Sync>,
+    command_system: Arc<CommandSystemImpl>,
+    runtime_system: Arc<dyn RuntimeSystem + Send + Sync>,
+    remotes_system: Arc<RemotesSystemImpl>,
+    config_system: Arc<ConfigSystemImpl>,
+    graphql_system: Arc<dyn GraphQLSystem + Send + Sync>,
+    dynamic_graph_system: Arc<dyn DynamicGraphSystem + Send + Sync>,
+    runtime_graphql_system: Arc<dyn RuntimeGraphQLSystem + Send + Sync>,
+    plugin_graphql_system: Arc<dyn PluginGraphQLSystem + Send + Sync>,
+    plugin_system: Arc<dyn PluginSystem + Send + Sync>,
+    web_system: Arc<dyn WebSystem + Send + Sync>,
+}
+
+impl RuntimeImpl {
+    async fn wait_for_started_internal(&self) {
+        // TODO: Add upper bound timeout (for example 30 sec)
+        while !self.is_running() {
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+    }
+}
+
+#[async_trait]
+#[component_alias]
+impl Runtime for RuntimeImpl {
+    async fn config(&self) {
+        self.config_system.init().await;
+    }
+
+    async fn run(&self) {
+        // Signal handling
+        let terminate = Arc::new(AtomicBool::new(false));
+        // This channel allows the main thread to stop the GraphQL server thread
+        let (graphql_server_stop_sender, graphql_server_stop_receiver) = crossbeam::channel::unbounded::<()>();
+        // This channel allows the GraphQL server thread to tell the main thread that it has been finished
+        let (graphql_server_stopped_sender, graphql_server_stopped_receiver) = crossbeam::channel::unbounded::<()>();
+        // Clone GraphQL server and move the reference into the GraphQL server thread
+        let graphql_server = self.web_system.get_graphql_server();
+        // GraphQL server thread: Create a new thread for the GraphQL server
+        // TODO: add thread name
+        let graphql_server_handle = tokio::spawn(async move {
+            // Run the GraphQL server
+            info!("Run the GraphQL server.");
+            graphql_server.serve(graphql_server_stop_receiver).await;
+            debug!("Successfully stopped GraphQL Server.");
+            // Tell the main thread, that the GraphQL server thread has finished
+            let _result = graphql_server_stopped_sender.send(());
+        });
+
+        {
+            self.running.store(true, Ordering::Relaxed);
+        }
+
+        {
+            let _r_sigint = signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&terminate));
+            let _r_sigterm = signal_hook::flag::register(signal_hook::consts::SIGTERM, Arc::clone(&terminate));
+
+            let mut stopping = false;
+            while self.is_running() && !stopping && !terminate.load(Ordering::Relaxed) {
+                tokio::time::sleep(Duration::from_millis(100)).await;
+                let r = graphql_server_stopped_receiver.try_recv();
+                if r.is_ok() {
+                    debug!("Stopping the main thread");
+                    stopping = true;
+                }
+                if self.runtime_system.get_shutdown_manager().is_shutdown() {
+                    stopping = true;
+                }
+            }
+        } // Drop "running"
+
+        // Stop GraphQL server thread, if it is still running
+        debug!("Stopping the GraphQL server thread");
+        let _graphql_server_stop_result = graphql_server_stop_sender.send_timeout((), Duration::from_millis(100));
+
+        // Be sure that the GraphQL server thread is gone
+        let _ = graphql_server_handle.await;
+        info!("Bye.");
+
+        // Ensure the running state is now set to false even if the loop was terminated
+        // externally because the running state is checked from outside.
+        {
+            self.running.store(false, Ordering::Relaxed);
+        }
+    }
+
+    fn stop(&self) {
+        {
+            self.running.store(false, Ordering::Relaxed);
+        }
+    }
+
+    fn is_running(&self) -> bool {
+        self.running.load(Ordering::Relaxed)
+        // *self.running.0.read().unwrap().deref()
+    }
+
+    async fn wait_for_started(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
+        tokio::time::timeout(timeout_duration, self.wait_for_started_internal()).await
+    }
+
+    async fn wait_for_stopped(&self) {
+        while self.is_running() {
+            tokio::time::sleep(Duration::from_millis(100)).await;
+        }
+    }
+
+    async fn wait_for_stopped_with_timeout(&self, timeout_duration: Duration) -> Result<(), Elapsed> {
+        tokio::time::timeout(timeout_duration, self.wait_for_stopped()).await
+    }
+
+    fn address(&self) -> InstanceAddress {
+        self.remotes_system.get_instance_service().get_instance_info().address()
+    }
+}
+
+impl TypeSystem for RuntimeImpl {
+    fn get_component_manager(&self) -> Arc<dyn ComponentManager + Send + Sync> {
+        self.type_system.get_component_manager()
+    }
+
+    fn get_component_import_export_manager(&self) -> Arc<dyn ComponentImportExportManager + Send + Sync> {
+        self.type_system.get_component_import_export_manager()
+    }
+
+    fn get_component_provider_registry(&self) -> Arc<dyn ComponentProviderRegistry + Send + Sync> {
+        self.type_system.get_component_provider_registry()
+    }
+
+    fn get_entity_type_manager(&self) -> Arc<dyn EntityTypeManager + Send + Sync> {
+        self.type_system.get_entity_type_manager()
+    }
+
+    fn get_entity_type_import_export_manager(&self) -> Arc<dyn EntityTypeImportExportManager + Send + Sync> {
+        self.type_system.get_entity_type_import_export_manager()
+    }
+
+    fn get_entity_type_provider_registry(&self) -> Arc<dyn EntityTypeProviderRegistry + Send + Sync> {
+        self.type_system.get_entity_type_provider_registry()
+    }
+
+    fn get_flow_type_manager(&self) -> Arc<dyn FlowTypeManager + Send + Sync> {
+        self.type_system.get_flow_type_manager()
+    }
+
+    fn get_flow_type_import_export_manager(&self) -> Arc<dyn FlowTypeImportExportManager + Send + Sync> {
+        self.type_system.get_flow_type_import_export_manager()
+    }
+
+    fn get_flow_type_provider_registry(&self) -> Arc<dyn FlowTypeProviderRegistry + Send + Sync> {
+        self.type_system.get_flow_type_provider_registry()
+    }
+
+    fn get_namespace_manager(&self) -> Arc<dyn NamespaceManager + Send + Sync> {
+        self.type_system.get_namespace_manager()
+    }
+
+    fn get_relation_type_manager(&self) -> Arc<dyn RelationTypeManager + Send + Sync> {
+        self.type_system.get_relation_type_manager()
+    }
+
+    fn get_relation_type_import_export_manager(&self) -> Arc<dyn RelationTypeImportExportManager + Send + Sync> {
+        self.type_system.get_relation_type_import_export_manager()
+    }
+
+    fn get_relation_type_provider_registry(&self) -> Arc<dyn RelationTypeProviderRegistry + Send + Sync> {
+        self.type_system.get_relation_type_provider_registry()
+    }
+
+    fn get_type_system_event_manager(&self) -> Arc<dyn TypeSystemEventManager + Send + Sync> {
+        self.type_system.get_type_system_event_manager()
+    }
+}
+
+impl ReactiveSystem for RuntimeImpl {
+    fn get_reactive_entity_manager(&self) -> Arc<dyn ReactiveEntityManager + Send + Sync> {
+        self.reactive_system.get_reactive_entity_manager()
+    }
+
+    fn get_reactive_flow_manager(&self) -> Arc<dyn ReactiveFlowManager + Send + Sync> {
+        self.reactive_system.get_reactive_flow_manager()
+    }
+
+    fn get_reactive_relation_manager(&self) -> Arc<dyn ReactiveRelationManager + Send + Sync> {
+        self.reactive_system.get_reactive_relation_manager()
+    }
+
+    fn get_reactive_instance_event_manager(&self) -> Arc<dyn ReactiveInstanceEventManager + Send + Sync> {
+        self.reactive_system.get_reactive_instance_event_manager()
+    }
+
+    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
+        self.reactive_system.type_system()
+    }
+
+    fn behaviour_system(&self) -> Arc<dyn BehaviourSystem + Send + Sync> {
+        self.reactive_system.behaviour_system()
+    }
+}
+
+impl BehaviourSystem for RuntimeImpl {
+    fn get_entity_behaviour_manager(&self) -> Arc<dyn EntityBehaviourManager + Send + Sync> {
+        self.behaviour_system.get_entity_behaviour_manager()
+    }
+
+    fn get_entity_behaviour_registry(&self) -> Arc<dyn EntityBehaviourRegistry + Send + Sync> {
+        self.behaviour_system.get_entity_behaviour_registry()
+    }
+
+    fn get_entity_component_behaviour_manager(&self) -> Arc<dyn EntityComponentBehaviourManager + Send + Sync> {
+        self.behaviour_system.get_entity_component_behaviour_manager()
+    }
+
+    fn get_entity_component_behaviour_registry(&self) -> Arc<dyn EntityComponentBehaviourRegistry + Send + Sync> {
+        self.behaviour_system.get_entity_component_behaviour_registry()
+    }
+
+    fn get_relation_behaviour_manager(&self) -> Arc<dyn RelationBehaviourManager + Send + Sync> {
+        self.behaviour_system.get_relation_behaviour_manager()
+    }
+
+    fn get_relation_behaviour_registry(&self) -> Arc<dyn RelationBehaviourRegistry + Send + Sync> {
+        self.behaviour_system.get_relation_behaviour_registry()
+    }
+
+    fn get_relation_component_behaviour_manager(&self) -> Arc<dyn RelationComponentBehaviourManager + Send + Sync> {
+        self.behaviour_system.get_relation_component_behaviour_manager()
+    }
+
+    fn get_relation_component_behaviour_registry(&self) -> Arc<dyn RelationComponentBehaviourRegistry + Send + Sync> {
+        self.behaviour_system.get_relation_component_behaviour_registry()
+    }
+
+    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
+        self.behaviour_system.type_system()
+    }
+}
+
+impl InstanceSystem for RuntimeImpl {
+    fn get_entity_instance_import_export_manager(&self) -> Arc<dyn EntityInstanceImportExportManager + Send + Sync> {
+        self.instance_system.get_entity_instance_import_export_manager()
+    }
+
+    fn get_relation_instance_import_export_manager(&self) -> Arc<dyn RelationInstanceImportExportManager + Send + Sync> {
+        self.instance_system.get_relation_instance_import_export_manager()
+    }
+
+    fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
+        self.reactive_system.clone()
+    }
+}
+
+impl CommandSystem for RuntimeImpl {
+    fn get_command_manager(&self) -> Arc<dyn CommandManager + Send + Sync> {
+        self.command_system.get_command_manager()
+    }
+
+    fn get_command_type_provider(&self) -> Arc<dyn CommandTypeProvider + Send + Sync> {
+        self.command_system.get_command_type_provider()
+    }
+
+    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
+        self.command_system.type_system()
+    }
+
+    fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
+        self.command_system.reactive_system()
+    }
+}
+
+impl ConfigSystem for RuntimeImpl {
+    fn get_config_manager(&self) -> Arc<dyn ConfigManager + Send + Sync> {
+        self.config_system.get_config_manager()
+    }
+}
+
+impl RemotesSystem for RuntimeImpl {
+    fn get_instance_service(&self) -> Arc<dyn InstanceService + Send + Sync> {
+        self.remotes_system.get_instance_service()
+    }
+
+    fn get_remotes_manager(&self) -> Arc<dyn RemotesManager + Send + Sync> {
+        self.remotes_system.get_remotes_manager()
+    }
+
+    fn config_system(&self) -> Arc<dyn ConfigSystem + Send + Sync> {
+        self.remotes_system.config_system()
+    }
+}
+
+impl RuntimeSystem for RuntimeImpl {
+    fn get_shutdown_manager(&self) -> Arc<dyn ShutdownManager + Send + Sync> {
+        self.runtime_system.get_shutdown_manager()
+    }
+}
+
+impl WebSystem for RuntimeImpl {
+    fn get_graphql_server(&self) -> Arc<dyn GraphQLServer + Send + Sync> {
+        self.web_system.get_graphql_server()
+    }
+
+    fn get_web_resource_manager(&self) -> Arc<dyn WebResourceManager + Send + Sync> {
+        self.web_system.get_web_resource_manager()
+    }
+
+    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
+        self.web_system.type_system()
+    }
+
+    fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
+        self.web_system.reactive_system()
+    }
+
+    fn config_system(&self) -> Arc<dyn ConfigSystem + Send + Sync> {
+        self.web_system.config_system()
+    }
+
+    fn runtime_graphql_system(&self) -> Arc<dyn RuntimeGraphQLSystem + Send + Sync> {
+        self.web_system.runtime_graphql_system()
+    }
+
+    fn plugin_graphql_system(&self) -> Arc<dyn PluginGraphQLSystem + Send + Sync> {
+        self.web_system.plugin_graphql_system()
+    }
+
+    fn dynamic_graph_system(&self) -> Arc<dyn DynamicGraphSystem + Send + Sync> {
+        self.web_system.dynamic_graph_system()
+    }
+
+    fn graphql_system(&self) -> Arc<dyn GraphQLSystem + Send + Sync> {
+        self.web_system.graphql_system()
+    }
+}
+
+impl GraphQLSystem for RuntimeImpl {
+    fn get_graphql_query_service(&self) -> Arc<dyn GraphQLQueryService + Send + Sync> {
+        self.graphql_system.get_graphql_query_service()
+    }
+
+    fn get_graphql_schema_manager(&self) -> Arc<dyn GraphQLSchemaManager + Send + Sync> {
+        self.graphql_system.get_graphql_schema_manager()
+    }
+}
+
+impl DynamicGraphSystem for RuntimeImpl {
+    fn get_dynamic_graph_query_service(&self) -> Arc<dyn DynamicGraphQueryService + Send + Sync> {
+        self.dynamic_graph_system.get_dynamic_graph_query_service()
+    }
+
+    fn get_dynamic_graph_schema_manager(&self) -> Arc<dyn DynamicGraphSchemaManager + Send + Sync> {
+        self.dynamic_graph_system.get_dynamic_graph_schema_manager()
+    }
+
+    fn type_system(&self) -> Arc<dyn TypeSystem + Send + Sync> {
+        self.dynamic_graph_system.type_system()
+    }
+
+    fn reactive_system(&self) -> Arc<dyn ReactiveSystem + Send + Sync> {
+        self.dynamic_graph_system.reactive_system()
+    }
+}
+
+impl RuntimeGraphQLSystem for RuntimeImpl {
+    fn get_runtime_query_service(&self) -> Arc<dyn RuntimeQueryService + Send + Sync> {
+        self.runtime_graphql_system.get_runtime_query_service()
+    }
+
+    fn get_runtime_schema_manager(&self) -> Arc<dyn RuntimeSchemaManager + Send + Sync> {
+        self.runtime_graphql_system.get_runtime_schema_manager()
+    }
+}
+
+impl PluginGraphQLSystem for RuntimeImpl {
+    fn get_plugin_query_service(&self) -> Arc<dyn PluginQueryService + Send + Sync> {
+        self.plugin_graphql_system.get_plugin_query_service()
+    }
+
+    fn get_plugin_schema_manager(&self) -> Arc<dyn PluginSchemaManager + Send + Sync> {
+        self.plugin_graphql_system.get_plugin_schema_manager()
+    }
+}
+
+impl PluginSystem for RuntimeImpl {
+    fn get_plugin_context_factory(&self) -> Arc<dyn PluginContextFactory + Send + Sync> {
+        self.plugin_system.get_plugin_context_factory()
+    }
+
+    fn get_plugin_container_manager(&self) -> Arc<dyn PluginContainerManager + Send + Sync> {
+        self.plugin_system.get_plugin_container_manager()
+    }
+
+    fn get_plugin_repository_manager(&self) -> Arc<dyn PluginRepositoryManager + Send + Sync> {
+        self.plugin_system.get_plugin_repository_manager()
+    }
+
+    fn get_plugin_resolver(&self) -> Arc<dyn PluginResolver + Send + Sync> {
+        self.plugin_system.get_plugin_resolver()
+    }
+}
+
+#[async_trait]
+impl Lifecycle for RuntimeImpl {
+    async fn init(&self) {
+        // Order matters
+        self.type_system.init().await;
+        self.reactive_system.init().await;
+        self.behaviour_system.init().await;
+        self.instance_system.init().await;
+        //
+        self.command_system.init().await;
+        self.runtime_system.init().await;
+        // self.shutdown_manager.init().await;
+        self.remotes_system.init().await;
+        //
+        self.graphql_system.init().await;
+        self.dynamic_graph_system.init().await;
+        //
+        self.web_system.init().await;
+        // self.web_resource_manager.init().await;
+        // self.graphql_server.init().await;
+        //
+        self.plugin_system.init().await;
+    }
+
+    async fn post_init(&self) {
+        // Order matters
+        self.type_system.post_init().await;
+        self.reactive_system.post_init().await;
+        self.behaviour_system.post_init().await;
+        self.instance_system.post_init().await;
+        //
+        self.command_system.post_init().await;
+        // self.shutdown_manager.post_init().await;
+        self.runtime_system.post_init().await;
+        self.remotes_system.post_init().await;
+        //
+        self.graphql_system.post_init().await;
+        self.dynamic_graph_system.post_init().await;
+        //
+        self.web_system.post_init().await;
+        // self.web_resource_manager.post_init().await;
+        // self.graphql_server.post_init().await;
+        //
+        self.plugin_system.post_init().await;
+    }
+
+    async fn pre_shutdown(&self) {
+        // Reverse order matters
+        self.plugin_system.pre_shutdown().await;
+        //
+        // self.graphql_server.pre_shutdown().await;
+        // self.web_resource_manager.pre_shutdown().await;
+        self.web_system.pre_shutdown().await;
+        //
+        self.dynamic_graph_system.pre_shutdown().await;
+        self.graphql_system.pre_shutdown().await;
+        //
+        self.remotes_system.pre_shutdown().await;
+        // self.shutdown_manager.pre_shutdown().await;
+        self.runtime_system.pre_shutdown().await;
+        self.command_system.init().await;
+        //
+        self.instance_system.pre_shutdown().await;
+        self.behaviour_system.pre_shutdown().await;
+        self.reactive_system.pre_shutdown().await;
+        self.type_system.pre_shutdown().await;
+    }
+
+    async fn shutdown(&self) {
+        // Reverse order matters
+        self.plugin_system.shutdown().await;
+        //
+        // self.graphql_server.shutdown().await;
+        // self.web_resource_manager.shutdown().await;
+        self.web_system.shutdown().await;
+        //
+        self.dynamic_graph_system.shutdown().await;
+        self.graphql_system.shutdown().await;
+        //
+        self.remotes_system.shutdown().await;
+        // self.shutdown_manager.shutdown().await;
+        self.runtime_system.shutdown().await;
+        self.command_system.init().await;
+        //
+        self.instance_system.shutdown().await;
+        self.behaviour_system.shutdown().await;
+        self.reactive_system.shutdown().await;
+        self.type_system.shutdown().await;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::time::Duration;
+
+    use log::LevelFilter;
+    use log4rs::append::console::ConsoleAppender;
+    use log4rs::config::Appender;
+    use log4rs::config::Root;
+    use log4rs::Config;
+
+    use crate::get_runtime;
+
+    /// This starts the runtime in an async environment.
+    ///
+    /// The runtime will be started including GraphQL server and fully
+    /// initialized. After 2 seconds the runtime will be stopped.
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_run() {
+        let stdout = ConsoleAppender::builder().build();
+        let config = Config::builder()
+            .appender(Appender::builder().build("stdout", Box::new(stdout)))
+            .build(Root::builder().appender("stdout").build(LevelFilter::Trace))
+            .expect("Failed to create logger");
+        if let Err(error) = log4rs::init_config(config) {
+            eprintln!("Failed to configure logger: {}", error);
+        }
+        let rt = get_runtime();
+        let runtime = rt.clone();
+        tokio::spawn(async move {
+            let runtime = runtime;
+            runtime.init().await;
+            runtime.post_init().await;
+            runtime.run().await;
+            runtime.pre_shutdown().await;
+            runtime.shutdown().await;
+        });
+        tokio::time::sleep(Duration::from_secs(2)).await;
+        rt.stop();
+    }
+}

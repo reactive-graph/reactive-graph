@@ -1,0 +1,36 @@
+[package]
+name = "inexor-rgf-runtime-graphql-schema"
+description = "Inexor - Reactive Graph Flow - Runtime - GraphQL - Schema"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+async-graphql = { workspace = true, features = ["uuid"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+
+##inexor-rgf-config-model = { version = "0.10.0", path = "../../../config/model" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
+inexor-rgf-command-api = { version = "0.10.0", path = "../../../command/api" }
+inexor-rgf-command-model = { version = "0.10.0", path = "../../../command/model" }
+inexor-rgf-runtime-model = { version = "0.10.0", path = "../../../runtime/model" }
+inexor-rgf-runtime-service-api = { version = "0.10.0", path = "../../service/api" }
+inexor-rgf-remotes-api = { version = "0.10.0", path = "../../../remotes/api" }
+inexor-rgf-remotes-model = { version = "0.10.0", path = "../../../remotes/model" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }
+#inexor-rgf-runtime-api = { version = "0.10.0", path = "../../api" }
+#inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../impl" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+inexor-rgf-graphql-api = { version = "0.10.0", path = "../../../graphql/api" }
+
+[lib]
+crate-type = ["lib"]

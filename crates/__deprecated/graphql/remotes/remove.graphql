@@ -1,0 +1,5 @@
+mutation RemoveRemote($address: InstanceAddress!) {
+  remotes {
+    remove(address: $address)
+  }
+}

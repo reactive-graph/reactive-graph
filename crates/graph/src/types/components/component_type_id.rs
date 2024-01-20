@@ -310,11 +310,7 @@ macro_rules! component_ty {
         $component_name: expr
     ) => {
         pub const $component_name_const: &str = $component_name;
-        // lazy_static::lazy_static! {
-        //     pub static ref $component_type_id: $crate::ComponentTypeId = $crate::ComponentTypeId::new_from_type($namespace, $component_name_const);
-        // }
-
-        pub const $component_type_id: std::sync::LazyLock<$crate::ComponentTypeId> =
+        pub static $component_type_id: std::sync::LazyLock<$crate::ComponentTypeId> =
             std::sync::LazyLock::new(|| $crate::ComponentTypeId::new_from_type($namespace, $component_name_const));
     };
 }
@@ -342,13 +338,13 @@ impl DefaultTest for ComponentTypeIds {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::ComponentTypeId;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn component_type_id_test() {

@@ -1,0 +1,23 @@
+[package]
+name = "inexor-rgf-plugin-service-api"
+description = "Inexor - Reactive Graph Flow - Plugin - Service - API"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+dashmap = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+strum_macros = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+inexor-rgf-plugin-api = { version = "0.10.0", path = "../../api" }
+
+[lib]
+crate-type = ["lib"]

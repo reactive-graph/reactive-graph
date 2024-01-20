@@ -1,6 +1,0 @@
-profile = "dev"
-
-int_v = 3
-str_prop = "str"
-prop = "prop_value"
-i32_prop = 7

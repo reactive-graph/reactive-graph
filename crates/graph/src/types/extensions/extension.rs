@@ -25,8 +25,6 @@ use serde_json::json;
 use serde_json::Value;
 use typed_builder::TypedBuilder;
 
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
 use crate::AddExtensionError;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
@@ -38,6 +36,8 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 
 /// Extension on a type. The extension allows to extend information
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TypedBuilder)]

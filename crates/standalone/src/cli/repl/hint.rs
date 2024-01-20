@@ -51,7 +51,8 @@ impl HinterMatch {
                             (ContextKind::SuggestedSubcommand, ContextValue::String(s)) => s.strip_prefix(&last_arg).map(|s| s.to_string()),
                             (ContextKind::SuggestedSubcommand, ContextValue::Strings(s)) => {
                                 let mut s: Vec<String> = s.iter().filter_map(|s| s.strip_prefix(&last_arg).map(|s| s.to_string())).collect();
-                                s.sort_by(|s1, s2| s1.len().cmp(&s2.len()));
+                                // s.sort_by(|s1, s2| s1.len().cmp(&s2.len()));
+                                s.sort_by_key(|s| s.len());
                                 Some(s.join(" | "))
                             }
                             (ContextKind::ValidSubcommand, ContextValue::String(s)) => Some(format!("   {} {}", CHAR_SUGGESTION, s)),
@@ -91,7 +92,7 @@ impl HinterMatch {
                 .find(|(kind, _)| kind != &ContextKind::InvalidSubcommand && kind != &ContextKind::Usage && kind != &ContextKind::Custom)
                 .map(|(k, v)| {
                     error_info = format!("{} {} {}", error_info, CHAR_ERROR, error_kind.to_string().red());
-                    (k.clone(), v)
+                    (k, v)
                 })
                 .and_then(|(_, value)| match value {
                     ContextValue::String(s) => s.strip_prefix(&last_arg).map(|s| s.to_string()),
@@ -104,7 +105,7 @@ impl HinterMatch {
                 }),
         };
 
-        let display = if error_info.len() > 0 {
+        let display = if !error_info.is_empty() {
             format!("{}  {}", display, error_info)
         } else {
             display

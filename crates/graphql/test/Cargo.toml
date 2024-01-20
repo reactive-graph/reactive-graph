@@ -1,0 +1,30 @@
+[package]
+name = "inexor-rgf-graphql-test"
+description = "Inexor - Reactive Graph Flow - GraphQL - Test"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dev-dependencies]
+async-graphql = { workspace = true, features = ["uuid"] }
+async-trait = { workspace = true }
+default-test = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+inexor-rgf-graphql-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-graphql-impl = { version = "0.10.0", path = "../impl" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-runtime-api = { version = "0.10.0", path = "../../runtime/api" }
+inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+
+[lib]
+crate-type = ["lib"]

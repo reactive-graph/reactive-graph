@@ -1,0 +1,5 @@
+mutation RemoveAllRemotes {
+  remotes {
+    removeAll
+  }
+}

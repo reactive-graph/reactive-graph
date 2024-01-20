@@ -1,0 +1,26 @@
+[package]
+name = "inexor-rgf-runtime-graphql-impl"
+description = "Inexor - Reactive Graph Flow - Runtime - GraphQL - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+async-graphql = { workspace = true, features = ["uuid"] }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+inexor-rgf-runtime-graphql-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-runtime-graphql-schema = { version = "0.10.0", path = "../schema" }
+inexor-rgf-runtime-service-api = { version = "0.10.0", path = "../../service/api" }
+inexor-rgf-command-api = { version = "0.10.0", path = "../../../command/api" }
+inexor-rgf-remotes-api = { version = "0.10.0", path = "../../../remotes/api" }
+
+[lib]
+crate-type = ["lib"]

@@ -1,7 +1,0 @@
-query GetAllPluginIds {
-  system {
-    plugins {
-      id
-    }
-  }
-}
