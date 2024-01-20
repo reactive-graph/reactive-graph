@@ -207,7 +207,6 @@ impl DefaultTest for RelationInstanceTypeId {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
     use crate::RelationInstanceTypeId;
@@ -215,6 +214,7 @@ mod tests {
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn relation_instance_type_id_unique_id_test() {

@@ -10,11 +10,13 @@ use reqwest::header::InvalidHeaderValue;
 use reqwest::Client;
 use reqwest::Error;
 
-use crate::client::system::System;
+use crate::client::plugin::api::Plugins;
+use crate::client::runtime::Runtime;
 use crate::client::types::Types;
-use crate::config::InstanceAddress;
+use inexor_rgf_remotes_model::InstanceAddress;
 
-pub mod system;
+pub mod plugin;
+pub mod runtime;
 pub mod types;
 
 #[derive(Debug)]
@@ -96,22 +98,94 @@ impl InexorRgfClient {
         self.remote.clone()
     }
 
-    /// Returns the URL of the remote
-    pub fn url(&self) -> String {
-        self.remote.url()
+    /// Returns the URL of the graphql endpoint of the remote.
+    pub fn url_graphql(&self) -> String {
+        self.remote.url_graphql()
+    }
+
+    /// Returns the URL of the dynamic graph endpoint of the remote.
+    pub fn url_dynamic_graph(&self) -> String {
+        self.remote.url_dynamic_graph()
+    }
+
+    /// Returns the URL of the runtime endpoint of the remote.
+    pub fn url_runtime(&self) -> String {
+        self.remote.url_runtime()
+    }
+
+    /// Returns the URL of the plugins endpoint of the remote.
+    pub fn url_plugin(&self) -> String {
+        self.remote.url_plugin()
     }
 
     pub fn types(self: &Arc<Self>) -> Types {
         Types::new(self.clone())
     }
 
-    pub fn system(self: &Arc<Self>) -> System {
-        System::new(self.clone())
+    pub fn runtime(self: &Arc<Self>) -> Runtime {
+        Runtime::new(self.clone())
+    }
+
+    pub fn plugins(self: &Arc<Self>) -> Plugins {
+        Plugins::new(self.clone())
     }
 
     /// Runs a typed graphql query and extracts the response data.
-    pub async fn run_graphql<ResponseData, Vars, ResponseType>(
+    pub async fn execute_graphql<ResponseData, Vars, ResponseType>(
         &self,
+        operation: Operation<ResponseData, Vars>,
+        extractor: impl FnOnce(ResponseData) -> ResponseType,
+    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    where
+        Vars: serde::Serialize,
+        ResponseData: serde::de::DeserializeOwned + 'static,
+    {
+        self.execute(self.url_graphql(), operation, extractor).await
+    }
+
+    /// Runs a typed graphql query and extracts the response data.
+    pub async fn execute_dynamic_graph<ResponseData, Vars, ResponseType>(
+        &self,
+        operation: Operation<ResponseData, Vars>,
+        extractor: impl FnOnce(ResponseData) -> ResponseType,
+    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    where
+        Vars: serde::Serialize,
+        ResponseData: serde::de::DeserializeOwned + 'static,
+    {
+        self.execute(self.url_dynamic_graph(), operation, extractor).await
+    }
+
+    /// Runs a typed graphql query and extracts the response data.
+    pub async fn execute_runtime<ResponseData, Vars, ResponseType>(
+        &self,
+        operation: Operation<ResponseData, Vars>,
+        extractor: impl FnOnce(ResponseData) -> ResponseType,
+    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    where
+        Vars: serde::Serialize,
+        ResponseData: serde::de::DeserializeOwned + 'static,
+    {
+        self.execute(self.url_runtime(), operation, extractor).await
+    }
+
+    /// Runs a typed graphql query and extracts the response data.
+    pub async fn execute_plugins<ResponseData, Vars, ResponseType>(
+        &self,
+        operation: Operation<ResponseData, Vars>,
+        extractor: impl FnOnce(ResponseData) -> ResponseType,
+    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    where
+        Vars: serde::Serialize,
+        ResponseData: serde::de::DeserializeOwned + 'static,
+    {
+        self.execute(self.url_plugin(), operation, extractor).await
+    }
+
+    /// Runs a typed graphql query and extracts the response data.
+    pub async fn execute<ResponseData, Vars, ResponseType>(
+        &self,
+        endpoint: String,
         operation: Operation<ResponseData, Vars>,
         extractor: impl FnOnce(ResponseData) -> ResponseType,
     ) -> Result<ResponseType, InexorRgfClientExecutionError>
@@ -122,7 +196,7 @@ impl InexorRgfClient {
         let response = self
             // Cynic Client
             .client
-            .post(self.url())
+            .post(endpoint)
             .run_graphql(operation)
             .await?;
         if let Some(data) = response.data.map(extractor) {

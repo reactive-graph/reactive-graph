@@ -1,0 +1,21 @@
+[package]
+name = "inexor-rgf-frp"
+description = "Inexor - Reactive Graph Flow - FRP (Bidule Patched)"
+version.workspace = true
+authors = [
+    "Dimitri Sabadie <dimitri.sabadie@gmail.com>",
+    "Andreas Schaeffer <hanack@nooblounge.net",
+]
+edition.workspace = true
+license = "BSD-3-Clause"
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+# log = { workspace = true, features = ["std", "serde"] }
+# log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format"]}
+rayon = { workspace = true }
+uuid = { workspace = true, features = ["fast-rng", "v4"]}
+
+[lib]
+crate-type = ["lib"]

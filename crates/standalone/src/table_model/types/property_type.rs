@@ -102,9 +102,9 @@ impl From<inexor_rgf_graph::PropertyType> for PropertyType {
     }
 }
 
-pub fn display_property_types(property_types: &Vec<PropertyType>) -> String {
-    Table::new(property_types).to_string()
-}
+// pub fn display_property_types(property_types: &Vec<PropertyType>) -> String {
+//     Table::new(property_types).to_string()
+// }
 
 pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> String {
     if property_types.is_empty() {
@@ -131,7 +131,7 @@ impl From<PropertyTypes> for inexor_rgf_graph::PropertyTypes {
 
 impl From<inexor_rgf_graph::PropertyTypes> for PropertyTypes {
     fn from(property_types: inexor_rgf_graph::PropertyTypes) -> Self {
-        PropertyTypes(property_types.into_iter().map(|(property_name, property_type)| property_type.into()).collect())
+        PropertyTypes(property_types.into_iter().map(|(_property_name, property_type)| property_type.into()).collect())
     }
 }
 

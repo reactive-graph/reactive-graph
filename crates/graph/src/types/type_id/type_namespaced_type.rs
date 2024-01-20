@@ -70,9 +70,9 @@ pub mod tests {
     use default_test::DefaultTest;
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
+    use inexor_rgf_test_utils::r_string;
 
     impl DefaultTest for NamespacedType {
         fn default_test() -> Self {

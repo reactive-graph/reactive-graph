@@ -38,27 +38,3 @@ pub trait NamespacedTypeComponentTypeIdContainer<T, AddComponentError, RemoveCom
     /// Remove the component with the given component_name from the entity type with the given name.
     fn remove_component(&self, ty: &T, component_ty: &ComponentTypeId) -> Result<ComponentTypeId, RemoveComponentError>;
 }
-
-// pub trait ComponentTypeIdContainerContainer
-//     where Self: IntoIterator<Self::Item=>
-// {
-//     type ID;
-//     type Item;
-//
-//     fn get_by_having_component(&self, component_ty: &ComponentTypeId) -> Self  {
-//         self.0.iter()
-//             .filter(|entity_type| entity_type.is_a(component_ty))
-//             .map(|entity_type| entity_type.value().clone())
-//             .collect()
-//     }
-//
-// }
-//
-// impl IntoIterator for EntityTypes {
-//     type Item = (EntityTypeId, EntityType);
-//     type IntoIter = OwningIter<EntityTypeId, EntityType>;
-//
-//     fn into_iter(self) -> Self::IntoIter {
-//         self.0.into_iter()
-//     }
-// }

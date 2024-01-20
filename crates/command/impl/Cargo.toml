@@ -1,0 +1,34 @@
+[package]
+name = "inexor-rgf-command-impl"
+description = "Inexor - Reactive Graph Flow - Command - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+inexor-rgf-command-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-command-model = { version = "0.10.0", path = "../model" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+inexor-rgf-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api" }
+
+[dev-dependencies]
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+inexor-rgf-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
+inexor-rgf-reactive-service-impl = { version = "0.10.0", path = "../../reactive/service/impl" }
+
+[lib]
+crate-type = ["lib"]

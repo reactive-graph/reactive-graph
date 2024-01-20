@@ -1,0 +1,23 @@
+[package]
+name = "inexor-rgf-behaviour-service-api"
+description = "Inexor - Reactive Graph Flow - Behaviour - Service - API"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../../reactive/model/impl" }
+inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../../model/api" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
+
+[lib]
+crate-type = ["lib"]

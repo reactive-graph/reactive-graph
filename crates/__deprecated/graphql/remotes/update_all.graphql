@@ -1,0 +1,18 @@
+mutation UpdateAllRemotes {
+  remotes {
+    updateAll {
+      buildDate
+      description
+      gitBranch
+      gitCommit
+      hostname
+      lastSeen
+      name
+      pluginApiVersion
+      port
+      rustcVersion
+      secure
+      version
+    }
+  }
+}

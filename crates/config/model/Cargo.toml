@@ -1,0 +1,19 @@
+[package]
+name = "inexor-rgf-config-model"
+description = "Inexor - Reactive Graph Flow - Config - Model"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+num_cpus = { workspace = true }
+serde = { workspace = true, features = [ "derive" ] }
+typed-builder = { workspace = true }
+
+inexor-rgf-remotes-model = { version = "0.10.0", path = "../../remotes/model" }
+
+[lib]
+crate-type = ["lib"]

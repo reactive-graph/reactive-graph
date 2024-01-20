@@ -8,19 +8,17 @@ use log4rs::config::Appender;
 use log4rs::config::Root;
 use log4rs::Config;
 
+#[cfg(client)]
 use crate::cli::client;
 use crate::cli_args::CliArguments;
 use crate::cli_args::Commands;
 use crate::server::server;
 
-use inexor_rgf_client as client;
-use inexor_rgf_config as config;
-use inexor_rgf_graph as model;
-use inexor_rgf_model_runtime as model_runtime;
-
+#[cfg(client)]
 mod cli;
 mod cli_args;
 mod server;
+#[cfg(client)]
 mod table_model;
 
 #[global_allocator]
@@ -51,6 +49,7 @@ async fn main() {
     }
     match cli_args.commands {
         Some(commands) => match commands {
+            #[cfg(client)]
             Commands::Client(args) => client(args).await,
         },
         None => server(cli_args).await,

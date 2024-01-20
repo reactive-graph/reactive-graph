@@ -13,13 +13,13 @@ use crate::client::InexorRgfClient;
 pub(crate) async fn handle_command(client: &Arc<InexorRgfClient>, command: ClientCommands) -> CommandResult {
     match command {
         // System
-        ClientCommands::ExecuteCommand(args) => execute_command(&client, args).await,
-        ClientCommands::InstanceInfo(args) => instance_info(&client, args).await,
-        ClientCommands::Plugins(args) => plugins(&client, args).await,
-        ClientCommands::Remotes(args) => remotes(&client, args).await,
-        ClientCommands::Shutdown => shutdown(&client).await,
+        ClientCommands::ExecuteCommand(args) => execute_command(client, args).await,
+        ClientCommands::InstanceInfo(args) => instance_info(client, args).await,
+        ClientCommands::Plugins(args) => plugins(client, args).await,
+        ClientCommands::Remotes(args) => remotes(client, args).await,
+        ClientCommands::Shutdown => shutdown(client).await,
         // Types
-        ClientCommands::Components(args) => components(&client, args).await,
+        ClientCommands::Components(args) => components(client, args).await,
         // TODO: Entity Types
         // TODO: Relation Types
         // TODO: Flow Types

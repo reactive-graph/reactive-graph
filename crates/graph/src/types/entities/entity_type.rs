@@ -21,8 +21,6 @@ use serde::Serialize;
 use typed_builder::TypedBuilder;
 
 use crate::extension::Extension;
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
 use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentTypeId;
@@ -59,6 +57,8 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 
 /// Entity types defines the type of an entity instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -324,9 +324,7 @@ impl
         let Some(entity_type) = self.0.get_mut(entity_ty) else {
             return Err(EntityTypeAddPropertyError::EntityTypeDoesNotExist(entity_ty.clone()));
         };
-        entity_type
-            .add_property(property_type)
-            .map_err(|e| EntityTypeAddPropertyError::AddPropertyError(e))
+        entity_type.add_property(property_type).map_err(EntityTypeAddPropertyError::AddPropertyError)
     }
 
     fn update_property<N: Into<String>, P: Into<PropertyType>>(
@@ -340,7 +338,7 @@ impl
         };
         entity_type
             .update_property(property_name, property_type)
-            .map_err(|e| EntityTypeUpdatePropertyError::UpdatePropertyError(e))
+            .map_err(EntityTypeUpdatePropertyError::UpdatePropertyError)
     }
 
     fn remove_property<P: Into<String>>(&self, entity_ty: &EntityTypeId, property_name: P) -> Result<PropertyType, EntityTypeRemovePropertyError> {
@@ -349,7 +347,7 @@ impl
         };
         entity_type
             .remove_property(property_name)
-            .map_err(|e| EntityTypeRemovePropertyError::RemovePropertyError(e))
+            .map_err(EntityTypeRemovePropertyError::RemovePropertyError)
     }
 
     fn merge_properties<P: Into<PropertyTypes>>(&self, entity_ty: &EntityTypeId, properties_to_merge: P) -> Result<(), EntityTypeMergePropertiesError> {
@@ -374,9 +372,7 @@ impl
         let Some(entity_type) = self.0.get_mut(entity_ty) else {
             return Err(EntityTypeAddExtensionError::EntityTypeDoesNotExist(entity_ty.clone()));
         };
-        entity_type
-            .add_extension(extension)
-            .map_err(|e| EntityTypeAddExtensionError::AddExtensionError(e))
+        entity_type.add_extension(extension).map_err(EntityTypeAddExtensionError::AddExtensionError)
     }
 
     fn update_extension<T: Into<ExtensionTypeId>, E: Into<Extension>>(
@@ -390,7 +386,7 @@ impl
         };
         entity_type
             .update_extension(extension_ty, extension)
-            .map_err(|e| EntityTypeUpdateExtensionError::UpdateExtensionError(e))
+            .map_err(EntityTypeUpdateExtensionError::UpdateExtensionError)
     }
 
     fn remove_extension<T: Into<ExtensionTypeId>>(&self, entity_ty: &EntityTypeId, extension_ty: T) -> Result<Extension, EntityTypeRemoveExtensionError> {
@@ -399,7 +395,7 @@ impl
         };
         entity_type
             .remove_extension(extension_ty)
-            .map_err(|e| EntityTypeRemoveExtensionError::RemoveExtensionError(e))
+            .map_err(EntityTypeRemoveExtensionError::RemoveExtensionError)
     }
 
     fn merge_extensions<E: Into<Extensions>>(&mut self, entity_ty: &EntityTypeId, extensions_to_merge: E) -> Result<(), EntityTypeMergeExtensionsError> {
@@ -581,7 +577,6 @@ mod tests {
     use schemars::schema_for;
     use serde_json::json;
 
-    use crate::test_utils::r_string;
     use crate::ComponentTypeId;
     use crate::ComponentTypeIdContainer;
     use crate::DataType;
@@ -595,6 +590,7 @@ mod tests {
     use crate::PropertyTypeContainer;
     use crate::SocketType;
     use crate::TypeDefinitionGetter;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn create_entity_type_test() {

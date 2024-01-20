@@ -1,0 +1,869 @@
+# This file was generated. Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"The entity or relation has a description."
+interface Base_Describable_Component {
+  _c__base__describable: ID
+  "The description of an entity or a relation"
+  description: String
+}
+
+"The entity is licensed."
+interface Base_Licensed_Component {
+  _c__base__licensed: ID
+  "Title, author, source and license. Best practices for attribution: https://wiki.creativecommons.org/wiki/best_practices_for_attribution"
+  attribution: String
+  "The SPDX license identifier. See: https://spdx.org/licenses/"
+  license: String
+}
+
+"The entity or relation has a name."
+interface Base_Named_Component {
+  _c__base__named: ID
+  "The name of an entity or a relation"
+  name: String
+}
+
+"The relations between two entities are ordered using a ordinal number associated with sibling relations"
+interface Base_Ordered_Component {
+  _c__base__ordered: ID
+  "The relation ordinal number associated with sibling relations"
+  order: Float
+}
+
+"The entity is versioned."
+interface Base_Versioned_Component {
+  _c__base__versioned: ID
+  "The version number. Use semantic versioning. See: https://semver.org/"
+  version: String
+}
+
+"An action can be triggered"
+interface Core_Action_Component {
+  _c__core__action: ID
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+"A command which can be executed. The command has a name and can have command arguments."
+interface Core_Command_Component {
+  _c__core__command: ID
+  "The command arguments"
+  args: JSON
+  "The result of the command"
+  cmd_result: JSON
+  "The command name"
+  command: String
+  "Help text which explains the command."
+  help: String
+  "The command namespace"
+  namespace: String
+}
+
+"This components spawns events."
+interface Core_Event_Component {
+  _c__core__event: ID
+  "On receiving a boolean trigger the action will be executed"
+  event: JSON
+}
+
+"The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+interface Core_Labeled_Component {
+  _c__core__labeled: ID
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+}
+
+"Entities have a outbound relations and a inbound relations as well as components and properties "
+interface Entity {
+  id: ID!
+}
+
+"Relations have a outbound entity and a inbound entity as well as components and properties,"
+interface Relation {
+  instance_id: ID!
+  key: ID!
+}
+
+"The entity returns data of any datatype"
+interface Result_ResultAny_Component {
+  _c__result__result_any: ID
+  "A result which can be of any type"
+  result: JSON
+}
+
+"The entity returns an array"
+interface Result_ResultArray_Component {
+  _c__result__result_array: ID
+  "A result of type array"
+  result: JSON
+}
+
+"The entity returns a boolean"
+interface Result_ResultBoolean_Component {
+  _c__result__result_boolean: ID
+  "The result"
+  result: Boolean
+}
+
+"The entity returns a number"
+interface Result_ResultNumber_Component {
+  _c__result__result_number: ID
+  "The result"
+  result: Float
+}
+
+"The entity returns an object"
+interface Result_ResultObject_Component {
+  _c__result__result_object: ID
+  "The result"
+  result: JSON
+}
+
+"The entity returns a string"
+interface Result_ResultString_Component {
+  _c__result__result_string: ID
+  "The result"
+  result: String
+}
+
+"State of type array"
+interface State_StateArray_Component {
+  _c__state__state_array: ID
+  "Sets the state if and only if the new state is different"
+  set_state: JSON
+  "A state of type array"
+  state: JSON
+}
+
+"State of type boolean"
+interface State_StateBoolean_Component {
+  _c__state__state_boolean: ID
+  "Sets the state if and only if the new state is different"
+  set_state: Boolean
+  "A state of type boolean"
+  state: Boolean
+}
+
+interface State_StateDebuggerDebug_Component {
+  _c__state__state_debugger_debug: ID
+}
+
+interface State_StateDebuggerTrace_Component {
+  _c__state__state_debugger_trace: ID
+}
+
+"State of type number"
+interface State_StateNumber_Component {
+  _c__state__state_number: ID
+  "Sets the state if and only if the new state is different"
+  set_state: Float
+  "A state of type number"
+  state: Float
+}
+
+"State of type object"
+interface State_StateObject_Component {
+  _c__state__state_object: ID
+  "Sets the state if and only if the new state is different"
+  set_state: JSON
+  "A state of type object"
+  state: JSON
+}
+
+"State of type string"
+interface State_StateString_Component {
+  _c__state__state_string: ID
+  "Sets the state if and only if the new state is different"
+  set_state: String
+  "A state of type string"
+  state: String
+}
+
+interface Taxonomy_Weighted_Component {
+  _c__taxonomy__weighted: ID
+  weight: Float
+}
+
+"A generator sends a trigger"
+interface Trigger_Generator_Component {
+  _c__trigger__generator: ID
+  "Sends a boolean trigger"
+  trigger: Boolean
+}
+
+"Value of type array"
+interface Value_ValueArray_Component {
+  _c__value__value_array: ID
+  "A value of type array"
+  value: JSON
+}
+
+"Value of type boolean"
+interface Value_ValueBoolean_Component {
+  _c__value__value_boolean: ID
+  "A value of type boolean"
+  value: Boolean
+}
+
+interface Value_ValueDebuggerDebug_Component {
+  _c__value__value_debugger_debug: ID
+}
+
+interface Value_ValueDebuggerTrace_Component {
+  _c__value__value_debugger_trace: ID
+}
+
+"Value of type number"
+interface Value_ValueNumber_Component {
+  _c__value__value_number: ID
+  "A value of type number"
+  value: Float
+}
+
+"Value of type object"
+interface Value_ValueObject_Component {
+  _c__value__value_object: ID
+  "A value of type object"
+  value: JSON
+}
+
+"Value of type string"
+interface Value_ValueString_Component {
+  _c__value__value_string: ID
+  "A value of type string"
+  value: String
+}
+
+"Any entity."
+union AllEntities = Core_NumCommands_Entity | Core_Shutdown_Entity | Core_SystemEvent_Entity | Flow_GenericFlow_Entity | State_StateArray_Entity | State_StateBoolean_Entity | State_StateNumber_Entity | State_StateObject_Entity | State_StateString_Entity | Taxonomy_Category_Entity | Taxonomy_Tag_Entity | Test_TestToml_Entity | Value_ValueArray_Entity | Value_ValueBoolean_Entity | Value_ValueNumber_Entity | Value_ValueObject_Entity | Value_ValueString_Entity
+
+"Queries for components, entities and relations on the namespace Base"
+type BaseNamespace {
+  "The entity or relation has a description."
+  describableComponent: [Base_Describable_Component!]!
+  "The entity is licensed."
+  licensedComponent: [Base_Licensed_Component!]!
+  "The entity or relation has a name."
+  namedComponent: [Base_Named_Component!]!
+  "The relations between two entities are ordered using a ordinal number associated with sibling relations"
+  orderedComponent: [Base_Ordered_Component!]!
+  "The entity is versioned."
+  versionedComponent: [Base_Versioned_Component!]!
+}
+
+"Mutations for entities and relations on the namespace Core"
+type CoreMutations {
+  createNumCommands(args: [JSON!]!, cmd_result: JSON, command: String, help: String, id: ID, label: String, namespace: String, trigger: Boolean!): Core_NumCommands_Entity!
+  createShutdown(args: [JSON!], cmd_result: JSON, command: String, delay: Float!, help: String, id: ID, label: String!, namespace: String, trigger: Boolean!): Core_Shutdown_Entity!
+  createSystemEvent(event: JSON!, id: ID, label: String!): Core_SystemEvent_Entity!
+  "Number of commands"
+  numCommands(args: [JSON!], cmd_result: JSON, command: String, help: String, id: ID, ids: [ID!], label: String, namespace: String, trigger: Boolean): Core_NumCommands_Entity_Mutations!
+  "Shutting down the runtime"
+  shutdown(args: [JSON!], cmd_result: JSON, command: String, delay: Float, help: String, id: ID, ids: [ID!], label: String, namespace: String, trigger: Boolean): Core_Shutdown_Entity_Mutations!
+  "Events of the type system"
+  systemEvent(event: JSON, id: ID, ids: [ID!], label: String): Core_SystemEvent_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Core"
+type CoreNamespace {
+  "An action can be triggered"
+  actionComponent: [Core_Action_Component!]!
+  "A command which can be executed. The command has a name and can have command arguments."
+  commandComponent: [Core_Command_Component!]!
+  "This components spawns events."
+  eventComponent: [Core_Event_Component!]!
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeledComponent: [Core_Labeled_Component!]!
+  "Number of commands"
+  numCommands(args: [JSON!], cmd_result: JSON, command: String, help: String, id: String, label: String, namespace: String, trigger: Boolean): [Core_NumCommands_Entity!]!
+  "Shutting down the runtime"
+  shutdown(args: [JSON!], cmd_result: JSON, command: String, delay: Float, help: String, id: String, label: String, namespace: String, trigger: Boolean): [Core_Shutdown_Entity!]!
+  "Events of the type system"
+  systemEvent(event: JSON, id: String, label: String): [Core_SystemEvent_Entity!]!
+}
+
+"Number of commands"
+type Core_NumCommands_Entity implements Core_Action_Component & Core_Command_Component & Core_Labeled_Component & Entity {
+  _c__core__action: ID
+  _c__core__command: ID
+  _c__core__labeled: ID
+  args: JSON
+  cmd_result: JSON
+  command: String
+  help: String
+  id: ID!
+  label: String
+  namespace: String
+  trigger: Boolean
+}
+
+type Core_NumCommands_Entity_Mutations {
+  delete: [ID!]!
+  trigger: [Core_NumCommands_Entity!]!
+  update(args: [JSON!], trigger: Boolean): [Core_NumCommands_Entity!]!
+}
+
+"Shutting down the runtime"
+type Core_Shutdown_Entity implements Core_Action_Component & Core_Command_Component & Core_Labeled_Component & Entity {
+  _c__core__action: ID
+  _c__core__command: ID
+  _c__core__labeled: ID
+  "The command arguments"
+  args: JSON
+  "The result of the command"
+  cmd_result: JSON
+  "The command name"
+  command: String
+  delay: Float
+  "Help text which explains the command."
+  help: String
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+  "The command namespace"
+  namespace: String
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+type Core_Shutdown_Entity_Mutations {
+  delete: [ID!]!
+  trigger: [Core_Shutdown_Entity!]!
+  update(delay: Float, label: String, trigger: Boolean): [Core_Shutdown_Entity!]!
+}
+
+"Events of the type system"
+type Core_SystemEvent_Entity implements Core_Event_Component & Core_Labeled_Component & Entity {
+  _c__core__event: ID
+  _c__core__labeled: ID
+  "On receiving a boolean trigger the action will be executed"
+  event: JSON
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+}
+
+type Core_SystemEvent_Entity_Mutations {
+  delete: [ID!]!
+  update(event: JSON, label: String): [Core_SystemEvent_Entity!]!
+}
+
+"Mutations for entities and relations on the namespace Flow"
+type FlowMutations {
+  createGenericFlow(id: ID, label: String!): Flow_GenericFlow_Entity!
+  "Generic flow without inputs and outputs"
+  genericFlow(id: ID, ids: [ID!], label: String): Flow_GenericFlow_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Flow"
+type FlowNamespace {
+  "Generic flow without inputs and outputs"
+  genericFlow(id: String, label: String): [Flow_GenericFlow_Entity!]!
+}
+
+"Generic flow without inputs and outputs"
+type Flow_GenericFlow_Entity implements Core_Labeled_Component & Entity {
+  _c__core__labeled: ID
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+}
+
+type Flow_GenericFlow_Entity_Mutations {
+  delete: [ID!]!
+  update(label: String): [Flow_GenericFlow_Entity!]!
+}
+
+"Mutations"
+type Mutation {
+  core: CoreMutations!
+  flow: FlowMutations!
+  state: StateMutations!
+  taxonomy: TaxonomyMutations!
+  test: TestMutations!
+  value: ValueMutations!
+}
+
+"Queries"
+type Query {
+  base: BaseNamespace!
+  core: CoreNamespace!
+  flow: FlowNamespace!
+  result: ResultNamespace!
+  state: StateNamespace!
+  taxonomy: TaxonomyNamespace!
+  test: TestNamespace!
+  trigger: TriggerNamespace!
+  value: ValueNamespace!
+}
+
+"Queries for components, entities and relations on the namespace Result"
+type ResultNamespace {
+  "The entity returns data of any datatype"
+  resultAnyComponent: [Result_ResultAny_Component!]!
+  "The entity returns an array"
+  resultArrayComponent: [Result_ResultArray_Component!]!
+  "The entity returns a boolean"
+  resultBooleanComponent: [Result_ResultBoolean_Component!]!
+  "The entity returns a number"
+  resultNumberComponent: [Result_ResultNumber_Component!]!
+  "The entity returns an object"
+  resultObjectComponent: [Result_ResultObject_Component!]!
+  "The entity returns a string"
+  resultStringComponent: [Result_ResultString_Component!]!
+}
+
+"Mutations for entities and relations on the namespace State"
+type StateMutations {
+  createStateArray(id: ID, name: String!, set_state: [JSON!]!, state: [JSON!], value: [JSON!]!): State_StateArray_Entity!
+  createStateBoolean(id: ID, name: String!, set_state: Boolean!, state: Boolean, value: Boolean!): State_StateBoolean_Entity!
+  createStateNumber(id: ID, name: String!, set_state: Float!, state: Float, value: Float!): State_StateNumber_Entity!
+  createStateObject(id: ID, name: String!, set_state: JSON!, state: JSON, value: JSON!): State_StateObject_Entity!
+  createStateString(id: ID, name: String!, set_state: String!, state: String, value: String!): State_StateString_Entity!
+  "State of type array"
+  stateArray(id: ID, ids: [ID!], label: String, name: String, set_state: [JSON!], state: [JSON!], value: [JSON!]): State_StateArray_Entity_Mutations!
+  "State of type boolean"
+  stateBoolean(id: ID, ids: [ID!], label: String, name: String, set_state: Boolean, state: Boolean, value: Boolean): State_StateBoolean_Entity_Mutations!
+  "State of type number"
+  stateNumber(id: ID, ids: [ID!], label: String, name: String, set_state: Float, state: Float, value: Float): State_StateNumber_Entity_Mutations!
+  "State of type object"
+  stateObject(id: ID, ids: [ID!], label: String, name: String, set_state: JSON, state: JSON, value: JSON): State_StateObject_Entity_Mutations!
+  "State of type string"
+  stateString(id: ID, ids: [ID!], label: String, name: String, set_state: String, state: String, value: String): State_StateString_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace State"
+type StateNamespace {
+  "State of type array"
+  stateArray(id: String, label: String, name: String, set_state: [JSON!], state: [JSON!], value: [JSON!]): [State_StateArray_Entity!]!
+  "State of type array"
+  stateArrayComponent: [State_StateArray_Component!]!
+  "State of type boolean"
+  stateBoolean(id: String, label: String, name: String, set_state: Boolean, state: Boolean, value: Boolean): [State_StateBoolean_Entity!]!
+  "State of type boolean"
+  stateBooleanComponent: [State_StateBoolean_Component!]!
+  stateDebuggerDebugComponent: [State_StateDebuggerDebug_Component!]!
+  stateDebuggerTraceComponent: [State_StateDebuggerTrace_Component!]!
+  "State of type number"
+  stateNumber(id: String, label: String, name: String, set_state: Float, state: Float, value: Float): [State_StateNumber_Entity!]!
+  "State of type number"
+  stateNumberComponent: [State_StateNumber_Component!]!
+  "State of type object"
+  stateObject(id: String, label: String, name: String, set_state: JSON, state: JSON, value: JSON): [State_StateObject_Entity!]!
+  "State of type object"
+  stateObjectComponent: [State_StateObject_Component!]!
+  "State of type string"
+  stateString(id: String, label: String, name: String, set_state: String, state: String, value: String): [State_StateString_Entity!]!
+  "State of type string"
+  stateStringComponent: [State_StateString_Component!]!
+}
+
+"State of type array"
+type State_StateArray_Entity implements Base_Named_Component & Entity & State_StateArray_Component & Value_ValueArray_Component {
+  _c__base__named: ID
+  _c__state__state_array: ID
+  _c__value__value_array: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "Sets the state if and only if the new state is different"
+  set_state: JSON
+  "A state of type array"
+  state: JSON
+  "A value of type array"
+  value: JSON
+}
+
+type State_StateArray_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, set_state: [JSON!], value: [JSON!]): [State_StateArray_Entity!]!
+}
+
+"State of type boolean"
+type State_StateBoolean_Entity implements Base_Named_Component & Entity & State_StateBoolean_Component & Value_ValueBoolean_Component {
+  _c__base__named: ID
+  _c__state__state_boolean: ID
+  _c__value__value_boolean: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "Sets the state if and only if the new state is different"
+  set_state: Boolean
+  "A state of type boolean"
+  state: Boolean
+  "A value of type boolean"
+  value: Boolean
+}
+
+type State_StateBoolean_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, set_state: Boolean, value: Boolean): [State_StateBoolean_Entity!]!
+}
+
+"State of type number"
+type State_StateNumber_Entity implements Base_Named_Component & Entity & State_StateNumber_Component & Value_ValueNumber_Component {
+  _c__base__named: ID
+  _c__state__state_number: ID
+  _c__value__value_number: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "Sets the state if and only if the new state is different"
+  set_state: Float
+  "A state of type number"
+  state: Float
+  "A value of type number"
+  value: Float
+}
+
+type State_StateNumber_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, set_state: Float, value: Float): [State_StateNumber_Entity!]!
+}
+
+"State of type object"
+type State_StateObject_Entity implements Base_Named_Component & Entity & State_StateObject_Component & Value_ValueObject_Component {
+  _c__base__named: ID
+  _c__state__state_object: ID
+  _c__value__value_object: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "Sets the state if and only if the new state is different"
+  set_state: JSON
+  "A state of type object"
+  state: JSON
+  "A value of type object"
+  value: JSON
+}
+
+type State_StateObject_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, set_state: JSON, value: JSON): [State_StateObject_Entity!]!
+}
+
+"State of type string"
+type State_StateString_Entity implements Base_Named_Component & Entity & State_StateString_Component & Value_ValueString_Component {
+  _c__base__named: ID
+  _c__state__state_string: ID
+  _c__value__value_string: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "Sets the state if and only if the new state is different"
+  set_state: String
+  "A state of type string"
+  state: String
+  "A value of type string"
+  value: String
+}
+
+type State_StateString_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, set_state: String, value: String): [State_StateString_Entity!]!
+}
+
+"Mutations for entities and relations on the namespace Taxonomy"
+type TaxonomyMutations {
+  "The outbound entity is categorized as the inbound category"
+  categorizedAs(inboundId: ID, label: String, outboundId: ID): Taxonomy_CategorizedAs_Relation_Mutations!
+  "A category is a fundamental and distinct class to which entities or concepts belong"
+  category(description: String, id: ID, ids: [ID!], label: String, name: String): Taxonomy_Category_Entity_Mutations!
+  createCategorizedAs(inboundId: ID, instanceId: ID, outboundId: ID, weight: Float!): Taxonomy_CategorizedAs_Relation!
+  createCategory(description: String!, id: ID, name: String!): Taxonomy_Category_Entity!
+  createHasSubcategory(inboundId: ID, instanceId: ID, outboundId: ID, weight: Float!): Taxonomy_HasSubcategory_Relation!
+  createTag(id: ID, label: String!, name: String!): Taxonomy_Tag_Entity!
+  createTaggedWith(inboundId: ID, instanceId: ID, label: String!, outboundId: ID, weight: Float!): Taxonomy_TaggedWith_Relation!
+  "The outbound category has the inbound entity as sub category"
+  hasSubcategory(inboundId: ID, label: String, outboundId: ID): Taxonomy_HasSubcategory_Relation_Mutations!
+  "A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
+  tag(id: ID, ids: [ID!], label: String, name: String): Taxonomy_Tag_Entity_Mutations!
+  "The outbound entity is tagged with the inbound tag"
+  taggedWith(inboundId: ID, label: String, outboundId: ID): Taxonomy_TaggedWith_Relation_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Taxonomy"
+type TaxonomyNamespace {
+  "The outbound entity is categorized as the inbound category"
+  categorizedAs(weight: Float): [Taxonomy_CategorizedAs_Relation!]!
+  "A category is a fundamental and distinct class to which entities or concepts belong"
+  category(description: String, id: String, label: String, name: String): [Taxonomy_Category_Entity!]!
+  "The outbound category has the inbound entity as sub category"
+  hasSubcategory(weight: Float): [Taxonomy_HasSubcategory_Relation!]!
+  "A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
+  tag(id: String, label: String, name: String): [Taxonomy_Tag_Entity!]!
+  "The outbound entity is tagged with the inbound tag"
+  taggedWith(weight: Float): [Taxonomy_TaggedWith_Relation!]!
+  weightedComponent: [Taxonomy_Weighted_Component!]!
+}
+
+"The outbound entity is categorized as the inbound category"
+type Taxonomy_CategorizedAs_Relation implements Relation & Taxonomy_Weighted_Component {
+  _c__taxonomy__weighted: ID
+  "The entity which is categorized."
+  categorized_entity: AllEntities!
+  "The category."
+  category: Taxonomy_Category_Entity!
+  instance_id: ID!
+  key: ID!
+  weight: Float
+}
+
+type Taxonomy_CategorizedAs_Relation_Mutations {
+  delete: [ID!]!
+  update(weight: Float): [Taxonomy_CategorizedAs_Relation!]!
+}
+
+"A category is a fundamental and distinct class to which entities or concepts belong"
+type Taxonomy_Category_Entity implements Base_Describable_Component & Base_Named_Component & Entity {
+  _c__base__describable: ID
+  _c__base__named: ID
+  "The relations between the category and the categorized entities."
+  categorized_as: [Taxonomy_CategorizedAs_Relation!]!
+  "The category categorizes these entities."
+  categorizes: [AllEntities!]!
+  "The description of an entity or a relation"
+  description: String
+  "The parent categories."
+  has_parent_categories: [Taxonomy_HasSubcategory_Relation!]!
+  "The sub categories."
+  has_sub_categories: [Taxonomy_HasSubcategory_Relation!]!
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "The parent categories."
+  parent_categories: [Taxonomy_Category_Entity!]!
+  "The sub categories."
+  sub_categories: [Taxonomy_Category_Entity!]!
+}
+
+type Taxonomy_Category_Entity_Mutations {
+  delete: [ID!]!
+  update(description: String, name: String): [Taxonomy_Category_Entity!]!
+}
+
+"The outbound category has the inbound entity as sub category"
+type Taxonomy_HasSubcategory_Relation implements Relation & Taxonomy_Weighted_Component {
+  _c__taxonomy__weighted: ID
+  instance_id: ID!
+  key: ID!
+  "The parent category."
+  parent_category: Taxonomy_Category_Entity!
+  "The sub category."
+  sub_category: Taxonomy_Category_Entity!
+  weight: Float
+}
+
+type Taxonomy_HasSubcategory_Relation_Mutations {
+  delete: [ID!]!
+  update(weight: Float): [Taxonomy_HasSubcategory_Relation!]!
+}
+
+"A tag is a piece of information that describes the data or content that it is assigned to. Tags are nonhierarchical keywords used for Internet bookmarks, digital images, videos, files and so on. A tag doesn't carry any information or semantics itself."
+type Taxonomy_Tag_Entity implements Base_Named_Component & Core_Labeled_Component & Entity {
+  _c__base__named: ID
+  _c__core__labeled: ID
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+  "The name of an entity or a relation"
+  name: String
+  "Entities which are tagged by this tag."
+  tagged_entities: [AllEntities!]!
+  "The weighted relations between the tag and the tagged entities."
+  tags_entities: [Taxonomy_TaggedWith_Relation!]!
+}
+
+type Taxonomy_Tag_Entity_Mutations {
+  delete: [ID!]!
+  update(label: String, name: String): [Taxonomy_Tag_Entity!]!
+}
+
+"The outbound entity is tagged with the inbound tag"
+type Taxonomy_TaggedWith_Relation implements Core_Labeled_Component & Relation & Taxonomy_Weighted_Component {
+  _c__core__labeled: ID
+  _c__taxonomy__weighted: ID
+  instance_id: ID!
+  key: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+  "The tag."
+  tag: Taxonomy_Tag_Entity!
+  "The entity which is tagged."
+  tagged_entity: AllEntities!
+  weight: Float
+}
+
+type Taxonomy_TaggedWith_Relation_Mutations {
+  delete: [ID!]!
+  update(label: String, weight: Float): [Taxonomy_TaggedWith_Relation!]!
+}
+
+"Mutations for entities and relations on the namespace Test"
+type TestMutations {
+  createTestToml(id: ID, label: String!, test: String!, trigger: Boolean!): Test_TestToml_Entity!
+  "The purpose of this entity type is to show that entity types can be defined using TOML files"
+  testToml(id: ID, ids: [ID!], label: String, test: String, trigger: Boolean): Test_TestToml_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Test"
+type TestNamespace {
+  "The purpose of this entity type is to show that entity types can be defined using TOML files"
+  testToml(id: String, label: String, test: String, trigger: Boolean): [Test_TestToml_Entity!]!
+}
+
+"The purpose of this entity type is to show that entity types can be defined using TOML files"
+type Test_TestToml_Entity implements Core_Action_Component & Core_Labeled_Component & Entity {
+  _c__core__action: ID
+  _c__core__labeled: ID
+  id: ID!
+  "Hierarchical path with static segments, named parameters and catch-all parameters"
+  label: String
+  test: String
+  "On receiving a boolean trigger the action will be executed"
+  trigger: Boolean
+}
+
+type Test_TestToml_Entity_Mutations {
+  delete: [ID!]!
+  trigger: [Test_TestToml_Entity!]!
+  update(label: String, test: String, trigger: Boolean): [Test_TestToml_Entity!]!
+}
+
+"Queries for components, entities and relations on the namespace Trigger"
+type TriggerNamespace {
+  "A generator sends a trigger"
+  generatorComponent: [Trigger_Generator_Component!]!
+}
+
+"Mutations for entities and relations on the namespace Value"
+type ValueMutations {
+  createValueArray(id: ID, name: String!, value: [JSON!]!): Value_ValueArray_Entity!
+  createValueBoolean(id: ID, name: String!, value: Boolean!): Value_ValueBoolean_Entity!
+  createValueNumber(id: ID, name: String!, value: Float!): Value_ValueNumber_Entity!
+  createValueObject(id: ID, name: String!, value: JSON!): Value_ValueObject_Entity!
+  createValueString(id: ID, name: String!, value: String!): Value_ValueString_Entity!
+  "Value of type array"
+  valueArray(id: ID, ids: [ID!], label: String, name: String, value: [JSON!]): Value_ValueArray_Entity_Mutations!
+  "Value of type boolean"
+  valueBoolean(id: ID, ids: [ID!], label: String, name: String, value: Boolean): Value_ValueBoolean_Entity_Mutations!
+  "Value of type number"
+  valueNumber(id: ID, ids: [ID!], label: String, name: String, value: Float): Value_ValueNumber_Entity_Mutations!
+  "Value of type object"
+  valueObject(id: ID, ids: [ID!], label: String, name: String, value: JSON): Value_ValueObject_Entity_Mutations!
+  "Value of type string"
+  valueString(id: ID, ids: [ID!], label: String, name: String, value: String): Value_ValueString_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Value"
+type ValueNamespace {
+  "Value of type array"
+  valueArray(id: String, label: String, name: String, value: [JSON!]): [Value_ValueArray_Entity!]!
+  "Value of type array"
+  valueArrayComponent: [Value_ValueArray_Component!]!
+  "Value of type boolean"
+  valueBoolean(id: String, label: String, name: String, value: Boolean): [Value_ValueBoolean_Entity!]!
+  "Value of type boolean"
+  valueBooleanComponent: [Value_ValueBoolean_Component!]!
+  valueDebuggerDebugComponent: [Value_ValueDebuggerDebug_Component!]!
+  valueDebuggerTraceComponent: [Value_ValueDebuggerTrace_Component!]!
+  "Value of type number"
+  valueNumber(id: String, label: String, name: String, value: Float): [Value_ValueNumber_Entity!]!
+  "Value of type number"
+  valueNumberComponent: [Value_ValueNumber_Component!]!
+  "Value of type object"
+  valueObject(id: String, label: String, name: String, value: JSON): [Value_ValueObject_Entity!]!
+  "Value of type object"
+  valueObjectComponent: [Value_ValueObject_Component!]!
+  "Value of type string"
+  valueString(id: String, label: String, name: String, value: String): [Value_ValueString_Entity!]!
+  "Value of type string"
+  valueStringComponent: [Value_ValueString_Component!]!
+}
+
+"Value of type array"
+type Value_ValueArray_Entity implements Base_Named_Component & Entity & Value_ValueArray_Component {
+  _c__base__named: ID
+  _c__value__value_array: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "A value of type array"
+  value: JSON
+}
+
+type Value_ValueArray_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, value: [JSON!]): [Value_ValueArray_Entity!]!
+}
+
+"Value of type boolean"
+type Value_ValueBoolean_Entity implements Base_Named_Component & Entity & Value_ValueBoolean_Component {
+  _c__base__named: ID
+  _c__value__value_boolean: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "A value of type boolean"
+  value: Boolean
+}
+
+type Value_ValueBoolean_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, value: Boolean): [Value_ValueBoolean_Entity!]!
+}
+
+"Value of type number"
+type Value_ValueNumber_Entity implements Base_Named_Component & Entity & Value_ValueNumber_Component {
+  _c__base__named: ID
+  _c__value__value_number: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "A value of type number"
+  value: Float
+}
+
+type Value_ValueNumber_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, value: Float): [Value_ValueNumber_Entity!]!
+}
+
+"Value of type object"
+type Value_ValueObject_Entity implements Base_Named_Component & Entity & Value_ValueObject_Component {
+  _c__base__named: ID
+  _c__value__value_object: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "A value of type object"
+  value: JSON
+}
+
+type Value_ValueObject_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, value: JSON): [Value_ValueObject_Entity!]!
+}
+
+"Value of type string"
+type Value_ValueString_Entity implements Base_Named_Component & Entity & Value_ValueString_Component {
+  _c__base__named: ID
+  _c__value__value_string: ID
+  id: ID!
+  "The name of an entity or a relation"
+  name: String
+  "A value of type string"
+  value: String
+}
+
+type Value_ValueString_Entity_Mutations {
+  delete: [ID!]!
+  update(name: String, value: String): [Value_ValueString_Entity!]!
+}
+
+scalar JSON

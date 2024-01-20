@@ -1,6 +1,15 @@
 query {
   types {
-    components {
+    components
+      (
+        extensions: [
+          {
+            namespace: "metadata"
+            name: "dublin-core"
+          }
+        ]
+      )
+    {
       namespace
       name
       description

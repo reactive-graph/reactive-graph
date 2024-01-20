@@ -1,9 +1,39 @@
-schema: ./schema.graphql
+schema:
+  - ./schema_graphql.graphql
+  - ./schema_dynamic_graph.graphql
+  - ./schema_runtime.graphql
+  - ./schema_plugin.graphql
 extensions:
   endpoints:
-    InexorReactiveGraphFlow@localhost:
+    graphql:
       url: http://localhost:31415/graphql
       introspect: true
-    InexorReactiveGraphFlow@https:
+      schema: ./schema_graphql.graphql
+    https@graphql:
       url: https://localhost:31415/graphql
       introspect: false
+      schema: ./schema_graphql.graphql
+    dynamic_graph:
+      url: http://localhost:31415/dynamic_graph
+      introspect: true
+      schema: ./schema_dynamic_graph.graphql
+    https@dynamic_graph:
+      url: https://localhost:31415/dynamic_graph
+      introspect: false
+      schema: ./schema_dynamic_graph.graphql
+    runtime:
+      url: http://localhost:31415/runtime/graphql
+      introspect: true
+      schema: ./schema_runtime.graphql
+    https@runtime:
+      url: https://localhost:31415/runtime/graphql
+      introspect: false
+      schema: ./schema_runtime.graphql
+    plugins:
+      url: http://localhost:31415/plugin/graphql
+      introspect: true
+      schema: ./schema_plugin.graphql
+    https@plugins:
+      url: https://localhost:31415/plugin/graphql
+      introspect: false
+      schema: ./schema_plugin.graphql

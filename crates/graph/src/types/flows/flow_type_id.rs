@@ -281,9 +281,8 @@ macro_rules! flow_ty {
         $flow_type_name: expr
     ) => {
         pub const $flow_type_name_const: &str = $flow_type_name;
-        lazy_static::lazy_static! {
-            pub static ref $flow_type_id: $crate::FlowTypeId = $crate::FlowTypeId::new_from_type($namespace, $flow_type_name_const);
-        }
+        pub static $flow_type_id: std::sync::LazyLock<$crate::FlowTypeId> =
+            std::sync::LazyLock::new(|| $crate::FlowTypeId::new_from_type($namespace, $flow_type_name_const));
     };
 }
 
@@ -310,13 +309,13 @@ impl DefaultTest for FlowTypeIds {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::FlowTypeId;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn flow_type_id_test() {

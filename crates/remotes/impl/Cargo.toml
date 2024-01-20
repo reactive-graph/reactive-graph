@@ -1,0 +1,34 @@
+[package]
+name = "inexor-rgf-remotes-impl"
+description = "Inexor - Reactive Graph Flow - Remotes - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+chrono = { workspace = true }
+dashmap = { workspace = true }
+gql_client = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+serde = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+
+inexor-rgf-remotes-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-remotes-model = { version = "0.10.0", path = "../model" }
+inexor-rgf-config-api = { version = "0.10.0", path = "../../config/api" }
+inexor-rgf-config-model = { version = "0.10.0", path = "../../config/model" }
+inexor-rgf-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+
+[dev-dependencies]
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+
+[build-dependencies]
+vergen = { workspace = true, features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
+
+[lib]
+crate-type = ["lib"]

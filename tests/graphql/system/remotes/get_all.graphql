@@ -1,0 +1,13 @@
+query {
+  system {
+    remotes {
+      name
+      description
+      hostname
+      name
+      port
+      secure
+      lastSeen
+    }
+  }
+}

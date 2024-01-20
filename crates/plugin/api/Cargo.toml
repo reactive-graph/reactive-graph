@@ -1,0 +1,54 @@
+[package]
+name = "inexor-rgf-plugin-api"
+description = "Inexor - Reactive Graph Flow - Core - Plugins"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+http = { workspace = true }
+#json5 = { workspace = true, optional = true }
+##paste = { workspace = true }
+rust-embed = { workspace = true, features = ["debug-embed", "compression"], optional = true }
+serde = { workspace = true, features = [ "derive" ] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ], optional = true }
+tokio-stream = { workspace = true }
+#toml = { workspace = true, optional = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../../behaviour/model/api" }
+##inexor-rgf-behaviour-model-impl = { version = "0.10.0", path = "../behaviour/model/impl" }
+inexor-rgf-config-model = { version = "0.10.0", path = "../../config/model" }
+#inexor-rgf-event-api = { version = "0.10.0", path = "../event-api" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-command-model = { version = "0.10.0", path = "../../command/model" }
+inexor-rgf-plugin-derive = { version = "0.10.0", path = "../derive", optional = true }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+inexor-rgf-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api" }
+
+[dev-dependencies]
+random-string = "1.0"
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+[build-dependencies]
+rustc_version = "0.4.0"
+
+[features]
+default = [ "derive", "springtime" ]
+derive = [ "inexor-rgf-plugin-derive", "rust-embed" ]
+springtime = [ "springtime-di/threadsafe", "springtime-di/derive" ]
+#json5 = [ "dep:json5", "inexor-rgf-plugin-derive/json5" ]
+#toml = [ "dep:toml", "inexor-rgf-plugin-derive/toml" ]
+full = [ "derive", "springtime" ] #, "json5", "toml" ]
+
+[lib]
+crate-type = ["lib"]

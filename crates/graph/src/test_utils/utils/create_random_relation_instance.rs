@@ -5,8 +5,8 @@
 //
 // use crate::property_identifier;
 // use crate::tests::utils::r_string;
-// use crate::reactive::ReactiveEntity;
-// use crate::reactive::ReactiveRelation;
+// use inexor_rgf_reactive_model_impl::ReactiveEntity;
+// use inexor_rgf_reactive_model_impl::ReactiveRelation;
 // use crate::RelationTypeId;
 // use crate::TypeDefinitionGetter;
 //

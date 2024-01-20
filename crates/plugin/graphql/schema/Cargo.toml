@@ -1,0 +1,31 @@
+[package]
+name = "inexor-rgf-plugin-graphql-schema"
+description = "Inexor - Reactive Graph Flow - Plugin - GraphQL - Schema"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+async-graphql = { workspace = true, features = ["uuid"] }
+uuid = { workspace = true }
+
+inexor-rgf-plugin-api = { version = "0.10.0", path = "../../api" }
+inexor-rgf-plugin-service-api = { version = "0.10.0", path = "../../service/api" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }
+inexor-rgf-runtime-api = { version = "0.10.0", path = "../../../runtime/api" }
+inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../../runtime/impl" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+inexor-rgf-graphql-api = { version = "0.10.0", path = "../../../graphql/api" }
+
+[lib]
+crate-type = ["lib"]

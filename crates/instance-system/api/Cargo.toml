@@ -1,0 +1,24 @@
+[package]
+name = "inexor-rgf-instance-system-api"
+description = "Inexor - Reactive Graph Flow - Instance System - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+
+[lib]
+crate-type = ["lib"]

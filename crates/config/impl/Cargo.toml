@@ -1,0 +1,23 @@
+[package]
+name = "inexor-rgf-config-impl"
+description = "Inexor - Reactive Graph Flow - Config - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+toml = { workspace = true }
+
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+inexor-rgf-config-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-config-model = { version = "0.10.0", path = "../model" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+
+[lib]
+crate-type = ["lib"]

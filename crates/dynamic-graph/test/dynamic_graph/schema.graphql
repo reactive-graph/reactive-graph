@@ -1,0 +1,135 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"This components spawns events."
+interface Core_Event_Component {
+  _c__core__event: ID
+  event: JSON
+}
+
+"The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+interface Core_Labeled_Component {
+  _c__core__labeled: ID
+  label: String
+}
+
+"Entities have a outbound relations and a inbound relations as well as components and properties "
+interface Entity {
+  id: ID!
+}
+
+"Mutations for entities and relations on the namespace Core"
+type CoreMutations {
+  createNumCommands(id: ID, label: String!): Core_NumCommands_Entity!
+  createShutdown(args: JSON!, command: String!, delay: Float!, help: String!, id: ID, label: String!, trigger: Boolean!): Core_Shutdown_Entity!
+  createSystemEvent(event: JSON, id: ID, label: String!): Core_SystemEvent_Entity!
+  "Number of commands"
+  numCommands(id: ID, ids: [ID!], label: String): Core_NumCommands_Entity_Mutations!
+  shutdown(args: JSON, command: String, delay: Float, help: String, id: ID, ids: [ID!], label: String, trigger: Boolean): Core_Shutdown_Entity_Mutations!
+  "Events of the type system"
+  systemEvent(event: JSON, id: ID, ids: [ID!], label: String): Core_SystemEvent_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Core"
+type CoreNamespace {
+  "This components spawns events."
+  eventComponent: [Core_Event_Component!]!
+  "The label is an hierarchical path with static segments, named parameters and catch-all parameters."
+  labeledComponent: [Core_Labeled_Component!]!
+  "Number of commands"
+  numCommands(id: String, label: String): [Core_NumCommands_Entity!]!
+  shutdown(args: JSON, command: String, delay: Float, help: String, id: String, label: String, trigger: Boolean): [Core_Shutdown_Entity!]!
+  "Events of the type system"
+  systemEvent(event: JSON, id: String, label: String): [Core_SystemEvent_Entity!]!
+}
+
+"Number of commands"
+type Core_NumCommands_Entity implements Core_Labeled_Component & Entity {
+  _c__command__command: ID
+  _c__core__labeled: ID
+  _c__trigger__action: ID
+  id: ID!
+  label: String
+}
+
+type Core_NumCommands_Entity_Mutations {
+  delete: [ID!]!
+  trigger: [Core_NumCommands_Entity!]!
+  update(label: String): [Core_NumCommands_Entity!]!
+}
+
+type Core_Shutdown_Entity implements Core_Labeled_Component & Entity {
+  _c__command__command: ID
+  _c__core__labeled: ID
+  _c__trigger__action: ID
+  args: JSON
+  command: String
+  delay: Float
+  help: String
+  id: ID!
+  label: String
+  trigger: Boolean
+}
+
+type Core_Shutdown_Entity_Mutations {
+  delete: [ID!]!
+  trigger: [Core_Shutdown_Entity!]!
+  update(args: JSON, command: String, delay: Float, help: String, label: String, trigger: Boolean): [Core_Shutdown_Entity!]!
+}
+
+"Events of the type system"
+type Core_SystemEvent_Entity implements Core_Event_Component & Core_Labeled_Component & Entity {
+  _c__core__event: ID
+  _c__core__labeled: ID
+  event: JSON
+  id: ID!
+  label: String
+}
+
+type Core_SystemEvent_Entity_Mutations {
+  delete: [ID!]!
+  update(label: String): [Core_SystemEvent_Entity!]!
+}
+
+"Mutations for entities and relations on the namespace Flow"
+type FlowMutations {
+  createGenericFlow(id: ID, label: String!): Flow_GenericFlow_Entity!
+  "Generic flow without inputs and outputs"
+  genericFlow(id: ID, ids: [ID!], label: String): Flow_GenericFlow_Entity_Mutations!
+}
+
+"Queries for components, entities and relations on the namespace Flow"
+type FlowNamespace {
+  "Generic flow without inputs and outputs"
+  genericFlow(id: String, label: String): [Flow_GenericFlow_Entity!]!
+}
+
+"Generic flow without inputs and outputs"
+type Flow_GenericFlow_Entity implements Core_Labeled_Component & Entity {
+  _c__core__labeled: ID
+  id: ID!
+  label: String
+}
+
+type Flow_GenericFlow_Entity_Mutations {
+  delete: [ID!]!
+  update(label: String): [Flow_GenericFlow_Entity!]!
+}
+
+"Mutations"
+type Mutation {
+  core: CoreMutations!
+  flow: FlowMutations!
+}
+
+"Queries"
+type Query {
+  core: CoreNamespace!
+  flow: FlowNamespace!
+}
+
+scalar JSON

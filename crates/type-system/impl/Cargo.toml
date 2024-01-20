@@ -1,0 +1,45 @@
+[package]
+name = "inexor-rgf-type-system-impl"
+description = "Inexor - Reactive Graph Flow - Type System - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+dashmap = { workspace = true }
+json5 = { workspace = true, optional = true }
+log = { workspace = true, features = ["std", "serde"] }
+rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ], optional = true }
+toml = { workspace = true, optional = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../api", features = [ "derive" ] }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+
+[features]
+default = [ "springtime", "json5", "toml" ]
+springtime = [ "springtime-di/threadsafe", "springtime-di/derive" ]
+json5 = [ "dep:json5", "inexor-rgf-type-system-api/json5" ]
+toml = [ "dep:toml", "inexor-rgf-type-system-api/toml" ]
+full = [ "springtime", "json5", "toml" ]
+
+[lib]
+crate-type = ["lib"]

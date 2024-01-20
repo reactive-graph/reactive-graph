@@ -1,0 +1,144 @@
+[package]
+name = "inexor-rgf-runtime-impl"
+description = "Inexor - Reactive Graph Flow - Runtime - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+keywords = [
+    "reactive",
+    "graph",
+    "flow",
+    "entity-system",
+    "ecs"
+]
+categories = [
+    "desktop-automation",
+    "entity-component-system",
+    "game-engine",
+    "home-automation",
+    "iot"
+]
+
+[dependencies]
+
+actix = { workspace = true }
+actix-cors = { workspace = true }
+actix-http = { workspace = true }
+actix-rt = { workspace = true }
+actix-web = { workspace = true, features = ["rustls-0_21"] }
+actix-web-extras = { workspace = true }
+# async-graphql features: uuid, chrono, url, log
+async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
+async-graphql-actix-web = { workspace = true }
+async-trait = { workspace = true }
+chrono = { workspace = true }
+convert_case = { workspace = true }
+crossbeam = { workspace = true }
+dashmap = { workspace = true }
+futures = { workspace = true }
+futures-timer = { workspace = true }
+futures-util = { workspace = true }
+gql_client = { workspace = true }
+http = { workspace = true }
+json5 = { workspace = true }
+lazy_static = { workspace = true }
+libloading = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+mime = { workspace = true }
+notify = { workspace = true }
+paste = { workspace = true }
+path-tree = { workspace = true }
+portpicker = { workspace = true }
+rand = { workspace = true }
+rayon = { workspace = true }
+reqwest = { workspace = true, features = ["json"] }
+rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
+rustls = { workspace = true }
+rustls-pemfile = { workspace = true }
+schemars = { workspace = true, features = ["uuid1"] }
+semver = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+signal-hook = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+strum = { workspace = true, features = ["derive"] }
+strum_macros = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+toml = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+walkdir = { workspace = true }
+wildmatch = { workspace = true }
+
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../../behaviour/model/api" }
+inexor-rgf-behaviour-model-impl = { version = "0.10.0", path = "../../behaviour/model/impl" }
+inexor-rgf-behaviour-service-api = { version = "0.10.0", path = "../../behaviour/service/api" }
+inexor-rgf-behaviour-service-impl = { version = "0.10.0", path = "../../behaviour/service/impl" }
+inexor-rgf-config-api = { version = "0.10.0", path = "../../config/api" }
+inexor-rgf-config-model = { version = "0.10.0", path = "../../config/model" }
+inexor-rgf-config-impl = { version = "0.10.0", path = "../../config/impl" }
+inexor-rgf-command-api = { version = "0.10.0", path = "../../command/api" }
+inexor-rgf-command-impl = { version = "0.10.0", path = "../../command/impl" }
+inexor-rgf-command-model = { version = "0.10.0", path = "../../command/model" }
+inexor-rgf-remotes-api = { version = "0.10.0", path = "../../remotes/api" }
+inexor-rgf-remotes-impl = { version = "0.10.0", path = "../../remotes/impl" }
+inexor-rgf-remotes-model = { version = "0.10.0", path = "../../remotes/model" }
+inexor-rgf-dynamic-graph-api = { version = "0.10.0", path = "../../dynamic-graph/api" }
+inexor-rgf-dynamic-graph-impl = { version = "0.10.0", path = "../../dynamic-graph/impl" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-graphql-api = { version = "0.10.0", path = "../../graphql/api" }
+inexor-rgf-graphql-impl = { version = "0.10.0", path = "../../graphql/impl" }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+inexor-rgf-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
+inexor-rgf-reactive-service-impl = { version = "0.10.0", path = "../../reactive/service/impl" }
+inexor-rgf-dynamic-graph-model = { version = "0.10.0", path = "../../dynamic-graph/model" }
+inexor-rgf-model-flow = { version = "0.10.0", path = "../../model/flow" }
+inexor-rgf-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api", features = [ "json5", "toml" ] }
+inexor-rgf-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
+inexor-rgf-instance-system-api = { version = "0.10.0", path = "../../instance-system/api" }
+inexor-rgf-instance-system-impl = { version = "0.10.0", path = "../../instance-system/impl" }
+inexor-rgf-runtime-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-runtime-service-api = { version = "0.10.0", path = "../service/api" }
+inexor-rgf-runtime-service-impl = { version = "0.10.0", path = "../service/impl" }
+inexor-rgf-runtime-web-api = { version = "0.10.0", path = "../web/api" }
+inexor-rgf-runtime-web-impl = { version = "0.10.0", path = "../web/impl" }
+inexor-rgf-runtime-graphql-api = { version = "0.10.0", path = "../graphql/api" }
+inexor-rgf-runtime-graphql-impl = { version = "0.10.0", path = "../graphql/impl" }
+inexor-rgf-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
+##inexor-rgf-plugin-derive = { version = "0.10.0", path = "../plugin/derive" }
+inexor-rgf-plugin-service-api = { version = "0.10.0", path = "../../plugin/service/api" }
+inexor-rgf-plugin-service-impl = { version = "0.10.0", path = "../../plugin/service/impl" }
+inexor-rgf-plugin-graphql-api = { version = "0.10.0", path = "../../plugin/graphql/api" }
+inexor-rgf-plugin-graphql-impl = { version = "0.10.0", path = "../../plugin/graphql/impl" }
+
+[dev-dependencies]
+colored = { workspace = true }
+default-test = { workspace = true }
+futures-await-test = { workspace = true }
+glob = { workspace = true }
+log4rs = { workspace = true, features = ["console_appender", "ansi_writer"] }
+similar = { workspace = true }
+similar-asserts = { workspace = true }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-runtime-api = { version = "0.10.0", path = "../api" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+
+#[build-dependencies]
+#vergen = { version = "8.1.3", features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
+
+[features]
+test = []
+
+[lib]
+crate-type = ["lib"]
+
+[[example]]
+name = "simple_runtime"

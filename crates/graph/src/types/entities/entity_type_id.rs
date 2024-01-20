@@ -280,9 +280,8 @@ macro_rules! entity_ty {
         $entity_type_name: expr
     ) => {
         pub const $entity_type_name_const: &str = $entity_type_name;
-        lazy_static::lazy_static! {
-            pub static ref $entity_type_id: $crate::EntityTypeId = $crate::EntityTypeId::new_from_type($namespace, $entity_type_name_const);
-        }
+        pub static $entity_type_id: std::sync::LazyLock<$crate::EntityTypeId> =
+            std::sync::LazyLock::new(|| $crate::EntityTypeId::new_from_type($namespace, $entity_type_name_const));
     };
 }
 
@@ -309,13 +308,13 @@ impl DefaultTest for EntityTypeIds {
 mod tests {
     use schemars::schema_for;
 
-    use crate::test_utils::r_string;
     use crate::EntityTypeId;
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn entity_type_id_test() {

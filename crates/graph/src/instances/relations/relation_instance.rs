@@ -27,8 +27,6 @@ use serde_json::Value;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
 use crate::AddExtensionError;
 use crate::Extension;
 use crate::ExtensionContainer;
@@ -46,6 +44,8 @@ use crate::RemoveExtensionError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -191,70 +191,43 @@ impl RelationInstance {
     }
 }
 
-// impl TryFrom<HashMap<String, Value>> for RelationInstance {
-//     type Error = ();
-//
-//     fn try_from(properties: HashMap<String, Value>) -> Result<Self, Self::Error> {
-//         let ty = RelationInstanceTypeId::try_from(&properties.edge.key.t)?;
-//         Ok(RelationInstance {
-//             outbound_id: properties.edge.key.outbound_id,
-//             ty,
-//             inbound_id: properties.edge.key.inbound_id,
-//             description: String::new(),
-//             properties: properties.props.iter().map(|p| (p.name.to_string(), p.value.clone())).collect(),
-//             extensions: Vec::new(),
-//         })
-//     }
-// }
-
 impl PropertyInstanceGetter for RelationInstance {
     fn get<S: Into<String>>(&self, property_name: S) -> Option<Value> {
-        self.properties.get(&property_name.into())
-        // self.properties.get(&property_name.into()).cloned()
+        self.properties.get(property_name.into())
     }
 
     fn as_bool<S: Into<String>>(&self, property_name: S) -> Option<bool> {
-        self.properties.as_bool(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_bool())
+        self.properties.as_bool(property_name.into())
     }
 
     fn as_u64<S: Into<String>>(&self, property_name: S) -> Option<u64> {
-        self.properties.as_u64(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_u64())
+        self.properties.as_u64(property_name.into())
     }
 
     fn as_i64<S: Into<String>>(&self, property_name: S) -> Option<i64> {
-        self.properties.as_i64(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_i64())
+        self.properties.as_i64(property_name.into())
     }
 
     fn as_f64<S: Into<String>>(&self, property_name: S) -> Option<f64> {
-        self.properties.as_f64(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_f64())
+        self.properties.as_f64(property_name.into())
     }
 
     fn as_string<S: Into<String>>(&self, property_name: S) -> Option<String> {
-        self.properties.as_string(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_str().map(|s| s.to_string()))
+        self.properties.as_string(property_name.into())
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.properties.as_array(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_array().map(Vec::clone))
+        self.properties.as_array(property_name.into())
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.properties.as_object(&property_name.into())
-        // self.properties.get(&property_name.into()).and_then(|p| p.as_object().map(Map::clone))
+        self.properties.as_object(property_name.into())
     }
 }
 
 impl MutablePropertyInstanceSetter for RelationInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
         self.properties.set(&property_name.into(), value);
-        // if let Some(property_value) = self.properties.get_mut(&property_name.into()) {
-        //     *property_value = value
-        // }
     }
 }
 
@@ -509,7 +482,6 @@ mod tests {
     use serde_json::json;
     use uuid::Uuid;
 
-    use crate::test_utils::r_string;
     use crate::Extension;
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
@@ -524,6 +496,7 @@ mod tests {
     use crate::RelationTypeId;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
+    use inexor_rgf_test_utils::r_string;
 
     #[test]
     fn relation_instance_builder_test() {

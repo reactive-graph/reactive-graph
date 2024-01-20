@@ -14,28 +14,28 @@ pub enum SocketType {
     Output,
 }
 
-impl From<SocketType> for crate::model::SocketType {
+impl From<SocketType> for inexor_rgf_graph::SocketType {
     fn from(socket_type: SocketType) -> Self {
         match socket_type {
-            SocketType::None => crate::model::SocketType::None,
-            SocketType::Input => crate::model::SocketType::Input,
-            SocketType::Output => crate::model::SocketType::Output,
+            SocketType::None => inexor_rgf_graph::SocketType::None,
+            SocketType::Input => inexor_rgf_graph::SocketType::Input,
+            SocketType::Output => inexor_rgf_graph::SocketType::Output,
         }
     }
 }
 
-impl From<crate::model::SocketType> for SocketType {
-    fn from(socket_type: crate::model::SocketType) -> Self {
+impl From<inexor_rgf_graph::SocketType> for SocketType {
+    fn from(socket_type: inexor_rgf_graph::SocketType) -> Self {
         match socket_type {
-            crate::model::SocketType::None => SocketType::None,
-            crate::model::SocketType::Input => SocketType::Input,
-            crate::model::SocketType::Output => SocketType::Output,
+            inexor_rgf_graph::SocketType::None => SocketType::None,
+            inexor_rgf_graph::SocketType::Input => SocketType::Input,
+            inexor_rgf_graph::SocketType::Output => SocketType::Output,
         }
     }
 }
 
 impl Display for SocketType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", crate::model::SocketType::from(*self))
+        write!(f, "{}", inexor_rgf_graph::SocketType::from(*self))
     }
 }

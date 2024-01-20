@@ -7,17 +7,17 @@ use crate::cli::repl::CHAR_ERROR;
 use crate::cli::repl::CHAR_SUCCESS;
 
 pub enum ReturnState {
-    NEUTRAL,
-    SUCCESS,
-    ERROR,
+    Neutral,
+    Success,
+    Error,
 }
 
 impl Display for ReturnState {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match &self {
-            ReturnState::NEUTRAL => write!(f, " "),
-            ReturnState::SUCCESS => write!(f, "{}", CHAR_SUCCESS.green().bold()),
-            ReturnState::ERROR => write!(f, "{}", CHAR_ERROR.red().bold()),
+            ReturnState::Neutral => write!(f, " "),
+            ReturnState::Success => write!(f, "{}", CHAR_SUCCESS.green().bold()),
+            ReturnState::Error => write!(f, "{}", CHAR_ERROR.red().bold()),
         }
     }
 }

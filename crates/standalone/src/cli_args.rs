@@ -2,6 +2,7 @@ use clap::ArgAction::SetTrue;
 use clap::Parser;
 use clap::Subcommand;
 
+#[cfg(client)]
 use crate::cli::args::ClientArgs;
 
 /// Simple program to greet a person
@@ -103,6 +104,7 @@ pub struct CliArguments {
 #[derive(Subcommand, Debug)]
 pub enum Commands {
     /// Connects to a client
+    #[cfg(client)]
     #[non_exhaustive]
     Client(ClientArgs),
 }

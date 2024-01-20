@@ -1,0 +1,41 @@
+[package]
+name = "inexor-rgf-reactive-service-api"
+description = "Inexor - Reactive Graph Flow - Reactive - API"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+crossbeam = { workspace = true }
+dashmap = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+thiserror = { workspace = true }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils", optional = true }
+inexor-rgf-reactive-derive = { version = "0.10.0", path = "../../derive", optional = true }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../model/impl" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../../../behaviour/model/api" }
+inexor-rgf-behaviour-service-api = { version = "0.10.0", path = "../../../behaviour/service/api" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
+
+[dev-dependencies]
+default-test = { workspace = true }
+
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+
+[features]
+default = [ "derive" ]
+derive = [ "inexor-rgf-reactive-derive" ]
+
+[lib]
+crate-type = ["lib"]

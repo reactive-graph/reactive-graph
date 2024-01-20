@@ -1,0 +1,7 @@
+query GetShutdownEntity {
+  core {
+    shutdown {
+      id
+    }
+  }
+}

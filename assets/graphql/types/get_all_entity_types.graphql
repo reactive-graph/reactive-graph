@@ -1,6 +1,20 @@
 query {
   types {
-    entities {
+    entities
+      (
+        components: [
+          {
+            namespace: "result"
+            name: "result_object"
+          },
+          {
+            namespace: "core"
+            name: "action"
+          }
+        ]
+      )
+
+    {
       namespace
       name
       description

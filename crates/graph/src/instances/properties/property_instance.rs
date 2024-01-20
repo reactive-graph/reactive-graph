@@ -255,9 +255,9 @@ impl FromIterator<(String, Value)> for PropertyInstances {
 #[cfg(any(test, feature = "test"))]
 use crate::test_utils::default_from::DefaultFrom;
 #[cfg(any(test, feature = "test"))]
-use crate::test_utils::r_string;
-#[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
+#[cfg(any(test, feature = "test"))]
+use inexor_rgf_test_utils::r_string;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]

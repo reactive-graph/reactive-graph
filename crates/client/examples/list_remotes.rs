@@ -17,7 +17,7 @@ async fn main() -> Result<(), SimpleClientError> {
     let client = InexorRgfClient::new_default().map_err(SimpleClientError::InexorRgfClientError)?;
     // Use inexor_rgf_client to fetch the list of plugins
     let remotes = client
-        .system()
+        .runtime()
         .remotes()
         .get_all()
         .await

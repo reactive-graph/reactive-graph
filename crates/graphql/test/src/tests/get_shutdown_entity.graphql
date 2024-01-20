@@ -1,0 +1,7 @@
+query GetShutdownEntity {
+  instances {
+    entities(label: "/org/inexor/commands/core/shutdown") {
+      id
+    }
+  }
+}

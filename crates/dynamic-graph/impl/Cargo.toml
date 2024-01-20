@@ -1,0 +1,48 @@
+[package]
+name = "inexor-rgf-dynamic-graph-impl"
+description = "Inexor - Reactive Graph Flow - Dynamic Graph - Implementation"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
+async-trait = { workspace = true }
+convert_case = { workspace = true }
+log = { workspace = true, features = ["std", "serde"] }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+thiserror = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api" }
+inexor-rgf-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+inexor-rgf-dynamic-graph-model = { version = "0.10.0", path = "../model" }
+inexor-rgf-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
+inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+inexor-rgf-dynamic-graph-api = { version = "0.10.0", path = "../api" }
+
+[dev-dependencies]
+colored = { workspace = true }
+default-test = { workspace = true }
+glob = { workspace = true }
+similar = { workspace = true }
+similar-asserts = { workspace = true }
+tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
+inexor-rgf-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
+inexor-rgf-reactive-service-impl = { version = "0.10.0", path = "../../reactive/service/impl" }
+
+[lib]
+crate-type = ["lib"]

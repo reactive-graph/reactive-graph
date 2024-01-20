@@ -1,0 +1,33 @@
+[package]
+name = "inexor-rgf-plugin-delegates"
+description = "Inexor - Reactive Graph Flow - Plugin - Delegates"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+uuid = { workspace = true, features = ["serde", "v4"] }
+
+inexor-rgf-config-api = { version = "0.10.0", path = "../../config/api" }
+inexor-rgf-config-model = { version = "0.10.0", path = "../../config/model" }
+inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+inexor-rgf-command-api = { version = "0.10.0", path = "../../command/api" }
+inexor-rgf-command-model = { version = "0.10.0", path = "../../command/model" }
+inexor-rgf-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
+##inexor-rgf-runtime-service-api = { version = "0.10.0", path = "../../runtime/service/api" }
+inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../../behaviour/model/api" }
+inexor-rgf-behaviour-service-api = { version = "0.10.0", path = "../../behaviour/service/api" }
+inexor-rgf-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
+inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api" }
+inexor-rgf-graphql-api = { version = "0.10.0", path = "../../graphql/api" }
+inexor-rgf-runtime-web-api = { version = "0.10.0", path = "../../runtime/web/api" }
+
+[lib]
+crate-type = ["lib"]
