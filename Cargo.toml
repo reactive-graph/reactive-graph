@@ -62,12 +62,12 @@ members = [
     "crates/runtime/web/api",
     "crates/runtime/web/impl",
     "crates/client",
-    "crates/standalone",
     "crates/type-system/api",
     "crates/type-system/derive",
     "crates/type-system/impl",
     "crates/type-system/json-schema",
     "crates/type-system/rest",
+    "crates/rgf",
 ]
 resolver = "2"
 
