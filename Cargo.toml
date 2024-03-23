@@ -154,7 +154,7 @@ thiserror = "1.0"
 tokio = { version = "1", features =  ["time", "rt"] }
 tokio-stream = "0.1"
 toml = "0.8"
-typed-builder = "0.16"
+typed-builder = "0.18"
 uuid = { version = "1.4", features = ["serde", "v4"] }
 vergen = { version = "8.2" }
 walkdir = "2.3"
