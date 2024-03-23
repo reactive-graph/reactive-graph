@@ -82,7 +82,7 @@ use inexor_rgf_type_system_api::TypeSystemEventManager;
 pub struct RunningState(Arc<AtomicBool>);
 
 fn create_running_state() -> Arc<AtomicBool> {
-    Arc::new(AtomicBool::new(true))
+    Arc::new(AtomicBool::new(false))
 }
 
 #[derive(Component)]
