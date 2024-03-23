@@ -63,10 +63,10 @@ semver = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 signal-hook = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 strum = { workspace = true, features = ["derive"] }
 strum_macros = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 toml = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 walkdir = { workspace = true }
@@ -99,7 +99,7 @@ inexor-rgf-dynamic-graph-model = { version = "0.10.0", path = "../../dynamic-gra
 inexor-rgf-model-flow = { version = "0.10.0", path = "../../model/flow" }
 inexor-rgf-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
 inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
-inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api", features = [ "json5", "toml" ] }
+inexor-rgf-type-system-api = { version = "0.10.0", path = "../../type-system/api", features = ["json5", "toml"] }
 inexor-rgf-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
 inexor-rgf-instance-system-api = { version = "0.10.0", path = "../../instance-system/api" }
 inexor-rgf-instance-system-impl = { version = "0.10.0", path = "../../instance-system/impl" }

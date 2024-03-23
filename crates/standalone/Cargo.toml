@@ -55,8 +55,8 @@ inexor-rgf-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
 inexor-rgf-client = { version = "0.10.0", path = "../client", optional = true }
 
 [features]
-client = [ "inexor-rgf-client"]
-default = [ "client" ]
+client = ["inexor-rgf-client"]
+default = ["client"]
 
 [[bin]]
 name = "inexor-rgf-rt-standalone"
