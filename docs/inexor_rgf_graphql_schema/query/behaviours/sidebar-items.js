@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["behaviour","behaviours","component_behaviour","entity_behaviour","relation_behaviour"]};

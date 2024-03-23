@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["GRAPHQL_DEFAULT_HOSTNAME","GRAPHQL_DEFAULT_PORT"],"struct":["GraphQLLoggingConfig","GraphQLServerConfig"]};

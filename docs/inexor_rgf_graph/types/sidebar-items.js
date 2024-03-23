@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["components","entities","extensions","flows","namespaces","properties","relations","type_id","variables"]};

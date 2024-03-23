@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_runtime_service_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_runtime_service_api/shutdown_manager/trait.ShutdownManager.html\" title=\"trait inexor_rgf_runtime_service_api::shutdown_manager::ShutdownManager\">ShutdownManager</a> for <a class=\"struct\" href=\"inexor_rgf_runtime_service_impl/shutdown_manager_impl/struct.ShutdownManagerImpl.html\" title=\"struct inexor_rgf_runtime_service_impl::shutdown_manager_impl::ShutdownManagerImpl\">ShutdownManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_unions"],"mod":["entity","namespace","relation"]};

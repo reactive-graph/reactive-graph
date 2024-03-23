@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"trait":["NamespacedTypeVariablesContainer","VariablesContainer"],"type":["Variable","VariableNames","Variables"]};

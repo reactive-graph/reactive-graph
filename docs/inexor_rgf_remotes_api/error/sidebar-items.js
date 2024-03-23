@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["FailedToAddInstance","FailedToFetchInstanceInfo","FailedToFetchRemoteInstances","FailedToUpdateInstance"]};

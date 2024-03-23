@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/client/src/client/types/components.rs`."><title>components.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="inexor_rgf_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../inexor_rgf_client/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/client/src/client/types/components.rs`."><title>components.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="inexor_rgf_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (85e449a32 2024-03-22)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../inexor_rgf_client/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -224,17 +226,19 @@
 <a href="#224" id="224">224</a>
 <a href="#225" id="225">225</a>
 <a href="#226" id="226">226</a>
-</pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#&quot;schema.graphql&quot;#</span>, module = <span class="string">&quot;crate::schema::schema&quot;</span>)]
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+</pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_graphql.graphql"#</span>, module = <span class="string">"crate::schema_graphql::schema"</span>)]
 </span><span class="kw">pub mod </span>queries {
     <span class="kw">use </span>typed_builder::TypedBuilder;
 
-    <span class="kw">use </span><span class="kw">crate</span>::model::ComponentTypeId;
-    <span class="kw">use </span><span class="kw">crate</span>::model::NamespacedTypeGetter;
-    <span class="kw">use </span><span class="kw">crate</span>::schema::types::component::Component;
-    <span class="kw">use </span><span class="kw">crate</span>::schema::types::extension::ExtensionDefinition;
-    <span class="kw">use </span><span class="kw">crate</span>::schema::types::extension::ExtensionDefinitions;
-    <span class="kw">use </span><span class="kw">crate</span>::schema::types::property_type::PropertyTypeDefinition;
-    <span class="kw">use </span><span class="kw">crate</span>::schema::types::property_type::PropertyTypeDefinitions;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::component::Component;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::extension::ExtensionDefinition;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::extension::ExtensionDefinitions;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::property_type::PropertyTypeDefinition;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::property_type::PropertyTypeDefinitions;
+    <span class="kw">use </span>inexor_rgf_graph::ComponentTypeId;
+    <span class="kw">use </span>inexor_rgf_graph::NamespacedTypeGetter;
 
     <span class="attr">#[derive(cynic::QueryVariables, Debug, TypedBuilder)]
     </span><span class="kw">pub struct </span>ComponentTypeIdVariables {
@@ -252,25 +256,25 @@
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">&quot;Query&quot;</span>)]
+    #[cynic(graphql_type = <span class="string">"Query"</span>)]
     </span><span class="kw">pub struct </span>GetAllComponents {
         <span class="kw">pub </span>types: GetAllComponentsTypes,
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">&quot;Types&quot;</span>)]
+    #[cynic(graphql_type = <span class="string">"Types"</span>)]
     </span><span class="kw">pub struct </span>GetAllComponentsTypes {
         <span class="kw">pub </span>components: Vec&lt;Component&gt;,
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">&quot;Query&quot;</span>, variables = <span class="string">&quot;ComponentTypeIdVariables&quot;</span>)]
+    #[cynic(graphql_type = <span class="string">"Query"</span>, variables = <span class="string">"ComponentTypeIdVariables"</span>)]
     </span><span class="kw">pub struct </span>GetComponentByType {
         <span class="kw">pub </span>types: GetComponentByTypeTypes,
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">&quot;Types&quot;</span>, variables = <span class="string">&quot;ComponentTypeIdVariables&quot;</span>)]
+    #[cynic(graphql_type = <span class="string">"Types"</span>, variables = <span class="string">"ComponentTypeIdVariables"</span>)]
     </span><span class="kw">pub struct </span>GetComponentByTypeTypes {
         <span class="attr">#[arguments(
           <span class="kw">type</span>: {
@@ -294,19 +298,19 @@
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">&quot;Mutation&quot;</span>, variables = <span class="string">&quot;CreateComponentVariables&quot;</span>)]
+    #[cynic(graphql_type = <span class="string">"Mutation"</span>, variables = <span class="string">"CreateComponentVariables"</span>)]
     </span><span class="kw">pub struct </span>CreateComponent {
         <span class="kw">pub </span>types: MutationTypes,
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(variables = <span class="string">&quot;CreateComponentVariables&quot;</span>)]
+    #[cynic(variables = <span class="string">"CreateComponentVariables"</span>)]
     </span><span class="kw">pub struct </span>MutationTypes {
         <span class="kw">pub </span>components: MutationComponents,
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(variables = <span class="string">&quot;CreateComponentVariables&quot;</span>)]
+    #[cynic(variables = <span class="string">"CreateComponentVariables"</span>)]
     </span><span class="kw">pub struct </span>MutationComponents {
         <span class="attr">#[arguments(<span class="kw">type</span>: { name: <span class="macro-nonterminal">$name</span>, namespace: <span class="macro-nonterminal">$namespace </span>}, description: <span class="macro-nonterminal">$description</span>, properties: <span class="macro-nonterminal">$properties</span>, extensions: <span class="macro-nonterminal">$extensions</span>)]
         </span><span class="kw">pub </span>create: Component,
@@ -322,7 +326,7 @@
         GetComponentByType::build(ty.clone().into())
     }
 
-    <span class="kw">pub fn </span>create_component_mutation(component: <span class="kw">crate</span>::model::Component) -&gt; cynic::Operation&lt;CreateComponent, CreateComponentVariables&gt; {
+    <span class="kw">pub fn </span>create_component_mutation(component: inexor_rgf_graph::Component) -&gt; cynic::Operation&lt;CreateComponent, CreateComponentVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
         <span class="comment">// let component = component.into();
         </span><span class="kw">let </span>namespace = component.namespace();
@@ -347,23 +351,25 @@
 
     <span class="attr">#[cfg(test)]
     </span><span class="kw">mod </span>tests {
-        <span class="kw">use </span>inexor_rgf_rt::runtime::RuntimeBuilder;
+        <span class="kw">use </span>inexor_rgf_runtime_impl::RuntimeBuilder;
 
-        <span class="kw">use </span><span class="kw">crate</span>::model::ComponentTypeId;
+        <span class="kw">use </span>inexor_rgf_graph::ComponentTypeId;
 
-        <span class="attr">#[tokio::test(flavor = <span class="string">&quot;multi_thread&quot;</span>)]
+        <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
         </span><span class="kw">async fn </span>test_get_components_by_type() {
             <span class="kw">let </span>runtime = RuntimeBuilder::new()
                 .ignore_config_files()
-                .instance_name(<span class="string">&quot;Test Runtime Builder Get&quot;</span>)
+                .instance_name(<span class="string">"Test Runtime Builder Get"</span>)
                 .pick_free_port()
                 .disable_all_plugins(<span class="bool-val">true</span>)
                 .get();
-            <span class="kw">let </span>ty = ComponentTypeId::new_from_type(<span class="string">&quot;test&quot;</span>, <span class="string">&quot;test&quot;</span>);
+            <span class="kw">let </span>ty = ComponentTypeId::new_from_type(<span class="string">"test"</span>, <span class="string">"test"</span>);
             <span class="kw">let </span>component_manager = runtime.get_component_manager();
-            <span class="kw">let </span>component = component_manager.create(<span class="kw-2">&amp;</span>ty, <span class="string">&quot;&quot;</span>, Vec::new(), Vec::new()).expect(<span class="string">&quot;Failed to create component&quot;</span>);
+            <span class="kw">let </span>_component = component_manager
+                .create_component(<span class="kw-2">&amp;</span>ty, <span class="string">""</span>, Vec::new(), Vec::new())
+                .expect(<span class="string">"Failed to create component"</span>);
             <span class="comment">// let inner_runtime = runtime.clone();
-            </span><span class="kw">let </span>port = runtime.get_config_manager().get_graphql_server_config().port();
+            </span><span class="kw">let </span>_port = runtime.get_config_manager().get_graphql_server_config().port();
         }
     }
 }
@@ -380,9 +386,9 @@
     <span class="kw">use </span><span class="kw">crate</span>::client::types::components::queries::CreateComponentVariables;
     <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
     <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClientExecutionError;
-    <span class="kw">use </span><span class="kw">crate</span>::model::Component;
-    <span class="kw">use </span><span class="kw">crate</span>::model::ComponentTypeId;
-    <span class="kw">use </span><span class="kw">crate</span>::schema::types::component::Components <span class="kw">as </span>ComponentsVec;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::component::Components <span class="kw">as </span>ComponentsVec;
+    <span class="kw">use </span>inexor_rgf_graph::Component;
+    <span class="kw">use </span>inexor_rgf_graph::ComponentTypeId;
 
     <span class="kw">pub struct </span>Components {
         client: Arc&lt;InexorRgfClient&gt;,
@@ -397,7 +403,7 @@
             <span class="kw">let </span>components = <span class="self">self
                 </span>.client
                 .client
-                .post(<span class="self">self</span>.client.url())
+                .post(<span class="self">self</span>.client.url_graphql())
                 .run_graphql(get_all_components_query())
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -411,7 +417,7 @@
             <span class="kw">let </span>component = <span class="self">self
                 </span>.client
                 .client
-                .post(<span class="self">self</span>.client.url())
+                .post(<span class="self">self</span>.client.url_graphql())
                 .run_graphql(get_component_by_type_query(<span class="kw-2">&amp;</span>ty.into()))
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -425,7 +431,7 @@
             <span class="kw">let </span>component = <span class="self">self
                 </span>.client
                 .client
-                .post(<span class="self">self</span>.client.url())
+                .post(<span class="self">self</span>.client.url_graphql())
                 .run_graphql(create_component_mutation(component))
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -439,7 +445,7 @@
             <span class="kw">let </span>component = <span class="self">self
                 </span>.client
                 .client
-                .post(<span class="self">self</span>.client.url())
+                .post(<span class="self">self</span>.client.url_graphql())
                 .run_graphql(create_component_with_variables(variables))
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?

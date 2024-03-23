@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"derive":["Component","TypeProvider"],"struct":["Components","EntityTypes","FlowTypes","RelationTypes"],"trait":["TypeProvider"]};

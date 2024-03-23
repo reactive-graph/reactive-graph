@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["COMPONENT_NAME_LABELED"],"enum":["LabeledProperties"],"static":["COMPONENT_LABELED"]};

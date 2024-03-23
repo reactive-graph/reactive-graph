@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["client"],"mod":["args","commands","error","handler","repl","result","system","types"]};

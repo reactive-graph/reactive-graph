@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["behaviour_type_id","component","component_or_entity_type_id","component_type_id","entity_behaviour_type_id","entity_type","entity_type_id","extension_type_id","flow_type","flow_type_id","property_type","relation_type","relation_type_id","types"]};

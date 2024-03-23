@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_relation_delete_field","get_relation_mutation_type","get_relation_mutation_types","get_relation_type","get_relation_type_trigger_field","get_relation_types","get_relation_update_field"]};

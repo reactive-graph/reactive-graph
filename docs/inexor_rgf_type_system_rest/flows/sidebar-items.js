@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["get_flow_type","get_flow_types"]};

@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_type_system_impl":[["impl RelationTypeImportExportManager for <a class=\"struct\" href=\"inexor_rgf_type_system_impl/relation_type_import_export_manager_impl/struct.RelationTypeImportExportManagerImpl.html\" title=\"struct inexor_rgf_type_system_impl::relation_type_import_export_manager_impl::RelationTypeImportExportManagerImpl\">RelationTypeImportExportManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

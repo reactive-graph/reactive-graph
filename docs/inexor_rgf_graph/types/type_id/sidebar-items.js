@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["namespaced_tys","type_definition","type_definition_component","type_definition_extension","type_definition_property","type_id_type","type_namespaced_type"]};

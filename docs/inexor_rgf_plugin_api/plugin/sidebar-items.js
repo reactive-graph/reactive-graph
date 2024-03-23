@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PLUGIN_NAME_PREFIX"],"trait":["Plugin"]};

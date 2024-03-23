@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":["UUID_SHUTDOWN"],"trait":["ShutdownManager"]};

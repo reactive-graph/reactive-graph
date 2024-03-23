@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["entity_component_type_id","entity_type","entity_type_errors","entity_type_id"]};

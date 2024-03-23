@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["entity_behaviour_functions"]};

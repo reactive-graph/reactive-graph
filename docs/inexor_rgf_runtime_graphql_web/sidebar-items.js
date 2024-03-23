@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["query_runtime_graphql"]};

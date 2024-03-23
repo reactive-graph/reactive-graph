@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_config_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_config_api/config_manager/trait.ConfigManager.html\" title=\"trait inexor_rgf_config_api::config_manager::ConfigManager\">ConfigManager</a> for <a class=\"struct\" href=\"inexor_rgf_config_impl/config_manager_impl/struct.ConfigManagerImpl.html\" title=\"struct inexor_rgf_config_impl::config_manager_impl::ConfigManagerImpl\">ConfigManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

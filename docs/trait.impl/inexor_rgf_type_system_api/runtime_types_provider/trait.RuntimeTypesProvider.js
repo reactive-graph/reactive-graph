@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_type_system_impl":[["impl RuntimeTypesProvider for <a class=\"struct\" href=\"inexor_rgf_type_system_impl/runtime_types_provider_impl/struct.RuntimeTypesProviderImpl.html\" title=\"struct inexor_rgf_type_system_impl::runtime_types_provider_impl::RuntimeTypesProviderImpl\">RuntimeTypesProviderImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

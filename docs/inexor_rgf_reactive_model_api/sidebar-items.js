@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["entity_model","relation_model"],"mod":["entity","error","instance","reactive_property_container","relation"]};

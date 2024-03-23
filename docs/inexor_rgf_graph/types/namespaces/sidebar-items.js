@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["namespaced_type_container","namespaced_type_id_container"],"type":["Namespaces"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ENTITY_TYPE_NAME_SYSTEM_EVENT"],"static":["ENTITY_TYPE_SYSTEM_EVENT"]};

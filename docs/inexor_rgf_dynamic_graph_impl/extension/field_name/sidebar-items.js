@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_dynamic_graph_field_names"],"struct":["DynamicGraphFieldNameExtension"]};

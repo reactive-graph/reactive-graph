@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["UNION_ALL_ENTITIES","UNION_NAMESPACE_ENTITIES_SUFFIX"],"fn":["get_all_entities_union","get_namespace_entities_union","namespace_entities_union_type_name"]};

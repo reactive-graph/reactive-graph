@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"static":["BUILD_DATE","GIT_BRANCH","GIT_COMMIT","RUSTC_VERSION","VERSION"],"struct":["InstanceServiceImpl"]};

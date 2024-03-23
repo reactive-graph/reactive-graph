@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["entity_instance","flow_instance","instances","properties","relation_instance"]};

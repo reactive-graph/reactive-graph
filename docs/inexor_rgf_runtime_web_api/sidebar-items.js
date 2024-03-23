@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["graphql_server","web_resource_manager","web_resource_path","web_system"]};

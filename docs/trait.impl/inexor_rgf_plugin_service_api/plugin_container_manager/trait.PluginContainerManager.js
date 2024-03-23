@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_plugin_service_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_plugin_service_api/plugin_container_manager/trait.PluginContainerManager.html\" title=\"trait inexor_rgf_plugin_service_api::plugin_container_manager::PluginContainerManager\">PluginContainerManager</a> for <a class=\"struct\" href=\"inexor_rgf_plugin_service_impl/plugin_container_manager_impl/struct.PluginContainerManagerImpl.html\" title=\"struct inexor_rgf_plugin_service_impl::plugin_container_manager_impl::PluginContainerManagerImpl\">PluginContainerManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_container","get_shared_component_definition_registry","get_shared_component_factory"],"static":["SHARED_COMPONENT_DEFINITION_REGISTRY","STATIC_COMPONENT_DEFINITION_REGISTRY_WRAPPER"],"struct":["SharedComponentDefinitionRegistry","StaticComponentDefinitionRegistryWrapper"]};

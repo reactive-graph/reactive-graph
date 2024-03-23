@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["FlowTypeCreationError","FlowTypeExportError","FlowTypeImportError","FlowTypeRegistrationError"]};

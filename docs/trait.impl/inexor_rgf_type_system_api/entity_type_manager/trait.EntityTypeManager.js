@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_type_system_impl":[["impl EntityTypeManager for <a class=\"struct\" href=\"inexor_rgf_type_system_impl/entity_type_manager_impl/struct.EntityTypeManagerImpl.html\" title=\"struct inexor_rgf_type_system_impl::entity_type_manager_impl::EntityTypeManagerImpl\">EntityTypeManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

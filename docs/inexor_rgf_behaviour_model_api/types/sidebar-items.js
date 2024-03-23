@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["behaviour_type_id","component_behaviour_type_id","entity_behaviour_type_id","relation_behaviour_type_id"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"macro":["behaviour_factory","behaviour_fsm","behaviour_functions","behaviour_types","behaviour_validator","entity_behaviour","entity_behaviour_transitions","relation_behaviour","relation_behaviour_transitions"],"mod":["behaviour","entity","property","relation"]};

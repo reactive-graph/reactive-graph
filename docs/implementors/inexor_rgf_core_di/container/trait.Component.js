@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_rt":[["impl <a class=\"trait\" href=\"inexor_rgf_core_di/container/trait.Component.html\" title=\"trait inexor_rgf_core_di::container::Component\">Component</a> for <a class=\"struct\" href=\"inexor_rgf_rt/runtime/runtime/struct.RuntimeImpl.html\" title=\"struct inexor_rgf_rt::runtime::runtime::RuntimeImpl\">RuntimeImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

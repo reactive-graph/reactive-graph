@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["AddComponentError","ComponentAddExtensionError","ComponentAddPropertyError","ComponentMergeError","ComponentRemoveExtensionError","ComponentRemovePropertyError","ComponentUpdateExtensionError","ComponentUpdatePropertyError","RemoveComponentError","UpdateComponentError"]};

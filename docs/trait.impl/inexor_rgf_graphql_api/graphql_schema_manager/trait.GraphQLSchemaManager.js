@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_graphql_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_graphql_api/graphql_schema_manager/trait.GraphQLSchemaManager.html\" title=\"trait inexor_rgf_graphql_api::graphql_schema_manager::GraphQLSchemaManager\">GraphQLSchemaManager</a> for <a class=\"struct\" href=\"inexor_rgf_graphql_impl/graphql_schema_manager_impl/struct.GraphQLSchemaManagerImpl.html\" title=\"struct inexor_rgf_graphql_impl::graphql_schema_manager_impl::GraphQLSchemaManagerImpl\">GraphQLSchemaManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

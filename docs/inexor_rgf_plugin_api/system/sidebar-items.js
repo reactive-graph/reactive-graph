@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["command_manager","config_manager"]};

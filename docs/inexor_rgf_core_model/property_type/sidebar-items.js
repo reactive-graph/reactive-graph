@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"static":["NAMESPACE_PROPERTY_TYPE"],"struct":["PropertyType"],"trait":["PropertyTypeDefinition"]};

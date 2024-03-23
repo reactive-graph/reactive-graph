@@ -1,0 +1,4 @@
+(function() {var implementors = {
+"inexor_rgf_instance_system_impl":[["impl InstanceSystem for <a class=\"struct\" href=\"inexor_rgf_instance_system_impl/instance_system_impl/struct.InstanceSystemImpl.html\" title=\"struct inexor_rgf_instance_system_impl::instance_system_impl::InstanceSystemImpl\">InstanceSystemImpl</a>"]],
+"inexor_rgf_runtime_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_instance_system_api/instance_system/trait.InstanceSystem.html\" title=\"trait inexor_rgf_instance_system_api::instance_system::InstanceSystem\">InstanceSystem</a> for <a class=\"struct\" href=\"inexor_rgf_runtime_impl/runtime_impl/struct.RuntimeImpl.html\" title=\"struct inexor_rgf_runtime_impl::runtime_impl::RuntimeImpl\">RuntimeImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

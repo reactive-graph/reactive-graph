@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["directives","error","mutation","query","subscription"],"type":["InexorSchema"]};

@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_plugin_delegates":[["impl <a class=\"trait\" href=\"inexor_rgf_plugin_api/types/type_system_event_manager/trait.TypeSystemEventManager.html\" title=\"trait inexor_rgf_plugin_api::types::type_system_event_manager::TypeSystemEventManager\">TypeSystemEventManager</a> for <a class=\"struct\" href=\"inexor_rgf_plugin_delegates/type_system_event_manager_impl/struct.TypeSystemEventManagerDelegate.html\" title=\"struct inexor_rgf_plugin_delegates::type_system_event_manager_impl::TypeSystemEventManagerDelegate\">TypeSystemEventManagerDelegate</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_dynamic_graph_impl":[["impl DynamicGraphQueryService for <a class=\"struct\" href=\"inexor_rgf_dynamic_graph_impl/dynamic_graph_query_service_impl/struct.DynamicGraphQueryServiceImpl.html\" title=\"struct inexor_rgf_dynamic_graph_impl::dynamic_graph_query_service_impl::DynamicGraphQueryServiceImpl\">DynamicGraphQueryServiceImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

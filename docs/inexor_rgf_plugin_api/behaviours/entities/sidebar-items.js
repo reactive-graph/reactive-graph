@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["entity_behaviour_registry","entity_component_behaviour_registry"]};

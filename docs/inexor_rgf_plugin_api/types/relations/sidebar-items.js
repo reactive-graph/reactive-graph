@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["relation_type_import_export_manager","relation_type_manager","relation_type_provider_registry"]};

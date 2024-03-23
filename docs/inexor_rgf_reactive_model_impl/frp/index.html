@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="The bidule FRP crate."><title>inexor_rgf_reactive_model_impl::frp - Rust</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="inexor_rgf_reactive_model_impl" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (85e449a32 2024-03-22)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../inexor_rgf_reactive_model_impl/index.html">inexor_rgf_reactive_model_impl</a><span class="version">0.10.0</span></h2></div><h2 class="location"><a href="#">Module frp</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li></ul></section><h2><a href="../index.html">In crate inexor_rgf_reactive_model_impl</a></h2></div></nav><div class="sidebar-resizer"></div>
+    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../inexor_rgf_reactive_model_impl/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../index.html">inexor_rgf_reactive_model_impl</a>::<wbr><a class="mod" href="#">frp</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../src/inexor_rgf_reactive_model_impl/frp/mod.rs.html#1-654">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>The bidule FRP crate.</p>
+<p>This crate provides few simple primitives to write FRP-driven programs. Everything revolves
+around the concept of a <a href="struct.Stream.html" title="struct inexor_rgf_reactive_model_impl::frp::Stream"><code>Stream</code></a>.</p>
+<h2 id="streams"><a class="doc-anchor" href="#streams">§</a>Streams</h2>
+<p>A <a href="struct.Stream.html" title="struct inexor_rgf_reactive_model_impl::frp::Stream"><code>Stream</code></a> is a <em>stream of typed signals</em>. A stream of signals will get a <em>signal</em> as input
+and will broadcast it downwards. You can compose streams with each other with very simple
+combinators, such as <code>map</code>, <code>filter</code>, <code>filter_map</code>, <code>zip</code>, <code>unzip</code>, <code>merge</code>, <code>fold</code>, etc. (non-exhaustive list).</p>
+<h3 id="creating-streams-and-send-signals"><a class="doc-anchor" href="#creating-streams-and-send-signals">§</a>Creating streams and send signals</h3>
+<p>Streams are typed. You can use type inference or give them an explicit type:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">let </span>my_stream: Stream&lt;i32&gt; = Stream::new();</code></pre></div>
+<p>That’s all you need to create a stream. A stream represent a value that will be flowing in <em>at
+some time</em>.</p>
+<blockquote>
+<p>Even though it’s not strictly the same thing, you can see a similitude with
+<a href="https://crates.io/crates/futures">futures</a>.</p>
+</blockquote>
+<p>When you’re ready to send signals, just call the <code>send</code> function:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">let </span>my_stream: Stream&lt;i32&gt; = Stream::new();
+
+my_stream.send(<span class="kw-2">&amp;</span><span class="number">1</span>);
+my_stream.send(<span class="kw-2">&amp;</span><span class="number">2</span>);
+my_stream.send(<span class="kw-2">&amp;</span><span class="number">3</span>);</code></pre></div>
+<h3 id="observing-signals"><a class="doc-anchor" href="#observing-signals">§</a>Observing signals</h3>
+<p>A single stream like that one won’t do much – actually, it’ll do nothing. The first thing we
+might want to do is to subscribe a closure to do something when a signal is emitted. This is
+done with the <a href="struct.Stream.html#method.observe" title="method inexor_rgf_reactive_model_impl::frp::Stream::observe"><code>Stream::observe</code></a> function.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">let </span>my_stream: Stream&lt;i32&gt; = Stream::new();
+
+my_stream.observe(|sig| {
+  <span class="comment">// print the signal on stdout each time it’s flowing in
+  </span><span class="macro">println!</span>(<span class="string">"signal: {:?}"</span>, sig);
+});
+
+my_stream.send(<span class="kw-2">&amp;</span><span class="number">1</span>);
+my_stream.send(<span class="kw-2">&amp;</span><span class="number">2</span>);
+my_stream.send(<span class="kw-2">&amp;</span><span class="number">3</span>);</code></pre></div>
+<h3 id="frp-basics"><a class="doc-anchor" href="#frp-basics">§</a>FRP basics</h3>
+<p>However, FRP is not about callbacks. It’s actually the opposite, to be honest. We try to reduce
+the use of callbacks as much as possible. FRP solves this by inversing the way you must work:
+instead of subscribing callbacks to react to something, you transform that something to create
+new values or objects. This is akin to the kind of transformations you do with <code>Future</code>.</p>
+<p>Let’s get our feet wet: let’s create a new stream that will only emit signals for even values:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">let </span>int_stream: Stream&lt;i32&gt; = Stream::new();
+<span class="kw">let </span>even_stream = int_stream.filter(|x| x % <span class="number">2 </span>== <span class="number">0</span>);</code></pre></div>
+<p><code>even_stream</code> has type <code>Stream&lt;i32&gt;</code> and will only emit signals when the input signal is <code>even</code>.</p>
+<p>Let’s try something more complicated: on those signals, if the value is less or equal to 10,
+output <code>&quot;Hello, world!&quot;</code>; otherwise, output <code>&quot;See you!&quot;</code>.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">let </span>int_stream: Stream&lt;i32&gt; = Stream::new();
+<span class="kw">let </span>even_stream = int_stream.filter(|x| x % <span class="number">2 </span>== <span class="number">0</span>);
+<span class="kw">let </span>str_stream = even_stream.map(|x| <span class="kw">if </span><span class="kw-2">*</span>x &lt;= <span class="number">10 </span>{ <span class="string">"Hello, world!" </span>} <span class="kw">else </span>{ <span class="string">"See you!" </span>});</code></pre></div>
+<p>This is really easy; no trap involved.</p>
+<p>Ok, let’s try something else. Some kind of a <em>Hello world</em> for FRP.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">enum </span>Button {
+  Pressed,
+  Released
+}
+
+<span class="kw">fn </span>unbuttonify(button: <span class="kw-2">&amp;</span>Button, v: i32) -&gt; <span class="prelude-ty">Option</span>&lt;i32&gt; {
+  <span class="kw">match </span><span class="kw-2">*</span>button {
+    Button::Released =&gt; <span class="prelude-val">Some</span>(v),
+    <span class="kw">_ </span>=&gt; <span class="prelude-val">None
+  </span>}
+}
+
+<span class="kw">let </span>minus = Stream::new();
+<span class="kw">let </span>plus = Stream::new();
+<span class="kw">let </span>counter =
+  minus.filter_map(|b| unbuttonify(b, -<span class="number">1</span>))
+       .merge(<span class="kw-2">&amp;</span>plus.filter_map(|b| unbuttonify(b, <span class="number">1</span>)))
+       .fold(<span class="number">0</span>, |a, x| a + x);</code></pre></div>
+<p>In this snippet, we have two buttons: <code>minus</code> and <code>plus</code>. If we hit the <code>minus</code> button, we want
+a counter to be decremented and if we hit the <code>plus</code> button, the counter must increment.</p>
+<p>FRP solves that problem by expressing <code>counter</code> in terms of both <code>minus</code> and <code>plus</code>. The first
+thing we do is to map a number on the stream that broadcasts button signals. Whenever that
+signal is a <code>Button::Released</code>, we return a given number. For <code>minus</code>, we return <code>-1</code> and for
+<code>plus</code>, we return <code>1</code> – or <code>+1</code>, it’s the same thing. That gives us two new streams. Let’s see
+the types to have a deeper understanding:</p>
+<ul>
+<li><code>minus: Stream&lt;Button&gt;</code></li>
+<li><code>plus: Stream&lt;Button&gt;</code></li>
+<li><code>minus.filter_map(|b| unbuttonify(b, -1)): Stream&lt;i32&gt;</code></li>
+<li><code>plus.filter_map(|b| unbuttonify(b, 1)): Stream&lt;i32&gt;</code></li>
+</ul>
+<p>The <code>merge</code> method is very simple: it takes two streams that emit the same type of signals and
+merges them into a single stream that will broadcasts both the signals:</p>
+<ul>
+<li><code>minus.filter_map(|b| unbuttonify(b, -1)).merge(plus.filter_map(|b| unbuttonify(b, 1)): Stream&lt;i32&gt;): Stream&lt;i32&gt;</code></li>
+</ul>
+<p>The next and final step is to <code>fold</code> those <code>i32</code> into the final value of the counter by applying
+successive additions. This is done with the <code>fold</code> method, that takes the initial value – in the
+case of a counter, it’s <code>0</code> – and the function to accumulate, with the accumulator as first
+argument and the iterated value as second argument.</p>
+<p>The resulting stream, which type is <code>Stream&lt;i32&gt;</code>, will then contain the value of the counter.
+You can test it by sending <code>Button</code> signals on both <code>minus</code> and <code>plus</code>: the resulting signal
+in <code>counter</code> will be correctly decrementing or incrementing.</p>
+<p>There exist several more, interesting combinators to work with your streams. For instance, if
+you don’t want to map a function over two streams to make them compatible with each other – they
+have different types, you can still perform some kind of a merge. That operation is called a
+<code>zip</code> and the resulting stream will yield either the value from the first – left – stream or the
+value of the other – right – as soon as a signal is emitted. Its dual method is called <code>unzip</code>
+and will split a stream apart into two streams if it’s a zipped stream. See <code>Either</code> for further
+details.</p>
+<h3 id="sinking"><a class="doc-anchor" href="#sinking">§</a>Sinking</h3>
+<p><em>Sinking</em> is the action to consume the signals of a stream and collect them. The current
+implementation uses non-blocking buffering when sending signals, and reading is up to you: the
+stream will collect the output signals in a buffer you can read via the
+<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html">Iterator</a> trait. For instance,
+non-blocking reads:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>inexor_rgf_reactive_model_impl::Stream;
+
+<span class="kw">enum </span>Button {
+  Pressed,
+  Released
+}
+
+<span class="kw">fn </span>unbuttonify(button: <span class="kw-2">&amp;</span>Button, v: i32) -&gt; <span class="prelude-ty">Option</span>&lt;i32&gt; {
+  <span class="kw">match </span><span class="kw-2">*</span>button {
+    Button::Released =&gt; <span class="prelude-val">Some</span>(v),
+    <span class="kw">_ </span>=&gt; <span class="prelude-val">None
+  </span>}
+}
+
+<span class="kw">let </span>minus = Stream::new();
+<span class="kw">let </span>plus = Stream::new();
+<span class="kw">let </span>counter =
+  minus.filter_map(|b| unbuttonify(b, -<span class="number">1</span>))
+       .merge(<span class="kw-2">&amp;</span>plus.filter_map(|b| unbuttonify(b, <span class="number">1</span>)))
+       .fold(<span class="number">0</span>, |a, x| a + x);
+
+<span class="kw">let </span>rx = counter.recv();
+
+<span class="comment">// do something with minus and plus
+// …
+
+</span><span class="kw">for </span>v <span class="kw">in </span>rx.try_iter() {
+  <span class="macro">println!</span>(<span class="string">"read a new value of the counter: {}"</span>, v);
+}</code></pre></div>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.Stream.html" title="struct inexor_rgf_reactive_model_impl::frp::Stream">Stream</a></div><div class="desc docblock-short">A stream of signals.</div></li></ul><h2 id="enums" class="section-header">Enums<a href="#enums" class="anchor">§</a></h2><ul class="item-table"><li><div class="item-name"><a class="enum" href="enum.Either.html" title="enum inexor_rgf_reactive_model_impl::frp::Either">Either</a></div><div class="desc docblock-short">Either one or another type.</div></li></ul></section></div></main></body></html>

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["instance","instance_address","plugin"]};

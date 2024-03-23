@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["plugin_graphql_system_impl","plugin_query_service_impl","plugin_schema_manager_impl"]};

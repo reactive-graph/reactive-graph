@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["behaviour_system","entity_behaviour_manager","entity_behaviour_registry","entity_component_behaviour_manager","entity_component_behaviour_registry","relation_behaviour_manager","relation_behaviour_registry","relation_component_behaviour_manager","relation_component_behaviour_registry"]};

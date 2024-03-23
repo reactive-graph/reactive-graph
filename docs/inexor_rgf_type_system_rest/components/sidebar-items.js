@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["get_component","get_components"]};

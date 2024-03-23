@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"constant":["COMPONENT_NAME_ACTION","PROPERTY_RESULT"],"enum":["ActionProperties"],"struct":["COMPONENT_ACTION"],"trait":["Action"]};

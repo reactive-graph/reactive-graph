@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["divergent","field_description","field_name"]};

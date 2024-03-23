@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["config_manager_impl","config_system_impl"]};

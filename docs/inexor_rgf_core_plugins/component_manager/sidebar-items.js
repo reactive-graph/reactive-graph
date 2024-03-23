@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["ComponentCreationError","ComponentImportError","ComponentManagerError"],"trait":["ComponentManager"]};

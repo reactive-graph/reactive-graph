@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["entity","namespace","relation","types"]};

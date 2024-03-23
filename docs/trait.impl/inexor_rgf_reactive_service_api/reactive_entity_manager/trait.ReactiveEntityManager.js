@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"inexor_rgf_reactive_service_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_reactive_service_api/reactive_entity_manager/trait.ReactiveEntityManager.html\" title=\"trait inexor_rgf_reactive_service_api::reactive_entity_manager::ReactiveEntityManager\">ReactiveEntityManager</a> for <a class=\"struct\" href=\"inexor_rgf_reactive_service_impl/reactive_entity_manager_impl/struct.ReactiveEntityManagerImpl.html\" title=\"struct inexor_rgf_reactive_service_impl::reactive_entity_manager_impl::ReactiveEntityManagerImpl\">ReactiveEntityManagerImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

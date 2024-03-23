@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["namespace_field_name","namespace_mutation_field","namespace_mutation_type_name","namespace_mutation_type_ref","namespace_query_field","namespace_type_name","namespace_type_ref"]};

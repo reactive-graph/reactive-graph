@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["component_container","component_type","component_type_container","component_type_errors","component_type_id"]};
