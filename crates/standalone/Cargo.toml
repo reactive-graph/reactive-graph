@@ -34,7 +34,7 @@ enable = true
 restart-after-upgrade = true
 
 [dependencies]
-actix-web = { workspace = true, features = ["rustls-0_21"] }
+actix-web = { workspace = true, features = ["rustls-0_22"] }
 clap = { workspace = true, features = ["derive", "env"] }
 colored = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }

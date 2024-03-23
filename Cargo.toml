@@ -83,14 +83,14 @@ keywords = ["graph", "reactive", "control-flow", "inexor"]
 
 [workspace.dependencies]
 actix = "0.13"
-actix-cors = "0.7.0"
-actix-http = "3.0"
-actix-rt = "2.6"
-actix-web = { version = "4.4", features = ["rustls-0_21"] }
+actix-cors = "0.7"
+actix-http = { version = "3.6", features = ["rustls-0_22"] }
+actix-rt = "2.9"
+actix-web = { version = "4.5.1", features = ["rustls-0_22"] }
 actix-web-extras = "0.1"
 # async-graphql features: uuid, chrono, url, log
-async-graphql = { version = "6.0", features = ["uuid", "dynamic-schema"] }
-async-graphql-actix-web = { version = "6.0" }
+async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
+async-graphql-actix-web = { version = "7.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 clap = { version = "4.1", features = ["derive", "env"] }
@@ -131,7 +131,8 @@ rayon = "1.6"
 regex = "1.9"
 reqwest = { version = "0.11.14", features = ["json"] }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
-rustls = "0.21"
+rustls = "0.22"
+rustls-pki-types = "1.4.0"
 rustls-pemfile = "1.0"
 rustyline = "14.0"
 schemars = { version = "0.8", features = ["uuid1"] }

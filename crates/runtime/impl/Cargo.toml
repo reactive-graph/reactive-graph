@@ -28,7 +28,7 @@ actix = { workspace = true }
 actix-cors = { workspace = true }
 actix-http = { workspace = true }
 actix-rt = { workspace = true }
-actix-web = { workspace = true, features = ["rustls-0_21"] }
+actix-web = { workspace = true, features = ["rustls-0_22"] }
 actix-web-extras = { workspace = true }
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
