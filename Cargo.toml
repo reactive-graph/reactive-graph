@@ -112,7 +112,7 @@ gql_client = "1.0.7"
 http = "0.2"
 json5 = "0.4"
 lazy_static = "1.4.0"
-libloading = "0.7"
+libloading = "0.8"
 log = { version = "0.4", features = ["std", "serde"] }
 log4rs = { version = "1.2", features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
 mime = "0.3"
