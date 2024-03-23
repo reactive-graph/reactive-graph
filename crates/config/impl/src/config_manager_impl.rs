@@ -2,6 +2,7 @@ use std::path::PathBuf;
 use std::sync::RwLock;
 
 use async_trait::async_trait;
+use log::debug;
 use log::error;
 use log::info;
 use springtime_di::component_alias;
@@ -180,6 +181,7 @@ impl ConfigManager for ConfigManagerImpl {
         match std::fs::read_to_string(&location) {
             Ok(toml_string) => match toml::from_str(&toml_string) {
                 Ok(graphql_server_config) => {
+                    debug!("Loaded graphql configuration from {}", location.to_str().unwrap_or(""));
                     self.set_graphql_server_config(graphql_server_config);
                 }
                 Err(_) => {
@@ -205,6 +207,16 @@ impl ConfigManager for ConfigManagerImpl {
     fn set_graphql_secure(&self, secure: bool) {
         let mut writer = self.graphql_server_config.write().unwrap();
         writer.secure = Some(secure);
+    }
+
+    fn set_graphql_ssl_certificate_path(&self, ssl_certificate_path: &str) {
+        let mut writer = self.graphql_server_config.write().unwrap();
+        writer.ssl_certificate_path = Some(String::from(ssl_certificate_path));
+    }
+
+    fn set_graphql_ssl_private_key_path(&self, ssl_private_key_path: &str) {
+        let mut writer = self.graphql_server_config.write().unwrap();
+        writer.ssl_private_key_path = Some(String::from(ssl_private_key_path));
     }
 
     fn set_graphql_shutdown_timeout(&self, shutdown_timeout: u64) {

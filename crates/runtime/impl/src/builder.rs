@@ -125,6 +125,22 @@ impl RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         self
     }
 
+    /// Sets the path to the SSL certificate.
+    pub fn ssl_certificate_path<S: Into<OptionOption<String>>>(self, ssl_certificate_path: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+        if let Some(ssl_certificate_path) = ssl_certificate_path.into().get() {
+            self.runtime.get_config_manager().set_graphql_ssl_certificate_path(&ssl_certificate_path);
+        }
+        self
+    }
+
+    /// Sets the path to the SSL private key.
+    pub fn ssl_private_key_path<S: Into<OptionOption<String>>>(self, ssl_private_key_path: S) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
+        if let Some(ssl_private_key_path) = ssl_private_key_path.into().get() {
+            self.runtime.get_config_manager().set_graphql_ssl_private_key_path(&ssl_private_key_path);
+        }
+        self
+    }
+
     /// Sets the hostname, port and secure of the GraphQL server.
     pub fn address(self, address: &InstanceAddress) -> RuntimeBuilder<ConfigFilesLoaded, NotRunning> {
         let config_manager = self.runtime.get_config_manager();

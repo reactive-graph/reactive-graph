@@ -18,6 +18,8 @@ pub(crate) async fn server(cli_args: CliArguments) {
         .hostname(cli_args.hostname)
         .port(cli_args.port)
         .secure(cli_args.secure)
+        .ssl_certificate_path(cli_args.ssl_certificate_path)
+        .ssl_private_key_path(cli_args.ssl_private_key_path)
         .shutdown_timeout(cli_args.shutdown_timeout)
         .workers(cli_args.workers)
         .default_context_path(cli_args.default_context_path)

@@ -21,7 +21,7 @@ pub struct ClientArgs {
     port: Option<u16>,
 
     /// If true, connects via HTTPS.
-    #[arg(long, action = SetTrue)]
+    #[arg(long)]
     secure: Option<bool>,
 
     /// The endpoint to use.

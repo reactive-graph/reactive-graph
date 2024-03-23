@@ -67,6 +67,12 @@ pub trait ConfigManager: Send + Sync + Lifecycle {
     /// Enables / disables HTTPS.
     fn set_graphql_secure(&self, secure: bool);
 
+    /// Sets the SSL certificate path.
+    fn set_graphql_ssl_certificate_path(&self, ssl_certificate_path: &str);
+
+    /// Sets the SSL private key path.
+    fn set_graphql_ssl_private_key_path(&self, ssl_private_key_path: &str);
+
     /// Sets the timeout for graceful workers shutdown in seconds.
     fn set_graphql_shutdown_timeout(&self, shutdown_timeout: u64);
 
