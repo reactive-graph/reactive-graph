@@ -1,6 +1,6 @@
 [package]
-name = "inexor-rgf-rt-standalone"
-description = "Inexor - Reactive Graph Flow - Runtime - Standalone"
+name = "rgf"
+description = "Reactive Graph Flow"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
@@ -9,27 +9,27 @@ repository.workspace = true
 readme = "../../README.md"
 
 [package.metadata.deb]
-name = "inexor-rgf"
+name = "rgf"
 maintainer-scripts = "debian/maintainer-scripts"
 assets = [
-  ["target/release/inexor-rgf-rt-standalone", "usr/bin/inexor-rgf", "755"],
-  ["../../README.md", "usr/share/doc/inexor-rgf/README", "644"],
-  ["../../CHANGELOG.md", "usr/share/doc/inexor-rgf/CHANGELOG", "644"],
-  ["../../CODE_OF_CONDUCT.md", "usr/share/doc/inexor-rgf/CODE_OF_CONDUCT", "644"],
-  ["../../LICENSE.md", "usr/share/doc/inexor-rgf/LICENSE", "644"],
-  ["../../CONTRIBUTING.md", "usr/share/doc/inexor-rgf/CONTRIBUTING", "644"],
-  ["debian/etc/inexor-rgf/var_file", "etc/inexor-rgf/default/var_file", "644"],
-  ["debian/etc/inexor-rgf/graphql.toml", "etc/inexor-rgf/default/graphql.toml", "644"],
-  ["debian/etc/inexor-rgf/instance.toml", "etc/inexor-rgf/default/instance.toml", "644"],
-  ["debian/etc/inexor-rgf/logging.toml", "etc/inexor-rgf/default/logging.toml", "644"],
-  ["debian/etc/inexor-rgf/plugins.toml", "etc/inexor-rgf/default/plugins.toml", "644"],
-  ["debian/usr/share/inexor-rgf/plugins/deploy/.gitkeep", "usr/share/inexor-rgf/default/plugins/deploy/.gitkeep", "644"],
-  ["debian/usr/share/inexor-rgf/plugins/installed/.gitkeep", "usr/share/inexor-rgf/default/plugins/installed/.gitkeep", "644"],
-  ["debian/var/lib/inexor-rgf/repositories/flows/.gitkeep", "var/lib/inexor-rgf/default/repositories/flows/.gitkeep", "644"],
+    ["target/release/inexor-rgf-rt-standalone", "usr/bin/inexor-rgf", "755"],
+    ["../../README.md", "usr/share/doc/inexor-rgf/README", "644"],
+    ["../../CHANGELOG.md", "usr/share/doc/inexor-rgf/CHANGELOG", "644"],
+    ["../../CODE_OF_CONDUCT.md", "usr/share/doc/inexor-rgf/CODE_OF_CONDUCT", "644"],
+    ["../../LICENSE.md", "usr/share/doc/inexor-rgf/LICENSE", "644"],
+    ["../../CONTRIBUTING.md", "usr/share/doc/inexor-rgf/CONTRIBUTING", "644"],
+    ["debian/etc/inexor-rgf/var_file", "etc/inexor-rgf/default/var_file", "644"],
+    ["debian/etc/inexor-rgf/graphql.toml", "etc/inexor-rgf/default/graphql.toml", "644"],
+    ["debian/etc/inexor-rgf/instance.toml", "etc/inexor-rgf/default/instance.toml", "644"],
+    ["debian/etc/inexor-rgf/logging.toml", "etc/inexor-rgf/default/logging.toml", "644"],
+    ["debian/etc/inexor-rgf/plugins.toml", "etc/inexor-rgf/default/plugins.toml", "644"],
+    ["debian/usr/share/inexor-rgf/plugins/deploy/.gitkeep", "usr/share/inexor-rgf/default/plugins/deploy/.gitkeep", "644"],
+    ["debian/usr/share/inexor-rgf/plugins/installed/.gitkeep", "usr/share/inexor-rgf/default/plugins/installed/.gitkeep", "644"],
+    ["debian/var/lib/inexor-rgf/repositories/flows/.gitkeep", "var/lib/inexor-rgf/default/repositories/flows/.gitkeep", "644"],
 ]
 
 [package.metadata.deb.systemd-units]
-unit-name = "inexor-rgf@"
+unit-name = "rgf@"
 enable = true
 restart-after-upgrade = true
 
@@ -59,4 +59,4 @@ client = ["inexor-rgf-client"]
 default = ["client"]
 
 [[bin]]
-name = "inexor-rgf-rt-standalone"
+name = "rgf"
