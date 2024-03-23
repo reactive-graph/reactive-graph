@@ -48,8 +48,16 @@ pub struct CliArguments {
     pub(crate) port: Option<u16>,
 
     /// If true, HTTPS is enabled.
-    #[arg(long, action = SetTrue, env = "INEXOR_RGF_SECURE")]
+    #[arg(long, env = "INEXOR_RGF_SECURE")]
     pub(crate) secure: Option<bool>,
+
+    /// The location of the certificate.
+    #[arg(long, env = "INEXOR_RGF_SSL_CERTIFICATE_PATH")]
+    pub ssl_certificate_path: Option<String>,
+
+    /// The location of the private key.
+    #[arg(long, env = "INEXOR_RGF_SSL_PRIVATE_KEY_PATH")]
+    pub ssl_private_key_path: Option<String>,
 
     /// Timeout for graceful workers shutdown in seconds.
     /// After receiving a stop signal, workers have this much time to finish serving requests.
@@ -69,7 +77,7 @@ pub struct CliArguments {
 
     // Plugins
     /// If true, all plugins will be disabled.
-    #[arg(short = 'x', long, action = SetTrue, env = "INEXOR_RGF_DISABLE_ALL_PLUGINS")]
+    #[arg(short = 'x', long, env = "INEXOR_RGF_DISABLE_ALL_PLUGINS")]
     pub(crate) disable_all_plugins: Option<bool>,
 
     /// The list of plugins to disable.
@@ -81,7 +89,7 @@ pub struct CliArguments {
     pub(crate) enabled_plugins: Option<Vec<String>>,
 
     /// If true, hot deployment will be disabled.
-    #[arg(long, action = SetTrue, env = "INEXOR_RGF_DISABLE_HOT_DEPLOY")]
+    #[arg(long, env = "INEXOR_RGF_DISABLE_HOT_DEPLOY")]
     pub(crate) disable_hot_deploy: Option<bool>,
 
     /// The folder which is watched for hot deployment.
@@ -93,11 +101,11 @@ pub struct CliArguments {
     pub(crate) install_location: Option<String>,
 
     /// If true, the runtime does not wait before exiting.
-    #[arg(long, action = SetTrue, env = "INEXOR_RGF_STOP_IMMEDIATELY")]
+    #[arg(long, env = "INEXOR_RGF_STOP_IMMEDIATELY")]
     pub(crate) stop_immediately: Option<bool>,
 
     /// If true, logging is disabled completely.
-    #[arg(short = 'q', long, action = SetTrue, env = "INEXOR_RGF_QUIET")]
+    #[arg(short = 'q', long, env = "INEXOR_RGF_QUIET")]
     pub(crate) quiet: Option<bool>,
 }
 

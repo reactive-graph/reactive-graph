@@ -5,6 +5,9 @@ use serde::Serialize;
 pub const GRAPHQL_DEFAULT_HOSTNAME: &str = "localhost";
 pub const GRAPHQL_DEFAULT_PORT: u16 = 31415;
 
+pub const GRAPHQL_SSL_CERTIFICATE_PATH: &str = "./keys/cert.pem";
+pub const GRAPHQL_SSL_PRIVATE_KEY_PATH: &str = "./keys/key.pem";
+
 /// Configuration for the logging middleware of the GraphQL server.
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct GraphQLLoggingConfig {
@@ -31,7 +34,12 @@ pub struct GraphQLServerConfig {
     /// If true, HTTPS is enabled.
     pub secure: Option<bool>,
 
-    // TODO: configure HTTPS private/public key location
+    /// The location of the certificate.
+    pub ssl_certificate_path: Option<String>,
+
+    /// The location of the private key.
+    pub ssl_private_key_path: Option<String>,
+
     /// Timeout for graceful workers shutdown in seconds.
     /// After receiving a stop signal, workers have this much time to finish serving requests.
     /// Workers still alive after the timeout are force dropped.
@@ -86,6 +94,14 @@ impl GraphQLServerConfig {
         self.secure.unwrap_or(false)
     }
 
+    pub fn ssl_certificate_path(&self) -> String {
+        self.ssl_certificate_path.clone().unwrap_or(String::from(GRAPHQL_SSL_CERTIFICATE_PATH))
+    }
+
+    pub fn ssl_private_key_path(&self) -> String {
+        self.ssl_private_key_path.clone().unwrap_or(String::from(GRAPHQL_SSL_PRIVATE_KEY_PATH))
+    }
+
     pub fn shutdown_timeout(&self) -> u64 {
         self.shutdown_timeout.unwrap_or(30)
     }
@@ -106,6 +122,8 @@ impl Default for GraphQLServerConfig {
             hostname: Some(String::from(GRAPHQL_DEFAULT_HOSTNAME)),
             port: Some(GRAPHQL_DEFAULT_PORT),
             secure: None,
+            ssl_certificate_path: Some(String::from(GRAPHQL_SSL_CERTIFICATE_PATH)),
+            ssl_private_key_path: Some(String::from(GRAPHQL_SSL_PRIVATE_KEY_PATH)),
             shutdown_timeout: None,
             workers: None,
             default_context_path: None,

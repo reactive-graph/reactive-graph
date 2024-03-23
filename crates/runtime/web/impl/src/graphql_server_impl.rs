@@ -239,14 +239,14 @@ impl GraphQLServerImpl {
         .workers(graphql_server_config.workers());
 
         let r_http_server = if graphql_server_config.is_secure() {
-            let cert_file = File::open("../../../../../keys/_cert.pem_")?;
+            let cert_file = File::open(graphql_server_config.ssl_certificate_path())?;
             let cert_file = &mut BufReader::new(cert_file);
             let cert_chain: Vec<CertificateDer> = certs(cert_file).filter_map(|cert| cert.ok()).collect();
             if cert_chain.is_empty() {
                 return Err(GraphQLServerError::EmptyCertificateChain.into());
             }
 
-            let key_file = File::open("./keys/key.pem")?;
+            let key_file = File::open(graphql_server_config.ssl_private_key_path())?;
             let key_file = &mut BufReader::new(key_file);
             let mut keys: Vec<PrivateKeyDer> = read_all(key_file)
                 .filter_map(|item| match item {
