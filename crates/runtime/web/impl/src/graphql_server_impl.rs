@@ -1,3 +1,6 @@
+use std::fmt::Debug;
+use std::fmt::Display;
+use std::fmt::Formatter;
 use std::fs::File;
 use std::io::BufReader;
 use std::sync::atomic::AtomicBool;
@@ -10,6 +13,7 @@ use actix_web::guard;
 use actix_web::web;
 use actix_web::App;
 use actix_web::HttpServer;
+use actix_web::ResponseError;
 use actix_web::Result;
 use actix_web_extras::middleware::Condition;
 use async_trait::async_trait;
@@ -20,10 +24,15 @@ use log::info;
 use log::trace;
 use rustls::pki_types::CertificateDer;
 use rustls::pki_types::PrivateKeyDer;
+use rustls::pki_types::PrivatePkcs8KeyDer;
 use rustls::ServerConfig;
 use rustls_pemfile::certs;
 use rustls_pemfile::pkcs8_private_keys;
+use rustls_pemfile::read_all;
+use rustls_pemfile::read_one;
+use rustls_pemfile::Item;
 use springtime_di::component_alias;
+use springtime_di::component_registry::TypedComponentDefinitionRegistry;
 use springtime_di::Component;
 
 use inexor_rgf_config_api::ConfigManager;
@@ -50,6 +59,18 @@ use inexor_rgf_type_system_api::RelationTypeManager;
 use crate::get_logger_middleware;
 use crate::web_resource_manager_handler::handle_root_web_resource;
 use crate::web_resource_manager_handler::handle_web_resource;
+
+#[derive(Debug, thiserror::Error)]
+pub enum GraphQLServerError {
+    #[error("The certificate chain is empty")]
+    EmptyCertificateChain,
+    #[error("No private key was found")]
+    NoPrivateKeyFound,
+    #[error("rustls error: {0}")]
+    RustlsError(#[from] rustls::Error),
+}
+
+impl ResponseError for GraphQLServerError {}
 
 #[derive(Component)]
 pub struct GraphQLServerImpl {
@@ -218,22 +239,41 @@ impl GraphQLServerImpl {
         .workers(graphql_server_config.workers());
 
         let r_http_server = if graphql_server_config.is_secure() {
-            let cert_file = &mut BufReader::new(File::open("./keys/cert.pem").unwrap());
-            let key_file = &mut BufReader::new(File::open("./keys/key.pem").unwrap());
-            let cert_chain = certs(cert_file).unwrap().into_iter().map(CertificateDer::from).collect();
-            let mut keys: Vec<PrivateKeyDer> = pkcs8_private_keys(key_file)
-                .unwrap()
-                .into_iter()
-                .filter_map(|key_file| PrivateKeyDer::try_from(key_file).ok())
+            let cert_file = File::open("../../../../../keys/_cert.pem_")?;
+            let cert_file = &mut BufReader::new(cert_file);
+            let cert_chain: Vec<CertificateDer> = certs(cert_file)
+                .filter_map(|cert| cert.ok())
+                .collect();
+            if cert_chain.is_empty() {
+                return Err(GraphQLServerError::EmptyCertificateChain.into());
+            }
+
+            let key_file = File::open("./keys/key.pem")?;
+            let key_file = &mut BufReader::new(key_file);
+            let mut keys: Vec<PrivateKeyDer> = read_all(key_file)
+                .filter_map(|item| match item {
+                    Ok(Item::Pkcs1Key(key)) => Some(key.into()),
+                    Ok(Item::Pkcs8Key(key)) => Some(key.into()),
+                    Ok(Item::Sec1Key(key)) => Some(key.into()),
+                    Ok(_) => {
+                        error!("Could not load private key: The file does not contain a private key in either format PKCS1, PKCS8, SEC1!");
+                        None
+                    }
+                    Err(e) => {
+                        error!("Failed to load private key: {e}");
+                        None
+                    }
+                })
                 .collect();
             if keys.is_empty() {
-                error!("Could not locate PKCS 8 private keys.");
+                error!("Could not load private keys.");
+                return Err(GraphQLServerError::NoPrivateKeyFound.into());
             }
             let tls_config = ServerConfig::builder()
                 .with_no_client_auth()
                 .with_single_cert(cert_chain, keys.remove(0))
-                .unwrap(); // TODO: handle error!
-            info!("Starting HTTP/GraphQL server on {}", graphql_server_config.url());
+                .map_err(|e| GraphQLServerError::RustlsError(e))?;
+            info!("Starting HTTPS/GraphQL server on {}", graphql_server_config.url());
             http_server.bind_rustls_0_22(graphql_server_config.addr(), tls_config)?.run()
         } else {
             info!("Starting HTTP/GraphQL server on {}", graphql_server_config.url());
