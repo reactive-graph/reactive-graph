@@ -14,8 +14,6 @@ use std::time::Duration;
 use inexor_rgf_runtime_api::Runtime;
 use inexor_rgf_runtime_impl::get_runtime;
 
-// const QUERY_GET_SHUTDOWN_ENTITY: &str = include_str!("./get_shutdown_entity.graphql");
-
 #[tokio::test(flavor = "multi_thread")]
 async fn test_dynamic_graph_query() {
     let stdout = ConsoleAppender::builder().build();
@@ -39,9 +37,6 @@ async fn test_dynamic_graph_query() {
     });
     rt.wait_for_started(Duration::from_secs(5)).await.expect("Runtime didn't came up");
 
-    // let sdl = rt.get_dynamic_graph_schema_manager().get_dynamic_schema().await.unwrap().sdl();
-    // println!("{sdl}");
-
     let entity_type_manager = rt.get_entity_type_manager();
     println!("Entity Types: {}", entity_type_manager.count());
     let entity_type = EntityType::default_test();
@@ -51,10 +46,6 @@ async fn test_dynamic_graph_query() {
     let sdl = rt.get_dynamic_graph_schema_manager().get_dynamic_schema().await.unwrap().sdl();
     println!("{sdl}");
 
-    // rt.get_dynamic_graph_schema_manager()
-    //     .regenerate_dynamic_schema()
-    //     .await
-    //     .expect("Failed to regenerate dynamic schema");
     let query = format!(
         r#"
             query GetShutdownEntity {{
