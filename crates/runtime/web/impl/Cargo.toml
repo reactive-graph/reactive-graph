@@ -22,8 +22,9 @@ rustls = { workspace = true }
 rustls-pemfile = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 uuid = { workspace = true }
 
 inexor-rgf-config-api = { version = "0.10.0", path = "../../../config/api" }
