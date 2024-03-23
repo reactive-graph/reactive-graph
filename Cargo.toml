@@ -148,8 +148,8 @@ springtime-di-derive = "0.3"
 stopwatch2 = "2.0"
 strum = { version = "0.25", features = ["derive"] }
 strum_macros = "0.25"
-syn = { version = "2.0", features = [ "full" ] }
-tabled = "0.14"
+syn = { version = "2.0", features = ["full"] }
+tabled = "0.15"
 thiserror = "1.0"
 tokio = { version = "1", features =  ["time", "rt"] }
 tokio-stream = "0.1"
