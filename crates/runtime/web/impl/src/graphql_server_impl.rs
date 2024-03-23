@@ -241,9 +241,7 @@ impl GraphQLServerImpl {
         let r_http_server = if graphql_server_config.is_secure() {
             let cert_file = File::open("../../../../../keys/_cert.pem_")?;
             let cert_file = &mut BufReader::new(cert_file);
-            let cert_chain: Vec<CertificateDer> = certs(cert_file)
-                .filter_map(|cert| cert.ok())
-                .collect();
+            let cert_chain: Vec<CertificateDer> = certs(cert_file).filter_map(|cert| cert.ok()).collect();
             if cert_chain.is_empty() {
                 return Err(GraphQLServerError::EmptyCertificateChain.into());
             }
