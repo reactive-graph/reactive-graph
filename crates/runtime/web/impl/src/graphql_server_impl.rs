@@ -18,8 +18,8 @@ use log::debug;
 use log::error;
 use log::info;
 use log::trace;
-use rustls::Certificate;
-use rustls::PrivateKey;
+use rustls::pki_types::CertificateDer;
+use rustls::pki_types::PrivateKeyDer;
 use rustls::ServerConfig;
 use rustls_pemfile::certs;
 use rustls_pemfile::pkcs8_private_keys;
@@ -220,18 +220,21 @@ impl GraphQLServerImpl {
         let r_http_server = if graphql_server_config.is_secure() {
             let cert_file = &mut BufReader::new(File::open("./keys/cert.pem").unwrap());
             let key_file = &mut BufReader::new(File::open("./keys/key.pem").unwrap());
-            let cert_chain = certs(cert_file).unwrap().into_iter().map(Certificate).collect();
-            let mut keys: Vec<PrivateKey> = pkcs8_private_keys(key_file).unwrap().into_iter().map(PrivateKey).collect();
+            let cert_chain = certs(cert_file).unwrap().into_iter().map(CertificateDer::from).collect();
+            let mut keys: Vec<PrivateKeyDer> = pkcs8_private_keys(key_file)
+                .unwrap()
+                .into_iter()
+                .filter_map(|key_file| PrivateKeyDer::try_from(key_file).ok())
+                .collect();
             if keys.is_empty() {
                 error!("Could not locate PKCS 8 private keys.");
             }
             let tls_config = ServerConfig::builder()
-                .with_safe_defaults()
                 .with_no_client_auth()
                 .with_single_cert(cert_chain, keys.remove(0))
-                .unwrap();
+                .unwrap(); // TODO: handle error!
             info!("Starting HTTP/GraphQL server on {}", graphql_server_config.url());
-            http_server.bind_rustls_021(graphql_server_config.addr(), tls_config)?.run()
+            http_server.bind_rustls_0_22(graphql_server_config.addr(), tls_config)?.run()
         } else {
             info!("Starting HTTP/GraphQL server on {}", graphql_server_config.url());
             http_server.bind(graphql_server_config.addr())?.run()

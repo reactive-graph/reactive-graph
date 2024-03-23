@@ -9,7 +9,7 @@ repository.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
-actix-web = { workspace = true, features = ["rustls-0_21"] }
+actix-web = { workspace = true, features = ["rustls-0_22"] }
 schemars = { workspace = true, features = ["uuid1"] }
 
 inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }

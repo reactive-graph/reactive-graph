@@ -11,7 +11,7 @@ readme = "../../../../README.md"
 [dependencies]
 actix-cors = { workspace = true }
 actix-http = { workspace = true }
-actix-web = { workspace = true, features = ["rustls-0_21"] }
+actix-web = { workspace = true, features = ["rustls-0_22"] }
 actix-web-extras = { workspace = true }
 async-trait = { workspace = true }
 crossbeam = { workspace = true }
