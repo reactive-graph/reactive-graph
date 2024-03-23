@@ -83,7 +83,7 @@ keywords = ["graph", "reactive", "control-flow", "inexor"]
 
 [workspace.dependencies]
 actix = "0.13"
-actix-cors = "0.6"
+actix-cors = "0.7.0"
 actix-http = "3.0"
 actix-rt = "2.6"
 actix-web = { version = "4.4", features = ["rustls-0_21"] }
