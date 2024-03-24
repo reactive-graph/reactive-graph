@@ -1,4 +1,3 @@
-#![feature(result_option_inspect)]
 #![feature(test)]
 
 pub use component_import_export_manager_impl::*;
