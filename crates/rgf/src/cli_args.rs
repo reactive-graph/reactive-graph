@@ -1,4 +1,3 @@
-use clap::ArgAction::SetTrue;
 use clap::Parser;
 use clap::Subcommand;
 
