@@ -129,7 +129,7 @@ rand_derive2 = "0.1"
 random-string = "1.0"
 rayon = "1.6"
 regex = "1.9"
-reqwest = { version = "0.11.14", features = ["json"] }
+reqwest = { version = "0.12.2", features = ["json"] }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
 rustls = "0.22"
 rustls-pki-types = "1.4.0"
