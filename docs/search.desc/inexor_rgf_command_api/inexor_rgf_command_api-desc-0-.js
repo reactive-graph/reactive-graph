@@ -1,0 +1,1 @@
+searchState.loadedDescShard("inexor_rgf_command_api", 0, "Returns the command with the given name.\nReturns all commands.\nRegisters a new command.\nRegisters a new singleton command.\nThe reactive entity instance cannot be created.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

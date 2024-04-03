@@ -1,0 +1,1 @@
+searchState.loadedDescShard("inexor_rgf_lifecycle", 0, "Called at initialization\nCalled after initialization\nCalled before shutdown\nCalled for shutdown")
