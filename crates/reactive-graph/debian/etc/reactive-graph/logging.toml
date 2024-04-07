@@ -11,7 +11,7 @@ pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} {m}{n}"
 
 [appenders.file-application]
 kind = "file"
-path = "/var/log/reactive-graph/default/inexor-rgf.log"
+path = "/var/log/reactive-graph/default/reactive-graph.log"
 
 [appenders.file-application.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
