@@ -1,11 +1,11 @@
 <div align="center">
 <a href="https://reactive-graph.io/">
-<img src="docs/book/src/images/rgf_logo_k2_v4_fg_sm.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" />
+<img src="design/logo/full/reactive-graph-full-mexican-pink-black.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" alt="Reactive Graph" />
 </a>
 </div>
 
 
-<h1 align="center" style="text-align: center;">Inexor Reactive Graph Flow</h1>
+<h1 align="center" style="text-align: center;">Reactive Graph</h1>
 
 <div align="center" style="text-align: center">
 
@@ -167,19 +167,6 @@ emitter. The possibilities for this are endless and want to be used!
 </div>
 
 
-<h2 align="center" style="text-align: center;">Inexor</h2>
-
-<div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
-
-* Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
-* Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.
-* Inexor will be written from ground up new in C++20 and Rust.
-* You can contribute anything you want: code, content, ideas..
-* Inexor and all its content is 100% open source!
-
-</div>
-
-
 <h2 align="center" style="text-align: center;">Plugins</h2>
 
 <div align="center" style="text-align: center">
@@ -219,9 +206,9 @@ emitter. The possibilities for this are endless and want to be used!
 
 <h2 align="center" style="text-align: center;">GraphQL Type System</h2>
 
-<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/queries.png">
+<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/queries.png" alt="GraphQL Type System Queries">
 
-<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/mutations.png">
+<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/mutations.png" alt="GraphQL Type System Mutations">
 
 
 <h2 align="center" style="text-align: center;">Flow Editor</h2>
