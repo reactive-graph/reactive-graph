@@ -12,7 +12,7 @@ readme = "../../../../README.md"
 async-graphql = { workspace = true, features = ["uuid"] }
 async-trait = { workspace = true }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }

@@ -11,8 +11,8 @@ readme = "../../../../README.md"
 [dependencies]
 dashmap = { workspace = true }
 rayon = { workspace = true }
-schemars = { workspace = true, features = [ "uuid1" ] }
-serde = { workspace = true, features = [ "derive" ] }
+schemars = { workspace = true, features = ["uuid1"] }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }

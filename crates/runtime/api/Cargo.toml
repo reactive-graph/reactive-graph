@@ -24,8 +24,8 @@ categories = [
 
 [dependencies]
 async-trait = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-config-api = { version = "0.10.0", path = "../../config/api" }

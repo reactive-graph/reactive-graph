@@ -15,9 +15,9 @@ convert_case = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 thiserror = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
@@ -37,7 +37,7 @@ default-test = { workspace = true }
 glob = { workspace = true }
 similar = { workspace = true }
 similar-asserts = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
 reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }

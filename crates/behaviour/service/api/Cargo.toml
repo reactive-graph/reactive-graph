@@ -10,7 +10,7 @@ readme = "../../../../README.md"
 
 [dependencies]
 async-trait = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }

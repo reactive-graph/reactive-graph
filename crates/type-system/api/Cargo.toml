@@ -13,7 +13,7 @@ async-trait = { workspace = true }
 json5 = { workspace = true, optional = true }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"], optional = true }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ], optional = true }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"], optional = true }
 thiserror = { workspace = true }
 toml = { workspace = true, optional = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
@@ -24,12 +24,12 @@ reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactiv
 reactive-graph-type-system-derive = { version = "0.10.0", path = "../derive", optional = true }
 
 [features]
-default = [ "derive", "springtime" ]
-derive = [ "reactive-graph-type-system-derive", "rust-embed" ]
-springtime = [ "springtime-di/threadsafe", "springtime-di/derive" ]
-json5 = [ "dep:json5", "reactive-graph-type-system-derive/json5" ]
-toml = [ "dep:toml", "reactive-graph-type-system-derive/toml" ]
-full = [ "derive", "springtime", "json5", "toml" ]
+default = ["derive", "springtime"]
+derive = ["reactive-graph-type-system-derive", "rust-embed"]
+springtime = ["springtime-di/threadsafe", "springtime-di/derive"]
+json5 = ["dep:json5", "reactive-graph-type-system-derive/json5"]
+toml = ["dep:toml", "reactive-graph-type-system-derive/toml"]
+full = ["derive", "springtime", "json5", "toml"]
 
 [lib]
 crate-type = ["lib"]

@@ -15,7 +15,7 @@ dashmap = { workspace = true }
 gql_client = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 serde = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 
 reactive-graph-remotes-api = { version = "0.10.0", path = "../api" }
 reactive-graph-remotes-model = { version = "0.10.0", path = "../model" }

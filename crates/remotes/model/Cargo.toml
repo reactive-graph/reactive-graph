@@ -10,7 +10,7 @@ readme = "../../../README.md"
 
 [dependencies]
 chrono = { workspace = true }
-serde = { workspace = true, features = [ "derive" ] }
+serde = { workspace = true, features = ["derive"] }
 typed-builder = { workspace = true }
 
 [lib]

@@ -15,7 +15,7 @@ dashmap = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 path-tree = { workspace = true }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 tokio = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 

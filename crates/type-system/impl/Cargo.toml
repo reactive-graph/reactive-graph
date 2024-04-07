@@ -15,19 +15,19 @@ json5 = { workspace = true, optional = true }
 log = { workspace = true, features = ["std", "serde"] }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ], optional = true }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"], optional = true }
 toml = { workspace = true, optional = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
-reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = [ "derive" ] }
+reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = ["derive"] }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 
 [dev-dependencies]
 default-test = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
@@ -35,11 +35,11 @@ reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
 
 [features]
-default = [ "springtime", "json5", "toml" ]
-springtime = [ "springtime-di/threadsafe", "springtime-di/derive" ]
-json5 = [ "dep:json5", "reactive-graph-type-system-api/json5" ]
-toml = [ "dep:toml", "reactive-graph-type-system-api/toml" ]
-full = [ "springtime", "json5", "toml" ]
+default = ["springtime", "json5", "toml"]
+springtime = ["springtime-di/threadsafe", "springtime-di/derive"]
+json5 = ["dep:json5", "reactive-graph-type-system-api/json5"]
+toml = ["dep:toml", "reactive-graph-type-system-api/toml"]
+full = ["springtime", "json5", "toml"]
 
 [lib]
 crate-type = ["lib"]

@@ -9,17 +9,17 @@ repository.workspace = true
 readme = "../../README.md"
 
 [dependencies]
-dashmap = { workspace = true, features = [ "serde" ] }
+dashmap = { workspace = true, features = ["serde"] }
 default-test = { workspace = true, optional = true }
 ##paste = { workspace = true }
 rand = { workspace = true, optional = true }
 rand_derive2 = { workspace = true, optional = true }
-schemars = { workspace = true, features = [ "uuid1" ] }
-serde = { workspace = true, features = [ "derive" ] }
+schemars = { workspace = true, features = ["uuid1"] }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
 typed-builder = { workspace = true }
-uuid = { workspace = true, features = [ "serde", "v4", "v5" ] }
+uuid = { workspace = true, features = ["serde", "v4", "v5"] }
 wildmatch = { workspace = true }
 
 reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils", optional = true }
@@ -33,7 +33,7 @@ rand_derive2 = { workspace = true }
 reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils" }
 
 [features]
-test = [ "default-test", "rand", "rand_derive2", "reactive-graph-test-utils" ]
+test = ["default-test", "rand", "rand_derive2", "reactive-graph-test-utils"]
 
 [lib]
 crate-type = ["lib"]

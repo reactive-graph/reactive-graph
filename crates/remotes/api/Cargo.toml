@@ -11,7 +11,7 @@ readme = "../../../README.md"
 [dependencies]
 async-trait = { workspace = true }
 gql_client = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 thiserror = { workspace = true }
 
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }

@@ -19,7 +19,7 @@ reactive-graph-plugin-service-api = { version = "0.10.0", path = "../../service/
 default-test = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../../../runtime/api" }

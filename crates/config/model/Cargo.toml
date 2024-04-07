@@ -10,7 +10,7 @@ readme = "../../../README.md"
 
 [dependencies]
 num_cpus = { workspace = true }
-serde = { workspace = true, features = [ "derive" ] }
+serde = { workspace = true, features = ["derive"] }
 typed-builder = { workspace = true }
 
 reactive-graph-remotes-model = { version = "0.10.0", path = "../../remotes/model" }

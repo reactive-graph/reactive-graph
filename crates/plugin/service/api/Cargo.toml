@@ -12,7 +12,7 @@ readme = "../../../../README.md"
 async-trait = { workspace = true }
 dashmap = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 strum_macros = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 

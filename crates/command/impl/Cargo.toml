@@ -13,7 +13,7 @@ async-trait = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
 reactive-graph-command-api = { version = "0.10.0", path = "../api" }

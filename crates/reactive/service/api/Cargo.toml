@@ -14,7 +14,7 @@ crossbeam = { workspace = true }
 dashmap = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 thiserror = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
@@ -34,8 +34,8 @@ default-test = { workspace = true }
 reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
 
 [features]
-default = [ "derive" ]
-derive = [ "reactive-graph-reactive-derive" ]
+default = ["derive"]
+derive = ["reactive-graph-reactive-derive"]
 
 [lib]
 crate-type = ["lib"]

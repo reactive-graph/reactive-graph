@@ -13,7 +13,7 @@ chrono = { workspace = true }
 cynic = { workspace = true, features = ["http-reqwest"] }
 openssl = { version = "0.10", features = ["vendored"] }
 reqwest = { workspace = true, features = ["json"] }
-serde = { workspace = true, features = [ "derive" ] }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
@@ -26,7 +26,7 @@ reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
 [dev-dependencies]
 reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api" }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 [lib]
 crate-type = ["lib"]

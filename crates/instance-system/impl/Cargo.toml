@@ -11,7 +11,7 @@ readme = "../../../README.md"
 [dependencies]
 async-trait = { workspace = true }
 serde_json = { workspace = true }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 uuid = { workspace = true }
 
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
@@ -24,7 +24,7 @@ reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reacti
 
 [dev-dependencies]
 default-test = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }

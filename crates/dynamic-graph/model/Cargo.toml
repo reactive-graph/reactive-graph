@@ -9,7 +9,7 @@ repository.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
-serde = { workspace = true, features = [ "derive" ] }
+serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 

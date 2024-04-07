@@ -11,7 +11,7 @@ readme = "../../../README.md"
 [dependencies]
 async-trait = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
-springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
+springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 toml = { workspace = true }
 
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
