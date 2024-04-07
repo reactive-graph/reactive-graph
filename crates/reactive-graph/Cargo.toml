@@ -1,5 +1,5 @@
 [package]
-name = "rgf"
+name = "reactive-graph"
 description = "Reactive Graph Flow"
 version.workspace = true
 authors.workspace = true
@@ -9,27 +9,27 @@ repository.workspace = true
 readme = "../../README.md"
 
 [package.metadata.deb]
-name = "rgf"
+name = "reactive-graph"
 maintainer-scripts = "debian/maintainer-scripts"
 assets = [
-    ["target/release/reactive-graph-rt-standalone", "usr/bin/inexor-rgf", "755"],
-    ["../../README.md", "usr/share/doc/inexor-rgf/README", "644"],
-    ["../../CHANGELOG.md", "usr/share/doc/inexor-rgf/CHANGELOG", "644"],
-    ["../../CODE_OF_CONDUCT.md", "usr/share/doc/inexor-rgf/CODE_OF_CONDUCT", "644"],
-    ["../../LICENSE.md", "usr/share/doc/inexor-rgf/LICENSE", "644"],
-    ["../../CONTRIBUTING.md", "usr/share/doc/inexor-rgf/CONTRIBUTING", "644"],
-    ["debian/etc/inexor-rgf/var_file", "etc/inexor-rgf/default/var_file", "644"],
-    ["debian/etc/inexor-rgf/graphql.toml", "etc/inexor-rgf/default/graphql.toml", "644"],
-    ["debian/etc/inexor-rgf/instance.toml", "etc/inexor-rgf/default/instance.toml", "644"],
-    ["debian/etc/inexor-rgf/logging.toml", "etc/inexor-rgf/default/logging.toml", "644"],
-    ["debian/etc/inexor-rgf/plugins.toml", "etc/inexor-rgf/default/plugins.toml", "644"],
-    ["debian/usr/share/inexor-rgf/plugins/deploy/.gitkeep", "usr/share/inexor-rgf/default/plugins/deploy/.gitkeep", "644"],
-    ["debian/usr/share/inexor-rgf/plugins/installed/.gitkeep", "usr/share/inexor-rgf/default/plugins/installed/.gitkeep", "644"],
-    ["debian/var/lib/inexor-rgf/repositories/flows/.gitkeep", "var/lib/inexor-rgf/default/repositories/flows/.gitkeep", "644"],
+    ["target/release/reactive-graph", "usr/bin/reactive-graph", "755"],
+    ["../../README.md", "usr/share/doc/reactive-graph/README", "644"],
+    ["../../CHANGELOG.md", "usr/share/doc/reactive-graph/CHANGELOG", "644"],
+    ["../../CODE_OF_CONDUCT.md", "usr/share/doc/reactive-graph/CODE_OF_CONDUCT", "644"],
+    ["../../LICENSE.md", "usr/share/doc/reactive-graph/LICENSE", "644"],
+    ["../../CONTRIBUTING.md", "usr/share/doc/reactive-graph/CONTRIBUTING", "644"],
+    ["debian/etc/reactive-graph/var_file", "etc/reactive-graph/default/var_file", "644"],
+    ["debian/etc/reactive-graph/graphql.toml", "etc/reactive-graph/default/graphql.toml", "644"],
+    ["debian/etc/reactive-graph/instance.toml", "etc/reactive-graph/default/instance.toml", "644"],
+    ["debian/etc/reactive-graph/logging.toml", "etc/reactive-graph/default/logging.toml", "644"],
+    ["debian/etc/reactive-graph/plugins.toml", "etc/reactive-graph/default/plugins.toml", "644"],
+    ["debian/usr/share/reactive-graph/plugins/deploy/.gitkeep", "usr/share/reactive-graph/default/plugins/deploy/.gitkeep", "644"],
+    ["debian/usr/share/reactive-graph/plugins/installed/.gitkeep", "usr/share/reactive-graph/default/plugins/installed/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/repositories/flows/.gitkeep", "var/lib/reactive-graph/default/repositories/flows/.gitkeep", "644"],
 ]
 
 [package.metadata.deb.systemd-units]
-unit-name = "rgf@"
+unit-name = "reactive-graph@"
 enable = true
 restart-after-upgrade = true
 
@@ -59,4 +59,4 @@ client = ["reactive-graph-client"]
 default = ["client"]
 
 [[bin]]
-name = "rgf"
+name = "reactive-graph"

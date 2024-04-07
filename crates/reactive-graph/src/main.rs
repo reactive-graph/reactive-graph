@@ -11,6 +11,7 @@ use log4rs::Config;
 #[cfg(client)]
 use crate::cli::client;
 use crate::cli_args::CliArguments;
+#[cfg(client)]
 use crate::cli_args::Commands;
 use crate::server::server;
 

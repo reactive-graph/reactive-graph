@@ -1,0 +1,28 @@
+[Unit]
+Description=Reactive Graph
+
+[Service]
+
+Environment="RGF_LOGGING_CONFIG=/etc/reactive-graph/%i/logging.toml"
+Environment="RGF_INSTANCE_CONFIG=/etc/reactive-graph/%i/instance.toml"
+Environment="RGF_GRAPHQL_CONFIG=/etc/reactive-graph/%i/graphql.toml"
+Environment="RGF_PLUGINS_CONFIG=/etc/reactive-graph/%i/plugins.toml"
+Environment="RGF_HOT_DEPLOY_LOCATION=/usr/share/reactive-graph/%i/plugins/deploy"
+Environment="RGF_INSTALL_LOCATION=/usr/share/reactive-graph/%i/plugins/installed"
+
+EnvironmentFile=/etc/reactive-graph/%i/var_file
+
+ExecStart=/usr/bin/reactive-graph
+
+ExecStartPre=/bin/mkdir -m 710 -p /etc/reactive-graph/%i
+ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/graphql.toml /etc/reactive-graph/%i/graphql.toml
+ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/instance.toml /etc/reactive-graph/%i/instance.toml
+ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/logging.toml /etc/reactive-graph/%i/logging.toml
+ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/plugins.toml /etc/reactive-graph/%i/plugins.toml
+ExecStartPre=/bin/mkdir -m 710 -p /usr/share/reactive-graph/%i/plugins/deploy
+ExecStartPre=/bin/mkdir -m 710 -p /usr/share/reactive-graph/%i/plugins/installed
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/flows
+ExecStartPre=/bin/mkdir -m 710 -p /var/log/reactive-graph/%i
+
+[Install]
+WantedBy=multi-user.target

@@ -67,7 +67,7 @@ members = [
     "crates/type-system/impl",
     "crates/type-system/json-schema",
     "crates/type-system/rest",
-    "crates/rgf",
+    "crates/reactive-graph",
 ]
 resolver = "2"
 
