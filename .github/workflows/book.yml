@@ -42,21 +42,21 @@ jobs:
         uses: actions-rs/install@v0.1
         with:
           crate: mdbook-mermaid
-          version: latest
+          version: 0.13.0
           use-tool-cache: true
 
       - name: Install preprocessor mdbook-admonish
         uses: actions-rs/install@v0.1
         with:
           crate: mdbook-admonish
-          version: latest
+          version: 1.15.0
           use-tool-cache: true
 
       - name: Install preprocessor mdbook-graphql-playground
         uses: actions-rs/install@v0.1
         with:
           crate: mdbook-preprocessor-graphql-playground
-          version: latest
+          version: 0.1.3
           use-tool-cache: true
 
       - name: Build Book
