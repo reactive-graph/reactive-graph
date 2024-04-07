@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-plugin-graphql-impl"
+name = "reactive-graph-plugin-graphql-impl"
 description = "Inexor - Reactive Graph Flow - Plugin - GraphQL - Implementation"
 version.workspace = true
 authors.workspace = true
@@ -15,11 +15,11 @@ serde_json = { workspace = true }
 springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-inexor-rgf-plugin-graphql-schema = { version = "0.10.0", path = "../schema" }
-inexor-rgf-plugin-graphql-api = { version = "0.10.0", path = "../api" }
-inexor-rgf-plugin-service-api = { version = "0.10.0", path = "../../service/api" }
+reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+reactive-graph-plugin-graphql-schema = { version = "0.10.0", path = "../schema" }
+reactive-graph-plugin-graphql-api = { version = "0.10.0", path = "../api" }
+reactive-graph-plugin-service-api = { version = "0.10.0", path = "../../service/api" }
 
 [lib]
 crate-type = ["lib"]

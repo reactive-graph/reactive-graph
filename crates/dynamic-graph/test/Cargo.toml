@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-dynamic-graph-test"
+name = "reactive-graph-dynamic-graph-test"
 description = "Inexor - Reactive Graph Flow - Dynamic Graph - Service - Integration Test"
 version.workspace = true
 authors.workspace = true
@@ -22,11 +22,11 @@ similar = { workspace = true }
 similar-asserts = { workspace = true }
 tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
-inexor-rgf-di = { version = "0.10.0", path = "../../di" }
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
-inexor-rgf-test-utils = { version = "0.10.0", path = "../../test-utils" }
-inexor-rgf-runtime-api = { version = "0.10.0", path = "../../runtime/api" }
-inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+reactive-graph-di = { version = "0.10.0", path = "../../di" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
+reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
+reactive-graph-runtime-api = { version = "0.10.0", path = "../../runtime/api" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
 
 [lib]
 crate-type = ["lib"]

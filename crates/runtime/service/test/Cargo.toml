@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-runtime-service-test"
+name = "reactive-graph-runtime-service-test"
 description = "Inexor - Reactive Graph Flow - Runtime - Service - Test"
 version.workspace = true
 authors.workspace = true
@@ -10,11 +10,11 @@ readme = "../../../../README.md"
 
 [dev-dependencies]
 default-test = { workspace = true }
-tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
+tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
-inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils" }
-inexor-rgf-runtime-api = { version = "0.10.0", path = "../../api" }
-inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../impl" }
+reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+reactive-graph-runtime-api = { version = "0.10.0", path = "../../api" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../impl" }
 
 [lib]
 crate-type = ["lib"]

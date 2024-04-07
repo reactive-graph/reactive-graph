@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-client"
+name = "reactive-graph-client"
 description = "Inexor - Reactive Graph Flow - Client"
 version.workspace = true
 authors.workspace = true
@@ -18,14 +18,14 @@ serde_json = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-##inexor-rgf-config-model = { version = "0.10.0", path = "../config/model" }
-inexor-rgf-graph = { version = "0.10.0", path = "../graph" }
-##inexor-rgf-runtime-model = { version = "0.10.0", path = "../runtime/model" }
-inexor-rgf-remotes-model = { version = "0.10.0", path = "../remotes/model" }
+##reactive-graph-config-model = { version = "0.10.0", path = "../config/model" }
+reactive-graph-graph = { version = "0.10.0", path = "../graph" }
+##reactive-graph-runtime-model = { version = "0.10.0", path = "../runtime/model" }
+reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
 
 [dev-dependencies]
-inexor-rgf-runtime-api = { version = "0.10.0", path = "../runtime/api" }
-inexor-rgf-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
+reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
 tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 [lib]

@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-type-system-api"
+name = "reactive-graph-type-system-api"
 description = "Inexor - Reactive Graph Flow - Type System - API"
 version.workspace = true
 authors.workspace = true
@@ -18,17 +18,17 @@ thiserror = { workspace = true }
 toml = { workspace = true, optional = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
-inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
-inexor-rgf-type-system-derive = { version = "0.10.0", path = "../derive", optional = true }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+reactive-graph-type-system-derive = { version = "0.10.0", path = "../derive", optional = true }
 
 [features]
 default = [ "derive", "springtime" ]
-derive = [ "inexor-rgf-type-system-derive", "rust-embed" ]
+derive = [ "reactive-graph-type-system-derive", "rust-embed" ]
 springtime = [ "springtime-di/threadsafe", "springtime-di/derive" ]
-json5 = [ "dep:json5", "inexor-rgf-type-system-derive/json5" ]
-toml = [ "dep:toml", "inexor-rgf-type-system-derive/toml" ]
+json5 = [ "dep:json5", "reactive-graph-type-system-derive/json5" ]
+toml = [ "dep:toml", "reactive-graph-type-system-derive/toml" ]
 full = [ "derive", "springtime", "json5", "toml" ]
 
 [lib]

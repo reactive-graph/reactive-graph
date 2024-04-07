@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-runtime-graphql-test"
+name = "reactive-graph-runtime-graphql-test"
 description = "Inexor - Reactive Graph Flow - Runtime - GraphQL - Test"
 version.workspace = true
 authors.workspace = true
@@ -18,13 +18,13 @@ serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 tokio = { workspace = true, features =  ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }
-inexor-rgf-graphql-api = { version = "0.10.0", path = "../../../graphql/api" }
-inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils" }
-inexor-rgf-remotes-model = { version = "0.10.0", path = "../../../remotes/model" }
-inexor-rgf-runtime-api = { version = "0.10.0", path = "../../api" }
-inexor-rgf-runtime-impl = { version = "0.10.0", path = "../../impl" }
-inexor-rgf-runtime-graphql-api = { version = "0.10.0", path = "../api" }
+reactive-graph-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }
+reactive-graph-graphql-api = { version = "0.10.0", path = "../../../graphql/api" }
+reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+reactive-graph-remotes-model = { version = "0.10.0", path = "../../../remotes/model" }
+reactive-graph-runtime-api = { version = "0.10.0", path = "../../api" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../impl" }
+reactive-graph-runtime-graphql-api = { version = "0.10.0", path = "../api" }
 
 [lib]
 crate-type = ["lib"]

@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-runtime-model"
+name = "reactive-graph-runtime-model"
 description = "Inexor - Reactive Graph Flow - Runtime - Model"
 version.workspace = true
 authors.workspace = true
@@ -15,7 +15,7 @@ strum_macros = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 
 [lib]
 crate-type = ["lib"]

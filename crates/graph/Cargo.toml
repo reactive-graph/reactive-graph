@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-graph"
+name = "reactive-graph-graph"
 description = "Inexor - Reactive Graph Flow - Core - Model"
 version.workspace = true
 authors.workspace = true
@@ -22,7 +22,7 @@ typed-builder = { workspace = true }
 uuid = { workspace = true, features = [ "serde", "v4", "v5" ] }
 wildmatch = { workspace = true }
 
-inexor-rgf-test-utils = { version = "0.10.0", path = "../test-utils", optional = true }
+reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils", optional = true }
 
 [dev-dependencies]
 default-test = { workspace = true }
@@ -30,10 +30,10 @@ random-string = { workspace = true }
 rand = { workspace = true }
 rand_derive2 = { workspace = true }
 
-inexor-rgf-test-utils = { version = "0.10.0", path = "../test-utils" }
+reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils" }
 
 [features]
-test = [ "default-test", "rand", "rand_derive2", "inexor-rgf-test-utils" ]
+test = [ "default-test", "rand", "rand_derive2", "reactive-graph-test-utils" ]
 
 [lib]
 crate-type = ["lib"]

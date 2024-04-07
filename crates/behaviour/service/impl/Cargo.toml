@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-behaviour-service-impl"
+name = "reactive-graph-behaviour-service-impl"
 description = "Inexor - Reactive Graph Flow - Behaviour - Service - Implementation"
 version.workspace = true
 authors.workspace = true
@@ -15,15 +15,15 @@ log = { workspace = true, features = ["std", "serde"] }
 springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-di = { version = "0.10.0", path = "../../../di" }
-inexor-rgf-behaviour-model-api = { version = "0.10.0", path = "../../model/api" }
-inexor-rgf-behaviour-model-impl = { version = "0.10.0", path = "../../model/impl" }
-inexor-rgf-behaviour-service-api = { version = "0.10.0", path = "../api" }
-inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../../reactive/model/api" }
-inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../../reactive/model/impl" }
-inexor-rgf-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
+reactive-graph-di = { version = "0.10.0", path = "../../../di" }
+reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../../model/api" }
+reactive-graph-behaviour-model-impl = { version = "0.10.0", path = "../../model/impl" }
+reactive-graph-behaviour-service-api = { version = "0.10.0", path = "../api" }
+reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../../reactive/model/api" }
+reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../../reactive/model/impl" }
+reactive-graph-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
 
 [lib]
 crate-type = ["lib"]

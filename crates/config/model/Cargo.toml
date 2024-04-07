@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-config-model"
+name = "reactive-graph-config-model"
 description = "Inexor - Reactive Graph Flow - Config - Model"
 version.workspace = true
 authors.workspace = true
@@ -13,7 +13,7 @@ num_cpus = { workspace = true }
 serde = { workspace = true, features = [ "derive" ] }
 typed-builder = { workspace = true }
 
-inexor-rgf-remotes-model = { version = "0.10.0", path = "../../remotes/model" }
+reactive-graph-remotes-model = { version = "0.10.0", path = "../../remotes/model" }
 
 [lib]
 crate-type = ["lib"]

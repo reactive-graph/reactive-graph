@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-plugin-service-api"
+name = "reactive-graph-plugin-service-api"
 description = "Inexor - Reactive Graph Flow - Plugin - Service - API"
 version.workspace = true
 authors.workspace = true
@@ -16,8 +16,8 @@ springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 strum_macros = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-inexor-rgf-plugin-api = { version = "0.10.0", path = "../../api" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+reactive-graph-plugin-api = { version = "0.10.0", path = "../../api" }
 
 [lib]
 crate-type = ["lib"]

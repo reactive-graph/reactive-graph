@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-type-system-rest"
+name = "reactive-graph-type-system-rest"
 description = "Inexor - Reactive Graph Flow - Type System - REST API"
 version.workspace = true
 authors.workspace = true
@@ -12,8 +12,8 @@ readme = "../../../README.md"
 actix-web = { workspace = true, features = ["rustls-0_22"] }
 mime = { workspace = true }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
-inexor-rgf-type-system-api = { version = "0.10.0", path = "../api" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-type-system-api = { version = "0.10.0", path = "../api" }
 
 [lib]
 crate-type = ["lib"]

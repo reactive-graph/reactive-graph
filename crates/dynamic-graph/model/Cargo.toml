@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-dynamic-graph-model"
+name = "reactive-graph-dynamic-graph-model"
 description = "Inexor - Reactive Graph Flow - Dynamic Graph - Model"
 version.workspace = true
 authors.workspace = true
@@ -13,7 +13,7 @@ serde = { workspace = true, features = [ "derive" ] }
 serde_json = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 
 [lib]
 crate-type = ["lib"]

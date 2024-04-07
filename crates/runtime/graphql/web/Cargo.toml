@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-runtime-graphql-web"
+name = "reactive-graph-runtime-graphql-web"
 description = "Inexor - Reactive Graph Flow - Runtime - GraphQL - Web"
 version.workspace = true
 authors.workspace = true
@@ -13,7 +13,7 @@ actix-web = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-actix-web = { workspace = true }
 
-inexor-rgf-runtime-graphql-schema = { version = "0.10.0", path = "../schema" }
+reactive-graph-runtime-graphql-schema = { version = "0.10.0", path = "../schema" }
 
 [lib]
 crate-type = ["lib"]

@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-di"
+name = "reactive-graph-di"
 description = "Inexor - Reactive Graph Flow - DI"
 version.workspace = true
 authors.workspace = true
@@ -14,7 +14,7 @@ fxhash = { version = "0.2.1" }
 log = { workspace = true, features = ["std", "serde"] }
 springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../lifecycle" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../lifecycle" }
 
 [lib]
 crate-type = ["lib"]

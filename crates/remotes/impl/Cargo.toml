@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-remotes-impl"
+name = "reactive-graph-remotes-impl"
 description = "Inexor - Reactive Graph Flow - Remotes - Implementation"
 version.workspace = true
 authors.workspace = true
@@ -17,15 +17,15 @@ log = { workspace = true, features = ["std", "serde"] }
 serde = { workspace = true }
 springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 
-inexor-rgf-remotes-api = { version = "0.10.0", path = "../api" }
-inexor-rgf-remotes-model = { version = "0.10.0", path = "../model" }
-inexor-rgf-config-api = { version = "0.10.0", path = "../../config/api" }
-inexor-rgf-config-model = { version = "0.10.0", path = "../../config/model" }
-inexor-rgf-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+reactive-graph-remotes-api = { version = "0.10.0", path = "../api" }
+reactive-graph-remotes-model = { version = "0.10.0", path = "../model" }
+reactive-graph-config-api = { version = "0.10.0", path = "../../config/api" }
+reactive-graph-config-model = { version = "0.10.0", path = "../../config/model" }
+reactive-graph-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 
 [dev-dependencies]
-inexor-rgf-di = { version = "0.10.0", path = "../../di" }
+reactive-graph-di = { version = "0.10.0", path = "../../di" }
 
 [build-dependencies]
 vergen = { workspace = true, features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }

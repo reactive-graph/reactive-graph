@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-config-api"
+name = "reactive-graph-config-api"
 description = "Inexor - Reactive Graph Flow - Config - API"
 version.workspace = true
 authors.workspace = true
@@ -12,8 +12,8 @@ readme = "../../../README.md"
 async-trait = { workspace = true }
 springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
-inexor-rgf-config-model = { version = "0.10.0", path = "../model" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
+reactive-graph-config-model = { version = "0.10.0", path = "../model" }
 
 [lib]
 crate-type = ["lib"]

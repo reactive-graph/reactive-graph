@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-type-system-json-schema"
+name = "reactive-graph-type-system-json-schema"
 description = "Inexor - Reactive Graph Flow - Type System - JSON Schema"
 version.workspace = true
 authors.workspace = true
@@ -12,7 +12,7 @@ readme = "../../../README.md"
 actix-web = { workspace = true, features = ["rustls-0_22"] }
 schemars = { workspace = true, features = ["uuid1"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 
 [lib]
 crate-type = ["lib"]

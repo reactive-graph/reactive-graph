@@ -1,8 +1,8 @@
 disabled = false
 
 disabled_plugins = [
-    "inexor-rgf-plugin-file",
-    "inexor-rgf-plugin-graphql-schema-visualization"
+    "reactive-graph-plugin-file",
+    "reactive-graph-plugin-graphql-schema-visualization"
 ]
 
 hot_deploy = true

@@ -2,14 +2,14 @@ disabled = false
 
 disabled_plugins = [
     # Full name
-    # "inexor-rgf-plugin-file",
+    # "reactive-graph-plugin-file",
     # Short name
     # "graphql-schema-visualization"
 ]
 
 #enabled_plugins = [
 #    # Full name
-#    "inexor-rgf-plugin-base",
+#    "reactive-graph-plugin-base",
 #    # Short name
 #    "trigger",
 #    "result",

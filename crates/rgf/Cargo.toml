@@ -12,7 +12,7 @@ readme = "../../README.md"
 name = "rgf"
 maintainer-scripts = "debian/maintainer-scripts"
 assets = [
-    ["target/release/inexor-rgf-rt-standalone", "usr/bin/inexor-rgf", "755"],
+    ["target/release/reactive-graph-rt-standalone", "usr/bin/inexor-rgf", "755"],
     ["../../README.md", "usr/share/doc/inexor-rgf/README", "644"],
     ["../../CHANGELOG.md", "usr/share/doc/inexor-rgf/CHANGELOG", "644"],
     ["../../CODE_OF_CONDUCT.md", "usr/share/doc/inexor-rgf/CODE_OF_CONDUCT", "644"],
@@ -46,16 +46,16 @@ shellwords = { workspace = true }
 tabled = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread"] }
 
-inexor-rgf-config-model = { version = "0.10.0", path = "../config/model" }
-inexor-rgf-remotes-model = { version = "0.10.0", path = "../remotes/model" }
-inexor-rgf-graph = { version = "0.10.0", path = "../graph" }
-inexor-rgf-runtime-model = { version = "0.10.0", path = "../runtime/model" }
-inexor-rgf-runtime-api = { version = "0.10.0", path = "../runtime/api" }
-inexor-rgf-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
-inexor-rgf-client = { version = "0.10.0", path = "../client", optional = true }
+reactive-graph-config-model = { version = "0.10.0", path = "../config/model" }
+reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
+reactive-graph-graph = { version = "0.10.0", path = "../graph" }
+reactive-graph-runtime-model = { version = "0.10.0", path = "../runtime/model" }
+reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
+reactive-graph-client = { version = "0.10.0", path = "../client", optional = true }
 
 [features]
-client = ["inexor-rgf-client"]
+client = ["reactive-graph-client"]
 default = ["client"]
 
 [[bin]]

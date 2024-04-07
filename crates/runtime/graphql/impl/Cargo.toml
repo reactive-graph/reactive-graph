@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-runtime-graphql-impl"
+name = "reactive-graph-runtime-graphql-impl"
 description = "Inexor - Reactive Graph Flow - Runtime - GraphQL - Implementation"
 version.workspace = true
 authors.workspace = true
@@ -15,12 +15,12 @@ serde_json = { workspace = true }
 springtime-di = { workspace = true, features = [ "threadsafe", "derive" ] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-inexor-rgf-runtime-graphql-api = { version = "0.10.0", path = "../api" }
-inexor-rgf-runtime-graphql-schema = { version = "0.10.0", path = "../schema" }
-inexor-rgf-runtime-service-api = { version = "0.10.0", path = "../../service/api" }
-inexor-rgf-command-api = { version = "0.10.0", path = "../../../command/api" }
-inexor-rgf-remotes-api = { version = "0.10.0", path = "../../../remotes/api" }
+reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
+reactive-graph-runtime-graphql-api = { version = "0.10.0", path = "../api" }
+reactive-graph-runtime-graphql-schema = { version = "0.10.0", path = "../schema" }
+reactive-graph-runtime-service-api = { version = "0.10.0", path = "../../service/api" }
+reactive-graph-command-api = { version = "0.10.0", path = "../../../command/api" }
+reactive-graph-remotes-api = { version = "0.10.0", path = "../../../remotes/api" }
 
 [lib]
 crate-type = ["lib"]

@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-reactive-model-api"
+name = "reactive-graph-reactive-model-api"
 description = "Inexor - Reactive Graph Flow - Reactive Model - API"
 version.workspace = true
 authors.workspace = true
@@ -13,10 +13,10 @@ serde_json = { workspace = true }
 thiserror = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../../graph" }
+reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
 
 [dev-dependencies]
-inexor-rgf-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
 
 [lib]
 crate-type = ["lib"]

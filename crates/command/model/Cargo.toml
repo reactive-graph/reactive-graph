@@ -1,5 +1,5 @@
 [package]
-name = "inexor-rgf-command-model"
+name = "reactive-graph-command-model"
 description = "Inexor - Reactive Graph Flow - Command - Model"
 version.workspace = true
 authors.workspace = true
@@ -17,10 +17,10 @@ strum_macros = { workspace = true }
 typed-builder = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-inexor-rgf-graph = { version = "0.10.0", path = "../../graph" }
-inexor-rgf-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
-inexor-rgf-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
-inexor-rgf-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
+reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
+reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 
 [dev-dependencies]
 
