@@ -23,7 +23,7 @@ cobertura.xml
 
 *.snap
 
-/docs/inexor-rgf/book/
+/docs/book/book/
 /docs/graphql-docs/
 
 /plugins/deploy/*
