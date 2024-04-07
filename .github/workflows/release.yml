@@ -58,27 +58,27 @@ jobs:
           #   os: windows-latest
     runs-on: ${{ matrix.os }}
     steps:
-    - name: VCS Checkout
-      uses: actions/checkout@v3
-    # Required by arm targets
-    - name: Install packages
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: pkg-config openssl libssl-dev
-        version: 1.1
-      if: matrix.os == 'ubuntu-latest'
-    - name: Upload Rust Binary
-      uses: taiki-e/upload-rust-binary-action@v1
-      with:
-        bin: inexor-rgf-rt-standalone
-        target: ${{ matrix.target }}
-        include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
-        tar: unix
-        zip: windows
-        leading_dir: true
-        token: ${{ secrets.GITHUB_TOKEN }}
-      env:
-        VERGEN_IDEMPOTENT: true
+      - name: VCS Checkout
+        uses: actions/checkout@v3
+      # Required by arm targets
+      - name: Install packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: pkg-config openssl libssl-dev
+          version: 1.1
+        if: matrix.os == 'ubuntu-latest'
+      - name: Upload Rust Binary
+        uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: reactive-graph
+          target: ${{ matrix.target }}
+          include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
+          tar: unix
+          zip: windows
+          leading_dir: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          VERGEN_IDEMPOTENT: true
   crates-io:
     name: Publish on crates.io
     runs-on: ubuntu-latest
@@ -160,13 +160,13 @@ jobs:
       - name: Create Debian Package
         run: |
           cd ./crates/standalone
-          cargo deb -p inexor-rgf-rt-standalone --target=${{ matrix.target }} --deb-version ${{steps.tag.outputs.tag}}
+          cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-version ${{steps.tag.outputs.tag}}
         env:
           VERGEN_IDEMPOTENT: true
       - name: Upload debian package to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/${{ matrix.target }}/debian/inexor-rgf_*_*.deb
+          file: target/${{ matrix.target }}/debian/reactive-graph_*_*.deb
           file_glob: true
           tag: ${{ github.ref }}
