@@ -1,17 +1,17 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Inexor Reactive Graph Flow</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
         
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="stylesheet" href="css/variables.css">
@@ -29,12 +29,13 @@
         <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="././inexor-rgf-book.css">
+        <link rel="stylesheet" href="././book.css">
         <link rel="stylesheet" href="././mdbook-admonish.css">
         <link rel="stylesheet" href="graphql-playground.css">
+        <link rel="stylesheet" href="./mdbook-admonish.css">
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -64,31 +65,38 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="About.html"><strong aria-hidden="true">1.</strong> About</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="About_Design_Goals.html"><strong aria-hidden="true">1.1.</strong> Design Goals</a></li><li class="chapter-item expanded "><a href="About_Roadmap.html"><strong aria-hidden="true">1.2.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="About_Changelog.html"><strong aria-hidden="true">1.3.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="Development_License.html"><strong aria-hidden="true">1.4.</strong> License</a></li><li class="chapter-item expanded "><a href="Development_Code_of_Conduct.html"><strong aria-hidden="true">1.5.</strong> Code of Conduct</a></li></ol></li><li class="chapter-item expanded "><a href="Installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="Configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Configuration_Logging.html"><strong aria-hidden="true">3.1.</strong> Logging</a></li><li class="chapter-item expanded "><a href="Configuration_Instance.html"><strong aria-hidden="true">3.2.</strong> Instance</a></li><li class="chapter-item expanded "><a href="Configuration_HTTP_GraphQL_Server.html"><strong aria-hidden="true">3.3.</strong> HTTP/GraphQL Server</a></li><li class="chapter-item expanded "><a href="Configuration_Plugins.html"><strong aria-hidden="true">3.4.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="Configuration_Remotes.html"><strong aria-hidden="true">3.5.</strong> Remotes</a></li></ol></li><li class="chapter-item expanded "><a href="Model.html"><strong aria-hidden="true">4.</strong> Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Model_Component.html"><strong aria-hidden="true">4.1.</strong> Component</a></li><li class="chapter-item expanded "><a href="Model_Entity_Type.html"><strong aria-hidden="true">4.2.</strong> Entity Type</a></li><li class="chapter-item expanded "><a href="Model_Relation_Type.html"><strong aria-hidden="true">4.3.</strong> Relation Type</a></li><li class="chapter-item expanded "><a href="Model_Property_Type.html"><strong aria-hidden="true">4.4.</strong> Property Type</a></li><li class="chapter-item expanded "><a href="Model_Flow_Type.html"><strong aria-hidden="true">4.5.</strong> Flow Type</a></li><li class="chapter-item expanded "><a href="Model_Extension.html"><strong aria-hidden="true">4.6.</strong> Extension</a></li><li class="chapter-item expanded "><a href="Model_Entity_Instance.html"><strong aria-hidden="true">4.7.</strong> Entity Instance</a></li><li class="chapter-item expanded "><a href="Model_Relation_Instance.html"><strong aria-hidden="true">4.8.</strong> Relation Instance</a></li><li class="chapter-item expanded "><a href="Model_Property_Instance.html"><strong aria-hidden="true">4.9.</strong> Property Instance</a></li><li class="chapter-item expanded "><a href="Model_Flow_Instances.html"><strong aria-hidden="true">4.10.</strong> Flow Instances</a></li></ol></li><li class="chapter-item expanded "><a href="GraphQL_API.html"><strong aria-hidden="true">5.</strong> GraphQL API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="GraphQL_API_Components.html"><strong aria-hidden="true">5.1.</strong> Components</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Types.html"><strong aria-hidden="true">5.2.</strong> Entity Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Types.html"><strong aria-hidden="true">5.3.</strong> Relation Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Types.html"><strong aria-hidden="true">5.4.</strong> Flow Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Extension.html"><strong aria-hidden="true">5.5.</strong> Extension</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Instances.html"><strong aria-hidden="true">5.6.</strong> Entity Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Instances.html"><strong aria-hidden="true">5.7.</strong> Relation Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Instances.html"><strong aria-hidden="true">5.8.</strong> Flow Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Property_Instance_Subscriptions.html"><strong aria-hidden="true">5.9.</strong> Property Instance Subscriptions</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Instance_info.html"><strong aria-hidden="true">5.10.</strong> Instance Info</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Plugins.html"><strong aria-hidden="true">5.11.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Remotes.html"><strong aria-hidden="true">5.12.</strong> Remotes</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Shutdown.html"><strong aria-hidden="true">5.13.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Dynamic_Graph_API.html"><strong aria-hidden="true">6.</strong> Dynamic Graph API</a></li><li class="chapter-item expanded "><a href="Plugin_System.html"><strong aria-hidden="true">7.</strong> Plugin System</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugin_System_Component_Provider.html"><strong aria-hidden="true">7.1.</strong> Component Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Type_Provider.html"><strong aria-hidden="true">7.2.</strong> Entity Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Type_Provider.html"><strong aria-hidden="true">7.3.</strong> Relation Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Flow_Provider.html"><strong aria-hidden="true">7.4.</strong> Flow Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Component_Behaviour_Provider.html"><strong aria-hidden="true">7.5.</strong> Component Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Behaviour_Provider.html"><strong aria-hidden="true">7.6.</strong> Entity Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Behaviour_Provider.html"><strong aria-hidden="true">7.7.</strong> Relation Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Web_Resource_Provider.html"><strong aria-hidden="true">7.8.</strong> Web Resource Provider</a></li></ol></li><li class="chapter-item expanded "><a href="Plugins.html"><strong aria-hidden="true">8.</strong> Plugins</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugins_Arithmetic.html"><strong aria-hidden="true">8.1.</strong> Arithmetic</a></li><li class="chapter-item expanded "><a href="Plugins_Asset.html"><strong aria-hidden="true">8.2.</strong> Asset</a></li><li class="chapter-item expanded "><a href="Plugins_Base.html"><strong aria-hidden="true">8.3.</strong> Base</a></li><li class="chapter-item expanded "><a href="Plugins_Binary.html"><strong aria-hidden="true">8.4.</strong> Binary</a></li><li class="chapter-item expanded "><a href="Plugins_Comparison.html"><strong aria-hidden="true">8.5.</strong> Comparison</a></li><li class="chapter-item expanded "><a href="Plugins_Config.html"><strong aria-hidden="true">8.6.</strong> Config</a></li><li class="chapter-item expanded "><a href="Plugins_Connector.html"><strong aria-hidden="true">8.7.</strong> Connector</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Client.html"><strong aria-hidden="true">8.8.</strong> GraphQL Client</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Schema_Visualization.html"><strong aria-hidden="true">8.9.</strong> GraphQL Schema Visualization</a></li><li class="chapter-item expanded "><a href="Plugins_HTTP.html"><strong aria-hidden="true">8.10.</strong> HTTP</a></li><li class="chapter-item expanded "><a href="Plugins_JSON.html"><strong aria-hidden="true">8.11.</strong> JSON</a></li><li class="chapter-item expanded "><a href="Plugins_Logical.html"><strong aria-hidden="true">8.12.</strong> Logical</a></li><li class="chapter-item expanded "><a href="Plugins_Meta_Data.html"><strong aria-hidden="true">8.13.</strong> Meta Data</a></li><li class="chapter-item expanded "><a href="Plugins_Notification.html"><strong aria-hidden="true">8.14.</strong> Notification</a></li><li class="chapter-item expanded "><a href="Plugins_Numeric.html"><strong aria-hidden="true">8.15.</strong> Numeric</a></li><li class="chapter-item expanded "><a href="Plugins_Random.html"><strong aria-hidden="true">8.16.</strong> Random</a></li><li class="chapter-item expanded "><a href="Plugins_State.html"><strong aria-hidden="true">8.17.</strong> State</a></li><li class="chapter-item expanded "><a href="Plugins_Scheduler.html"><strong aria-hidden="true">8.18.</strong> Scheduler</a></li><li class="chapter-item expanded "><a href="Plugins_String.html"><strong aria-hidden="true">8.19.</strong> String</a></li><li class="chapter-item expanded "><a href="Plugins_System_Command.html"><strong aria-hidden="true">8.20.</strong> System Command</a></li><li class="chapter-item expanded "><a href="Plugins_System_Environment.html"><strong aria-hidden="true">8.21.</strong> System Environment</a></li><li class="chapter-item expanded "><a href="Plugins_Taxonomy.html"><strong aria-hidden="true">8.22.</strong> Taxonomy</a></li><li class="chapter-item expanded "><a href="Plugins_Value.html"><strong aria-hidden="true">8.23.</strong> Value</a></li></ol></li><li class="chapter-item expanded "><a href="Events.html"><strong aria-hidden="true">9.</strong> Events</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Events_System.html"><strong aria-hidden="true">9.1.</strong> System Events</a></li><li class="chapter-item expanded "><a href="Events_Shutdown.html"><strong aria-hidden="true">9.2.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns.html"><strong aria-hidden="true">10.</strong> Reactive Graph Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Generator_Action.html"><strong aria-hidden="true">10.1.</strong> Generators & Actions</a></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Time_Graph.html"><strong aria-hidden="true">10.2.</strong> Time Graph</a></li></ol></li><li class="chapter-item expanded "><a href="System_Architecture.html"><strong aria-hidden="true">11.</strong> System Architecture</a></li><li class="chapter-item expanded "><a href="API.html"><strong aria-hidden="true">12.</strong> Application Programming Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="API_Builders.html"><strong aria-hidden="true">12.1.</strong> Builders</a></li><li class="chapter-item expanded "><a href="API_RuntimeBuilder.html"><strong aria-hidden="true">12.2.</strong> RuntimeBuilder</a></li></ol></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">13.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Development_Supported_Platforms.html"><strong aria-hidden="true">13.1.</strong> Supported Platforms</a></li><li class="chapter-item expanded "><a href="Development_Build.html"><strong aria-hidden="true">13.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="Development_Code_Formatting.html"><strong aria-hidden="true">13.3.</strong> Code Formatting</a></li><li class="chapter-item expanded "><a href="Development_Binaries.html"><strong aria-hidden="true">13.4.</strong> Binaries</a></li><li class="chapter-item expanded "><a href="Development_Packaging.html"><strong aria-hidden="true">13.5.</strong> Packaging</a></li><li class="chapter-item expanded "><a href="Development_Documentation.html"><strong aria-hidden="true">13.6.</strong> Documentation</a></li></ol></li><li class="chapter-item expanded "><a href="Limitations.html"><strong aria-hidden="true">14.</strong> Limitations</a></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -119,9 +127,9 @@
                                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -211,7 +219,7 @@ the help of the graph. Inexor is the first game engine to introduce a graph as a
 assembled using components. The type system itself is flat and supports composition rather than inheritance. Components
 can be added or removed from instances, i.e. entity instances or relation instances.</p>
 <h2 id="what-is-reactive"><a class="header" href="#what-is-reactive">What is Reactive?</a></h2>
-<p>Now that we understand how data is stored, here's how data interacts. The approach is that the data itself is &quot;alive&quot;.
+<p>Now that we understand how data is stored, here's how data interacts. The approach is that the data itself is "alive".
 To do this, Inexor adopts a concept from reactive programming.</p>
 <blockquote>
 <p>In computing, reactive programming is a declarative programming paradigm concerned with data streams and the propagation of change.</p>
@@ -221,7 +229,7 @@ contain data. Rather, they are streams of data. If you change the value of a pro
 stream of this property instance. Data streams are linked together. For example, if the stream of one property instance
 is linked to the stream of another property instance and you change the value of the first property instance, the value
 of the second property instance will automatically change as well. Data is thus propagated from one station to the next,
-triggering a cascade of propagations. </p>
+triggering a cascade of propagations.</p>
 <pre class="mermaid">graph TD;
     A(Property Instance 1)--&gt;|stream|B(Property Instance 2);
     A--&gt;|stream|C(Property Instance 3);
@@ -243,7 +251,7 @@ stream and caching it. This allows subsequent querying of the value of a propert
 is to use these data streams to simulate behaviour.</p>
 <p>Behaviors can be implemented on components, entities and relations. To do this, one or more incoming data streams are
 combined, calculations are performed and written to one or more outgoing data streams.</p>
-<p>For example, the entity type &quot;AND gate&quot; implements a behavior by subscribing to the two input properties, combining them
+<p>For example, the entity type "AND gate" implements a behavior by subscribing to the two input properties, combining them
 into a combination data stream and performing an AND operation on the incoming pairs of values. The result of the AND
 operation is itself a data stream and this is linked to the output property.</p>
 <p>This example shows how an entity type is wired internally. They are all data streams that are cleverly combined with one
@@ -292,8 +300,8 @@ from entity/relation instances.</p>
 <p>In the Reactive Graph Flow there are <code>ComponentBehaviour</code>s, <code>EntityBehaviours</code> and
 <code>RelationBehaviours</code>.</p>
 <div class="table-wrapper"><table><thead><tr><th>Type</th><th>Behaviour</th></tr></thead><tbody>
-<tr><td>Entity Type &quot;and&quot;</td><td>Entity Behaviour <code>Logical Gate</code> with AND-combinator</td></tr>
-<tr><td>Relation Type &quot;default_connector&quot;</td><td>Relation Behaviour <code>Default Connector</code></td></tr>
+<tr><td>Entity Type "and"</td><td>Entity Behaviour <code>Logical Gate</code> with AND-combinator</td></tr>
+<tr><td>Relation Type "default_connector"</td><td>Relation Behaviour <code>Default Connector</code></td></tr>
 </tbody></table>
 </div>
 <p>Behaviours are provided by <a href="./Plugin_System.html">plugins</a>.</p>
@@ -348,7 +356,7 @@ part has changed. It should be sufficient to restart the modified plugin.</p>
 restarting the core application.</p>
 <p>In addition, the file size of the binary file is reduced since only its libraries are compiled in the core application.</p>
 <p>In addition, only what is actually used is loaded. Plugins that are not required for the application can be deactivated.</p>
-<div id="admonition-quick-links" class="admonition info">
+<div id="admonition-quick-links" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Quick-Links</p>
 <p><a class="admonition-anchor-link" href="About_Design_Goals.html#admonition-quick-links"></a></p>
@@ -381,7 +389,7 @@ please take a look at the <a href="./System_Architecture.html">System Architectu
 <p>In addition, there are cross-sectional functionalities such as lifecycle management, logging and configuration.</p>
 <p>For configurations, TOML should be used as the configuration format wherever possible.</p>
 <p>The application should be able to be adapted to the application by means of configuration.</p>
-<div id="admonition-quick-links-1" class="admonition info">
+<div id="admonition-quick-links-1" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Quick-Links</p>
 <p><a class="admonition-anchor-link" href="About_Design_Goals.html#admonition-quick-links-1"></a></p>
@@ -412,7 +420,7 @@ please take a look at the <a href="./System_Architecture.html">System Architectu
 <p>The application should be able to be used as required in the specific case:</p>
 <ul>
 <li>Just run and use it</li>
-<li>Let two or multiple instances talk to each other </li>
+<li>Let two or multiple instances talk to each other</li>
 <li>Use the runtime as integration bus for different applications or systems</li>
 <li>Embed the runtime in your own application which empowers you have a platform
 for an embedded zero code flow control and an embedded graph database</li>
@@ -422,7 +430,7 @@ for an embedded zero code flow control and an embedded graph database</li>
 <p><a href="./System_Architecture.html">System Architecture</a></p>
 <img src="images/rgf_logo_k1_h1_sm.png" />
 <div style="break-before: page; page-break-before: always;"></div><h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
-<p>See <a href="https://github.com/inexorgame/inexor-rgf-application/milestones">Milestones</a></p>
+<p>See <a href="https://github.com/reactive-graph/reactive-graph/milestones">Milestones</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
@@ -614,16 +622,16 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <img src="images/rgf_logo_k1_fg_sm.png" />
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mit-license"><a class="header" href="#mit-license">MIT License</a></h1>
-<p>Copyright (c) 2011-2023 The Inexor Collective.</p>
+<p>Copyright (c) 2011-2024 Andreas Schaeffer, the Reactive Graph Contributors and the Inexor Collective.</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the &quot;Software&quot;), to deal
+of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:</p>
 <p>The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -682,7 +690,7 @@ Further details of specific enforcement policies may be posted separately.</p>
 <p>Project maintainers who do not follow or enforce the Code of Conduct in good
 faith may face temporary or permanent repercussions as determined by other
 members of the project's leadership.</p>
-<div id="admonition-attribution" class="admonition info">
+<div id="admonition-attribution" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Attribution</p>
 <p><a class="admonition-anchor-link" href="Development_Code_of_Conduct.html#admonition-attribution"></a></p>
@@ -697,7 +705,7 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 <div style="break-before: page; page-break-before: always;"></div><h1 id="2-installation"><a class="header" href="#2-installation">2. Installation</a></h1>
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
 <h3 id="ubuntu--debian--raspberry-pi-os"><a class="header" href="#ubuntu--debian--raspberry-pi-os">Ubuntu / Debian / Raspberry Pi OS</a></h3>
-<div id="admonition-supported-distributions" class="admonition info">
+<div id="admonition-supported-distributions" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Supported Distributions</p>
 <p><a class="admonition-anchor-link" href="Installation.html#admonition-supported-distributions"></a></p>
@@ -716,7 +724,7 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 </ul>
 </div>
 </div>
-<div id="admonition-apt-repository" class="admonition info">
+<div id="admonition-apt-repository" class="admonition admonish-info">
 <div class="admonition-title">
 <p>APT Repository</p>
 <p><a class="admonition-anchor-link" href="Installation.html#admonition-apt-repository"></a></p>
@@ -732,7 +740,7 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 </div>
 </div>
 <h4 id="setup-apt-repository-and-download-gpg-keys"><a class="header" href="#setup-apt-repository-and-download-gpg-keys">Setup APT repository and download GPG keys</a></h4>
-<pre><code class="language-shell">echo &quot;deb https://apt.rgf.app/ focal main&quot; | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
+<pre><code class="language-shell">echo "deb https://apt.rgf.app/ focal main" | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
 gpg --recv-keys --keyserver keyserver.ubuntu.com 1F7F762FFE6BF816DB4C41D218D6C25399307BA5
 gpg --recv-keys --keyserver keyserver.ubuntu.com 18D6C25399307BA5
 gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.rgf.app.gpg
@@ -747,7 +755,7 @@ sudo apt update
 sudo systemctl start inexor-rgf@default
 </code></pre>
 <h3 id="configure-the-default-instance"><a class="header" href="#configure-the-default-instance">Configure the default instance</a></h3>
-<div id="admonition-configuration-files" class="admonition info">
+<div id="admonition-configuration-files" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Configuration Files</p>
 <p><a class="admonition-anchor-link" href="Installation.html#admonition-configuration-files"></a></p>
@@ -760,7 +768,7 @@ sudo systemctl start inexor-rgf@default
 sudo systemctl restart inexor-rgf@default
 </code></pre>
 <h3 id="optional-create-further-instances"><a class="header" href="#optional-create-further-instances">Optional: Create further instances</a></h3>
-<div id="admonition-multi-tenancy" class="admonition info">
+<div id="admonition-multi-tenancy" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Multi tenancy</p>
 <p><a class="admonition-anchor-link" href="Installation.html#admonition-multi-tenancy"></a></p>
@@ -785,10 +793,10 @@ sudo nano /etc/inexor-rgf/second/graphql.toml
 sudo systemctl start inexor-rgf@default
 </code></pre>
 <p>Similarly, you can just install all available plugins:</p>
-<pre><code class="language-shell">sudo apt install &quot;libinexor-rgf-plugin-*&quot;
+<pre><code class="language-shell">sudo apt install "libinexor-rgf-plugin-*"
 sudo systemctl start inexor-rgf@default
 </code></pre>
-<div id="admonition-plugins-and-multi-tenancy" class="admonition info">
+<div id="admonition-plugins-and-multi-tenancy" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Plugins and multi tenancy</p>
 <p><a class="admonition-anchor-link" href="Installation.html#admonition-plugins-and-multi-tenancy"></a></p>
@@ -810,10 +818,10 @@ because the runtime is able to hot deploy plugins.</p>
 <p>Another way is to install the debian packages manually:</p>
 <ol>
 <li>
-<p>Download the debian package from <a href="https://github.com/inexorgame/inexor-rgf-application/releases">GitHub</a></p>
+<p>Download the debian package from <a href="https://github.com/reactive-graph/reactive-graph/releases">GitHub</a></p>
 <pre><code class="language-shell">mkdir -p /tmp/inexor-rgf
 cd /tmp/inexor-rgf
-wget https://github.com/inexorgame/inexor-rgf-application/releases/download/{version}/inexor-rgf_{version}_amd64.deb
+wget https://github.com/reactive-graph/reactive-graph/releases/download/{version}/inexor-rgf_{version}_amd64.deb
 </code></pre>
 </li>
 <li>
@@ -856,8 +864,8 @@ sudo nano /etc/inexor-rgf/instance-name/plugins.toml
 <p>You can install the binary packages manually:</p>
 <ol>
 <li>
-<p>Download the binary from https://github.com/inexorgame/inexor-rgf-application/releases</p>
-<pre><code class="language-shell">wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v{version}/inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
+<p>Download the binary from https://github.com/reactive-graph/reactive-graph/releases</p>
+<pre><code class="language-shell">wget https://github.com/reactive-graph/reactive-graph/releases/download/v{version}/inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
 </code></pre>
 </li>
 <li>
@@ -876,7 +884,7 @@ sudo nano /etc/inexor-rgf/instance-name/plugins.toml
 <p>Please follow the <a href="./Development_Build.html">Build Instructions</a>.</p>
 <h2 id="windows"><a class="header" href="#windows">Windows</a></h2>
 <h3 id="windows-installer"><a class="header" href="#windows-installer">Windows Installer</a></h3>
-<div id="admonition-coming-soomtm" class="admonition warning">
+<div id="admonition-coming-soomtm" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Coming soom(tm)</p>
 <p><a class="admonition-anchor-link" href="Installation.html#admonition-coming-soomtm"></a></p>
@@ -887,7 +895,7 @@ sudo nano /etc/inexor-rgf/instance-name/plugins.toml
 </div>
 <h3 id="manually-install-binaries"><a class="header" href="#manually-install-binaries">Manually install binaries</a></h3>
 <ol>
-<li>Download the latest binary from https://github.com/inexorgame/inexor-rgf-application/releases</li>
+<li>Download the latest binary from https://github.com/reactive-graph/reactive-graph/releases</li>
 <li>Unzip the archive</li>
 <li>Change into the directory</li>
 <li>Execute <code>inexor-rgf-rt-standalone.exe</code></li>
@@ -897,7 +905,7 @@ sudo nano /etc/inexor-rgf/instance-name/plugins.toml
 <h2 id="macos"><a class="header" href="#macos">MacOS</a></h2>
 <h3 id="manually-install-binaries-1"><a class="header" href="#manually-install-binaries-1">Manually install binaries</a></h3>
 <ol>
-<li>Download the latest binary from https://github.com/inexorgame/inexor-rgf-application/releases</li>
+<li>Download the latest binary from https://github.com/reactive-graph/reactive-graph/releases</li>
 <li>Extract the archive</li>
 <li>Change into the directory</li>
 <li>Execute <code>inexor-rgf-rt-standalone</code></li>
@@ -918,12 +926,12 @@ sudo nano /etc/inexor-rgf/instance-name/plugins.toml
 <h3 id="stdout"><a class="header" href="#stdout">Stdout</a></h3>
 <p>Writes to stdout.</p>
 <pre><code class="language-toml">[appenders.stdout]
-kind = &quot;console&quot;
+kind = "console"
 
 [appenders.stdout.encoder]
-pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}&quot;
+pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 </code></pre>
-<div id="admonition-documentation-of-the-date-format-library" class="admonition tip">
+<div id="admonition-documentation-of-the-date-format-library" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Documentation of the date format library</p>
 <p><a class="admonition-anchor-link" href="Configuration_Logging.html#admonition-documentation-of-the-date-format-library"></a></p>
@@ -932,7 +940,7 @@ pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}&quot;
 <p><a href="https://docs.rs/chrono/0.4.11/chrono/format/strftime/index.html">Date Formatting Syntax</a></p>
 </div>
 </div>
-<div id="admonition-systemd" class="admonition tip">
+<div id="admonition-systemd" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>systemd</p>
 <p><a class="admonition-anchor-link" href="Configuration_Logging.html#admonition-systemd"></a></p>
@@ -944,24 +952,24 @@ pattern = &quot;{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}&quot;
 <h3 id="file"><a class="header" href="#file">File</a></h3>
 <p>Writes to file.</p>
 <pre><code class="language-toml">[appenders.file-application]
-kind = &quot;file&quot;
-path = &quot;log/inexor-rgf-application.log&quot;
+kind = "file"
+path = "log/inexor-rgf-application.log"
 
 [appenders.file-application.encoder]
-pattern = &quot;{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}&quot;
+pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 </code></pre>
 <h2 id="default-log-level"><a class="header" href="#default-log-level">Default log level</a></h2>
-<p>Set the default logging level to &quot;debug&quot; and attach the <code>stdout</code> and <code>file-application</code> appender to the root.</p>
+<p>Set the default logging level to "debug" and attach the <code>stdout</code> and <code>file-application</code> appender to the root.</p>
 <pre><code class="language-toml">[root]
-level = &quot;debug&quot;
-appenders = [ &quot;stdout&quot;, &quot;file-application&quot; ]
+level = "debug"
+appenders = [ "stdout", "file-application" ]
 </code></pre>
 <h2 id="per-log-levels"><a class="header" href="#per-log-levels">Per Log levels</a></h2>
 <p>Set the log level for a specific module:</p>
-<pre><code class="language-toml">[loggers.&quot;inexor_rgf_application::implementation::component_manager_impl&quot;]
-level = &quot;info&quot;
+<pre><code class="language-toml">[loggers."inexor_rgf_application::implementation::component_manager_impl"]
+level = "info"
 </code></pre>
-<div id="admonition-documentation-of-the-logging-library" class="admonition tip">
+<div id="admonition-documentation-of-the-logging-library" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Documentation of the logging library</p>
 <p><a class="admonition-anchor-link" href="Configuration_Logging.html#admonition-documentation-of-the-logging-library"></a></p>
@@ -973,15 +981,15 @@ level = &quot;info&quot;
 <h2 id="additive"><a class="header" href="#additive">Additive</a></h2>
 <p>Route log events sent to the <code>inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes</code> logger
 to the <code>file-plugin-mqtt</code> appender, and <em>not</em> the normal appenders installed at the root.</p>
-<pre><code class="language-toml">[loggers.&quot;inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes&quot;]
-level = &quot;debug&quot;
-appenders = [ &quot;file-plugin-mqtt&quot; ]
+<pre><code class="language-toml">[loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
+level = "debug"
+appenders = [ "file-plugin-mqtt" ]
 additive = false
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-instance"><a class="header" href="#configure-instance">Configure Instance</a></h1>
 <p>To configure the name and description of the <code>Runtime</code> instance, edit <code>config/instance.toml</code>:</p>
-<pre><code class="language-toml">name = &quot;Default&quot;
-description = &quot;This is the default instance.&quot;
+<pre><code class="language-toml">name = "Default"
+description = "This is the default instance."
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-httpgraphql-server"><a class="header" href="#configure-httpgraphql-server">Configure HTTP/GraphQL server</a></h1>
 <ol>
@@ -989,10 +997,10 @@ description = &quot;This is the default instance.&quot;
 </ol>
 <h2 id="bind-address-and-port"><a class="header" href="#bind-address-and-port">Bind address and port</a></h2>
 <p>Configure the bind address and port:</p>
-<pre><code class="language-toml">hostname = &quot;localhost&quot;
+<pre><code class="language-toml">hostname = "localhost"
 port = 31415
 </code></pre>
-<div id="admonition-hostname" class="admonition tip">
+<div id="admonition-hostname" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Hostname</p>
 <p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-hostname"></a></p>
@@ -1012,7 +1020,7 @@ reachable from outside.</p>
 still alive after the timeout are force dropped. By default, shutdown timeout is set to 30 seconds.</p>
 <pre><code class="language-toml">shutdown_timeout = 3
 </code></pre>
-<div id="admonition-development" class="admonition tip">
+<div id="admonition-development" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Development</p>
 <p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-development"></a></p>
@@ -1035,9 +1043,9 @@ with <code>http(s)://hostname:31415/binary/</code>.</p>
 means that the URL <code>https://hostname:31415/entities/uuid/property_name</code> will be handled by the
 WebResourceProvider binary and is doing the same as
 <code>https://hostname:31415/binary/entities/uuid/property_name</code>.</p>
-<pre><code class="language-toml">default_context_path = &quot;binary&quot;
+<pre><code class="language-toml">default_context_path = "binary"
 </code></pre>
-<div id="admonition-default-base-path" class="admonition tip">
+<div id="admonition-default-base-path" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Default Base Path</p>
 <p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-default-base-path"></a></p>
@@ -1052,9 +1060,9 @@ https://hostname:31415/</p>
 format is specified the default log format is used.</p>
 <pre><code class="language-toml">[logging]
 enabled = true
-format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot; %T&quot;
+format = "%a \"%r\" %s %b \"%{Referer}i\" \"%{User-Agent}i\" %T"
 </code></pre>
-<div id="admonition-list-of-log-format-variables" class="admonition tip">
+<div id="admonition-list-of-log-format-variables" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>List of Log Format Variables</p>
 <p><a class="admonition-anchor-link" href="Configuration_HTTP_GraphQL_Server.html#admonition-list-of-log-format-variables"></a></p>
@@ -1072,11 +1080,11 @@ format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User
 <h3 id="disable-specific-plugins"><a class="header" href="#disable-specific-plugins">Disable specific plugins</a></h3>
 <p>You can disable specific plugins</p>
 <pre><code class="language-toml">disabled_plugins = [
-    &quot;inexor-rgf-plugin-arithmetic&quot;,
-    &quot;inexor-rgf-plugin-numeric&quot;
+    "inexor-rgf-plugin-arithmetic",
+    "inexor-rgf-plugin-numeric"
 ]
 </code></pre>
-<div id="admonition-plugin-dependencies" class="admonition bug">
+<div id="admonition-plugin-dependencies" class="admonition admonish-bug">
 <div class="admonition-title">
 <p>Plugin Dependencies</p>
 <p><a class="admonition-anchor-link" href="Configuration_Plugins.html#admonition-plugin-dependencies"></a></p>
@@ -1089,13 +1097,13 @@ format = &quot;%a \&quot;%r\&quot; %s %b \&quot;%{Referer}i\&quot; \&quot;%{User
 <h3 id="enable-specific-plugins"><a class="header" href="#enable-specific-plugins">Enable specific plugins</a></h3>
 <p>You can enable specific plugins. This take precedence over <code>disabled_plugins</code> (which will have no effect).</p>
 <pre><code class="language-toml">enabled_plugins = [
-    &quot;inexor-rgf-plugin-base&quot;,
-    &quot;inexor-rgf-plugin-trigger&quot;,
-    &quot;inexor-rgf-plugin-result&quot;,
-    &quot;inexor-rgf-plugin-file&quot;,
-    &quot;inexor-rgf-plugin-connector&quot;,
-    &quot;inexor-rgf-plugin-json&quot;,
-    &quot;inexor-rgf-plugin-taxonomy&quot;,
+    "inexor-rgf-plugin-base",
+    "inexor-rgf-plugin-trigger",
+    "inexor-rgf-plugin-result",
+    "inexor-rgf-plugin-file",
+    "inexor-rgf-plugin-connector",
+    "inexor-rgf-plugin-json",
+    "inexor-rgf-plugin-taxonomy",
 ]
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-remotes"><a class="header" href="#configure-remotes">Configure Remotes</a></h1>
@@ -1108,14 +1116,14 @@ default port <code>31415</code> is used.</p>
 <ol>
 <li>https://demo.rgf.app/graphql
 <pre><code class="language-toml">[[remotes]]
-hostname = &quot;demo.rgf.app&quot;
+hostname = "demo.rgf.app"
 port = 443
 secure = true
 </code></pre>
 </li>
 <li>http://localhost:31415/graphql
 <pre><code class="language-toml">[[remotes]]
-hostname = &quot;localhost&quot;
+hostname = "localhost"
 </code></pre>
 </li>
 </ol>
@@ -1123,21 +1131,21 @@ hostname = &quot;localhost&quot;
 <p>Optionally, you can set the GraphQL endpoint. By default, the GraphQL endpoint is <code>/graphql</code>.</p>
 <pre><code class="language-toml">[[remotes]]
 # hostname, port omitted
-endpoint = &quot;/graphql&quot;
+endpoint = "/graphql"
 </code></pre>
 <h2 id="user-agent"><a class="header" href="#user-agent">User Agent</a></h2>
 <p>You can configure the user agent which shall be used for communication with the remote. By
 default, the user agent is <code>inexor_rgf_client</code>.</p>
 <pre><code class="language-toml">[[remotes]]
 # hostname, port omitted
-userAgent = &quot;Noob Agent&quot;
+userAgent = "Noob Agent"
 </code></pre>
 <h2 id="bearer"><a class="header" href="#bearer">Bearer</a></h2>
 <p>You can configure the bearer token which shall be used for communication with the remote. By default,
 no bearer token is used.</p>
 <pre><code class="language-toml">[[remotes]]
 # hostname, port omitted
-bearer = &quot;...&quot;
+bearer = "..."
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model"><a class="header" href="#model">Model</a></h1>
 <p>The data model of Inexor Reactive Graph Flow can be divided into the type system and the instance system.</p>
@@ -1145,19 +1153,19 @@ bearer = &quot;...&quot;
 <p>The type system is similar to type systems in programming languages. An object is of a specific, previously defined
 type.</p>
 <p>The type says something about the semantic meaning. For example, just looking at the type name gives you an idea of what
-a &quot;player&quot; or a &quot;camera&quot; is, for example.</p>
+a "player" or a "camera" is, for example.</p>
 <p>The type system also specifies the data model of such a semantic object. For example, a player has a name, is in a
 position, and you know how many frags he has scored. Therefore, it is defined that a player should have a property
-called &quot;name&quot;.</p>
+called "name".</p>
 <p>Types are also related to each other. For example, a teleport entrance has one or more teleport exits. This relationship
 between the teleport input type and the teleport output type is called a relation type. The relation type also has a
-semantic meaning. In this case, the relation type &quot;teleports_to&quot; means that a player who is directly at the teleport
+semantic meaning. In this case, the relation type "teleports_to" means that a player who is directly at the teleport
 entrance should be teleported to the teleport exit.</p>
-<p>Another example is a team that has one player as a member. There is a relation type called &quot;is_member_of&quot; that leads
+<p>Another example is a team that has one player as a member. There is a relation type called "is_member_of" that leads
 from the entity type team to the entity type relation. Note the direction of the relation type.</p>
 <p>This becomes even more relevant when there can be multiple distinct relationships between two entity types. A player can
 be a member of a team and he can be the team captain at the same time. The first type of relationship has already been
-described, the second has the name &quot;is_captain_of&quot;.</p>
+described, the second has the name "is_captain_of".</p>
 <h3 id="er-diagram"><a class="header" href="#er-diagram">ER Diagram</a></h3>
 <pre class="mermaid">erDiagram
     Relation-Type
@@ -1207,7 +1215,7 @@ described, the second has the name &quot;is_captain_of&quot;.</p>
 <p>Having described the type system, this section describes the instance system.</p>
 <p>The type system describes what could exist.</p>
 <p>A type defines how an instance should look like. An instance itself fills this type with life. There can be any number
-of instances of a type. For example, there is the player named &quot;peter&quot; and the player named &quot;penacka&quot;. In this case
+of instances of a type. For example, there is the player named "peter" and the player named "penacka". In this case
 there are two instances of the same type.</p>
 <p>The following table shows that an instance and the corresponding type:</p>
 <div class="table-wrapper"><table><thead><tr><th>Type</th><th>Instance</th></tr></thead><tbody>
@@ -1267,12 +1275,12 @@ there are two instances of the same type.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model-component"><a class="header" href="#model-component">Model: Component</a></h1>
 <p>A component is a reusable building block for entity types and relation types. A component semantically represents an
 aspect of one or more entity types or relation types.</p>
-<p>For example, the component &quot;named&quot; represents that something has a name. In practice, the component has a property
-called &quot;name&quot; which contains the name. The &quot;named&quot; component can be used in a wide variety of cases. For example, a
+<p>For example, the component "named" represents that something has a name. In practice, the component has a property
+called "name" which contains the name. The "named" component can be used in a wide variety of cases. For example, a
 player has a name, a server has a name, and a player model also has a name. Apart from the name, they have little in
 common.</p>
 <p>A component should provide at least one property. However, it is also possible to define several properties.</p>
-<p>Another example is the &quot;position&quot; component, which defines the x, y, and z coordinates. Again, this is a perfect example
+<p>Another example is the "position" component, which defines the x, y, and z coordinates. Again, this is a perfect example
 of a Component. Because all things in a 3D world have a position. A player has a position, a camera, a flag or a light
 each have a position. But here, too, they have little in common. And yet they have at least one thing in common.</p>
 <p>A player has a name and a position, i.e. an entity type (just like a relation type) can consist of several components.
@@ -1306,7 +1314,7 @@ The properties of all components are merged.</p>
     Relation-Type o{--}o Component : composes
 </pre>
 <h2 id="graphql"><a class="header" href="#graphql">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Component.html#admonition-graphql"></a></p>
@@ -1318,7 +1326,7 @@ The properties of all components are merged.</p>
 </div>
 </div>
 <h2 id="json-schema"><a class="header" href="#json-schema">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Component.html#admonition-json-schema"></a></p>
@@ -1382,7 +1390,7 @@ defines which components it is combined from. Additional properties can also be 
     Entity-Type o{--}o Component : composes
 </pre>
 <h2 id="graphql-1"><a class="header" href="#graphql-1">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Entity_Type.html#admonition-graphql"></a></p>
@@ -1394,7 +1402,7 @@ defines which components it is combined from. Additional properties can also be 
 </div>
 </div>
 <h2 id="json-schema-1"><a class="header" href="#json-schema-1">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Entity_Type.html#admonition-json-schema"></a></p>
@@ -1470,7 +1478,7 @@ appearance of a connector of this type in the flow editor.</p>
     Relation-Instance o{--|| Relation-Type : is-a
 </pre>
 <h2 id="graphql-2"><a class="header" href="#graphql-2">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Relation_Type.html#admonition-graphql"></a></p>
@@ -1482,7 +1490,7 @@ appearance of a connector of this type in the flow editor.</p>
 </div>
 </div>
 <h2 id="json-schema-2"><a class="header" href="#json-schema-2">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Relation_Type.html#admonition-json-schema"></a></p>
@@ -1573,7 +1581,7 @@ relation instances within the flow type.</p>
 <h2 id="nested-flow-types--subflows--subprograms"><a class="header" href="#nested-flow-types--subflows--subprograms">Nested Flow Types / Subflows / Subprograms</a></h2>
 <p>Nested flow types are possible. The outer flow type contains entity instances and relation
 instances which can interact with the wrapper entity instance and their properties of the inner flow type. This way it
-is possible to &quot;call&quot; subprograms / subflows / subactivities. The entity instances and relation instances of the inner
+is possible to "call" subprograms / subflows / subactivities. The entity instances and relation instances of the inner
 flow type are hidden for the outer flow type.</p>
 <h2 id="data-model-4"><a class="header" href="#data-model-4">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th><th>Example</th></tr></thead><tbody>
@@ -1649,7 +1657,7 @@ flow type are hidden for the outer flow type.</p>
     Flow-Type ||--}o Extension : has
 </pre>
 <h2 id="graphql-3"><a class="header" href="#graphql-3">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Flow_Type.html#admonition-graphql"></a></p>
@@ -1661,7 +1669,7 @@ flow type are hidden for the outer flow type.</p>
 </div>
 </div>
 <h2 id="json-schema-3"><a class="header" href="#json-schema-3">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Flow_Type.html#admonition-json-schema"></a></p>
@@ -1680,9 +1688,9 @@ unstructured data in JSON format. This means that the data model of the extensio
 however, it is possible to provide any conceivable information. Because a JSON value is used, any complex and nested
 information is possible. It is possible to deserialize the JSON value into a concrete data model.</p>
 <p>An example of an extension is the information on how a flow editor should draw a shape of an entity type. The extension
-is called &quot;flow_shape&quot; and contains information about the color, size, label and alignment of the shape. This example
+is called "flow_shape" and contains information about the color, size, label and alignment of the shape. This example
 shows that an extension can potentially contain very complex data structures and at the same time that an extension
-covers a case that is not relevant in all cases. For example, if the &quot;Flow Editor&quot; plugin is not installed or not
+covers a case that is not relevant in all cases. For example, if the "Flow Editor" plugin is not installed or not
 activated, the extension is present but not used.</p>
 <h2 id="data-model-5"><a class="header" href="#data-model-5">Data Model</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Field</th><th>DataType</th><th>Description</th></tr></thead><tbody>
@@ -1716,86 +1724,86 @@ activated, the extension is present but not used.</p>
 </div>
 <h2 id="extension-dublin_core"><a class="header" href="#extension-dublin_core">Extension <code>dublin_core</code></a></h2>
 <pre><code class="language-json">    {
-      &quot;name&quot;: &quot;dublin-core&quot;,
-      &quot;extension&quot;:{
-        &quot;title&quot;: &quot;Decrement number&quot;,
-        &quot;subject&quot;: &quot;Decrement number&quot;,
-        &quot;creator&quot;: &quot;Hanack&quot;
+      "name": "dublin-core",
+      "extension":{
+        "title": "Decrement number",
+        "subject": "Decrement number",
+        "creator": "Hanack"
       }
     }
 </code></pre>
 <h2 id="extension-flow_editor_palette"><a class="header" href="#extension-flow_editor_palette">Extension <code>flow_editor_palette</code></a></h2>
 <pre><code class="language-json">{
-  &quot;name&quot;: &quot;flow_editor_palette&quot;,
-  &quot;extension&quot;: {
-    &quot;content&quot;: &quot;Decrement&quot;,
-    &quot;styles&quot;: {
-      &quot;font-family&quot;: &quot;Fira Code&quot;,
-      &quot;font-size&quot;: &quot;12px&quot;,
-      &quot;padding&quot;: &quot;5px&quot;
+  "name": "flow_editor_palette",
+  "extension": {
+    "content": "Decrement",
+    "styles": {
+      "font-family": "Fira Code",
+      "font-size": "12px",
+      "padding": "5px"
     }
   }
 }
 </code></pre>
 <h2 id="extension-flow_editor_shape"><a class="header" href="#extension-flow_editor_shape">Extension <code>flow_editor_shape</code></a></h2>
 <pre><code class="language-json">{
-  &quot;name&quot;: &quot;flow_editor_shape&quot;,
-  &quot;extension&quot;: {
-    &quot;width&quot;: 200,
-    &quot;socket&quot;: {
-      &quot;width&quot;: 60,
-      &quot;height&quot;: 30,
-      &quot;offset&quot;: 5
+  "name": "flow_editor_shape",
+  "extension": {
+    "width": 200,
+    "socket": {
+      "width": 60,
+      "height": 30,
+      "offset": 5
     },
-    &quot;offset&quot;: {
-      &quot;top&quot;: &quot;socket.height&quot;,
-      &quot;bottom&quot;: &quot;socket.height&quot;
+    "offset": {
+      "top": "socket.height",
+      "bottom": "socket.height"
     },
-    &quot;elements&quot;: {
-      &quot;title&quot;: {
-        &quot;show&quot;: true,
-        &quot;type&quot;: &quot;text&quot;,
-        &quot;content&quot;: &quot;element.description&quot;,
-        &quot;position&quot;: {
-          &quot;left&quot;: 0,
-          &quot;top&quot;: 0,
-          &quot;width&quot;: &quot;shape.width&quot;,
-          &quot;height&quot;: &quot;socket.height&quot;
+    "elements": {
+      "title": {
+        "show": true,
+        "type": "text",
+        "content": "element.description",
+        "position": {
+          "left": 0,
+          "top": 0,
+          "width": "shape.width",
+          "height": "socket.height"
         },
-        &quot;styles&quot;: {
-          &quot;font-size&quot;: &quot;12px&quot;,
-          &quot;color&quot;: &quot;black&quot;
+        "styles": {
+          "font-size": "12px",
+          "color": "black"
         }
       },
-      &quot;symbol&quot;: {
-        &quot;show&quot;: true,
-        &quot;type&quot;: &quot;text&quot;,
-        &quot;content&quot;: &quot;--&quot;,
-        &quot;position&quot;: {
-          &quot;left&quot;: 0,
-          &quot;top&quot;: 0,
-          &quot;width&quot;: &quot;shape.width&quot;,
-          &quot;height&quot;: &quot;shape.height&quot;
+      "symbol": {
+        "show": true,
+        "type": "text",
+        "content": "--",
+        "position": {
+          "left": 0,
+          "top": 0,
+          "width": "shape.width",
+          "height": "shape.height"
         },
-        &quot;styles&quot;: {
-          &quot;fill&quot;: &quot;steelblue&quot;,
-          &quot;font-size&quot;: &quot;80px&quot;,
-          &quot;font-family&quot;: &quot;Fira Code&quot;
+        "styles": {
+          "fill": "steelblue",
+          "font-size": "80px",
+          "font-family": "Fira Code"
         }
       },
-      &quot;id&quot;: {
-        &quot;show&quot;: true,
-        &quot;type&quot;: &quot;text&quot;,
-        &quot;content&quot;: &quot;shape.id&quot;,
-        &quot;position&quot;: {
-          &quot;left&quot;: 0,
-          &quot;top&quot;: &quot;shape.height-socket.height&quot;,
-          &quot;width&quot;: &quot;shape.width&quot;,
-          &quot;height&quot;: &quot;socket.height&quot;
+      "id": {
+        "show": true,
+        "type": "text",
+        "content": "shape.id",
+        "position": {
+          "left": 0,
+          "top": "shape.height-socket.height",
+          "width": "shape.width",
+          "height": "socket.height"
         },
-        &quot;styles&quot;: {
-          &quot;font-size&quot;: &quot;9px&quot;,
-          &quot;color&quot;: &quot;black&quot;
+        "styles": {
+          "font-size": "9px",
+          "color": "black"
         }
       }
     }
@@ -1803,7 +1811,7 @@ activated, the extension is present but not used.</p>
 }
 </code></pre>
 <h2 id="graphql-4"><a class="header" href="#graphql-4">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Extension.html#admonition-graphql"></a></p>
@@ -1824,7 +1832,7 @@ last value.</p>
 <p>Entity instances can be uniquely identified via a UUID. This is particularly important when entity instances are
 synchronized in a distributed system. For example, a player's representation exists not only in the local client, but
 also on the server and on clients connected to it.</p>
-<div id="admonition-uuids" class="admonition info">
+<div id="admonition-uuids" class="admonition admonish-info">
 <div class="admonition-title">
 <p>UUIDs</p>
 <p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-uuids"></a></p>
@@ -1841,7 +1849,7 @@ also on the server and on clients connected to it.</p>
 entity instances to be addressed using labels, for example in GraphQL queries.</p>
 <p>If you compare the query with and without a label, you will find that the query is easier to understand thanks to the
 label and transports significantly more information about what is actually happening.</p>
-<div id="admonition-info" class="admonition info">
+<div id="admonition-info" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Info</p>
 <p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-info"></a></p>
@@ -1852,8 +1860,8 @@ label and transports significantly more information about what is actually happe
 </div>
 <pre><code class="language-graphql">query {
   instances {
-    entities(label: &quot;/org/inexor/input/any_device/key/key_f7&quot;) {
-      properties(name: &quot;key_down&quot;) {
+    entities(label: "/org/inexor/input/any_device/key/key_f7") {
+      properties(name: "key_down") {
         value
       }
     }
@@ -1862,8 +1870,8 @@ label and transports significantly more information about what is actually happe
 </code></pre>
 <pre><code class="language-graphql">query {
   instances {
-    entities(id: &quot;c7ec76e0-40e8-587e-bc89-e9cd31fa75a0&quot;) {
-      properties(name: &quot;key_down&quot;) {
+    entities(id: "c7ec76e0-40e8-587e-bc89-e9cd31fa75a0") {
+      properties(name: "key_down") {
         value
       }
     }
@@ -1933,7 +1941,7 @@ label and transports significantly more information about what is actually happe
     Entity-Type ||--}o Property-Type : defines
 </pre>
 <h2 id="graphql-5"><a class="header" href="#graphql-5">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-graphql"></a></p>
@@ -1945,7 +1953,7 @@ label and transports significantly more information about what is actually happe
 </div>
 </div>
 <h2 id="json-schema-4"><a class="header" href="#json-schema-4">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Entity_Instance.html#admonition-json-schema"></a></p>
@@ -1966,7 +1974,7 @@ defines which entity type the outbound entity type and which entity type the inb
 <li>Relation Type</li>
 <li>Instance Id</li>
 </ul>
-<div id="admonition-warning" class="admonition warning">
+<div id="admonition-warning" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Warning</p>
 <p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-warning"></a></p>
@@ -1987,7 +1995,7 @@ will prevent that multiple connectors of the same type exist between the same pr
 instance (Cardinality: 0..N). In this case a random string will be generated as instance id. This allows to create
 multiple relation instances of the same type between the same outbound entity instance and inbound entity instance.</li>
 </ol>
-<div id="admonition-info" class="admonition info">
+<div id="admonition-info" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Info</p>
 <p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-info"></a></p>
@@ -2052,7 +2060,7 @@ multiple relation instances of the same type between the same outbound entity in
     Entity-Type ||--}o Property-Type : defines
 </pre>
 <h2 id="graphql-6"><a class="header" href="#graphql-6">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-graphql"></a></p>
@@ -2064,7 +2072,7 @@ multiple relation instances of the same type between the same outbound entity in
 </div>
 </div>
 <h2 id="json-schema-5"><a class="header" href="#json-schema-5">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Relation_Instance.html#admonition-json-schema"></a></p>
@@ -2176,7 +2184,7 @@ an entity instance can be used in multiple flow instances.</p>
     end
 </pre>
 <h2 id="graphql-7"><a class="header" href="#graphql-7">GraphQL</a></h2>
-<div id="admonition-graphql" class="admonition tip">
+<div id="admonition-graphql" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL</p>
 <p><a class="admonition-anchor-link" href="Model_Flow_Instances.html#admonition-graphql"></a></p>
@@ -2188,7 +2196,7 @@ an entity instance can be used in multiple flow instances.</p>
 </div>
 </div>
 <h2 id="json-schema-6"><a class="header" href="#json-schema-6">JSON Schema</a></h2>
-<div id="admonition-json-schema" class="admonition tip">
+<div id="admonition-json-schema" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>JSON Schema</p>
 <p><a class="admonition-anchor-link" href="Model_Flow_Instances.html#admonition-json-schema"></a></p>
@@ -2200,7 +2208,7 @@ an entity instance can be used in multiple flow instances.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api"><a class="header" href="#graphql-api">GraphQL API</a></h1>
 <p>GraphQL is the most important interface for interaction with the Reactive Graph Flow.</p>
 <h2 id="what-is-graphql"><a class="header" href="#what-is-graphql">What is GraphQL?</a></h2>
-<p>GraphQL stands for &quot;Graph Query Language&quot;. It is a query language with which data present in graphs can be efficiently
+<p>GraphQL stands for "Graph Query Language". It is a query language with which data present in graphs can be efficiently
 queried and selectively modified.</p>
 <h2 id="why-do-we-use-graphql"><a class="header" href="#why-do-we-use-graphql">Why do we use GraphQL?</a></h2>
 <p>As already described, Inexor uses a graph to hold the highly interconnected data of the Entity Component System. A query
@@ -2215,7 +2223,7 @@ in real time.</p>
 <p>Other advantages of GraphQL are type safety and the fact that semantics can be mapped better.</p>
 <h3 id="queries"><a class="header" href="#queries">Queries</a></h3>
 <p><img src="images/queries.png" alt="GraphQL Queries" /></p>
-<div id="admonition-graphql-schema-visualization" class="admonition tip">
+<div id="admonition-graphql-schema-visualization" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
 <p><a class="admonition-anchor-link" href="GraphQL_API.html#admonition-graphql-schema-visualization"></a></p>
@@ -2227,7 +2235,7 @@ in real time.</p>
 </div>
 <h3 id="mutations"><a class="header" href="#mutations">Mutations</a></h3>
 <p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
-<div id="admonition-graphql-schema-visualization-1" class="admonition tip">
+<div id="admonition-graphql-schema-visualization-1" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
 <p><a class="admonition-anchor-link" href="GraphQL_API.html#admonition-graphql-schema-visualization-1"></a></p>
@@ -2239,7 +2247,7 @@ in real time.</p>
 </div>
 <h3 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h3>
 <p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
-<div id="admonition-graphql-schema-visualization-2" class="admonition tip">
+<div id="admonition-graphql-schema-visualization-2" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
 <p><a class="admonition-anchor-link" href="GraphQL_API.html#admonition-graphql-schema-visualization-2"></a></p>
@@ -2262,22 +2270,22 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="eaecc28b-74b7-4146-83ac-0a18d02f056a" src="/examples/graphql/types/components/tabs.json">
+<graphql-playground id="179f5abc-4c32-493f-8164-739fb1a356c9" src="/examples/graphql/types/components/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="965794ec-bf10-40cb-b554-77cb22b242c2" src="/examples/graphql/types/entities/tabs.json">
+<graphql-playground id="7136c6ae-b1b4-4060-8539-90702444f9a5" src="/examples/graphql/types/entities/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
-<graphql-playground id="2ea3bacc-dc36-4065-845b-ad0b532cef93" src="/examples/graphql/types/relations/tabs.json">
+<graphql-playground id="03c8e87b-7b71-47b0-9a02-94360e5f461b" src="/examples/graphql/types/relations/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-types"><a class="header" href="#flow-types">Flow Types</a></h1>
-<graphql-playground id="806e47cd-4fe1-461c-bd27-8d9a9c1cccbc" src="/examples/graphql/types/flows/tabs.json">
+<graphql-playground id="f0495109-436e-45a9-8d5e-e548015b3f77" src="/examples/graphql/types/flows/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
 <h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
 <pre><code class="language-graphql">query {
   types {
-    entities(name: &quot;example_entity&quot;) {
+    entities(name: "example_entity") {
       name
       properties {
         extensions {
@@ -2292,10 +2300,10 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="query-extension-by-name"><a class="header" href="#query-extension-by-name">Query extension by name</a></h2>
 <pre><code class="language-graphql">query {
   types {
-    entities(name: &quot;example_entity&quot;) {
+    entities(name: "example_entity") {
       name
       properties {
-        extensions(name: &quot;flow_editor_palette&quot;) {
+        extensions(name: "flow_editor_palette") {
           extension
         }
       }
@@ -2307,7 +2315,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="query-an-entity-instance-by-id"><a class="header" href="#query-an-entity-instance-by-id">Query an entity instance by id</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(id: &quot;0-0-0-0&quot;) {
+    entities(id: "0-0-0-0") {
       id
       type {
         name
@@ -2323,8 +2331,8 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="query-a-property-instance-by-name-of-an-entity-instance-by-label"><a class="header" href="#query-a-property-instance-by-name-of-an-entity-instance-by-label">Query a property instance by name of an entity instance by label</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(label: &quot;/org/inexor/input/any_device/key_f10&quot;) {
-      properties(name: &quot;key_down&quot;) {
+    entities(label: "/org/inexor/input/any_device/key_f10") {
+      properties(name: "key_down") {
         value
       }
     }
@@ -2334,10 +2342,10 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="query-the-positions-of-all-cameras-that-are-looking-at-a-player"><a class="header" href="#query-the-positions-of-all-cameras-that-are-looking-at-a-player">Query the positions of all cameras that are looking at a player</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(type: &quot;player&quot;, label: &quot;/org/inexor/game/players/Hanack&quot;) {
-      inbound(type: &quot;look_at&quot;) {
+    entities(type: "player", label: "/org/inexor/game/players/Hanack") {
+      inbound(type: "look_at") {
         outbound {
-          properties(name: &quot;position&quot;) {
+          properties(name: "position") {
             value
           }
         }
@@ -2350,7 +2358,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-pairs-of-outbound--inbound-entity-instances-of-all-relations-of-a-specific-type"><a class="header" href="#get-pairs-of-outbound--inbound-entity-instances-of-all-relations-of-a-specific-type">Get pairs of outbound + inbound entity instances of all relations of a specific type</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    relations(type: &quot;looks_at&quot;) {
+    relations(type: "looks_at") {
       outbound {
         id
       }
@@ -2364,7 +2372,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-all-inbound-relation-instances-of-an-entity-instance"><a class="header" href="#get-all-inbound-relation-instances-of-an-entity-instance">Get all inbound relation instances of an entity instance</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(id: &quot;uuid&quot;) {
+    entities(id: "uuid") {
       inbound {
         type {
           name
@@ -2381,7 +2389,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-entity-instances-which-are-inbound-relations-to-an-entity-instance"><a class="header" href="#get-the-entity-instances-which-are-inbound-relations-to-an-entity-instance">Get the entity instances which are inbound relations to an entity instance</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(type: &quot;player&quot;) {
+    entities(type: "player") {
       inbound {
         outbound {
           id
@@ -2401,7 +2409,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-entity-instances-which-are-outbound-relations-to-an-entity-instance"><a class="header" href="#get-the-entity-instances-which-are-outbound-relations-to-an-entity-instance">Get the entity instances which are outbound relations to an entity instance</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(type: &quot;player&quot;) {
+    entities(type: "player") {
       outbound {
         inbound {
           id
@@ -2431,7 +2439,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-all-flows-of-a-particular-entity-type"><a class="header" href="#get-all-flows-of-a-particular-entity-type">Get all flows of a particular entity type</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(type: &quot;generic_flow&quot;) {
+    flows(type: "generic_flow") {
       id
     }
   }
@@ -2440,7 +2448,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-label-of-a-flows-by-id"><a class="header" href="#get-the-label-of-a-flows-by-id">Get the label of a flows by id</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(id: &quot;uuid&quot;) {
+    flows(id: "uuid") {
       label
     }
   }
@@ -2449,7 +2457,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-id-of-a-flows-by-label"><a class="header" href="#get-the-id-of-a-flows-by-label">Get the id of a flows by label</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(label: &quot;/org/inexor/flows/game-servers&quot;) {
+    flows(label: "/org/inexor/flows/game-servers") {
       id
     }
   }
@@ -2458,7 +2466,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-entity-instance-which-are-contained-by-a-flow"><a class="header" href="#get-the-entity-instance-which-are-contained-by-a-flow">Get the entity instance which are contained by a flow</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(id: &quot;uuid&quot;) {
+    flows(id: "uuid") {
       entities {
         id
       }
@@ -2469,7 +2477,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-properties-of-the-wrapper-entity-instance-of-a-flow"><a class="header" href="#get-the-properties-of-the-wrapper-entity-instance-of-a-flow">Get the properties of the wrapper entity instance of a flow</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(id: &quot;uuid&quot;) {
+    flows(id: "uuid") {
       wrapper {
         properties {
           name
@@ -2487,7 +2495,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-relation-instances-which-are-contained-by-a-flow"><a class="header" href="#get-the-relation-instances-which-are-contained-by-a-flow">Get the relation instances which are contained by a flow</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(id: &quot;uuid&quot;) {
+    flows(id: "uuid") {
       relations {
         outbound {
           id
@@ -2506,7 +2514,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-all-entity-instances-and-all-relation-instances-of-a-flow"><a class="header" href="#get-all-entity-instances-and-all-relation-instances-of-a-flow">Get all entity instances and all relation instances of a flow</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(id: &quot;uuid&quot;) {
+    flows(id: "uuid") {
       type {
         name
       }
@@ -2542,7 +2550,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="property-instance-subscriptions"><a class="header" href="#property-instance-subscriptions">Property Instance Subscriptions</a></h1>
-<div id="admonition-graphql-schema-visualization" class="admonition tip">
+<div id="admonition-graphql-schema-visualization" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>GraphQL Schema Visualization</p>
 <p><a class="admonition-anchor-link" href="GraphQL_API_Property_Instance_Subscriptions.html#admonition-graphql-schema-visualization"></a></p>
@@ -2555,8 +2563,8 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="subscribe-changes-of-the-key-right-ctrl"><a class="header" href="#subscribe-changes-of-the-key-right-ctrl">Subscribe changes of the key <code>right-ctrl</code></a></h2>
 <pre><code class="language-graphql">subscription keyDownRightCtrl {
   entity(
-    label: &quot;/org/inexor/input/any_device/key/key_rightctrl&quot;,
-    propertyName: &quot;key_down&quot;
+    label: "/org/inexor/input/any_device/key/key_rightctrl",
+    propertyName: "key_down"
   ) {
     name
     value
@@ -2573,7 +2581,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-instance-info"><a class="header" href="#graphql-api-instance-info"><center>GraphQL API: Instance Info</center></a></h1>
-<graphql-playground id="61a7f8f6-475f-4fbb-af7f-74afec5bcb87" src="/examples/graphql/system/instance_info/tabs.json">
+<graphql-playground id="3fdfa635-d7e4-4f1a-a00b-07072b2bd207" src="/examples/graphql/system/instance_info/tabs.json">
 </graphql-playground>
 <h2 id="functionality"><a class="header" href="#functionality">Functionality</a></h2>
 <ul>
@@ -2606,7 +2614,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-plugins"><a class="header" href="#graphql-api-plugins"><center>GraphQL API: Plugins</center></a></h1>
-<graphql-playground id="54b6a7d2-9626-4fd2-8e86-b5fc42af2010" src="/examples/graphql/system/plugins/tabs.json">
+<graphql-playground id="29c24852-9440-4e32-b6d1-89ab20937042" src="/examples/graphql/system/plugins/tabs.json">
 </graphql-playground>
 <h2 id="functionality-1"><a class="header" href="#functionality-1">Functionality</a></h2>
 <ul>
@@ -2622,7 +2630,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li>Unsatisfied dependencies</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-remotes"><a class="header" href="#graphql-api-remotes"><center>GraphQL API: Remotes</center></a></h1>
-<graphql-playground id="086d353e-50ac-46a2-bbc9-91e0c5bae758" src="/examples/graphql/system/remotes/tabs.json">
+<graphql-playground id="cff6d097-84c1-4ce7-95de-bd5b6fa08ef8" src="/examples/graphql/system/remotes/tabs.json">
 </graphql-playground>
 <h2 id="functionality-2"><a class="header" href="#functionality-2">Functionality</a></h2>
 <ul>
@@ -2641,7 +2649,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-shutdown"><a class="header" href="#graphql-api-shutdown"><center>GraphQL API: Shutdown</center></a></h1>
-<graphql-playground id="d8eebf68-3e9b-4893-b67d-d66c0cdd8c58" src="/examples/graphql/system/shutdown/tabs.json">
+<graphql-playground id="aead2c71-02f0-46ed-bef9-4c952346c7f3" src="/examples/graphql/system/shutdown/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-graph-api"><a class="header" href="#dynamic-graph-api">Dynamic Graph API</a></h1>
 <h3 id="advantages"><a class="header" href="#advantages">Advantages</a></h3>
@@ -2672,7 +2680,7 @@ to which instances at runtime. Querying for these properties is possible but mak
 <h3 id="schema-introspection-1"><a class="header" href="#schema-introspection-1">Schema Introspection</a></h3>
 <p>The GraphQL Server allows introspection and returns a GraphQL schema including documentation. With this it is possible
 to validate queries and mutations and some tools can use the schema to provide autocompletion for creating queries.</p>
-<div id="admonition-schema-regeneration" class="admonition tip">
+<div id="admonition-schema-regeneration" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Schema Regeneration</p>
 <p><a class="admonition-anchor-link" href="Dynamic_Graph_API.html#admonition-schema-regeneration"></a></p>
@@ -2689,7 +2697,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="2c851317-8e75-4615-85e0-bd73b85922a2" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="50e541d7-db70-46c7-9951-65442d960d3a" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -2755,9 +2763,9 @@ restarting the core application.</p>
 </span>impl Plugin for ComparisonPluginImpl {
     fn metadata(&amp;self) -&gt; Result&lt;PluginMetadata, PluginError&gt; {
         Ok(PluginMetadata {
-            name: env!(&quot;CARGO_PKG_NAME&quot;).into(),
-            description: env!(&quot;CARGO_PKG_DESCRIPTION&quot;).into(),
-            version: env!(&quot;CARGO_PKG_VERSION&quot;).into(),
+            name: env!("CARGO_PKG_NAME").into(),
+            description: env!("CARGO_PKG_DESCRIPTION").into(),
+            version: env!("CARGO_PKG_VERSION").into(),
         })
     }
 }
@@ -2838,8 +2846,8 @@ which is called during initialization:</p>
     fn create_entity(&amp;self) {
         let reader = self.context.0.read().unwrap();
         let entity_instance_manager = reader.as_ref().unwrap().get_entity_instance_manager().clone();
-        let entity_instance = EntityInstanceBuilder::new(&quot;entity_type_name&quot;)
-            .property(&quot;property_name&quot;, json!(&quot;property_value&quot;))
+        let entity_instance = EntityInstanceBuilder::new("entity_type_name")
+            .property("property_name", json!("property_value"))
             .get();
         let reactive_entity_instance = entity_instance_manager.create(entity_instance);
     }
@@ -2956,9 +2964,8 @@ plugin.</p>
 <h2 id="trait-entitybehaviourprovider"><a class="header" href="#trait-entitybehaviourprovider">Trait <code>EntityBehaviourProvider</code></a></h2>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>const EXAMPLE: &amp;'static str = &quot;example&quot;;
+</span>const EXAMPLE: &amp;'static str = "example";
 
-#[wrapper]
 pub struct ExampleStorage(std::sync::RwLock&lt;std::collections::HashMap&lt;Uuid, std::sync::Arc&lt;Example&gt;&gt;&gt;);
 
 #[provides]
@@ -2968,9 +2975,9 @@ fn create_example_storage() -&gt; ExampleStorage {
 
 #[async_trait]
 pub trait ExampleEntityBehaviourProvider: EntityBehaviourProvider + Send + Sync {
-    fn create_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;);
+    fn create_example(&amp;self, entity_instance: ReactiveEntity);
 
-    fn remove_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;);
+    fn remove_example(&amp;self, entity_instance: ReactiveEntity);
 
     fn remove_by_id(&amp;self, id: Uuid);
 }
@@ -2994,38 +3001,38 @@ impl ExampleEntityBehaviourProviderImpl {
 #[async_trait]
 #[provides]
 impl ExampleEntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
-    fn create_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+    fn create_example(&amp;self, entity_instance: ReactiveEntity) {
         let id = entity_instance.id;
         let example_behaviour = Example::new(entity_instance);
         if example_behaviour.is_ok() {
             let example_behaviour = Arc::new(example_behaviour.unwrap());
             self.example_behaviours.0.write().unwrap().insert(id, example_behaviour);
-            debug!(&quot;Added behaviour {} to entity instance {}&quot;, EXAMPLE, id);
+            debug!("Added behaviour {} to entity instance {}", EXAMPLE, id);
         }
     }
 
-    fn remove_example(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+    fn remove_example(&amp;self, entity_instance: ReactiveEntity) {
         self.example_behaviours.0.write().unwrap().remove(&amp;entity_instance.id);
-        debug!(&quot;Removed behaviour {} from entity instance {}&quot;, EXAMPLE, entity_instance.id);
+        debug!("Removed behaviour {} from entity instance {}", EXAMPLE, entity_instance.id);
     }
 
     fn remove_by_id(&amp;self, id: Uuid) {
         if self.example_behaviours.0.write().unwrap().contains_key(&amp;id) {
             self.example_behaviours.0.write().unwrap().remove(&amp;id);
-            debug!(&quot;Removed behaviour {} from entity instance {}&quot;, EXAMPLE, id);
+            debug!("Removed behaviour {} from entity instance {}", EXAMPLE, id);
         }
     }
 }
 
 impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
-    fn add_behaviours(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+    fn add_behaviours(&amp;self, entity_instance: ReactiveEntity) {
         match entity_instance.clone().type_name.as_str() {
             EXAMPLE =&gt; self.create_example(entity_instance),
             _ =&gt; {}
         }
     }
 
-    fn remove_behaviours(&amp;self, entity_instance: Arc&lt;ReactiveEntityInstance&gt;) {
+    fn remove_behaviours(&amp;self, entity_instance: ReactiveEntity) {
         match entity_instance.clone().type_name.as_str() {
             EXAMPLE =&gt; self.remove_example(entity_instance),
             _ =&gt; {}
@@ -3050,7 +3057,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </span><span class="boring">fn main() {
 </span>impl WebResourceProvider for ExampleWebResourceProviderImpl {
     fn get_context_path(&amp;self) -&gt; String {
-        String::from(&quot;example&quot;)
+        String::from("example")
     }
 
     fn handle_web_resource(
@@ -3117,45 +3124,45 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </div>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Components</th><th>Properties</th><th>DataType</th><th>SocketType</th><th>Description</th></tr></thead><tbody>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>add</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Addition</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>counter</td><td>action</td><td>trigger</td><td>bool</td><td>input</td><td>If triggered, the result will be incremented by 1</td></tr>
-<tr><td></td><td>action</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>decrement</td><td>arithmetic_operation</td><td>lhs</td><td>number</td><td>input</td><td>Decrements the input by 1</td></tr>
-<tr><td></td><td>arithmetic_operation</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>div</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Division</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>increment</td><td>arithmetic_operation</td><td>lhs</td><td>number</td><td>input</td><td>Increments the input by 1</td></tr>
-<tr><td></td><td>arithmetic_operation</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>max</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Max value</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>min</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Min value</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>mod</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Modulo</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>mul</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Multiplication</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
-<tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-<tr><td>sub</td><td>arithmetic_gate</td><td>lhs</td><td>number</td><td>input</td><td>Subtraction</td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>rhs</td><td>number</td><td>input</td><td></td></tr>
-<tr><td></td><td>arithmetic_gate</td><td>result</td><td>number</td><td>output</td><td></td></tr>
 </tbody></table>
 </div>
+<p>|
+| add       | arithmetic_gate      | lhs        | number   | input      | Addition                                          |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+|
+| counter   | action               | trigger    | bool     | input      | If triggered, the result will be incremented by 1 |
+|           | action               | result     | number   | output     |                                                   |
+|
+| decrement | arithmetic_operation | lhs        | number   | input      | Decrements the input by 1                         |
+|           | arithmetic_operation | result     | number   | output     |                                                   |
+|
+| div       | arithmetic_gate      | lhs        | number   | input      | Division                                          |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+|
+| increment | arithmetic_operation | lhs        | number   | input      | Increments the input by 1                         |
+|           | arithmetic_operation | result     | number   | output     |                                                   |
+|
+| max       | arithmetic_gate      | lhs        | number   | input      | Max value                                         |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+|
+| min       | arithmetic_gate      | lhs        | number   | input      | Min value                                         |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+|
+| mod       | arithmetic_gate      | lhs        | number   | input      | Modulo                                            |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+|
+| mul       | arithmetic_gate      | lhs        | number   | input      | Multiplication                                    |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |
+|
+| sub       | arithmetic_gate      | lhs        | number   | input      | Subtraction                                       |
+|           | arithmetic_gate      | rhs        | number   | input      |                                                   |
+|           | arithmetic_gate      | result     | number   | output     |                                                   |</p>
 <h2 id="platform-compatibility"><a class="header" href="#platform-compatibility">Platform Compatibility</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Platform</th><th style="text-align: center">Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td style="text-align: center">✓</td></tr>
@@ -3165,14 +3172,14 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </div>
 <h2 id="repository"><a class="header" href="#repository">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-arithmetic</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/arithmetic">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/arithmetic</a></td></tr>
+<tr><td>inexor-rgf-plugin-arithmetic</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/arithmetic">https://github.com/reactive-graph/plugins-core/tree/main/plugins/arithmetic</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="ce26d4d9-8f6d-406d-a620-941868d20ec7" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
+<graphql-playground id="31af04f1-792d-4502-97a2-1d4a4d89c140" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="698b8cf0-b6ce-47c9-9393-9258dfea9b66" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
+<graphql-playground id="a6c8a398-6927-43f0-92e3-faf35e9a95b7" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -3184,11 +3191,11 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </div>
 <h2 id="repository-1"><a class="header" href="#repository-1">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-asset</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/asset">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/asset</a></td></tr>
+<tr><td>inexor-rgf-plugin-asset</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/asset">https://github.com/reactive-graph/plugins-core/tree/main/plugins/asset</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="faa5b459-6237-4405-9501-27b9c459ad65" src="/examples/graphql/plugins/asset/tabs.json">
+<graphql-playground id="28b2ce0e-574a-48af-adc5-f6148f2d00c0" src="/examples/graphql/plugins/asset/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3225,7 +3232,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </div>
 <h2 id="repository-2"><a class="header" href="#repository-2">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-base</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/base">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/base</a></td></tr>
+<tr><td>inexor-rgf-plugin-base</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/base">https://github.com/reactive-graph/plugins-core/tree/main/plugins/base</a></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-binary"><a class="header" href="#plugin-binary">Plugin Binary</a></h1>
 <p>This plugin provides two entity types for loading binary data from a file into a property as
@@ -3279,7 +3286,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </div>
 <h2 id="repository-3"><a class="header" href="#repository-3">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-binary</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/binary">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/binary</a></td></tr>
+<tr><td>inexor-rgf-plugin-binary</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary">https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
@@ -3287,9 +3294,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="725fbb07-9df8-40e9-a6f2-8fbd27bb38dc" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
+<graphql-playground id="048ab5f3-ae75-4689-b0b5-4d66e379bfe1" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
 </graphql-playground>
-<graphql-playground id="4d62cd02-5617-4e0c-bd65-7a9e0abf52cb" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
+<graphql-playground id="94ac6f22-0d78-4600-9943-12568cf2ef29" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3318,11 +3325,11 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </div>
 <h2 id="repository-4"><a class="header" href="#repository-4">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-comparison</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/comparison">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/comparison</a></td></tr>
+<tr><td>inexor-rgf-plugin-comparison</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/comparison">https://github.com/reactive-graph/plugins-core/tree/main/plugins/comparison</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="6a6567cb-e77c-4cd8-9b88-500a94c5e1d3" src="/examples/graphql/plugins/comparison/tabs.json">
+<graphql-playground id="4bcc3d1e-e7c6-4ea9-80d8-da692c3ea27f" src="/examples/graphql/plugins/comparison/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3341,11 +3348,11 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </div>
 <h2 id="repository-5"><a class="header" href="#repository-5">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-config</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/config">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/config</a></td></tr>
+<tr><td>inexor-rgf-plugin-config</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/config">https://github.com/reactive-graph/plugins-core/tree/main/plugins/config</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="e7770365-e66a-4618-8820-4922e7f1b3fc" src="/examples/graphql/plugins/config/tabs.json">
+<graphql-playground id="d1d5850f-aae1-44fc-b123-6268d59bcb34" src="/examples/graphql/plugins/config/tabs.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3353,12 +3360,12 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
   instances {
     entities {
       create(
-        type: &quot;config_file&quot;
-        id: &quot;aed6c9b0-e495-4423-baeb-5597b66416f4&quot;
+        type: "config_file"
+        id: "aed6c9b0-e495-4423-baeb-5597b66416f4"
         properties: [
           {
-            name: &quot;filename&quot;
-            value: &quot;config/plugins.toml&quot;
+            name: "filename"
+            value: "config/plugins.toml"
           }
         ]
       ) {
@@ -3368,8 +3375,8 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
         }
         properties(
           names: [
-            &quot;filename&quot;
-            &quot;configuration&quot;
+            "filename"
+            "configuration"
           ]
         ) {
           name
@@ -3383,7 +3390,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <h3 id="get-all-configurations"><a class="header" href="#get-all-configurations">Get all configurations</a></h3>
 <pre><code class="language-graphql">query getAllConfigs {
   instances {
-    entities(type: &quot;config_file&quot;) {
+    entities(type: "config_file") {
       id
       label
       description
@@ -3395,17 +3402,17 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
   }
 }
 </code></pre>
-<h3 id="reload-a-configuration"><a class="header" href="#reload-a-configuration">&quot;Reload&quot; a configuration</a></h3>
+<h3 id="reload-a-configuration"><a class="header" href="#reload-a-configuration">"Reload" a configuration</a></h3>
 <p>By triggering the property `filename' the configuration file will be read again:</p>
 <pre><code class="language-graphql">mutation reloadPluginsConfig {
   instances {
     entities {
       update(
-        id: &quot;aed6c9b0-e495-4423-baeb-5597b66416f4&quot;,
+        id: "aed6c9b0-e495-4423-baeb-5597b66416f4",
         properties: [
           {
-            name: &quot;filename&quot;,
-            value: &quot;config/plugins.toml&quot;
+            name: "filename",
+            value: "config/plugins.toml"
           }
         ]
       ) {
@@ -3489,11 +3496,11 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </div>
 <h2 id="repository-6"><a class="header" href="#repository-6">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-connector</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/connector">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/connector</a></td></tr>
+<tr><td>inexor-rgf-plugin-connector</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/connector">https://github.com/reactive-graph/plugins-core/tree/main/plugins/connector</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="7574e854-9522-4e75-ada0-238f6a4f56f8" src="/examples/graphql/plugins/connector/tabs.json">
+<graphql-playground id="947adf3d-b5e4-451f-9f56-8b3b80e4fe07" src="/examples/graphql/plugins/connector/tabs.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3502,18 +3509,18 @@ effect (yet). You have to remove the old connector and recreate a new connector.
     relations {
       createConnector: create(
         edgeKey: {
-          outboundId: &quot;dc82735e-28ec-4c24-aedb-d968b73b288f&quot;,
-          typeName: &quot;default_connector--value--value&quot;
-          inboundId: &quot;4cf8e6d8-f92e-4ffa-9610-ec0635f55e08&quot;,
+          outboundId: "dc82735e-28ec-4c24-aedb-d968b73b288f",
+          typeName: "default_connector--value--value"
+          inboundId: "4cf8e6d8-f92e-4ffa-9610-ec0635f55e08",
         },
         properties: [
           {
-            name: &quot;outbound_property_name&quot;,
-            value: &quot;value&quot;
+            name: "outbound_property_name",
+            value: "value"
           },
           {
-            name: &quot;inbound_property_name&quot;,
-            value: &quot;value&quot;
+            name: "inbound_property_name",
+            value: "value"
           }
         ]
       ) {
@@ -3523,8 +3530,8 @@ effect (yet). You have to remove the old connector and recreate a new connector.
         },
         properties(
           names: [
-            &quot;outbound_property_name&quot;,
-            &quot;inbound_property_name&quot;
+            "outbound_property_name",
+            "inbound_property_name"
           ]
         ) {
           name
@@ -3541,7 +3548,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 <tr><td><a href="http://hostname:31415/graphql-client/graph">http://hostname:31415/graphql-client/graph</a></td><td><a href="./GraphQL_API.html">GraphQL API</a></td></tr>
 <tr><td><a href="http://hostname:31415/graphql-client/dynamic-graph">http://hostname:31415/graphql-client/dynamic-graph</a></td><td><a href="./Dynamic_Graph_API.html">Dynamic Graph API</a></td></tr>
 </tbody></table>
-</div><div id="admonition-altair" class="admonition tip">
+</div><div id="admonition-altair" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Altair</p>
 <p><a class="admonition-anchor-link" href="Plugins_GraphQL_Client.html#admonition-altair"></a></p>
@@ -3563,22 +3570,22 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </div>
 <h2 id="repositories"><a class="header" href="#repositories">Repositories</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-graphql-client</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/graphql-client">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/graphql-client</a></td></tr>
+<tr><td>inexor-rgf-plugin-graphql-client</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client">https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client</a></td></tr>
 <tr><td>Altair GraphQL Client</td><td><a href="https://github.com/altair-graphql/altair">https://github.com/altair-graphql/altair</a></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-graphql-schema-visualization"><a class="header" href="#plugin-graphql-schema-visualization">Plugin GraphQL Schema Visualization</a></h1>
 <p>This plugin represents the GraphQL API as an interactive graph.</p>
 <div class="table-wrapper"><table><thead><tr><th>URL</th><th>API</th><th>Query Root</th></tr></thead><tbody>
-<tr><td></td><td></td><td></td></tr>
-<tr><td><a href="http://hostname:31415/graphql-schema-visualization/graph/query">http://hostname:31415/graphql-schema-visualization/graph/query</a></td><td><a href="./GraphQL_API.html">GraphQL API</a></td><td>Queries</td></tr>
-<tr><td><a href="http://hostname:31415/graphql-schema-visualization/graph/mutation">http://hostname:31415/graphql-schema-visualization/graph/mutation</a></td><td><a href="./GraphQL_API.html">GraphQL API</a></td><td>Mutations</td></tr>
-<tr><td><a href="http://hostname:31415/graphql-schema-visualization/graph/subscription">http://hostname:31415/graphql-schema-visualization/graph/subscription</a></td><td><a href="./GraphQL_API.html">GraphQL API</a></td><td>Subscriptions</td></tr>
-<tr><td></td><td></td><td></td></tr>
-<tr><td><a href="http://hostname:31415/graphql-schema-visualization/dynamic-graph/query">http://hostname:31415/graphql-schema-visualization/dynamic-graph/query</a></td><td><a href="./Dynamic_Graph_API.html">Dynamic Graph API</a></td><td>Queries</td></tr>
-<tr><td><a href="http://hostname:31415/graphql-schema-visualization/dynamic-graph/mutation">http://hostname:31415/graphql-schema-visualization/dynamic-graph/mutation</a></td><td><a href="./Dynamic_Graph_API.html">Dynamic Graph API</a></td><td>Mutations</td></tr>
-<tr><td><a href="http://hostname:31415/graphql-schema-visualization/dynamic-graph/subscription">http://hostname:31415/graphql-schema-visualization/dynamic-graph/subscription</a></td><td><a href="./Dynamic_Graph_API.html">Dynamic Graph API</a></td><td>Subscriptions</td></tr>
 </tbody></table>
 </div>
+<p>|
+| <a href="http://hostname:31415/graphql-schema-visualization/graph/query">http://hostname:31415/graphql-schema-visualization/graph/query</a>                               | <a href="./GraphQL_API.html">GraphQL API</a>             | Queries       |
+| <a href="http://hostname:31415/graphql-schema-visualization/graph/mutation">http://hostname:31415/graphql-schema-visualization/graph/mutation</a>                         | <a href="./GraphQL_API.html">GraphQL API</a>             | Mutations     |
+| <a href="http://hostname:31415/graphql-schema-visualization/graph/subscription">http://hostname:31415/graphql-schema-visualization/graph/subscription</a>                 | <a href="./GraphQL_API.html">GraphQL API</a>             | Subscriptions |
+|
+| <a href="http://hostname:31415/graphql-schema-visualization/dynamic-graph/query">http://hostname:31415/graphql-schema-visualization/dynamic-graph/query</a>               | <a href="./Dynamic_Graph_API.html">Dynamic Graph API</a> | Queries       |
+| <a href="http://hostname:31415/graphql-schema-visualization/dynamic-graph/mutation">http://hostname:31415/graphql-schema-visualization/dynamic-graph/mutation</a>         | <a href="./Dynamic_Graph_API.html">Dynamic Graph API</a> | Mutations     |
+| <a href="http://hostname:31415/graphql-schema-visualization/dynamic-graph/subscription">http://hostname:31415/graphql-schema-visualization/dynamic-graph/subscription</a> | <a href="./Dynamic_Graph_API.html">Dynamic Graph API</a> | Subscriptions |</p>
 <h2 id="platform-compatibility-8"><a class="header" href="#platform-compatibility-8">Platform Compatibility</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Platform</th><th style="text-align: center">Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td style="text-align: center">✓</td></tr>
@@ -3588,7 +3595,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </div>
 <h2 id="repository-7"><a class="header" href="#repository-7">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-graphql-schema-visualization</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/graphql-schema-visualization">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/graphql-schema-visualization</a></td></tr>
+<tr><td>inexor-rgf-plugin-graphql-schema-visualization</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-schema-visualization">https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-schema-visualization</a></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-http"><a class="header" href="#plugin-http">Plugin: HTTP</a></h1>
 <p>This plugin provides a reactive http client integration. Using entities of type <code>http</code> requests via HTTP can be made.</p>
@@ -3602,15 +3609,15 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 <tr><td></td><td>response_headers</td><td>object</td><td>output</td></tr>
 <tr><td></td><td>result</td><td>object</td><td>output</td></tr>
 <tr><td></td><td>status</td><td>number</td><td>output</td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
-<tr><td>jsonrpc</td><td>url</td><td>string</td><td>input</td></tr>
-<tr><td></td><td>jsonrpc_version</td><td>string</td><td>input</td></tr>
-<tr><td></td><td>method</td><td>string</td><td>none</td></tr>
-<tr><td></td><td>params</td><td>object</td><td>input</td></tr>
-<tr><td></td><td>result</td><td>object</td><td>output</td></tr>
-<tr><td></td><td>error</td><td>object</td><td>output</td></tr>
 </tbody></table>
 </div>
+<p>|
+| jsonrpc | url              | string    | input       |
+|         | jsonrpc_version  | string    | input       |
+|         | method           | string    | none        |
+|         | params           | object    | input       |
+|         | result           | object    | output      |
+|         | error            | object    | output      |</p>
 <h2 id="platform-compatibility-9"><a class="header" href="#platform-compatibility-9">Platform Compatibility</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Platform</th><th style="text-align: center">Compatibility</th></tr></thead><tbody>
 <tr><td>Linux</td><td style="text-align: center">✓</td></tr>
@@ -3620,17 +3627,17 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </div>
 <h2 id="repository-8"><a class="header" href="#repository-8">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-http</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/http">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/http</a></td></tr>
+<tr><td>inexor-rgf-plugin-http</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/http">https://github.com/reactive-graph/plugins-core/tree/main/plugins/http</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="b398967a-87c4-4182-8f89-090d9cb2390f" src="/examples/graphql/plugins/http/tabs.json">
+<graphql-playground id="0903cdaf-494d-40c9-96f4-b6edce8ebff0" src="/examples/graphql/plugins/http/tabs.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
 <h4 id="create-http-request"><a class="header" href="#create-http-request">Create HTTP Request</a></h4>
-<p>First create an entity instance of type <code>http</code> and specify the URL and the method. </p>
-<div id="admonition-how-to-execute-the-http-request" class="admonition tip">
+<p>First create an entity instance of type <code>http</code> and specify the URL and the method.</p>
+<div id="admonition-how-to-execute-the-http-request" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>How to execute the HTTP Request</p>
 <p><a class="admonition-anchor-link" href="Plugins_HTTP.html#admonition-how-to-execute-the-http-request"></a></p>
@@ -3643,35 +3650,35 @@ effect (yet). You have to remove the old connector and recreate a new connector.
   instances {
     entities {
       create(
-        type: &quot;http&quot;,
-        id: &quot;a3370278-b05c-4d1a-ad57-cabd575c37e4&quot;,
+        type: "http",
+        id: "a3370278-b05c-4d1a-ad57-cabd575c37e4",
         properties: [
           {
-            name: &quot;url&quot;,
-            value: &quot;https://api.sunrise-sunset.org/json?lat=47.557400&amp;lng=9.707209&amp;formatted=0&quot;
+            name: "url",
+            value: "https://api.sunrise-sunset.org/json?lat=47.557400&amp;lng=9.707209&amp;formatted=0"
           },
           {
-            name: &quot;method&quot;,
-            value: &quot;GET&quot;
+            name: "method",
+            value: "GET"
           },
           {
-            name: &quot;request_headers&quot;,
+            name: "request_headers",
             value: {}
           },
           {
-            name: &quot;payload&quot;,
+            name: "payload",
             value: {}
           },
           {
-            name: &quot;response_headers&quot;,
+            name: "response_headers",
             value: {}
           },
           {
-            name: &quot;result&quot;,
+            name: "result",
             value: {}
           },
           {
-            name: &quot;status&quot;,
+            name: "status",
             value: 500
           }
         ]
@@ -3682,13 +3689,13 @@ effect (yet). You have to remove the old connector and recreate a new connector.
         }
         properties(
           names: [
-            &quot;url&quot;,
-            &quot;method&quot;,
-            &quot;request_headers&quot;,
-            &quot;payload&quot;,
-            &quot;response_headers&quot;,
-            &quot;result&quot;,
-            &quot;status&quot;
+            "url",
+            "method",
+            "request_headers",
+            "payload",
+            "response_headers",
+            "result",
+            "status"
           ]
         ) {
           name
@@ -3706,10 +3713,10 @@ property <code>result</code>.</p>
   instances {
     entities {
       update(
-        id: &quot;a3370278-b05c-4d1a-ad57-cabd575c37e4&quot;,
+        id: "a3370278-b05c-4d1a-ad57-cabd575c37e4",
         properties: [
           {
-            name: &quot;payload&quot;,
+            name: "payload",
             value: {}
           }
         ]
@@ -3720,13 +3727,13 @@ property <code>result</code>.</p>
         }
         properties(
           names: [
-            &quot;url&quot;,
-            &quot;method&quot;,
-            &quot;request_headers&quot;,
-            &quot;payload&quot;,
-            &quot;response_headers&quot;,
-            &quot;result&quot;,
-            &quot;status&quot;
+            "url",
+            "method",
+            "request_headers",
+            "payload",
+            "response_headers",
+            "result",
+            "status"
           ]
         ) {
           name
@@ -3739,8 +3746,8 @@ property <code>result</code>.</p>
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-json"><a class="header" href="#plugin-json">Plugin: JSON</a></h1>
 <p>This plugin adds functionality to operate with complex data structures. Properties of entity instances or relation
-instances can have different data types. It's possible to store even complex data using the data  types array and
-object. This is handy if you receive data from an MQTT endpoint or if you want to represent  more complex data. But it
+instances can have different data types. It's possible to store even complex data using the data types array and
+object. This is handy if you receive data from an MQTT endpoint or if you want to represent more complex data. But it
 makes it also necessary to unpack or pack these data in order to operate with it.</p>
 <h4 id="entity-types-6"><a class="header" href="#entity-types-6">Entity Types</a></h4>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
@@ -3781,11 +3788,11 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </div>
 <h2 id="repository-9"><a class="header" href="#repository-9">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-json</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/json">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/json</a></td></tr>
+<tr><td>inexor-rgf-plugin-json</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/json">https://github.com/reactive-graph/plugins-core/tree/main/plugins/json</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="fbc709e3-86f3-4de2-8ea9-84178164f353" src="/examples/graphql/plugins/json/tabs.json">
+<graphql-playground id="67b7fd38-e3c1-4bd1-a4d0-0b08cee66462" src="/examples/graphql/plugins/json/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -3859,11 +3866,11 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </div>
 <h2 id="repository-10"><a class="header" href="#repository-10">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-logical</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/logical">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/logical</a></td></tr>
+<tr><td>inexor-rgf-plugin-logical</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical">https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="e05667bc-356d-4aca-b0e5-6c290050a993" src="/examples/graphql/plugins/logical/tabs.json">
+<graphql-playground id="55d86adc-7fd8-4e67-87e2-61b457798ba0" src="/examples/graphql/plugins/logical/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
@@ -3896,11 +3903,11 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </div>
 <h2 id="repositories-1"><a class="header" href="#repositories-1">Repositories</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-metadata</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/metadata">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/metadata</a></td></tr>
+<tr><td>inexor-rgf-plugin-metadata</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/metadata">https://github.com/reactive-graph/plugins-core/tree/main/plugins/metadata</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<graphql-playground id="9f685426-ed38-4be0-bec0-54df5dcc498f" src="/examples/graphql/plugins/metadata/tabs.json">
+<graphql-playground id="9f0e422e-52ca-4fe8-9a30-9a33b9ed31e0" src="/examples/graphql/plugins/metadata/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -3923,7 +3930,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </div>
 <h2 id="repository-11"><a class="header" href="#repository-11">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-notification</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/notification">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/notification</a></td></tr>
+<tr><td>inexor-rgf-plugin-notification</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/notification">https://github.com/reactive-graph/plugins-core/tree/main/plugins/notification</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-13"><a class="header" href="#usage-13">Usage</a></h2>
@@ -3933,16 +3940,16 @@ makes it also necessary to unpack or pack these data in order to operate with it
   instances {
     entities {
       create(
-        type: &quot;desktop_notification&quot;,
-        id: &quot;dfe30808-9242-4af8-aced-556ffe617038&quot;,
+        type: "desktop_notification",
+        id: "dfe30808-9242-4af8-aced-556ffe617038",
         properties: [
           {
-            name: &quot;show&quot;,
+            name: "show",
             value: false
           },
           {
-            name: &quot;body&quot;,
-            value: &quot;Test&quot;
+            name: "body",
+            value: "Test"
           }
         ]
       ) {
@@ -3952,12 +3959,12 @@ makes it also necessary to unpack or pack these data in order to operate with it
         }
         properties(
           names: [
-            &quot;show&quot;,
-            &quot;app_name&quot;,
-            &quot;summary&quot;,
-            &quot;body&quot;,
-            &quot;icon&quot;,
-            &quot;timeout&quot;
+            "show",
+            "app_name",
+            "summary",
+            "body",
+            "icon",
+            "timeout"
           ]
         ) {
           name
@@ -3974,26 +3981,26 @@ makes it also necessary to unpack or pack these data in order to operate with it
   instances {
     entities {
       update(
-        id: &quot;dfe30808-9242-4af8-aced-556ffe617038&quot;,
+        id: "dfe30808-9242-4af8-aced-556ffe617038",
         properties: [
           {
-            name: &quot;show&quot;,
+            name: "show",
             value: true
           },
           {
-            name: &quot;summary&quot;,
-            value: &quot;Important Message&quot;
+            name: "summary",
+            value: "Important Message"
           },
           {
-            name: &quot;body&quot;,
-            value: &quot;Lorem Ipsum&quot;
+            name: "body",
+            value: "Lorem Ipsum"
           },
           {
-            name: &quot;icon&quot;,
-            value: &quot;computer&quot;
+            name: "icon",
+            value: "computer"
           },
           {
-            name: &quot;timeout&quot;,
+            name: "timeout",
             value: 1000
           }
         ]
@@ -4004,12 +4011,12 @@ makes it also necessary to unpack or pack these data in order to operate with it
         }
         properties(
           names: [
-            &quot;show&quot;,
-            &quot;app_name&quot;,
-            &quot;summary&quot;,
-            &quot;body&quot;,
-            &quot;icon&quot;,
-            &quot;timeout&quot;
+            "show",
+            "app_name",
+            "summary",
+            "body",
+            "icon",
+            "timeout"
           ]
         ) {
           name
@@ -4079,11 +4086,11 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </div>
 <h2 id="repository-12"><a class="header" href="#repository-12">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-numeric</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/numeric">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/numeric</a></td></tr>
+<tr><td>inexor-rgf-plugin-numeric</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/numeric">https://github.com/reactive-graph/plugins-core/tree/main/plugins/numeric</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="25aa8702-afa3-411c-8e2e-41c40b51d6b5" src="/examples/graphql/plugins/numeric/tabs.json">
+<graphql-playground id="ddff6b64-da91-4e82-ba73-fc48259f6581" src="/examples/graphql/plugins/numeric/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4122,13 +4129,13 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </div>
 <h2 id="repository-13"><a class="header" href="#repository-13">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-random</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/random">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/random</a></td></tr>
+<tr><td>inexor-rgf-plugin-random</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/random">https://github.com/reactive-graph/plugins-core/tree/main/plugins/random</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="68beaf95-cb30-4fa1-b3ef-6946f769860f" src="/examples/graphql/plugins/random/number/tabs.json">
+<graphql-playground id="28d6b431-aad4-46a4-97c0-f7a96ab714f8" src="/examples/graphql/plugins/random/number/tabs.json">
 </graphql-playground>
-<graphql-playground id="089eb2ff-43e8-4cd7-b60b-7a88cd5b089d" src="/examples/graphql/plugins/random/string/tabs.json">
+<graphql-playground id="32c494c9-6b17-45fa-a352-4bbd8513b898" src="/examples/graphql/plugins/random/string/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-state"><a class="header" href="#plugin-state">Plugin: State</a></h1>
 <p>This plugin provides state components. States extends <a href="./Plugins_Value.html">values</a> with debounce mechanism. States are
@@ -4188,7 +4195,7 @@ behaviour.</p>
 </div>
 <h2 id="repositories-2"><a class="header" href="#repositories-2">Repositories</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-state</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/state">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/state</a></td></tr>
+<tr><td>inexor-rgf-plugin-state</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/state">https://github.com/reactive-graph/plugins-core/tree/main/plugins/state</a></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-scheduler"><a class="header" href="#plugin-scheduler">Plugin: Scheduler</a></h1>
 <p>Timers and scheduled jobs</p>
@@ -4213,7 +4220,7 @@ would execute at 6am on Sunday and Saturday.</p>
 <p>A <code>timer</code> triggers after a given duration. The duration can be specified either as a number in
 milliseconds or as a string in <a href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration Format</a>.</p>
 <h3 id="iso-8601-duration-format"><a class="header" href="#iso-8601-duration-format">ISO 8601 Duration Format</a></h3>
-<div id="admonition-what-is-the-iso-8601-duration-format" class="admonition info">
+<div id="admonition-what-is-the-iso-8601-duration-format" class="admonition admonish-info">
 <div class="admonition-title">
 <p>What is the ISO 8601 Duration Format?</p>
 <p><a class="admonition-anchor-link" href="Plugins_Scheduler.html#admonition-what-is-the-iso-8601-duration-format"></a></p>
@@ -4269,14 +4276,14 @@ and time elements and are not replaced.</p>
 </div>
 <h2 id="repositories-3"><a class="header" href="#repositories-3">Repositories</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-scheduler</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/scheduler">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/scheduler</a></td></tr>
+<tr><td>inexor-rgf-plugin-scheduler</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/scheduler">https://github.com/reactive-graph/plugins-core/tree/main/plugins/scheduler</a></td></tr>
 <tr><td>tokio-cron-scheduler</td><td><a href="https://github.com/mvniekerk/tokio-cron-scheduler">https://github.com/mvniekerk/tokio-cron-scheduler</a></td></tr>
 <tr><td>cron expression parser</td><td><a href="https://github.com/zslayton/cron">https://github.com/zslayton/cron</a></td></tr>
 <tr><td>ISO8601 duration parser</td><td><a href="https://github.com/PoiScript/iso8601-duration">https://github.com/PoiScript/iso8601-duration</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
-<graphql-playground id="11a6bd14-e899-428e-95bd-2738616d7491" src="/examples/graphql/plugins/scheduler/tabs.json">
+<graphql-playground id="7c0efe1b-922e-46ff-ba74-d67e36e28562" src="/examples/graphql/plugins/scheduler/tabs.json">
 </graphql-playground>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4284,11 +4291,11 @@ and time elements and are not replaced.</p>
   instances {
     entities {
       create(
-        type: &quot;timer&quot;,
-        id: &quot;46e2ecd0-3e91-4205-99c9-d9543923a73a&quot;,
+        type: "timer",
+        id: "46e2ecd0-3e91-4205-99c9-d9543923a73a",
         properties: [
           {
-            name: &quot;duration&quot;,
+            name: "duration",
             value: 1000
           }
         ]
@@ -4299,8 +4306,8 @@ and time elements and are not replaced.</p>
         }
         properties(
           names: [
-            &quot;duration&quot;,
-            &quot;trigger&quot;
+            "duration",
+            "trigger"
           ]
         ) {
           name
@@ -4316,10 +4323,10 @@ and time elements and are not replaced.</p>
   instances {
     entities {
       update(
-        id: &quot;46e2ecd0-3e91-4205-99c9-d9543923a73a&quot;,
+        id: "46e2ecd0-3e91-4205-99c9-d9543923a73a",
         properties: [
           {
-            name: &quot;duration&quot;,
+            name: "duration",
             value: 1500
           }
         ]
@@ -4330,8 +4337,8 @@ and time elements and are not replaced.</p>
         }
         properties(
           names: [
-            &quot;duration&quot;,
-            &quot;trigger&quot;
+            "duration",
+            "trigger"
           ]
         ) {
           name
@@ -4445,15 +4452,15 @@ and time elements and are not replaced.</p>
 </div>
 <h2 id="repository-14"><a class="header" href="#repository-14">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-string</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/string">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/string</a></td></tr>
+<tr><td>inexor-rgf-plugin-string</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/string">https://github.com/reactive-graph/plugins-core/tree/main/plugins/string</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-18"><a class="header" href="#usage-18">Usage</a></h2>
-<graphql-playground id="1085c4b2-4c2e-49b3-944e-51b05af82b18" src="/examples/graphql/plugins/string/concat/tabs.json">
+<graphql-playground id="0b1dfecf-b2db-460b-8903-8b4526aa02da" src="/examples/graphql/plugins/string/concat/tabs.json">
 </graphql-playground>
-<graphql-playground id="9cb85be5-3375-4f2c-a3c0-5b1324efc143" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
+<graphql-playground id="c3950760-a124-46e5-8788-11c32525576f" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
 </graphql-playground>
-<graphql-playground id="daf6859c-8da4-47ae-a5e7-86f1f4b29caf" src="/examples/graphql/plugins/string/trim/tabs.json">
+<graphql-playground id="51a28f2a-7b27-467f-907c-8489e7591554" src="/examples/graphql/plugins/string/trim/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4462,7 +4469,7 @@ control a headless Raspberry Pi Zero.</p>
 <p>A system command is executed by triggering (i.e. changing) the spawn property. Please see the GraphQL example.</p>
 <p>When a program runs, it writes to stdout and stderr. These outputs are available in the corresponding properties after
 the program has ended.</p>
-<div id="admonition-a-word-about-safety" class="admonition warning">
+<div id="admonition-a-word-about-safety" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>A word about safety</p>
 <p><a class="admonition-anchor-link" href="Plugins_System_Command.html#admonition-a-word-about-safety"></a></p>
@@ -4483,42 +4490,42 @@ the program has ended.</p>
 </tbody></table>
 </div>
 <h2 id="usage-19"><a class="header" href="#usage-19">Usage</a></h2>
-<h3 id="graphql-create-system-command-list-current-directory"><a class="header" href="#graphql-create-system-command-list-current-directory">GraphQL: Create System Command &quot;List Current Directory&quot;</a></h3>
+<h3 id="graphql-create-system-command-list-current-directory"><a class="header" href="#graphql-create-system-command-list-current-directory">GraphQL: Create System Command "List Current Directory"</a></h3>
 <p>The system command is only generated but not yet executed.</p>
 <pre><code class="language-graphql">mutation {
   instances {
     entities {
       create(
-        type: &quot;system_command&quot;,
-        id: &quot;57cd91ba-b437-4ba9-b274-b5e1ad4abbe5&quot;,
+        type: "system_command",
+        id: "57cd91ba-b437-4ba9-b274-b5e1ad4abbe5",
         properties: [
           {
-            name: &quot;name&quot;,
-            value: &quot;List files in the current directory&quot;
+            name: "name",
+            value: "List files in the current directory"
           },
           {
-            name: &quot;current_dir&quot;,
-            value: &quot;.&quot;
+            name: "current_dir",
+            value: "."
           },
           {
-            name: &quot;command&quot;,
-            value: &quot;ls&quot;
+            name: "command",
+            value: "ls"
           },
           {
-            name: &quot;spawn&quot;,
+            name: "spawn",
             value: []
           },
           {
-            name: &quot;stdin&quot;,
-            value: &quot;&quot;
+            name: "stdin",
+            value: ""
           },
           {
-            name: &quot;stdout&quot;,
-            value: &quot;&quot;
+            name: "stdout",
+            value: ""
           },
           {
-            name: &quot;stderr&quot;,
-            value: &quot;&quot;
+            name: "stderr",
+            value: ""
           }
         ]
       ) {
@@ -4526,13 +4533,13 @@ the program has ended.</p>
         type {name},
         properties(
           names: [
-            &quot;name&quot;,
-            &quot;current_dir&quot;,
-            &quot;command&quot;,
-            &quot;spawn&quot;,
-            &quot;stdin&quot;,
-            &quot;stdout&quot;,
-            &quot;stderr&quot;
+            "name",
+            "current_dir",
+            "command",
+            "spawn",
+            "stdin",
+            "stdout",
+            "stderr"
           ]
         ) {
           name
@@ -4543,20 +4550,20 @@ the program has ended.</p>
   }
 }
 </code></pre>
-<h3 id="graphql-execute-system-command-list-current-directory"><a class="header" href="#graphql-execute-system-command-list-current-directory">GraphQL: Execute System Command &quot;List Current Directory&quot;</a></h3>
+<h3 id="graphql-execute-system-command-list-current-directory"><a class="header" href="#graphql-execute-system-command-list-current-directory">GraphQL: Execute System Command "List Current Directory"</a></h3>
 <p>A system command is executed when the property <code>spawn</code> is changed. This property expects an array with arguments. If the
 command is to be executed without arguments, an empty array can be passed.</p>
 <pre><code class="language-graphql">mutation {
   instances {
     entities {
       update(
-        id: &quot;57cd91ba-b437-4ba9-b274-b5e1ad4abbe5&quot;,
+        id: "57cd91ba-b437-4ba9-b274-b5e1ad4abbe5",
         properties: [
           {
-            name: &quot;spawn&quot;,
+            name: "spawn",
             value: [
-              &quot;-l&quot;,
-              &quot;-a&quot;
+              "-l",
+              "-a"
             ]
           }
         ]
@@ -4565,13 +4572,13 @@ command is to be executed without arguments, an empty array can be passed.</p>
         type {name},
         properties(
           names: [
-            &quot;name&quot;,
-            &quot;current_dir&quot;,
-            &quot;command&quot;,
-            &quot;spawn&quot;,
-            &quot;stdin&quot;,
-            &quot;stdout&quot;,
-            &quot;stderr&quot;
+            "name",
+            "current_dir",
+            "command",
+            "spawn",
+            "stdin",
+            "stdout",
+            "stderr"
           ]
         ) {
           name
@@ -4591,13 +4598,13 @@ command is to be executed without arguments, an empty array can be passed.</p>
 </div>
 <h2 id="repository-15"><a class="header" href="#repository-15">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-system-command</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-command">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-command</a></td></tr>
+<tr><td>inexor-rgf-plugin-system-command</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-command">https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-command</a></td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-environment"><a class="header" href="#plugin-system-environment">Plugin: System Environment</a></h1>
 <p>The plugin creates entity instances for each environment variable. As environment variables doesn't change at runtime
 this happens only at initialization.</p>
 <h2 id="uuids-1"><a class="header" href="#uuids-1">UUIDs</a></h2>
-<div id="admonition-info" class="admonition info">
+<div id="admonition-info" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Info</p>
 <p><a class="admonition-anchor-link" href="Plugins_System_Environment.html#admonition-info"></a></p>
@@ -4629,11 +4636,11 @@ this happens only at initialization.</p>
 </div>
 <h2 id="repository-16"><a class="header" href="#repository-16">Repository</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-system-environment</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-environment">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-environment</a></td></tr>
+<tr><td>inexor-rgf-plugin-system-environment</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment">https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="9d7f0373-e896-4385-9299-5ee688f2b39f" src="/examples/graphql/plugins/system-environment/tabs.json">
+<graphql-playground id="25aa083f-4c7c-4637-a1b1-de261b8c5291" src="/examples/graphql/plugins/system-environment/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -4677,13 +4684,13 @@ this happens only at initialization.</p>
 </div>
 <h2 id="repositories-4"><a class="header" href="#repositories-4">Repositories</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-taxonomy</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/taxonomy">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/taxonomy</a></td></tr>
+<tr><td>inexor-rgf-plugin-taxonomy</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy">https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="usage-21"><a class="header" href="#usage-21">Usage</a></h2>
-<graphql-playground id="35e120e2-fa9c-495d-9c97-48783ca97c2f" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
+<graphql-playground id="db4324eb-4e6b-4cd1-b6b0-f837f2c041e2" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
 </graphql-playground>
-<graphql-playground id="c5ae1269-0dba-4427-8e7b-06a727fd724e" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
+<graphql-playground id="c3c73368-0136-4561-9747-93b459c55338" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value components. Value components contains a single property of a specific data type.
@@ -4719,7 +4726,7 @@ this happens only at initialization.</p>
 </div>
 <h2 id="repositories-5"><a class="header" href="#repositories-5">Repositories</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Repository</th></tr></thead><tbody>
-<tr><td>inexor-rgf-plugin-value</td><td><a href="https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/value">https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/value</a></td></tr>
+<tr><td>inexor-rgf-plugin-value</td><td><a href="https://github.com/reactive-graph/plugins-core/tree/main/plugins/value">https://github.com/reactive-graph/plugins-core/tree/main/plugins/value</a></td></tr>
 </tbody></table>
 </div>
 <h2 id="see-also"><a class="header" href="#see-also">See also</a></h2>
@@ -4731,7 +4738,7 @@ this happens only at initialization.</p>
 a reactive system it wouldn't make sense to implement another event system. So, basically the events are conventions
 rather than implementation.</p>
 <h2 id="component"><a class="header" href="#component">Component</a></h2>
-<p>Entity types or relation types can be composed with the component <code>event</code> in order to have an property <code>event</code>. </p>
+<p>Entity types or relation types can be composed with the component <code>event</code> in order to have an property <code>event</code>.</p>
 <div class="table-wrapper"><table><thead><tr><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
 <tr><td>Event</td><td>event</td><td>Any</td><td>Output</td></tr>
 </tbody></table>
@@ -4760,7 +4767,7 @@ through these events.</p>
 <tr><td><code>/org/inexor/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
 <tr><td><code>/org/inexor/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
 </tbody></table>
-</div><div id="admonition-label" class="admonition tip">
+</div><div id="admonition-label" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Label</p>
 <p><a class="admonition-anchor-link" href="Events_System.html#admonition-label"></a></p>
@@ -4771,7 +4778,7 @@ through these events.</p>
 </div>
 <h2 id="graphql-subscription"><a class="header" href="#graphql-subscription">GraphQL Subscription</a></h2>
 <p>It is possible to subscribe to these events via GraphQL subscription.</p>
-<div id="admonition-transform-and-zip-multiple-events" class="admonition tip">
+<div id="admonition-transform-and-zip-multiple-events" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Transform and Zip Multiple Events</p>
 <p><a class="admonition-anchor-link" href="Events_System.html#admonition-transform-and-zip-multiple-events"></a></p>
@@ -4782,7 +4789,7 @@ through these events.</p>
 </div>
 <h3 id="get-new-components"><a class="header" href="#get-new-components">Get new components</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventComponentCreated {
-  entity(label: &quot;/org/inexor/event/type/component/created&quot;, propertyName: &quot;event&quot;) {
+  entity(label: "/org/inexor/event/type/component/created", propertyName: "event") {
     name
     value
     type {
@@ -4794,7 +4801,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-which-components-have-been-deleted"><a class="header" href="#get-which-components-have-been-deleted">Get which components have been deleted</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventComponentDeleted {
-  entity(label: &quot;/org/inexor/event/type/component/deleted&quot;, propertyName: &quot;event&quot;) {
+  entity(label: "/org/inexor/event/type/component/deleted", propertyName: "event") {
     name
     value
     type {
@@ -4806,7 +4813,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-new-flows"><a class="header" href="#get-new-flows">Get new flows</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventFlowCreated {
-  entity(label: &quot;/org/inexor/event/instance/flow/created&quot;, propertyName: &quot;event&quot;) {
+  entity(label: "/org/inexor/event/instance/flow/created", propertyName: "event") {
     name
     value
     type {
@@ -4818,7 +4825,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-which-flows-have-been-deleted"><a class="header" href="#get-which-flows-have-been-deleted">Get which flows have been deleted</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventCFlowDeleted {
-  entity(label: &quot;/org/inexor/event/instance/flow/deleted&quot;, propertyName: &quot;event&quot;) {
+  entity(label: "/org/inexor/event/instance/flow/deleted", propertyName: "event") {
     name
     value
     type {
@@ -4840,10 +4847,10 @@ through these events.</p>
   instances {
     entities {
       update(
-        label: &quot;/org/inexor/commands/core/shutdown&quot;
+        label: "/org/inexor/commands/core/shutdown"
         properties: [
           {
-            name: &quot;shutdown&quot;
+            name: "shutdown"
             value: 5
           }
         ]
@@ -4854,7 +4861,7 @@ through these events.</p>
         }
         properties(
           names: [
-            &quot;shutdown&quot;
+            "shutdown"
           ]
         ) {
           name
@@ -5280,46 +5287,33 @@ end
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="builders"><a class="header" href="#builders">Builders</a></h1>
 <p>The builder pattern is useful when you would otherwise require many constructors or where construction has side effects.</p>
-<div id="admonition-cargotoml" class="admonition tip">
-<div class="admonition-title">
-<p>Cargo.toml</p>
-<p><a class="admonition-anchor-link" href="API_Builders.html#admonition-cargotoml"></a></p>
-</div>
-<div>
-<p>Don't forget to include the dependency:</p>
-<blockquote>
-<p>[dependencies]<br>
-inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf-core-builder.git&quot; }</p>
-</blockquote>
-</div>
-</div>
 <h2 id="component-builder"><a class="header" href="#component-builder">Component Builder</a></h2>
 <p>Constructs a new component programmatically.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_component() -&gt; Component {
-    ComponentBuilder::new(&quot;namespace&quot;, &quot;component_name&quot;)
-        .description(&quot;A test component with several properties&quot;)
+    ComponentBuilder::new("namespace", "component_name")
+        .description("A test component with several properties")
         // Provide properties
-        .property(&quot;property_1&quot;, DataType::String)
-        .property_from(PropertyType::new(&quot;property_2&quot;, DataType::Bool))
-        .string_property(&quot;property_3&quot;)
-        .bool_property(&quot;property_4&quot;)
-        .number_property(&quot;property_5&quot;)
-        .array_property(&quot;property_6&quot;)
-        .object_property(&quot;property_7&quot;)
-        .input_property(&quot;property_8&quot;, DataType::Bool)
-        .output_property(&quot;property_9&quot;, DataType::Bool)
+        .property("property_1", DataType::String)
+        .property_from(PropertyType::new("property_2", DataType::Bool))
+        .string_property("property_3")
+        .bool_property("property_4")
+        .number_property("property_5")
+        .array_property("property_6")
+        .object_property("property_7")
+        .input_property("property_8", DataType::Bool)
+        .output_property("property_9", DataType::Bool)
         // Provide extensions
-        .extension(&quot;security&quot;, json!({
+        .extension("security", json!({
             roles: [
-                &quot;ADMIN&quot;
+                "ADMIN"
             ]
         }))
         .build()
 }
 <span class="boring">}</span></code></pre></pre>
-<div id="admonition-register-component" class="admonition tip">
+<div id="admonition-register-component" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Register Component</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-register-component"></a></p>
@@ -5334,24 +5328,24 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn build_entity_type() -&gt; EntityType {
-    EntityTypeBuilder::new(&quot;namespace&quot;, &quot;entity_type_name&quot;)
-        .description(&quot;A test entity type&quot;)
+    EntityTypeBuilder::new("namespace", "entity_type_name")
+        .description("A test entity type")
         // Compose with the labeled component
-        .component(&quot;labeled&quot;)
+        .component("labeled")
         // Provide additional properties
-        .property(&quot;property_1&quot;, DataType::String)
-        .property_from(PropertyType::new(&quot;property_2&quot;, DataType::Bool))
-        .string_property(&quot;property_3&quot;)
-        .bool_property(&quot;property_4&quot;)
-        .number_property(&quot;property_5&quot;)
-        .input_property(&quot;property_6&quot;, DataType::Bool)
-        .output_property(&quot;property_7&quot;, DataType::Bool)
+        .property("property_1", DataType::String)
+        .property_from(PropertyType::new("property_2", DataType::Bool))
+        .string_property("property_3")
+        .bool_property("property_4")
+        .number_property("property_5")
+        .input_property("property_6", DataType::Bool)
+        .output_property("property_7", DataType::Bool)
         // Provide extensions
-        .extension(&quot;usage&quot;, json!(&quot;ls [OPTION]... [FILE]...&quot;))
+        .extension("usage", json!("ls [OPTION]... [FILE]..."))
         .build()
 }
 <span class="boring">}</span></code></pre></pre>
-<div id="admonition-register-entity-type" class="admonition tip">
+<div id="admonition-register-entity-type" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Register Entity Type</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-register-entity-type"></a></p>
@@ -5368,30 +5362,30 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
 </span>fn build_relation_type() -&gt; RelationType {
     RelationTypeBuilder::new(
         // Outbound Entity Type
-        &quot;teleport&quot;,
+        "teleport",
         // Relation Type Name
-        &quot;teleports_to&quot;,
+        "teleports_to",
         // Inbound Entity Type
-        &quot;tele_destination&quot;
+        "tele_destination"
     )
-        .description(&quot;A relation type which connects a teleport with a tele destination. The property weight defines the probability&quot;)
+        .description("A relation type which connects a teleport with a tele destination. The property weight defines the probability")
         // Compose with the weighted component
-        .component(&quot;weighted&quot;)
+        .component("weighted")
         // Provide additional properties
-        .property(&quot;property_1&quot;, DataType::String)
-        .property_from(PropertyType::new(&quot;property_2&quot;, DataType::Bool))
-        .string_property(&quot;property_3&quot;)
-        .bool_property(&quot;property_4&quot;)
-        .number_property(&quot;property_5&quot;)
-        .input_property(&quot;property_6&quot;, DataType::Bool)
-        .output_property(&quot;property_7&quot;, DataType::Bool)
+        .property("property_1", DataType::String)
+        .property_from(PropertyType::new("property_2", DataType::Bool))
+        .string_property("property_3")
+        .bool_property("property_4")
+        .number_property("property_5")
+        .input_property("property_6", DataType::Bool)
+        .output_property("property_7", DataType::Bool)
         // Provide extensions
-        .extension(&quot;flow_arrow_color&quot;, json!(&quot;#ff7700&quot;))
-        .extension(&quot;flow_arrow_labeling&quot;, json!(&quot;teleports from {outbound.name} to {inbound.name}&quot;))
+        .extension("flow_arrow_color", json!("#ff7700"))
+        .extension("flow_arrow_labeling", json!("teleports from {outbound.name} to {inbound.name}"))
         .build()
 }
 <span class="boring">}</span></code></pre></pre>
-<div id="admonition-register-relation-type" class="admonition tip">
+<div id="admonition-register-relation-type" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Register Relation Type</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-register-relation-type"></a></p>
@@ -5408,67 +5402,67 @@ inexor-rgf-core-builder = { git = &quot;https://github.com/inexorgame/inexor-rgf
 </span>fn build_entity_instance(type_name: String) -&gt; EntityInstance {
     EntityInstanceBuilder::new(type_name)
         .id(id)
-        .property(&quot;property_1&quot;, json!(&quot;value_1&quot;))
+        .property("property_1", json!("value_1"))
         .get()
 }
 
 fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance {
     EntityInstanceBuilder::from(entity_type)
         .id(id)
-        .property(&quot;property_1&quot;, json!(&quot;value_1&quot;))
+        .property("property_1", json!("value_1"))
         .get()
 }
 <span class="boring">}</span></code></pre></pre>
-<div id="admonition-create-reactive-entity-instance" class="admonition tip">
+<div id="admonition-create-reactive-entity-instance" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Create Reactive Entity Instance</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-create-reactive-entity-instance"></a></p>
 </div>
 <div>
 <p>The entity instance is non-reactive and not yet registered.</p>
-<p>Create a reactive instance and register it using <code>ReactiveEntityInstanceManager::create_reactive_instance</code></p>
+<p>Create a reactive instance and register it using <code>ReactiveEntityManager::create_reactive_instance</code></p>
 </div>
 </div>
 <h2 id="relation-instance-builder"><a class="header" href="#relation-instance-builder">Relation Instance Builder</a></h2>
 <p>Constructs a new relation instance programmatically. This is the non-reactive variant.</p>
-<div id="admonition-create-reactive-relation-instance" class="admonition tip">
+<div id="admonition-create-reactive-relation-instance" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Create Reactive Relation Instance</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-create-reactive-relation-instance"></a></p>
 </div>
 <div>
 <p>The relation instance is non-reactive and not yet registered.</p>
-<p>Create a reactive instance and register it using <code>ReactiveRelationInstanceManager::create_reactive_instance</code></p>
+<p>Create a reactive instance and register it using <code>ReactiveRelationManager::create_reactive_instance</code></p>
 </div>
 </div>
 <h2 id="reactive-entity-instance-builder"><a class="header" href="#reactive-entity-instance-builder">Reactive Entity Instance Builder</a></h2>
 <p>Constructs a new reactive entity instance programmatically.</p>
-<div id="admonition-register-reactive-entity-instance" class="admonition tip">
+<div id="admonition-register-reactive-entity-instance" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Register Reactive Entity Instance</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-register-reactive-entity-instance"></a></p>
 </div>
 <div>
 <p>The reactive entity instance is fully functional, but not yet registered.</p>
-<p>Register the reactive entity instance using <code>ReactiveEntityInstanceManager::register_reactive_instance</code></p>
+<p>Register the reactive entity instance using <code>ReactiveEntityManager::register_reactive_instance</code></p>
 </div>
 </div>
 <h2 id="reactive-relation-instance-builder"><a class="header" href="#reactive-relation-instance-builder">Reactive Relation Instance Builder</a></h2>
 <p>Constructs a new reactive relation instance programmatically.</p>
-<div id="admonition-register-reactive-relation-instance" class="admonition tip">
+<div id="admonition-register-reactive-relation-instance" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Register Reactive Relation Instance</p>
 <p><a class="admonition-anchor-link" href="API_Builders.html#admonition-register-reactive-relation-instance"></a></p>
 </div>
 <div>
 <p>The reactive relation instance is fully functional, but not yet registered.</p>
-<p>Register the reactive relation instance using <code>ReactiveRelationInstanceManager::register_reactive_instance</code></p>
+<p>Register the reactive relation instance using <code>ReactiveRelationManager::register_reactive_instance</code></p>
 </div>
 </div>
 <h2 id="flow-builder"><a class="header" href="#flow-builder">Flow Builder</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="runtime-builder"><a class="header" href="#runtime-builder">Runtime Builder</a></h1>
 <p>The <code>RuntimeBuilder</code> is a builder for <code>inexor_rgf_rt</code>.</p>
-<div id="admonition-use-cases" class="admonition tip">
+<div id="admonition-use-cases" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Use cases</p>
 <p><a class="admonition-anchor-link" href="API_RuntimeBuilder.html#admonition-use-cases"></a></p>
@@ -5626,7 +5620,7 @@ call the shutdown method.</p>
 <h3 id="linux-1"><a class="header" href="#linux-1">Linux</a></h3>
 <p>We support x86_64 / arm7 / aarch Linux. Chances are that it works with other targets, too, but haven't been tested.</p>
 <p>We have specific build instructions for Ubuntu and Raspberry Pi 2-4.</p>
-<div id="admonition-libc" class="admonition tip">
+<div id="admonition-libc" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>libc</p>
 <p><a class="admonition-anchor-link" href="Development_Supported_Platforms.html#admonition-libc"></a></p>
@@ -5661,7 +5655,7 @@ os: ubuntu-20.04</p>
 <tr><td>armv7-unknown-linux-gnueabihf</td><td>binutils-arm-linux-gnueabihf</td></tr>
 <tr><td>x86_64-pc-windows-gnu</td><td>binutils-mingw-w64-x86-64</td></tr>
 </tbody></table>
-</div><div id="admonition-ubuntu-packages-for-binutils" class="admonition tip">
+</div><div id="admonition-ubuntu-packages-for-binutils" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Ubuntu packages for binutils</p>
 <p><a class="admonition-anchor-link" href="Development_Supported_Platforms.html#admonition-ubuntu-packages-for-binutils"></a></p>
@@ -5670,7 +5664,7 @@ os: ubuntu-20.04</p>
 <p>Run <code>apt-cache search binutils</code> for getting a list of possible binutils packages.</p>
 </div>
 </div>
-<div id="admonition-cargo-configuration" class="admonition tip">
+<div id="admonition-cargo-configuration" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Cargo Configuration</p>
 <p><a class="admonition-anchor-link" href="Development_Supported_Platforms.html#admonition-cargo-configuration"></a></p>
@@ -5680,7 +5674,7 @@ os: ubuntu-20.04</p>
 </div>
 </div>
 <h4 id="rust-platform-support"><a class="header" href="#rust-platform-support">Rust Platform Support</a></h4>
-<div id="admonition-rust-platform-support" class="admonition tip">
+<div id="admonition-rust-platform-support" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Rust Platform Support</p>
 <p><a class="admonition-anchor-link" href="Development_Supported_Platforms.html#admonition-rust-platform-support"></a></p>
@@ -5694,7 +5688,7 @@ os: ubuntu-20.04</p>
 <h3 id="linux--raspberry-pi--macos"><a class="header" href="#linux--raspberry-pi--macos">Linux / Raspberry Pi / MacOS</a></h3>
 <pre><code class="language-shell">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
-<div id="admonition-rustup" class="admonition info">
+<div id="admonition-rustup" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Rustup</p>
 <p><a class="admonition-anchor-link" href="Development_Build.html#admonition-rustup"></a></p>
@@ -5704,13 +5698,14 @@ os: ubuntu-20.04</p>
 </div>
 </div>
 <h3 id="windows-1"><a class="header" href="#windows-1">Windows</a></h3>
-<p>Please follow the instructions for <a href="https://rust-lang.github.io/rustup/installation/other.html">Installing rustup on Windows</a></p>
+<p>Please follow the instructions
+for <a href="https://rust-lang.github.io/rustup/installation/other.html">Installing rustup on Windows</a></p>
 <h2 id="install-nightly-toolchain"><a class="header" href="#install-nightly-toolchain">Install nightly toolchain</a></h2>
 <p>Once you have rustup up and running, please install the <code>nightly</code> toolchain.</p>
 <pre><code class="language-shell">rustup update nightly
 </code></pre>
 <h2 id="clone-the-repository"><a class="header" href="#clone-the-repository">Clone the repository</a></h2>
-<pre><code class="language-shell">git clone https://github.com/inexorgame/inexor-rgf-application.git
+<pre><code class="language-shell">git clone https://github.com/reactive-graph/reactive-graph.git
 </code></pre>
 <h2 id="build-the-application"><a class="header" href="#build-the-application">Build the application</a></h2>
 <p>Build in development mode:</p>
@@ -5721,7 +5716,7 @@ cargo build
 <pre><code class="language-shell">cd inexor-rgf-application
 cargo build --release
 </code></pre>
-<div id="admonition-cargo" class="admonition info">
+<div id="admonition-cargo" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Cargo</p>
 <p><a class="admonition-anchor-link" href="Development_Build.html#admonition-cargo"></a></p>
@@ -5744,7 +5739,7 @@ the Rust community’s package registry.</p>
 <pre><code class="language-shell">git pull
 </code></pre>
 </li>
-<li>(Optional) If you want a completely clean build 
+<li>(Optional) If you want a completely clean build
 <pre><code class="language-shell">cargo clean
 </code></pre>
 </li>
@@ -5758,7 +5753,7 @@ the Rust community’s package registry.</p>
 </li>
 <li>Repeat this for all plugins</li>
 </ol>
-<div id="admonition-plugin-api-version-must-match" class="admonition warning">
+<div id="admonition-plugin-api-version-must-match" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Plugin API version must match</p>
 <p><a class="admonition-anchor-link" href="Development_Build.html#admonition-plugin-api-version-must-match"></a></p>
@@ -5770,8 +5765,8 @@ the Rust community’s package registry.</p>
 <h2 id="build-plugins"><a class="header" href="#build-plugins">Build plugins</a></h2>
 <h3 id="checkout-and-build-the-plugin"><a class="header" href="#checkout-and-build-the-plugin">Checkout and build the plugin</a></h3>
 <pre><code class="language-shell">cd ..
-git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
-cd inexor-rgf-plugin-mqtt
+git clone https://github.com/reactive-graph/plugin-mqtt.git
+cd plugin-mqtt
 </code></pre>
 <p>Build in development mode:</p>
 <pre><code class="language-shell">cargo build
@@ -5784,11 +5779,11 @@ cd inexor-rgf-plugin-mqtt
 the path to the dynamically linked library. The path can be either absolute or relative to the working directory of the
 application.</p>
 <pre><code class="language-toml">[[plugin]]
-name = &quot;inexor-rgf-plugin-mqtt&quot;
+name = "plugin-mqtt"
 active = true
-path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so&quot;
+path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 </code></pre>
-<div id="admonition-artifact-location" class="admonition tip">
+<div id="admonition-artifact-location" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Artifact Location</p>
 <p><a class="admonition-anchor-link" href="Development_Build.html#admonition-artifact-location"></a></p>
@@ -5797,7 +5792,7 @@ path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so
 <p>Release builds are located in <code>target/release</code> instead of <code>target/debug</code></p>
 </div>
 </div>
-<div id="admonition-configure-plugins" class="admonition info">
+<div id="admonition-configure-plugins" class="admonition admonish-info">
 <div class="admonition-title">
 <p>Configure plugins</p>
 <p><a class="admonition-anchor-link" href="Development_Build.html#admonition-configure-plugins"></a></p>
@@ -5809,7 +5804,7 @@ path = &quot;../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so
 <h3 id="plugin-compatibility"><a class="header" href="#plugin-compatibility">Plugin Compatibility</a></h3>
 <pre><code class="language-log">17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../inexor-rgf-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
 </code></pre>
-<div id="admonition-rust-compiler" class="admonition warning">
+<div id="admonition-rust-compiler" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Rust Compiler</p>
 <p><a class="admonition-anchor-link" href="Development_Build.html#admonition-rust-compiler"></a></p>
@@ -5837,7 +5832,7 @@ cargo build
 <pre><code class="language-shell"># Build binary with release profile
 cargo build --release
 </code></pre>
-<div id="admonition-release-profiles" class="admonition tip">
+<div id="admonition-release-profiles" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Release Profiles</p>
 <p><a class="admonition-anchor-link" href="Development_Binaries.html#admonition-release-profiles"></a></p>
@@ -5849,7 +5844,7 @@ cargo build --release
 </ul>
 </div>
 </div>
-<div id="admonition-optimization-levels" class="admonition tip">
+<div id="admonition-optimization-levels" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Optimization Levels</p>
 <p><a class="admonition-anchor-link" href="Development_Binaries.html#admonition-optimization-levels"></a></p>
@@ -5861,7 +5856,7 @@ cargo build --release
 </ul>
 </div>
 </div>
-<div id="admonition-strip-symbols" class="admonition tip">
+<div id="admonition-strip-symbols" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Strip Symbols</p>
 <p><a class="admonition-anchor-link" href="Development_Binaries.html#admonition-strip-symbols"></a></p>
@@ -5882,7 +5877,7 @@ opt-level = 3
 # 12MB -&gt; 7.8MB
 lto = true
 # 7.8MB -&gt; 4.5MB
-strip = &quot;symbols&quot;
+strip = "symbols"
 </code></pre>
 <h2 id="plugin-sodll"><a class="header" href="#plugin-sodll">Plugin (.so/.dll)</a></h2>
 <pre><code class="language-toml">[profile.dev]
@@ -5893,7 +5888,7 @@ opt-level = 3
 # 12MB -&gt; 7.8MB
 lto = true
 # 7.8MB -&gt; 4.5MB
-strip = &quot;symbols&quot;
+strip = "symbols"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development--packaging"><a class="header" href="#development--packaging">Development / Packaging</a></h1>
 <h2 id="cargo-rust-package-manager"><a class="header" href="#cargo-rust-package-manager">cargo (Rust Package Manager)</a></h2>
@@ -5903,19 +5898,19 @@ strip = &quot;symbols&quot;
 <p>We are creating debian packages using <a href="https://crates.io/crates/cargo-deb">cargo-deb</a>.</p>
 <p>The configuration of the debian package is defined in <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[package.metadata.deb]
-name = &quot;inexor-rgf&quot;
-maintainer-scripts = &quot;debian/maintainer-scripts&quot;
+name = "inexor-rgf"
+maintainer-scripts = "debian/maintainer-scripts"
 assets = [
-    [&quot;target/release/inexor-rgf-rt-standalone&quot;, &quot;usr/bin/inexor-rgf&quot;, &quot;755&quot;],
+    ["target/release/inexor-rgf-rt-standalone", "usr/bin/inexor-rgf", "755"],
     # more assets omitted...
 ]
 
 [package.metadata.deb.systemd-units]
-unit-name = &quot;inexor-rgf@&quot;
+unit-name = "inexor-rgf@"
 enable = true
 restart-after-upgrade = true
 </code></pre>
-<div id="admonition-installation-instructions-for-debian" class="admonition tip">
+<div id="admonition-installation-instructions-for-debian" class="admonition admonish-tip">
 <div class="admonition-title">
 <p>Installation instructions for Debian</p>
 <p><a class="admonition-anchor-link" href="Development_Packaging.html#admonition-installation-instructions-for-debian"></a></p>
@@ -5987,7 +5982,7 @@ cargo install mdbook-preprocessor-graphql-playground
 <pre><code class="language-shell">mdbook serve --open
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="limitations-1"><a class="header" href="#limitations-1">Limitations</a></h1>
-<div id="admonition-not-yet-ready-for-production" class="admonition warning">
+<div id="admonition-not-yet-ready-for-production" class="admonition admonish-warning">
 <div class="admonition-title">
 <p>Not yet ready for production</p>
 <p><a class="admonition-anchor-link" href="Limitations.html#admonition-not-yet-ready-for-production"></a></p>
@@ -5999,7 +5994,7 @@ cargo install mdbook-preprocessor-graphql-playground
 <h2 id="1-no-security-layer"><a class="header" href="#1-no-security-layer">1. No security layer</a></h2>
 <p>Currently, there is no security layer. The HTTP/GraphQL/DynamicGraph endpoint needs to be protected.</p>
 <h2 id="2-building-requires-rust-nightly"><a class="header" href="#2-building-requires-rust-nightly">2. Building requires rust nightly</a></h2>
-<p>There are specific features in rust nightly we are building 
+<p>There are specific features in rust nightly we are building
 Currently, these limitations exist:</p>
 <ol>
 <li>No security layer yet</li>
