@@ -28,39 +28,39 @@ This plugin provides logical gates and operations.
 |--------------|-------------------|--------------|----------|------------|---------------------------------------------------------------------------------------|
 | not          | logical_operation | lhs          | bool     | input      | NOT-Operation                                                                         |
 |              | logical_operation | result       | bool     | output     |                                                                                       |
-||
+|              |
 | and          | logical_gate      | lhs          | bool     | input      | AND-Gate                                                                              |
 |              | logical_gate      | rhs          | bool     | input      |                                                                                       |
 |              | logical_gate      | result       | bool     | output     |                                                                                       |
-||
+|              |
 | nand         | logical_gate      | lhs          | bool     | input      | NAND-Gate                                                                             | 
 |              | logical_gate      | rhs          | bool     | input      |                                                                                       |
 |              | logical_gate      | result       | bool     | output     |                                                                                       |
-||
+|              |
 | nor          | logical_gate      | lhs          | bool     | input      | NOR-Gate                                                                              |
 |              | logical_gate      | rhs          | bool     | input      |                                                                                       |
 |              | logical_gate      | result       | bool     | output     |                                                                                       |
-||
+|              |
 | or           | logical_gate      | lhs          | bool     | input      | OR-Gate                                                                               |
 |              | logical_gate      | rhs          | bool     | input      |                                                                                       |
 |              | logical_gate      | result       | bool     | output     |                                                                                       |
-||
+|              |
 | xor          | logical_gate      | lhs          | bool     | input      | XOR-Gate                                                                              |
 |              | logical_gate      | rhs          | bool     | input      |                                                                                       |
 |              | logical_gate      | result       | bool     | output     |                                                                                       |
-||
+|              |
 | xnor         | logical_gate      | lhs          | bool     | input      | XNOR-Gate                                                                             |
 |              | logical_gate      | rhs          | bool     | input      |                                                                                       |
 |              | logical_gate      | result       | bool     | output     |                                                                                       |
-||
+|              |
 | if_then_else | condition         | condition    | bool     | input      | Each time it's triggered, either the then-payload or the else-payload gets propagated |
 |              |                   | then_payload | any      | input      | Will be propagated if the condition is `true`                                         |
 |              |                   | else_payload | any      | input      | Will be propagated if the condition is `false`                                        |
 |              | condition         | result       | any      | output     |                                                                                       |
-||
+|              |
 | toggle       | action            | trigger      | bool     | input      | If triggered the result will toggled                                                  |
 |              | action            | result       | bool     | output     |                                                                                       |
-||
+|              |
 | trigger      | action            | trigger      | bool     | input      | If triggered the payload will be copied to the result                                 |
 |              |                   | payload      | any      | input      |                                                                                       |
 |              | action            | result       | any      | output     |                                                                                       |
@@ -75,9 +75,9 @@ This plugin provides logical gates and operations.
 
 ## Repository
 
-| Name                      | Repository                                                                                                                                               |
-|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-logical | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/logical](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/logical) |
+| Name                      | Repository                                                                                                                                           |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-logical | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical](https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical) |
 
 ## Usage
 

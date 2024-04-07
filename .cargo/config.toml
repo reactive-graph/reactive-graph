@@ -1,5 +1,5 @@
-[build]
-rustflags = ["-Z", "threads=8"]
+#[build]
+#rustflags = ["-Z", "threads=8"]
 
 [target.aarch64-unknown-linux-gnu]
 objcopy = { path = "aarch64-linux-gnu-objcopy" }

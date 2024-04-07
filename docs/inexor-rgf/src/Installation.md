@@ -119,14 +119,14 @@ because the runtime is able to hot deploy plugins.
 
 Another way is to install the debian packages manually:
 
-1. Download the debian package from [GitHub](https://github.com/inexorgame/inexor-rgf-application/releases)
+1. Download the debian package from [GitHub](https://github.com/reactive-graph/reactive-graph/releases)
 
     ```shell
     mkdir -p /tmp/inexor-rgf
     cd /tmp/inexor-rgf
-    wget https://github.com/inexorgame/inexor-rgf-application/releases/download/{version}/inexor-rgf_{version}_amd64.deb
+    wget https://github.com/reactive-graph/reactive-graph/releases/download/{version}/inexor-rgf_{version}_amd64.deb
     ```
- 
+
 2. Install the package via `dpkg`
 
     ```shell
@@ -182,10 +182,10 @@ sudo systemctl restart inexor-rgf@instance-name
 
 You can install the binary packages manually:
 
-1. Download the binary from https://github.com/inexorgame/inexor-rgf-application/releases
+1. Download the binary from https://github.com/reactive-graph/reactive-graph/releases
 
     ```shell
-    wget https://github.com/inexorgame/inexor-rgf-application/releases/download/v{version}/inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
+    wget https://github.com/reactive-graph/reactive-graph/releases/download/v{version}/inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
     ```
 
 2. Extract the binary
@@ -215,7 +215,7 @@ We plan to provide an installer for windows.
 
 ### Manually install binaries
 
-1. Download the latest binary from https://github.com/inexorgame/inexor-rgf-application/releases
+1. Download the latest binary from https://github.com/reactive-graph/reactive-graph/releases
 2. Unzip the archive
 3. Change into the directory
 4. Execute `inexor-rgf-rt-standalone.exe`
@@ -228,7 +228,7 @@ Please follow the [Build Instructions](./Development_Build.md).
 
 ### Manually install binaries
 
-1. Download the latest binary from https://github.com/inexorgame/inexor-rgf-application/releases
+1. Download the latest binary from https://github.com/reactive-graph/reactive-graph/releases
 2. Extract the archive
 3. Change into the directory
 4. Execute `inexor-rgf-rt-standalone`

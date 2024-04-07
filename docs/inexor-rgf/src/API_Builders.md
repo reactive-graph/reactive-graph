@@ -2,12 +2,6 @@
 
 The builder pattern is useful when you would otherwise require many constructors or where construction has side effects.
 
-```admonish tip "Cargo.toml"
-Don't forget to include the dependency:
-> [dependencies]<br>
-> inexor-rgf-core-builder = { git = "https://github.com/inexorgame/inexor-rgf-core-builder.git" }
-```
-
 ## Component Builder
 
 Constructs a new component programmatically.
@@ -165,6 +159,5 @@ The reactive relation instance is fully functional, but not yet registered.
 
 Register the reactive relation instance using `ReactiveRelationManager::register_reactive_instance`
 ```
-
 
 ## Flow Builder

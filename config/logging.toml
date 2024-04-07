@@ -32,7 +32,7 @@ pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 
 [appenders.file-plugin-mqtt]
 kind = "file"
-path = "log/inexor-rgf-plugin-mqtt.log"
+path = "log/plugin-mqtt.log"
 
 [appenders.file-plugin-mqtt.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
@@ -41,7 +41,7 @@ pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 # Set the default logging level to "warn" and attach the "stdout" appender to the root
 [root]
 level = "debug"
-appenders = [ "stdout", "file-application" ]
+appenders = ["stdout", "file-application"]
 
 # How to configure the loggers: https://docs.rs/log4rs/1.0.0/log4rs/
 
@@ -279,7 +279,7 @@ level = "warn"
 
 [loggers."rumqttc::state"]
 level = "debug"
-appenders = [ "file-plugin-mqtt" ]
+appenders = ["file-plugin-mqtt"]
 additive = false
 
 [loggers."reqwest"]

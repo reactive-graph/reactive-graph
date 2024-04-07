@@ -62,9 +62,9 @@ Numeric operations
 
 ## Repository
 
-| Name                      | Repository                                                                                                                                               |
-|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-numeric | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/numeric](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/numeric) |
+| Name                      | Repository                                                                                                                                           |
+|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-numeric | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/numeric](https://github.com/reactive-graph/plugins-core/tree/main/plugins/numeric) |
 
 ## Usage
 

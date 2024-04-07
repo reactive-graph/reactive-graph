@@ -33,9 +33,9 @@ With this plugin it's possible to integrate external services into your home aut
 
 ## Repository
 
-| Name                   | Repository                                                                                                                                         |
-|------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-http | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/http](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/http) |
+| Name                   | Repository                                                                                                                                     |
+|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-http | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/http](https://github.com/reactive-graph/plugins-core/tree/main/plugins/http) |
 
 ## Usage
 
@@ -47,7 +47,7 @@ With this plugin it's possible to integrate external services into your home aut
 
 #### Create HTTP Request
 
-First create an entity instance of type `http` and specify the URL and the method. 
+First create an entity instance of type `http` and specify the URL and the method.
 
 ```admonish tip "How to execute the HTTP Request"
 By creating the entity instance no request will be made. The next example explains how to execute the request.

@@ -22,9 +22,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 
 ## Components
 
-| Name        | Property | Data Type | Socket Type | Description                                |
-|-------------|----------|-----------|-------------|--------------------------------------------|
-| binary_data | data_url | string    | none        | Data-URL, BASE64 encoded                   |
+| Name        | Property | Data Type | Socket Type | Description              |
+|-------------|----------|-----------|-------------|--------------------------|
+| binary_data | data_url | string    | none        | Data-URL, BASE64 encoded |
 
 ## Entity Types
 
@@ -42,11 +42,10 @@ Feed the streams with binary data from files.
 
 Download binary resources via HTTP.
 
-| HTTP Method | Resource Pattern                        | Description                                                              |
-|-------------|-----------------------------------------|--------------------------------------------------------------------------|
-| GET         | /binary/entities/{uuid}/{property_name} | Converts the Data-URL into a binary data and returns it as web resource  |
-| GET         | /binary//entities/label/*label          | Converts the Data-URL into a binary data and returns it as web resource  |
-
+| HTTP Method | Resource Pattern                        | Description                                                             |
+|-------------|-----------------------------------------|-------------------------------------------------------------------------|
+| GET         | /binary/entities/{uuid}/{property_name} | Converts the Data-URL into a binary data and returns it as web resource |
+| GET         | /binary//entities/label/*label          | Converts the Data-URL into a binary data and returns it as web resource |
 
 ### Examples
 
@@ -65,9 +64,9 @@ Download binary resources via HTTP.
 
 ## Repository
 
-| Name                     | Repository                                                                                                                                             |
-|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-binary | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/binary](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/binary) |
+| Name                     | Repository                                                                                                                                         |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-binary | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary](https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary) |
 
 ## Resources
 

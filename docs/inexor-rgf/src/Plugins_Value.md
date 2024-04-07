@@ -5,17 +5,17 @@ This plugin provides value components. Value components contains a single proper
 
 ## Components
 
-| *Component*            | *Properties* | *Data Type* | *Socket Type* | Description                           |
-|------------------------|--------------|-------------|---------------|---------------------------------------|
-|                        |
-| value_boolean          | value        | boolean     | output        | A boolean value                       |
-| value_number           | value        | number      | output        | A numeric value                       |
-| value_string           | value        | string      | output        | A string value                        |
-| value_array            | value        | array       | output        | A array value                         |
-| value_object           | value        | object      | output        | A object value                        | 
-|                        |
-| value_debugger_debug   |              |             |               | Debugger for values (log level debug) |
-| value_debugger_trace   |              |             |               | Debugger for values (log level trace) |
+| *Component*          | *Properties* | *Data Type* | *Socket Type* | Description                           |
+|----------------------|--------------|-------------|---------------|---------------------------------------|
+|                      |
+| value_boolean        | value        | boolean     | output        | A boolean value                       |
+| value_number         | value        | number      | output        | A numeric value                       |
+| value_string         | value        | string      | output        | A string value                        |
+| value_array          | value        | array       | output        | A array value                         |
+| value_object         | value        | object      | output        | A object value                        | 
+|                      |
+| value_debugger_debug |              |             |               | Debugger for values (log level debug) |
+| value_debugger_trace |              |             |               | Debugger for values (log level trace) |
 
 ## Entity Types
 
@@ -37,9 +37,9 @@ This plugin provides value components. Value components contains a single proper
 
 ## Repositories
 
-| Name                    | Repository                                                                                                                                           |
-|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-value | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/value](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/value) |
+| Name                    | Repository                                                                                                                                       |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-value | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/value](https://github.com/reactive-graph/plugins-core/tree/main/plugins/value) |
 
 ## See also
 

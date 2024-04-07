@@ -2,10 +2,10 @@
 
 This plugin provides a web based GraphQL client.
 
-| URL                                                                                                       | API                                         |
-|-----------------------------------------------------------------------------------------------------------|---------------------------------------------|
-| [http://hostname:31415/graphql-client/graph](http://hostname:31415/graphql-client/graph)                  | [GraphQL API](./GraphQL_API.md)             |
-| [http://hostname:31415/graphql-client/dynamic-graph](http://hostname:31415/graphql-client/dynamic-graph)  | [Dynamic Graph API](./Dynamic_Graph_API.md) |
+| URL                                                                                                      | API                                         |
+|----------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| [http://hostname:31415/graphql-client/graph](http://hostname:31415/graphql-client/graph)                 | [GraphQL API](./GraphQL_API.md)             |
+| [http://hostname:31415/graphql-client/dynamic-graph](http://hostname:31415/graphql-client/dynamic-graph) | [Dynamic Graph API](./Dynamic_Graph_API.md) |
 
 ```admonish tip "Altair"
 This plugin uses [Altair](https://altair.sirmuel.design/).
@@ -25,7 +25,7 @@ Btw: You can also use Altair as standalone application or as firefox addon.
 
 ## Repositories
 
-| Name                             | Repository                                                                                                                                                             |
-|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-graphql-client | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/graphql-client](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/graphql-client) |
-| Altair GraphQL Client            | [https://github.com/altair-graphql/altair](https://github.com/altair-graphql/altair)                                                                                   |
+| Name                             | Repository                                                                                                                                                         |
+|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-graphql-client | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client](https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client) |
+| Altair GraphQL Client            | [https://github.com/altair-graphql/altair](https://github.com/altair-graphql/altair)                                                                               |

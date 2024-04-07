@@ -29,9 +29,9 @@
 
 ## Repository
 
-| Name                         | Repository                                                                                                                                                     |
-|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-comparison | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/comparison](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/comparison) |
+| Name                         | Repository                                                                                                                                                 |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-comparison | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/comparison](https://github.com/reactive-graph/plugins-core/tree/main/plugins/comparison) |
 
 ## Usage
 

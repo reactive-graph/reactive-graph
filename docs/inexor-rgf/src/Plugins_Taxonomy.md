@@ -14,21 +14,21 @@ This plugin provides a generic [taxonomy](https://en.wikipedia.org/wiki/Taxonomy
 
 ## Components
 
-| Name      | Properties | DataType | SocketType | Description                                                                   |
-|-----------|------------|----------|------------|-------------------------------------------------------------------------------|
-|           |
-| weighted  | weight     | number   | none       | The weight of a relation between two entity instances (Range from 0.0 to 1.0) |
+| Name     | Properties | DataType | SocketType | Description                                                                   |
+|----------|------------|----------|------------|-------------------------------------------------------------------------------|
+|          |
+| weighted | weight     | number   | none       | The weight of a relation between two entity instances (Range from 0.0 to 1.0) |
 
 ## Entity Types
 
 | Name     | Components  | Properties  | DataType | SocketType | Description                     |
 |----------|-------------|-------------|----------|------------|---------------------------------|
-||
+|          |
 | category | named       | name        | string   | none       | The name of the category        |
 |          | describable | description | string   | none       | The description of the category |
-||
+|          |
 | tag      | named       | name        | string   | none       | The tag name                    |
-||
+|          |
 
 ## Relation Types
 
@@ -48,9 +48,9 @@ This plugin provides a generic [taxonomy](https://en.wikipedia.org/wiki/Taxonomy
 
 ## Repositories
 
-| Name                       | Repository                                                                                                                                                 |
-|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-taxonomy | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/taxonomy](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/taxonomy) |
+| Name                       | Repository                                                                                                                                             |
+|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-taxonomy | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy](https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy) |
 
 ## Usage
 

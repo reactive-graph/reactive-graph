@@ -11,26 +11,26 @@ This plugin makes input devices (keyboard, mouse, gamepad, remote control...) av
     * Use a real keyboard (for example a wireless numpad keyboards) as interface to control flows
 * Robotics
     * Control your robot with keys or a 3d mouse
-    
+
 ## Event Types
 
 * Key ([List](https://docs.rs/evdev/latest/evdev/struct.Key.html#implementations))
-  * Keyboard Key
-  * Mouse Button
+    * Keyboard Key
+    * Mouse Button
 * Led ([List](https://docs.rs/evdev/latest/evdev/struct.LedType.html))
-  * Keyboard Led
+    * Keyboard Led
 * Relative Axis ([List](https://docs.rs/evdev/latest/evdev/struct.RelativeAxisType.html))
-  * Mouse Position XY
-  * Mouse Wheels
-  * Volume Wheels on Keyboards
+    * Mouse Position XY
+    * Mouse Wheels
+    * Volume Wheels on Keyboards
 * Absolute Axis ([List](https://docs.rs/evdev/latest/evdev/struct.AbsoluteAxisType.html))
-  * Joysticks
+    * Joysticks
 * Switch ([List](https://docs.rs/evdev/latest/evdev/struct.SwitchType.html))
-  * Lid shut
-  * Microphone Jack inserted
-  * Camera lens covered
-  * Front proximity sensor active
-  * Cover closed
+    * Lid shut
+    * Microphone Jack inserted
+    * Camera lens covered
+    * Front proximity sensor active
+    * Cover closed
 
 ## Entity Instances
 
@@ -67,30 +67,30 @@ This allows you to address a key/led/... event on a specific device or the key/l
 
 ## Entity Types
 
-| Name                    | Property           | Data Type   | Socket Type  |
-|-------------------------|--------------------|-------------|--------------|
-| InputDevice             | name               | string      | output       |
-|                         | event              | object      | output       |
-|                         | physical_path      | string      | output       |
-|                         | driver_version     | string      | output       |
-|                         | vendor             | number      | output       |
-|                         | product            | number      | output       |
-|                         | version            | number      | output       |
-| InputDeviceKey          | key                | string      | none         |
-|                         | key_code           | number      | none         |
-|                         | key_down           | bool        | output       |
-| InputDeviceLed          | led                | string      | none         |
-|                         | led_type           | number      | none         |
-|                         | state              | bool        | output       |
-| InputDeviceRelativeAxis | relative_axis      | string      | none         |
-|                         | relative_axis_type | number      | none         |
-|                         | state              | number      | output       |
-| InputDeviceAbsoluteAxis | absolute_axis      | string      | none         |
-|                         | absolute_axis_type | number      | none         |
-|                         | state              | number      | output       |
-| InputDeviceSwitch       | switch             | string      | none         |
-|                         | switch_type        | number      | none         |
-|                         | state              | number      | output       |
+| Name                    | Property           | Data Type | Socket Type |
+|-------------------------|--------------------|-----------|-------------|
+| InputDevice             | name               | string    | output      |
+|                         | event              | object    | output      |
+|                         | physical_path      | string    | output      |
+|                         | driver_version     | string    | output      |
+|                         | vendor             | number    | output      |
+|                         | product            | number    | output      |
+|                         | version            | number    | output      |
+| InputDeviceKey          | key                | string    | none        |
+|                         | key_code           | number    | none        |
+|                         | key_down           | bool      | output      |
+| InputDeviceLed          | led                | string    | none        |
+|                         | led_type           | number    | none        |
+|                         | state              | bool      | output      |
+| InputDeviceRelativeAxis | relative_axis      | string    | none        |
+|                         | relative_axis_type | number    | none        |
+|                         | state              | number    | output      |
+| InputDeviceAbsoluteAxis | absolute_axis      | string    | none        |
+|                         | absolute_axis_type | number    | none        |
+|                         | state              | number    | output      |
+| InputDeviceSwitch       | switch             | string    | none        |
+|                         | switch_type        | number    | none        |
+|                         | state              | number    | output      |
 
 ## Relation Types
 
@@ -133,9 +133,9 @@ This allows you to address a key/led/... event on a specific device or the key/l
 
 ## Repository
 
-| Name                           | Repository                                                                                                                                                         |
-|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-input-device | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/input-device](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/input-device) |
+| Name                           | Repository                                                                                                                                                     |
+|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-input-device | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/input-device](https://github.com/reactive-graph/plugins-core/tree/main/plugins/input-device) |
 
 ## Appendix: Input Device Types
 

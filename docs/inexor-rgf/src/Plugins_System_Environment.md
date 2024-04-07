@@ -13,10 +13,10 @@ The UUIDs of the entity instances are stable.
 
 Each entity instance which represents a system environment variable has a label.
 
-| System Env  | Label                         |
-|-------------|-------------------------------|
-| `$HOME`     | `/org/inexor/system/env/home` |
-| `$PATH`     | `/org/inexor/system/env/path` |
+| System Env | Label                         |
+|------------|-------------------------------|
+| `$HOME`    | `/org/inexor/system/env/home` |
+| `$PATH`    | `/org/inexor/system/env/path` |
 
 ## Entity Types
 
@@ -36,9 +36,9 @@ Each entity instance which represents a system environment variable has a label.
 
 ## Repository
 
-| Name                                 | Repository                                                                                                                                                                     |
-|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-system-environment | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-environment](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/system-environment) |
+| Name                                 | Repository                                                                                                                                                                 |
+|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-system-environment | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment](https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment) |
 
 ## Usage
 

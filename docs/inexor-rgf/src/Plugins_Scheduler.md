@@ -2,7 +2,7 @@
 
 Timers and scheduled jobs
 
-## Scheduled Jobs 
+## Scheduled Jobs
 
 A `scheduled job` triggers periodically using a cron expression.
 
@@ -58,7 +58,7 @@ and time elements and are not replaced.
 | `H`        | `H` is the hour designator that follows the value for the number of hours.                      |
 | `M`        | `M` is the minute designator that follows the value for the number of minutes.                  |
 | `S`        | `S` is the second designator that follows the value for the number of seconds.                  |
- 
+
 #### Examples
 
 | Duration           | Description                                                                                                  |
@@ -73,10 +73,10 @@ and time elements and are not replaced.
 
 | Name          | Component | Property | Data Type              | Socket Type | Description                                            |
 |---------------|-----------|----------|------------------------|-------------|--------------------------------------------------------|
-||
+|               |
 | scheduled_job |           | schedule | string                 | input       | Cron Expression                                        |
 |               | generator | trigger  | bool                   | output      |                                                        |
-||
+|               |
 | timer         |           | duration | number<br>or<br>string | input       | Duration in milliseconds or as ISO8601 Duration Format |
 |               | generator | trigger  | bool                   | output      |                                                        |
 
@@ -90,12 +90,12 @@ and time elements and are not replaced.
 
 ## Repositories
 
-| Name                        | Repository                                                                                                                                                   |
-|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-scheduler | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/scheduler](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/scheduler) |
-| tokio-cron-scheduler        | [https://github.com/mvniekerk/tokio-cron-scheduler](https://github.com/mvniekerk/tokio-cron-scheduler)                                                       |
-| cron expression parser      | [https://github.com/zslayton/cron](https://github.com/zslayton/cron)                                                                                         |
-| ISO8601 duration parser     | [https://github.com/PoiScript/iso8601-duration](https://github.com/PoiScript/iso8601-duration)                                                               |
+| Name                        | Repository                                                                                                                                               |
+|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-scheduler | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/scheduler](https://github.com/reactive-graph/plugins-core/tree/main/plugins/scheduler) |
+| tokio-cron-scheduler        | [https://github.com/mvniekerk/tokio-cron-scheduler](https://github.com/mvniekerk/tokio-cron-scheduler)                                                   |
+| cron expression parser      | [https://github.com/zslayton/cron](https://github.com/zslayton/cron)                                                                                     |
+| ISO8601 duration parser     | [https://github.com/PoiScript/iso8601-duration](https://github.com/PoiScript/iso8601-duration)                                                           |
 
 ## Usage
 

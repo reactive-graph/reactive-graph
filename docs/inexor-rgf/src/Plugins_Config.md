@@ -19,9 +19,9 @@ Read configuration files (TOML) into an entity instance.
 
 ## Repository
 
-| Name                     | Repository                                                                                                                                             |
-|--------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-config | [https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/config](https://github.com/inexorgame/inexor-rgf-plugins/tree/main/plugins/config) |
+| Name                     | Repository                                                                                                                                         |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| inexor-rgf-plugin-config | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/config](https://github.com/reactive-graph/plugins-core/tree/main/plugins/config) |
 
 ## Usage
 
@@ -65,6 +65,7 @@ mutation {
 ```
 
 ### Get all configurations
+
 ```graphql
 query getAllConfigs {
   instances {

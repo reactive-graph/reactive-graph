@@ -14,7 +14,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ### Windows
 
-Please follow the instructions for [Installing rustup on Windows](https://rust-lang.github.io/rustup/installation/other.html)
+Please follow the instructions
+for [Installing rustup on Windows](https://rust-lang.github.io/rustup/installation/other.html)
 
 ## Install nightly toolchain
 
@@ -27,7 +28,7 @@ rustup update nightly
 ## Clone the repository
 
 ```shell
-git clone https://github.com/inexorgame/inexor-rgf-application.git
+git clone https://github.com/reactive-graph/reactive-graph.git
 ```
 
 ## Build the application
@@ -70,11 +71,11 @@ cargo run --release
     ```shell
     git pull
     ```
-2. (Optional) If you want a completely clean build 
+2. (Optional) If you want a completely clean build
     ```shell
     cargo clean
     ```
-3. Update dependencies    
+3. Update dependencies
     ```shell
     cargo update
     ```
@@ -94,8 +95,8 @@ The application and the plugins must be compiled with the same version of the Pl
 
  ```shell
  cd ..
- git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
- cd inexor-rgf-plugin-mqtt
+ git clone https://github.com/reactive-graph/plugin-mqtt.git
+ cd plugin-mqtt
  ```
 
 Build in development mode:
@@ -118,9 +119,9 @@ application.
 
 ```toml
 [[plugin]]
-name = "inexor-rgf-plugin-mqtt"
+name = "plugin-mqtt"
 active = true
-path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 ```
 
 ```admonish tip "Artifact Location"

@@ -14,11 +14,11 @@
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/inexorgame/inexor-rgf-application/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/reactive-graph/reactive-graph/blob/main/LICENSE)
 
-[![Build](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/rust.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/rust.yml)
-[![Formatting](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/fmt.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/fmt.yml)
-[![Clippy](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/lint.yml/badge.svg)](https://github.com/inexorgame/inexor-rgf-application/actions/workflows/lint.yml)
+[![Build](https://github.com/reactive-graph/reactive-graph/actions/workflows/rust.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/rust.yml)
+[![Formatting](https://github.com/reactive-graph/reactive-graph/actions/workflows/fmt.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/fmt.yml)
+[![Clippy](https://github.com/reactive-graph/reactive-graph/actions/workflows/lint.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/lint.yml)
 [<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
 
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
@@ -74,7 +74,7 @@ A **graph** organizes highly interconnected data. The state of an `Entity Compon
 with the help of the graph. Inexor is the first game engine to introduce a graph as a basis.
 
 The main benefits of a graph are:
- 
+
 * A universal data structure for everything
 * Relations are first class citizens
 * Benefit from types and instances which makes things intuitive
@@ -188,7 +188,7 @@ emitter. The possibilities for this are endless and want to be used!
 
 [List of Plugins](https://inexorgame.github.io/inexor-rgf-application/book/Plugins.html)
 
-[Plugins Repository](https://github.com/inexorgame/inexor-rgf-plugins)
+[Plugins Repository](https://github.com/reactive-graph/plugins-core)
 
 </div>
 

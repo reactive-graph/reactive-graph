@@ -29,8 +29,8 @@ Plugins can provide:
 1. Checkout and build the plugin
     ```shell
     cd ..
-    git clone https://github.com/inexorgame/inexor-rgf-plugin-mqtt.git
-    cd inexor-rgf-plugin-mqtt
+    git clone https://github.com/reactive-graph/plugin-mqtt.git
+    cd plugin-mqtt
     cargo build (or cargo build --release)
     ```
 2. Edit `config/plugins.toml` and add a section for the plugin. The name must match the
@@ -39,9 +39,9 @@ Plugins can provide:
 
     ```toml
     [[plugin]]
-    name = "inexor-rgf-plugin-mqtt"
+    name = "plugin-mqtt"
     active = true
-    path = "../inexor-rgf-plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+    path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
     ```
 
 ## Roadmap
@@ -52,9 +52,9 @@ Plugins can provide:
 
 ### Scheduler and Timer
 
-| Name                        | Repository                                                |
-|-----------------------------|-----------------------------------------------------------|
-| inexor-rgf-plugin-scheduler | https://github.com/inexorgame/inexor-rgf-plugin-scheduler |
+| Name                        | Repository                                                    |
+|-----------------------------|---------------------------------------------------------------|
+| inexor-rgf-plugin-scheduler | https://github.com/reactive-graph/inexor-rgf-plugin-scheduler |
 
 This plugin provides a scheduler which starts tasks on a regular basis.
 
@@ -66,15 +66,15 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 #### Entity Types
 
-| Name            | Properties                               | Behaviours                                                       | Description |
-|-----------------|------------------------------------------|------------------------------------------------------------------|-------------|
-| Cron Expression | expression (string)<br>activation (bool) | A cron based scheduler propagates the activation output (true)   |             |
+| Name            | Properties                               | Behaviours                                                     | Description |
+|-----------------|------------------------------------------|----------------------------------------------------------------|-------------|
+| Cron Expression | expression (string)<br>activation (bool) | A cron based scheduler propagates the activation output (true) |             |
 
 ### Audio
 
-| Name                    | Repository                                            |
-|-------------------------|-------------------------------------------------------|
-| inexor-rgf-plugin-audio | https://github.com/inexorgame/inexor-rgf-plugin-audio |
+| Name                    | Repository                                                |
+|-------------------------|-----------------------------------------------------------|
+| inexor-rgf-plugin-audio | https://github.com/reactive-graph/inexor-rgf-plugin-audio |
 
 #### Rust Crate / Rust Reference
 
@@ -89,9 +89,9 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 ### Color
 
-| Name                       | Repository                                                 |
-|----------------------------|------------------------------------------------------------|
-| inexor-rgf-plugin-graphics | https://github.com/inexorgame/inexor-rgf-plugin-graphics   |
+| Name                       | Repository                                                   |
+|----------------------------|--------------------------------------------------------------|
+| inexor-rgf-plugin-graphics | https://github.com/reactive-graph/inexor-rgf-plugin-graphics |
 
 #### Components
 
@@ -108,18 +108,18 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 ### Texture
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-texture | https://github.com/inexorgame/inexor-rgf-plugin-texture |
+| Name                      | Repository                                                  |
+|---------------------------|-------------------------------------------------------------|
+| inexor-rgf-plugin-texture | https://github.com/reactive-graph/inexor-rgf-plugin-texture |
 
 * GLTF Buffer (`data:application/gltf-buffer;base64,`)
 * https://github.com/KhronosGroup/glTF-Tutorials/blob/master/gltfTutorial/gltfTutorial_013_SimpleTexture.md
 
 ### Texture Processing
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-texture-processing | https://github.com/inexorgame/inexor-rgf-plugin-texture-processing |
+| Name                                 | Repository                                                             |
+|--------------------------------------|------------------------------------------------------------------------|
+| inexor-rgf-plugin-texture-processing | https://github.com/reactive-graph/inexor-rgf-plugin-texture-processing |
 
 * Color Filter
 * Blend Filter
@@ -127,9 +127,9 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 ### Noise Generation
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugin-noise-generation | https://github.com/inexorgame/inexor-rgf-plugin-noise-generation |
+| Name                               | Repository                                                           |
+|------------------------------------|----------------------------------------------------------------------|
+| inexor-rgf-plugin-noise-generation | https://github.com/reactive-graph/inexor-rgf-plugin-noise-generation |
 
 #### Use Cases
 
@@ -144,9 +144,9 @@ This plugin provides a scheduler which starts tasks on a regular basis.
 
 ### WebAssembly / Scripting
 
-| Name                    | Repository                                           |
-|-------------------------|------------------------------------------------------|
-| inexor-rgf-plugin-wasm  | https://github.com/inexorgame/inexor-rgf-plugin-wasm |
+| Name                   | Repository                                               |
+|------------------------|----------------------------------------------------------|
+| inexor-rgf-plugin-wasm | https://github.com/reactive-graph/inexor-rgf-plugin-wasm |
 
 This plugin provides the possibility to run scripts.
 
@@ -162,47 +162,47 @@ Deno is a simple, modern and secure runtime for JavaScript and TypeScript that u
 
 #### Entity Types
 
-| Name | Property | Data Type | Socket Type |
-| --- | --- | --- | --- |
-| |
-| Script | filename | string | none |
-| | script | string | output |
-| |
-| ExecuteScript | script | string | input |
-| | input | object | input |
-| | result | object | output |
-| | activation | bool | none |
+| Name          | Property   | Data Type | Socket Type |
+|---------------|------------|-----------|-------------|
+|               |
+| Script        | filename   | string    | none        |
+|               | script     | string    | output      |
+|               |
+| ExecuteScript | script     | string    | input       |
+|               | input      | object    | input       |
+|               | result     | object    | output      |
+|               | activation | bool      | none        |
 
 #### Relation Types
 
 | Source Entity Type | Relation Type Name | Target Entity Type |
-| --- | --- | --- |
-| Script | -- LoadsScript --> | ExecuteScript |
+|--------------------|--------------------|--------------------|
+| Script             | -- LoadsScript --> | ExecuteScript      |
 
 #### Entity Behaviour
 
-| Name | Description |
-| --- | --- |
-| Script | Load the script from `filename` |
+| Name          | Description                                                           |
+|---------------|-----------------------------------------------------------------------|
+| Script        | Load the script from `filename`                                       |
 | ExecuteScript | Executes the script if either `activation` or `input` gets triggered. |
 
-### Physics 
+### Physics
 
-| Name | Repository |
-| --- | --- |
-| inexor-rgf-plugins-physics | https://github.com/inexorgame/inexor-rgf-plugin-physics |
+| Name                       | Repository                                                  |
+|----------------------------|-------------------------------------------------------------|
+| inexor-rgf-plugins-physics | https://github.com/reactive-graph/inexor-rgf-plugin-physics |
 
 #### Components
 
-| Name | Properties | Behaviours |
-| --- | --- | --- |
-| position | x<br>y<br>z | - |
+| Name     | Properties     | Behaviours             |
+|----------|----------------|------------------------|
+| position | x<br>y<br>z    | -                      |
 | velocity | vx<br>vy<br>vz | VelocityTransformation |
 
 ### Game-Server inexor-rgf-plugins-game-server
 
 #### Entity Types
 
-| Name | Properties | Behaviours |
-| --- | --- | --- |
-| game_server | hostname<br>port<br>name<br>owner<br>description<br>game_mode_name<br>map_name<br>number_of_players<br> | - |
+| Name        | Properties                                                                                              | Behaviours |
+|-------------|---------------------------------------------------------------------------------------------------------|------------|
+| game_server | hostname<br>port<br>name<br>owner<br>description<br>game_mode_name<br>map_name<br>number_of_players<br> | -          |
