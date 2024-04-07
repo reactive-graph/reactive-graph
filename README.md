@@ -9,17 +9,17 @@
 
 <div align="center" style="text-align: center">
 
-[<img src="https://img.shields.io/badge/book-master-yellow">](https://inexorgame.github.io/inexor-rgf-application/book/)
-[<img src="https://img.shields.io/badge/api-master-yellow">](https://inexorgame.github.io/inexor-rgf-application/docs/)
+[<img src="https://img.shields.io/badge/book-master-yellow">](https://docs.reactive-graph.io/book/)
+[<img src="https://img.shields.io/badge/api-master-yellow">](https://docs.reactive-graph.io/docs/)
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/license/inexorgame/inexor-rgf-application">](https://github.com/reactive-graph/reactive-graph/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/reactive-graph/reactive-graph">](https://github.com/reactive-graph/reactive-graph/blob/main/LICENSE)
 
 [![Build](https://github.com/reactive-graph/reactive-graph/actions/workflows/rust.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/rust.yml)
 [![Formatting](https://github.com/reactive-graph/reactive-graph/actions/workflows/fmt.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/fmt.yml)
 [![Clippy](https://github.com/reactive-graph/reactive-graph/actions/workflows/lint.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/lint.yml)
-[<img src="https://img.shields.io/codecov/c/github/inexorgame/inexor-rgf-application">](https://app.codecov.io/gh/inexorgame/inexor-rgf-application)
+[<img src="https://img.shields.io/codecov/c/github/reactive-graph/reactive-graph">](https://app.codecov.io/gh/reactive-graph/reactive-graph)
 
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 
@@ -184,9 +184,9 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[The Plugin System](https://inexorgame.github.io/inexor-rgf-application/book/Plugin_System.html)
+[The Plugin System](https://docs.reactive-graph.io/book/Plugin_System.html)
 
-[List of Plugins](https://inexorgame.github.io/inexor-rgf-application/book/Plugins.html)
+[List of Plugins](https://docs.reactive-graph.io/book/Plugins.html)
 
 [Plugins Repository](https://github.com/reactive-graph/plugins-core)
 
@@ -197,13 +197,13 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[Build Instructions](https://inexorgame.github.io/inexor-rgf-application/book/Development_Build.html)
+[Build Instructions](https://docs.reactive-graph.io/book/Development_Build.html)
 
-[Data Model](https://inexorgame.github.io/inexor-rgf-application/book/Model.html)
+[Data Model](https://docs.reactive-graph.io/book/Model.html)
 
-[GraphQL API](https://inexorgame.github.io/inexor-rgf-application/book/GraphQL_API.html)
+[GraphQL API](https://docs.reactive-graph.io/book/GraphQL_API.html)
 
-[Dynamic Graph API](https://inexorgame.github.io/inexor-rgf-application/book/Dynamic_Graph_API.html)
+[Dynamic Graph API](https://docs.reactive-graph.io/book/Dynamic_Graph_API.html)
 
 </div>
 
@@ -212,16 +212,16 @@ emitter. The possibilities for this are endless and want to be used!
 
 <div align="center" style="text-align: center">
 
-[Configuration](https://inexorgame.github.io/inexor-rgf-application/book/Configuration.html)
+[Configuration](https://docs.reactive-graph.io/book/Configuration.html)
 
 </div>
 
 
 <h2 align="center" style="text-align: center;">GraphQL Type System</h2>
 
-<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/queries.png">
+<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/queries.png">
 
-<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/graphql/mutations.png">
+<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/mutations.png">
 
 
 <h2 align="center" style="text-align: center;">Flow Editor</h2>
@@ -229,18 +229,5 @@ emitter. The possibilities for this are endless and want to be used!
 <div align="center" style="text-align: center">
 
 Coming soon.
-
-</div>
-
-
-<h2 align="center" style="text-align: center;">Sponsors</h2>
-
-<div align="center" style="text-align: center">
-
-<a href="https://www.jetbrains.com/?from=github.com/inexorgame">
-<img src="https://raw.githubusercontent.com/inexorgame/inexor-rgf-application/main/docs/images/icon_CLion.svg" style="width: 30%; height: 30%;">
-</a>
-
-_Special thanks to JetBrains for providing us with CLion licenses!_
 
 </div>
