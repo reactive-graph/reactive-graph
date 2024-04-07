@@ -26,4 +26,4 @@ renderer = ["html"]
 
 [output.html]
 additional-js = ["mermaid.min.js", "mermaid-init.js", "graphql-playground-react-middleware.js", "graphql-playground.js"]
-additional-css = ["././inexor-rgf-book.css", "././mdbook-admonish.css", "graphql-playground.css"]
+additional-css = ["././book.css", "././mdbook-admonish.css", "graphql-playground.css"]
