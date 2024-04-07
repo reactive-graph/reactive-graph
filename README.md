@@ -14,12 +14,11 @@
 
 [<img src="https://img.shields.io/badge/Language-Rust-brightgreen">](https://www.rust-lang.org/)
 [<img src="https://img.shields.io/badge/Platforms-Linux%20%26%20Windows-brightgreen">]()
-[<img src="https://img.shields.io/github/license/reactive-graph/reactive-graph">](https://github.com/reactive-graph/reactive-graph/blob/main/LICENSE)
+[<img src="https://img.shields.io/github/license/reactive-graph/reactive-graph">](https://github.com/reactive-graph/reactive-graph/blob/main/LICENSE.md)
 
 [![Build](https://github.com/reactive-graph/reactive-graph/actions/workflows/rust.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/rust.yml)
 [![Formatting](https://github.com/reactive-graph/reactive-graph/actions/workflows/fmt.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/fmt.yml)
 [![Clippy](https://github.com/reactive-graph/reactive-graph/actions/workflows/lint.yml/badge.svg)](https://github.com/reactive-graph/reactive-graph/actions/workflows/lint.yml)
-[<img src="https://img.shields.io/codecov/c/github/reactive-graph/reactive-graph">](https://app.codecov.io/gh/reactive-graph/reactive-graph)
 
 [<img src="https://img.shields.io/discord/698219248954376256?logo=discord">](https://discord.com/invite/acUW8k7)
 

@@ -1,7 +1,6 @@
 # MIT License
 
-Copyright (c) 2011-2024 Andreas Schaeffer, the Reactive Graph Contributors and
-the Inexor Collective.
+Copyright (c) 2011-2024 Andreas Schaeffer, the Reactive Graph Contributors and the Inexor Collective.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
