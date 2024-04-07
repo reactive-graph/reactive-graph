@@ -4,16 +4,15 @@
 pub use error::entity::*;
 pub use error::flow::*;
 pub use error::relation::*;
+pub use event_channels::*;
 pub use flow_instance_provider::*;
+pub use property::*;
+pub use reactive_entity_manager::*;
+pub use reactive_flow_manager::*;
 #[cfg(feature = "derive")]
 pub use reactive_graph_reactive_derive::reactive_entity;
 #[cfg(feature = "derive")]
 pub use reactive_graph_reactive_derive::ReactiveEntity;
-pub use property::*;
-
-pub use event_channels::*;
-pub use reactive_entity_manager::*;
-pub use reactive_flow_manager::*;
 pub use reactive_instance_event_manager::*;
 pub use reactive_instance_event_subscriber::*;
 pub use reactive_instance_events::*;

@@ -10,12 +10,12 @@ use dashmap::iter_set::OwningIter;
 use dashmap::DashSet;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
-use reactive_graph_graph::prelude::*;
-use reactive_graph_graph::NamespacedTypeIds;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use rand_derive2::RandGen;
+use reactive_graph_graph::prelude::*;
+use reactive_graph_graph::NamespacedTypeIds;
 use schemars::gen::SchemaGenerator;
 use schemars::schema::ArrayValidation;
 use schemars::schema::InstanceType;

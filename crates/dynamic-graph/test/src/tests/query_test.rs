@@ -1,13 +1,13 @@
 use convert_case::Case::Camel;
 use convert_case::Casing;
 use default_test::DefaultTest;
-use reactive_graph_graph::EntityType;
-use reactive_graph_graph::NamespacedTypeGetter;
 use log::LevelFilter;
 use log4rs::append::console::ConsoleAppender;
 use log4rs::config::Appender;
 use log4rs::config::Root;
 use log4rs::Config;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::NamespacedTypeGetter;
 use std::sync::Arc;
 use std::time::Duration;
 

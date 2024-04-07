@@ -421,9 +421,9 @@ macro_rules! component_model {
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
-#[cfg(any(test, feature = "test"))]
 use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_test_utils::r_string;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for Component {

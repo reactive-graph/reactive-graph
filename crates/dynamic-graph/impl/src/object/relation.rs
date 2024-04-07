@@ -2,9 +2,9 @@ use std::sync::Arc;
 
 use async_graphql::dynamic::*;
 use async_graphql::ID;
+use log::trace;
 use reactive_graph_dynamic_graph_api::ImmutablePropertyError;
 use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
-use log::trace;
 use serde_json::json;
 use serde_json::Value;
 

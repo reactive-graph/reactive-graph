@@ -257,9 +257,9 @@ use crate::test_utils::default_from::DefaultFrom;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
-#[cfg(any(test, feature = "test"))]
 use rand::Rng;
+#[cfg(any(test, feature = "test"))]
+use reactive_graph_test_utils::r_string;
 #[cfg(any(test, feature = "test"))]
 use serde_json::json;
 
