@@ -11,27 +11,27 @@ macro_rules! entity_model {
         )*
         $(,)?
     ) => {
-        pub struct $ident(inexor_rgf_reactive_model_impl::ReactiveEntity);
+        pub struct $ident(reactive_graph_reactive_model_impl::ReactiveEntity);
 
         impl $ident {
             $(
-                inexor_rgf_graph::rx_accessor!(pub $accessor_type $($accessor_name $accessor_data_type)?);
+                reactive_graph_graph::rx_accessor!(pub $accessor_type $($accessor_name $accessor_data_type)?);
             )*
         }
 
-        impl $crate::ReactiveInstanceGetter<inexor_rgf_reactive_model_impl::ReactiveEntity> for $ident {
-            fn get_reactive_instance(&self) -> &inexor_rgf_reactive_model_impl::ReactiveEntity {
+        impl $crate::ReactiveInstanceGetter<reactive_graph_reactive_model_impl::ReactiveEntity> for $ident {
+            fn get_reactive_instance(&self) -> &reactive_graph_reactive_model_impl::ReactiveEntity {
                 &self.0
             }
         }
 
-        impl From<inexor_rgf_reactive_model_impl::ReactiveEntity> for $ident {
-            fn from(reactive_entity: inexor_rgf_reactive_model_impl::ReactiveEntity) -> Self {
+        impl From<reactive_graph_reactive_model_impl::ReactiveEntity> for $ident {
+            fn from(reactive_entity: reactive_graph_reactive_model_impl::ReactiveEntity) -> Self {
                 $ident(reactive_entity)
             }
         }
 
-        impl inexor_rgf_graph::PropertyInstanceGetter for $ident {
+        impl reactive_graph_graph::PropertyInstanceGetter for $ident {
             fn get<S: Into<String>>(&self, property_name: S) -> Option<serde_json::Value> {
                 self.0.get(property_name)
             }
@@ -65,7 +65,7 @@ macro_rules! entity_model {
             }
         }
 
-        impl inexor_rgf_graph::PropertyInstanceSetter for $ident {
+        impl reactive_graph_graph::PropertyInstanceSetter for $ident {
             fn set_checked<S: Into<String>>(&self, property_name: S, value: serde_json::Value) {
                 self.0.set_checked(property_name, value);
             }
@@ -82,16 +82,16 @@ macro_rules! entity_model {
                 self.0.set_no_propagate(property_name, value);
             }
 
-            fn mutability<S: Into<String>>(&self, property_name: S) -> Option<inexor_rgf_graph::Mutability> {
+            fn mutability<S: Into<String>>(&self, property_name: S) -> Option<reactive_graph_graph::Mutability> {
                 self.0.mutability(property_name)
             }
 
-            fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: inexor_rgf_graph::Mutability) {
+            fn set_mutability<S: Into<String>>(&self, property_name: S, mutability: reactive_graph_graph::Mutability) {
                 self.0.set_mutability(property_name, mutability);
             }
         }
 
-        impl inexor_rgf_graph::NamespacedTypeGetter for $ident {
+        impl reactive_graph_graph::NamespacedTypeGetter for $ident {
             fn namespace(&self) -> String {
                 self.0.ty.namespace()
             }
@@ -101,8 +101,8 @@ macro_rules! entity_model {
             }
         }
 
-        impl inexor_rgf_graph::TypeDefinitionGetter for $ident {
-            fn type_definition(&self) -> inexor_rgf_graph::TypeDefinition {
+        impl reactive_graph_graph::TypeDefinitionGetter for $ident {
+            fn type_definition(&self) -> reactive_graph_graph::TypeDefinition {
                 self.0.ty.type_definition()
             }
         }

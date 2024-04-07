@@ -8,8 +8,8 @@ use log::debug;
 use rand::Rng;
 use serde_json::Value;
 
-use inexor_rgf_graph::TypeDefinitionGetter;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 
 pub struct RelationPropertyInstanceStream {
     relation_instance: ReactiveRelation,

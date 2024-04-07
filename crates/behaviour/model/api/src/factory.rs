@@ -3,7 +3,7 @@ use std::sync::Arc;
 
 use dashmap::DashMap;
 
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 
 use crate::BehaviourCreationError;
 use crate::BehaviourFsm;

@@ -8,31 +8,31 @@ use serde_json::Value;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::BehaviourTypeIds;
-use inexor_rgf_behaviour_model_api::BehaviourTypesContainer;
-use inexor_rgf_graph::Component;
-use inexor_rgf_graph::ComponentContainer;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ComponentTypeIds;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::Extensions;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::Mutability::Mutable;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::TypeDefinition;
-use inexor_rgf_graph::TypeDefinitionGetter;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::BehaviourTypeIds;
+use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::ComponentContainer;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Mutability::Mutable;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::TypeDefinition;
+use reactive_graph_graph::TypeDefinitionGetter;
 
 use crate::ReactiveProperties;
 use crate::ReactiveProperty;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 
 #[derive(TypedBuilder)]
 #[builder(

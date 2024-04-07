@@ -6,7 +6,7 @@ use strum::Display;
 /// The mutability of a property.
 #[derive(Enum, Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq, Display)]
 #[serde(rename_all = "lowercase")]
-#[graphql(name = "Mutability", remote = "inexor_rgf_graph::Mutability")]
+#[graphql(name = "Mutability", remote = "reactive_graph_graph::Mutability")]
 pub enum GraphQLMutability {
     /// The property is mutable.
     Mutable,

@@ -2,14 +2,14 @@
 macro_rules! entity_behaviour_transitions {
     ($transitions: ident $(, $fn_name:ident, $fn_ident: ident)*) => {
         pub struct $transitions {
-            pub reactive_instance: inexor_rgf_reactive_model_impl::ReactiveEntity,
+            pub reactive_instance: reactive_graph_reactive_model_impl::ReactiveEntity,
             pub property_observers: $crate::EntityPropertyObserverContainerImpl,
-            pub ty: inexor_rgf_behaviour_model_api::BehaviourTypeId,
+            pub ty: reactive_graph_behaviour_model_api::BehaviourTypeId,
             $(pub $fn_name: $fn_ident,)*
         }
 
         impl $transitions {
-            pub fn new(reactive_instance: inexor_rgf_reactive_model_impl::ReactiveEntity, ty: inexor_rgf_behaviour_model_api::BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
+            pub fn new(reactive_instance: reactive_graph_reactive_model_impl::ReactiveEntity, ty: reactive_graph_behaviour_model_api::BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
                 let property_observers = $crate::EntityPropertyObserverContainerImpl::new(reactive_instance.clone());
                 $transitions {
                     reactive_instance,
@@ -20,15 +20,15 @@ macro_rules! entity_behaviour_transitions {
             }
         }
 
-        impl $crate::BehaviourDisconnect<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity> for $transitions {
+        impl $crate::BehaviourDisconnect<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity> for $transitions {
             fn disconnect(&self) -> Result<(), $crate::BehaviourDisconnectFailed> {
                 self.property_observers.remove_all_observers();
                 Ok(())
             }
         }
 
-        impl inexor_rgf_reactive_model_api::ReactiveInstanceContainer<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity> for $transitions {
-            fn get_reactive_instance(&self) -> &inexor_rgf_reactive_model_impl::ReactiveEntity {
+        impl reactive_graph_reactive_model_api::ReactiveInstanceContainer<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity> for $transitions {
+            fn get_reactive_instance(&self) -> &reactive_graph_reactive_model_impl::ReactiveEntity {
                 &self.reactive_instance
             }
         }

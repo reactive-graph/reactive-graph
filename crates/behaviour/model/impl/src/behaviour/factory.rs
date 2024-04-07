@@ -3,8 +3,8 @@
 // use std::ops::Deref;
 // use std::sync::Arc;
 //
-// use inexor_rgf_behaviour_model_api::prelude::*;
-// use inexor_rgf_reactive_service_api::prelude::*;
+// use reactive_graph_behaviour_model_api::prelude::*;
+// use reactive_graph_reactive_service_api::prelude::*;
 
 // pub trait BehaviourFactory<ID: Clone, T: ReactiveInstance<ID>> {
 //     /// Creates a new behaviour in the given reactive instance and returns the created state machine.

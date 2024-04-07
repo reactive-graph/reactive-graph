@@ -1,16 +1,16 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_command_api::CommandTypeProvider;
+use reactive_graph_command_api::CommandTypeProvider;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::Components;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::ComponentProviderRegistry;
+use reactive_graph_graph::Components;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::ComponentProviderRegistry;
 #[allow(unused)]
-use inexor_rgf_type_system_api::TypeProvider as TypeProvider1;
-use inexor_rgf_type_system_api::TypeProvider;
+use reactive_graph_type_system_api::TypeProvider as TypeProvider1;
+use reactive_graph_type_system_api::TypeProvider;
 
 #[derive(TypeProvider, Component)]
 #[type_provider(tys = "Components", path = "types/components")]

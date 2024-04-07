@@ -3,10 +3,10 @@ pub mod plugin {
 
     pub use async_trait::async_trait;
 
-    pub use inexor_rgf_graph::Components;
-    pub use inexor_rgf_graph::EntityTypes;
-    pub use inexor_rgf_graph::FlowTypes;
-    pub use inexor_rgf_graph::RelationTypes;
+    pub use reactive_graph_graph::Components;
+    pub use reactive_graph_graph::EntityTypes;
+    pub use reactive_graph_graph::FlowTypes;
+    pub use reactive_graph_graph::RelationTypes;
 
     pub use crate::component_alias;
     pub use crate::export_plugin;
@@ -21,10 +21,10 @@ pub mod plugin {
 }
 
 pub mod providers {
-    pub use inexor_rgf_graph::Components;
-    pub use inexor_rgf_graph::EntityTypes;
-    pub use inexor_rgf_graph::FlowTypes;
-    pub use inexor_rgf_graph::RelationTypes;
+    pub use reactive_graph_graph::Components;
+    pub use reactive_graph_graph::EntityTypes;
+    pub use reactive_graph_graph::FlowTypes;
+    pub use reactive_graph_graph::RelationTypes;
 
     pub use crate::Component;
     pub use crate::ComponentProviderRegistry;

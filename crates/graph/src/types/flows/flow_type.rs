@@ -79,7 +79,7 @@ use crate::Variable;
 use crate::Variables;
 use crate::VariablesContainer;
 #[cfg(any(test, feature = "test"))]
-use inexor_rgf_test_utils::r_string;
+use reactive_graph_test_utils::r_string;
 
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
@@ -791,7 +791,7 @@ mod tests {
     use crate::Variable;
     use crate::Variables;
     use crate::VariablesContainer;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn create_flow_type_test() {

@@ -14,28 +14,28 @@ use uuid::Uuid;
 
 use crate::plugin_paths::get_deploy_path;
 use crate::plugin_paths::get_install_path;
-use inexor_rgf_plugin_api::Plugin;
-use inexor_rgf_plugin_api::PluginContext;
-use inexor_rgf_plugin_api::PluginDeclaration;
-use inexor_rgf_plugin_api::PluginDependency;
-use inexor_rgf_plugin_api::PluginDeployError;
-use inexor_rgf_plugin_api::PluginDisableError;
-use inexor_rgf_plugin_api::PluginLoadingError;
-use inexor_rgf_plugin_api::PluginRefreshingState;
-use inexor_rgf_plugin_api::PluginResolveState;
-use inexor_rgf_plugin_api::PluginStartError;
-use inexor_rgf_plugin_api::PluginStartingState;
-use inexor_rgf_plugin_api::PluginState;
-use inexor_rgf_plugin_api::PluginStopError;
-use inexor_rgf_plugin_api::PluginStoppingState;
-use inexor_rgf_plugin_api::PluginUninstallError;
-use inexor_rgf_plugin_api::PluginUninstallingState;
-use inexor_rgf_plugin_api::PLUGIN_API_VERSION;
-use inexor_rgf_plugin_api::PLUGIN_NAME_PREFIX;
-use inexor_rgf_plugin_api::RUSTC_VERSION;
-use inexor_rgf_plugin_service_api::PluginTransitionResult;
-use inexor_rgf_plugin_service_api::PluginTransitionResult::Changed;
-use inexor_rgf_plugin_service_api::PluginTransitionResult::NoChange;
+use reactive_graph_plugin_api::Plugin;
+use reactive_graph_plugin_api::PluginContext;
+use reactive_graph_plugin_api::PluginDeclaration;
+use reactive_graph_plugin_api::PluginDependency;
+use reactive_graph_plugin_api::PluginDeployError;
+use reactive_graph_plugin_api::PluginDisableError;
+use reactive_graph_plugin_api::PluginLoadingError;
+use reactive_graph_plugin_api::PluginRefreshingState;
+use reactive_graph_plugin_api::PluginResolveState;
+use reactive_graph_plugin_api::PluginStartError;
+use reactive_graph_plugin_api::PluginStartingState;
+use reactive_graph_plugin_api::PluginState;
+use reactive_graph_plugin_api::PluginStopError;
+use reactive_graph_plugin_api::PluginStoppingState;
+use reactive_graph_plugin_api::PluginUninstallError;
+use reactive_graph_plugin_api::PluginUninstallingState;
+use reactive_graph_plugin_api::PLUGIN_API_VERSION;
+use reactive_graph_plugin_api::PLUGIN_NAME_PREFIX;
+use reactive_graph_plugin_api::RUSTC_VERSION;
+use reactive_graph_plugin_service_api::PluginTransitionResult;
+use reactive_graph_plugin_service_api::PluginTransitionResult::Changed;
+use reactive_graph_plugin_service_api::PluginTransitionResult::NoChange;
 
 use crate::PluginProxy;
 use crate::PluginRegistrar;
@@ -340,8 +340,8 @@ impl PluginContainer {
                     if let PluginLoadingError::ComponentInstanceProviderError(ComponentInstanceProviderError::NoPrimaryInstance { type_name, .. }) = e {
                         if let Some(type_name) = type_name {
                             let type_name_stripped = type_name.replace("dyn ", "").replace(" + core::marker::Send + core::marker::Sync", "");
-                            let notice = if type_name_stripped == "inexor_rgf_plugin_api::plugin::Plugin" {
-                                "\n  Notice:    Every plugin must provide a component that implements inexor_rgf_plugin_api::Plugin!"
+                            let notice = if type_name_stripped == "reactive_graph_plugin_api::plugin::Plugin" {
+                                "\n  Notice:    Every plugin must provide a component that implements reactive_graph_plugin_api::Plugin!"
                             } else {
                                 ""
                             };

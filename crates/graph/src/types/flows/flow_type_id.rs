@@ -315,7 +315,7 @@ mod tests {
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn flow_type_id_test() {

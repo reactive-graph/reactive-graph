@@ -4,17 +4,17 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_behaviour_service_api::BehaviourSystem;
-use inexor_rgf_behaviour_service_api::EntityBehaviourManager;
-use inexor_rgf_behaviour_service_api::EntityBehaviourRegistry;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourManager;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourRegistry;
-use inexor_rgf_behaviour_service_api::RelationBehaviourManager;
-use inexor_rgf_behaviour_service_api::RelationBehaviourRegistry;
-use inexor_rgf_behaviour_service_api::RelationComponentBehaviourManager;
-use inexor_rgf_behaviour_service_api::RelationComponentBehaviourRegistry;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::TypeSystem;
+use reactive_graph_behaviour_service_api::BehaviourSystem;
+use reactive_graph_behaviour_service_api::EntityBehaviourManager;
+use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
+use reactive_graph_behaviour_service_api::RelationBehaviourManager;
+use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::TypeSystem;
 
 #[derive(Component)]
 pub struct BehaviourSystemImpl {

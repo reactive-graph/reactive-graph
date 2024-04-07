@@ -1,7 +1,7 @@
 use crate::TypedReactivePropertyCreator;
 use crate::TypedReactivePropertyImpl;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_graph::Mutability;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 use serde_json::json;
 
 impl<IdType, ReactiveInstanceType> TypedReactivePropertyCreator<IdType, ReactiveInstanceType> for TypedReactivePropertyImpl<IdType, ReactiveInstanceType, i64>

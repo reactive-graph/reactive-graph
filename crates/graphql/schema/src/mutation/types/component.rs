@@ -5,20 +5,20 @@ use async_graphql::Error;
 use async_graphql::Object;
 use async_graphql::Result;
 
-use inexor_rgf_graph::AddExtensionError;
-use inexor_rgf_graph::AddPropertyError;
-use inexor_rgf_graph::ComponentAddExtensionError;
-use inexor_rgf_graph::ComponentAddPropertyError;
-use inexor_rgf_graph::ComponentRemoveExtensionError;
-use inexor_rgf_graph::ComponentRemovePropertyError;
-use inexor_rgf_graph::ComponentUpdateExtensionError;
-use inexor_rgf_graph::ComponentUpdatePropertyError;
-use inexor_rgf_graph::RemoveExtensionError;
-use inexor_rgf_graph::RemovePropertyError;
-use inexor_rgf_graph::UpdateExtensionError;
-use inexor_rgf_graph::UpdatePropertyError;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::ComponentRegistrationError;
+use reactive_graph_graph::AddExtensionError;
+use reactive_graph_graph::AddPropertyError;
+use reactive_graph_graph::ComponentAddExtensionError;
+use reactive_graph_graph::ComponentAddPropertyError;
+use reactive_graph_graph::ComponentRemoveExtensionError;
+use reactive_graph_graph::ComponentRemovePropertyError;
+use reactive_graph_graph::ComponentUpdateExtensionError;
+use reactive_graph_graph::ComponentUpdatePropertyError;
+use reactive_graph_graph::RemoveExtensionError;
+use reactive_graph_graph::RemovePropertyError;
+use reactive_graph_graph::UpdateExtensionError;
+use reactive_graph_graph::UpdatePropertyError;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::ComponentRegistrationError;
 
 use crate::mutation::ComponentTypeIdDefinition;
 use crate::mutation::ExtensionTypeIdDefinition;
@@ -50,7 +50,7 @@ impl MutationComponents {
             Some(extensions) => extensions.iter().map(|extension| extension.clone().into()).collect(),
             None => Vec::new(),
         };
-        let component = inexor_rgf_graph::Component::new(ty, description.unwrap_or_default(), property_types, extensions);
+        let component = reactive_graph_graph::Component::new(ty, description.unwrap_or_default(), property_types, extensions);
         match component_manager.register(component) {
             Ok(component) => Ok(component.into()),
             Err(ComponentRegistrationError::ComponentAlreadyExists(ty)) => {

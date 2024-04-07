@@ -1,8 +1,8 @@
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_graph::TypeDefinitionGetter;
-use inexor_rgf_reactive_model_api::ReactiveFlowConstructionError;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_reactive_model_api::ReactiveFlowConstructionError;
 use std::fmt;
 use uuid::Uuid;
 

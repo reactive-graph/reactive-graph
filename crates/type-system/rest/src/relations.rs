@@ -5,7 +5,7 @@ use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
 
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 #[get("/types/relations")]
 pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn RelationTypeManager + Send + Sync>>) -> HttpResponse {

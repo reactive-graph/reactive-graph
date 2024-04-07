@@ -5,17 +5,17 @@ use log::debug;
 use serde_json::json;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_service_api::RelationBehaviourManager;
-use inexor_rgf_behaviour_service_api::RelationComponentBehaviourManager;
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationInstanceTypeId;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_service_api::RelationBehaviourManager;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationInstanceTypeId;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::mutation::BehaviourTypeIdDefinition;
 use crate::mutation::ComponentTypeIdDefinition;

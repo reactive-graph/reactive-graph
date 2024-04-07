@@ -2,9 +2,9 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use inexor_rgf_plugin_api::Plugin;
-use inexor_rgf_plugin_api::PluginActivationError;
-use inexor_rgf_plugin_api::PluginDeactivationError;
+use reactive_graph_plugin_api::Plugin;
+use reactive_graph_plugin_api::PluginActivationError;
+use reactive_graph_plugin_api::PluginDeactivationError;
 
 /// A proxy object which wraps a [`Plugin`] and makes sure it can't outlive
 /// the library it came from.

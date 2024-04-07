@@ -1,6 +1,6 @@
 use async_graphql::Object;
 
-use inexor_rgf_graph::PropertyType;
+use reactive_graph_graph::PropertyType;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLDataType;

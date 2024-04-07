@@ -6,10 +6,10 @@ use log::trace;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_dynamic_graph_api::DynamicGraphQueryService;
-use inexor_rgf_dynamic_graph_api::DynamicGraphSchemaManager;
-use inexor_rgf_dynamic_graph_api::DynamicQueryError;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_dynamic_graph_api::DynamicGraphQueryService;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
+use reactive_graph_dynamic_graph_api::DynamicQueryError;
+use reactive_graph_lifecycle::Lifecycle;
 
 #[derive(Component)]
 pub struct DynamicGraphQueryServiceImpl {

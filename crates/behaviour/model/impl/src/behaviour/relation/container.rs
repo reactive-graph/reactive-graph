@@ -1,10 +1,10 @@
-use inexor_rgf_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_model_api::prelude::*;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypesContainer;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_reactive_model_api::ReactiveInstanceContainer;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_reactive_model_api::ReactiveInstanceContainer;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 
 pub trait BehaviourRelationInstanceContainer: ReactiveInstanceContainer<RelationInstanceId, ReactiveRelation> {
     /// Returns the outbound instance of the behaviour.

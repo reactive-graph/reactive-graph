@@ -10,10 +10,10 @@ use serde_json::Value;
 
 use crate::Stream;
 
-use inexor_rgf_graph::ContainerPropertyInstance;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::Mutability::Mutable;
-use inexor_rgf_graph::PropertyInstances;
+use reactive_graph_graph::ContainerPropertyInstance;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::Mutability::Mutable;
+use reactive_graph_graph::PropertyInstances;
 
 pub struct ReactiveProperty<IdType: Clone> {
     /// The parent identifier (entity: uuid, relation: RelationInstanceId)
@@ -280,8 +280,8 @@ pub mod tests {
     use crate::Stream;
 
     use crate::ReactiveProperty;
-    use inexor_rgf_graph::Mutability::Mutable;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_graph::Mutability::Mutable;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn reactive_property_instance_test() {

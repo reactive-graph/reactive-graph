@@ -5,9 +5,9 @@ use async_trait::async_trait;
 use tokio_stream::StreamExt;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_model_api::prelude::*;
 
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 #[async_trait]
 pub trait EntityComponentBehaviourRegistry: Send + Sync {

@@ -6,11 +6,11 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_runtime_service_api::ShutdownManager;
-use inexor_rgf_runtime_service_api::UUID_SHUTDOWN;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_runtime_service_api::ShutdownManager;
+use reactive_graph_runtime_service_api::UUID_SHUTDOWN;
 
 use crate::command::shutdown::shutdown_command;
 

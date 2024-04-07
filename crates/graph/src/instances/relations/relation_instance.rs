@@ -45,7 +45,7 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
 #[cfg(any(test, feature = "test"))]
-use inexor_rgf_test_utils::r_string;
+use reactive_graph_test_utils::r_string;
 
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
@@ -496,7 +496,7 @@ mod tests {
     use crate::RelationTypeId;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn relation_instance_builder_test() {

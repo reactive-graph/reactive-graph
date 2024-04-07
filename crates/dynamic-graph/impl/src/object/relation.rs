@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use async_graphql::dynamic::*;
 use async_graphql::ID;
-use inexor_rgf_dynamic_graph_api::ImmutablePropertyError;
-use inexor_rgf_dynamic_graph_api::PropertyDataTypeError;
+use reactive_graph_dynamic_graph_api::ImmutablePropertyError;
+use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
 use log::trace;
 use serde_json::json;
 use serde_json::Value;
@@ -20,15 +20,15 @@ use crate::relation_property_field;
 use crate::to_input_type_ref;
 use crate::DynamicGraphTypeDefinition;
 use crate::INTERFACE_RELATION;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
-use inexor_rgf_graph::Mutability::Immutable;
-use inexor_rgf_graph::Mutability::Mutable;
-use inexor_rgf_graph::*;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_runtime_model::ActionProperties::TRIGGER;
-use inexor_rgf_runtime_model::COMPONENT_ACTION;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_graph::Mutability::Immutable;
+use reactive_graph_graph::Mutability::Mutable;
+use reactive_graph_graph::*;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_runtime_model::ActionProperties::TRIGGER;
+use reactive_graph_runtime_model::COMPONENT_ACTION;
 
 pub fn get_relation_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for relation_type in context.relation_type_manager.get_all().iter() {

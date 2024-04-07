@@ -2,10 +2,10 @@ use std::fmt;
 
 use uuid::Uuid;
 
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_graph::TypeDefinitionGetter;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_graph::TypeDefinitionGetter;
 
 #[derive(Debug)]
 pub enum FlowMutationError {

@@ -10,15 +10,15 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::RelationType;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::DeserializationError;
-use inexor_rgf_type_system_api::RelationTypeExportError;
-use inexor_rgf_type_system_api::RelationTypeImportError;
-use inexor_rgf_type_system_api::RelationTypeImportExportManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
-use inexor_rgf_type_system_api::SerializationError;
+use reactive_graph_graph::RelationType;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_type_system_api::RelationTypeExportError;
+use reactive_graph_type_system_api::RelationTypeImportError;
+use reactive_graph_type_system_api::RelationTypeImportExportManager;
+use reactive_graph_type_system_api::RelationTypeManager;
+use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct RelationTypeImportExportManagerImpl {
@@ -87,16 +87,16 @@ mod tests {
     use default_test::DefaultTest;
 
     use crate::TypeSystemImpl;
-    use inexor_rgf_graph::EntityType;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_graph::RelationType;
-    use inexor_rgf_graph::RelationTypeId;
-    use inexor_rgf_type_system_api::TypeSystem;
+    use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::RelationType;
+    use reactive_graph_graph::RelationTypeId;
+    use reactive_graph_type_system_api::TypeSystem;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_relation_type() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
         let relation_type_import_export_manager = type_system.get_relation_type_import_export_manager();

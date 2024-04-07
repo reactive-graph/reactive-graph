@@ -7,7 +7,7 @@ use crate::EntityTypeId;
 use crate::FlowInstance;
 use crate::NamespacedTypeGetter;
 use crate::RelationInstances;
-use inexor_rgf_test_utils::r_string;
+use reactive_graph_test_utils::r_string;
 
 #[test]
 fn flow_instance_test() {

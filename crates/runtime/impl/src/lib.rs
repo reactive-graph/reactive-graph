@@ -12,17 +12,17 @@
 // https://rust-lang.github.io/async-fundamentals-initiative/index.html
 
 // Let rust know to link to the implementations
-extern crate inexor_rgf_behaviour_service_impl;
-extern crate inexor_rgf_dynamic_graph_impl;
-extern crate inexor_rgf_graphql_impl;
-extern crate inexor_rgf_instance_system_impl;
-extern crate inexor_rgf_plugin_graphql_impl;
-extern crate inexor_rgf_plugin_service_impl;
-extern crate inexor_rgf_reactive_service_impl;
-extern crate inexor_rgf_runtime_graphql_impl;
-extern crate inexor_rgf_runtime_service_impl;
-extern crate inexor_rgf_runtime_web_impl;
-extern crate inexor_rgf_type_system_impl;
+extern crate reactive_graph_behaviour_service_impl;
+extern crate reactive_graph_dynamic_graph_impl;
+extern crate reactive_graph_graphql_impl;
+extern crate reactive_graph_instance_system_impl;
+extern crate reactive_graph_plugin_graphql_impl;
+extern crate reactive_graph_plugin_service_impl;
+extern crate reactive_graph_reactive_service_impl;
+extern crate reactive_graph_runtime_graphql_impl;
+extern crate reactive_graph_runtime_service_impl;
+extern crate reactive_graph_runtime_web_impl;
+extern crate reactive_graph_type_system_impl;
 
 pub use builder::*;
 pub use runtime_getter::*;

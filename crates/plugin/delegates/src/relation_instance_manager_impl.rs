@@ -3,22 +3,22 @@ use std::sync::Arc;
 use serde_json::Value;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::RelationInstance;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_reactive_service_api::ReactiveRelationComponentAddError;
-use inexor_rgf_reactive_service_api::ReactiveRelationComponentRemoveError;
-use inexor_rgf_reactive_service_api::ReactiveRelationCreationError;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationPropertyAddError;
-use inexor_rgf_reactive_service_api::ReactiveRelationPropertyRemoveError;
-use inexor_rgf_reactive_service_api::ReactiveRelationRegistrationError;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::RelationInstance;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_reactive_service_api::ReactiveRelationComponentAddError;
+use reactive_graph_reactive_service_api::ReactiveRelationComponentRemoveError;
+use reactive_graph_reactive_service_api::ReactiveRelationCreationError;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_reactive_service_api::ReactiveRelationPropertyAddError;
+use reactive_graph_reactive_service_api::ReactiveRelationPropertyRemoveError;
+use reactive_graph_reactive_service_api::ReactiveRelationRegistrationError;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 pub struct RelationInstanceManagerDelegate {
     component_manager: Arc<dyn ComponentManager + Send + Sync>,
@@ -39,7 +39,7 @@ impl RelationInstanceManagerDelegate {
         }
     }
 }
-impl inexor_rgf_plugin_api::RelationInstanceManager for RelationInstanceManagerDelegate {
+impl reactive_graph_plugin_api::RelationInstanceManager for RelationInstanceManagerDelegate {
     fn has(&self, edge_key: &RelationInstanceId) -> bool {
         self.reactive_relation_manager.has(edge_key)
     }

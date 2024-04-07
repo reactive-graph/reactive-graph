@@ -9,7 +9,7 @@ use strum::Display;
 /// Derived from serde_json::Value but without value payload.
 #[derive(Enum, Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq, Display)]
 #[serde(rename_all = "lowercase")]
-#[graphql(name = "DataType", remote = "inexor_rgf_graph::DataType")]
+#[graphql(name = "DataType", remote = "reactive_graph_graph::DataType")]
 pub enum GraphQLDataType {
     /// Represents a JSON null value.
     Null,

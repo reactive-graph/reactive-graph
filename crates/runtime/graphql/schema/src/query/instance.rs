@@ -1,6 +1,6 @@
 use async_graphql::Object;
 
-use inexor_rgf_remotes_model::InstanceInfo;
+use reactive_graph_remotes_model::InstanceInfo;
 
 pub struct GraphQLInstanceInfo {
     /// The instance information.

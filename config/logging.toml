@@ -49,219 +49,219 @@ appenders = ["stdout", "file-application"]
 
 ### Core
 
-[loggers."inexor_rgf_frp"]
+[loggers."reactive_graph_frp"]
 level = "info"
 
-[loggers."inexor_rgf_type_system_impl"]
+[loggers."reactive_graph_type_system_impl"]
 level = "debug"
 
-[loggers."inexor_rgf_behaviour_service_impl"]
+[loggers."reactive_graph_behaviour_service_impl"]
 level = "debug"
 
-[loggers."inexor_rgf_plugin_service_impl"]
+[loggers."reactive_graph_plugin_service_impl"]
 level = "debug"
 
-[loggers."inexor_rgf_dynamic_graph_impl"]
+[loggers."reactive_graph_dynamic_graph_impl"]
 level = "debug"
 
 
 
 ### Runtime
 
-[loggers."inexor_rgf_rt::implementation::component_manager_impl"]
+[loggers."reactive_graph_rt::implementation::component_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::entity_type_manager_impl"]
+[loggers."reactive_graph_rt::implementation::entity_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::relation_type_manager_impl"]
+[loggers."reactive_graph_rt::implementation::relation_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::flow_type_manager_impl"]
+[loggers."reactive_graph_rt::implementation::flow_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::entity_vertex_manager_impl"]
+[loggers."reactive_graph_rt::implementation::entity_vertex_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::entity_behaviour_manager_impl"]
+[loggers."reactive_graph_rt::implementation::entity_behaviour_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::relation_behaviour_manager_impl"]
+[loggers."reactive_graph_rt::implementation::relation_behaviour_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::reactive_flow_instance_manager_impl"]
+[loggers."reactive_graph_rt::implementation::reactive_flow_instance_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::web_resource_manager_impl"]
+[loggers."reactive_graph_rt::implementation::web_resource_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::plugin_resolver_impl"]
+[loggers."reactive_graph_rt::implementation::plugin_resolver_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::plugin_container_manager_impl"]
+[loggers."reactive_graph_rt::implementation::plugin_container_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::plugin_repository_manager_impl"]
+[loggers."reactive_graph_rt::implementation::plugin_repository_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::entity_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::entity_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::entity_component_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::entity_component_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::relation_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::relation_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::relation_component_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::relation_component_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::dynamic_graph_schema_manager_impl"]
+[loggers."reactive_graph_rt::implementation::dynamic_graph_schema_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::graphql_server_impl"]
+[loggers."reactive_graph_rt::implementation::graphql_server_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::runtime_types_provider_impl"]
+[loggers."reactive_graph_rt::implementation::runtime_types_provider_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::graphql::dynamic::object::namespace"]
+[loggers."reactive_graph_rt::graphql::dynamic::object::namespace"]
 level = "error"
 
-[loggers."inexor_rgf_rt::plugin::container"]
+[loggers."reactive_graph_rt::plugin::container"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::types::component_manager_impl"]
+[loggers."reactive_graph_rt::implementation::types::component_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::types::entity_type_manager_impl"]
+[loggers."reactive_graph_rt::implementation::types::entity_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::types::relation_type_manager_impl"]
+[loggers."reactive_graph_rt::implementation::types::relation_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::types::flow_type_manager_impl"]
+[loggers."reactive_graph_rt::implementation::types::flow_type_manager_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::behaviour::entity_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::behaviour::entity_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::behaviour::entity_component_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::behaviour::entity_component_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::behaviour::relation_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::behaviour::relation_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::behaviour::relation_component_behaviour_registry_impl"]
+[loggers."reactive_graph_rt::implementation::behaviour::relation_component_behaviour_registry_impl"]
 level = "info"
 
-[loggers."inexor_rgf_rt::implementation::types::runtime_types_provider_impl"]
+[loggers."reactive_graph_rt::implementation::types::runtime_types_provider_impl"]
 level = "info"
 
 
 
 ### Plugins
 
-[loggers."inexor_rgf_plugin_arithmetic::providers"]
+[loggers."reactive_graph_plugin_arithmetic::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_base::providers"]
+[loggers."reactive_graph_plugin_base::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_binary::providers"]
+[loggers."reactive_graph_plugin_binary::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_color::providers"]
+[loggers."reactive_graph_plugin_color::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_comparison::providers"]
+[loggers."reactive_graph_plugin_comparison::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_config::providers"]
+[loggers."reactive_graph_plugin_config::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_connector"]
+[loggers."reactive_graph_plugin_connector"]
 level = "trace"
 
-[loggers."inexor_rgf_plugin_connector::providers"]
+[loggers."reactive_graph_plugin_connector::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_date_time"]
+[loggers."reactive_graph_plugin_date_time"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_date_time::providers"]
+[loggers."reactive_graph_plugin_date_time::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_date_time::implementation::time_graph_impl"]
+[loggers."reactive_graph_plugin_date_time::implementation::time_graph_impl"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_file::providers"]
+[loggers."reactive_graph_plugin_file::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_flow::providers"]
+[loggers."reactive_graph_plugin_flow::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_git::providers"]
+[loggers."reactive_graph_plugin_git::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_http::providers"]
+[loggers."reactive_graph_plugin_http::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_input_device::provider"]
+[loggers."reactive_graph_plugin_input_device::provider"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_json::providers"]
+[loggers."reactive_graph_plugin_json::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_logical"]
+[loggers."reactive_graph_plugin_logical"]
 level = "trace"
 
-[loggers."inexor_rgf_plugin_logical::providers"]
+[loggers."reactive_graph_plugin_logical::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_metadata::providers"]
+[loggers."reactive_graph_plugin_metadata::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_mqtt::plugin"]
+[loggers."reactive_graph_plugin_mqtt::plugin"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_mqtt::providers"]
+[loggers."reactive_graph_plugin_mqtt::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_numeric::plugin"]
+[loggers."reactive_graph_plugin_numeric::plugin"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_numeric::providers"]
+[loggers."reactive_graph_plugin_numeric::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_random::providers"]
+[loggers."reactive_graph_plugin_random::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_result"]
+[loggers."reactive_graph_plugin_result"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_state"]
+[loggers."reactive_graph_plugin_state"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_string::providers"]
+[loggers."reactive_graph_plugin_string::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_system_environment::plugin"]
+[loggers."reactive_graph_plugin_system_environment::plugin"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_system_environment::providers"]
+[loggers."reactive_graph_plugin_system_environment::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_taxonomy::providers"]
+[loggers."reactive_graph_plugin_taxonomy::providers"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_trigger"]
+[loggers."reactive_graph_plugin_trigger"]
 level = "info"
 
-[loggers."inexor_rgf_plugin_value"]
+[loggers."reactive_graph_plugin_value"]
 level = "trace"
 
-[loggers."inexor_rgf_plugin_value::providers"]
+[loggers."reactive_graph_plugin_value::providers"]
 level = "info"
 
 

@@ -4,7 +4,7 @@ use std::sync::Arc;
 use dashmap::DashMap;
 use dashmap::ReadOnlyView;
 
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 
 use crate::BehaviourFactories;
 use crate::BehaviourFactory;
@@ -113,7 +113,7 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> From<NamespacedBehaviour
 #[macro_export]
 macro_rules! entity_behaviour_functions {
     ($ident: ident, $fn_type: ty, $constructor: expr) => {
-        pub static $ident: std::sync::LazyLock<$crate::BehaviourFunctionsReadOnlyView<Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity, $fn_type>> =
+        pub static $ident: std::sync::LazyLock<$crate::BehaviourFunctionsReadOnlyView<Uuid, reactive_graph_reactive_model_impl::ReactiveEntity, $fn_type>> =
             std::sync::LazyLock::new($constructor);
     };
 }
@@ -122,7 +122,7 @@ macro_rules! entity_behaviour_functions {
 macro_rules! relation_behaviour_functions {
     ($ident: ident, $fn_type: ty, $constructor: expr) => {
         pub static $ident: std::sync::LazyLock<
-            $crate::BehaviourFunctionsReadOnlyView<inexor_rgf_graph::RelationTypeId, inexor_rgf_reactive_model_impl::ReactiveRelation, $fn_type>,
+            $crate::BehaviourFunctionsReadOnlyView<reactive_graph_graph::RelationTypeId, reactive_graph_reactive_model_impl::ReactiveRelation, $fn_type>,
         > = std::sync::LazyLock::new($constructor);
     };
 }

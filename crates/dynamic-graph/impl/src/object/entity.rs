@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use async_graphql::dynamic::*;
 use async_graphql::ID;
-use inexor_rgf_dynamic_graph_api::ImmutablePropertyError;
-use inexor_rgf_dynamic_graph_api::PropertyDataTypeError;
+use reactive_graph_dynamic_graph_api::ImmutablePropertyError;
+use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
 use log::trace;
 use serde_json::json;
 use serde_json::Value;
@@ -21,21 +21,21 @@ use crate::outbound_entity_to_inbound_field;
 use crate::to_input_type_ref;
 use crate::DynamicGraphTypeDefinition;
 use crate::INTERFACE_ENTITY;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
-use inexor_rgf_graph::ComponentOrEntityTypeId;
-use inexor_rgf_graph::ComponentTypeIdContainer;
-use inexor_rgf_graph::DataType;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::Mutability::Immutable;
-use inexor_rgf_graph::Mutability::Mutable;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::PropertyTypeDefinition;
-use inexor_rgf_graph::RelationTypes;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_runtime_model::ActionProperties::TRIGGER;
-use inexor_rgf_runtime_model::COMPONENT_ACTION;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::ComponentTypeIdContainer;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::Mutability::Immutable;
+use reactive_graph_graph::Mutability::Mutable;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_graph::RelationTypes;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_runtime_model::ActionProperties::TRIGGER;
+use reactive_graph_runtime_model::COMPONENT_ACTION;
 
 pub fn get_entity_types(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     for entity_type in context.entity_type_manager.get_all().iter() {

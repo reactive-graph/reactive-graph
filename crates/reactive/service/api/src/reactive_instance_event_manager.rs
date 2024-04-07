@@ -3,8 +3,8 @@ use springtime_di::injectable;
 
 use crate::ReactiveInstanceEvent;
 use crate::ReactiveInstanceEventTypes;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 pub const REACTIVE_INSTANCE_EVENT_PROPERTY_LABEL: &str = "label";
 

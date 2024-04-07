@@ -1,4 +1,4 @@
-pub trait TypeProvider<T: inexor_rgf_graph::NamespacedTypeContainer>: Send + Sync {
+pub trait TypeProvider<T: reactive_graph_graph::NamespacedTypeContainer>: Send + Sync {
     /// Returns the id of the type provider.
     fn id<'a>(&self) -> &'a str;
 

@@ -7,7 +7,7 @@ use crate::PluginContainerManager;
 use crate::PluginContextFactory;
 use crate::PluginRepositoryManager;
 use crate::PluginResolver;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_lifecycle::Lifecycle;
 
 #[injectable]
 #[async_trait]

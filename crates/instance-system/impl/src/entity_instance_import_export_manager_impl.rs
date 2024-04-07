@@ -7,13 +7,13 @@ use springtime_di::component_alias;
 use springtime_di::Component;
 use uuid::Uuid;
 
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_instance_system_api::EntityInstanceExportError;
-use inexor_rgf_instance_system_api::EntityInstanceImportError;
-use inexor_rgf_instance_system_api::EntityInstanceImportExportManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_instance_system_api::EntityInstanceExportError;
+use reactive_graph_instance_system_api::EntityInstanceImportError;
+use reactive_graph_instance_system_api::EntityInstanceImportExportManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
 
 #[derive(Component)]
 pub struct EntityInstanceImportExportManagerImpl {
@@ -57,26 +57,26 @@ mod tests {
     use default_test::DefaultTest;
 
     use crate::InstanceSystemImpl;
-    use inexor_rgf_graph::EntityInstance;
-    use inexor_rgf_graph::EntityType;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_instance_system_api::InstanceSystem;
-    use inexor_rgf_test_utils::DefaultFrom;
+    use reactive_graph_graph::EntityInstance;
+    use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_instance_system_api::InstanceSystem;
+    use reactive_graph_test_utils::DefaultFrom;
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_type_system_impl::TypeSystemImpl;
+    use reactive_graph_type_system_impl::TypeSystemImpl;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_reactive_service_impl::ReactiveSystemImpl;
+    use reactive_graph_reactive_service_impl::ReactiveSystemImpl;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_behaviour_service_impl::BehaviourSystemImpl;
+    use reactive_graph_behaviour_service_impl::BehaviourSystemImpl;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_entity_instance_import_export_manager() {
-        inexor_rgf_test_utils::init_logger();
-        let instance_system = inexor_rgf_di::get_container::<InstanceSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let instance_system = reactive_graph_di::get_container::<InstanceSystemImpl>();
         let reactive_system = instance_system.reactive_system();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();

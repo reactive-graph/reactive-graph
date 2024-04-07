@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 
 use crate::TypeProvider;
-use inexor_rgf_graph::RelationTypes;
+use reactive_graph_graph::RelationTypes;
 
 #[async_trait]
 pub trait RelationTypeProviderRegistry: Send + Sync {

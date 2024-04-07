@@ -4,23 +4,23 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::ComponentImportExportManager;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::ComponentProviderRegistry;
-use inexor_rgf_type_system_api::EntityTypeImportExportManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::EntityTypeProviderRegistry;
-use inexor_rgf_type_system_api::FlowTypeImportExportManager;
-use inexor_rgf_type_system_api::FlowTypeManager;
-use inexor_rgf_type_system_api::FlowTypeProviderRegistry;
-use inexor_rgf_type_system_api::NamespaceManager;
-use inexor_rgf_type_system_api::RelationTypeImportExportManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
-use inexor_rgf_type_system_api::RelationTypeProviderRegistry;
-use inexor_rgf_type_system_api::RuntimeTypesProvider;
-use inexor_rgf_type_system_api::TypeSystem;
-use inexor_rgf_type_system_api::TypeSystemEventManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::ComponentImportExportManager;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::ComponentProviderRegistry;
+use reactive_graph_type_system_api::EntityTypeImportExportManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::EntityTypeProviderRegistry;
+use reactive_graph_type_system_api::FlowTypeImportExportManager;
+use reactive_graph_type_system_api::FlowTypeManager;
+use reactive_graph_type_system_api::FlowTypeProviderRegistry;
+use reactive_graph_type_system_api::NamespaceManager;
+use reactive_graph_type_system_api::RelationTypeImportExportManager;
+use reactive_graph_type_system_api::RelationTypeManager;
+use reactive_graph_type_system_api::RelationTypeProviderRegistry;
+use reactive_graph_type_system_api::RuntimeTypesProvider;
+use reactive_graph_type_system_api::TypeSystem;
+use reactive_graph_type_system_api::TypeSystemEventManager;
 
 #[derive(Component)]
 pub struct TypeSystemImpl {

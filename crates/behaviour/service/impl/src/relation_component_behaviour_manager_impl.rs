@@ -2,20 +2,20 @@ use async_trait::async_trait;
 use log::trace;
 use std::sync::Arc;
 
-use inexor_rgf_behaviour_model_api::BehaviourConnectFailed;
-use inexor_rgf_behaviour_model_api::BehaviourDisconnectFailed;
-use inexor_rgf_behaviour_model_api::BehaviourState;
-use inexor_rgf_behaviour_model_api::BehaviourTransitionError;
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::ComponentBehaviourTypeId;
-use inexor_rgf_behaviour_model_impl::RelationBehaviourStorage;
-use inexor_rgf_behaviour_service_api::RelationComponentBehaviourManager;
-use inexor_rgf_behaviour_service_api::RelationComponentBehaviourRegistry;
-use inexor_rgf_graph::ComponentContainer;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_behaviour_model_api::BehaviourConnectFailed;
+use reactive_graph_behaviour_model_api::BehaviourDisconnectFailed;
+use reactive_graph_behaviour_model_api::BehaviourState;
+use reactive_graph_behaviour_model_api::BehaviourTransitionError;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::ComponentBehaviourTypeId;
+use reactive_graph_behaviour_model_impl::RelationBehaviourStorage;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
+use reactive_graph_graph::ComponentContainer;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
@@ -43,7 +43,7 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
         }
     }
 
-    fn add_behaviours_to_relation_component(&self, relation_instance: ReactiveRelation, component: inexor_rgf_graph::Component) {
+    fn add_behaviours_to_relation_component(&self, relation_instance: ReactiveRelation, component: reactive_graph_graph::Component) {
         let edge_key = relation_instance.id();
         for factory in self.relation_component_behaviour_registry.get(&component.ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
@@ -76,7 +76,7 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
         self.relation_behaviour_storage.remove_all(&relation_instance.id());
     }
 
-    fn remove_behaviours_from_relation_component(&self, relation_instance: ReactiveRelation, component: inexor_rgf_graph::Component) {
+    fn remove_behaviours_from_relation_component(&self, relation_instance: ReactiveRelation, component: reactive_graph_graph::Component) {
         let edge_key = relation_instance.id();
         for factory in self.relation_component_behaviour_registry.get(&component.ty) {
             self.relation_behaviour_storage.remove(&edge_key, factory.behaviour_ty());

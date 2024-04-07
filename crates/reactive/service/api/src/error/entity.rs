@@ -1,8 +1,8 @@
 use thiserror::Error;
 use uuid::Uuid;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityTypeId;
 
 #[derive(Debug, Error)]
 pub enum ReactiveEntityCreationError {

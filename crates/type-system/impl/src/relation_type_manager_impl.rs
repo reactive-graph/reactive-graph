@@ -8,44 +8,44 @@ use serde_json::json;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::ComponentOrEntityTypeId;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ComponentTypeIds;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::ExtensionContainer;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::Extensions;
-use inexor_rgf_graph::NamespacedTypeComponentTypeIdContainer;
-use inexor_rgf_graph::NamespacedTypeContainer;
-use inexor_rgf_graph::NamespacedTypeExtensionContainer;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::NamespacedTypePropertyTypeContainer;
-use inexor_rgf_graph::Namespaces;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypeContainer;
-use inexor_rgf_graph::PropertyTypes;
-use inexor_rgf_graph::RelationType;
-use inexor_rgf_graph::RelationTypeAddComponentError;
-use inexor_rgf_graph::RelationTypeAddExtensionError;
-use inexor_rgf_graph::RelationTypeAddPropertyError;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_graph::RelationTypeIds;
-use inexor_rgf_graph::RelationTypeMergeError;
-use inexor_rgf_graph::RelationTypeRemoveComponentError;
-use inexor_rgf_graph::RelationTypeRemoveExtensionError;
-use inexor_rgf_graph::RelationTypeRemovePropertyError;
-use inexor_rgf_graph::RelationTypeUpdateExtensionError;
-use inexor_rgf_graph::RelationTypeUpdatePropertyError;
-use inexor_rgf_graph::RelationTypes;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_runtime_model::EXTENSION_DIVERGENT;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::RelationTypeCreationError;
-use inexor_rgf_type_system_api::RelationTypeManager;
-use inexor_rgf_type_system_api::RelationTypeRegistrationError;
-use inexor_rgf_type_system_api::TypeSystemEvent;
-use inexor_rgf_type_system_api::TypeSystemEventManager;
+use reactive_graph_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionContainer;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::NamespacedTypeComponentTypeIdContainer;
+use reactive_graph_graph::NamespacedTypeContainer;
+use reactive_graph_graph::NamespacedTypeExtensionContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::NamespacedTypePropertyTypeContainer;
+use reactive_graph_graph::Namespaces;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypeContainer;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_graph::RelationType;
+use reactive_graph_graph::RelationTypeAddComponentError;
+use reactive_graph_graph::RelationTypeAddExtensionError;
+use reactive_graph_graph::RelationTypeAddPropertyError;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_graph::RelationTypeIds;
+use reactive_graph_graph::RelationTypeMergeError;
+use reactive_graph_graph::RelationTypeRemoveComponentError;
+use reactive_graph_graph::RelationTypeRemoveExtensionError;
+use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateExtensionError;
+use reactive_graph_graph::RelationTypeUpdatePropertyError;
+use reactive_graph_graph::RelationTypes;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_runtime_model::EXTENSION_DIVERGENT;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::RelationTypeCreationError;
+use reactive_graph_type_system_api::RelationTypeManager;
+use reactive_graph_type_system_api::RelationTypeRegistrationError;
+use reactive_graph_type_system_api::TypeSystemEvent;
+use reactive_graph_type_system_api::TypeSystemEventManager;
 
 #[derive(Component)]
 pub struct RelationTypeManagerImpl {
@@ -402,26 +402,26 @@ mod tests {
     use default_test::DefaultTest;
 
     use crate::TypeSystemImpl;
-    use inexor_rgf_graph::Component;
-    use inexor_rgf_graph::ComponentOrEntityTypeId;
-    use inexor_rgf_graph::ComponentTypeId;
-    use inexor_rgf_graph::ComponentTypeIdContainer;
-    use inexor_rgf_graph::ComponentTypeIds;
-    use inexor_rgf_graph::EntityType;
-    use inexor_rgf_graph::Extensions;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_graph::PropertyType;
-    use inexor_rgf_graph::PropertyTypeContainer;
-    use inexor_rgf_graph::PropertyTypes;
-    use inexor_rgf_graph::RelationType;
-    use inexor_rgf_graph::RelationTypeId;
-    use inexor_rgf_test_utils::r_string;
-    use inexor_rgf_type_system_api::TypeSystem;
+    use reactive_graph_graph::Component;
+    use reactive_graph_graph::ComponentOrEntityTypeId;
+    use reactive_graph_graph::ComponentTypeId;
+    use reactive_graph_graph::ComponentTypeIdContainer;
+    use reactive_graph_graph::ComponentTypeIds;
+    use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::Extensions;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::PropertyType;
+    use reactive_graph_graph::PropertyTypeContainer;
+    use reactive_graph_graph::PropertyTypes;
+    use reactive_graph_graph::RelationType;
+    use reactive_graph_graph::RelationTypeId;
+    use reactive_graph_test_utils::r_string;
+    use reactive_graph_type_system_api::TypeSystem;
 
     #[test]
     fn test_register_relation_type() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
@@ -454,8 +454,8 @@ mod tests {
 
     #[test]
     fn test_create_and_delete_relation_type() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
@@ -496,8 +496,8 @@ mod tests {
 
     #[test]
     fn test_get_relation_types() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 
@@ -532,8 +532,8 @@ mod tests {
 
     #[test]
     fn test_register_relation_type_has_component() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
@@ -571,8 +571,8 @@ mod tests {
 
     #[test]
     fn test_register_relation_type_has_property() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
 

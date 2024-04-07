@@ -2,7 +2,7 @@ use actix_web::get;
 use actix_web::HttpResponse;
 use schemars::schema_for;
 
-use inexor_rgf_graph::Component;
+use reactive_graph_graph::Component;
 
 #[get("/types/components/schema")]
 pub async fn schema_components() -> HttpResponse {

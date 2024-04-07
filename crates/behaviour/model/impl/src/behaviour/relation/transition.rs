@@ -2,16 +2,16 @@
 macro_rules! relation_behaviour_transitions {
     ($transitions: ident $(, $fn_name:ident, $fn_ident: ident)*) => {
         pub struct $transitions {
-            pub reactive_instance: inexor_rgf_reactive_model_impl::ReactiveRelation,
+            pub reactive_instance: reactive_graph_reactive_model_impl::ReactiveRelation,
             pub outbound_property_observers: $crate::EntityPropertyObserverContainerImpl,
             pub property_observers: $crate::RelationPropertyObserverContainerImpl,
             pub inbound_property_observers: $crate::EntityPropertyObserverContainerImpl,
-            pub ty: inexor_rgf_behaviour_model_api::BehaviourTypeId,
+            pub ty: reactive_graph_behaviour_model_api::BehaviourTypeId,
             $(pub $fn_name: $fn_ident,)*
         }
 
         impl $transitions {
-            pub fn new(reactive_instance: inexor_rgf_reactive_model_impl::ReactiveRelation, ty: inexor_rgf_behaviour_model_api::BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
+            pub fn new(reactive_instance: reactive_graph_reactive_model_impl::ReactiveRelation, ty: reactive_graph_behaviour_model_api::BehaviourTypeId $(, $fn_name: $fn_ident)*) -> Self {
                 let outbound_property_observers = $crate::EntityPropertyObserverContainerImpl::new(reactive_instance.outbound.clone());
                 let property_observers = $crate::RelationPropertyObserverContainerImpl::new(reactive_instance.clone());
                 let inbound_property_observers = $crate::EntityPropertyObserverContainerImpl::new(reactive_instance.inbound.clone());
@@ -26,7 +26,7 @@ macro_rules! relation_behaviour_transitions {
             }
         }
 
-        impl $crate::BehaviourDisconnect<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive_model_impl::ReactiveRelation> for $transitions {
+        impl $crate::BehaviourDisconnect<reactive_graph_graph::RelationInstanceId, reactive_graph_reactive_model_impl::ReactiveRelation> for $transitions {
             fn disconnect(&self) -> Result<(), $crate::BehaviourDisconnectFailed> {
                 self.inbound_property_observers.remove_all_observers();
                 self.property_observers.remove_all_observers();
@@ -35,8 +35,8 @@ macro_rules! relation_behaviour_transitions {
             }
         }
 
-        impl inexor_rgf_reactive_model_api::ReactiveInstanceContainer<inexor_rgf_graph::RelationInstanceId, inexor_rgf_reactive_model_impl::ReactiveRelation> for $transitions {
-            fn get_reactive_instance(&self) -> &inexor_rgf_reactive_model_impl::ReactiveRelation {
+        impl reactive_graph_reactive_model_api::ReactiveInstanceContainer<reactive_graph_graph::RelationInstanceId, reactive_graph_reactive_model_impl::ReactiveRelation> for $transitions {
+            fn get_reactive_instance(&self) -> &reactive_graph_reactive_model_impl::ReactiveRelation {
                 &self.reactive_instance
             }
         }

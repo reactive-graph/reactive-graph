@@ -13,7 +13,7 @@ use reqwest::Error;
 use crate::client::plugin::api::Plugins;
 use crate::client::runtime::Runtime;
 use crate::client::types::Types;
-use inexor_rgf_remotes_model::InstanceAddress;
+use reactive_graph_remotes_model::InstanceAddress;
 
 pub mod plugin;
 pub mod runtime;

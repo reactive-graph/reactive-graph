@@ -2,13 +2,13 @@ use clap::ArgAction::SetTrue;
 use clap::Args;
 
 use crate::cli::commands::ClientCommands;
-use inexor_rgf_remotes_model::InstanceAddress;
-use inexor_rgf_remotes_model::DEFAULT_ENDPOINT_DYNAMIC_GRAPH;
-use inexor_rgf_remotes_model::DEFAULT_ENDPOINT_GRAPHQL;
-use inexor_rgf_remotes_model::DEFAULT_ENDPOINT_PLUGIN;
-use inexor_rgf_remotes_model::DEFAULT_ENDPOINT_RUNTIME;
-use inexor_rgf_remotes_model::DEFAULT_HOSTNAME;
-use inexor_rgf_remotes_model::DEFAULT_PORT;
+use reactive_graph_remotes_model::InstanceAddress;
+use reactive_graph_remotes_model::DEFAULT_ENDPOINT_DYNAMIC_GRAPH;
+use reactive_graph_remotes_model::DEFAULT_ENDPOINT_GRAPHQL;
+use reactive_graph_remotes_model::DEFAULT_ENDPOINT_PLUGIN;
+use reactive_graph_remotes_model::DEFAULT_ENDPOINT_RUNTIME;
+use reactive_graph_remotes_model::DEFAULT_HOSTNAME;
+use reactive_graph_remotes_model::DEFAULT_PORT;
 
 #[derive(Args, Debug, Clone)]
 pub struct ClientArgs {

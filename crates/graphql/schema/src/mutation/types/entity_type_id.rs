@@ -2,8 +2,8 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "EntityTypeId")]

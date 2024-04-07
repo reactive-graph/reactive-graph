@@ -20,8 +20,8 @@ pub struct PropertyTypeDefinition {
     pub socket_type: SocketType,
 }
 
-impl From<inexor_rgf_graph::PropertyType> for PropertyTypeDefinition {
-    fn from(property_type: inexor_rgf_graph::PropertyType) -> Self {
+impl From<reactive_graph_graph::PropertyType> for PropertyTypeDefinition {
+    fn from(property_type: reactive_graph_graph::PropertyType) -> Self {
         let extensions: ExtensionDefinitions = property_type.extensions.into();
         PropertyTypeDefinition {
             name: property_type.name,
@@ -48,14 +48,14 @@ impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
     }
 }
 
-impl From<inexor_rgf_graph::PropertyTypes> for PropertyTypeDefinitions {
-    fn from(property_types: inexor_rgf_graph::PropertyTypes) -> Self {
+impl From<reactive_graph_graph::PropertyTypes> for PropertyTypeDefinitions {
+    fn from(property_types: reactive_graph_graph::PropertyTypes) -> Self {
         property_types.into_iter().map(|(_, property_type)| property_type).collect()
     }
 }
 
-impl FromIterator<inexor_rgf_graph::PropertyType> for PropertyTypeDefinitions {
-    fn from_iter<I: IntoIterator<Item = inexor_rgf_graph::PropertyType>>(iter: I) -> Self {
+impl FromIterator<reactive_graph_graph::PropertyType> for PropertyTypeDefinitions {
+    fn from_iter<I: IntoIterator<Item = reactive_graph_graph::PropertyType>>(iter: I) -> Self {
         let mut property_types = PropertyTypeDefinitions::new();
         for property_type in iter {
             property_types.0.push(property_type.into());
@@ -86,9 +86,9 @@ pub struct PropertyType {
     pub extensions: Vec<Extension>,
 }
 
-impl From<PropertyType> for inexor_rgf_graph::PropertyType {
+impl From<PropertyType> for reactive_graph_graph::PropertyType {
     fn from(property_type: PropertyType) -> Self {
-        inexor_rgf_graph::PropertyType {
+        reactive_graph_graph::PropertyType {
             name: property_type.name,
             description: property_type.description,
             data_type: property_type.data_type.into(),
@@ -102,7 +102,7 @@ impl From<PropertyType> for inexor_rgf_graph::PropertyType {
 #[derive(Clone, Debug)]
 pub struct PropertyTypes(pub Vec<PropertyType>);
 
-impl From<PropertyTypes> for inexor_rgf_graph::PropertyTypes {
+impl From<PropertyTypes> for reactive_graph_graph::PropertyTypes {
     fn from(property_types: PropertyTypes) -> Self {
         property_types.0.into_iter().map(|property_type| property_type.into()).collect()
     }

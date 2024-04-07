@@ -5,13 +5,13 @@
 // use serde_json::json;
 // use tokio::task;
 //
-// use inexor_rgf_graph::PropertyInstanceGetter;
-// use inexor_rgf_command_model::builder::CommandBuilder;
-// use inexor_rgf_command_model::entity::Command;
-// use inexor_rgf_command_model::entity::CommandArg;
-// use inexor_rgf_command_model::error::CommandBuilderError;
-// use inexor_rgf_runtime_model::ShutdownProperties::DELAY;
-// use inexor_rgf_runtime_model::ENTITY_TYPE_SHUTDOWN;
+// use reactive_graph_graph::PropertyInstanceGetter;
+// use reactive_graph_command_model::builder::CommandBuilder;
+// use reactive_graph_command_model::entity::Command;
+// use reactive_graph_command_model::entity::CommandArg;
+// use reactive_graph_command_model::error::CommandBuilderError;
+// use reactive_graph_runtime_model::ShutdownProperties::DELAY;
+// use reactive_graph_runtime_model::ENTITY_TYPE_SHUTDOWN;
 //
 // use crate::api::RemotesManager;
 // use crate::api::UUID_SHUTDOWN;

@@ -7,13 +7,13 @@ use log::warn;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
-use inexor_rgf_behaviour_service_api::RelationBehaviourRegistry;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 #[derive(Component)]
 pub struct RelationBehaviourRegistryImpl {

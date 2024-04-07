@@ -2,7 +2,7 @@ use async_graphql::dynamic::*;
 
 use crate::namespace_query;
 use crate::namespace_query_field;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 
 pub fn get_query(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     let mut query = Object::new("Query").description("Queries");

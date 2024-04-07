@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-use inexor_rgf_runtime_impl::RuntimeBuilder;
+use reactive_graph_runtime_impl::RuntimeBuilder;
 
 use crate::cli_args::CliArguments;
 

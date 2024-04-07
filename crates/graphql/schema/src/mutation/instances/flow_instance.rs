@@ -3,16 +3,16 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_graph::RelationInstanceId;
-// use inexor_rgf_graphql_api::FlowMutationError;
-use inexor_rgf_reactive_model_impl::ReactiveFlow;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveFlowManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::RelationInstanceId;
+// use reactive_graph_graphql_api::FlowMutationError;
+use reactive_graph_reactive_model_impl::ReactiveFlow;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveFlowManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::error::flow::FlowMutationError;
 use crate::mutation::GraphQLFlowInstanceDefinition;

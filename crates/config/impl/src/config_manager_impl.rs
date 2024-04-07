@@ -8,12 +8,12 @@ use log::info;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_config_model::GraphQLServerConfig;
-use inexor_rgf_config_model::InstanceConfig;
-use inexor_rgf_config_model::PluginsConfig;
-use inexor_rgf_config_model::RemotesConfig;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_config_model::GraphQLServerConfig;
+use reactive_graph_config_model::InstanceConfig;
+use reactive_graph_config_model::PluginsConfig;
+use reactive_graph_config_model::RemotesConfig;
+use reactive_graph_lifecycle::Lifecycle;
 
 const DEFAULT_CONFIG_LOCATION: &str = "./config";
 

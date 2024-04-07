@@ -8,7 +8,7 @@ use log::debug;
 use rand::Rng;
 use serde_json::Value;
 
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 pub struct EntityPropertyInstanceStream {
     entity_instance: ReactiveEntity,

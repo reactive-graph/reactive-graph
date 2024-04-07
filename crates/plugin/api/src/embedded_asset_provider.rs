@@ -3,7 +3,7 @@
 #[macro_export]
 macro_rules! embedded_asset_provider_impl {
     ($asset: ident, $tys: ident) => {{
-        let mut entries = <$tys as inexor_rgf_graph::NamespacedTypeContainer>::new();
+        let mut entries = <$tys as reactive_graph_graph::NamespacedTypeContainer>::new();
         for file in $asset::iter() {
             let filename = file.as_ref();
             if filename.starts_with(".") {
@@ -17,24 +17,24 @@ macro_rules! embedded_asset_provider_impl {
                         if filename.ends_with(".json") {
                             match serde_json::from_str(asset_str) {
                                 Ok(parsed_entry) => {
-                                    let entry: <$tys as inexor_rgf_graph::NamespacedTypeContainer>::Type = parsed_entry;
-                                    inexor_rgf_graph::NamespacedTypeContainer::push(&entries, entry);
+                                    let entry: <$tys as reactive_graph_graph::NamespacedTypeContainer>::Type = parsed_entry;
+                                    reactive_graph_graph::NamespacedTypeContainer::push(&entries, entry);
                                 }
                                 Err(e) => log::error!("Error in parsing JSON file {}: {}", filename, e),
                             }
                         } else if filename.ends_with(".json5") {
                             match json5::from_str(asset_str) {
                                 Ok(parsed_entry) => {
-                                    let entry: <$tys as inexor_rgf_graph::NamespacedTypeContainer>::Type = parsed_entry;
-                                    inexor_rgf_graph::NamespacedTypeContainer::push(&entries, entry);
+                                    let entry: <$tys as reactive_graph_graph::NamespacedTypeContainer>::Type = parsed_entry;
+                                    reactive_graph_graph::NamespacedTypeContainer::push(&entries, entry);
                                 }
                                 Err(e) => log::error!("Error in parsing JSON5 file {}: {}", filename, e),
                             }
                         } else if filename.ends_with(".toml") {
                             match toml::from_str(asset_str) {
                                 Ok(parsed_entry) => {
-                                    let entry: <$tys as inexor_rgf_graph::NamespacedTypeContainer>::Type = parsed_entry;
-                                    inexor_rgf_graph::NamespacedTypeContainer::push(&entries, entry);
+                                    let entry: <$tys as reactive_graph_graph::NamespacedTypeContainer>::Type = parsed_entry;
+                                    reactive_graph_graph::NamespacedTypeContainer::push(&entries, entry);
                                 }
                                 Err(e) => log::error!("Error in parsing TOML file {}: {}", filename, e),
                             }

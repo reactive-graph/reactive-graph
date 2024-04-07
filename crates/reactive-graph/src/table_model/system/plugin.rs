@@ -35,7 +35,7 @@ pub(crate) fn display_plugins(plugins: &Vec<Plugin>) -> String {
 }
 
 impl From<crate::client::Plugin> for Plugin {
-    fn from(plugin: inexor_rgf_client::Plugin) -> Self {
+    fn from(plugin: reactive_graph_client::Plugin) -> Self {
         Plugin {
             name: plugin.name,
             short_name: plugin.short_name,

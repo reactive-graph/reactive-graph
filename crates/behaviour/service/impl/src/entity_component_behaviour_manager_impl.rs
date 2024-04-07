@@ -6,18 +6,18 @@ use springtime_di::component_alias;
 use springtime_di::Component;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourConnectFailed;
-use inexor_rgf_behaviour_model_api::BehaviourDisconnectFailed;
-use inexor_rgf_behaviour_model_api::BehaviourState;
-use inexor_rgf_behaviour_model_api::BehaviourTransitionError;
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::ComponentBehaviourTypeId;
-use inexor_rgf_behaviour_model_impl::EntityBehaviourStorage;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourManager;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourRegistry;
-use inexor_rgf_graph::ComponentContainer;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_behaviour_model_api::BehaviourConnectFailed;
+use reactive_graph_behaviour_model_api::BehaviourDisconnectFailed;
+use reactive_graph_behaviour_model_api::BehaviourState;
+use reactive_graph_behaviour_model_api::BehaviourTransitionError;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::ComponentBehaviourTypeId;
+use reactive_graph_behaviour_model_impl::EntityBehaviourStorage;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
+use reactive_graph_graph::ComponentContainer;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 #[derive(Component)]
 pub struct EntityComponentBehaviourManagerImpl {
@@ -42,7 +42,7 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
         }
     }
 
-    fn add_behaviours_to_entity_component(&self, entity_instance: ReactiveEntity, component: inexor_rgf_graph::Component) {
+    fn add_behaviours_to_entity_component(&self, entity_instance: ReactiveEntity, component: reactive_graph_graph::Component) {
         for factory in self.entity_component_behaviour_registry.get(&component.ty) {
             if let Ok(behaviour) = factory.create(entity_instance.clone()) {
                 let behaviour_ty = behaviour.ty().clone();
@@ -73,7 +73,7 @@ impl EntityComponentBehaviourManager for EntityComponentBehaviourManagerImpl {
         self.entity_behaviour_storage.remove_all(&entity_instance.id);
     }
 
-    fn remove_behaviours_from_entity_component(&self, entity_instance: ReactiveEntity, component: inexor_rgf_graph::Component) {
+    fn remove_behaviours_from_entity_component(&self, entity_instance: ReactiveEntity, component: reactive_graph_graph::Component) {
         for factory in self.entity_component_behaviour_registry.get(&component.ty) {
             self.entity_behaviour_storage.remove(&entity_instance.id, factory.behaviour_ty());
             trace!("Removed entity component behaviour {}", factory.behaviour_ty());

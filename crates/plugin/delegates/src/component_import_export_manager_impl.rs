@@ -1,17 +1,17 @@
 use async_trait::async_trait;
 use std::sync::Arc;
 
-use inexor_rgf_graph::Component;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_type_system_api::ComponentExportError;
-use inexor_rgf_type_system_api::ComponentImportError;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_type_system_api::ComponentExportError;
+use reactive_graph_type_system_api::ComponentImportError;
 
 pub struct ComponentImportExportManagerDelegate {
-    component_import_export_manager: Arc<dyn inexor_rgf_type_system_api::ComponentImportExportManager + Send + Sync>,
+    component_import_export_manager: Arc<dyn reactive_graph_type_system_api::ComponentImportExportManager + Send + Sync>,
 }
 
 impl ComponentImportExportManagerDelegate {
-    pub fn new(component_manager: Arc<dyn inexor_rgf_type_system_api::ComponentImportExportManager + Send + Sync>) -> Self {
+    pub fn new(component_manager: Arc<dyn reactive_graph_type_system_api::ComponentImportExportManager + Send + Sync>) -> Self {
         Self {
             component_import_export_manager: component_manager,
         }
@@ -19,7 +19,7 @@ impl ComponentImportExportManagerDelegate {
 }
 
 #[async_trait]
-impl inexor_rgf_plugin_api::ComponentImportExportManager for ComponentImportExportManagerDelegate {
+impl reactive_graph_plugin_api::ComponentImportExportManager for ComponentImportExportManagerDelegate {
     async fn import(&self, path: &str) -> Result<Component, ComponentImportError> {
         self.component_import_export_manager.import(path).await
     }

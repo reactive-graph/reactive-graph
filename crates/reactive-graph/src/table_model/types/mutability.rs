@@ -11,26 +11,26 @@ pub enum Mutability {
     Immutable,
 }
 
-impl From<Mutability> for inexor_rgf_graph::Mutability {
+impl From<Mutability> for reactive_graph_graph::Mutability {
     fn from(mutability: Mutability) -> Self {
         match mutability {
-            Mutability::Mutable => inexor_rgf_graph::Mutability::Mutable,
-            Mutability::Immutable => inexor_rgf_graph::Mutability::Immutable,
+            Mutability::Mutable => reactive_graph_graph::Mutability::Mutable,
+            Mutability::Immutable => reactive_graph_graph::Mutability::Immutable,
         }
     }
 }
 
-impl From<inexor_rgf_graph::Mutability> for Mutability {
-    fn from(mutability: inexor_rgf_graph::Mutability) -> Self {
+impl From<reactive_graph_graph::Mutability> for Mutability {
+    fn from(mutability: reactive_graph_graph::Mutability) -> Self {
         match mutability {
-            inexor_rgf_graph::Mutability::Mutable => Mutability::Mutable,
-            inexor_rgf_graph::Mutability::Immutable => Mutability::Immutable,
+            reactive_graph_graph::Mutability::Mutable => Mutability::Mutable,
+            reactive_graph_graph::Mutability::Immutable => Mutability::Immutable,
         }
     }
 }
 
 impl Display for Mutability {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", inexor_rgf_graph::Mutability::from(*self))
+        write!(f, "{}", reactive_graph_graph::Mutability::from(*self))
     }
 }

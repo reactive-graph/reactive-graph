@@ -1,6 +1,6 @@
 // TODO: move unit test to plugin
 
-// use inexor_rgf_graph::{PropertyInstanceGetter, PropertyInstanceSetter};
+// use reactive_graph_graph::{PropertyInstanceGetter, PropertyInstanceSetter};
 // use crate::relation::connector::Connector;
 // // use crate::create_numeric_gate_entity;
 // use crate::tests::utils::create_relation_instance_with_properties;

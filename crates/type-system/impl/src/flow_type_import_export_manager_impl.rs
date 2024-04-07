@@ -10,15 +10,15 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::FlowType;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::DeserializationError;
-use inexor_rgf_type_system_api::FlowTypeExportError;
-use inexor_rgf_type_system_api::FlowTypeImportError;
-use inexor_rgf_type_system_api::FlowTypeImportExportManager;
-use inexor_rgf_type_system_api::FlowTypeManager;
-use inexor_rgf_type_system_api::SerializationError;
+use reactive_graph_graph::FlowType;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_type_system_api::FlowTypeExportError;
+use reactive_graph_type_system_api::FlowTypeImportError;
+use reactive_graph_type_system_api::FlowTypeImportExportManager;
+use reactive_graph_type_system_api::FlowTypeManager;
+use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct FlowTypeImportExportManagerImpl {

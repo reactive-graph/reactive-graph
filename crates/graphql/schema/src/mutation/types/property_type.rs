@@ -2,8 +2,8 @@ use async_graphql::*;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypes;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
 
 use crate::query::GraphQLDataType;
 use crate::query::GraphQLExtension;

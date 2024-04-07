@@ -2,12 +2,12 @@ use convert_case::Case::Camel;
 use convert_case::Case::Pascal;
 use convert_case::Casing;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_graph::TypeDefinition;
-use inexor_rgf_graph::TypeDefinitionGetter;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_graph::TypeDefinition;
+use reactive_graph_graph::TypeDefinitionGetter;
 
 pub struct DynamicGraphTypeDefinition {
     ty: TypeDefinition,

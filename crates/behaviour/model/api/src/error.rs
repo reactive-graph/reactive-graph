@@ -1,7 +1,7 @@
 use thiserror::Error;
 
 use crate::BehaviourTypeId;
-use inexor_rgf_graph::DataType;
+use reactive_graph_graph::DataType;
 
 #[derive(Debug, Error)]
 pub enum BehaviourTransitionError {

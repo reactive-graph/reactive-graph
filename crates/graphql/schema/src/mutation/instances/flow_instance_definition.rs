@@ -3,8 +3,8 @@ use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
 
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::FlowInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowInstance;
 
 use crate::mutation::GraphQLEntityInstanceDefinition;
 use crate::mutation::GraphQLRelationInstanceDefinition;

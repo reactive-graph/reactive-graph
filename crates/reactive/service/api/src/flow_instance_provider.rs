@@ -1,4 +1,4 @@
-use inexor_rgf_graph::FlowInstance;
+use reactive_graph_graph::FlowInstance;
 
 #[derive(Debug)]
 pub enum FlowInstanceProviderError {
@@ -25,9 +25,9 @@ macro_rules! flow_instance_provider {
 macro_rules! flow_instance_provider_impl {
     ($asset: ident, $path: expr) => {
         paste::paste! {
-            use inexor_rgf_graph::FlowInstance as ModelFlowInstance;
+            use reactive_graph_graph::FlowInstance as ModelFlowInstance;
 
-            #[derive(inexor_rgf_plugin_api::RustEmbed)]
+            #[derive(reactive_graph_plugin_api::RustEmbed)]
             #[folder = $path]
             struct [<$asset FlowInstanceAsset>];
 
@@ -38,7 +38,7 @@ macro_rules! flow_instance_provider_impl {
 
             interfaces!([<$asset FlowInstanceProviderImpl>]: dyn $crate::FlowInstanceProvider);
 
-            #[inexor_rgf_core_di::component]
+            #[reactive_graph_core_di::component]
             impl [<$asset FlowInstanceProviderImpl>] {
                 #[provides]
                 fn new() -> Self {
@@ -46,7 +46,7 @@ macro_rules! flow_instance_provider_impl {
                 }
             }
 
-            #[inexor_rgf_core_di::provides]
+            #[reactive_graph_core_di::provides]
             impl [<$asset FlowInstanceProvider>] for [<$asset FlowInstanceProviderImpl>] {}
 
             impl $crate::FlowInstanceProvider for [<$asset FlowInstanceProviderImpl>] {

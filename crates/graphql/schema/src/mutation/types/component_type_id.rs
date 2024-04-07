@@ -6,10 +6,10 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ComponentTypeIds;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::TYPE_ID_TYPE_SEPARATOR;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "ComponentTypeId")]

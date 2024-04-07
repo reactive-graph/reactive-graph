@@ -4,10 +4,10 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_runtime_graphql_api::RuntimeGraphQLSystem;
-use inexor_rgf_runtime_graphql_api::RuntimeQueryService;
-use inexor_rgf_runtime_graphql_api::RuntimeSchemaManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_runtime_graphql_api::RuntimeGraphQLSystem;
+use reactive_graph_runtime_graphql_api::RuntimeQueryService;
+use reactive_graph_runtime_graphql_api::RuntimeSchemaManager;
 
 #[derive(Component)]
 pub struct RuntimeGraphQLSystemImpl {

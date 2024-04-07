@@ -19,8 +19,8 @@ use serde::Serialize;
 use typed_builder::TypedBuilder;
 
 use crate::BehaviourTypeId;
-use inexor_rgf_graph::NamespacedType;
-use inexor_rgf_graph::RelationTypeId;
+use reactive_graph_graph::NamespacedType;
+use reactive_graph_graph::RelationTypeId;
 
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;

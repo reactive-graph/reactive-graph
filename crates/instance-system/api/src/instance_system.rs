@@ -3,8 +3,8 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_service_api::ReactiveSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_service_api::ReactiveSystem;
 
 use crate::EntityInstanceImportExportManager;
 use crate::RelationInstanceImportExportManager;

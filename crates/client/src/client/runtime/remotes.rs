@@ -8,8 +8,8 @@ pub mod mapping {
         pub address: InstanceAddress,
     }
 
-    impl From<&inexor_rgf_remotes_model::InstanceAddress> for InstanceAddressVariables {
-        fn from(address: &inexor_rgf_remotes_model::InstanceAddress) -> Self {
+    impl From<&reactive_graph_remotes_model::InstanceAddress> for InstanceAddressVariables {
+        fn from(address: &reactive_graph_remotes_model::InstanceAddress) -> Self {
             InstanceAddressVariables {
                 address: InstanceAddress {
                     hostname: address.hostname.clone(),
@@ -190,8 +190,8 @@ pub mod api {
     use crate::schema_runtime::InstanceInfos;
     use crate::InexorRgfClient;
     use crate::InexorRgfClientExecutionError;
-    use inexor_rgf_remotes_model::InstanceAddress;
-    use inexor_rgf_remotes_model::InstanceInfo;
+    use reactive_graph_remotes_model::InstanceAddress;
+    use reactive_graph_remotes_model::InstanceInfo;
 
     pub struct Remotes {
         client: Arc<InexorRgfClient>,
@@ -246,8 +246,8 @@ pub mod api {
 pub mod test {
 
     use crate::InexorRgfClient;
-    use inexor_rgf_runtime_api::Runtime;
-    use inexor_rgf_runtime_impl::RuntimeBuilder;
+    use reactive_graph_runtime_api::Runtime;
+    use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
 
     #[tokio::test(flavor = "multi_thread")]

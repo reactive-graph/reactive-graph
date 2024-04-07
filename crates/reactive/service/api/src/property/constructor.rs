@@ -4,7 +4,7 @@ use uuid::Uuid;
 
 use crate::TypedReactivePropertyCreator;
 use crate::TypedReactivePropertyImpl;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 
 pub trait TypedReactivePropertyConstructor<IdType, ReactiveInstanceType>: TypedReactivePropertyCreator<IdType, ReactiveInstanceType>
 where

@@ -2,7 +2,7 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::ops::Deref;
 
-// use inexor_rgf_graph::NamespacedTypeContainer;
+// use reactive_graph_graph::NamespacedTypeContainer;
 use serde_json::Value;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
@@ -12,7 +12,7 @@ use tabled::Tabled;
 
 use crate::table_model::styles::modern_inline::modern_inline;
 use crate::table_model::types::json_value::pretty_json;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct ExtensionTypeId {
@@ -20,8 +20,8 @@ pub struct ExtensionTypeId {
     pub namespace: String,
 }
 
-impl From<inexor_rgf_graph::ExtensionTypeId> for ExtensionTypeId {
-    fn from(ty: inexor_rgf_graph::ExtensionTypeId) -> Self {
+impl From<reactive_graph_graph::ExtensionTypeId> for ExtensionTypeId {
+    fn from(ty: reactive_graph_graph::ExtensionTypeId) -> Self {
         ExtensionTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
@@ -35,8 +35,8 @@ pub struct ExtensionDefinition {
     pub extension: Value,
 }
 
-impl From<inexor_rgf_graph::Extension> for ExtensionDefinition {
-    fn from(extension: inexor_rgf_graph::Extension) -> Self {
+impl From<reactive_graph_graph::Extension> for ExtensionDefinition {
+    fn from(extension: reactive_graph_graph::Extension) -> Self {
         ExtensionDefinition {
             type_: extension.ty.into(),
             description: extension.description,
@@ -71,8 +71,8 @@ impl From<ExtensionDefinitions> for Vec<ExtensionDefinition> {
     }
 }
 
-impl From<inexor_rgf_graph::Extensions> for ExtensionDefinitions {
-    fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
+impl From<reactive_graph_graph::Extensions> for ExtensionDefinitions {
+    fn from(extensions: reactive_graph_graph::Extensions) -> Self {
         ExtensionDefinitions(extensions.into_iter().map(|(_extension_ty, extension)| extension.into()).collect())
     }
 }
@@ -93,10 +93,10 @@ pub struct Extension {
     pub extension: Value,
 }
 
-impl From<Extension> for inexor_rgf_graph::Extension {
+impl From<Extension> for reactive_graph_graph::Extension {
     fn from(extension: Extension) -> Self {
-        let ty = inexor_rgf_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
-        inexor_rgf_graph::Extension {
+        let ty = reactive_graph_graph::ExtensionTypeId::new_from_type(extension.namespace, extension.name);
+        reactive_graph_graph::Extension {
             ty,
             description: extension.description,
             extension: extension.extension,
@@ -104,8 +104,8 @@ impl From<Extension> for inexor_rgf_graph::Extension {
     }
 }
 
-impl From<inexor_rgf_graph::Extension> for Extension {
-    fn from(extension: inexor_rgf_graph::Extension) -> Self {
+impl From<reactive_graph_graph::Extension> for Extension {
+    fn from(extension: reactive_graph_graph::Extension) -> Self {
         Extension {
             namespace: extension.namespace(),
             name: extension.type_name(),
@@ -126,7 +126,7 @@ impl Deref for Extensions {
     }
 }
 
-impl From<Extensions> for inexor_rgf_graph::Extensions {
+impl From<Extensions> for reactive_graph_graph::Extensions {
     fn from(extensions: Extensions) -> Self {
         extensions.0.into_iter().map(|extension| extension.into()).collect()
     }
@@ -138,8 +138,8 @@ impl From<Extensions> for Vec<Extension> {
     }
 }
 
-impl From<inexor_rgf_graph::Extensions> for Extensions {
-    fn from(extensions: inexor_rgf_graph::Extensions) -> Self {
+impl From<reactive_graph_graph::Extensions> for Extensions {
+    fn from(extensions: reactive_graph_graph::Extensions) -> Self {
         Extensions(extensions.into_iter().map(|(_extension_ty, extension)| extension.into()).collect())
     }
 }

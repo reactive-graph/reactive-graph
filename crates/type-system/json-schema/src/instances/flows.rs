@@ -2,7 +2,7 @@ use actix_web::get;
 use actix_web::HttpResponse;
 use schemars::schema_for;
 
-use inexor_rgf_graph::FlowInstance;
+use reactive_graph_graph::FlowInstance;
 
 #[get("/instances/flows/schema")]
 pub async fn schema_flow_instances() -> HttpResponse {

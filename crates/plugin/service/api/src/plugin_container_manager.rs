@@ -7,15 +7,15 @@ use springtime_di::injectable;
 use uuid::Uuid;
 
 use crate::PluginTransitionResult;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_api::PluginContext;
-use inexor_rgf_plugin_api::PluginDependency;
-use inexor_rgf_plugin_api::PluginDeployError;
-use inexor_rgf_plugin_api::PluginDisableError;
-use inexor_rgf_plugin_api::PluginStartError;
-use inexor_rgf_plugin_api::PluginState;
-use inexor_rgf_plugin_api::PluginStopError;
-use inexor_rgf_plugin_api::PluginUninstallError;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_api::PluginContext;
+use reactive_graph_plugin_api::PluginDependency;
+use reactive_graph_plugin_api::PluginDeployError;
+use reactive_graph_plugin_api::PluginDisableError;
+use reactive_graph_plugin_api::PluginStartError;
+use reactive_graph_plugin_api::PluginState;
+use reactive_graph_plugin_api::PluginStopError;
+use reactive_graph_plugin_api::PluginUninstallError;
 
 #[injectable]
 #[async_trait]

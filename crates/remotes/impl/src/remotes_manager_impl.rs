@@ -9,16 +9,16 @@ use log::error;
 use log::info;
 use serde::Deserialize;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_config_model::RemotesConfig;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_remotes_api::FailedToAddInstance;
-use inexor_rgf_remotes_api::FailedToFetchInstanceInfo;
-use inexor_rgf_remotes_api::FailedToFetchRemoteInstances;
-use inexor_rgf_remotes_api::FailedToUpdateInstance;
-use inexor_rgf_remotes_api::RemotesManager;
-use inexor_rgf_remotes_model::InstanceAddress;
-use inexor_rgf_remotes_model::InstanceInfo;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_config_model::RemotesConfig;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_remotes_api::FailedToAddInstance;
+use reactive_graph_remotes_api::FailedToFetchInstanceInfo;
+use reactive_graph_remotes_api::FailedToFetchRemoteInstances;
+use reactive_graph_remotes_api::FailedToUpdateInstance;
+use reactive_graph_remotes_api::RemotesManager;
+use reactive_graph_remotes_model::InstanceAddress;
+use reactive_graph_remotes_model::InstanceInfo;
 use springtime_di::component_alias;
 use springtime_di::Component;
 

@@ -1,8 +1,8 @@
 use async_trait::async_trait;
-use inexor_rgf_graph::Component;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_type_system_api::ComponentExportError;
-use inexor_rgf_type_system_api::ComponentImportError;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_type_system_api::ComponentExportError;
+use reactive_graph_type_system_api::ComponentImportError;
 
 #[async_trait]
 pub trait ComponentImportExportManager: Send + Sync {

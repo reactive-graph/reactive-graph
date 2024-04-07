@@ -4,11 +4,11 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_instance_system_api::EntityInstanceImportExportManager;
-use inexor_rgf_instance_system_api::InstanceSystem;
-use inexor_rgf_instance_system_api::RelationInstanceImportExportManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_service_api::ReactiveSystem;
+use reactive_graph_instance_system_api::EntityInstanceImportExportManager;
+use reactive_graph_instance_system_api::InstanceSystem;
+use reactive_graph_instance_system_api::RelationInstanceImportExportManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_service_api::ReactiveSystem;
 
 #[derive(Component)]
 pub struct InstanceSystemImpl {

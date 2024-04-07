@@ -2,12 +2,12 @@ use std::sync::Arc;
 use std::time::Duration;
 use std::time::Instant;
 
-use inexor_rgf_runtime_api::Runtime;
-use inexor_rgf_runtime_impl::RuntimeBuilder;
+use reactive_graph_runtime_api::Runtime;
+use reactive_graph_runtime_impl::RuntimeBuilder;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn integration_test_shutdown() {
-    inexor_rgf_test_utils::init_logger();
+    reactive_graph_test_utils::init_logger();
     let start = Instant::now();
     RuntimeBuilder::new()
         .ignore_config_files()

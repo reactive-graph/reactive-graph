@@ -1,7 +1,7 @@
 use springtime_di::injectable;
 
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_type_system_api::TypeSystemEventTypes;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_type_system_api::TypeSystemEventTypes;
 
 #[injectable]
 pub trait TypeSystemEventManager: Send + Sync {

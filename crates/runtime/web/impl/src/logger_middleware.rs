@@ -1,6 +1,6 @@
 use actix_web::middleware::Logger;
 
-use inexor_rgf_config_model::GraphQLLoggingConfig;
+use reactive_graph_config_model::GraphQLLoggingConfig;
 
 pub fn get_logger_middleware(graphql_logging_config: &GraphQLLoggingConfig) -> Option<Logger> {
     if graphql_logging_config.enabled {

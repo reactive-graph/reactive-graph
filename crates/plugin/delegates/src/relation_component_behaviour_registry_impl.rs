@@ -2,21 +2,21 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_behaviour_model_api::prelude::*;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 
 pub struct RelationComponentBehaviourRegistryDelegate {
-    relation_component_behaviour_manager: Arc<dyn inexor_rgf_behaviour_service_api::RelationComponentBehaviourManager + Send + Sync>,
-    relation_component_behaviour_registry: Arc<dyn inexor_rgf_behaviour_service_api::RelationComponentBehaviourRegistry + Send + Sync>,
-    reactive_relation_manager: Arc<dyn inexor_rgf_reactive_service_api::ReactiveRelationManager + Send + Sync>,
+    relation_component_behaviour_manager: Arc<dyn reactive_graph_behaviour_service_api::RelationComponentBehaviourManager + Send + Sync>,
+    relation_component_behaviour_registry: Arc<dyn reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry + Send + Sync>,
+    reactive_relation_manager: Arc<dyn reactive_graph_reactive_service_api::ReactiveRelationManager + Send + Sync>,
 }
 
 impl RelationComponentBehaviourRegistryDelegate {
     pub fn new(
-        relation_component_behaviour_manager: Arc<dyn inexor_rgf_behaviour_service_api::RelationComponentBehaviourManager + Send + Sync>,
-        relation_component_behaviour_registry: Arc<dyn inexor_rgf_behaviour_service_api::RelationComponentBehaviourRegistry + Send + Sync>,
-        reactive_relation_manager: Arc<dyn inexor_rgf_reactive_service_api::ReactiveRelationManager + Send + Sync>,
+        relation_component_behaviour_manager: Arc<dyn reactive_graph_behaviour_service_api::RelationComponentBehaviourManager + Send + Sync>,
+        relation_component_behaviour_registry: Arc<dyn reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry + Send + Sync>,
+        reactive_relation_manager: Arc<dyn reactive_graph_reactive_service_api::ReactiveRelationManager + Send + Sync>,
     ) -> Self {
         Self {
             relation_component_behaviour_manager,
@@ -27,7 +27,7 @@ impl RelationComponentBehaviourRegistryDelegate {
 }
 
 #[async_trait]
-impl inexor_rgf_plugin_api::RelationComponentBehaviourRegistry for RelationComponentBehaviourRegistryDelegate {
+impl reactive_graph_plugin_api::RelationComponentBehaviourRegistry for RelationComponentBehaviourRegistryDelegate {
     async fn register(
         &self,
         component_behaviour_ty: ComponentBehaviourTypeId,

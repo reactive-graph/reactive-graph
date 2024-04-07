@@ -56,7 +56,7 @@ pub fn reactive_entity(args: TokenStream, item: TokenStream) -> TokenStream {
                     let field_type = &field.ty.clone();
                     let field_vis = &field.vis;
                     quote! {
-                        #field_vis #field_name: inexor_rgf_reactive_service_api::TypedReactivePropertyImpl<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity, #field_type>,
+                        #field_vis #field_name: reactive_graph_reactive_service_api::TypedReactivePropertyImpl<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity, #field_type>,
                     }
                 })
                 .collect(),
@@ -66,10 +66,10 @@ pub fn reactive_entity(args: TokenStream, item: TokenStream) -> TokenStream {
     };
 
     let expanded = quote! {
-        #[derive(inexor_rgf_reactive_service_api::ReactiveEntity)]
+        #[derive(reactive_graph_reactive_service_api::ReactiveEntity)]
         #[reactive_entity_derive(namespace = #namespace, type_name = #type_name)]
         pub struct #ident {
-            // reactive_instance: inexor_rgf_reactive_service_api::ReactiveEntity,
+            // reactive_instance: reactive_graph_reactive_service_api::ReactiveEntity,
             #output
         }
     }
@@ -110,7 +110,7 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
                 let field_name = f.ident.clone().unwrap();
                 let property_name = field_name.to_string();
                 quote! {
-                    #field_name: inexor_rgf_reactive_service_api::TypedReactivePropertyConstructor::new(reactive_instance.clone(), #property_name),
+                    #field_name: reactive_graph_reactive_service_api::TypedReactivePropertyConstructor::new(reactive_instance.clone(), #property_name),
                 }
             }));
 
@@ -160,7 +160,7 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
                 let property_name = field_name.to_string();
                 quote! {
                     properties.insert(#property_name.to_string(), serde_json::json!(#field_name.into()));
-                    // properties.insert(#property_name.to_string(), serde_json::json!(inexor_rgf_reactive_service_api::TypedReactivePropertyAccessor::get(&#field_name.into())));
+                    // properties.insert(#property_name.to_string(), serde_json::json!(reactive_graph_reactive_service_api::TypedReactivePropertyAccessor::get(&#field_name.into())));
                 }
             }));
         }
@@ -168,11 +168,11 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
 
     let expanded = quote! {
 
-        pub static #ident_entity_type: std::sync::LazyLock<inexor_rgf_graph::EntityTypeId> = std::sync::LazyLock::new(|| { inexor_rgf_graph::EntityTypeId::new_from_type(#namespace, #type_name)});
+        pub static #ident_entity_type: std::sync::LazyLock<reactive_graph_graph::EntityTypeId> = std::sync::LazyLock::new(|| { reactive_graph_graph::EntityTypeId::new_from_type(#namespace, #type_name)});
 
         #[automatically_derived]
-        impl From<inexor_rgf_reactive_model_impl::ReactiveEntity> for #ident {
-            fn from(reactive_instance: inexor_rgf_reactive_model_impl::ReactiveEntity) -> Self {
+        impl From<reactive_graph_reactive_model_impl::ReactiveEntity> for #ident {
+            fn from(reactive_instance: reactive_graph_reactive_model_impl::ReactiveEntity) -> Self {
                 Self {
                     // reactive_instance: reactive_instance.clone(),
                     #constructor_fields
@@ -180,8 +180,8 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
             }
         }
         #[automatically_derived]
-        impl From<&inexor_rgf_reactive_model_impl::ReactiveEntity> for #ident {
-            fn from(reactive_instance: &inexor_rgf_reactive_model_impl::ReactiveEntity) -> Self {
+        impl From<&reactive_graph_reactive_model_impl::ReactiveEntity> for #ident {
+            fn from(reactive_instance: &reactive_graph_reactive_model_impl::ReactiveEntity) -> Self {
                 Self {
                     // reactive_instance: reactive_instance.clone(),
                     #constructor_fields
@@ -197,23 +197,23 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
                 #constructor_parameters
             ) -> Self {
                 let id = uuid::Uuid::new_v4();
-                let mut properties = inexor_rgf_graph::PropertyInstances::new();
+                let mut properties = reactive_graph_graph::PropertyInstances::new();
                 #constructor_properties
                 // properties.insert("value".to_string(), serde_json::json!(value.into()));
-                let properties = inexor_rgf_reactive_model_impl::ReactiveProperties::new_with_id_from_properties(id, properties);
+                let properties = reactive_graph_reactive_model_impl::ReactiveProperties::new_with_id_from_properties(id, properties);
                 let ty = std::ops::Deref::deref(&#ident_entity_type).clone();
-                Self::from(inexor_rgf_reactive_model_impl::ReactiveEntity::builder().ty(ty).id(id).properties(properties).build())
+                Self::from(reactive_graph_reactive_model_impl::ReactiveEntity::builder().ty(ty).id(id).properties(properties).build())
             }
         }
 
         #[automatically_derived]
-        impl inexor_rgf_reactive_service_api::TypedReactivePropertyContainer<inexor_rgf_graph::EntityTypeId, inexor_rgf_graph::EntityType> for #ident {
-            fn new_with_ty<TY: Into<inexor_rgf_graph::EntityTypeId>>(ty: TY) -> Self {
-                #ident::from(inexor_rgf_reactive_model_impl::ReactiveEntity::builder().ty(ty).id(uuid::Uuid::new_v4()).build())
+        impl reactive_graph_reactive_service_api::TypedReactivePropertyContainer<reactive_graph_graph::EntityTypeId, reactive_graph_graph::EntityType> for #ident {
+            fn new_with_ty<TY: Into<reactive_graph_graph::EntityTypeId>>(ty: TY) -> Self {
+                #ident::from(reactive_graph_reactive_model_impl::ReactiveEntity::builder().ty(ty).id(uuid::Uuid::new_v4()).build())
             }
 
-            fn new_from_type(entity_type: &inexor_rgf_graph::EntityType) -> Self {
-                #ident::from(inexor_rgf_reactive_model_impl::ReactiveEntity::builder_from_entity_type(&entity_type).build())
+            fn new_from_type(entity_type: &reactive_graph_graph::EntityType) -> Self {
+                #ident::from(reactive_graph_reactive_model_impl::ReactiveEntity::builder_from_entity_type(&entity_type).build())
             }
         }
 
@@ -221,13 +221,13 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
         impl Default for #ident {
             fn default() -> Self {
                 let ty = std::ops::Deref::deref(&#ident_entity_type).clone();
-                #ident::from(inexor_rgf_reactive_model_impl::ReactiveEntity::builder().ty(ty).id(uuid::Uuid::new_v4()).build())
+                #ident::from(reactive_graph_reactive_model_impl::ReactiveEntity::builder().ty(ty).id(uuid::Uuid::new_v4()).build())
             }
         }
 
         // #[automatically_derived]
-        // impl inexor_rgf_reactive_service_api::ReactiveInstanceGetter<inexor_rgf_reactive_model_impl::ReactiveEntity> for #ident {
-        //     fn get_reactive_instance() -> &inexor_rgf_reactive_model_impl::ReactiveEntity {
+        // impl reactive_graph_reactive_service_api::ReactiveInstanceGetter<reactive_graph_reactive_model_impl::ReactiveEntity> for #ident {
+        //     fn get_reactive_instance() -> &reactive_graph_reactive_model_impl::ReactiveEntity {
         //         &self.reactive_instance
         //     }
         // }

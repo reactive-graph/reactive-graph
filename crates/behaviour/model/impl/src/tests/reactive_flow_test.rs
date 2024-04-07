@@ -14,7 +14,7 @@ use crate::builder::EntityTypeBuilder;
 use crate::builder::FlowInstanceBuilder;
 use indradb::EdgeKey;
 use indradb::Type;
-use inexor_rgf_reactive::LogicalGateProperties;
+use reactive_graph_reactive::LogicalGateProperties;
 use std::convert::TryFrom;
 use std::convert::TryInto;
 use std::str::FromStr;

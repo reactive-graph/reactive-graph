@@ -1,10 +1,10 @@
 use async_graphql::dynamic::SchemaError;
-use inexor_rgf_graph::EntityTypeId;
+use reactive_graph_graph::EntityTypeId;
 use serde_json::Error;
 use thiserror::Error;
 use uuid::Uuid;
 
-use inexor_rgf_graph::DataType;
+use reactive_graph_graph::DataType;
 
 #[derive(Debug, Error)]
 pub enum DynamicQueryError {

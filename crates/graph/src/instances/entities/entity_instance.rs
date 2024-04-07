@@ -47,7 +47,7 @@ use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
 #[cfg(any(test, feature = "test"))]
-use inexor_rgf_test_utils::r_string;
+use reactive_graph_test_utils::r_string;
 
 /// Entity instances represents an typed object which contains properties.
 ///
@@ -440,7 +440,7 @@ pub mod entity_instance_tests {
     use crate::NamespacedTypeGetter;
     use crate::PropertyInstanceGetter;
     use crate::PropertyInstances;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
 
     pub fn create_entity_instance_with_property<S: Into<String>>(property_name: S) -> EntityInstance {
         let properties = PropertyInstances::new().property(property_name, json!(r_string()));

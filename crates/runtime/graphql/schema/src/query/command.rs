@@ -1,7 +1,7 @@
 use async_graphql::Object;
 
-use inexor_rgf_command_model::entity::Command;
-use inexor_rgf_command_model::entity::CommandArg;
+use reactive_graph_command_model::entity::Command;
+use reactive_graph_command_model::entity::CommandArg;
 
 pub struct GraphQLCommand {
     /// The instance information.

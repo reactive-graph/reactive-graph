@@ -3,12 +3,12 @@ use std::sync::Arc;
 use async_graphql::Context;
 use async_graphql::Object;
 
-use inexor_rgf_graph::FlowType;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::FlowTypeManager;
+use reactive_graph_graph::FlowType;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::FlowTypeManager;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLEntityInstance;

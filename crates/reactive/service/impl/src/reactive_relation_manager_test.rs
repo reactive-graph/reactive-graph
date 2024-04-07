@@ -3,7 +3,7 @@
 // use indradb::{EdgeKey, Type};
 //
 // use crate::builder::{EntityTypeBuilder, ReactiveEntityBuilder, ReactiveRelationBuilder, RelationTypeBuilder};
-// use inexor_rgf_graph::PropertyInstanceSetter;
+// use reactive_graph_graph::PropertyInstanceSetter;
 // use crate::tests::r_json_string;
 // use crate::tests::utils::{init_application, r_string};
 // use std::env;

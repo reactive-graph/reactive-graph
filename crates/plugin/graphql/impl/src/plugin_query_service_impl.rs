@@ -6,9 +6,9 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_graphql_api::PluginQueryService;
-use inexor_rgf_plugin_graphql_api::PluginSchemaManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_graphql_api::PluginQueryService;
+use reactive_graph_plugin_graphql_api::PluginSchemaManager;
 
 #[derive(Component)]
 pub struct PluginQueryServiceImpl {

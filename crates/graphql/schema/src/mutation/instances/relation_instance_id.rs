@@ -3,9 +3,9 @@ use std::fmt;
 use async_graphql::*;
 use uuid::Uuid;
 
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationInstanceTypeId;
-use inexor_rgf_graph::TYPE_ID_TYPE_SEPARATOR;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationInstanceTypeId;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 /// The primary key of an edge consists of the outbound id, the
 /// type name and the inbound id.

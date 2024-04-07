@@ -4,11 +4,11 @@ use std::sync::Arc;
 use serde_json::Value;
 use uuid::Uuid;
 
-use inexor_rgf_graph::FlowInstance;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_reactive_model_impl::ReactiveFlow;
-use inexor_rgf_reactive_service_api::ReactiveFlowCreationError;
-use inexor_rgf_reactive_service_api::ReactiveFlowManager;
+use reactive_graph_graph::FlowInstance;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_reactive_model_impl::ReactiveFlow;
+use reactive_graph_reactive_service_api::ReactiveFlowCreationError;
+use reactive_graph_reactive_service_api::ReactiveFlowManager;
 
 pub struct FlowInstanceManagerDelegate {
     reactive_flow_manager: Arc<dyn ReactiveFlowManager + Send + Sync>,
@@ -20,7 +20,7 @@ impl FlowInstanceManagerDelegate {
     }
 }
 
-impl inexor_rgf_plugin_api::FlowInstanceManager for FlowInstanceManagerDelegate {
+impl reactive_graph_plugin_api::FlowInstanceManager for FlowInstanceManagerDelegate {
     fn has(&self, id: Uuid) -> bool {
         self.reactive_flow_manager.has(id)
     }

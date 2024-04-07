@@ -1,8 +1,8 @@
 use convert_case::Case::Camel;
 use convert_case::Casing;
 use default_test::DefaultTest;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::NamespacedTypeGetter;
 use log::LevelFilter;
 use log4rs::append::console::ConsoleAppender;
 use log4rs::config::Appender;
@@ -11,8 +11,8 @@ use log4rs::Config;
 use std::sync::Arc;
 use std::time::Duration;
 
-use inexor_rgf_runtime_api::Runtime;
-use inexor_rgf_runtime_impl::get_runtime;
+use reactive_graph_runtime_api::Runtime;
+use reactive_graph_runtime_impl::get_runtime;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_dynamic_graph_query() {

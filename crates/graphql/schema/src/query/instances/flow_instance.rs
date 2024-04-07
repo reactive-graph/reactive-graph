@@ -4,8 +4,8 @@ use async_graphql::Context;
 use async_graphql::Object;
 use uuid::Uuid;
 
-use inexor_rgf_reactive_model_impl::ReactiveFlow;
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_reactive_model_impl::ReactiveFlow;
+use reactive_graph_type_system_api::EntityTypeManager;
 
 use crate::query::GraphQLEntityInstance;
 use crate::query::GraphQLEntityType;

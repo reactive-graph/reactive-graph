@@ -1,8 +1,8 @@
 use async_trait::async_trait;
-use inexor_rgf_graph::RelationType;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_type_system_api::RelationTypeExportError;
-use inexor_rgf_type_system_api::RelationTypeImportError;
+use reactive_graph_graph::RelationType;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_type_system_api::RelationTypeExportError;
+use reactive_graph_type_system_api::RelationTypeImportError;
 
 #[async_trait]
 pub trait RelationTypeImportExportManager: Send + Sync {

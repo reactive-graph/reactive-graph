@@ -2,9 +2,9 @@ use std::fmt::Display;
 
 use serde_json::Value;
 
-use inexor_rgf_graph::ComponentContainer;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::PropertyInstanceSetter;
+use reactive_graph_graph::ComponentContainer;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::PropertyInstanceSetter;
 
 use crate::ReactivePropertyContainer;
 

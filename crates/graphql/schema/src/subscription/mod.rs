@@ -16,8 +16,8 @@ pub use relation_instance::*;
 
 use crate::mutation::GraphQLRelationInstanceId;
 use crate::query::GraphQLPropertyInstance;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
 
 pub mod entity_instance;
 pub mod relation_instance;

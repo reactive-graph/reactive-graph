@@ -6,25 +6,25 @@ use serde_json::json;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::PropertyTypeDefinition;
-use inexor_rgf_graph::TypeDefinition;
-use inexor_rgf_graph::TypeDefinitionComponent;
-use inexor_rgf_graph::TypeDefinitionExtension;
-use inexor_rgf_graph::TypeDefinitionGetter;
-use inexor_rgf_graph::TypeDefinitionProperty;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_runtime_model::EventProperties::EVENT;
-use inexor_rgf_runtime_model::ENTITY_TYPE_SYSTEM_EVENT;
-use inexor_rgf_type_system_api::TypeSystemEvent;
-use inexor_rgf_type_system_api::TypeSystemEventManager;
-use inexor_rgf_type_system_api::TypeSystemEventTypes;
-use inexor_rgf_type_system_api::TYPE_SYSTEM_EVENT_PROPERTY_LABEL;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_graph::TypeDefinition;
+use reactive_graph_graph::TypeDefinitionComponent;
+use reactive_graph_graph::TypeDefinitionExtension;
+use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::TypeDefinitionProperty;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_runtime_model::EventProperties::EVENT;
+use reactive_graph_runtime_model::ENTITY_TYPE_SYSTEM_EVENT;
+use reactive_graph_type_system_api::TypeSystemEvent;
+use reactive_graph_type_system_api::TypeSystemEventManager;
+use reactive_graph_type_system_api::TypeSystemEventTypes;
+use reactive_graph_type_system_api::TYPE_SYSTEM_EVENT_PROPERTY_LABEL;
 
 #[derive(Component)]
 pub struct TypeSystemEventManagerImpl {

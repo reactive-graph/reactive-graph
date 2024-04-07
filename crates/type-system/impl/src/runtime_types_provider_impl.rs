@@ -4,19 +4,19 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::Components;
-use inexor_rgf_graph::EntityTypes;
-use inexor_rgf_graph::FlowTypes;
-use inexor_rgf_graph::RelationTypes;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::ComponentProviderRegistry;
-use inexor_rgf_type_system_api::EntityTypeProviderRegistry;
-use inexor_rgf_type_system_api::FlowTypeProviderRegistry;
-use inexor_rgf_type_system_api::RelationTypeProviderRegistry;
-use inexor_rgf_type_system_api::RuntimeTypesProvider;
+use reactive_graph_graph::Components;
+use reactive_graph_graph::EntityTypes;
+use reactive_graph_graph::FlowTypes;
+use reactive_graph_graph::RelationTypes;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::ComponentProviderRegistry;
+use reactive_graph_type_system_api::EntityTypeProviderRegistry;
+use reactive_graph_type_system_api::FlowTypeProviderRegistry;
+use reactive_graph_type_system_api::RelationTypeProviderRegistry;
+use reactive_graph_type_system_api::RuntimeTypesProvider;
 #[allow(unused)]
-use inexor_rgf_type_system_api::TypeProvider as TypeProvider1;
-use inexor_rgf_type_system_api::TypeProvider;
+use reactive_graph_type_system_api::TypeProvider as TypeProvider1;
+use reactive_graph_type_system_api::TypeProvider;
 
 #[derive(TypeProvider, Component)]
 #[type_provider(tys = "Components", path = "types/components")]

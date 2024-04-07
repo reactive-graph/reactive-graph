@@ -1,7 +1,7 @@
 use crate::TypedReactivePropertyImpl;
 use crate::TypedReactivePropertyName;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_api::ReactiveInstanceContainer;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstanceContainer;
 
 impl<IdTypeSelf, ReactiveInstanceTypeSelf, TargetSelf, IdTypeOther, ReactiveInstanceTypeOther, TargetOther>
     PartialEq<TypedReactivePropertyImpl<IdTypeOther, ReactiveInstanceTypeOther, TargetOther>>

@@ -1,30 +1,30 @@
 use std::sync::Arc;
 
-use inexor_rgf_plugin_api::CommandManager;
-use inexor_rgf_plugin_api::ComponentImportExportManager;
-use inexor_rgf_plugin_api::ComponentManager;
-use inexor_rgf_plugin_api::ComponentProviderRegistry;
-use inexor_rgf_plugin_api::ConfigManager;
-use inexor_rgf_plugin_api::EntityBehaviourRegistry;
-use inexor_rgf_plugin_api::EntityComponentBehaviourRegistry;
-use inexor_rgf_plugin_api::EntityInstanceManager;
-use inexor_rgf_plugin_api::EntityTypeImportExportManager;
-use inexor_rgf_plugin_api::EntityTypeManager;
-use inexor_rgf_plugin_api::EntityTypeProviderRegistry;
-use inexor_rgf_plugin_api::FlowInstanceManager;
-use inexor_rgf_plugin_api::FlowTypeImportExportManager;
-use inexor_rgf_plugin_api::FlowTypeManager;
-use inexor_rgf_plugin_api::FlowTypeProviderRegistry;
-use inexor_rgf_plugin_api::GraphQLQueryService;
-use inexor_rgf_plugin_api::PluginContext;
-use inexor_rgf_plugin_api::RelationBehaviourRegistry;
-use inexor_rgf_plugin_api::RelationComponentBehaviourRegistry;
-use inexor_rgf_plugin_api::RelationInstanceManager;
-use inexor_rgf_plugin_api::RelationTypeImportExportManager;
-use inexor_rgf_plugin_api::RelationTypeManager;
-use inexor_rgf_plugin_api::RelationTypeProviderRegistry;
-use inexor_rgf_plugin_api::TypeSystemEventManager;
-use inexor_rgf_plugin_api::WebResourceManager;
+use reactive_graph_plugin_api::CommandManager;
+use reactive_graph_plugin_api::ComponentImportExportManager;
+use reactive_graph_plugin_api::ComponentManager;
+use reactive_graph_plugin_api::ComponentProviderRegistry;
+use reactive_graph_plugin_api::ConfigManager;
+use reactive_graph_plugin_api::EntityBehaviourRegistry;
+use reactive_graph_plugin_api::EntityComponentBehaviourRegistry;
+use reactive_graph_plugin_api::EntityInstanceManager;
+use reactive_graph_plugin_api::EntityTypeImportExportManager;
+use reactive_graph_plugin_api::EntityTypeManager;
+use reactive_graph_plugin_api::EntityTypeProviderRegistry;
+use reactive_graph_plugin_api::FlowInstanceManager;
+use reactive_graph_plugin_api::FlowTypeImportExportManager;
+use reactive_graph_plugin_api::FlowTypeManager;
+use reactive_graph_plugin_api::FlowTypeProviderRegistry;
+use reactive_graph_plugin_api::GraphQLQueryService;
+use reactive_graph_plugin_api::PluginContext;
+use reactive_graph_plugin_api::RelationBehaviourRegistry;
+use reactive_graph_plugin_api::RelationComponentBehaviourRegistry;
+use reactive_graph_plugin_api::RelationInstanceManager;
+use reactive_graph_plugin_api::RelationTypeImportExportManager;
+use reactive_graph_plugin_api::RelationTypeManager;
+use reactive_graph_plugin_api::RelationTypeProviderRegistry;
+use reactive_graph_plugin_api::TypeSystemEventManager;
+use reactive_graph_plugin_api::WebResourceManager;
 
 #[derive(Clone)]
 pub struct PluginContextImpl {

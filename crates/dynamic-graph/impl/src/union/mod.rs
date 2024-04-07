@@ -4,7 +4,7 @@ pub use entity::*;
 pub use namespace::*;
 pub use relation::*;
 
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 
 pub mod entity;
 pub mod namespace;

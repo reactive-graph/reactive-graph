@@ -10,10 +10,10 @@ use http::Request;
 use http::Response;
 use log::debug;
 
-use inexor_rgf_plugin_api::HttpBody;
-use inexor_rgf_runtime_web_api::RootPathInfo;
-use inexor_rgf_runtime_web_api::WebResourceManager;
-use inexor_rgf_runtime_web_api::WebResourcePathInfo;
+use reactive_graph_plugin_api::HttpBody;
+use reactive_graph_runtime_web_api::RootPathInfo;
+use reactive_graph_runtime_web_api::WebResourceManager;
+use reactive_graph_runtime_web_api::WebResourcePathInfo;
 
 pub async fn handle_web_resource(
     web_resource_manager: web::Data<Arc<dyn WebResourceManager + Send + Sync>>,

@@ -1,5 +1,5 @@
 use crate::TypedReactivePropertyImpl;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 use std::fmt::Debug;
 use std::fmt::Display;
 use std::fmt::Error;

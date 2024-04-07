@@ -6,15 +6,15 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_command_api::CommandManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_remotes_api::InstanceService;
-use inexor_rgf_remotes_api::RemotesManager;
-use inexor_rgf_runtime_graphql_api::RuntimeSchemaManager;
-use inexor_rgf_runtime_graphql_schema::mutation::RuntimeMutation;
-use inexor_rgf_runtime_graphql_schema::query::RuntimeQuery;
-use inexor_rgf_runtime_graphql_schema::RuntimeSchema;
-use inexor_rgf_runtime_service_api::ShutdownManager;
+use reactive_graph_command_api::CommandManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_remotes_api::InstanceService;
+use reactive_graph_remotes_api::RemotesManager;
+use reactive_graph_runtime_graphql_api::RuntimeSchemaManager;
+use reactive_graph_runtime_graphql_schema::mutation::RuntimeMutation;
+use reactive_graph_runtime_graphql_schema::query::RuntimeQuery;
+use reactive_graph_runtime_graphql_schema::RuntimeSchema;
+use reactive_graph_runtime_service_api::ShutdownManager;
 
 #[derive(Component)]
 pub struct RuntimeSchemaManagerImpl {

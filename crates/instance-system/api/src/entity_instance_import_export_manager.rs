@@ -1,9 +1,9 @@
 use async_trait::async_trait;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_lifecycle::Lifecycle;
 use springtime_di::injectable;
 use uuid::Uuid;
 
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 use crate::EntityInstanceExportError;
 use crate::EntityInstanceImportError;

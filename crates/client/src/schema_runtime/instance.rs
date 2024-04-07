@@ -4,7 +4,7 @@ use chrono::DateTime;
 use chrono::FixedOffset;
 use chrono::Utc;
 
-use inexor_rgf_remotes_model::InstanceAddress;
+use reactive_graph_remotes_model::InstanceAddress;
 
 #[derive(Clone, Debug, cynic::QueryFragment)]
 #[cynic(schema_path = "schema_runtime.graphql", schema_module = "crate::schema_runtime::schema")]
@@ -23,12 +23,12 @@ pub struct InstanceInfo {
     pub last_seen: String,
 }
 
-impl From<InstanceInfo> for inexor_rgf_remotes_model::InstanceInfo {
+impl From<InstanceInfo> for reactive_graph_remotes_model::InstanceInfo {
     fn from(instance_info: InstanceInfo) -> Self {
         let last_seen = DateTime::<FixedOffset>::parse_from_rfc3339(&instance_info.last_seen)
             .map(|result| result.into())
             .unwrap_or(Utc::now());
-        inexor_rgf_remotes_model::InstanceInfo {
+        reactive_graph_remotes_model::InstanceInfo {
             name: instance_info.name,
             description: instance_info.description,
             version: instance_info.version,
@@ -53,7 +53,7 @@ impl Deref for InstanceInfos {
     }
 }
 
-impl From<InstanceInfos> for Vec<inexor_rgf_remotes_model::InstanceInfo> {
+impl From<InstanceInfos> for Vec<reactive_graph_remotes_model::InstanceInfo> {
     fn from(instances_info: InstanceInfos) -> Self {
         instances_info.0.into_iter().map(From::from).collect()
     }

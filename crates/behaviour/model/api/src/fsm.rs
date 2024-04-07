@@ -1,5 +1,5 @@
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_api::ReactiveInstanceContainer;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstanceContainer;
 
 use crate::BehaviourState;
 use crate::BehaviourTransitionError;
@@ -93,7 +93,7 @@ pub trait BehaviourFsm<ID: Clone, T: ReactiveInstance<ID> + BehaviourTypesContai
 #[macro_export]
 macro_rules! behaviour_fsm {
     ($fsm: ident, $validator: ty, $transitions: ty, $id: ty, $reactive_instance: ty) => {
-        use inexor_rgf_graph::PropertyInstanceGetter as BehaviourFsmPropertyInstanceGetter;
+        use reactive_graph_graph::PropertyInstanceGetter as BehaviourFsmPropertyInstanceGetter;
 
         pub struct $fsm {
             pub reactive_instance: $reactive_instance,
@@ -139,7 +139,7 @@ macro_rules! behaviour_fsm {
             }
         }
 
-        impl inexor_rgf_reactive_model_api::ReactiveInstanceContainer<$id, $reactive_instance> for $fsm {
+        impl reactive_graph_reactive_model_api::ReactiveInstanceContainer<$id, $reactive_instance> for $fsm {
             fn get_reactive_instance(&self) -> &$reactive_instance {
                 &self.reactive_instance
             }

@@ -1,7 +1,7 @@
 use serde_json::Value;
 
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::PropertyType;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::PropertyType;
 
 pub trait ReactivePropertyContainer {
     /// Sends the current value down the stream if mutable.

@@ -5,10 +5,10 @@ use dashmap::DashMap;
 use log::debug;
 use uuid::Uuid;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_api::WebResourceProvider;
-use inexor_rgf_runtime_web_api::WebResourceManager;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_api::WebResourceProvider;
+use reactive_graph_runtime_web_api::WebResourceManager;
 use springtime_di::component_alias;
 use springtime_di::Component;
 

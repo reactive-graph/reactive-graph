@@ -5,11 +5,11 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::NamespaceManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::NamespaceManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 #[derive(Component)]
 pub struct NamespaceManagerImpl {

@@ -10,14 +10,14 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::ComponentExportError;
-use inexor_rgf_type_system_api::ComponentImportError;
-use inexor_rgf_type_system_api::ComponentImportExportManager;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::DeserializationError;
-use inexor_rgf_type_system_api::SerializationError;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::ComponentExportError;
+use reactive_graph_type_system_api::ComponentImportError;
+use reactive_graph_type_system_api::ComponentImportExportManager;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct ComponentImportExportManagerImpl {
@@ -27,18 +27,18 @@ pub struct ComponentImportExportManagerImpl {
 #[async_trait]
 #[component_alias]
 impl ComponentImportExportManager for ComponentImportExportManagerImpl {
-    async fn import(&self, path: &str) -> Result<inexor_rgf_graph::Component, ComponentImportError> {
+    async fn import(&self, path: &str) -> Result<reactive_graph_graph::Component, ComponentImportError> {
         let path = Path::new(path);
         let file = File::open(path)?;
         let mut reader = BufReader::new(file);
         let mut content = String::new();
         reader.read_to_string(&mut content)?;
         let component = match path.extension().and_then(|ext| ext.to_str()) {
-            Some("json") => serde_json::from_str::<inexor_rgf_graph::Component>(&content).map_err(|e| DeserializationError::Json(e).into()),
+            Some("json") => serde_json::from_str::<reactive_graph_graph::Component>(&content).map_err(|e| DeserializationError::Json(e).into()),
             #[cfg(json5)]
-            Some("json5") => json5::from_str::<inexor_rgf_graph::Component>(&content).map_err(|e| DeserializationError::Json5(e).into()),
+            Some("json5") => json5::from_str::<reactive_graph_graph::Component>(&content).map_err(|e| DeserializationError::Json5(e).into()),
             #[cfg(toml)]
-            Some("toml") => toml::from_str::<inexor_rgf_graph::Component>(&content).map_err(|e| DeserializationError::Toml(e).into()),
+            Some("toml") => toml::from_str::<reactive_graph_graph::Component>(&content).map_err(|e| DeserializationError::Toml(e).into()),
             Some(ext) => Err(ComponentImportError::UnsupportedFormat(ext.to_string())),
             None => Err(ComponentImportError::UnsupportedFormat(Default::default())),
         }?;
@@ -89,14 +89,14 @@ mod test {
     use default_test::DefaultTest;
 
     use crate::TypeSystemImpl;
-    use inexor_rgf_graph::Component;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_type_system_api::TypeSystem;
+    use reactive_graph_graph::Component;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_type_system_api::TypeSystem;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_component() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let component_import_export_manager = type_system.get_component_import_export_manager();
 

@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use springtime_di::injectable;
 use uuid::Uuid;
 
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_lifecycle::Lifecycle;
 
 // Ensure stable UUID for the shutdown entity
 pub static UUID_SHUTDOWN: Uuid = Uuid::from_u128(0x6ba7b8109e1511d150b400c04fd530c7);

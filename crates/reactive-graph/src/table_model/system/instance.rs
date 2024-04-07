@@ -25,8 +25,8 @@ pub struct InstanceInfo {
     pub last_seen: String,
 }
 
-impl From<inexor_rgf_remotes_model::InstanceInfo> for InstanceInfo {
-    fn from(instance_info: inexor_rgf_remotes_model::InstanceInfo) -> Self {
+impl From<reactive_graph_remotes_model::InstanceInfo> for InstanceInfo {
+    fn from(instance_info: reactive_graph_remotes_model::InstanceInfo) -> Self {
         InstanceInfo {
             name: instance_info.name,
             description: instance_info.description,
@@ -44,4 +44,4 @@ impl From<inexor_rgf_remotes_model::InstanceInfo> for InstanceInfo {
     }
 }
 
-pub(crate) type InstanceInfos = DefaultTableContainer<inexor_rgf_remotes_model::InstanceInfo, InstanceInfo, DefaultTableOptions>;
+pub(crate) type InstanceInfos = DefaultTableContainer<reactive_graph_remotes_model::InstanceInfo, InstanceInfo, DefaultTableOptions>;

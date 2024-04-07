@@ -1,8 +1,8 @@
 use async_trait::async_trait;
-use inexor_rgf_graph::FlowType;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_type_system_api::FlowTypeExportError;
-use inexor_rgf_type_system_api::FlowTypeImportError;
+use reactive_graph_graph::FlowType;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_type_system_api::FlowTypeExportError;
+use reactive_graph_type_system_api::FlowTypeImportError;
 
 #[async_trait]
 pub trait FlowTypeImportExportManager: Send + Sync {

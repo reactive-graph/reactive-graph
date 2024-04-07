@@ -2,9 +2,9 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::from_value;
 
-use inexor_rgf_dynamic_graph_model::EXTENSION_FIELD_NAME;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::ExtensionContainer;
+use reactive_graph_dynamic_graph_model::EXTENSION_FIELD_NAME;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionContainer;
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]
 pub struct DynamicGraphFieldNameExtension {

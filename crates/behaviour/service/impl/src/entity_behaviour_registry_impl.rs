@@ -6,13 +6,13 @@ use log::debug;
 use log::warn;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_model_api::prelude::*;
 
-use inexor_rgf_behaviour_service_api::EntityBehaviourRegistry;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_type_system_api::EntityTypeManager;
 use springtime_di::component_alias;
 use springtime_di::Component;
 

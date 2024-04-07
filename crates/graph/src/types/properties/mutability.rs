@@ -61,7 +61,7 @@ mod tests {
     use schemars::schema_for;
 
     use crate::Mutability;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn mutability_should_be_created_using_static_method_call() {

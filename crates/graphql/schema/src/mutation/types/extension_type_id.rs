@@ -5,8 +5,8 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::TYPE_ID_TYPE_SEPARATOR;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq, PartialOrd, Ord, InputObject)]
 #[graphql(name = "ExtensionTypeId")]

@@ -5,9 +5,9 @@ use serde_json::Value;
 use uuid::Uuid;
 
 use crate::PropertyObserverContainer;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 /// Container which manages the observers of a reactive entity instance.
 pub struct EntityPropertyObserverContainerImpl {

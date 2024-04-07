@@ -1,6 +1,6 @@
 use uuid::Uuid;
 
-use inexor_rgf_graph::RelationInstanceId;
+use reactive_graph_graph::RelationInstanceId;
 
 #[derive(Eq, Hash, PartialEq, Clone, Debug)]
 pub enum ReactiveInstanceEventTypes {

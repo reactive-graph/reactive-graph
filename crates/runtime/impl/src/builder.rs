@@ -6,8 +6,8 @@ use std::sync::Arc;
 use tokio::time::Duration;
 
 use crate::get_runtime;
-use inexor_rgf_remotes_model::InstanceAddress;
-use inexor_rgf_runtime_api::Runtime;
+use reactive_graph_remotes_model::InstanceAddress;
+use reactive_graph_runtime_api::Runtime;
 
 pub enum SetConfigLocations {}
 pub enum ConfigFilesLoaded {}

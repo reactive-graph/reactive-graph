@@ -10,8 +10,8 @@ use dashmap::iter_set::OwningIter;
 use dashmap::DashSet;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
-use inexor_rgf_graph::prelude::*;
-use inexor_rgf_graph::NamespacedTypeIds;
+use reactive_graph_graph::prelude::*;
+use reactive_graph_graph::NamespacedTypeIds;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
@@ -25,12 +25,12 @@ use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::NamespacedType;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::TypeDefinition;
-use inexor_rgf_graph::TypeDefinitionGetter;
-use inexor_rgf_graph::TypeIdType;
-use inexor_rgf_graph::TYPE_ID_TYPE_SEPARATOR;
+use reactive_graph_graph::NamespacedType;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::TypeDefinition;
+use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::TypeIdType;
+use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
@@ -335,12 +335,12 @@ mod tests {
     use schemars::schema_for;
 
     use crate::BehaviourTypeId;
-    use inexor_rgf_graph::NamespacedType;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_graph::TypeDefinition;
-    use inexor_rgf_graph::TypeDefinitionGetter;
-    use inexor_rgf_graph::TypeIdType;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_graph::NamespacedType;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::TypeDefinition;
+    use reactive_graph_graph::TypeDefinitionGetter;
+    use reactive_graph_graph::TypeIdType;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn behaviour_type_id_test() {

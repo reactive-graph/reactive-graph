@@ -2,10 +2,10 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::tests::utils::r_string;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 // TODO: replace with default_test()
 pub fn create_random_entity_instance<S: Into<String>>(property_name: S) -> ReactiveEntity {

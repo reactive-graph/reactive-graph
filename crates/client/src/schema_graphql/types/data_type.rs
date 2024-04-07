@@ -26,36 +26,36 @@ pub enum DataType {
     Any,
 }
 
-impl From<DataType> for inexor_rgf_graph::DataType {
+impl From<DataType> for reactive_graph_graph::DataType {
     fn from(data_type: DataType) -> Self {
         match data_type {
-            DataType::Null => inexor_rgf_graph::DataType::Null,
-            DataType::Bool => inexor_rgf_graph::DataType::Bool,
-            DataType::Number => inexor_rgf_graph::DataType::Number,
-            DataType::String => inexor_rgf_graph::DataType::String,
-            DataType::Array => inexor_rgf_graph::DataType::Array,
-            DataType::Object => inexor_rgf_graph::DataType::Object,
-            DataType::Any => inexor_rgf_graph::DataType::Any,
+            DataType::Null => reactive_graph_graph::DataType::Null,
+            DataType::Bool => reactive_graph_graph::DataType::Bool,
+            DataType::Number => reactive_graph_graph::DataType::Number,
+            DataType::String => reactive_graph_graph::DataType::String,
+            DataType::Array => reactive_graph_graph::DataType::Array,
+            DataType::Object => reactive_graph_graph::DataType::Object,
+            DataType::Any => reactive_graph_graph::DataType::Any,
         }
     }
 }
 
-impl From<inexor_rgf_graph::DataType> for DataType {
-    fn from(data_type: inexor_rgf_graph::DataType) -> Self {
+impl From<reactive_graph_graph::DataType> for DataType {
+    fn from(data_type: reactive_graph_graph::DataType) -> Self {
         match data_type {
-            inexor_rgf_graph::DataType::Null => DataType::Null,
-            inexor_rgf_graph::DataType::Bool => DataType::Bool,
-            inexor_rgf_graph::DataType::Number => DataType::Number,
-            inexor_rgf_graph::DataType::String => DataType::String,
-            inexor_rgf_graph::DataType::Array => DataType::Array,
-            inexor_rgf_graph::DataType::Object => DataType::Object,
-            inexor_rgf_graph::DataType::Any => DataType::Any,
+            reactive_graph_graph::DataType::Null => DataType::Null,
+            reactive_graph_graph::DataType::Bool => DataType::Bool,
+            reactive_graph_graph::DataType::Number => DataType::Number,
+            reactive_graph_graph::DataType::String => DataType::String,
+            reactive_graph_graph::DataType::Array => DataType::Array,
+            reactive_graph_graph::DataType::Object => DataType::Object,
+            reactive_graph_graph::DataType::Any => DataType::Any,
         }
     }
 }
 
 impl Display for DataType {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", inexor_rgf_graph::DataType::from(*self))
+        write!(f, "{}", reactive_graph_graph::DataType::from(*self))
     }
 }

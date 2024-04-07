@@ -2,8 +2,8 @@ use async_graphql::*;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "BehaviourTypeId")]

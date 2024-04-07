@@ -5,13 +5,13 @@ use async_graphql::Object;
 use async_graphql::Result;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_service_api::EntityBehaviourRegistry;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourRegistry;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::EntityTypeManager;
 
 use crate::mutation::RelationTypeIdDefinition;
 use crate::query::GraphQLComponent;

@@ -20,7 +20,7 @@ pub use property_u64::display::*;
 pub use property_u64::eq::*;
 pub use property_u64::operator::*;
 
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 
 pub mod accessor;
 pub mod constructor;

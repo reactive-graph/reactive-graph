@@ -6,11 +6,11 @@ use log::trace;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::EntityTypes;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::EntityTypeProviderRegistry;
-use inexor_rgf_type_system_api::TypeProvider;
+use reactive_graph_graph::EntityTypes;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::EntityTypeProviderRegistry;
+use reactive_graph_type_system_api::TypeProvider;
 
 #[derive(Component)]
 pub struct EntityTypeProviderRegistryImpl {

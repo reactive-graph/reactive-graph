@@ -4,9 +4,9 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_config_api::ConfigSystem;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_config_api::ConfigSystem;
+use reactive_graph_lifecycle::Lifecycle;
 
 #[derive(Component)]
 pub struct ConfigSystemImpl {

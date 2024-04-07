@@ -7,9 +7,9 @@ use async_graphql::Object;
 use async_graphql::Result;
 use async_graphql::Value;
 
-use inexor_rgf_command_api::CommandManager;
-use inexor_rgf_command_model::component::CommandProperties::COMMAND_RESULT;
-use inexor_rgf_graph::PropertyTypeDefinition;
+use reactive_graph_command_api::CommandManager;
+use reactive_graph_command_model::component::CommandProperties::COMMAND_RESULT;
+use reactive_graph_graph::PropertyTypeDefinition;
 
 use crate::properties::GraphQLCommandResult;
 

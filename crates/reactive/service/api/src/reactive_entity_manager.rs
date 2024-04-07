@@ -10,16 +10,16 @@ use crate::ReactiveEntityCreationError;
 use crate::ReactiveEntityPropertyAddError;
 use crate::ReactiveEntityPropertyRemoveError;
 use crate::ReactiveEntityRegistrationError;
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::ComponentBehaviourTypeId;
-use inexor_rgf_behaviour_model_api::EntityBehaviourTypeId;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::ComponentBehaviourTypeId;
+use reactive_graph_behaviour_model_api::EntityBehaviourTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 #[injectable]
 #[async_trait]

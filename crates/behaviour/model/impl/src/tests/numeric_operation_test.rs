@@ -4,13 +4,13 @@ use std::f64::consts::PI;
 
 use serde_json::json;
 
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyInstanceSetter;
 // use crate::behaviour::{EntityBehaviour, NumericOperationBehaviour};
 use crate::entity::numeric_operation::NumericOperation;
 use crate::entity::numeric_operation::NumericOperationProperties;
 use crate::entity::numeric_operation::NumericOperationReactiveEntityFactory as Factory;
-use inexor_rgf_graph::ReactiveEntityFactory;
+use reactive_graph_graph::ReactiveEntityFactory;
 
 const LHS: NumericOperationProperties = NumericOperationProperties::LHS;
 const RESULT: NumericOperationProperties = NumericOperationProperties::RESULT;

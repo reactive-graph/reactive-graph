@@ -1,8 +1,8 @@
 use async_graphql::dynamic::TypeRef;
 
-use inexor_rgf_graph::DataType;
-use inexor_rgf_graph::Mutability::Immutable;
-use inexor_rgf_graph::PropertyType;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::Mutability::Immutable;
+use reactive_graph_graph::PropertyType;
 
 /// Maps the data type of a property to the GraphQL type ref.
 pub fn to_type_ref(data_type: &DataType) -> TypeRef {

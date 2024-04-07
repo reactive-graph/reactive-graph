@@ -2,7 +2,7 @@ use async_graphql::OneofObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::ComponentOrEntityTypeId;
 
 use crate::mutation::ComponentTypeIdDefinition;
 use crate::mutation::EntityTypeIdDefinition;

@@ -5,17 +5,17 @@ use log::debug;
 use serde_json::json;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_service_api::EntityBehaviourManager;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourManager;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::PropertyTypeDefinition;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_runtime_model::ActionProperties::TRIGGER;
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_service_api::EntityBehaviourManager;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_runtime_model::ActionProperties::TRIGGER;
+use reactive_graph_type_system_api::EntityTypeManager;
 
 use crate::mutation::BehaviourTypeIdDefinition;
 use crate::mutation::ComponentTypeIdDefinition;

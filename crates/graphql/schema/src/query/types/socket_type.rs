@@ -8,7 +8,7 @@ use strum::Display;
 /// or is an hidden property
 #[derive(Enum, Serialize, Deserialize, Copy, Clone, Debug, Eq, PartialEq, Display)]
 #[serde(rename_all = "lowercase")]
-#[graphql(name = "SocketType", remote = "inexor_rgf_graph::SocketType")]
+#[graphql(name = "SocketType", remote = "reactive_graph_graph::SocketType")]
 pub enum GraphQLSocketType {
     /// The property doesn't act as input or output socket.
     None,

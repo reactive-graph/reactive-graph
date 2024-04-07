@@ -14,7 +14,7 @@
 //! Streams are typed. You can use type inference or give them an explicit type:
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! let my_stream: Stream<i32> = Stream::new();
 //! ```
@@ -28,7 +28,7 @@
 //! When you’re ready to send signals, just call the `send` function:
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! let my_stream: Stream<i32> = Stream::new();
 //!
@@ -44,7 +44,7 @@
 //! done with the [`Stream::observe`] function.
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! let my_stream: Stream<i32> = Stream::new();
 //!
@@ -68,7 +68,7 @@
 //! Let’s get our feet wet: let’s create a new stream that will only emit signals for even values:
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! let int_stream: Stream<i32> = Stream::new();
 //! let even_stream = int_stream.filter(|x| x % 2 == 0);
@@ -80,7 +80,7 @@
 //! output `"Hello, world!"`; otherwise, output `"See you!"`.
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! let int_stream: Stream<i32> = Stream::new();
 //! let even_stream = int_stream.filter(|x| x % 2 == 0);
@@ -92,7 +92,7 @@
 //! Ok, let’s try something else. Some kind of a *Hello world* for FRP.
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! enum Button {
 //!   Pressed,
@@ -159,7 +159,7 @@
 //! non-blocking reads:
 //!
 //! ```rust
-//! use inexor_rgf_reactive_model_impl::Stream;
+//! use reactive_graph_reactive_model_impl::Stream;
 //!
 //! enum Button {
 //!   Pressed,
@@ -515,7 +515,7 @@ where
     /// This method performs the same logical operation as:
     ///
     /// ```rust
-    /// use inexor_rgf_reactive_model_impl::Stream;
+    /// use reactive_graph_reactive_model_impl::Stream;
     ///
     /// let stream_a = Stream::new();
     /// let stream_b = Stream::new();

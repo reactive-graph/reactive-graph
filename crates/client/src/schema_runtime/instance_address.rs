@@ -12,8 +12,8 @@ pub struct InstanceAddress {
     pub bearer: Option<String>,
 }
 
-impl From<inexor_rgf_remotes_model::InstanceAddress> for InstanceAddress {
-    fn from(address: inexor_rgf_remotes_model::InstanceAddress) -> Self {
+impl From<reactive_graph_remotes_model::InstanceAddress> for InstanceAddress {
+    fn from(address: reactive_graph_remotes_model::InstanceAddress) -> Self {
         InstanceAddress {
             hostname: address.hostname,
             port: address.port as i32,

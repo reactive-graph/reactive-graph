@@ -1,5 +1,5 @@
 // use crate::error::reactive::entity::ReactiveEntityCreationError;
-use inexor_rgf_reactive_service_api::ReactiveEntityCreationError;
+use reactive_graph_reactive_service_api::ReactiveEntityCreationError;
 use uuid::Uuid;
 
 #[derive(Debug)]

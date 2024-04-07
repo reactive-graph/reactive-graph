@@ -1,27 +1,27 @@
 use uuid::Uuid;
 
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityInstances;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::Extensions;
-use inexor_rgf_graph::FlowType;
-use inexor_rgf_graph::FlowTypeAddEntityInstanceError;
-use inexor_rgf_graph::FlowTypeAddExtensionError;
-use inexor_rgf_graph::FlowTypeAddVariableError;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_graph::FlowTypeRemoveEntityInstanceError;
-use inexor_rgf_graph::FlowTypeRemoveExtensionError;
-use inexor_rgf_graph::FlowTypeRemoveVariableError;
-use inexor_rgf_graph::FlowTypeUpdateEntityInstanceError;
-use inexor_rgf_graph::FlowTypeUpdateExtensionError;
-use inexor_rgf_graph::FlowTypeUpdateVariableError;
-use inexor_rgf_graph::FlowTypes;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypes;
-use inexor_rgf_graph::RelationInstances;
-use inexor_rgf_graph::Variable;
-use inexor_rgf_type_system_api::FlowTypeCreationError;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityInstances;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::FlowType;
+use reactive_graph_graph::FlowTypeAddEntityInstanceError;
+use reactive_graph_graph::FlowTypeAddExtensionError;
+use reactive_graph_graph::FlowTypeAddVariableError;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::FlowTypeRemoveEntityInstanceError;
+use reactive_graph_graph::FlowTypeRemoveExtensionError;
+use reactive_graph_graph::FlowTypeRemoveVariableError;
+use reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+use reactive_graph_graph::FlowTypeUpdateExtensionError;
+use reactive_graph_graph::FlowTypeUpdateVariableError;
+use reactive_graph_graph::FlowTypes;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_graph::RelationInstances;
+use reactive_graph_graph::Variable;
+use reactive_graph_type_system_api::FlowTypeCreationError;
 
 #[derive(Debug)]
 pub enum FlowTypeManagerError {

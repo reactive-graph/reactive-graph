@@ -26,8 +26,8 @@ use typed_builder::TypedBuilder;
 
 use crate::BehaviourTypeId;
 use crate::BehaviourTypeIds;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::NamespacedType;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::NamespacedType;
 
 /// The behaviour of a component.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]

@@ -3,10 +3,10 @@ use std::collections::HashMap;
 use serde_json::Value;
 use uuid::Uuid;
 
-use inexor_rgf_graph::FlowInstance;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_reactive_model_impl::ReactiveFlow;
-use inexor_rgf_reactive_service_api::ReactiveFlowCreationError;
+use reactive_graph_graph::FlowInstance;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_reactive_model_impl::ReactiveFlow;
+use reactive_graph_reactive_service_api::ReactiveFlowCreationError;
 
 pub trait FlowInstanceManager: Send + Sync {
     /// Returns true, if an flow instance exists with the given UUID.

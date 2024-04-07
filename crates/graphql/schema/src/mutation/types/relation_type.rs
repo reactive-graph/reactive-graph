@@ -2,19 +2,19 @@ use std::sync::Arc;
 
 use async_graphql::*;
 
-use inexor_rgf_graph::ComponentOrEntityTypeId;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::RelationType;
-use inexor_rgf_graph::RelationTypeAddComponentError;
-use inexor_rgf_graph::RelationTypeAddExtensionError;
-use inexor_rgf_graph::RelationTypeAddPropertyError;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_graph::RelationTypeRemoveComponentError;
-use inexor_rgf_graph::RelationTypeRemoveExtensionError;
-use inexor_rgf_graph::RelationTypeRemovePropertyError;
-use inexor_rgf_graph::RelationTypeUpdateExtensionError;
-use inexor_rgf_graph::RelationTypeUpdatePropertyError;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_graph::ComponentOrEntityTypeId;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::RelationType;
+use reactive_graph_graph::RelationTypeAddComponentError;
+use reactive_graph_graph::RelationTypeAddExtensionError;
+use reactive_graph_graph::RelationTypeAddPropertyError;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_graph::RelationTypeRemoveComponentError;
+use reactive_graph_graph::RelationTypeRemoveExtensionError;
+use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateExtensionError;
+use reactive_graph_graph::RelationTypeUpdatePropertyError;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::mutation::ComponentOrEntityTypeIdDefinition;
 use crate::mutation::ComponentTypeIdDefinition;

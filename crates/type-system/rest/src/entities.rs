@@ -5,7 +5,7 @@ use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
 
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::EntityTypeManager;
 
 #[get("/types/entities")]
 pub async fn get_entity_types(entity_type_manager: web::Data<Arc<dyn EntityTypeManager + Send + Sync>>) -> HttpResponse {

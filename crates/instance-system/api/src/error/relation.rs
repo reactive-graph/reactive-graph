@@ -1,8 +1,8 @@
 // use crate::ReactiveRelationCreationError;
-// use inexor_rgf_graph::RelationInstanceId;
+// use reactive_graph_graph::RelationInstanceId;
 
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_reactive_service_api::ReactiveRelationCreationError;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_reactive_service_api::ReactiveRelationCreationError;
 
 #[derive(Debug)]
 pub enum RelationInstanceImportError {

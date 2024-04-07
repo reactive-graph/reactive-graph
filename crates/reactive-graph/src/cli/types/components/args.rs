@@ -1,7 +1,7 @@
 use clap::Args;
 
 use crate::cli::types::components::commands::ComponentsCommands;
-use inexor_rgf_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeId;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]

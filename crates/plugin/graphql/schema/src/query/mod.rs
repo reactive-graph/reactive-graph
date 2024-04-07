@@ -1,6 +1,6 @@
 use async_graphql::*;
-use inexor_rgf_plugin_api::PluginState;
-use inexor_rgf_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_api::PluginState;
+use reactive_graph_plugin_service_api::PluginContainerManager;
 use std::sync::Arc;
 use uuid::Uuid;
 
@@ -84,10 +84,10 @@ impl PluginQuery {
 //     use serde::Deserialize;
 //     use uuid::Uuid;
 //
-//     use inexor_rgf_graphql_api::GraphQLQueryService;
-//     use inexor_rgf_plugin_api::serde_json;
-//     use inexor_rgf_runtime_api::Runtime;
-//     use inexor_rgf_runtime_impl::RuntimeBuilder;
+//     use reactive_graph_graphql_api::GraphQLQueryService;
+//     use reactive_graph_plugin_api::serde_json;
+//     use reactive_graph_runtime_api::Runtime;
+//     use reactive_graph_runtime_impl::RuntimeBuilder;
 //
 //     #[derive(Deserialize, Debug)]
 //     #[serde(rename_all = "camelCase")]

@@ -2,7 +2,7 @@ use std::process::exit;
 
 use colored::Colorize;
 
-use inexor_rgf_client::InexorRgfClient;
+use reactive_graph_client::InexorRgfClient;
 
 use crate::cli::args::ClientArgs;
 use crate::cli::handler::handle_command;

@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 
-use inexor_rgf_graphql_api::GraphQLQueryService;
+use reactive_graph_graphql_api::GraphQLQueryService;
 use serde_json::Error;
 use std::sync::Arc;
 
@@ -15,7 +15,7 @@ impl GraphQLQueryServiceDelegate {
 }
 
 #[async_trait]
-impl inexor_rgf_plugin_api::GraphQLQueryService for GraphQLQueryServiceDelegate {
+impl reactive_graph_plugin_api::GraphQLQueryService for GraphQLQueryServiceDelegate {
     async fn query(&self, request: &str) -> Result<String, Error> {
         self.graphql_query_service.query(request).await
     }

@@ -6,14 +6,14 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::RelationInstance;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_instance_system_api::RelationInstanceExportError;
-use inexor_rgf_instance_system_api::RelationInstanceImportError;
-use inexor_rgf_instance_system_api::RelationInstanceImportExportManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_graph::RelationInstance;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_instance_system_api::RelationInstanceExportError;
+use reactive_graph_instance_system_api::RelationInstanceImportError;
+use reactive_graph_instance_system_api::RelationInstanceImportExportManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
 
 #[derive(Component)]
 pub struct RelationInstanceImportExportManagerImpl {
@@ -59,28 +59,28 @@ mod tests {
     use default_test::DefaultTest;
 
     use crate::InstanceSystemImpl;
-    use inexor_rgf_graph::EntityType;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_graph::RelationType;
-    use inexor_rgf_graph::RelationTypeId;
-    use inexor_rgf_instance_system_api::InstanceSystem;
-    use inexor_rgf_reactive_model_api::ReactiveInstance;
-    use inexor_rgf_reactive_model_impl::ReactiveEntity;
-    use inexor_rgf_reactive_model_impl::ReactiveRelation;
+    use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::RelationType;
+    use reactive_graph_graph::RelationTypeId;
+    use reactive_graph_instance_system_api::InstanceSystem;
+    use reactive_graph_reactive_model_api::ReactiveInstance;
+    use reactive_graph_reactive_model_impl::ReactiveEntity;
+    use reactive_graph_reactive_model_impl::ReactiveRelation;
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_type_system_impl::TypeSystemImpl;
+    use reactive_graph_type_system_impl::TypeSystemImpl;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_reactive_service_impl::ReactiveSystemImpl;
+    use reactive_graph_reactive_service_impl::ReactiveSystemImpl;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_behaviour_service_impl::BehaviourSystemImpl;
+    use reactive_graph_behaviour_service_impl::BehaviourSystemImpl;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_relation_instance_import_export_manager() {
-        let instance_system = inexor_rgf_di::get_container::<InstanceSystemImpl>();
+        let instance_system = reactive_graph_di::get_container::<InstanceSystemImpl>();
         let reactive_system = instance_system.reactive_system();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();

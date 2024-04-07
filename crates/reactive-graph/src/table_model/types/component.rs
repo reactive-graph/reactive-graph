@@ -13,7 +13,7 @@ use crate::table_model::types::extension::Extensions;
 use crate::table_model::types::property_type::display_property_types_inline;
 use crate::table_model::types::property_type::PropertyType;
 use crate::table_model::types::property_type::PropertyTypes;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub(crate) struct Component {
@@ -36,8 +36,8 @@ pub(crate) struct Component {
     pub extensions: Vec<Extension>,
 }
 
-impl From<inexor_rgf_graph::Component> for Component {
-    fn from(component: inexor_rgf_graph::Component) -> Self {
+impl From<reactive_graph_graph::Component> for Component {
+    fn from(component: reactive_graph_graph::Component) -> Self {
         Component {
             namespace: component.namespace(),
             name: component.type_name(),
@@ -48,7 +48,7 @@ impl From<inexor_rgf_graph::Component> for Component {
     }
 }
 
-pub(crate) type Components = DefaultTableContainer<inexor_rgf_graph::Component, Component, ComponentsTableOptions>;
+pub(crate) type Components = DefaultTableContainer<reactive_graph_graph::Component, Component, ComponentsTableOptions>;
 
 pub(crate) struct ComponentsTableOptions;
 

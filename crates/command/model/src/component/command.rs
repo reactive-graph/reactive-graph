@@ -1,17 +1,17 @@
 use serde_json::json;
 
-use inexor_rgf_graph::component_model;
-use inexor_rgf_graph::component_ty;
-use inexor_rgf_graph::properties;
-use inexor_rgf_graph::DataType;
-use inexor_rgf_graph::Mutability::Immutable;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypeDefinition;
-use inexor_rgf_graph::PropertyTypes;
-use inexor_rgf_graph::SocketType;
-use inexor_rgf_runtime_model::ActionProperties::TRIGGER;
-use inexor_rgf_runtime_model::LabeledProperties::LABEL;
-use inexor_rgf_runtime_model::NAMESPACE_CORE;
+use reactive_graph_graph::component_model;
+use reactive_graph_graph::component_ty;
+use reactive_graph_graph::properties;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::Mutability::Immutable;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_graph::SocketType;
+use reactive_graph_runtime_model::ActionProperties::TRIGGER;
+use reactive_graph_runtime_model::LabeledProperties::LABEL;
+use reactive_graph_runtime_model::NAMESPACE_CORE;
 
 properties!(
     CommandProperties,

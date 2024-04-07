@@ -8,15 +8,15 @@ use similar::ChangeTag;
 
 use colored::Colorize;
 
-use inexor_rgf_runtime_impl::RuntimeBuilder;
-use inexor_rgf_test_utils::error_verb;
-use inexor_rgf_test_utils::status_failed;
-use inexor_rgf_test_utils::status_ok;
-use inexor_rgf_test_utils::verb;
+use reactive_graph_runtime_impl::RuntimeBuilder;
+use reactive_graph_test_utils::error_verb;
+use reactive_graph_test_utils::status_failed;
+use reactive_graph_test_utils::status_ok;
+use reactive_graph_test_utils::verb;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_graphql_snapshots() {
-    inexor_rgf_test_utils::init_logger();
+    reactive_graph_test_utils::init_logger();
     // TODO: compile runtime with graphql, but without plugin system, dynamic graph, ...!
     let runtime = RuntimeBuilder::new()
         .ignore_config_files()

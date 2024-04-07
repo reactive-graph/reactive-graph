@@ -12,7 +12,7 @@
 // use crate::api::FlowInstanceManager;
 // use crate::api::RelationInstanceManager;
 // use crate::di::*;
-// use inexor_rgf_graph::FlowInstance;
+// use reactive_graph_graph::FlowInstance;
 //
 // #[component]
 // pub struct FlowInstanceManagerImpl {

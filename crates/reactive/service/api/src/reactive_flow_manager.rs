@@ -8,10 +8,10 @@ use uuid::Uuid;
 
 use crate::FlowInstanceProvider;
 use crate::ReactiveFlowCreationError;
-use inexor_rgf_graph::FlowInstance;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveFlow;
+use reactive_graph_graph::FlowInstance;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveFlow;
 
 #[injectable]
 #[async_trait]

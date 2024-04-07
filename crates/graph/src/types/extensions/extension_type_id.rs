@@ -270,7 +270,7 @@ mod tests {
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
     use default_test::DefaultTest;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
     use rand::Rng;
     use schemars::schema_for;
 

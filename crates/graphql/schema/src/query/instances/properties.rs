@@ -8,12 +8,12 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::PropertyTypes;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::query::GraphQLPropertyType;
 

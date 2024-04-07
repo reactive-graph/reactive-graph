@@ -12,8 +12,8 @@ macro_rules! behaviour_functions {
         )*
     ) => {
         lazy_static::lazy_static! {
-            pub static ref $collection_name: std::collections::HashMap<inexor_rgf_behaviour_model_api::BehaviourTypeId, $function_type> = vec![
-                $((inexor_rgf_behaviour_model_api::BehaviourTypeId::new_from_type($namespace, $type_name), $function),)*
+            pub static ref $collection_name: std::collections::HashMap<reactive_graph_behaviour_model_api::BehaviourTypeId, $function_type> = vec![
+                $((reactive_graph_behaviour_model_api::BehaviourTypeId::new_from_type($namespace, $type_name), $function),)*
             ].into_iter().collect();
         }
     };

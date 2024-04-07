@@ -1,8 +1,8 @@
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_model_api::prelude::*;
 
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 pub trait EntityBehaviourFactory: BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync {}
 

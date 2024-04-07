@@ -1,9 +1,9 @@
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use inexor_rgf_graph::Component;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_lifecycle::Lifecycle;
 
 use crate::ComponentExportError;
 use crate::ComponentImportError;

@@ -1,4 +1,4 @@
-use inexor_rgf_remotes_model::InstanceAddress;
+use reactive_graph_remotes_model::InstanceAddress;
 use serde::Deserialize;
 use serde::Serialize;
 

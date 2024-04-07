@@ -1,10 +1,10 @@
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use inexor_rgf_command_model::error::NoSuchCommand;
-use inexor_rgf_command_model::Command;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_command_model::error::NoSuchCommand;
+use reactive_graph_command_model::Command;
+use reactive_graph_graph::EntityType;
+use reactive_graph_lifecycle::Lifecycle;
 
 use crate::CommandRegistrationError;
 

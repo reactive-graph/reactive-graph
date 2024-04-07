@@ -6,9 +6,9 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::Extensions;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::NamespacedTypeGetter;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 

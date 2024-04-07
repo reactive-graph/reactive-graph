@@ -3,12 +3,12 @@ use serde::Deserialize;
 use serde::Serialize;
 use uuid::Uuid;
 
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityInstances;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::Extensions;
-use inexor_rgf_graph::PropertyInstances;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityInstances;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::PropertyInstances;
 
 use crate::query::GraphQLExtension;
 use crate::query::GraphQLPropertyInstance;

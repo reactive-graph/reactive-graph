@@ -2,7 +2,7 @@ use async_graphql::dynamic::*;
 
 use crate::namespace_mutation;
 use crate::namespace_mutation_field;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 
 pub fn get_mutation(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     let mut mutation = Object::new("Mutation").description("Mutations");

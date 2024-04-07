@@ -1,21 +1,21 @@
 use std::sync::Arc;
 
-use inexor_rgf_config_model::GraphQLServerConfig;
-use inexor_rgf_config_model::InstanceConfig;
-use inexor_rgf_config_model::PluginsConfig;
-use inexor_rgf_config_model::RemotesConfig;
+use reactive_graph_config_model::GraphQLServerConfig;
+use reactive_graph_config_model::InstanceConfig;
+use reactive_graph_config_model::PluginsConfig;
+use reactive_graph_config_model::RemotesConfig;
 
 pub struct ConfigManagerDelegate {
-    config_manager: Arc<dyn inexor_rgf_config_api::ConfigManager + Send + Sync>,
+    config_manager: Arc<dyn reactive_graph_config_api::ConfigManager + Send + Sync>,
 }
 
 impl ConfigManagerDelegate {
-    pub fn new(config_manager: Arc<dyn inexor_rgf_config_api::ConfigManager + Send + Sync>) -> Self {
+    pub fn new(config_manager: Arc<dyn reactive_graph_config_api::ConfigManager + Send + Sync>) -> Self {
         Self { config_manager }
     }
 }
 
-impl inexor_rgf_plugin_api::ConfigManager for ConfigManagerDelegate {
+impl reactive_graph_plugin_api::ConfigManager for ConfigManagerDelegate {
     fn get_instance_config(&self) -> InstanceConfig {
         self.config_manager.get_instance_config()
     }

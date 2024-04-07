@@ -1,5 +1,5 @@
-// use inexor_rgf_reactive::BehaviourTypeId;
-// use inexor_rgf_reactive::ReactiveInstance;
+// use reactive_graph_reactive::BehaviourTypeId;
+// use reactive_graph_reactive::ReactiveInstance;
 // use crate::BehaviourReactiveInstanceContainer;
 // use crate::BehaviourState;
 // use crate::BehaviourTransitionError;
@@ -91,11 +91,11 @@
 // #[macro_export]
 // macro_rules! behaviour_fsm {
 //     ($fsm: ident, $validator: ty, $transitions: ty, $reactive_instance: ty) => {
-//         use inexor_rgf_graph::PropertyInstanceGetter as BehaviourFsmPropertyInstanceGetter;
+//         use reactive_graph_graph::PropertyInstanceGetter as BehaviourFsmPropertyInstanceGetter;
 //
 //         pub struct $fsm {
 //             pub reactive_instance: std::sync::Arc<$reactive_instance>,
-//             pub ty: inexor_rgf_graph::BehaviourTypeId,
+//             pub ty: reactive_graph_graph::BehaviourTypeId,
 //             pub state: std::sync::RwLock<$crate::BehaviourState>,
 //             pub validator: $validator,
 //             pub transitions: $transitions,
@@ -104,7 +104,7 @@
 //         impl $fsm {
 //             pub fn new(
 //                 reactive_instance: std::sync::Arc<$reactive_instance>,
-//                 ty: inexor_rgf_graph::BehaviourTypeId,
+//                 ty: reactive_graph_graph::BehaviourTypeId,
 //                 validator: $validator,
 //                 transitions: $transitions,
 //             ) -> Self {
@@ -119,7 +119,7 @@
 //         }
 //
 //         impl $crate::BehaviourFsm<$reactive_instance> for $fsm {
-//             fn ty(&self) -> &inexor_rgf_graph::BehaviourTypeId {
+//             fn ty(&self) -> &reactive_graph_graph::BehaviourTypeId {
 //                 &self.ty
 //             }
 //

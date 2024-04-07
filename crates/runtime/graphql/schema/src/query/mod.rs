@@ -4,9 +4,9 @@ use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
 
-use inexor_rgf_command_api::CommandManager;
-use inexor_rgf_remotes_api::InstanceService;
-use inexor_rgf_remotes_api::RemotesManager;
+use reactive_graph_command_api::CommandManager;
+use reactive_graph_remotes_api::InstanceService;
+use reactive_graph_remotes_api::RemotesManager;
 
 use crate::query::command::GraphQLCommand;
 use crate::query::instance::GraphQLInstanceInfo;

@@ -10,8 +10,8 @@ use serde_json::Value;
 use crate::entity::simple_closure::SimpleClosure;
 use crate::entity::simple_closure::SimpleClosureProperties;
 use crate::entity::simple_closure::SimpleClosureReactiveEntityFactory as Factory;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::ReactiveEntityFactory;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::ReactiveEntityFactory;
 use std::ops::Deref;
 use std::ops::DerefMut;
 

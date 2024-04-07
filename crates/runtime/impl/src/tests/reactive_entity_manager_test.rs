@@ -1,8 +1,8 @@
 use default_test::DefaultTest;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_graph::EntityType;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
-use inexor_rgf_runtime_api::Runtime;
+use reactive_graph_runtime_api::Runtime;
 
 use crate::get_runtime;
 use std::sync::Arc;

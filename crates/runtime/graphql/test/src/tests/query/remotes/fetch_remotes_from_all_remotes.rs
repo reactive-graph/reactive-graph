@@ -3,10 +3,10 @@ use std::sync::Arc;
 
 use serde::Deserialize;
 
-use inexor_rgf_remotes_model::InstanceInfo;
-use inexor_rgf_runtime_api::Runtime;
-use inexor_rgf_runtime_graphql_api::RuntimeQueryService;
-use inexor_rgf_runtime_impl::RuntimeBuilder;
+use reactive_graph_remotes_model::InstanceInfo;
+use reactive_graph_runtime_api::Runtime;
+use reactive_graph_runtime_graphql_api::RuntimeQueryService;
+use reactive_graph_runtime_impl::RuntimeBuilder;
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]

@@ -1,6 +1,6 @@
-use inexor_rgf_client::InexorRgfClient;
-use inexor_rgf_client::InexorRgfClientError;
-use inexor_rgf_client::InexorRgfClientExecutionError;
+use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::InexorRgfClientError;
+use reactive_graph_client::InexorRgfClientExecutionError;
 
 #[derive(Debug)]
 enum SimpleClientError {
@@ -15,7 +15,7 @@ enum SimpleClientError {
 async fn main() -> Result<(), SimpleClientError> {
     // Connect to localhost:31415 (default port)
     let client = InexorRgfClient::new_default().map_err(SimpleClientError::InexorRgfClientError)?;
-    // Use inexor_rgf_client to fetch the list of plugins
+    // Use reactive_graph_client to fetch the list of plugins
     let remotes = client
         .runtime()
         .remotes()

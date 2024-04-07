@@ -25,8 +25,8 @@ use serde::Serialize;
 use typed_builder::TypedBuilder;
 
 use crate::BehaviourTypeId;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::NamespacedType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::NamespacedType;
 
 /// The behaviour of an entity type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]

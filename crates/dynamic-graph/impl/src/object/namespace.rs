@@ -12,7 +12,7 @@ use crate::namespace_type_name;
 use crate::relation_creation_field;
 use crate::relation_mutation_field;
 use crate::relation_query_field;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 
 pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Option<Object> {
     let components = context.component_manager.get_by_namespace(namespace);

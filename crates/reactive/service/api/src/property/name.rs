@@ -1,5 +1,5 @@
 use crate::TypedReactivePropertyImpl;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 
 pub trait TypedReactivePropertyName {
     fn property_name(&self) -> String;

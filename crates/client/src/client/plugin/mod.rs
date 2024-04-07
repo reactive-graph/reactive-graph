@@ -283,8 +283,8 @@ pub mod api {
 pub mod test {
 
     use crate::InexorRgfClient;
-    use inexor_rgf_runtime_api::Runtime;
-    use inexor_rgf_runtime_impl::RuntimeBuilder;
+    use reactive_graph_runtime_api::Runtime;
+    use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
 
     #[tokio::test(flavor = "multi_thread")]

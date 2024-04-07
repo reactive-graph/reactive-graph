@@ -3,7 +3,7 @@ use std::sync::Arc;
 use async_graphql::*;
 use uuid::Uuid;
 
-use inexor_rgf_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_service_api::PluginContainerManager;
 
 pub struct GraphQLPlugin {
     pub id: Uuid,

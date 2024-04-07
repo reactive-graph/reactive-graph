@@ -1,6 +1,6 @@
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_reactive_service_api::ReactiveEntityRegistrationError;
-use inexor_rgf_type_system_api::EntityTypeRegistrationError;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_reactive_service_api::ReactiveEntityRegistrationError;
+use reactive_graph_type_system_api::EntityTypeRegistrationError;
 
 #[derive(Debug)]
 pub enum CommandRegistrationError {

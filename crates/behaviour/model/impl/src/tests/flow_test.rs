@@ -12,8 +12,8 @@ use crate::connector::Connector;
 use crate::entity::logical_gate::LogicalGateProperties;
 use crate::relation::connector::ConnectorProperties;
 use crate::tests::utils::r_string;
-use inexor_rgf_graph::DataType;
-use inexor_rgf_graph::Flow;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::Flow;
 use serde_json::json;
 
 const LHS: LogicalGateProperties = LogicalGateProperties::LHS;

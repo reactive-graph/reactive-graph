@@ -6,7 +6,7 @@ use typed_builder::TypedBuilder;
 
 pub const DEFAULT_HOSTNAME: &str = "localhost";
 pub const DEFAULT_PORT: u16 = 31415;
-pub const DEFAULT_USER_AGENT: &str = "inexor_rgf_client";
+pub const DEFAULT_USER_AGENT: &str = "reactive_graph_client";
 pub const DEFAULT_ENDPOINT_GRAPHQL: &str = "/graphql";
 pub const DEFAULT_ENDPOINT_DYNAMIC_GRAPH: &str = "/dynamic_graph";
 pub const DEFAULT_ENDPOINT_RUNTIME: &str = "/runtime/graphql";

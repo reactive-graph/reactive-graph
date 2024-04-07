@@ -2,7 +2,7 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_graph::FlowTypeId;
+use reactive_graph_graph::FlowTypeId;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "FlowTypeId")]

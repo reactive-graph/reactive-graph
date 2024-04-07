@@ -20,12 +20,12 @@ macro_rules! entity_behaviour {
         $(,)?
     ) => {
         pub struct $behaviour {
-            pub reactive_instance: inexor_rgf_reactive_model_impl::ReactiveEntity,
+            pub reactive_instance: reactive_graph_reactive_model_impl::ReactiveEntity,
             pub fsm: $fsm,
         }
 
         impl $behaviour {
-            pub fn new(reactive_instance: inexor_rgf_reactive_model_impl::ReactiveEntity, ty: inexor_rgf_behaviour_model_api::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
+            pub fn new(reactive_instance: reactive_graph_reactive_model_impl::ReactiveEntity, ty: reactive_graph_behaviour_model_api::BehaviourTypeId, $($fn_name: $fn_ident)*) -> Result<std::sync::Arc<$behaviour>, $crate::BehaviourCreationError> {
                 let transitions = <$transitions>::new(reactive_instance.clone(), ty.clone() $(, $fn_name)*);
                 let validator = <$validator>::new(reactive_instance.clone());
                 let fsm = <$fsm>::new(reactive_instance.clone(), ty, validator, transitions);
@@ -38,40 +38,40 @@ macro_rules! entity_behaviour {
             }
         }
 
-        impl inexor_rgf_behaviour_model_api::BehaviourFsm<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity> for $behaviour {
-            fn ty(&self) -> &inexor_rgf_behaviour_model_api::BehaviourTypeId {
+        impl reactive_graph_behaviour_model_api::BehaviourFsm<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity> for $behaviour {
+            fn ty(&self) -> &reactive_graph_behaviour_model_api::BehaviourTypeId {
                 &self.fsm.ty
             }
 
-            fn get_state(&self) -> inexor_rgf_behaviour_model_api::BehaviourState {
+            fn get_state(&self) -> reactive_graph_behaviour_model_api::BehaviourState {
                 self.fsm.get_state()
             }
 
-            fn set_state(&self, state: inexor_rgf_behaviour_model_api::BehaviourState) {
+            fn set_state(&self, state: reactive_graph_behaviour_model_api::BehaviourState) {
                 self.fsm.set_state(state);
             }
 
-            fn get_validator(&self) -> &dyn inexor_rgf_behaviour_model_api::BehaviourValidator<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity> {
+            fn get_validator(&self) -> &dyn reactive_graph_behaviour_model_api::BehaviourValidator<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity> {
                 &self.fsm.validator
             }
 
-            fn get_transitions(&self) -> &dyn inexor_rgf_behaviour_model_api::BehaviourTransitions<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity> {
+            fn get_transitions(&self) -> &dyn reactive_graph_behaviour_model_api::BehaviourTransitions<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity> {
                 &self.fsm.transitions
             }
         }
 
-        impl inexor_rgf_reactive_model_api::ReactiveInstanceContainer<uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity> for $behaviour {
-            fn get_reactive_instance(&self) -> &inexor_rgf_reactive_model_impl::ReactiveEntity {
+        impl reactive_graph_reactive_model_api::ReactiveInstanceContainer<uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity> for $behaviour {
+            fn get_reactive_instance(&self) -> &reactive_graph_reactive_model_impl::ReactiveEntity {
                 &self.reactive_instance
             }
 
             fn get(&self, property_name: &str) -> Option<serde_json::Value> {
-                // inexor_rgf_graph::PropertyInstanceGetter::get(self, property_name)
+                // reactive_graph_graph::PropertyInstanceGetter::get(self, property_name)
                 self.reactive_instance.get(property_name)
             }
 
             fn set(&self, property_name: &str, value: serde_json::Value) {
-                // inexor_rgf_graph::PropertyInstanceSetter::get(self, property_name, value)
+                // reactive_graph_graph::PropertyInstanceSetter::get(self, property_name, value)
                 self.reactive_instance.set(property_name, value);
             }
         }
@@ -82,9 +82,9 @@ macro_rules! entity_behaviour {
             }
         }
 
-        inexor_rgf_behaviour_model_api::behaviour_factory!($factory, $behaviour, uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity $(, $fn_name, $fn_ident)*);
+        reactive_graph_behaviour_model_api::behaviour_factory!($factory, $behaviour, uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity $(, $fn_name, $fn_ident)*);
 
-        inexor_rgf_behaviour_model_api::behaviour_fsm!($fsm, $validator, $transitions, uuid::Uuid, inexor_rgf_reactive_model_impl::ReactiveEntity);
+        reactive_graph_behaviour_model_api::behaviour_fsm!($fsm, $validator, $transitions, uuid::Uuid, reactive_graph_reactive_model_impl::ReactiveEntity);
 
         $crate::entity_behaviour_transitions!($transitions $(, $fn_name, $fn_ident)*);
     };

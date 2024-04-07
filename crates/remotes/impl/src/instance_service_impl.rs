@@ -5,11 +5,11 @@ use chrono::Utc;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_api::PLUGIN_API_VERSION;
-use inexor_rgf_remotes_api::InstanceService;
-use inexor_rgf_remotes_model::InstanceInfo;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_api::PLUGIN_API_VERSION;
+use reactive_graph_remotes_api::InstanceService;
+use reactive_graph_remotes_model::InstanceInfo;
 
 pub static VERSION: &str = env!("CARGO_PKG_VERSION");
 pub static BUILD_DATE: &str = env!("VERGEN_BUILD_DATE");

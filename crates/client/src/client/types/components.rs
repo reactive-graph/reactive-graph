@@ -7,8 +7,8 @@ pub mod queries {
     use crate::schema_graphql::types::extension::ExtensionDefinitions;
     use crate::schema_graphql::types::property_type::PropertyTypeDefinition;
     use crate::schema_graphql::types::property_type::PropertyTypeDefinitions;
-    use inexor_rgf_graph::ComponentTypeId;
-    use inexor_rgf_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::ComponentTypeId;
+    use reactive_graph_graph::NamespacedTypeGetter;
 
     #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
     pub struct ComponentTypeIdVariables {
@@ -96,7 +96,7 @@ pub mod queries {
         GetComponentByType::build(ty.clone().into())
     }
 
-    pub fn create_component_mutation(component: inexor_rgf_graph::Component) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
+    pub fn create_component_mutation(component: reactive_graph_graph::Component) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
         use cynic::MutationBuilder;
         // let component = component.into();
         let namespace = component.namespace();
@@ -121,9 +121,9 @@ pub mod queries {
 
     #[cfg(test)]
     mod tests {
-        use inexor_rgf_runtime_impl::RuntimeBuilder;
+        use reactive_graph_runtime_impl::RuntimeBuilder;
 
-        use inexor_rgf_graph::ComponentTypeId;
+        use reactive_graph_graph::ComponentTypeId;
 
         #[tokio::test(flavor = "multi_thread")]
         async fn test_get_components_by_type() {
@@ -157,8 +157,8 @@ pub mod api {
     use crate::client::InexorRgfClient;
     use crate::client::InexorRgfClientExecutionError;
     use crate::schema_graphql::types::component::Components as ComponentsVec;
-    use inexor_rgf_graph::Component;
-    use inexor_rgf_graph::ComponentTypeId;
+    use reactive_graph_graph::Component;
+    use reactive_graph_graph::ComponentTypeId;
 
     pub struct Components {
         client: Arc<InexorRgfClient>,

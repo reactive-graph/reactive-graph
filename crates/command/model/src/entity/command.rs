@@ -17,23 +17,23 @@ use crate::entity::arg::CommandArgs;
 use crate::error::CommandArgsError;
 use crate::error::CommandExecutionFailed;
 use crate::error::NotACommand;
-use inexor_rgf_graph::ComponentContainer;
-use inexor_rgf_graph::ComponentTypeIds;
-use inexor_rgf_graph::DataType;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypeDefinition;
-use inexor_rgf_graph::SocketType;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_runtime_model::ActionProperties::TRIGGER;
-use inexor_rgf_runtime_model::LabeledProperties::LABEL;
-use inexor_rgf_runtime_model::COMPONENT_ACTION;
-use inexor_rgf_runtime_model::COMPONENT_LABELED;
+use reactive_graph_graph::ComponentContainer;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_graph::SocketType;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_runtime_model::ActionProperties::TRIGGER;
+use reactive_graph_runtime_model::LabeledProperties::LABEL;
+use reactive_graph_runtime_model::COMPONENT_ACTION;
+use reactive_graph_runtime_model::COMPONENT_LABELED;
 
 pub struct Command(ReactiveEntity);
 
@@ -248,10 +248,10 @@ mod tests {
     use serde_json::json;
     use uuid::Uuid;
 
-    use inexor_rgf_graph::ComponentTypeIds;
-    use inexor_rgf_graph::PropertyInstances;
-    use inexor_rgf_reactive_model_impl::ReactiveEntity;
-    use inexor_rgf_reactive_model_impl::ReactiveProperties;
+    use reactive_graph_graph::ComponentTypeIds;
+    use reactive_graph_graph::PropertyInstances;
+    use reactive_graph_reactive_model_impl::ReactiveEntity;
+    use reactive_graph_reactive_model_impl::ReactiveProperties;
 
     use crate::component::CommandProperties::COMMAND_ARGS;
     use crate::component::CommandProperties::COMMAND_HELP;
@@ -260,13 +260,13 @@ mod tests {
     use crate::entity::Command;
     use crate::error::CommandExecutionFailed;
     use crate::CommandProperties::COMMAND_RESULT;
-    use inexor_rgf_graph::EntityTypeId;
-    use inexor_rgf_graph::PropertyInstanceGetter;
-    use inexor_rgf_graph::PropertyInstanceSetter;
-    use inexor_rgf_graph::PropertyTypeDefinition;
-    use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-    use inexor_rgf_runtime_model::ActionProperties::TRIGGER;
-    use inexor_rgf_runtime_model::COMPONENT_ACTION;
+    use reactive_graph_graph::EntityTypeId;
+    use reactive_graph_graph::PropertyInstanceGetter;
+    use reactive_graph_graph::PropertyInstanceSetter;
+    use reactive_graph_graph::PropertyTypeDefinition;
+    use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+    use reactive_graph_runtime_model::ActionProperties::TRIGGER;
+    use reactive_graph_runtime_model::COMPONENT_ACTION;
 
     #[test]
     fn test_command() {

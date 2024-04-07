@@ -5,8 +5,8 @@ use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
 
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_type_system_api::FlowTypeManager;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_type_system_api::FlowTypeManager;
 
 #[get("/types/flows")]
 pub async fn get_flow_types(flow_type_manager: web::Data<Arc<dyn FlowTypeManager + Send + Sync>>) -> HttpResponse {

@@ -4,23 +4,23 @@ use springtime_di::injectable;
 use uuid::Uuid;
 
 use crate::ReactiveRelationComponentRemoveError;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::RelationInstance;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationTypeId;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::RelationInstance;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationTypeId;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 
 use crate::ReactiveRelationComponentAddError;
 use crate::ReactiveRelationCreationError;
 use crate::ReactiveRelationPropertyAddError;
 use crate::ReactiveRelationPropertyRemoveError;
 use crate::ReactiveRelationRegistrationError;
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::ComponentBehaviourTypeId;
-use inexor_rgf_behaviour_model_api::RelationBehaviourTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::ComponentBehaviourTypeId;
+use reactive_graph_behaviour_model_api::RelationBehaviourTypeId;
+use reactive_graph_lifecycle::Lifecycle;
 
 #[injectable]
 #[async_trait]

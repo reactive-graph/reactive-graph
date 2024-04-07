@@ -5,10 +5,10 @@ use async_graphql::Error;
 use async_graphql::Object;
 use async_graphql::Result;
 
-use inexor_rgf_behaviour_model_api::EntityBehaviourTypeId;
-use inexor_rgf_behaviour_service_api::EntityBehaviourManager;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_behaviour_model_api::EntityBehaviourTypeId;
+use reactive_graph_behaviour_service_api::EntityBehaviourManager;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_type_system_api::EntityTypeManager;
 
 use crate::query::GraphQLBehaviour;
 use crate::query::GraphQLEntityInstance;

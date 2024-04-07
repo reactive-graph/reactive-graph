@@ -10,15 +10,15 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::DeserializationError;
-use inexor_rgf_type_system_api::EntityTypeExportError;
-use inexor_rgf_type_system_api::EntityTypeImportError;
-use inexor_rgf_type_system_api::EntityTypeImportExportManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::SerializationError;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_type_system_api::EntityTypeExportError;
+use reactive_graph_type_system_api::EntityTypeImportError;
+use reactive_graph_type_system_api::EntityTypeImportExportManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct EntityTypeImportExportManagerImpl {
@@ -88,14 +88,14 @@ mod test {
     use default_test::DefaultTest;
 
     use crate::TypeSystemImpl;
-    use inexor_rgf_graph::EntityType;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_type_system_api::TypeSystem;
+    use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_type_system_api::TypeSystem;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_entity_type() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let entity_type_import_export_manager = type_system.get_entity_type_import_export_manager();
 

@@ -11,21 +11,21 @@ use springtime_di::Component;
 use tokio::task::yield_now;
 use uuid::Uuid;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_api::PluginRefreshingState;
-use inexor_rgf_plugin_api::PluginResolveState;
-use inexor_rgf_plugin_api::PluginStartingState;
-use inexor_rgf_plugin_api::PluginState;
-use inexor_rgf_plugin_api::PluginStoppingState;
-use inexor_rgf_plugin_api::PluginUninstallingState;
-use inexor_rgf_plugin_service_api::PluginContainerManager;
-use inexor_rgf_plugin_service_api::PluginContextFactory;
-use inexor_rgf_plugin_service_api::PluginResolver;
-use inexor_rgf_plugin_service_api::PluginResolverMode;
-use inexor_rgf_plugin_service_api::PluginTransitionResult;
-use inexor_rgf_plugin_service_api::PluginTransitionResult::Changed;
-use inexor_rgf_plugin_service_api::PluginTransitionResult::NoChange;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_api::PluginRefreshingState;
+use reactive_graph_plugin_api::PluginResolveState;
+use reactive_graph_plugin_api::PluginStartingState;
+use reactive_graph_plugin_api::PluginState;
+use reactive_graph_plugin_api::PluginStoppingState;
+use reactive_graph_plugin_api::PluginUninstallingState;
+use reactive_graph_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_service_api::PluginContextFactory;
+use reactive_graph_plugin_service_api::PluginResolver;
+use reactive_graph_plugin_service_api::PluginResolverMode;
+use reactive_graph_plugin_service_api::PluginTransitionResult;
+use reactive_graph_plugin_service_api::PluginTransitionResult::Changed;
+use reactive_graph_plugin_service_api::PluginTransitionResult::NoChange;
 
 const MAX_ITERATIONS: u32 = 1000;
 

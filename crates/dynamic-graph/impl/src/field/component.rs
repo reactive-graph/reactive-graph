@@ -11,13 +11,13 @@ use async_graphql::ID;
 // use crate::graphql::dynamic::DynamicGraphTypeDefinition;
 use crate::to_type_ref;
 use crate::DynamicGraphTypeDefinition;
-use inexor_rgf_graph::Component;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
 
 pub fn component_query_field(component_ty: &ComponentTypeId, component: &Component) -> Field {
     let ty = component_ty.clone();

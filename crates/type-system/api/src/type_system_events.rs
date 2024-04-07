@@ -1,8 +1,8 @@
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_graph::RelationTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Eq, Hash, PartialEq, Clone, Debug)]
 pub enum TypeSystemEventTypes {

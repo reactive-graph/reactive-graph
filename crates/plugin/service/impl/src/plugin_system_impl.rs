@@ -1,18 +1,18 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_di::get_shared_component_factory;
+use reactive_graph_di::get_shared_component_factory;
 use springtime_di::component_alias;
 // use springtime_di::factory::ComponentFactoryBuilder;
 use springtime_di::instance_provider::TypedComponentInstanceProvider;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_service_api::PluginContainerManager;
-use inexor_rgf_plugin_service_api::PluginContextFactory;
-use inexor_rgf_plugin_service_api::PluginRepositoryManager;
-use inexor_rgf_plugin_service_api::PluginResolver;
-use inexor_rgf_plugin_service_api::PluginSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_service_api::PluginContextFactory;
+use reactive_graph_plugin_service_api::PluginRepositoryManager;
+use reactive_graph_plugin_service_api::PluginResolver;
+use reactive_graph_plugin_service_api::PluginSystem;
 
 #[derive(Component)]
 pub struct PluginSystemImpl {

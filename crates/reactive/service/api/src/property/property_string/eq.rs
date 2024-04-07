@@ -1,5 +1,5 @@
 use crate::TypedReactivePropertyImpl;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 
 impl<IdType, ReactiveInstanceType> PartialEq<&str> for TypedReactivePropertyImpl<IdType, ReactiveInstanceType, String>
 where

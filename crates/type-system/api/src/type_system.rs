@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_lifecycle::Lifecycle;
 use springtime_di::injectable;
 
 use crate::ComponentImportExportManager;

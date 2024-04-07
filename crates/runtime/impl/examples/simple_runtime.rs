@@ -1,12 +1,12 @@
 use std::sync::Arc;
 
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypes;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_runtime_api::Runtime;
-use inexor_rgf_runtime_impl::RuntimeBuilder;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_runtime_api::Runtime;
+use reactive_graph_runtime_impl::RuntimeBuilder;
 
 #[tokio::main]
 async fn main() -> Result<(), ()> {

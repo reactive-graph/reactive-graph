@@ -30,26 +30,26 @@ use springtime_di::component_alias;
 use springtime_di::component_registry::TypedComponentDefinitionRegistry;
 use springtime_di::Component;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_dynamic_graph_api::DynamicGraphSchemaManager;
-use inexor_rgf_dynamic_graph_web::query_dynamic_graph;
-use inexor_rgf_graphql_api::GraphQLSchemaManager;
-use inexor_rgf_graphql_web::query_graphql;
-use inexor_rgf_graphql_web::subscription_websocket;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_graphql_api::PluginSchemaManager;
-use inexor_rgf_plugin_graphql_web::query_plugin_graphql;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveFlowManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_runtime_graphql_api::RuntimeSchemaManager;
-use inexor_rgf_runtime_graphql_web::query_runtime_graphql;
-use inexor_rgf_runtime_web_api::GraphQLServer;
-use inexor_rgf_runtime_web_api::WebResourceManager;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::FlowTypeManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
+use reactive_graph_dynamic_graph_web::query_dynamic_graph;
+use reactive_graph_graphql_api::GraphQLSchemaManager;
+use reactive_graph_graphql_web::query_graphql;
+use reactive_graph_graphql_web::subscription_websocket;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_graphql_api::PluginSchemaManager;
+use reactive_graph_plugin_graphql_web::query_plugin_graphql;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveFlowManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_runtime_graphql_api::RuntimeSchemaManager;
+use reactive_graph_runtime_graphql_web::query_runtime_graphql;
+use reactive_graph_runtime_web_api::GraphQLServer;
+use reactive_graph_runtime_web_api::WebResourceManager;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::FlowTypeManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::get_logger_middleware;
 use crate::web_resource_manager_handler::handle_root_web_resource;
@@ -206,23 +206,23 @@ impl GraphQLServerImpl {
             let app = app.service(query_plugin_graphql);
             // Type System REST API
             let app = app
-                .service(inexor_rgf_type_system_rest::components::get_components)
-                .service(inexor_rgf_type_system_rest::components::get_component)
-                .service(inexor_rgf_type_system_rest::entities::get_entity_types)
-                .service(inexor_rgf_type_system_rest::entities::get_entity_type)
-                .service(inexor_rgf_type_system_rest::relations::get_relation_types)
-                .service(inexor_rgf_type_system_rest::relations::get_relation_type)
-                .service(inexor_rgf_type_system_rest::flows::get_flow_types)
-                .service(inexor_rgf_type_system_rest::flows::get_flow_type);
+                .service(reactive_graph_type_system_rest::components::get_components)
+                .service(reactive_graph_type_system_rest::components::get_component)
+                .service(reactive_graph_type_system_rest::entities::get_entity_types)
+                .service(reactive_graph_type_system_rest::entities::get_entity_type)
+                .service(reactive_graph_type_system_rest::relations::get_relation_types)
+                .service(reactive_graph_type_system_rest::relations::get_relation_type)
+                .service(reactive_graph_type_system_rest::flows::get_flow_types)
+                .service(reactive_graph_type_system_rest::flows::get_flow_type);
             // JSON Schema
             let app = app
-                .service(inexor_rgf_type_system_json_schema::types::components::schema_components)
-                .service(inexor_rgf_type_system_json_schema::types::entities::schema_entity_types)
-                .service(inexor_rgf_type_system_json_schema::types::relations::schema_relation_types)
-                .service(inexor_rgf_type_system_json_schema::types::flows::schema_flow_types)
-                .service(inexor_rgf_type_system_json_schema::instances::entities::schema_entity_instances)
-                .service(inexor_rgf_type_system_json_schema::instances::relations::schema_relation_instances)
-                .service(inexor_rgf_type_system_json_schema::instances::flows::schema_flow_instances);
+                .service(reactive_graph_type_system_json_schema::types::components::schema_components)
+                .service(reactive_graph_type_system_json_schema::types::entities::schema_entity_types)
+                .service(reactive_graph_type_system_json_schema::types::relations::schema_relation_types)
+                .service(reactive_graph_type_system_json_schema::types::flows::schema_flow_types)
+                .service(reactive_graph_type_system_json_schema::instances::entities::schema_entity_instances)
+                .service(reactive_graph_type_system_json_schema::instances::relations::schema_relation_instances)
+                .service(reactive_graph_type_system_json_schema::instances::flows::schema_flow_instances);
             // Web Resource API
             let app = app
                 .service(web::resource("/{web_resource_context_path}/{path:.*}").route(web::get().to(handle_web_resource)))

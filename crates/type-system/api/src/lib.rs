@@ -37,7 +37,7 @@ pub use springtime_di::instance_provider::ErrorPtr;
 pub use springtime_di::Component;
 
 #[cfg(feature = "derive")]
-pub use inexor_rgf_type_system_derive::TypeProvider;
+pub use reactive_graph_type_system_derive::TypeProvider;
 
 pub mod component_import_export_manager;
 pub mod component_manager;

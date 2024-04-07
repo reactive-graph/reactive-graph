@@ -7,14 +7,14 @@ use std::time;
 use serde_json::json;
 use tokio::task;
 
-use inexor_rgf_command_model::entity::Command;
-use inexor_rgf_command_model::entity::CommandArg;
-use inexor_rgf_command_model::CommandArgs;
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_runtime_model::ShutdownProperties::DELAY;
-use inexor_rgf_runtime_model::ENTITY_TYPE_SHUTDOWN;
-use inexor_rgf_runtime_service_api::UUID_SHUTDOWN;
+use reactive_graph_command_model::entity::Command;
+use reactive_graph_command_model::entity::CommandArg;
+use reactive_graph_command_model::CommandArgs;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_runtime_model::ShutdownProperties::DELAY;
+use reactive_graph_runtime_model::ENTITY_TYPE_SHUTDOWN;
+use reactive_graph_runtime_service_api::UUID_SHUTDOWN;
 
 pub(crate) fn shutdown_command(shutdown_state: Arc<AtomicBool>) -> Command {
     let args = CommandArgs::new().arg(

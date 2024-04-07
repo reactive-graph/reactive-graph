@@ -1,9 +1,9 @@
-use inexor_rgf_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_model_api::prelude::*;
 
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_reactive_model_api::ReactiveInstanceContainer;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_reactive_model_api::ReactiveInstanceContainer;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 
 pub trait RelationPropertyValidator: ReactiveInstanceContainer<RelationInstanceId, ReactiveRelation> {
     /// Validates the outbound property with the given name.

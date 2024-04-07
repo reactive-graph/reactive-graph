@@ -25,13 +25,13 @@ use tokio::sync::mpsc;
 use uuid::Uuid;
 use walkdir::WalkDir;
 
-use inexor_rgf_config_api::ConfigManager;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_api::HotDeployError;
-use inexor_rgf_plugin_api::PluginState;
-use inexor_rgf_plugin_service_api::PluginContainerManager;
-use inexor_rgf_plugin_service_api::PluginRepositoryManager;
-use inexor_rgf_plugin_service_api::PluginResolver;
+use reactive_graph_config_api::ConfigManager;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_api::HotDeployError;
+use reactive_graph_plugin_api::PluginState;
+use reactive_graph_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_service_api::PluginRepositoryManager;
+use reactive_graph_plugin_service_api::PluginResolver;
 
 use crate::plugin_paths::get_install_path;
 use crate::plugin_paths::get_stem;

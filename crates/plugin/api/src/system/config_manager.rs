@@ -1,7 +1,7 @@
-use inexor_rgf_config_model::GraphQLServerConfig;
-use inexor_rgf_config_model::InstanceConfig;
-use inexor_rgf_config_model::PluginsConfig;
-use inexor_rgf_config_model::RemotesConfig;
+use reactive_graph_config_model::GraphQLServerConfig;
+use reactive_graph_config_model::InstanceConfig;
+use reactive_graph_config_model::PluginsConfig;
+use reactive_graph_config_model::RemotesConfig;
 use springtime_di::injectable;
 
 #[injectable]

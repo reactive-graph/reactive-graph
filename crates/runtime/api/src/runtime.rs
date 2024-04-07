@@ -1,25 +1,25 @@
 use std::time::Duration;
 
 use async_trait::async_trait;
-use inexor_rgf_behaviour_service_api::BehaviourSystem;
+use reactive_graph_behaviour_service_api::BehaviourSystem;
 use springtime_di::injectable;
 use tokio::time::error::Elapsed;
 
-use inexor_rgf_command_api::CommandSystem;
-use inexor_rgf_config_api::ConfigSystem;
-use inexor_rgf_dynamic_graph_api::DynamicGraphSystem;
-use inexor_rgf_graphql_api::GraphQLSystem;
-use inexor_rgf_instance_system_api::InstanceSystem;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_graphql_api::PluginGraphQLSystem;
-use inexor_rgf_plugin_service_api::PluginSystem;
-use inexor_rgf_reactive_service_api::ReactiveSystem;
-use inexor_rgf_remotes_api::RemotesSystem;
-use inexor_rgf_remotes_model::InstanceAddress;
-use inexor_rgf_runtime_graphql_api::RuntimeGraphQLSystem;
-use inexor_rgf_runtime_service_api::RuntimeSystem;
-use inexor_rgf_runtime_web_api::WebSystem;
-use inexor_rgf_type_system_api::TypeSystem;
+use reactive_graph_command_api::CommandSystem;
+use reactive_graph_config_api::ConfigSystem;
+use reactive_graph_dynamic_graph_api::DynamicGraphSystem;
+use reactive_graph_graphql_api::GraphQLSystem;
+use reactive_graph_instance_system_api::InstanceSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_graphql_api::PluginGraphQLSystem;
+use reactive_graph_plugin_service_api::PluginSystem;
+use reactive_graph_reactive_service_api::ReactiveSystem;
+use reactive_graph_remotes_api::RemotesSystem;
+use reactive_graph_remotes_model::InstanceAddress;
+use reactive_graph_runtime_graphql_api::RuntimeGraphQLSystem;
+use reactive_graph_runtime_service_api::RuntimeSystem;
+use reactive_graph_runtime_web_api::WebSystem;
+use reactive_graph_type_system_api::TypeSystem;
 
 #[async_trait]
 #[injectable]

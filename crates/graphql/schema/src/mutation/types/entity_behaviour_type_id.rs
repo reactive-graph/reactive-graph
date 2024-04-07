@@ -2,9 +2,9 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::EntityBehaviourTypeId;
-use inexor_rgf_graph::EntityTypeId;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::EntityBehaviourTypeId;
+use reactive_graph_graph::EntityTypeId;
 
 use crate::mutation::BehaviourTypeIdDefinition;
 use crate::mutation::EntityTypeIdDefinition;

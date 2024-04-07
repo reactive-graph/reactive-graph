@@ -1,5 +1,5 @@
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_api::ReactiveInstanceContainer;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstanceContainer;
 
 use crate::BehaviourInvalid;
 use crate::BehaviourPropertyInvalid;
@@ -43,7 +43,7 @@ macro_rules! behaviour_validator {
 
         impl BehaviourValidator<$id, $reactive_instance> for $validator {}
 
-        impl inexor_rgf_reactive_model_api::ReactiveInstanceContainer<$id, $reactive_instance> for $validator {
+        impl reactive_graph_reactive_model_api::ReactiveInstanceContainer<$id, $reactive_instance> for $validator {
             fn get_reactive_instance(&self) -> &$reactive_instance {
                 &self.reactive_instance
             }
@@ -63,7 +63,7 @@ macro_rules! behaviour_validator {
 
         impl $crate::BehaviourValidator<$id, $reactive_instance> for $validator {}
 
-        impl inexor_rgf_reactive_model_api::ReactiveInstanceContainer<$id, $reactive_instance> for $validator {
+        impl reactive_graph_reactive_model_api::ReactiveInstanceContainer<$id, $reactive_instance> for $validator {
             fn get_reactive_instance(&self) -> &$reactive_instance {
                 &self.reactive_instance
             }

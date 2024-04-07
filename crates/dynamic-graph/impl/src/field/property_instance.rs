@@ -1,12 +1,12 @@
 use async_graphql::dynamic::ResolverContext;
 use async_graphql::Error;
-use inexor_rgf_dynamic_graph_api::PropertyDataTypeError;
+use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
 use serde_json::json;
 use serde_json::Value;
 
-use inexor_rgf_graph::DataType;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::PropertyTypes;
+use reactive_graph_graph::DataType;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyTypes;
 
 /// Returns a list of property instances from the field arguments.
 ///

@@ -24,7 +24,7 @@ pub mod api {
     use crate::client::runtime::instance::queries::get_instance_info;
     use crate::InexorRgfClient;
     use crate::InexorRgfClientExecutionError;
-    use inexor_rgf_remotes_model::InstanceInfo;
+    use reactive_graph_remotes_model::InstanceInfo;
 
     pub struct Instance {
         client: Arc<InexorRgfClient>,
@@ -44,8 +44,8 @@ pub mod api {
 #[cfg(test)]
 pub mod test {
     use crate::InexorRgfClient;
-    use inexor_rgf_runtime_api::Runtime;
-    use inexor_rgf_runtime_impl::RuntimeBuilder;
+    use reactive_graph_runtime_api::Runtime;
+    use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
 
     #[tokio::test(flavor = "multi_thread")]

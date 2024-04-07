@@ -2,17 +2,17 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use inexor_rgf_graph::FlowType;
-use inexor_rgf_graph::FlowTypeId;
-use inexor_rgf_type_system_api::FlowTypeExportError;
-use inexor_rgf_type_system_api::FlowTypeImportError;
+use reactive_graph_graph::FlowType;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_type_system_api::FlowTypeExportError;
+use reactive_graph_type_system_api::FlowTypeImportError;
 
 pub struct FlowTypeImportExportManagerDelegate {
-    flow_type_import_export_manager: Arc<dyn inexor_rgf_type_system_api::FlowTypeImportExportManager + Send + Sync>,
+    flow_type_import_export_manager: Arc<dyn reactive_graph_type_system_api::FlowTypeImportExportManager + Send + Sync>,
 }
 
 impl FlowTypeImportExportManagerDelegate {
-    pub fn new(flow_type_manager: Arc<dyn inexor_rgf_type_system_api::FlowTypeImportExportManager + Send + Sync>) -> Self {
+    pub fn new(flow_type_manager: Arc<dyn reactive_graph_type_system_api::FlowTypeImportExportManager + Send + Sync>) -> Self {
         Self {
             flow_type_import_export_manager: flow_type_manager,
         }
@@ -20,7 +20,7 @@ impl FlowTypeImportExportManagerDelegate {
 }
 
 #[async_trait]
-impl inexor_rgf_plugin_api::FlowTypeImportExportManager for FlowTypeImportExportManagerDelegate {
+impl reactive_graph_plugin_api::FlowTypeImportExportManager for FlowTypeImportExportManagerDelegate {
     async fn import(&self, path: &str) -> Result<FlowType, FlowTypeImportError> {
         self.flow_type_import_export_manager.import(path).await
     }

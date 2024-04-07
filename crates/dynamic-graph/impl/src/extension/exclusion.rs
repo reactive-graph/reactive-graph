@@ -1,7 +1,7 @@
 use serde_json::json;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ExtensionContainer;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ExtensionContainer;
 
 pub const EXCLUDE: &str = "exclude";
 

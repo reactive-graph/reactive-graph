@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-use inexor_rgf_graph::prelude::*;
+use reactive_graph_graph::prelude::*;
 
 use crate::error::serde::DeserializationError;
 use crate::error::serde::SerializationError;

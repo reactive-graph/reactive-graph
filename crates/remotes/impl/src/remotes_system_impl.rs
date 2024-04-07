@@ -1,14 +1,14 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_config_api::ConfigSystem;
+use reactive_graph_config_api::ConfigSystem;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_remotes_api::InstanceService;
-use inexor_rgf_remotes_api::RemotesManager;
-use inexor_rgf_remotes_api::RemotesSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_remotes_api::InstanceService;
+use reactive_graph_remotes_api::RemotesManager;
+use reactive_graph_remotes_api::RemotesSystem;
 
 #[derive(Component)]
 pub struct RemotesSystemImpl {

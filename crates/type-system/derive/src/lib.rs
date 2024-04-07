@@ -44,7 +44,7 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
 
     let component_alias = if type_provider_config.component_alias.unwrap_or(true) {
         quote! {
-            #[inexor_rgf_type_system_api::springtime_di::component_alias]
+            #[reactive_graph_type_system_api::springtime_di::component_alias]
         }
     } else {
         TokenStream2::new()
@@ -53,10 +53,10 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
     #[cfg(feature = "json")]
     let json = {
         quote! {
-            match inexor_rgf_type_system_api::serde_json::from_str(asset_str) {
+            match reactive_graph_type_system_api::serde_json::from_str(asset_str) {
                 Ok(parsed_entry) => {
-                    let entry: <#tys as inexor_rgf_graph::NamespacedTypeContainer>::Type = parsed_entry;
-                    inexor_rgf_graph::NamespacedTypeContainer::push(&entries, entry);
+                    let entry: <#tys as reactive_graph_graph::NamespacedTypeContainer>::Type = parsed_entry;
+                    reactive_graph_graph::NamespacedTypeContainer::push(&entries, entry);
                 }
                 Err(e) => log::error!("Error in parsing JSON file {filename}: {e}"),
             }
@@ -72,10 +72,10 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
     #[cfg(feature = "json5")]
     let json5 = {
         quote! {
-            match inexor_rgf_type_system_api::json5::from_str(asset_str) {
+            match reactive_graph_type_system_api::json5::from_str(asset_str) {
                 Ok(parsed_entry) => {
-                    let entry: <#tys as inexor_rgf_graph::NamespacedTypeContainer>::Type = parsed_entry;
-                    inexor_rgf_graph::NamespacedTypeContainer::push(&entries, entry);
+                    let entry: <#tys as reactive_graph_graph::NamespacedTypeContainer>::Type = parsed_entry;
+                    reactive_graph_graph::NamespacedTypeContainer::push(&entries, entry);
                 }
                 Err(e) => log::error!("Error in parsing JSON5 file {filename}: {e}"),
             }
@@ -91,10 +91,10 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
     #[cfg(feature = "toml")]
     let toml = {
         quote! {
-            match inexor_rgf_type_system_api::toml::from_str(asset_str) {
+            match reactive_graph_type_system_api::toml::from_str(asset_str) {
                 Ok(parsed_entry) => {
-                    let entry: <#tys as inexor_rgf_graph::NamespacedTypeContainer>::Type = parsed_entry;
-                    inexor_rgf_graph::NamespacedTypeContainer::push(&entries, entry);
+                    let entry: <#tys as reactive_graph_graph::NamespacedTypeContainer>::Type = parsed_entry;
+                    reactive_graph_graph::NamespacedTypeContainer::push(&entries, entry);
                 }
                 Err(e) => log::error!("Error in parsing TOML file {filename}: {e}"),
             }
@@ -114,12 +114,12 @@ pub fn type_provider(input: TokenStream) -> TokenStream {
 
         #[automatically_derived]
         #component_alias
-        impl inexor_rgf_type_system_api::TypeProvider<#tys> for #ident {
+        impl reactive_graph_type_system_api::TypeProvider<#tys> for #ident {
             fn id<'a>(&self) -> &'a str {
                 #type_provider_id
             }
             fn get_types(&self) -> #tys {
-                let mut entries = <#tys as inexor_rgf_graph::NamespacedTypeContainer>::new();
+                let mut entries = <#tys as reactive_graph_graph::NamespacedTypeContainer>::new();
                 for file in #ident_assets::iter() {
                     let filename = file.as_ref();
                     if filename.starts_with(".") {

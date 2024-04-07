@@ -37,7 +37,7 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 #[cfg(any(test, feature = "test"))]
-use inexor_rgf_test_utils::r_string;
+use reactive_graph_test_utils::r_string;
 
 /// Extension on a type. The extension allows to extend information
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TypedBuilder)]

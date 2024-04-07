@@ -3,21 +3,21 @@ use std::sync::Arc;
 
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
+use reactive_graph_behaviour_model_api::prelude::*;
 
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 pub struct EntityBehaviourRegistryDelegate {
-    entity_behaviour_manager: Arc<dyn inexor_rgf_behaviour_service_api::EntityBehaviourManager + Send + Sync>,
-    entity_behaviour_registry: Arc<dyn inexor_rgf_behaviour_service_api::EntityBehaviourRegistry + Send + Sync>,
-    reactive_entity_manager: Arc<dyn inexor_rgf_reactive_service_api::ReactiveEntityManager + Send + Sync>,
+    entity_behaviour_manager: Arc<dyn reactive_graph_behaviour_service_api::EntityBehaviourManager + Send + Sync>,
+    entity_behaviour_registry: Arc<dyn reactive_graph_behaviour_service_api::EntityBehaviourRegistry + Send + Sync>,
+    reactive_entity_manager: Arc<dyn reactive_graph_reactive_service_api::ReactiveEntityManager + Send + Sync>,
 }
 
 impl EntityBehaviourRegistryDelegate {
     pub fn new(
-        entity_behaviour_manager: Arc<dyn inexor_rgf_behaviour_service_api::EntityBehaviourManager + Send + Sync>,
-        entity_behaviour_registry: Arc<dyn inexor_rgf_behaviour_service_api::EntityBehaviourRegistry + Send + Sync>,
-        reactive_entity_manager: Arc<dyn inexor_rgf_reactive_service_api::ReactiveEntityManager + Send + Sync>,
+        entity_behaviour_manager: Arc<dyn reactive_graph_behaviour_service_api::EntityBehaviourManager + Send + Sync>,
+        entity_behaviour_registry: Arc<dyn reactive_graph_behaviour_service_api::EntityBehaviourRegistry + Send + Sync>,
+        reactive_entity_manager: Arc<dyn reactive_graph_reactive_service_api::ReactiveEntityManager + Send + Sync>,
     ) -> Self {
         Self {
             entity_behaviour_manager,
@@ -28,7 +28,7 @@ impl EntityBehaviourRegistryDelegate {
 }
 
 #[async_trait]
-impl inexor_rgf_plugin_api::EntityBehaviourRegistry for EntityBehaviourRegistryDelegate {
+impl reactive_graph_plugin_api::EntityBehaviourRegistry for EntityBehaviourRegistryDelegate {
     async fn register(&self, entity_behaviour_ty: EntityBehaviourTypeId, factory: Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>) {
         self.entity_behaviour_registry.register(entity_behaviour_ty.clone(), factory);
         self.reactive_entity_manager.add_behaviour_to_all_entity_instances(&entity_behaviour_ty);

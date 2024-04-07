@@ -6,8 +6,8 @@ use crate::component_property_field;
 use crate::get_entity_interface;
 use crate::get_relation_interface;
 use crate::DynamicGraphTypeDefinition;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
-use inexor_rgf_graph::Component;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_graph::Component;
 
 pub fn get_interfaces(mut schema: SchemaBuilder, context: &SchemaBuilderContext) -> SchemaBuilder {
     schema = schema.register(get_entity_interface());

@@ -2,19 +2,19 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use inexor_rgf_graph::RelationTypes;
-use inexor_rgf_type_system_api::TypeProvider;
+use reactive_graph_graph::RelationTypes;
+use reactive_graph_type_system_api::TypeProvider;
 
-pub struct RelationTypeProviderRegistryDelegate(Arc<dyn inexor_rgf_type_system_api::RelationTypeProviderRegistry + Send + Sync>);
+pub struct RelationTypeProviderRegistryDelegate(Arc<dyn reactive_graph_type_system_api::RelationTypeProviderRegistry + Send + Sync>);
 
 impl RelationTypeProviderRegistryDelegate {
-    pub fn new(provider_registry: &Arc<dyn inexor_rgf_type_system_api::RelationTypeProviderRegistry + Send + Sync>) -> Self {
+    pub fn new(provider_registry: &Arc<dyn reactive_graph_type_system_api::RelationTypeProviderRegistry + Send + Sync>) -> Self {
         Self(provider_registry.clone())
     }
 }
 
 #[async_trait]
-impl inexor_rgf_plugin_api::RelationTypeProviderRegistry for RelationTypeProviderRegistryDelegate {
+impl reactive_graph_plugin_api::RelationTypeProviderRegistry for RelationTypeProviderRegistryDelegate {
     async fn register_provider(&self, provider: Arc<dyn TypeProvider<RelationTypes>>) {
         self.0.register_provider(provider).await
     }

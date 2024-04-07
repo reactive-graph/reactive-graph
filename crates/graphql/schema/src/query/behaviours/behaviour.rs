@@ -1,7 +1,7 @@
 use async_graphql::Object;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_graph::NamespacedTypeGetter;
 
 pub struct GraphQLBehaviour {
     behaviour_ty: BehaviourTypeId,

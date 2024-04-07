@@ -6,11 +6,11 @@ use log::trace;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::Components;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::ComponentProviderRegistry;
-use inexor_rgf_type_system_api::TypeProvider;
+use reactive_graph_graph::Components;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::ComponentProviderRegistry;
+use reactive_graph_type_system_api::TypeProvider;
 
 #[derive(Component)]
 pub struct ComponentProviderRegistryImpl {

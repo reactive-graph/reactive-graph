@@ -10,8 +10,8 @@ use springtime_di::instance_provider::ComponentInstanceProvider;
 use springtime_di::instance_provider::ComponentInstanceProviderError;
 use springtime_di::instance_provider::TypedComponentInstanceProvider;
 
-use inexor_rgf_di::get_shared_component_factory;
-use inexor_rgf_runtime_api::Runtime;
+use reactive_graph_di::get_shared_component_factory;
+use reactive_graph_runtime_api::Runtime;
 
 use crate::RuntimeImpl;
 

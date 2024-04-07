@@ -1,11 +1,11 @@
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use inexor_rgf_behaviour_model_api::BehaviourTransitionError;
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
+use reactive_graph_behaviour_model_api::BehaviourTransitionError;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
 
 #[injectable]
 #[async_trait]

@@ -1,17 +1,17 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use inexor_rgf_behaviour_service_api::BehaviourSystem;
+use reactive_graph_behaviour_service_api::BehaviourSystem;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveFlowManager;
-use inexor_rgf_reactive_service_api::ReactiveInstanceEventManager;
-use inexor_rgf_reactive_service_api::ReactiveRelationManager;
-use inexor_rgf_reactive_service_api::ReactiveSystem;
-use inexor_rgf_type_system_api::TypeSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveFlowManager;
+use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
+use reactive_graph_reactive_service_api::ReactiveRelationManager;
+use reactive_graph_reactive_service_api::ReactiveSystem;
+use reactive_graph_type_system_api::TypeSystem;
 
 #[derive(Component)]
 pub struct ReactiveSystemImpl {

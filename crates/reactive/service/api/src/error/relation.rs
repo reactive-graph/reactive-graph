@@ -1,10 +1,10 @@
 use thiserror::Error;
 use uuid::Uuid;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::RelationTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Debug, Error)]
 pub enum ReactiveRelationCreationError {

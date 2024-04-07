@@ -28,9 +28,9 @@ pub use graphql::graphql_query_service::*;
 pub use graphql::http_body::HttpBody;
 pub use graphql::web_resource_manager::*;
 pub use graphql::web_resource_provider::*;
-pub use inexor_rgf_graph as model;
+pub use reactive_graph_graph as model;
 //#[cfg(feature = "derive")]
-//pub use inexor_rgf_plugin_derive::TypeProvider;
+//pub use reactive_graph_plugin_derive::TypeProvider;
 pub use instances::entities::entity_instance_manager::*;
 pub use instances::flows::flow_instance_manager::*;
 pub use instances::relations::relation_instance_manager::*;
@@ -69,8 +69,8 @@ pub use PluginActivationError;
 pub use PluginDeactivationError;
 pub use PluginUnloadingError;
 
-pub use inexor_rgf_type_system_api::TypeProvider;
-// TODO: pub use inexor_rgf_type_system_api::*;
+pub use reactive_graph_type_system_api::TypeProvider;
+// TODO: pub use reactive_graph_type_system_api::*;
 
 pub mod behaviours;
 pub mod instances;
@@ -218,7 +218,7 @@ macro_rules! construct_plugin {
         /// ```
         /// pub struct MyPluginImpl {
         ///   #[component(default = "inject_plugin_context_checked")]
-        ///   context: Option<std::sync::Arc<dyn inexor_rgf_plugin_api::PluginContext + Send + Sync>>,
+        ///   context: Option<std::sync::Arc<dyn reactive_graph_plugin_api::PluginContext + Send + Sync>>,
         /// }
         /// ```
         pub fn inject_plugin_context_checked() -> Option<std::sync::Arc<dyn $crate::PluginContext + Send + Sync>> {
@@ -230,7 +230,7 @@ macro_rules! construct_plugin {
         /// ```
         /// pub struct MyPluginImpl {
         ///   #[component(default = "inject_plugin_context")]
-        ///   context: std::sync::Arc<dyn inexor_rgf_plugin_api::PluginContext + Send + Sync>,
+        ///   context: std::sync::Arc<dyn reactive_graph_plugin_api::PluginContext + Send + Sync>,
         /// }
         /// ```
         ///
@@ -245,112 +245,112 @@ macro_rules! construct_plugin {
             context
         }
 
-        pub fn component_provider_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::ComponentProviderRegistry + Send + Sync> {
+        pub fn component_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::ComponentProviderRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_component_provider_registry()
         }
 
-        pub fn entity_types_provider_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::EntityTypeProviderRegistry + Send + Sync> {
+        pub fn entity_types_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityTypeProviderRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_entity_type_provider_registry()
         }
 
-        pub fn relation_types_provider_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::RelationTypeProviderRegistry + Send + Sync> {
+        pub fn relation_types_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::RelationTypeProviderRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_relation_type_provider_registry()
         }
 
-        pub fn flow_types_provider_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::FlowTypeProviderRegistry + Send + Sync> {
+        pub fn flow_types_provider_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::FlowTypeProviderRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_flow_type_provider_registry()
         }
 
-        pub fn entity_behaviour_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::EntityBehaviourRegistry + Send + Sync> {
+        pub fn entity_behaviour_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityBehaviourRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_entity_behaviour_registry()
         }
 
-        pub fn entity_component_behaviour_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::EntityComponentBehaviourRegistry + Send + Sync> {
+        pub fn entity_component_behaviour_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityComponentBehaviourRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_entity_component_behaviour_registry()
         }
 
-        pub fn relation_behaviour_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::RelationBehaviourRegistry + Send + Sync> {
+        pub fn relation_behaviour_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::RelationBehaviourRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_relation_behaviour_registry()
         }
 
-        pub fn relation_component_behaviour_registry() -> std::sync::Arc<dyn inexor_rgf_plugin_api::RelationComponentBehaviourRegistry + Send + Sync> {
+        pub fn relation_component_behaviour_registry() -> std::sync::Arc<dyn reactive_graph_plugin_api::RelationComponentBehaviourRegistry + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_relation_component_behaviour_registry()
         }
 
-        pub fn component_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::ComponentManager + Send + Sync> {
+        pub fn component_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::ComponentManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_component_manager()
         }
 
-        pub fn entity_type_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::EntityTypeManager + Send + Sync> {
+        pub fn entity_type_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityTypeManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_entity_type_manager()
         }
 
-        pub fn relation_type_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::RelationTypeManager + Send + Sync> {
+        pub fn relation_type_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::RelationTypeManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_relation_type_manager()
         }
 
-        pub fn flow_type_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::FlowTypeManager + Send + Sync> {
+        pub fn flow_type_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::FlowTypeManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_flow_type_manager()
         }
 
-        pub fn web_resource_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::WebResourceManager + Send + Sync> {
+        pub fn web_resource_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::WebResourceManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_web_resource_manager()
         }
 
-        pub fn config_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::ConfigManager + Send + Sync> {
+        pub fn config_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::ConfigManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_config_manager()
         }
 
-        pub fn entity_instance_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::EntityInstanceManager + Send + Sync> {
+        pub fn entity_instance_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::EntityInstanceManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };
             context.get_entity_instance_manager()
         }
 
-        pub fn relation_instance_manager() -> std::sync::Arc<dyn inexor_rgf_plugin_api::RelationInstanceManager + Send + Sync> {
+        pub fn relation_instance_manager() -> std::sync::Arc<dyn reactive_graph_plugin_api::RelationInstanceManager + Send + Sync> {
             let Some(context) = PLUGIN_CONTEXT.get().cloned() else {
                 panic!("The plugin context is uninitialized!");
             };

@@ -5,7 +5,7 @@ use actix_web::web;
 use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
 
-use inexor_rgf_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::ComponentManager;
 
 #[get("/types/components")]
 pub async fn get_components(component_manager: web::Data<Arc<dyn ComponentManager + Send + Sync>>) -> HttpResponse {

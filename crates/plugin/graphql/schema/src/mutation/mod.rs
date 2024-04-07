@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use async_graphql::*;
 
-use inexor_rgf_plugin_service_api::PluginContainerManager;
-use inexor_rgf_plugin_service_api::PluginResolver;
+use reactive_graph_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_service_api::PluginResolver;
 
 use crate::query::GraphQLPlugin;
 

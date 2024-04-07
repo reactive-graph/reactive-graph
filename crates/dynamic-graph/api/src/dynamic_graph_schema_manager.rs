@@ -6,7 +6,7 @@ use async_graphql::dynamic::SchemaError;
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_lifecycle::Lifecycle;
 
 use crate::SchemaBuilderContext;
 

@@ -1,5 +1,5 @@
 use crate::TypedReactivePropertyImpl;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactiveInstance;
 use serde_json::json;
 
 impl<IdType, ReactiveInstanceType> FnOnce<(bool,)> for TypedReactivePropertyImpl<IdType, ReactiveInstanceType, bool>

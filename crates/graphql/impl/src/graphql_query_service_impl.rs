@@ -7,9 +7,9 @@ use log::info;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graphql_api::GraphQLQueryService;
-use inexor_rgf_graphql_api::GraphQLSchemaManager;
-use inexor_rgf_lifecycle::Lifecycle;
+use reactive_graph_graphql_api::GraphQLQueryService;
+use reactive_graph_graphql_api::GraphQLSchemaManager;
+use reactive_graph_lifecycle::Lifecycle;
 
 #[derive(Component)]
 pub struct GraphQLQueryServiceImpl {

@@ -1,16 +1,16 @@
-use inexor_rgf_graph::Component;
-use inexor_rgf_graph::ComponentAddExtensionError;
-use inexor_rgf_graph::ComponentAddPropertyError;
-use inexor_rgf_graph::ComponentRemoveExtensionError;
-use inexor_rgf_graph::ComponentRemovePropertyError;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ComponentUpdateExtensionError;
-use inexor_rgf_graph::ComponentUpdatePropertyError;
-use inexor_rgf_graph::Components;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_type_system_api::ComponentCreationError;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::ComponentAddExtensionError;
+use reactive_graph_graph::ComponentAddPropertyError;
+use reactive_graph_graph::ComponentRemoveExtensionError;
+use reactive_graph_graph::ComponentRemovePropertyError;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentUpdateExtensionError;
+use reactive_graph_graph::ComponentUpdatePropertyError;
+use reactive_graph_graph::Components;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_type_system_api::ComponentCreationError;
 
 pub trait ComponentManager: Send + Sync {
     /// Returns all components

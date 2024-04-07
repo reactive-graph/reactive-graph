@@ -3,14 +3,14 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use inexor_rgf_config_api::ConfigSystem;
-use inexor_rgf_dynamic_graph_api::DynamicGraphSystem;
-use inexor_rgf_graphql_api::GraphQLSystem;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_graphql_api::PluginGraphQLSystem;
-use inexor_rgf_reactive_service_api::ReactiveSystem;
-use inexor_rgf_runtime_graphql_api::RuntimeGraphQLSystem;
-use inexor_rgf_type_system_api::TypeSystem;
+use reactive_graph_config_api::ConfigSystem;
+use reactive_graph_dynamic_graph_api::DynamicGraphSystem;
+use reactive_graph_graphql_api::GraphQLSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_graphql_api::PluginGraphQLSystem;
+use reactive_graph_reactive_service_api::ReactiveSystem;
+use reactive_graph_runtime_graphql_api::RuntimeGraphQLSystem;
+use reactive_graph_type_system_api::TypeSystem;
 
 use crate::GraphQLServer;
 use crate::WebResourceManager;

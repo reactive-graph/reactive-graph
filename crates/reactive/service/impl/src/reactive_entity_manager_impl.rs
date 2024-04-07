@@ -14,44 +14,44 @@ use springtime_di::Component;
 use tokio::time::sleep;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_api::BehaviourTypesContainer;
-use inexor_rgf_behaviour_model_api::ComponentBehaviourTypeId;
-use inexor_rgf_behaviour_model_api::EntityBehaviourTypeId;
-use inexor_rgf_behaviour_service_api::EntityBehaviourManager;
-use inexor_rgf_behaviour_service_api::EntityComponentBehaviourManager;
-use inexor_rgf_graph::ComponentContainer;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::PropertyTypeContainer;
-use inexor_rgf_graph::PropertyTypeDefinition;
-use inexor_rgf_graph::TypeDefinitionComponent;
-use inexor_rgf_graph::TypeDefinitionGetter;
-use inexor_rgf_graph::TypeDefinitionProperty;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_service_api::event_channels::EventChannels;
-use inexor_rgf_reactive_service_api::ReactiveEntityComponentAddError;
-use inexor_rgf_reactive_service_api::ReactiveEntityCreationError;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveEntityPropertyAddError;
-use inexor_rgf_reactive_service_api::ReactiveEntityPropertyRemoveError;
-use inexor_rgf_reactive_service_api::ReactiveEntityRegistrationError;
-use inexor_rgf_reactive_service_api::ReactiveInstanceEvent;
-use inexor_rgf_reactive_service_api::ReactiveInstanceEventManager;
-use inexor_rgf_runtime_model::EventProperties::EVENT;
-use inexor_rgf_runtime_model::LabeledProperties::LABEL;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
-use inexor_rgf_type_system_api::TypeSystemEventManager;
-use inexor_rgf_type_system_api::TypeSystemEventSubscriber;
-use inexor_rgf_type_system_api::TypeSystemEventTypes;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
+use reactive_graph_behaviour_model_api::ComponentBehaviourTypeId;
+use reactive_graph_behaviour_model_api::EntityBehaviourTypeId;
+use reactive_graph_behaviour_service_api::EntityBehaviourManager;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
+use reactive_graph_graph::ComponentContainer;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyTypeContainer;
+use reactive_graph_graph::PropertyTypeDefinition;
+use reactive_graph_graph::TypeDefinitionComponent;
+use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::TypeDefinitionProperty;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_service_api::event_channels::EventChannels;
+use reactive_graph_reactive_service_api::ReactiveEntityComponentAddError;
+use reactive_graph_reactive_service_api::ReactiveEntityCreationError;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveEntityPropertyAddError;
+use reactive_graph_reactive_service_api::ReactiveEntityPropertyRemoveError;
+use reactive_graph_reactive_service_api::ReactiveEntityRegistrationError;
+use reactive_graph_reactive_service_api::ReactiveInstanceEvent;
+use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
+use reactive_graph_runtime_model::EventProperties::EVENT;
+use reactive_graph_runtime_model::LabeledProperties::LABEL;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::TypeSystemEventManager;
+use reactive_graph_type_system_api::TypeSystemEventSubscriber;
+use reactive_graph_type_system_api::TypeSystemEventTypes;
 
 static HANDLE_ID_ENTITY_TYPE_COMPONENT_ADDED: u128 = 0x6ba7b8109e1513d350b300c04fe530c7;
 static HANDLE_ID_ENTITY_TYPE_COMPONENT_REMOVED: u128 = 0x6ba8b8119e1513d350b300c04fe630c7;
@@ -628,26 +628,26 @@ mod tests {
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_behaviour_service_impl::BehaviourSystemImpl;
-    use inexor_rgf_graph::EntityType;
-    use inexor_rgf_graph::EntityTypeId;
-    use inexor_rgf_graph::PropertyInstanceSetter;
-    use inexor_rgf_graph::PropertyType;
-    use inexor_rgf_graph::PropertyTypes;
-    use inexor_rgf_reactive_model_impl::ReactiveEntity;
-    use inexor_rgf_reactive_service_api::ReactiveSystem;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_behaviour_service_impl::BehaviourSystemImpl;
+    use reactive_graph_graph::EntityType;
+    use reactive_graph_graph::EntityTypeId;
+    use reactive_graph_graph::PropertyInstanceSetter;
+    use reactive_graph_graph::PropertyType;
+    use reactive_graph_graph::PropertyTypes;
+    use reactive_graph_reactive_model_impl::ReactiveEntity;
+    use reactive_graph_reactive_service_api::ReactiveSystem;
+    use reactive_graph_test_utils::r_string;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
-    use inexor_rgf_type_system_impl::TypeSystemImpl;
+    use reactive_graph_type_system_impl::TypeSystemImpl;
 
     use crate::ReactiveSystemImpl;
 
     #[test]
     fn test_register_reactive_entity_instance() {
-        inexor_rgf_test_utils::init_logger();
+        reactive_graph_test_utils::init_logger();
 
-        let reactive_system = inexor_rgf_di::get_container::<ReactiveSystemImpl>();
+        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
 
         let entity_type_manager = type_system.get_entity_type_manager();
@@ -683,12 +683,12 @@ mod tests {
 
     #[test]
     fn test_unregister_reactive_entity_instance() {
-        inexor_rgf_test_utils::init_logger();
+        reactive_graph_test_utils::init_logger();
         // let runtime = get_runtime();
         // let entity_type_manager = runtime.get_entity_type_manager();
         // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let reactive_system = inexor_rgf_di::get_container::<ReactiveSystemImpl>();
+        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
@@ -715,12 +715,12 @@ mod tests {
 
     #[test]
     fn test_not_register_twice_reactive_entity_instance() {
-        inexor_rgf_test_utils::init_logger();
+        reactive_graph_test_utils::init_logger();
         // let runtime: Arc<dyn Runtime + Send + Sync> = get_runtime();
         // let entity_type_manager = runtime.get_entity_type_manager();
         // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let reactive_system = inexor_rgf_di::get_container::<ReactiveSystemImpl>();
+        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
@@ -767,7 +767,7 @@ mod tests {
         // let entity_type_manager = runtime.get_entity_type_manager();
         // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let reactive_system = inexor_rgf_di::get_container::<ReactiveSystemImpl>();
+        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
@@ -790,7 +790,7 @@ mod tests {
         // let entity_type_manager = runtime.get_entity_type_manager();
         // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let reactive_system = inexor_rgf_di::get_container::<ReactiveSystemImpl>();
+        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
@@ -815,7 +815,7 @@ mod tests {
         // let entity_type_manager = runtime.get_entity_type_manager();
         // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
-        let reactive_system = inexor_rgf_di::get_container::<ReactiveSystemImpl>();
+        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
         let entity_type_manager = type_system.get_entity_type_manager();
         let reactive_entity_manager = reactive_system.get_reactive_entity_manager();

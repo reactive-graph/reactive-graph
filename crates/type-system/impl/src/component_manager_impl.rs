@@ -5,29 +5,29 @@ use log::debug;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_graph::ComponentAddExtensionError;
-use inexor_rgf_graph::ComponentAddPropertyError;
-use inexor_rgf_graph::ComponentMergeError;
-use inexor_rgf_graph::ComponentRemoveExtensionError;
-use inexor_rgf_graph::ComponentRemovePropertyError;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ComponentTypeIds;
-use inexor_rgf_graph::ComponentUpdateExtensionError;
-use inexor_rgf_graph::ComponentUpdatePropertyError;
-use inexor_rgf_graph::Components;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::ExtensionContainer;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::NamespacedTypeContainer;
-use inexor_rgf_graph::Namespaces;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypeContainer;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_type_system_api::ComponentCreationError;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::ComponentRegistrationError;
-use inexor_rgf_type_system_api::TypeSystemEvent;
-use inexor_rgf_type_system_api::TypeSystemEventManager;
+use reactive_graph_graph::ComponentAddExtensionError;
+use reactive_graph_graph::ComponentAddPropertyError;
+use reactive_graph_graph::ComponentMergeError;
+use reactive_graph_graph::ComponentRemoveExtensionError;
+use reactive_graph_graph::ComponentRemovePropertyError;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::ComponentUpdateExtensionError;
+use reactive_graph_graph::ComponentUpdatePropertyError;
+use reactive_graph_graph::Components;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionContainer;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::NamespacedTypeContainer;
+use reactive_graph_graph::Namespaces;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypeContainer;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_type_system_api::ComponentCreationError;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::ComponentRegistrationError;
+use reactive_graph_type_system_api::TypeSystemEvent;
+use reactive_graph_type_system_api::TypeSystemEventManager;
 
 #[derive(Component)]
 pub struct ComponentManagerImpl {
@@ -40,7 +40,7 @@ pub struct ComponentManagerImpl {
 #[async_trait]
 #[component_alias]
 impl ComponentManager for ComponentManagerImpl {
-    fn register(&self, component: inexor_rgf_graph::Component) -> Result<inexor_rgf_graph::Component, ComponentRegistrationError> {
+    fn register(&self, component: reactive_graph_graph::Component) -> Result<reactive_graph_graph::Component, ComponentRegistrationError> {
         let ty = component.ty.clone();
         if self.components.contains_key(&ty) {
             return Err(ComponentRegistrationError::ComponentAlreadyExists(ty));
@@ -80,11 +80,11 @@ impl ComponentManager for ComponentManagerImpl {
         self.components.contains_key(&ComponentTypeId::new_from_type(namespace, name))
     }
 
-    fn get(&self, ty: &ComponentTypeId) -> Option<inexor_rgf_graph::Component> {
+    fn get(&self, ty: &ComponentTypeId) -> Option<reactive_graph_graph::Component> {
         self.components.get(ty)
     }
 
-    fn get_by_type(&self, namespace: &str, name: &str) -> Option<inexor_rgf_graph::Component> {
+    fn get_by_type(&self, namespace: &str, name: &str) -> Option<reactive_graph_graph::Component> {
         self.components.get(ComponentTypeId::new_from_type(namespace, name))
     }
 
@@ -110,12 +110,12 @@ impl ComponentManager for ComponentManagerImpl {
         description: &str,
         properties: Vec<PropertyType>,
         extensions: Vec<Extension>,
-    ) -> Result<inexor_rgf_graph::Component, ComponentCreationError> {
-        let component = inexor_rgf_graph::Component::new(ty.clone(), description, properties.to_vec(), extensions.to_vec());
+    ) -> Result<reactive_graph_graph::Component, ComponentCreationError> {
+        let component = reactive_graph_graph::Component::new(ty.clone(), description, properties.to_vec(), extensions.to_vec());
         self.register(component).map_err(ComponentCreationError::RegistrationError)
     }
 
-    fn replace(&self, ty: &ComponentTypeId, r_component: inexor_rgf_graph::Component) {
+    fn replace(&self, ty: &ComponentTypeId, r_component: reactive_graph_graph::Component) {
         for mut component in self.components.iter_mut() {
             if &component.ty == ty {
                 component.ty = r_component.ty.clone();
@@ -127,7 +127,7 @@ impl ComponentManager for ComponentManagerImpl {
         }
     }
 
-    fn merge(&self, component_to_merge: inexor_rgf_graph::Component) -> Result<inexor_rgf_graph::Component, ComponentMergeError> {
+    fn merge(&self, component_to_merge: reactive_graph_graph::Component) -> Result<reactive_graph_graph::Component, ComponentMergeError> {
         self.components.merge(component_to_merge).inspect(|_component| {
             // TODO: Notify about changed component -> This effects reactive instances which contains the component -> Add/remove property instances
         })
@@ -247,24 +247,24 @@ mod test {
     use test::Bencher;
 
     use default_test::DefaultTest;
-    use inexor_rgf_graph::Component;
-    use inexor_rgf_graph::ComponentTypeId;
-    use inexor_rgf_graph::Extension;
-    use inexor_rgf_graph::ExtensionContainer;
-    use inexor_rgf_graph::ExtensionTypeId;
-    use inexor_rgf_graph::NamespacedTypeGetter;
-    use inexor_rgf_graph::PropertyType;
-    use inexor_rgf_graph::PropertyTypeContainer;
+    use reactive_graph_graph::Component;
+    use reactive_graph_graph::ComponentTypeId;
+    use reactive_graph_graph::Extension;
+    use reactive_graph_graph::ExtensionContainer;
+    use reactive_graph_graph::ExtensionTypeId;
+    use reactive_graph_graph::NamespacedTypeGetter;
+    use reactive_graph_graph::PropertyType;
+    use reactive_graph_graph::PropertyTypeContainer;
     use serde_json::json;
 
     use crate::TypeSystemImpl;
-    use inexor_rgf_test_utils::r_string;
-    use inexor_rgf_type_system_api::TypeSystem;
+    use reactive_graph_test_utils::r_string;
+    use reactive_graph_type_system_api::TypeSystem;
 
     #[test]
     fn test_register_component() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let namespace = r_string();
         let component_name = r_string();
@@ -292,8 +292,8 @@ mod test {
 
     #[test]
     fn test_get_components() {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let components = component_manager.get_all();
         for component in components.iter() {
@@ -304,8 +304,8 @@ mod test {
 
     #[bench]
     fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
-        inexor_rgf_test_utils::init_logger();
-        let type_system = inexor_rgf_di::get_container::<TypeSystemImpl>();
+        reactive_graph_test_utils::init_logger();
+        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let component = Component::default_test();
         let ty = component.ty.clone();

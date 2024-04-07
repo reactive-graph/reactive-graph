@@ -4,10 +4,10 @@ use async_trait::async_trait;
 use springtime_di::injectable;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::prelude::*;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_behaviour_model_api::prelude::*;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 #[injectable]
 #[async_trait]

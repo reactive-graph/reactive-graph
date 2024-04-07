@@ -3,9 +3,9 @@ use std::sync::Arc;
 use serde::Deserialize;
 use uuid::Uuid;
 
-use inexor_rgf_plugin_graphql_api::PluginQueryService;
-use inexor_rgf_runtime_api::Runtime;
-use inexor_rgf_runtime_impl::RuntimeBuilder;
+use reactive_graph_plugin_graphql_api::PluginQueryService;
+use reactive_graph_runtime_api::Runtime;
+use reactive_graph_runtime_impl::RuntimeBuilder;
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -21,7 +21,7 @@ struct Plugin {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_get_all_plugins() {
-    inexor_rgf_test_utils::init_logger();
+    reactive_graph_test_utils::init_logger();
     RuntimeBuilder::new()
         .ignore_config_files()
         .disable_all_plugins(true)

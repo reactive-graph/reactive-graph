@@ -1,8 +1,8 @@
 use async_trait::async_trait;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_type_system_api::EntityTypeExportError;
-use inexor_rgf_type_system_api::EntityTypeImportError;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_type_system_api::EntityTypeExportError;
+use reactive_graph_type_system_api::EntityTypeImportError;
 
 #[async_trait]
 pub trait EntityTypeImportExportManager: Send + Sync {

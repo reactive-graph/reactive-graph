@@ -1,33 +1,33 @@
 use std::sync::Arc;
 
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::ComponentTypeIds;
-use inexor_rgf_graph::EntityType;
-use inexor_rgf_graph::EntityTypeAddComponentError;
-use inexor_rgf_graph::EntityTypeAddExtensionError;
-use inexor_rgf_graph::EntityTypeAddPropertyError;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::EntityTypeRemoveComponentError;
-use inexor_rgf_graph::EntityTypeRemoveExtensionError;
-use inexor_rgf_graph::EntityTypeRemovePropertyError;
-use inexor_rgf_graph::EntityTypes;
-use inexor_rgf_graph::Extension;
-use inexor_rgf_graph::ExtensionTypeId;
-use inexor_rgf_graph::Extensions;
-use inexor_rgf_graph::PropertyType;
-use inexor_rgf_graph::PropertyTypes;
-use inexor_rgf_type_system_api::EntityTypeCreationError;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::EntityType;
+use reactive_graph_graph::EntityTypeAddComponentError;
+use reactive_graph_graph::EntityTypeAddExtensionError;
+use reactive_graph_graph::EntityTypeAddPropertyError;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::EntityTypeRemoveComponentError;
+use reactive_graph_graph::EntityTypeRemoveExtensionError;
+use reactive_graph_graph::EntityTypeRemovePropertyError;
+use reactive_graph_graph::EntityTypes;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
+use reactive_graph_type_system_api::EntityTypeCreationError;
 
 pub struct EntityTypeManagerDelegate {
-    entity_type_manager: Arc<dyn inexor_rgf_type_system_api::EntityTypeManager + Send + Sync>,
+    entity_type_manager: Arc<dyn reactive_graph_type_system_api::EntityTypeManager + Send + Sync>,
 }
 
 impl EntityTypeManagerDelegate {
-    pub fn new(entity_type_manager: Arc<dyn inexor_rgf_type_system_api::EntityTypeManager + Send + Sync>) -> Self {
+    pub fn new(entity_type_manager: Arc<dyn reactive_graph_type_system_api::EntityTypeManager + Send + Sync>) -> Self {
         Self { entity_type_manager }
     }
 }
-impl inexor_rgf_plugin_api::EntityTypeManager for EntityTypeManagerDelegate {
+impl reactive_graph_plugin_api::EntityTypeManager for EntityTypeManagerDelegate {
     fn get_all(&self) -> EntityTypes {
         self.entity_type_manager.get_all()
     }

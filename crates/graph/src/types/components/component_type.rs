@@ -421,7 +421,7 @@ macro_rules! component_model {
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
-use inexor_rgf_test_utils::r_string;
+use reactive_graph_test_utils::r_string;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 
@@ -465,7 +465,7 @@ mod component_type_tests {
     use crate::PropertyTypeContainer;
     use crate::PropertyTypes;
     use crate::TypeDefinitionGetter;
-    use inexor_rgf_test_utils::r_string;
+    use reactive_graph_test_utils::r_string;
 
     #[test]
     fn build_component() {

@@ -6,16 +6,16 @@ use springtime_di::component_alias;
 use springtime_di::Component;
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourConnectFailed;
-use inexor_rgf_behaviour_model_api::BehaviourDisconnectFailed;
-use inexor_rgf_behaviour_model_api::BehaviourState;
-use inexor_rgf_behaviour_model_api::BehaviourTransitionError;
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_behaviour_model_impl::EntityBehaviourStorage;
-use inexor_rgf_behaviour_service_api::EntityBehaviourManager;
-use inexor_rgf_behaviour_service_api::EntityBehaviourRegistry;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
+use reactive_graph_behaviour_model_api::BehaviourConnectFailed;
+use reactive_graph_behaviour_model_api::BehaviourDisconnectFailed;
+use reactive_graph_behaviour_model_api::BehaviourState;
+use reactive_graph_behaviour_model_api::BehaviourTransitionError;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_behaviour_model_impl::EntityBehaviourStorage;
+use reactive_graph_behaviour_service_api::EntityBehaviourManager;
+use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
 
 #[derive(Component)]
 pub struct EntityBehaviourManagerImpl {

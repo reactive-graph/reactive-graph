@@ -6,8 +6,8 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Value;
 
-use inexor_rgf_graph::PropertyInstances;
-use inexor_rgf_graph::PropertyTypes;
+use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyTypes;
 
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "CommandResultDefinition")]

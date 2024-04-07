@@ -4,11 +4,11 @@ use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
 
-use inexor_rgf_behaviour_service_api::RelationBehaviourRegistry;
-use inexor_rgf_behaviour_service_api::RelationComponentBehaviourRegistry;
-use inexor_rgf_reactive_model_impl::ReactiveRelation;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::RelationTypeManager;
+use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
+use reactive_graph_reactive_model_impl::ReactiveRelation;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 use crate::query::GraphQLComponent;
 use crate::query::GraphQLComponentBehaviour;

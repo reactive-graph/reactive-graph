@@ -3,7 +3,7 @@ use convert_case::Case::Pascal;
 use convert_case::Casing;
 
 use crate::DynamicGraphTypeDefinition;
-use inexor_rgf_dynamic_graph_api::SchemaBuilderContext;
+use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 
 pub const UNION_ALL_ENTITIES: &str = "AllEntities";
 pub const UNION_NAMESPACE_ENTITIES_SUFFIX: &str = "Entities";

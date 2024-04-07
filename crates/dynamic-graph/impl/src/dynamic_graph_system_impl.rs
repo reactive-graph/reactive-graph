@@ -4,12 +4,12 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_dynamic_graph_api::DynamicGraphQueryService;
-use inexor_rgf_dynamic_graph_api::DynamicGraphSchemaManager;
-use inexor_rgf_dynamic_graph_api::DynamicGraphSystem;
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_reactive_service_api::ReactiveSystem;
-use inexor_rgf_type_system_api::TypeSystem;
+use reactive_graph_dynamic_graph_api::DynamicGraphQueryService;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
+use reactive_graph_dynamic_graph_api::DynamicGraphSystem;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_reactive_service_api::ReactiveSystem;
+use reactive_graph_type_system_api::TypeSystem;
 
 #[derive(Component)]
 pub struct DynamicGraphSystemImpl {

@@ -6,9 +6,9 @@ pub use error::flow::*;
 pub use error::relation::*;
 pub use flow_instance_provider::*;
 #[cfg(feature = "derive")]
-pub use inexor_rgf_reactive_derive::reactive_entity;
+pub use reactive_graph_reactive_derive::reactive_entity;
 #[cfg(feature = "derive")]
-pub use inexor_rgf_reactive_derive::ReactiveEntity;
+pub use reactive_graph_reactive_derive::ReactiveEntity;
 pub use property::*;
 
 pub use event_channels::*;

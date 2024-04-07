@@ -7,7 +7,7 @@ use async_graphql::ServerError;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 
-use inexor_rgf_dynamic_graph_api::DynamicGraphSchemaManager;
+use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;
 
 #[post("/dynamic_graph")]
 pub async fn query_dynamic_graph(

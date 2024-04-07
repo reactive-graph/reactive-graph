@@ -4,7 +4,7 @@ use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
 
-use inexor_rgf_runtime_service_api::ShutdownManager;
+use reactive_graph_runtime_service_api::ShutdownManager;
 
 use crate::mutation::command::MutationCommands;
 use crate::mutation::remotes::MutationRemotes;

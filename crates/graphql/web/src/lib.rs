@@ -8,7 +8,7 @@ use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 use async_graphql_actix_web::GraphQLSubscription;
 
-use inexor_rgf_graphql_schema::InexorSchema;
+use reactive_graph_graphql_schema::InexorSchema;
 
 #[post("/graphql")]
 pub async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest) -> GraphQLResponse {

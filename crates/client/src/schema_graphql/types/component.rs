@@ -2,7 +2,7 @@ use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
-use inexor_rgf_graph::NamespacedTypeGetter;
+use reactive_graph_graph::NamespacedTypeGetter;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]
@@ -12,8 +12,8 @@ pub struct ComponentTypeId {
     pub namespace: String,
 }
 
-impl From<inexor_rgf_graph::ComponentTypeId> for ComponentTypeId {
-    fn from(ty: inexor_rgf_graph::ComponentTypeId) -> Self {
+impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
+    fn from(ty: reactive_graph_graph::ComponentTypeId) -> Self {
         ComponentTypeId {
             name: ty.type_name(),
             namespace: ty.namespace(),
@@ -40,10 +40,10 @@ pub struct Component {
     pub extensions: Vec<Extension>,
 }
 
-impl From<Component> for inexor_rgf_graph::Component {
+impl From<Component> for reactive_graph_graph::Component {
     fn from(component: Component) -> Self {
-        let ty = inexor_rgf_graph::ComponentTypeId::new_from_type(component.namespace, component.name);
-        inexor_rgf_graph::Component {
+        let ty = reactive_graph_graph::ComponentTypeId::new_from_type(component.namespace, component.name);
+        reactive_graph_graph::Component {
             ty,
             description: component.description,
             properties: PropertyTypes(component.properties).into(),
@@ -62,7 +62,7 @@ impl Deref for Components {
     }
 }
 
-impl From<Components> for Vec<inexor_rgf_graph::Component> {
+impl From<Components> for Vec<reactive_graph_graph::Component> {
     fn from(components: Components) -> Self {
         components.0.into_iter().map(From::from).collect()
     }

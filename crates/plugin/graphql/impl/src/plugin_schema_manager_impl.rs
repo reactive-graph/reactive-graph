@@ -6,13 +6,13 @@ use async_trait::async_trait;
 use springtime_di::component_alias;
 use springtime_di::Component;
 
-use inexor_rgf_lifecycle::Lifecycle;
-use inexor_rgf_plugin_graphql_api::PluginSchemaManager;
-use inexor_rgf_plugin_graphql_schema::mutation::PluginMutation;
-use inexor_rgf_plugin_graphql_schema::query::PluginQuery;
-use inexor_rgf_plugin_graphql_schema::PluginSchema;
-use inexor_rgf_plugin_service_api::PluginContainerManager;
-use inexor_rgf_plugin_service_api::PluginResolver;
+use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_plugin_graphql_api::PluginSchemaManager;
+use reactive_graph_plugin_graphql_schema::mutation::PluginMutation;
+use reactive_graph_plugin_graphql_schema::query::PluginQuery;
+use reactive_graph_plugin_graphql_schema::PluginSchema;
+use reactive_graph_plugin_service_api::PluginContainerManager;
+use reactive_graph_plugin_service_api::PluginResolver;
 
 #[derive(Component)]
 pub struct PluginSchemaManagerImpl {

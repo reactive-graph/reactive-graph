@@ -13,21 +13,21 @@ use uuid::Uuid;
 
 use crate::ReactiveEntity;
 use crate::ReactiveRelation;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_graph::FlowInstance;
-use inexor_rgf_graph::FlowInstanceCreationError;
-use inexor_rgf_graph::Mutability;
-use inexor_rgf_graph::NamespacedTypeGetter;
-use inexor_rgf_graph::PropertyInstanceGetter;
-use inexor_rgf_graph::PropertyInstanceSetter;
-use inexor_rgf_graph::RelationInstance;
-use inexor_rgf_graph::RelationInstanceId;
-use inexor_rgf_graph::TypeDefinition;
-use inexor_rgf_graph::TypeDefinitionGetter;
-use inexor_rgf_reactive_model_api::ReactiveFlowConstructionError;
-use inexor_rgf_reactive_model_api::ReactiveInstance;
-use inexor_rgf_reactive_model_api::ReactivePropertyContainer;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::FlowInstance;
+use reactive_graph_graph::FlowInstanceCreationError;
+use reactive_graph_graph::Mutability;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::RelationInstance;
+use reactive_graph_graph::RelationInstanceId;
+use reactive_graph_graph::TypeDefinition;
+use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_reactive_model_api::ReactiveFlowConstructionError;
+use reactive_graph_reactive_model_api::ReactiveInstance;
+use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 
 pub struct ReactiveFlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance.

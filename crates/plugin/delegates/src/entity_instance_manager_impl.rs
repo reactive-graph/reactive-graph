@@ -3,17 +3,17 @@ use std::sync::Arc;
 
 use uuid::Uuid;
 
-use inexor_rgf_behaviour_model_api::BehaviourTypeId;
-use inexor_rgf_graph::ComponentTypeId;
-use inexor_rgf_graph::EntityInstance;
-use inexor_rgf_graph::EntityTypeId;
-use inexor_rgf_reactive_model_impl::ReactiveEntity;
-use inexor_rgf_reactive_service_api::ReactiveEntityComponentAddError;
-use inexor_rgf_reactive_service_api::ReactiveEntityCreationError;
-use inexor_rgf_reactive_service_api::ReactiveEntityManager;
-use inexor_rgf_reactive_service_api::ReactiveEntityRegistrationError;
-use inexor_rgf_type_system_api::ComponentManager;
-use inexor_rgf_type_system_api::EntityTypeManager;
+use reactive_graph_behaviour_model_api::BehaviourTypeId;
+use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_service_api::ReactiveEntityComponentAddError;
+use reactive_graph_reactive_service_api::ReactiveEntityCreationError;
+use reactive_graph_reactive_service_api::ReactiveEntityManager;
+use reactive_graph_reactive_service_api::ReactiveEntityRegistrationError;
+use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_api::EntityTypeManager;
 
 pub struct EntityInstanceManagerDelegate {
     component_manager: Arc<dyn ComponentManager + Send + Sync>,
@@ -35,7 +35,7 @@ impl EntityInstanceManagerDelegate {
     }
 }
 
-impl inexor_rgf_plugin_api::EntityInstanceManager for EntityInstanceManagerDelegate {
+impl reactive_graph_plugin_api::EntityInstanceManager for EntityInstanceManagerDelegate {
     fn has(&self, id: Uuid) -> bool {
         self.reactive_entity_manager.has(id)
     }

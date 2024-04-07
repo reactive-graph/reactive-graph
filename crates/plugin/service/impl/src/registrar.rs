@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use inexor_rgf_plugin_api::Plugin;
-use inexor_rgf_plugin_api::PluginContext;
+use reactive_graph_plugin_api::Plugin;
+use reactive_graph_plugin_api::PluginContext;
 
 use crate::PluginProxy;
 
@@ -16,7 +16,7 @@ impl PluginRegistrar {
     }
 }
 
-impl inexor_rgf_plugin_api::PluginRegistrar for PluginRegistrar {
+impl reactive_graph_plugin_api::PluginRegistrar for PluginRegistrar {
     fn register_plugin(&mut self, plugin: Box<Arc<dyn Plugin>>) {
         self.plugin = Some(Arc::new(PluginProxy { plugin }));
     }
