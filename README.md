@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://inexor.org/">
+<a href="https://reactive-graph.io/">
 <img src="docs/inexor-rgf/src/images/rgf_logo_k2_v4_fg_sm.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" />
 </a>
 </div>
