@@ -60,7 +60,7 @@ jobs:
           use-tool-cache: true
 
       - name: Build Book
-        working-directory: ./docs/inexor-rgf
+        working-directory: ./docs/book
         run: mdbook build
 
       - name: Deploy
@@ -68,5 +68,5 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/inexor-rgf/book
+          publish_dir: ./docs/book/book
           destination_dir: book

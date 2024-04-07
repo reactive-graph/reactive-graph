@@ -11,7 +11,7 @@ pattern = "{d(%H:%M:%S%.3f)} {h([{l}])} [{T}] {h({M}:{L})} {m}{n}\r"
 
 [appenders.file-application]
 kind = "file"
-path = "log/inexor-rgf-application.log"
+path = "log/reactive-graph-application.log"
 
 [appenders.file-application.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
@@ -25,7 +25,7 @@ pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 
 [appenders.file-plugin-connector]
 kind = "file"
-path = "log/inexor-rgf-plugin-connector.log"
+path = "log/reactive-graph-plugin-connector.log"
 
 [appenders.file-plugin-connector.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
