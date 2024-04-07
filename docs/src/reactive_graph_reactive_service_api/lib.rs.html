@@ -44,23 +44,21 @@
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
 <a href="#44" id="44">44</a>
-<a href="#45" id="45">45</a>
 </pre></div><pre class="rust"><code><span class="attr">#![feature(unboxed_closures)]
 #![feature(fn_traits)]
 
 </span><span class="kw">pub use </span>error::entity::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>error::flow::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>error::relation::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>event_channels::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>flow_instance_provider::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>property::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>reactive_entity_manager::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>reactive_flow_manager::<span class="kw-2">*</span>;
 <span class="attr">#[cfg(feature = <span class="string">"derive"</span>)]
 </span><span class="kw">pub use </span>reactive_graph_reactive_derive::reactive_entity;
 <span class="attr">#[cfg(feature = <span class="string">"derive"</span>)]
 </span><span class="kw">pub use </span>reactive_graph_reactive_derive::ReactiveEntity;
-<span class="kw">pub use </span>property::<span class="kw-2">*</span>;
-
-<span class="kw">pub use </span>event_channels::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>reactive_entity_manager::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>reactive_flow_manager::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>reactive_instance_event_manager::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>reactive_instance_event_subscriber::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>reactive_instance_events::<span class="kw-2">*</span>;
