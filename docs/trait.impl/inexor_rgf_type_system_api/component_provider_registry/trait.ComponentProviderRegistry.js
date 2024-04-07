@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_type_system_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_type_system_api/component_provider_registry/trait.ComponentProviderRegistry.html\" title=\"trait inexor_rgf_type_system_api::component_provider_registry::ComponentProviderRegistry\">ComponentProviderRegistry</a> for <a class=\"struct\" href=\"inexor_rgf_type_system_impl/component_provider_registry_impl/struct.ComponentProviderRegistryImpl.html\" title=\"struct inexor_rgf_type_system_impl::component_provider_registry_impl::ComponentProviderRegistryImpl\">ComponentProviderRegistryImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

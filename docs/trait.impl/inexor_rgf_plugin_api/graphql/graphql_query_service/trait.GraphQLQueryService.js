@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_plugin_delegates":[["impl <a class=\"trait\" href=\"inexor_rgf_plugin_api/graphql/graphql_query_service/trait.GraphQLQueryService.html\" title=\"trait inexor_rgf_plugin_api::graphql::graphql_query_service::GraphQLQueryService\">GraphQLQueryService</a> for <a class=\"struct\" href=\"inexor_rgf_plugin_delegates/graphql_query_service_impl/struct.GraphQLQueryServiceDelegate.html\" title=\"struct inexor_rgf_plugin_delegates::graphql_query_service_impl::GraphQLQueryServiceDelegate\">GraphQLQueryServiceDelegate</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

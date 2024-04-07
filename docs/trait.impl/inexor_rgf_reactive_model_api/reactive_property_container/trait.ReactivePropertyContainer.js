@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_reactive_model_impl":[["impl ReactivePropertyContainer for <a class=\"struct\" href=\"inexor_rgf_reactive_model_impl/entities/reactive_entity/struct.ReactiveEntity.html\" title=\"struct inexor_rgf_reactive_model_impl::entities::reactive_entity::ReactiveEntity\">ReactiveEntity</a>"],["impl ReactivePropertyContainer for <a class=\"struct\" href=\"inexor_rgf_reactive_model_impl/relations/reactive_relation/struct.ReactiveRelation.html\" title=\"struct inexor_rgf_reactive_model_impl::relations::reactive_relation::ReactiveRelation\">ReactiveRelation</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

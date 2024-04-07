@@ -1,1 +1,0 @@
-searchState.loadedDescShard("inexor_rgf_plugin_graphql_test", 0, "")

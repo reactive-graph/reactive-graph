@@ -1,1 +1,0 @@
-searchState.loadedDescShard("inexor_rgf_graphql_api", 0, "Executes the given GraphQL request and returns the GraphQL …\nRuns the given GraphQL query.\nRuns the given GraphQL query and returns the response.\nReturns the GraphQL schema.")

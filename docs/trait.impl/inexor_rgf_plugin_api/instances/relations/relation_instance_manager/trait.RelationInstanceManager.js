@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_plugin_delegates":[["impl <a class=\"trait\" href=\"inexor_rgf_plugin_api/instances/relations/relation_instance_manager/trait.RelationInstanceManager.html\" title=\"trait inexor_rgf_plugin_api::instances::relations::relation_instance_manager::RelationInstanceManager\">RelationInstanceManager</a> for <a class=\"struct\" href=\"inexor_rgf_plugin_delegates/relation_instance_manager_impl/struct.RelationInstanceManagerDelegate.html\" title=\"struct inexor_rgf_plugin_delegates::relation_instance_manager_impl::RelationInstanceManagerDelegate\">RelationInstanceManagerDelegate</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_remotes_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_remotes_api/remotes_manager/trait.RemotesManager.html\" title=\"trait inexor_rgf_remotes_api::remotes_manager::RemotesManager\">RemotesManager</a> for <a class=\"struct\" href=\"inexor_rgf_remotes_impl/remotes_manager_impl/struct.RemotesManagerImpl.html\" title=\"struct inexor_rgf_remotes_impl::remotes_manager_impl::RemotesManagerImpl\">RemotesManagerImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

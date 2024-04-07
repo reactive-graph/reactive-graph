@@ -1,4 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_runtime_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_type_system_api/type_system/trait.TypeSystem.html\" title=\"trait inexor_rgf_type_system_api::type_system::TypeSystem\">TypeSystem</a> for <a class=\"struct\" href=\"inexor_rgf_runtime_impl/runtime_impl/struct.RuntimeImpl.html\" title=\"struct inexor_rgf_runtime_impl::runtime_impl::RuntimeImpl\">RuntimeImpl</a>"]],
-"inexor_rgf_type_system_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_type_system_api/type_system/trait.TypeSystem.html\" title=\"trait inexor_rgf_type_system_api::type_system::TypeSystem\">TypeSystem</a> for <a class=\"struct\" href=\"inexor_rgf_type_system_impl/type_system_impl/struct.TypeSystemImpl.html\" title=\"struct inexor_rgf_type_system_impl::type_system_impl::TypeSystemImpl\">TypeSystemImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

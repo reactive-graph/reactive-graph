@@ -1,4 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_behaviour_model_api":[["impl <a class=\"trait\" href=\"inexor_rgf_graph/types/namespaces/namespaced_type_id_container/trait.NamespacedTypeIdContainer.html\" title=\"trait inexor_rgf_graph::types::namespaces::namespaced_type_id_container::NamespacedTypeIdContainer\">NamespacedTypeIdContainer</a> for <a class=\"struct\" href=\"inexor_rgf_behaviour_model_api/types/behaviour_type_id/struct.BehaviourTypeIds.html\" title=\"struct inexor_rgf_behaviour_model_api::types::behaviour_type_id::BehaviourTypeIds\">BehaviourTypeIds</a>"]],
-"inexor_rgf_graph":[]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"reactive_graph_runtime_impl":[["impl Runtime for <a class=\"struct\" href=\"reactive_graph_runtime_impl/runtime_impl/struct.RuntimeImpl.html\" title=\"struct reactive_graph_runtime_impl::runtime_impl::RuntimeImpl\">RuntimeImpl</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

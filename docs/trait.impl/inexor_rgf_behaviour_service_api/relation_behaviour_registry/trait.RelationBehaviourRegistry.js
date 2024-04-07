@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_behaviour_service_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_behaviour_service_api/relation_behaviour_registry/trait.RelationBehaviourRegistry.html\" title=\"trait inexor_rgf_behaviour_service_api::relation_behaviour_registry::RelationBehaviourRegistry\">RelationBehaviourRegistry</a> for <a class=\"struct\" href=\"inexor_rgf_behaviour_service_impl/relation_behaviour_registry_impl/struct.RelationBehaviourRegistryImpl.html\" title=\"struct inexor_rgf_behaviour_service_impl::relation_behaviour_registry_impl::RelationBehaviourRegistryImpl\">RelationBehaviourRegistryImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

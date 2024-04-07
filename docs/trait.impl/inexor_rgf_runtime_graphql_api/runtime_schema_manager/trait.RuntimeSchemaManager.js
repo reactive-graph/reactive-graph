@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_runtime_graphql_impl":[["impl RuntimeSchemaManager for <a class=\"struct\" href=\"inexor_rgf_runtime_graphql_impl/runtime_schema_manager_impl/struct.RuntimeSchemaManagerImpl.html\" title=\"struct inexor_rgf_runtime_graphql_impl::runtime_schema_manager_impl::RuntimeSchemaManagerImpl\">RuntimeSchemaManagerImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

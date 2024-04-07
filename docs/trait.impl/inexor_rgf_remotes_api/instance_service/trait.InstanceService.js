@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_remotes_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_remotes_api/instance_service/trait.InstanceService.html\" title=\"trait inexor_rgf_remotes_api::instance_service::InstanceService\">InstanceService</a> for <a class=\"struct\" href=\"inexor_rgf_remotes_impl/instance_service_impl/struct.InstanceServiceImpl.html\" title=\"struct inexor_rgf_remotes_impl::instance_service_impl::InstanceServiceImpl\">InstanceServiceImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

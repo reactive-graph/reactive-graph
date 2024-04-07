@@ -1,1 +1,0 @@
-searchState.loadedDescShard("inexor_rgf_plugin_graphql_schema", 0, "Returns the argument unchanged.\nCalls <code>U::from(self)</code>.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.\nReturns the argument unchanged.\nCalls <code>U::from(self)</code>.")

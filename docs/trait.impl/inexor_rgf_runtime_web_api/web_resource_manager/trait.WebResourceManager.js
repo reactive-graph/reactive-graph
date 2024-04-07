@@ -1,3 +1,0 @@
-(function() {var implementors = {
-"inexor_rgf_runtime_web_impl":[["impl <a class=\"trait\" href=\"inexor_rgf_runtime_web_api/web_resource_manager/trait.WebResourceManager.html\" title=\"trait inexor_rgf_runtime_web_api::web_resource_manager::WebResourceManager\">WebResourceManager</a> for <a class=\"struct\" href=\"inexor_rgf_runtime_web_impl/web_resource_manager_impl/struct.WebResourceManagerImpl.html\" title=\"struct inexor_rgf_runtime_web_impl::web_resource_manager_impl::WebResourceManagerImpl\">WebResourceManagerImpl</a>"]]
-};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

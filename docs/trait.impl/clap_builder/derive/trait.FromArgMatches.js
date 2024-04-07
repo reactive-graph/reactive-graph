@@ -1,3 +1,3 @@
 (function() {var implementors = {
-"rgf":[["impl FromArgMatches for <a class=\"enum\" href=\"rgf/cli_args/enum.Commands.html\" title=\"enum rgf::cli_args::Commands\">Commands</a>"],["impl FromArgMatches for <a class=\"struct\" href=\"rgf/cli_args/struct.CliArguments.html\" title=\"struct rgf::cli_args::CliArguments\">CliArguments</a>"]]
+"reactive_graph":[["impl FromArgMatches for <a class=\"enum\" href=\"reactive_graph/cli_args/enum.Commands.html\" title=\"enum reactive_graph::cli_args::Commands\">Commands</a>"],["impl FromArgMatches for <a class=\"struct\" href=\"reactive_graph/cli_args/struct.CliArguments.html\" title=\"struct reactive_graph::cli_args::CliArguments\">CliArguments</a>"]]
 };if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
