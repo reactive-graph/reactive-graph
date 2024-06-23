@@ -3,7 +3,7 @@ use std::fmt::Debug;
 use std::fmt::Display;
 use std::fmt::Formatter;
 
-use crate::client::InexorRgfClientExecutionError;
+use reactive_graph_client::InexorRgfClientExecutionError;
 
 #[derive(Debug)]
 pub(crate) enum CommandError {

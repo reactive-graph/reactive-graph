@@ -6,8 +6,8 @@ use crate::cli::error::CommandError::NotFound;
 use crate::cli::result::CommandResult;
 use crate::cli::system::plugin::args::PluginsArgs;
 use crate::cli::system::plugin::commands::PluginsCommands;
-use crate::client::InexorRgfClient;
 use crate::table_model::system::plugin::Plugins;
+use reactive_graph_client::InexorRgfClient;
 
 pub(crate) mod args;
 pub(crate) mod commands;
@@ -17,42 +17,42 @@ pub(crate) async fn plugins(client: &Arc<InexorRgfClient>, plugins_args: Plugins
         return Err(CommandError::MissingSubCommand);
     };
     match command {
-        PluginsCommands::List => match client.system().plugins().get_all().await {
+        PluginsCommands::List => match client.runtime().plugins().get_all().await {
             Ok(plugins) => Ok(Plugins::from(plugins).into()),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Search(args) => match client.system().plugins().search(args.into()).await {
+        PluginsCommands::Search(args) => match client.runtime().plugins().search(args.into()).await {
             Ok(plugins) => Ok(Plugins::from(plugins).into()),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Get(args) => match client.system().plugins().get_by_name(args.name.clone()).await {
+        PluginsCommands::Get(args) => match client.runtime().plugins().get_by_name(args.name.clone()).await {
             Ok(Some(plugin)) => Ok(Plugins::from(plugin).into()),
             Ok(None) => Err(NotFound(format!("No plugin exists with name {}", args.name).to_string())),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Dependencies(args) => match client.system().plugins().get_dependencies(args.name.clone()).await {
+        PluginsCommands::Dependencies(args) => match client.runtime().plugins().get_dependencies(args.name.clone()).await {
             Ok(Some(plugins)) => Ok(Plugins::from(plugins).into()),
             Ok(None) => Err(NotFound(format!("No plugin exists with name {}", args.name).to_string())),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Dependents(args) => match client.system().plugins().get_dependents(args.name.clone()).await {
+        PluginsCommands::Dependents(args) => match client.runtime().plugins().get_dependents(args.name.clone()).await {
             Ok(Some(plugins)) => Ok(Plugins::from(plugins).into()),
             Ok(None) => Err(NotFound(format!("No plugin exists with name {}", args.name).to_string())),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Start(args) => match client.system().plugins().start(args.name).await {
+        PluginsCommands::Start(args) => match client.runtime().plugins().start(args.name).await {
             Ok(plugin) => Ok(Plugins::from(plugin).into()),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Stop(args) => match client.system().plugins().stop(args.name).await {
+        PluginsCommands::Stop(args) => match client.runtime().plugins().stop(args.name).await {
             Ok(plugin) => Ok(Plugins::from(plugin).into()),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Restart(args) => match client.system().plugins().restart(args.name).await {
+        PluginsCommands::Restart(args) => match client.runtime().plugins().restart(args.name).await {
             Ok(plugin) => Ok(Plugins::from(plugin).into()),
             Err(e) => Err(e.into()),
         },
-        PluginsCommands::Uninstall(args) => match client.system().plugins().uninstall(args.name).await {
+        PluginsCommands::Uninstall(args) => match client.runtime().plugins().uninstall(args.name).await {
             Ok(true) => Ok("Uninstalled plugin".into()),
             Ok(false) => Err(NoChange("Plugin wasn't uninstalled.".to_string())),
             Err(e) => Err(e.into()),

@@ -296,3 +296,6 @@ level = "trace"
 
 [loggers."springtime_di::component_registry::registry"]
 level = "trace"
+
+[loggers."hyper_util"]
+level = "info"

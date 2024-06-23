@@ -82,20 +82,24 @@ impl InstanceAddress {
         }
     }
 
+    pub fn base_url(&self) -> String {
+        format!("{}://{}:{}", self.protocol(), self.hostname, self.port)
+    }
+
     pub fn url_graphql(&self) -> String {
-        format!("{}://{}:{}{}", self.protocol(), self.hostname, self.port, self.endpoint_graphql)
+        format!("{}{}", self.base_url(), self.endpoint_graphql)
     }
 
     pub fn url_dynamic_graph(&self) -> String {
-        format!("{}://{}:{}{}", self.protocol(), self.hostname, self.port, self.endpoint_dynamic_graph)
+        format!("{}{}", self.base_url(), self.endpoint_dynamic_graph)
     }
 
     pub fn url_runtime(&self) -> String {
-        format!("{}://{}:{}{}", self.protocol(), self.hostname, self.port, self.endpoint_runtime)
+        format!("{}{}", self.base_url(), self.endpoint_runtime)
     }
 
     pub fn url_plugin(&self) -> String {
-        format!("{}://{}:{}{}", self.protocol(), self.hostname, self.port, self.endpoint_plugin)
+        format!("{}{}", self.base_url(), self.endpoint_plugin)
     }
 }
 

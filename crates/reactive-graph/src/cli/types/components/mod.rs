@@ -7,9 +7,9 @@ use crate::cli::error::CommandError::NotFound;
 use crate::cli::result::CommandResult;
 use crate::cli::types::components::args::ComponentsArgs;
 use crate::cli::types::components::commands::ComponentsCommands;
-use crate::client::types::components::queries::CreateComponentVariables;
-use crate::client::InexorRgfClient;
 use crate::table_model::types::component::Components;
+use reactive_graph_client::types::components::queries::CreateComponentVariables;
+use reactive_graph_client::InexorRgfClient;
 
 pub(crate) mod args;
 pub(crate) mod commands;

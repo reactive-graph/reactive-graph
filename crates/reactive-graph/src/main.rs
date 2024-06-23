@@ -8,18 +8,18 @@ use log4rs::config::Appender;
 use log4rs::config::Root;
 use log4rs::Config;
 
-#[cfg(client)]
+#[cfg(feature = "client")]
 use crate::cli::client;
 use crate::cli_args::CliArguments;
-#[cfg(client)]
+#[cfg(feature = "client")]
 use crate::cli_args::Commands;
 use crate::server::server;
 
-#[cfg(client)]
+#[cfg(feature = "client")]
 mod cli;
 mod cli_args;
 mod server;
-#[cfg(client)]
+#[cfg(feature = "client")]
 mod table_model;
 
 #[global_allocator]
@@ -50,7 +50,7 @@ async fn main() {
     }
     match cli_args.commands {
         Some(commands) => match commands {
-            #[cfg(client)]
+            #[cfg(feature = "client")]
             Commands::Client(args) => client(args).await,
         },
         None => server(cli_args).await,

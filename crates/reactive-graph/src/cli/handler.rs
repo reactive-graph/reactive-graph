@@ -8,7 +8,7 @@ use crate::cli::system::plugin::plugins;
 use crate::cli::system::remotes::remotes;
 use crate::cli::system::shutdown::shutdown;
 use crate::cli::types::components::components;
-use crate::client::InexorRgfClient;
+use reactive_graph_client::InexorRgfClient;
 
 pub(crate) async fn handle_command(client: &Arc<InexorRgfClient>, command: ClientCommands) -> CommandResult {
     match command {

@@ -34,7 +34,7 @@ pub(crate) fn display_plugins(plugins: &Vec<Plugin>) -> String {
     Table::new(plugins).to_string()
 }
 
-impl From<crate::client::Plugin> for Plugin {
+impl From<reactive_graph_client::Plugin> for Plugin {
     fn from(plugin: reactive_graph_client::Plugin) -> Self {
         Plugin {
             name: plugin.name,
@@ -47,7 +47,7 @@ impl From<crate::client::Plugin> for Plugin {
     }
 }
 
-pub(crate) type Plugins = DefaultTableContainer<crate::client::Plugin, Plugin, PluginsTableOptions>;
+pub(crate) type Plugins = DefaultTableContainer<reactive_graph_client::Plugin, Plugin, PluginsTableOptions>;
 
 pub(crate) struct PluginsTableOptions;
 

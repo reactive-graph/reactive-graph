@@ -1,7 +1,8 @@
 use clap::Args;
 
+use reactive_graph_client::client::plugin::mapping::SearchPluginVariables;
+
 use crate::cli::system::plugin::commands::PluginsCommands;
-use crate::client::system::plugin::mapping::SearchPluginVariables;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]

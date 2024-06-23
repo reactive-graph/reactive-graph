@@ -1,4 +1,3 @@
-use clap::ArgAction::SetTrue;
 use clap::Args;
 
 use crate::cli::commands::ClientCommands;
@@ -57,7 +56,7 @@ impl From<&ClientArgs> for InstanceAddress {
             .endpoint_graphql(client_args.endpoint_graphql.clone().unwrap_or(DEFAULT_ENDPOINT_GRAPHQL.to_string()))
             .endpoint_dynamic_graph(client_args.endpoint_dynamic_graph.clone().unwrap_or(DEFAULT_ENDPOINT_DYNAMIC_GRAPH.to_string()))
             .endpoint_runtime(client_args.endpoint_runtime.clone().unwrap_or(DEFAULT_ENDPOINT_RUNTIME.to_string()))
-            .endpoint_plugins(client_args.endpoint_plugins.clone().unwrap_or(DEFAULT_ENDPOINT_PLUGIN.to_string()))
+            .endpoint_plugin(client_args.endpoint_plugins.clone().unwrap_or(DEFAULT_ENDPOINT_PLUGIN.to_string()))
             .bearer(client_args.bearer.clone())
             .build()
     }

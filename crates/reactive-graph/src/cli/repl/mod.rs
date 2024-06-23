@@ -1,4 +1,3 @@
-use std::string::ToString;
 use std::sync::Arc;
 
 use clap::Parser;
@@ -18,7 +17,7 @@ use crate::cli::repl::args::ReplArgs;
 use crate::cli::repl::chars::*;
 use crate::cli::repl::repl_helper::ReplHelper;
 use crate::cli::repl::return_state::ReturnState;
-use crate::client::InexorRgfClient;
+use reactive_graph_client::InexorRgfClient;
 
 pub(crate) mod args;
 pub(crate) mod chars;
@@ -38,7 +37,7 @@ pub(crate) async fn repl(client: &Arc<InexorRgfClient>) -> Result<(), i32> {
     let mut return_state = ReturnState::Neutral;
     let mut break_state = false;
     loop {
-        let prompt = format!("{} {} {} ", CHAR_PROMPT, client.remote().url().cyan().bold(), return_state.to_string());
+        let prompt = format!("{} {} {} ", CHAR_PROMPT, client.remote().base_url().cyan().bold(), return_state.to_string());
         let readline = rl.readline(prompt.as_str());
         match readline {
             Ok(line) => {
