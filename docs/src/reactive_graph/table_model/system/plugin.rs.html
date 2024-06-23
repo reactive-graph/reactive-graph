@@ -60,6 +60,9 @@
 <a href="#60" id="60">60</a>
 <a href="#61" id="61">61</a>
 <a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>tabled::settings::object::Rows;
 <span class="kw">use </span>tabled::settings::Modify;
 <span class="kw">use </span>tabled::settings::Style;
@@ -80,19 +83,22 @@
     <span class="kw">pub </span>rustc_version: String,
 }
 
-<span class="attr">#[derive(Clone, Debug, Tabled)]
+<span class="attr">#[allow(unused)]
+#[derive(Clone, Debug, Tabled)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>PluginDependencies {
     <span class="attr">#[tabled(display_with(<span class="string">"display_plugins"</span>))]
     </span><span class="kw">pub </span>dependencies: Vec&lt;Plugin&gt;,
 }
 
-<span class="attr">#[derive(Clone, Debug, Tabled)]
+<span class="attr">#[allow(unused)]
+#[derive(Clone, Debug, Tabled)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>PluginDependents {
     <span class="attr">#[tabled(display_with(<span class="string">"display_plugins"</span>))]
     </span><span class="kw">pub </span>dependents: Vec&lt;Plugin&gt;,
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>display_plugins(plugins: <span class="kw-2">&amp;</span>Vec&lt;Plugin&gt;) -&gt; String {
+<span class="attr">#[allow(unused)]
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>display_plugins(plugins: <span class="kw-2">&amp;</span>Vec&lt;Plugin&gt;) -&gt; String {
     Table::new(plugins).to_string()
 }
 
