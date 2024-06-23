@@ -1,9 +1,8 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `FlowTypeManager` trait in crate `reactive_graph_type_system_api`."><title>FlowTypeManager in reactive_graph_type_system_api::flow_type_manager - Rust</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="reactive_graph_type_system_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (aa1c45908 2024-04-06)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../reactive_graph_type_system_api/index.html">reactive_graph_type_system_api</a><span class="version">0.10.0</span></h2></div><h2 class="location"><a href="#">FlowTypeManager</a></h2><div class="sidebar-elems"><section><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.add_entity_instance">add_entity_instance</a></li><li><a href="#tymethod.add_extension">add_extension</a></li><li><a href="#tymethod.add_relation_instance">add_relation_instance</a></li><li><a href="#tymethod.add_variable">add_variable</a></li><li><a href="#tymethod.count">count</a></li><li><a href="#tymethod.count_by_namespace">count_by_namespace</a></li><li><a href="#tymethod.create_flow_type">create_flow_type</a></li><li><a href="#tymethod.delete">delete</a></li><li><a href="#tymethod.find_by_type_name">find_by_type_name</a></li><li><a href="#tymethod.get">get</a></li><li><a href="#tymethod.get_all">get_all</a></li><li><a href="#tymethod.get_by_namespace">get_by_namespace</a></li><li><a href="#tymethod.get_by_type">get_by_type</a></li><li><a href="#tymethod.get_namespaces">get_namespaces</a></li><li><a href="#tymethod.get_type_ids">get_type_ids</a></li><li><a href="#tymethod.get_types_by_namespace">get_types_by_namespace</a></li><li><a href="#tymethod.has">has</a></li><li><a href="#tymethod.has_by_type">has_by_type</a></li><li><a href="#tymethod.register">register</a></li><li><a href="#tymethod.remove_entity_instance">remove_entity_instance</a></li><li><a href="#tymethod.remove_extension">remove_extension</a></li><li><a href="#tymethod.remove_relation_instance">remove_relation_instance</a></li><li><a href="#tymethod.remove_variable">remove_variable</a></li><li><a href="#tymethod.update_entity_instance">update_entity_instance</a></li><li><a href="#tymethod.update_extension">update_extension</a></li><li><a href="#tymethod.update_relation_instance">update_relation_instance</a></li><li><a href="#tymethod.update_variable">update_variable</a></li><li><a href="#tymethod.validate">validate</a></li></ul><h3><a href="#trait-implementations">Trait Implementations</a></h3><ul class="block trait-implementation"><li><a href="#impl-Injectable-for-dyn+FlowTypeManager+%2B+Send+%2B+Sync">Injectable</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In reactive_graph_type_system_api::flow_type_manager</a></h2></div></nav><div class="sidebar-resizer"></div>
-    <main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../reactive_graph_type_system_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../index.html">reactive_graph_type_system_api</a>::<wbr><a href="index.html">flow_type_manager</a>::<wbr><a class="trait" href="#">FlowTypeManager</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#39-145">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait FlowTypeManager: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + Lifecycle {
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `FlowTypeManager` trait in crate `reactive_graph_type_system_api`."><title>FlowTypeManager in reactive_graph_type_system_api::flow_type_manager - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="reactive_graph_type_system_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cb521a43 2024-06-22)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../reactive_graph_type_system_api/index.html">reactive_graph_type_system_api</a><span class="version">0.10.0</span></h2></div><h2 class="location"><a href="#">FlowTypeManager</a></h2><div class="sidebar-elems"><section><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.add_entity_instance">add_entity_instance</a></li><li><a href="#tymethod.add_extension">add_extension</a></li><li><a href="#tymethod.add_relation_instance">add_relation_instance</a></li><li><a href="#tymethod.add_variable">add_variable</a></li><li><a href="#tymethod.count">count</a></li><li><a href="#tymethod.count_by_namespace">count_by_namespace</a></li><li><a href="#tymethod.create_flow_type">create_flow_type</a></li><li><a href="#tymethod.delete">delete</a></li><li><a href="#tymethod.find_by_type_name">find_by_type_name</a></li><li><a href="#tymethod.get">get</a></li><li><a href="#tymethod.get_all">get_all</a></li><li><a href="#tymethod.get_by_namespace">get_by_namespace</a></li><li><a href="#tymethod.get_by_type">get_by_type</a></li><li><a href="#tymethod.get_namespaces">get_namespaces</a></li><li><a href="#tymethod.get_type_ids">get_type_ids</a></li><li><a href="#tymethod.get_types_by_namespace">get_types_by_namespace</a></li><li><a href="#tymethod.has">has</a></li><li><a href="#tymethod.has_by_type">has_by_type</a></li><li><a href="#tymethod.register">register</a></li><li><a href="#tymethod.remove_entity_instance">remove_entity_instance</a></li><li><a href="#tymethod.remove_extension">remove_extension</a></li><li><a href="#tymethod.remove_relation_instance">remove_relation_instance</a></li><li><a href="#tymethod.remove_variable">remove_variable</a></li><li><a href="#tymethod.update_entity_instance">update_entity_instance</a></li><li><a href="#tymethod.update_extension">update_extension</a></li><li><a href="#tymethod.update_relation_instance">update_relation_instance</a></li><li><a href="#tymethod.update_variable">update_variable</a></li><li><a href="#tymethod.validate">validate</a></li></ul><h3><a href="#trait-implementations">Trait Implementations</a></h3><ul class="block trait-implementation"><li><a href="#impl-Injectable-for-dyn+FlowTypeManager+%2B+Send+%2B+Sync">Injectable</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In reactive_graph_type_system_api::flow_type_manager</a></h2></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../index.html">reactive_graph_type_system_api</a>::<wbr><a href="index.html">flow_type_manager</a>::<wbr><a class="trait" href="#">FlowTypeManager</a><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><span class="out-of-band"><a class="src" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#39-145">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait FlowTypeManager: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + Lifecycle {
 <details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 28 methods</span></summary>    // Required methods
     fn <a href="#tymethod.register" class="fn">register</a>(
         &amp;self,
-        flow_type: FlowType
+        flow_type: FlowType,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;FlowType, <a class="enum" href="../error/flow/enum.FlowTypeRegistrationError.html" title="enum reactive_graph_type_system_api::error::flow::FlowTypeRegistrationError">FlowTypeRegistrationError</a>&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_all" class="fn">get_all</a>(&amp;self) -&gt; FlowTypes;
 <span class="item-spacer"></span>    fn <a href="#tymethod.get_type_ids" class="fn">get_type_ids</a>(&amp;self) -&gt; FlowTypeIds;
@@ -25,77 +24,77 @@
         entity_instances: EntityInstances,
         relation_instances: RelationInstances,
         variables: PropertyTypes,
-        extensions: Extensions
+        extensions: Extensions,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;FlowType, <a class="enum" href="../error/flow/enum.FlowTypeCreationError.html" title="enum reactive_graph_type_system_api::error::flow::FlowTypeCreationError">FlowTypeCreationError</a>&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.add_entity_instance" class="fn">add_entity_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        entity_instance: EntityInstance
+        entity_instance: EntityInstance,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, FlowTypeAddEntityInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.update_entity_instance" class="fn">update_entity_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
         id: <a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
-        entity_instance: EntityInstance
+        entity_instance: EntityInstance,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance), FlowTypeUpdateEntityInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.remove_entity_instance" class="fn">remove_entity_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        id: <a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>
+        id: <a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance)&gt;, FlowTypeRemoveEntityInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.add_relation_instance" class="fn">add_relation_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        relation_instance: RelationInstance
+        relation_instance: RelationInstance,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, FlowTypeAddRelationInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.update_relation_instance" class="fn">update_relation_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
         id: &amp;RelationInstanceId,
-        relation_instance: RelationInstance
+        relation_instance: RelationInstance,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(RelationInstanceId, RelationInstance), FlowTypeUpdateRelationInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.remove_relation_instance" class="fn">remove_relation_instance</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        id: &amp;RelationInstanceId
+        id: &amp;RelationInstanceId,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(RelationInstanceId, RelationInstance)&gt;, FlowTypeRemoveRelationInstanceError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.add_extension" class="fn">add_extension</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        extension: Extension
+        extension: Extension,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;ExtensionTypeId, FlowTypeAddExtensionError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.update_extension" class="fn">update_extension</a>(
         &amp;self,
         flow_ty: &amp;FlowTypeId,
         extension_ty: &amp;ExtensionTypeId,
-        extension: Extension
+        extension: Extension,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Extension, FlowTypeUpdateExtensionError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.remove_extension" class="fn">remove_extension</a>(
         &amp;self,
         flow_ty: &amp;FlowTypeId,
-        extension_ty: &amp;ExtensionTypeId
+        extension_ty: &amp;ExtensionTypeId,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Extension, FlowTypeRemoveExtensionError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.add_variable" class="fn">add_variable</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        variable: PropertyType
+        variable: PropertyType,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Variable, FlowTypeAddVariableError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.update_variable" class="fn">update_variable</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
         variable_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-        variable: PropertyType
+        variable: PropertyType,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Variable, FlowTypeUpdateVariableError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.remove_variable" class="fn">remove_variable</a>(
         &amp;self,
         ty: &amp;FlowTypeId,
-        variable_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>
+        variable_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Variable, FlowTypeRemoveVariableError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.delete" class="fn">delete</a>(&amp;self, ty: &amp;FlowTypeId) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;FlowType&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.validate" class="fn">validate</a>(&amp;self, ty: &amp;FlowTypeId) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
 </details>}</code></pre><h2 id="required-methods" class="section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><section id="tymethod.register" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#40">source</a><h4 class="code-header">fn <a href="#tymethod.register" class="fn">register</a>(
     &amp;self,
-    flow_type: FlowType
+    flow_type: FlowType,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;FlowType, <a class="enum" href="../error/flow/enum.FlowTypeRegistrationError.html" title="enum reactive_graph_type_system_api::error::flow::FlowTypeRegistrationError">FlowTypeRegistrationError</a>&gt;</h4></section><details class="toggle method-toggle" open><summary><section id="tymethod.get_all" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#43">source</a><h4 class="code-header">fn <a href="#tymethod.get_all" class="fn">get_all</a>(&amp;self) -&gt; FlowTypes</h4></section></summary><div class="docblock"><p>Returns all flow types.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_type_ids" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#46">source</a><h4 class="code-header">fn <a href="#tymethod.get_type_ids" class="fn">get_type_ids</a>(&amp;self) -&gt; FlowTypeIds</h4></section></summary><div class="docblock"><p>Returns the ids of all flow types.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.get_namespaces" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#49">source</a><h4 class="code-header">fn <a href="#tymethod.get_namespaces" class="fn">get_namespaces</a>(&amp;self) -&gt; Namespaces</h4></section></summary><div class="docblock"><p>Returns all defined namespaces.</p>
@@ -115,71 +114,71 @@
     entity_instances: EntityInstances,
     relation_instances: RelationInstances,
     variables: PropertyTypes,
-    extensions: Extensions
+    extensions: Extensions,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;FlowType, <a class="enum" href="../error/flow/enum.FlowTypeCreationError.html" title="enum reactive_graph_type_system_api::error::flow::FlowTypeCreationError">FlowTypeCreationError</a>&gt;</h4></section></summary><div class="docblock"><p>Creates a new flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_entity_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#90">source</a><h4 class="code-header">fn <a href="#tymethod.add_entity_instance" class="fn">add_entity_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    entity_instance: EntityInstance
+    entity_instance: EntityInstance,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, FlowTypeAddEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Adds the given entity instance to the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.update_entity_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#93-98">source</a><h4 class="code-header">fn <a href="#tymethod.update_entity_instance" class="fn">update_entity_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
     id: <a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
-    entity_instance: EntityInstance
+    entity_instance: EntityInstance,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance), FlowTypeUpdateEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Updates the entity instance with the given id of the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.remove_entity_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#101">source</a><h4 class="code-header">fn <a href="#tymethod.remove_entity_instance" class="fn">remove_entity_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    id: <a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>
+    id: <a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(<a class="struct" href="https://docs.rs/uuid/1.8.0/uuid/struct.Uuid.html" title="struct uuid::Uuid">Uuid</a>, EntityInstance)&gt;, FlowTypeRemoveEntityInstanceError&gt;</h4></section></summary><div class="docblock"><p>Removes the entity instance with the given id from the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_relation_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#104">source</a><h4 class="code-header">fn <a href="#tymethod.add_relation_instance" class="fn">add_relation_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    relation_instance: RelationInstance
+    relation_instance: RelationInstance,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, FlowTypeAddRelationInstanceError&gt;</h4></section></summary><div class="docblock"><p>Adds the given relation instance to the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.update_relation_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#107-112">source</a><h4 class="code-header">fn <a href="#tymethod.update_relation_instance" class="fn">update_relation_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
     id: &amp;RelationInstanceId,
-    relation_instance: RelationInstance
+    relation_instance: RelationInstance,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;(RelationInstanceId, RelationInstance), FlowTypeUpdateRelationInstanceError&gt;</h4></section></summary><div class="docblock"><p>Updates the relation instance with the given id of the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.remove_relation_instance" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#115-119">source</a><h4 class="code-header">fn <a href="#tymethod.remove_relation_instance" class="fn">remove_relation_instance</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    id: &amp;RelationInstanceId
+    id: &amp;RelationInstanceId,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(RelationInstanceId, RelationInstance)&gt;, FlowTypeRemoveRelationInstanceError&gt;</h4></section></summary><div class="docblock"><p>Removes the relation instance with the given id from the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_extension" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#122">source</a><h4 class="code-header">fn <a href="#tymethod.add_extension" class="fn">add_extension</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    extension: Extension
+    extension: Extension,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;ExtensionTypeId, FlowTypeAddExtensionError&gt;</h4></section></summary><div class="docblock"><p>Adds the given extension to the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.update_extension" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#125">source</a><h4 class="code-header">fn <a href="#tymethod.update_extension" class="fn">update_extension</a>(
     &amp;self,
     flow_ty: &amp;FlowTypeId,
     extension_ty: &amp;ExtensionTypeId,
-    extension: Extension
+    extension: Extension,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Extension, FlowTypeUpdateExtensionError&gt;</h4></section></summary><div class="docblock"><p>Updates the extension with the given name of the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.remove_extension" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#128">source</a><h4 class="code-header">fn <a href="#tymethod.remove_extension" class="fn">remove_extension</a>(
     &amp;self,
     flow_ty: &amp;FlowTypeId,
-    extension_ty: &amp;ExtensionTypeId
+    extension_ty: &amp;ExtensionTypeId,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Extension, FlowTypeRemoveExtensionError&gt;</h4></section></summary><div class="docblock"><p>Removes the extension with the given name from the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.add_variable" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#131">source</a><h4 class="code-header">fn <a href="#tymethod.add_variable" class="fn">add_variable</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    variable: PropertyType
+    variable: PropertyType,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Variable, FlowTypeAddVariableError&gt;</h4></section></summary><div class="docblock"><p>Adds the given variable to the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.update_variable" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#134">source</a><h4 class="code-header">fn <a href="#tymethod.update_variable" class="fn">update_variable</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
     variable_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    variable: PropertyType
+    variable: PropertyType,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Variable, FlowTypeUpdateVariableError&gt;</h4></section></summary><div class="docblock"><p>Updates the variable with the given name of the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.remove_variable" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#137">source</a><h4 class="code-header">fn <a href="#tymethod.remove_variable" class="fn">remove_variable</a>(
     &amp;self,
     ty: &amp;FlowTypeId,
-    variable_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>
+    variable_name: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
 ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Variable, FlowTypeRemoveVariableError&gt;</h4></section></summary><div class="docblock"><p>Removes the variable with the given name from the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.delete" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#140">source</a><h4 class="code-header">fn <a href="#tymethod.delete" class="fn">delete</a>(&amp;self, ty: &amp;FlowTypeId) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;FlowType&gt;</h4></section></summary><div class="docblock"><p>Deletes the given flow type.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.validate" class="method"><a class="src rightside" href="../../src/reactive_graph_type_system_api/flow_type_manager.rs.html#144">source</a><h4 class="code-header">fn <a href="#tymethod.validate" class="fn">validate</a>(&amp;self, ty: &amp;FlowTypeId) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Validates the given flow type.
