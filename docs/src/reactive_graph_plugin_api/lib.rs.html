@@ -415,10 +415,6 @@
 <a href="#415" id="415">415</a>
 <a href="#416" id="416">416</a>
 <a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
 </pre></div><pre class="rust"><code><span class="attr">#![feature(register_tool)]
 #![feature(concat_idents)]
 #![register_tool(tarpaulin)]
@@ -440,7 +436,6 @@
 <span class="kw">pub use </span>behaviours::entities::entity_component_behaviour_registry::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>behaviours::relations::relation_behaviour_registry::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>behaviours::relations::relation_component_behaviour_registry::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>embedded_asset_provider::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>error::activation::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>error::hot_deploy::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>error::lifecycle::<span class="kw-2">*</span>;
@@ -450,9 +445,7 @@
 <span class="kw">pub use </span>graphql::web_resource_manager::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>graphql::web_resource_provider::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>reactive_graph_graph <span class="kw">as </span>model;
-<span class="comment">//#[cfg(feature = "derive")]
-//pub use reactive_graph_plugin_derive::TypeProvider;
-</span><span class="kw">pub use </span>instances::entities::entity_instance_manager::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>instances::entities::entity_instance_manager::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>instances::flows::flow_instance_manager::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>instances::relations::relation_instance_manager::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>plugin::Plugin;
@@ -507,9 +500,8 @@
 <span class="kw">pub mod </span>plugin_declaration;
 <span class="kw">pub mod </span>plugin_dependency;
 <span class="kw">pub mod </span>plugin_state;
-<span class="comment">// pub mod transition;
 
-</span><span class="kw">pub static </span>RUSTC_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"RUSTC_VERSION"</span>);
+<span class="kw">pub static </span>RUSTC_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"RUSTC_VERSION"</span>);
 <span class="kw">pub static </span>PLUGIN_API_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>);
 
 <span class="attr">#[macro_export]

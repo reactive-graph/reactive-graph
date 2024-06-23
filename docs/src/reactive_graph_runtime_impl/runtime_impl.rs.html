@@ -706,14 +706,14 @@
 
 <span class="kw">pub struct </span>RunningState(Arc&lt;AtomicBool&gt;);
 
-<span class="kw">fn </span>create_running_state() -&gt; Arc&lt;AtomicBool&gt; {
-    Arc::new(AtomicBool::new(<span class="bool-val">false</span>))
+<span class="kw">fn </span>create_running_state() -&gt; RunningState {
+    RunningState(Arc::new(AtomicBool::new(<span class="bool-val">false</span>)))
 }
 
 <span class="attr">#[derive(Component)]
 </span><span class="kw">pub struct </span>RuntimeImpl {
     <span class="attr">#[component(default = <span class="string">"create_running_state"</span>)]
-    </span>running: Arc&lt;AtomicBool&gt;,
+    </span>running: RunningState,
     type_system: Arc&lt;<span class="kw">dyn </span>TypeSystem + Send + Sync&gt;,
     reactive_system: Arc&lt;<span class="kw">dyn </span>ReactiveSystem + Send + Sync&gt;,
     behaviour_system: Arc&lt;<span class="kw">dyn </span>BehaviourSystem + Send + Sync&gt;,
@@ -767,7 +767,7 @@
         });
 
         {
-            <span class="self">self</span>.running.store(<span class="bool-val">true</span>, Ordering::Relaxed);
+            <span class="self">self</span>.running.<span class="number">0</span>.store(<span class="bool-val">true</span>, Ordering::Relaxed);
         }
 
         {
@@ -799,18 +799,18 @@
         <span class="comment">// Ensure the running state is now set to false even if the loop was terminated
         // externally because the running state is checked from outside.
         </span>{
-            <span class="self">self</span>.running.store(<span class="bool-val">false</span>, Ordering::Relaxed);
+            <span class="self">self</span>.running.<span class="number">0</span>.store(<span class="bool-val">false</span>, Ordering::Relaxed);
         }
     }
 
     <span class="kw">fn </span>stop(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         {
-            <span class="self">self</span>.running.store(<span class="bool-val">false</span>, Ordering::Relaxed);
+            <span class="self">self</span>.running.<span class="number">0</span>.store(<span class="bool-val">false</span>, Ordering::Relaxed);
         }
     }
 
     <span class="kw">fn </span>is_running(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.running.load(Ordering::Relaxed)
+        <span class="self">self</span>.running.<span class="number">0</span>.load(Ordering::Relaxed)
         <span class="comment">// *self.running.0.read().unwrap().deref()
     </span>}
 
