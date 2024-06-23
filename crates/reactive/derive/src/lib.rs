@@ -1,5 +1,3 @@
-#![feature(associated_type_bounds)]
-
 extern crate proc_macro;
 
 use proc_macro::TokenStream;

@@ -1,5 +1,3 @@
-// #![feature(associated_type_bounds)]
-//
 // #[macro_use]
 // extern crate darling;
 // extern crate proc_macro;
