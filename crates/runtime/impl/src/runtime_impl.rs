@@ -81,14 +81,14 @@ use reactive_graph_type_system_api::TypeSystemEventManager;
 
 pub struct RunningState(Arc<AtomicBool>);
 
-fn create_running_state() -> Arc<AtomicBool> {
-    Arc::new(AtomicBool::new(false))
+fn create_running_state() -> RunningState {
+    RunningState(Arc::new(AtomicBool::new(false)))
 }
 
 #[derive(Component)]
 pub struct RuntimeImpl {
     #[component(default = "create_running_state")]
-    running: Arc<AtomicBool>,
+    running: RunningState,
     type_system: Arc<dyn TypeSystem + Send + Sync>,
     reactive_system: Arc<dyn ReactiveSystem + Send + Sync>,
     behaviour_system: Arc<dyn BehaviourSystem + Send + Sync>,
@@ -142,7 +142,7 @@ impl Runtime for RuntimeImpl {
         });
 
         {
-            self.running.store(true, Ordering::Relaxed);
+            self.running.0.store(true, Ordering::Relaxed);
         }
 
         {
@@ -174,18 +174,18 @@ impl Runtime for RuntimeImpl {
         // Ensure the running state is now set to false even if the loop was terminated
         // externally because the running state is checked from outside.
         {
-            self.running.store(false, Ordering::Relaxed);
+            self.running.0.store(false, Ordering::Relaxed);
         }
     }
 
     fn stop(&self) {
         {
-            self.running.store(false, Ordering::Relaxed);
+            self.running.0.store(false, Ordering::Relaxed);
         }
     }
 
     fn is_running(&self) -> bool {
-        self.running.load(Ordering::Relaxed)
+        self.running.0.load(Ordering::Relaxed)
         // *self.running.0.read().unwrap().deref()
     }
 
