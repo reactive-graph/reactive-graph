@@ -17,11 +17,19 @@
 <a href="#17" id="17">17</a>
 <a href="#18" id="18">18</a>
 <a href="#19" id="19">19</a>
+<a href="#20" id="20">20</a>
+<a href="#21" id="21">21</a>
+<a href="#22" id="22">22</a>
+<a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::types::components::api::Components;
+<span class="kw">use </span><span class="kw">crate</span>::client::types::entity_types::api::EntityTypes;
 <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
 <span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">pub mod </span>components;
+<span class="kw">pub mod </span>entity_types;
 
 <span class="kw">pub struct </span>Types {
     client: Arc&lt;InexorRgfClient&gt;,
@@ -34,6 +42,10 @@
 
     <span class="kw">pub fn </span>components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Components {
         Components::new(<span class="self">self</span>.client.clone())
+    }
+
+    <span class="kw">pub fn </span>entity_types(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EntityTypes {
+        EntityTypes::new(<span class="self">self</span>.client.clone())
     }
 }
 </code></pre></div></section></main></body></html>

@@ -74,10 +74,6 @@
 <a href="#74" id="74">74</a>
 <a href="#75" id="75">75</a>
 <a href="#76" id="76">76</a>
-<a href="#77" id="77">77</a>
-<a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>reactive_graph_graph::Component;
 <span class="kw">use </span>reactive_graph_graph::ComponentAddExtensionError;
 <span class="kw">use </span>reactive_graph_graph::ComponentAddPropertyError;
@@ -89,7 +85,9 @@
 <span class="kw">use </span>reactive_graph_graph::Components;
 <span class="kw">use </span>reactive_graph_graph::Extension;
 <span class="kw">use </span>reactive_graph_graph::ExtensionTypeId;
+<span class="kw">use </span>reactive_graph_graph::Extensions;
 <span class="kw">use </span>reactive_graph_graph::PropertyType;
+<span class="kw">use </span>reactive_graph_graph::PropertyTypes;
 <span class="kw">use </span>reactive_graph_type_system_api::ComponentCreationError;
 
 <span class="kw">pub trait </span>ComponentManager: Send + Sync {
@@ -121,13 +119,7 @@
     </span><span class="kw">fn </span>count_by_namespace(<span class="kw-2">&amp;</span><span class="self">self</span>, namespace: <span class="kw-2">&amp;</span>str) -&gt; usize;
 
     <span class="doccomment">/// Creates a new component with the given name and the given properties.
-    </span><span class="kw">fn </span>create(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        ty: <span class="kw-2">&amp;</span>ComponentTypeId,
-        description: <span class="kw-2">&amp;</span>str,
-        properties: Vec&lt;PropertyType&gt;,
-        extensions: Vec&lt;Extension&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentCreationError&gt;;
+    </span><span class="kw">fn </span>create(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, description: <span class="kw-2">&amp;</span>str, properties: PropertyTypes, extensions: Extensions) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentCreationError&gt;;
 
     <span class="doccomment">/// Replaces the component with the given name with the given component.
     </span><span class="kw">fn </span>replace(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, component: Component);

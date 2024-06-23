@@ -28,6 +28,7 @@
 <a href="#28" id="28">28</a>
 <a href="#29" id="29">29</a>
 <a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::commands::ClientCommands;
@@ -38,6 +39,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::remotes::remotes;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::shutdown::shutdown;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::components::components;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::entities::entity_types;
 <span class="kw">use </span>reactive_graph_client::InexorRgfClient;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>handle_command(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, command: ClientCommands) -&gt; CommandResult {
@@ -50,8 +52,8 @@
         ClientCommands::Shutdown =&gt; shutdown(client).<span class="kw">await</span>,
         <span class="comment">// Types
         </span>ClientCommands::Components(args) =&gt; components(client, args).<span class="kw">await</span>,
-        <span class="comment">// TODO: Entity Types
-        // TODO: Relation Types
+        ClientCommands::EntityTypes(args) =&gt; entity_types(client, args).<span class="kw">await</span>,
+        <span class="comment">// TODO: Relation Types
         // TODO: Flow Types
         // TODO: Entity Instances
         // TODO: Relation Instances

@@ -107,6 +107,8 @@
 <a href="#107" id="107">107</a>
 <a href="#108" id="108">108</a>
 <a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 
@@ -125,8 +127,10 @@
 <span class="kw">use </span>reactive_graph_graph::Components;
 <span class="kw">use </span>reactive_graph_graph::Extension;
 <span class="kw">use </span>reactive_graph_graph::ExtensionTypeId;
+<span class="kw">use </span>reactive_graph_graph::Extensions;
 <span class="kw">use </span>reactive_graph_graph::Namespaces;
 <span class="kw">use </span>reactive_graph_graph::PropertyType;
+<span class="kw">use </span>reactive_graph_graph::PropertyTypes;
 <span class="kw">use </span>reactive_graph_lifecycle::Lifecycle;
 
 <span class="attr">#[injectable]
@@ -179,8 +183,8 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         ty: <span class="kw-2">&amp;</span>ComponentTypeId,
         description: <span class="kw-2">&amp;</span>str,
-        properties: Vec&lt;PropertyType&gt;,
-        extensions: Vec&lt;Extension&gt;,
+        properties: PropertyTypes,
+        extensions: Extensions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentCreationError&gt;;
 
     <span class="doccomment">/// Replaces the component with the given name with the given component.

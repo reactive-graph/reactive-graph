@@ -226,6 +226,8 @@
 <a href="#226" id="226">226</a>
 <a href="#227" id="227">227</a>
 <a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_graphql.graphql"#</span>, module = <span class="string">"crate::schema_graphql::schema"</span>)]
 </span><span class="kw">pub mod </span>queries {
     <span class="kw">use </span>typed_builder::TypedBuilder;
@@ -352,6 +354,8 @@
         <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
 
         <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
+        <span class="kw">use </span>reactive_graph_graph::Extensions;
+        <span class="kw">use </span>reactive_graph_graph::PropertyTypes;
 
         <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
         </span><span class="kw">async fn </span>test_get_components_by_type() {
@@ -364,7 +368,7 @@
             <span class="kw">let </span>ty = ComponentTypeId::new_from_type(<span class="string">"test"</span>, <span class="string">"test"</span>);
             <span class="kw">let </span>component_manager = runtime.get_component_manager();
             <span class="kw">let </span>_component = component_manager
-                .create_component(<span class="kw-2">&amp;</span>ty, <span class="string">""</span>, Vec::new(), Vec::new())
+                .create_component(<span class="kw-2">&amp;</span>ty, <span class="string">""</span>, PropertyTypes::new(), Extensions::new())
                 .expect(<span class="string">"Failed to create component"</span>);
             <span class="comment">// let inner_runtime = runtime.clone();
             </span><span class="kw">let </span>_port = runtime.get_config_manager().get_graphql_server_config().port();

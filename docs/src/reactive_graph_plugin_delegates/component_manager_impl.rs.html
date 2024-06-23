@@ -103,10 +103,6 @@
 <a href="#103" id="103">103</a>
 <a href="#104" id="104">104</a>
 <a href="#105" id="105">105</a>
-<a href="#106" id="106">106</a>
-<a href="#107" id="107">107</a>
-<a href="#108" id="108">108</a>
-<a href="#109" id="109">109</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>reactive_graph_type_system_api::ComponentCreationError;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -121,7 +117,9 @@
 <span class="kw">use </span>reactive_graph_graph::Components;
 <span class="kw">use </span>reactive_graph_graph::Extension;
 <span class="kw">use </span>reactive_graph_graph::ExtensionTypeId;
+<span class="kw">use </span>reactive_graph_graph::Extensions;
 <span class="kw">use </span>reactive_graph_graph::PropertyType;
+<span class="kw">use </span>reactive_graph_graph::PropertyTypes;
 
 <span class="kw">pub struct </span>ComponentManagerDelegate {
     component_manager: Arc&lt;<span class="kw">dyn </span>reactive_graph_type_system_api::ComponentManager + Send + Sync&gt;,
@@ -169,13 +167,7 @@
         <span class="self">self</span>.component_manager.count_by_namespace(namespace)
     }
 
-    <span class="kw">fn </span>create(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        ty: <span class="kw-2">&amp;</span>ComponentTypeId,
-        description: <span class="kw-2">&amp;</span>str,
-        properties: Vec&lt;PropertyType&gt;,
-        extensions: Vec&lt;Extension&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentCreationError&gt; {
+    <span class="kw">fn </span>create(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, description: <span class="kw-2">&amp;</span>str, properties: PropertyTypes, extensions: Extensions) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentCreationError&gt; {
         <span class="self">self</span>.component_manager.create_component(ty, description, properties, extensions)
     }
 
