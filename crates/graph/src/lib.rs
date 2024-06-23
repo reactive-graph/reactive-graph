@@ -1,4 +1,3 @@
-#![feature(result_option_inspect)]
 #![feature(register_tool)]
 #![register_tool(tarpaulin)]
 

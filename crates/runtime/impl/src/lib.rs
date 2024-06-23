@@ -3,7 +3,6 @@
 #![feature(register_tool)]
 #![feature(test)]
 #![feature(path_file_prefix)]
-#![feature(result_option_inspect)]
 #![register_tool(tarpaulin)]
 #![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 
