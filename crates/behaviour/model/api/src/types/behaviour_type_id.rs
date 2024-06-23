@@ -15,7 +15,6 @@ use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use rand_derive2::RandGen;
 use reactive_graph_graph::prelude::*;
-use reactive_graph_graph::NamespacedTypeIds;
 use schemars::gen::SchemaGenerator;
 use schemars::schema::ArrayValidation;
 use schemars::schema::InstanceType;
@@ -24,13 +23,6 @@ use schemars::schema::SchemaObject;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
-
-use reactive_graph_graph::NamespacedType;
-use reactive_graph_graph::NamespacedTypeGetter;
-use reactive_graph_graph::TypeDefinition;
-use reactive_graph_graph::TypeDefinitionGetter;
-use reactive_graph_graph::TypeIdType;
-use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]

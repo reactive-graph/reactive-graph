@@ -27,7 +27,6 @@ use rustls_pemfile::certs;
 use rustls_pemfile::read_all;
 use rustls_pemfile::Item;
 use springtime_di::component_alias;
-use springtime_di::component_registry::TypedComponentDefinitionRegistry;
 use springtime_di::Component;
 
 use reactive_graph_config_api::ConfigManager;

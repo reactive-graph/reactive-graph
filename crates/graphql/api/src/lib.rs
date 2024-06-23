@@ -1,3 +1,4 @@
+#[allow(unused_imports)]
 pub use error::*;
 pub use graphql_query_service::*;
 pub use graphql_schema_manager::*;

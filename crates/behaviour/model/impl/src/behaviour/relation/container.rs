@@ -1,6 +1,5 @@
 use reactive_graph_behaviour_model_api::prelude::*;
 
-use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_reactive_model_api::ReactiveInstanceContainer;
 use reactive_graph_reactive_model_impl::ReactiveEntity;

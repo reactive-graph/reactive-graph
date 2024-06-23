@@ -11,6 +11,7 @@ pub use types::relations::*;
 pub use types::type_id::*;
 pub use types::variables::*;
 
+#[allow(unused_imports)]
 pub use instances::components::*;
 pub use instances::entities::*;
 pub use instances::flows::*;
@@ -37,6 +38,7 @@ pub mod prelude {
     pub use crate::types::type_id::*;
     pub use crate::types::variables::*;
 
+    #[allow(unused_imports)]
     pub use crate::instances::components::*;
     pub use crate::instances::entities::*;
     pub use crate::instances::flows::*;

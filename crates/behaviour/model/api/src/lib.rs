@@ -5,6 +5,7 @@ pub use error::*;
 pub use factory::*;
 pub use fsm::*;
 pub use function::*;
+#[allow(unused_imports)]
 pub use instances::*;
 pub use observer::*;
 pub use state::*;
@@ -34,6 +35,7 @@ pub mod prelude {
     pub use crate::factory::*;
     pub use crate::fsm::*;
     pub use crate::function::*;
+    #[allow(unused_imports)]
     pub use crate::instances::*;
     pub use crate::observer::*;
     pub use crate::state::*;

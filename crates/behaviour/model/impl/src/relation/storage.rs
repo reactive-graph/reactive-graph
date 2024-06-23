@@ -5,7 +5,6 @@ use dashmap::DashMap;
 use reactive_graph_behaviour_model_api::prelude::*;
 
 use crate::BehaviourStorage;
-use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
 

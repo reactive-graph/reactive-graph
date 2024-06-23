@@ -19,7 +19,6 @@ pub use behaviours::entities::entity_behaviour_registry::*;
 pub use behaviours::entities::entity_component_behaviour_registry::*;
 pub use behaviours::relations::relation_behaviour_registry::*;
 pub use behaviours::relations::relation_component_behaviour_registry::*;
-pub use embedded_asset_provider::*;
 pub use error::activation::*;
 pub use error::hot_deploy::*;
 pub use error::lifecycle::*;
@@ -29,8 +28,6 @@ pub use graphql::http_body::HttpBody;
 pub use graphql::web_resource_manager::*;
 pub use graphql::web_resource_provider::*;
 pub use reactive_graph_graph as model;
-//#[cfg(feature = "derive")]
-//pub use reactive_graph_plugin_derive::TypeProvider;
 pub use instances::entities::entity_instance_manager::*;
 pub use instances::flows::flow_instance_manager::*;
 pub use instances::relations::relation_instance_manager::*;
@@ -86,7 +83,6 @@ pub mod plugin_context;
 pub mod plugin_declaration;
 pub mod plugin_dependency;
 pub mod plugin_state;
-// pub mod transition;
 
 pub static RUSTC_VERSION: &str = env!("RUSTC_VERSION");
 pub static PLUGIN_API_VERSION: &str = env!("CARGO_PKG_VERSION");
