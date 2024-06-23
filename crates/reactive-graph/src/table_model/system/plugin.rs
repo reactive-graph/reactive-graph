@@ -18,18 +18,21 @@ pub(crate) struct Plugin {
     pub rustc_version: String,
 }
 
+#[allow(unused)]
 #[derive(Clone, Debug, Tabled)]
 pub(crate) struct PluginDependencies {
     #[tabled(display_with("display_plugins"))]
     pub dependencies: Vec<Plugin>,
 }
 
+#[allow(unused)]
 #[derive(Clone, Debug, Tabled)]
 pub(crate) struct PluginDependents {
     #[tabled(display_with("display_plugins"))]
     pub dependents: Vec<Plugin>,
 }
 
+#[allow(unused)]
 pub(crate) fn display_plugins(plugins: &Vec<Plugin>) -> String {
     Table::new(plugins).to_string()
 }

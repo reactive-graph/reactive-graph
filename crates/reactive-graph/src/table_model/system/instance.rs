@@ -6,6 +6,7 @@ use crate::table_model::container::DefaultTableOptions;
 #[derive(Clone, Debug, Tabled)]
 pub struct InstanceInfo {
     pub name: String,
+    #[allow(unused)]
     #[tabled(skip)]
     pub description: String,
     pub version: String,
@@ -13,14 +14,19 @@ pub struct InstanceInfo {
     pub rustc_version: String,
     pub hostname: String,
     pub port: i32,
+    #[allow(unused)]
     #[tabled(skip)]
     pub secure: bool,
+    #[allow(unused)]
     #[tabled(skip)]
     pub git_branch: String,
+    #[allow(unused)]
     #[tabled(skip)]
     pub git_commit: String,
+    #[allow(unused)]
     #[tabled(skip)]
     pub build_date: String,
+    #[allow(unused)]
     #[tabled(skip)]
     pub last_seen: String,
 }
