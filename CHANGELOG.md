@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.10.0-1] - 2024-03-24
+
+This is a highly technical release with a lot of major refactorings and design changes.
+
+### Highlights
+
+- Modularized code base
+- API separation
+- Replaced dependency injection framework
+
+### Added
+
+- Added plural types (`EntityTypes` for a set of `EntityType`s) + Changed API to use plural types
+- Handle reactive instances ReactiveEntity + ReactiveRelation like smart pointers (is this an anti-pattern?)
+- Introduced thiserror for lots of error types
+- Added test mocks using default_test in order to write tests easier
+- Added declarative reactive models (reactive-derive + TypedReactivePropertyContainer)
+- Added RelationTypeProviderRegistry and FlowTypeProviderRegistry
+- Provide and use preludes
+- Support JSON, JSON5 and TOML formats for importing and exporting types
+- Added configuration for the location to the SSL certificate and private key
+- Remotes Management
+- JSON-Schemas
+- CLI REPL + Improved CLI
+
+### Changed
+
+- Use TypedBuilder in core-model + migrate all calls to the new builders
+- Refactored reactive layer out of core-model
+- Moved reactive from core-model to reactive
+- Refactored hashmap and vec to dashmap and dashset
+- Implemented lots of conversions between types and instances
+- Refactored import export managers into own services to separate concerns
+- Grouped services in a business layer
+- Moved tests into implementation classes to follow rust coding guidelines
+- Modernized lots of tests with mocks
+- Renamed model to inexor_rgf_graph
+- Plugins can use springtime dependency injection + Added declarative macros for type providers
+- Extended behaviour API: BehaviourFactoryCreator + BehaviourFunctions
+- Moved behaviour functionality into behaviour_api and behaviour impl modules
+- Moved reactive functionality into reactive_api and reactive impl modules
+- Refactored error methods in dynamic graph to regular error types with thiserror
+- Made handle_web_resource async
+- Web resource providers must have an ID
+- Make import export managers fully async
+- Improved error types for import and export types
+
+### Removed
+
+- Removed IndraDB
 
 ## [0.9.1-25] - 2023-07-20
 
@@ -88,7 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Executable: Added cli argument for disabling hot deployment
 - Executable: Added cli argument for configuring the hostname and port of the GraphQL server
 - Executable: Added cli argument for configuring the shutdown timeout
-- Type System: Allow merging types into existing types and plugin type providers are now merging instead of ignoring changes
+- Type System: Allow merging types into existing types and plugin type providers are now merging instead of ignoring
+  changes
 - GraphQL: Simplify trigger action by providing a dedicated GraphQL mutation
 - GraphQL: Allow sorting of type properties
 - GraphQL: Allow sorting of type extensions
@@ -199,4 +250,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Plugin-API: Removed dependencies for faster builds and smaller plugin binaries: `actix-http`, `actix-web`, `async-std`, `query_interface`, `inexor-rgf-core-reactive`
+- Plugin-API: Removed dependencies for faster builds and smaller plugin
+  binaries: `actix-http`, `actix-web`, `async-std`, `query_interface`, `inexor-rgf-core-reactive`
