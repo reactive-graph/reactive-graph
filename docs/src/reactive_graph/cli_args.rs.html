@@ -118,7 +118,7 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::Parser;
 <span class="kw">use </span>clap::Subcommand;
 
-<span class="attr">#[cfg(client)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cli::args::ClientArgs;
 
 <span class="doccomment">/// Simple program to greet a person
@@ -228,7 +228,7 @@
 <span class="attr">#[derive(Subcommand, Debug)]
 </span><span class="kw">pub enum </span>Commands {
     <span class="doccomment">/// Connects to a client
-    </span><span class="attr">#[cfg(client)]
+    </span><span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
     #[non_exhaustive]
     </span>Client(ClientArgs),
 }

@@ -181,6 +181,10 @@
 <a href="#181" id="181">181</a>
 <a href="#182" id="182">182</a>
 <a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>std::hash::Hash;
@@ -265,20 +269,24 @@
         }
     }
 
+    <span class="kw">pub fn </span>base_url(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="macro">format!</span>(<span class="string">"{}://{}:{}"</span>, <span class="self">self</span>.protocol(), <span class="self">self</span>.hostname, <span class="self">self</span>.port)
+    }
+
     <span class="kw">pub fn </span>url_graphql(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="macro">format!</span>(<span class="string">"{}://{}:{}{}"</span>, <span class="self">self</span>.protocol(), <span class="self">self</span>.hostname, <span class="self">self</span>.port, <span class="self">self</span>.endpoint_graphql)
+        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_graphql)
     }
 
     <span class="kw">pub fn </span>url_dynamic_graph(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="macro">format!</span>(<span class="string">"{}://{}:{}{}"</span>, <span class="self">self</span>.protocol(), <span class="self">self</span>.hostname, <span class="self">self</span>.port, <span class="self">self</span>.endpoint_dynamic_graph)
+        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_dynamic_graph)
     }
 
     <span class="kw">pub fn </span>url_runtime(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="macro">format!</span>(<span class="string">"{}://{}:{}{}"</span>, <span class="self">self</span>.protocol(), <span class="self">self</span>.hostname, <span class="self">self</span>.port, <span class="self">self</span>.endpoint_runtime)
+        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_runtime)
     }
 
     <span class="kw">pub fn </span>url_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="macro">format!</span>(<span class="string">"{}://{}:{}{}"</span>, <span class="self">self</span>.protocol(), <span class="self">self</span>.hostname, <span class="self">self</span>.port, <span class="self">self</span>.endpoint_plugin)
+        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_plugin)
     }
 }
 

@@ -66,18 +66,18 @@
 <span class="kw">use </span>log4rs::config::Root;
 <span class="kw">use </span>log4rs::Config;
 
-<span class="attr">#[cfg(client)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cli::client;
 <span class="kw">use </span><span class="kw">crate</span>::cli_args::CliArguments;
-<span class="attr">#[cfg(client)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cli_args::Commands;
 <span class="kw">use </span><span class="kw">crate</span>::server::server;
 
-<span class="attr">#[cfg(client)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">mod </span>cli;
 <span class="kw">mod </span>cli_args;
 <span class="kw">mod </span>server;
-<span class="attr">#[cfg(client)]
+<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">mod </span>table_model;
 
 <span class="attr">#[global_allocator]
@@ -108,7 +108,7 @@
     }
     <span class="kw">match </span>cli_args.commands {
         <span class="prelude-val">Some</span>(commands) =&gt; <span class="kw">match </span>commands {
-            <span class="attr">#[cfg(client)]
+            <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
             </span>Commands::Client(args) =&gt; client(args).<span class="kw">await</span>,
         },
         <span class="prelude-val">None </span>=&gt; server(cli_args).<span class="kw">await</span>,
