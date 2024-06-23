@@ -1,4 +1,5 @@
 use serde_json::Value;
+use std::ops::Deref;
 
 use crate::schema_graphql::scalar::Json;
 use reactive_graph_graph::NamespacedTypeGetter;
@@ -97,6 +98,14 @@ impl From<Extension> for reactive_graph_graph::Extension {
 
 #[derive(Clone, Debug)]
 pub struct Extensions(pub Vec<Extension>);
+
+impl Deref for Extensions {
+    type Target = Vec<Extension>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
 
 impl From<Extensions> for reactive_graph_graph::Extensions {
     fn from(extensions: Extensions) -> Self {

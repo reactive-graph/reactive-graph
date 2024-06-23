@@ -45,20 +45,3 @@ pub(crate) async fn components(client: &Arc<InexorRgfClient>, component_args: Co
         }
     }
 }
-
-// fn print_component(component: Component) {
-//     print_components(vec![component]);
-// }
-//
-// fn print_components(components: Vec<Component>) {
-//     let components: Vec<crate::table_model::types::component::Component> = components.into_iter().map(|p| p.into()).collect();
-//     let table = Table::new(components)
-//         .with(Style::extended())
-//         .with(
-//             Modify::new(Segment::new(1.., 0..2))
-//                 .with(Width::increase(22).priority())
-//                 .with(Width::truncate(25).suffix("...")),
-//         )
-//         .to_string();
-//     println!("{}", table);
-// }

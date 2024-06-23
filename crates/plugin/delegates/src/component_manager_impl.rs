@@ -12,7 +12,9 @@ use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
 use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
 
 pub struct ComponentManagerDelegate {
     component_manager: Arc<dyn reactive_graph_type_system_api::ComponentManager + Send + Sync>,
@@ -60,13 +62,7 @@ impl reactive_graph_plugin_api::ComponentManager for ComponentManagerDelegate {
         self.component_manager.count_by_namespace(namespace)
     }
 
-    fn create(
-        &self,
-        ty: &ComponentTypeId,
-        description: &str,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
-    ) -> Result<Component, ComponentCreationError> {
+    fn create(&self, ty: &ComponentTypeId, description: &str, properties: PropertyTypes, extensions: Extensions) -> Result<Component, ComponentCreationError> {
         self.component_manager.create_component(ty, description, properties, extensions)
     }
 

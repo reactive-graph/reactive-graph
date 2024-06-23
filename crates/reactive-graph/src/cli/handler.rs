@@ -8,6 +8,7 @@ use crate::cli::system::plugin::plugins;
 use crate::cli::system::remotes::remotes;
 use crate::cli::system::shutdown::shutdown;
 use crate::cli::types::components::components;
+use crate::cli::types::entities::entity_types;
 use reactive_graph_client::InexorRgfClient;
 
 pub(crate) async fn handle_command(client: &Arc<InexorRgfClient>, command: ClientCommands) -> CommandResult {
@@ -20,7 +21,7 @@ pub(crate) async fn handle_command(client: &Arc<InexorRgfClient>, command: Clien
         ClientCommands::Shutdown => shutdown(client).await,
         // Types
         ClientCommands::Components(args) => components(client, args).await,
-        // TODO: Entity Types
+        ClientCommands::EntityTypes(args) => entity_types(client, args).await,
         // TODO: Relation Types
         // TODO: Flow Types
         // TODO: Entity Instances

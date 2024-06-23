@@ -9,7 +9,9 @@ use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
 use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
 use reactive_graph_type_system_api::ComponentCreationError;
 
 pub trait ComponentManager: Send + Sync {
@@ -41,13 +43,7 @@ pub trait ComponentManager: Send + Sync {
     fn count_by_namespace(&self, namespace: &str) -> usize;
 
     /// Creates a new component with the given name and the given properties.
-    fn create(
-        &self,
-        ty: &ComponentTypeId,
-        description: &str,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
-    ) -> Result<Component, ComponentCreationError>;
+    fn create(&self, ty: &ComponentTypeId, description: &str, properties: PropertyTypes, extensions: Extensions) -> Result<Component, ComponentCreationError>;
 
     /// Replaces the component with the given name with the given component.
     fn replace(&self, ty: &ComponentTypeId, component: Component);

@@ -18,10 +18,12 @@ use reactive_graph_graph::Components;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionContainer;
 use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
 use reactive_graph_graph::NamespacedTypeContainer;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypeContainer;
+use reactive_graph_graph::PropertyTypes;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_type_system_api::ComponentCreationError;
 use reactive_graph_type_system_api::ComponentManager;
@@ -108,8 +110,8 @@ impl ComponentManager for ComponentManagerImpl {
         &self,
         ty: &ComponentTypeId,
         description: &str,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
+        properties: PropertyTypes,
+        extensions: Extensions,
     ) -> Result<reactive_graph_graph::Component, ComponentCreationError> {
         let component = reactive_graph_graph::Component::new(ty.clone(), description, properties.to_vec(), extensions.to_vec());
         self.register(component).map_err(ComponentCreationError::RegistrationError)

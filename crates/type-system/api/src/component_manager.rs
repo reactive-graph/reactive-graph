@@ -16,8 +16,10 @@ use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
+use reactive_graph_graph::Extensions;
 use reactive_graph_graph::Namespaces;
 use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::PropertyTypes;
 use reactive_graph_lifecycle::Lifecycle;
 
 #[injectable]
@@ -70,8 +72,8 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
         &self,
         ty: &ComponentTypeId,
         description: &str,
-        properties: Vec<PropertyType>,
-        extensions: Vec<Extension>,
+        properties: PropertyTypes,
+        extensions: Extensions,
     ) -> Result<Component, ComponentCreationError>;
 
     /// Replaces the component with the given name with the given component.
