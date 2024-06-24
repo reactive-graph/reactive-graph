@@ -1,5 +1,8 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
+    use cynic::Operation;
+    use cynic::QueryFragment;
+    use cynic::QueryVariables;
     use typed_builder::TypedBuilder;
 
     use crate::schema_graphql::types::component::Component;
@@ -10,7 +13,7 @@ pub mod queries {
     use reactive_graph_graph::ComponentTypeId;
     use reactive_graph_graph::NamespacedTypeGetter;
 
-    #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug, TypedBuilder)]
     pub struct ComponentTypeIdVariables {
         namespace: String,
         name: String,
@@ -25,25 +28,25 @@ pub mod queries {
         }
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Query")]
     pub struct GetAllComponents {
         pub types: GetAllComponentsTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types")]
     pub struct GetAllComponentsTypes {
         pub components: Vec<Component>,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Query", variables = "ComponentTypeIdVariables")]
     pub struct GetComponentByType {
         pub types: GetComponentByTypeTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "ComponentTypeIdVariables")]
     pub struct GetComponentByTypeTypes {
         #[arguments(
@@ -55,7 +58,7 @@ pub mod queries {
         pub components: Vec<Component>,
     }
 
-    #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug, TypedBuilder)]
     pub struct CreateComponentVariables {
         pub namespace: String,
         pub name: String,
@@ -67,36 +70,36 @@ pub mod queries {
         pub extensions: Option<Vec<ExtensionDefinition>>,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "CreateComponentVariables")]
     pub struct CreateComponent {
         pub types: MutationTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateComponentVariables")]
     pub struct MutationTypes {
         pub components: MutationComponents,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateComponentVariables")]
     pub struct MutationComponents {
         #[arguments(type: { name: $name, namespace: $namespace }, description: $description, properties: $properties, extensions: $extensions)]
         pub create: Component,
     }
 
-    pub fn get_all_components_query() -> cynic::Operation<GetAllComponents, ()> {
+    pub fn get_all_components_query() -> Operation<GetAllComponents, ()> {
         use cynic::QueryBuilder;
         GetAllComponents::build(())
     }
 
-    pub fn get_component_by_type_query(ty: &ComponentTypeId) -> cynic::Operation<GetComponentByType, ComponentTypeIdVariables> {
+    pub fn get_component_by_type_query(ty: &ComponentTypeId) -> Operation<GetComponentByType, ComponentTypeIdVariables> {
         use cynic::QueryBuilder;
         GetComponentByType::build(ty.clone().into())
     }
 
-    pub fn create_component_mutation(component: reactive_graph_graph::Component) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
+    pub fn create_component_mutation(component: reactive_graph_graph::Component) -> Operation<CreateComponent, CreateComponentVariables> {
         use cynic::MutationBuilder;
         // let component = component.into();
         let namespace = component.namespace();

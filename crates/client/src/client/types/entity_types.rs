@@ -1,5 +1,8 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
+    use cynic::Operation;
+    use cynic::QueryFragment;
+    use cynic::QueryVariables;
     use typed_builder::TypedBuilder;
 
     use crate::schema_graphql::types::entity_type::EntityType;
@@ -10,7 +13,7 @@ pub mod queries {
     use reactive_graph_graph::EntityTypeId;
     use reactive_graph_graph::NamespacedTypeGetter;
 
-    #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug, TypedBuilder)]
     pub struct EntityTypeTypeIdVariables {
         namespace: String,
         name: String,
@@ -25,25 +28,25 @@ pub mod queries {
         }
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Query")]
     pub struct GetAllEntityTypes {
         pub types: GetAllEntityTypesTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types")]
     pub struct GetAllEntityTypesTypes {
         pub entities: Vec<EntityType>,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Query", variables = "EntityTypeTypeIdVariables")]
     pub struct GetEntityTypeByType {
         pub types: GetEntityTypeByTypeTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Types", variables = "EntityTypeTypeIdVariables")]
     pub struct GetEntityTypeByTypeTypes {
         #[arguments(
@@ -55,7 +58,7 @@ pub mod queries {
         pub entities: Vec<EntityType>,
     }
 
-    #[derive(cynic::QueryVariables, Debug, TypedBuilder)]
+    #[derive(QueryVariables, Debug, TypedBuilder)]
     pub struct CreateEntityTypeVariables {
         pub namespace: String,
         pub name: String,
@@ -73,30 +76,30 @@ pub mod queries {
         pub types: MutationTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateEntityTypeVariables")]
     pub struct MutationTypes {
         pub entities: MutationEntityTypes,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateEntityTypeVariables")]
     pub struct MutationEntityTypes {
         #[arguments(type: { name: $name, namespace: $namespace }, description: $description, properties: $properties, extensions: $extensions)]
         pub create: EntityType,
     }
 
-    pub fn get_all_entity_types_query() -> cynic::Operation<GetAllEntityTypes, ()> {
+    pub fn get_all_entity_types_query() -> Operation<GetAllEntityTypes, ()> {
         use cynic::QueryBuilder;
         GetAllEntityTypes::build(())
     }
 
-    pub fn get_entity_type_by_type_query(ty: &EntityTypeId) -> cynic::Operation<GetEntityTypeByType, EntityTypeTypeIdVariables> {
+    pub fn get_entity_type_by_type_query(ty: &EntityTypeId) -> Operation<GetEntityTypeByType, EntityTypeTypeIdVariables> {
         use cynic::QueryBuilder;
         GetEntityTypeByType::build(ty.clone().into())
     }
 
-    pub fn create_entity_type_mutation(entity_type: reactive_graph_graph::EntityType) -> cynic::Operation<CreateEntityType, CreateEntityTypeVariables> {
+    pub fn create_entity_type_mutation(entity_type: reactive_graph_graph::EntityType) -> Operation<CreateEntityType, CreateEntityTypeVariables> {
         use cynic::MutationBuilder;
         // let entity_type = entity_type.into();
         let namespace = entity_type.namespace();
@@ -114,7 +117,7 @@ pub mod queries {
         CreateEntityType::build(vars)
     }
 
-    pub fn create_entity_type_with_variables(variables: CreateEntityTypeVariables) -> cynic::Operation<CreateEntityType, CreateEntityTypeVariables> {
+    pub fn create_entity_type_with_variables(variables: CreateEntityTypeVariables) -> Operation<CreateEntityType, CreateEntityTypeVariables> {
         use cynic::MutationBuilder;
         CreateEntityType::build(variables)
     }
