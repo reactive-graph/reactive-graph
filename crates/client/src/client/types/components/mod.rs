@@ -73,18 +73,18 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "CreateComponentVariables")]
     pub struct CreateComponent {
-        pub types: MutationTypes,
+        pub types: CreateComponentMutationTypes,
     }
 
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateComponentVariables")]
-    pub struct MutationTypes {
-        pub components: MutationComponents,
+    pub struct CreateComponentMutationTypes {
+        pub components: CreateComponentMutationComponents,
     }
 
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateComponentVariables")]
-    pub struct MutationComponents {
+    pub struct CreateComponentMutationComponents {
         #[arguments(type: { name: $name, namespace: $namespace }, description: $description, properties: $properties, extensions: $extensions)]
         pub create: Component,
     }
@@ -117,7 +117,7 @@ pub mod queries {
         CreateComponent::build(vars)
     }
 
-    pub fn create_component_with_variables(variables: CreateComponentVariables) -> cynic::Operation<CreateComponent, CreateComponentVariables> {
+    pub fn create_component_with_variables(variables: CreateComponentVariables) -> Operation<CreateComponent, CreateComponentVariables> {
         use cynic::MutationBuilder;
         CreateComponent::build(variables)
     }
