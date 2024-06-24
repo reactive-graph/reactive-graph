@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/client/src/client/types/components.rs`."><title>components.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (3cb521a43 2024-06-22)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/client/src/client/types/entity_types/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="reactive_graph_client" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (bcf94dec5 2024-06-23)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -228,65 +228,75 @@
 <a href="#228" id="228">228</a>
 <a href="#229" id="229">229</a>
 <a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_graphql.graphql"#</span>, module = <span class="string">"crate::schema_graphql::schema"</span>)]
 </span><span class="kw">pub mod </span>queries {
+    <span class="kw">use </span>cynic::Operation;
+    <span class="kw">use </span>cynic::QueryFragment;
+    <span class="kw">use </span>cynic::QueryVariables;
     <span class="kw">use </span>typed_builder::TypedBuilder;
 
-    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::component::Component;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::entity_type::EntityType;
     <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::extension::ExtensionDefinition;
     <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::extension::ExtensionDefinitions;
     <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::property_type::PropertyTypeDefinition;
     <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::property_type::PropertyTypeDefinitions;
-    <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
+    <span class="kw">use </span>reactive_graph_graph::EntityTypeId;
     <span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
 
-    <span class="attr">#[derive(cynic::QueryVariables, Debug, TypedBuilder)]
-    </span><span class="kw">pub struct </span>ComponentTypeIdVariables {
+    <span class="attr">#[derive(QueryVariables, Debug, TypedBuilder)]
+    </span><span class="kw">pub struct </span>EntityTypeTypeIdVariables {
         namespace: String,
         name: String,
     }
 
-    <span class="kw">impl </span>From&lt;ComponentTypeId&gt; <span class="kw">for </span>ComponentTypeIdVariables {
-        <span class="kw">fn </span>from(ty: ComponentTypeId) -&gt; <span class="self">Self </span>{
-            ComponentTypeIdVariables {
+    <span class="kw">impl </span>From&lt;EntityTypeId&gt; <span class="kw">for </span>EntityTypeTypeIdVariables {
+        <span class="kw">fn </span>from(ty: EntityTypeId) -&gt; <span class="self">Self </span>{
+            EntityTypeTypeIdVariables {
                 namespace: ty.namespace(),
                 name: ty.type_name(),
             }
         }
     }
 
-    <span class="attr">#[derive(cynic::QueryFragment, Debug)]
+    <span class="attr">#[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = <span class="string">"Query"</span>)]
-    </span><span class="kw">pub struct </span>GetAllComponents {
-        <span class="kw">pub </span>types: GetAllComponentsTypes,
+    </span><span class="kw">pub struct </span>GetAllEntityTypes {
+        <span class="kw">pub </span>types: GetAllEntityTypesTypes,
     }
 
-    <span class="attr">#[derive(cynic::QueryFragment, Debug)]
+    <span class="attr">#[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = <span class="string">"Types"</span>)]
-    </span><span class="kw">pub struct </span>GetAllComponentsTypes {
-        <span class="kw">pub </span>components: Vec&lt;Component&gt;,
+    </span><span class="kw">pub struct </span>GetAllEntityTypesTypes {
+        <span class="kw">pub </span>entities: Vec&lt;EntityType&gt;,
     }
 
-    <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">"Query"</span>, variables = <span class="string">"ComponentTypeIdVariables"</span>)]
-    </span><span class="kw">pub struct </span>GetComponentByType {
-        <span class="kw">pub </span>types: GetComponentByTypeTypes,
+    <span class="attr">#[derive(QueryFragment, Debug)]
+    #[cynic(graphql_type = <span class="string">"Query"</span>, variables = <span class="string">"EntityTypeTypeIdVariables"</span>)]
+    </span><span class="kw">pub struct </span>GetEntityTypeByType {
+        <span class="kw">pub </span>types: GetEntityTypeByTypeTypes,
     }
 
-    <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">"Types"</span>, variables = <span class="string">"ComponentTypeIdVariables"</span>)]
-    </span><span class="kw">pub struct </span>GetComponentByTypeTypes {
+    <span class="attr">#[derive(QueryFragment, Debug)]
+    #[cynic(graphql_type = <span class="string">"Types"</span>, variables = <span class="string">"EntityTypeTypeIdVariables"</span>)]
+    </span><span class="kw">pub struct </span>GetEntityTypeByTypeTypes {
         <span class="attr">#[arguments(
           <span class="kw">type</span>: {
             namespace: <span class="macro-nonterminal">$namespace</span>,
             name: <span class="macro-nonterminal">$name
           </span>}
         )]
-        </span><span class="kw">pub </span>components: Vec&lt;Component&gt;,
+        </span><span class="kw">pub </span>entities: Vec&lt;EntityType&gt;,
     }
 
-    <span class="attr">#[derive(cynic::QueryVariables, Debug, TypedBuilder)]
-    </span><span class="kw">pub struct </span>CreateComponentVariables {
+    <span class="attr">#[derive(QueryVariables, Debug, TypedBuilder)]
+    </span><span class="kw">pub struct </span>CreateEntityTypeVariables {
         <span class="kw">pub </span>namespace: String,
         <span class="kw">pub </span>name: String,
         <span class="attr">#[builder(default)]
@@ -298,78 +308,79 @@
     }
 
     <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = <span class="string">"Mutation"</span>, variables = <span class="string">"CreateComponentVariables"</span>)]
-    </span><span class="kw">pub struct </span>CreateComponent {
+    #[cynic(graphql_type = <span class="string">"Mutation"</span>, variables = <span class="string">"CreateEntityTypeVariables"</span>)]
+    </span><span class="kw">pub struct </span>CreateEntityType {
         <span class="kw">pub </span>types: MutationTypes,
     }
 
-    <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(variables = <span class="string">"CreateComponentVariables"</span>)]
+    <span class="attr">#[derive(QueryFragment, Debug)]
+    #[cynic(variables = <span class="string">"CreateEntityTypeVariables"</span>)]
     </span><span class="kw">pub struct </span>MutationTypes {
-        <span class="kw">pub </span>components: MutationComponents,
+        <span class="kw">pub </span>entities: MutationEntityTypes,
     }
 
-    <span class="attr">#[derive(cynic::QueryFragment, Debug)]
-    #[cynic(variables = <span class="string">"CreateComponentVariables"</span>)]
-    </span><span class="kw">pub struct </span>MutationComponents {
+    <span class="attr">#[derive(QueryFragment, Debug)]
+    #[cynic(variables = <span class="string">"CreateEntityTypeVariables"</span>)]
+    </span><span class="kw">pub struct </span>MutationEntityTypes {
         <span class="attr">#[arguments(<span class="kw">type</span>: { name: <span class="macro-nonterminal">$name</span>, namespace: <span class="macro-nonterminal">$namespace </span>}, description: <span class="macro-nonterminal">$description</span>, properties: <span class="macro-nonterminal">$properties</span>, extensions: <span class="macro-nonterminal">$extensions</span>)]
-        </span><span class="kw">pub </span>create: Component,
+        </span><span class="kw">pub </span>create: EntityType,
     }
 
-    <span class="kw">pub fn </span>get_all_components_query() -&gt; cynic::Operation&lt;GetAllComponents, ()&gt; {
+    <span class="kw">pub fn </span>get_all_entity_types_query() -&gt; Operation&lt;GetAllEntityTypes, ()&gt; {
         <span class="kw">use </span>cynic::QueryBuilder;
-        GetAllComponents::build(())
+        GetAllEntityTypes::build(())
     }
 
-    <span class="kw">pub fn </span>get_component_by_type_query(ty: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; cynic::Operation&lt;GetComponentByType, ComponentTypeIdVariables&gt; {
+    <span class="kw">pub fn </span>get_entity_type_by_type_query(ty: <span class="kw-2">&amp;</span>EntityTypeId) -&gt; Operation&lt;GetEntityTypeByType, EntityTypeTypeIdVariables&gt; {
         <span class="kw">use </span>cynic::QueryBuilder;
-        GetComponentByType::build(ty.clone().into())
+        GetEntityTypeByType::build(ty.clone().into())
     }
 
-    <span class="kw">pub fn </span>create_component_mutation(component: reactive_graph_graph::Component) -&gt; cynic::Operation&lt;CreateComponent, CreateComponentVariables&gt; {
+    <span class="kw">pub fn </span>create_entity_type_mutation(entity_type: reactive_graph_graph::EntityType) -&gt; Operation&lt;CreateEntityType, CreateEntityTypeVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        <span class="comment">// let component = component.into();
-        </span><span class="kw">let </span>namespace = component.namespace();
-        <span class="kw">let </span>name = component.type_name();
-        <span class="kw">let </span>description = component.description;
-        <span class="kw">let </span>property_types: PropertyTypeDefinitions = component.properties.into();
-        <span class="kw">let </span>extensions: ExtensionDefinitions = component.extensions.into();
-        <span class="kw">let </span>vars = CreateComponentVariables {
+        <span class="comment">// let entity_type = entity_type.into();
+        </span><span class="kw">let </span>namespace = entity_type.namespace();
+        <span class="kw">let </span>name = entity_type.type_name();
+        <span class="kw">let </span>description = entity_type.description;
+        <span class="kw">let </span>property_types: PropertyTypeDefinitions = entity_type.properties.into();
+        <span class="kw">let </span>extensions: ExtensionDefinitions = entity_type.extensions.into();
+        <span class="kw">let </span>vars = CreateEntityTypeVariables {
             namespace,
             name,
             description: <span class="prelude-val">Some</span>(description),
             properties: <span class="prelude-val">Some</span>(property_types.<span class="number">0</span>),
             extensions: <span class="prelude-val">Some</span>(extensions.<span class="number">0</span>),
         };
-        CreateComponent::build(vars)
+        CreateEntityType::build(vars)
     }
 
-    <span class="kw">pub fn </span>create_component_with_variables(variables: CreateComponentVariables) -&gt; cynic::Operation&lt;CreateComponent, CreateComponentVariables&gt; {
+    <span class="kw">pub fn </span>create_entity_type_with_variables(variables: CreateEntityTypeVariables) -&gt; Operation&lt;CreateEntityType, CreateEntityTypeVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        CreateComponent::build(variables)
+        CreateEntityType::build(variables)
     }
 
     <span class="attr">#[cfg(test)]
     </span><span class="kw">mod </span>tests {
         <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
 
-        <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
+        <span class="kw">use </span>reactive_graph_graph::ComponentTypeIds;
+        <span class="kw">use </span>reactive_graph_graph::EntityTypeId;
         <span class="kw">use </span>reactive_graph_graph::Extensions;
         <span class="kw">use </span>reactive_graph_graph::PropertyTypes;
 
         <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
-        </span><span class="kw">async fn </span>test_get_components_by_type() {
+        </span><span class="kw">async fn </span>test_get_entity_types_by_type() {
             <span class="kw">let </span>runtime = RuntimeBuilder::new()
                 .ignore_config_files()
                 .instance_name(<span class="string">"Test Runtime Builder Get"</span>)
                 .pick_free_port()
                 .disable_all_plugins(<span class="bool-val">true</span>)
                 .get();
-            <span class="kw">let </span>ty = ComponentTypeId::new_from_type(<span class="string">"test"</span>, <span class="string">"test"</span>);
-            <span class="kw">let </span>component_manager = runtime.get_component_manager();
-            <span class="kw">let </span>_component = component_manager
-                .create_component(<span class="kw-2">&amp;</span>ty, <span class="string">""</span>, PropertyTypes::new(), Extensions::new())
-                .expect(<span class="string">"Failed to create component"</span>);
+            <span class="kw">let </span>ty = EntityTypeId::new_from_type(<span class="string">"test"</span>, <span class="string">"test"</span>);
+            <span class="kw">let </span>entity_type_manager = runtime.get_entity_type_manager();
+            <span class="kw">let </span>_entity_type = entity_type_manager
+                .create_entity_type(<span class="kw-2">&amp;</span>ty, <span class="string">""</span>, ComponentTypeIds::new(), PropertyTypes::new(), Extensions::new())
+                .expect(<span class="string">"Failed to create entity_type"</span>);
             <span class="comment">// let inner_runtime = runtime.clone();
             </span><span class="kw">let </span>_port = runtime.get_config_manager().get_graphql_server_config().port();
         }
@@ -381,80 +392,83 @@
 
     <span class="kw">use </span>cynic::http::ReqwestExt;
 
-    <span class="kw">use </span><span class="kw">crate</span>::client::types::components::queries::create_component_mutation;
-    <span class="kw">use </span><span class="kw">crate</span>::client::types::components::queries::create_component_with_variables;
-    <span class="kw">use </span><span class="kw">crate</span>::client::types::components::queries::get_all_components_query;
-    <span class="kw">use </span><span class="kw">crate</span>::client::types::components::queries::get_component_by_type_query;
-    <span class="kw">use </span><span class="kw">crate</span>::client::types::components::queries::CreateComponentVariables;
+    <span class="kw">use </span><span class="kw">crate</span>::client::types::entity_types::queries::create_entity_type_mutation;
+    <span class="kw">use </span><span class="kw">crate</span>::client::types::entity_types::queries::create_entity_type_with_variables;
+    <span class="kw">use </span><span class="kw">crate</span>::client::types::entity_types::queries::get_all_entity_types_query;
+    <span class="kw">use </span><span class="kw">crate</span>::client::types::entity_types::queries::get_entity_type_by_type_query;
+    <span class="kw">use </span><span class="kw">crate</span>::client::types::entity_types::queries::CreateEntityTypeVariables;
     <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
     <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClientExecutionError;
-    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::component::Components <span class="kw">as </span>ComponentsVec;
-    <span class="kw">use </span>reactive_graph_graph::Component;
-    <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
+    <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::entity_type::EntityTypes <span class="kw">as </span>EntityTypesVec;
+    <span class="kw">use </span>reactive_graph_graph::EntityType;
+    <span class="kw">use </span>reactive_graph_graph::EntityTypeId;
 
-    <span class="kw">pub struct </span>Components {
+    <span class="kw">pub struct </span>EntityTypes {
         client: Arc&lt;InexorRgfClient&gt;,
     }
 
-    <span class="kw">impl </span>Components {
+    <span class="kw">impl </span>EntityTypes {
         <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
             <span class="self">Self </span>{ client }
         }
 
-        <span class="kw">pub async fn </span>get_all_components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Component&gt;&gt;, InexorRgfClientExecutionError&gt; {
-            <span class="kw">let </span>components = <span class="self">self
+        <span class="kw">pub async fn </span>get_all_entity_types(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;EntityType&gt;&gt;, InexorRgfClientExecutionError&gt; {
+            <span class="kw">let </span>entity_types = <span class="self">self
                 </span>.client
                 .client
                 .post(<span class="self">self</span>.client.url_graphql())
-                .run_graphql(get_all_components_query())
+                .run_graphql(get_all_entity_types_query())
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
                 </span>.data
-                .map(|data| ComponentsVec(data.types.components))
+                .map(|data| EntityTypesVec(data.types.entities))
                 .map(From::from);
-            <span class="prelude-val">Ok</span>(components)
+            <span class="prelude-val">Ok</span>(entity_types)
         }
 
-        <span class="kw">pub async fn </span>get_component_by_type&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
-            <span class="kw">let </span>component = <span class="self">self
+        <span class="kw">pub async fn </span>get_entity_type_by_type&lt;C: Into&lt;EntityTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityType&gt;, InexorRgfClientExecutionError&gt; {
+            <span class="kw">let </span>entity_type = <span class="self">self
                 </span>.client
                 .client
                 .post(<span class="self">self</span>.client.url_graphql())
-                .run_graphql(get_component_by_type_query(<span class="kw-2">&amp;</span>ty.into()))
+                .run_graphql(get_entity_type_by_type_query(<span class="kw-2">&amp;</span>ty.into()))
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
                 </span>.data
-                .and_then(|data| data.types.components.first().cloned())
+                .and_then(|data| data.types.entities.first().cloned())
                 .map(From::from);
-            <span class="prelude-val">Ok</span>(component)
+            <span class="prelude-val">Ok</span>(entity_type)
         }
 
-        <span class="kw">pub async fn </span>create_component(<span class="kw-2">&amp;</span><span class="self">self</span>, component: Component) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
-            <span class="kw">let </span>component = <span class="self">self
+        <span class="kw">pub async fn </span>create_entity_type(<span class="kw-2">&amp;</span><span class="self">self</span>, entity_type: EntityType) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityType&gt;, InexorRgfClientExecutionError&gt; {
+            <span class="kw">let </span>entity_type = <span class="self">self
                 </span>.client
                 .client
                 .post(<span class="self">self</span>.client.url_graphql())
-                .run_graphql(create_component_mutation(component))
+                .run_graphql(create_entity_type_mutation(entity_type))
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
                 </span>.data
-                .map(|data| data.types.components.create)
+                .map(|data| data.types.entities.create)
                 .map(From::from);
-            <span class="prelude-val">Ok</span>(component)
+            <span class="prelude-val">Ok</span>(entity_type)
         }
 
-        <span class="kw">pub async fn </span>create_component_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: CreateComponentVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
-            <span class="kw">let </span>component = <span class="self">self
+        <span class="kw">pub async fn </span>create_entity_type_with_variables(
+            <span class="kw-2">&amp;</span><span class="self">self</span>,
+            variables: CreateEntityTypeVariables,
+        ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityType&gt;, InexorRgfClientExecutionError&gt; {
+            <span class="kw">let </span>entity_type = <span class="self">self
                 </span>.client
                 .client
                 .post(<span class="self">self</span>.client.url_graphql())
-                .run_graphql(create_component_with_variables(variables))
+                .run_graphql(create_entity_type_with_variables(variables))
                 .<span class="kw">await
                 </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
                 </span>.data
-                .map(|data| data.types.components.create)
+                .map(|data| data.types.entities.create)
                 .map(From::from);
-            <span class="prelude-val">Ok</span>(component)
+            <span class="prelude-val">Ok</span>(entity_type)
         }
     }
 }
