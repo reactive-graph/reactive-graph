@@ -56,9 +56,9 @@ impl TableOptions for ComponentsTableOptions {
     fn options(table: &mut Table) -> &mut Table {
         table.with(Style::extended()).with(
             Modify::new(Segment::new(0.., 0..3))
-                .with(Width::increase(22).priority())
-                .with(Width::increase(22).priority())
-                .with(Width::wrap(40).keep_words()),
+                .with(Width::increase(22))
+                .with(Width::increase(22))
+                .with(Width::wrap(40).keep_words(true)),
         )
     }
 }

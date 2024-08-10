@@ -1,4 +1,5 @@
 use tabled::settings::object::Rows;
+use tabled::settings::peaker::PriorityMax;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
@@ -58,8 +59,8 @@ impl TableOptions for PluginsTableOptions {
     fn options(table: &mut Table) -> &mut Table {
         table.with(Style::extended()).with(
             Modify::new(Rows::new(1..))
-                .with(Width::increase(10).priority())
-                .with(Width::truncate(40).suffix("...")),
+                .with(Width::increase(10))
+                .with(Width::truncate(40).suffix("...").priority(PriorityMax)),
         )
     }
 }

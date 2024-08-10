@@ -1,5 +1,3 @@
-#![feature(lazy_cell)]
-
 pub use container::*;
 pub use error::*;
 pub use factory::*;

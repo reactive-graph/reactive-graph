@@ -11,7 +11,7 @@ readme = "../../../README.md"
 [dependencies]
 async-trait = { workspace = true }
 http = { workspace = true }
-#json5 = { workspace = true, optional = true }
+json5 = { workspace = true, optional = true }
 ##paste = { workspace = true }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"], optional = true }
 serde = { workspace = true, features = ["derive"] }
@@ -19,7 +19,7 @@ serde_json = { workspace = true }
 thiserror = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"], optional = true }
 tokio-stream = { workspace = true }
-#toml = { workspace = true, optional = true }
+toml = { workspace = true, optional = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../../behaviour/model/api" }
@@ -46,8 +46,8 @@ rustc_version = "0.4.0"
 default = ["derive", "springtime"]
 derive = ["reactive-graph-plugin-derive", "rust-embed"]
 springtime = ["springtime-di/threadsafe", "springtime-di/derive"]
-#json5 = [ "dep:json5", "reactive-graph-plugin-derive/json5" ]
-#toml = [ "dep:toml", "reactive-graph-plugin-derive/toml" ]
+json5 = ["dep:json5", "reactive-graph-plugin-derive/json5"]
+toml = ["dep:toml", "reactive-graph-plugin-derive/toml"]
 full = ["derive", "springtime"] #, "json5", "toml" ]
 
 [lib]

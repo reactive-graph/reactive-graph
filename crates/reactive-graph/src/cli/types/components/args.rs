@@ -1,6 +1,7 @@
 use clap::Args;
 
 use crate::cli::types::components::commands::ComponentsCommands;
+use crate::cli::types::property_type::args::PropertyTypeDefinitionArgs;
 use reactive_graph_graph::ComponentTypeId;
 
 #[derive(Args, Debug, Clone)]
@@ -18,6 +19,17 @@ pub(crate) struct CreateComponentArgs {
 
     /// The component description.
     pub description: Option<String>,
+}
+
+#[derive(Args, Debug, Clone)]
+pub(crate) struct ComponentAddPropertyArgs {
+    /// The component type.
+    #[clap(flatten)]
+    pub ty: ComponentTypeIdArgs,
+
+    /// The property.
+    #[clap(flatten)]
+    pub property_type: PropertyTypeDefinitionArgs,
 }
 
 /// The component type.

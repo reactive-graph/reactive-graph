@@ -29,17 +29,15 @@
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
-➔ The `Reactive Graph Flow` is a **graph database**
+➔ The `Reactive Graph` is a **graph database**
 
-➔ The `Reactive Graph Flow` is a **document store**
+➔ The `Reactive Graph` is a **document store**
 
-➔ The `Reactive Graph Flow` is a **flow control** runtime
+➔ The `Reactive Graph` is a **flow control** runtime
 
-➔ The `Reactive Graph Flow` is a **web server**
+➔ The `Reactive Graph` is **pluggable** and **extensible**
 
-➔ The `Reactive Graph Flow` is **pluggable** and **extensible**
-
-➔ The `Reactive Graph Flow` is **fast**, **secure** and **small**
+➔ The `Reactive Graph` is **fast**, **secure** and **small**
 
 </div>
 

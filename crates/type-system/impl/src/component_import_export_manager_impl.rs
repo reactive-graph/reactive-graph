@@ -35,9 +35,9 @@ impl ComponentImportExportManager for ComponentImportExportManagerImpl {
         reader.read_to_string(&mut content)?;
         let component = match path.extension().and_then(|ext| ext.to_str()) {
             Some("json") => serde_json::from_str::<reactive_graph_graph::Component>(&content).map_err(|e| DeserializationError::Json(e).into()),
-            #[cfg(json5)]
+            #[cfg(feature = "json5")]
             Some("json5") => json5::from_str::<reactive_graph_graph::Component>(&content).map_err(|e| DeserializationError::Json5(e).into()),
-            #[cfg(toml)]
+            #[cfg(feature = "toml")]
             Some("toml") => toml::from_str::<reactive_graph_graph::Component>(&content).map_err(|e| DeserializationError::Toml(e).into()),
             Some(ext) => Err(ComponentImportError::UnsupportedFormat(ext.to_string())),
             None => Err(ComponentImportError::UnsupportedFormat(Default::default())),
@@ -55,7 +55,7 @@ impl ComponentImportExportManager for ComponentImportExportManagerImpl {
                 Ok(file) => serde_json::to_writer_pretty(&file, &component).map_err(|e| SerializationError::Json(e).into()),
                 Err(e) => Err(ComponentExportError::Io(e)),
             },
-            #[cfg(json5)]
+            #[cfg(feature = "json5")]
             Some("json5") => match File::create(path) {
                 Ok(mut file) => {
                     let content = json5::to_string(&component).map_err(|e| ComponentExportError::Serialization(SerializationError::Json5(e)))?;
@@ -63,7 +63,7 @@ impl ComponentImportExportManager for ComponentImportExportManagerImpl {
                 }
                 Err(e) => Err(ComponentExportError::Io(e)),
             },
-            #[cfg(toml)]
+            #[cfg(feature = "toml")]
             Some("toml") => match File::create(path) {
                 Ok(mut file) => {
                     let content = toml::to_string_pretty(&component).map_err(|e| ComponentExportError::Serialization(SerializationError::Toml(e)))?;

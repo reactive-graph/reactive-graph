@@ -1,5 +1,3 @@
-#![feature(lazy_cell)]
-
 pub use extension::*;
 
 pub mod extension;
