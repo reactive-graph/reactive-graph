@@ -7,6 +7,7 @@ use reactive_graph_graph::ComponentAddPropertyError;
 use reactive_graph_graph::ComponentRemoveExtensionError;
 use reactive_graph_graph::ComponentRemovePropertyError;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentUpdateError;
 use reactive_graph_graph::ComponentUpdateExtensionError;
 use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
@@ -68,6 +69,10 @@ impl reactive_graph_plugin_api::ComponentManager for ComponentManagerDelegate {
 
     fn replace(&self, ty: &ComponentTypeId, component: Component) {
         self.component_manager.replace(ty, component)
+    }
+
+    fn update_description(&self, ty: &ComponentTypeId, description: &str) -> Result<Component, ComponentUpdateError> {
+        self.component_manager.update_description(ty, description)
     }
 
     fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<PropertyType, ComponentAddPropertyError> {

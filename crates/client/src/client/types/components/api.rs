@@ -14,11 +14,14 @@ use crate::client::types::components::get_all_components::queries::get_all_compo
 use crate::client::types::components::get_component_by_type::queries::get_component_by_type_query;
 use crate::client::types::components::remove_property::queries::remove_property_mutation;
 use crate::client::types::components::remove_property::queries::remove_property_with_variables;
+use crate::client::types::components::update_description::queries::update_description_mutation;
+use crate::client::types::components::update_description::queries::update_description_with_variables;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
 use crate::types::components::common::queries::ComponentTypeIdVariables;
 use crate::types::components::remove_property::queries::RemovePropertyVariables;
+use crate::types::components::update_description::queries::UpdateDescriptionVariables;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;
 
@@ -172,6 +175,34 @@ impl Components {
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.types.components.remove_property)
+            .map(From::from);
+        Ok(component)
+    }
+
+    pub async fn update_description(&self, ty: ComponentTypeId, description: String) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+        let component = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(update_description_mutation(ty, description))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.components.update_description)
+            .map(From::from);
+        Ok(component)
+    }
+
+    pub async fn update_description_with_variables(&self, variables: UpdateDescriptionVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+        let component = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(update_description_with_variables(variables))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.components.update_description)
             .map(From::from);
         Ok(component)
     }

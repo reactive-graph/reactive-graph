@@ -49,5 +49,10 @@ pub(crate) async fn components(client: &Arc<InexorRgfClient>, component_args: Co
             Ok(None) => Err(NotFound(format!("Component {}__{} not found", args.ty.namespace, args.ty.name))),
             Err(e) => Err(e.into()),
         },
+        ComponentsCommands::UpdateDescription(args) => match client.types().components().update_description_with_variables((&args).into()).await {
+            Ok(Some(component)) => Ok(Components::from(component).into()),
+            Ok(None) => Err(NotFound(format!("Component {}__{} not found", args.ty.namespace, args.ty.name))),
+            Err(e) => Err(e.into()),
+        },
     }
 }
