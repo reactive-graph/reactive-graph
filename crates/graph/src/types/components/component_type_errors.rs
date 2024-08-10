@@ -26,6 +26,12 @@ pub enum RemoveComponentError {
 }
 
 #[derive(Debug, Error)]
+pub enum ComponentUpdateError {
+    #[error("The component {0} does not exist")]
+    ComponentDoesNotExist(ComponentTypeId),
+}
+
+#[derive(Debug, Error)]
 pub enum ComponentMergeError {
     #[error("The component {0} does not exist")]
     ComponentDoesNotExist(ComponentTypeId),

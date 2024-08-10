@@ -424,6 +424,8 @@ type MutationComponents {
   removeProperty(propertyName: String!, type: ComponentTypeId!): Component!
   "Renames the component with the given type to the component with the given new type."
   rename(newType: ComponentTypeId!, type: ComponentTypeId!): Component!
+  "Updates the description of the given component."
+  updateDescription(description: String!, type: ComponentTypeId!): Component!
   "Updates the extension with the given id of the given component."
   updateExtension(extension: ExtensionDefinition!, extension_type: ExtensionTypeId!, type: ComponentTypeId!): Component!
   "Updates the property with the given name of the given component."
