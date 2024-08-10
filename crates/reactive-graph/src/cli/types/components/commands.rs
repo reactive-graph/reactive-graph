@@ -1,6 +1,7 @@
 use clap::Subcommand;
 
 use crate::cli::types::components::args::ComponentAddPropertyArgs;
+use crate::cli::types::components::args::ComponentRemovePropertyArgs;
 use crate::cli::types::components::args::ComponentTypeIdArgs;
 use crate::cli::types::components::args::CreateComponentArgs;
 
@@ -21,4 +22,7 @@ pub(crate) enum ComponentsCommands {
     /// Adds a property to a component.
     #[non_exhaustive]
     AddProperty(ComponentAddPropertyArgs),
+    /// Removes a property from a component.
+    #[non_exhaustive]
+    RemoveProperty(ComponentRemovePropertyArgs),
 }
