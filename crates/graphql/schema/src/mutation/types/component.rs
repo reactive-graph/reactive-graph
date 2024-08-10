@@ -11,6 +11,7 @@ use reactive_graph_graph::ComponentAddExtensionError;
 use reactive_graph_graph::ComponentAddPropertyError;
 use reactive_graph_graph::ComponentRemoveExtensionError;
 use reactive_graph_graph::ComponentRemovePropertyError;
+use reactive_graph_graph::ComponentUpdateError;
 use reactive_graph_graph::ComponentUpdateExtensionError;
 use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::RemoveExtensionError;
@@ -74,6 +75,26 @@ impl MutationComponents {
         component.ty = new_ty.into();
         component_manager.replace(&ty, component.clone());
         Ok(component.into())
+    }
+
+    /// Updates the description of the given component.
+    async fn update_description(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: ComponentTypeIdDefinition,
+        description: String,
+    ) -> Result<GraphQLComponent> {
+        let component_manager = context.data::<Arc<dyn ComponentManager + Send + Sync>>()?;
+        let ty = ty.into();
+        match component_manager.update_description(&ty, &description) {
+            Ok(_) => component_manager
+                .get(&ty)
+                .map(|component| component.into())
+                .ok_or_else(|| Error::new(format!("Component {} not found", ty))),
+            Err(ComponentUpdateError::ComponentDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to update description of component {ty}: Component does not exist")))
+            }
+        }
     }
 
     /// Adds a property to the component with the given name.
