@@ -4,6 +4,7 @@ use reactive_graph_graph::ComponentAddPropertyError;
 use reactive_graph_graph::ComponentRemoveExtensionError;
 use reactive_graph_graph::ComponentRemovePropertyError;
 use reactive_graph_graph::ComponentTypeId;
+use reactive_graph_graph::ComponentUpdateError;
 use reactive_graph_graph::ComponentUpdateExtensionError;
 use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
@@ -47,6 +48,8 @@ pub trait ComponentManager: Send + Sync {
 
     /// Replaces the component with the given name with the given component.
     fn replace(&self, ty: &ComponentTypeId, component: Component);
+
+    fn update_description(&self, ty: &ComponentTypeId, description: &str) -> Result<Component, ComponentUpdateError>;
 
     /// Adds a property to the component with the given name.
     fn add_property(&self, ty: &ComponentTypeId, property: PropertyType) -> Result<PropertyType, ComponentAddPropertyError>;

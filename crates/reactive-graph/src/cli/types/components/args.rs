@@ -6,6 +6,7 @@ use reactive_graph_client::types::components::add_property::queries::AddProperty
 use reactive_graph_client::types::components::common::queries::ComponentTypeIdVariables;
 use reactive_graph_client::types::components::create_component::queries::CreateComponentVariables;
 use reactive_graph_client::types::components::remove_property::queries::RemovePropertyVariables;
+use reactive_graph_client::types::components::update_description::queries::UpdateDescriptionVariables;
 use reactive_graph_graph::ComponentTypeId;
 
 #[derive(Args, Debug, Clone)]
@@ -81,6 +82,26 @@ impl From<&ComponentRemovePropertyArgs> for RemovePropertyVariables {
             namespace: args.ty.namespace.clone(),
             name: args.ty.name.clone(),
             property_name: args.property_name.clone(),
+        }
+    }
+}
+
+#[derive(Args, Debug, Clone)]
+pub(crate) struct ComponentUpdateDescriptionArgs {
+    /// The component type.
+    #[clap(flatten)]
+    pub ty: ComponentTypeIdArgs,
+
+    /// The description to update.
+    pub description: String,
+}
+
+impl From<&ComponentUpdateDescriptionArgs> for UpdateDescriptionVariables {
+    fn from(args: &ComponentUpdateDescriptionArgs) -> Self {
+        UpdateDescriptionVariables {
+            namespace: args.ty.namespace.clone(),
+            name: args.ty.name.clone(),
+            description: args.description.clone(),
         }
     }
 }
