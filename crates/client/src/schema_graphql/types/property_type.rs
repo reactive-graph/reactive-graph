@@ -1,6 +1,3 @@
-use std::fmt;
-use std::fmt::Formatter;
-
 use crate::schema_graphql::types::data_type::DataType;
 use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::ExtensionDefinition;
@@ -8,8 +5,11 @@ use crate::schema_graphql::types::extension::ExtensionDefinitions;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::mutability::Mutability;
 use crate::schema_graphql::types::socket_type::SocketType;
+use std::fmt;
+use std::fmt::Formatter;
+use typed_builder::TypedBuilder;
 
-#[derive(cynic::InputObject, Debug)]
+#[derive(cynic::InputObject, Debug, TypedBuilder)]
 #[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
 pub struct PropertyTypeDefinition {
     pub data_type: DataType,

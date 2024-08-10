@@ -28,11 +28,7 @@ pub mod queries {
 
         use cynic::http::ReqwestExt;
 
-        // use crate::client::types::components::queries::create_component_mutation;
-        // use crate::client::types::components::queries::create_component_with_variables;
         use crate::client::types::components::get_all_components::queries::get_all_components_query;
-        // use crate::client::types::components::queries::get_component_by_type_query;
-        // use crate::client::types::components::queries::CreateComponentVariables;
         use crate::client::InexorRgfClient;
         use crate::client::InexorRgfClientExecutionError;
         use crate::schema_graphql::types::component::Components as ComponentsVec;

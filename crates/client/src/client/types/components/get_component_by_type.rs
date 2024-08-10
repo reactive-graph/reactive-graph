@@ -5,9 +5,9 @@ pub mod queries {
 
     use reactive_graph_graph::ComponentTypeId;
 
+    use crate::client::types::components::common::queries::ComponentTypeIdVariables;
+    use crate::client::types::components::common::queries::ComponentTypeIdVariablesFields;
     use crate::schema_graphql::types::component::Component;
-    use crate::types::components::queries::ComponentTypeIdVariables;
-    use crate::types::components::queries::ComponentTypeIdVariablesFields;
 
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Query", variables = "ComponentTypeIdVariables")]
