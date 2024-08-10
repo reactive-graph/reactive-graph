@@ -5,8 +5,8 @@ pub mod queries {
 
     use reactive_graph_graph::ComponentTypeId;
 
-    use crate::client::types::components::common::queries::ComponentTypeIdVariables;
-    use crate::client::types::components::common::queries::ComponentTypeIdVariablesFields;
+    use crate::client::types::components::type_id::queries::ComponentTypeIdVariables;
+    use crate::client::types::components::type_id::queries::ComponentTypeIdVariablesFields;
     use crate::schema_graphql::types::component::Component;
 
     #[derive(QueryFragment, Debug)]

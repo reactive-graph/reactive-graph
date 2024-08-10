@@ -1,12 +1,18 @@
 use crate::cli::types::components::commands::ComponentsCommands;
+use crate::cli::types::extension::args::ExtensionDefinitionArgs;
+use crate::cli::types::extension::args::ExtensionTypeIdArgs;
 use crate::cli::types::property_type::args::PropertyTypeDefinitionArgs;
 use clap::Args;
+use reactive_graph_client::schema_graphql::scalar::Json;
 use reactive_graph_client::schema_graphql::types::property_type::PropertyTypeDefinition;
+use reactive_graph_client::types::components::add_extension::queries::AddExtensionVariables;
 use reactive_graph_client::types::components::add_property::queries::AddPropertyVariables;
-use reactive_graph_client::types::components::common::queries::ComponentTypeIdVariables;
 use reactive_graph_client::types::components::create_component::queries::CreateComponentVariables;
+use reactive_graph_client::types::components::remove_extension::queries::RemoveExtensionVariables;
 use reactive_graph_client::types::components::remove_property::queries::RemovePropertyVariables;
+use reactive_graph_client::types::components::type_id::queries::ComponentTypeIdVariables;
 use reactive_graph_client::types::components::update_description::queries::UpdateDescriptionVariables;
+use reactive_graph_client::ExtensionDefinition;
 use reactive_graph_graph::ComponentTypeId;
 
 #[derive(Args, Debug, Clone)]
@@ -82,6 +88,56 @@ impl From<&ComponentRemovePropertyArgs> for RemovePropertyVariables {
             namespace: args.ty.namespace.clone(),
             name: args.ty.name.clone(),
             property_name: args.property_name.clone(),
+        }
+    }
+}
+
+#[derive(Args, Debug, Clone)]
+pub(crate) struct ComponentAddExtensionArgs {
+    /// The component type.
+    #[clap(flatten)]
+    pub ty: ComponentTypeIdArgs,
+
+    /// The extension.
+    #[clap(flatten)]
+    pub extension: ExtensionDefinitionArgs,
+}
+
+impl From<&ComponentAddExtensionArgs> for AddExtensionVariables {
+    fn from(args: &ComponentAddExtensionArgs) -> Self {
+        let extension: Json = args.extension.extension.clone().into();
+        let ty: reactive_graph_graph::ExtensionTypeId = args.extension.ty.clone().into();
+        let ty: reactive_graph_client::ExtensionTypeId = ty.into();
+        AddExtensionVariables {
+            namespace: args.ty.namespace.clone(),
+            name: args.ty.name.clone(),
+            extension: ExtensionDefinition {
+                type_: ty,
+                description: args.extension.description.clone(),
+                extension,
+            },
+        }
+    }
+}
+
+#[derive(Args, Debug, Clone)]
+pub(crate) struct ComponentRemoveExtensionArgs {
+    /// The component type.
+    #[clap(flatten)]
+    pub ty: ComponentTypeIdArgs,
+
+    /// The component type.
+    #[clap(flatten)]
+    pub extension_ty: ExtensionTypeIdArgs,
+}
+
+impl From<&ComponentRemoveExtensionArgs> for RemoveExtensionVariables {
+    fn from(args: &ComponentRemoveExtensionArgs) -> Self {
+        RemoveExtensionVariables {
+            namespace: args.ty.namespace.clone(),
+            name: args.ty.name.clone(),
+            extension_namespace: args.extension_ty.extension_namespace.clone(),
+            extension_name: args.extension_ty.extension_name.clone(),
         }
     }
 }

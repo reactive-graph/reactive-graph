@@ -5,6 +5,7 @@ use std::sync::Arc;
 
 pub mod components;
 pub mod entity_types;
+pub mod extensions;
 
 pub struct Types {
     client: Arc<InexorRgfClient>,
