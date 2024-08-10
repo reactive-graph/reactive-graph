@@ -37,14 +37,14 @@ pub mod queries {
     }
 
     pub fn add_property_mutation(
-        component: reactive_graph_graph::Component,
+        ty: reactive_graph_graph::ComponentTypeId,
         property_type: reactive_graph_graph::PropertyType,
     ) -> Operation<AddProperty, AddPropertyVariables> {
         use cynic::MutationBuilder;
         let extensions: ExtensionDefinitions = property_type.extensions.into();
         let vars = AddPropertyVariables {
-            namespace: component.namespace(),
-            name: component.type_name(),
+            namespace: ty.namespace(),
+            name: ty.type_name(),
             property: PropertyTypeDefinition {
                 name: property_type.name,
                 data_type: property_type.data_type.into(),
