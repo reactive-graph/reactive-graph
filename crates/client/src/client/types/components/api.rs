@@ -118,14 +118,14 @@ impl Components {
 
     pub async fn add_property(
         &self,
-        component: Component,
+        ty: ComponentTypeId,
         property_type: reactive_graph_graph::PropertyType,
     ) -> Result<Option<Component>, InexorRgfClientExecutionError> {
         let component = self
             .client
             .client
             .post(self.client.url_graphql())
-            .run_graphql(add_property_mutation(component, property_type))
+            .run_graphql(add_property_mutation(ty, property_type))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
