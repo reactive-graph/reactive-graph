@@ -11,6 +11,7 @@ use reactive_graph_graph::ComponentRemoveExtensionError;
 use reactive_graph_graph::ComponentRemovePropertyError;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::ComponentUpdateError;
 use reactive_graph_graph::ComponentUpdateExtensionError;
 use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
@@ -78,6 +79,9 @@ pub trait ComponentManager: Send + Sync + Lifecycle {
 
     /// Replaces the component with the given name with the given component.
     fn replace(&self, ty: &ComponentTypeId, component: Component);
+
+    /// Updates the description of the given component.
+    fn update_description(&self, ty: &ComponentTypeId, description: &str) -> Result<Component, ComponentUpdateError>;
 
     /// Merges the given component_to_merge into an existing component with the same component type id.
     fn merge(&self, component_to_merge: Component) -> Result<Component, ComponentMergeError>;

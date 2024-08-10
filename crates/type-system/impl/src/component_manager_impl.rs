@@ -12,6 +12,7 @@ use reactive_graph_graph::ComponentRemoveExtensionError;
 use reactive_graph_graph::ComponentRemovePropertyError;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIds;
+use reactive_graph_graph::ComponentUpdateError;
 use reactive_graph_graph::ComponentUpdateExtensionError;
 use reactive_graph_graph::ComponentUpdatePropertyError;
 use reactive_graph_graph::Components;
@@ -127,6 +128,19 @@ impl ComponentManager for ComponentManagerImpl {
                 // TODO: Notify about changed component -> This effects reactive instances which contains the component -> Add/remove property instances
             }
         }
+    }
+
+    fn update_description(&self, ty: &ComponentTypeId, description: &str) -> Result<reactive_graph_graph::Component, ComponentUpdateError> {
+        if !self.has(ty) {
+            return Err(ComponentUpdateError::ComponentDoesNotExist(ty.clone()));
+        }
+        for mut component in self.components.iter_mut() {
+            if &component.ty == ty {
+                component.description = description.to_string();
+                // TODO: Notify about changed component
+            }
+        }
+        self.get(ty).ok_or(ComponentUpdateError::ComponentDoesNotExist(ty.clone()))
     }
 
     fn merge(&self, component_to_merge: reactive_graph_graph::Component) -> Result<reactive_graph_graph::Component, ComponentMergeError> {
