@@ -1,6 +1,8 @@
 use clap::Subcommand;
 
+use crate::cli::types::components::args::ComponentAddExtensionArgs;
 use crate::cli::types::components::args::ComponentAddPropertyArgs;
+use crate::cli::types::components::args::ComponentRemoveExtensionArgs;
 use crate::cli::types::components::args::ComponentRemovePropertyArgs;
 use crate::cli::types::components::args::ComponentTypeIdArgs;
 use crate::cli::types::components::args::ComponentUpdateDescriptionArgs;
@@ -26,6 +28,12 @@ pub(crate) enum ComponentsCommands {
     /// Removes a property from a component.
     #[non_exhaustive]
     RemoveProperty(ComponentRemovePropertyArgs),
+    /// Adds an extension to a component.
+    #[non_exhaustive]
+    AddExtension(ComponentAddExtensionArgs),
+    /// Removes an extension from a component.
+    #[non_exhaustive]
+    RemoveExtension(ComponentRemoveExtensionArgs),
     /// Updates the description of a component.
     #[non_exhaustive]
     UpdateDescription(ComponentUpdateDescriptionArgs),

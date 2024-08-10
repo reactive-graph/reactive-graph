@@ -3,8 +3,8 @@ pub mod queries {
     use cynic::Operation;
     use cynic::QueryFragment;
 
-    use crate::client::types::components::common::queries::ComponentTypeIdVariables;
-    use crate::client::types::components::common::queries::ComponentTypeIdVariablesFields;
+    use crate::client::types::components::type_id::queries::ComponentTypeIdVariables;
+    use crate::client::types::components::type_id::queries::ComponentTypeIdVariablesFields;
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "ComponentTypeIdVariables")]
