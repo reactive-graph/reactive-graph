@@ -25,9 +25,9 @@ pub mod queries {
         pub delete: bool,
     }
 
-    pub fn delete_component_mutation(component: reactive_graph_graph::Component) -> Operation<DeleteComponent, ComponentTypeIdVariables> {
+    pub fn delete_component_mutation<C: Into<reactive_graph_graph::ComponentTypeId>>(ty: C) -> Operation<DeleteComponent, ComponentTypeIdVariables> {
         use cynic::MutationBuilder;
-        DeleteComponent::build(component.ty.into())
+        DeleteComponent::build(ty.into().into())
     }
 
     pub fn delete_component_with_variables(variables: ComponentTypeIdVariables) -> Operation<DeleteComponent, ComponentTypeIdVariables> {

@@ -3,6 +3,8 @@ use std::sync::Arc;
 use cynic::http::ReqwestExt;
 
 use crate::client::types::components::add_property::queries::add_property_mutation;
+use crate::client::types::components::add_property::queries::add_property_with_variables;
+use crate::client::types::components::add_property::queries::AddPropertyVariables;
 use crate::client::types::components::create_component::queries::create_component_mutation;
 use crate::client::types::components::create_component::queries::create_component_with_variables;
 use crate::client::types::components::create_component::queries::CreateComponentVariables;
@@ -10,11 +12,13 @@ use crate::client::types::components::delete_component::queries::delete_componen
 use crate::client::types::components::delete_component::queries::delete_component_with_variables;
 use crate::client::types::components::get_all_components::queries::get_all_components_query;
 use crate::client::types::components::get_component_by_type::queries::get_component_by_type_query;
+use crate::client::types::components::remove_property::queries::remove_property_mutation;
+use crate::client::types::components::remove_property::queries::remove_property_with_variables;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
-use crate::types::components::add_property::queries::add_property_with_variables;
-use crate::types::components::add_property::queries::AddPropertyVariables;
+use crate::types::components::common::queries::ComponentTypeIdVariables;
+use crate::types::components::remove_property::queries::RemovePropertyVariables;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;
 
@@ -55,12 +59,12 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn create_component(&self, component: Component) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+    pub async fn create_component<C: Into<Component>>(&self, component: C) -> Result<Option<Component>, InexorRgfClientExecutionError> {
         let component = self
             .client
             .client
             .post(self.client.url_graphql())
-            .run_graphql(create_component_mutation(component))
+            .run_graphql(create_component_mutation(component.into()))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
@@ -83,12 +87,13 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn delete_component(&self, component: Component) -> Result<Option<bool>, InexorRgfClientExecutionError> {
+    pub async fn delete_component<C: Into<ComponentTypeId>>(&self, ty: C) -> Result<Option<bool>, InexorRgfClientExecutionError> {
+        let ty: ComponentTypeId = ty.into();
         let component = self
             .client
             .client
             .post(self.client.url_graphql())
-            .run_graphql(delete_component_mutation(component))
+            .run_graphql(delete_component_mutation(ty))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
@@ -97,13 +102,12 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn delete_component_by_type<C: Into<ComponentTypeId>>(&self, ty: C) -> Result<Option<bool>, InexorRgfClientExecutionError> {
-        let ty: ComponentTypeId = ty.into();
+    pub async fn delete_component_with_variables(&self, variables: ComponentTypeIdVariables) -> Result<Option<bool>, InexorRgfClientExecutionError> {
         let component = self
             .client
             .client
             .post(self.client.url_graphql())
-            .run_graphql(delete_component_with_variables(ty.into()))
+            .run_graphql(delete_component_with_variables(variables))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
@@ -140,6 +144,34 @@ impl Components {
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.types.components.add_property)
+            .map(From::from);
+        Ok(component)
+    }
+
+    pub async fn remove_property(&self, ty: ComponentTypeId, property_name: String) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+        let component = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_property_mutation(ty, property_name))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.components.remove_property)
+            .map(From::from);
+        Ok(component)
+    }
+
+    pub async fn remove_property_with_variables(&self, variables: RemovePropertyVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+        let component = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_property_with_variables(variables))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.components.remove_property)
             .map(From::from);
         Ok(component)
     }
