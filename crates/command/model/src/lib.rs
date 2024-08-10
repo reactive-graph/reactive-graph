@@ -1,5 +1,3 @@
-#![feature(lazy_cell)]
-
 pub use crate::component::CommandProperties;
 pub use crate::component::COMPONENT_COMMAND;
 pub use crate::component::COMPONENT_NAME_COMMAND;

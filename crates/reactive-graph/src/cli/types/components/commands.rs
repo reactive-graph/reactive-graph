@@ -1,5 +1,6 @@
 use clap::Subcommand;
 
+use crate::cli::types::components::args::ComponentAddPropertyArgs;
 use crate::cli::types::components::args::ComponentTypeIdArgs;
 use crate::cli::types::components::args::CreateComponentArgs;
 
@@ -14,4 +15,10 @@ pub(crate) enum ComponentsCommands {
     /// Creates a new component.
     #[non_exhaustive]
     Create(CreateComponentArgs),
+    /// Deletes a component.
+    #[non_exhaustive]
+    Delete(ComponentTypeIdArgs),
+    /// Adds a property to a component.
+    #[non_exhaustive]
+    AddProperty(ComponentAddPropertyArgs),
 }

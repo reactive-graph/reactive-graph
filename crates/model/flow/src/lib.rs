@@ -1,5 +1,3 @@
-#![feature(lazy_cell)]
-
 #[allow(unused_imports)]
 pub use component::*;
 pub use entity::*;

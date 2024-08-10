@@ -1,5 +1,3 @@
-#![feature(lazy_cell)]
-
 use fxhash::FxHashMap;
 use log::error;
 use springtime_di::component::Injectable;

@@ -1,4 +1,3 @@
-#![feature(lazy_cell)]
 #![feature(register_tool)]
 #![register_tool(tarpaulin)]
 

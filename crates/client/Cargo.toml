@@ -10,9 +10,8 @@ readme = "../../README.md"
 
 [dependencies]
 chrono = { workspace = true }
-cynic = { workspace = true, features = ["http-reqwest"] }
-openssl = { version = "0.10", features = ["vendored"] }
-reqwest = { workspace = true, features = ["json"] }
+cynic = { workspace = true, features = ["http-reqwest"], default-features = false }
+reqwest = { workspace = true, features = ["json", "rustls-tls"], default-features = false }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 typed-builder = { workspace = true }
