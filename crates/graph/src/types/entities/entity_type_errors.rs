@@ -10,6 +10,12 @@ use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 
 #[derive(Debug, Error)]
+pub enum EntityTypeUpdateError {
+    #[error("The entity type {0} does not exist")]
+    EntityTypeDoesNotExist(EntityTypeId),
+}
+
+#[derive(Debug, Error)]
 pub enum EntityTypeMergeError {
     #[error("The entity type {0} does not exist")]
     EntityTypeDoesNotExist(EntityTypeId),

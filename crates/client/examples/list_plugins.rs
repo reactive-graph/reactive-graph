@@ -13,7 +13,7 @@ enum SimpleClientError {
 
 /// This simple example shows how to connect to a runtime and list all plugins.
 ///
-/// Note: A runtime must running at the default port (31415).
+/// Note: A runtime must run at the default port (31415).
 #[tokio::main]
 async fn main() -> Result<(), SimpleClientError> {
     // Connect to localhost:31415 (default port)

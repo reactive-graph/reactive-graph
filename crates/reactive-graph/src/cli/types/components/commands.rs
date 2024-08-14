@@ -1,12 +1,12 @@
 use clap::Subcommand;
 
-use crate::cli::types::components::args::ComponentAddExtensionArgs;
-use crate::cli::types::components::args::ComponentAddPropertyArgs;
-use crate::cli::types::components::args::ComponentRemoveExtensionArgs;
-use crate::cli::types::components::args::ComponentRemovePropertyArgs;
-use crate::cli::types::components::args::ComponentTypeIdArgs;
-use crate::cli::types::components::args::ComponentUpdateDescriptionArgs;
-use crate::cli::types::components::args::CreateComponentArgs;
+use crate::cli::types::components::args::add_extension::ComponentAddExtensionArgs;
+use crate::cli::types::components::args::add_property::ComponentAddPropertyArgs;
+use crate::cli::types::components::args::create::CreateComponentArgs;
+use crate::cli::types::components::args::remove_extension::ComponentRemoveExtensionArgs;
+use crate::cli::types::components::args::remove_property::ComponentRemovePropertyArgs;
+use crate::cli::types::components::args::type_id::ComponentTypeIdArgs;
+use crate::cli::types::components::args::update_description::ComponentUpdateDescriptionArgs;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum ComponentsCommands {

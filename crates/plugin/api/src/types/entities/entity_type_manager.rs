@@ -8,6 +8,7 @@ use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::EntityTypeRemoveComponentError;
 use reactive_graph_graph::EntityTypeRemoveExtensionError;
 use reactive_graph_graph::EntityTypeRemovePropertyError;
+use reactive_graph_graph::EntityTypeUpdateError;
 use reactive_graph_graph::EntityTypes;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
@@ -53,6 +54,9 @@ pub trait EntityTypeManager: Send + Sync {
         properties: PropertyTypes,
         extensions: Extensions,
     ) -> Result<EntityType, EntityTypeCreationError>;
+
+    /// Updates the description of the given entity type.
+    fn update_description(&self, ty: &EntityTypeId, description: &str) -> Result<EntityType, EntityTypeUpdateError>;
 
     /// Adds the component with the given component_name to the given entity type.
     fn add_component(&self, ty: &EntityTypeId, component: &ComponentTypeId) -> Result<(), EntityTypeAddComponentError>;

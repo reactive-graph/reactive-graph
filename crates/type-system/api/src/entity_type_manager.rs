@@ -15,6 +15,7 @@ use reactive_graph_graph::EntityTypeMergeError;
 use reactive_graph_graph::EntityTypeRemoveComponentError;
 use reactive_graph_graph::EntityTypeRemoveExtensionError;
 use reactive_graph_graph::EntityTypeRemovePropertyError;
+use reactive_graph_graph::EntityTypeUpdateError;
 use reactive_graph_graph::EntityTypeUpdateExtensionError;
 use reactive_graph_graph::EntityTypeUpdatePropertyError;
 use reactive_graph_graph::EntityTypes;
@@ -79,6 +80,9 @@ pub trait EntityTypeManager: Send + Sync + Lifecycle {
         properties: PropertyTypes,
         extensions: Extensions,
     ) -> Result<EntityType, EntityTypeCreationError>;
+
+    /// Updates the description of the given entity type.
+    fn update_description(&self, ty: &EntityTypeId, description: &str) -> Result<EntityType, EntityTypeUpdateError>;
 
     /// Merges the given entity_type_to_merge into an existing entity type with the same entity type id.
     fn merge(&self, entity_type_to_merge: EntityType) -> Result<EntityType, EntityTypeMergeError>;

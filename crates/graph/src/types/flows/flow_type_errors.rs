@@ -14,6 +14,12 @@ use crate::UpdateVariableError;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
+pub enum FlowTypeUpdateError {
+    #[error("The flow type {0} does not exist")]
+    FlowTypeDoesNotExist(FlowTypeId),
+}
+
+#[derive(Debug, Error)]
 #[error("The flow type {0} does not exist")]
 pub struct FlowTypeDoesNotExistError(pub FlowTypeId);
 

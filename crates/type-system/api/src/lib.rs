@@ -1,6 +1,7 @@
 pub use component_import_export_manager::*;
 pub use component_manager::*;
 pub use component_provider_registry::*;
+pub use component_serialization_manager::*;
 pub use entity_type_import_export_manager::*;
 pub use entity_type_manager::*;
 pub use entity_type_provider_registry::*;
@@ -42,6 +43,7 @@ pub use reactive_graph_type_system_derive::TypeProvider;
 pub mod component_import_export_manager;
 pub mod component_manager;
 pub mod component_provider_registry;
+pub mod component_serialization_manager;
 pub mod entity_type_import_export_manager;
 pub mod entity_type_manager;
 pub mod entity_type_provider_registry;

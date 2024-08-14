@@ -24,6 +24,7 @@ use reactive_graph_graph::FlowTypeRemoveExtensionError;
 use reactive_graph_graph::FlowTypeRemoveRelationInstanceError;
 use reactive_graph_graph::FlowTypeRemoveVariableError;
 use reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+use reactive_graph_graph::FlowTypeUpdateError;
 use reactive_graph_graph::FlowTypeUpdateExtensionError;
 use reactive_graph_graph::FlowTypeUpdateRelationInstanceError;
 use reactive_graph_graph::FlowTypeUpdateVariableError;
@@ -58,7 +59,7 @@ pub struct FlowTypeManagerImpl {
     relation_type_manager: Arc<dyn RelationTypeManager + Send + Sync>,
 
     #[component(default = "FlowTypes::new")]
-    flow_types: FlowTypes, // FlowTypesStorage,
+    flow_types: FlowTypes,
 }
 
 #[async_trait]
@@ -158,6 +159,19 @@ impl FlowTypeManager for FlowTypeManagerImpl {
             .extensions(extensions)
             .build();
         self.register(flow_type).map_err(FlowTypeCreationError::RegistrationError)
+    }
+
+    fn update_description(&self, ty: &FlowTypeId, description: &str) -> Result<FlowType, FlowTypeUpdateError> {
+        if !self.has(ty) {
+            return Err(FlowTypeUpdateError::FlowTypeDoesNotExist(ty.clone()));
+        }
+        for mut flow_type in self.flow_types.iter_mut() {
+            if &flow_type.ty == ty {
+                flow_type.description = description.to_string();
+                // TODO: Notify about changed flow_type
+            }
+        }
+        self.get(ty).ok_or(FlowTypeUpdateError::FlowTypeDoesNotExist(ty.clone()))
     }
 
     fn add_entity_instance(&self, ty: &FlowTypeId, entity_instance: EntityInstance) -> Result<(), FlowTypeAddEntityInstanceError> {

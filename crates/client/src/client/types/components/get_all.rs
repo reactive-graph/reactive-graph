@@ -1,6 +1,5 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
-
     use cynic::Operation;
     use cynic::QueryFragment;
 
@@ -28,12 +27,11 @@ pub mod queries {
 
         use cynic::http::ReqwestExt;
 
-        use crate::client::types::components::get_all_components::queries::get_all_components_query;
+        use crate::client::types::components::get_all::queries::get_all_components_query;
         use crate::client::InexorRgfClient;
         use crate::client::InexorRgfClientExecutionError;
         use crate::schema_graphql::types::component::Components as ComponentsVec;
         use reactive_graph_graph::Component;
-        // use reactive_graph_graph::ComponentTypeId;
 
         pub struct Components {
             client: Arc<InexorRgfClient>,
