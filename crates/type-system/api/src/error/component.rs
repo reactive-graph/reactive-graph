@@ -40,3 +40,11 @@ pub enum ComponentExportError {
     #[error("Failed to export component because serialization failed: {0}")]
     Serialization(#[from] SerializationError),
 }
+
+#[derive(Debug, Error)]
+pub enum ComponentSerializeError {
+    #[error("Failed to serialize non existent component {0}!")]
+    ComponentNotFound(ComponentTypeId),
+    #[error("Failed to serialize component: {0}")]
+    Serialization(#[from] SerializationError),
+}

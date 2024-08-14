@@ -21,6 +21,7 @@ use reactive_graph_graph::FlowTypeRemoveExtensionError;
 use reactive_graph_graph::FlowTypeRemoveRelationInstanceError;
 use reactive_graph_graph::FlowTypeRemoveVariableError;
 use reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+use reactive_graph_graph::FlowTypeUpdateError;
 use reactive_graph_graph::FlowTypeUpdateExtensionError;
 use reactive_graph_graph::FlowTypeUpdateRelationInstanceError;
 use reactive_graph_graph::FlowTypeUpdateVariableError;
@@ -85,6 +86,9 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
         variables: PropertyTypes,
         extensions: Extensions,
     ) -> Result<FlowType, FlowTypeCreationError>;
+
+    /// Updates the description of the given flow type.
+    fn update_description(&self, ty: &FlowTypeId, description: &str) -> Result<FlowType, FlowTypeUpdateError>;
 
     /// Adds the given entity instance to the given flow type.
     fn add_entity_instance(&self, ty: &FlowTypeId, entity_instance: EntityInstance) -> Result<(), FlowTypeAddEntityInstanceError>;

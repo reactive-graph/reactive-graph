@@ -14,6 +14,7 @@ use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateError;
 use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_graph::RelationTypes;
@@ -64,6 +65,9 @@ pub trait RelationTypeManager: Send + Sync {
         properties: PropertyTypes,
         extensions: Extensions,
     ) -> Result<RelationType, RelationTypeCreationError>;
+
+    /// Updates the description of the given relation type.
+    fn update_description(&self, ty: &RelationTypeId, description: &str) -> Result<RelationType, RelationTypeUpdateError>;
 
     /// Adds the component with the given type to the given relation type.
     fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) -> Result<(), RelationTypeAddComponentError>;

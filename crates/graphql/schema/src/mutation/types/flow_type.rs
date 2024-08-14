@@ -1,23 +1,10 @@
 use std::sync::Arc;
 
 use async_graphql::Context;
+use async_graphql::Error;
 use async_graphql::Object;
 use async_graphql::Result;
 use uuid::Uuid;
-
-use reactive_graph_graph::Extension;
-use reactive_graph_graph::FlowType;
-use reactive_graph_graph::FlowTypeAddEntityInstanceError;
-use reactive_graph_graph::FlowTypeAddExtensionError;
-use reactive_graph_graph::FlowTypeAddVariableError;
-use reactive_graph_graph::FlowTypeId;
-use reactive_graph_graph::FlowTypeRemoveEntityInstanceError;
-use reactive_graph_graph::FlowTypeRemoveExtensionError;
-use reactive_graph_graph::FlowTypeRemoveVariableError;
-use reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
-use reactive_graph_graph::FlowTypeUpdateExtensionError;
-use reactive_graph_graph::FlowTypeUpdateVariableError;
-use reactive_graph_type_system_api::FlowTypeManager;
 
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::mutation::FlowTypeIdDefinition;
@@ -30,6 +17,20 @@ use crate::mutation::PropertyTypeDefinitions;
 use crate::query::GraphQLExtension;
 use crate::query::GraphQLExtensions;
 use crate::query::GraphQLFlowType;
+use reactive_graph_graph::Extension;
+use reactive_graph_graph::FlowType;
+use reactive_graph_graph::FlowTypeAddEntityInstanceError;
+use reactive_graph_graph::FlowTypeAddExtensionError;
+use reactive_graph_graph::FlowTypeAddVariableError;
+use reactive_graph_graph::FlowTypeId;
+use reactive_graph_graph::FlowTypeRemoveEntityInstanceError;
+use reactive_graph_graph::FlowTypeRemoveExtensionError;
+use reactive_graph_graph::FlowTypeRemoveVariableError;
+use reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+use reactive_graph_graph::FlowTypeUpdateError;
+use reactive_graph_graph::FlowTypeUpdateExtensionError;
+use reactive_graph_graph::FlowTypeUpdateVariableError;
+use reactive_graph_type_system_api::FlowTypeManager;
 
 #[derive(Default)]
 pub struct MutationFlowTypes;
@@ -65,6 +66,26 @@ impl MutationFlowTypes {
         match flow_type_manager.register(flow_type.clone()) {
             Ok(flow_type) => Ok(flow_type.into()),
             Err(e) => Err(e.into()),
+        }
+    }
+
+    /// Updates the description of the given flow type.
+    async fn update_description(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: FlowTypeIdDefinition,
+        description: String,
+    ) -> Result<GraphQLFlowType> {
+        let relation_type_manager = context.data::<Arc<dyn FlowTypeManager + Send + Sync>>()?;
+        let ty = ty.into();
+        match relation_type_manager.update_description(&ty, &description) {
+            Ok(_) => relation_type_manager
+                .get(&ty)
+                .map(|relation_type| relation_type.into())
+                .ok_or_else(|| Error::new(format!("Relation Type {} not found", ty))),
+            Err(FlowTypeUpdateError::FlowTypeDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to update description of flow type {ty}: Flow type does not exist")))
+            }
         }
     }
 
