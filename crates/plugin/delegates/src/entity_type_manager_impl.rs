@@ -10,6 +10,7 @@ use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::EntityTypeRemoveComponentError;
 use reactive_graph_graph::EntityTypeRemoveExtensionError;
 use reactive_graph_graph::EntityTypeRemovePropertyError;
+use reactive_graph_graph::EntityTypeUpdateError;
 use reactive_graph_graph::EntityTypes;
 use reactive_graph_graph::Extension;
 use reactive_graph_graph::ExtensionTypeId;
@@ -73,6 +74,10 @@ impl reactive_graph_plugin_api::EntityTypeManager for EntityTypeManagerDelegate 
         extensions: Extensions,
     ) -> Result<EntityType, EntityTypeCreationError> {
         self.entity_type_manager.create_entity_type(ty, description, components, properties, extensions)
+    }
+
+    fn update_description(&self, ty: &EntityTypeId, description: &str) -> Result<EntityType, EntityTypeUpdateError> {
+        self.entity_type_manager.update_description(ty, description)
     }
 
     fn add_component(&self, entity_ty: &EntityTypeId, component_ty: &ComponentTypeId) -> Result<(), EntityTypeAddComponentError> {

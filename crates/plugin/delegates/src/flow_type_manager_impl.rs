@@ -16,6 +16,7 @@ use reactive_graph_graph::FlowTypeRemoveEntityInstanceError;
 use reactive_graph_graph::FlowTypeRemoveExtensionError;
 use reactive_graph_graph::FlowTypeRemoveVariableError;
 use reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+use reactive_graph_graph::FlowTypeUpdateError;
 use reactive_graph_graph::FlowTypeUpdateExtensionError;
 use reactive_graph_graph::FlowTypeUpdateVariableError;
 use reactive_graph_graph::FlowTypes;
@@ -83,6 +84,10 @@ impl reactive_graph_plugin_api::FlowTypeManager for FlowTypeManagerDelegate {
     ) -> Result<FlowType, FlowTypeCreationError> {
         self.flow_type_manager
             .create_flow_type(ty, description, wrapper_entity_instance, entity_instances, relation_instances, variables, extensions)
+    }
+
+    fn update_description(&self, ty: &FlowTypeId, description: &str) -> Result<FlowType, FlowTypeUpdateError> {
+        self.flow_type_manager.update_description(ty, description)
     }
 
     fn add_entity_instance(&self, flow_ty: &FlowTypeId, entity_instance: EntityInstance) -> Result<(), FlowTypeAddEntityInstanceError> {

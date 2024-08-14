@@ -5,7 +5,6 @@ use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
-use crate::table_model::container::DefaultTableContainer;
 use crate::table_model::container::TableOptions;
 use crate::table_model::types::extension::display_extensions_inline;
 use crate::table_model::types::extension::Extension;
@@ -51,8 +50,6 @@ impl From<reactive_graph_graph::EntityType> for EntityType {
         }
     }
 }
-
-pub(crate) type EntityTypes = DefaultTableContainer<reactive_graph_graph::EntityType, EntityType, EntityTypesTableOptions>;
 
 pub(crate) struct EntityTypesTableOptions;
 

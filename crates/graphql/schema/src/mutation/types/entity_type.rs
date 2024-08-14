@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use async_graphql::Context;
+use async_graphql::Error;
 use async_graphql::Object;
 use async_graphql::Result;
 
@@ -12,6 +13,7 @@ use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::EntityTypeRemoveComponentError;
 use reactive_graph_graph::EntityTypeRemoveExtensionError;
 use reactive_graph_graph::EntityTypeRemovePropertyError;
+use reactive_graph_graph::EntityTypeUpdateError;
 use reactive_graph_graph::EntityTypeUpdateExtensionError;
 use reactive_graph_graph::EntityTypeUpdatePropertyError;
 use reactive_graph_graph::Extension;
@@ -57,6 +59,26 @@ impl MutationEntityTypes {
         match entity_type_manager.register(entity_type) {
             Ok(entity_type) => Ok(entity_type.into()),
             Err(e) => Err(e.into()),
+        }
+    }
+
+    /// Updates the description of the given entity type.
+    async fn update_description(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: EntityTypeIdDefinition,
+        description: String,
+    ) -> Result<GraphQLEntityType> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
+        let ty = ty.into();
+        match entity_type_manager.update_description(&ty, &description) {
+            Ok(_) => entity_type_manager
+                .get(&ty)
+                .map(|entity_type| entity_type.into())
+                .ok_or_else(|| Error::new(format!("Entity Type {} not found", ty))),
+            Err(EntityTypeUpdateError::EntityTypeDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to update description of entity type {ty}: Entity type does not exist")))
+            }
         }
     }
 

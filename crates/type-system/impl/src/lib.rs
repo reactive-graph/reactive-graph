@@ -3,6 +3,7 @@
 pub use component_import_export_manager_impl::*;
 pub use component_manager_impl::*;
 pub use component_provider_registry_impl::*;
+pub use component_serialization_manager_impl::*;
 pub use entity_type_import_export_manager_impl::*;
 pub use entity_type_manager_impl::*;
 pub use entity_type_provider_registry_impl::*;
@@ -20,6 +21,7 @@ pub use type_system_impl::*;
 pub mod component_import_export_manager_impl;
 pub mod component_manager_impl;
 pub mod component_provider_registry_impl;
+pub mod component_serialization_manager_impl;
 pub mod entity_type_import_export_manager_impl;
 pub mod entity_type_manager_impl;
 pub mod entity_type_provider_registry_impl;

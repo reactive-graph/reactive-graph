@@ -20,6 +20,7 @@ use reactive_graph_graph::EntityTypeMergeError;
 use reactive_graph_graph::EntityTypeRemoveComponentError;
 use reactive_graph_graph::EntityTypeRemoveExtensionError;
 use reactive_graph_graph::EntityTypeRemovePropertyError;
+use reactive_graph_graph::EntityTypeUpdateError;
 use reactive_graph_graph::EntityTypeUpdateExtensionError;
 use reactive_graph_graph::EntityTypeUpdatePropertyError;
 use reactive_graph_graph::EntityTypes;
@@ -189,6 +190,19 @@ impl EntityTypeManager for EntityTypeManagerImpl {
             .extensions(extensions)
             .build();
         self.register(entity_type).map_err(EntityTypeCreationError::RegistrationError)
+    }
+
+    fn update_description(&self, ty: &EntityTypeId, description: &str) -> Result<EntityType, EntityTypeUpdateError> {
+        if !self.has(ty) {
+            return Err(EntityTypeUpdateError::EntityTypeDoesNotExist(ty.clone()));
+        }
+        for mut entity_type in self.entity_types.iter_mut() {
+            if &entity_type.ty == ty {
+                entity_type.description = description.to_string();
+                // TODO: Notify about changed entity_type
+            }
+        }
+        self.get(ty).ok_or(EntityTypeUpdateError::EntityTypeDoesNotExist(ty.clone()))
     }
 
     fn merge(&self, entity_type_to_merge: EntityType) -> Result<EntityType, EntityTypeMergeError> {

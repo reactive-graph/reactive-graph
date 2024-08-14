@@ -49,6 +49,7 @@ pub trait ComponentManager: Send + Sync {
     /// Replaces the component with the given name with the given component.
     fn replace(&self, ty: &ComponentTypeId, component: Component);
 
+    /// Updates the description of the given component.
     fn update_description(&self, ty: &ComponentTypeId, description: &str) -> Result<Component, ComponentUpdateError>;
 
     /// Adds a property to the component with the given name.

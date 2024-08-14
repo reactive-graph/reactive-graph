@@ -22,6 +22,7 @@ use reactive_graph_graph::RelationTypeMergeError;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateError;
 use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_graph::RelationTypes;
@@ -88,6 +89,9 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
         properties: PropertyTypes,
         extensions: Extensions,
     ) -> Result<RelationType, RelationTypeCreationError>;
+
+    /// Updates the description of the given relation type.
+    fn update_description(&self, ty: &RelationTypeId, description: &str) -> Result<RelationType, RelationTypeUpdateError>;
 
     /// Merges the given relation_type_to_merge into an existing relation type with the same relation type id.
     fn merge(&self, relation_type_to_merge: RelationType) -> Result<RelationType, RelationTypeMergeError>;

@@ -34,6 +34,7 @@ use reactive_graph_graph::RelationTypeMergeError;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateError;
 use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_graph::RelationTypes;
@@ -257,6 +258,19 @@ impl RelationTypeManager for RelationTypeManagerImpl {
             .extensions(extensions)
             .build();
         self.register(relation_type).map_err(RelationTypeCreationError::RegistrationError)
+    }
+
+    fn update_description(&self, ty: &RelationTypeId, description: &str) -> Result<RelationType, RelationTypeUpdateError> {
+        if !self.has(ty) {
+            return Err(RelationTypeUpdateError::RelationTypeDoesNotExist(ty.clone()));
+        }
+        for mut relation_type in self.relation_types.iter_mut() {
+            if &relation_type.ty == ty {
+                relation_type.description = description.to_string();
+                // TODO: Notify about changed relation_type
+            }
+        }
+        self.get(ty).ok_or(RelationTypeUpdateError::RelationTypeDoesNotExist(ty.clone()))
     }
 
     fn merge(&self, relation_type_to_merge: RelationType) -> Result<RelationType, RelationTypeMergeError> {

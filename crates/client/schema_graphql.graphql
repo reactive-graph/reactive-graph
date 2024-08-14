@@ -527,6 +527,8 @@ type MutationEntityTypes {
   removeExtension(extension: ExtensionTypeId!, type: EntityTypeId!): EntityType!
   "Removes the property with the given property_name from the entity type with the given name."
   removeProperty(propertyName: String!, type: EntityTypeId!): EntityType!
+  "Updates the description of the given entity type."
+  updateDescription(description: String!, type: EntityTypeId!): EntityType!
   "Updates the extension with the given name of the flow type with the given name."
   updateExtension(extension: ExtensionDefinition!, type: EntityTypeId!): EntityType!
   "Updates the property with the given property_name from the entity type with the given name."
@@ -709,6 +711,8 @@ type MutationRelationTypes {
   removeExtension(extension: ExtensionTypeId!, type: RelationTypeId!): RelationType!
   "Removes the property with the given property_name from the relation type with the given name."
   removeProperty(propertyName: String!, type: RelationTypeId!): RelationType!
+  "Updates the description of the given relation type."
+  updateDescription(description: String!, type: RelationTypeId!): RelationType!
   "Updates the extension with the given name of the flow type with the given name."
   updateExtension(extension: ExtensionDefinition!, type: RelationTypeId!): RelationType!
   updateProperty(property: PropertyTypeDefinition!, propertyName: String!, type: RelationTypeId!): RelationType!

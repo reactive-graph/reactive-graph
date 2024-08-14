@@ -12,6 +12,7 @@ use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateError;
 use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_type_system_api::RelationTypeManager;
@@ -68,6 +69,26 @@ impl MutationRelationTypes {
         match relation_type_manager.register(relation_type) {
             Ok(relation_type) => Ok(relation_type.into()),
             Err(e) => Err(e.into()),
+        }
+    }
+
+    /// Updates the description of the given relation type.
+    async fn update_description(
+        &self,
+        context: &Context<'_>,
+        #[graphql(name = "type")] ty: RelationTypeIdDefinition,
+        description: String,
+    ) -> Result<GraphQLRelationType> {
+        let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
+        let ty = ty.into();
+        match relation_type_manager.update_description(&ty, &description) {
+            Ok(_) => relation_type_manager
+                .get(&ty)
+                .map(|relation_type| relation_type.into())
+                .ok_or_else(|| Error::new(format!("Relation Type {} not found", ty))),
+            Err(RelationTypeUpdateError::RelationTypeDoesNotExist(ty)) => {
+                Err(Error::new(format!("Failed to update description of relation type {ty}: Relation type does not exist")))
+            }
         }
     }
 

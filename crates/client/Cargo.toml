@@ -35,3 +35,9 @@ name = "list_plugins"
 
 [[example]]
 name = "list_remotes"
+
+[[example]]
+name = "list_components"
+
+[[example]]
+name = "dump_components"

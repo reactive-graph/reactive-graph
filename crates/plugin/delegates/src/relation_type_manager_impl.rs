@@ -16,6 +16,7 @@ use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::RelationTypeRemoveComponentError;
 use reactive_graph_graph::RelationTypeRemoveExtensionError;
 use reactive_graph_graph::RelationTypeRemovePropertyError;
+use reactive_graph_graph::RelationTypeUpdateError;
 use reactive_graph_graph::RelationTypeUpdateExtensionError;
 use reactive_graph_graph::RelationTypeUpdatePropertyError;
 use reactive_graph_graph::RelationTypes;
@@ -79,6 +80,10 @@ impl reactive_graph_plugin_api::RelationTypeManager for RelationTypeManagerDeleg
     ) -> Result<RelationType, RelationTypeCreationError> {
         self.relation_type_manager
             .create_relation_type(outbound_type, ty, inbound_type, description, components, properties, extensions)
+    }
+
+    fn update_description(&self, ty: &RelationTypeId, description: &str) -> Result<RelationType, RelationTypeUpdateError> {
+        self.relation_type_manager.update_description(ty, description)
     }
 
     fn add_component(&self, ty: &RelationTypeId, component: &ComponentTypeId) -> Result<(), RelationTypeAddComponentError> {

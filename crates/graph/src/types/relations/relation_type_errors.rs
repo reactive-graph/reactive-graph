@@ -9,6 +9,12 @@ use crate::UpdatePropertyError;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
+pub enum RelationTypeUpdateError {
+    #[error("The relation type {0} does not exist")]
+    RelationTypeDoesNotExist(RelationTypeId),
+}
+
+#[derive(Debug, Error)]
 pub enum RelationTypeMergeError {
     #[error("The relation type {0} does not exist")]
     RelationTypeDoesNotExist(RelationTypeId),
