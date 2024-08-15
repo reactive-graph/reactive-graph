@@ -1,10 +1,10 @@
 use crate::cli::types::entities::args::add_extension::EntityTypeAddExtensionArgs;
 use crate::cli::types::entities::args::add_property::EntityTypeAddPropertyArgs;
 use crate::cli::types::entities::args::create::CreateEntityTypeArgs;
-use crate::cli::types::entities::args::remove_extension::EntityTypeRemoveExtensionArgs;
-use crate::cli::types::entities::args::remove_property::EntityTypeRemovePropertyArgs;
+use crate::cli::types::entities::args::entity_component_type::EntityComponentTypeIdArgs;
+use crate::cli::types::entities::args::entity_extension_type::EntityExtensionTypeIdArgs;
+use crate::cli::types::entities::args::entity_type_property::EntityTypePropertyArgs;
 use crate::cli::types::entities::args::type_id::EntityTypeIdArgs;
-// use crate::cli::types::entities::args::update_description::EntityTypeUpdateDescriptionArgs;
 use crate::cli::types::entities::args::update_description::EntityTypeUpdateDescriptionArgs;
 use clap::Subcommand;
 
@@ -16,6 +16,15 @@ pub(crate) enum EntityTypesCommands {
     /// Prints a single entity type.
     #[non_exhaustive]
     Get(EntityTypeIdArgs),
+    /// List the properties of an entity type.
+    #[non_exhaustive]
+    ListProperties(EntityTypeIdArgs),
+    /// List the extensions of an entity type.
+    #[non_exhaustive]
+    ListExtensions(EntityTypeIdArgs),
+    /// List the components of an entity type.
+    #[non_exhaustive]
+    ListComponents(EntityTypeIdArgs),
     /// Creates a new entity type.
     #[non_exhaustive]
     Create(CreateEntityTypeArgs),
@@ -27,13 +36,19 @@ pub(crate) enum EntityTypesCommands {
     AddProperty(EntityTypeAddPropertyArgs),
     /// Removes a property from an entity type.
     #[non_exhaustive]
-    RemoveProperty(EntityTypeRemovePropertyArgs),
+    RemoveProperty(EntityTypePropertyArgs),
     /// Adds an extension to an entity type.
     #[non_exhaustive]
     AddExtension(EntityTypeAddExtensionArgs),
     /// Removes an extension from an entity type.
     #[non_exhaustive]
-    RemoveExtension(EntityTypeRemoveExtensionArgs),
+    RemoveExtension(EntityExtensionTypeIdArgs),
+    /// Adds a component to an entity type.
+    #[non_exhaustive]
+    AddComponent(EntityComponentTypeIdArgs),
+    /// Removes a component from an entity type.
+    #[non_exhaustive]
+    RemoveComponent(EntityComponentTypeIdArgs),
     /// Updates the description of an entity type.
     #[non_exhaustive]
     UpdateDescription(EntityTypeUpdateDescriptionArgs),

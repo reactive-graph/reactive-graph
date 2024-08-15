@@ -1,7 +1,7 @@
 use crate::cli::error::CommandError;
 use crate::cli::error::CommandError::NotFound;
 use clap::Args;
-use reactive_graph_client::types::entity_types::type_id::queries::EntityTypeIdVariables;
+use reactive_graph_client::types::entities::type_id::queries::EntityTypeIdVariables;
 use reactive_graph_graph::EntityTypeId;
 
 /// The entity type.
@@ -31,4 +31,24 @@ impl From<&EntityTypeIdArgs> for EntityTypeIdVariables {
         let ty: EntityTypeId = ty.clone().into();
         ty.into()
     }
+}
+
+/// The outbound entity type.
+#[derive(Args, Debug, Clone)]
+pub(crate) struct OutboundEntityTypeIdArgs {
+    /// The outbound entity type namespace.
+    pub outbound_type_namespace: String,
+
+    /// The outbound entity type name.
+    pub outbound_type_name: String,
+}
+
+/// The inbound entity type.
+#[derive(Args, Debug, Clone)]
+pub(crate) struct InboundEntityTypeIdArgs {
+    /// The inbound entity type namespace.
+    pub inbound_type_namespace: String,
+
+    /// The inbound entity type name.
+    pub inbound_type_name: String,
 }

@@ -4,22 +4,22 @@ use crate::cli::error::CommandError;
 use crate::cli::error::CommandError::NoContent;
 use crate::cli::error::CommandError::NotCreated;
 use crate::cli::error::CommandError::NotFound;
-use crate::cli::output_format::OutputFormatWrapper;
 use crate::cli::result::CommandResult;
+use crate::cli::types::components::output_format::ComponentsOutputFormatWrapper;
 use crate::cli::types::entities::args::EntityTypesArgs;
 use crate::cli::types::entities::commands::EntityTypesCommands;
-use crate::table_model;
-use crate::table_model::types::entity_type::EntityTypesTableOptions;
+use crate::cli::types::entities::output_format::EntityTypesOutputFormatWrapper;
+use crate::cli::types::extension::output_format::ExtensionsOutputFormatWrapper;
+use crate::cli::types::property_type::output_format::PropertyTypesOutputFormatWrapper;
 use reactive_graph_client::InexorRgfClient;
+use reactive_graph_graph::NamespacedTypeContainer;
 
 pub(crate) mod args;
 pub(crate) mod commands;
-
-type EntityTypesOutputFormatWrapper =
-    OutputFormatWrapper<reactive_graph_graph::EntityType, table_model::types::entity_type::EntityType, EntityTypesTableOptions>;
+pub(crate) mod output_format;
 
 pub(crate) async fn entity_types(client: &Arc<InexorRgfClient>, entity_type_args: EntityTypesArgs) -> CommandResult {
-    let output_format_wrapper: EntityTypesOutputFormatWrapper = entity_type_args.output_format.into();
+    let output_format_wrapper: EntityTypesOutputFormatWrapper = entity_type_args.output_format.clone().into();
     let Some(command) = entity_type_args.commands else {
         return Err(CommandError::MissingSubCommand);
     };
@@ -31,6 +31,30 @@ pub(crate) async fn entity_types(client: &Arc<InexorRgfClient>, entity_type_args
         },
         EntityTypesCommands::Get(args) => match client.types().entity_types().get_entity_type_by_type(args.clone()).await {
             Ok(Some(entity_type)) => output_format_wrapper.single(entity_type),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityTypesCommands::ListProperties(args) => match client.types().entity_types().get_entity_type_by_type(args.clone()).await {
+            Ok(Some(entity_type)) => {
+                let output_format_wrapper: PropertyTypesOutputFormatWrapper = entity_type_args.output_format.into();
+                output_format_wrapper.collection(entity_type.properties.to_vec())
+            }
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityTypesCommands::ListExtensions(args) => match client.types().entity_types().get_entity_type_by_type(args.clone()).await {
+            Ok(Some(entity_type)) => {
+                let output_format_wrapper: ExtensionsOutputFormatWrapper = entity_type_args.output_format.into();
+                output_format_wrapper.collection(entity_type.extensions.to_vec())
+            }
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityTypesCommands::ListComponents(args) => match client.types().entity_types().get_entity_type_components(args.clone()).await {
+            Ok(Some(components)) => {
+                let output_format_wrapper: ComponentsOutputFormatWrapper = entity_type_args.output_format.into();
+                output_format_wrapper.collection(components.to_vec())
+            }
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
@@ -61,6 +85,16 @@ pub(crate) async fn entity_types(client: &Arc<InexorRgfClient>, entity_type_args
             Err(e) => Err(e.into()),
         },
         EntityTypesCommands::RemoveExtension(args) => match client.types().entity_types().remove_extension_with_variables((&args).into()).await {
+            Ok(Some(entity_type)) => output_format_wrapper.single(entity_type),
+            Ok(None) => Err(args.entity_ty.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityTypesCommands::AddComponent(args) => match client.types().entity_types().add_component((&args).into()).await {
+            Ok(Some(entity_type)) => output_format_wrapper.single(entity_type),
+            Ok(None) => Err(NotCreated("Component wasn't added to entity type".to_string())),
+            Err(e) => Err(e.into()),
+        },
+        EntityTypesCommands::RemoveComponent(args) => match client.types().entity_types().remove_component((&args).into()).await {
             Ok(Some(entity_type)) => output_format_wrapper.single(entity_type),
             Ok(None) => Err(args.ty.not_found()),
             Err(e) => Err(e.into()),

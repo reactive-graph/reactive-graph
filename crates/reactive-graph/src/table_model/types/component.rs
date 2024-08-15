@@ -1,3 +1,4 @@
+use tabled::settings::object::Columns;
 use tabled::settings::object::Segment;
 use tabled::settings::Modify;
 use tabled::settings::Style;
@@ -6,6 +7,7 @@ use tabled::Table;
 use tabled::Tabled;
 
 use crate::table_model::container::TableOptions;
+use crate::table_model::styles::modern_inline::modern_inline;
 use crate::table_model::types::extension::display_extensions_inline;
 use crate::table_model::types::extension::Extension;
 use crate::table_model::types::extension::Extensions;
@@ -16,13 +18,13 @@ use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub(crate) struct Component {
-    /// The namespace of the extension.
+    /// The namespace of the component.
     pub namespace: String,
 
-    /// The name of the extension.
+    /// The name of the component.
     pub name: String,
 
-    /// Textual description of the extension.
+    /// Textual description of the component.
     // #[tabled(skip)]
     pub description: String,
 
@@ -44,6 +46,47 @@ impl From<reactive_graph_graph::Component> for Component {
             properties: PropertyTypes::from(component.properties).0,
             extensions: Extensions::from(component.extensions).0,
         }
+    }
+}
+
+#[derive(Clone, Debug, Tabled)]
+pub(crate) struct ComponentTypeId {
+    /// The namespace of the component.
+    pub namespace: String,
+
+    /// The name of the component.
+    pub name: String,
+}
+
+impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
+    fn from(ty: reactive_graph_graph::ComponentTypeId) -> Self {
+        ComponentTypeId {
+            namespace: ty.namespace(),
+            name: ty.type_name(),
+        }
+    }
+}
+
+pub fn display_component_type_ids_inline(tys: &Vec<ComponentTypeId>) -> String {
+    if tys.is_empty() {
+        return String::from("No components");
+    }
+
+    Table::new(tys)
+        .with(modern_inline())
+        .with(Modify::new(Columns::new(0..1)).with(Width::increase(15)))
+        .with(Modify::new(Columns::new(1..2)).with(Width::increase(15)))
+        // .with(Modify::new(Columns::new(2..3)).with(Width::increase(11)))
+        // .with(Modify::new(Columns::new(3..4)).with(Width::increase(10)))
+        .to_string()
+}
+
+#[derive(Clone, Debug)]
+pub struct ComponentTypeIds(pub Vec<ComponentTypeId>);
+
+impl From<reactive_graph_graph::ComponentTypeIds> for ComponentTypeIds {
+    fn from(tys: reactive_graph_graph::ComponentTypeIds) -> Self {
+        ComponentTypeIds(tys.into_iter().map(|ty| ty.into()).collect())
     }
 }
 

@@ -2,7 +2,7 @@ use crate::cli::types::entities::args::type_id::EntityTypeIdArgs;
 use crate::cli::types::extension::args::ExtensionDefinitionArgs;
 use clap::Args;
 use reactive_graph_client::schema_graphql::scalar::Json;
-use reactive_graph_client::types::entity_types::add_extension::queries::AddExtensionVariables;
+use reactive_graph_client::types::entities::add_extension::queries::AddExtensionVariables;
 use reactive_graph_client::ExtensionDefinition;
 
 #[derive(Args, Debug, Clone)]

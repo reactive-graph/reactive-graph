@@ -6,10 +6,12 @@ use std::ops::Deref;
 use serde_json::Value;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
+use tabled::settings::Style;
 use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
+use crate::table_model::container::TableOptions;
 use crate::table_model::styles::modern_inline::modern_inline;
 use crate::table_model::types::json_value::pretty_json;
 use reactive_graph_graph::NamespacedTypeGetter;
@@ -147,5 +149,13 @@ impl From<reactive_graph_graph::Extensions> for Extensions {
 impl fmt::Display for Extensions {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         writeln!(f, "{}", Table::new(self.0.iter().cloned()))
+    }
+}
+
+pub(crate) struct ExtensionsTableOptions;
+
+impl TableOptions for ExtensionsTableOptions {
+    fn options(table: &mut Table) -> &mut Table {
+        table.with(Style::extended())
     }
 }
