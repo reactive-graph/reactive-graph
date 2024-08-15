@@ -2,41 +2,34 @@
 pub mod queries {
     use cynic::Operation;
     use cynic::QueryFragment;
-    use cynic::QueryVariables;
-    use typed_builder::TypedBuilder;
 
     use crate::schema_graphql::types::component::Component;
+    use crate::types::properties::container::queries::PropertyContainerVariables;
+    use crate::types::properties::container::queries::PropertyContainerVariablesFields;
     use reactive_graph_graph::NamespacedTypeGetter;
 
-    #[derive(QueryVariables, Debug, TypedBuilder)]
-    pub struct RemovePropertyVariables {
-        pub namespace: String,
-        pub name: String,
-        pub property_name: String,
-    }
-
     #[derive(cynic::QueryFragment, Debug)]
-    #[cynic(graphql_type = "Mutation", variables = "RemovePropertyVariables")]
+    #[cynic(graphql_type = "Mutation", variables = "PropertyContainerVariables")]
     pub struct RemoveProperty {
         pub types: MutationTypes,
     }
 
     #[derive(QueryFragment, Debug)]
-    #[cynic(variables = "RemovePropertyVariables")]
+    #[cynic(variables = "PropertyContainerVariables")]
     pub struct MutationTypes {
         pub components: MutationComponents,
     }
 
     #[derive(QueryFragment, Debug)]
-    #[cynic(variables = "RemovePropertyVariables")]
+    #[cynic(variables = "PropertyContainerVariables")]
     pub struct MutationComponents {
         #[arguments(type: { name: $name, namespace: $namespace }, propertyName: $property_name)]
         pub remove_property: Component,
     }
 
-    pub fn remove_property_mutation(ty: reactive_graph_graph::ComponentTypeId, property_name: String) -> Operation<RemoveProperty, RemovePropertyVariables> {
+    pub fn remove_property_mutation(ty: reactive_graph_graph::ComponentTypeId, property_name: String) -> Operation<RemoveProperty, PropertyContainerVariables> {
         use cynic::MutationBuilder;
-        let vars = RemovePropertyVariables {
+        let vars = PropertyContainerVariables {
             namespace: ty.namespace(),
             name: ty.type_name(),
             property_name,
@@ -44,7 +37,7 @@ pub mod queries {
         RemoveProperty::build(vars)
     }
 
-    pub fn remove_property_with_variables(variables: RemovePropertyVariables) -> Operation<RemoveProperty, RemovePropertyVariables> {
+    pub fn remove_property_with_variables(variables: PropertyContainerVariables) -> Operation<RemoveProperty, PropertyContainerVariables> {
         use cynic::MutationBuilder;
         RemoveProperty::build(variables)
     }

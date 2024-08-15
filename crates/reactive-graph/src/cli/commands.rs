@@ -6,6 +6,7 @@ use crate::cli::system::plugin::args::PluginsArgs;
 use crate::cli::system::remotes::args::RemotesArgs;
 use crate::cli::types::components::args::ComponentsArgs;
 use crate::cli::types::entities::args::EntityTypesArgs;
+use crate::cli::types::relations::args::RelationTypesArgs;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum ClientCommands {
@@ -38,4 +39,8 @@ pub(crate) enum ClientCommands {
     /// Manage entity types.
     #[non_exhaustive]
     EntityTypes(EntityTypesArgs),
+
+    /// Manage entity types.
+    #[non_exhaustive]
+    RelationTypes(RelationTypesArgs),
 }

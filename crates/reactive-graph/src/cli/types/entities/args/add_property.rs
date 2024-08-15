@@ -1,7 +1,7 @@
 use crate::cli::types::entities::args::type_id::EntityTypeIdArgs;
 use crate::cli::types::property_type::args::PropertyTypeDefinitionArgs;
 use clap::Args;
-use reactive_graph_client::types::entity_types::add_property::queries::AddPropertyVariables;
+use reactive_graph_client::types::entities::add_property::queries::AddPropertyVariables;
 use reactive_graph_client::PropertyTypeDefinition;
 
 #[derive(Args, Debug, Clone)]

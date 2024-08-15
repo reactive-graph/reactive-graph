@@ -1,33 +1,41 @@
 use std::sync::Arc;
 
-use cynic::http::ReqwestExt;
-
-use crate::client::types::entity_types::add_extension::queries::add_extension_mutation;
-use crate::client::types::entity_types::add_extension::queries::add_extension_with_variables;
-use crate::client::types::entity_types::add_extension::queries::AddExtensionVariables;
-use crate::client::types::entity_types::add_property::queries::add_property_mutation;
-use crate::client::types::entity_types::add_property::queries::add_property_with_variables;
-use crate::client::types::entity_types::add_property::queries::AddPropertyVariables;
-use crate::client::types::entity_types::create::queries::create_entity_type_mutation;
-use crate::client::types::entity_types::create::queries::create_entity_type_with_variables;
-use crate::client::types::entity_types::create::queries::CreateEntityTypeVariables;
-use crate::client::types::entity_types::delete::queries::delete_entity_type_mutation;
-use crate::client::types::entity_types::delete::queries::delete_entity_type_with_variables;
-use crate::client::types::entity_types::get_all::queries::get_all_entity_types_query;
-use crate::client::types::entity_types::get_by_type::queries::get_entity_type_by_type_query;
-use crate::client::types::entity_types::remove_extension::queries::remove_extension_mutation;
-use crate::client::types::entity_types::remove_extension::queries::remove_extension_with_variables;
-use crate::client::types::entity_types::remove_extension::queries::RemoveExtensionVariables;
-use crate::client::types::entity_types::remove_property::queries::remove_property_mutation;
-use crate::client::types::entity_types::remove_property::queries::remove_property_with_variables;
-use crate::client::types::entity_types::remove_property::queries::RemovePropertyVariables;
-use crate::client::types::entity_types::type_id::queries::EntityTypeIdVariables;
-use crate::client::types::entity_types::update_description::queries::update_description_mutation;
-use crate::client::types::entity_types::update_description::queries::update_description_with_variables;
-use crate::client::types::entity_types::update_description::queries::UpdateDescriptionVariables;
+use crate::client::types::entities::add_extension::queries::add_extension_mutation;
+use crate::client::types::entities::add_extension::queries::add_extension_with_variables;
+use crate::client::types::entities::add_extension::queries::AddExtensionVariables;
+use crate::client::types::entities::add_property::queries::add_property_mutation;
+use crate::client::types::entities::add_property::queries::add_property_with_variables;
+use crate::client::types::entities::add_property::queries::AddPropertyVariables;
+use crate::client::types::entities::create::queries::create_entity_type_mutation;
+use crate::client::types::entities::create::queries::create_entity_type_with_variables;
+use crate::client::types::entities::create::queries::CreateEntityTypeVariables;
+use crate::client::types::entities::delete::queries::delete_entity_type_mutation;
+use crate::client::types::entities::delete::queries::delete_entity_type_with_variables;
+use crate::client::types::entities::get_all::queries::get_all_entity_types_query;
+use crate::client::types::entities::get_by_type::queries::get_entity_type_by_type_query;
+use crate::client::types::entities::remove_extension::queries::remove_extension_mutation;
+use crate::client::types::entities::remove_extension::queries::remove_extension_with_variables;
+use crate::client::types::entities::remove_property::queries::remove_property_mutation;
+use crate::client::types::entities::remove_property::queries::remove_property_with_variables;
+use crate::client::types::entities::type_id::queries::EntityTypeIdVariables;
+use crate::client::types::entities::update_description::queries::update_description_mutation;
+use crate::client::types::entities::update_description::queries::update_description_with_variables;
+use crate::client::types::entities::update_description::queries::UpdateDescriptionVariables;
+use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
+use crate::schema_graphql::types::component::Components as ComponentsVec;
 use crate::schema_graphql::types::entity_type::EntityTypes as EntityTypesVec;
+use crate::types::components::container::queries::ComponentContainerVariables;
+use crate::types::entities::add_component::queries::add_component_mutation;
+use crate::types::entities::add_component::queries::add_component_with_variables;
+use crate::types::entities::get_components::queries::get_entity_type_components_query;
+use crate::types::entities::remove_component::queries::remove_component_mutation;
+use crate::types::entities::remove_component::queries::remove_component_with_variables;
+use crate::types::properties::container::queries::PropertyContainerVariables;
+use cynic::http::ReqwestExt;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::EntityComponentTypeId;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::ExtensionTypeId;
@@ -56,17 +64,33 @@ impl EntityTypes {
     }
 
     pub async fn get_entity_type_by_type<C: Into<EntityTypeId>>(&self, ty: C) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+        let ty = ty.into();
         let entity_type = self
             .client
             .client
             .post(self.client.url_graphql())
-            .run_graphql(get_entity_type_by_type_query(&ty.into()))
+            .run_graphql(get_entity_type_by_type_query(&ty))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.types.entities.first().cloned())
             .map(From::from);
         Ok(entity_type)
+    }
+
+    pub async fn get_entity_type_components<C: Into<EntityTypeId>>(&self, ty: C) -> Result<Option<Vec<Component>>, InexorRgfClientExecutionError> {
+        let ty = ty.into();
+        let components = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(get_entity_type_components_query(&ty))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.types.entities.first().cloned().map(|entity_type| ComponentsVec(entity_type.components)))
+            .map(From::from);
+        Ok(components)
     }
 
     pub async fn create_entity_type(&self, entity_type: EntityType) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
@@ -172,7 +196,7 @@ impl EntityTypes {
         Ok(entity_type)
     }
 
-    pub async fn remove_property_with_variables(&self, variables: RemovePropertyVariables) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+    pub async fn remove_property_with_variables(&self, variables: PropertyContainerVariables) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
         let entity_type = self
             .client
             .client
@@ -232,7 +256,7 @@ impl EntityTypes {
         Ok(entity_type)
     }
 
-    pub async fn remove_extension_with_variables(&self, variables: RemoveExtensionVariables) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+    pub async fn remove_extension_with_variables(&self, variables: ExtensionContainerVariables) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
         let entity_type = self
             .client
             .client
@@ -242,6 +266,62 @@ impl EntityTypes {
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.types.entities.remove_extension)
+            .map(From::from);
+        Ok(entity_type)
+    }
+
+    pub async fn add_component(&self, ty: EntityComponentTypeId) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+        let entity_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(add_component_mutation(ty))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.entities.add_component)
+            .map(From::from);
+        Ok(entity_type)
+    }
+
+    pub async fn add_component_with_variables(&self, variables: ComponentContainerVariables) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+        let entity_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(add_component_with_variables(variables))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.entities.add_component)
+            .map(From::from);
+        Ok(entity_type)
+    }
+
+    pub async fn remove_component(&self, ty: EntityComponentTypeId) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+        let entity_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_component_mutation(ty))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.entities.remove_component)
+            .map(From::from);
+        Ok(entity_type)
+    }
+
+    pub async fn remove_component_with_variables(&self, variables: ComponentContainerVariables) -> Result<Option<EntityType>, InexorRgfClientExecutionError> {
+        let entity_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_component_with_variables(variables))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.entities.remove_component)
             .map(From::from);
         Ok(entity_type)
     }

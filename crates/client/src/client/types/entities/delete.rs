@@ -3,8 +3,8 @@ pub mod queries {
     use cynic::Operation;
     use cynic::QueryFragment;
 
-    use crate::client::types::entity_types::type_id::queries::EntityTypeIdVariables;
-    use crate::client::types::entity_types::type_id::queries::EntityTypeIdVariablesFields;
+    use crate::client::types::entities::type_id::queries::EntityTypeIdVariables;
+    use crate::client::types::entities::type_id::queries::EntityTypeIdVariablesFields;
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "EntityTypeIdVariables")]

@@ -1,11 +1,14 @@
 use crate::client::types::components::api::Components;
-use crate::client::types::entity_types::api::EntityTypes;
+use crate::client::types::entities::api::EntityTypes;
+use crate::client::types::relations::api::RelationTypes;
 use crate::client::InexorRgfClient;
 use std::sync::Arc;
 
 pub mod components;
-pub mod entity_types;
+pub mod entities;
 pub mod extensions;
+pub mod properties;
+pub mod relations;
 
 pub struct Types {
     client: Arc<InexorRgfClient>,
@@ -22,5 +25,9 @@ impl Types {
 
     pub fn entity_types(&self) -> EntityTypes {
         EntityTypes::new(self.client.clone())
+    }
+
+    pub fn relation_types(&self) -> RelationTypes {
+        RelationTypes::new(self.client.clone())
     }
 }

@@ -5,8 +5,9 @@ use clap::Args;
 pub mod add_extension;
 pub mod add_property;
 pub mod create;
-pub mod remove_extension;
-pub mod remove_property;
+pub mod entity_component_type;
+pub mod entity_extension_type;
+pub mod entity_type_property;
 pub mod type_id;
 pub mod update_description;
 

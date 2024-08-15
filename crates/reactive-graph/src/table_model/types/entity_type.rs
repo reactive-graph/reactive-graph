@@ -6,6 +6,9 @@ use tabled::Table;
 use tabled::Tabled;
 
 use crate::table_model::container::TableOptions;
+use crate::table_model::types::component::display_component_type_ids_inline;
+use crate::table_model::types::component::ComponentTypeId;
+use crate::table_model::types::component::ComponentTypeIds;
 use crate::table_model::types::extension::display_extensions_inline;
 use crate::table_model::types::extension::Extension;
 use crate::table_model::types::extension::Extensions;
@@ -26,9 +29,10 @@ pub(crate) struct EntityType {
     // #[tabled(skip)]
     pub description: String,
 
-    // /// The components.
-    // #[tabled(display_with("display_components_inline"))]
-    // pub components: Vec<ComponentTypeId>,
+    /// The components.
+    #[tabled(display_with("display_component_type_ids_inline"))]
+    pub components: Vec<ComponentTypeId>,
+
     /// The property types.
     #[tabled(display_with("display_property_types_inline"))]
     pub properties: Vec<PropertyType>,
@@ -44,7 +48,7 @@ impl From<reactive_graph_graph::EntityType> for EntityType {
             namespace: entity_type.namespace(),
             name: entity_type.type_name(),
             description: entity_type.description,
-            // components
+            components: ComponentTypeIds::from(entity_type.components).0,
             properties: PropertyTypes::from(entity_type.properties).0,
             extensions: Extensions::from(entity_type.extensions).0,
         }
