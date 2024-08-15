@@ -6,8 +6,8 @@ pub mod queries {
     use crate::schema_graphql::types::entity_type::EntityType;
     use reactive_graph_graph::EntityTypeId;
 
-    use crate::types::entity_types::type_id::queries::EntityTypeIdVariables;
-    use crate::types::entity_types::type_id::queries::EntityTypeIdVariablesFields;
+    use crate::types::entities::type_id::queries::EntityTypeIdVariables;
+    use crate::types::entities::type_id::queries::EntityTypeIdVariablesFields;
 
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Query", variables = "EntityTypeIdVariables")]

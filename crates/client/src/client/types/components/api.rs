@@ -17,14 +17,14 @@ use crate::client::types::components::get_all::queries::get_all_components_query
 use crate::client::types::components::get_by_type::queries::get_component_by_type_query;
 use crate::client::types::components::remove_extension::queries::remove_extension_mutation;
 use crate::client::types::components::remove_extension::queries::remove_extension_with_variables;
-use crate::client::types::components::remove_extension::queries::RemoveExtensionVariables;
 use crate::client::types::components::remove_property::queries::remove_property_mutation;
 use crate::client::types::components::remove_property::queries::remove_property_with_variables;
-use crate::client::types::components::remove_property::queries::RemovePropertyVariables;
 use crate::client::types::components::type_id::queries::ComponentTypeIdVariables;
 use crate::client::types::components::update_description::queries::update_description_mutation;
 use crate::client::types::components::update_description::queries::update_description_with_variables;
 use crate::client::types::components::update_description::queries::UpdateDescriptionVariables;
+use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
+use crate::client::types::properties::container::queries::PropertyContainerVariables;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
@@ -172,7 +172,7 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn remove_property_with_variables(&self, variables: RemovePropertyVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+    pub async fn remove_property_with_variables(&self, variables: PropertyContainerVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
         let component = self
             .client
             .client
@@ -232,7 +232,7 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn remove_extension_with_variables(&self, variables: RemoveExtensionVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
+    pub async fn remove_extension_with_variables(&self, variables: ExtensionContainerVariables) -> Result<Option<Component>, InexorRgfClientExecutionError> {
         let component = self
             .client
             .client

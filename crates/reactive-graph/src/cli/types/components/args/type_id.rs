@@ -32,3 +32,19 @@ impl From<&ComponentTypeIdArgs> for ComponentTypeIdVariables {
         ty.into()
     }
 }
+
+/// The component type in a component container.
+#[derive(Args, Debug, Clone)]
+pub(crate) struct ComponentContainerTypeIdArgs {
+    /// The component namespace.
+    pub component_namespace: String,
+
+    /// The component name.
+    pub component_name: String,
+}
+
+impl From<ComponentContainerTypeIdArgs> for ComponentTypeId {
+    fn from(ty: ComponentContainerTypeIdArgs) -> Self {
+        ComponentTypeId::new_from_type(ty.component_namespace, ty.component_name)
+    }
+}

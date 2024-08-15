@@ -1,11 +1,4 @@
-use std::fmt;
-use std::fmt::Formatter;
-use tabled::settings::object::Columns;
-use tabled::settings::Modify;
-use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
-
+use crate::table_model::container::TableOptions;
 use crate::table_model::styles::modern_inline::modern_inline;
 use crate::table_model::types::data_type::DataType;
 use crate::table_model::types::extension::Extension;
@@ -14,6 +7,14 @@ use crate::table_model::types::extension::ExtensionDefinitions;
 use crate::table_model::types::extension::Extensions;
 use crate::table_model::types::mutability::Mutability;
 use crate::table_model::types::socket_type::SocketType;
+use std::fmt;
+use std::fmt::Formatter;
+use tabled::settings::object::Columns;
+use tabled::settings::Modify;
+use tabled::settings::Style;
+use tabled::settings::Width;
+use tabled::Table;
+use tabled::Tabled;
 
 pub struct PropertyTypeDefinition {
     pub data_type: DataType,
@@ -140,5 +141,13 @@ impl fmt::Display for PropertyTypes {
         // let x = Table::new(&self.0).to_string();
         // writeln!(f, "{}", Table::new(self.0.clone()).to_string())
         writeln!(f)
+    }
+}
+
+pub(crate) struct PropertyTypesTableOptions;
+
+impl TableOptions for PropertyTypesTableOptions {
+    fn options(table: &mut Table) -> &mut Table {
+        table.with(Style::extended())
     }
 }

@@ -5,4 +5,5 @@ pub mod extension;
 pub mod mutability;
 pub mod property_instance;
 pub mod property_type;
+pub mod relation_type;
 pub mod socket_type;

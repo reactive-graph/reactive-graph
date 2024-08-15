@@ -4,6 +4,7 @@ use crate::schema_graphql::types::extension::Extension;
 use crate::schema_graphql::types::extension::Extensions;
 use crate::schema_graphql::types::property_type::PropertyType;
 use crate::schema_graphql::types::property_type::PropertyTypes;
+use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::NamespacedTypeGetter;
 use std::ops::Deref;
 
@@ -73,5 +74,12 @@ impl Deref for EntityTypes {
 impl From<EntityTypes> for Vec<reactive_graph_graph::EntityType> {
     fn from(entity_types: EntityTypes) -> Self {
         entity_types.0.into_iter().map(From::from).collect()
+    }
+}
+
+impl From<EntityType> for ComponentOrEntityTypeId {
+    fn from(entity_type: EntityType) -> Self {
+        let entity_type: reactive_graph_graph::EntityType = entity_type.into();
+        ComponentOrEntityTypeId::EntityType(entity_type.ty)
     }
 }

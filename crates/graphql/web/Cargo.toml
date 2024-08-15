@@ -12,6 +12,7 @@ readme = "../../../README.md"
 actix-web = { workspace = true }
 async-graphql = { workspace = true }
 async-graphql-actix-web = { workspace = true }
+log = { workspace = true }
 
 reactive-graph-graphql-schema = { version = "0.10.0", path = "../schema" }
 
