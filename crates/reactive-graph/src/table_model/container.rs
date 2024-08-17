@@ -1,3 +1,5 @@
+use std::fmt::Display;
+use std::fmt::Formatter;
 use std::marker::PhantomData;
 use tabled::settings::Style;
 use tabled::Table;
@@ -46,8 +48,8 @@ impl<S, T: Clone + Tabled + From<S>, O: TableOptions> From<S> for DefaultTableCo
     }
 }
 
-impl<S, T: Clone + Tabled + From<S>, O: TableOptions> ToString for DefaultTableContainer<S, T, O> {
-    fn to_string(&self) -> String {
-        self.table().to_string()
+impl<S, T: Clone + Tabled + From<S>, O: TableOptions> Display for DefaultTableContainer<S, T, O> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.table().to_string())
     }
 }
