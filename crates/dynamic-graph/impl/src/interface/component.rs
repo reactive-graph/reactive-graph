@@ -20,7 +20,7 @@ pub fn get_interfaces(mut schema: SchemaBuilder, context: &SchemaBuilderContext)
 
 pub fn get_component_interface(component: Component) -> Interface {
     let dy_ty = DynamicGraphTypeDefinition::from(&component.ty);
-    let mut interface = Interface::new(&dy_ty.to_string())
+    let mut interface = Interface::new(dy_ty.to_string())
         .description(&component.description)
         .field(component_id_field(&component.ty));
     for field in component.properties.iter() {
