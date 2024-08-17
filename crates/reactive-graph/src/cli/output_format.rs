@@ -28,7 +28,7 @@ pub(crate) struct OutputFormatWrapper<S: Serialize, T: Clone + Tabled + From<S>,
 
 impl<S: Serialize, T: Clone + Tabled + From<S>, O: TableOptions> From<Option<OutputFormatArgs>> for OutputFormatWrapper<S, T, O> {
     fn from(value: Option<OutputFormatArgs>) -> Self {
-        Self(value, PhantomData::default(), PhantomData::default(), PhantomData::default())
+        Self(value, PhantomData, PhantomData, PhantomData)
     }
 }
 
