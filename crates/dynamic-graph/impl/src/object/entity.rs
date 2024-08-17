@@ -50,9 +50,7 @@ pub fn get_entity_types(mut schema: SchemaBuilder, context: &SchemaBuilderContex
 
 pub fn get_entity_type(entity_type: &EntityType, outbound_types: RelationTypes, inbound_types: RelationTypes, context: &SchemaBuilderContext) -> Object {
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let mut object = Object::new(&dy_ty.to_string())
-        .description(&entity_type.description)
-        .implement(INTERFACE_ENTITY);
+    let mut object = Object::new(dy_ty.to_string()).description(&entity_type.description).implement(INTERFACE_ENTITY);
     // Components
     for component_ty in entity_type.components.iter() {
         object = object.field(instance_component_id_field(component_ty.key()));
@@ -119,7 +117,7 @@ pub fn get_entity_mutation_type(entity_ty: &EntityTypeId, entity_type: &EntityTy
 pub fn get_entity_update_field(entity_type: &EntityType) -> Option<Field> {
     let entity_type_inner = entity_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&entity_type.ty);
-    let mut update_field = Field::new("update", TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let mut update_field = Field::new("update", TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let entity_type = entity_type_inner.clone();
         FieldFuture::new(async move {
             let entity_instances = ctx.parent_value.try_downcast_ref::<Vec<ReactiveEntity>>()?;
@@ -283,7 +281,7 @@ pub fn get_entity_type_trigger_field(entity_type: &EntityType) -> Option<Field> 
         FieldFuture::new(async move {
             let entity_instances = ctx.parent_value.try_downcast_ref::<Vec<ReactiveEntity>>()?;
             for entity_instance in entity_instances {
-                entity_instance.set(&TRIGGER.property_name(), json!(true));
+                entity_instance.set(TRIGGER.property_name(), json!(true));
             }
             Ok(Some(FieldValue::list(
                 entity_instances.iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),

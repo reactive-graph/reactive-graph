@@ -41,7 +41,7 @@ pub fn relation_query_field(relation_ty: &RelationTypeId, relation_type: &Relati
     let ty = relation_ty.clone();
     let relation_type_inner = relation_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
-    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let mut field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let relation_type = relation_type_inner.clone();
         FieldFuture::new(async move {
@@ -130,7 +130,7 @@ pub fn relation_creation_field(relation_ty: &RelationTypeId, relation_type: &Rel
     let ty = relation_ty.clone();
     let relation_type_inner = relation_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
-    let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(&dy_ty.to_string()), move |ctx| {
+    let mut field = Field::new(dy_ty.mutation_field_name("create"), TypeRef::named_nn(dy_ty.to_string()), move |ctx| {
         let ty = ty.clone();
         let relation_type = relation_type_inner.clone();
         FieldFuture::new(async move {
