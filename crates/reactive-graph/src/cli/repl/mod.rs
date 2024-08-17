@@ -37,7 +37,7 @@ pub(crate) async fn repl(client: &Arc<InexorRgfClient>) -> Result<(), i32> {
     let mut return_state = ReturnState::Neutral;
     let mut break_state = false;
     loop {
-        let prompt = format!("{} {} {} ", CHAR_PROMPT, client.remote().base_url().cyan().bold(), return_state.to_string());
+        let prompt = format!("{} {} {} ", CHAR_PROMPT, client.remote().base_url().cyan().bold(), return_state);
         let readline = rl.readline(prompt.as_str());
         match readline {
             Ok(line) => {
