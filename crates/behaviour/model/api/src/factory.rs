@@ -49,6 +49,12 @@ impl<ID: Clone, T: ReactiveInstance<ID>> Clone for BehaviourFactories<ID, T> {
     }
 }
 
+impl<ID: Clone, T: ReactiveInstance<ID>> Default for BehaviourFactories<ID, T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 // impl<ID: Clone, T: ReactiveInstance<ID>> IntoIterator for BehaviourFactories<ID, T> {
 //     type Item = (BehaviourTypeId, Arc<dyn BehaviourFactory<ID, T> + Send + Sync>);
 //     type IntoIter = OwningIter<BehaviourTypeId, Arc<dyn BehaviourFactory<ID, T> + Send + Sync>>;

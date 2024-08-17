@@ -91,6 +91,12 @@ impl OutboundInstances {
     }
 }
 
+impl Default for OutboundInstances {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 pub struct InboundInstances(DashMap<Uuid, DashSet<RelationInstanceId>>);
 
 impl InboundInstances {
@@ -117,6 +123,12 @@ impl InboundInstances {
 
     pub fn get(&self, id: Uuid) -> Option<DashSet<RelationInstanceId>> {
         self.0.get(&id).map(|entry| entry.value().clone())
+    }
+}
+
+impl Default for InboundInstances {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
