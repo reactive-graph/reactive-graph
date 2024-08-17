@@ -107,8 +107,8 @@ pub fn longest_common_prefix(s: &Vec<&String>) -> String {
     }
     loop {
         result.push_str(&s[0][count..count + 1]);
-        for i in 0..s.len() {
-            if s[i].len() < count + 1 || s[i][0..count + 1] != result {
+        for item in s {
+            if item.len() < count + 1 || item[0..count + 1] != result {
                 found = true;
                 break;
             }
