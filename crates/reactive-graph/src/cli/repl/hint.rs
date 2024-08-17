@@ -42,7 +42,7 @@ impl HinterMatch {
             match &t {
                 HinterMatchType::Command(_command) => CHAR_ENTER.green().to_string(),
                 HinterMatchType::Error(error_kind, context) => {
-                    match context
+                    context
                         .iter()
                         .find(|(kind, _)| kind != &ContextKind::InvalidSubcommand && kind != &ContextKind::Usage && kind != &ContextKind::Custom)
                         .and_then(|(kind, value)| match (kind, value) {
@@ -74,10 +74,8 @@ impl HinterMatch {
                                     _ => "unknown",
                                 }
                             )),
-                        }) {
-                        Some(v) => v,
-                        None => String::new(),
-                    }
+                        })
+                        .unwrap_or_default()
                 }
             }
         };
