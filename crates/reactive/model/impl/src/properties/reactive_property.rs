@@ -114,11 +114,11 @@ impl<IdType: Clone> ReactiveProperty<IdType> {
     }
 
     pub fn as_array(&self) -> Option<Vec<Value>> {
-        self.get().as_array().map(Vec::clone)
+        self.get().as_array().cloned()
     }
 
     pub fn as_object(&self) -> Option<Map<String, Value>> {
-        self.get().as_object().map(Map::clone)
+        self.get().as_object().cloned()
     }
 }
 
@@ -259,7 +259,6 @@ impl<IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
 
 #[cfg(test)]
 pub mod tests {
-
     extern crate test;
 
     use std::ops::DerefMut;

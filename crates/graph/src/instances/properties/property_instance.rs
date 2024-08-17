@@ -111,11 +111,11 @@ impl PropertyInstanceGetter for PropertyInstances {
     }
 
     fn as_array<S: Into<String>>(&self, property_name: S) -> Option<Vec<Value>> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_array().map(Vec::clone))
+        self.0.get(&property_name.into()).and_then(|p| p.as_array().cloned())
     }
 
     fn as_object<S: Into<String>>(&self, property_name: S) -> Option<Map<String, Value>> {
-        self.0.get(&property_name.into()).and_then(|p| p.as_object().map(Map::clone))
+        self.0.get(&property_name.into()).and_then(|p| p.as_object().cloned())
     }
 }
 
