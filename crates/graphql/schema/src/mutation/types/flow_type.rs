@@ -39,6 +39,7 @@ pub struct MutationFlowTypes;
 #[Object]
 impl MutationFlowTypes {
     /// Creates a new flow type with the given name and components and properties.
+    #[allow(clippy::too_many_arguments)]
     async fn create(
         &self,
         context: &Context<'_>,

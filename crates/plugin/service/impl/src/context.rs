@@ -55,6 +55,7 @@ pub struct PluginContextImpl {
 }
 
 impl PluginContextImpl {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         component_manager: Arc<dyn ComponentManager + Send + Sync>,
         component_import_export_manager: Arc<dyn ComponentImportExportManager + Send + Sync>,
