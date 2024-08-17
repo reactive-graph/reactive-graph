@@ -111,7 +111,6 @@ reactive-graph-runtime-web-impl = { version = "0.10.0", path = "../web/impl" }
 reactive-graph-runtime-graphql-api = { version = "0.10.0", path = "../graphql/api" }
 reactive-graph-runtime-graphql-impl = { version = "0.10.0", path = "../graphql/impl" }
 reactive-graph-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
-##reactive-graph-plugin-derive = { version = "0.10.0", path = "../plugin/derive" }
 reactive-graph-plugin-service-api = { version = "0.10.0", path = "../../plugin/service/api" }
 reactive-graph-plugin-service-impl = { version = "0.10.0", path = "../../plugin/service/impl" }
 reactive-graph-plugin-graphql-api = { version = "0.10.0", path = "../../plugin/graphql/api" }
@@ -130,9 +129,6 @@ reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../api" }
 reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
-
-#[build-dependencies]
-#vergen = { version = "8.1.3", features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
 
 [features]
 test = []

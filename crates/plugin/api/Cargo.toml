@@ -12,7 +12,6 @@ readme = "../../../README.md"
 async-trait = { workspace = true }
 http = { workspace = true }
 json5 = { workspace = true, optional = true }
-##paste = { workspace = true }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"], optional = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
@@ -23,9 +22,7 @@ toml = { workspace = true, optional = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../../behaviour/model/api" }
-##reactive-graph-behaviour-model-impl = { version = "0.10.0", path = "../behaviour/model/impl" }
 reactive-graph-config-model = { version = "0.10.0", path = "../../config/model" }
-#reactive-graph-event-api = { version = "0.10.0", path = "../event-api" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-command-model = { version = "0.10.0", path = "../../command/model" }
 reactive-graph-plugin-derive = { version = "0.10.0", path = "../derive", optional = true }

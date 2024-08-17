@@ -20,7 +20,6 @@ reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-command-api = { version = "0.10.0", path = "../../command/api" }
 reactive-graph-command-model = { version = "0.10.0", path = "../../command/model" }
 reactive-graph-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
-##reactive-graph-runtime-service-api = { version = "0.10.0", path = "../../runtime/service/api" }
 reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../../behaviour/model/api" }
 reactive-graph-behaviour-service-api = { version = "0.10.0", path = "../../behaviour/service/api" }
 reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
