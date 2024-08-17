@@ -126,6 +126,6 @@ impl Hint for HinterMatch {
     }
 
     fn completion(&self) -> Option<&str> {
-        self.completion.as_ref().map(|x| x.as_str())
+        self.completion.as_deref()
     }
 }
