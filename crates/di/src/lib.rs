@@ -36,6 +36,7 @@ pub static SHARED_COMPONENT_DEFINITION_REGISTRY: LazyLock<Option<Box<SharedCompo
         .map(|parent_definition_registry| Box::new(SharedComponentDefinitionRegistry::new(parent_definition_registry.clone())))
 });
 
+#[allow(clippy::let_and_return)]
 pub fn get_shared_component_definition_registry() -> Option<Box<SharedComponentDefinitionRegistry>> {
     let shared_component_definition_registry = SHARED_COMPONENT_DEFINITION_REGISTRY.clone();
     shared_component_definition_registry
