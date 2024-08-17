@@ -69,6 +69,12 @@ impl FromIterator<reactive_graph_graph::Extension> for ExtensionDefinitions {
     }
 }
 
+impl Default for ExtensionDefinitions {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
 pub struct Extension {
