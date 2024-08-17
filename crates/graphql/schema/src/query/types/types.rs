@@ -197,6 +197,7 @@ impl Types {
     }
 
     /// Search for relation types.
+    #[allow(clippy::too_many_arguments)]
     async fn relations(
         &self,
         context: &Context<'_>,

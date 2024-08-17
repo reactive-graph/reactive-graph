@@ -76,6 +76,7 @@ pub trait FlowTypeManager: Send + Sync + Lifecycle {
     fn count_by_namespace(&self, namespace: &str) -> usize;
 
     /// Creates a new flow type.
+    #[allow(clippy::too_many_arguments)]
     fn create_flow_type(
         &self,
         ty: &FlowTypeId,

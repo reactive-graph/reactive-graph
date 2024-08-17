@@ -91,6 +91,7 @@ impl MutationRelationInstances {
     /// Creates a connector from a property of the outbound entity instance to a property of the inbound entity instance.
     ///
     /// The type_name must match a relation type exactly.
+    #[allow(clippy::too_many_arguments)]
     async fn create_connector(
         &self,
         context: &Context<'_>,
