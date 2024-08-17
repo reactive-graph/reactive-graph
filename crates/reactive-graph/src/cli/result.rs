@@ -99,11 +99,11 @@ impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOpti
 
     pub(crate) fn to_command_result(self) -> CommandResult {
         match self.output_format.clone().unwrap_or_default() {
-            OutputFormatArgs::TABLE => match self.object_or_collection {
+            OutputFormatArgs::Table => match self.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) => Ok(DefaultTableContainer::<S, T, O>::from(single_object).into()),
                 CommandResultBuilderContent::Collection(collection) => Ok(DefaultTableContainer::<S, T, O>::from(collection).into()),
             },
-            OutputFormatArgs::JSON => match self.object_or_collection {
+            OutputFormatArgs::Json => match self.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) => Ok(serde_json::to_value(single_object)
                     .map_err(|e| CommandError::SerializationError(SerializationError::Json(e)))?
                     .into()),
@@ -112,9 +112,9 @@ impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOpti
                     .into()),
             },
             #[cfg(feature = "json5")]
-            OutputFormatArgs::JSON5 => Err(NotImplemented),
+            OutputFormatArgs::Json5 => Err(NotImplemented),
             #[cfg(feature = "toml")]
-            OutputFormatArgs::TOML => match self.object_or_collection {
+            OutputFormatArgs::Toml => match self.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) => Ok(toml::Value::try_from(single_object)
                     .map_err(|e| CommandError::SerializationError(SerializationError::Toml(e)))?
                     .into()),
