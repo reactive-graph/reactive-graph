@@ -25,7 +25,7 @@ use std::sync::LazyLock;
 use std::sync::RwLock;
 
 pub static STATIC_COMPONENT_DEFINITION_REGISTRY_WRAPPER: LazyLock<Option<Arc<StaticComponentDefinitionRegistryWrapper>>> = LazyLock::new(|| {
-    StaticComponentDefinitionRegistry::new(true, &SimpleContextFactory::default())
+    StaticComponentDefinitionRegistry::new(true, &SimpleContextFactory)
         .ok()
         .map(|definition_registry| Arc::new(StaticComponentDefinitionRegistryWrapper::new(definition_registry)))
 });
