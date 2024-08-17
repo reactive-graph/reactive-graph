@@ -10,18 +10,11 @@ readme = "../../../../README.md"
 
 [dependencies]
 async-trait = { workspace = true }
-##gql_client = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 thiserror = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-##reactive-graph-config-model = { version = "0.10.0", path = "../../../config/model" }
-##reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
-##reactive-graph-command-model = { version = "0.10.0", path = "../../../command/model" }
-##reactive-graph-runtime-model = { version = "0.10.0", path = "../../../runtime/model" }
-##reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../../reactive/service/api" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-##reactive-graph-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
 
 [lib]
 crate-type = ["lib"]
