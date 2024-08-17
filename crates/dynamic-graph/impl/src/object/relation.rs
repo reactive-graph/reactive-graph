@@ -39,7 +39,7 @@ pub fn get_relation_types(mut schema: SchemaBuilder, context: &SchemaBuilderCont
 
 pub fn get_relation_type(relation_ty: &RelationTypeId, relation_type: &RelationType, context: &SchemaBuilderContext) -> Object {
     let dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
-    let mut object = Object::new(&dy_ty.to_string())
+    let mut object = Object::new(dy_ty.to_string())
         .description(&relation_type.description)
         .implement(INTERFACE_RELATION);
     // Components
@@ -103,7 +103,7 @@ pub fn get_relation_mutation_type(relation_ty: &RelationTypeId, relation_type: &
 pub fn get_relation_update_field(relation_type: &RelationType) -> Option<Field> {
     let relation_type_inner = relation_type.clone();
     let dy_ty = DynamicGraphTypeDefinition::from(&relation_type.ty);
-    let mut update_field = Field::new("update", TypeRef::named_nn_list_nn(&dy_ty.to_string()), move |ctx| {
+    let mut update_field = Field::new("update", TypeRef::named_nn_list_nn(dy_ty.to_string()), move |ctx| {
         let relation_type = relation_type_inner.clone();
         FieldFuture::new(async move {
             let relation_instances = ctx.parent_value.try_downcast_ref::<Vec<ReactiveRelation>>()?;
@@ -269,7 +269,7 @@ pub fn get_relation_type_trigger_field(relation_type: &RelationType) -> Option<F
         FieldFuture::new(async move {
             let relation_instances = ctx.parent_value.try_downcast_ref::<Vec<ReactiveRelation>>()?;
             for relation_instance in relation_instances {
-                relation_instance.set(&TRIGGER.property_name(), json!(true));
+                relation_instance.set(TRIGGER.property_name(), json!(true));
             }
             Ok(Some(FieldValue::list(
                 relation_instances

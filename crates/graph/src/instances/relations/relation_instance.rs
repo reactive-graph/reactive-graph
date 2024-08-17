@@ -227,7 +227,7 @@ impl PropertyInstanceGetter for RelationInstance {
 
 impl MutablePropertyInstanceSetter for RelationInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
-        self.properties.set(&property_name.into(), value);
+        self.properties.set(property_name.into(), value);
     }
 }
 
