@@ -37,6 +37,7 @@ impl MutationRelationTypes {
     /// Creates a new relation type with the given name and components and properties.
     ///
     /// The outbound entity type and the inbound entity type must be specified.
+    #[allow(clippy::too_many_arguments)]
     async fn create(
         &self,
         context: &Context<'_>,

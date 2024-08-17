@@ -79,6 +79,7 @@ pub trait RelationTypeManager: Send + Sync + Lifecycle {
     fn count_by_namespace(&self, namespace: &str) -> usize;
 
     /// Creates a new relation type.
+    #[allow(clippy::too_many_arguments)]
     fn create_relation_type(
         &self,
         outbound_type: &ComponentOrEntityTypeId,

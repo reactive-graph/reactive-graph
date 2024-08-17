@@ -13,6 +13,7 @@ pub struct PluginQuery;
 /// Search queries for the type system, the instances and the flows.
 #[Object(name = "Query")]
 impl PluginQuery {
+    #[allow(clippy::too_many_arguments)]
     async fn plugins(
         &self,
         context: &Context<'_>,

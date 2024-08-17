@@ -35,6 +35,7 @@ impl Instances {
     /// If an id is given, the entity instance with the given id will be returned.
     ///
     /// If an entity type is given, only entity instances of the given type are returned.
+    #[allow(clippy::too_many_arguments)]
     async fn entities(
         &self,
         context: &Context<'_>,
@@ -156,6 +157,7 @@ impl Instances {
     /// entity instance, the entity type of the inbound entity instance, the id of the outbound
     /// entity instance or the id of the inbound entity instance. All of these filters can be
     /// combined.
+    #[allow(clippy::too_many_arguments)]
     async fn relations(
         &self,
         context: &Context<'_>,
