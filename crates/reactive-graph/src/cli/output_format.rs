@@ -10,13 +10,13 @@ use tabled::Tabled;
 pub(crate) enum OutputFormatArgs {
     // The output is formatted as a table.
     #[default]
-    TABLE,
+    Table,
     // The output is returned as JSON.
-    JSON,
+    Json,
     // The output is returned as JSON5.
-    JSON5,
+    Json5,
     // The output is returned as TOML.
-    TOML,
+    Toml,
 }
 
 pub(crate) struct OutputFormatWrapper<S: Serialize, T: Clone + Tabled + From<S>, O: TableOptions>(
