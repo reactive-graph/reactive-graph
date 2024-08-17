@@ -42,24 +42,20 @@ impl fmt::Display for ReactiveFlowCreationError {
                 )
             }
             ReactiveFlowCreationError::FlowTypeDoesntExist(flow_ty) => {
-                write!(
-                    f,
-                    "Failed to construct reactive flow instance: Flow type {} doesn't exist",
-                    flow_ty.type_definition().to_string()
-                )
+                write!(f, "Failed to construct reactive flow instance: Flow type {} doesn't exist", flow_ty.type_definition())
             }
             ReactiveFlowCreationError::EntityTypeDoesntExist(entity_ty) => {
                 write!(
                     f,
                     "Failed to construct reactive flow instance: Flow type contains an entity instance of type {} which doesn't exist",
-                    entity_ty.type_definition().to_string()
+                    entity_ty.type_definition()
                 )
             }
             ReactiveFlowCreationError::RelationTypeDoesntExist(relation_ty) => {
                 write!(
                     f,
                     "Failed to construct reactive flow instance: Flow type contains a relation instance of type {} which doesn't exist",
-                    relation_ty.type_definition().to_string()
+                    relation_ty.type_definition()
                 )
             }
             ReactiveFlowCreationError::InvalidOutboundId(id) => {

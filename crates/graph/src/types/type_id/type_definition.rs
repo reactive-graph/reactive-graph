@@ -74,11 +74,7 @@ impl Display for TypeDefinition {
         write!(
             f,
             "{}{}{}{}{}",
-            self.type_id_type.to_string(),
-            &TYPE_ID_TYPE_SEPARATOR,
-            &self.namespace,
-            &TYPE_ID_TYPE_SEPARATOR,
-            &self.type_name
+            self.type_id_type, &TYPE_ID_TYPE_SEPARATOR, &self.namespace, &TYPE_ID_TYPE_SEPARATOR, &self.type_name
         )
     }
 }

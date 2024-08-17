@@ -41,10 +41,10 @@ impl fmt::Display for FlowMutationError {
             // FlowMutationError::MissingWrapperEntityInstance(id) => write!(f, "Missing wrapper entity instance with the id {}", id),
             FlowMutationError::WrapperEntityInstanceAlreadyExists(id) => write!(f, "Can't create flow: An entity instance with the id {} already exists!", id),
             FlowMutationError::MissingEntityType(ty) => {
-                write!(f, "Entity type {} does not exist", ty.type_definition().to_string())
+                write!(f, "Entity type {} does not exist", ty.type_definition())
             }
             FlowMutationError::MissingRelationType(ty) => {
-                write!(f, "Relation type {} does not exist", ty.type_definition().to_string())
+                write!(f, "Relation type {} does not exist", ty.type_definition())
             }
             FlowMutationError::MissingEntityInstance(id) => {
                 write!(f, "Entity instance {} does not exist", id)

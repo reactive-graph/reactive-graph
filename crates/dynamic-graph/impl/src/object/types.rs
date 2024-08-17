@@ -37,7 +37,7 @@ impl DynamicGraphTypeDefinition {
     }
 
     pub fn mutation_type_name(&self) -> String {
-        format!("{}_Mutations", self.to_string())
+        format!("{}_Mutations", self)
     }
 }
 
