@@ -1,6 +1,8 @@
 use convert_case::Case::Camel;
 use convert_case::Case::Pascal;
 use convert_case::Casing;
+use std::fmt::Display;
+use std::fmt::Formatter;
 
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityTypeId;
@@ -49,9 +51,9 @@ impl NamespacedTypeGetter for DynamicGraphTypeDefinition {
     }
 }
 
-impl ToString for DynamicGraphTypeDefinition {
-    fn to_string(&self) -> String {
-        format!("{}_{}_{}", self.namespace(), self.type_name(), self.ty.type_id_type.full_name())
+impl Display for DynamicGraphTypeDefinition {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}_{}_{}", self.namespace(), self.type_name(), self.ty.type_id_type.full_name())
     }
 }
 

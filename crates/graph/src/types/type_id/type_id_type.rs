@@ -1,6 +1,8 @@
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
 use uuid::Uuid;
 
 /// Separator for the string representation of a type definition.
@@ -71,16 +73,20 @@ impl From<TypeIdType> for Uuid {
 }
 
 /// Converts the type of a type into a one letter string representation.
-impl ToString for TypeIdType {
-    fn to_string(&self) -> String {
-        match self {
-            TypeIdType::Behaviour => TYPE_ID_TYPE_BEHAVIOUR.to_string(),
-            TypeIdType::Component => TYPE_ID_TYPE_COMPONENT.to_string(),
-            TypeIdType::EntityType => TYPE_ID_TYPE_ENTITY_TYPE.to_string(),
-            TypeIdType::Extension => TYPE_ID_TYPE_EXTENSION.to_string(),
-            TypeIdType::RelationType => TYPE_ID_TYPE_RELATION_TYPE.to_string(),
-            TypeIdType::FlowType => TYPE_ID_TYPE_FLOW_TYPE.to_string(),
-        }
+impl Display for TypeIdType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                TypeIdType::Behaviour => TYPE_ID_TYPE_BEHAVIOUR,
+                TypeIdType::Component => TYPE_ID_TYPE_COMPONENT,
+                TypeIdType::EntityType => TYPE_ID_TYPE_ENTITY_TYPE,
+                TypeIdType::Extension => TYPE_ID_TYPE_EXTENSION,
+                TypeIdType::RelationType => TYPE_ID_TYPE_RELATION_TYPE,
+                TypeIdType::FlowType => TYPE_ID_TYPE_FLOW_TYPE,
+            }
+        )
     }
 }
 
