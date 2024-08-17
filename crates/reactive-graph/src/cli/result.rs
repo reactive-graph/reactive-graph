@@ -97,7 +97,7 @@ impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOpti
         }
     }
 
-    pub(crate) fn to_command_result(self) -> CommandResult {
+    pub(crate) fn into_command_result(self) -> CommandResult {
         match self.output_format.clone().unwrap_or_default() {
             OutputFormatArgs::Table => match self.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) => Ok(DefaultTableContainer::<S, T, O>::from(single_object).into()),

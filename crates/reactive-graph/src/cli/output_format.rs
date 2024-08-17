@@ -34,9 +34,9 @@ impl<S: Serialize, T: Clone + Tabled + From<S>, O: TableOptions> From<Option<Out
 
 impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOptions + 'static> OutputFormatWrapper<S, T, O> {
     pub(crate) fn single(self, single_object: S) -> CommandResult {
-        CommandResultBuilder::<S, T, O>::single(single_object, self.0).to_command_result()
+        CommandResultBuilder::<S, T, O>::single(single_object, self.0).into_command_result()
     }
     pub(crate) fn collection(self, collection: Vec<S>) -> CommandResult {
-        CommandResultBuilder::<S, T, O>::collection(collection, self.0).to_command_result()
+        CommandResultBuilder::<S, T, O>::collection(collection, self.0).into_command_result()
     }
 }
