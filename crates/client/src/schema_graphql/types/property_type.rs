@@ -64,6 +64,12 @@ impl FromIterator<reactive_graph_graph::PropertyType> for PropertyTypeDefinition
     }
 }
 
+impl Default for PropertyTypeDefinitions {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
 pub struct PropertyType {

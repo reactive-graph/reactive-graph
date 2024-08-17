@@ -28,3 +28,9 @@ impl Deref for EventChannels {
         &self.0
     }
 }
+
+impl Default for EventChannels {
+    fn default() -> Self {
+        Self::new()
+    }
+}
