@@ -1,6 +1,8 @@
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
+use std::fmt::Display;
+use std::fmt::Formatter;
 use typed_builder::TypedBuilder;
 
 use crate::NamespacedType;
@@ -67,9 +69,10 @@ impl NamespacedTypeGetter for TypeDefinition {
 }
 
 /// Returns the fully qualified type name.
-impl ToString for TypeDefinition {
-    fn to_string(&self) -> String {
-        format!(
+impl Display for TypeDefinition {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
             "{}{}{}{}{}",
             self.type_id_type.to_string(),
             &TYPE_ID_TYPE_SEPARATOR,
