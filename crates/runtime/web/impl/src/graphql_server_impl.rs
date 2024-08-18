@@ -259,7 +259,7 @@ impl GraphQLServerImpl {
             let tls_config = ServerConfig::builder()
                 .with_no_client_auth()
                 .with_single_cert(cert_chain, keys.remove(0))
-                .map_err(|e| GraphQLServerError::RustlsError(e))?;
+                .map_err(GraphQLServerError::RustlsError)?;
             info!("Starting HTTPS/GraphQL server on {}", graphql_server_config.url());
             http_server.bind_rustls_0_22(graphql_server_config.addr(), tls_config)?.run()
         } else {
