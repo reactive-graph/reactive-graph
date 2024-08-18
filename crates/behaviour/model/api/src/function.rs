@@ -73,7 +73,7 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> BehaviourFunctionsReadOn
     }
 }
 
-impl<'a, ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> Deref for BehaviourFunctionsReadOnlyView<ID, T, FnType> {
+impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> Deref for BehaviourFunctionsReadOnlyView<ID, T, FnType> {
     type Target = ReadOnlyView<BehaviourTypeId, FnType>;
 
     fn deref(&self) -> &Self::Target {
