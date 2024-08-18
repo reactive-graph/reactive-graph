@@ -511,6 +511,7 @@ impl FromIterator<EntityType> for EntityTypes {
 
 // Experimental
 impl EntityTypeBuilder<((EntityTypeId,), (), (), (), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(self, component_ty: C) -> EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
         let (ty, description, _, properties, extensions) = self.fields;
         EntityTypeBuilder {
@@ -522,6 +523,7 @@ impl EntityTypeBuilder<((EntityTypeId,), (), (), (), ())> {
 
 // Experimental
 impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(self, ty: C) -> EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
         self.fields.2 .0.insert(ty.into());
         self
@@ -530,6 +532,7 @@ impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
 
 // Experimental
 impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn property<P: Into<PropertyType>>(self, property: P) -> EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())> {
         let (ty, description, components, _, extensions) = self.fields;
         EntityTypeBuilder {
@@ -541,6 +544,7 @@ impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
 
 // Experimental
 impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn property<P: Into<PropertyType>>(self, property: P) -> EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())> {
         self.fields.3 .0.push(property.into());
         self
