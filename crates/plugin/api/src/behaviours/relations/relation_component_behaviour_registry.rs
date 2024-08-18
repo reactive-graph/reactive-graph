@@ -22,7 +22,7 @@ pub trait RelationComponentBehaviourRegistry: Send + Sync {
     );
 
     async fn register_all(&self, factories: &BehaviourFactories<RelationInstanceId, ReactiveRelation>) {
-        let mut factories = tokio_stream::iter(factories.deref().clone().into_iter());
+        let mut factories = tokio_stream::iter(factories.deref().clone());
         while let Some((ty, factory)) = factories.next().await {
             self.register(ComponentBehaviourTypeId::from(&ty), factory).await
         }
