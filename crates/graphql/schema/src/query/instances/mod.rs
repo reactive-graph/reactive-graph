@@ -6,6 +6,7 @@ pub use relation_instance::*;
 
 pub mod entity_instance;
 pub mod flow_instance;
+#[allow(clippy::module_inception)]
 pub mod instances;
 pub mod properties;
 pub mod relation_instance;
