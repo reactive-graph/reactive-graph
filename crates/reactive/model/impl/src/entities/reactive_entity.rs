@@ -37,7 +37,7 @@ use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 #[derive(TypedBuilder)]
 #[builder(
     build_method(vis="pub", into=ReactiveEntity),
-    builder_method(vis=""),
+    builder_method(vis = ""),
     builder_type(vis="pub", name=ReactiveEntityInstanceBuilder),
 )]
 pub struct ReactiveEntityInstance {
@@ -77,6 +77,7 @@ impl ReactiveEntity {
     /// Creates a builder from the given entity type.
     /// Generates an id for the reactive entity.
     /// Converts property types into reactive properties and initializes the properties with default values.
+    #[allow(clippy::type_complexity)]
     pub fn builder_from_entity_type(
         entity_type: &EntityType,
     ) -> ReactiveEntityInstanceBuilder<((EntityTypeId,), (Uuid,), (), (ReactiveProperties<Uuid>,), (), ())> {

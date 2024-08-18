@@ -61,7 +61,7 @@ use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 #[derive(TypedBuilder)]
 #[builder(
     build_method(vis="pub", into=ReactiveRelation),
-    builder_method(vis=""),
+    builder_method(vis = ""),
     builder_type(vis="pub", name=ReactiveRelationInstanceBuilder),
 )]
 pub struct ReactiveRelationInstance {
@@ -196,6 +196,7 @@ impl ReactiveRelation {
         ReactiveRelationInstance::builder()
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn builder_with_entities(
         outbound: ReactiveEntity,
         ty: &RelationInstanceTypeId,
@@ -207,6 +208,7 @@ impl ReactiveRelation {
     /// Creates a builder for the given relation instance type id.
     /// Generates an id for the reactive relation.
     /// Converts property types into reactive properties and initializes the properties with default values.
+    #[allow(clippy::type_complexity)]
     pub fn builder_with_entities_and_properties(
         outbound: ReactiveEntity,
         ty: &RelationInstanceTypeId,
@@ -227,6 +229,7 @@ impl ReactiveRelation {
         ReactiveRelation::builder_with_entities(outbound, ty, inbound).properties(reactive_properties)
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn builder_from_type_with_unique_id(
         outbound: ReactiveEntity,
         relation_type: &RelationType,
@@ -244,6 +247,7 @@ impl ReactiveRelation {
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn builder_from_type_with_unique_instance_id(
         outbound: ReactiveEntity,
         relation_type: &RelationType,
@@ -262,6 +266,7 @@ impl ReactiveRelation {
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn builder_from_type_with_random_instance_id(
         outbound: ReactiveEntity,
         relation_type: &RelationType,
