@@ -271,7 +271,7 @@ impl PluginContainerManager for PluginContainerManagerImpl {
     }
 
     fn get_dependencies(&self, id: &Uuid) -> DashSet<PluginDependency> {
-        self.plugin_containers.get(id).map(|e| e.dependencies.clone()).unwrap_or_else(DashSet::new)
+        self.plugin_containers.get(id).map(|e| e.dependencies.clone()).unwrap_or_default()
     }
 
     fn has_unsatisfied_dependencies(&self, id: &Uuid) -> bool {
