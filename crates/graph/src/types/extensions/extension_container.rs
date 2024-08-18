@@ -1,6 +1,7 @@
 use crate::AddExtensionError;
 use crate::Extension;
 use crate::ExtensionTypeId;
+use crate::ExtensionTypeIds;
 use crate::Extensions;
 use crate::RemoveExtensionError;
 use crate::UpdateExtensionError;
@@ -10,13 +11,13 @@ pub trait ExtensionContainer {
     fn has_own_extension(&self, ty: &ExtensionTypeId) -> bool;
 
     /// Returns true, if the type contains any of the given extensions.
-    fn has_any_own_extensions(&self, tys: &Vec<ExtensionTypeId>) -> bool {
-        tys.iter().any(|ty| self.has_own_extension(ty))
+    fn has_any_own_extensions(&self, tys: &ExtensionTypeIds) -> bool {
+        tys.iter().any(|ty| self.has_own_extension(&ty))
     }
 
     /// Returns true, if the type contains all given extensions.
-    fn has_all_own_extensions(&self, tys: &Vec<ExtensionTypeId>) -> bool {
-        tys.iter().all(|ty| self.has_own_extension(ty))
+    fn has_all_own_extensions(&self, tys: &ExtensionTypeIds) -> bool {
+        tys.iter().all(|ty| self.has_own_extension(&ty))
     }
 
     /// Returns the own extension with the given type.

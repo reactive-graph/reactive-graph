@@ -12,13 +12,13 @@ pub trait PropertyTypeContainer {
 
     /// Returns true, if the type contains any of the given properties.
     /// Doesn't respect properties from potential components.
-    fn has_any_own_properties(&self, property_names: &Vec<String>) -> bool {
+    fn has_any_own_properties(&self, property_names: &[String]) -> bool {
         property_names.iter().any(|property_name| self.has_own_property(property_name))
     }
 
     /// Returns true, if the type contains all of the given properties.
     /// Doesn't respect properties from potential components.
-    fn has_all_own_properties(&self, property_names: &Vec<String>) -> bool {
+    fn has_all_own_properties(&self, property_names: &[String]) -> bool {
         property_names.iter().all(|property_name| self.has_own_property(property_name))
     }
 
