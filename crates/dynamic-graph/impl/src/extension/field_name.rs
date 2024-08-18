@@ -29,10 +29,7 @@ pub struct DynamicGraphFieldNameExtension {
 
 impl From<Extension> for DynamicGraphFieldNameExtension {
     fn from(extension: Extension) -> Self {
-        match from_value(extension.extension) {
-            Ok(field_names) => field_names,
-            Err(_) => Default::default(),
-        }
+        from_value(extension.extension).unwrap_or_default()
     }
 }
 
