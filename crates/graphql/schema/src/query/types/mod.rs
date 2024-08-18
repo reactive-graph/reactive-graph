@@ -18,4 +18,5 @@ pub mod mutability;
 pub mod property_type;
 pub mod relation_type;
 pub mod socket_type;
+#[allow(clippy::module_inception)]
 pub mod types;

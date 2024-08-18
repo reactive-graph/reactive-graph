@@ -11,6 +11,7 @@ pub mod entity_instance;
 pub mod entity_instance_definition;
 pub mod flow_instance;
 pub mod flow_instance_definition;
+#[allow(clippy::module_inception)]
 pub mod instances;
 pub mod relation_instance;
 pub mod relation_instance_definition;

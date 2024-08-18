@@ -26,4 +26,5 @@ pub mod flow_type_id;
 pub mod property_type;
 pub mod relation_type;
 pub mod relation_type_id;
+#[allow(clippy::module_inception)]
 pub mod types;
