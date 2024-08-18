@@ -155,9 +155,7 @@ impl Command {
     }
 
     pub fn command(&self) -> Option<clap::Command> {
-        let Some(name) = self.name() else {
-            return None;
-        };
+        let name = self.name()?;
         let Ok(args) = self.args() else {
             return None;
         };
