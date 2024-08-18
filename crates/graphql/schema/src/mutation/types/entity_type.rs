@@ -205,7 +205,7 @@ impl MutationEntityTypes {
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
         let ty: EntityTypeId = ty.into();
         let extension: Extension = extension.into();
-        if let Err(e) = entity_type_manager.update_extension(&ty, &extension.ty.clone(), extension.into()) {
+        if let Err(e) = entity_type_manager.update_extension(&ty, &extension.ty.clone(), extension) {
             return Err(e.into());
         }
         entity_type_manager
