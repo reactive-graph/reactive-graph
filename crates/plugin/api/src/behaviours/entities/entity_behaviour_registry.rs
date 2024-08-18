@@ -18,7 +18,7 @@ pub trait EntityBehaviourRegistry: Send + Sync {
     async fn register(&self, entity_behaviour_ty: EntityBehaviourTypeId, factory: Arc<dyn BehaviourFactory<Uuid, ReactiveEntity> + Send + Sync>);
 
     async fn register_all(&self, factories: &BehaviourFactories<Uuid, ReactiveEntity>) {
-        let mut factories = tokio_stream::iter(factories.deref().clone().into_iter());
+        let mut factories = tokio_stream::iter(factories.deref().clone());
         while let Some((ty, factory)) = factories.next().await {
             self.register(EntityBehaviourTypeId::from(&ty), factory).await
         }
