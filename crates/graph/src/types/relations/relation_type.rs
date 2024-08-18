@@ -131,6 +131,7 @@ impl RelationType {
         }
     }
 
+    #[allow(clippy::type_complexity)]
     pub fn builder_with_ty<O: Into<ComponentOrEntityTypeId>, T: Into<RelationTypeId>, I: Into<ComponentOrEntityTypeId>>(
         outbound_type: O,
         ty: T,
@@ -530,6 +531,7 @@ impl FromIterator<RelationType> for RelationTypes {
 
 // Experimental
 impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (), (), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(
         self,
         component_ty: C,
@@ -552,6 +554,7 @@ impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (Compon
 
 // Experimental
 impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(
         self,
         ty: C,
@@ -563,6 +566,7 @@ impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (Compon
 
 // Experimental
 impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
+    #[allow(clippy::type_complexity)]
     pub fn property<P: Into<PropertyType>>(
         self,
         property: P,
@@ -603,6 +607,7 @@ impl
         (),
     )>
 {
+    #[allow(clippy::type_complexity)]
     pub fn property<P: Into<PropertyType>>(
         self,
         property: P,
