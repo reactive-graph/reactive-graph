@@ -167,44 +167,42 @@ impl GraphQLServerImpl {
 
         let http_server = HttpServer::new(move || {
             let graphql_logging_config = graphql_logging_config.clone();
-            let app = App::new()
+            App::new()
                 .wrap(Cors::permissive())
-                .wrap(Condition::from_option(get_logger_middleware(&graphql_logging_config)));
-            // Type System
-            let app = app
+                .wrap(Condition::from_option(get_logger_middleware(&graphql_logging_config)))
+                // Type System
                 .app_data(component_manager.clone())
                 .app_data(entity_type_manager.clone())
                 .app_data(relation_type_manager.clone())
-                .app_data(flow_type_manager.clone());
-            // Instance System
-            let app = app
+                .app_data(flow_type_manager.clone())
+                // Instance System
                 .app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
-                .app_data(flow_instance_manager.clone());
-            // Web Resources
-            let app = app.app_data(web_resource_manager.clone());
-            // GraphQL Schema
-            let app = app.app_data(schema_data.clone());
-            // Runtime GraphQL Schema
-            let app = app.app_data(runtime_schema_data.clone());
-            // Plugin GraphQL Schema
-            let app = app.app_data(plugin_schema_data.clone());
-            // Dynamic Graph
-            let app = app.app_data(dynamic_graph_schema_manager.clone());
-            // GraphQL API
-            let app = app.service(query_graphql).service(
-                web::resource("/graphql")
-                    .guard(guard::Get())
-                    .guard(guard::Header("upgrade", "websocket"))
-                    .to(subscription_websocket),
-            );
-            // Dynamic GraphQL API
-            let app = app.service(query_dynamic_graph);
-            // Runtime GraphQL API
-            let app = app.service(query_runtime_graphql);
-            let app = app.service(query_plugin_graphql);
-            // Type System REST API
-            let app = app
+                .app_data(flow_instance_manager.clone())
+                // Web Resources
+                .app_data(web_resource_manager.clone())
+                // GraphQL Schema
+                .app_data(schema_data.clone())
+                // Runtime GraphQL Schema
+                .app_data(runtime_schema_data.clone())
+                // Plugin GraphQL Schema
+                .app_data(plugin_schema_data.clone())
+                // Dynamic Graph
+                .app_data(dynamic_graph_schema_manager.clone())
+                // GraphQL API
+                .service(query_graphql)
+                .service(
+                    web::resource("/graphql")
+                        .guard(guard::Get())
+                        .guard(guard::Header("upgrade", "websocket"))
+                        .to(subscription_websocket),
+                )
+                // Dynamic GraphQL API
+                .service(query_dynamic_graph)
+                // Runtime GraphQL API
+                .service(query_runtime_graphql)
+                .service(query_plugin_graphql)
+                // Type System REST API
                 .service(reactive_graph_type_system_rest::components::get_components)
                 .service(reactive_graph_type_system_rest::components::get_component)
                 .service(reactive_graph_type_system_rest::entities::get_entity_types)
@@ -212,21 +210,18 @@ impl GraphQLServerImpl {
                 .service(reactive_graph_type_system_rest::relations::get_relation_types)
                 .service(reactive_graph_type_system_rest::relations::get_relation_type)
                 .service(reactive_graph_type_system_rest::flows::get_flow_types)
-                .service(reactive_graph_type_system_rest::flows::get_flow_type);
-            // JSON Schema
-            let app = app
+                .service(reactive_graph_type_system_rest::flows::get_flow_type)
+                // JSON Schema
                 .service(reactive_graph_type_system_json_schema::types::components::schema_components)
                 .service(reactive_graph_type_system_json_schema::types::entities::schema_entity_types)
                 .service(reactive_graph_type_system_json_schema::types::relations::schema_relation_types)
                 .service(reactive_graph_type_system_json_schema::types::flows::schema_flow_types)
                 .service(reactive_graph_type_system_json_schema::instances::entities::schema_entity_instances)
                 .service(reactive_graph_type_system_json_schema::instances::relations::schema_relation_instances)
-                .service(reactive_graph_type_system_json_schema::instances::flows::schema_flow_instances);
-            // Web Resource API
-            let app = app
+                .service(reactive_graph_type_system_json_schema::instances::flows::schema_flow_instances)
+                // Web Resource API
                 .service(web::resource("/{web_resource_context_path}/{path:.*}").route(web::get().to(handle_web_resource)))
-                .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)));
-            app
+                .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)))
         })
         .disable_signals()
         .shutdown_timeout(graphql_server_config.shutdown_timeout())
