@@ -75,7 +75,7 @@ impl RelationType {
 impl From<RelationType> for reactive_graph_graph::RelationType {
     fn from(relation_type: RelationType) -> Self {
         let ty = reactive_graph_graph::RelationTypeId::new_from_type(&relation_type.namespace, &relation_type.name);
-        let tys: reactive_graph_graph::ComponentTypeIds = Components(relation_type.components.clone()).into();
+        let components: reactive_graph_graph::ComponentTypeIds = Components(relation_type.components.clone()).into();
         let outbound_type = relation_type.get_outbound_type();
         let inbound_type = relation_type.get_inbound_type();
         reactive_graph_graph::RelationType {
@@ -83,7 +83,7 @@ impl From<RelationType> for reactive_graph_graph::RelationType {
             ty,
             inbound_type,
             description: relation_type.description,
-            components: tys.into(),
+            components,
             properties: PropertyTypes(relation_type.properties).into(),
             extensions: Extensions(relation_type.extensions).into(),
         }

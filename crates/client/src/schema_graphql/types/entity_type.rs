@@ -49,12 +49,12 @@ pub struct EntityType {
 impl From<EntityType> for reactive_graph_graph::EntityType {
     fn from(entity_type: EntityType) -> Self {
         let ty = reactive_graph_graph::EntityTypeId::new_from_type(entity_type.namespace, entity_type.name);
-        let tys: reactive_graph_graph::ComponentTypeIds = Components(entity_type.components).into();
+        let components: reactive_graph_graph::ComponentTypeIds = Components(entity_type.components).into();
         // let tys: ComponentTypeIds = components.into();
         reactive_graph_graph::EntityType {
             ty,
             description: entity_type.description,
-            components: tys.into(),
+            components,
             properties: PropertyTypes(entity_type.properties).into(),
             extensions: Extensions(entity_type.extensions).into(),
         }
