@@ -222,14 +222,14 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         self.outbound_instances
             .get(outbound_entity_id)
             .and_then(|outbound_instances| outbound_instances.iter().map(|id| self.get(id.deref())).collect())
-            .unwrap_or(Vec::new())
+            .unwrap_or_default()
     }
 
     fn get_by_inbound_entity(&self, inbound_entity_id: Uuid) -> Vec<ReactiveRelation> {
         self.inbound_instances
             .get(inbound_entity_id)
             .and_then(|inbound_instances| inbound_instances.iter().map(|id| self.get(id.deref())).collect())
-            .unwrap_or(Vec::new())
+            .unwrap_or_default()
     }
 
     fn get_all(&self) -> Vec<ReactiveRelation> {
