@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["api","get_all_components","get_component_by_type","queries"]};
+window.SIDEBAR_ITEMS = {"mod":["add_property","api","common","create_component","delete_component","get_all_components","get_component_by_type"]};
