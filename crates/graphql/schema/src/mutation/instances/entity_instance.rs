@@ -143,10 +143,10 @@ impl MutationEntityInstances {
         #[graphql(desc = "Triggers the entity instance with the given label.")] label: Option<String>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
-        let Some(entity_instance) = (if id.is_some() {
-            entity_instance_manager.get(id.unwrap())
-        } else if label.is_some() {
-            entity_instance_manager.get_by_label(label.unwrap().as_str())
+        let Some(entity_instance) = (if let Some(id) = id {
+            entity_instance_manager.get(id)
+        } else if let Some(label) = label {
+            entity_instance_manager.get_by_label(label.as_str())
         } else {
             return Err("Either id or label must be given!".into());
         }) else {
