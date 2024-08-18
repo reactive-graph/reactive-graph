@@ -10,7 +10,7 @@ readme = "../../../README.md"
 
 [dependencies]
 async-trait = { workspace = true }
-gql_client = { workspace = true }
+gql_client = { workspace = true, features = ["rustls-tls"], default-features = false }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 thiserror = { workspace = true }
 

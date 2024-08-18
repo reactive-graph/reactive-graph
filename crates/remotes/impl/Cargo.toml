@@ -12,7 +12,7 @@ readme = "../../../README.md"
 async-trait = { workspace = true }
 chrono = { workspace = true }
 dashmap = { workspace = true }
-gql_client = { workspace = true }
+gql_client = { workspace = true, features = ["rustls-tls"], default-features = false }
 log = { workspace = true, features = ["std", "serde"] }
 serde = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }

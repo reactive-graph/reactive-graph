@@ -41,7 +41,7 @@ dashmap = { workspace = true }
 futures = { workspace = true }
 futures-timer = { workspace = true }
 futures-util = { workspace = true }
-gql_client = { workspace = true }
+gql_client = { workspace = true, features = ["rustls-tls"], default-features = false }
 http = { workspace = true }
 json5 = { workspace = true }
 lazy_static = { workspace = true }
@@ -54,7 +54,7 @@ path-tree = { workspace = true }
 portpicker = { workspace = true }
 rand = { workspace = true }
 rayon = { workspace = true }
-reqwest = { workspace = true, features = ["json"] }
+reqwest = { workspace = true, features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 rustls = { workspace = true }
 rustls-pemfile = { workspace = true }
