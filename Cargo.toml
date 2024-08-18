@@ -82,15 +82,16 @@ keywords = ["graph", "reactive", "control-flow", "inexor"]
 [workspace.dependencies]
 actix = "0.13"
 actix-cors = "0.7"
-actix-http = { version = "3.6", features = ["rustls-0_22"] }
-actix-rt = "2.9"
-actix-web = { version = "4.5.1", features = ["rustls-0_22"] }
+actix-http = { version = "3.9", features = ["rustls-0_23"] }
+actix-rt = "2.10"
+actix-web = { version = "4.9", features = ["rustls-0_23"] }
 actix-web-extras = "0.1"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "7.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
+aws-lc-rs = "1.8.1"
 clap = { version = "4.1", features = ["derive", "env"] }
 clap-markdown = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
@@ -98,7 +99,7 @@ colored = "2.0"
 config = "0.14.0"
 convert_case = "0.6"
 crossbeam = "0.8"
-cynic = { version = "3.2", features = ["http-reqwest"] }
+cynic = { version = "3.7", features = ["http-reqwest"], default-features = false }
 darling = "0.20"
 dashmap = { version = "6.0", features = ["serde"] }
 default-test = "0.1"
@@ -107,7 +108,7 @@ futures-await-test = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
 glob = "0.3.1"
-gql_client = "1.0.7"
+gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-client-rs.git", features = ["rustls-tls"], default-features = false }
 http = "0.2"
 json5 = "0.4"
 lazy_static = "1.4.0"
@@ -128,9 +129,9 @@ rand_derive2 = "0.1"
 random-string = "1.0"
 rayon = "1.6"
 regex = "1.9"
-reqwest = { version = "0.12.2", features = ["json"] }
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
-rustls = "0.22"
+rustls = { version = "0.23", features = ["aws_lc_rs"] }
 rustls-pki-types = "1.4.0"
 rustls-pemfile = "2.1.1"
 rustyline = "14.0"
