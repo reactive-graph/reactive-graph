@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ComponentAddPropertyArgs","ComponentTypeIdArgs","ComponentsArgs","CreateComponentArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["ComponentAddExtensionArgs","ComponentAddPropertyArgs","ComponentRemoveExtensionArgs","ComponentRemovePropertyArgs","ComponentTypeIdArgs","ComponentUpdateDescriptionArgs","ComponentsArgs","CreateComponentArgs"]};
