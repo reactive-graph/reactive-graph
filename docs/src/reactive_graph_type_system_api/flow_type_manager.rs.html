@@ -143,6 +143,10 @@
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
 <a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 <span class="kw">use </span>uuid::Uuid;
@@ -166,6 +170,7 @@
 <span class="kw">use </span>reactive_graph_graph::FlowTypeRemoveRelationInstanceError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeRemoveVariableError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+<span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateRelationInstanceError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateVariableError;
@@ -230,6 +235,9 @@
         variables: PropertyTypes,
         extensions: Extensions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;FlowType, FlowTypeCreationError&gt;;
+
+    <span class="doccomment">/// Updates the description of the given flow type.
+    </span><span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>FlowTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;FlowType, FlowTypeUpdateError&gt;;
 
     <span class="doccomment">/// Adds the given entity instance to the given flow type.
     </span><span class="kw">fn </span>add_entity_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>FlowTypeId, entity_instance: EntityInstance) -&gt; <span class="prelude-ty">Result</span>&lt;(), FlowTypeAddEntityInstanceError&gt;;

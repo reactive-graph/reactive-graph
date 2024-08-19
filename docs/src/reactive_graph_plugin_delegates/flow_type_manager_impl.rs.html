@@ -142,6 +142,11 @@
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
 <a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>uuid::Uuid;
@@ -160,6 +165,7 @@
 <span class="kw">use </span>reactive_graph_graph::FlowTypeRemoveExtensionError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeRemoveVariableError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+<span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateVariableError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypes;
@@ -227,6 +233,10 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;FlowType, FlowTypeCreationError&gt; {
         <span class="self">self</span>.flow_type_manager
             .create_flow_type(ty, description, wrapper_entity_instance, entity_instances, relation_instances, variables, extensions)
+    }
+
+    <span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>FlowTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;FlowType, FlowTypeUpdateError&gt; {
+        <span class="self">self</span>.flow_type_manager.update_description(ty, description)
     }
 
     <span class="kw">fn </span>add_entity_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, flow_ty: <span class="kw-2">&amp;</span>FlowTypeId, entity_instance: EntityInstance) -&gt; <span class="prelude-ty">Result</span>&lt;(), FlowTypeAddEntityInstanceError&gt; {

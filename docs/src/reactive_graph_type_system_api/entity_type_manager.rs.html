@@ -124,6 +124,10 @@
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
 <a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 
@@ -141,6 +145,7 @@
 <span class="kw">use </span>reactive_graph_graph::EntityTypeRemoveComponentError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeRemoveExtensionError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeRemovePropertyError;
+<span class="kw">use </span>reactive_graph_graph::EntityTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeUpdatePropertyError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypes;
@@ -205,6 +210,9 @@
         properties: PropertyTypes,
         extensions: Extensions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;EntityType, EntityTypeCreationError&gt;;
+
+    <span class="doccomment">/// Updates the description of the given entity type.
+    </span><span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>EntityTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;EntityType, EntityTypeUpdateError&gt;;
 
     <span class="doccomment">/// Merges the given entity_type_to_merge into an existing entity type with the same entity type id.
     </span><span class="kw">fn </span>merge(<span class="kw-2">&amp;</span><span class="self">self</span>, entity_type_to_merge: EntityType) -&gt; <span class="prelude-ty">Result</span>&lt;EntityType, EntityTypeMergeError&gt;;

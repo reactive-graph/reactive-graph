@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["client"],"mod":["args","commands","error","handler","repl","result","system","types"]};
+window.SIDEBAR_ITEMS = {"fn":["client"],"mod":["args","commands","error","handler","output_format","repl","result","system","types"]};

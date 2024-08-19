@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["CreateEntityTypeArgs","EntityTypeIdArgs","EntityTypesArgs"]};
+window.SIDEBAR_ITEMS = {"mod":["add_extension","add_property","create","remove_extension","remove_property","type_id","update_description"],"struct":["EntityTypesArgs"]};

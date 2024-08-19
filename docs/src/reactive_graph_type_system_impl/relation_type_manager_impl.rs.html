@@ -607,6 +607,20 @@
 <a href="#607" id="607">607</a>
 <a href="#608" id="608">608</a>
 <a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+<a href="#621" id="621">621</a>
+<a href="#622" id="622">622</a>
+<a href="#623" id="623">623</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::Deref;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -643,6 +657,7 @@
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemoveComponentError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemoveExtensionError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemovePropertyError;
+<span class="kw">use </span>reactive_graph_graph::RelationTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeUpdatePropertyError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypes;
@@ -866,6 +881,19 @@
             .extensions(extensions)
             .build();
         <span class="self">self</span>.register(relation_type).map_err(RelationTypeCreationError::RegistrationError)
+    }
+
+    <span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>RelationTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeUpdateError&gt; {
+        <span class="kw">if </span>!<span class="self">self</span>.has(ty) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(RelationTypeUpdateError::RelationTypeDoesNotExist(ty.clone()));
+        }
+        <span class="kw">for </span><span class="kw-2">mut </span>relation_type <span class="kw">in </span><span class="self">self</span>.relation_types.iter_mut() {
+            <span class="kw">if </span><span class="kw-2">&amp;</span>relation_type.ty == ty {
+                relation_type.description = description.to_string();
+                <span class="comment">// TODO: Notify about changed relation_type
+            </span>}
+        }
+        <span class="self">self</span>.get(ty).ok_or(RelationTypeUpdateError::RelationTypeDoesNotExist(ty.clone()))
     }
 
     <span class="kw">fn </span>merge(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_type_to_merge: RelationType) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeMergeError&gt; {

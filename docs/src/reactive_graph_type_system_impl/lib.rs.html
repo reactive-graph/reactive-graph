@@ -33,11 +33,14 @@
 <a href="#33" id="33">33</a>
 <a href="#34" id="34">34</a>
 <a href="#35" id="35">35</a>
+<a href="#36" id="36">36</a>
+<a href="#37" id="37">37</a>
 </pre></div><pre class="rust"><code><span class="attr">#![feature(test)]
 
 </span><span class="kw">pub use </span>component_import_export_manager_impl::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>component_manager_impl::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>component_provider_registry_impl::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>component_serialization_manager_impl::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>entity_type_import_export_manager_impl::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>entity_type_manager_impl::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>entity_type_provider_registry_impl::<span class="kw-2">*</span>;
@@ -55,6 +58,7 @@
 <span class="kw">pub mod </span>component_import_export_manager_impl;
 <span class="kw">pub mod </span>component_manager_impl;
 <span class="kw">pub mod </span>component_provider_registry_impl;
+<span class="kw">pub mod </span>component_serialization_manager_impl;
 <span class="kw">pub mod </span>entity_type_import_export_manager_impl;
 <span class="kw">pub mod </span>entity_type_manager_impl;
 <span class="kw">pub mod </span>entity_type_provider_registry_impl;

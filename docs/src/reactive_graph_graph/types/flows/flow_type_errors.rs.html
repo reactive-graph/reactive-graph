@@ -124,6 +124,12 @@
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
 <a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::AddEntityInstanceError;
 <span class="kw">use </span><span class="kw">crate</span>::AddExtensionError;
 <span class="kw">use </span><span class="kw">crate</span>::AddRelationInstanceError;
@@ -138,6 +144,12 @@
 <span class="kw">use </span><span class="kw">crate</span>::UpdateRelationInstanceError;
 <span class="kw">use </span><span class="kw">crate</span>::UpdateVariableError;
 <span class="kw">use </span>thiserror::Error;
+
+<span class="attr">#[derive(Debug, Error)]
+</span><span class="kw">pub enum </span>FlowTypeUpdateError {
+    <span class="attr">#[error(<span class="string">"The flow type {0} does not exist"</span>)]
+    </span>FlowTypeDoesNotExist(FlowTypeId),
+}
 
 <span class="attr">#[derive(Debug, Error)]
 #[error(<span class="string">"The flow type {0} does not exist"</span>)]

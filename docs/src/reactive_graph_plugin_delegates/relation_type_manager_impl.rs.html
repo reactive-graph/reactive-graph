@@ -139,6 +139,11 @@
 <a href="#139" id="139">139</a>
 <a href="#140" id="140">140</a>
 <a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>reactive_graph_graph::ComponentOrEntityTypeId;
@@ -157,6 +162,7 @@
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemoveComponentError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemoveExtensionError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemovePropertyError;
+<span class="kw">use </span>reactive_graph_graph::RelationTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeUpdatePropertyError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypes;
@@ -220,6 +226,10 @@
     ) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeCreationError&gt; {
         <span class="self">self</span>.relation_type_manager
             .create_relation_type(outbound_type, ty, inbound_type, description, components, properties, extensions)
+    }
+
+    <span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>RelationTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeUpdateError&gt; {
+        <span class="self">self</span>.relation_type_manager.update_description(ty, description)
     }
 
     <span class="kw">fn </span>add_component(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>RelationTypeId, component: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;(), RelationTypeAddComponentError&gt; {

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["CommandResponse"],"type":["CommandResult"]};
+window.SIDEBAR_ITEMS = {"enum":["CommandResponse","CommandResultBuilderContent"],"struct":["CommandResultBuilder"],"type":["CommandResult"]};

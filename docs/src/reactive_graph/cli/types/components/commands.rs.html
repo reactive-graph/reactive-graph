@@ -40,13 +40,13 @@
 <a href="#40" id="40">40</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::Subcommand;
 
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentAddExtensionArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentAddPropertyArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentRemoveExtensionArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentRemovePropertyArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentTypeIdArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentUpdateDescriptionArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::CreateComponentArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::add_extension::ComponentAddExtensionArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::add_property::ComponentAddPropertyArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::create::CreateComponentArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::remove_extension::ComponentRemoveExtensionArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::remove_property::ComponentRemovePropertyArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::type_id::ComponentTypeIdArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::update_description::ComponentUpdateDescriptionArgs;
 
 <span class="attr">#[derive(Subcommand, Debug, Clone)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>ComponentsCommands {

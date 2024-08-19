@@ -77,6 +77,7 @@
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
 <a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>reactive_graph_graph::Component;
 <span class="kw">use </span>reactive_graph_graph::ComponentAddExtensionError;
 <span class="kw">use </span>reactive_graph_graph::ComponentAddPropertyError;
@@ -128,7 +129,8 @@
     <span class="doccomment">/// Replaces the component with the given name with the given component.
     </span><span class="kw">fn </span>replace(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, component: Component);
 
-    <span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentUpdateError&gt;;
+    <span class="doccomment">/// Updates the description of the given component.
+    </span><span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Component, ComponentUpdateError&gt;;
 
     <span class="doccomment">/// Adds a property to the component with the given name.
     </span><span class="kw">fn </span>add_property(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId, property: PropertyType) -&gt; <span class="prelude-ty">Result</span>&lt;PropertyType, ComponentAddPropertyError&gt;;

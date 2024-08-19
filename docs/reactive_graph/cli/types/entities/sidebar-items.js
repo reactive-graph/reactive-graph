@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["entity_types"],"mod":["args","commands"]};
+window.SIDEBAR_ITEMS = {"fn":["entity_types"],"mod":["args","commands"],"type":["EntityTypesOutputFormatWrapper"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["components"],"mod":["args","commands"]};
+window.SIDEBAR_ITEMS = {"fn":["components"],"mod":["args","commands"],"type":["ComponentsOutputFormatWrapper"]};

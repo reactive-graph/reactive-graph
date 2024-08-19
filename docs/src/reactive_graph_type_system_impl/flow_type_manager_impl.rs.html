@@ -264,6 +264,20 @@
 <a href="#264" id="264">264</a>
 <a href="#265" id="265">265</a>
 <a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -290,6 +304,7 @@
 <span class="kw">use </span>reactive_graph_graph::FlowTypeRemoveRelationInstanceError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeRemoveVariableError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateEntityInstanceError;
+<span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateRelationInstanceError;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeUpdateVariableError;
@@ -324,8 +339,8 @@
     relation_type_manager: Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;,
 
     <span class="attr">#[component(default = <span class="string">"FlowTypes::new"</span>)]
-    </span>flow_types: FlowTypes, <span class="comment">// FlowTypesStorage,
-</span>}
+    </span>flow_types: FlowTypes,
+}
 
 <span class="attr">#[async_trait]
 #[component_alias]
@@ -424,6 +439,19 @@
             .extensions(extensions)
             .build();
         <span class="self">self</span>.register(flow_type).map_err(FlowTypeCreationError::RegistrationError)
+    }
+
+    <span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>FlowTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;FlowType, FlowTypeUpdateError&gt; {
+        <span class="kw">if </span>!<span class="self">self</span>.has(ty) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowTypeUpdateError::FlowTypeDoesNotExist(ty.clone()));
+        }
+        <span class="kw">for </span><span class="kw-2">mut </span>flow_type <span class="kw">in </span><span class="self">self</span>.flow_types.iter_mut() {
+            <span class="kw">if </span><span class="kw-2">&amp;</span>flow_type.ty == ty {
+                flow_type.description = description.to_string();
+                <span class="comment">// TODO: Notify about changed flow_type
+            </span>}
+        }
+        <span class="self">self</span>.get(ty).ok_or(FlowTypeUpdateError::FlowTypeDoesNotExist(ty.clone()))
     }
 
     <span class="kw">fn </span>add_entity_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>FlowTypeId, entity_instance: EntityInstance) -&gt; <span class="prelude-ty">Result</span>&lt;(), FlowTypeAddEntityInstanceError&gt; {

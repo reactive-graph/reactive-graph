@@ -77,22 +77,74 @@
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
 <a href="#79" id="79">79</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>std::error::Error;
-<span class="kw">use </span>std::fmt::Debug;
-<span class="kw">use </span>std::fmt::Display;
-<span class="kw">use </span>std::fmt::Formatter;
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Debug;
+
+<span class="kw">use </span>thiserror::Error;
 
 <span class="kw">use </span>reactive_graph_client::InexorRgfClientExecutionError;
 
-<span class="attr">#[derive(Debug)]
+<span class="attr">#[derive(Debug, Error)]
+</span><span class="kw">pub enum </span>SerializationError {
+    <span class="attr">#[error(<span class="string">"Failed to serialize JSON: {0}"</span>)]
+    </span>Json(<span class="attr">#[from] </span>serde_json::Error),
+    <span class="attr">#[cfg(feature = <span class="string">"json5"</span>)]
+    #[error(<span class="string">"Failed to serialize JSON5: {0}"</span>)]
+    </span>Json5(<span class="attr">#[from] </span>json5::Error),
+    <span class="attr">#[cfg(feature = <span class="string">"toml"</span>)]
+    #[error(<span class="string">"Failed to serialize TOML: {0}"</span>)]
+    </span>Toml(<span class="attr">#[from] </span>toml::ser::Error),
+}
+
+<span class="attr">#[derive(Debug, Error)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>CommandError {
-    MissingSubCommand,
-    InexorRgfClientExecutionError(InexorRgfClientExecutionError),
-    Rejected(String),
-    NotFound(String),
-    NoChange(String),
-    NoContent(String),
-    NotCreated(String),
+    <span class="attr">#[error(<span class="string">"Missing sub command"</span>)]
+    </span>MissingSubCommand,
+    <span class="attr">#[error(<span class="string">"Execution failed: {0}"</span>)]
+    </span>InexorRgfClientExecutionError(InexorRgfClientExecutionError),
+    <span class="attr">#[error(<span class="string">"Not yet implemented"</span>)]
+    </span>NotImplemented,
+    <span class="attr">#[error(<span class="string">"Rejected: {0}"</span>)]
+    </span>Rejected(String),
+    <span class="attr">#[error(<span class="string">"Not found: {0}"</span>)]
+    </span>NotFound(String),
+    <span class="attr">#[error(<span class="string">"No change: {0}"</span>)]
+    </span>NoChange(String),
+    <span class="attr">#[error(<span class="string">"No content: {0}"</span>)]
+    </span>NoContent(String),
+    <span class="attr">#[error(<span class="string">"Not created: {0}"</span>)]
+    </span>NotCreated(String),
+    <span class="attr">#[error(<span class="string">"Serialization failed: {0}"</span>)]
+    </span>SerializationError(SerializationError),
 }
 
 <span class="kw">impl </span>CommandError {
@@ -100,60 +152,68 @@
         <span class="kw">match </span><span class="self">self </span>{
             CommandError::MissingSubCommand =&gt; <span class="number">254</span>,
             CommandError::InexorRgfClientExecutionError(<span class="kw">_</span>) =&gt; <span class="number">253</span>,
+            CommandError::NotImplemented =&gt; <span class="number">252</span>,
             CommandError::Rejected(<span class="kw">_</span>) =&gt; <span class="number">4</span>,
             CommandError::NotFound(<span class="kw">_</span>) =&gt; <span class="number">3</span>,
             CommandError::NoChange(<span class="kw">_</span>) =&gt; <span class="number">2</span>,
             CommandError::NoContent(<span class="kw">_</span>) =&gt; <span class="number">1</span>,
             CommandError::NotCreated(<span class="kw">_</span>) =&gt; <span class="number">5</span>,
+            CommandError::SerializationError(<span class="kw">_</span>) =&gt; <span class="number">6</span>,
         }
     }
 }
 
-<span class="kw">impl </span>Display <span class="kw">for </span>CommandError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="kw">match </span><span class="self">self </span>{
-            CommandError::MissingSubCommand =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"Missing sub command"</span>)
-            }
-            CommandError::InexorRgfClientExecutionError(e) =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"{e}"</span>)
-            }
-            CommandError::Rejected(message) =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, message)
-            }
-            CommandError::NotFound(message) =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, message)
-            }
-            CommandError::NoChange(message) =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, message)
-            }
-            CommandError::NoContent(message) =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, message)
-            }
-            CommandError::NotCreated(message) =&gt; {
-                <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, message)
-            }
-        }
-    }
-}
+<span class="comment">// impl Display for CommandError {
+//     fn fmt(&amp;self, f: &amp;mut Formatter&lt;'_&gt;) -&gt; std::fmt::Result {
+//         match self {
+//             CommandError::MissingSubCommand =&gt; {
+//                 writeln!(f, "Missing sub command")
+//             }
+//             CommandError::InexorRgfClientExecutionError(e) =&gt; {
+//                 writeln!(f, "{e}")
+//             }
+//             CommandError::Rejected(message) =&gt; {
+//                 writeln!(f, "{}", message)
+//             }
+//             CommandError::NotFound(message) =&gt; {
+//                 writeln!(f, "{}", message)
+//             }
+//             CommandError::NoChange(message) =&gt; {
+//                 writeln!(f, "{}", message)
+//             }
+//             CommandError::NoContent(message) =&gt; {
+//                 writeln!(f, "{}", message)
+//             }
+//             CommandError::NotCreated(message) =&gt; {
+//                 writeln!(f, "{}", message)
+//             }
+//         }
+//     }
+// }
 
-<span class="kw">impl </span>Error <span class="kw">for </span>CommandError {
-    <span class="kw">fn </span>description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
-        <span class="kw">match </span><span class="self">self </span>{
-            CommandError::MissingSubCommand =&gt; <span class="string">"Missing sub command"</span>,
-            CommandError::InexorRgfClientExecutionError(<span class="kw">_</span>) =&gt; <span class="string">"Client execution error"</span>,
-            CommandError::Rejected(message) =&gt; message,
-            CommandError::NotFound(message) =&gt; message,
-            CommandError::NoChange(message) =&gt; message,
-            CommandError::NoContent(message) =&gt; message,
-            CommandError::NotCreated(message) =&gt; message,
-        }
-    }
-}
+// impl Error for CommandError {
+//     fn description(&amp;self) -&gt; &amp;str {
+//         match self {
+//             CommandError::MissingSubCommand =&gt; "Missing sub command",
+//             CommandError::InexorRgfClientExecutionError(_) =&gt; "Client execution error",
+//             CommandError::Rejected(message) =&gt; message,
+//             CommandError::NotFound(message) =&gt; message,
+//             CommandError::NoChange(message) =&gt; message,
+//             CommandError::NoContent(message) =&gt; message,
+//             CommandError::NotCreated(message) =&gt; message,
+//         }
+//     }
+// }
 
-<span class="kw">impl </span>From&lt;InexorRgfClientExecutionError&gt; <span class="kw">for </span>CommandError {
+</span><span class="kw">impl </span>From&lt;InexorRgfClientExecutionError&gt; <span class="kw">for </span>CommandError {
     <span class="kw">fn </span>from(e: InexorRgfClientExecutionError) -&gt; <span class="self">Self </span>{
         CommandError::InexorRgfClientExecutionError(e)
+    }
+}
+
+<span class="kw">impl </span>From&lt;SerializationError&gt; <span class="kw">for </span>CommandError {
+    <span class="kw">fn </span>from(e: SerializationError) -&gt; <span class="self">Self </span>{
+        CommandError::SerializationError(e)
     }
 }
 </code></pre></div></section></main></body></html>

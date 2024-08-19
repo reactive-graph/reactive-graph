@@ -67,71 +67,79 @@
 <a href="#67" id="67">67</a>
 <a href="#68" id="68">68</a>
 <a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError;
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NoContent;
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NotCreated;
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NotFound;
+<span class="kw">use </span><span class="kw">crate</span>::cli::output_format::OutputFormatWrapper;
 <span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::ComponentsArgs;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::components::commands::ComponentsCommands;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::types::component::Components;
+<span class="kw">use </span><span class="kw">crate</span>::table_model;
+<span class="kw">use </span><span class="kw">crate</span>::table_model::types::component::ComponentsTableOptions;
 <span class="kw">use </span>reactive_graph_client::InexorRgfClient;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>args;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>commands;
 
+<span class="kw">type </span>ComponentsOutputFormatWrapper = OutputFormatWrapper&lt;reactive_graph_graph::Component, table_model::types::component::Component, ComponentsTableOptions&gt;;
+
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>components(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, component_args: ComponentsArgs) -&gt; CommandResult {
+    <span class="kw">let </span>output_format_wrapper: ComponentsOutputFormatWrapper = component_args.output_format.into();
     <span class="kw">let </span><span class="prelude-val">Some</span>(command) = component_args.commands <span class="kw">else </span>{
         <span class="kw">return </span><span class="prelude-val">Err</span>(CommandError::MissingSubCommand);
     };
     <span class="kw">match </span>command {
         ComponentsCommands::List =&gt; <span class="kw">match </span>client.types().components().get_all_components().<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(components)) =&gt; <span class="prelude-val">Ok</span>(Components::from(components).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(components)) =&gt; output_format_wrapper.collection(components),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NoContent(<span class="string">"No components found"</span>.to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::Get(args) =&gt; <span class="kw">match </span>client.types().components().get_component_by_type(args.clone()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"Component {}__{} not found"</span>, args.namespace, args.name))),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::Create(args) =&gt; <span class="kw">match </span>client.types().components().create_component_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotCreated(<span class="string">"Component wasn't created"</span>.to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::Delete(args) =&gt; <span class="kw">match </span>client.types().components().delete_component_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="bool-val">true</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"Component {}__{} deleted"</span>, args.namespace, args.name).into()),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="bool-val">false</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"Component {}__{} not deleted"</span>, args.namespace, args.name).into()),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"Component {}__{} not found"</span>, args.namespace, args.name))),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::AddProperty(args) =&gt; <span class="kw">match </span>client.types().components().add_property_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotCreated(<span class="string">"Property wasn't created"</span>.to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::RemoveProperty(args) =&gt; <span class="kw">match </span>client.types().components().remove_property_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"Component {}__{} not found"</span>, args.ty.namespace, args.ty.name))),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::AddExtension(args) =&gt; <span class="kw">match </span>client.types().components().add_extension_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotCreated(<span class="string">"Extension wasn't created"</span>.to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::RemoveExtension(args) =&gt; <span class="kw">match </span>client.types().components().remove_extension_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"Component {}__{} not found"</span>, args.ty.namespace, args.ty.name))),
-            <span class="comment">// Ok(None) =&gt; Err(NotCreated("Extension wasn't created".to_string())),
-            </span><span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.ty.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         ComponentsCommands::UpdateDescription(args) =&gt; <span class="kw">match </span>client.types().components().update_description_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; <span class="prelude-val">Ok</span>(Components::from(component).into()),
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"Component {}__{} not found"</span>, args.ty.namespace, args.ty.name))),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.ty.not_found()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
     }

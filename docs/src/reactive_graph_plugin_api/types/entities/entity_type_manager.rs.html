@@ -79,6 +79,10 @@
 <a href="#79" id="79">79</a>
 <a href="#80" id="80">80</a>
 <a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
 <span class="kw">use </span>reactive_graph_graph::ComponentTypeIds;
 <span class="kw">use </span>reactive_graph_graph::EntityType;
@@ -89,6 +93,7 @@
 <span class="kw">use </span>reactive_graph_graph::EntityTypeRemoveComponentError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeRemoveExtensionError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeRemovePropertyError;
+<span class="kw">use </span>reactive_graph_graph::EntityTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::EntityTypes;
 <span class="kw">use </span>reactive_graph_graph::Extension;
 <span class="kw">use </span>reactive_graph_graph::ExtensionTypeId;
@@ -134,6 +139,9 @@
         properties: PropertyTypes,
         extensions: Extensions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;EntityType, EntityTypeCreationError&gt;;
+
+    <span class="doccomment">/// Updates the description of the given entity type.
+    </span><span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>EntityTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;EntityType, EntityTypeUpdateError&gt;;
 
     <span class="doccomment">/// Adds the component with the given component_name to the given entity type.
     </span><span class="kw">fn </span>add_component(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>EntityTypeId, component: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;(), EntityTypeAddComponentError&gt;;

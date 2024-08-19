@@ -135,6 +135,10 @@
 <a href="#135" id="135">135</a>
 <a href="#136" id="136">136</a>
 <a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 
@@ -159,6 +163,7 @@
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemoveComponentError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemoveExtensionError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeRemovePropertyError;
+<span class="kw">use </span>reactive_graph_graph::RelationTypeUpdateError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeUpdateExtensionError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeUpdatePropertyError;
 <span class="kw">use </span>reactive_graph_graph::RelationTypes;
@@ -225,6 +230,9 @@
         properties: PropertyTypes,
         extensions: Extensions,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeCreationError&gt;;
+
+    <span class="doccomment">/// Updates the description of the given relation type.
+    </span><span class="kw">fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>RelationTypeId, description: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeUpdateError&gt;;
 
     <span class="doccomment">/// Merges the given relation_type_to_merge into an existing relation type with the same relation type id.
     </span><span class="kw">fn </span>merge(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_type_to_merge: RelationType) -&gt; <span class="prelude-ty">Result</span>&lt;RelationType, RelationTypeMergeError&gt;;
