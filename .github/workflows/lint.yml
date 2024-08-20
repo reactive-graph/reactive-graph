@@ -33,6 +33,8 @@ jobs:
         with:
           toolchain: nightly-2024-08-19
           components: clippy
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@v0.0.5
       - name: Run cargo clippy
