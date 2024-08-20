@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["args"]};
+window.SIDEBAR_ITEMS = {"mod":["args","output_format"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["type_id"]};
+window.SIDEBAR_ITEMS = {"mod":["container","type_id"]};

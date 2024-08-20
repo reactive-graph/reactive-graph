@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["EntityTypeIdArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["EntityTypeIdArgs","InboundEntityTypeIdArgs","OutboundEntityTypeIdArgs"]};

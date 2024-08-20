@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/reactive-graph/src/cli/types/entities/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-b25d77b18a16a9a4.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="reactive_graph" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (6de928dce 2024-08-18)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/reactive-graph/src/cli/types/entities/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-b25d77b18a16a9a4.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="reactive_graph" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (636d7ff91 2024-08-19)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -72,28 +72,62 @@
 <a href="#72" id="72">72</a>
 <a href="#73" id="73">73</a>
 <a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError;
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NoContent;
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NotCreated;
 <span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError::NotFound;
-<span class="kw">use </span><span class="kw">crate</span>::cli::output_format::OutputFormatWrapper;
 <span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::output_format::ComponentsOutputFormatWrapper;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::entities::args::EntityTypesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::entities::commands::EntityTypesCommands;
-<span class="kw">use </span><span class="kw">crate</span>::table_model;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::types::entity_type::EntityTypesTableOptions;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::entities::output_format::EntityTypesOutputFormatWrapper;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::extension::output_format::ExtensionsOutputFormatWrapper;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::property_type::output_format::PropertyTypesOutputFormatWrapper;
 <span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_graph::NamespacedTypeContainer;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>args;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>commands;
-
-<span class="kw">type </span>EntityTypesOutputFormatWrapper =
-    OutputFormatWrapper&lt;reactive_graph_graph::EntityType, table_model::types::entity_type::EntityType, EntityTypesTableOptions&gt;;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>output_format;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>entity_types(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, entity_type_args: EntityTypesArgs) -&gt; CommandResult {
-    <span class="kw">let </span>output_format_wrapper: EntityTypesOutputFormatWrapper = entity_type_args.output_format.into();
+    <span class="kw">let </span>output_format_wrapper: EntityTypesOutputFormatWrapper = entity_type_args.output_format.clone().into();
     <span class="kw">let </span><span class="prelude-val">Some</span>(command) = entity_type_args.commands <span class="kw">else </span>{
         <span class="kw">return </span><span class="prelude-val">Err</span>(CommandError::MissingSubCommand);
     };
@@ -105,6 +139,30 @@
         },
         EntityTypesCommands::Get(args) =&gt; <span class="kw">match </span>client.types().entity_types().get_entity_type_by_type(args.clone()).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_type)) =&gt; output_format_wrapper.single(entity_type),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        EntityTypesCommands::ListProperties(args) =&gt; <span class="kw">match </span>client.types().entity_types().get_entity_type_by_type(args.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_type)) =&gt; {
+                <span class="kw">let </span>output_format_wrapper: PropertyTypesOutputFormatWrapper = entity_type_args.output_format.into();
+                output_format_wrapper.collection(entity_type.properties.to_vec())
+            }
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        EntityTypesCommands::ListExtensions(args) =&gt; <span class="kw">match </span>client.types().entity_types().get_entity_type_by_type(args.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_type)) =&gt; {
+                <span class="kw">let </span>output_format_wrapper: ExtensionsOutputFormatWrapper = entity_type_args.output_format.into();
+                output_format_wrapper.collection(entity_type.extensions.to_vec())
+            }
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        EntityTypesCommands::ListComponents(args) =&gt; <span class="kw">match </span>client.types().entity_types().get_entity_type_components(args.clone()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(components)) =&gt; {
+                <span class="kw">let </span>output_format_wrapper: ComponentsOutputFormatWrapper = entity_type_args.output_format.into();
+                output_format_wrapper.collection(components.to_vec())
+            }
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
@@ -135,6 +193,16 @@
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         EntityTypesCommands::RemoveExtension(args) =&gt; <span class="kw">match </span>client.types().entity_types().remove_extension_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_type)) =&gt; output_format_wrapper.single(entity_type),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.entity_ty.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        EntityTypesCommands::AddComponent(args) =&gt; <span class="kw">match </span>client.types().entity_types().add_component((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_type)) =&gt; output_format_wrapper.single(entity_type),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotCreated(<span class="string">"Component wasn't added to entity type"</span>.to_string())),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        EntityTypesCommands::RemoveComponent(args) =&gt; <span class="kw">match </span>client.types().entity_types().remove_component((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_type)) =&gt; output_format_wrapper.single(entity_type),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.ty.not_found()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),

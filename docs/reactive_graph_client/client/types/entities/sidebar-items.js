@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["add_component","add_extension","add_property","api","create","delete","get_all","get_by_type","get_components","remove_component","remove_extension","remove_property","type_id","update_description"]};

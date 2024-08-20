@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["components","entity_types","extensions"],"struct":["Types"]};
+window.SIDEBAR_ITEMS = {"mod":["components","entities","extensions","properties","relations"],"struct":["Types"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ComponentTypeIdArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["ComponentContainerTypeIdArgs","ComponentTypeIdArgs"]};

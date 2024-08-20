@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["remove_property_mutation","remove_property_with_variables"],"struct":["MutationComponents","MutationTypes","RemoveProperty","RemovePropertyVariables","RemovePropertyVariablesFields"]};
+window.SIDEBAR_ITEMS = {"fn":["remove_property_mutation","remove_property_with_variables"],"struct":["MutationComponents","MutationTypes","RemoveProperty"]};
