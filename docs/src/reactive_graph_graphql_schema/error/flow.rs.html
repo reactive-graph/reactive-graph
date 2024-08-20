@@ -110,10 +110,10 @@
             <span class="comment">// FlowMutationError::MissingWrapperEntityInstance(id) =&gt; write!(f, "Missing wrapper entity instance with the id {}", id),
             </span>FlowMutationError::WrapperEntityInstanceAlreadyExists(id) =&gt; <span class="macro">write!</span>(f, <span class="string">"Can't create flow: An entity instance with the id {} already exists!"</span>, id),
             FlowMutationError::MissingEntityType(ty) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">"Entity type {} does not exist"</span>, ty.type_definition().to_string())
+                <span class="macro">write!</span>(f, <span class="string">"Entity type {} does not exist"</span>, ty.type_definition())
             }
             FlowMutationError::MissingRelationType(ty) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">"Relation type {} does not exist"</span>, ty.type_definition().to_string())
+                <span class="macro">write!</span>(f, <span class="string">"Relation type {} does not exist"</span>, ty.type_definition())
             }
             FlowMutationError::MissingEntityInstance(id) =&gt; {
                 <span class="macro">write!</span>(f, <span class="string">"Entity instance {} does not exist"</span>, id)

@@ -469,6 +469,7 @@
 <a href="#469" id="469">469</a>
 <a href="#470" id="470">470</a>
 <a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashSet;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -668,6 +669,7 @@
     </span>}
 
     <span class="doccomment">/// Search for relation types.
+    </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">async fn </span>relations(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,

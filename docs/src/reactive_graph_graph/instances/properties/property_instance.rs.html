@@ -403,11 +403,11 @@
     }
 
     <span class="kw">fn </span>as_array&lt;S: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: S) -&gt; <span class="prelude-ty">Option</span>&lt;Vec&lt;Value&gt;&gt; {
-        <span class="self">self</span>.<span class="number">0</span>.get(<span class="kw-2">&amp;</span>property_name.into()).and_then(|p| p.as_array().map(Vec::clone))
+        <span class="self">self</span>.<span class="number">0</span>.get(<span class="kw-2">&amp;</span>property_name.into()).and_then(|p| p.as_array().cloned())
     }
 
     <span class="kw">fn </span>as_object&lt;S: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, property_name: S) -&gt; <span class="prelude-ty">Option</span>&lt;Map&lt;String, Value&gt;&gt; {
-        <span class="self">self</span>.<span class="number">0</span>.get(<span class="kw-2">&amp;</span>property_name.into()).and_then(|p| p.as_object().map(Map::clone))
+        <span class="self">self</span>.<span class="number">0</span>.get(<span class="kw-2">&amp;</span>property_name.into()).and_then(|p| p.as_object().cloned())
     }
 }
 

@@ -27,6 +27,7 @@
 <a href="#27" id="27">27</a>
 <a href="#28" id="28">28</a>
 <a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
 </pre></div><pre class="rust"><code><span class="kw">pub use </span>behaviour_type_id::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>component::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>component_or_entity_type_id::<span class="kw-2">*</span>;
@@ -55,5 +56,6 @@
 <span class="kw">pub mod </span>property_type;
 <span class="kw">pub mod </span>relation_type;
 <span class="kw">pub mod </span>relation_type_id;
-<span class="kw">pub mod </span>types;
+<span class="attr">#[allow(clippy::module_inception)]
+</span><span class="kw">pub mod </span>types;
 </code></pre></div></section></main></body></html>

@@ -115,6 +115,12 @@
 <a href="#115" id="115">115</a>
 <a href="#116" id="116">116</a>
 <a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::data_type::DataType;
 <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::extension::Extension;
 <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::extension::ExtensionDefinition;
@@ -178,6 +184,12 @@
             property_types.<span class="number">0</span>.push(property_type.into());
         }
         property_types
+    }
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>PropertyTypeDefinitions {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 

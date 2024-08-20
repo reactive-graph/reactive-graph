@@ -485,7 +485,7 @@
     <span class="kw">let </span>ty = relation_ty.clone();
     <span class="kw">let </span>relation_type_inner = relation_type.clone();
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(<span class="kw-2">&amp;</span>dy_ty.to_string()), <span class="kw">move </span>|ctx| {
+    <span class="kw">let </span><span class="kw-2">mut </span>field = Field::new(dy_ty.field_name(), TypeRef::named_nn_list_nn(dy_ty.to_string()), <span class="kw">move </span>|ctx| {
         <span class="kw">let </span>ty = ty.clone();
         <span class="kw">let </span>relation_type = relation_type_inner.clone();
         FieldFuture::new(<span class="kw">async move </span>{
@@ -574,7 +574,7 @@
     <span class="kw">let </span>ty = relation_ty.clone();
     <span class="kw">let </span>relation_type_inner = relation_type.clone();
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>field = Field::new(dy_ty.mutation_field_name(<span class="string">"create"</span>), TypeRef::named_nn(<span class="kw-2">&amp;</span>dy_ty.to_string()), <span class="kw">move </span>|ctx| {
+    <span class="kw">let </span><span class="kw-2">mut </span>field = Field::new(dy_ty.mutation_field_name(<span class="string">"create"</span>), TypeRef::named_nn(dy_ty.to_string()), <span class="kw">move </span>|ctx| {
         <span class="kw">let </span>ty = ty.clone();
         <span class="kw">let </span>relation_type = relation_type_inner.clone();
         FieldFuture::new(<span class="kw">async move </span>{

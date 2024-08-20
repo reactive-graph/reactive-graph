@@ -29,7 +29,6 @@
 <a href="#29" id="29">29</a>
 <a href="#30" id="30">30</a>
 <a href="#31" id="31">31</a>
-<a href="#32" id="32">32</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>actix_web::post;
 <span class="kw">use </span>actix_web::web;
 <span class="kw">use </span>actix_web::HttpRequest;
@@ -39,17 +38,16 @@
 <span class="kw">use </span>async_graphql_actix_web::GraphQLRequest;
 <span class="kw">use </span>async_graphql_actix_web::GraphQLResponse;
 <span class="kw">use </span>async_graphql_actix_web::GraphQLSubscription;
-<span class="kw">use </span>log::info;
+<span class="kw">use </span>log::trace;
 <span class="kw">use </span>reactive_graph_graphql_schema::InexorSchema;
 
 <span class="attr">#[post(<span class="string">"/graphql"</span>)]
 </span><span class="kw">pub async fn </span>query_graphql(schema: web::Data&lt;InexorSchema&gt;, request: GraphQLRequest) -&gt; GraphQLResponse {
     <span class="kw">let </span>request = request.into_inner();
-    <span class="macro">info!</span>(<span class="string">"{request:?}"</span>);
+    <span class="macro">trace!</span>(<span class="string">"{request:?}"</span>);
     <span class="kw">let </span>response = schema.execute(request).<span class="kw">await</span>;
-    <span class="macro">info!</span>(<span class="string">"{response:?}"</span>);
-    <span class="kw">let </span>response = response.into();
-    response
+    <span class="macro">trace!</span>(<span class="string">"{response:?}"</span>);
+    response.into()
 }
 
 <span class="kw">pub async fn </span>subscription_websocket(schema: web::Data&lt;InexorSchema&gt;, request: HttpRequest, payload: web::Payload) -&gt; <span class="prelude-ty">Result</span>&lt;HttpResponse&gt; {

@@ -337,7 +337,7 @@
 
 <span class="kw">pub fn </span>get_relation_type(relation_ty: <span class="kw-2">&amp;</span>RelationTypeId, relation_type: <span class="kw-2">&amp;</span>RelationType, context: <span class="kw-2">&amp;</span>SchemaBuilderContext) -&gt; Object {
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(relation_ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>object = Object::new(<span class="kw-2">&amp;</span>dy_ty.to_string())
+    <span class="kw">let </span><span class="kw-2">mut </span>object = Object::new(dy_ty.to_string())
         .description(<span class="kw-2">&amp;</span>relation_type.description)
         .implement(INTERFACE_RELATION);
     <span class="comment">// Components
@@ -401,7 +401,7 @@
 <span class="kw">pub fn </span>get_relation_update_field(relation_type: <span class="kw-2">&amp;</span>RelationType) -&gt; <span class="prelude-ty">Option</span>&lt;Field&gt; {
     <span class="kw">let </span>relation_type_inner = relation_type.clone();
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>relation_type.ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>update_field = Field::new(<span class="string">"update"</span>, TypeRef::named_nn_list_nn(<span class="kw-2">&amp;</span>dy_ty.to_string()), <span class="kw">move </span>|ctx| {
+    <span class="kw">let </span><span class="kw-2">mut </span>update_field = Field::new(<span class="string">"update"</span>, TypeRef::named_nn_list_nn(dy_ty.to_string()), <span class="kw">move </span>|ctx| {
         <span class="kw">let </span>relation_type = relation_type_inner.clone();
         FieldFuture::new(<span class="kw">async move </span>{
             <span class="kw">let </span>relation_instances = ctx.parent_value.try_downcast_ref::&lt;Vec&lt;ReactiveRelation&gt;&gt;()<span class="question-mark">?</span>;
@@ -567,7 +567,7 @@
         FieldFuture::new(<span class="kw">async move </span>{
             <span class="kw">let </span>relation_instances = ctx.parent_value.try_downcast_ref::&lt;Vec&lt;ReactiveRelation&gt;&gt;()<span class="question-mark">?</span>;
             <span class="kw">for </span>relation_instance <span class="kw">in </span>relation_instances {
-                relation_instance.set(<span class="kw-2">&amp;</span>TRIGGER.property_name(), <span class="macro">json!</span>(<span class="bool-val">true</span>));
+                relation_instance.set(TRIGGER.property_name(), <span class="macro">json!</span>(<span class="bool-val">true</span>));
             }
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::list(
                 relation_instances

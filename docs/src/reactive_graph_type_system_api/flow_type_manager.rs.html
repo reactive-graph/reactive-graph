@@ -147,6 +147,7 @@
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
 <a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 <span class="kw">use </span>uuid::Uuid;
@@ -225,6 +226,7 @@
     </span><span class="kw">fn </span>count_by_namespace(<span class="kw-2">&amp;</span><span class="self">self</span>, namespace: <span class="kw-2">&amp;</span>str) -&gt; usize;
 
     <span class="doccomment">/// Creates a new flow type.
+    </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">fn </span>create_flow_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         ty: <span class="kw-2">&amp;</span>FlowTypeId,

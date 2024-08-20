@@ -134,12 +134,12 @@
 <span class="kw">impl </span>From&lt;EntityType&gt; <span class="kw">for </span>reactive_graph_graph::EntityType {
     <span class="kw">fn </span>from(entity_type: EntityType) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ty = reactive_graph_graph::EntityTypeId::new_from_type(entity_type.namespace, entity_type.name);
-        <span class="kw">let </span>tys: reactive_graph_graph::ComponentTypeIds = Components(entity_type.components).into();
+        <span class="kw">let </span>components: reactive_graph_graph::ComponentTypeIds = Components(entity_type.components).into();
         <span class="comment">// let tys: ComponentTypeIds = components.into();
         </span>reactive_graph_graph::EntityType {
             ty,
             description: entity_type.description,
-            components: tys.into(),
+            components,
             properties: PropertyTypes(entity_type.properties).into(),
             extensions: Extensions(entity_type.extensions).into(),
         }

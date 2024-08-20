@@ -229,13 +229,13 @@
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>to_command_result(<span class="self">self</span>) -&gt; CommandResult {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>into_command_result(<span class="self">self</span>) -&gt; CommandResult {
         <span class="kw">match </span><span class="self">self</span>.output_format.clone().unwrap_or_default() {
-            OutputFormatArgs::TABLE =&gt; <span class="kw">match </span><span class="self">self</span>.object_or_collection {
+            OutputFormatArgs::Table =&gt; <span class="kw">match </span><span class="self">self</span>.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) =&gt; <span class="prelude-val">Ok</span>(DefaultTableContainer::&lt;S, T, O&gt;::from(single_object).into()),
                 CommandResultBuilderContent::Collection(collection) =&gt; <span class="prelude-val">Ok</span>(DefaultTableContainer::&lt;S, T, O&gt;::from(collection).into()),
             },
-            OutputFormatArgs::JSON =&gt; <span class="kw">match </span><span class="self">self</span>.object_or_collection {
+            OutputFormatArgs::Json =&gt; <span class="kw">match </span><span class="self">self</span>.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) =&gt; <span class="prelude-val">Ok</span>(serde_json::to_value(single_object)
                     .map_err(|e| CommandError::SerializationError(SerializationError::Json(e)))<span class="question-mark">?
                     </span>.into()),
@@ -244,9 +244,9 @@
                     </span>.into()),
             },
             <span class="attr">#[cfg(feature = <span class="string">"json5"</span>)]
-            </span>OutputFormatArgs::JSON5 =&gt; <span class="prelude-val">Err</span>(NotImplemented),
+            </span>OutputFormatArgs::Json5 =&gt; <span class="prelude-val">Err</span>(NotImplemented),
             <span class="attr">#[cfg(feature = <span class="string">"toml"</span>)]
-            </span>OutputFormatArgs::TOML =&gt; <span class="kw">match </span><span class="self">self</span>.object_or_collection {
+            </span>OutputFormatArgs::Toml =&gt; <span class="kw">match </span><span class="self">self</span>.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) =&gt; <span class="prelude-val">Ok</span>(toml::Value::try_from(single_object)
                     .map_err(|e| CommandError::SerializationError(SerializationError::Toml(e)))<span class="question-mark">?
                     </span>.into()),

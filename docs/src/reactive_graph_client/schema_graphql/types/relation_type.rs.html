@@ -182,7 +182,7 @@
 <span class="kw">impl </span>From&lt;RelationType&gt; <span class="kw">for </span>reactive_graph_graph::RelationType {
     <span class="kw">fn </span>from(relation_type: RelationType) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ty = reactive_graph_graph::RelationTypeId::new_from_type(<span class="kw-2">&amp;</span>relation_type.namespace, <span class="kw-2">&amp;</span>relation_type.name);
-        <span class="kw">let </span>tys: reactive_graph_graph::ComponentTypeIds = Components(relation_type.components.clone()).into();
+        <span class="kw">let </span>components: reactive_graph_graph::ComponentTypeIds = Components(relation_type.components.clone()).into();
         <span class="kw">let </span>outbound_type = relation_type.get_outbound_type();
         <span class="kw">let </span>inbound_type = relation_type.get_inbound_type();
         reactive_graph_graph::RelationType {
@@ -190,7 +190,7 @@
             ty,
             inbound_type,
             description: relation_type.description,
-            components: tys.into(),
+            components,
             properties: PropertyTypes(relation_type.properties).into(),
             extensions: Extensions(relation_type.extensions).into(),
         }

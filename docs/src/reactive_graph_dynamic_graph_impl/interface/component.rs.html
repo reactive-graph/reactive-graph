@@ -50,7 +50,7 @@
 
 <span class="kw">pub fn </span>get_component_interface(component: Component) -&gt; Interface {
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>component.ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>interface = Interface::new(<span class="kw-2">&amp;</span>dy_ty.to_string())
+    <span class="kw">let </span><span class="kw-2">mut </span>interface = Interface::new(dy_ty.to_string())
         .description(<span class="kw-2">&amp;</span>component.description)
         .field(component_id_field(<span class="kw-2">&amp;</span>component.ty));
     <span class="kw">for </span>field <span class="kw">in </span>component.properties.iter() {

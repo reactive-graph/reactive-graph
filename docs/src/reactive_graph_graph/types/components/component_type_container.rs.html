@@ -46,13 +46,13 @@
     </span><span class="kw">fn </span>is_a(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; bool;
 
     <span class="doccomment">/// Returns true, if the type is composed with any of the given components.
-    </span><span class="kw">fn </span>is_any(<span class="kw-2">&amp;</span><span class="self">self</span>, component_tys: <span class="kw-2">&amp;</span>Vec&lt;ComponentTypeId&gt;) -&gt; bool {
-        component_tys.iter().any(|ty| <span class="self">self</span>.is_a(ty))
+    </span><span class="kw">fn </span>is_any(<span class="kw-2">&amp;</span><span class="self">self</span>, component_tys: <span class="kw-2">&amp;</span>ComponentTypeIds) -&gt; bool {
+        component_tys.iter().any(|ty| <span class="self">self</span>.is_a(<span class="kw-2">&amp;</span>ty))
     }
 
     <span class="doccomment">/// Returns true, if the type is composed with every given components.
-    </span><span class="kw">fn </span>is_all(<span class="kw-2">&amp;</span><span class="self">self</span>, component_tys: <span class="kw-2">&amp;</span>Vec&lt;ComponentTypeId&gt;) -&gt; bool {
-        component_tys.iter().all(|ty| <span class="self">self</span>.is_a(ty))
+    </span><span class="kw">fn </span>is_all(<span class="kw-2">&amp;</span><span class="self">self</span>, component_tys: <span class="kw-2">&amp;</span>ComponentTypeIds) -&gt; bool {
+        component_tys.iter().all(|ty| <span class="self">self</span>.is_a(<span class="kw-2">&amp;</span>ty))
     }
 
     <span class="doccomment">/// Adds the given component.

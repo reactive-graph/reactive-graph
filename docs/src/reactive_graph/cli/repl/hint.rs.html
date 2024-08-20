@@ -127,8 +127,6 @@
 <a href="#127" id="127">127</a>
 <a href="#128" id="128">128</a>
 <a href="#129" id="129">129</a>
-<a href="#130" id="130">130</a>
-<a href="#131" id="131">131</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::error::ContextKind;
 <span class="kw">use </span>clap::error::ContextValue;
 <span class="kw">use </span>clap::error::ErrorKind;
@@ -173,7 +171,7 @@
             <span class="kw">match </span><span class="kw-2">&amp;</span>t {
                 HinterMatchType::Command(_command) =&gt; CHAR_ENTER.green().to_string(),
                 HinterMatchType::Error(error_kind, context) =&gt; {
-                    <span class="kw">match </span>context
+                    context
                         .iter()
                         .find(|(kind, <span class="kw">_</span>)| kind != <span class="kw-2">&amp;</span>ContextKind::InvalidSubcommand &amp;&amp; kind != <span class="kw-2">&amp;</span>ContextKind::Usage &amp;&amp; kind != <span class="kw-2">&amp;</span>ContextKind::Custom)
                         .and_then(|(kind, value)| <span class="kw">match </span>(kind, value) {
@@ -205,10 +203,8 @@
                                     <span class="kw">_ </span>=&gt; <span class="string">"unknown"</span>,
                                 }
                             )),
-                        }) {
-                        <span class="prelude-val">Some</span>(v) =&gt; v,
-                        <span class="prelude-val">None </span>=&gt; String::new(),
-                    }
+                        })
+                        .unwrap_or_default()
                 }
             }
         };
@@ -257,7 +253,7 @@
     }
 
     <span class="kw">fn </span>completion(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt; {
-        <span class="self">self</span>.completion.as_ref().map(|x| x.as_str())
+        <span class="self">self</span>.completion.as_deref()
     }
 }
 </code></pre></div></section></main></body></html>

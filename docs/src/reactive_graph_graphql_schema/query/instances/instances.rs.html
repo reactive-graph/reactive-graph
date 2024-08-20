@@ -293,6 +293,8 @@
 <a href="#293" id="293">293</a>
 <a href="#294" id="294">294</a>
 <a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::Context;
@@ -330,6 +332,7 @@
     /// If an id is given, the entity instance with the given id will be returned.
     ///
     /// If an entity type is given, only entity instances of the given type are returned.
+    </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">async fn </span>entities(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
@@ -451,6 +454,7 @@
     /// entity instance, the entity type of the inbound entity instance, the id of the outbound
     /// entity instance or the id of the inbound entity instance. All of these filters can be
     /// combined.
+    </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">async fn </span>relations(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,

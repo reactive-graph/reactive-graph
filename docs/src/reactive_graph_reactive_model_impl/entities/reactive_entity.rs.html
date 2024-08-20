@@ -354,6 +354,7 @@
 <a href="#354" id="354">354</a>
 <a href="#355" id="355">355</a>
 <a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::ops::Deref;
@@ -393,7 +394,7 @@
 <span class="attr">#[derive(TypedBuilder)]
 #[builder(
     build_method(vis=<span class="string">"pub"</span>, into=ReactiveEntity),
-    builder_method(vis=<span class="string">""</span>),
+    builder_method(vis = <span class="string">""</span>),
     builder_type(vis=<span class="string">"pub"</span>, name=ReactiveEntityInstanceBuilder),
 )]
 </span><span class="kw">pub struct </span>ReactiveEntityInstance {
@@ -433,6 +434,7 @@
     <span class="doccomment">/// Creates a builder from the given entity type.
     /// Generates an id for the reactive entity.
     /// Converts property types into reactive properties and initializes the properties with default values.
+    </span><span class="attr">#[allow(clippy::type_complexity)]
     </span><span class="kw">pub fn </span>builder_from_entity_type(
         entity_type: <span class="kw-2">&amp;</span>EntityType,
     ) -&gt; ReactiveEntityInstanceBuilder&lt;((EntityTypeId,), (Uuid,), (), (ReactiveProperties&lt;Uuid&gt;,), (), ())&gt; {

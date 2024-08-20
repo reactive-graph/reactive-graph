@@ -718,6 +718,10 @@
 <a href="#718" id="718">718</a>
 <a href="#719" id="719">719</a>
 <a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>std::hash::Hasher;
@@ -1231,7 +1235,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>EntityTypeBuilder&lt;((EntityTypeId,), (), (), (), ())&gt; {
-    <span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="self">self</span>, component_ty: C) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="self">self</span>, component_ty: C) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
         <span class="kw">let </span>(ty, description, <span class="kw">_</span>, properties, extensions) = <span class="self">self</span>.fields;
         EntityTypeBuilder {
             fields: (ty, description, (ComponentTypeIds::new().component(component_ty),), properties, extensions),
@@ -1242,7 +1247,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
-    <span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="self">self</span>, ty: C) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="self">self</span>, ty: C) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
         <span class="self">self</span>.fields.<span class="number">2 </span>.<span class="number">0</span>.insert(ty.into());
         <span class="self">self
     </span>}
@@ -1250,7 +1256,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
-    <span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(<span class="self">self</span>, property: P) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())&gt; {
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(<span class="self">self</span>, property: P) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())&gt; {
         <span class="kw">let </span>(ty, description, components, <span class="kw">_</span>, extensions) = <span class="self">self</span>.fields;
         EntityTypeBuilder {
             fields: (ty, description, components, (PropertyTypes::new().property(property),), extensions),
@@ -1261,7 +1268,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())&gt; {
-    <span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(<span class="self">self</span>, property: P) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())&gt; {
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(<span class="self">self</span>, property: P) -&gt; EntityTypeBuilder&lt;((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())&gt; {
         <span class="self">self</span>.fields.<span class="number">3 </span>.<span class="number">0</span>.push(property.into());
         <span class="self">self
     </span>}

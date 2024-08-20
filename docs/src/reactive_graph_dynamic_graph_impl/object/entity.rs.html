@@ -306,8 +306,6 @@
 <a href="#306" id="306">306</a>
 <a href="#307" id="307">307</a>
 <a href="#308" id="308">308</a>
-<a href="#309" id="309">309</a>
-<a href="#310" id="310">310</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::dynamic::<span class="kw-2">*</span>;
@@ -360,9 +358,7 @@
 
 <span class="kw">pub fn </span>get_entity_type(entity_type: <span class="kw-2">&amp;</span>EntityType, outbound_types: RelationTypes, inbound_types: RelationTypes, context: <span class="kw-2">&amp;</span>SchemaBuilderContext) -&gt; Object {
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>entity_type.ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>object = Object::new(<span class="kw-2">&amp;</span>dy_ty.to_string())
-        .description(<span class="kw-2">&amp;</span>entity_type.description)
-        .implement(INTERFACE_ENTITY);
+    <span class="kw">let </span><span class="kw-2">mut </span>object = Object::new(dy_ty.to_string()).description(<span class="kw-2">&amp;</span>entity_type.description).implement(INTERFACE_ENTITY);
     <span class="comment">// Components
     </span><span class="kw">for </span>component_ty <span class="kw">in </span>entity_type.components.iter() {
         object = object.field(instance_component_id_field(component_ty.key()));
@@ -429,7 +425,7 @@
 <span class="kw">pub fn </span>get_entity_update_field(entity_type: <span class="kw-2">&amp;</span>EntityType) -&gt; <span class="prelude-ty">Option</span>&lt;Field&gt; {
     <span class="kw">let </span>entity_type_inner = entity_type.clone();
     <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>entity_type.ty);
-    <span class="kw">let </span><span class="kw-2">mut </span>update_field = Field::new(<span class="string">"update"</span>, TypeRef::named_nn_list_nn(<span class="kw-2">&amp;</span>dy_ty.to_string()), <span class="kw">move </span>|ctx| {
+    <span class="kw">let </span><span class="kw-2">mut </span>update_field = Field::new(<span class="string">"update"</span>, TypeRef::named_nn_list_nn(dy_ty.to_string()), <span class="kw">move </span>|ctx| {
         <span class="kw">let </span>entity_type = entity_type_inner.clone();
         FieldFuture::new(<span class="kw">async move </span>{
             <span class="kw">let </span>entity_instances = ctx.parent_value.try_downcast_ref::&lt;Vec&lt;ReactiveEntity&gt;&gt;()<span class="question-mark">?</span>;
@@ -593,7 +589,7 @@
         FieldFuture::new(<span class="kw">async move </span>{
             <span class="kw">let </span>entity_instances = ctx.parent_value.try_downcast_ref::&lt;Vec&lt;ReactiveEntity&gt;&gt;()<span class="question-mark">?</span>;
             <span class="kw">for </span>entity_instance <span class="kw">in </span>entity_instances {
-                entity_instance.set(<span class="kw-2">&amp;</span>TRIGGER.property_name(), <span class="macro">json!</span>(<span class="bool-val">true</span>));
+                entity_instance.set(TRIGGER.property_name(), <span class="macro">json!</span>(<span class="bool-val">true</span>));
             }
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::list(
                 entity_instances.iter().map(|entity_instance| FieldValue::owned_any(entity_instance.clone())),

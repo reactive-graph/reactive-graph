@@ -69,13 +69,13 @@
 
     <span class="doccomment">/// Returns true, if the type contains any of the given properties.
     /// Doesn't respect properties from potential components.
-    </span><span class="kw">fn </span>has_any_own_properties(<span class="kw-2">&amp;</span><span class="self">self</span>, property_names: <span class="kw-2">&amp;</span>Vec&lt;String&gt;) -&gt; bool {
+    </span><span class="kw">fn </span>has_any_own_properties(<span class="kw-2">&amp;</span><span class="self">self</span>, property_names: <span class="kw-2">&amp;</span>[String]) -&gt; bool {
         property_names.iter().any(|property_name| <span class="self">self</span>.has_own_property(property_name))
     }
 
     <span class="doccomment">/// Returns true, if the type contains all of the given properties.
     /// Doesn't respect properties from potential components.
-    </span><span class="kw">fn </span>has_all_own_properties(<span class="kw-2">&amp;</span><span class="self">self</span>, property_names: <span class="kw-2">&amp;</span>Vec&lt;String&gt;) -&gt; bool {
+    </span><span class="kw">fn </span>has_all_own_properties(<span class="kw-2">&amp;</span><span class="self">self</span>, property_names: <span class="kw-2">&amp;</span>[String]) -&gt; bool {
         property_names.iter().all(|property_name| <span class="self">self</span>.has_own_property(property_name))
     }
 

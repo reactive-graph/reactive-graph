@@ -841,6 +841,11 @@
 <a href="#841" id="841">841</a>
 <a href="#842" id="842">842</a>
 <a href="#843" id="843">843</a>
+<a href="#844" id="844">844</a>
+<a href="#845" id="845">845</a>
+<a href="#846" id="846">846</a>
+<a href="#847" id="847">847</a>
+<a href="#848" id="848">848</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>std::hash::Hasher;
@@ -974,7 +979,8 @@
         }
     }
 
-    <span class="kw">pub fn </span>builder_with_ty&lt;O: Into&lt;ComponentOrEntityTypeId&gt;, T: Into&lt;RelationTypeId&gt;, I: Into&lt;ComponentOrEntityTypeId&gt;&gt;(
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>builder_with_ty&lt;O: Into&lt;ComponentOrEntityTypeId&gt;, T: Into&lt;RelationTypeId&gt;, I: Into&lt;ComponentOrEntityTypeId&gt;&gt;(
         outbound_type: O,
         ty: T,
         inbound_type: I,
@@ -1373,7 +1379,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>RelationTypeBuilder&lt;((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (), (), ())&gt; {
-    <span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(
         <span class="self">self</span>,
         component_ty: C,
     ) -&gt; RelationTypeBuilder&lt;((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
@@ -1395,7 +1402,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>RelationTypeBuilder&lt;((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
-    <span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(
         <span class="self">self</span>,
         ty: C,
     ) -&gt; RelationTypeBuilder&lt;((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
@@ -1406,7 +1414,8 @@
 
 <span class="comment">// Experimental
 </span><span class="kw">impl </span>RelationTypeBuilder&lt;((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
-    <span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(
         <span class="self">self</span>,
         property: P,
     ) -&gt; RelationTypeBuilder&lt;(
@@ -1446,7 +1455,8 @@
         (),
     )&gt;
 {
-    <span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(
+    <span class="attr">#[allow(clippy::type_complexity)]
+    </span><span class="kw">pub fn </span>property&lt;P: Into&lt;PropertyType&gt;&gt;(
         <span class="self">self</span>,
         property: P,
     ) -&gt; RelationTypeBuilder&lt;(

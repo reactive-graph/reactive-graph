@@ -833,7 +833,7 @@
 
 <span class="kw">impl </span>MutablePropertyInstanceSetter <span class="kw">for </span>EntityInstance {
     <span class="kw">fn </span>set&lt;S: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, property_name: S, value: Value) {
-        <span class="self">self</span>.properties.set(<span class="kw-2">&amp;</span>property_name.into(), value);
+        <span class="self">self</span>.properties.set(property_name.into(), value);
     }
 }
 

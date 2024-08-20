@@ -139,6 +139,7 @@
 <a href="#139" id="139">139</a>
 <a href="#140" id="140">140</a>
 <a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 
@@ -220,6 +221,7 @@
     </span><span class="kw">fn </span>count_by_namespace(<span class="kw-2">&amp;</span><span class="self">self</span>, namespace: <span class="kw-2">&amp;</span>str) -&gt; usize;
 
     <span class="doccomment">/// Creates a new relation type.
+    </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">fn </span>create_relation_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         outbound_type: <span class="kw-2">&amp;</span>ComponentOrEntityTypeId,

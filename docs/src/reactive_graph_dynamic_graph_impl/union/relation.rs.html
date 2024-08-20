@@ -41,7 +41,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>union = Union::new(type_name).description(<span class="macro">format!</span>(<span class="string">"Any relation of the namespace {}"</span>, namespace));
     <span class="kw">for </span>relation_ty <span class="kw">in </span>context.relation_type_manager.get_types_by_namespace(namespace) {
         <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>relation_ty);
-        union = union.possible_type(<span class="kw-2">&amp;</span>dy_ty.to_string());
+        union = union.possible_type(dy_ty.to_string());
     }
     schema.register(union)
 }
@@ -50,7 +50,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>union = Union::new(UNION_ALL_RELATIONS).description(<span class="string">"Any relation."</span>);
     <span class="kw">for </span>relation_ty <span class="kw">in </span>context.relation_type_manager.get_type_ids() {
         <span class="kw">let </span>dy_ty = DynamicGraphTypeDefinition::from(<span class="kw-2">&amp;</span>relation_ty);
-        union = union.possible_type(<span class="kw-2">&amp;</span>dy_ty.to_string());
+        union = union.possible_type(dy_ty.to_string());
     }
     schema.register(union)
 }

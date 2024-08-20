@@ -76,10 +76,6 @@
 <a href="#76" id="76">76</a>
 <a href="#77" id="77">77</a>
 <a href="#78" id="78">78</a>
-<a href="#79" id="79">79</a>
-<a href="#80" id="80">80</a>
-<a href="#81" id="81">81</a>
-<a href="#82" id="82">82</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>reactive_graph_graph::EntityTypeId;
 <span class="kw">use </span>reactive_graph_graph::FlowTypeId;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeId;
@@ -124,24 +120,20 @@
                 )
             }
             ReactiveFlowCreationError::FlowTypeDoesntExist(flow_ty) =&gt; {
-                <span class="macro">write!</span>(
-                    f,
-                    <span class="string">"Failed to construct reactive flow instance: Flow type {} doesn't exist"</span>,
-                    flow_ty.type_definition().to_string()
-                )
+                <span class="macro">write!</span>(f, <span class="string">"Failed to construct reactive flow instance: Flow type {} doesn't exist"</span>, flow_ty.type_definition())
             }
             ReactiveFlowCreationError::EntityTypeDoesntExist(entity_ty) =&gt; {
                 <span class="macro">write!</span>(
                     f,
                     <span class="string">"Failed to construct reactive flow instance: Flow type contains an entity instance of type {} which doesn't exist"</span>,
-                    entity_ty.type_definition().to_string()
+                    entity_ty.type_definition()
                 )
             }
             ReactiveFlowCreationError::RelationTypeDoesntExist(relation_ty) =&gt; {
                 <span class="macro">write!</span>(
                     f,
                     <span class="string">"Failed to construct reactive flow instance: Flow type contains a relation instance of type {} which doesn't exist"</span>,
-                    relation_ty.type_definition().to_string()
+                    relation_ty.type_definition()
                 )
             }
             ReactiveFlowCreationError::InvalidOutboundId(id) =&gt; {

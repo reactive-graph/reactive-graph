@@ -418,10 +418,10 @@
         <span class="attr">#[graphql(desc = <span class="string">"Triggers the entity instance with the given label."</span>)] </span>label: <span class="prelude-ty">Option</span>&lt;String&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLEntityInstance&gt; {
         <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span><span class="prelude-val">Some</span>(entity_instance) = (<span class="kw">if </span>id.is_some() {
-            entity_instance_manager.get(id.unwrap())
-        } <span class="kw">else if </span>label.is_some() {
-            entity_instance_manager.get_by_label(label.unwrap().as_str())
+        <span class="kw">let </span><span class="prelude-val">Some</span>(entity_instance) = (<span class="kw">if let </span><span class="prelude-val">Some</span>(id) = id {
+            entity_instance_manager.get(id)
+        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(label) = label {
+            entity_instance_manager.get_by_label(label.as_str())
         } <span class="kw">else </span>{
             <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"Either id or label must be given!"</span>.into());
         }) <span class="kw">else </span>{

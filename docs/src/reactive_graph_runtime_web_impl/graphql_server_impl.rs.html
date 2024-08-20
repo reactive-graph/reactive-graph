@@ -280,11 +280,6 @@
 <a href="#280" id="280">280</a>
 <a href="#281" id="281">281</a>
 <a href="#282" id="282">282</a>
-<a href="#283" id="283">283</a>
-<a href="#284" id="284">284</a>
-<a href="#285" id="285">285</a>
-<a href="#286" id="286">286</a>
-<a href="#287" id="287">287</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Debug;
 <span class="kw">use </span>std::fs::File;
 <span class="kw">use </span>std::io::BufReader;
@@ -454,66 +449,61 @@
 
         <span class="kw">let </span>http_server = HttpServer::new(<span class="kw">move </span>|| {
             <span class="kw">let </span>graphql_logging_config = graphql_logging_config.clone();
-            <span class="kw">let </span>app = App::new()
+            App::new()
                 .wrap(Cors::permissive())
-                .wrap(Condition::from_option(get_logger_middleware(<span class="kw-2">&amp;</span>graphql_logging_config)));
-            <span class="comment">// Type System
-            </span><span class="kw">let </span>app = app
-                .app_data(component_manager.clone())
+                .wrap(Condition::from_option(get_logger_middleware(<span class="kw-2">&amp;</span>graphql_logging_config)))
+                <span class="comment">// Type System
+                </span>.app_data(component_manager.clone())
                 .app_data(entity_type_manager.clone())
                 .app_data(relation_type_manager.clone())
-                .app_data(flow_type_manager.clone());
-            <span class="comment">// Instance System
-            </span><span class="kw">let </span>app = app
-                .app_data(entity_instance_manager.clone())
+                .app_data(flow_type_manager.clone())
+                <span class="comment">// Instance System
+                </span>.app_data(entity_instance_manager.clone())
                 .app_data(relation_instance_manager.clone())
-                .app_data(flow_instance_manager.clone());
-            <span class="comment">// Web Resources
-            </span><span class="kw">let </span>app = app.app_data(web_resource_manager.clone());
-            <span class="comment">// GraphQL Schema
-            </span><span class="kw">let </span>app = app.app_data(schema_data.clone());
-            <span class="comment">// Runtime GraphQL Schema
-            </span><span class="kw">let </span>app = app.app_data(runtime_schema_data.clone());
-            <span class="comment">// Plugin GraphQL Schema
-            </span><span class="kw">let </span>app = app.app_data(plugin_schema_data.clone());
-            <span class="comment">// Dynamic Graph
-            </span><span class="kw">let </span>app = app.app_data(dynamic_graph_schema_manager.clone());
-            <span class="comment">// GraphQL API
-            </span><span class="kw">let </span>app = app.service(query_graphql).service(
-                web::resource(<span class="string">"/graphql"</span>)
-                    .guard(guard::Get())
-                    .guard(guard::Header(<span class="string">"upgrade"</span>, <span class="string">"websocket"</span>))
-                    .to(subscription_websocket),
-            );
-            <span class="comment">// Dynamic GraphQL API
-            </span><span class="kw">let </span>app = app.service(query_dynamic_graph);
-            <span class="comment">// Runtime GraphQL API
-            </span><span class="kw">let </span>app = app.service(query_runtime_graphql);
-            <span class="kw">let </span>app = app.service(query_plugin_graphql);
-            <span class="comment">// Type System REST API
-            </span><span class="kw">let </span>app = app
-                .service(reactive_graph_type_system_rest::components::get_components)
+                .app_data(flow_instance_manager.clone())
+                <span class="comment">// Web Resources
+                </span>.app_data(web_resource_manager.clone())
+                <span class="comment">// GraphQL Schema
+                </span>.app_data(schema_data.clone())
+                <span class="comment">// Runtime GraphQL Schema
+                </span>.app_data(runtime_schema_data.clone())
+                <span class="comment">// Plugin GraphQL Schema
+                </span>.app_data(plugin_schema_data.clone())
+                <span class="comment">// Dynamic Graph
+                </span>.app_data(dynamic_graph_schema_manager.clone())
+                <span class="comment">// GraphQL API
+                </span>.service(query_graphql)
+                .service(
+                    web::resource(<span class="string">"/graphql"</span>)
+                        .guard(guard::Get())
+                        .guard(guard::Header(<span class="string">"upgrade"</span>, <span class="string">"websocket"</span>))
+                        .to(subscription_websocket),
+                )
+                <span class="comment">// Dynamic GraphQL API
+                </span>.service(query_dynamic_graph)
+                <span class="comment">// Runtime GraphQL API
+                </span>.service(query_runtime_graphql)
+                .service(query_plugin_graphql)
+                <span class="comment">// Type System REST API
+                </span>.service(reactive_graph_type_system_rest::components::get_components)
                 .service(reactive_graph_type_system_rest::components::get_component)
                 .service(reactive_graph_type_system_rest::entities::get_entity_types)
                 .service(reactive_graph_type_system_rest::entities::get_entity_type)
                 .service(reactive_graph_type_system_rest::relations::get_relation_types)
                 .service(reactive_graph_type_system_rest::relations::get_relation_type)
                 .service(reactive_graph_type_system_rest::flows::get_flow_types)
-                .service(reactive_graph_type_system_rest::flows::get_flow_type);
-            <span class="comment">// JSON Schema
-            </span><span class="kw">let </span>app = app
-                .service(reactive_graph_type_system_json_schema::types::components::schema_components)
+                .service(reactive_graph_type_system_rest::flows::get_flow_type)
+                <span class="comment">// JSON Schema
+                </span>.service(reactive_graph_type_system_json_schema::types::components::schema_components)
                 .service(reactive_graph_type_system_json_schema::types::entities::schema_entity_types)
                 .service(reactive_graph_type_system_json_schema::types::relations::schema_relation_types)
                 .service(reactive_graph_type_system_json_schema::types::flows::schema_flow_types)
                 .service(reactive_graph_type_system_json_schema::instances::entities::schema_entity_instances)
                 .service(reactive_graph_type_system_json_schema::instances::relations::schema_relation_instances)
-                .service(reactive_graph_type_system_json_schema::instances::flows::schema_flow_instances);
-            <span class="comment">// Web Resource API
-            </span><span class="kw">let </span>app = app
-                .service(web::resource(<span class="string">"/{web_resource_context_path}/{path:.*}"</span>).route(web::get().to(handle_web_resource)))
-                .service(web::resource(<span class="string">"/{path:.*}"</span>).route(web::get().to(handle_root_web_resource)));
-            app
+                .service(reactive_graph_type_system_json_schema::instances::flows::schema_flow_instances)
+                <span class="comment">// Web Resource API
+                </span>.service(web::resource(<span class="string">"/{web_resource_context_path}/{path:.*}"</span>).route(web::get().to(handle_web_resource)))
+                .service(web::resource(<span class="string">"/{path:.*}"</span>).route(web::get().to(handle_root_web_resource)))
         })
         .disable_signals()
         .shutdown_timeout(graphql_server_config.shutdown_timeout())
@@ -551,7 +541,7 @@
             <span class="kw">let </span>tls_config = ServerConfig::builder()
                 .with_no_client_auth()
                 .with_single_cert(cert_chain, keys.remove(<span class="number">0</span>))
-                .map_err(|e| GraphQLServerError::RustlsError(e))<span class="question-mark">?</span>;
+                .map_err(GraphQLServerError::RustlsError)<span class="question-mark">?</span>;
             <span class="macro">info!</span>(<span class="string">"Starting HTTPS/GraphQL server on {}"</span>, graphql_server_config.url());
             http_server.bind_rustls_0_22(graphql_server_config.addr(), tls_config)<span class="question-mark">?</span>.run()
         } <span class="kw">else </span>{

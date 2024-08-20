@@ -446,7 +446,7 @@
         <span class="kw">let </span>entity_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>ty: EntityTypeId = ty.into();
         <span class="kw">let </span>extension: Extension = extension.into();
-        <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = entity_type_manager.update_extension(<span class="kw-2">&amp;</span>ty, <span class="kw-2">&amp;</span>extension.ty.clone(), extension.into()) {
+        <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = entity_type_manager.update_extension(<span class="kw-2">&amp;</span>ty, <span class="kw-2">&amp;</span>extension.ty.clone(), extension) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(e.into());
         }
         entity_type_manager
