@@ -39,12 +39,6 @@ jobs:
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@v0.0.5
       - name: Build (Release Mode)
-        uses: actions-rs/cargo@v1
-        with:
-          command: "build"
-          args: "--release --verbose"
+        run: cargo build --release --verbose
       - name: Test (Release Mode)
-        uses: actions-rs/cargo@v1
-        with:
-          command: "test"
-          args: "--release --verbose"
+        run: cargo test --release --verbose
