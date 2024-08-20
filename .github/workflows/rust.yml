@@ -35,7 +35,7 @@ jobs:
         with:
           toolchain: nightly
       - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.3
+        uses: mozilla-actions/sccache-action@v0.0.5
       - name: Build (Release Mode)
         uses: actions-rs/cargo@v1
         with:
