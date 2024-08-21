@@ -48,6 +48,10 @@ async fn main() {
             }
         }
     }
+    if cli_args.markdown_help {
+        clap_markdown::print_help_markdown::<CliArguments>();
+        exit(0);
+    }
     match cli_args.commands {
         Some(commands) => match commands {
             #[cfg(feature = "client")]
