@@ -14,15 +14,15 @@ The configuration of the debian package is defined in `Cargo.toml`:
 
 ```toml
 [package.metadata.deb]
-name = "inexor-rgf"
+name = "reactive-graph"
 maintainer-scripts = "debian/maintainer-scripts"
 assets = [
-    ["target/release/inexor-rgf-rt-standalone", "usr/bin/inexor-rgf", "755"],
+    ["target/release/reactive-graph", "usr/bin/reactive-graph", "755"],
     # more assets omitted...
 ]
 
 [package.metadata.deb.systemd-units]
-unit-name = "inexor-rgf@"
+unit-name = "reactive-graph@"
 enable = true
 restart-after-upgrade = true
 ```
@@ -52,13 +52,13 @@ snapcraft
 The snap have to be installed with `--devmode`.
 
 ```shell
-sudo snap install --devmode inexor-rgf-application_0.0.0_amd64.snap
+sudo snap install --devmode reactive-graph_0.0.0_amd64.snap
 ```
 
 ### Package Information
 
 ```shell
-snap info --verbose inexor-rgf-application
+snap info --verbose reactive-graph
 ```
 
 ### `snapcraft.yaml` Examples
@@ -69,14 +69,17 @@ snap info --verbose inexor-rgf-application
 ## RPM
 
 (TODO)
+
 * https://crates.io/crates/cargo-rpm
 
 ## Arch
 
 (TODO)
+
 * https://crates.io/crates/cargo-arch
 
 ## (Windows)
 
 (TODO)
+
 * https://crates.io/crates/msi

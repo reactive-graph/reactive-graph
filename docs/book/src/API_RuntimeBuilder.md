@@ -48,7 +48,7 @@ In this state it is possible to configure the locations of the config files or t
 #### Transitions
 
 * Transition `load_config_files` loads the config files and transits to state `ConfigFilesLoaded`. This is used
-  in the standalone executable.
+  in the executable.
 * Transition `ignore_config_files` doesn't load the config files and transits to state `ConfigFilesLoaded`. This is
   useful for integration tests and hard coded initialization.
 

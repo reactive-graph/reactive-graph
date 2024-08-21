@@ -54,6 +54,7 @@ instances.
 The **Command Line Interface API (CLI)** is part of the standalone executable.
 
 It is possible to use the standalone executable as
+
 * **Server** (GraphQL Server + Runtime)
 * **Client** (CLI)
 
@@ -70,9 +71,9 @@ The components can be used for different use cases:
 * Let your application communicate with a (remote) runtime
 * Integration tests
 
-### Command Line Interface `inexor_rgf_rt_standalone`
+### Command Line Interface `reactive-graph`
 
-The standalone executable can act as CLI. The CLI can connect to any **Inexor GraphQL Server** (local or remote). You
+The executable can act as CLI. The CLI can connect to any **Reactive Graph GraphQL Server** (local or remote). You
 can specify to hostname and port of the GraphQL server to connect to.
 
 ```mermaid
