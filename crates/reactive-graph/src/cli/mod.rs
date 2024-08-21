@@ -12,6 +12,7 @@ pub(crate) mod args;
 pub(crate) mod commands;
 pub(crate) mod error;
 pub(crate) mod handler;
+pub(crate) mod instances;
 pub(crate) mod output_format;
 pub(crate) mod repl;
 pub(crate) mod result;

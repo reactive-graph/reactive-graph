@@ -116,8 +116,6 @@ impl From<PropertyTypes> for reactive_graph_graph::PropertyTypes {
 
 impl fmt::Display for PropertyTypes {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        // let x = Table::new(&self.0).to_string();
-        // writeln!(f, "{}", Table::new(self.0.clone()).to_string())
         writeln!(f)
     }
 }

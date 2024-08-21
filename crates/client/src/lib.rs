@@ -7,11 +7,11 @@ pub use client::InexorRgfClient;
 pub use client::InexorRgfClientError;
 pub use client::InexorRgfClientExecutionError;
 
+pub use schema_graphql::instances::property_instance::*;
 pub use schema_graphql::types::component::*;
 pub use schema_graphql::types::data_type::*;
 pub use schema_graphql::types::extension::*;
 pub use schema_graphql::types::mutability::*;
-pub use schema_graphql::types::property_instance::*;
 pub use schema_graphql::types::property_type::*;
 pub use schema_graphql::types::socket_type::*;
 pub use schema_plugin::plugin::*;
