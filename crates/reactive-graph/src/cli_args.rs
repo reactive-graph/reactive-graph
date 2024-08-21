@@ -106,6 +106,10 @@ pub struct CliArguments {
     /// If true, logging is disabled completely.
     #[arg(short = 'q', long, env = "REACTIVE_GRAPH_QUIET")]
     pub(crate) quiet: Option<bool>,
+
+    /// If true, generates command line documentation.
+    #[arg(long, hide = true)]
+    pub(crate) markdown_help: bool,
 }
 
 #[derive(Subcommand, Debug)]
