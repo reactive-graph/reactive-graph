@@ -2,8 +2,8 @@ use crate::table_model::container::TableOptions;
 use crate::table_model::styles::modern_inline::modern_inline;
 use crate::table_model::types::data_type::DataType;
 use crate::table_model::types::extension::Extension;
-use crate::table_model::types::extension::ExtensionDefinition;
-use crate::table_model::types::extension::ExtensionDefinitions;
+// use crate::table_model::types::extension::ExtensionDefinition;
+// use crate::table_model::types::extension::ExtensionDefinitions;
 use crate::table_model::types::extension::Extensions;
 use crate::table_model::types::mutability::Mutability;
 use crate::table_model::types::socket_type::SocketType;
@@ -16,62 +16,62 @@ use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
-pub struct PropertyTypeDefinition {
-    pub data_type: DataType,
-    pub description: String,
-    pub extensions: Vec<ExtensionDefinition>,
-    pub mutability: Mutability,
-    pub name: String,
-    pub socket_type: SocketType,
-}
-
-impl From<reactive_graph_graph::PropertyType> for PropertyTypeDefinition {
-    fn from(property_type: reactive_graph_graph::PropertyType) -> Self {
-        let extensions: ExtensionDefinitions = property_type.extensions.into();
-        PropertyTypeDefinition {
-            name: property_type.name,
-            description: property_type.description,
-            data_type: property_type.data_type.into(),
-            socket_type: property_type.socket_type.into(),
-            mutability: property_type.mutability.into(),
-            extensions: extensions.0,
-        }
-    }
-}
-
-pub struct PropertyTypeDefinitions(pub Vec<PropertyTypeDefinition>);
-
-impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
-    fn from(property_types: PropertyTypeDefinitions) -> Self {
-        property_types.0.into_iter().collect()
-    }
-}
-
-impl From<Vec<reactive_graph_graph::PropertyType>> for PropertyTypeDefinitions {
-    fn from(property_types: Vec<reactive_graph_graph::PropertyType>) -> Self {
-        PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
-    }
-}
+// pub struct PropertyTypeDefinition {
+//     pub data_type: DataType,
+//     pub description: String,
+//     pub extensions: Vec<ExtensionDefinition>,
+//     pub mutability: Mutability,
+//     pub name: String,
+//     pub socket_type: SocketType,
+// }
+//
+// impl From<reactive_graph_graph::PropertyType> for PropertyTypeDefinition {
+//     fn from(property_type: reactive_graph_graph::PropertyType) -> Self {
+//         let extensions: ExtensionDefinitions = property_type.extensions.into();
+//         PropertyTypeDefinition {
+//             name: property_type.name,
+//             description: property_type.description,
+//             data_type: property_type.data_type.into(),
+//             socket_type: property_type.socket_type.into(),
+//             mutability: property_type.mutability.into(),
+//             extensions: extensions.0,
+//         }
+//     }
+// }
+//
+// pub struct PropertyTypeDefinitions(pub Vec<PropertyTypeDefinition>);
+//
+// impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
+//     fn from(property_types: PropertyTypeDefinitions) -> Self {
+//         property_types.0.into_iter().collect()
+//     }
+// }
+//
+// impl From<Vec<reactive_graph_graph::PropertyType>> for PropertyTypeDefinitions {
+//     fn from(property_types: Vec<reactive_graph_graph::PropertyType>) -> Self {
+//         PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
+//     }
+// }
 
 #[derive(Clone, Debug, Tabled)]
 pub struct PropertyType {
-    /// The name of the extension.
+    /// The name of the property.
     pub name: String,
 
-    /// Textual description of the extension.
+    /// Textual description of the property.
     #[tabled(skip)]
     pub description: String,
 
-    /// The extension as JSON representation.
+    /// Specifies the data type of the property.
     pub data_type: DataType,
 
-    /// Specifies the type of socket - either input socket or output socket or none
+    /// Specifies the type of socket - either input socket or output socket or none.
     pub socket_type: SocketType,
 
     /// Specifies if the property is mutable.
     pub mutability: Mutability,
 
-    /// Property specific extensions
+    /// Property specific extensions.
     #[tabled(display_with("display_extensions"))]
     #[tabled(skip)]
     pub extensions: Vec<Extension>,

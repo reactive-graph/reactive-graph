@@ -1,3 +1,4 @@
+pub mod instances;
 pub mod scalar;
 pub mod system;
 pub mod types;

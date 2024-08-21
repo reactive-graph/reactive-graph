@@ -10,11 +10,13 @@ use reqwest::header::InvalidHeaderValue;
 use reqwest::Client;
 use reqwest::Error;
 
+use crate::client::instances::Instances;
 use crate::client::plugin::api::Plugins;
 use crate::client::runtime::Runtime;
 use crate::client::types::Types;
 use reactive_graph_remotes_model::InstanceAddress;
 
+pub mod instances;
 pub mod plugin;
 pub mod runtime;
 pub mod types;
@@ -120,6 +122,10 @@ impl InexorRgfClient {
 
     pub fn types(self: &Arc<Self>) -> Types {
         Types::new(self.clone())
+    }
+
+    pub fn instances(self: &Arc<Self>) -> Instances {
+        Instances::new(self.clone())
     }
 
     pub fn runtime(self: &Arc<Self>) -> Runtime {
