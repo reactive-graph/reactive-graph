@@ -185,20 +185,20 @@ You can install the binary packages manually:
 1. Download the binary from https://github.com/reactive-graph/reactive-graph/releases
 
     ```shell
-    wget https://github.com/reactive-graph/reactive-graph/releases/download/v{version}/inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
+    wget https://github.com/reactive-graph/reactive-graph/releases/download/v{version}/reactive-graph-x86_64-unknown-linux-gnu.tar.gz
     ```
 
 2. Extract the binary
 
     ```shell
-    tar xvf inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu.tar.gz
+    tar xvf reactive-graph-x86_64-unknown-linux-gnu.tar.gz
     ```
 
 3. Start the binary
 
     ```shell
-    cd inexor-rgf-rt-standalone-x86_64-unknown-linux-gnu
-    ./inexor-rgf-rt-standalone
+    cd reactive-graph-x86_64-unknown-linux-gnu
+    ./reactive-graph
     ```
 
 ### From Source
@@ -218,7 +218,7 @@ We plan to provide an installer for windows.
 1. Download the latest binary from https://github.com/reactive-graph/reactive-graph/releases
 2. Unzip the archive
 3. Change into the directory
-4. Execute `inexor-rgf-rt-standalone.exe`
+4. Execute `reactive-graph.exe`
 
 ### From Source
 
@@ -231,7 +231,7 @@ Please follow the [Build Instructions](./Development_Build.md).
 1. Download the latest binary from https://github.com/reactive-graph/reactive-graph/releases
 2. Extract the archive
 3. Change into the directory
-4. Execute `inexor-rgf-rt-standalone`
+4. Execute `reactive-graph`
 
 ### From Source
 

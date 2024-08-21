@@ -159,7 +159,7 @@ jobs:
           target: ${{ matrix.target }}
       - name: Create Debian Package
         run: |
-          cd ./crates/standalone
+          cd ./crates/reactive-graph
           cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-version ${{steps.tag.outputs.tag}}
         env:
           VERGEN_IDEMPOTENT: true

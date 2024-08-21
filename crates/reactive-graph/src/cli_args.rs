@@ -6,7 +6,7 @@ use crate::cli::args::ClientArgs;
 
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
-#[command(name = "inexor-rgf-rt-standalone", author, version, about, long_about = None)]
+#[command(name = "reactive-graph", author, version, about, long_about = None)]
 #[command(propagate_version = true)]
 pub struct CliArguments {
     #[command(subcommand)]
