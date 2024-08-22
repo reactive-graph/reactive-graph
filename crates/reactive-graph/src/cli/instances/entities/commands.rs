@@ -1,4 +1,5 @@
 use crate::cli::instances::entities::args::id::IdArgs;
+use crate::cli::instances::entities::args::label::LabelArgs;
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug, Clone)]
@@ -9,6 +10,9 @@ pub(crate) enum EntityInstancesCommands {
     /// Prints a single entity instance.
     #[non_exhaustive]
     Get(IdArgs),
+    /// Prints a single entity instance.
+    #[non_exhaustive]
+    GetByLabel(LabelArgs),
     // /// List the properties of an entity type.
     // #[non_exhaustive]
     // ListProperties(EntityTypeIdArgs),

@@ -9,6 +9,7 @@ use clap::Args;
 // pub mod entity_extension_type;
 // pub mod entity_type_property;
 pub mod id;
+pub mod label;
 // pub mod update_description;
 
 #[derive(Args, Debug, Clone)]
