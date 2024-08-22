@@ -1,6 +1,5 @@
 use crate::table_model::container::TableOptions;
 use crate::table_model::styles::modern_inline::modern_inline;
-use crate::table_model::types::property_type::PropertyType;
 use serde_json::Value;
 use std::fmt;
 use std::fmt::Formatter;

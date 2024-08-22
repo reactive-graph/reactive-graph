@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use crate::client::instances::entities::get_all::queries::get_all_entity_instances_query;
 use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
+use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use cynic::http::ReqwestExt;
@@ -38,6 +39,21 @@ impl EntityInstances {
             .client
             .post(self.client.url_graphql())
             .run_graphql(get_entity_instance_by_id(id))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.instances.entities.first().cloned())
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn get_entity_instance_by_label<L: Into<String>>(&self, label: L) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let label = label.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(get_entity_instance_by_label(label))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data

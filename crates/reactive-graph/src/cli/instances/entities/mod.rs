@@ -27,5 +27,10 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        EntityInstancesCommands::GetByLabel(args) => match client.instances().entity_instances().get_entity_instance_by_label(args.label.clone()).await {
+            Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
     }
 }

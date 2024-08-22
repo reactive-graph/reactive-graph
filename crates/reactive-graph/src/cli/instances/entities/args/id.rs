@@ -3,16 +3,16 @@ use crate::cli::error::CommandError::NotFound;
 use clap::Args;
 use uuid::Uuid;
 
-/// The entity type.
+/// CLI argument which identifies a reactive instance by its id.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct IdArgs {
-    /// The id of the entity instance.
+    /// The id of the reactive instance.
     pub id: Uuid,
 }
 
 impl IdArgs {
     pub fn not_found(&self) -> CommandError {
-        NotFound(format!("EntityInstance {} not found", &self.id))
+        NotFound(format!("The instance with the id {} was not found", &self.id))
     }
 }
 
