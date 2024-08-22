@@ -1,6 +1,6 @@
 use crate::schema_graphql::instances::property_instance::PropertyInstance;
 use crate::schema_graphql::scalar::UUID;
-use crate::schema_graphql::types::component::Component;
+// use crate::schema_graphql::types::component::Component;
 use crate::schema_graphql::types::entity_type::EntityType;
 use crate::PropertyInstances;
 use reactive_graph_graph::EntityTypeId;
@@ -14,7 +14,7 @@ pub struct EntityInstance {
     id: UUID,
     description: String,
     properties: Vec<PropertyInstance>,
-    components: Vec<Component>,
+    // components: Vec<Component>,
 }
 
 impl EntityInstance {

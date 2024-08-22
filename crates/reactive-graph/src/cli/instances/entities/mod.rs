@@ -32,5 +32,11 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        EntityInstancesCommands::Delete(args) => match client.instances().entity_instances().delete_entity_instance(args.id).await {
+            Ok(Some(true)) => Ok(format!("Entity instance {} deleted", args.id).into()),
+            Ok(Some(false)) => Ok(format!("Entity instance {} not deleted", args.id).into()),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
     }
 }

@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
 use crate::client::instances::entities::get_all::queries::get_all_entity_instances_query;
 use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
@@ -58,6 +59,21 @@ impl EntityInstances {
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.entities.first().cloned())
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn delete_entity_instance<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<bool>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(delete_entity_instance_mutation(id))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.delete)
             .map(From::from);
         Ok(entity_instance)
     }

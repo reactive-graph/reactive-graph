@@ -3,10 +3,7 @@ use crate::table_model::styles::modern_inline::modern_inline;
 use serde_json::Value;
 use std::fmt;
 use std::fmt::Formatter;
-use tabled::settings::object::Columns;
-use tabled::settings::Modify;
 use tabled::settings::Style;
-use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
@@ -24,13 +21,7 @@ pub fn display_property_instances_inline(property_instances: &Vec<PropertyInstan
         return String::from("No properties");
     }
 
-    Table::new(property_instances)
-        .with(modern_inline())
-        // .with(Modify::new(Columns::new(0..1)).with(Width::increase(35)))
-        // .with(Modify::new(Columns::new(1..2)).with(Width::increase(9)))
-        // .with(Modify::new(Columns::new(2..3)).with(Width::increase(11)))
-        // .with(Modify::new(Columns::new(3..4)).with(Width::increase(10)))
-        .to_string()
+    Table::new(property_instances).with(modern_inline()).to_string()
 }
 
 #[derive(Clone, Debug)]

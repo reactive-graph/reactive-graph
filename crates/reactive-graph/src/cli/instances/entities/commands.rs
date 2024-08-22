@@ -25,9 +25,9 @@ pub(crate) enum EntityInstancesCommands {
     // /// Creates a new entity type.
     // #[non_exhaustive]
     // Create(CreateEntityTypeArgs),
-    // /// Deletes a entity type.
-    // #[non_exhaustive]
-    // Delete(EntityTypeIdArgs),
+    /// Deletes an entity instance.
+    #[non_exhaustive]
+    Delete(IdArgs),
     // /// Adds a property to an entity type.
     // #[non_exhaustive]
     // AddProperty(EntityTypeAddPropertyArgs),
