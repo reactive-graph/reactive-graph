@@ -3,7 +3,9 @@ use crate::cli::error::CommandError::NoContent;
 use crate::cli::instances::entities::args::EntityInstancesArgs;
 use crate::cli::instances::entities::commands::EntityInstancesCommands;
 use crate::cli::instances::entities::output_format::EntityInstancesOutputFormatWrapper;
+use crate::cli::instances::properties::output_format::PropertyInstancesOutputFormatWrapper;
 use crate::cli::result::CommandResult;
+use crate::table_model::instances::properties::PropertyInstance;
 use reactive_graph_client::InexorRgfClient;
 use std::sync::Arc;
 
@@ -29,6 +31,19 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
         },
         EntityInstancesCommands::GetByLabel(args) => match client.instances().entity_instances().get_entity_instance_by_label(args.label.clone()).await {
             Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityInstancesCommands::ListProperties(args) => match client.instances().entity_instances().get_entity_instance_by_id(args.clone()).await {
+            Ok(Some(entity_instance)) => {
+                let output_format_wrapper: PropertyInstancesOutputFormatWrapper = entity_instances_args.output_format.into();
+                let property_instances = entity_instance
+                    .properties
+                    .iter()
+                    .map(|property_instance| PropertyInstance::new(property_instance.key().clone(), property_instance.value().clone()))
+                    .collect();
+                output_format_wrapper.collection(property_instances)
+            }
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },

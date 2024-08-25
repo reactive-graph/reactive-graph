@@ -1,5 +1,6 @@
 use crate::table_model::container::TableOptions;
 use crate::table_model::styles::modern_inline::modern_inline;
+use serde::Serialize;
 use serde_json::Value;
 use std::fmt;
 use std::fmt::Formatter;
@@ -7,13 +8,19 @@ use tabled::settings::Style;
 use tabled::Table;
 use tabled::Tabled;
 
-#[derive(Clone, Debug, Tabled)]
+#[derive(Clone, Debug, Serialize, Tabled)]
 pub struct PropertyInstance {
     /// The name of the property.
     pub name: String,
 
     /// The value of the property
     pub value: Value,
+}
+
+impl PropertyInstance {
+    pub fn new(name: String, value: Value) -> Self {
+        Self { name, value }
+    }
 }
 
 pub fn display_property_instances_inline(property_instances: &Vec<PropertyInstance>) -> String {
