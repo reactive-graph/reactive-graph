@@ -13,6 +13,9 @@ pub(crate) enum EntityInstancesCommands {
     /// Prints a single entity instance.
     #[non_exhaustive]
     GetByLabel(LabelArgs),
+    /// Lists the properties of an entity instance.
+    #[non_exhaustive]
+    ListProperties(IdArgs),
     // /// List the properties of an entity type.
     // #[non_exhaustive]
     // ListProperties(EntityTypeIdArgs),
