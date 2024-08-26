@@ -1,5 +1,6 @@
 use clap::Args;
 use serde_json::Value;
+use std::error::Error;
 use std::str::FromStr;
 
 /// The property type.
@@ -26,4 +27,12 @@ impl FromStr for PropertyInstanceArgs {
         let property_value = property_value.parse::<Value>().map_err(|_| ())?;
         Ok(PropertyInstanceArgs::new(property_name.to_string(), property_value))
     }
+}
+
+pub fn parse_property(s: &str) -> Result<(String, Value), Box<dyn Error + Send + Sync + 'static>> {
+    let pos = s.find('=').ok_or_else(|| format!("invalid KEY=value: no `=` found in `{s}`"))?;
+    let key = s[..pos].parse()?;
+    let value = s[pos + 1..].to_string();
+    let value = Value::from_str(&value)?;
+    Ok((key, value))
 }

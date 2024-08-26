@@ -6,6 +6,7 @@ pub mod create;
 pub mod id;
 pub mod id_and_property;
 pub mod label;
+pub mod search;
 pub mod set_property;
 
 #[derive(Args, Debug, Clone)]

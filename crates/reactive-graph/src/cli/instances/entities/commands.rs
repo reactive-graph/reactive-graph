@@ -2,6 +2,7 @@ use crate::cli::instances::entities::args::create::CreateEntityInstanceArgs;
 use crate::cli::instances::entities::args::id::IdArgs;
 use crate::cli::instances::entities::args::id_and_property::IdAndPropertyArgs;
 use crate::cli::instances::entities::args::label::LabelArgs;
+use crate::cli::instances::entities::args::search::SearchEntityInstancesArgs;
 use crate::cli::instances::entities::args::set_property::SetPropertyArgs;
 use clap::Subcommand;
 
@@ -9,7 +10,7 @@ use clap::Subcommand;
 pub(crate) enum EntityInstancesCommands {
     /// List all entity instances.
     #[non_exhaustive]
-    List,
+    List(SearchEntityInstancesArgs),
     /// Prints a single entity instance.
     #[non_exhaustive]
     Get(IdArgs),

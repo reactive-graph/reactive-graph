@@ -52,3 +52,24 @@ pub(crate) struct InboundEntityTypeIdArgs {
     /// The inbound entity type name.
     pub inbound_type_name: String,
 }
+
+/// The entity type.
+#[derive(Args, Debug, Clone)]
+pub(crate) struct EntityTypeIdOptions {
+    /// The entity type namespace.
+    #[clap(long)]
+    pub namespace: Option<String>,
+
+    /// The entity type name.
+    #[clap(short, long)]
+    pub name: Option<String>,
+}
+
+impl From<EntityTypeIdOptions> for Option<EntityTypeId> {
+    fn from(ty: EntityTypeIdOptions) -> Self {
+        if ty.namespace.is_none() && ty.name.is_none() {
+            return None;
+        }
+        Some(EntityTypeId::new_from_type(ty.namespace.unwrap_or_default(), ty.name.unwrap_or_default()))
+    }
+}

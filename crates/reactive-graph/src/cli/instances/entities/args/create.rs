@@ -1,9 +1,8 @@
+use crate::cli::instances::properties::args::parse_property;
 use crate::cli::types::entities::args::type_id::EntityTypeIdArgs;
 use clap::Args;
 use reactive_graph_graph::PropertyInstances;
 use serde_json::Value;
-use std::error::Error;
-use std::str::FromStr;
 use uuid::Uuid;
 
 #[derive(Args, Debug, Clone)]
@@ -32,12 +31,4 @@ impl CreateEntityInstanceArgs {
             Some(properties) => properties.into_iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
         }
     }
-}
-
-pub fn parse_property(s: &str) -> Result<(String, Value), Box<dyn Error + Send + Sync + 'static>> {
-    let pos = s.find('=').ok_or_else(|| format!("invalid KEY=value: no `=` found in `{s}`"))?;
-    let key = s[..pos].parse()?;
-    let value = s[pos + 1..].to_string();
-    let value = Value::from_str(&value)?;
-    Ok((key, value))
 }

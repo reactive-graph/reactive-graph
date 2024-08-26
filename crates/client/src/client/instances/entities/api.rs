@@ -2,9 +2,10 @@ use std::sync::Arc;
 
 use crate::client::instances::entities::create::queries::create;
 use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
-use crate::client::instances::entities::get_all::queries::get_all_entity_instances_query;
 use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
+use crate::client::instances::entities::search::queries::search;
+use crate::client::instances::entities::search::queries::SearchEntityInstancesVariables;
 use crate::client::instances::entities::set_property::queries::set_property;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
@@ -24,12 +25,12 @@ impl EntityInstances {
         Self { client }
     }
 
-    pub async fn get_all_entity_instances(&self) -> Result<Option<Vec<EntityInstance>>, InexorRgfClientExecutionError> {
+    pub async fn search(&self, search_query: SearchEntityInstancesVariables) -> Result<Option<Vec<EntityInstance>>, InexorRgfClientExecutionError> {
         let entity_instances = self
             .client
             .client
             .post(self.client.url_graphql())
-            .run_graphql(get_all_entity_instances_query())
+            .run_graphql(search(search_query))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data

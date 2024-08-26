@@ -20,7 +20,7 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
         return Err(CommandError::MissingSubCommand);
     };
     match command {
-        EntityInstancesCommands::List => match client.instances().entity_instances().get_all_entity_instances().await {
+        EntityInstancesCommands::List(args) => match client.instances().entity_instances().search((&args).into()).await {
             Ok(Some(entity_instances)) => output_format_wrapper.collection(entity_instances),
             Ok(None) => Err(NoContent("No entity instances found".to_string())),
             Err(e) => Err(e.into()),
