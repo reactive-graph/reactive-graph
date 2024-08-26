@@ -1,5 +1,5 @@
 use crate::schema_graphql::scalar::Json;
-use crate::schema_graphql::types::property_type::PropertyType;
+use crate::PropertyType;
 use std::fmt;
 use std::fmt::Formatter;
 

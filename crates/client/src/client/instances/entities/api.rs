@@ -1,13 +1,18 @@
 use std::sync::Arc;
 
+use crate::client::instances::entities::create::queries::create;
 use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
 use crate::client::instances::entities::get_all::queries::get_all_entity_instances_query;
 use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
+use crate::client::instances::entities::set_property::queries::set_property;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::EntityInstance;
+use reactive_graph_graph::EntityTypeId;
+use reactive_graph_graph::PropertyInstances;
+use serde_json::Value;
 use uuid::Uuid;
 
 pub struct EntityInstances {
@@ -59,6 +64,43 @@ impl EntityInstances {
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.entities.first().cloned())
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn set_property<ID: Into<Uuid>>(&self, id: ID, name: String, value: Value) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(set_property(id, name, value))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.update)
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn create<TY: Into<EntityTypeId>, ID: Into<Uuid>>(
+        &self,
+        ty: TY,
+        id: Option<ID>,
+        description: Option<String>,
+        properties: PropertyInstances,
+    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let ty = ty.into();
+        let id = id.map(|id| id.into());
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(create(ty, id, description, properties))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.create)
             .map(From::from);
         Ok(entity_instance)
     }

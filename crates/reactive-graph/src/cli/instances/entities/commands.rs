@@ -1,5 +1,8 @@
+use crate::cli::instances::entities::args::create::CreateEntityInstanceArgs;
 use crate::cli::instances::entities::args::id::IdArgs;
+use crate::cli::instances::entities::args::id_and_property::IdAndPropertyArgs;
 use crate::cli::instances::entities::args::label::LabelArgs;
+use crate::cli::instances::entities::args::set_property::SetPropertyArgs;
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug, Clone)]
@@ -16,40 +19,16 @@ pub(crate) enum EntityInstancesCommands {
     /// Lists the properties of an entity instance.
     #[non_exhaustive]
     ListProperties(IdArgs),
-    // /// List the properties of an entity type.
-    // #[non_exhaustive]
-    // ListProperties(EntityTypeIdArgs),
-    // /// List the extensions of an entity type.
-    // #[non_exhaustive]
-    // ListExtensions(EntityTypeIdArgs),
-    // /// List the components of an entity type.
-    // #[non_exhaustive]
-    // ListComponents(EntityTypeIdArgs),
-    // /// Creates a new entity type.
-    // #[non_exhaustive]
-    // Create(CreateEntityTypeArgs),
-    /// Deletes an entity instance.
+    /// Prints the value of a property of an entity instance.
+    #[non_exhaustive]
+    GetProperty(IdAndPropertyArgs),
+    /// Sets the value of a property of an entity instance.
+    #[non_exhaustive]
+    SetProperty(SetPropertyArgs),
+    /// Creates a new entity type.
+    #[non_exhaustive]
+    Create(CreateEntityInstanceArgs),
+    // Deletes an entity instance.
     #[non_exhaustive]
     Delete(IdArgs),
-    // /// Adds a property to an entity type.
-    // #[non_exhaustive]
-    // AddProperty(EntityTypeAddPropertyArgs),
-    // /// Removes a property from an entity type.
-    // #[non_exhaustive]
-    // RemoveProperty(EntityTypePropertyArgs),
-    // /// Adds an extension to an entity type.
-    // #[non_exhaustive]
-    // AddExtension(EntityTypeAddExtensionArgs),
-    // /// Removes an extension from an entity type.
-    // #[non_exhaustive]
-    // RemoveExtension(EntityExtensionTypeIdArgs),
-    // /// Adds a component to an entity type.
-    // #[non_exhaustive]
-    // AddComponent(EntityComponentTypeIdArgs),
-    // /// Removes a component from an entity type.
-    // #[non_exhaustive]
-    // RemoveComponent(EntityComponentTypeIdArgs),
-    // /// Updates the description of an entity type.
-    // #[non_exhaustive]
-    // UpdateDescription(EntityTypeUpdateDescriptionArgs),
 }
