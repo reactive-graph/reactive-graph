@@ -2,15 +2,11 @@ use crate::cli::instances::entities::commands::EntityInstancesCommands;
 use crate::cli::output_format::OutputFormatArgs;
 use clap::Args;
 
-// pub mod add_extension;
-// pub mod add_property;
-// pub mod create;
-// pub mod entity_component_type;
-// pub mod entity_extension_type;
-// pub mod entity_type_property;
+pub mod create;
 pub mod id;
+pub mod id_and_property;
 pub mod label;
-// pub mod update_description;
+pub mod set_property;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]

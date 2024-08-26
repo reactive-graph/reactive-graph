@@ -3,8 +3,7 @@ use crate::InexorRgfClient;
 use std::sync::Arc;
 
 pub mod entities;
-pub mod label;
-pub mod uuid;
+pub mod variables;
 
 pub struct Instances {
     client: Arc<InexorRgfClient>,

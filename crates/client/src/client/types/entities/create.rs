@@ -24,7 +24,7 @@ pub mod queries {
         pub extensions: Option<Vec<ExtensionDefinition>>,
     }
 
-    #[derive(cynic::QueryFragment, Debug)]
+    #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "CreateEntityTypeVariables")]
     pub struct CreateEntityType {
         pub types: MutationTypes,

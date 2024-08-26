@@ -8,6 +8,7 @@ use uuid::Uuid;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_service_api::EntityBehaviourManager;
 use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
+use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::PropertyInstanceSetter;
 use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_reactive_model_api::ReactiveInstance;
@@ -44,6 +45,7 @@ impl MutationEntityInstances {
         context: &Context<'_>,
         #[graphql(name = "type", desc = "The entity type")] entity_ty: EntityTypeIdDefinition,
         #[graphql(desc = "The id of the entity instance. If none is given a random uuid will be generated.")] id: Option<Uuid>,
+        #[graphql(desc = "Description of the entity instance.")] description: Option<String>,
         #[graphql(desc = "Creates the entity instance with the given components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
@@ -57,10 +59,13 @@ impl MutationEntityInstances {
 
         let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.properties);
 
-        let entity_instance = match id {
-            Some(id) => entity_instance_manager.create_with_id(&entity_ty, id, properties),
-            None => entity_instance_manager.create_reactive_entity(&entity_ty, properties),
-        };
+        let entity_instance = EntityInstance::builder()
+            .ty(&entity_ty)
+            .id(id.unwrap_or(Uuid::new_v4()))
+            .description(description.unwrap_or_default())
+            .properties(properties)
+            .build();
+        let entity_instance = entity_instance_manager.create_reactive_instance(entity_instance);
         match entity_instance {
             Ok(entity_instance) => {
                 if let Some(components) = components {

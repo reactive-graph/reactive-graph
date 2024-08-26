@@ -1,7 +1,7 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
-    use crate::client::instances::uuid::queries::UuidVariables;
-    use crate::client::instances::uuid::queries::UuidVariablesFields;
+    use crate::client::instances::variables::uuid::queries::UuidVariables;
+    use crate::client::instances::variables::uuid::queries::UuidVariablesFields;
     use cynic::Operation;
     use cynic::QueryFragment;
     use uuid::Uuid;
@@ -29,9 +29,4 @@ pub mod queries {
         use cynic::MutationBuilder;
         DeleteEntityInstance::build(id.into())
     }
-
-    // pub fn delete_entity_instance_with_variables(variables: UuidVariables) -> Operation<DeleteEntityInstance, UuidVariables> {
-    //     use cynic::MutationBuilder;
-    //     DeleteEntityInstance::build(variables)
-    // }
 }

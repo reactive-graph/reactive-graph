@@ -451,6 +451,8 @@ type MutationEntityInstances {
   create(
     "Creates the entity instance with the given components."
     components: [ComponentTypeId!],
+    "Description of the entity instance."
+    description: String,
     "The id of the entity instance. If none is given a random uuid will be generated."
     id: UUID,
     properties: [PropertyInstanceDefinition!],
