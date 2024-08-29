@@ -1,5 +1,6 @@
 use crate::cli::error::CommandError;
 use crate::cli::error::CommandError::NotFound;
+use crate::cli::instances::properties::args::parse_json;
 use clap::Args;
 use serde_json::Value;
 use uuid::Uuid;
@@ -13,7 +14,10 @@ pub(crate) struct SetPropertyArgs {
     /// The name of the property.
     pub name: String,
 
-    /// The new value of the property.
+    /// The new JSON value of the property.
+    ///
+    /// 'true' is boolean true, '"true"' is the string "true"
+    #[clap(value_parser = parse_json)]
     pub value: Value,
 }
 
