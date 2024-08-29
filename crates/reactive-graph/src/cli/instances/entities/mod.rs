@@ -5,6 +5,7 @@ use crate::cli::instances::entities::commands::EntityInstancesCommands;
 use crate::cli::instances::entities::output_format::EntityInstancesOutputFormatWrapper;
 use crate::cli::instances::properties::output_format::PropertyInstancesOutputFormatWrapper;
 use crate::cli::result::CommandResult;
+use crate::cli::types::components::output_format::ComponentTypeIdsOutputFormatWrapper;
 use crate::table_model::instances::properties::PropertyInstance;
 use reactive_graph_client::InexorRgfClient;
 use reactive_graph_graph::PropertyInstanceGetter;
@@ -61,6 +62,15 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
         {
             Ok(Some(entity_instance)) => Ok(entity_instance.get(args.name.clone()).ok_or(args.property_not_found())?.into()),
             Ok(None) => Err(args.id_not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityInstancesCommands::ListComponents(args) => match client.instances().entity_instances().get_entity_instance_by_id(args.clone()).await {
+            Ok(Some(entity_instance)) => {
+                let output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = entity_instances_args.output_format.into();
+                let component_tys = entity_instance.components.iter().map(|ty| ty.clone().into()).collect();
+                output_format_wrapper.collection(component_tys)
+            }
+            Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
         EntityInstancesCommands::Create(args) => match client

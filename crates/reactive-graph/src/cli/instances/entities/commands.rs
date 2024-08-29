@@ -26,6 +26,9 @@ pub(crate) enum EntityInstancesCommands {
     /// Sets the value of a property of an entity instance.
     #[non_exhaustive]
     SetProperty(SetPropertyArgs),
+    /// Lists the components of an entity instance.
+    #[non_exhaustive]
+    ListComponents(IdArgs),
     /// Creates a new entity type.
     #[non_exhaustive]
     Create(CreateEntityInstanceArgs),
