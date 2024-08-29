@@ -53,7 +53,7 @@ pub(crate) struct InboundEntityTypeIdArgs {
     pub inbound_type_name: String,
 }
 
-/// The entity type.
+/// The entity type as option.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct EntityTypeIdOptions {
     /// The entity type namespace.
