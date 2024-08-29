@@ -313,6 +313,7 @@ impl From<ReactiveEntity> for EntityInstance {
             id: entity.id,
             description: entity.description.clone(),
             properties: PropertyInstances::from(&entity.properties),
+            components: entity.components.clone(),
             extensions: Extensions::new(),
         }
     }
@@ -325,6 +326,7 @@ impl From<&ReactiveEntity> for EntityInstance {
             id: entity.id,
             description: entity.description.clone(),
             properties: PropertyInstances::from(&entity.properties),
+            components: entity.components.clone(),
             extensions: Extensions::new(),
         }
     }

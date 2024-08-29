@@ -7,6 +7,7 @@ pub mod queries {
 
     use crate::schema_graphql::instances::entity_instance::EntityInstance;
     use crate::schema_graphql::scalar::UUID;
+    use crate::schema_graphql::types::component::ComponentTypeId;
     use crate::schema_graphql::types::entity_type::EntityTypeId;
     use crate::PropertyInstanceDefinition;
 
@@ -21,11 +22,13 @@ pub mod queries {
         /// Returns the entity instance with the given label.
         #[builder(default)]
         pub label: Option<String>,
-        /// Query by properties.
+        /// Filter by properties.
         #[builder(default)]
         pub properties: Option<Vec<PropertyInstanceDefinition>>,
+        /// Filter by components.
+        #[builder(default)]
+        pub components: Option<Vec<ComponentTypeId>>,
         // TODO: search for behaviours
-        // TODO: search for components
     }
 
     #[derive(QueryFragment, Debug)]
@@ -37,15 +40,13 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(graphql_type = "Instances", variables = "SearchEntityInstancesVariables")]
     pub struct SearchEntityInstancesInstances {
-        #[arguments(type: $ty, id: $id, label: $label, properties: $properties
+        #[arguments(type: $ty, id: $id, label: $label, properties: $properties, components: $components
         )]
         pub entities: Vec<EntityInstance>,
     }
 
     pub fn search(vars: SearchEntityInstancesVariables) -> Operation<SearchEntityInstances, SearchEntityInstancesVariables> {
         use cynic::QueryBuilder;
-        // let ty = reactive_graph_graph::EntityTypeId::new_from_type("test", "test_toml");
-        // let vars = SearchEntityInstanceVariables::builder().ty(Some(ty.into())).build();
         SearchEntityInstances::build(vars)
     }
 }
