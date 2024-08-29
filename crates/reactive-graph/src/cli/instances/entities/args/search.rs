@@ -1,8 +1,11 @@
 use crate::cli::instances::properties::args::parse_property;
+use crate::cli::types::components::args::parse_component_ty;
 use crate::cli::types::entities::args::type_id::EntityTypeIdOptions;
 use clap::Args;
 use reactive_graph_client::client::instances::entities::search::queries::SearchEntityInstancesVariables;
+use reactive_graph_client::ComponentTypeIds;
 use reactive_graph_client::PropertyInstanceDefinitions;
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstances;
 use serde_json::Value;
 use uuid::Uuid;
@@ -25,6 +28,10 @@ pub(crate) struct SearchEntityInstancesArgs {
     /// The properties to search for.
     #[clap(short, long, value_parser = parse_property)]
     pub properties: Option<Vec<(String, Value)>>,
+
+    /// The properties to search for.
+    #[clap(short, long, value_parser = parse_component_ty)]
+    pub components: Option<Vec<ComponentTypeId>>,
 }
 
 impl SearchEntityInstancesArgs {
@@ -34,6 +41,13 @@ impl SearchEntityInstancesArgs {
             Some(properties) => properties.into_iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
         }
     }
+
+    pub fn components(&self) -> ComponentTypeIds {
+        match &self.components {
+            None => ComponentTypeIds::new(),
+            Some(components) => ComponentTypeIds(components.iter().map(|ty| ty.clone().into()).collect()),
+        }
+    }
 }
 
 impl From<&SearchEntityInstancesArgs> for SearchEntityInstancesVariables {
@@ -41,11 +55,14 @@ impl From<&SearchEntityInstancesArgs> for SearchEntityInstancesVariables {
         let ty: Option<reactive_graph_graph::EntityTypeId> = search.ty.clone().into();
         let properties: PropertyInstanceDefinitions = search.properties().into();
         let properties = Some(properties.0);
+        let components: ComponentTypeIds = search.components().into();
+        let components = Some(components.0);
         SearchEntityInstancesVariables::builder()
             .ty(ty.map(From::from))
             .id(search.id.map(From::from))
             .label(search.label.clone())
             .properties(properties)
+            .components(components)
             .build()
     }
 }

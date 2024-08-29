@@ -30,6 +30,7 @@ use uuid::Uuid;
 #[cfg(any(test, feature = "test"))]
 use crate::test_utils::default_from::DefaultFrom;
 use crate::AddExtensionError;
+use crate::ComponentTypeIds;
 #[cfg(any(test, feature = "test"))]
 use crate::EntityType;
 use crate::EntityTypeId;
@@ -73,14 +74,22 @@ pub struct EntityInstance {
 
     /// The properties of then entity instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// <https://docs.serde.rs/serde_json/value/enum.Value.html>
     #[serde(default = "PropertyInstances::new")]
     #[builder(default, setter(into))]
     pub properties: PropertyInstances,
 
+    /// The components of the entity instance.
+    #[serde(default = "ComponentTypeIds::new")]
+    #[builder(default, setter(into))]
+    pub components: ComponentTypeIds,
+
+    //
+    // TODO: behaviours?
+    //
     /// Entity instance specific extensions.
     #[serde(default = "Extensions::new")]
     #[builder(default, setter(into))]
@@ -95,6 +104,7 @@ impl EntityInstance {
             id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -106,18 +116,19 @@ impl EntityInstance {
             id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
 
     /// Constructs a new entity instance with the given type and id but without properties.
     pub fn new_without_properties<T: Into<EntityTypeId>>(ty: T, id: Uuid) -> EntityInstance {
-        // , P: Into<PropertyInstances>
         EntityInstance {
             ty: ty.into(),
             id,
             description: String::new(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }

@@ -2,6 +2,9 @@ use crate::table_model::container::TableOptions;
 use crate::table_model::instances::properties::display_property_instances_inline;
 use crate::table_model::instances::properties::PropertyInstance;
 use crate::table_model::instances::properties::PropertyInstances;
+use crate::table_model::types::component::display_component_type_ids_inline;
+use crate::table_model::types::component::ComponentTypeId;
+use crate::table_model::types::component::ComponentTypeIds;
 use crate::table_model::types::extension::display_extensions_inline;
 use crate::table_model::types::extension::Extension;
 use crate::table_model::types::extension::Extensions;
@@ -32,6 +35,10 @@ pub(crate) struct EntityInstance {
     #[tabled(display_with("display_property_instances_inline"))]
     pub properties: Vec<PropertyInstance>,
 
+    /// The property types.
+    #[tabled(display_with("display_component_type_ids_inline"))]
+    pub components: Vec<ComponentTypeId>,
+
     /// The extensions.
     #[tabled(display_with("display_extensions_inline"))]
     pub extensions: Vec<Extension>,
@@ -45,6 +52,7 @@ impl From<reactive_graph_graph::EntityInstance> for EntityInstance {
             name: entity_instance.type_name(),
             description: entity_instance.description,
             properties: PropertyInstances::from(entity_instance.properties).0,
+            components: ComponentTypeIds::from(entity_instance.components).0,
             extensions: Extensions::from(entity_instance.extensions).0,
         }
     }
