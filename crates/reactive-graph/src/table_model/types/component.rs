@@ -100,3 +100,11 @@ impl TableOptions for ComponentsTableOptions {
         )
     }
 }
+
+pub(crate) struct ComponentTypeIdsTableOptions;
+
+impl TableOptions for ComponentTypeIdsTableOptions {
+    fn options(table: &mut Table) -> &mut Table {
+        table.with(Style::extended())
+    }
+}
