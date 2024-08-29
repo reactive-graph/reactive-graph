@@ -32,6 +32,12 @@ impl From<ComponentTypeId> for reactive_graph_graph::ComponentTypeId {
 #[derive(Clone, Debug)]
 pub struct ComponentTypeIds(pub Vec<ComponentTypeId>);
 
+impl ComponentTypeIds {
+    pub fn new() -> Self {
+        Self(Vec::new())
+    }
+}
+
 impl From<ComponentTypeIds> for reactive_graph_graph::ComponentTypeIds {
     fn from(component_type_ids: ComponentTypeIds) -> Self {
         component_type_ids
