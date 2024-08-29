@@ -76,8 +76,6 @@ pub fn display_component_type_ids_inline(tys: &Vec<ComponentTypeId>) -> String {
         .with(modern_inline())
         .with(Modify::new(Columns::new(0..1)).with(Width::increase(15)))
         .with(Modify::new(Columns::new(1..2)).with(Width::increase(15)))
-        // .with(Modify::new(Columns::new(2..3)).with(Width::increase(11)))
-        // .with(Modify::new(Columns::new(3..4)).with(Width::increase(10)))
         .to_string()
 }
 
