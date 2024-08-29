@@ -48,3 +48,24 @@ impl From<ComponentContainerTypeIdArgs> for ComponentTypeId {
         ComponentTypeId::new_from_type(ty.component_namespace, ty.component_name)
     }
 }
+
+/// The component as option.
+#[derive(Args, Debug, Clone)]
+pub(crate) struct ComponentTypeIdOptions {
+    /// The component namespace.
+    #[clap(long)]
+    pub namespace: Option<String>,
+
+    /// The component name.
+    #[clap(short, long)]
+    pub name: Option<String>,
+}
+
+impl From<ComponentTypeIdOptions> for Option<ComponentTypeId> {
+    fn from(ty: ComponentTypeIdOptions) -> Self {
+        if ty.namespace.is_none() && ty.name.is_none() {
+            return None;
+        }
+        Some(ComponentTypeId::new_from_type(ty.namespace.unwrap_or_default(), ty.name.unwrap_or_default()))
+    }
+}
