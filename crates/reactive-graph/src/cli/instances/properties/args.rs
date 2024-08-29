@@ -36,3 +36,7 @@ pub fn parse_property(s: &str) -> Result<(String, Value), Box<dyn Error + Send +
     let value = Value::from_str(&value)?;
     Ok((key, value))
 }
+
+pub fn parse_json(s: &str) -> Result<Value, Box<dyn Error + Send + Sync + 'static>> {
+    Ok(Value::from_str(&s)?)
+}
