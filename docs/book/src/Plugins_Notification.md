@@ -23,9 +23,9 @@ Create desktop notifications.
 
 ## Repository
 
-| Name                           | Repository                                                                                                                                                     |
-|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-notification | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/notification](https://github.com/reactive-graph/plugins-core/tree/main/plugins/notification) |
+| Name                               | Repository                                                                                                                                                     |
+|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-notification | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/notification](https://github.com/reactive-graph/plugins-core/tree/main/plugins/notification) |
 
 ## Usage
 

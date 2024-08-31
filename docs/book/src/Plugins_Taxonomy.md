@@ -48,9 +48,9 @@ This plugin provides a generic [taxonomy](https://en.wikipedia.org/wiki/Taxonomy
 
 ## Repositories
 
-| Name                       | Repository                                                                                                                                             |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-taxonomy | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy](https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy) |
+| Name                           | Repository                                                                                                                                             |
+|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-taxonomy | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy](https://github.com/reactive-graph/plugins-core/tree/main/plugins/taxonomy) |
 
 ## Usage
 

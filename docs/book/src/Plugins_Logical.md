@@ -75,9 +75,9 @@ This plugin provides logical gates and operations.
 
 ## Repository
 
-| Name                      | Repository                                                                                                                                           |
-|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-logical | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical](https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical) |
+| Name                          | Repository                                                                                                                                           |
+|-------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-logical | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical](https://github.com/reactive-graph/plugins-core/tree/main/plugins/logical) |
 
 ## Usage
 

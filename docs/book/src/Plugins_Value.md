@@ -37,9 +37,9 @@ This plugin provides value components. Value components contains a single proper
 
 ## Repositories
 
-| Name                    | Repository                                                                                                                                       |
-|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-value | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/value](https://github.com/reactive-graph/plugins-core/tree/main/plugins/value) |
+| Name                        | Repository                                                                                                                                       |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-value | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/value](https://github.com/reactive-graph/plugins-core/tree/main/plugins/value) |
 
 ## See also
 

@@ -16,8 +16,8 @@ You can disable specific plugins
 
 ```toml
 disabled_plugins = [
-    "inexor-rgf-plugin-arithmetic",
-    "inexor-rgf-plugin-numeric"
+    "reactive-graph-plugin-arithmetic",
+    "reactive-graph-plugin-numeric"
 ]
 ```
 
@@ -33,12 +33,12 @@ You can enable specific plugins. This take precedence over `disabled_plugins` (w
 
 ```toml
 enabled_plugins = [
-    "inexor-rgf-plugin-base",
-    "inexor-rgf-plugin-trigger",
-    "inexor-rgf-plugin-result",
-    "inexor-rgf-plugin-file",
-    "inexor-rgf-plugin-connector",
-    "inexor-rgf-plugin-json",
-    "inexor-rgf-plugin-taxonomy",
+    "reactive-graph-plugin-base",
+    "reactive-graph-plugin-trigger",
+    "reactive-graph-plugin-result",
+    "reactive-graph-plugin-file",
+    "reactive-graph-plugin-connector",
+    "reactive-graph-plugin-json",
+    "reactive-graph-plugin-taxonomy",
 ]
 ```

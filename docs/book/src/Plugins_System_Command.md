@@ -145,6 +145,6 @@ mutation {
 
 ## Repository
 
-| Name                             | Repository                                                                                                                                                         |
-|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-system-command | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-command](https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-command) |
+| Name                                 | Repository                                                                                                                                                         |
+|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-system-command | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-command](https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-command) |
