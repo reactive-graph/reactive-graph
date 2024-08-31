@@ -74,6 +74,17 @@ This document contains the help content for the `reactive-graph` command-line pr
 * [`reactive-graph client entity-instances`↴](#reactive-graph-client-entity-instances)
 * [`reactive-graph client entity-instances list`↴](#reactive-graph-client-entity-instances-list)
 * [`reactive-graph client entity-instances get`↴](#reactive-graph-client-entity-instances-get)
+* [`reactive-graph client entity-instances get-by-label`↴](#reactive-graph-client-entity-instances-get-by-label)
+* [`reactive-graph client entity-instances list-properties`↴](#reactive-graph-client-entity-instances-list-properties)
+* [`reactive-graph client entity-instances get-property`↴](#reactive-graph-client-entity-instances-get-property)
+* [`reactive-graph client entity-instances set-property`↴](#reactive-graph-client-entity-instances-set-property)
+* [`reactive-graph client entity-instances add-property`↴](#reactive-graph-client-entity-instances-add-property)
+* [`reactive-graph client entity-instances remove-property`↴](#reactive-graph-client-entity-instances-remove-property)
+* [`reactive-graph client entity-instances list-components`↴](#reactive-graph-client-entity-instances-list-components)
+* [`reactive-graph client entity-instances add-component`↴](#reactive-graph-client-entity-instances-add-component)
+* [`reactive-graph client entity-instances remove-component`↴](#reactive-graph-client-entity-instances-remove-component)
+* [`reactive-graph client entity-instances create`↴](#reactive-graph-client-entity-instances-create)
+* [`reactive-graph client entity-instances delete`↴](#reactive-graph-client-entity-instances-delete)
 
 ## `reactive-graph`
 
@@ -1096,6 +1107,17 @@ Manage entity instances
 
 * `list` — List all entity instances
 * `get` — Prints a single entity instance
+* `get-by-label` — Prints a single entity instance
+* `list-properties` — Lists the properties of an entity instance
+* `get-property` — Prints the value of a property of an entity instance
+* `set-property` — Sets the value of a property of an entity instance
+* `add-property` — Adds a new property to an entity instance
+* `remove-property` — Removes a property from an entity instance
+* `list-components` — Lists the components of an entity instance
+* `add-component` — Adds a component to an entity instance
+* `remove-component` — Removes a component from an entity instance
+* `create` — Creates a new entity type
+* `delete` — CLI argument which identifies a reactive instance by its id
 
 ###### **Options:**
 
@@ -1110,7 +1132,16 @@ Manage entity instances
 
 List all entity instances
 
-**Usage:** `reactive-graph client entity-instances list`
+**Usage:** `reactive-graph client entity-instances list [OPTIONS]`
+
+###### **Options:**
+
+* `--namespace <NAMESPACE>` — The entity type namespace
+* `-n`, `--name <NAME>` — The entity type name
+* `-i`, `--id <ID>` — The id of the entity instance
+* `-l`, `--label <LABEL>` — The label of the entity instance
+* `-p`, `--properties <PROPERTIES>` — The properties to search for
+* `-c`, `--components <COMPONENTS>` — The properties to search for
 
 
 
@@ -1122,7 +1153,161 @@ Prints a single entity instance
 
 ###### **Arguments:**
 
-* `<ID>` — The id of the entity instance
+* `<ID>` — The id of the reactive instance
+
+
+
+## `reactive-graph client entity-instances get-by-label`
+
+Prints a single entity instance
+
+**Usage:** `reactive-graph client entity-instances get-by-label <LABEL>`
+
+###### **Arguments:**
+
+* `<LABEL>` — The label of the reactive instance
+
+
+
+## `reactive-graph client entity-instances list-properties`
+
+Lists the properties of an entity instance
+
+**Usage:** `reactive-graph client entity-instances list-properties <ID>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+
+
+
+## `reactive-graph client entity-instances get-property`
+
+Prints the value of a property of an entity instance
+
+**Usage:** `reactive-graph client entity-instances get-property <ID> <PROPERTY_NAME>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+* `<PROPERTY_NAME>` — The name of the property
+
+
+
+## `reactive-graph client entity-instances set-property`
+
+Sets the value of a property of an entity instance
+
+**Usage:** `reactive-graph client entity-instances set-property <ID> <NAME> <VALUE>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+* `<NAME>` — The name of the property
+* `<VALUE>` — The new JSON value of the property.
+
+   'true' is boolean true, '"true"' is the string "true"
+
+
+
+## `reactive-graph client entity-instances add-property`
+
+Adds a new property to an entity instance
+
+**Usage:** `reactive-graph client entity-instances add-property <ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+* `<PROPERTY_NAME>` — The name of the property
+* `<DATA_TYPE>` — The data type of the property
+* `<SOCKET_TYPE>` — The socket type of the property
+* `<MUTABILITY>` — If the property is mutable or not
+* `<DESCRIPTION>` — Description of the property
+
+
+
+## `reactive-graph client entity-instances remove-property`
+
+Removes a property from an entity instance
+
+**Usage:** `reactive-graph client entity-instances remove-property <ID> <PROPERTY_NAME>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+* `<PROPERTY_NAME>` — The name of the property
+
+
+
+## `reactive-graph client entity-instances list-components`
+
+Lists the components of an entity instance
+
+**Usage:** `reactive-graph client entity-instances list-components <ID>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+
+
+
+## `reactive-graph client entity-instances add-component`
+
+Adds a component to an entity instance
+
+**Usage:** `reactive-graph client entity-instances add-component <ID> <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+* `<NAMESPACE>` — The component namespace
+* `<NAME>` — The component name
+
+
+
+## `reactive-graph client entity-instances remove-component`
+
+Removes a component from an entity instance
+
+**Usage:** `reactive-graph client entity-instances remove-component <ID> <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
+* `<NAMESPACE>` — The component namespace
+* `<NAME>` — The component name
+
+
+
+## `reactive-graph client entity-instances create`
+
+Creates a new entity type
+
+**Usage:** `reactive-graph client entity-instances create [OPTIONS] <NAMESPACE> <NAME>`
+
+###### **Arguments:**
+
+* `<NAMESPACE>` — The entity type namespace
+* `<NAME>` — The entity type name
+
+###### **Options:**
+
+* `-i`, `--id <ID>` — The entity instance id
+* `-d`, `--description <DESCRIPTION>` — The entity instance description
+* `-p`, `--properties <PROPERTIES>` — The entity instance properties
+
+
+
+## `reactive-graph client entity-instances delete`
+
+CLI argument which identifies a reactive instance by its id
+
+**Usage:** `reactive-graph client entity-instances delete <ID>`
+
+###### **Arguments:**
+
+* `<ID>` — The id of the reactive instance
 
 
 
