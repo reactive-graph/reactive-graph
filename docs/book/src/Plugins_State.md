@@ -63,6 +63,6 @@ behaviour.
 
 ## Repositories
 
-| Name                    | Repository                                                                                                                                       |
-|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-state | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/state](https://github.com/reactive-graph/plugins-core/tree/main/plugins/state) |
+| Name                        | Repository                                                                                                                                       |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-state | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/state](https://github.com/reactive-graph/plugins-core/tree/main/plugins/state) |

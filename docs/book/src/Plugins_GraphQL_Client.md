@@ -25,7 +25,7 @@ Btw: You can also use Altair as standalone application or as firefox addon.
 
 ## Repositories
 
-| Name                             | Repository                                                                                                                                                         |
-|----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-graphql-client | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client](https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client) |
-| Altair GraphQL Client            | [https://github.com/altair-graphql/altair](https://github.com/altair-graphql/altair)                                                                               |
+| Name                                 | Repository                                                                                                                                                         |
+|--------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-graphql-client | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client](https://github.com/reactive-graph/plugins-core/tree/main/plugins/graphql-client) |
+| Altair GraphQL Client                | [https://github.com/altair-graphql/altair](https://github.com/altair-graphql/altair)                                                                               |

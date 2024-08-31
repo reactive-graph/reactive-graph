@@ -66,9 +66,9 @@ This plugin provides arithmetic gates and operations.
 
 ## Repository
 
-| Name                         | Repository                                                                                                                                                 |
-|------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-arithmetic | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/arithmetic](https://github.com/reactive-graph/plugins-core/tree/main/plugins/arithmetic) |
+| Name                             | Repository                                                                                                                                                 |
+|----------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-arithmetic | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/arithmetic](https://github.com/reactive-graph/plugins-core/tree/main/plugins/arithmetic) |
 
 ## Usage
 

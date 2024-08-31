@@ -33,9 +33,9 @@ This plugin provides generic components for meta data.
 
 ## Repositories
 
-| Name                       | Repository                                                                                                                                             |
-|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-metadata | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/metadata](https://github.com/reactive-graph/plugins-core/tree/main/plugins/metadata) |
+| Name                           | Repository                                                                                                                                             |
+|--------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-metadata | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/metadata](https://github.com/reactive-graph/plugins-core/tree/main/plugins/metadata) |
 
 ## Usage
 

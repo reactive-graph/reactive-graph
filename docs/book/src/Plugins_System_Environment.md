@@ -36,9 +36,9 @@ Each entity instance which represents a system environment variable has a label.
 
 ## Repository
 
-| Name                                 | Repository                                                                                                                                                                 |
-|--------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-system-environment | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment](https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment) |
+| Name                                     | Repository                                                                                                                                                                 |
+|------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-system-environment | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment](https://github.com/reactive-graph/plugins-core/tree/main/plugins/system-environment) |
 
 ## Usage
 

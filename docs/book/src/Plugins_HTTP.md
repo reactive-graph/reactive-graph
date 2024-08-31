@@ -33,9 +33,9 @@ With this plugin it's possible to integrate external services into your home aut
 
 ## Repository
 
-| Name                   | Repository                                                                                                                                     |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-http | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/http](https://github.com/reactive-graph/plugins-core/tree/main/plugins/http) |
+| Name                       | Repository                                                                                                                                     |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-http | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/http](https://github.com/reactive-graph/plugins-core/tree/main/plugins/http) |
 
 ## Usage
 

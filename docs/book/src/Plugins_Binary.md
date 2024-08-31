@@ -64,9 +64,9 @@ Download binary resources via HTTP.
 
 ## Repository
 
-| Name                     | Repository                                                                                                                                         |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-binary | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary](https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary) |
+| Name                         | Repository                                                                                                                                         |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-binary | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary](https://github.com/reactive-graph/plugins-core/tree/main/plugins/binary) |
 
 ## Resources
 

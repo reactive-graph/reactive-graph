@@ -10,9 +10,9 @@
 
 ## Repository
 
-| Name                    | Repository                                                                                                                                       |
-|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-asset | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/asset](https://github.com/reactive-graph/plugins-core/tree/main/plugins/asset) |
+| Name                        | Repository                                                                                                                                       |
+|-----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-asset | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/asset](https://github.com/reactive-graph/plugins-core/tree/main/plugins/asset) |
 
 ## Usage
 

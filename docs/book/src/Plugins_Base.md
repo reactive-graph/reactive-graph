@@ -38,6 +38,6 @@ Basic components and entity types.
 
 ## Repository
 
-| Name                   | Repository                                                                                                                                     |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-base | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/base](https://github.com/reactive-graph/plugins-core/tree/main/plugins/base) |
+| Name                       | Repository                                                                                                                                     |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-base | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/base](https://github.com/reactive-graph/plugins-core/tree/main/plugins/base) |

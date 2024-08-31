@@ -105,9 +105,9 @@
 
 ## Repository
 
-| Name                     | Repository                                                                                                                                         |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-string | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/string](https://github.com/reactive-graph/plugins-core/tree/main/plugins/string) |
+| Name                         | Repository                                                                                                                                         |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-string | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/string](https://github.com/reactive-graph/plugins-core/tree/main/plugins/string) |
 
 ## Usage
 

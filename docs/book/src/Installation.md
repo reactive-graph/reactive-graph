@@ -87,14 +87,14 @@ apt search libinexor-rgf-plugin
 To install a plugin for the default instance you just have to install the package and restart the service:
 
 ```shell
-sudo apt install libinexor-rgf-plugin-base
+sudo apt install libreactive-graph-plugin-base
 sudo systemctl start inexor-rgf@default
 ```
 
 Similarly, you can just install all available plugins:
 
 ```shell
-sudo apt install "libinexor-rgf-plugin-*"
+sudo apt install "libreactive-graph-plugin-*"
 sudo systemctl start inexor-rgf@default
 ```
 

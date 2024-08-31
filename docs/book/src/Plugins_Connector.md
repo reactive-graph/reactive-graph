@@ -81,9 +81,9 @@ On destruction of the connector, the stream will be removed.
 
 ## Repository
 
-| Name                        | Repository                                                                                                                                               |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-connector | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/connector](https://github.com/reactive-graph/plugins-core/tree/main/plugins/connector) |
+| Name                            | Repository                                                                                                                                               |
+|---------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-connector | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/connector](https://github.com/reactive-graph/plugins-core/tree/main/plugins/connector) |
 
 ## Usage
 

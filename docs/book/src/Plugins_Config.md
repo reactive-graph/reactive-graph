@@ -19,9 +19,9 @@ Read configuration files (TOML) into an entity instance.
 
 ## Repository
 
-| Name                     | Repository                                                                                                                                         |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-config | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/config](https://github.com/reactive-graph/plugins-core/tree/main/plugins/config) |
+| Name                         | Repository                                                                                                                                         |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-config | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/config](https://github.com/reactive-graph/plugins-core/tree/main/plugins/config) |
 
 ## Usage
 

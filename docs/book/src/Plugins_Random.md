@@ -39,9 +39,9 @@ Generate random numbers, strings, UUIDs or booleans.
 
 ## Repository
 
-| Name                     | Repository                                                                                                                                         |
-|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-random | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/random](https://github.com/reactive-graph/plugins-core/tree/main/plugins/random) |
+| Name                         | Repository                                                                                                                                         |
+|------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-random | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/random](https://github.com/reactive-graph/plugins-core/tree/main/plugins/random) |
 
 ## Usage
 

@@ -46,9 +46,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 
 ## Repository
 
-| Name                   | Repository                                                                                                                                     |
-|------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
-| inexor-rgf-plugin-json | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/json](https://github.com/reactive-graph/plugins-core/tree/main/plugins/json) |
+| Name                       | Repository                                                                                                                                     |
+|----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| reactive-graph-plugin-json | [https://github.com/reactive-graph/plugins-core/tree/main/plugins/json](https://github.com/reactive-graph/plugins-core/tree/main/plugins/json) |
 
 ## Usage
 
