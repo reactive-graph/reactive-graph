@@ -66,96 +66,82 @@ level = "debug"
 
 
 
-### Runtime
+### Type System Implementation
 
-[loggers."reactive_graph_rt::implementation::component_manager_impl"]
+[loggers."reactive_graph_type_system_impl::component_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::entity_type_manager_impl"]
+[loggers."reactive_graph_type_system_impl::entity_type_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::relation_type_manager_impl"]
+[loggers."reactive_graph_type_system_impl::relation_type_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::flow_type_manager_impl"]
+[loggers."reactive_graph_type_system_impl::flow_type_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::entity_vertex_manager_impl"]
+[loggers."reactive_graph_type_system_impl::runtime_types_provider_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::entity_behaviour_manager_impl"]
+### Reactive Service Implementation
+
+[loggers."reactive_graph_reactive_service_impl::reactive_entity_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::relation_behaviour_manager_impl"]
+[loggers."reactive_graph_reactive_service_impl::reactive_relation_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::reactive_flow_instance_manager_impl"]
+[loggers."reactive_graph_reactive_service_impl::reactive_flow_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::web_resource_manager_impl"]
+### Behaviour Service Implementation
+
+[loggers."reactive_graph_behaviour_service_impl::entity_behaviour_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::plugin_resolver_impl"]
+[loggers."reactive_graph_behaviour_service_impl::relation_behaviour_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::plugin_container_manager_impl"]
+[loggers."reactive_graph_behaviour_service_impl::entity_behaviour_registry_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::plugin_repository_manager_impl"]
+[loggers."reactive_graph_behaviour_service_impl::entity_component_behaviour_registry_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::entity_behaviour_registry_impl"]
+[loggers."reactive_graph_behaviour_service_impl::relation_behaviour_registry_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::entity_component_behaviour_registry_impl"]
+[loggers."reactive_graph_behaviour_service_impl::relation_component_behaviour_registry_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::relation_behaviour_registry_impl"]
+### GraphQL Runtime Web Implementation
+
+[loggers."reactive_graph_runtime_web_impl::graphql_server_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::relation_component_behaviour_registry_impl"]
+[loggers."reactive_graph_runtime_web_impl::web_resource_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::dynamic_graph_schema_manager_impl"]
+### Dynamic Graph Impl
+
+[loggers."reactive_graph_dynamic_graph_impl::dynamic_graph_schema_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::graphql_server_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::runtime_types_provider_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::graphql::dynamic::object::namespace"]
+[loggers."reactive_graph_dynamic_graph_impl::object::namespace"]
 level = "error"
 
-[loggers."reactive_graph_rt::plugin::container"]
+### Plugin Service Implementation
+
+[loggers."reactive_graph_plugin_service_impl::plugin_container_manager_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::types::component_manager_impl"]
+[loggers."reactive_graph_plugin_service_impl::container"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::types::entity_type_manager_impl"]
+[loggers."reactive_graph_plugin_service_impl::plugin_resolver_impl"]
 level = "info"
 
-[loggers."reactive_graph_rt::implementation::types::relation_type_manager_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::types::flow_type_manager_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::behaviour::entity_behaviour_registry_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::behaviour::entity_component_behaviour_registry_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::behaviour::relation_behaviour_registry_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::behaviour::relation_component_behaviour_registry_impl"]
-level = "info"
-
-[loggers."reactive_graph_rt::implementation::types::runtime_types_provider_impl"]
+[loggers."reactive_graph_plugin_service_impl::plugin_repository_manager_impl"]
 level = "info"
 
 
@@ -292,10 +278,10 @@ level = "info"
 level = "info"
 
 [loggers."springtime_di::factory"]
-level = "trace"
+level = "info"
 
 [loggers."springtime_di::component_registry::registry"]
-level = "trace"
+level = "info"
 
 [loggers."hyper_util"]
 level = "info"
