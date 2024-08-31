@@ -1,6 +1,6 @@
 query Dependents {
   system {
-    plugins(name: "inexor-rgf-plugin-trigger") {
+    plugins(name: "reactive-graph-plugin-trigger") {
       name
       state
       dependents {

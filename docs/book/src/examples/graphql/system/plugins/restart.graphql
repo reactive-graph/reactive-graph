@@ -1,7 +1,7 @@
 mutation RestartPlugin {
   system {
     plugins {
-      restart(name: "inexor-rgf-plugin-numeric") {
+      restart(name: "reactive-graph-plugin-numeric") {
         name
         description
         state
