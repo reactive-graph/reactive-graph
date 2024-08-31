@@ -51,6 +51,22 @@ impl From<ComponentTypeIds> for reactive_graph_graph::ComponentTypeIds {
     }
 }
 
+impl From<reactive_graph_graph::ComponentTypeIds> for ComponentTypeIds {
+    fn from(component_type_ids: reactive_graph_graph::ComponentTypeIds) -> Self {
+        component_type_ids.into_iter().map(From::from).collect()
+    }
+}
+
+impl FromIterator<ComponentTypeId> for ComponentTypeIds {
+    fn from_iter<I: IntoIterator<Item = ComponentTypeId>>(iter: I) -> Self {
+        let mut tys = ComponentTypeIds::new();
+        for component in iter {
+            tys.0.push(component);
+        }
+        tys
+    }
+}
+
 impl FromIterator<Component> for reactive_graph_graph::ComponentTypeIds {
     fn from_iter<I: IntoIterator<Item = Component>>(iter: I) -> Self {
         let tys = reactive_graph_graph::ComponentTypeIds::new();

@@ -1,3 +1,4 @@
+pub mod add_component;
 pub mod add_property;
 pub mod api;
 pub mod create;

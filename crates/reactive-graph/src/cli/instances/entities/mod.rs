@@ -8,6 +8,7 @@ use crate::cli::result::CommandResult;
 use crate::cli::types::components::output_format::ComponentTypeIdsOutputFormatWrapper;
 use crate::table_model::instances::properties::PropertyInstance;
 use reactive_graph_client::InexorRgfClient;
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyType;
 use std::sync::Arc;
@@ -89,6 +90,14 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
+        EntityInstancesCommands::AddComponent(args) => {
+            let component_ty: ComponentTypeId = args.component_ty.clone().into();
+            match client.instances().entity_instances().add_component(args.id, component_ty).await {
+                Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+                Ok(None) => Err(args.id_not_found()),
+                Err(e) => Err(e.into()),
+            }
+        }
         EntityInstancesCommands::Create(args) => match client
             .instances()
             .entity_instances()
