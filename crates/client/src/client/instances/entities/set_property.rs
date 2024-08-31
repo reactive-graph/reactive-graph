@@ -45,9 +45,4 @@ pub mod queries {
 
         SetProperty::build(vars.into())
     }
-
-    // pub fn delete_entity_instance_with_variables(variables: UuidVariables) -> Operation<DeleteEntityInstance, UuidVariables> {
-    //     use cynic::MutationBuilder;
-    //     DeleteEntityInstance::build(variables)
-    // }
 }

@@ -1,3 +1,4 @@
+use crate::cli::instances::entities::args::add_property::AddPropertyArgs;
 use crate::cli::instances::entities::args::create::CreateEntityInstanceArgs;
 use crate::cli::instances::entities::args::id::IdArgs;
 use crate::cli::instances::entities::args::id_and_property::IdAndPropertyArgs;
@@ -26,6 +27,12 @@ pub(crate) enum EntityInstancesCommands {
     /// Sets the value of a property of an entity instance.
     #[non_exhaustive]
     SetProperty(SetPropertyArgs),
+    /// Adds a new property to an entity instance.
+    #[non_exhaustive]
+    AddProperty(AddPropertyArgs),
+    /// Removes a property from an entity instance.
+    #[non_exhaustive]
+    RemoveProperty(IdAndPropertyArgs),
     /// Lists the components of an entity instance.
     #[non_exhaustive]
     ListComponents(IdArgs),
