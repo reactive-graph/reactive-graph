@@ -98,6 +98,14 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
                 Err(e) => Err(e.into()),
             }
         }
+        EntityInstancesCommands::RemoveComponent(args) => {
+            let component_ty: ComponentTypeId = args.component_ty.clone().into();
+            match client.instances().entity_instances().remove_component(args.id, component_ty).await {
+                Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+                Ok(None) => Err(args.id_not_found()),
+                Err(e) => Err(e.into()),
+            }
+        }
         EntityInstancesCommands::Create(args) => match client
             .instances()
             .entity_instances()

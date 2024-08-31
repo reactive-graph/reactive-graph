@@ -6,6 +6,7 @@ use crate::client::instances::entities::create::queries::create;
 use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
 use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
+use crate::client::instances::entities::remove_component::queries::remove_component;
 use crate::client::instances::entities::remove_property::queries::remove_property;
 use crate::client::instances::entities::search::queries::search;
 use crate::client::instances::entities::search::queries::SearchEntityInstancesVariables;
@@ -148,6 +149,26 @@ impl EntityInstances {
             .client
             .post(self.client.url_graphql())
             .run_graphql(add_component(id, component_ty))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.update)
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn remove_component<ID: Into<Uuid>, C: Into<ComponentTypeId>>(
+        &self,
+        id: ID,
+        component_ty: C,
+    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let component_ty = component_ty.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_component(id, component_ty))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data

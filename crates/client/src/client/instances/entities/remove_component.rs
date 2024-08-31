@@ -10,7 +10,7 @@ pub mod queries {
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "IdAndComponentVariables")]
-    pub struct AddComponent {
+    pub struct RemoveComponent {
         pub instances: MutationInstances,
     }
 
@@ -23,21 +23,21 @@ pub mod queries {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "IdAndComponentVariables")]
     pub struct MutationEntityInstances {
-        #[arguments(id: $id, addComponents: $components)]
+        #[arguments(id: $id, removeComponents: $components)]
         pub update: EntityInstance,
     }
 
-    pub fn add_component(id: Uuid, component_ty: reactive_graph_graph::ComponentTypeId) -> Operation<AddComponent, IdAndComponentVariables> {
+    pub fn remove_component(id: Uuid, component_ty: reactive_graph_graph::ComponentTypeId) -> Operation<RemoveComponent, IdAndComponentVariables> {
         use cynic::MutationBuilder;
         let component_ty = component_ty.into();
         let vars = IdAndComponentVariables::builder().id(id.into()).components(Some(vec![component_ty])).build();
-        AddComponent::build(vars.into())
+        RemoveComponent::build(vars.into())
     }
 
-    pub fn add_components(id: Uuid, component_tys: reactive_graph_graph::ComponentTypeIds) -> Operation<AddComponent, IdAndComponentVariables> {
+    pub fn remove_components(id: Uuid, component_tys: reactive_graph_graph::ComponentTypeIds) -> Operation<RemoveComponent, IdAndComponentVariables> {
         use cynic::MutationBuilder;
         let component_tys: ComponentTypeIds = component_tys.into();
         let vars = IdAndComponentVariables::builder().id(id.into()).components(Some(component_tys.0)).build();
-        AddComponent::build(vars.into())
+        RemoveComponent::build(vars.into())
     }
 }

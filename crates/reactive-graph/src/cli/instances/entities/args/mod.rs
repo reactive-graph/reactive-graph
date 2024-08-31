@@ -2,10 +2,10 @@ use crate::cli::instances::entities::commands::EntityInstancesCommands;
 use crate::cli::output_format::OutputFormatArgs;
 use clap::Args;
 
-pub mod add_component;
 pub mod add_property;
 pub mod create;
 pub mod id;
+pub mod id_and_component;
 pub mod id_and_property;
 pub mod label;
 pub mod search;
