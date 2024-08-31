@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["scalar","schema","system","types"]};
+window.SIDEBAR_ITEMS = {"mod":["instances","scalar","schema","system","types"]};

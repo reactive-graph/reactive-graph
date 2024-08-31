@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"type":["ComponentsOutputFormatWrapper"]};
+window.SIDEBAR_ITEMS = {"type":["ComponentTypeIdsOutputFormatWrapper","ComponentsOutputFormatWrapper"]};

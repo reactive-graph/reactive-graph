@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graphql/schema/src/mutation/instances/entity_instance.rs`."><title>entity_instance.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-b25d77b18a16a9a4.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graphql_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (636d7ff91 2024-08-19)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graphql/schema/src/mutation/instances/entity_instance.rs`."><title>entity_instance.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graphql_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (0d634185d 2024-08-29)" data-channel="nightly" data-search-js="search-acd2e111c9cb27e3.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -273,6 +273,27 @@
 <a href="#273" id="273">273</a>
 <a href="#274" id="274">274</a>
 <a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::<span class="kw-2">*</span>;
@@ -283,7 +304,9 @@
 <span class="kw">use </span>reactive_graph_behaviour_model_api::BehaviourTypeId;
 <span class="kw">use </span>reactive_graph_behaviour_service_api::EntityBehaviourManager;
 <span class="kw">use </span>reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
+<span class="kw">use </span>reactive_graph_graph::EntityInstance;
 <span class="kw">use </span>reactive_graph_graph::PropertyInstanceSetter;
+<span class="kw">use </span>reactive_graph_graph::PropertyType;
 <span class="kw">use </span>reactive_graph_graph::PropertyTypeDefinition;
 <span class="kw">use </span>reactive_graph_reactive_model_api::ReactiveInstance;
 <span class="kw">use </span>reactive_graph_reactive_model_api::ReactivePropertyContainer;
@@ -319,6 +342,7 @@
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
         <span class="attr">#[graphql(name = <span class="string">"type"</span>, desc = <span class="string">"The entity type"</span>)] </span>entity_ty: EntityTypeIdDefinition,
         <span class="attr">#[graphql(desc = <span class="string">"The id of the entity instance. If none is given a random uuid will be generated."</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;Uuid&gt;,
+        <span class="attr">#[graphql(desc = <span class="string">"Description of the entity instance."</span>)] </span>description: <span class="prelude-ty">Option</span>&lt;String&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Creates the entity instance with the given components."</span>)] </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
         properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLEntityInstance&gt; {
@@ -332,10 +356,13 @@
 
         <span class="kw">let </span>properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, entity_type.properties);
 
-        <span class="kw">let </span>entity_instance = <span class="kw">match </span>id {
-            <span class="prelude-val">Some</span>(id) =&gt; entity_instance_manager.create_with_id(<span class="kw-2">&amp;</span>entity_ty, id, properties),
-            <span class="prelude-val">None </span>=&gt; entity_instance_manager.create_reactive_entity(<span class="kw-2">&amp;</span>entity_ty, properties),
-        };
+        <span class="kw">let </span>entity_instance = EntityInstance::builder()
+            .ty(<span class="kw-2">&amp;</span>entity_ty)
+            .id(id.unwrap_or(Uuid::new_v4()))
+            .description(description.unwrap_or_default())
+            .properties(properties)
+            .build();
+        <span class="kw">let </span>entity_instance = entity_instance_manager.create_reactive_instance(entity_instance);
         <span class="kw">match </span>entity_instance {
             <span class="prelude-val">Ok</span>(entity_instance) =&gt; {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(components) = components {
@@ -361,6 +388,8 @@
         <span class="attr">#[graphql(desc = <span class="string">"Adds the given components."</span>)] </span>add_components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Removes the given components."</span>)] </span>remove_components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Updates the given properties"</span>)] </span>properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
+        <span class="attr">#[graphql(desc = <span class="string">"Adds the given properties"</span>)] </span>add_properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;<span class="kw">crate</span>::mutation::PropertyTypeDefinition&gt;&gt;,
+        <span class="attr">#[graphql(desc = <span class="string">"Removes the given properties"</span>)] </span>remove_properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLEntityInstance&gt; {
         <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>entity_instance;
@@ -403,6 +432,19 @@
                     <span class="comment">// Tick with respect to the mutability state
                     </span>property_instance.tick_checked();
                 }
+            }
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(add_properties) = add_properties {
+            <span class="kw">for </span>property_type <span class="kw">in </span>add_properties.clone() {
+                <span class="kw">let </span>property_type: PropertyType = property_type.into();
+                <span class="macro">debug!</span>(<span class="string">"add property {} ({})"</span>, <span class="kw-2">&amp;</span>property_type.name, <span class="kw-2">&amp;</span>property_type.data_type);
+                entity_instance.add_property_by_type(<span class="kw-2">&amp;</span>property_type);
+            }
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(remove_properties) = remove_properties {
+            <span class="kw">for </span>property_name <span class="kw">in </span>remove_properties.clone() {
+                <span class="macro">debug!</span>(<span class="string">"remove property {}"</span>, <span class="kw-2">&amp;</span>property_name);
+                entity_instance.remove_property(property_name);
             }
         }
         <span class="comment">// TODO: it's still not a transactional mutation

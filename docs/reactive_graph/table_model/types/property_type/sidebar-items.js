@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["display_property_types_inline"],"struct":["PropertyType","PropertyTypeDefinition","PropertyTypeDefinitions","PropertyTypes","PropertyTypesTableOptions"]};
+window.SIDEBAR_ITEMS = {"fn":["display_property_types_inline"],"struct":["PropertyType","PropertyTypes","PropertyTypesTableOptions"]};

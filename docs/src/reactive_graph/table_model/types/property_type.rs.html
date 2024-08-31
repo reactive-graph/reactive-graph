@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/reactive-graph/src/table_model/types/property_type.rs`."><title>property_type.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-b25d77b18a16a9a4.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (636d7ff91 2024-08-19)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/reactive-graph/src/table_model/types/property_type.rs`."><title>property_type.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (0d634185d 2024-08-29)" data-channel="nightly" data-search-js="search-acd2e111c9cb27e3.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -155,9 +155,9 @@
 <span class="kw">use </span><span class="kw">crate</span>::table_model::styles::modern_inline::modern_inline;
 <span class="kw">use </span><span class="kw">crate</span>::table_model::types::data_type::DataType;
 <span class="kw">use </span><span class="kw">crate</span>::table_model::types::extension::Extension;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::types::extension::ExtensionDefinition;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::types::extension::ExtensionDefinitions;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::types::extension::Extensions;
+<span class="comment">// use crate::table_model::types::extension::ExtensionDefinition;
+// use crate::table_model::types::extension::ExtensionDefinitions;
+</span><span class="kw">use </span><span class="kw">crate</span>::table_model::types::extension::Extensions;
 <span class="kw">use </span><span class="kw">crate</span>::table_model::types::mutability::Mutability;
 <span class="kw">use </span><span class="kw">crate</span>::table_model::types::socket_type::SocketType;
 <span class="kw">use </span>std::fmt;
@@ -169,62 +169,62 @@
 <span class="kw">use </span>tabled::Table;
 <span class="kw">use </span>tabled::Tabled;
 
-<span class="kw">pub struct </span>PropertyTypeDefinition {
-    <span class="kw">pub </span>data_type: DataType,
-    <span class="kw">pub </span>description: String,
-    <span class="kw">pub </span>extensions: Vec&lt;ExtensionDefinition&gt;,
-    <span class="kw">pub </span>mutability: Mutability,
-    <span class="kw">pub </span>name: String,
-    <span class="kw">pub </span>socket_type: SocketType,
-}
+<span class="comment">// pub struct PropertyTypeDefinition {
+//     pub data_type: DataType,
+//     pub description: String,
+//     pub extensions: Vec&lt;ExtensionDefinition&gt;,
+//     pub mutability: Mutability,
+//     pub name: String,
+//     pub socket_type: SocketType,
+// }
+//
+// impl From&lt;reactive_graph_graph::PropertyType&gt; for PropertyTypeDefinition {
+//     fn from(property_type: reactive_graph_graph::PropertyType) -&gt; Self {
+//         let extensions: ExtensionDefinitions = property_type.extensions.into();
+//         PropertyTypeDefinition {
+//             name: property_type.name,
+//             description: property_type.description,
+//             data_type: property_type.data_type.into(),
+//             socket_type: property_type.socket_type.into(),
+//             mutability: property_type.mutability.into(),
+//             extensions: extensions.0,
+//         }
+//     }
+// }
+//
+// pub struct PropertyTypeDefinitions(pub Vec&lt;PropertyTypeDefinition&gt;);
+//
+// impl From&lt;PropertyTypeDefinitions&gt; for Vec&lt;PropertyTypeDefinition&gt; {
+//     fn from(property_types: PropertyTypeDefinitions) -&gt; Self {
+//         property_types.0.into_iter().collect()
+//     }
+// }
+//
+// impl From&lt;Vec&lt;reactive_graph_graph::PropertyType&gt;&gt; for PropertyTypeDefinitions {
+//     fn from(property_types: Vec&lt;reactive_graph_graph::PropertyType&gt;) -&gt; Self {
+//         PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
+//     }
+// }
 
-<span class="kw">impl </span>From&lt;reactive_graph_graph::PropertyType&gt; <span class="kw">for </span>PropertyTypeDefinition {
-    <span class="kw">fn </span>from(property_type: reactive_graph_graph::PropertyType) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>extensions: ExtensionDefinitions = property_type.extensions.into();
-        PropertyTypeDefinition {
-            name: property_type.name,
-            description: property_type.description,
-            data_type: property_type.data_type.into(),
-            socket_type: property_type.socket_type.into(),
-            mutability: property_type.mutability.into(),
-            extensions: extensions.<span class="number">0</span>,
-        }
-    }
-}
-
-<span class="kw">pub struct </span>PropertyTypeDefinitions(<span class="kw">pub </span>Vec&lt;PropertyTypeDefinition&gt;);
-
-<span class="kw">impl </span>From&lt;PropertyTypeDefinitions&gt; <span class="kw">for </span>Vec&lt;PropertyTypeDefinition&gt; {
-    <span class="kw">fn </span>from(property_types: PropertyTypeDefinitions) -&gt; <span class="self">Self </span>{
-        property_types.<span class="number">0</span>.into_iter().collect()
-    }
-}
-
-<span class="kw">impl </span>From&lt;Vec&lt;reactive_graph_graph::PropertyType&gt;&gt; <span class="kw">for </span>PropertyTypeDefinitions {
-    <span class="kw">fn </span>from(property_types: Vec&lt;reactive_graph_graph::PropertyType&gt;) -&gt; <span class="self">Self </span>{
-        PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
-    }
-}
-
-<span class="attr">#[derive(Clone, Debug, Tabled)]
+</span><span class="attr">#[derive(Clone, Debug, Tabled)]
 </span><span class="kw">pub struct </span>PropertyType {
-    <span class="doccomment">/// The name of the extension.
+    <span class="doccomment">/// The name of the property.
     </span><span class="kw">pub </span>name: String,
 
-    <span class="doccomment">/// Textual description of the extension.
+    <span class="doccomment">/// Textual description of the property.
     </span><span class="attr">#[tabled(skip)]
     </span><span class="kw">pub </span>description: String,
 
-    <span class="doccomment">/// The extension as JSON representation.
+    <span class="doccomment">/// Specifies the data type of the property.
     </span><span class="kw">pub </span>data_type: DataType,
 
-    <span class="doccomment">/// Specifies the type of socket - either input socket or output socket or none
+    <span class="doccomment">/// Specifies the type of socket - either input socket or output socket or none.
     </span><span class="kw">pub </span>socket_type: SocketType,
 
     <span class="doccomment">/// Specifies if the property is mutable.
     </span><span class="kw">pub </span>mutability: Mutability,
 
-    <span class="doccomment">/// Property specific extensions
+    <span class="doccomment">/// Property specific extensions.
     </span><span class="attr">#[tabled(display_with(<span class="string">"display_extensions"</span>))]
     #[tabled(skip)]
     </span><span class="kw">pub </span>extensions: Vec&lt;Extension&gt;,

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graph/src/instances/entities/entity_instance.rs`."><title>entity_instance.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-b25d77b18a16a9a4.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graph" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (636d7ff91 2024-08-19)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graph/src/instances/entities/entity_instance.rs`."><title>entity_instance.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-492a78a4a87dcc01.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graph" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (0d634185d 2024-08-29)" data-channel="nightly" data-search-js="search-acd2e111c9cb27e3.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -672,6 +672,69 @@
 <a href="#672" id="672">672</a>
 <a href="#673" id="673">673</a>
 <a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
+<a href="#687" id="687">687</a>
+<a href="#688" id="688">688</a>
+<a href="#689" id="689">689</a>
+<a href="#690" id="690">690</a>
+<a href="#691" id="691">691</a>
+<a href="#692" id="692">692</a>
+<a href="#693" id="693">693</a>
+<a href="#694" id="694">694</a>
+<a href="#695" id="695">695</a>
+<a href="#696" id="696">696</a>
+<a href="#697" id="697">697</a>
+<a href="#698" id="698">698</a>
+<a href="#699" id="699">699</a>
+<a href="#700" id="700">700</a>
+<a href="#701" id="701">701</a>
+<a href="#702" id="702">702</a>
+<a href="#703" id="703">703</a>
+<a href="#704" id="704">704</a>
+<a href="#705" id="705">705</a>
+<a href="#706" id="706">706</a>
+<a href="#707" id="707">707</a>
+<a href="#708" id="708">708</a>
+<a href="#709" id="709">709</a>
+<a href="#710" id="710">710</a>
+<a href="#711" id="711">711</a>
+<a href="#712" id="712">712</a>
+<a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
+<a href="#732" id="732">732</a>
+<a href="#733" id="733">733</a>
+<a href="#734" id="734">734</a>
+<a href="#735" id="735">735</a>
+<a href="#736" id="736">736</a>
+<a href="#737" id="737">737</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
@@ -704,6 +767,9 @@
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::test_utils::default_from::DefaultFrom;
 <span class="kw">use </span><span class="kw">crate</span>::AddExtensionError;
+<span class="kw">use </span><span class="kw">crate</span>::ComponentTypeId;
+<span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIdContainer;
+<span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIds;
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span><span class="kw">crate</span>::EntityType;
 <span class="kw">use </span><span class="kw">crate</span>::EntityTypeId;
@@ -747,15 +813,23 @@
 
     <span class="doccomment">/// The properties of then entity instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// &lt;https://docs.serde.rs/serde_json/value/enum.Value.html&gt;
     </span><span class="attr">#[serde(default = <span class="string">"PropertyInstances::new"</span>)]
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>properties: PropertyInstances,
 
-    <span class="doccomment">/// Entity instance specific extensions.
+    <span class="doccomment">/// The components of the entity instance.
+    </span><span class="attr">#[serde(default = <span class="string">"ComponentTypeIds::new"</span>)]
+    #[builder(default, setter(into))]
+    </span><span class="kw">pub </span>components: ComponentTypeIds,
+
+    <span class="comment">//
+    // TODO: behaviours?
+    //
+    </span><span class="doccomment">/// Entity instance specific extensions.
     </span><span class="attr">#[serde(default = <span class="string">"Extensions::new"</span>)]
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>extensions: Extensions,
@@ -769,6 +843,7 @@
             id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -780,18 +855,19 @@
             id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
 
     <span class="doccomment">/// Constructs a new entity instance with the given type and id but without properties.
     </span><span class="kw">pub fn </span>new_without_properties&lt;T: Into&lt;EntityTypeId&gt;&gt;(ty: T, id: Uuid) -&gt; EntityInstance {
-        <span class="comment">// , P: Into&lt;PropertyInstances&gt;
-        </span>EntityInstance {
+        EntityInstance {
             ty: ty.into(),
             id,
             description: String::new(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -834,6 +910,28 @@
 <span class="kw">impl </span>MutablePropertyInstanceSetter <span class="kw">for </span>EntityInstance {
     <span class="kw">fn </span>set&lt;S: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, property_name: S, value: Value) {
         <span class="self">self</span>.properties.set(property_name.into(), value);
+    }
+}
+
+<span class="kw">impl </span>ComponentTypeIdContainer <span class="kw">for </span>EntityInstance {
+    <span class="kw">fn </span>is_a(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; bool {
+        <span class="self">self</span>.components.is_a(ty)
+    }
+
+    <span class="kw">fn </span>add_component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; bool {
+        <span class="self">self</span>.components.add_component(ty)
+    }
+
+    <span class="kw">fn </span>add_components&lt;C: Into&lt;ComponentTypeIds&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, components_to_add: C) {
+        <span class="self">self</span>.components.add_components(components_to_add)
+    }
+
+    <span class="kw">fn </span>remove_component(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; {
+        <span class="self">self</span>.components.remove_component(ty)
+    }
+
+    <span class="kw">fn </span>remove_components&lt;C: Into&lt;ComponentTypeIds&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, components_to_remove: C) {
+        <span class="self">self</span>.components.remove_components(components_to_remove)
     }
 }
 
@@ -1104,6 +1202,9 @@
     <span class="kw">use </span>serde_json::json;
     <span class="kw">use </span>uuid::Uuid;
 
+    <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeId;
+    <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIdContainer;
+    <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIds;
     <span class="kw">use </span><span class="kw">crate</span>::EntityInstance;
     <span class="kw">use </span><span class="kw">crate</span>::EntityTypeId;
     <span class="kw">use </span><span class="kw">crate</span>::Extension;
@@ -1143,6 +1244,11 @@
         <span class="kw">let </span>property_value = <span class="macro">json!</span>(r_string());
         <span class="kw">let </span>properties = PropertyInstances::new().property(<span class="kw-2">&amp;</span>property_name, property_value.clone());
 
+        <span class="kw">let </span>component_namespace = r_string();
+        <span class="kw">let </span>component_name = r_string();
+        <span class="kw">let </span>component_ty = ComponentTypeId::new_from_type(<span class="kw-2">&amp;</span>component_namespace, <span class="kw-2">&amp;</span>component_name);
+        <span class="kw">let </span>components = ComponentTypeIds::new().component(component_ty.clone());
+
         <span class="kw">let </span>extension_namespace = r_string();
         <span class="kw">let </span>extension_name = r_string();
         <span class="kw">let </span>extension_ty = ExtensionTypeId::new_from_type(<span class="kw-2">&amp;</span>extension_namespace, <span class="kw-2">&amp;</span>extension_name);
@@ -1166,6 +1272,7 @@
             id: uuid.clone(),
             description: description.to_string(),
             properties: properties.clone(),
+            components: components.clone(),
             extensions: extensions.clone(),
         };
         <span class="macro">assert_eq!</span>(namespace, entity_instance.namespace());
@@ -1176,6 +1283,10 @@
         <span class="macro">assert!</span>(entity_instance.get(property_name.clone()).is_some());
         <span class="macro">assert!</span>(entity_instance.get(r_string()).is_none());
         <span class="macro">assert_eq!</span>(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
+        <span class="macro">assert!</span>(entity_instance.components.contains(<span class="kw-2">&amp;</span>component_ty.clone()));
+        <span class="macro">assert!</span>(entity_instance.components.is_a(<span class="kw-2">&amp;</span>component_ty));
+        <span class="macro">assert!</span>(entity_instance.is_a(<span class="kw-2">&amp;</span>component_ty));
+        <span class="macro">assert!</span>(!entity_instance.is_a(<span class="kw-2">&amp;</span>ComponentTypeId::generate_random()));
         <span class="macro">assert!</span>(entity_instance.extensions.has_own_extension(<span class="kw-2">&amp;</span>extension_ty));
         <span class="macro">assert!</span>(entity_instance.has_own_extension(<span class="kw-2">&amp;</span>extension_ty));
         <span class="kw">let </span>non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
@@ -1272,6 +1383,10 @@
         <span class="kw">let </span>other_extension_ty = ExtensionTypeId::new_from_type(<span class="kw-2">&amp;</span>extension_namespace, <span class="kw-2">&amp;</span>r_string());
         <span class="kw">let </span>other_extension = Extension::new(<span class="kw-2">&amp;</span>other_extension_ty, r_string(), extension_value.clone());
         <span class="kw">let </span>extensions = Extensions::new().extension(extension.clone()).extension(other_extension.clone());
+        <span class="kw">let </span>component_namespace = r_string();
+        <span class="kw">let </span>component_name = r_string();
+        <span class="kw">let </span>component_ty = ComponentTypeId::new_from_type(<span class="kw-2">&amp;</span>component_namespace, <span class="kw-2">&amp;</span>component_name);
+        <span class="kw">let </span>components = ComponentTypeIds::new().component(component_ty.clone());
 
         <span class="kw">let </span>ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
         <span class="kw">let </span>entity_instance = EntityInstance {
@@ -1279,6 +1394,7 @@
             id: uuid.clone(),
             description: description.to_string(),
             properties: properties.clone(),
+            components: components.clone(),
             extensions: extensions.clone(),
         };
         <span class="macro">println!</span>(<span class="string">"{}"</span>, serde_json::to_string_pretty(<span class="kw-2">&amp;</span>entity_instance).expect(<span class="string">"Failed to serialize entity instance"</span>));
@@ -1294,6 +1410,12 @@
   "properties": {
     "NaUPOBoqyp": "qEnGqwNeEL"
   },
+  "components": [
+    {
+      "namespace": "c_namespace",
+      "type_name": "c_name"
+    }
+  ],
   "extensions": [
     {
       "namespace": "ext_namespace",
@@ -1315,6 +1437,10 @@
         <span class="macro">assert_eq!</span>(<span class="number">1</span>, entity_instance.properties.len());
         <span class="kw">let </span>property = entity_instance.properties.get(<span class="string">"NaUPOBoqyp"</span>).expect(<span class="string">"Missing property"</span>);
         <span class="macro">assert_eq!</span>(<span class="string">"qEnGqwNeEL"</span>, property.as_str().unwrap());
+        <span class="macro">assert_eq!</span>(<span class="number">1</span>, entity_instance.components.len());
+        <span class="macro">assert!</span>(entity_instance.components.contains(<span class="kw-2">&amp;</span>ComponentTypeId::new_from_type(<span class="string">"c_namespace"</span>, <span class="string">"c_name"</span>)));
+        <span class="macro">assert!</span>(entity_instance.components.is_a(<span class="kw-2">&amp;</span>ComponentTypeId::new_from_type(<span class="string">"c_namespace"</span>, <span class="string">"c_name"</span>)));
+        <span class="macro">assert!</span>(entity_instance.is_a(<span class="kw-2">&amp;</span>ComponentTypeId::new_from_type(<span class="string">"c_namespace"</span>, <span class="string">"c_name"</span>)));
         <span class="macro">assert_eq!</span>(<span class="number">2</span>, entity_instance.extensions.len());
         <span class="macro">assert!</span>(entity_instance
             .extensions

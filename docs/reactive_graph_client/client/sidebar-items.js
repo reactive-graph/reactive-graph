@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["InexorRgfClientError","InexorRgfClientExecutionError"],"mod":["plugin","runtime","types"],"struct":["InexorRgfClient"]};
+window.SIDEBAR_ITEMS = {"enum":["InexorRgfClientError","InexorRgfClientExecutionError"],"mod":["instances","plugin","runtime","types"],"struct":["InexorRgfClient"]};

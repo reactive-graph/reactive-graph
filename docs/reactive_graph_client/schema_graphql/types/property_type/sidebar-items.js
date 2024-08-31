@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["PropertyType","PropertyTypeDefinition","PropertyTypeDefinitions","PropertyTypes"]};
+window.SIDEBAR_ITEMS = {"mod":["property_type","property_type_definition"]};
