@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
 use async_graphql::*;
-use uuid::Uuid;
-
+use reactive_graph_plugin_api::PLUGIN_NAME_PREFIX;
 use reactive_graph_plugin_service_api::PluginContainerManager;
+use uuid::Uuid;
 
 pub struct GraphQLPlugin {
     pub id: Uuid,
@@ -48,7 +48,7 @@ impl GraphQLPlugin {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         plugin_container_manager
             .name(&self.id)
-            .map(|name| name.replace("inexor-rgf-plugin-", ""))
+            .map(|name| name.replace(&PLUGIN_NAME_PREFIX, ""))
             .ok_or_else(|| Error::new("Failed to resolve plugin short name"))
     }
 

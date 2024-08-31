@@ -390,14 +390,14 @@ impl PluginContainer {
                 self.state = PluginState::Active;
                 info!(
                     "[ACTIVE] {} {}",
-                    self.name().unwrap_or_default().replace("inexor-rgf-plugin-", ""),
+                    self.name().unwrap_or_default().replace(&PLUGIN_NAME_PREFIX, ""),
                     self.version().unwrap_or_default()
                 );
             }
             Err(e) => {
                 error!(
                     "[FAILED] {} {}: {}",
-                    self.name().unwrap_or_default().replace("inexor-rgf-plugin-", ""),
+                    self.name().unwrap_or_default().replace(&PLUGIN_NAME_PREFIX, ""),
                     self.version().unwrap_or_default(),
                     e
                 );
