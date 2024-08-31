@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://reactive-graph.io/">
-<img src="https://raw.githubusercontent.com/reactive-graph/design/main/logo/full/reactive-graph-full-mexican-pink-black.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" alt="Reactive Graph" />
+<img src="https://raw.githubusercontent.com/reactive-graph/design/main/public/logo/full/reactive-graph-full-mexican-pink-black.png" style="width: 50%; height: 50%; margin-left: 25%; margin-right: 25%;" alt="Reactive Graph" />
 </a>
 </div>
 
