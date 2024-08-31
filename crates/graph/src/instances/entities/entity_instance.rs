@@ -30,6 +30,8 @@ use uuid::Uuid;
 #[cfg(any(test, feature = "test"))]
 use crate::test_utils::default_from::DefaultFrom;
 use crate::AddExtensionError;
+use crate::ComponentTypeId;
+use crate::ComponentTypeIdContainer;
 use crate::ComponentTypeIds;
 #[cfg(any(test, feature = "test"))]
 use crate::EntityType;
@@ -171,6 +173,28 @@ impl PropertyInstanceGetter for EntityInstance {
 impl MutablePropertyInstanceSetter for EntityInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
         self.properties.set(property_name.into(), value);
+    }
+}
+
+impl ComponentTypeIdContainer for EntityInstance {
+    fn is_a(&self, ty: &ComponentTypeId) -> bool {
+        self.components.is_a(ty)
+    }
+
+    fn add_component<C: Into<ComponentTypeId>>(&self, ty: C) -> bool {
+        self.components.add_component(ty)
+    }
+
+    fn add_components<C: Into<ComponentTypeIds>>(&mut self, components_to_add: C) {
+        self.components.add_components(components_to_add)
+    }
+
+    fn remove_component(&self, ty: &ComponentTypeId) -> Option<ComponentTypeId> {
+        self.components.remove_component(ty)
+    }
+
+    fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
+        self.components.remove_components(components_to_remove)
     }
 }
 
@@ -441,6 +465,9 @@ pub mod entity_instance_tests {
     use serde_json::json;
     use uuid::Uuid;
 
+    use crate::ComponentTypeId;
+    use crate::ComponentTypeIdContainer;
+    use crate::ComponentTypeIds;
     use crate::EntityInstance;
     use crate::EntityTypeId;
     use crate::Extension;
@@ -480,6 +507,11 @@ pub mod entity_instance_tests {
         let property_value = json!(r_string());
         let properties = PropertyInstances::new().property(&property_name, property_value.clone());
 
+        let component_namespace = r_string();
+        let component_name = r_string();
+        let component_ty = ComponentTypeId::new_from_type(&component_namespace, &component_name);
+        let components = ComponentTypeIds::new().component(component_ty.clone());
+
         let extension_namespace = r_string();
         let extension_name = r_string();
         let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
@@ -503,6 +535,7 @@ pub mod entity_instance_tests {
             id: uuid.clone(),
             description: description.to_string(),
             properties: properties.clone(),
+            components: components.clone(),
             extensions: extensions.clone(),
         };
         assert_eq!(namespace, entity_instance.namespace());
@@ -513,6 +546,10 @@ pub mod entity_instance_tests {
         assert!(entity_instance.get(property_name.clone()).is_some());
         assert!(entity_instance.get(r_string()).is_none());
         assert_eq!(property_value.clone(), entity_instance.get(property_name.clone()).unwrap());
+        assert!(entity_instance.components.contains(&component_ty.clone()));
+        assert!(entity_instance.components.is_a(&component_ty));
+        assert!(entity_instance.is_a(&component_ty));
+        assert!(!entity_instance.is_a(&ComponentTypeId::generate_random()));
         assert!(entity_instance.extensions.has_own_extension(&extension_ty));
         assert!(entity_instance.has_own_extension(&extension_ty));
         let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
@@ -609,6 +646,10 @@ pub mod entity_instance_tests {
         let other_extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &r_string());
         let other_extension = Extension::new(&other_extension_ty, r_string(), extension_value.clone());
         let extensions = Extensions::new().extension(extension.clone()).extension(other_extension.clone());
+        let component_namespace = r_string();
+        let component_name = r_string();
+        let component_ty = ComponentTypeId::new_from_type(&component_namespace, &component_name);
+        let components = ComponentTypeIds::new().component(component_ty.clone());
 
         let ty = EntityTypeId::new_from_type(namespace.clone(), type_name.clone());
         let entity_instance = EntityInstance {
@@ -616,6 +657,7 @@ pub mod entity_instance_tests {
             id: uuid.clone(),
             description: description.to_string(),
             properties: properties.clone(),
+            components: components.clone(),
             extensions: extensions.clone(),
         };
         println!("{}", serde_json::to_string_pretty(&entity_instance).expect("Failed to serialize entity instance"));
@@ -631,6 +673,12 @@ pub mod entity_instance_tests {
   "properties": {
     "NaUPOBoqyp": "qEnGqwNeEL"
   },
+  "components": [
+    {
+      "namespace": "c_namespace",
+      "type_name": "c_name"
+    }
+  ],
   "extensions": [
     {
       "namespace": "ext_namespace",
@@ -652,6 +700,10 @@ pub mod entity_instance_tests {
         assert_eq!(1, entity_instance.properties.len());
         let property = entity_instance.properties.get("NaUPOBoqyp").expect("Missing property");
         assert_eq!("qEnGqwNeEL", property.as_str().unwrap());
+        assert_eq!(1, entity_instance.components.len());
+        assert!(entity_instance.components.contains(&ComponentTypeId::new_from_type("c_namespace", "c_name")));
+        assert!(entity_instance.components.is_a(&ComponentTypeId::new_from_type("c_namespace", "c_name")));
+        assert!(entity_instance.is_a(&ComponentTypeId::new_from_type("c_namespace", "c_name")));
         assert_eq!(2, entity_instance.extensions.len());
         assert!(entity_instance
             .extensions
