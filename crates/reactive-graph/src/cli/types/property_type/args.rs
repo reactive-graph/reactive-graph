@@ -23,3 +23,15 @@ pub(crate) struct PropertyTypeDefinitionArgs {
     // The extensions of the property
     // pub extensions: Option<Extensions>,
 }
+
+impl From<PropertyTypeDefinitionArgs> for reactive_graph_graph::PropertyType {
+    fn from(property_type: PropertyTypeDefinitionArgs) -> Self {
+        reactive_graph_graph::PropertyType::builder()
+            .name(property_type.property_name)
+            .data_type(property_type.data_type.into())
+            .socket_type(property_type.socket_type.into())
+            .mutability(property_type.mutability.into())
+            .description(property_type.description.unwrap_or_default())
+            .build()
+    }
+}

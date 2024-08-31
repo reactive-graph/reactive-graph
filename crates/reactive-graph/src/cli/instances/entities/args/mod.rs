@@ -2,6 +2,7 @@ use crate::cli::instances::entities::commands::EntityInstancesCommands;
 use crate::cli::output_format::OutputFormatArgs;
 use clap::Args;
 
+pub mod add_property;
 pub mod create;
 pub mod id;
 pub mod id_and_property;

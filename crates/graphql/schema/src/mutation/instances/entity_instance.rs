@@ -10,6 +10,7 @@ use reactive_graph_behaviour_service_api::EntityBehaviourManager;
 use reactive_graph_behaviour_service_api::EntityComponentBehaviourManager;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
@@ -91,6 +92,8 @@ impl MutationEntityInstances {
         #[graphql(desc = "Adds the given components.")] add_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Removes the given components.")] remove_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
+        #[graphql(desc = "Adds the given properties")] add_properties: Option<Vec<crate::mutation::PropertyTypeDefinition>>,
+        #[graphql(desc = "Removes the given properties")] remove_properties: Option<Vec<String>>,
     ) -> Result<GraphQLEntityInstance> {
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_instance;
@@ -133,6 +136,19 @@ impl MutationEntityInstances {
                     // Tick with respect to the mutability state
                     property_instance.tick_checked();
                 }
+            }
+        }
+        if let Some(add_properties) = add_properties {
+            for property_type in add_properties.clone() {
+                let property_type: PropertyType = property_type.into();
+                debug!("add property {} ({})", &property_type.name, &property_type.data_type);
+                entity_instance.add_property_by_type(&property_type);
+            }
+        }
+        if let Some(remove_properties) = remove_properties {
+            for property_name in remove_properties.clone() {
+                debug!("remove property {}", &property_name);
+                entity_instance.remove_property(property_name);
             }
         }
         // TODO: it's still not a transactional mutation

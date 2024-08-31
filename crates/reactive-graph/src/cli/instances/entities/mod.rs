@@ -9,6 +9,7 @@ use crate::cli::types::components::output_format::ComponentTypeIdsOutputFormatWr
 use crate::table_model::instances::properties::PropertyInstance;
 use reactive_graph_client::InexorRgfClient;
 use reactive_graph_graph::PropertyInstanceGetter;
+use reactive_graph_graph::PropertyType;
 use std::sync::Arc;
 
 pub(crate) mod args;
@@ -64,6 +65,21 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
             Ok(None) => Err(args.id_not_found()),
             Err(e) => Err(e.into()),
         },
+        EntityInstancesCommands::AddProperty(args) => {
+            let property_type: PropertyType = args.property_type.clone().into();
+            match client.instances().entity_instances().add_property(args.id, property_type.clone()).await {
+                Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+                Ok(None) => Err(args.id_not_found()),
+                Err(e) => Err(e.into()),
+            }
+        }
+        EntityInstancesCommands::RemoveProperty(args) => {
+            match client.instances().entity_instances().remove_property(args.id, args.property_name.clone()).await {
+                Ok(Some(entity_instance)) => output_format_wrapper.single(entity_instance),
+                Ok(None) => Err(args.id_not_found()),
+                Err(e) => Err(e.into()),
+            }
+        }
         EntityInstancesCommands::ListComponents(args) => match client.instances().entity_instances().get_entity_instance_by_id(args.clone()).await {
             Ok(Some(entity_instance)) => {
                 let output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = entity_instances_args.output_format.into();

@@ -491,6 +491,8 @@ type MutationEntityInstances {
   update(
     "Adds the given components."
     addComponents: [ComponentTypeId!],
+    "Adds the given properties"
+    addProperties: [PropertyTypeDefinition!],
     "Updates the entity instance with the given id."
     id: UUID,
     "Updates the entity instance with the given label."
@@ -498,7 +500,9 @@ type MutationEntityInstances {
     "Updates the given properties"
     properties: [PropertyInstanceDefinition!],
     "Removes the given components."
-    removeComponents: [ComponentTypeId!]
+    removeComponents: [ComponentTypeId!],
+    "Removes the given properties"
+    removeProperties: [String!]
   ): EntityInstance!
 }
 

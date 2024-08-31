@@ -1,9 +1,11 @@
 use std::sync::Arc;
 
+use crate::client::instances::entities::add_property::queries::add_property;
 use crate::client::instances::entities::create::queries::create;
 use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
 use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
+use crate::client::instances::entities::remove_property::queries::remove_property;
 use crate::client::instances::entities::search::queries::search;
 use crate::client::instances::entities::search::queries::SearchEntityInstancesVariables;
 use crate::client::instances::entities::set_property::queries::set_property;
@@ -13,6 +15,7 @@ use cynic::http::ReqwestExt;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::PropertyInstances;
+use reactive_graph_graph::PropertyType;
 use serde_json::Value;
 use uuid::Uuid;
 
@@ -76,6 +79,41 @@ impl EntityInstances {
             .client
             .post(self.client.url_graphql())
             .run_graphql(set_property(id, name, value))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.update)
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn add_property<ID: Into<Uuid>>(&self, id: ID, property_type: PropertyType) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(add_property(id, property_type))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.update)
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn remove_property<ID: Into<Uuid>, S: Into<String>>(
+        &self,
+        id: ID,
+        property_name: S,
+    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let property_name = property_name.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_property(id, property_name))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
