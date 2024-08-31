@@ -1,7 +1,7 @@
 mutation UninstallPlugin {
   system {
     plugins {
-      uninstall(name: "inexor-rgf-plugin-numeric")
+      uninstall(name: "reactive-graph-plugin-numeric")
     }
   }
 }

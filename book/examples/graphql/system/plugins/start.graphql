@@ -1,7 +1,7 @@
 mutation StartPlugin {
   system {
     plugins {
-      start(name: "inexor-rgf-plugin-numeric") {
+      start(name: "reactive-graph-plugin-numeric") {
         name
         description
         state
