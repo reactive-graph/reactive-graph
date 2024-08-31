@@ -1,5 +1,6 @@
 use std::sync::Arc;
 
+use crate::client::instances::entities::add_component::queries::add_component;
 use crate::client::instances::entities::add_property::queries::add_property;
 use crate::client::instances::entities::create::queries::create;
 use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
@@ -12,6 +13,7 @@ use crate::client::instances::entities::set_property::queries::set_property;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use cynic::http::ReqwestExt;
+use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::PropertyInstances;
@@ -72,8 +74,15 @@ impl EntityInstances {
         Ok(entity_instance)
     }
 
-    pub async fn set_property<ID: Into<Uuid>>(&self, id: ID, name: String, value: Value) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    pub async fn set_property<ID: Into<Uuid>, S: Into<String>, V: Into<Value>>(
+        &self,
+        id: ID,
+        name: S,
+        value: V,
+    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
         let id = id.into();
+        let name = name.into();
+        let value = value.into();
         let entity_instance = self
             .client
             .client
@@ -87,8 +96,13 @@ impl EntityInstances {
         Ok(entity_instance)
     }
 
-    pub async fn add_property<ID: Into<Uuid>>(&self, id: ID, property_type: PropertyType) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    pub async fn add_property<ID: Into<Uuid>, PT: Into<PropertyType>>(
+        &self,
+        id: ID,
+        property_type: PT,
+    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
         let id = id.into();
+        let property_type = property_type.into();
         let entity_instance = self
             .client
             .client
@@ -114,6 +128,26 @@ impl EntityInstances {
             .client
             .post(self.client.url_graphql())
             .run_graphql(remove_property(id, property_name))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.instances.entities.update)
+            .map(From::from);
+        Ok(entity_instance)
+    }
+
+    pub async fn add_component<ID: Into<Uuid>, C: Into<ComponentTypeId>>(
+        &self,
+        id: ID,
+        component_ty: C,
+    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let component_ty = component_ty.into();
+        let entity_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(add_component(id, component_ty))
             .await
             .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
             .data
