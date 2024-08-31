@@ -1,7 +1,7 @@
-use crate::cli::instances::entities::args::add_component::AddComponentArgs;
 use crate::cli::instances::entities::args::add_property::AddPropertyArgs;
 use crate::cli::instances::entities::args::create::CreateEntityInstanceArgs;
 use crate::cli::instances::entities::args::id::IdArgs;
+use crate::cli::instances::entities::args::id_and_component::IdAndComponentArgs;
 use crate::cli::instances::entities::args::id_and_property::IdAndPropertyArgs;
 use crate::cli::instances::entities::args::label::LabelArgs;
 use crate::cli::instances::entities::args::search::SearchEntityInstancesArgs;
@@ -39,7 +39,10 @@ pub(crate) enum EntityInstancesCommands {
     ListComponents(IdArgs),
     /// Adds a component to an entity instance.
     #[non_exhaustive]
-    AddComponent(AddComponentArgs),
+    AddComponent(IdAndComponentArgs),
+    /// Removes a component from an entity instance.
+    #[non_exhaustive]
+    RemoveComponent(IdAndComponentArgs),
     /// Creates a new entity type.
     #[non_exhaustive]
     Create(CreateEntityInstanceArgs),
