@@ -1,6 +1,6 @@
 query DependenciesOfAPlugin {
   system {
-    plugins(name: "inexor-rgf-plugin-comparison") {
+    plugins(name: "reactive-graph-plugin-comparison") {
       name
       state
       dependencies {
