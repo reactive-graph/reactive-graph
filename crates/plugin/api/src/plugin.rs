@@ -4,7 +4,7 @@ use crate::injectable;
 use crate::PluginActivationError;
 use crate::PluginDeactivationError;
 
-pub const PLUGIN_NAME_PREFIX: &str = "inexor-rgf-plugin-";
+pub const PLUGIN_NAME_PREFIX: &str = "reactive-graph-plugin-";
 
 #[cfg_attr(feature = "springtime", injectable)]
 #[async_trait]
