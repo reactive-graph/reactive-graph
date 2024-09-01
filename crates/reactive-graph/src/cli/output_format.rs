@@ -11,6 +11,7 @@ pub(crate) enum OutputFormatArgs {
     // The output is formatted as a table.
     #[default]
     Table,
+    Count,
     // The output is returned as JSON.
     Json,
     // The output is returned as JSON5.
