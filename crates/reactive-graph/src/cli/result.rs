@@ -103,6 +103,10 @@ impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOpti
                 CommandResultBuilderContent::Single(single_object) => Ok(DefaultTableContainer::<S, T, O>::from(single_object).into()),
                 CommandResultBuilderContent::Collection(collection) => Ok(DefaultTableContainer::<S, T, O>::from(collection).into()),
             },
+            OutputFormatArgs::Count => match self.object_or_collection {
+                CommandResultBuilderContent::Single(_) => Ok("1 result".into()),
+                CommandResultBuilderContent::Collection(collection) => Ok(format!("{} result(s)", collection.len()).into()),
+            },
             OutputFormatArgs::Json => match self.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) => Ok(serde_json::to_value(single_object)
                     .map_err(|e| CommandError::SerializationError(SerializationError::Json(e)))?
