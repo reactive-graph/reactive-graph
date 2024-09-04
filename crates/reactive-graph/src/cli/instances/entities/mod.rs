@@ -6,11 +6,11 @@ use crate::cli::instances::entities::output_format::EntityInstancesOutputFormatW
 use crate::cli::instances::properties::output_format::PropertyInstancesOutputFormatWrapper;
 use crate::cli::result::CommandResult;
 use crate::cli::types::components::output_format::ComponentTypeIdsOutputFormatWrapper;
-use crate::table_model::instances::properties::PropertyInstance;
 use reactive_graph_client::InexorRgfClient;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyType;
+use reactive_graph_table_model::instances::properties::PropertyInstance;
 use std::sync::Arc;
 
 pub(crate) mod args;

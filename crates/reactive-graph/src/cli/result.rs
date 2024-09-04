@@ -2,9 +2,9 @@ use crate::cli::error::CommandError;
 use crate::cli::error::CommandError::NotImplemented;
 use crate::cli::error::SerializationError;
 use crate::cli::output_format::OutputFormatArgs;
-use crate::table_model::container::DefaultTableContainer;
-use crate::table_model::container::TableContainer;
-use crate::table_model::container::TableOptions;
+use reactive_graph_table_model::container::DefaultTableContainer;
+use reactive_graph_table_model::container::TableContainer;
+use reactive_graph_table_model::container::TableOptions;
 use serde::Serialize;
 use serde_json::Value;
 use std::fmt::Display;
@@ -13,7 +13,7 @@ use std::marker::PhantomData;
 use tabled::Tabled;
 use toml::map::Map;
 
-pub(crate) enum CommandResponse {
+pub enum CommandResponse {
     Message(String),
     Value(Value),
     #[cfg(feature = "toml")]
@@ -21,7 +21,7 @@ pub(crate) enum CommandResponse {
     Table(Box<dyn TableContainer>),
 }
 
-pub(crate) type CommandResult = Result<CommandResponse, CommandError>;
+pub type CommandResult = Result<CommandResponse, CommandError>;
 
 impl From<String> for CommandResponse {
     fn from(message: String) -> Self {

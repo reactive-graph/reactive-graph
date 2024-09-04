@@ -59,6 +59,7 @@ reactive-graph-runtime-model = { version = "0.10.0", path = "../runtime/model" }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api" }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
 reactive-graph-client = { version = "0.10.0", path = "../client", optional = true }
+reactive-graph-table-model = { version = "0.10.0", path = "../table-model", optional = true }
 
 [features]
 default = ["client", "json5", "toml"]

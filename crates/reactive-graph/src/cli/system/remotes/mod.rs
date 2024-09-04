@@ -5,8 +5,8 @@ use crate::cli::error::CommandError::NoChange;
 use crate::cli::result::CommandResult;
 use crate::cli::system::remotes::args::RemotesArgs;
 use crate::cli::system::remotes::commands::RemotesCommands;
-use crate::table_model::system::instance::InstanceInfos;
 use reactive_graph_client::InexorRgfClient;
+use reactive_graph_table_model::system::instance::InstanceInfos;
 
 pub(crate) mod args;
 pub(crate) mod commands;
