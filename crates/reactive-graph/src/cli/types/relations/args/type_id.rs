@@ -32,3 +32,24 @@ impl From<&RelationTypeIdArgs> for RelationTypeIdVariables {
         ty.into()
     }
 }
+
+/// The relation type as option.
+#[derive(Args, Debug, Clone)]
+pub(crate) struct RelationTypeIdOptions {
+    /// The entity type namespace.
+    #[clap(long)]
+    pub namespace: Option<String>,
+
+    /// The entity type name.
+    #[clap(short, long)]
+    pub name: Option<String>,
+}
+
+impl From<RelationTypeIdOptions> for Option<RelationTypeId> {
+    fn from(ty: RelationTypeIdOptions) -> Self {
+        if ty.namespace.is_none() && ty.name.is_none() {
+            return None;
+        }
+        Some(RelationTypeId::new_from_type(ty.namespace.unwrap_or_default(), ty.name.unwrap_or_default()))
+    }
+}
