@@ -1,6 +1,6 @@
 use clap::Args;
 
-use reactive_graph_client::client::plugin::mapping::SearchPluginVariables;
+use reactive_graph_client::client::plugin::variables::search::variables::SearchPluginVariables;
 
 use crate::cli::system::plugin::commands::PluginsCommands;
 

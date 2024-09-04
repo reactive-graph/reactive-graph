@@ -6,8 +6,8 @@ use crate::cli::error::CommandError::NotFound;
 use crate::cli::result::CommandResult;
 use crate::cli::system::plugin::args::PluginsArgs;
 use crate::cli::system::plugin::commands::PluginsCommands;
-use crate::table_model::system::plugin::Plugins;
 use reactive_graph_client::InexorRgfClient;
+use reactive_graph_table_model::system::plugin::Plugins;
 
 pub(crate) mod args;
 pub(crate) mod commands;
@@ -65,7 +65,7 @@ pub(crate) async fn plugins(client: &Arc<InexorRgfClient>, plugins_args: Plugins
 // }
 //
 // fn print_plugins(plugins: Vec<Plugin>) {
-//     let plugins: Vec<crate::table_model::system::plugin::Plugin> = plugins.into_iter().map(|p| p.into()).collect();
+//     let plugins: Vec<reactive-graph-table-model::system::plugin::Plugin> = plugins.into_iter().map(|p| p.into()).collect();
 //     let table = Table::new(plugins)
 //         .with(Style::extended())
 //         .with(

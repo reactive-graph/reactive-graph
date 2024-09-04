@@ -4,8 +4,8 @@ use crate::cli::error::CommandError;
 use crate::cli::result::CommandResult;
 use crate::cli::system::instance::args::InstanceInfoArgs;
 use crate::cli::system::instance::commands::InstanceInfoCommands;
-use crate::table_model::system::instance::InstanceInfos;
 use reactive_graph_client::InexorRgfClient;
+use reactive_graph_table_model::system::instance::InstanceInfos;
 
 pub(crate) mod args;
 pub(crate) mod commands;

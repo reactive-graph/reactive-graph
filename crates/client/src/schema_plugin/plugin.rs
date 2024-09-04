@@ -29,3 +29,16 @@ pub struct PluginDependents {
 pub struct PluginUnsatisfiedDependencies {
     pub unsatisfied_dependencies: Vec<Plugin>,
 }
+
+impl From<&Plugin> for reactive_graph_plugin_model::Plugin {
+    fn from(plugin: &Plugin) -> Self {
+        reactive_graph_plugin_model::Plugin {
+            name: plugin.name.clone(),
+            short_name: plugin.short_name.clone(),
+            state: plugin.state.clone(),
+            version: plugin.version.clone(),
+            plugin_api_version: plugin.plugin_api_version.clone(),
+            rustc_version: plugin.rustc_version.clone(),
+        }
+    }
+}

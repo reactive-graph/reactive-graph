@@ -1,6 +1,6 @@
 use crate::cli::result::CommandResult;
 use crate::cli::result::CommandResultBuilder;
-use crate::table_model::container::TableOptions;
+use reactive_graph_table_model::container::TableOptions;
 
 use serde::Serialize;
 use std::marker::PhantomData;

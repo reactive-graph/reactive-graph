@@ -1,10 +1,13 @@
 use crate::cli::output_format::OutputFormatWrapper;
-use crate::table_model;
-use crate::table_model::types::component::ComponentTypeIdsTableOptions;
-use crate::table_model::types::component::ComponentsTableOptions;
 
-pub(crate) type ComponentsOutputFormatWrapper =
-    OutputFormatWrapper<reactive_graph_graph::Component, table_model::types::component::Component, ComponentsTableOptions>;
+pub(crate) type ComponentsOutputFormatWrapper = OutputFormatWrapper<
+    reactive_graph_graph::Component,
+    reactive_graph_table_model::types::component::Component,
+    reactive_graph_table_model::types::component::ComponentsTableOptions,
+>;
 
-pub(crate) type ComponentTypeIdsOutputFormatWrapper =
-    OutputFormatWrapper<reactive_graph_graph::ComponentTypeId, table_model::types::component::ComponentTypeId, ComponentTypeIdsTableOptions>;
+pub(crate) type ComponentTypeIdsOutputFormatWrapper = OutputFormatWrapper<
+    reactive_graph_graph::ComponentTypeId,
+    reactive_graph_table_model::types::component::ComponentTypeId,
+    reactive_graph_table_model::types::component::ComponentTypeIdsTableOptions,
+>;

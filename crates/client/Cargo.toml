@@ -19,6 +19,7 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../graph" }
 reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
+reactive-graph-plugin-model = { version = "0.10.0", path = "../plugin/model" }
 
 [dev-dependencies]
 reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api" }
