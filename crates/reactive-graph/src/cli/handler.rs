@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use crate::cli::commands::ClientCommands;
 use crate::cli::instances::entities::entity_instances;
+use crate::cli::instances::relations::relation_instances;
 use crate::cli::result::CommandResult;
 use crate::cli::system::command::execute_command;
 use crate::cli::system::instance::instance_info;
@@ -27,7 +28,7 @@ pub(crate) async fn handle_command(client: &Arc<InexorRgfClient>, command: Clien
         ClientCommands::RelationTypes(args) => relation_types(client, args).await,
         // TODO: Flow Types
         ClientCommands::EntityInstances(args) => entity_instances(client, args).await,
-        // TODO: Relation Instances
+        ClientCommands::RelationInstances(args) => relation_instances(client, args).await,
         // TODO: Flow Instances
     }
 }

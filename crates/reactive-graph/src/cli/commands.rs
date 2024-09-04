@@ -1,4 +1,5 @@
 use crate::cli::instances::entities::args::EntityInstancesArgs;
+use crate::cli::instances::relations::args::RelationInstancesArgs;
 use crate::cli::system::command::args::ExecuteCommandArgs;
 use crate::cli::system::instance::args::InstanceInfoArgs;
 use crate::cli::system::plugin::args::PluginsArgs;
@@ -44,7 +45,12 @@ pub(crate) enum ClientCommands {
     #[non_exhaustive]
     RelationTypes(RelationTypesArgs),
 
+    // --- Instances ---
     /// Manage entity instances.
     #[non_exhaustive]
     EntityInstances(EntityInstancesArgs),
+
+    /// Manage relation instances.
+    #[non_exhaustive]
+    RelationInstances(RelationInstancesArgs),
 }
