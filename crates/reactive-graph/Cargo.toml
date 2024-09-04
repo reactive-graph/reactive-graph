@@ -13,6 +13,7 @@ name = "reactive-graph"
 maintainer-scripts = "debian/maintainer-scripts"
 assets = [
     ["target/release/reactive-graph", "usr/bin/reactive-graph", "755"],
+    ["target/release/reactive-graph-client", "usr/bin/reactive-graph-client", "755"],
     ["../../README.md", "usr/share/doc/reactive-graph/README", "644"],
     ["../../CHANGELOG.md", "usr/share/doc/reactive-graph/CHANGELOG", "644"],
     ["../../CODE_OF_CONDUCT.md", "usr/share/doc/reactive-graph/CODE_OF_CONDUCT", "644"],
