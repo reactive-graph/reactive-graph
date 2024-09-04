@@ -1,4 +1,4 @@
-# Inexor Reactive Graph Flow
+# Reactive Graph
 
 - [About](./About.md)
     - [Design Goals](./About_Design_Goals.md)
