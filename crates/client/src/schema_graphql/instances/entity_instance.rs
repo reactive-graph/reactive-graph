@@ -10,11 +10,11 @@ use std::ops::Deref;
 #[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
 pub struct EntityInstance {
     #[cynic(rename = "type")]
-    ty: Option<EntityType>,
-    id: UUID,
-    description: String,
-    properties: Vec<PropertyInstance>,
-    components: Vec<Component>,
+    pub ty: Option<EntityType>,
+    pub id: UUID,
+    pub description: String,
+    pub properties: Vec<PropertyInstance>,
+    pub components: Vec<Component>,
 }
 
 impl EntityInstance {
