@@ -1,4 +1,4 @@
-use clap::Args;
+use clap::Parser;
 
 use crate::cli::commands::ClientCommands;
 use reactive_graph_remotes_model::InstanceAddress;
@@ -9,7 +9,8 @@ use reactive_graph_remotes_model::DEFAULT_ENDPOINT_RUNTIME;
 use reactive_graph_remotes_model::DEFAULT_HOSTNAME;
 use reactive_graph_remotes_model::DEFAULT_PORT;
 
-#[derive(Args, Debug, Clone)]
+#[derive(Parser, Debug, Clone)]
+#[command(name = "reactive-graph-client", author, version, about, long_about = None)]
 pub struct ClientArgs {
     /// The hostname to connect to.
     #[arg(long)]
@@ -42,6 +43,10 @@ pub struct ClientArgs {
     /// The authentication token.
     #[arg(long)]
     bearer: Option<String>,
+
+    /// If true, generates command line documentation.
+    #[arg(long, hide = true)]
+    pub(crate) markdown_help: bool,
 
     #[command(subcommand)]
     pub(crate) commands: Option<ClientCommands>,

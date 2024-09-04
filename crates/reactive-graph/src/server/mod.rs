@@ -1,8 +1,10 @@
+pub mod cli_args;
+
 use std::time::Duration;
 
 use reactive_graph_runtime_impl::RuntimeBuilder;
 
-use crate::cli_args::CliArguments;
+use cli_args::CliArguments;
 
 pub(crate) async fn server(cli_args: CliArguments) {
     RuntimeBuilder::new()

@@ -10,23 +10,25 @@ use log4rs::Config;
 
 #[cfg(feature = "client")]
 use crate::cli::client;
-use crate::cli_args::CliArguments;
-#[cfg(feature = "client")]
-use crate::cli_args::Commands;
+#[cfg(feature = "server")]
+use crate::server::cli_args::CliArguments;
+#[cfg(feature = "server")]
+use crate::server::cli_args::Commands;
+#[cfg(feature = "server")]
 use crate::server::server;
 
 #[cfg(feature = "client")]
 mod cli;
-mod cli_args;
+#[cfg(feature = "server")]
 mod server;
-#[cfg(feature = "client")]
-mod table_model;
 
 #[global_allocator]
 static ALLOCATOR: System = System;
 
 #[tokio::main]
 async fn main() {
+    #[cfg(feature = "server")]
+    {}
     let cli_args = CliArguments::parse();
 
     // Initialize logging
