@@ -41,4 +41,7 @@ name = "list_remotes"
 name = "list_components"
 
 [[example]]
+name = "list_component_type_ids"
+
+[[example]]
 name = "dump_components"
