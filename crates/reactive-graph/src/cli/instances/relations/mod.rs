@@ -27,11 +27,11 @@ pub(crate) async fn relation_instances(client: &Arc<InexorRgfClient>, relation_i
             Ok(None) => Err(NoContent("No relation instances found".to_string())),
             Err(e) => Err(e.into()),
         },
-        // RelationInstancesCommands::Get(args) => match client.instances().relation_instances().get_relation_instance_by_id(args.clone()).await {
-        //     Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
-        //     Ok(None) => Err(args.not_found()),
-        //     Err(e) => Err(e.into()),
-        // },
+        RelationInstancesCommands::Get(args) => match client.instances().relation_instances().get_by_id(&args).await {
+            Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
         // RelationInstancesCommands::GetByLabel(args) => match client.instances().relation_instances().get_relation_instance_by_label(args.label.clone()).await {
         //     Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
         //     Ok(None) => Err(args.not_found()),

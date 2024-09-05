@@ -2,6 +2,7 @@ use crate::cli::instances::relations::commands::RelationInstancesCommands;
 use crate::cli::output_format::OutputFormatArgs;
 use clap::Args;
 
+pub mod id;
 pub mod search;
 
 #[derive(Args, Debug, Clone)]

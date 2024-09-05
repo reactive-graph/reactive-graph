@@ -10,6 +10,8 @@ use reactive_graph_behaviour_service_api::RelationBehaviourManager;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyType;
+use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationInstanceTypeId;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
@@ -40,7 +42,7 @@ impl MutationRelationInstances {
     /// For example a given type name "default_connector--property_name--property_name" will match
     /// as relation type "default_connector".
     ///
-    /// Furthermore the outbound and the inbound entity instance must exist.
+    /// Furthermore, the outbound and the inbound entity instance must exist.
     ///
     /// The given properties consists of a list of pairs of property name and property value.
     /// If properties are not provided, default values will be used depending on the data type
@@ -49,6 +51,7 @@ impl MutationRelationInstances {
         &self,
         context: &Context<'_>,
         #[graphql(desc = "Specifies the outbound id, the inbound id, the relation type and the instance_id.")] edge_key: GraphQLRelationInstanceId,
+        #[graphql(desc = "Description of the entity instance.")] description: Option<String>,
         #[graphql(desc = "Creates the relation instance with the given components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLRelationInstance> {
@@ -72,20 +75,32 @@ impl MutationRelationInstances {
         }
 
         let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, relation_type.properties);
+
+        let relation_instance = RelationInstance::builder()
+            .outbound_id(edge_key.outbound_id)
+            .ty(relation_instance_ty)
+            .inbound_id(edge_key.inbound_id)
+            .description(description.unwrap_or_default())
+            .properties(properties)
+            .build();
+
         let id: RelationInstanceId = edge_key.into();
 
-        let relation_instance = relation_instance_manager
-            .create_reactive_relation(&id, properties)
-            .map_err(|e| Error::new(format!("Failed to create relation instance: {:?}", e)))?;
+        let relation_instance = relation_instance_manager.create_reactive_instance(relation_instance);
 
-        if let Some(components) = components {
-            for component in components {
-                let component = component.into();
-                // TODO: handle components which have not been added
-                let _ = relation_instance_manager.add_component(&id, &component);
+        match relation_instance {
+            Ok(relation_instance) => {
+                if let Some(components) = components {
+                    for component in components {
+                        let component = component.into();
+                        // TODO: handle components which have not been added
+                        let _ = relation_instance_manager.add_component(&id, &component);
+                    }
+                }
+                Ok(relation_instance.into())
             }
+            Err(e) => Err(e.into()),
         }
-        Ok(relation_instance.into())
     }
 
     /// Creates a connector from a property of the outbound entity instance to a property of the inbound entity instance.
@@ -135,7 +150,7 @@ impl MutationRelationInstances {
         }
 
         // Construct the instance_id because between two nodes only one edge with the same type
-        // can exist. Therefore we construct an unique type which contains the names of the outbound
+        // can exist. Therefore, we construct a unique type which contains the names of the outbound
         // property and the inbound property. This allows *exactly one* connector (of the given
         // connector type) between the two properties.
         let instance_id = format!("{}__{}", outbound_property_name, inbound_property_name);
@@ -171,6 +186,8 @@ impl MutationRelationInstances {
         #[graphql(desc = "Adds the components with the given name")] add_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Removes the components with the given name")] remove_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
+        #[graphql(desc = "Adds the given properties")] add_properties: Option<Vec<crate::mutation::PropertyTypeDefinition>>,
+        #[graphql(desc = "Removes the given properties")] remove_properties: Option<Vec<String>>,
     ) -> Result<GraphQLRelationInstance> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
@@ -222,6 +239,19 @@ impl MutationRelationInstances {
                     // Tick with respect to the mutability state
                     property_instance.tick_checked();
                 }
+            }
+        }
+        if let Some(add_properties) = add_properties {
+            for property_type in add_properties.clone() {
+                let property_type: PropertyType = property_type.into();
+                debug!("add property {} ({})", &property_type.name, &property_type.data_type);
+                relation_instance.add_property_by_type(&property_type);
+            }
+        }
+        if let Some(remove_properties) = remove_properties {
+            for property_name in remove_properties.clone() {
+                debug!("remove property {}", &property_name);
+                relation_instance.remove_property(property_name);
             }
         }
         // TODO: it's still not a transactional mutation

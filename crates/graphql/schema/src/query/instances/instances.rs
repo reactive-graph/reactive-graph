@@ -18,6 +18,7 @@ use reactive_graph_reactive_service_api::ReactiveRelationManager;
 use crate::mutation::BehaviourTypeIdDefinition;
 use crate::mutation::ComponentTypeIdDefinition;
 use crate::mutation::EntityTypeIdDefinition;
+use crate::mutation::GraphQLRelationInstanceId;
 use crate::mutation::RelationTypeIdDefinition;
 use crate::query::GraphQLEntityInstance;
 use crate::query::GraphQLFlowInstance;
@@ -161,6 +162,7 @@ impl Instances {
     async fn relations(
         &self,
         context: &Context<'_>,
+        #[graphql(desc = "Returns only the relation instance with the given id.")] id: Option<GraphQLRelationInstanceId>,
         #[graphql(desc = "Filters the relation instances by the entity type of the outbound entity instance.")] outbound_entity_ty: Option<
             EntityTypeIdDefinition,
         >,
@@ -181,6 +183,20 @@ impl Instances {
         #[graphql(name = "properties", desc = "Query by properties.")] property_query: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<Vec<GraphQLRelationInstance>> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
+        if id.is_some() {
+            let id = id.unwrap();
+            let id = id.into();
+            let relation_instance = relation_instance_manager.get(&id).map(|relation_instance| {
+                let relation_instance: GraphQLRelationInstance = relation_instance.into();
+                relation_instance
+            });
+            return if relation_instance.is_some() {
+                Ok(vec![relation_instance.unwrap()])
+            } else {
+                Ok(Vec::new())
+            };
+        }
+
         let outbound_entity_ty: Option<EntityTypeId> = outbound_entity_ty.map(|outbound_entity_ty| outbound_entity_ty.into());
         let outbound_component_ty: Option<ComponentTypeId> = outbound_component_ty.map(|outbound_component_ty| outbound_component_ty.into());
         let relation_ty: Option<RelationTypeId> = relation_ty.map(|relation_ty| relation_ty.into());

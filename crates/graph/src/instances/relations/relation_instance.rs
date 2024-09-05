@@ -28,6 +28,9 @@ use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
 use crate::AddExtensionError;
+use crate::ComponentTypeId;
+use crate::ComponentTypeIdContainer;
+use crate::ComponentTypeIds;
 use crate::Extension;
 use crate::ExtensionContainer;
 use crate::ExtensionTypeId;
@@ -52,7 +55,7 @@ use reactive_graph_test_utils::r_string;
 ///
 /// The relation instance is of a relation type. The relation type defines
 /// the entity types of the outbound entity instance and the inbound entity
-/// instance. Furthermore the relation type defines which properties
+/// instance. Furthermore, the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
 /// In contrast to the relation type, the relation instance stores values/
@@ -77,13 +80,18 @@ pub struct RelationInstance {
 
     /// The properties of then relation instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// <https://docs.serde.rs/serde_json/value/enum.Value.html>
     #[serde(default = "PropertyInstances::new")]
     #[builder(default, setter(into))]
     pub properties: PropertyInstances,
+
+    /// The components of the entity instance.
+    #[serde(default = "ComponentTypeIds::new")]
+    #[builder(default, setter(into))]
+    pub components: ComponentTypeIds,
 
     /// Relation instance specific extensions.
     #[serde(default = "Extensions::new")]
@@ -100,6 +108,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -118,6 +127,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -137,6 +147,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -155,6 +166,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -167,6 +179,7 @@ impl RelationInstance {
             inbound_id,
             description: String::new(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -228,6 +241,28 @@ impl PropertyInstanceGetter for RelationInstance {
 impl MutablePropertyInstanceSetter for RelationInstance {
     fn set<S: Into<String>>(&mut self, property_name: S, value: Value) {
         self.properties.set(property_name.into(), value);
+    }
+}
+
+impl ComponentTypeIdContainer for RelationInstance {
+    fn is_a(&self, ty: &ComponentTypeId) -> bool {
+        self.components.is_a(ty)
+    }
+
+    fn add_component<C: Into<ComponentTypeId>>(&self, ty: C) -> bool {
+        self.components.add_component(ty)
+    }
+
+    fn add_components<C: Into<ComponentTypeIds>>(&mut self, components_to_add: C) {
+        self.components.add_components(components_to_add)
+    }
+
+    fn remove_component(&self, ty: &ComponentTypeId) -> Option<ComponentTypeId> {
+        self.components.remove_component(ty)
+    }
+
+    fn remove_components<C: Into<ComponentTypeIds>>(&mut self, components_to_remove: C) {
+        self.components.remove_components(components_to_remove)
     }
 }
 
@@ -482,6 +517,9 @@ mod tests {
     use serde_json::json;
     use uuid::Uuid;
 
+    use crate::ComponentTypeId;
+    use crate::ComponentTypeIdContainer;
+    use crate::ComponentTypeIds;
     use crate::Extension;
     use crate::ExtensionContainer;
     use crate::ExtensionTypeId;
@@ -541,6 +579,11 @@ mod tests {
         let property_value = json!(r_string());
         let properties = PropertyInstances::new().property(&property_name, property_value.clone());
 
+        let component_namespace = r_string();
+        let component_name = r_string();
+        let component_ty = ComponentTypeId::new_from_type(&component_namespace, &component_name);
+        let components = ComponentTypeIds::new().component(component_ty.clone());
+
         let extension_namespace = r_string();
         let extension_name = r_string();
         let extension_ty = ExtensionTypeId::new_from_type(&extension_namespace, &extension_name);
@@ -561,6 +604,7 @@ mod tests {
             inbound_id,
             description: description.to_string(),
             properties: properties.clone(),
+            components: components.clone(),
             extensions: extensions.clone(),
         };
         assert_eq!(namespace, relation_instance.namespace());
@@ -572,6 +616,10 @@ mod tests {
         assert!(relation_instance.get(property_name.clone()).is_some());
         assert!(relation_instance.get(r_string()).is_none());
         assert_eq!(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
+        assert!(relation_instance.components.contains(&component_ty.clone()));
+        assert!(relation_instance.components.is_a(&component_ty));
+        assert!(relation_instance.is_a(&component_ty));
+        assert!(!relation_instance.is_a(&ComponentTypeId::generate_random()));
         assert!(relation_instance.extensions.has_own_extension(&extension_ty));
         assert!(relation_instance.has_own_extension(&extension_ty));
         let non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
@@ -600,6 +648,7 @@ mod tests {
             inbound_id,
             description: r_string(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         };
         // RelationInstanceId::
@@ -638,6 +687,7 @@ mod tests {
             inbound_id,
             description: r_string(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         };
 
@@ -852,6 +902,7 @@ mod tests {
             inbound_id,
             description: description.to_string(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         };
 

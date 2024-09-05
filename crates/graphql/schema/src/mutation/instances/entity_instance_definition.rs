@@ -13,11 +13,11 @@ use reactive_graph_graph::PropertyInstances;
 use crate::query::GraphQLExtension;
 use crate::query::GraphQLPropertyInstance;
 
-/// Entity instances represents an typed object which contains properties.
+/// Entity instances represents a typed object which contains properties.
 ///
 /// The entity type defines the properties (name, data type and socket type).
 ///
-/// In contrast to the entity type the entity instance stores values in it's
+/// In contrast to the entity type the entity instance stores values in its
 /// properties.
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "EntityInstanceDefinition")]
@@ -37,8 +37,8 @@ pub struct GraphQLEntityInstanceDefinition {
 
     /// The properties of then entity instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     pub properties: Vec<GraphQLPropertyInstance>,

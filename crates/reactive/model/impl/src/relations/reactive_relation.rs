@@ -535,6 +535,7 @@ impl From<ReactiveRelation> for RelationInstance {
             inbound_id: relation.inbound.id,
             description: relation.description.clone(),
             properties: PropertyInstances::from(&relation.properties),
+            components: relation.components.clone(),
             extensions: Extensions::new(),
         }
     }
@@ -548,6 +549,7 @@ impl From<&ReactiveRelation> for RelationInstance {
             inbound_id: relation.inbound.id,
             description: relation.description.clone(),
             properties: PropertyInstances::from(&relation.properties),
+            components: relation.components.clone(),
             extensions: Extensions::new(),
         }
     }

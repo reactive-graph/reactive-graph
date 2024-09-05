@@ -10,7 +10,7 @@ use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 /// The primary key of an edge consists of the outbound id, the
 /// type name and the inbound id.
 #[derive(Debug, Clone, InputObject)]
-#[graphql(name = "EdgeKeyDefinition")]
+#[graphql(name = "RelationInstanceIdDefinition")]
 pub struct GraphQLRelationInstanceId {
     /// The id of the outbound entity instance.
     pub outbound_id: Uuid,
@@ -46,13 +46,13 @@ impl fmt::Display for GraphQLRelationInstanceId {
 }
 
 impl From<GraphQLRelationInstanceId> for RelationInstanceId {
-    fn from(edge_key: GraphQLRelationInstanceId) -> Self {
-        RelationInstanceId::new(edge_key.outbound_id, edge_key.ty().clone(), edge_key.inbound_id)
+    fn from(relation_instance_id: GraphQLRelationInstanceId) -> Self {
+        RelationInstanceId::new(relation_instance_id.outbound_id, relation_instance_id.ty().clone(), relation_instance_id.inbound_id)
     }
 }
 
 impl From<&GraphQLRelationInstanceId> for RelationInstanceId {
-    fn from(edge_key: &GraphQLRelationInstanceId) -> Self {
-        RelationInstanceId::new(edge_key.outbound_id, edge_key.ty().clone(), edge_key.inbound_id)
+    fn from(relation_instance_id: &GraphQLRelationInstanceId) -> Self {
+        RelationInstanceId::new(relation_instance_id.outbound_id, relation_instance_id.ty().clone(), relation_instance_id.inbound_id)
     }
 }

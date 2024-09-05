@@ -381,6 +381,8 @@ type Instances {
     behaviours: [BehaviourTypeId!],
     "Filters the relation instances by applied components."
     components: [ComponentTypeId!],
+    "Returns only the relation instance with the given id."
+    id: RelationInstanceIdDefinition,
     "Filters the relation instances by the component of the inbound entity instance."
     inboundComponentTy: ComponentTypeId,
     "Filters the relation instances by the entity type of the inbound entity instance."
@@ -441,7 +443,7 @@ type MutationEntityInstances {
 
   The entity type must exist.
 
-  Optionally, an UUID can be specified. If no UUID is specified one will be generated
+  Optionally, a UUID can be specified. If no UUID is specified one will be generated
   randomly.
 
   The given properties consists of a list of pairs of property name and property value.
@@ -546,7 +548,7 @@ type MutationFlowInstances {
   "Adds an existing entity instance by id to the given flow by id"
   addEntity(entityId: UUID!, flowId: UUID!): FlowInstance!
   "Adds an existing relation instance by edge_key to the given flow by id"
-  addRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!): FlowInstance!
+  addRelation(edgeKey: RelationInstanceIdDefinition!, flowId: UUID!): FlowInstance!
   """
 
   Creates a new flow and a corresponding wrapper entity instance.
@@ -580,7 +582,7 @@ type MutationFlowInstances {
   """
   createFromType(namespace: String!, properties: [PropertyInstanceDefinition!], typeName: String!, variables: [PropertyInstanceDefinition!]): FlowInstance!
   "Creates a new relation instance and adds the relation instance to the given flow by id."
-  createRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!, properties: [PropertyInstanceDefinition!]): FlowInstance!
+  createRelation(edgeKey: RelationInstanceIdDefinition!, flowId: UUID!, properties: [PropertyInstanceDefinition!]): FlowInstance!
   """
 
   Imports the given flow. Creates entity instances and relation instances which are contained
@@ -590,7 +592,7 @@ type MutationFlowInstances {
   "Removes an entity instance from flow."
   removeEntity(entityId: UUID!, flowId: UUID!): FlowInstance!
   "Removes an existing relation instance by edge_key from the given flow by id"
-  removeRelation(edgeKey: EdgeKeyDefinition!, flowId: UUID!): FlowInstance!
+  removeRelation(edgeKey: RelationInstanceIdDefinition!, flowId: UUID!): FlowInstance!
 }
 
 "Mutations on instances."
@@ -605,7 +607,7 @@ type MutationInstances {
 
 "Mutation of relation instances."
 type MutationRelationInstances {
-  connect(edgeKey: EdgeKeyDefinition!, type: BehaviourTypeId!): RelationInstance!
+  connect(edgeKey: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
   """
 
   Creates a new relation instance with the given edge_key.
@@ -618,7 +620,7 @@ type MutationRelationInstances {
   For example a given type name "default_connector--property_name--property_name" will match
   as relation type "default_connector".
 
-  Furthermore the outbound and the inbound entity instance must exist.
+  Furthermore, the outbound and the inbound entity instance must exist.
 
   The given properties consists of a list of pairs of property name and property value.
   If properties are not provided, default values will be used depending on the data type
@@ -627,8 +629,10 @@ type MutationRelationInstances {
   create(
     "Creates the relation instance with the given components."
     components: [ComponentTypeId!],
+    "Description of the entity instance."
+    description: String,
     "Specifies the outbound id, the inbound id, the relation type and the instance_id."
-    edgeKey: EdgeKeyDefinition!,
+    edgeKey: RelationInstanceIdDefinition!,
     properties: [PropertyInstanceDefinition!]
   ): RelationInstance!
   """
@@ -654,9 +658,9 @@ type MutationRelationInstances {
     type: RelationTypeId!
   ): RelationInstance!
   "Deletes an relation instance."
-  delete(edgeKey: EdgeKeyDefinition!): Boolean!
-  disconnect(edgeKey: EdgeKeyDefinition!, type: BehaviourTypeId!): RelationInstance!
-  reconnect(edgeKey: EdgeKeyDefinition!, type: BehaviourTypeId!): RelationInstance!
+  delete(edgeKey: RelationInstanceIdDefinition!): Boolean!
+  disconnect(edgeKey: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
+  reconnect(edgeKey: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
   """
 
   Manually tick the relation instance. This means for each property of the entity instance
@@ -668,16 +672,20 @@ type MutationRelationInstances {
   In case of the default_connector it does NOT lead to a new value propagation, because the
   reactive streams are not consumed by the default_connector behaviour.
   """
-  tick(edgeKey: EdgeKeyDefinition!): RelationInstance!
+  tick(edgeKey: RelationInstanceIdDefinition!): RelationInstance!
   "Updates the properties of the given relation instance by edge key."
   update(
     "Adds the components with the given name"
     addComponents: [ComponentTypeId!],
-    edgeKey: EdgeKeyDefinition!,
+    "Adds the given properties"
+    addProperties: [PropertyTypeDefinition!],
+    edgeKey: RelationInstanceIdDefinition!,
     "Updates the given properties"
     properties: [PropertyInstanceDefinition!],
     "Removes the components with the given name"
-    removeComponents: [ComponentTypeId!]
+    removeComponents: [ComponentTypeId!],
+    "Removes the given properties"
+    removeProperties: [String!]
   ): RelationInstance!
 }
 
@@ -956,7 +964,7 @@ type Subscription {
     propertyName: String!
   ): PropertyInstance!
   relation(
-    edgeKey: EdgeKeyDefinition!,
+    edgeKey: RelationInstanceIdDefinition!,
     "The name of the property"
     propertyName: String!
   ): PropertyInstance!
@@ -1124,29 +1132,11 @@ input ComponentTypeId {
 
 """
 
-The primary key of an edge consists of the outbound id, the
-type name and the inbound id.
-"""
-input EdgeKeyDefinition {
-  "The id of the inbound entity instance."
-  inboundId: UUID!
-  "The instance id."
-  instanceId: String! = ""
-  "The namespace."
-  namespace: String!
-  "The id of the outbound entity instance."
-  outboundId: UUID!
-  "The name of the relation type."
-  typeName: String!
-}
-
-"""
-
-Entity instances represents an typed object which contains properties.
+Entity instances represents a typed object which contains properties.
 
 The entity type defines the properties (name, data type and socket type).
 
-In contrast to the entity type the entity instance stores values in it's
+In contrast to the entity type the entity instance stores values in its
 properties.
 """
 input EntityInstanceDefinition {
@@ -1162,8 +1152,8 @@ input EntityInstanceDefinition {
 
   The properties of then entity instance.
 
-  Each property is represented by it's name (String) and it's value. The value is
-  a representation of a JSON. Therefore the value can be boolean, number, string,
+  Each property is represented by its name (String) and it's value. The value is
+  a representation of a JSON. Therefore, the value can be boolean, number, string,
   array or an object. For more information about the data types please look at
   https://docs.serde.rs/serde_json/value/enum.Value.html
   """
@@ -1267,11 +1257,11 @@ inbound entity instance.
 
 The relation instance is of a relation type. The relation type defines
 the entity types of the outbound entity instance and the inbound entity
-instance. Furthermore the relation type defines which properties
+instance. Furthermore, the relation type defines which properties
 (name, data type, socket type) a relation instance have to have.
 
-In constrast to the relation type, the relation instance stores values/
-documents in it's properties.
+In contrast to the relation type, the relation instance stores values/
+documents in its properties.
 """
 input RelationInstanceDefinition {
   "Textual description of the relation instance."
@@ -1290,12 +1280,30 @@ input RelationInstanceDefinition {
 
   The properties of then relation instance.
 
-  Each property is represented by it's name (String) and it's value. The value is
-  a representation of a JSON. Therefore the value can be boolean, number, string,
+  Each property is represented by its name (String) and it's value. The value is
+  a representation of a JSON. Therefore, the value can be boolean, number, string,
   array or an object. For more information about the data types please look at
   https://docs.serde.rs/serde_json/value/enum.Value.html
   """
   properties: [PropertyInstanceDefinition!]!
+  "The name of the relation type."
+  typeName: String!
+}
+
+"""
+
+The primary key of an edge consists of the outbound id, the
+type name and the inbound id.
+"""
+input RelationInstanceIdDefinition {
+  "The id of the inbound entity instance."
+  inboundId: UUID!
+  "The instance id."
+  instanceId: String! = ""
+  "The namespace."
+  namespace: String!
+  "The id of the outbound entity instance."
+  outboundId: UUID!
   "The name of the relation type."
   typeName: String!
 }

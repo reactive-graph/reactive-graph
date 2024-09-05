@@ -8,8 +8,9 @@ use std::sync::Arc;
 // use crate::client::instances::relations::get_by_label::queries::get_relation_instance_by_label;
 // use crate::client::instances::relations::remove_component::queries::remove_component;
 // use crate::client::instances::relations::remove_property::queries::remove_property;
-use crate::client::instances::relations::search::queries::search;
-use crate::client::instances::relations::search::queries::SearchRelationInstancesVariables;
+use crate::client::instances::relations::queries::get_by_id::queries::get_by_id;
+use crate::client::instances::relations::queries::search::queries::search;
+use crate::client::instances::relations::variables::search::variables::SearchRelationInstancesVariables;
 // use crate::client::instances::relations::set_property::queries::set_property;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
@@ -18,6 +19,7 @@ use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::RelationInstance;
+use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationTypeId;
 use serde_json::Value;
 use uuid::Uuid;
@@ -44,22 +46,22 @@ impl RelationInstances {
             .map(From::from);
         Ok(relation_instances)
     }
-    //
-    // pub async fn get_relation_instance_by_id<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
-    //     let id = id.into();
-    //     let relation_instance = self
-    //         .client
-    //         .client
-    //         .post(self.client.url_graphql())
-    //         .run_graphql(get_relation_instance_by_id(id))
-    //         .await
-    //         .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
-    //         .data
-    //         .and_then(|data| data.instances.relations.first().cloned())
-    //         .map(From::from);
-    //     Ok(relation_instance)
-    // }
-    //
+
+    pub async fn get_by_id<ID: Into<RelationInstanceId>>(&self, id: ID) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+        let id = id.into();
+        let relation_instance = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(get_by_id(&id))
+            .await
+            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .data
+            .and_then(|data| data.instances.relations.first().cloned())
+            .map(From::from);
+        Ok(relation_instance)
+    }
+
     // pub async fn get_relation_instance_by_label<L: Into<String>>(&self, label: L) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
     //     let label = label.into();
     //     let relation_instance = self
