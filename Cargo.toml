@@ -112,6 +112,7 @@ futures-util = "0.3"
 glob = "0.3.1"
 gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-client-rs.git", features = ["rustls-tls"], default-features = false }
 http = "0.2"
+itertools = "0.13"
 json5 = "0.4"
 lazy_static = "1.4.0"
 libloading = "0.8"
