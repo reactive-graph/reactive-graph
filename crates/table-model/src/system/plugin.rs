@@ -51,7 +51,7 @@ impl From<reactive_graph_plugin_model::Plugin> for Plugin {
     }
 }
 
-pub type Plugins = DefaultTableContainer<reactive_graph_plugin_model::Plugin, Plugin, PluginsTableOptions>;
+pub type PluginsTableContainer = DefaultTableContainer<reactive_graph_plugin_model::Plugin, Plugin, PluginsTableOptions>;
 
 pub struct PluginsTableOptions;
 
