@@ -2,7 +2,7 @@ use crate::cli::instances::properties::args::parse_property;
 use crate::cli::types::components::args::parse_component_ty;
 use crate::cli::types::relations::args::type_id::RelationTypeIdOptions;
 use clap::Args;
-use reactive_graph_client::client::instances::relations::search::queries::SearchRelationInstancesVariables;
+use reactive_graph_client::client::instances::relations::variables::search::variables::SearchRelationInstancesVariables;
 use reactive_graph_client::ComponentTypeIds;
 use reactive_graph_client::PropertyInstanceDefinitions;
 use reactive_graph_graph::ComponentTypeId;

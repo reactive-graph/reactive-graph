@@ -40,21 +40,21 @@ impl From<RelationInstance> for reactive_graph_graph::RelationInstance {
         let outbound_id = relation_instance.outbound.id.into();
         let inbound_id = relation_instance.inbound.id.into();
         let properties = PropertyInstances(relation_instance.properties).into();
-        // let components = relation_instance
-        //     .components
-        //     .iter()
-        //     .map(|component| {
-        //         let ty: reactive_graph_graph::ComponentTypeId = component.clone().ty().into();
-        //         ty
-        //     })
-        //     .collect();
+        let components = relation_instance
+            .components
+            .iter()
+            .map(|component| {
+                let ty: reactive_graph_graph::ComponentTypeId = component.clone().ty().into();
+                ty
+            })
+            .collect();
         reactive_graph_graph::RelationInstance {
             outbound_id,
             ty,
             inbound_id,
             description: relation_instance.description.clone(),
             properties,
-            // TODO: components,
+            components,
             extensions: Default::default(),
         }
     }

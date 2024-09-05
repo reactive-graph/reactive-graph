@@ -1,2 +1,4 @@
 pub mod api;
-pub mod search;
+pub mod mutations;
+pub mod queries;
+pub mod variables;

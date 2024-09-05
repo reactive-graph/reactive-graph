@@ -4,6 +4,8 @@ use serde::Serialize;
 use uuid::Uuid;
 
 use reactive_graph_graph::Extension;
+use reactive_graph_graph::Extensions;
+use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceTypeId;
 use reactive_graph_graph::RelationInstances;
@@ -16,11 +18,11 @@ use crate::query::GraphQLPropertyInstance;
 ///
 /// The relation instance is of a relation type. The relation type defines
 /// the entity types of the outbound entity instance and the inbound entity
-/// instance. Furthermore the relation type defines which properties
+/// instance. Furthermore, the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
-/// In constrast to the relation type, the relation instance stores values/
-/// documents in it's properties.
+/// In contrast to the relation type, the relation instance stores values/
+/// documents in its properties.
 #[derive(Serialize, Deserialize, Clone, Debug, InputObject)]
 #[graphql(name = "RelationInstanceDefinition")]
 pub struct GraphQLRelationInstanceDefinition {
@@ -44,8 +46,8 @@ pub struct GraphQLRelationInstanceDefinition {
 
     /// The properties of then relation instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     pub properties: Vec<GraphQLPropertyInstance>,
@@ -61,18 +63,22 @@ impl From<GraphQLRelationInstanceDefinition> for RelationInstance {
             relation_instance.type_name,
             relation_instance.instance_id,
         );
-        RelationInstance {
-            outbound_id: relation_instance.outbound_id,
-            ty,
-            inbound_id: relation_instance.inbound_id,
-            description: relation_instance.description.clone(),
-            properties: relation_instance
-                .properties
-                .iter()
-                .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
-                .collect(),
-            extensions: relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect(),
-        }
+        let properties: PropertyInstances = relation_instance
+            .properties
+            .iter()
+            .map(|property_instance| (property_instance.name.clone(), property_instance.value.clone()))
+            .collect();
+        // let components; relation_instance.components.iter().map(|e| ComponentTypeId::from(e.clone())).collect();
+        let extensions: Extensions = relation_instance.extensions.iter().map(|e| Extension::from(e.clone())).collect();
+        RelationInstance::builder()
+            .outbound_id(relation_instance.outbound_id)
+            .ty(ty)
+            .inbound_id(relation_instance.inbound_id)
+            .description(relation_instance.description)
+            .properties(properties)
+            // .components(components) ???
+            .extensions(extensions)
+            .build()
     }
 }
 

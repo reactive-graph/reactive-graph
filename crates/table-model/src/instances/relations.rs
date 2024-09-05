@@ -56,8 +56,7 @@ impl From<reactive_graph_graph::RelationInstance> for RelationInstance {
             inbound_id: relation_instance.inbound_id,
             description: relation_instance.description,
             properties: PropertyInstances::from(relation_instance.properties).0,
-            // TODO: components: ComponentTypeIds::from(relation_instance.components).0,
-            components: Default::default(),
+            components: ComponentTypeIds::from(relation_instance.components).0,
             extensions: Extensions::from(relation_instance.extensions).0,
         }
     }

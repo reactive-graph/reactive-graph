@@ -8,8 +8,6 @@ use reactive_graph_graph::RelationTypeId;
 
 #[derive(Debug, Error)]
 pub enum ReactiveRelationCreationError {
-    #[error("The edge key is invalid!")] // TODO: Rename or remove!
-    InvalidEdgeKey,
     #[error("The outbound entity {0} doesn't have component {1}!")]
     OutboundEntityDoesNotHaveComponent(Uuid, ComponentTypeId),
     #[error("The outbound entity {0} is of type {1} but expected {2}!")]

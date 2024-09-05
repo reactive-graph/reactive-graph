@@ -6,6 +6,7 @@
 // use crate::cli::instances::relations::args::label::LabelArgs;
 use crate::cli::instances::relations::args::search::SearchRelationInstancesArgs;
 // use crate::cli::instances::relations::args::set_property::SetPropertyArgs;
+use crate::cli::instances::relations::args::id::RelationInstanceIdArgs;
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug, Clone)]
@@ -13,9 +14,9 @@ pub(crate) enum RelationInstancesCommands {
     /// List all relation instances.
     #[non_exhaustive]
     List(SearchRelationInstancesArgs),
-    // /// Prints a single relation instance.
-    // #[non_exhaustive]
-    // Get(IdArgs),
+    /// Prints a single relation instance.
+    #[non_exhaustive]
+    Get(RelationInstanceIdArgs),
     // /// Prints a single relation instance.
     // #[non_exhaustive]
     // GetByLabel(LabelArgs),
