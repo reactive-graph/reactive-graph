@@ -6,6 +6,7 @@ use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
+use crate::container::DefaultTableContainer;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
 use crate::types::extension::display_extensions_inline;
@@ -94,6 +95,8 @@ impl Default for ComponentTypeIds {
     }
 }
 
+pub type ComponentTableContainer = DefaultTableContainer<reactive_graph_graph::Component, Component, ComponentTypeIdsTableOptions>;
+
 pub struct ComponentsTableOptions;
 
 impl TableOptions for ComponentsTableOptions {
@@ -106,6 +109,8 @@ impl TableOptions for ComponentsTableOptions {
         )
     }
 }
+
+pub type ComponentTypeIdTableContainer = DefaultTableContainer<reactive_graph_graph::ComponentTypeId, ComponentTypeId, ComponentTypeIdsTableOptions>;
 
 pub struct ComponentTypeIdsTableOptions;
 
