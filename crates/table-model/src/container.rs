@@ -1,6 +1,7 @@
 use std::fmt::Display;
 use std::fmt::Formatter;
 use std::marker::PhantomData;
+use std::vec::IntoIter;
 use tabled::settings::Style;
 use tabled::Table;
 use tabled::Tabled;
@@ -45,6 +46,22 @@ impl<S, T: Clone + Tabled + From<S>, O: TableOptions> From<Vec<S>> for DefaultTa
 impl<S, T: Clone + Tabled + From<S>, O: TableOptions> From<S> for DefaultTableContainer<S, T, O> {
     fn from(s: S) -> Self {
         DefaultTableContainer::<S, T, O>(vec![s.into()], PhantomData, PhantomData)
+    }
+}
+
+impl<S, T: Clone + Tabled + From<S>, O: TableOptions> From<IntoIter<S>> for DefaultTableContainer<S, T, O> {
+    fn from(iter: IntoIter<S>) -> Self {
+        DefaultTableContainer::<S, T, O>(iter.map(From::from).collect(), PhantomData, PhantomData)
+    }
+}
+
+impl<S, T: Clone + Tabled + From<S>, O: TableOptions> FromIterator<S> for DefaultTableContainer<S, T, O>
+where
+    Vec<T>: FromIterator<S>,
+{
+    fn from_iter<TT: IntoIterator<Item = S>>(iter: TT) -> Self {
+        let entries = iter.into_iter().map(From::from).collect();
+        DefaultTableContainer::<S, T, O>(entries, PhantomData, PhantomData)
     }
 }
 
