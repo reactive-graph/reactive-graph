@@ -22,8 +22,10 @@ reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
 reactive-graph-plugin-model = { version = "0.10.0", path = "../plugin/model" }
 
 [dev-dependencies]
+itertools = { workspace = true }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api" }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
+reactive-graph-table-model = { version = "0.10.0", path = "../table-model" }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 [lib]

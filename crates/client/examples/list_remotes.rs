@@ -1,6 +1,8 @@
 use reactive_graph_client::InexorRgfClient;
 use reactive_graph_client::InexorRgfClientError;
 use reactive_graph_client::InexorRgfClientExecutionError;
+use reactive_graph_table_model::container::TableContainer;
+use reactive_graph_table_model::system::instance::InstanceInfos;
 
 #[derive(Debug)]
 enum SimpleClientError {
@@ -10,7 +12,7 @@ enum SimpleClientError {
 
 /// This example shows how to connect to a runtime and list all remotes.
 ///
-/// Note: A runtime must running at the default port (31415).
+/// Note: A runtime must run at the default port (31415).
 #[tokio::main]
 async fn main() -> Result<(), SimpleClientError> {
     // Connect to localhost:31415 (default port)
@@ -22,16 +24,11 @@ async fn main() -> Result<(), SimpleClientError> {
         .get_all()
         .await
         .map_err(SimpleClientError::InexorRgfClientExecutionError)?;
-    // Print the list of plugins
-    if remotes.len() == 0 {
-        println!("No remotes found.");
-        return Ok(());
-    }
-    remotes.iter().for_each(|remote| {
-        println!(
-            "| {:<30} | {:<5} | {:<50} | {:<70} |",
-            remote.address.hostname, remote.address.port, remote.name, remote.description
-        )
-    });
+    // Convert client model into table model
+    let remotes = InstanceInfos::from(remotes);
+    // Generate table
+    let table = remotes.table();
+    // Print table
+    println!("{}", table);
     Ok(())
 }
