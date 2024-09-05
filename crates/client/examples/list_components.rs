@@ -3,8 +3,8 @@ use reactive_graph_client as client;
 use client::InexorRgfClient;
 use client::InexorRgfClientError;
 use client::InexorRgfClientExecutionError;
-use reactive_graph_graph::Component;
-use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_table_model::container::TableContainer;
+use reactive_graph_table_model::types::component::ComponentTableContainer;
 
 #[derive(Debug)]
 enum SimpleClientError {
@@ -27,32 +27,11 @@ async fn main() -> Result<(), SimpleClientError> {
         .await
         .map_err(SimpleClientError::InexorRgfClientExecutionError)?
         .unwrap_or_default();
-    // Print the list of components
-    if components.len() == 0 {
-        println!("No components found.");
-        return Ok(());
-    }
-    let table: String = components.iter().map(row).collect();
-    println!("{}{}{}{}{}", top(), header("Namespace", "Name"), line(), table, bottom(),);
+    // Convert client model into table model
+    let components = ComponentTableContainer::from(components);
+    // Generate table
+    let table = components.table();
+    // Print table
+    println!("{}", table);
     Ok(())
-}
-
-fn row(component: &Component) -> String {
-    format!("║ {:<40} ║ {:<40} ║\n", component.namespace(), component.type_name())
-}
-
-fn header(c1: &str, c2: &str) -> String {
-    format!("║{: ^42}║{: ^42}║\n", c1, c2)
-}
-
-fn top() -> String {
-    format!("╔{}╦{}╗\n", "═".repeat(42), "═".repeat(42))
-}
-
-fn line() -> String {
-    format!("╠{}╬{}╣\n", "═".repeat(42), "═".repeat(42))
-}
-
-fn bottom() -> String {
-    format!("╚{}╩{}╝\n", "═".repeat(42), "═".repeat(42))
 }
