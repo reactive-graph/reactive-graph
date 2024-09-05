@@ -1,4 +1,4 @@
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Ord, Eq, PartialOrd, PartialEq)]
 pub struct Plugin {
     pub name: String,
     pub short_name: String,
