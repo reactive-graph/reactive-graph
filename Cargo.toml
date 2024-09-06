@@ -91,7 +91,7 @@ async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "7.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
-aws-lc-rs = "1.8.1"
+aws-lc-rs = "1.9.0"
 clap = { version = "4.1", features = ["derive", "env"] }
 clap-markdown = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
