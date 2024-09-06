@@ -18,6 +18,8 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
 
 jobs:
   codecov-tarpaulin:
@@ -25,17 +27,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install latest nightly
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly
-          override: true
+          toolchain: nightly-2024-08-19
+          components: rustfmt, rust-src
+      - name: Install tarpaulin
+        uses: taiki-e/cache-cargo-install-action@v2
+        with:
+          tool: tarpaulin
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.5
       - name: Run cargo-tarpaulin
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          version: '0.22.0'
-          args: --all-features
+        run: cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
       # Note: closed-source code needs to provide a token,
       # but open source code does not.
       - name: Upload to codecov.io
