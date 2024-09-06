@@ -29,40 +29,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
+      - name: Install rust toolchain
+        uses: dtolnay/rust-toolchain@stable
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: 'latest'
-
-      - name: Install preprocessor mdbook-mermaid
-        uses: actions-rs/install@v0.1
-        with:
-          crate: mdbook-mermaid
-          version: 0.13.0
-          use-tool-cache: true
-
       - name: Install preprocessor mdbook-admonish
-        uses: actions-rs/install@v0.1
+        uses: taiki-e/cache-cargo-install-action@v2
         with:
-          crate: mdbook-admonish
-          version: 1.15.0
-          use-tool-cache: true
-
-      - name: Install preprocessor mdbook-graphql-playground
-        uses: actions-rs/install@v0.1
+          tool: mdbook-admonish
+      - name: Install preprocessor mdbook-mermaid
+        uses: taiki-e/cache-cargo-install-action@v2
         with:
-          crate: mdbook-preprocessor-graphql-playground
-          version: 0.1.3
-          use-tool-cache: true
+          tool: mdbook-mermaid
 
+      - name: Install preprocessor mdbook-preprocessor-graphql-playground
+        uses: taiki-e/cache-cargo-install-action@v2
+        with:
+          tool: mdbook-preprocessor-graphql-playground
       - name: Build Book
         working-directory: ./docs/book
         run: mdbook build
-
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
