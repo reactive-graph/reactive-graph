@@ -181,10 +181,12 @@
 <h3 id="linux--raspberry-pi--macos"><a class="header" href="#linux--raspberry-pi--macos">Linux / Raspberry Pi / MacOS</a></h3>
 <pre><code class="language-shell">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 </code></pre>
-<div id="admonition-rustup" class="admonition admonish-info">
+<div id="admonition-rustup" class="admonition admonish-info" role="note" aria-labelledby="admonition-rustup-title">
 <div class="admonition-title">
+<div id="admonition-rustup-title">
 <p>Rustup</p>
-<p><a class="admonition-anchor-link" href="#admonition-rustup"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rustup"></a>
 </div>
 <div>
 <p><a href="https://rustup.rs/">rustup</a> is an installer for the systems programming language Rust.</p>
@@ -209,10 +211,12 @@ cargo build
 <pre><code class="language-shell">cd inexor-rgf-application
 cargo build --release
 </code></pre>
-<div id="admonition-cargo" class="admonition admonish-info">
+<div id="admonition-cargo" class="admonition admonish-info" role="note" aria-labelledby="admonition-cargo-title">
 <div class="admonition-title">
+<div id="admonition-cargo-title">
 <p>Cargo</p>
-<p><a class="admonition-anchor-link" href="#admonition-cargo"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-cargo"></a>
 </div>
 <div>
 <p><a href="https://doc.rust-lang.org/cargo/index.html">Cargo</a> is the Rust package manager. Cargo downloads your Rust package's
@@ -246,10 +250,12 @@ the Rust community’s package registry.</p>
 </li>
 <li>Repeat this for all plugins</li>
 </ol>
-<div id="admonition-plugin-api-version-must-match" class="admonition admonish-warning">
+<div id="admonition-plugin-api-version-must-match" class="admonition admonish-warning" role="note" aria-labelledby="admonition-plugin-api-version-must-match-title">
 <div class="admonition-title">
+<div id="admonition-plugin-api-version-must-match-title">
 <p>Plugin API version must match</p>
-<p><a class="admonition-anchor-link" href="#admonition-plugin-api-version-must-match"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-plugin-api-version-must-match"></a>
 </div>
 <div>
 <p>The application and the plugins must be compiled with the same version of the Plugin API!</p>
@@ -276,19 +282,23 @@ name = "plugin-mqtt"
 active = true
 path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 </code></pre>
-<div id="admonition-artifact-location" class="admonition admonish-tip">
+<div id="admonition-artifact-location" class="admonition admonish-tip" role="note" aria-labelledby="admonition-artifact-location-title">
 <div class="admonition-title">
+<div id="admonition-artifact-location-title">
 <p>Artifact Location</p>
-<p><a class="admonition-anchor-link" href="#admonition-artifact-location"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-artifact-location"></a>
 </div>
 <div>
 <p>Release builds are located in <code>target/release</code> instead of <code>target/debug</code></p>
 </div>
 </div>
-<div id="admonition-configure-plugins" class="admonition admonish-info">
+<div id="admonition-configure-plugins" class="admonition admonish-info" role="note" aria-labelledby="admonition-configure-plugins-title">
 <div class="admonition-title">
+<div id="admonition-configure-plugins-title">
 <p>Configure plugins</p>
-<p><a class="admonition-anchor-link" href="#admonition-configure-plugins"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-configure-plugins"></a>
 </div>
 <div>
 <p>Please consult the documentation for <a href="./Configuration_Plugins.html">configuring plugins</a></p>
@@ -297,10 +307,12 @@ path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
 <h3 id="plugin-compatibility"><a class="header" href="#plugin-compatibility">Plugin Compatibility</a></h3>
 <pre><code class="language-log">17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../reactive-graph-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
 </code></pre>
-<div id="admonition-rust-compiler" class="admonition admonish-warning">
+<div id="admonition-rust-compiler" class="admonition admonish-warning" role="note" aria-labelledby="admonition-rust-compiler-title">
 <div class="admonition-title">
+<div id="admonition-rust-compiler-title">
 <p>Rust Compiler</p>
-<p><a class="admonition-anchor-link" href="#admonition-rust-compiler"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rust-compiler"></a>
 </div>
 <div>
 <p>The plugins have to be compiled by the same rust compiler.</p>

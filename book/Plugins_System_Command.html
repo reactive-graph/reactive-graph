@@ -183,10 +183,12 @@ control a headless Raspberry Pi Zero.</p>
 <p>A system command is executed by triggering (i.e. changing) the spawn property. Please see the GraphQL example.</p>
 <p>When a program runs, it writes to stdout and stderr. These outputs are available in the corresponding properties after
 the program has ended.</p>
-<div id="admonition-a-word-about-safety" class="admonition admonish-warning">
+<div id="admonition-a-word-about-safety" class="admonition admonish-warning" role="note" aria-labelledby="admonition-a-word-about-safety-title">
 <div class="admonition-title">
+<div id="admonition-a-word-about-safety-title">
 <p>A word about safety</p>
-<p><a class="admonition-anchor-link" href="#admonition-a-word-about-safety"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-a-word-about-safety"></a>
 </div>
 <div>
 <p>Only activate the plugin if you know what you are doing. Do not run the Reactive Graph Flow as root user, because the system command will be executed as the same user! The GraphQL endpoint should also be specially protected.</p>

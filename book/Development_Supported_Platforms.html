@@ -184,10 +184,12 @@
 <h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
 <p>We support x86_64 / arm7 / aarch Linux. Chances are that it works with other targets, too, but haven't been tested.</p>
 <p>We have specific build instructions for Ubuntu and Raspberry Pi 2-4.</p>
-<div id="admonition-libc" class="admonition admonish-tip">
+<div id="admonition-libc" class="admonition admonish-tip" role="note" aria-labelledby="admonition-libc-title">
 <div class="admonition-title">
+<div id="admonition-libc-title">
 <p>libc</p>
-<p><a class="admonition-anchor-link" href="#admonition-libc"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-libc"></a>
 </div>
 <div>
 <p>The continuous integration is configured to use <code>ubuntu-20.04</code> in order to support older libc versions.</p>
@@ -219,29 +221,35 @@ os: ubuntu-20.04</p>
 <tr><td>armv7-unknown-linux-gnueabihf</td><td>binutils-arm-linux-gnueabihf</td></tr>
 <tr><td>x86_64-pc-windows-gnu</td><td>binutils-mingw-w64-x86-64</td></tr>
 </tbody></table>
-</div><div id="admonition-ubuntu-packages-for-binutils" class="admonition admonish-tip">
+</div><div id="admonition-ubuntu-packages-for-binutils" class="admonition admonish-tip" role="note" aria-labelledby="admonition-ubuntu-packages-for-binutils-title">
 <div class="admonition-title">
+<div id="admonition-ubuntu-packages-for-binutils-title">
 <p>Ubuntu packages for binutils</p>
-<p><a class="admonition-anchor-link" href="#admonition-ubuntu-packages-for-binutils"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-ubuntu-packages-for-binutils"></a>
 </div>
 <div>
 <p>Run <code>apt-cache search binutils</code> for getting a list of possible binutils packages.</p>
 </div>
 </div>
-<div id="admonition-cargo-configuration" class="admonition admonish-tip">
+<div id="admonition-cargo-configuration" class="admonition admonish-tip" role="note" aria-labelledby="admonition-cargo-configuration-title">
 <div class="admonition-title">
+<div id="admonition-cargo-configuration-title">
 <p>Cargo Configuration</p>
-<p><a class="admonition-anchor-link" href="#admonition-cargo-configuration"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-cargo-configuration"></a>
 </div>
 <div>
 <p>The binutils for specific targets are configured at .cargo/config.toml</p>
 </div>
 </div>
 <h4 id="rust-platform-support"><a class="header" href="#rust-platform-support">Rust Platform Support</a></h4>
-<div id="admonition-rust-platform-support" class="admonition admonish-tip">
+<div id="admonition-rust-platform-support" class="admonition admonish-tip" role="note" aria-labelledby="admonition-rust-platform-support-title">
 <div class="admonition-title">
+<div id="admonition-rust-platform-support-title">
 <p>Rust Platform Support</p>
-<p><a class="admonition-anchor-link" href="#admonition-rust-platform-support"></a></p>
+</div>
+<a class="admonition-anchor-link" href="#admonition-rust-platform-support"></a>
 </div>
 <div>
 <p>Please check out the <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html">platform support of the rust language</a>.</p>
