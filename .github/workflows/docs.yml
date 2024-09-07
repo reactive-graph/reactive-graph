@@ -34,7 +34,7 @@ jobs:
           override: true
           components: rustfmt, rust-src
       - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.3
+        uses: mozilla-actions/sccache-action@v0.0.5
       - name: Run cargo doc
         uses: actions-rs/cargo@v1
         with:
