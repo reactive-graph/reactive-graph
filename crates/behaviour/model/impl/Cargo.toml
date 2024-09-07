@@ -23,7 +23,7 @@ reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../../reac
 reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../api" }
 
 [dev-dependencies]
-random-string = "1.0"
+random-string = { workspace = true }
 
 [lib]
 crate-type = ["lib"]
