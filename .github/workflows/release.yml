@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Create GitHub Release
         uses: taiki-e/create-gh-release-action@v1
         with:
@@ -59,7 +59,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # Required by arm targets
       - name: Install packages
         uses: awalsh128/cache-apt-pkgs-action@latest
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
@@ -123,7 +123,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get version number from git tag
         id: tag
         uses: devops-actions/action-get-tag@v1.0.3
