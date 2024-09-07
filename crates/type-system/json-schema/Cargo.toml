@@ -9,7 +9,7 @@ repository.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
-actix-web = { workspace = true, features = ["rustls-0_22"] }
+actix-web = { workspace = true, features = ["rustls-0_23"] }
 schemars = { workspace = true, features = ["uuid1"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
