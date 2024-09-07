@@ -1,0 +1,29 @@
+name: Security audit
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "crates/**/Cargo.toml"
+      - "Cargo.toml"
+      - ".github/workflows/audit.yml"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "crates/**/Cargo.toml"
+      - "Cargo.toml"
+      - ".github/workflows/audit.yml"
+  schedule:
+    - cron: "0 12 * * 0"
+  # Run manually
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Audit Rust Dependencies
+        uses: rustsec/audit-check@v1.4.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
