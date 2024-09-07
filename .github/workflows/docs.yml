@@ -37,7 +37,7 @@ jobs:
       - name: Cache dependencies
         uses: Swatinem/rust-cache@v2
       - name: Run sccache-cache
-        uses: mozilla-actions/sccache-action@v0.0.3
+        uses: mozilla-actions/sccache-action@v0.0.5
       - name: Run cargo doc
         run: cargo doc --all --no-deps
       - name: Deploy
