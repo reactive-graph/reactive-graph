@@ -61,8 +61,8 @@ impl RelationBehaviourManager for RelationBehaviourManagerImpl {
         self.relation_behaviour_storage.remove_all(&relation_instance.id());
     }
 
-    fn remove_behaviours_by_key(&self, edge_key: &RelationInstanceId) {
-        self.relation_behaviour_storage.remove_all(edge_key);
+    fn remove_behaviours_by_key(&self, relation_instance_id: &RelationInstanceId) {
+        self.relation_behaviour_storage.remove_all(relation_instance_id);
     }
 
     fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) {

@@ -50,7 +50,7 @@ pub fn get_relation_type(relation_ty: &RelationTypeId, relation_type: &RelationT
             object = object.implement(component_dy_ty.to_string());
         }
     }
-    // Edge key field
+    // Relation Instance ID field
     object = object.field(relation_key_field());
     object = object.field(relation_instance_id_field());
     for property_type in relation_type.properties.iter() {

@@ -32,9 +32,9 @@ pub struct MutationRelationInstances;
 /// Mutation of relation instances.
 #[Object]
 impl MutationRelationInstances {
-    /// Creates a new relation instance with the given edge_key.
+    /// Creates a new relation instance with the given relation_instance_id.
     ///
-    /// The edge key is the primary key of a relation instance and consists of the id of the
+    /// The relation instance id is the primary key of a relation instance and consists of the id of the
     /// outbound entity instance, the name of the relation type and the id of the inbound
     /// entity instance.
     ///
@@ -50,7 +50,7 @@ impl MutationRelationInstances {
     async fn create(
         &self,
         context: &Context<'_>,
-        #[graphql(desc = "Specifies the outbound id, the inbound id, the relation type and the instance_id.")] edge_key: GraphQLRelationInstanceId,
+        #[graphql(desc = "Specifies the outbound id, the inbound id, the relation type and the instance_id.")] relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(desc = "Description of the entity instance.")] description: Option<String>,
         #[graphql(desc = "Creates the relation instance with the given components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
@@ -59,32 +59,32 @@ impl MutationRelationInstances {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
 
-        let relation_instance_ty = edge_key.ty();
+        let relation_instance_ty = relation_instance_id.ty();
         let relation_ty = relation_instance_ty.relation_type_id();
 
         let relation_type = relation_type_manager
             .get(&relation_ty)
             .ok_or_else(|| Error::new(format!("Relation type {} does not exist!", &relation_ty)))?;
 
-        if !entity_instance_manager.has(edge_key.outbound_id) {
-            return Err(Error::new(format!("Outbound entity {} does not exist!", edge_key.outbound_id)));
+        if !entity_instance_manager.has(relation_instance_id.outbound_id) {
+            return Err(Error::new(format!("Outbound entity {} does not exist!", relation_instance_id.outbound_id)));
         }
 
-        if !entity_instance_manager.has(edge_key.inbound_id) {
-            return Err(Error::new(format!("Inbound entity {} does not exist!", edge_key.inbound_id)));
+        if !entity_instance_manager.has(relation_instance_id.inbound_id) {
+            return Err(Error::new(format!("Inbound entity {} does not exist!", relation_instance_id.inbound_id)));
         }
 
         let properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, relation_type.properties);
 
         let relation_instance = RelationInstance::builder()
-            .outbound_id(edge_key.outbound_id)
+            .outbound_id(relation_instance_id.outbound_id)
             .ty(relation_instance_ty)
-            .inbound_id(edge_key.inbound_id)
+            .inbound_id(relation_instance_id.inbound_id)
             .description(description.unwrap_or_default())
             .properties(properties)
             .build();
 
-        let id: RelationInstanceId = edge_key.into();
+        let id: RelationInstanceId = relation_instance_id.into();
 
         let relation_instance = relation_instance_manager.create_reactive_instance(relation_instance);
 
@@ -156,7 +156,7 @@ impl MutationRelationInstances {
         let instance_id = format!("{}__{}", outbound_property_name, inbound_property_name);
         let ty = RelationInstanceTypeId::new_unique_for_instance_id(relation_ty, instance_id);
 
-        // Construct an edge key using the outbound id, the type identifier (containing the
+        // Construct a relation instance id using the outbound id, the type identifier (containing the
         // previously generated instance_id) and the inbound id.
         let id = RelationInstanceId::new(outbound_id, ty, inbound_id);
 
@@ -178,11 +178,11 @@ impl MutationRelationInstances {
         }
     }
 
-    /// Updates the properties of the given relation instance by edge key.
+    /// Updates the properties of the given relation instance by its relation instance id.
     async fn update(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(desc = "Adds the components with the given name")] add_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Removes the components with the given name")] remove_components: Option<Vec<ComponentTypeIdDefinition>>,
         #[graphql(desc = "Updates the given properties")] properties: Option<Vec<GraphQLPropertyInstance>>,
@@ -193,22 +193,22 @@ impl MutationRelationInstances {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
 
-        if !entity_instance_manager.has(edge_key.outbound_id) {
-            return Err(Error::new(format!("Outbound entity {} does not exist!", edge_key.outbound_id)));
+        if !entity_instance_manager.has(relation_instance_id.outbound_id) {
+            return Err(Error::new(format!("Outbound entity {} does not exist!", relation_instance_id.outbound_id)));
         }
 
-        if !entity_instance_manager.has(edge_key.inbound_id) {
-            return Err(Error::new(format!("Inbound entity {} does not exist!", edge_key.inbound_id)));
+        if !entity_instance_manager.has(relation_instance_id.inbound_id) {
+            return Err(Error::new(format!("Inbound entity {} does not exist!", relation_instance_id.inbound_id)));
         }
 
-        let ty = edge_key.ty();
+        let ty = relation_instance_id.ty();
         let relation_ty = ty.relation_type_id();
 
         if relation_type_manager.get(&relation_ty).is_none() {
-            return Err(Error::new(format!("Relation type {} does not exist!", edge_key)));
+            return Err(Error::new(format!("Relation type {} does not exist!", relation_instance_id)));
         }
 
-        let id: RelationInstanceId = edge_key.into();
+        let id: RelationInstanceId = relation_instance_id.into();
         let relation_instance = relation_instance_manager
             .get(&id)
             .ok_or_else(|| Error::new(format!("Relation instance {} does not exist!", id)))?;
@@ -267,9 +267,9 @@ impl MutationRelationInstances {
     ///
     /// In case of the default_connector it does NOT lead to a new value propagation, because the
     /// reactive streams are not consumed by the default_connector behaviour.
-    async fn tick(&self, context: &Context<'_>, edge_key: GraphQLRelationInstanceId) -> Result<GraphQLRelationInstance> {
+    async fn tick(&self, context: &Context<'_>, relation_instance_id: GraphQLRelationInstanceId) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
-        let id = edge_key.into();
+        let id = relation_instance_id.into();
         let relation_instance = relation_instance_manager
             .get(&id)
             .ok_or_else(|| Error::new(format!("Relation instance {} does not exist!", id)))?;
@@ -277,36 +277,38 @@ impl MutationRelationInstances {
         Ok(relation_instance.into())
     }
 
-    /// Deletes an relation instance.
-    async fn delete(&self, context: &Context<'_>, edge_key: GraphQLRelationInstanceId) -> Result<bool> {
+    /// Deletes a relation instance.
+    async fn delete(&self, context: &Context<'_>, relation_instance_id: GraphQLRelationInstanceId) -> Result<bool> {
         // let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
 
-        debug!("Deleting relation instance {:?}", edge_key);
+        debug!("Deleting relation instance {:?}", relation_instance_id);
 
-        if !entity_instance_manager.has(edge_key.outbound_id) {
-            return Err(Error::new(format!("Outbound entity {} does not exist!", edge_key.outbound_id)));
+        if !entity_instance_manager.has(relation_instance_id.outbound_id) {
+            return Err(Error::new(format!("Outbound entity {} does not exist!", relation_instance_id.outbound_id)));
         }
 
-        if !entity_instance_manager.has(edge_key.inbound_id) {
-            return Err(Error::new(format!("Inbound entity {} does not exist!", edge_key.inbound_id)));
+        if !entity_instance_manager.has(relation_instance_id.inbound_id) {
+            return Err(Error::new(format!("Inbound entity {} does not exist!", relation_instance_id.inbound_id)));
         }
 
-        Ok(relation_instance_manager.delete(&edge_key.into()))
+        Ok(relation_instance_manager.delete(&relation_instance_id.into()))
     }
 
     async fn connect(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager + Send + Sync>>()?;
         let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager + Send + Sync>>()?;
-        let edge_key = RelationInstanceId::from(edge_key);
-        let reactive_instance = relation_instance_manager.get(&edge_key).ok_or(Error::new("Relation instance not found"))?;
+        let relation_instance_id = RelationInstanceId::from(relation_instance_id);
+        let reactive_instance = relation_instance_manager
+            .get(&relation_instance_id)
+            .ok_or(Error::new("Relation instance not found"))?;
         let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_behaviour_manager
@@ -324,14 +326,16 @@ impl MutationRelationInstances {
     async fn disconnect(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager + Send + Sync>>()?;
         let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager + Send + Sync>>()?;
-        let edge_key = RelationInstanceId::from(edge_key);
-        let reactive_instance = relation_instance_manager.get(&edge_key).ok_or(Error::new("Relation instance not found"))?;
+        let relation_instance_id = RelationInstanceId::from(relation_instance_id);
+        let reactive_instance = relation_instance_manager
+            .get(&relation_instance_id)
+            .ok_or(Error::new("Relation instance not found"))?;
         let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_behaviour_manager
@@ -349,14 +353,16 @@ impl MutationRelationInstances {
     async fn reconnect(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLRelationInstance> {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let relation_behaviour_manager = context.data::<Arc<dyn RelationBehaviourManager + Send + Sync>>()?;
         let relation_component_behaviour_manager = context.data::<Arc<dyn RelationComponentBehaviourManager + Send + Sync>>()?;
-        let edge_key = RelationInstanceId::from(edge_key);
-        let reactive_instance = relation_instance_manager.get(&edge_key).ok_or(Error::new("Relation instance not found"))?;
+        let relation_instance_id = RelationInstanceId::from(relation_instance_id);
+        let reactive_instance = relation_instance_manager
+            .get(&relation_instance_id)
+            .ok_or(Error::new("Relation instance not found"))?;
         let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         if relation_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             relation_behaviour_manager

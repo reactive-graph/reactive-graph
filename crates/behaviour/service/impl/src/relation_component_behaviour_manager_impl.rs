@@ -31,12 +31,13 @@ pub struct RelationComponentBehaviourManagerImpl {
 #[component_alias]
 impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl {
     fn add_behaviours_to_relation(&self, relation_instance: ReactiveRelation) {
-        let edge_key = relation_instance.id();
+        let relation_instance_id = relation_instance.id();
         for component_ty in relation_instance.get_components() {
             for factory in self.relation_component_behaviour_registry.get(&component_ty) {
                 if let Ok(behaviour) = factory.create(relation_instance.clone()) {
                     let behaviour_ty = behaviour.ty().clone();
-                    self.relation_behaviour_storage.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                    self.relation_behaviour_storage
+                        .insert(relation_instance_id.clone(), behaviour_ty.clone(), behaviour);
                     trace!("Added relation component behaviour {}", &behaviour_ty);
                 }
             }
@@ -44,31 +45,33 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
     }
 
     fn add_behaviours_to_relation_component(&self, relation_instance: ReactiveRelation, component: reactive_graph_graph::Component) {
-        let edge_key = relation_instance.id();
+        let relation_instance_id = relation_instance.id();
         for factory in self.relation_component_behaviour_registry.get(&component.ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
                 let behaviour_ty = behaviour.ty().clone();
-                self.relation_behaviour_storage.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                self.relation_behaviour_storage
+                    .insert(relation_instance_id.clone(), behaviour_ty.clone(), behaviour);
                 trace!("Added relation component behaviour {}", &behaviour_ty);
             }
         }
     }
 
     fn add_behaviour_to_relation_component(&self, relation_instance: ReactiveRelation, component_behaviour_ty: &ComponentBehaviourTypeId) {
-        let edge_key = relation_instance.id();
+        let relation_instance_id = relation_instance.id();
         for factory in self.relation_component_behaviour_registry.get(&component_behaviour_ty.component_ty) {
             if let Ok(behaviour) = factory.create(relation_instance.clone()) {
                 let behaviour_ty = behaviour.ty().clone();
-                self.relation_behaviour_storage.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                self.relation_behaviour_storage
+                    .insert(relation_instance_id.clone(), behaviour_ty.clone(), behaviour);
                 trace!("Added relation component behaviour {}", &behaviour_ty);
             }
         }
     }
 
     fn remove_behaviour_from_relation(&self, relation_instance: ReactiveRelation, behaviour_ty: &BehaviourTypeId) {
-        let edge_key = relation_instance.id();
+        let relation_instance_id = relation_instance.id();
         let _ = self.disconnect(relation_instance, behaviour_ty);
-        self.relation_behaviour_storage.remove(&edge_key, behaviour_ty);
+        self.relation_behaviour_storage.remove(&relation_instance_id, behaviour_ty);
         trace!("Removed relation behaviour {}", &behaviour_ty);
     }
 
@@ -77,15 +80,15 @@ impl RelationComponentBehaviourManager for RelationComponentBehaviourManagerImpl
     }
 
     fn remove_behaviours_from_relation_component(&self, relation_instance: ReactiveRelation, component: reactive_graph_graph::Component) {
-        let edge_key = relation_instance.id();
+        let relation_instance_id = relation_instance.id();
         for factory in self.relation_component_behaviour_registry.get(&component.ty) {
-            self.relation_behaviour_storage.remove(&edge_key, factory.behaviour_ty());
+            self.relation_behaviour_storage.remove(&relation_instance_id, factory.behaviour_ty());
             trace!("Removed relation component behaviour {}", factory.behaviour_ty());
         }
     }
 
-    fn remove_behaviours_by_key(&self, edge_key: &RelationInstanceId) {
-        self.relation_behaviour_storage.remove_all(edge_key);
+    fn remove_behaviours_by_key(&self, relation_instance_id: &RelationInstanceId) {
+        self.relation_behaviour_storage.remove_all(relation_instance_id);
     }
 
     fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId) {

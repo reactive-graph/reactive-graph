@@ -49,8 +49,8 @@ impl fmt::Display for FlowMutationError {
             FlowMutationError::MissingEntityInstance(id) => {
                 write!(f, "Entity instance {} does not exist", id)
             }
-            FlowMutationError::MissingRelationInstance(edge_key) => {
-                write!(f, "Relation instance {:?} does not exist", edge_key)
+            FlowMutationError::MissingRelationInstance(relation_instance_id) => {
+                write!(f, "Relation instance {:?} does not exist", relation_instance_id)
             }
             FlowMutationError::MissingOutboundEntityInstance(id) => {
                 write!(f, "Outbound entity instance {} does not exist", id)
@@ -61,8 +61,8 @@ impl fmt::Display for FlowMutationError {
             FlowMutationError::FlowInstanceDoesNotContainEntityInstance(id) => {
                 write!(f, "Flow doesn't contain entity instance {}", id)
             }
-            FlowMutationError::FlowInstanceDoesNotContainRelationInstance(edge_key) => {
-                write!(f, "Flow doesn't contain relation instance {:?}", edge_key.clone())
+            FlowMutationError::FlowInstanceDoesNotContainRelationInstance(relation_instance_id) => {
+                write!(f, "Flow doesn't contain relation instance {:?}", relation_instance_id.clone())
             }
         }
     }

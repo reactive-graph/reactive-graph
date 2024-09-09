@@ -382,7 +382,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                 // Because the entity instances might have been replaced by the actual registered entity instances
                 let mut relation_instances = reactive_flow_instance.relation_instances.write().unwrap();
                 let mut replaced_relation_instances = HashMap::<RelationInstanceId, ReactiveRelation>::new();
-                for (edge_key, relation_instance) in relation_instances.iter() {
+                for (relation_instance_id, relation_instance) in relation_instances.iter() {
                     let inbound_id = relation_instance.inbound.id;
                     let outbound_id = relation_instance.outbound.id;
 
@@ -391,36 +391,36 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
                         entity_instances.get(&inbound_id).unwrap().clone(),
                         RelationInstance::from(relation_instance.clone()),
                     );
-                    replaced_relation_instances.insert(edge_key.clone(), recreated_relation_instance);
+                    replaced_relation_instances.insert(relation_instance_id.clone(), recreated_relation_instance);
                     // relation_instance.inbound = entity_instances.get(&inbound_id).unwrap().clone();
                     // relation_instance.outbound = entity_instances.get(&outbound_id).unwrap().clone();
                 }
 
                 // Step 4: Replace the relation instances of the flow instance with the recreated relation instances
                 relation_instances.clear();
-                for (edge_key, relation_instance) in replaced_relation_instances.iter() {
-                    relation_instances.insert(edge_key.clone(), relation_instance.clone());
+                for (relation_instance_id, relation_instance) in replaced_relation_instances.iter() {
+                    relation_instances.insert(relation_instance_id.clone(), relation_instance.clone());
                 }
 
-                // Step 5: Register all (recreated) relation instances (if not already registered by edge_key)
+                // Step 5: Register all (recreated) relation instances (if not already registered by relation_instance_id)
                 let mut replaced_relation_instances = HashMap::<RelationInstanceId, ReactiveRelation>::new();
-                for (edge_key, relation_instance) in relation_instances.iter() {
+                for (relation_instance_id, relation_instance) in relation_instances.iter() {
                     match self.reactive_relation_manager.register_or_merge_reactive_instance(relation_instance.clone()) {
                         Ok(relation_instance) => {
                             // Replace the relation instance with the actual registered instance
-                            replaced_relation_instances.insert(edge_key.clone(), relation_instance);
+                            replaced_relation_instances.insert(relation_instance_id.clone(), relation_instance);
                         }
                         Err(e) => {
                             // This happens when a relation instance doesn't exist and cannot be created
-                            debug!("Failed to register relation instance {:?}: {:?}", edge_key, e);
+                            debug!("Failed to register relation instance {:?}: {:?}", relation_instance_id, e);
                         }
                     }
                 }
 
                 // Step 6: Replace the relation instances of the flow instance with the actual registered relation instances
                 relation_instances.clear();
-                for (edge_key, relation_instance) in replaced_relation_instances.iter() {
-                    relation_instances.insert(edge_key.clone(), relation_instance.clone());
+                for (relation_instance_id, relation_instance) in replaced_relation_instances.iter() {
+                    relation_instances.insert(relation_instance_id.clone(), relation_instance.clone());
                 }
             } // Drop rwlock
             self.register_flow_instance(reactive_flow_instance);
@@ -456,8 +456,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     // fn commit(&self, id: Uuid) {
     //     if let Some(reactive_flow_instance) = self.get(id) {
     //         // Unregister removed relations
-    //         for edge_key in reactive_flow_instance.relations_removed.read().unwrap().iter() {
-    //             self.reactive_relation_manager.unregister_reactive_instance(edge_key);
+    //         for relation_instance_id in reactive_flow_instance.relations_removed.read().unwrap().iter() {
+    //             self.reactive_relation_manager.unregister_reactive_instance(relation_instance_id);
     //         }
     //         reactive_flow_instance.relations_removed.write().unwrap().clear();
     //
@@ -477,8 +477,8 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     //         reactive_flow_instance.entities_added.write().unwrap().clear();
     //
     //         // Register added relations
-    //         for edge_key in reactive_flow_instance.relations_added.read().unwrap().iter() {
-    //             if let Some(relation_instance) = reactive_flow_instance.get_relation(edge_key) {
+    //         for relation_instance_id in reactive_flow_instance.relations_added.read().unwrap().iter() {
+    //             if let Some(relation_instance) = reactive_flow_instance.get_relation(relation_instance_id) {
     //                 // TODO: How to handle reactive if registering a relation instance wasn't successful?
     //                 let _ = self.reactive_relation_manager.register_reactive_instance(relation_instance.clone());
     //             }
@@ -491,10 +491,10 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     //         //     }
     //         // }
     //         // for (_, relation_instance) in reactive_flow.relation_instances.read().unwrap().iter() {
-    //         //     let edge_key = relation_instance.get_key();
-    //         //     if edge_key.is_some() {
-    //         //         let edge_key = edge_key.unwrap();
-    //         //         if !self.reactive_relation_manager.has(edge_key.clone()) {
+    //         //     let relation_instance_id = relation_instance.get_key();
+    //         //     if relation_instance_id.is_some() {
+    //         //         let relation_instance_id = relation_instance_id.unwrap();
+    //         //         if !self.reactive_relation_manager.has(relation_instance_id.clone()) {
     //         //             self.reactive_relation_manager.register_reactive_instance(relation_instance.clone());
     //         //         }
     //         //     }
