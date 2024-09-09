@@ -60,8 +60,6 @@ static HANDLE_ID_RELATION_TYPE_COMPONENT_REMOVED: u128 = 0x6ba8b8119e1513ee59b30
 static HANDLE_ID_RELATION_TYPE_PROPERTY_ADDED: u128 = 0x6bb9b9232e1513d350b300c04fe530c7;
 static HANDLE_ID_RELATION_TYPE_PROPERTY_REMOVED: u128 = 0x6ba8b8339e1535ee5bd300c0410630c7;
 
-// pub struct ReactiveRelations(DashMap<RelationInstanceId, ReactiveRelation>); // Arc<DashMap<>>
-//
 pub struct OutboundInstances(DashMap<Uuid, DashSet<RelationInstanceId>>);
 
 impl OutboundInstances {
@@ -132,36 +130,6 @@ impl Default for InboundInstances {
     }
 }
 
-// pub struct RunningState(Arc<AtomicBool>);
-
-// pub struct SystemEventChannels(DashMap<u128, (Sender<Value>, Receiver<Value>)>);
-//
-// impl SystemEventChannels {
-//     fn sender(&self, handle_id: &u128) -> Option<Sender<Value>> {
-//         self.0.get(handle_id).map(|channel| channel.0.clone())
-//     }
-//
-//     fn receiver(&self, handle_id: &u128) -> Option<Receiver<Value>> {
-//         self.0.get(handle_id).map(|channel| channel.1.clone())
-//     }
-// }
-
-// fn create_reactive_relation_instance_storage() -> ReactiveRelations {
-//     // ReactiveRelations(Arc::new(DashMap::new()))
-//     ReactiveRelations(DashMap::new())
-// }
-
-// fn create_outbound_instances_storage() -> OutboundInstances {
-//     OutboundInstances(DashMap::new())
-// }
-//
-// fn create_inbound_instances_storage() -> InboundInstances {
-//     InboundInstances(DashMap::new())
-// }
-//
-// fn create_running_state() -> RunningState {
-//     RunningState(Arc::new(AtomicBool::new(true)))
-// }
 fn create_running_state() -> Arc<AtomicBool> {
     Arc::new(AtomicBool::new(true))
 }
@@ -284,7 +252,7 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         self.reactive_relation_instances.iter().filter(|r| r.behaves_as(behaviour_ty)).count()
     }
 
-    fn get_keys(&self) -> Vec<RelationInstanceId> {
+    fn get_relation_instance_ids(&self) -> Vec<RelationInstanceId> {
         self.reactive_relation_instances.iter().map(|e| e.key().clone()).collect()
     }
 
@@ -296,10 +264,10 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
             .properties(properties)
             .build();
         self.create_reactive_instance(relation_instance)
-        // match self.relation_instance_manager.create(edge_key, properties) {
-        //     Ok(edge_key) => match self.relation_instance_manager.get(&edge_key) {
+        // match self.relation_instance_manager.create(relation_instance_id, properties) {
+        //     Ok(relation_instance_id) => match self.relation_instance_manager.get(&relation_instance_id) {
         //         Some(relation_instance) => self.create_reactive_instance(relation_instance),
-        //         None => Err(ReactiveRelationCreationError::MissingInstance(edge_key)),
+        //         None => Err(ReactiveRelationCreationError::MissingInstance(relation_instance_id)),
         //     },
         //     Err(e) => Err(ReactiveRelationCreationError::RelationInstanceCreationError(e)),
         // }
@@ -422,8 +390,8 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         //     .relation_instance_manager
         //     .create_from_instance_if_not_exist(reactive_relation_instance.clone().into())
         // {
-        //     Ok(_edge_key) => {
-        //         self.reactive_relation_instances.insert(edge_key.clone(), reactive_relation_instance.clone());
+        //     Ok(relation_instance_id) => {
+        //         self.reactive_relation_instances.insert(relation_instance_id.clone(), reactive_relation_instance.clone());
         //         // Apply all components that are predefined in the relation type
         //         let relation_ty = reactive_relation_instance.relation_type_id();
         //         if let Some(components) = self.relation_type_manager.get(&relation_ty).map(|relation_type| relation_type.components) {
@@ -436,7 +404,7 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         //             .add_behaviours_to_relation(reactive_relation_instance.clone());
         //         // Add relation behaviours
         //         self.relation_behaviour_manager.add_behaviours(reactive_relation_instance.clone());
-        //         self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(edge_key));
+        //         self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(relation_instance_id));
         //         Ok(reactive_relation_instance)
         //     }
         //     Err(e) => Err(ReactiveRelationRegistrationError::RelationInstanceCreationError(e)),
@@ -446,9 +414,9 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
     fn register_or_merge_reactive_instance(&self, relation_instance: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError> {
         let id = relation_instance.id();
         match self.get(&id) {
-            // No instance with the given edge key exists yet, try to register the given reactive instance
+            // No instance with the given relation instance id exists yet, try to register the given reactive instance
             None => self.register_reactive_instance(relation_instance),
-            // Instance with the given edge key exists. Don't register but return the existing reactive instance instead of the given instance
+            // Instance with the given relation instance id exists. Don't register but return the existing reactive instance instead of the given instance
             Some(reactive_relation_instance) => Ok(reactive_relation_instance),
         }
     }
@@ -495,12 +463,12 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
 
     fn add_property(
         &self,
-        edge_key: &RelationInstanceId,
+        relation_instance_id: &RelationInstanceId,
         property_name: &str,
         mutability: Mutability,
         value: Value,
     ) -> Result<(), ReactiveRelationPropertyAddError> {
-        match self.get(edge_key) {
+        match self.get(relation_instance_id) {
             Some(relation_instance) => {
                 if relation_instance.has_property(property_name) {
                     return Err(ReactiveRelationPropertyAddError::PropertyAlreadyExists(property_name.to_string()));
@@ -508,12 +476,12 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
                 relation_instance.add_property(property_name, mutability, value);
                 Ok(())
             }
-            None => Err(ReactiveRelationPropertyAddError::MissingInstance(edge_key.clone())),
+            None => Err(ReactiveRelationPropertyAddError::MissingInstance(relation_instance_id.clone())),
         }
     }
 
-    fn remove_property(&self, edge_key: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError> {
-        match self.get(edge_key) {
+    fn remove_property(&self, relation_instance_id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError> {
+        match self.get(relation_instance_id) {
             Some(relation_instance) => {
                 if !relation_instance.has_property(property_name) {
                     return Err(ReactiveRelationPropertyRemoveError::MissingProperty(property_name.to_string()));
@@ -528,7 +496,7 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
                 relation_instance.remove_property(property_name);
                 Ok(())
             }
-            None => Err(ReactiveRelationPropertyRemoveError::MissingInstance(edge_key.clone())),
+            None => Err(ReactiveRelationPropertyRemoveError::MissingInstance(relation_instance_id.clone())),
         }
     }
 
@@ -550,8 +518,8 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         }
     }
 
-    // fn commit(&self, edge_key: &RelationInstanceId) {
-    //     if let Some(reactive_relation_instance) = self.get(edge_key) {
+    // fn commit(&self, relation_instance_id: &RelationInstanceId) {
+    //     if let Some(reactive_relation_instance) = self.get(relation_instance_id) {
     //         self.relation_instance_manager.commit(reactive_relation_instance.into());
     //     }
     // }
@@ -565,9 +533,6 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         } else {
             false
         }
-        // let result = self.relation_instance_manager.delete(id);
-        // self.event_manager.emit_event(SystemEvent::RelationInstanceDeleted(id.clone()));
-        // result
     }
 
     fn unregister_reactive_instance(&self, id: &RelationInstanceId) {
@@ -589,23 +554,6 @@ impl ReactiveRelationManager for ReactiveRelationManagerImpl {
         self.inbound_instances.remove(id);
         self.reactive_relation_instances.remove(id);
     }
-
-    // fn import(&self, path: &str) -> Result<ReactiveRelation, ReactiveRelationImportError> {
-    //     match self.relation_instance_manager.import(path) {
-    //         Ok(relation_instance) => match self.create_reactive_instance(relation_instance) {
-    //             Ok(reactive_relation_instance) => Ok(reactive_relation_instance),
-    //             Err(error) => Err(ReactiveRelationImportError::ReactiveRelationCreation(error)),
-    //         },
-    //         Err(error) => Err(ReactiveRelationImportError::RelationInstanceImport(error)),
-    //     }
-    // }
-    //
-    // fn export(&self, edge_key: &RelationInstanceId, path: &str) {
-    //     if self.has(edge_key) {
-    //         self.commit(edge_key);
-    //         self.relation_instance_manager.export(edge_key, path);
-    //     }
-    // }
 
     fn handle_component_added_events(&self) {
         let component_manager = self.component_manager.clone();

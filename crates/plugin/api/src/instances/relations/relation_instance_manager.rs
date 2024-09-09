@@ -44,7 +44,7 @@ pub trait RelationInstanceManager: Send + Sync {
     /// Returns all reactive relation instances of the given namespace.
     fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveRelation>;
 
-    /// Returns all edge keys.
+    /// Returns all relation instance ids.
     fn get_keys(&self) -> Vec<RelationInstanceId>;
 
     /// Returns the count of registered reactive relation instances.
@@ -65,18 +65,24 @@ pub trait RelationInstanceManager: Send + Sync {
     /// Registers the given reactive relation instance and applies components and behaviours.
     fn register(&self, reactive_relation: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
 
-    /// Adds the component with the given name to the relation instance with the given edge key.
-    fn add_component(&self, edge_key: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError>;
+    /// Adds the component with the given name to the relation instance with the given relation instance id.
+    fn add_component(&self, relation_instance_id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError>;
 
-    /// Removes the component with the given name from the relation instance with the given edge key.
-    fn remove_component(&self, edge_key: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError>;
+    /// Removes the component with the given name from the relation instance with the given relation instance id.
+    fn remove_component(&self, relation_instance_id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError>;
 
     /// Adds the property with the given name and initial value to the relation instance with the given id.
-    fn add_property(&self, id: &RelationInstanceId, property_name: &str, mutability: Mutability, value: Value) -> Result<(), ReactiveRelationPropertyAddError>;
+    fn add_property(
+        &self,
+        relation_instance_id: &RelationInstanceId,
+        property_name: &str,
+        mutability: Mutability,
+        value: Value,
+    ) -> Result<(), ReactiveRelationPropertyAddError>;
 
     /// Removes the property with the given name from the relation instance with the given id.
-    fn remove_property(&self, id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError>;
+    fn remove_property(&self, relation_instance_id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError>;
 
     /// Deletes the reactive relation instance with the given key.
-    fn delete(&self, edge_key: &RelationInstanceId) -> bool;
+    fn delete(&self, relation_instance_id: &RelationInstanceId) -> bool;
 }

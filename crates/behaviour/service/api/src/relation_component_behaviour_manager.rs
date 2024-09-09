@@ -30,8 +30,8 @@ pub trait RelationComponentBehaviourManager: Send + Sync + Lifecycle {
     /// Removes behaviour from the given relation instance's component
     fn remove_behaviours_from_relation_component(&self, relation_instance: ReactiveRelation, component: Component);
 
-    /// Removes behaviours from the given relation instance by edge key.
-    fn remove_behaviours_by_key(&self, edge_key: &RelationInstanceId);
+    /// Removes behaviours from the given relation instance by relation instance id.
+    fn remove_behaviours_by_key(&self, relation_instance_id: &RelationInstanceId);
 
     /// Removes all behaviours of the given behaviour type.
     fn remove_behaviours_by_behaviour(&self, behaviour_ty: &BehaviourTypeId);

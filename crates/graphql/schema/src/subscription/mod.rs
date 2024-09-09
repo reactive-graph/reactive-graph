@@ -76,11 +76,11 @@ impl InexorSubscription {
     async fn relation(
         &self,
         context: &Context<'_>,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         #[graphql(desc = "The name of the property")] property_name: String,
     ) -> Result<impl Stream<Item = GraphQLPropertyInstance>> {
         match context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>() {
-            Ok(relation_instance_manager) => match relation_instance_manager.get(&edge_key.into()) {
+            Ok(relation_instance_manager) => match relation_instance_manager.get(&relation_instance_id.into()) {
                 Some(relation_instance) => {
                     if !relation_instance.properties.contains_key(&property_name) {
                         return Err("Error: property by name not found".into());

@@ -18,7 +18,7 @@ use crate::TypeIdType;
 /// Separator for the string representation of a relation instance.
 pub static RELATION_INSTANCE_ID_SEPARATOR: &str = "--";
 
-/// Unique edge key
+/// Unique ID of the relation instance
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
 pub struct RelationInstanceId {
     /// The id of the outbound entity.

@@ -547,8 +547,8 @@ type MutationEntityTypes {
 type MutationFlowInstances {
   "Adds an existing entity instance by id to the given flow by id"
   addEntity(entityId: UUID!, flowId: UUID!): FlowInstance!
-  "Adds an existing relation instance by edge_key to the given flow by id"
-  addRelation(edgeKey: RelationInstanceIdDefinition!, flowId: UUID!): FlowInstance!
+  "Adds an existing relation instance by relation_instance_id to the given flow by id"
+  addRelation(flowId: UUID!, relationInstanceId: RelationInstanceIdDefinition!): FlowInstance!
   """
 
   Creates a new flow and a corresponding wrapper entity instance.
@@ -582,7 +582,7 @@ type MutationFlowInstances {
   """
   createFromType(namespace: String!, properties: [PropertyInstanceDefinition!], typeName: String!, variables: [PropertyInstanceDefinition!]): FlowInstance!
   "Creates a new relation instance and adds the relation instance to the given flow by id."
-  createRelation(edgeKey: RelationInstanceIdDefinition!, flowId: UUID!, properties: [PropertyInstanceDefinition!]): FlowInstance!
+  createRelation(flowId: UUID!, properties: [PropertyInstanceDefinition!], relationInstanceId: RelationInstanceIdDefinition!): FlowInstance!
   """
 
   Imports the given flow. Creates entity instances and relation instances which are contained
@@ -591,8 +591,8 @@ type MutationFlowInstances {
   import(flow: FlowInstanceDefinition!): FlowInstance!
   "Removes an entity instance from flow."
   removeEntity(entityId: UUID!, flowId: UUID!): FlowInstance!
-  "Removes an existing relation instance by edge_key from the given flow by id"
-  removeRelation(edgeKey: RelationInstanceIdDefinition!, flowId: UUID!): FlowInstance!
+  "Removes an existing relation instance by relation_instance_id from the given flow by id"
+  removeRelation(flowId: UUID!, relationInstanceId: RelationInstanceIdDefinition!): FlowInstance!
 }
 
 "Mutations on instances."
@@ -607,12 +607,12 @@ type MutationInstances {
 
 "Mutation of relation instances."
 type MutationRelationInstances {
-  connect(edgeKey: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
+  connect(relationInstanceId: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
   """
 
-  Creates a new relation instance with the given edge_key.
+  Creates a new relation instance with the given relation_instance_id.
 
-  The edge key is the primary key of a relation instance and consists of the id of the
+  The relation instance id is the primary key of a relation instance and consists of the id of the
   outbound entity instance, the name of the relation type and the id of the inbound
   entity instance.
 
@@ -631,9 +631,9 @@ type MutationRelationInstances {
     components: [ComponentTypeId!],
     "Description of the entity instance."
     description: String,
+    properties: [PropertyInstanceDefinition!],
     "Specifies the outbound id, the inbound id, the relation type and the instance_id."
-    edgeKey: RelationInstanceIdDefinition!,
-    properties: [PropertyInstanceDefinition!]
+    relationInstanceId: RelationInstanceIdDefinition!
   ): RelationInstance!
   """
 
@@ -657,10 +657,10 @@ type MutationRelationInstances {
     "The name of the connector relation type"
     type: RelationTypeId!
   ): RelationInstance!
-  "Deletes an relation instance."
-  delete(edgeKey: RelationInstanceIdDefinition!): Boolean!
-  disconnect(edgeKey: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
-  reconnect(edgeKey: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
+  "Deletes a relation instance."
+  delete(relationInstanceId: RelationInstanceIdDefinition!): Boolean!
+  disconnect(relationInstanceId: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
+  reconnect(relationInstanceId: RelationInstanceIdDefinition!, type: BehaviourTypeId!): RelationInstance!
   """
 
   Manually tick the relation instance. This means for each property of the entity instance
@@ -672,16 +672,16 @@ type MutationRelationInstances {
   In case of the default_connector it does NOT lead to a new value propagation, because the
   reactive streams are not consumed by the default_connector behaviour.
   """
-  tick(edgeKey: RelationInstanceIdDefinition!): RelationInstance!
-  "Updates the properties of the given relation instance by edge key."
+  tick(relationInstanceId: RelationInstanceIdDefinition!): RelationInstance!
+  "Updates the properties of the given relation instance by its relation instance id."
   update(
     "Adds the components with the given name"
     addComponents: [ComponentTypeId!],
     "Adds the given properties"
     addProperties: [PropertyTypeDefinition!],
-    edgeKey: RelationInstanceIdDefinition!,
     "Updates the given properties"
     properties: [PropertyInstanceDefinition!],
+    relationInstanceId: RelationInstanceIdDefinition!,
     "Removes the components with the given name"
     removeComponents: [ComponentTypeId!],
     "Removes the given properties"
@@ -964,9 +964,9 @@ type Subscription {
     propertyName: String!
   ): PropertyInstance!
   relation(
-    edgeKey: RelationInstanceIdDefinition!,
     "The name of the property"
-    propertyName: String!
+    propertyName: String!,
+    relationInstanceId: RelationInstanceIdDefinition!
   ): PropertyInstance!
 }
 
@@ -1292,8 +1292,8 @@ input RelationInstanceDefinition {
 
 """
 
-The primary key of an edge consists of the outbound id, the
-type name and the inbound id.
+The primary key of a relation instance consists of the outbound id, the
+type name, the inbound id and an instance_id.
 """
 input RelationInstanceIdDefinition {
   "The id of the inbound entity instance."

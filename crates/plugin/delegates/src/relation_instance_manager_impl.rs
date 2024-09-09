@@ -40,12 +40,12 @@ impl RelationInstanceManagerDelegate {
     }
 }
 impl reactive_graph_plugin_api::RelationInstanceManager for RelationInstanceManagerDelegate {
-    fn has(&self, edge_key: &RelationInstanceId) -> bool {
-        self.reactive_relation_manager.has(edge_key)
+    fn has(&self, relation_instance_id: &RelationInstanceId) -> bool {
+        self.reactive_relation_manager.has(relation_instance_id)
     }
 
-    fn get(&self, edge_key: &RelationInstanceId) -> Option<ReactiveRelation> {
-        self.reactive_relation_manager.get(edge_key)
+    fn get(&self, relation_instance_id: &RelationInstanceId) -> Option<ReactiveRelation> {
+        self.reactive_relation_manager.get(relation_instance_id)
     }
 
     fn get_by_outbound_entity(&self, outbound_entity_id: Uuid) -> Vec<ReactiveRelation> {
@@ -69,7 +69,7 @@ impl reactive_graph_plugin_api::RelationInstanceManager for RelationInstanceMana
     }
 
     fn get_keys(&self) -> Vec<RelationInstanceId> {
-        self.reactive_relation_manager.get_keys()
+        self.reactive_relation_manager.get_relation_instance_ids()
     }
 
     fn count(&self) -> usize {
@@ -127,20 +127,27 @@ impl reactive_graph_plugin_api::RelationInstanceManager for RelationInstanceMana
         self.reactive_relation_manager.register_reactive_instance(reactive_relation)
     }
 
-    fn add_component(&self, id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
-        self.reactive_relation_manager.add_component(id, component)
+    fn add_component(&self, relation_instance_id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError> {
+        self.reactive_relation_manager.add_component(relation_instance_id, component)
     }
 
-    fn remove_component(&self, id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError> {
-        self.reactive_relation_manager.remove_component(id, component)
+    fn remove_component(&self, relation_instance_id: &RelationInstanceId, component: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError> {
+        self.reactive_relation_manager.remove_component(relation_instance_id, component)
     }
 
-    fn add_property(&self, id: &RelationInstanceId, property_name: &str, mutability: Mutability, value: Value) -> Result<(), ReactiveRelationPropertyAddError> {
-        self.reactive_relation_manager.add_property(id, property_name, mutability, value)
+    fn add_property(
+        &self,
+        relation_instance_id: &RelationInstanceId,
+        property_name: &str,
+        mutability: Mutability,
+        value: Value,
+    ) -> Result<(), ReactiveRelationPropertyAddError> {
+        self.reactive_relation_manager
+            .add_property(relation_instance_id, property_name, mutability, value)
     }
 
-    fn remove_property(&self, id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError> {
-        self.reactive_relation_manager.remove_property(id, property_name)
+    fn remove_property(&self, relation_instance_id: &RelationInstanceId, property_name: &str) -> Result<(), ReactiveRelationPropertyRemoveError> {
+        self.reactive_relation_manager.remove_property(relation_instance_id, property_name)
     }
 
     fn delete(&self, id: &RelationInstanceId) -> bool {

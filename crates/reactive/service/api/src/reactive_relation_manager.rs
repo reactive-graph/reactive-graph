@@ -54,8 +54,8 @@ pub trait ReactiveRelationManager: Send + Sync + Lifecycle {
     /// Returns all reactive relation instances of the given namespace.
     fn get_by_namespace(&self, namespace: &str) -> Vec<ReactiveRelation>;
 
-    /// Returns all edge keys.
-    fn get_keys(&self) -> Vec<RelationInstanceId>;
+    /// Returns all relation instance ids.
+    fn get_relation_instance_ids(&self) -> Vec<RelationInstanceId>;
 
     /// Returns the count of registered reactive relation instances.
     fn count(&self) -> usize;
@@ -79,10 +79,10 @@ pub trait ReactiveRelationManager: Send + Sync + Lifecycle {
 
     fn register_or_merge_reactive_instance(&self, relation_instance: ReactiveRelation) -> Result<ReactiveRelation, ReactiveRelationRegistrationError>;
 
-    /// Adds the component with the given name to the relation instance with the given edge key.
+    /// Adds the component with the given name to the relation instance with the given relation instance id.
     fn add_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentAddError>;
 
-    /// Removes the component with the given name from the relation instance with the given edge key.
+    /// Removes the component with the given name from the relation instance with the given relation instance id.
     fn remove_component(&self, id: &RelationInstanceId, component_ty: &ComponentTypeId) -> Result<(), ReactiveRelationComponentRemoveError>;
 
     /// Adds the property with the given name and initial value to the relation instance with the given id.

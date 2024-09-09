@@ -7,8 +7,8 @@ use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationInstanceTypeId;
 use reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
-/// The primary key of an edge consists of the outbound id, the
-/// type name and the inbound id.
+/// The primary key of a relation instance consists of the outbound id, the
+/// type name, the inbound id and an instance_id.
 #[derive(Debug, Clone, InputObject)]
 #[graphql(name = "RelationInstanceIdDefinition")]
 pub struct GraphQLRelationInstanceId {

@@ -107,13 +107,13 @@ impl ReactiveFlowInstance {
         self.relation_instances.read().unwrap().contains_key(&relation_instance.id())
     }
 
-    pub fn has_relation_by_key(&self, edge_key: &RelationInstanceId) -> bool {
-        self.relation_instances.read().unwrap().contains_key(edge_key)
+    pub fn has_relation_by_key(&self, relation_instance_id: &RelationInstanceId) -> bool {
+        self.relation_instances.read().unwrap().contains_key(relation_instance_id)
     }
 
-    pub fn get_relation(&self, edge_key: &RelationInstanceId) -> Option<ReactiveRelation> {
+    pub fn get_relation(&self, relation_instance_id: &RelationInstanceId) -> Option<ReactiveRelation> {
         let reader = self.relation_instances.read().unwrap();
-        reader.get(edge_key).cloned()
+        reader.get(relation_instance_id).cloned()
     }
 
     pub fn add_relation(&self, relation_instance: ReactiveRelation) {
@@ -124,9 +124,9 @@ impl ReactiveFlowInstance {
         }
     }
 
-    pub fn remove_relation(&self, edge_key: &RelationInstanceId) {
-        self.relation_instances.write().unwrap().remove(edge_key);
-        self.relations_removed.write().unwrap().push(edge_key.clone());
+    pub fn remove_relation(&self, relation_instance_id: &RelationInstanceId) {
+        self.relation_instances.write().unwrap().remove(relation_instance_id);
+        self.relations_removed.write().unwrap().push(relation_instance_id.clone());
     }
 
     pub fn tick(&self) {
