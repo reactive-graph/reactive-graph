@@ -134,7 +134,7 @@ rayon = "1.6"
 regex = "1.9"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
-rustls = { version = "0.23", features = ["aws_lc_rs"] }
+rustls = { version = "0.23.13", features = ["aws_lc_rs"] }
 rustls-pki-types = "1.4.0"
 rustls-pemfile = "2.1.1"
 rustyline = "14.0"
