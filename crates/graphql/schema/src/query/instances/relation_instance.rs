@@ -3,7 +3,6 @@ use std::sync::Arc;
 use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
-
 use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
@@ -26,11 +25,11 @@ pub struct GraphQLRelationInstance {
 ///
 /// The relation instance is of a relation type. The relation type defines
 /// the entity types of the outbound entity instance and the inbound entity
-/// instance. Furthermore the relation type defines which properties
+/// instance. Furthermore, the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
 /// In contrast to the relation type, the relation instance stores values/
-/// documents in it's properties.
+/// documents in its properties.
 #[Object(name = "RelationInstance")]
 impl GraphQLRelationInstance {
     /// The outbound entity instance.
@@ -71,8 +70,8 @@ impl GraphQLRelationInstance {
 
     /// The properties of then relation instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     async fn properties(
