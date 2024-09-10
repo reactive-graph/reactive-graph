@@ -36,11 +36,11 @@ impl From<&RelationTypeIdArgs> for RelationTypeIdVariables {
 /// The relation type as option.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypeIdOptions {
-    /// The entity type namespace.
+    /// The relation type namespace.
     #[clap(long)]
     pub namespace: Option<String>,
 
-    /// The entity type name.
+    /// The relation type name.
     #[clap(short, long)]
     pub name: Option<String>,
 }
