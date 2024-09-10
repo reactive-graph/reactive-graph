@@ -11,14 +11,14 @@ pattern = "{d(%H:%M:%S%.3f)} {h([{l}])} [{T}] {h({M}:{L})} {m}{n}\r"
 
 [appenders.file-application]
 kind = "file"
-path = "log/reactive-graph-application.log"
+path = "log/reactive-graph.log"
 
 [appenders.file-application.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 
 [appenders.file-errors]
 kind = "file"
-path = "log/error.log"
+path = "log/reactive-graph.error.log"
 
 [appenders.file-errors.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
