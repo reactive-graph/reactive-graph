@@ -45,7 +45,7 @@ impl GraphQLRelationInstance {
     #[graphql(name = "type")]
     async fn relation_type(&self, context: &Context<'_>) -> Option<GraphQLRelationType> {
         context
-            .data::<Arc<dyn RelationTypeManager>>()
+            .data::<Arc<dyn RelationTypeManager + Send + Sync>>()
             .ok()?
             .get(&self.relation_instance.relation_type_id())
             .map(|r| r.into())
