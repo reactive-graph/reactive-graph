@@ -4,7 +4,7 @@ use crate::cli::types::components::args::type_id::ComponentTypeIdArgs;
 use clap::Args;
 use uuid::Uuid;
 
-/// Identifies a component of an reactive instance.
+/// Identifies a component of an entity instance.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct IdAndComponentArgs {
     /// The id of the reactive instance.

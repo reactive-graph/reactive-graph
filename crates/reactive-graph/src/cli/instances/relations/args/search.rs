@@ -29,7 +29,7 @@ pub(crate) struct SearchRelationInstancesArgs {
     #[clap(short, long, value_parser = parse_property)]
     pub properties: Option<Vec<(String, Value)>>,
 
-    /// The properties to search for.
+    /// The components to search for.
     #[clap(short, long, value_parser = parse_component_ty)]
     pub components: Option<Vec<ComponentTypeId>>,
 }

@@ -4,9 +4,12 @@ use crate::cli::types::relations::args::type_id::RelationTypeIdArgs;
 use clap::Args;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::RelationInstanceTypeId;
+use std::fmt::Debug;
+use std::fmt::Display;
+use std::fmt::Formatter;
 use uuid::Uuid;
 
-/// CLI argument for searching relation instances.
+/// CLI argument which identifies an relation instance by its id.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationInstanceIdArgs {
     /// The id of the outbound entity instance.
@@ -40,5 +43,12 @@ impl From<&RelationInstanceIdArgs> for RelationInstanceId {
             ty,
             inbound_id: id.inbound_id,
         }
+    }
+}
+
+impl Display for RelationInstanceIdArgs {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let id = RelationInstanceId::from(self);
+        std::fmt::Display::fmt(&id, f)
     }
 }

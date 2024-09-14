@@ -28,6 +28,9 @@ pub struct RelationInstance {
     /// The type name.
     pub name: String,
 
+    /// The relation type instance id.
+    pub instance_id: String,
+
     /// The id of the inbound entity instance.
     pub inbound_id: Uuid,
 
@@ -52,7 +55,8 @@ impl From<reactive_graph_graph::RelationInstance> for RelationInstance {
         RelationInstance {
             outbound_id: relation_instance.outbound_id,
             namespace: relation_instance.namespace(),
-            name: relation_instance.type_name(),
+            name: relation_instance.relation_type_id().type_name(),
+            instance_id: relation_instance.instance_id(),
             inbound_id: relation_instance.inbound_id,
             description: relation_instance.description,
             properties: PropertyInstances::from(relation_instance.properties).0,

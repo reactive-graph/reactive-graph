@@ -9,7 +9,10 @@ pub(crate) struct PropertyInstanceArgs {
     /// The name of the property.
     pub property_name: String,
 
-    /// The value of the property.
+    /// The JSON value of the property.
+    ///
+    /// 'true' is boolean true, '"true"' is the string "true"
+    #[clap(value_parser = parse_json)]
     pub property_value: Value,
 }
 

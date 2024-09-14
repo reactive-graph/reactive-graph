@@ -1,5 +1,5 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
-pub mod queries {
+pub mod mutations {
     use crate::client::instances::variables::id_and_component::queries::IdAndComponentVariables;
     use crate::client::instances::variables::id_and_component::queries::IdAndComponentVariablesFields;
     use crate::schema_graphql::instances::entity_instance::EntityInstance;
