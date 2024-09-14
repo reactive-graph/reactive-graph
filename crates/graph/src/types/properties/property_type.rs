@@ -273,6 +273,10 @@ impl PropertyTypes {
         property_types.sort();
         property_types
     }
+
+    pub fn names(&self) -> Vec<String> {
+        self.0.iter().map(|property_type| property_type.name.clone()).collect()
+    }
 }
 
 impl PropertyTypeContainer for PropertyTypes {

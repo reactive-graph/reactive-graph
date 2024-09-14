@@ -6,7 +6,7 @@ use uuid::Uuid;
 /// CLI argument which identifies a property of an entity instance.
 #[derive(Args, Debug, Clone)]
 pub(crate) struct IdAndPropertyArgs {
-    /// The id of the reactive instance.
+    /// The id of the entity instance.
     pub id: Uuid,
 
     /// The name of the property.

@@ -2,8 +2,13 @@ use crate::cli::instances::relations::commands::RelationInstancesCommands;
 use crate::cli::output_format::OutputFormatArgs;
 use clap::Args;
 
+pub mod add_property;
+pub mod create;
 pub mod id;
+pub mod id_and_component;
+pub mod id_and_property;
 pub mod search;
+pub mod set_property;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]

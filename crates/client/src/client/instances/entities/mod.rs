@@ -1,11 +1,5 @@
-pub mod add_component;
-pub mod add_property;
 pub mod api;
-pub mod create;
-pub mod delete;
-pub mod get_by_id;
-pub mod get_by_label;
-pub mod remove_component;
-pub mod remove_property;
-pub mod search;
-pub mod set_property;
+
+pub mod mutations;
+pub mod queries;
+pub mod variables;

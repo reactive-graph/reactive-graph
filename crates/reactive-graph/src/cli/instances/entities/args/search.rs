@@ -2,7 +2,7 @@ use crate::cli::instances::properties::args::parse_property;
 use crate::cli::types::components::args::parse_component_ty;
 use crate::cli::types::entities::args::type_id::EntityTypeIdOptions;
 use clap::Args;
-use reactive_graph_client::client::instances::entities::search::queries::SearchEntityInstancesVariables;
+use reactive_graph_client::client::instances::entities::queries::search::queries::SearchEntityInstancesVariables;
 use reactive_graph_client::ComponentTypeIds;
 use reactive_graph_client::PropertyInstanceDefinitions;
 use reactive_graph_graph::ComponentTypeId;
@@ -29,7 +29,7 @@ pub(crate) struct SearchEntityInstancesArgs {
     #[clap(short, long, value_parser = parse_property)]
     pub properties: Option<Vec<(String, Value)>>,
 
-    /// The properties to search for.
+    /// The components to search for.
     #[clap(short, long, value_parser = parse_component_ty)]
     pub components: Option<Vec<ComponentTypeId>>,
 }

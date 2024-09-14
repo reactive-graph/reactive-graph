@@ -1,16 +1,16 @@
 use std::sync::Arc;
 
-use crate::client::instances::entities::add_component::queries::add_component;
-use crate::client::instances::entities::add_property::queries::add_property;
-use crate::client::instances::entities::create::queries::create;
-use crate::client::instances::entities::delete::queries::delete_entity_instance_mutation;
-use crate::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
-use crate::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
-use crate::client::instances::entities::remove_component::queries::remove_component;
-use crate::client::instances::entities::remove_property::queries::remove_property;
-use crate::client::instances::entities::search::queries::search;
-use crate::client::instances::entities::search::queries::SearchEntityInstancesVariables;
-use crate::client::instances::entities::set_property::queries::set_property;
+use crate::client::instances::entities::mutations::add_component::mutations::add_component;
+use crate::client::instances::entities::mutations::add_property::mutations::add_property;
+use crate::client::instances::entities::mutations::create::mutations::create;
+use crate::client::instances::entities::mutations::delete::mutations::delete_entity_instance_mutation;
+use crate::client::instances::entities::mutations::remove_component::mutations::remove_component;
+use crate::client::instances::entities::mutations::remove_property::mutations::remove_property;
+use crate::client::instances::entities::mutations::set_property::mutations::set_property;
+use crate::client::instances::entities::queries::get_by_id::queries::get_entity_instance_by_id;
+use crate::client::instances::entities::queries::get_by_label::queries::get_entity_instance_by_label;
+use crate::client::instances::entities::queries::search::queries::search;
+use crate::client::instances::entities::queries::search::queries::SearchEntityInstancesVariables;
 use crate::client::InexorRgfClient;
 use crate::client::InexorRgfClientExecutionError;
 use cynic::http::ReqwestExt;
