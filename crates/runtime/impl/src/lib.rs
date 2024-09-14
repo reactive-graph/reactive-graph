@@ -1,4 +1,3 @@
-#![feature(unsized_tuple_coercion)]
 #![feature(concat_idents)]
 #![feature(register_tool)]
 #![feature(test)]
