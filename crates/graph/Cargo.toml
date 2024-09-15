@@ -36,3 +36,6 @@ test = ["default-test", "rand", "rand_derive2", "reactive-graph-test-utils"]
 
 [lib]
 crate-type = ["lib"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

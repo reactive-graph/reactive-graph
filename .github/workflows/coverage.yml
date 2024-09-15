@@ -42,7 +42,7 @@ jobs:
       - name: Run sccache-cache
         uses: mozilla-actions/sccache-action@v0.0.5
       - name: Run cargo-tarpaulin
-        run: cargo +nightly tarpaulin --verbose --all-features --workspace --timeout 120 --out xml
+        run: cargo +nightly tarpaulin --engine llvm --verbose --all-features --workspace --timeout 120 --out xml
       # Note: closed-source code needs to provide a token,
       # but open source code does not.
       - name: Upload to codecov.io

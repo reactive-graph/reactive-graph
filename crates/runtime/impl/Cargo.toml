@@ -138,3 +138,6 @@ crate-type = ["lib"]
 
 [[example]]
 name = "simple_runtime"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

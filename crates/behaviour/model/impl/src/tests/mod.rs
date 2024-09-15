@@ -1,6 +1,6 @@
 mod expression_test;
 
-#[tarpaulin::skip]
+#[cfg(not(tarpaulin_include))]
 pub mod utils;
 
 #[test]

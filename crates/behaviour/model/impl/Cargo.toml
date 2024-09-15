@@ -27,3 +27,6 @@ random-string = { workspace = true }
 
 [lib]
 crate-type = ["lib"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

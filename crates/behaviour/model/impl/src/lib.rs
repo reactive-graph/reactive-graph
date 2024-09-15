@@ -1,6 +1,3 @@
-#![feature(register_tool)]
-#![register_tool(tarpaulin)]
-
 pub use behaviour::BehaviourConnect;
 pub use behaviour::BehaviourConnectFailed;
 pub use behaviour::BehaviourCreationError;
@@ -45,5 +42,5 @@ pub mod entity;
 pub mod relation;
 
 #[cfg(test)]
-#[tarpaulin::ignore]
+#[cfg(not(tarpaulin_include))]
 pub mod tests;

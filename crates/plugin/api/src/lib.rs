@@ -1,6 +1,4 @@
-#![feature(register_tool)]
 #![feature(concat_idents)]
-#![register_tool(tarpaulin)]
 
 #[cfg(feature = "json5")]
 pub use json5;
@@ -413,5 +411,5 @@ macro_rules! get_context {
 pub mod prelude;
 
 #[cfg(test)]
-#[tarpaulin::ignore]
+#[cfg(not(tarpaulin_include))]
 pub mod tests;

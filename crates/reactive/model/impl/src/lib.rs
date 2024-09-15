@@ -1,7 +1,4 @@
-#![feature(unsized_tuple_coercion)]
-#![feature(register_tool)]
 #![feature(test)]
-#![register_tool(tarpaulin)]
 
 pub use entities::*;
 pub use flows::*;
