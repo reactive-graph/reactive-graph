@@ -341,6 +341,42 @@
 <a href="#341" id="341">341</a>
 <a href="#342" id="342">342</a>
 <a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::<span class="kw-2">*</span>;
@@ -353,6 +389,8 @@
 <span class="kw">use </span>reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 <span class="kw">use </span>reactive_graph_graph::PropertyInstanceGetter;
 <span class="kw">use </span>reactive_graph_graph::PropertyInstanceSetter;
+<span class="kw">use </span>reactive_graph_graph::PropertyType;
+<span class="kw">use </span>reactive_graph_graph::RelationInstance;
 <span class="kw">use </span>reactive_graph_graph::RelationInstanceId;
 <span class="kw">use </span>reactive_graph_graph::RelationInstanceTypeId;
 <span class="kw">use </span>reactive_graph_reactive_model_api::ReactivePropertyContainer;
@@ -373,9 +411,9 @@
 <span class="doccomment">/// Mutation of relation instances.
 </span><span class="attr">#[Object]
 </span><span class="kw">impl </span>MutationRelationInstances {
-    <span class="doccomment">/// Creates a new relation instance with the given edge_key.
+    <span class="doccomment">/// Creates a new relation instance with the given relation_instance_id.
     ///
-    /// The edge key is the primary key of a relation instance and consists of the id of the
+    /// The relation instance id is the primary key of a relation instance and consists of the id of the
     /// outbound entity instance, the name of the relation type and the id of the inbound
     /// entity instance.
     ///
@@ -383,7 +421,7 @@
     /// For example a given type name "default_connector--property_name--property_name" will match
     /// as relation type "default_connector".
     ///
-    /// Furthermore the outbound and the inbound entity instance must exist.
+    /// Furthermore, the outbound and the inbound entity instance must exist.
     ///
     /// The given properties consists of a list of pairs of property name and property value.
     /// If properties are not provided, default values will be used depending on the data type
@@ -391,7 +429,8 @@
     </span><span class="kw">async fn </span>create(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-        <span class="attr">#[graphql(desc = <span class="string">"Specifies the outbound id, the inbound id, the relation type and the instance_id."</span>)] </span>edge_key: GraphQLRelationInstanceId,
+        <span class="attr">#[graphql(desc = <span class="string">"Specifies the outbound id, the inbound id, the relation type and the instance_id."</span>)] </span>relation_instance_id: GraphQLRelationInstanceId,
+        <span class="attr">#[graphql(desc = <span class="string">"Description of the entity instance."</span>)] </span>description: <span class="prelude-ty">Option</span>&lt;String&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Creates the relation instance with the given components."</span>)] </span>components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
         properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
@@ -399,36 +438,48 @@
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>relation_instance_ty = edge_key.ty();
+        <span class="kw">let </span>relation_instance_ty = relation_instance_id.ty();
         <span class="kw">let </span>relation_ty = relation_instance_ty.relation_type_id();
 
         <span class="kw">let </span>relation_type = relation_type_manager
             .get(<span class="kw-2">&amp;</span>relation_ty)
             .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Relation type {} does not exist!"</span>, <span class="kw-2">&amp;</span>relation_ty)))<span class="question-mark">?</span>;
 
-        <span class="kw">if </span>!entity_instance_manager.has(edge_key.outbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Outbound entity {} does not exist!"</span>, edge_key.outbound_id)));
+        <span class="kw">if </span>!entity_instance_manager.has(relation_instance_id.outbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Outbound entity {} does not exist!"</span>, relation_instance_id.outbound_id)));
         }
 
-        <span class="kw">if </span>!entity_instance_manager.has(edge_key.inbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Inbound entity {} does not exist!"</span>, edge_key.inbound_id)));
+        <span class="kw">if </span>!entity_instance_manager.has(relation_instance_id.inbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Inbound entity {} does not exist!"</span>, relation_instance_id.inbound_id)));
         }
 
         <span class="kw">let </span>properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, relation_type.properties);
-        <span class="kw">let </span>id: RelationInstanceId = edge_key.into();
 
-        <span class="kw">let </span>relation_instance = relation_instance_manager
-            .create_reactive_relation(<span class="kw-2">&amp;</span>id, properties)
-            .map_err(|e| Error::new(<span class="macro">format!</span>(<span class="string">"Failed to create relation instance: {:?}"</span>, e)))<span class="question-mark">?</span>;
+        <span class="kw">let </span>relation_instance = RelationInstance::builder()
+            .outbound_id(relation_instance_id.outbound_id)
+            .ty(relation_instance_ty)
+            .inbound_id(relation_instance_id.inbound_id)
+            .description(description.unwrap_or_default())
+            .properties(properties)
+            .build();
 
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(components) = components {
-            <span class="kw">for </span>component <span class="kw">in </span>components {
-                <span class="kw">let </span>component = component.into();
-                <span class="comment">// TODO: handle components which have not been added
-                </span><span class="kw">let _ </span>= relation_instance_manager.add_component(<span class="kw-2">&amp;</span>id, <span class="kw-2">&amp;</span>component);
+        <span class="kw">let </span>id: RelationInstanceId = relation_instance_id.into();
+
+        <span class="kw">let </span>relation_instance = relation_instance_manager.create_reactive_instance(relation_instance);
+
+        <span class="kw">match </span>relation_instance {
+            <span class="prelude-val">Ok</span>(relation_instance) =&gt; {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(components) = components {
+                    <span class="kw">for </span>component <span class="kw">in </span>components {
+                        <span class="kw">let </span>component = component.into();
+                        <span class="comment">// TODO: handle components which have not been added
+                        </span><span class="kw">let _ </span>= relation_instance_manager.add_component(<span class="kw-2">&amp;</span>id, <span class="kw-2">&amp;</span>component);
+                    }
+                }
+                <span class="prelude-val">Ok</span>(relation_instance.into())
             }
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         }
-        <span class="prelude-val">Ok</span>(relation_instance.into())
     }
 
     <span class="doccomment">/// Creates a connector from a property of the outbound entity instance to a property of the inbound entity instance.
@@ -478,13 +529,13 @@
         }
 
         <span class="comment">// Construct the instance_id because between two nodes only one edge with the same type
-        // can exist. Therefore we construct an unique type which contains the names of the outbound
+        // can exist. Therefore, we construct a unique type which contains the names of the outbound
         // property and the inbound property. This allows *exactly one* connector (of the given
         // connector type) between the two properties.
         </span><span class="kw">let </span>instance_id = <span class="macro">format!</span>(<span class="string">"{}__{}"</span>, outbound_property_name, inbound_property_name);
         <span class="kw">let </span>ty = RelationInstanceTypeId::new_unique_for_instance_id(relation_ty, instance_id);
 
-        <span class="comment">// Construct an edge key using the outbound id, the type identifier (containing the
+        <span class="comment">// Construct a relation instance id using the outbound id, the type identifier (containing the
         // previously generated instance_id) and the inbound id.
         </span><span class="kw">let </span>id = RelationInstanceId::new(outbound_id, ty, inbound_id);
 
@@ -506,35 +557,37 @@
         }
     }
 
-    <span class="doccomment">/// Updates the properties of the given relation instance by edge key.
+    <span class="doccomment">/// Updates the properties of the given relation instance by its relation instance id.
     </span><span class="kw">async fn </span>update(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         <span class="attr">#[graphql(desc = <span class="string">"Adds the components with the given name"</span>)] </span>add_components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Removes the components with the given name"</span>)] </span>remove_components: <span class="prelude-ty">Option</span>&lt;Vec&lt;ComponentTypeIdDefinition&gt;&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Updates the given properties"</span>)] </span>properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
+        <span class="attr">#[graphql(desc = <span class="string">"Adds the given properties"</span>)] </span>add_properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;<span class="kw">crate</span>::mutation::PropertyTypeDefinition&gt;&gt;,
+        <span class="attr">#[graphql(desc = <span class="string">"Removes the given properties"</span>)] </span>remove_properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
         <span class="kw">let </span>relation_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 
-        <span class="kw">if </span>!entity_instance_manager.has(edge_key.outbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Outbound entity {} does not exist!"</span>, edge_key.outbound_id)));
+        <span class="kw">if </span>!entity_instance_manager.has(relation_instance_id.outbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Outbound entity {} does not exist!"</span>, relation_instance_id.outbound_id)));
         }
 
-        <span class="kw">if </span>!entity_instance_manager.has(edge_key.inbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Inbound entity {} does not exist!"</span>, edge_key.inbound_id)));
+        <span class="kw">if </span>!entity_instance_manager.has(relation_instance_id.inbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Inbound entity {} does not exist!"</span>, relation_instance_id.inbound_id)));
         }
 
-        <span class="kw">let </span>ty = edge_key.ty();
+        <span class="kw">let </span>ty = relation_instance_id.ty();
         <span class="kw">let </span>relation_ty = ty.relation_type_id();
 
         <span class="kw">if </span>relation_type_manager.get(<span class="kw-2">&amp;</span>relation_ty).is_none() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Relation type {} does not exist!"</span>, edge_key)));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Relation type {} does not exist!"</span>, relation_instance_id)));
         }
 
-        <span class="kw">let </span>id: RelationInstanceId = edge_key.into();
+        <span class="kw">let </span>id: RelationInstanceId = relation_instance_id.into();
         <span class="kw">let </span>relation_instance = relation_instance_manager
             .get(<span class="kw-2">&amp;</span>id)
             .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Relation instance {} does not exist!"</span>, id)))<span class="question-mark">?</span>;
@@ -567,6 +620,19 @@
                 }
             }
         }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(add_properties) = add_properties {
+            <span class="kw">for </span>property_type <span class="kw">in </span>add_properties.clone() {
+                <span class="kw">let </span>property_type: PropertyType = property_type.into();
+                <span class="macro">debug!</span>(<span class="string">"add property {} ({})"</span>, <span class="kw-2">&amp;</span>property_type.name, <span class="kw-2">&amp;</span>property_type.data_type);
+                relation_instance.add_property_by_type(<span class="kw-2">&amp;</span>property_type);
+            }
+        }
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(remove_properties) = remove_properties {
+            <span class="kw">for </span>property_name <span class="kw">in </span>remove_properties.clone() {
+                <span class="macro">debug!</span>(<span class="string">"remove property {}"</span>, <span class="kw-2">&amp;</span>property_name);
+                relation_instance.remove_property(property_name);
+            }
+        }
         <span class="comment">// TODO: it's still not a transactional mutation
         // relation_instance.tick();
         </span><span class="prelude-val">Ok</span>(relation_instance.into())
@@ -580,9 +646,9 @@
     ///
     /// In case of the default_connector it does NOT lead to a new value propagation, because the
     /// reactive streams are not consumed by the default_connector behaviour.
-    </span><span class="kw">async fn </span>tick(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, edge_key: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
+    </span><span class="kw">async fn </span>tick(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, relation_instance_id: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span>id = edge_key.into();
+        <span class="kw">let </span>id = relation_instance_id.into();
         <span class="kw">let </span>relation_instance = relation_instance_manager
             .get(<span class="kw-2">&amp;</span>id)
             .ok_or_else(|| Error::new(<span class="macro">format!</span>(<span class="string">"Relation instance {} does not exist!"</span>, id)))<span class="question-mark">?</span>;
@@ -590,36 +656,38 @@
         <span class="prelude-val">Ok</span>(relation_instance.into())
     }
 
-    <span class="doccomment">/// Deletes an relation instance.
-    </span><span class="kw">async fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, edge_key: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
+    <span class="doccomment">/// Deletes a relation instance.
+    </span><span class="kw">async fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, relation_instance_id: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;bool&gt; {
         <span class="comment">// let relation_type_manager = context.data::&lt;Arc&lt;dyn RelationTypeManager + Send + Sync&gt;&gt;()?;
         </span><span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>entity_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveEntityManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 
-        <span class="macro">debug!</span>(<span class="string">"Deleting relation instance {:?}"</span>, edge_key);
+        <span class="macro">debug!</span>(<span class="string">"Deleting relation instance {:?}"</span>, relation_instance_id);
 
-        <span class="kw">if </span>!entity_instance_manager.has(edge_key.outbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Outbound entity {} does not exist!"</span>, edge_key.outbound_id)));
+        <span class="kw">if </span>!entity_instance_manager.has(relation_instance_id.outbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Outbound entity {} does not exist!"</span>, relation_instance_id.outbound_id)));
         }
 
-        <span class="kw">if </span>!entity_instance_manager.has(edge_key.inbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Inbound entity {} does not exist!"</span>, edge_key.inbound_id)));
+        <span class="kw">if </span>!entity_instance_manager.has(relation_instance_id.inbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::new(<span class="macro">format!</span>(<span class="string">"Inbound entity {} does not exist!"</span>, relation_instance_id.inbound_id)));
         }
 
-        <span class="prelude-val">Ok</span>(relation_instance_manager.delete(<span class="kw-2">&amp;</span>edge_key.into()))
+        <span class="prelude-val">Ok</span>(relation_instance_manager.delete(<span class="kw-2">&amp;</span>relation_instance_id.into()))
     }
 
     <span class="kw">async fn </span>connect(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         <span class="attr">#[graphql(name = <span class="string">"type"</span>)] </span>behaviour_ty: BehaviourTypeIdDefinition,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_behaviour_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationBehaviourManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_component_behaviour_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationComponentBehaviourManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span>edge_key = RelationInstanceId::from(edge_key);
-        <span class="kw">let </span>reactive_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>edge_key).ok_or(Error::new(<span class="string">"Relation instance not found"</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>relation_instance_id = RelationInstanceId::from(relation_instance_id);
+        <span class="kw">let </span>reactive_instance = relation_instance_manager
+            .get(<span class="kw-2">&amp;</span>relation_instance_id)
+            .ok_or(Error::new(<span class="string">"Relation instance not found"</span>))<span class="question-mark">?</span>;
         <span class="kw">let </span>behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         <span class="kw">if </span>relation_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
             relation_behaviour_manager
@@ -637,14 +705,16 @@
     <span class="kw">async fn </span>disconnect(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         <span class="attr">#[graphql(name = <span class="string">"type"</span>)] </span>behaviour_ty: BehaviourTypeIdDefinition,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_behaviour_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationBehaviourManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_component_behaviour_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationComponentBehaviourManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span>edge_key = RelationInstanceId::from(edge_key);
-        <span class="kw">let </span>reactive_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>edge_key).ok_or(Error::new(<span class="string">"Relation instance not found"</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>relation_instance_id = RelationInstanceId::from(relation_instance_id);
+        <span class="kw">let </span>reactive_instance = relation_instance_manager
+            .get(<span class="kw-2">&amp;</span>relation_instance_id)
+            .ok_or(Error::new(<span class="string">"Relation instance not found"</span>))<span class="question-mark">?</span>;
         <span class="kw">let </span>behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         <span class="kw">if </span>relation_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
             relation_behaviour_manager
@@ -662,14 +732,16 @@
     <span class="kw">async fn </span>reconnect(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         <span class="attr">#[graphql(name = <span class="string">"type"</span>)] </span>behaviour_ty: BehaviourTypeIdDefinition,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLRelationInstance&gt; {
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_behaviour_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationBehaviourManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_component_behaviour_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationComponentBehaviourManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">let </span>edge_key = RelationInstanceId::from(edge_key);
-        <span class="kw">let </span>reactive_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>edge_key).ok_or(Error::new(<span class="string">"Relation instance not found"</span>))<span class="question-mark">?</span>;
+        <span class="kw">let </span>relation_instance_id = RelationInstanceId::from(relation_instance_id);
+        <span class="kw">let </span>reactive_instance = relation_instance_manager
+            .get(<span class="kw-2">&amp;</span>relation_instance_id)
+            .ok_or(Error::new(<span class="string">"Relation instance not found"</span>))<span class="question-mark">?</span>;
         <span class="kw">let </span>behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         <span class="kw">if </span>relation_behaviour_manager.has(reactive_instance.clone(), <span class="kw-2">&amp;</span>behaviour_ty) {
             relation_behaviour_manager

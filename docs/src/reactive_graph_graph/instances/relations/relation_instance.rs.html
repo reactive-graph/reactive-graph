@@ -867,80 +867,6 @@
 <a href="#867" id="867">867</a>
 <a href="#868" id="868">868</a>
 <a href="#869" id="869">869</a>
-<a href="#870" id="870">870</a>
-<a href="#871" id="871">871</a>
-<a href="#872" id="872">872</a>
-<a href="#873" id="873">873</a>
-<a href="#874" id="874">874</a>
-<a href="#875" id="875">875</a>
-<a href="#876" id="876">876</a>
-<a href="#877" id="877">877</a>
-<a href="#878" id="878">878</a>
-<a href="#879" id="879">879</a>
-<a href="#880" id="880">880</a>
-<a href="#881" id="881">881</a>
-<a href="#882" id="882">882</a>
-<a href="#883" id="883">883</a>
-<a href="#884" id="884">884</a>
-<a href="#885" id="885">885</a>
-<a href="#886" id="886">886</a>
-<a href="#887" id="887">887</a>
-<a href="#888" id="888">888</a>
-<a href="#889" id="889">889</a>
-<a href="#890" id="890">890</a>
-<a href="#891" id="891">891</a>
-<a href="#892" id="892">892</a>
-<a href="#893" id="893">893</a>
-<a href="#894" id="894">894</a>
-<a href="#895" id="895">895</a>
-<a href="#896" id="896">896</a>
-<a href="#897" id="897">897</a>
-<a href="#898" id="898">898</a>
-<a href="#899" id="899">899</a>
-<a href="#900" id="900">900</a>
-<a href="#901" id="901">901</a>
-<a href="#902" id="902">902</a>
-<a href="#903" id="903">903</a>
-<a href="#904" id="904">904</a>
-<a href="#905" id="905">905</a>
-<a href="#906" id="906">906</a>
-<a href="#907" id="907">907</a>
-<a href="#908" id="908">908</a>
-<a href="#909" id="909">909</a>
-<a href="#910" id="910">910</a>
-<a href="#911" id="911">911</a>
-<a href="#912" id="912">912</a>
-<a href="#913" id="913">913</a>
-<a href="#914" id="914">914</a>
-<a href="#915" id="915">915</a>
-<a href="#916" id="916">916</a>
-<a href="#917" id="917">917</a>
-<a href="#918" id="918">918</a>
-<a href="#919" id="919">919</a>
-<a href="#920" id="920">920</a>
-<a href="#921" id="921">921</a>
-<a href="#922" id="922">922</a>
-<a href="#923" id="923">923</a>
-<a href="#924" id="924">924</a>
-<a href="#925" id="925">925</a>
-<a href="#926" id="926">926</a>
-<a href="#927" id="927">927</a>
-<a href="#928" id="928">928</a>
-<a href="#929" id="929">929</a>
-<a href="#930" id="930">930</a>
-<a href="#931" id="931">931</a>
-<a href="#932" id="932">932</a>
-<a href="#933" id="933">933</a>
-<a href="#934" id="934">934</a>
-<a href="#935" id="935">935</a>
-<a href="#936" id="936">936</a>
-<a href="#937" id="937">937</a>
-<a href="#938" id="938">938</a>
-<a href="#939" id="939">939</a>
-<a href="#940" id="940">940</a>
-<a href="#941" id="941">941</a>
-<a href="#942" id="942">942</a>
-<a href="#943" id="943">943</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
@@ -971,6 +897,9 @@
 <span class="kw">use </span>uuid::Uuid;
 
 <span class="kw">use </span><span class="kw">crate</span>::AddExtensionError;
+<span class="kw">use </span><span class="kw">crate</span>::ComponentTypeId;
+<span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIdContainer;
+<span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIds;
 <span class="kw">use </span><span class="kw">crate</span>::Extension;
 <span class="kw">use </span><span class="kw">crate</span>::ExtensionContainer;
 <span class="kw">use </span><span class="kw">crate</span>::ExtensionTypeId;
@@ -995,7 +924,7 @@
 ///
 /// The relation instance is of a relation type. The relation type defines
 /// the entity types of the outbound entity instance and the inbound entity
-/// instance. Furthermore the relation type defines which properties
+/// instance. Furthermore, the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
 /// In contrast to the relation type, the relation instance stores values/
@@ -1005,7 +934,7 @@
     <span class="doccomment">/// The id of the outbound vertex.
     </span><span class="kw">pub </span>outbound_id: Uuid,
 
-    <span class="doccomment">/// The edge key is unique and consists of the relation type and an instance_id.
+    <span class="doccomment">/// The relation instance id is unique and consists of the relation type and an instance_id.
     </span><span class="attr">#[serde(flatten)]
     #[builder(setter(into))]
     </span><span class="kw">pub </span>ty: RelationInstanceTypeId,
@@ -1020,13 +949,18 @@
 
     <span class="doccomment">/// The properties of then relation instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// &lt;https://docs.serde.rs/serde_json/value/enum.Value.html&gt;
     </span><span class="attr">#[serde(default = <span class="string">"PropertyInstances::new"</span>)]
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>properties: PropertyInstances,
+
+    <span class="doccomment">/// The components of the entity instance.
+    </span><span class="attr">#[serde(default = <span class="string">"ComponentTypeIds::new"</span>)]
+    #[builder(default, setter(into))]
+    </span><span class="kw">pub </span>components: ComponentTypeIds,
 
     <span class="doccomment">/// Relation instance specific extensions.
     </span><span class="attr">#[serde(default = <span class="string">"Extensions::new"</span>)]
@@ -1043,6 +977,7 @@
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -1061,6 +996,7 @@
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -1080,6 +1016,7 @@
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -1098,6 +1035,7 @@
             inbound_id,
             description: String::new(),
             properties: properties.into(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -1110,6 +1048,7 @@
             inbound_id,
             description: String::new(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
     }
@@ -1171,6 +1110,28 @@
 <span class="kw">impl </span>MutablePropertyInstanceSetter <span class="kw">for </span>RelationInstance {
     <span class="kw">fn </span>set&lt;S: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, property_name: S, value: Value) {
         <span class="self">self</span>.properties.set(property_name.into(), value);
+    }
+}
+
+<span class="kw">impl </span>ComponentTypeIdContainer <span class="kw">for </span>RelationInstance {
+    <span class="kw">fn </span>is_a(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; bool {
+        <span class="self">self</span>.components.is_a(ty)
+    }
+
+    <span class="kw">fn </span>add_component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; bool {
+        <span class="self">self</span>.components.add_component(ty)
+    }
+
+    <span class="kw">fn </span>add_components&lt;C: Into&lt;ComponentTypeIds&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, components_to_add: C) {
+        <span class="self">self</span>.components.add_components(components_to_add)
+    }
+
+    <span class="kw">fn </span>remove_component(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; {
+        <span class="self">self</span>.components.remove_component(ty)
+    }
+
+    <span class="kw">fn </span>remove_components&lt;C: Into&lt;ComponentTypeIds&gt;&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, components_to_remove: C) {
+        <span class="self">self</span>.components.remove_components(components_to_remove)
     }
 }
 
@@ -1425,6 +1386,9 @@
     <span class="kw">use </span>serde_json::json;
     <span class="kw">use </span>uuid::Uuid;
 
+    <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeId;
+    <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIdContainer;
+    <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIds;
     <span class="kw">use </span><span class="kw">crate</span>::Extension;
     <span class="kw">use </span><span class="kw">crate</span>::ExtensionContainer;
     <span class="kw">use </span><span class="kw">crate</span>::ExtensionTypeId;
@@ -1484,6 +1448,11 @@
         <span class="kw">let </span>property_value = <span class="macro">json!</span>(r_string());
         <span class="kw">let </span>properties = PropertyInstances::new().property(<span class="kw-2">&amp;</span>property_name, property_value.clone());
 
+        <span class="kw">let </span>component_namespace = r_string();
+        <span class="kw">let </span>component_name = r_string();
+        <span class="kw">let </span>component_ty = ComponentTypeId::new_from_type(<span class="kw-2">&amp;</span>component_namespace, <span class="kw-2">&amp;</span>component_name);
+        <span class="kw">let </span>components = ComponentTypeIds::new().component(component_ty.clone());
+
         <span class="kw">let </span>extension_namespace = r_string();
         <span class="kw">let </span>extension_name = r_string();
         <span class="kw">let </span>extension_ty = ExtensionTypeId::new_from_type(<span class="kw-2">&amp;</span>extension_namespace, <span class="kw-2">&amp;</span>extension_name);
@@ -1504,6 +1473,7 @@
             inbound_id,
             description: description.to_string(),
             properties: properties.clone(),
+            components: components.clone(),
             extensions: extensions.clone(),
         };
         <span class="macro">assert_eq!</span>(namespace, relation_instance.namespace());
@@ -1515,6 +1485,10 @@
         <span class="macro">assert!</span>(relation_instance.get(property_name.clone()).is_some());
         <span class="macro">assert!</span>(relation_instance.get(r_string()).is_none());
         <span class="macro">assert_eq!</span>(property_value.clone(), relation_instance.get(property_name.clone()).unwrap());
+        <span class="macro">assert!</span>(relation_instance.components.contains(<span class="kw-2">&amp;</span>component_ty.clone()));
+        <span class="macro">assert!</span>(relation_instance.components.is_a(<span class="kw-2">&amp;</span>component_ty));
+        <span class="macro">assert!</span>(relation_instance.is_a(<span class="kw-2">&amp;</span>component_ty));
+        <span class="macro">assert!</span>(!relation_instance.is_a(<span class="kw-2">&amp;</span>ComponentTypeId::generate_random()));
         <span class="macro">assert!</span>(relation_instance.extensions.has_own_extension(<span class="kw-2">&amp;</span>extension_ty));
         <span class="macro">assert!</span>(relation_instance.has_own_extension(<span class="kw-2">&amp;</span>extension_ty));
         <span class="kw">let </span>non_existing_extension = ExtensionTypeId::new_from_type(r_string(), r_string());
@@ -1528,7 +1502,7 @@
     }
 
     <span class="attr">#[test]
-    </span><span class="kw">fn </span>edge_key_from_type_unique_id_test() {
+    </span><span class="kw">fn </span>relation_instance_id_from_type_unique_id_test() {
         <span class="kw">let </span>namespace = r_string();
         <span class="kw">let </span>type_name = r_string();
         <span class="kw">let </span>outbound_id = Uuid::new_v4();
@@ -1543,16 +1517,11 @@
             inbound_id,
             description: r_string(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         };
-        <span class="comment">// RelationInstanceId::
-        // let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
 
-        // assert_eq!(edge_key.t, relation_instance.type_id());
-        // assert_eq!(edge_key.t, relation_instance.get_key().t);
-        // assert_eq!(edge_key, relation_instance.get_key());
-
-        </span><span class="kw">let </span>rity = relation_instance.id();
+        <span class="kw">let </span>rity = relation_instance.id();
         <span class="macro">assert_eq!</span>(namespace, rity.namespace());
         <span class="macro">assert_eq!</span>(type_name, rity.type_name());
         <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">"{outbound_id}-[r__{namespace}__{type_name}]-&gt;{inbound_id}"</span>), <span class="macro">format!</span>(<span class="string">"{rity}"</span>));
@@ -1581,6 +1550,7 @@
             inbound_id,
             description: r_string(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         };
 
@@ -1597,101 +1567,7 @@
         <span class="macro">assert_eq!</span>(<span class="macro">format!</span>(<span class="string">"r__{namespace}__{type_name}__{instance_id}"</span>), <span class="macro">format!</span>(<span class="string">"{}"</span>, relation_instance.ty));
     }
 
-    <span class="comment">// #[test]
-    // fn edge_key_from_type_with_random_instance_id_test() {
-    //     let namespace = r_string();
-    //     let type_name = r_string();
-    //     let outbound_id = Uuid::new_v4();
-    //     let inbound_id = Uuid::new_v4();
-    //     let ty = RelationInstanceTypeId::new_from_type_with_random_instance_id(&amp;namespace, &amp;type_name);
-    //     assert_eq!(namespace, ty.namespace());
-    //     assert_eq!(type_name, ty.relation_type_id().type_name());
-    //     assert!(ty.type_name().starts_with(&amp;type_name));
-    //     let expected_type_definition_prefix = format!("r__{namespace}__{type_name}__");
-    //     assert!(ty.type_definition().to_string().starts_with(&amp;expected_type_definition_prefix));
-    //     let relation_instance = RelationInstance {
-    //         outbound_id,
-    //         ty: ty.clone(),
-    //         inbound_id,
-    //         description: r_string(),
-    //         properties: HashMap::new(),
-    //         extensions: Vec::new(),
-    //     };
-    //     let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
-    //
-    //     assert_eq!(edge_key.t, relation_instance.type_id());
-    //     assert_eq!(edge_key.t, relation_instance.get_key().t);
-    //     assert_eq!(edge_key, relation_instance.get_key());
-    //     // assert_eq!(format!("r__{namespace}__{type_name}__{instance_id}"), relation_instance.get_key().t.as_str());
-    // }
-    //
-    // #[test]
-    // fn edge_key_with_long_namespace_test() {
-    //     let namespace = r_string_1000();
-    //     let type_name = r_string();
-    //     let outbound_id = Uuid::new_v4();
-    //     let inbound_id = Uuid::new_v4();
-    //     let ty = RelationInstanceTypeId::new_from_type_unique_id(&amp;namespace, &amp;type_name);
-    //     let relation_instance = RelationInstance {
-    //         outbound_id,
-    //         ty: ty.clone(),
-    //         inbound_id,
-    //         description: r_string(),
-    //         properties: HashMap::new(),
-    //         extensions: Vec::new(),
-    //     };
-    //     let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
-    //
-    //     assert_eq!(edge_key.t, relation_instance.type_id());
-    //     assert_eq!(edge_key.t, relation_instance.get_key().t);
-    //     assert_eq!(edge_key, relation_instance.get_key());
-    // }
-    //
-    // #[test]
-    // fn edge_key_with_long_type_name_test() {
-    //     let namespace = r_string();
-    //     let type_name = r_string_1000();
-    //     let outbound_id = Uuid::new_v4();
-    //     let inbound_id = Uuid::new_v4();
-    //     let ty = RelationInstanceTypeId::new_from_type_unique_id(&amp;namespace, &amp;type_name);
-    //     let relation_instance = RelationInstance {
-    //         outbound_id,
-    //         ty: ty.clone(),
-    //         inbound_id,
-    //         description: r_string(),
-    //         properties: HashMap::new(),
-    //         extensions: Vec::new(),
-    //     };
-    //     let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
-    //
-    //     assert_eq!(edge_key.t, relation_instance.type_id());
-    //     assert_eq!(edge_key.t, relation_instance.get_key().t);
-    //     assert_eq!(edge_key, relation_instance.get_key());
-    // }
-    //
-    // #[test]
-    // fn edge_key_with_long_namespace_and_type_name_test() {
-    //     let namespace = r_string_1000();
-    //     let type_name = r_string_1000();
-    //     let outbound_id = Uuid::new_v4();
-    //     let inbound_id = Uuid::new_v4();
-    //     let ty = RelationInstanceTypeId::new_from_type_unique_id(&amp;namespace, &amp;type_name);
-    //     let relation_instance = RelationInstance {
-    //         outbound_id,
-    //         ty: ty.clone(),
-    //         inbound_id,
-    //         description: r_string(),
-    //         properties: HashMap::new(),
-    //         extensions: Vec::new(),
-    //     };
-    //     let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
-    //
-    //     assert_eq!(edge_key.t, relation_instance.type_id());
-    //     assert_eq!(edge_key.t, relation_instance.get_key().t);
-    //     assert_eq!(edge_key, relation_instance.get_key());
-    // }
-
-    </span><span class="attr">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>create_relation_instance_test() {
         <span class="kw">let </span>namespace = r_string();
         <span class="kw">let </span>outbound_id = Uuid::new_v4();
@@ -1727,32 +1603,7 @@
         <span class="macro">assert_eq!</span>(<span class="number">0</span>, relation_instance.properties.len());
     }
 
-    <span class="comment">// #[test]
-    // fn create_relation_instance_from_edge_properties() {
-    //     let namespace = r_string();
-    //     let outbound_id = Uuid::new_v4();
-    //     let inbound_id = Uuid::new_v4();
-    //     let type_name = r_string();
-    //     let ty = RelationInstanceTypeId::new_from_type_unique_id(&amp;namespace, &amp;type_name);
-    //     let property_name = r_string();
-    //     let property_value = r_string();
-    //     let property_value_json = json!(property_value);
-    //     let property = NamedProperty {
-    //         name: property_identifier(&amp;property_name),
-    //         value: property_value_json,
-    //     };
-    //     let properties = vec![property];
-    //     // let edge_key = EdgeKey::new(outbound_id, ty.type_id(), inbound_id);
-    //     // let edge_properties = EdgeProperties::new(Edge::new_with_current_datetime(edge_key), properties.clone());
-    //     let relation_instance = RelationInstance::try_from(edge_properties).unwrap();
-    //     assert_eq!(namespace, relation_instance.namespace());
-    //     assert_eq!(outbound_id, relation_instance.outbound_id);
-    //     assert_eq!(type_name, relation_instance.type_name());
-    //     assert_eq!(inbound_id, relation_instance.inbound_id);
-    //     assert_eq!(property_value.as_str(), relation_instance.properties.get(property_name.as_str()).unwrap().as_str().unwrap());
-    // }
-
-    </span><span class="attr">#[test]
+    <span class="attr">#[test]
     </span><span class="kw">fn </span>relation_instance_typed_getter_test() {
         <span class="kw">let </span>namespace = r_string();
         <span class="kw">let </span>outbound_id = Uuid::new_v4();
@@ -1795,6 +1646,7 @@
             inbound_id,
             description: description.to_string(),
             properties: PropertyInstances::new(),
+            components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         };
 

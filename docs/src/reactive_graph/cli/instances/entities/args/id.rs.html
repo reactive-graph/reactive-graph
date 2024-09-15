@@ -26,16 +26,16 @@
 <span class="kw">use </span>clap::Args;
 <span class="kw">use </span>uuid::Uuid;
 
-<span class="doccomment">/// CLI argument which identifies a reactive instance by its id.
+<span class="doccomment">/// CLI argument which identifies an entity instance by its id.
 </span><span class="attr">#[derive(Args, Debug, Clone)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>IdArgs {
-    <span class="doccomment">/// The id of the reactive instance.
+    <span class="doccomment">/// The id of the entity instance.
     </span><span class="kw">pub </span>id: Uuid,
 }
 
 <span class="kw">impl </span>IdArgs {
     <span class="kw">pub fn </span>not_found(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; CommandError {
-        NotFound(<span class="macro">format!</span>(<span class="string">"The instance with the id {} was not found"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id))
+        NotFound(<span class="macro">format!</span>(<span class="string">"The entity instance with the id {} was not found"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id))
     }
 }
 

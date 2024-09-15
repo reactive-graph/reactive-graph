@@ -160,13 +160,11 @@
 <a href="#160" id="160">160</a>
 <a href="#161" id="161">161</a>
 <a href="#162" id="162">162</a>
-<a href="#163" id="163">163</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::Context;
 <span class="kw">use </span>async_graphql::Object;
 <span class="kw">use </span>async_graphql::Result;
-
 <span class="kw">use </span>reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
 <span class="kw">use </span>reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 <span class="kw">use </span>reactive_graph_reactive_model_impl::ReactiveRelation;
@@ -189,11 +187,11 @@
 ///
 /// The relation instance is of a relation type. The relation type defines
 /// the entity types of the outbound entity instance and the inbound entity
-/// instance. Furthermore the relation type defines which properties
+/// instance. Furthermore, the relation type defines which properties
 /// (name, data type, socket type) a relation instance have to have.
 ///
 /// In contrast to the relation type, the relation instance stores values/
-/// documents in it's properties.
+/// documents in its properties.
 </span><span class="attr">#[Object(name = <span class="string">"RelationInstance"</span>)]
 </span><span class="kw">impl </span>GraphQLRelationInstance {
     <span class="doccomment">/// The outbound entity instance.
@@ -208,7 +206,7 @@
     </span><span class="attr">#[graphql(name = <span class="string">"type"</span>)]
     </span><span class="kw">async fn </span>relation_type(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;GraphQLRelationType&gt; {
         context
-            .data::&lt;Arc&lt;<span class="kw">dyn </span>RelationTypeManager&gt;&gt;()
+            .data::&lt;Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;&gt;()
             .ok()<span class="question-mark">?
             </span>.get(<span class="kw-2">&amp;</span><span class="self">self</span>.relation_instance.relation_type_id())
             .map(|r| r.into())
@@ -234,8 +232,8 @@
 
     <span class="doccomment">/// The properties of then relation instance.
     ///
-    /// Each property is represented by it's name (String) and it's value. The value is
-    /// a representation of a JSON. Therefore the value can be boolean, number, string,
+    /// Each property is represented by its name (String) and it's value. The value is
+    /// a representation of a JSON. Therefore, the value can be boolean, number, string,
     /// array or an object. For more information about the data types please look at
     /// https://docs.serde.rs/serde_json/value/enum.Value.html
     </span><span class="kw">async fn </span>properties(

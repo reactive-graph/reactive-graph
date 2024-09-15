@@ -216,17 +216,17 @@
 <a href="#216" id="216">216</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::add_component::queries::add_component;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::add_property::queries::add_property;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::create::queries::create;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::delete::queries::delete_entity_instance_mutation;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::get_by_id::queries::get_entity_instance_by_id;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::get_by_label::queries::get_entity_instance_by_label;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::remove_component::queries::remove_component;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::remove_property::queries::remove_property;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::search::queries::search;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::search::queries::SearchEntityInstancesVariables;
-<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::set_property::queries::set_property;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::add_component::mutations::add_component;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::add_property::mutations::add_property;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::create::mutations::create;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::delete::mutations::delete_entity_instance_mutation;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::remove_component::mutations::remove_component;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::remove_property::mutations::remove_property;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::mutations::set_property::mutations::set_property;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::get_by_id::queries::get_entity_instance_by_id;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::get_by_label::queries::get_entity_instance_by_label;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::search::queries::search;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::search::queries::SearchEntityInstancesVariables;
 <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
 <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClientExecutionError;
 <span class="kw">use </span>cynic::http::ReqwestExt;

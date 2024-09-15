@@ -84,8 +84,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::plugin::args::PluginsArgs;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::plugin::commands::PluginsCommands;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::system::plugin::Plugins;
 <span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_table_model::system::plugin::PluginsTableContainer;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>args;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>commands;
@@ -96,38 +96,38 @@
     };
     <span class="kw">match </span>command {
         PluginsCommands::List =&gt; <span class="kw">match </span>client.runtime().plugins().get_all().<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugins) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Ok</span>(plugins) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugins).into()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Search(args) =&gt; <span class="kw">match </span>client.runtime().plugins().search(args.into()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugins) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Ok</span>(plugins) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugins).into()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Get(args) =&gt; <span class="kw">match </span>client.runtime().plugins().get_by_name(args.name.clone()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugin)) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugin)) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugin).into()),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"No plugin exists with name {}"</span>, args.name).to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Dependencies(args) =&gt; <span class="kw">match </span>client.runtime().plugins().get_dependencies(args.name.clone()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugins).into()),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"No plugin exists with name {}"</span>, args.name).to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Dependents(args) =&gt; <span class="kw">match </span>client.runtime().plugins().get_dependents(args.name.clone()).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugins).into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(plugins)) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugins).into()),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="macro">format!</span>(<span class="string">"No plugin exists with name {}"</span>, args.name).to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Start(args) =&gt; <span class="kw">match </span>client.runtime().plugins().start(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugin).into()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Stop(args) =&gt; <span class="kw">match </span>client.runtime().plugins().stop(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugin).into()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Restart(args) =&gt; <span class="kw">match </span>client.runtime().plugins().restart(args.name).<span class="kw">await </span>{
-            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(Plugins::from(plugin).into()),
+            <span class="prelude-val">Ok</span>(plugin) =&gt; <span class="prelude-val">Ok</span>(PluginsTableContainer::from(plugin).into()),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
         PluginsCommands::Uninstall(args) =&gt; <span class="kw">match </span>client.runtime().plugins().uninstall(args.name).<span class="kw">await </span>{
@@ -143,7 +143,7 @@
 // }
 //
 // fn print_plugins(plugins: Vec&lt;Plugin&gt;) {
-//     let plugins: Vec&lt;crate::table_model::system::plugin::Plugin&gt; = plugins.into_iter().map(|p| p.into()).collect();
+//     let plugins: Vec&lt;reactive-graph-table-model::system::plugin::Plugin&gt; = plugins.into_iter().map(|p| p.into()).collect();
 //     let table = Table::new(plugins)
 //         .with(Style::extended())
 //         .with(

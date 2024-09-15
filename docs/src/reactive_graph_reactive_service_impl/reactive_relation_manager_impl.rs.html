@@ -734,58 +734,6 @@
 <a href="#734" id="734">734</a>
 <a href="#735" id="735">735</a>
 <a href="#736" id="736">736</a>
-<a href="#737" id="737">737</a>
-<a href="#738" id="738">738</a>
-<a href="#739" id="739">739</a>
-<a href="#740" id="740">740</a>
-<a href="#741" id="741">741</a>
-<a href="#742" id="742">742</a>
-<a href="#743" id="743">743</a>
-<a href="#744" id="744">744</a>
-<a href="#745" id="745">745</a>
-<a href="#746" id="746">746</a>
-<a href="#747" id="747">747</a>
-<a href="#748" id="748">748</a>
-<a href="#749" id="749">749</a>
-<a href="#750" id="750">750</a>
-<a href="#751" id="751">751</a>
-<a href="#752" id="752">752</a>
-<a href="#753" id="753">753</a>
-<a href="#754" id="754">754</a>
-<a href="#755" id="755">755</a>
-<a href="#756" id="756">756</a>
-<a href="#757" id="757">757</a>
-<a href="#758" id="758">758</a>
-<a href="#759" id="759">759</a>
-<a href="#760" id="760">760</a>
-<a href="#761" id="761">761</a>
-<a href="#762" id="762">762</a>
-<a href="#763" id="763">763</a>
-<a href="#764" id="764">764</a>
-<a href="#765" id="765">765</a>
-<a href="#766" id="766">766</a>
-<a href="#767" id="767">767</a>
-<a href="#768" id="768">768</a>
-<a href="#769" id="769">769</a>
-<a href="#770" id="770">770</a>
-<a href="#771" id="771">771</a>
-<a href="#772" id="772">772</a>
-<a href="#773" id="773">773</a>
-<a href="#774" id="774">774</a>
-<a href="#775" id="775">775</a>
-<a href="#776" id="776">776</a>
-<a href="#777" id="777">777</a>
-<a href="#778" id="778">778</a>
-<a href="#779" id="779">779</a>
-<a href="#780" id="780">780</a>
-<a href="#781" id="781">781</a>
-<a href="#782" id="782">782</a>
-<a href="#783" id="783">783</a>
-<a href="#784" id="784">784</a>
-<a href="#785" id="785">785</a>
-<a href="#786" id="786">786</a>
-<a href="#787" id="787">787</a>
-<a href="#788" id="788">788</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::Deref;
 <span class="kw">use </span>std::sync::atomic::AtomicBool;
 <span class="kw">use </span>std::sync::atomic::Ordering;
@@ -848,9 +796,7 @@
 <span class="kw">static </span>HANDLE_ID_RELATION_TYPE_PROPERTY_ADDED: u128 = <span class="number">0x6bb9b9232e1513d350b300c04fe530c7</span>;
 <span class="kw">static </span>HANDLE_ID_RELATION_TYPE_PROPERTY_REMOVED: u128 = <span class="number">0x6ba8b8339e1535ee5bd300c0410630c7</span>;
 
-<span class="comment">// pub struct ReactiveRelations(DashMap&lt;RelationInstanceId, ReactiveRelation&gt;); // Arc&lt;DashMap&lt;&gt;&gt;
-//
-</span><span class="kw">pub struct </span>OutboundInstances(DashMap&lt;Uuid, DashSet&lt;RelationInstanceId&gt;&gt;);
+<span class="kw">pub struct </span>OutboundInstances(DashMap&lt;Uuid, DashSet&lt;RelationInstanceId&gt;&gt;);
 
 <span class="kw">impl </span>OutboundInstances {
     <span class="kw">pub fn </span>new() -&gt; <span class="self">Self </span>{
@@ -920,37 +866,7 @@
     }
 }
 
-<span class="comment">// pub struct RunningState(Arc&lt;AtomicBool&gt;);
-
-// pub struct SystemEventChannels(DashMap&lt;u128, (Sender&lt;Value&gt;, Receiver&lt;Value&gt;)&gt;);
-//
-// impl SystemEventChannels {
-//     fn sender(&amp;self, handle_id: &amp;u128) -&gt; Option&lt;Sender&lt;Value&gt;&gt; {
-//         self.0.get(handle_id).map(|channel| channel.0.clone())
-//     }
-//
-//     fn receiver(&amp;self, handle_id: &amp;u128) -&gt; Option&lt;Receiver&lt;Value&gt;&gt; {
-//         self.0.get(handle_id).map(|channel| channel.1.clone())
-//     }
-// }
-
-// fn create_reactive_relation_instance_storage() -&gt; ReactiveRelations {
-//     // ReactiveRelations(Arc::new(DashMap::new()))
-//     ReactiveRelations(DashMap::new())
-// }
-
-// fn create_outbound_instances_storage() -&gt; OutboundInstances {
-//     OutboundInstances(DashMap::new())
-// }
-//
-// fn create_inbound_instances_storage() -&gt; InboundInstances {
-//     InboundInstances(DashMap::new())
-// }
-//
-// fn create_running_state() -&gt; RunningState {
-//     RunningState(Arc::new(AtomicBool::new(true)))
-// }
-</span><span class="kw">fn </span>create_running_state() -&gt; Arc&lt;AtomicBool&gt; {
+<span class="kw">fn </span>create_running_state() -&gt; Arc&lt;AtomicBool&gt; {
     Arc::new(AtomicBool::new(<span class="bool-val">true</span>))
 }
 
@@ -1072,7 +988,7 @@
         <span class="self">self</span>.reactive_relation_instances.iter().filter(|r| r.behaves_as(behaviour_ty)).count()
     }
 
-    <span class="kw">fn </span>get_keys(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;RelationInstanceId&gt; {
+    <span class="kw">fn </span>get_relation_instance_ids(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;RelationInstanceId&gt; {
         <span class="self">self</span>.reactive_relation_instances.iter().map(|e| e.key().clone()).collect()
     }
 
@@ -1084,10 +1000,10 @@
             .properties(properties)
             .build();
         <span class="self">self</span>.create_reactive_instance(relation_instance)
-        <span class="comment">// match self.relation_instance_manager.create(edge_key, properties) {
-        //     Ok(edge_key) =&gt; match self.relation_instance_manager.get(&amp;edge_key) {
+        <span class="comment">// match self.relation_instance_manager.create(relation_instance_id, properties) {
+        //     Ok(relation_instance_id) =&gt; match self.relation_instance_manager.get(&amp;relation_instance_id) {
         //         Some(relation_instance) =&gt; self.create_reactive_instance(relation_instance),
-        //         None =&gt; Err(ReactiveRelationCreationError::MissingInstance(edge_key)),
+        //         None =&gt; Err(ReactiveRelationCreationError::MissingInstance(relation_instance_id)),
         //     },
         //     Err(e) =&gt; Err(ReactiveRelationCreationError::RelationInstanceCreationError(e)),
         // }
@@ -1210,8 +1126,8 @@
         //     .relation_instance_manager
         //     .create_from_instance_if_not_exist(reactive_relation_instance.clone().into())
         // {
-        //     Ok(_edge_key) =&gt; {
-        //         self.reactive_relation_instances.insert(edge_key.clone(), reactive_relation_instance.clone());
+        //     Ok(relation_instance_id) =&gt; {
+        //         self.reactive_relation_instances.insert(relation_instance_id.clone(), reactive_relation_instance.clone());
         //         // Apply all components that are predefined in the relation type
         //         let relation_ty = reactive_relation_instance.relation_type_id();
         //         if let Some(components) = self.relation_type_manager.get(&amp;relation_ty).map(|relation_type| relation_type.components) {
@@ -1224,7 +1140,7 @@
         //             .add_behaviours_to_relation(reactive_relation_instance.clone());
         //         // Add relation behaviours
         //         self.relation_behaviour_manager.add_behaviours(reactive_relation_instance.clone());
-        //         self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(edge_key));
+        //         self.event_manager.emit_event(SystemEvent::RelationInstanceCreated(relation_instance_id));
         //         Ok(reactive_relation_instance)
         //     }
         //     Err(e) =&gt; Err(ReactiveRelationRegistrationError::RelationInstanceCreationError(e)),
@@ -1234,9 +1150,9 @@
     <span class="kw">fn </span>register_or_merge_reactive_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation) -&gt; <span class="prelude-ty">Result</span>&lt;ReactiveRelation, ReactiveRelationRegistrationError&gt; {
         <span class="kw">let </span>id = relation_instance.id();
         <span class="kw">match </span><span class="self">self</span>.get(<span class="kw-2">&amp;</span>id) {
-            <span class="comment">// No instance with the given edge key exists yet, try to register the given reactive instance
+            <span class="comment">// No instance with the given relation instance id exists yet, try to register the given reactive instance
             </span><span class="prelude-val">None </span>=&gt; <span class="self">self</span>.register_reactive_instance(relation_instance),
-            <span class="comment">// Instance with the given edge key exists. Don't register but return the existing reactive instance instead of the given instance
+            <span class="comment">// Instance with the given relation instance id exists. Don't register but return the existing reactive instance instead of the given instance
             </span><span class="prelude-val">Some</span>(reactive_relation_instance) =&gt; <span class="prelude-val">Ok</span>(reactive_relation_instance),
         }
     }
@@ -1283,12 +1199,12 @@
 
     <span class="kw">fn </span>add_property(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        edge_key: <span class="kw-2">&amp;</span>RelationInstanceId,
+        relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId,
         property_name: <span class="kw-2">&amp;</span>str,
         mutability: Mutability,
         value: Value,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyAddError&gt; {
-        <span class="kw">match </span><span class="self">self</span>.get(edge_key) {
+        <span class="kw">match </span><span class="self">self</span>.get(relation_instance_id) {
             <span class="prelude-val">Some</span>(relation_instance) =&gt; {
                 <span class="kw">if </span>relation_instance.has_property(property_name) {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ReactiveRelationPropertyAddError::PropertyAlreadyExists(property_name.to_string()));
@@ -1296,12 +1212,12 @@
                 relation_instance.add_property(property_name, mutability, value);
                 <span class="prelude-val">Ok</span>(())
             }
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(ReactiveRelationPropertyAddError::MissingInstance(edge_key.clone())),
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(ReactiveRelationPropertyAddError::MissingInstance(relation_instance_id.clone())),
         }
     }
 
-    <span class="kw">fn </span>remove_property(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId, property_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyRemoveError&gt; {
-        <span class="kw">match </span><span class="self">self</span>.get(edge_key) {
+    <span class="kw">fn </span>remove_property(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId, property_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyRemoveError&gt; {
+        <span class="kw">match </span><span class="self">self</span>.get(relation_instance_id) {
             <span class="prelude-val">Some</span>(relation_instance) =&gt; {
                 <span class="kw">if </span>!relation_instance.has_property(property_name) {
                     <span class="kw">return </span><span class="prelude-val">Err</span>(ReactiveRelationPropertyRemoveError::MissingProperty(property_name.to_string()));
@@ -1316,7 +1232,7 @@
                 relation_instance.remove_property(property_name);
                 <span class="prelude-val">Ok</span>(())
             }
-            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(ReactiveRelationPropertyRemoveError::MissingInstance(edge_key.clone())),
+            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(ReactiveRelationPropertyRemoveError::MissingInstance(relation_instance_id.clone())),
         }
     }
 
@@ -1338,8 +1254,8 @@
         }
     }
 
-    <span class="comment">// fn commit(&amp;self, edge_key: &amp;RelationInstanceId) {
-    //     if let Some(reactive_relation_instance) = self.get(edge_key) {
+    <span class="comment">// fn commit(&amp;self, relation_instance_id: &amp;RelationInstanceId) {
+    //     if let Some(reactive_relation_instance) = self.get(relation_instance_id) {
     //         self.relation_instance_manager.commit(reactive_relation_instance.into());
     //     }
     // }
@@ -1353,10 +1269,7 @@
         </span>} <span class="kw">else </span>{
             <span class="bool-val">false
         </span>}
-        <span class="comment">// let result = self.relation_instance_manager.delete(id);
-        // self.event_manager.emit_event(SystemEvent::RelationInstanceDeleted(id.clone()));
-        // result
-    </span>}
+    }
 
     <span class="kw">fn </span>unregister_reactive_instance(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>RelationInstanceId) {
         <span class="kw">match </span><span class="self">self</span>.get(id) {
@@ -1378,24 +1291,7 @@
         <span class="self">self</span>.reactive_relation_instances.remove(id);
     }
 
-    <span class="comment">// fn import(&amp;self, path: &amp;str) -&gt; Result&lt;ReactiveRelation, ReactiveRelationImportError&gt; {
-    //     match self.relation_instance_manager.import(path) {
-    //         Ok(relation_instance) =&gt; match self.create_reactive_instance(relation_instance) {
-    //             Ok(reactive_relation_instance) =&gt; Ok(reactive_relation_instance),
-    //             Err(error) =&gt; Err(ReactiveRelationImportError::ReactiveRelationCreation(error)),
-    //         },
-    //         Err(error) =&gt; Err(ReactiveRelationImportError::RelationInstanceImport(error)),
-    //     }
-    // }
-    //
-    // fn export(&amp;self, edge_key: &amp;RelationInstanceId, path: &amp;str) {
-    //     if self.has(edge_key) {
-    //         self.commit(edge_key);
-    //         self.relation_instance_manager.export(edge_key, path);
-    //     }
-    // }
-
-    </span><span class="kw">fn </span>handle_component_added_events(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+    <span class="kw">fn </span>handle_component_added_events(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">let </span>component_manager = <span class="self">self</span>.component_manager.clone();
         <span class="kw">let </span>relation_component_behaviour_manager = <span class="self">self</span>.relation_component_behaviour_manager.clone();
         <span class="kw">let </span>reactive_relation_instances = <span class="self">self</span>.reactive_relation_instances.clone();

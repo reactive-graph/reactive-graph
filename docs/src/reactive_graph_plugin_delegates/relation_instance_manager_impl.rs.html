@@ -147,6 +147,13 @@
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
 <a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>serde_json::Value;
@@ -189,12 +196,12 @@
     }
 }
 <span class="kw">impl </span>reactive_graph_plugin_api::RelationInstanceManager <span class="kw">for </span>RelationInstanceManagerDelegate {
-    <span class="kw">fn </span>has(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; bool {
-        <span class="self">self</span>.reactive_relation_manager.has(edge_key)
+    <span class="kw">fn </span>has(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; bool {
+        <span class="self">self</span>.reactive_relation_manager.has(relation_instance_id)
     }
 
-    <span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; <span class="prelude-ty">Option</span>&lt;ReactiveRelation&gt; {
-        <span class="self">self</span>.reactive_relation_manager.get(edge_key)
+    <span class="kw">fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; <span class="prelude-ty">Option</span>&lt;ReactiveRelation&gt; {
+        <span class="self">self</span>.reactive_relation_manager.get(relation_instance_id)
     }
 
     <span class="kw">fn </span>get_by_outbound_entity(<span class="kw-2">&amp;</span><span class="self">self</span>, outbound_entity_id: Uuid) -&gt; Vec&lt;ReactiveRelation&gt; {
@@ -218,7 +225,7 @@
     }
 
     <span class="kw">fn </span>get_keys(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;RelationInstanceId&gt; {
-        <span class="self">self</span>.reactive_relation_manager.get_keys()
+        <span class="self">self</span>.reactive_relation_manager.get_relation_instance_ids()
     }
 
     <span class="kw">fn </span>count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
@@ -276,20 +283,27 @@
         <span class="self">self</span>.reactive_relation_manager.register_reactive_instance(reactive_relation)
     }
 
-    <span class="kw">fn </span>add_component(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>RelationInstanceId, component: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationComponentAddError&gt; {
-        <span class="self">self</span>.reactive_relation_manager.add_component(id, component)
+    <span class="kw">fn </span>add_component(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId, component: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationComponentAddError&gt; {
+        <span class="self">self</span>.reactive_relation_manager.add_component(relation_instance_id, component)
     }
 
-    <span class="kw">fn </span>remove_component(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>RelationInstanceId, component: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationComponentRemoveError&gt; {
-        <span class="self">self</span>.reactive_relation_manager.remove_component(id, component)
+    <span class="kw">fn </span>remove_component(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId, component: <span class="kw-2">&amp;</span>ComponentTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationComponentRemoveError&gt; {
+        <span class="self">self</span>.reactive_relation_manager.remove_component(relation_instance_id, component)
     }
 
-    <span class="kw">fn </span>add_property(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>RelationInstanceId, property_name: <span class="kw-2">&amp;</span>str, mutability: Mutability, value: Value) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyAddError&gt; {
-        <span class="self">self</span>.reactive_relation_manager.add_property(id, property_name, mutability, value)
+    <span class="kw">fn </span>add_property(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId,
+        property_name: <span class="kw-2">&amp;</span>str,
+        mutability: Mutability,
+        value: Value,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyAddError&gt; {
+        <span class="self">self</span>.reactive_relation_manager
+            .add_property(relation_instance_id, property_name, mutability, value)
     }
 
-    <span class="kw">fn </span>remove_property(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>RelationInstanceId, property_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyRemoveError&gt; {
-        <span class="self">self</span>.reactive_relation_manager.remove_property(id, property_name)
+    <span class="kw">fn </span>remove_property(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId, property_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), ReactiveRelationPropertyRemoveError&gt; {
+        <span class="self">self</span>.reactive_relation_manager.remove_property(relation_instance_id, property_name)
     }
 
     <span class="kw">fn </span>delete(<span class="kw-2">&amp;</span><span class="self">self</span>, id: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; bool {

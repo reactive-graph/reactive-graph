@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["behaviours","components","inboundComponentTy","inboundEntityTy","inboundId","outboundComponentTy","outboundEntityTy","outboundId","properties","type"]};
+window.SIDEBAR_ITEMS = {"struct":["behaviours","components","id","inboundComponentTy","inboundEntityTy","inboundId","outboundComponentTy","outboundEntityTy","outboundId","properties","type"]};

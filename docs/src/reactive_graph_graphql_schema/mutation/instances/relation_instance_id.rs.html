@@ -65,10 +65,10 @@
 <span class="kw">use </span>reactive_graph_graph::RelationInstanceTypeId;
 <span class="kw">use </span>reactive_graph_graph::TYPE_ID_TYPE_SEPARATOR;
 
-<span class="doccomment">/// The primary key of an edge consists of the outbound id, the
-/// type name and the inbound id.
+<span class="doccomment">/// The primary key of a relation instance consists of the outbound id, the
+/// type name, the inbound id and an instance_id.
 </span><span class="attr">#[derive(Debug, Clone, InputObject)]
-#[graphql(name = <span class="string">"EdgeKeyDefinition"</span>)]
+#[graphql(name = <span class="string">"RelationInstanceIdDefinition"</span>)]
 </span><span class="kw">pub struct </span>GraphQLRelationInstanceId {
     <span class="doccomment">/// The id of the outbound entity instance.
     </span><span class="kw">pub </span>outbound_id: Uuid,
@@ -104,14 +104,14 @@
 }
 
 <span class="kw">impl </span>From&lt;GraphQLRelationInstanceId&gt; <span class="kw">for </span>RelationInstanceId {
-    <span class="kw">fn </span>from(edge_key: GraphQLRelationInstanceId) -&gt; <span class="self">Self </span>{
-        RelationInstanceId::new(edge_key.outbound_id, edge_key.ty().clone(), edge_key.inbound_id)
+    <span class="kw">fn </span>from(relation_instance_id: GraphQLRelationInstanceId) -&gt; <span class="self">Self </span>{
+        RelationInstanceId::new(relation_instance_id.outbound_id, relation_instance_id.ty().clone(), relation_instance_id.inbound_id)
     }
 }
 
 <span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>GraphQLRelationInstanceId&gt; <span class="kw">for </span>RelationInstanceId {
-    <span class="kw">fn </span>from(edge_key: <span class="kw-2">&amp;</span>GraphQLRelationInstanceId) -&gt; <span class="self">Self </span>{
-        RelationInstanceId::new(edge_key.outbound_id, edge_key.ty().clone(), edge_key.inbound_id)
+    <span class="kw">fn </span>from(relation_instance_id: <span class="kw-2">&amp;</span>GraphQLRelationInstanceId) -&gt; <span class="self">Self </span>{
+        RelationInstanceId::new(relation_instance_id.outbound_id, relation_instance_id.ty().clone(), relation_instance_id.inbound_id)
     }
 }
 </code></pre></div></section></main></body></html>

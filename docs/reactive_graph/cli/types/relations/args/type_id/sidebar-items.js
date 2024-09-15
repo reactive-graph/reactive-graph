@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RelationTypeIdArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["RelationTypeIdArgs","RelationTypeIdOptions"]};

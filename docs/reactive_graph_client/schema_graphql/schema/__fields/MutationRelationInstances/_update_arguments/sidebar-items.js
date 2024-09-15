@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["addComponents","edgeKey","properties","removeComponents"]};
+window.SIDEBAR_ITEMS = {"struct":["addComponents","addProperties","properties","relationInstanceId","removeComponents","removeProperties"]};

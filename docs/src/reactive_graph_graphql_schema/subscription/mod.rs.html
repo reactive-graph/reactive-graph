@@ -204,11 +204,11 @@
     <span class="kw">async fn </span>relation(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         <span class="attr">#[graphql(desc = <span class="string">"The name of the property"</span>)] </span>property_name: String,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw">impl </span>Stream&lt;Item = GraphQLPropertyInstance&gt;&gt; {
         <span class="kw">match </span>context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;() {
-            <span class="prelude-val">Ok</span>(relation_instance_manager) =&gt; <span class="kw">match </span>relation_instance_manager.get(<span class="kw-2">&amp;</span>edge_key.into()) {
+            <span class="prelude-val">Ok</span>(relation_instance_manager) =&gt; <span class="kw">match </span>relation_instance_manager.get(<span class="kw-2">&amp;</span>relation_instance_id.into()) {
                 <span class="prelude-val">Some</span>(relation_instance) =&gt; {
                     <span class="kw">if </span>!relation_instance.properties.contains_key(<span class="kw-2">&amp;</span>property_name) {
                         <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="string">"Error: property by name not found"</span>.into());

@@ -558,6 +558,8 @@
 <a href="#558" id="558">558</a>
 <a href="#559" id="559">559</a>
 <a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::ops::Deref;
@@ -1095,6 +1097,7 @@
             inbound_id: relation.inbound.id,
             description: relation.description.clone(),
             properties: PropertyInstances::from(<span class="kw-2">&amp;</span>relation.properties),
+            components: relation.components.clone(),
             extensions: Extensions::new(),
         }
     }
@@ -1108,6 +1111,7 @@
             inbound_id: relation.inbound.id,
             description: relation.description.clone(),
             properties: PropertyInstances::from(<span class="kw-2">&amp;</span>relation.properties),
+            components: relation.components.clone(),
             extensions: Extensions::new(),
         }
     }

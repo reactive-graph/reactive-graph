@@ -503,13 +503,13 @@
         <span class="self">self</span>.relation_instances.read().unwrap().contains_key(<span class="kw-2">&amp;</span>relation_instance.id())
     }
 
-    <span class="kw">pub fn </span>has_relation_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; bool {
-        <span class="self">self</span>.relation_instances.read().unwrap().contains_key(edge_key)
+    <span class="kw">pub fn </span>has_relation_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; bool {
+        <span class="self">self</span>.relation_instances.read().unwrap().contains_key(relation_instance_id)
     }
 
-    <span class="kw">pub fn </span>get_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; <span class="prelude-ty">Option</span>&lt;ReactiveRelation&gt; {
+    <span class="kw">pub fn </span>get_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) -&gt; <span class="prelude-ty">Option</span>&lt;ReactiveRelation&gt; {
         <span class="kw">let </span>reader = <span class="self">self</span>.relation_instances.read().unwrap();
-        reader.get(edge_key).cloned()
+        reader.get(relation_instance_id).cloned()
     }
 
     <span class="kw">pub fn </span>add_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation) {
@@ -520,9 +520,9 @@
         }
     }
 
-    <span class="kw">pub fn </span>remove_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) {
-        <span class="self">self</span>.relation_instances.write().unwrap().remove(edge_key);
-        <span class="self">self</span>.relations_removed.write().unwrap().push(edge_key.clone());
+    <span class="kw">pub fn </span>remove_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) {
+        <span class="self">self</span>.relation_instances.write().unwrap().remove(relation_instance_id);
+        <span class="self">self</span>.relations_removed.write().unwrap().push(relation_instance_id.clone());
     }
 
     <span class="kw">pub fn </span>tick(<span class="kw-2">&amp;</span><span class="self">self</span>) {

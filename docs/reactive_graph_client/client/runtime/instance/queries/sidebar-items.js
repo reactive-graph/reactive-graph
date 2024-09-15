@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_instance_info"]};
+window.SIDEBAR_ITEMS = {"mod":["get_instance_info"]};

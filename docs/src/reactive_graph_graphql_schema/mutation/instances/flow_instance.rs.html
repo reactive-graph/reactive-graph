@@ -557,14 +557,14 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
         flow_id: Uuid,
-        edge_key: GraphQLRelationInstanceId,
+        relation_instance_id: GraphQLRelationInstanceId,
         properties: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLFlowInstance&gt; {
         <span class="kw">let </span>flow_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 
-        <span class="kw">let </span>ty = edge_key.ty();
+        <span class="kw">let </span>ty = relation_instance_id.ty();
         <span class="kw">let </span>relation_ty = ty.relation_type_id();
 
         <span class="kw">let </span>relation_type = relation_type_manager
@@ -575,19 +575,19 @@
             .get(flow_id)
             .ok_or::&lt;FlowMutationError&gt;(FlowMutationError::MissingFlow(flow_id))<span class="question-mark">?</span>;
 
-        <span class="kw">if </span>!flow_instance.has_entity_by_id(edge_key.outbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::MissingOutboundEntityInstance(edge_key.outbound_id).into());
+        <span class="kw">if </span>!flow_instance.has_entity_by_id(relation_instance_id.outbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::MissingOutboundEntityInstance(relation_instance_id.outbound_id).into());
         }
 
-        <span class="kw">if </span>!flow_instance.has_entity_by_id(edge_key.inbound_id) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::MissingInboundEntityInstance(edge_key.inbound_id).into());
+        <span class="kw">if </span>!flow_instance.has_entity_by_id(relation_instance_id.inbound_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::MissingInboundEntityInstance(relation_instance_id.inbound_id).into());
         }
 
         <span class="comment">// TODO: optionally we could check if the entity_instance_manager contains the outbound_id and inbound_id
 
         </span><span class="kw">let </span>properties = GraphQLPropertyInstance::to_property_instances_with_defaults(properties, relation_type.properties);
 
-        <span class="kw">let </span>relation_instance = relation_instance_manager.create_reactive_relation(<span class="kw-2">&amp;</span>edge_key.into(), properties);
+        <span class="kw">let </span>relation_instance = relation_instance_manager.create_reactive_relation(<span class="kw-2">&amp;</span>relation_instance_id.into(), properties);
 
         <span class="kw">if </span>relation_instance.is_err() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::RelationInstanceCreationError().into());
@@ -601,8 +601,8 @@
         <span class="prelude-val">Ok</span>(flow_instance.into())
     }
 
-    <span class="doccomment">/// Adds an existing relation instance by edge_key to the given flow by id
-    </span><span class="kw">async fn </span>add_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, flow_id: Uuid, edge_key: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLFlowInstance&gt; {
+    <span class="doccomment">/// Adds an existing relation instance by relation_instance_id to the given flow by id
+    </span><span class="kw">async fn </span>add_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, flow_id: Uuid, relation_instance_id: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLFlowInstance&gt; {
         <span class="kw">let </span>flow_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 
@@ -612,10 +612,10 @@
         }
         <span class="kw">let </span>flow_instance = flow_instance.unwrap();
 
-        <span class="kw">let </span>edge_key: RelationInstanceId = edge_key.into();
-        <span class="kw">let </span>relation_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>edge_key);
+        <span class="kw">let </span>relation_instance_id: RelationInstanceId = relation_instance_id.into();
+        <span class="kw">let </span>relation_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>relation_instance_id);
         <span class="kw">if </span>relation_instance.is_none() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::MissingRelationInstance(edge_key).into());
+            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::MissingRelationInstance(relation_instance_id).into());
         }
         <span class="kw">let </span>relation_instance = relation_instance.unwrap();
 
@@ -624,8 +624,8 @@
         <span class="prelude-val">Ok</span>(flow_instance.into())
     }
 
-    <span class="doccomment">/// Removes an existing relation instance by edge_key from the given flow by id
-    </span><span class="kw">async fn </span>remove_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, flow_id: Uuid, edge_key: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLFlowInstance&gt; {
+    <span class="doccomment">/// Removes an existing relation instance by relation_instance_id from the given flow by id
+    </span><span class="kw">async fn </span>remove_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;, flow_id: Uuid, relation_instance_id: GraphQLRelationInstanceId) -&gt; <span class="prelude-ty">Result</span>&lt;GraphQLFlowInstance&gt; {
         <span class="kw">let </span>flow_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveFlowManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
 
         <span class="kw">let </span>flow_instance = flow_instance_manager.get(flow_id);
@@ -634,13 +634,13 @@
         }
         <span class="kw">let </span>flow_instance = flow_instance.unwrap();
 
-        <span class="kw">let </span>edge_key: RelationInstanceId = edge_key.into();
+        <span class="kw">let </span>relation_instance_id: RelationInstanceId = relation_instance_id.into();
 
-        <span class="kw">if </span>!flow_instance.has_relation_by_key(<span class="kw-2">&amp;</span>edge_key) {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::FlowInstanceDoesNotContainRelationInstance(edge_key).into());
+        <span class="kw">if </span>!flow_instance.has_relation_by_key(<span class="kw-2">&amp;</span>relation_instance_id) {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(FlowMutationError::FlowInstanceDoesNotContainRelationInstance(relation_instance_id).into());
         }
 
-        flow_instance.remove_relation(<span class="kw-2">&amp;</span>edge_key);
+        flow_instance.remove_relation(<span class="kw-2">&amp;</span>relation_instance_id);
         <span class="comment">// The relation is removed from flow, but not yet deleted
         // TODO: How to handle this? It may be that a relation is used in multiple flows?
         // Orphaned instances / Do not delete instances used in other flows?

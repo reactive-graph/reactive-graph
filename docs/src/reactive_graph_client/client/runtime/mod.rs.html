@@ -44,11 +44,11 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::client::plugin::api::Plugins;
-<span class="kw">use </span><span class="kw">crate</span>::client::runtime::command::api::Command;
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::instance::api::Instance;
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::remotes::api::Remotes;
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::shutdown::api::Shutdown;
 <span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
+<span class="kw">use </span>command::api::Command;
 
 <span class="kw">pub mod </span>command;
 <span class="kw">pub mod </span>instance;

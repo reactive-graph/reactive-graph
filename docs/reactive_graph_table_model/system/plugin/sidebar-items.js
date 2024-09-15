@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["Plugin","PluginsTableOptions"],"type":["PluginsTableContainer"]};

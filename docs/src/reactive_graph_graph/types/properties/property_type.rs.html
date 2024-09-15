@@ -652,6 +652,10 @@
 <a href="#652" id="652">652</a>
 <a href="#653" id="653">653</a>
 <a href="#654" id="654">654</a>
+<a href="#655" id="655">655</a>
+<a href="#656" id="656">656</a>
+<a href="#657" id="657">657</a>
+<a href="#658" id="658">658</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>std::hash::Hasher;
@@ -926,6 +930,10 @@
         <span class="kw">let </span><span class="kw-2">mut </span>property_types: Vec&lt;PropertyType&gt; = <span class="self">self</span>.<span class="number">0</span>.iter().map(|property| property.value().clone()).collect();
         property_types.sort();
         property_types
+    }
+
+    <span class="kw">pub fn </span>names(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;String&gt; {
+        <span class="self">self</span>.<span class="number">0</span>.iter().map(|property_type| property_type.name.clone()).collect()
     }
 }
 

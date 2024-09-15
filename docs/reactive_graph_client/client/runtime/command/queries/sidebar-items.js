@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["execute"],"struct":["ExecuteCommand","ExecuteCommandVariables","ExecuteCommandVariablesFields","MutationCommands"]};

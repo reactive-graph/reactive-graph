@@ -31,10 +31,12 @@
 <a href="#31" id="31">31</a>
 <a href="#32" id="32">32</a>
 <a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::commands::ClientCommands;
 <span class="kw">use </span><span class="kw">crate</span>::cli::instances::entities::entity_instances;
+<span class="kw">use </span><span class="kw">crate</span>::cli::instances::relations::relation_instances;
 <span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::command::execute_command;
 <span class="kw">use </span><span class="kw">crate</span>::cli::system::instance::instance_info;
@@ -60,8 +62,8 @@
         ClientCommands::RelationTypes(args) =&gt; relation_types(client, args).<span class="kw">await</span>,
         <span class="comment">// TODO: Flow Types
         </span>ClientCommands::EntityInstances(args) =&gt; entity_instances(client, args).<span class="kw">await</span>,
-        <span class="comment">// TODO: Relation Instances
-        // TODO: Flow Instances
+        ClientCommands::RelationInstances(args) =&gt; relation_instances(client, args).<span class="kw">await</span>,
+        <span class="comment">// TODO: Flow Instances
     </span>}
 }
 </code></pre></div></section></main></body></html>

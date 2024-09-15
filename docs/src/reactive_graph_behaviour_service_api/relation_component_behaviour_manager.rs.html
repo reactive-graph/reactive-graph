@@ -86,8 +86,8 @@
     <span class="doccomment">/// Removes behaviour from the given relation instance's component
     </span><span class="kw">fn </span>remove_behaviours_from_relation_component(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation, component: Component);
 
-    <span class="doccomment">/// Removes behaviours from the given relation instance by edge key.
-    </span><span class="kw">fn </span>remove_behaviours_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId);
+    <span class="doccomment">/// Removes behaviours from the given relation instance by relation instance id.
+    </span><span class="kw">fn </span>remove_behaviours_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId);
 
     <span class="doccomment">/// Removes all behaviours of the given behaviour type.
     </span><span class="kw">fn </span>remove_behaviours_by_behaviour(<span class="kw-2">&amp;</span><span class="self">self</span>, behaviour_ty: <span class="kw-2">&amp;</span>BehaviourTypeId);

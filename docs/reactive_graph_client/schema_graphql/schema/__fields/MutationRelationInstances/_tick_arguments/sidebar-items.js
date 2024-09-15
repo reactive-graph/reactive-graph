@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["edgeKey"]};
+window.SIDEBAR_ITEMS = {"struct":["relationInstanceId"]};

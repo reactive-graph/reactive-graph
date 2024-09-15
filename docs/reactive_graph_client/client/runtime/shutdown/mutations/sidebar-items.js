@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["shutdown"]};
+window.SIDEBAR_ITEMS = {"mod":["shutdown"]};

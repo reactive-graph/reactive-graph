@@ -295,6 +295,22 @@
 <a href="#295" id="295">295</a>
 <a href="#296" id="296">296</a>
 <a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::Context;
@@ -315,6 +331,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::mutation::BehaviourTypeIdDefinition;
 <span class="kw">use </span><span class="kw">crate</span>::mutation::ComponentTypeIdDefinition;
 <span class="kw">use </span><span class="kw">crate</span>::mutation::EntityTypeIdDefinition;
+<span class="kw">use </span><span class="kw">crate</span>::mutation::GraphQLRelationInstanceId;
 <span class="kw">use </span><span class="kw">crate</span>::mutation::RelationTypeIdDefinition;
 <span class="kw">use </span><span class="kw">crate</span>::query::GraphQLEntityInstance;
 <span class="kw">use </span><span class="kw">crate</span>::query::GraphQLFlowInstance;
@@ -458,6 +475,7 @@
     </span><span class="kw">async fn </span>relations(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,
+        <span class="attr">#[graphql(desc = <span class="string">"Returns only the relation instance with the given id."</span>)] </span>id: <span class="prelude-ty">Option</span>&lt;GraphQLRelationInstanceId&gt;,
         <span class="attr">#[graphql(desc = <span class="string">"Filters the relation instances by the entity type of the outbound entity instance."</span>)] </span>outbound_entity_ty: <span class="prelude-ty">Option</span>&lt;
             EntityTypeIdDefinition,
         &gt;,
@@ -478,6 +496,20 @@
         <span class="attr">#[graphql(name = <span class="string">"properties"</span>, desc = <span class="string">"Query by properties."</span>)] </span>property_query: <span class="prelude-ty">Option</span>&lt;Vec&lt;GraphQLPropertyInstance&gt;&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLRelationInstance&gt;&gt; {
         <span class="kw">let </span>relation_instance_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>ReactiveRelationManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
+        <span class="kw">if </span>id.is_some() {
+            <span class="kw">let </span>id = id.unwrap();
+            <span class="kw">let </span>id = id.into();
+            <span class="kw">let </span>relation_instance = relation_instance_manager.get(<span class="kw-2">&amp;</span>id).map(|relation_instance| {
+                <span class="kw">let </span>relation_instance: GraphQLRelationInstance = relation_instance.into();
+                relation_instance
+            });
+            <span class="kw">return if </span>relation_instance.is_some() {
+                <span class="prelude-val">Ok</span>(<span class="macro">vec!</span>[relation_instance.unwrap()])
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Ok</span>(Vec::new())
+            };
+        }
+
         <span class="kw">let </span>outbound_entity_ty: <span class="prelude-ty">Option</span>&lt;EntityTypeId&gt; = outbound_entity_ty.map(|outbound_entity_ty| outbound_entity_ty.into());
         <span class="kw">let </span>outbound_component_ty: <span class="prelude-ty">Option</span>&lt;ComponentTypeId&gt; = outbound_component_ty.map(|outbound_component_ty| outbound_component_ty.into());
         <span class="kw">let </span>relation_ty: <span class="prelude-ty">Option</span>&lt;RelationTypeId&gt; = relation_ty.map(|relation_ty| relation_ty.into());

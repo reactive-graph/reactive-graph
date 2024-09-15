@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["api","mapping","queries"]};
+window.SIDEBAR_ITEMS = {"mod":["api","queries","variables"]};

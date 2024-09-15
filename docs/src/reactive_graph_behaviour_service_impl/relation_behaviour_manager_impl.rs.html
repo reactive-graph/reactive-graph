@@ -169,8 +169,8 @@
         <span class="self">self</span>.relation_behaviour_storage.remove_all(<span class="kw-2">&amp;</span>relation_instance.id());
     }
 
-    <span class="kw">fn </span>remove_behaviours_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) {
-        <span class="self">self</span>.relation_behaviour_storage.remove_all(edge_key);
+    <span class="kw">fn </span>remove_behaviours_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) {
+        <span class="self">self</span>.relation_behaviour_storage.remove_all(relation_instance_id);
     }
 
     <span class="kw">fn </span>remove_behaviours_by_behaviour(<span class="kw-2">&amp;</span><span class="self">self</span>, behaviour_ty: <span class="kw-2">&amp;</span>BehaviourTypeId) {

@@ -61,7 +61,12 @@
 <a href="#61" id="61">61</a>
 <a href="#62" id="62">62</a>
 <a href="#63" id="63">63</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>clap::Args;
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+</pre></div><pre class="rust"><code><span class="kw">use </span>clap::Parser;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::commands::ClientCommands;
 <span class="kw">use </span>reactive_graph_remotes_model::InstanceAddress;
@@ -72,7 +77,8 @@
 <span class="kw">use </span>reactive_graph_remotes_model::DEFAULT_HOSTNAME;
 <span class="kw">use </span>reactive_graph_remotes_model::DEFAULT_PORT;
 
-<span class="attr">#[derive(Args, Debug, Clone)]
+<span class="attr">#[derive(Parser, Debug, Clone)]
+#[command(name = <span class="string">"reactive-graph-client"</span>, author, version, about, long_about = <span class="prelude-val">None</span>)]
 </span><span class="kw">pub struct </span>ClientArgs {
     <span class="doccomment">/// The hostname to connect to.
     </span><span class="attr">#[arg(long)]
@@ -105,6 +111,10 @@
     <span class="doccomment">/// The authentication token.
     </span><span class="attr">#[arg(long)]
     </span>bearer: <span class="prelude-ty">Option</span>&lt;String&gt;,
+
+    <span class="doccomment">/// If true, generates command line documentation.
+    </span><span class="attr">#[arg(long, hide = <span class="bool-val">true</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) markdown_help: bool,
 
     <span class="attr">#[command(subcommand)]
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) commands: <span class="prelude-ty">Option</span>&lt;ClientCommands&gt;,

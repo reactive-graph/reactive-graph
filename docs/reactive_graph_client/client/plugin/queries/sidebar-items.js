@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_all","get_by_name","get_dependencies","get_dependents","get_unsatisfied_dependencies","search"]};
+window.SIDEBAR_ITEMS = {"mod":["get_all","get_by_name","get_dependencies","get_dependents","get_unsatisfied_dependencies","search"]};

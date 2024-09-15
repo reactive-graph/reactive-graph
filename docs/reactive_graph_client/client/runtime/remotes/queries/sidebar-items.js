@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_all"]};
+window.SIDEBAR_ITEMS = {"mod":["get_all"]};

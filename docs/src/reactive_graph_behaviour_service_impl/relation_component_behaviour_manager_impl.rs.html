@@ -129,6 +129,9 @@
 <a href="#129" id="129">129</a>
 <a href="#130" id="130">130</a>
 <a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>log::trace;
 <span class="kw">use </span>std::sync::Arc;
@@ -162,12 +165,13 @@
 #[component_alias]
 </span><span class="kw">impl </span>RelationComponentBehaviourManager <span class="kw">for </span>RelationComponentBehaviourManagerImpl {
     <span class="kw">fn </span>add_behaviours_to_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation) {
-        <span class="kw">let </span>edge_key = relation_instance.id();
+        <span class="kw">let </span>relation_instance_id = relation_instance.id();
         <span class="kw">for </span>component_ty <span class="kw">in </span>relation_instance.get_components() {
             <span class="kw">for </span>factory <span class="kw">in </span><span class="self">self</span>.relation_component_behaviour_registry.get(<span class="kw-2">&amp;</span>component_ty) {
                 <span class="kw">if let </span><span class="prelude-val">Ok</span>(behaviour) = factory.create(relation_instance.clone()) {
                     <span class="kw">let </span>behaviour_ty = behaviour.ty().clone();
-                    <span class="self">self</span>.relation_behaviour_storage.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                    <span class="self">self</span>.relation_behaviour_storage
+                        .insert(relation_instance_id.clone(), behaviour_ty.clone(), behaviour);
                     <span class="macro">trace!</span>(<span class="string">"Added relation component behaviour {}"</span>, <span class="kw-2">&amp;</span>behaviour_ty);
                 }
             }
@@ -175,31 +179,33 @@
     }
 
     <span class="kw">fn </span>add_behaviours_to_relation_component(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation, component: reactive_graph_graph::Component) {
-        <span class="kw">let </span>edge_key = relation_instance.id();
+        <span class="kw">let </span>relation_instance_id = relation_instance.id();
         <span class="kw">for </span>factory <span class="kw">in </span><span class="self">self</span>.relation_component_behaviour_registry.get(<span class="kw-2">&amp;</span>component.ty) {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(behaviour) = factory.create(relation_instance.clone()) {
                 <span class="kw">let </span>behaviour_ty = behaviour.ty().clone();
-                <span class="self">self</span>.relation_behaviour_storage.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                <span class="self">self</span>.relation_behaviour_storage
+                    .insert(relation_instance_id.clone(), behaviour_ty.clone(), behaviour);
                 <span class="macro">trace!</span>(<span class="string">"Added relation component behaviour {}"</span>, <span class="kw-2">&amp;</span>behaviour_ty);
             }
         }
     }
 
     <span class="kw">fn </span>add_behaviour_to_relation_component(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation, component_behaviour_ty: <span class="kw-2">&amp;</span>ComponentBehaviourTypeId) {
-        <span class="kw">let </span>edge_key = relation_instance.id();
+        <span class="kw">let </span>relation_instance_id = relation_instance.id();
         <span class="kw">for </span>factory <span class="kw">in </span><span class="self">self</span>.relation_component_behaviour_registry.get(<span class="kw-2">&amp;</span>component_behaviour_ty.component_ty) {
             <span class="kw">if let </span><span class="prelude-val">Ok</span>(behaviour) = factory.create(relation_instance.clone()) {
                 <span class="kw">let </span>behaviour_ty = behaviour.ty().clone();
-                <span class="self">self</span>.relation_behaviour_storage.insert(edge_key.clone(), behaviour_ty.clone(), behaviour);
+                <span class="self">self</span>.relation_behaviour_storage
+                    .insert(relation_instance_id.clone(), behaviour_ty.clone(), behaviour);
                 <span class="macro">trace!</span>(<span class="string">"Added relation component behaviour {}"</span>, <span class="kw-2">&amp;</span>behaviour_ty);
             }
         }
     }
 
     <span class="kw">fn </span>remove_behaviour_from_relation(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation, behaviour_ty: <span class="kw-2">&amp;</span>BehaviourTypeId) {
-        <span class="kw">let </span>edge_key = relation_instance.id();
+        <span class="kw">let </span>relation_instance_id = relation_instance.id();
         <span class="kw">let _ </span>= <span class="self">self</span>.disconnect(relation_instance, behaviour_ty);
-        <span class="self">self</span>.relation_behaviour_storage.remove(<span class="kw-2">&amp;</span>edge_key, behaviour_ty);
+        <span class="self">self</span>.relation_behaviour_storage.remove(<span class="kw-2">&amp;</span>relation_instance_id, behaviour_ty);
         <span class="macro">trace!</span>(<span class="string">"Removed relation behaviour {}"</span>, <span class="kw-2">&amp;</span>behaviour_ty);
     }
 
@@ -208,15 +214,15 @@
     }
 
     <span class="kw">fn </span>remove_behaviours_from_relation_component(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance: ReactiveRelation, component: reactive_graph_graph::Component) {
-        <span class="kw">let </span>edge_key = relation_instance.id();
+        <span class="kw">let </span>relation_instance_id = relation_instance.id();
         <span class="kw">for </span>factory <span class="kw">in </span><span class="self">self</span>.relation_component_behaviour_registry.get(<span class="kw-2">&amp;</span>component.ty) {
-            <span class="self">self</span>.relation_behaviour_storage.remove(<span class="kw-2">&amp;</span>edge_key, factory.behaviour_ty());
+            <span class="self">self</span>.relation_behaviour_storage.remove(<span class="kw-2">&amp;</span>relation_instance_id, factory.behaviour_ty());
             <span class="macro">trace!</span>(<span class="string">"Removed relation component behaviour {}"</span>, factory.behaviour_ty());
         }
     }
 
-    <span class="kw">fn </span>remove_behaviours_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, edge_key: <span class="kw-2">&amp;</span>RelationInstanceId) {
-        <span class="self">self</span>.relation_behaviour_storage.remove_all(edge_key);
+    <span class="kw">fn </span>remove_behaviours_by_key(<span class="kw-2">&amp;</span><span class="self">self</span>, relation_instance_id: <span class="kw-2">&amp;</span>RelationInstanceId) {
+        <span class="self">self</span>.relation_behaviour_storage.remove_all(relation_instance_id);
     }
 
     <span class="kw">fn </span>remove_behaviours_by_behaviour(<span class="kw-2">&amp;</span><span class="self">self</span>, behaviour_ty: <span class="kw-2">&amp;</span>BehaviourTypeId) {

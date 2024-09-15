@@ -77,11 +77,11 @@
 #[cynic(schema_path = <span class="string">"schema_graphql.graphql"</span>, schema_module = <span class="string">"crate::schema_graphql::schema"</span>)]
 </span><span class="kw">pub struct </span>EntityInstance {
     <span class="attr">#[cynic(rename = <span class="string">"type"</span>)]
-    </span>ty: <span class="prelude-ty">Option</span>&lt;EntityType&gt;,
-    id: UUID,
-    description: String,
-    properties: Vec&lt;PropertyInstance&gt;,
-    components: Vec&lt;Component&gt;,
+    </span><span class="kw">pub </span>ty: <span class="prelude-ty">Option</span>&lt;EntityType&gt;,
+    <span class="kw">pub </span>id: UUID,
+    <span class="kw">pub </span>description: String,
+    <span class="kw">pub </span>properties: Vec&lt;PropertyInstance&gt;,
+    <span class="kw">pub </span>components: Vec&lt;Component&gt;,
 }
 
 <span class="kw">impl </span>EntityInstance {

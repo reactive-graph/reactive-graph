@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["edgeKey","flowId","properties"]};
+window.SIDEBAR_ITEMS = {"struct":["flowId","properties","relationInstanceId"]};

@@ -60,6 +60,8 @@
 <a href="#60" id="60">60</a>
 <a href="#61" id="61">61</a>
 <a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::alloc::System;
 <span class="kw">use </span>std::process::exit;
 
@@ -72,23 +74,25 @@
 
 <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cli::client;
-<span class="kw">use </span><span class="kw">crate</span>::cli_args::CliArguments;
-<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::cli_args::Commands;
-<span class="kw">use </span><span class="kw">crate</span>::server::server;
+<span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::server::cli_args::CliArguments;
+<span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::server::cli_args::Commands;
+<span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
+</span><span class="kw">use </span><span class="kw">crate</span>::server::server;
 
 <span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
 </span><span class="kw">mod </span>cli;
-<span class="kw">mod </span>cli_args;
-<span class="kw">mod </span>server;
-<span class="attr">#[cfg(feature = <span class="string">"client"</span>)]
-</span><span class="kw">mod </span>table_model;
+<span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
+</span><span class="kw">mod </span>server;
 
 <span class="attr">#[global_allocator]
 </span><span class="kw">static </span>ALLOCATOR: System = System;
 
 <span class="attr">#[tokio::main]
 </span><span class="kw">async fn </span>main() {
+    <span class="attr">#[cfg(feature = <span class="string">"server"</span>)]
+    </span>{}
     <span class="kw">let </span>cli_args = CliArguments::parse();
 
     <span class="comment">// Initialize logging

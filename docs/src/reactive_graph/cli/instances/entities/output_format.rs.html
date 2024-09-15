@@ -4,10 +4,12 @@
 <a href="#4" id="4">4</a>
 <a href="#5" id="5">5</a>
 <a href="#6" id="6">6</a>
+<a href="#7" id="7">7</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cli::output_format::OutputFormatWrapper;
-<span class="kw">use </span><span class="kw">crate</span>::table_model;
-<span class="kw">use </span><span class="kw">crate</span>::table_model::instances::entities::EntityInstancesTableOptions;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>EntityInstancesOutputFormatWrapper =
-    OutputFormatWrapper&lt;reactive_graph_graph::EntityInstance, table_model::instances::entities::EntityInstance, EntityInstancesTableOptions&gt;;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type </span>EntityInstancesOutputFormatWrapper = OutputFormatWrapper&lt;
+    reactive_graph_graph::EntityInstance,
+    reactive_graph_table_model::instances::entities::EntityInstance,
+    reactive_graph_table_model::instances::entities::EntityInstancesTableOptions,
+&gt;;
 </code></pre></div></section></main></body></html>

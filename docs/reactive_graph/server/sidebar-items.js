@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["server"]};
+window.SIDEBAR_ITEMS = {"fn":["server"],"mod":["cli_args"]};

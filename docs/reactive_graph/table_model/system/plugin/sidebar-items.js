@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["display_plugins"],"struct":["Plugin","PluginDependencies","PluginDependents","PluginsTableOptions"],"type":["Plugins"]};

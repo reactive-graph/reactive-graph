@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["main"],"mod":["cli","cli_args","server","table_model"],"static":["ALLOCATOR"]};
+window.SIDEBAR_ITEMS = {"fn":["main"],"mod":["cli","server"],"static":["ALLOCATOR"]};

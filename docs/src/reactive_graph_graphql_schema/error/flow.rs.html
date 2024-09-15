@@ -118,8 +118,8 @@
             FlowMutationError::MissingEntityInstance(id) =&gt; {
                 <span class="macro">write!</span>(f, <span class="string">"Entity instance {} does not exist"</span>, id)
             }
-            FlowMutationError::MissingRelationInstance(edge_key) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">"Relation instance {:?} does not exist"</span>, edge_key)
+            FlowMutationError::MissingRelationInstance(relation_instance_id) =&gt; {
+                <span class="macro">write!</span>(f, <span class="string">"Relation instance {:?} does not exist"</span>, relation_instance_id)
             }
             FlowMutationError::MissingOutboundEntityInstance(id) =&gt; {
                 <span class="macro">write!</span>(f, <span class="string">"Outbound entity instance {} does not exist"</span>, id)
@@ -130,8 +130,8 @@
             FlowMutationError::FlowInstanceDoesNotContainEntityInstance(id) =&gt; {
                 <span class="macro">write!</span>(f, <span class="string">"Flow doesn't contain entity instance {}"</span>, id)
             }
-            FlowMutationError::FlowInstanceDoesNotContainRelationInstance(edge_key) =&gt; {
-                <span class="macro">write!</span>(f, <span class="string">"Flow doesn't contain relation instance {:?}"</span>, edge_key.clone())
+            FlowMutationError::FlowInstanceDoesNotContainRelationInstance(relation_instance_id) =&gt; {
+                <span class="macro">write!</span>(f, <span class="string">"Flow doesn't contain relation instance {:?}"</span>, relation_instance_id.clone())
             }
         }
     }
