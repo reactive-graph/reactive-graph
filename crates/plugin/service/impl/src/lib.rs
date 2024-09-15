@@ -1,5 +1,3 @@
-#![feature(path_file_prefix)]
-
 pub use container::*;
 pub use context::*;
 pub use plugin_container_manager_impl::*;
