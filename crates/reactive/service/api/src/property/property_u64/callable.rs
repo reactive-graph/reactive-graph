@@ -2,6 +2,7 @@ use crate::TypedReactivePropertyImpl;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use serde_json::json;
 
+#[cfg(feature = "rustc_nightly")]
 impl<IdType, ReactiveInstanceType> FnOnce<(u64,)> for TypedReactivePropertyImpl<IdType, ReactiveInstanceType, u64>
 where
     IdType: Clone,
@@ -14,6 +15,7 @@ where
     }
 }
 
+#[cfg(feature = "rustc_nightly")]
 impl<IdType, ReactiveInstanceType> FnMut<(u64,)> for TypedReactivePropertyImpl<IdType, ReactiveInstanceType, u64>
 where
     IdType: Clone,
@@ -24,6 +26,7 @@ where
     }
 }
 
+#[cfg(feature = "rustc_nightly")]
 impl<IdType, ReactiveInstanceType> Fn<(u64,)> for TypedReactivePropertyImpl<IdType, ReactiveInstanceType, u64>
 where
     IdType: Clone,
