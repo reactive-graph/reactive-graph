@@ -9,7 +9,7 @@ repository.workspace = true
 readme = "../../../../README.md"
 
 [dependencies]
-dashmap = { workspace = true }
+dashmap = { workspace = true, features = ["rayon"] }
 rayon = { workspace = true }
 schemars = { workspace = true, features = ["uuid1"] }
 serde = { workspace = true, features = ["derive"] }
