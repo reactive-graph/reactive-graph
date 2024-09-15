@@ -618,21 +618,13 @@ impl Lifecycle for ReactiveEntityManagerImpl {
 
 #[cfg(test)]
 mod tests {
-    extern crate test;
-
-    use std::process::Termination;
-    use test::Bencher;
-
     use default_test::DefaultTest;
-    use serde_json::json;
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
     use reactive_graph_behaviour_service_impl::BehaviourSystemImpl;
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::EntityTypeId;
-    use reactive_graph_graph::PropertyInstanceSetter;
-    use reactive_graph_graph::PropertyType;
     use reactive_graph_graph::PropertyTypes;
     use reactive_graph_reactive_model_impl::ReactiveEntity;
     use reactive_graph_reactive_service_api::ReactiveSystem;
@@ -684,9 +676,6 @@ mod tests {
     #[test]
     fn test_unregister_reactive_entity_instance() {
         reactive_graph_test_utils::init_logger();
-        // let runtime = get_runtime();
-        // let entity_type_manager = runtime.get_entity_type_manager();
-        // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
@@ -716,9 +705,6 @@ mod tests {
     #[test]
     fn test_not_register_twice_reactive_entity_instance() {
         reactive_graph_test_utils::init_logger();
-        // let runtime: Arc<dyn Runtime + Send + Sync> = get_runtime();
-        // let entity_type_manager = runtime.get_entity_type_manager();
-        // let reactive_entity_manager = runtime.get_reactive_entity_manager();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
@@ -759,80 +745,5 @@ mod tests {
 
         assert!(reactive_entity_manager.has(id), "The reactive entity with id should be registered!");
         assert_eq!(reactive_entity_manager.count(), 1);
-    }
-
-    #[bench]
-    fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
-        // let runtime = get_runtime();
-        // let entity_type_manager = runtime.get_entity_type_manager();
-        // let reactive_entity_manager = runtime.get_reactive_entity_manager();
-
-        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
-        let type_system = reactive_system.type_system();
-        let entity_type_manager = type_system.get_entity_type_manager();
-        let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
-
-        let entity_type = entity_type_manager
-            .register(EntityType::default_test())
-            .expect("Failed to register entity type");
-
-        bencher.iter(move || {
-            let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
-            reactive_entity_manager
-                .register_reactive_instance(reactive_entity)
-                .expect("Failed to register reactive instance");
-        })
-    }
-
-    #[bench]
-    fn get_by_id_benchmark(bencher: &mut Bencher) -> impl Termination {
-        // let runtime = get_runtime();
-        // let entity_type_manager = runtime.get_entity_type_manager();
-        // let reactive_entity_manager = runtime.get_reactive_entity_manager();
-
-        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
-        let type_system = reactive_system.type_system();
-        let entity_type_manager = type_system.get_entity_type_manager();
-        let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
-
-        let entity_type = entity_type_manager
-            .register(EntityType::default_test())
-            .expect("Failed to register entity type");
-
-        let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
-        let id = reactive_entity.id;
-
-        reactive_entity_manager
-            .register_reactive_instance(reactive_entity)
-            .expect("Failed to register reactive instance");
-
-        bencher.iter(|| reactive_entity_manager.get(id))
-    }
-
-    #[bench]
-    fn get_by_label_benchmark(bencher: &mut Bencher) -> impl Termination {
-        // let runtime = get_runtime();
-        // let entity_type_manager = runtime.get_entity_type_manager();
-        // let reactive_entity_manager = runtime.get_reactive_entity_manager();
-
-        let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
-        let type_system = reactive_system.type_system();
-        let entity_type_manager = type_system.get_entity_type_manager();
-        let reactive_entity_manager = reactive_system.get_reactive_entity_manager();
-
-        let entity_type = EntityType::default_test();
-        entity_type.properties.push(PropertyType::string("label"));
-
-        let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
-
-        let label = String::from("/org/inexor/test");
-
-        let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
-        reactive_entity.set("label", json!(label.clone()));
-        reactive_entity_manager
-            .register_reactive_instance(reactive_entity)
-            .expect("Failed to register reactive entity");
-
-        bencher.iter(|| reactive_entity_manager.get_by_label(&label))
     }
 }

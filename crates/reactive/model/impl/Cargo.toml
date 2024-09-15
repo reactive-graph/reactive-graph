@@ -23,6 +23,7 @@ reactive-graph-reactive-model-api = { version = "0.10.0", path = "../api" }
 reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils", optional = true }
 
 [dev-dependencies]
+criterion = { workspace = true, features = ["html_reports"] }
 default-test = { workspace = true }
 random-string = { workspace = true }
 rand = { workspace = true }
@@ -36,3 +37,7 @@ crate-type = ["lib"]
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
+
+[[bench]]
+name = "reactive_property_instance_stream"
+harness = false

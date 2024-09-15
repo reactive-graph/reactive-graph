@@ -257,12 +257,6 @@ impl Lifecycle for ComponentManagerImpl {
 
 #[cfg(test)]
 mod test {
-    extern crate test;
-
-    use std::process::Termination;
-    use test::Bencher;
-
-    use default_test::DefaultTest;
     use reactive_graph_graph::Component;
     use reactive_graph_graph::ComponentTypeId;
     use reactive_graph_graph::Extension;
@@ -316,18 +310,5 @@ mod test {
             assert!(component_manager.has(&component.ty));
         }
         assert!(!component_manager.has(&ComponentTypeId::new_from_type(r_string(), r_string())));
-    }
-
-    #[bench]
-    fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
-        reactive_graph_test_utils::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
-        let component_manager = type_system.get_component_manager();
-        let component = Component::default_test();
-        let ty = component.ty.clone();
-        bencher.iter(move || {
-            let _ = component_manager.register(component.clone());
-            component_manager.delete(&ty);
-        })
     }
 }

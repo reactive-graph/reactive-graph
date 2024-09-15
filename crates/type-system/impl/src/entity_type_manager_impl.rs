@@ -338,11 +338,6 @@ impl Lifecycle for EntityTypeManagerImpl {
 
 #[cfg(test)]
 mod test {
-    extern crate test;
-
-    use std::process::Termination;
-    use test::Bencher;
-
     use default_test::DefaultTest;
 
     use crate::TypeSystemImpl;
@@ -470,18 +465,5 @@ mod test {
         // let entity_type = EntityType::new(&entity_ty, String::new(), vec![], vec![property_type], vec![]);
         // assert!(entity_type_manager.register(entity_type).is_ok());
         // assert!(entity_type_manager.get(&entity_ty).unwrap().has_own_property(property_name.as_str()));
-    }
-
-    #[bench]
-    fn creation_benchmark(bencher: &mut Bencher) -> impl Termination {
-        reactive_graph_test_utils::init_logger();
-        let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
-        let entity_type_manager = type_system.get_entity_type_manager();
-        let entity_type = EntityType::default_test();
-        let ty = entity_type.ty.clone();
-        bencher.iter(move || {
-            let _ = entity_type_manager.register(entity_type.clone());
-            let _ = entity_type_manager.delete(&ty);
-        })
     }
 }

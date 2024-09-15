@@ -1,5 +1,3 @@
-#![feature(test)]
-
 pub use component_import_export_manager_impl::*;
 pub use component_manager_impl::*;
 pub use component_provider_registry_impl::*;

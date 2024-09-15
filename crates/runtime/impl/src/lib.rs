@@ -1,5 +1,4 @@
 #![feature(concat_idents)]
-#![feature(test)]
 #![allow(clippy::map_entry, clippy::module_inception, clippy::too_many_arguments)]
 
 // async fn in traits + async closures
