@@ -27,6 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
+        toolchain: [ stable, nightly-2024-08-19 ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
@@ -34,7 +35,7 @@ jobs:
       - name: Install latest nightly
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly-2024-08-19
+          toolchain: ${{ matrix.toolchain }}
       - name: Cache dependencies
         uses: Swatinem/rust-cache@v2
       - name: Run sccache-cache
