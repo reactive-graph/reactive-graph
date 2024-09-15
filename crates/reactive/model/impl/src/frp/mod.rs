@@ -650,5 +650,5 @@ where
 }
 
 #[cfg(test)]
-#[tarpaulin::ignore]
+#[cfg(not(tarpaulin_include))]
 mod tests;
