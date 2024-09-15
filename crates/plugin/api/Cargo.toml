@@ -49,3 +49,6 @@ full = ["derive", "springtime"] #, "json5", "toml" ]
 
 [lib]
 crate-type = ["lib"]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }

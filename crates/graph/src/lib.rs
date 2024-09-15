@@ -1,6 +1,3 @@
-#![feature(register_tool)]
-#![register_tool(tarpaulin)]
-
 pub use types::components::*;
 pub use types::entities::*;
 pub use types::extensions::*;
