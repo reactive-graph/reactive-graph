@@ -82,8 +82,6 @@ impl Lifecycle for ComponentImportExportManagerImpl {}
 
 #[cfg(test)]
 mod test {
-    extern crate test;
-
     use std::env;
 
     use default_test::DefaultTest;

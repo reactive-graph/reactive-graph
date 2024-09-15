@@ -259,17 +259,13 @@ impl<IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
 
 #[cfg(test)]
 pub mod tests {
-    extern crate test;
-
     use std::ops::DerefMut;
     use std::ops::Index;
-    use std::process::Termination;
     use std::sync::atomic::AtomicU64;
     use std::sync::atomic::Ordering;
     use std::sync::Arc;
     use std::sync::RwLock;
     use std::thread;
-    use test::Bencher;
 
     use rand::Rng;
     use serde_json::json;
@@ -566,45 +562,6 @@ pub mod tests {
 
         let number: u64 = rng.gen();
         instance1.set(json!(number));
-    }
-
-    #[bench]
-    fn reactive_property_instance_stream_benchmark(bencher: &mut Bencher) -> impl Termination {
-        let instance1 = ReactiveProperty::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
-        let instance2 = ReactiveProperty::new(Uuid::new_v4(), r_string(), Mutable, json!(0));
-
-        let v = Arc::new(AtomicU64::new(0));
-
-        {
-            let v = v.clone();
-            let writer = instance2.stream.write().unwrap();
-            let handle_id = Uuid::new_v4().as_u128();
-            writer.observe_with_handle(
-                move |value| {
-                    v.store(value.as_u64().unwrap(), Ordering::Relaxed);
-                },
-                handle_id,
-            );
-        }
-
-        {
-            let writer = instance1.stream.write().unwrap();
-            let handle_id = Uuid::new_v4().as_u128();
-            writer.observe_with_handle(
-                move |value| {
-                    instance2.set(value.clone());
-                },
-                handle_id,
-            );
-        }
-
-        let mut rng = rand::thread_rng();
-
-        bencher.iter(move || {
-            let number: u64 = rng.gen();
-            instance1.set(json!(number));
-            assert_eq!(number, v.load(Ordering::Relaxed));
-        })
     }
 
     #[test]

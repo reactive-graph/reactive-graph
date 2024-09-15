@@ -26,6 +26,7 @@ reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 
 [dev-dependencies]
+criterion = { workspace = true, features = ["html_reports"] }
 default-test = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
@@ -43,3 +44,11 @@ full = ["springtime", "json5", "toml"]
 
 [lib]
 crate-type = ["lib"]
+
+[[bench]]
+name = "component_manager"
+harness = false
+
+[[bench]]
+name = "entity_type_manager"
+harness = false

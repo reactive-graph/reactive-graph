@@ -1,5 +1,3 @@
-#![feature(test)]
-
 pub use entities::*;
 pub use flows::*;
 pub use frp::*;
