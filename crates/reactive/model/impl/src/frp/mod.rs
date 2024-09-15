@@ -190,25 +190,25 @@
 //! }
 //! ```
 
-use std::cell::RefCell;
+use dashmap::DashMap;
+use rayon::prelude::*;
+use std::hash::Hash;
 use std::ops::Deref;
 use std::sync::mpsc::channel;
 use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::RwLock;
 use std::sync::Weak;
-
-use rayon::prelude::*;
 use uuid::Uuid;
 
 /// The subscriber stores the handle_id and the closure.
-type Subscriber<'a, Sig> = (u128, dyn FnMut(&Sig) + Send + 'a);
+type Subscriber<'a, Sig> = dyn FnMut(&Sig) + Send + 'a;
 
 /// List of subscribers to a stream.
 ///
 /// When a stream emit a value, it streams the value down to all subscribers.
 type BoxedSubscriber<'a, Sig> = Box<Subscriber<'a, Sig>>;
-type Subscribers<'a, Sig> = RefCell<Vec<BoxedSubscriber<'a, Sig>>>;
+type Subscribers<'a, Sig> = DashMap<u128, BoxedSubscriber<'a, Sig>>;
 
 /// Dependent streams that will receive values.
 ///
@@ -254,7 +254,7 @@ where
 {
     /// Create a new stream.
     pub fn new() -> Self {
-        let subscribers = DependentStreams::Own(Arc::new(RefCell::new(Vec::new())));
+        let subscribers = DependentStreams::Own(Arc::new(DashMap::new()));
         Stream {
             subscribers: RwLock::new(subscribers),
         }
@@ -276,7 +276,6 @@ where
     fn new_weak(&self) -> Self {
         let guard = self.subscribers.read().unwrap();
         let subscribers = RwLock::new(match guard.deref() {
-            // DependentStreams::Own(ref rc) => DependentStreams::Weak(Rc::downgrade(rc)),
             DependentStreams::Own(ref rc) => DependentStreams::Weak(Arc::downgrade(rc)),
             DependentStreams::Weak(ref weak) => DependentStreams::Weak(weak.clone()),
         });
@@ -295,13 +294,11 @@ where
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                let mut subscribers = subscribers.borrow_mut();
-                subscribers.push(Box::new((handle_id, subscriber)))
+                subscribers.insert(handle_id, Box::new(subscriber));
             }
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    let mut subscribers = subscribers.borrow_mut();
-                    subscribers.push(Box::new((handle_id, subscriber)));
+                    subscribers.insert(handle_id, Box::new(subscriber));
                 }
             }
         }
@@ -318,13 +315,11 @@ where
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                let mut subscribers = subscribers.borrow_mut();
-                subscribers.push(Box::new((handle_id, subscriber)));
+                subscribers.insert(handle_id, Box::new(subscriber));
             }
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    let mut subscribers = subscribers.borrow_mut();
-                    subscribers.push(Box::new((handle_id, subscriber)));
+                    subscribers.insert(handle_id, Box::new(subscriber));
                 }
             }
         }
@@ -335,14 +330,12 @@ where
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                let mut subscribers = subscribers.borrow_mut();
-                subscribers.retain(|sub| sub.0 != handle_id)
+                subscribers.remove(&handle_id);
             }
 
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    let mut subscribers = subscribers.borrow_mut();
-                    subscribers.retain(|sub| sub.0 != handle_id)
+                    subscribers.remove(&handle_id);
                 }
             }
         }
@@ -353,13 +346,11 @@ where
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                let mut subscribers = subscribers.borrow_mut();
                 subscribers.clear();
             }
 
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    let mut subscribers = subscribers.borrow_mut();
                     subscribers.clear();
                 }
             }
@@ -368,45 +359,25 @@ where
 
     /// Send a signal down the stream.
     pub fn send(&self, signal: &Sig) {
-        let guard = self.subscribers.read().unwrap();
+        let guard = self.subscribers.write().unwrap();
         match guard.deref() {
             DependentStreams::Own(ref subscribers) => {
-                // for sub in subscribers.borrow_mut().iter_mut() {
-                //   sub.1(signal);
-                // }
-                // Compromise for multi threading: drop stream if it would violate borrow checking
-                // let subscribers_mut = subscribers.try_borrow_mut();
-                if let Ok(mut subscribers_mut) = subscribers.try_borrow_mut() {
-                    // for sub in subscribers_mut.iter_mut() {
-                    //     sub.1(signal);
-                    // }
-                    subscribers_mut.par_iter_mut().for_each(|sub| sub.1(signal));
-                    // for sub in subscribers_mut.par_iter_mut() {
-                    //     sub.1(signal);
-                    // }
-                }
-                // if subscribers_mut.is_ok() {
-                //     for sub in subscribers_mut.unwrap().iter_mut() {
-                //         sub.1(signal);
-                //     }
-                // }
+                // subscribers.par_iter_mut().for_each(|mut subscriber| {
+                //     subscriber(&signal);
+                // });
+                subscribers.iter_mut().for_each(|mut subscriber| {
+                    subscriber(&signal);
+                });
             }
 
             DependentStreams::Weak(ref weak) => {
                 if let Some(subscribers) = weak.upgrade() {
-                    // for sub in subscribers.borrow_mut().iter_mut() {
-                    //   sub.1(signal);
-                    // }
-                    // Compromise for multi threading: drop stream if it would violate borrow checking
-                    // let subscribers_mut = subscribers.try_borrow_mut();
-                    // if subscribers_mut.is_ok() {
-                    //     for sub in subscribers_mut.unwrap().iter_mut() {
-                    //         sub.1(signal);
-                    //     }
-                    // }
-                    if let Ok(mut subscribers_mut) = subscribers.try_borrow_mut() {
-                        subscribers_mut.par_iter_mut().for_each(|sub| sub.1(signal));
-                    }
+                    // subscribers.deref().par_iter_mut().for_each(|mut subscriber| {
+                    //     subscriber(&signal);
+                    // });
+                    subscribers.iter_mut().for_each(|mut subscriber| {
+                        subscriber(&signal);
+                    });
                 }
             }
         }
