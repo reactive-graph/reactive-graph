@@ -1,5 +1,3 @@
-#![feature(concat_idents)]
-
 #[cfg(feature = "json5")]
 pub use json5;
 pub use serde_json;
