@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_deploy_path","get_install_path","get_stem"]};
+window.SIDEBAR_ITEMS = {"fn":["file_prefix","get_deploy_path","get_install_path","get_stem"]};

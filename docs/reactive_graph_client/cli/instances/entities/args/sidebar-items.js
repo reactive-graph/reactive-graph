@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["add_property","create","id","id_and_component","id_and_property","label","search","set_property"],"struct":["EntityInstancesArgs"]};
