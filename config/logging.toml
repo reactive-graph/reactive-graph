@@ -47,26 +47,10 @@ appenders = ["stdout", "file-application"]
 
 
 
-### Core
-
-[loggers."reactive_graph_frp"]
-level = "info"
+### Type System Implementation
 
 [loggers."reactive_graph_type_system_impl"]
 level = "debug"
-
-[loggers."reactive_graph_behaviour_service_impl"]
-level = "debug"
-
-[loggers."reactive_graph_plugin_service_impl"]
-level = "debug"
-
-[loggers."reactive_graph_dynamic_graph_impl"]
-level = "debug"
-
-
-
-### Type System Implementation
 
 [loggers."reactive_graph_type_system_impl::component_manager_impl"]
 level = "info"
@@ -96,6 +80,9 @@ level = "info"
 
 ### Behaviour Service Implementation
 
+[loggers."reactive_graph_behaviour_service_impl"]
+level = "debug"
+
 [loggers."reactive_graph_behaviour_service_impl::entity_behaviour_manager_impl"]
 level = "info"
 
@@ -124,6 +111,9 @@ level = "info"
 
 ### Dynamic Graph Impl
 
+[loggers."reactive_graph_dynamic_graph_impl"]
+level = "debug"
+
 [loggers."reactive_graph_dynamic_graph_impl::dynamic_graph_schema_manager_impl"]
 level = "info"
 
@@ -131,6 +121,9 @@ level = "info"
 level = "error"
 
 ### Plugin Service Implementation
+
+[loggers."reactive_graph_plugin_service_impl"]
+level = "debug"
 
 [loggers."reactive_graph_plugin_service_impl::plugin_container_manager_impl"]
 level = "info"
@@ -143,6 +136,17 @@ level = "info"
 
 [loggers."reactive_graph_plugin_service_impl::plugin_repository_manager_impl"]
 level = "info"
+
+### Runtime Implementation
+
+[loggers."reactive_graph_runtime_impl::runtime_impl"]
+level = "debug"
+
+### Reactive Graph FRP
+
+[loggers."reactive_graph_frp"]
+level = "info"
+
 
 
 
