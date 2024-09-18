@@ -61,7 +61,7 @@ pub struct CliArguments {
     /// Timeout for graceful workers shutdown in seconds.
     /// After receiving a stop signal, workers have this much time to finish serving requests.
     /// Workers still alive after the timeout are force dropped.
-    /// By default shutdown timeout sets to 30 seconds.
+    /// By default, shutdown timeout sets to 30 seconds.
     #[arg(long, env = "REACTIVE_GRAPH_INSTANCE_SHUTDOWN_TIMEOUT")]
     pub(crate) shutdown_timeout: Option<u64>,
 
@@ -110,6 +110,49 @@ pub struct CliArguments {
     /// If true, generates command line documentation.
     #[arg(long, hide = true)]
     pub(crate) markdown_help: bool,
+
+    /// If true, the process will run as daemon.
+    #[cfg(target_os = "linux")]
+    #[arg(short = 'D', long, env = "REACTIVE_GRAPH_DAEMON")]
+    pub(crate) daemon: bool,
+
+    /// Sets the name of the daemon.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_NAME")]
+    pub(crate) daemon_name: Option<String>,
+
+    /// The location of the daemon PID file.
+    /// By default, no PID file will be created.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_PID")]
+    pub(crate) daemon_pid: Option<String>,
+
+    /// The working directory of the daemon.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_WORKING_DIRECTORY")]
+    pub(crate) daemon_working_directory: Option<String>,
+
+    /// Stdout will be written into this file.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_STDOUT")]
+    pub(crate) daemon_stdout: Option<String>,
+
+    /// Stderr will be written into this file.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_STDERR")]
+    pub(crate) daemon_stderr: Option<String>,
+
+    /// If set will drop privileges to the specified user.
+    /// Note: Both must be given: user and group.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_USER")]
+    pub(crate) daemon_user: Option<String>,
+
+    /// If set will drop privileges to the specified group.
+    /// Note: Both must be given: user and group.
+    #[cfg(target_os = "linux")]
+    #[arg(long, env = "REACTIVE_GRAPH_DAEMON_GROUP")]
+    pub(crate) daemon_group: Option<String>,
 }
 
 #[derive(Subcommand, Debug)]

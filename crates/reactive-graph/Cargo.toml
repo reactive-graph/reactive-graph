@@ -62,6 +62,9 @@ reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl", op
 reactive-graph-client = { version = "0.10.0", path = "../client", optional = true }
 reactive-graph-table-model = { version = "0.10.0", path = "../table-model", optional = true }
 
+[target.'cfg(target_os = "linux")'.dependencies]
+daemonize-me = { workspace = true }
+
 [features]
 default = ["server", "client", "json5", "toml"]
 client = ["reactive-graph-client", "reactive-graph-table-model"]
