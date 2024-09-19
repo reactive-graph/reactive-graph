@@ -31,7 +31,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@stable
-      - name: Install tarpaulin
+        with:
+          toolchain: stable
+      - name: Install cargo msrv
         uses: taiki-e/cache-cargo-install-action@v2
         with:
           tool: cargo-msrv
