@@ -33,11 +33,11 @@ jobs:
       - name: Install cargo msrv
         uses: taiki-e/cache-cargo-install-action@v2
         with:
-          tool: cargo-msrv
+          tool: cargo-msrv@0.16.0-beta.25
       - name: Version of cargo msrv
         run: cargo msrv --version
       - name: Run cargo msrv
-        run: cargo msrv --output-format json verify -- cargo check
+        run: cargo msrv --path crates/reactive-graph --output-format json verify
       - name: Run cargo msrv on verify failure
         if: ${{ failure() }}
-        run: cargo msrv --output-format json -- cargo check
+        run: cargo msrv find --output-format json
