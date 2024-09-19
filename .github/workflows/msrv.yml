@@ -18,9 +18,6 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-  SCCACHE_GHA_ENABLED: "true"
-  RUSTC_WRAPPER: "sccache"
-  AWS_LC_SYS_PREBUILT_NASM: 1
 
 jobs:
   build:
