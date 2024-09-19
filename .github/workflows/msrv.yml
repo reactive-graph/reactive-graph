@@ -1,0 +1,44 @@
+name: MSRV
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "crates/**/*.rs"
+      - "crates/**/Cargo.toml"
+      - "Cargo.toml"
+      - ".github/workflows/msrv.yml"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "crates/**/*.rs"
+      - "crates/**/Cargo.toml"
+      - "Cargo.toml"
+      - ".github/workflows/msrv.yml"
+
+env:
+  CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+  AWS_LC_SYS_PREBUILT_NASM: 1
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Install rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install tarpaulin
+        uses: taiki-e/cache-cargo-install-action@v2
+        with:
+          tool: cargo-msrv
+      - name: Version of cargo msrv
+        run: cargo msrv --version
+      - name: Run cargo msrv
+        run: cargo msrv --output-format json verify -- cargo check
+      - name: Run cargo msrv on verify failure
+        if: ${{ failure() }}
+        run: cargo msrv --output-format json -- cargo check
