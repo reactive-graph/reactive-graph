@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["inboundId","instanceId","namespace","outboundId","typeName"]};

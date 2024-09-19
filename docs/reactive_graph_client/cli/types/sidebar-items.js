@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["components","entities","extension","property_type","relations"]};

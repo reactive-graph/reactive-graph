@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["entity_instances"],"mod":["args","commands","output_format"]};
