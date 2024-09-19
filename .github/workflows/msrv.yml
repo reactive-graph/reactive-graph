@@ -30,9 +30,9 @@ jobs:
       - name: VCS Checkout
         uses: actions/checkout@v4
       - name: Install rust toolchain
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: stable
+          toolchain: nightly-2024-08-19
       - name: Install cargo msrv
         uses: taiki-e/cache-cargo-install-action@v2
         with:
