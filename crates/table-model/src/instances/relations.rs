@@ -1,10 +1,15 @@
+use crate::container::TableInlineFormat;
+use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
+use crate::instances::properties::display_property_instances_html_inline;
 use crate::instances::properties::display_property_instances_inline;
 use crate::instances::properties::PropertyInstance;
 use crate::instances::properties::PropertyInstances;
+use crate::types::component::display_component_type_ids_html_inline;
 use crate::types::component::display_component_type_ids_inline;
 use crate::types::component::ComponentTypeId;
 use crate::types::component::ComponentTypeIds;
+use crate::types::extension::display_extensions_html_inline;
 use crate::types::extension::display_extensions_inline;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
@@ -37,17 +42,50 @@ pub struct RelationInstance {
     /// Textual description of the entity instance.
     pub description: String,
 
-    /// The property types.
-    #[tabled(display_with("display_property_instances_inline"))]
-    pub properties: Vec<PropertyInstance>,
-
-    /// The property types.
-    #[tabled(display_with("display_component_type_ids_inline"))]
+    /// The components.
+    #[tabled(display_with("Self::display_component_type_ids", self))]
     pub components: Vec<ComponentTypeId>,
 
+    /// The property instances.
+    #[tabled(display_with("Self::display_property_instances", self))]
+    pub properties: Vec<PropertyInstance>,
+
     /// The extensions.
-    #[tabled(display_with("display_extensions_inline"))]
+    #[tabled(display_with("Self::display_extensions", self))]
     pub extensions: Vec<Extension>,
+
+    #[tabled(skip)]
+    inline_format: TableInlineFormat,
+}
+
+impl RelationInstance {
+    fn display_component_type_ids(&self) -> String {
+        match self.inline_format {
+            TableInlineFormat::Table => display_component_type_ids_inline(&self.components).to_string(),
+            TableInlineFormat::Html => display_component_type_ids_html_inline(&self.components),
+        }
+    }
+
+    fn display_property_instances(&self) -> String {
+        match self.inline_format {
+            TableInlineFormat::Table => display_property_instances_inline(&self.properties).to_string(),
+            TableInlineFormat::Html => display_property_instances_html_inline(&self.properties),
+        }
+    }
+
+    fn display_extensions(&self) -> String {
+        // println!("{:?}", &self.inline_format);
+        match self.inline_format {
+            TableInlineFormat::Table => display_extensions_inline(&self.extensions).to_string(),
+            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
+        }
+    }
+}
+
+impl TableInlineFormatSetter for RelationInstance {
+    fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {
+        self.inline_format = table_inline_format;
+    }
 }
 
 impl From<reactive_graph_graph::RelationInstance> for RelationInstance {
@@ -62,6 +100,7 @@ impl From<reactive_graph_graph::RelationInstance> for RelationInstance {
             properties: PropertyInstances::from(relation_instance.properties).0,
             components: ComponentTypeIds::from(relation_instance.components).0,
             extensions: Extensions::from(relation_instance.extensions).0,
+            inline_format: Default::default(),
         }
     }
 }

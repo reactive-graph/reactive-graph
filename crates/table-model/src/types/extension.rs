@@ -2,15 +2,18 @@ use std::fmt;
 use std::fmt::Formatter;
 use std::ops::Deref;
 
-// use reactive_graph_graph::NamespacedTypeContainer;
 use serde_json::Value;
+use table_to_html::HtmlTable;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
+use tabled::settings::Panel;
 use tabled::settings::Style;
 use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
 
+use crate::container::TableInlineFormat;
+use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
 use crate::types::json_value::pretty_json;
@@ -47,13 +50,13 @@ impl From<reactive_graph_graph::Extension> for ExtensionDefinition {
     }
 }
 
-// pub fn display_extensions(extensions: &Vec<Extension>) -> String {
-//     Table::new(extensions).to_string()
-// }
-
-pub fn display_extensions_inline(extensions: &Vec<Extension>) -> String {
+pub fn display_extensions_inline(extensions: &[Extension]) -> Table {
+    let extensions = extensions.to_vec();
     if extensions.is_empty() {
-        return String::from("No extensions");
+        return Table::new::<[_; 1], String>([String::from("No extensions")])
+            .with(Panel::header("Extensions"))
+            .with(modern_inline())
+            .to_owned();
     }
 
     Table::new(extensions)
@@ -62,7 +65,18 @@ pub fn display_extensions_inline(extensions: &Vec<Extension>) -> String {
         .with(Modify::new(Columns::new(1..2)).with(Width::increase(22)))
         .with(Modify::new(Columns::new(2..3)).with(Width::wrap(40)))
         .with(Modify::new(Columns::new(3..4)).with(Width::wrap(80)))
+        .to_owned()
+}
+
+pub fn display_extensions_html_inline(extensions: &Vec<Extension>) -> String {
+    let extensions = extensions.to_vec();
+    if extensions.is_empty() {
+        return String::new();
+    }
+    HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(&extensions)))
         .to_string()
+        .split_whitespace()
+        .collect()
 }
 
 pub struct ExtensionDefinitions(pub Vec<ExtensionDefinition>);
@@ -82,17 +96,29 @@ impl From<reactive_graph_graph::Extensions> for ExtensionDefinitions {
 #[derive(Clone, Debug, Tabled)]
 pub struct Extension {
     /// The namespace of the extension.
+    #[tabled(rename = "Namespace")]
     pub namespace: String,
 
     /// The name of the extension.
+    #[tabled(rename = "Type Name")]
     pub name: String,
 
     /// Textual description of the extension.
+    #[tabled(rename = "Description")]
     pub description: String,
 
     /// The extension as JSON representation.
-    #[tabled(display_with("pretty_json"))]
+    #[tabled(rename = "Extension", display_with("pretty_json"))]
     pub extension: Value,
+
+    #[tabled(skip)]
+    inline_format: TableInlineFormat,
+}
+
+impl TableInlineFormatSetter for Extension {
+    fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {
+        self.inline_format = table_inline_format;
+    }
 }
 
 impl From<Extension> for reactive_graph_graph::Extension {
@@ -113,6 +139,7 @@ impl From<reactive_graph_graph::Extension> for Extension {
             name: extension.type_name(),
             description: extension.description,
             extension: extension.extension,
+            inline_format: Default::default(),
         }
     }
 }

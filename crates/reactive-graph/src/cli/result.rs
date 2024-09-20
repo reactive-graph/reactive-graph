@@ -4,6 +4,7 @@ use crate::cli::error::SerializationError;
 use crate::cli::output_format::OutputFormatArgs;
 use reactive_graph_table_model::container::DefaultTableContainer;
 use reactive_graph_table_model::container::TableContainer;
+use reactive_graph_table_model::container::TableInlineFormatSetter;
 use reactive_graph_table_model::container::TableOptions;
 use serde::Serialize;
 use serde_json::Value;
@@ -48,7 +49,9 @@ impl From<toml::Value> for CommandResponse {
     }
 }
 
-impl<S: 'static, T: Clone + Tabled + From<S> + 'static, O: TableOptions + 'static> From<DefaultTableContainer<S, T, O>> for CommandResponse {
+impl<S: 'static, T: Clone + Tabled + From<S> + TableInlineFormatSetter + 'static, O: TableOptions + 'static> From<DefaultTableContainer<S, T, O>>
+    for CommandResponse
+{
     fn from(t: DefaultTableContainer<S, T, O>) -> Self {
         CommandResponse::Table(t.into_boxed())
     }
@@ -61,7 +64,7 @@ impl Display for CommandResponse {
             CommandResponse::Value(value) => write!(f, "{}", serde_json::to_string_pretty(&value).unwrap_or_default()),
             #[cfg(feature = "toml")]
             CommandResponse::TomlValue(value) => write!(f, "{}", toml::to_string_pretty(&value).unwrap_or_default()),
-            CommandResponse::Table(table) => write!(f, "{}", table.table()),
+            CommandResponse::Table(table) => write!(f, "{}", table),
         }
     }
 }
@@ -78,7 +81,7 @@ pub(crate) struct CommandResultBuilder<S: Serialize, T: Clone + Tabled + From<S>
     table_options: PhantomData<O>,
 }
 
-impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOptions + 'static> CommandResultBuilder<S, T, O> {
+impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + TableInlineFormatSetter + 'static, O: TableOptions + 'static> CommandResultBuilder<S, T, O> {
     pub(crate) fn single(single_object: S, output_format: Option<OutputFormatArgs>) -> Self {
         Self {
             object_or_collection: CommandResultBuilderContent::Single(single_object),
@@ -102,6 +105,14 @@ impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOpti
             OutputFormatArgs::Table => match self.object_or_collection {
                 CommandResultBuilderContent::Single(single_object) => Ok(DefaultTableContainer::<S, T, O>::from(single_object).into()),
                 CommandResultBuilderContent::Collection(collection) => Ok(DefaultTableContainer::<S, T, O>::from(collection).into()),
+            },
+            OutputFormatArgs::HtmlTable => match self.object_or_collection {
+                CommandResultBuilderContent::Single(single_object) => Ok(DefaultTableContainer::<S, T, O>::from(single_object).into_html_table().into()),
+                CommandResultBuilderContent::Collection(collection) => Ok(DefaultTableContainer::<S, T, O>::from(collection).into_html_table().into()),
+            },
+            OutputFormatArgs::MarkdownTable => match self.object_or_collection {
+                CommandResultBuilderContent::Single(single_object) => Ok(DefaultTableContainer::<S, T, O>::from(single_object).into_markdown_table().into()),
+                CommandResultBuilderContent::Collection(collection) => Ok(DefaultTableContainer::<S, T, O>::from(collection).into_markdown_table().into()),
             },
             OutputFormatArgs::Count => match self.object_or_collection {
                 CommandResultBuilderContent::Single(_) => Ok("1 result".into()),

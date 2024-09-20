@@ -1,5 +1,6 @@
 use crate::cli::result::CommandResult;
 use crate::cli::result::CommandResultBuilder;
+use reactive_graph_table_model::container::TableInlineFormatSetter;
 use reactive_graph_table_model::container::TableOptions;
 
 use serde::Serialize;
@@ -11,6 +12,10 @@ pub(crate) enum OutputFormatArgs {
     // The output is formatted as a table.
     #[default]
     Table,
+    // The output is formatted as a HTML table.
+    HtmlTable,
+    // The output is formatted as a Markdown table.
+    MarkdownTable,
     Count,
     // The output is returned as JSON.
     Json,
@@ -20,20 +25,20 @@ pub(crate) enum OutputFormatArgs {
     Toml,
 }
 
-pub(crate) struct OutputFormatWrapper<S: Serialize, T: Clone + Tabled + From<S>, O: TableOptions>(
+pub(crate) struct OutputFormatWrapper<S: Serialize, T: Clone + Tabled + From<S> + TableInlineFormatSetter, O: TableOptions>(
     pub Option<OutputFormatArgs>,
     PhantomData<S>,
     PhantomData<T>,
     PhantomData<O>,
 );
 
-impl<S: Serialize, T: Clone + Tabled + From<S>, O: TableOptions> From<Option<OutputFormatArgs>> for OutputFormatWrapper<S, T, O> {
+impl<S: Serialize, T: Clone + Tabled + From<S> + TableInlineFormatSetter, O: TableOptions> From<Option<OutputFormatArgs>> for OutputFormatWrapper<S, T, O> {
     fn from(value: Option<OutputFormatArgs>) -> Self {
         Self(value, PhantomData, PhantomData, PhantomData)
     }
 }
 
-impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + 'static, O: TableOptions + 'static> OutputFormatWrapper<S, T, O> {
+impl<S: Serialize + 'static, T: Clone + Tabled + From<S> + TableInlineFormatSetter + 'static, O: TableOptions + 'static> OutputFormatWrapper<S, T, O> {
     pub(crate) fn single(self, single_object: S) -> CommandResult {
         CommandResultBuilder::<S, T, O>::single(single_object, self.0).into_command_result()
     }

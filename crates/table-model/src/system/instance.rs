@@ -2,6 +2,8 @@ use tabled::Tabled;
 
 use crate::container::DefaultTableContainer;
 use crate::container::DefaultTableOptions;
+use crate::container::TableInlineFormat;
+use crate::container::TableInlineFormatSetter;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct InstanceInfo {
@@ -29,6 +31,15 @@ pub struct InstanceInfo {
     #[allow(unused)]
     #[tabled(skip)]
     pub last_seen: String,
+
+    #[tabled(skip)]
+    inline_format: TableInlineFormat,
+}
+
+impl TableInlineFormatSetter for InstanceInfo {
+    fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {
+        self.inline_format = table_inline_format;
+    }
 }
 
 impl From<reactive_graph_remotes_model::InstanceInfo> for InstanceInfo {
@@ -46,6 +57,7 @@ impl From<reactive_graph_remotes_model::InstanceInfo> for InstanceInfo {
             git_commit: instance_info.git_commit,
             build_date: instance_info.build_date,
             last_seen: instance_info.last_seen.to_rfc3339(),
+            inline_format: Default::default(),
         }
     }
 }
