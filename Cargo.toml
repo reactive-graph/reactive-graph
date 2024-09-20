@@ -158,6 +158,7 @@ strum = { version = "0.26", features = ["derive"] }
 strum_macros = "0.26"
 syn = { version = "2.0", features = ["full"] }
 tabled = "0.16"
+table_to_html = "0.5.0"
 thiserror = "1.0"
 tokio = { version = "1", features = ["time", "rt"] }
 tokio-stream = "0.1"

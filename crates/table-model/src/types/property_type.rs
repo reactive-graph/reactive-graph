@@ -1,57 +1,21 @@
+use crate::container::TableInlineFormat;
+use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
 use crate::types::data_type::DataType;
 use crate::types::extension::Extension;
-// use crate::types::extension::ExtensionDefinition;
-// use crate::types::extension::ExtensionDefinitions;
 use crate::types::extension::Extensions;
 use crate::types::mutability::Mutability;
 use crate::types::socket_type::SocketType;
 use std::fmt;
 use std::fmt::Formatter;
+use table_to_html::HtmlTable;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
-
-// pub struct PropertyTypeDefinition {
-//     pub data_type: DataType,
-//     pub description: String,
-//     pub extensions: Vec<ExtensionDefinition>,
-//     pub mutability: Mutability,
-//     pub name: String,
-//     pub socket_type: SocketType,
-// }
-//
-// impl From<reactive_graph_graph::PropertyType> for PropertyTypeDefinition {
-//     fn from(property_type: reactive_graph_graph::PropertyType) -> Self {
-//         let extensions: ExtensionDefinitions = property_type.extensions.into();
-//         PropertyTypeDefinition {
-//             name: property_type.name,
-//             description: property_type.description,
-//             data_type: property_type.data_type.into(),
-//             socket_type: property_type.socket_type.into(),
-//             mutability: property_type.mutability.into(),
-//             extensions: extensions.0,
-//         }
-//     }
-// }
-//
-// pub struct PropertyTypeDefinitions(pub Vec<PropertyTypeDefinition>);
-//
-// impl From<PropertyTypeDefinitions> for Vec<PropertyTypeDefinition> {
-//     fn from(property_types: PropertyTypeDefinitions) -> Self {
-//         property_types.0.into_iter().collect()
-//     }
-// }
-//
-// impl From<Vec<reactive_graph_graph::PropertyType>> for PropertyTypeDefinitions {
-//     fn from(property_types: Vec<reactive_graph_graph::PropertyType>) -> Self {
-//         PropertyTypeDefinitions(property_types.into_iter().map(|property_type| property_type.into()).collect())
-//     }
-// }
 
 #[derive(Clone, Debug, Tabled)]
 pub struct PropertyType {
@@ -75,6 +39,15 @@ pub struct PropertyType {
     #[tabled(display_with("display_extensions"))]
     #[tabled(skip)]
     pub extensions: Vec<Extension>,
+
+    #[tabled(skip)]
+    inline_format: TableInlineFormat,
+}
+
+impl TableInlineFormatSetter for PropertyType {
+    fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {
+        self.inline_format = table_inline_format;
+    }
 }
 
 impl From<PropertyType> for reactive_graph_graph::PropertyType {
@@ -99,26 +72,34 @@ impl From<reactive_graph_graph::PropertyType> for PropertyType {
             socket_type: property_type.socket_type.into(),
             mutability: property_type.mutability.into(),
             extensions: Extensions::from(property_type.extensions).into(),
+            inline_format: Default::default(),
         }
     }
 }
 
-// pub fn display_property_types(property_types: &Vec<PropertyType>) -> String {
-//     Table::new(property_types).to_string()
-// }
-
-pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> String {
+pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> Table {
+    let property_types = property_types.to_vec();
     if property_types.is_empty() {
-        return String::from("No properties");
+        return Table::new(["no properties"]);
     }
-
     Table::new(property_types)
         .with(modern_inline())
         .with(Modify::new(Columns::new(0..1)).with(Width::increase(35)))
         .with(Modify::new(Columns::new(1..2)).with(Width::increase(9)))
         .with(Modify::new(Columns::new(2..3)).with(Width::increase(11)))
         .with(Modify::new(Columns::new(3..4)).with(Width::increase(10)))
+        .to_owned()
+}
+
+pub fn display_property_types_html_inline(property_types: &Vec<PropertyType>) -> String {
+    let property_types = property_types.to_vec();
+    if property_types.is_empty() {
+        return String::new();
+    }
+    HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(&property_types)))
         .to_string()
+        .split_whitespace()
+        .collect()
 }
 
 #[derive(Clone, Debug)]
@@ -138,8 +119,6 @@ impl From<reactive_graph_graph::PropertyTypes> for PropertyTypes {
 
 impl fmt::Display for PropertyTypes {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        // let x = Table::new(&self.0).to_string();
-        // writeln!(f, "{}", Table::new(self.0.clone()).to_string())
         writeln!(f)
     }
 }

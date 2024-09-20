@@ -7,6 +7,8 @@ use tabled::Table;
 use tabled::Tabled;
 
 use crate::container::DefaultTableContainer;
+use crate::container::TableInlineFormat;
+use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 
 #[derive(Clone, Debug, Tabled)]
@@ -17,6 +19,9 @@ pub struct Plugin {
     pub version: String,
     pub plugin_api_version: String,
     pub rustc_version: String,
+
+    #[tabled(skip)]
+    inline_format: TableInlineFormat,
 }
 
 #[allow(unused)]
@@ -38,6 +43,12 @@ pub(crate) fn display_plugins(plugins: &Vec<Plugin>) -> String {
     Table::new(plugins).to_string()
 }
 
+impl TableInlineFormatSetter for Plugin {
+    fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {
+        self.inline_format = table_inline_format;
+    }
+}
+
 impl From<reactive_graph_plugin_model::Plugin> for Plugin {
     fn from(plugin: reactive_graph_plugin_model::Plugin) -> Self {
         Plugin {
@@ -47,6 +58,7 @@ impl From<reactive_graph_plugin_model::Plugin> for Plugin {
             version: plugin.version,
             plugin_api_version: plugin.plugin_api_version,
             rustc_version: plugin.rustc_version,
+            inline_format: Default::default(),
         }
     }
 }
