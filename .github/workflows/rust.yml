@@ -24,6 +24,7 @@ env:
 
 jobs:
   build:
+    name: Build in release mode
     strategy:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
@@ -42,5 +43,24 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.5
       - name: Build (Release Mode)
         run: cargo build --release --verbose
+  test:
+    name: Test Suite
+    strategy:
+      matrix:
+        toolchain: [ stable, nightly-2024-08-19 ]
+        target: [ x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Install rust toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          target: ${{ matrix.target }}
+      - name: Cache dependencies
+        uses: Swatinem/rust-cache@v2
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.5
       - name: Test (Release Mode)
-        run: cargo test --release --verbose
+        run: cargo test --release --verbose --target ${{ matrix.target }
