@@ -59,7 +59,7 @@ jobs:
       - name: Run cargo clippy
         run: cargo clippy
   build:
-    name: Build in release mode
+    name: Release Build
     needs: [ formatting, lint ]
     strategy:
       matrix:
@@ -80,7 +80,7 @@ jobs:
       - name: Build (Release Mode)
         run: cargo build --release --verbose
   test:
-    name: Test Suite
+    name: Tests
     needs: [ formatting, lint ]
     strategy:
       matrix:
@@ -95,6 +95,12 @@ jobs:
         with:
           toolchain: ${{ matrix.toolchain }}
           target: ${{ matrix.target }}
+      - name: Install musl-tools
+        uses: awalsh128/cache-apt-pkgs-action@v1
+        with:
+          packages: musl-tools # provides musl-gcc
+          version: 1.0
+        if: matrix.target == 'x86_64-unknown-linux-musl'
       - name: Cache dependencies
         uses: Swatinem/rust-cache@v2
       - name: Run sccache-cache
