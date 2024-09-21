@@ -56,6 +56,6 @@
 
 <span class="kw">pub fn </span>parse_component_ty(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;ComponentTypeId, Box&lt;<span class="kw">dyn </span>Error + Send + Sync + <span class="lifetime">'static</span>&gt;&gt; {
     <span class="kw">let </span>pos = s.find(<span class="string">"__"</span>).ok_or_else(|| <span class="macro">format!</span>(<span class="string">"no namespace delimiter `__` found in `{s}`"</span>))<span class="question-mark">?</span>;
-    <span class="prelude-val">Ok</span>(ComponentTypeId::new_from_type(s[..pos].to_string(), s[pos + <span class="number">2</span>..].to_string()).into())
+    <span class="prelude-val">Ok</span>(ComponentTypeId::new_from_type(s[..pos].to_string(), s[pos + <span class="number">2</span>..].to_string()))
 }
 </code></pre></div></section></main></body></html>

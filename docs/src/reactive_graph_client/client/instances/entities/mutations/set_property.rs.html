@@ -45,7 +45,6 @@
 <a href="#45" id="45">45</a>
 <a href="#46" id="46">46</a>
 <a href="#47" id="47">47</a>
-<a href="#48" id="48">48</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_graphql.graphql"#</span>, module = <span class="string">"crate::schema_graphql::schema"</span>)]
 </span><span class="kw">pub mod </span>mutations {
     <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::instances::entity_instance::EntityInstance;
@@ -85,13 +84,12 @@
 
     <span class="kw">pub fn </span>set_property(id: Uuid, name: String, value: Value) -&gt; Operation&lt;SetProperty, SetPropertyVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-
-        <span class="kw">let </span>vars = SetPropertyVariables::builder()
-            .id(id.into())
-            .properties(<span class="prelude-val">Some</span>(<span class="macro">vec!</span>[PropertyInstanceDefinition { name, value }]))
-            .build();
-
-        SetProperty::build(vars.into())
+        SetProperty::build(
+            SetPropertyVariables::builder()
+                .id(id.into())
+                .properties(<span class="prelude-val">Some</span>(<span class="macro">vec!</span>[PropertyInstanceDefinition { name, value }]))
+                .build(),
+        )
     }
 }
 </code></pre></div></section></main></body></html>

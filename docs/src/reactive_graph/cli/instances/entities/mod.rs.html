@@ -210,7 +210,7 @@
         EntityInstancesCommands::ListComponents(args) =&gt; <span class="kw">match </span>client.instances().entity_instances().get_entity_instance_by_id(args.clone()).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(entity_instance)) =&gt; {
                 <span class="kw">let </span>output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = entity_instances_args.output_format.into();
-                <span class="kw">let </span>component_tys = entity_instance.components.iter().map(|ty| ty.clone().into()).collect();
+                <span class="kw">let </span>component_tys = entity_instance.components.iter().map(|ty| ty.clone()).collect();
                 output_format_wrapper.collection(component_tys)
             }
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),

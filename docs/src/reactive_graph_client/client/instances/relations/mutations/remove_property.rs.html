@@ -85,12 +85,12 @@
 
     <span class="kw">pub fn </span>remove_properties(id: <span class="kw-2">&amp;</span>RelationInstanceId, property_names: Vec&lt;String&gt;) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new(id, property_names).into())
+        RemoveProperties::build(RemovePropertiesVariables::new(id, property_names))
     }
 
     <span class="kw">pub fn </span>remove_property&lt;S: Into&lt;String&gt;&gt;(id: <span class="kw-2">&amp;</span>RelationInstanceId, property_name: S) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new_from_property_name(id, property_name.into()).into())
+        RemoveProperties::build(RemovePropertiesVariables::new_from_property_name(id, property_name.into()))
     }
 
     <span class="kw">pub fn </span>remove_properties_by_property_types&lt;P: Into&lt;PropertyTypes&gt;&gt;(
@@ -98,14 +98,14 @@
         property_types: P,
     ) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new_from_property_types(id, property_types).into())
+        RemoveProperties::build(RemovePropertiesVariables::new_from_property_types(id, property_types))
     }
     <span class="kw">pub fn </span>remove_property_by_property_type&lt;P: Into&lt;PropertyType&gt;&gt;(
         id: <span class="kw-2">&amp;</span>RelationInstanceId,
         property_type: P,
     ) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new_from_property_type(id, property_type).into())
+        RemoveProperties::build(RemovePropertiesVariables::new_from_property_type(id, property_type))
     }
 }
 </code></pre></div></section></main></body></html>

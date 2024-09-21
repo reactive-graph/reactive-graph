@@ -41,8 +41,14 @@
 <a href="#41" id="41">41</a>
 <a href="#42" id="42">42</a>
 <a href="#43" id="43">43</a>
+<a href="#44" id="44">44</a>
+<a href="#45" id="45">45</a>
+<a href="#46" id="46">46</a>
+<a href="#47" id="47">47</a>
+<a href="#48" id="48">48</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResultBuilder;
+<span class="kw">use </span>reactive_graph_table_model::container::TableInlineFormatSetter;
 <span class="kw">use </span>reactive_graph_table_model::container::TableOptions;
 
 <span class="kw">use </span>serde::Serialize;
@@ -54,6 +60,10 @@
     <span class="comment">// The output is formatted as a table.
     </span><span class="attr">#[default]
     </span>Table,
+    <span class="comment">// The output is formatted as a HTML table.
+    </span>HtmlTable,
+    <span class="comment">// The output is formatted as a Markdown table.
+    </span>MarkdownTable,
     Count,
     <span class="comment">// The output is returned as JSON.
     </span>Json,
@@ -63,20 +73,20 @@
     </span>Toml,
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>OutputFormatWrapper&lt;S: Serialize, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt;(
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>OutputFormatWrapper&lt;S: Serialize, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt;(
     <span class="kw">pub </span><span class="prelude-ty">Option</span>&lt;OutputFormatArgs&gt;,
     PhantomData&lt;S&gt;,
     PhantomData&lt;T&gt;,
     PhantomData&lt;O&gt;,
 );
 
-<span class="kw">impl</span>&lt;S: Serialize, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; From&lt;<span class="prelude-ty">Option</span>&lt;OutputFormatArgs&gt;&gt; <span class="kw">for </span>OutputFormatWrapper&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S: Serialize, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; From&lt;<span class="prelude-ty">Option</span>&lt;OutputFormatArgs&gt;&gt; <span class="kw">for </span>OutputFormatWrapper&lt;S, T, O&gt; {
     <span class="kw">fn </span>from(value: <span class="prelude-ty">Option</span>&lt;OutputFormatArgs&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>(value, PhantomData, PhantomData, PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;S: Serialize + <span class="lifetime">'static</span>, T: Clone + Tabled + From&lt;S&gt; + <span class="lifetime">'static</span>, O: TableOptions + <span class="lifetime">'static</span>&gt; OutputFormatWrapper&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S: Serialize + <span class="lifetime">'static</span>, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter + <span class="lifetime">'static</span>, O: TableOptions + <span class="lifetime">'static</span>&gt; OutputFormatWrapper&lt;S, T, O&gt; {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>single(<span class="self">self</span>, single_object: S) -&gt; CommandResult {
         CommandResultBuilder::&lt;S, T, O&gt;::single(single_object, <span class="self">self</span>.<span class="number">0</span>).into_command_result()
     }

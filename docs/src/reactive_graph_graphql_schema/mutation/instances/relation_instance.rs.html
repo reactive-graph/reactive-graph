@@ -377,6 +377,7 @@
 <a href="#377" id="377">377</a>
 <a href="#378" id="378">378</a>
 <a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_graphql::<span class="kw-2">*</span>;
@@ -558,6 +559,7 @@
     }
 
     <span class="doccomment">/// Updates the properties of the given relation instance by its relation instance id.
+    </span><span class="attr">#[allow(clippy::too_many_arguments)]
     </span><span class="kw">async fn </span>update(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,

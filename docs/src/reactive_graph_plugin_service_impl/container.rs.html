@@ -588,6 +588,7 @@
 <a href="#588" id="588">588</a>
 <a href="#589" id="589">589</a>
 <a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fs;
 <span class="kw">use </span>std::path::PathBuf;
 <span class="kw">use </span>std::sync::Arc;
@@ -912,6 +913,7 @@
     }
 
     <span class="doccomment">/// Constructs the proxy for the plugin.
+    </span><span class="attr">#[allow(clippy::collapsible_match)]
     </span><span class="kw">pub fn </span>construct_proxy(<span class="kw-2">&amp;mut </span><span class="self">self</span>, plugin_context: Arc&lt;<span class="kw">dyn </span>PluginContext + Send + Sync&gt;) -&gt; PluginTransitionResult {
         <span class="kw">if </span><span class="self">self</span>.state != PluginState::Starting(PluginStartingState::ConstructingProxy)
             &amp;&amp; <span class="self">self</span>.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
@@ -980,14 +982,14 @@
                 <span class="self">self</span>.state = PluginState::Active;
                 <span class="macro">info!</span>(
                     <span class="string">"[ACTIVE] {} {}"</span>,
-                    <span class="self">self</span>.name().unwrap_or_default().replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>),
+                    <span class="self">self</span>.name().unwrap_or_default().replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>),
                     <span class="self">self</span>.version().unwrap_or_default()
                 );
             }
             <span class="prelude-val">Err</span>(e) =&gt; {
                 <span class="macro">error!</span>(
                     <span class="string">"[FAILED] {} {}: {}"</span>,
-                    <span class="self">self</span>.name().unwrap_or_default().replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>),
+                    <span class="self">self</span>.name().unwrap_or_default().replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>),
                     <span class="self">self</span>.version().unwrap_or_default(),
                     e
                 );

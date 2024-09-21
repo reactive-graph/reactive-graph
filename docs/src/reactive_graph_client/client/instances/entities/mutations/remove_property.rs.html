@@ -63,8 +63,6 @@
 <a href="#63" id="63">63</a>
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
-<a href="#66" id="66">66</a>
-<a href="#67" id="67">67</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_graphql.graphql"#</span>, module = <span class="string">"crate::schema_graphql::schema"</span>)]
 </span><span class="kw">pub mod </span>mutations {
     <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::instances::entity_instance::EntityInstance;
@@ -105,31 +103,29 @@
     <span class="kw">pub fn </span>remove_property&lt;S: Into&lt;String&gt;&gt;(id: Uuid, property_name: S) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
         <span class="kw">let </span>property_name = property_name.into();
-        <span class="kw">let </span>vars = RemovePropertiesVariables::builder().id(id.into()).properties(<span class="prelude-val">Some</span>(<span class="macro">vec!</span>[property_name])).build();
-        RemoveProperties::build(vars.into())
+        RemoveProperties::build(RemovePropertiesVariables::builder().id(id.into()).properties(<span class="prelude-val">Some</span>(<span class="macro">vec!</span>[property_name])).build())
     }
 
     <span class="kw">pub fn </span>remove_property_by_type&lt;P: Into&lt;PropertyType&gt;&gt;(id: Uuid, property_type: P) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
         <span class="kw">let </span>property_type = property_type.into();
-        <span class="kw">let </span>vars = RemovePropertiesVariables::builder()
-            .id(id.into())
-            .properties(<span class="prelude-val">Some</span>(<span class="macro">vec!</span>[property_type.name]))
-            .build();
-        RemoveProperties::build(vars.into())
+        RemoveProperties::build(
+            RemovePropertiesVariables::builder()
+                .id(id.into())
+                .properties(<span class="prelude-val">Some</span>(<span class="macro">vec!</span>[property_type.name]))
+                .build(),
+        )
     }
 
     <span class="kw">pub fn </span>remove_properties(id: Uuid, properties: Vec&lt;String&gt;) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        <span class="kw">let </span>vars = RemovePropertiesVariables::builder().id(id.into()).properties(<span class="prelude-val">Some</span>(properties)).build();
-        RemoveProperties::build(vars.into())
+        RemoveProperties::build(RemovePropertiesVariables::builder().id(id.into()).properties(<span class="prelude-val">Some</span>(properties)).build())
     }
 
     <span class="kw">pub fn </span>remove_properties_by_type(id: Uuid, properties: <span class="kw-2">&amp;</span>PropertyTypes) -&gt; Operation&lt;RemoveProperties, RemovePropertiesVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
         <span class="kw">let </span>properties = properties.iter().map(|property_type| property_type.name.clone()).collect();
-        <span class="kw">let </span>vars = RemovePropertiesVariables::builder().id(id.into()).properties(<span class="prelude-val">Some</span>(properties)).build();
-        RemoveProperties::build(vars.into())
+        RemoveProperties::build(RemovePropertiesVariables::builder().id(id.into()).properties(<span class="prelude-val">Some</span>(properties)).build())
     }
 }
 </code></pre></div></section></main></body></html>

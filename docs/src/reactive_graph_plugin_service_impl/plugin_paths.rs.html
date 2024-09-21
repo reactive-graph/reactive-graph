@@ -105,7 +105,7 @@
 
 <span class="comment">// Use this workaround until #![feature(path_file_prefix)] is stabilized
 </span><span class="kw">pub fn </span>file_prefix(path: <span class="kw-2">&amp;</span>Path) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>OsStr&gt; {
-    path.file_name().map(split_file_at_dot).and_then(|(before, _after)| <span class="prelude-val">Some</span>(before))
+    path.file_name().map(split_file_at_dot).map(|(before, _after)| before)
 }
 
 <span class="comment">// Use this workaround until #![feature(path_file_prefix)] is stabilized

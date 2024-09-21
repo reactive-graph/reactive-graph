@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["display_extensions_inline"],"struct":["Extension","ExtensionDefinition","ExtensionDefinitions","ExtensionTypeId","Extensions","ExtensionsTableOptions"]};
+window.SIDEBAR_ITEMS = {"fn":["display_extensions_html_inline","display_extensions_inline","display_extensions_inline_str"],"struct":["Extension","ExtensionDefinition","ExtensionDefinitions","ExtensionTypeId","Extensions","ExtensionsTableOptions"]};

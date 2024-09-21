@@ -64,8 +64,6 @@
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
 <a href="#66" id="66">66</a>
-<a href="#67" id="67">67</a>
-<a href="#68" id="68">68</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cli::instances::properties::args::parse_property;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::parse_component_ty;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::entities::args::type_id::EntityTypeIdOptions;
@@ -106,7 +104,7 @@
     <span class="kw">pub fn </span>properties(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; PropertyInstances {
         <span class="kw">match </span><span class="kw-2">&amp;</span><span class="self">self</span>.properties {
             <span class="prelude-val">None </span>=&gt; PropertyInstances::new(),
-            <span class="prelude-val">Some</span>(properties) =&gt; properties.into_iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
+            <span class="prelude-val">Some</span>(properties) =&gt; properties.iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
         }
     }
 
@@ -122,15 +120,13 @@
     <span class="kw">fn </span>from(search: <span class="kw-2">&amp;</span>SearchEntityInstancesArgs) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>ty: <span class="prelude-ty">Option</span>&lt;reactive_graph_graph::EntityTypeId&gt; = search.ty.clone().into();
         <span class="kw">let </span>properties: PropertyInstanceDefinitions = search.properties().into();
-        <span class="kw">let </span>properties = <span class="prelude-val">Some</span>(properties.<span class="number">0</span>);
-        <span class="kw">let </span>components: ComponentTypeIds = search.components().into();
-        <span class="kw">let </span>components = <span class="prelude-val">Some</span>(components.<span class="number">0</span>);
+        <span class="kw">let </span>components: ComponentTypeIds = search.components();
         SearchEntityInstancesVariables::builder()
             .ty(ty.map(From::from))
             .id(search.id.map(From::from))
             .label(search.label.clone())
-            .properties(properties)
-            .components(components)
+            .properties(<span class="prelude-val">Some</span>(properties.<span class="number">0</span>))
+            .components(<span class="prelude-val">Some</span>(components.<span class="number">0</span>))
             .build()
     }
 }

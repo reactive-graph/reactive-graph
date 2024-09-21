@@ -73,7 +73,7 @@
         properties: PropertyInstances,
     ) -&gt; Operation&lt;CreateRelationInstance, CreateRelationInstanceVariables&gt; {
         <span class="kw">use </span>cynic::MutationBuilder;
-        CreateRelationInstance::build(CreateRelationInstanceVariables::new(id, description, properties).into())
+        CreateRelationInstance::build(CreateRelationInstanceVariables::new(id, description, properties))
     }
 }
 </code></pre></div></section></main></body></html>

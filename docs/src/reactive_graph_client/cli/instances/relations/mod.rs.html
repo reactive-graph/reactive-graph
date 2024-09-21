@@ -216,7 +216,7 @@
         RelationInstancesCommands::ListComponents(args) =&gt; <span class="kw">match </span>client.instances().relation_instances().get_by_id(<span class="kw-2">&amp;</span>args).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(relation_instance)) =&gt; {
                 <span class="kw">let </span>output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = relation_instances_args.output_format.into();
-                <span class="kw">let </span>component_tys = relation_instance.components.iter().map(|ty| ty.clone().into()).collect();
+                <span class="kw">let </span>component_tys = relation_instance.components.iter().map(|ty| ty.clone()).collect();
                 output_format_wrapper.collection(component_tys)
             }
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),

@@ -161,7 +161,7 @@
         <span class="kw">let </span>plugin_container_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>PluginContainerManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         plugin_container_manager
             .name(<span class="kw-2">&amp;</span><span class="self">self</span>.id)
-            .map(|name| name.replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>))
+            .map(|name| name.replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>))
             .ok_or_else(|| Error::new(<span class="string">"Failed to resolve plugin short name"</span>))
     }
 

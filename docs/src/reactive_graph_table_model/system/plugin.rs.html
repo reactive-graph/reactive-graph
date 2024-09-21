@@ -64,6 +64,18 @@
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
 <a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>tabled::settings::object::Rows;
 <span class="kw">use </span>tabled::settings::peaker::PriorityMax;
 <span class="kw">use </span>tabled::settings::Modify;
@@ -73,6 +85,8 @@
 <span class="kw">use </span>tabled::Tabled;
 
 <span class="kw">use </span><span class="kw">crate</span>::container::DefaultTableContainer;
+<span class="kw">use </span><span class="kw">crate</span>::container::TableInlineFormat;
+<span class="kw">use </span><span class="kw">crate</span>::container::TableInlineFormatSetter;
 <span class="kw">use </span><span class="kw">crate</span>::container::TableOptions;
 
 <span class="attr">#[derive(Clone, Debug, Tabled)]
@@ -83,6 +97,9 @@
     <span class="kw">pub </span>version: String,
     <span class="kw">pub </span>plugin_api_version: String,
     <span class="kw">pub </span>rustc_version: String,
+
+    <span class="attr">#[tabled(skip)]
+    </span>inline_format: TableInlineFormat,
 }
 
 <span class="attr">#[allow(unused)]
@@ -104,6 +121,12 @@
     Table::new(plugins).to_string()
 }
 
+<span class="kw">impl </span>TableInlineFormatSetter <span class="kw">for </span>Plugin {
+    <span class="kw">fn </span>set_table_inline_format(<span class="kw-2">&amp;mut </span><span class="self">self</span>, table_inline_format: TableInlineFormat) {
+        <span class="self">self</span>.inline_format = table_inline_format;
+    }
+}
+
 <span class="kw">impl </span>From&lt;reactive_graph_plugin_model::Plugin&gt; <span class="kw">for </span>Plugin {
     <span class="kw">fn </span>from(plugin: reactive_graph_plugin_model::Plugin) -&gt; <span class="self">Self </span>{
         Plugin {
@@ -113,6 +136,7 @@
             version: plugin.version,
             plugin_api_version: plugin.plugin_api_version,
             rustc_version: plugin.rustc_version,
+            inline_format: Default::default(),
         }
     }
 }

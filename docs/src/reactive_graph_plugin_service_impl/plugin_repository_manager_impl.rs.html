@@ -378,12 +378,6 @@
 <a href="#378" id="378">378</a>
 <a href="#379" id="379">379</a>
 <a href="#380" id="380">380</a>
-<a href="#381" id="381">381</a>
-<a href="#382" id="382">382</a>
-<a href="#383" id="383">383</a>
-<a href="#384" id="384">384</a>
-<a href="#385" id="385">385</a>
-<a href="#386" id="386">386</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>std::env::consts::DLL_EXTENSION;
 <span class="kw">use </span>std::fs;
@@ -519,7 +513,7 @@
                             <span class="kw">let </span><span class="prelude-val">Some</span>(id) = plugin_container_manager.get_id(<span class="kw-2">&amp;</span>stem) <span class="kw">else </span>{
                                 <span class="kw">continue</span>;
                             };
-                            <span class="kw">let </span>name = plugin_container_manager.name(<span class="kw-2">&amp;</span>id).unwrap_or_default().replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>);
+                            <span class="kw">let </span>name = plugin_container_manager.name(<span class="kw-2">&amp;</span>id).unwrap_or_default().replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>);
                             <span class="kw">let </span>version = plugin_container_manager.version(<span class="kw-2">&amp;</span>id).unwrap_or(String::from(<span class="string">"?.?.?"</span>));
                             <span class="comment">// Warn about disabled plugins
                             </span><span class="kw">if let </span><span class="prelude-val">Some</span>(state) = plugin_container_manager.get_plugin_state(<span class="kw-2">&amp;</span>id) {
@@ -529,25 +523,19 @@
                             }
                             <span class="comment">// Warn about unsatisfied dependencies
                             </span><span class="kw">for </span>d <span class="kw">in </span>plugin_container_manager.get_unsatisfied_dependencies(<span class="kw-2">&amp;</span>id) {
-                                <span class="macro">trace!</span>(
-                                    <span class="string">"Plugin {} {} has unsatisfied dependency: {}:{}"</span>,
-                                    id,
-                                    <span class="kw-2">&amp;</span>name,
-                                    d.name.replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>),
-                                    d.version
-                                );
+                                <span class="macro">trace!</span>(<span class="string">"Plugin {} {} has unsatisfied dependency: {}:{}"</span>, id, <span class="kw-2">&amp;</span>name, d.name.replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>), d.version);
                                 <span class="kw">match </span>plugin_container_manager.get_plugin_by_dependency(<span class="kw-2">&amp;</span>d) {
                                     <span class="prelude-val">Some</span>(dependency_id) =&gt; {
                                         <span class="kw">let </span>dependency_name = plugin_container_manager
                                             .name(<span class="kw-2">&amp;</span>dependency_id)
                                             .unwrap_or_default()
-                                            .replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>);
+                                            .replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>);
                                         <span class="kw">let </span>dependency_version = plugin_container_manager.version(<span class="kw-2">&amp;</span>dependency_id).unwrap_or(String::from(<span class="string">"?.?.?"</span>));
                                         <span class="kw">let </span>dependency_state = plugin_container_manager.get_plugin_state(<span class="kw-2">&amp;</span>dependency_id).unwrap_or(PluginState::Uninstalled);
                                         <span class="macro">warn!</span>(
                                             <span class="string">"Plugin {} has unsatisfied dependency: {}:{} - which exists ({} {}) but has state {:?}"</span>,
                                             <span class="kw-2">&amp;</span>name,
-                                            d.name.replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>),
+                                            d.name.replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>),
                                             d.version,
                                             dependency_name,
                                             dependency_version,
@@ -558,7 +546,7 @@
                                         <span class="macro">warn!</span>(
                                             <span class="string">"Plugin {} has unsatisfied dependency: {}:{} - which doesn't exist"</span>,
                                             <span class="kw-2">&amp;</span>name,
-                                            d.name.replace(<span class="kw-2">&amp;</span>PLUGIN_NAME_PREFIX, <span class="string">""</span>),
+                                            d.name.replace(PLUGIN_NAME_PREFIX, <span class="string">""</span>),
                                             d.version
                                         );
                                     }

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["DefaultTableContainer","DefaultTableOptions"],"trait":["TableContainer","TableOptions"]};
+window.SIDEBAR_ITEMS = {"enum":["TableInlineFormat","TableOutputFormat"],"struct":["DefaultTableContainer","DefaultTableOptions"],"trait":["TableContainer","TableInlineFormatSetter","TableOptions"]};

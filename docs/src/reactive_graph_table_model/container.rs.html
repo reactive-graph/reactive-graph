@@ -70,20 +70,109 @@
 <a href="#70" id="70">70</a>
 <a href="#71" id="71">71</a>
 <a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::marker::PhantomData;
 <span class="kw">use </span>std::vec::IntoIter;
+<span class="kw">use </span>table_to_html::HtmlTable;
 <span class="kw">use </span>tabled::settings::Style;
 <span class="kw">use </span>tabled::Table;
 <span class="kw">use </span>tabled::Tabled;
 
-<span class="kw">pub trait </span>TableContainer {
+<span class="kw">pub trait </span>TableContainer: Display {
     <span class="kw">fn </span>table(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Table;
+
+    <span class="kw">fn </span>markdown_table(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Table;
+
+    <span class="kw">fn </span>html_table(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HtmlTable;
 }
 
 <span class="kw">pub trait </span>TableOptions: Sized {
     <span class="kw">fn </span>options(table: <span class="kw-2">&amp;mut </span>Table) -&gt; <span class="kw-2">&amp;mut </span>Table;
+}
+
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub enum </span>TableOutputFormat {
+    Table,
+    MarkdownTable,
+    HtmlTable,
+}
+
+<span class="attr">#[derive(Clone, Debug)]
+</span><span class="kw">pub enum </span>TableInlineFormat {
+    Table,
+    Html,
+}
+
+<span class="kw">pub trait </span>TableInlineFormatSetter {
+    <span class="kw">fn </span>set_table_inline_format(<span class="kw-2">&amp;mut </span><span class="self">self</span>, table_inline_format: TableInlineFormat);
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span>TableInlineFormat {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::Table
+    }
 }
 
 <span class="kw">pub struct </span>DefaultTableOptions {}
@@ -94,52 +183,85 @@
     }
 }
 
-<span class="kw">pub struct </span>DefaultTableContainer&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt;(<span class="kw">pub</span>(<span class="kw">crate</span>) Vec&lt;T&gt;, PhantomData&lt;S&gt;, PhantomData&lt;O&gt;);
+<span class="kw">pub struct </span>DefaultTableContainer&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt;(
+    <span class="kw">pub</span>(<span class="kw">crate</span>) Vec&lt;T&gt;,
+    TableOutputFormat,
+    PhantomData&lt;S&gt;,
+    PhantomData&lt;O&gt;,
+);
 
-<span class="kw">impl</span>&lt;S: <span class="lifetime">'static</span>, T: Clone + Tabled + From&lt;S&gt; + <span class="lifetime">'static</span>, O: TableOptions + <span class="lifetime">'static</span>&gt; DefaultTableContainer&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S: <span class="lifetime">'static</span>, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter + <span class="lifetime">'static</span>, O: TableOptions + <span class="lifetime">'static</span>&gt; DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">pub fn </span>into_boxed(<span class="self">self</span>) -&gt; Box&lt;DefaultTableContainer&lt;S, T, O&gt;&gt; {
         Box::new(<span class="self">self</span>)
     }
+
+    <span class="kw">pub fn </span>into_html_table(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.iter_mut().for_each(|item| item.set_table_inline_format(TableInlineFormat::Html));
+        <span class="self">self</span>.<span class="number">1 </span>= TableOutputFormat::HtmlTable;
+        <span class="self">self
+    </span>}
+
+    <span class="kw">pub fn </span>into_markdown_table(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
+        <span class="self">self</span>.<span class="number">0</span>.iter_mut().for_each(|item| item.set_table_inline_format(TableInlineFormat::Html));
+        <span class="self">self</span>.<span class="number">1 </span>= TableOutputFormat::MarkdownTable;
+        <span class="self">self
+    </span>}
 }
 
-<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; TableContainer <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; TableContainer <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">fn </span>table(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Table {
         <span class="kw">let </span><span class="kw-2">mut </span>table = Table::new(<span class="self">self</span>.<span class="number">0</span>.to_vec().iter());
         O::options(<span class="kw-2">&amp;mut </span>table).to_owned()
     }
+
+    <span class="kw">fn </span>markdown_table(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Table {
+        Table::new(<span class="self">self</span>.<span class="number">0</span>.to_vec().iter()).with(Style::markdown()).to_owned()
+    }
+
+    <span class="kw">fn </span>html_table(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; HtmlTable {
+        <span class="kw">let </span>items = <span class="self">self</span>.<span class="number">0</span>.to_vec();
+        HtmlTable::with_header(Vec::&lt;Vec&lt;String&gt;&gt;::from(Table::builder(<span class="kw-2">&amp;</span>items)))
+    }
 }
 
-<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; From&lt;Vec&lt;S&gt;&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; From&lt;Vec&lt;S&gt;&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">fn </span>from(entries: Vec&lt;S&gt;) -&gt; <span class="self">Self </span>{
-        DefaultTableContainer::&lt;S, T, O&gt;(entries.into_iter().map(From::from).collect(), PhantomData, PhantomData)
+        DefaultTableContainer::&lt;S, T, O&gt;(entries.into_iter().map(From::from).collect(), TableOutputFormat::Table, PhantomData, PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; From&lt;S&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; From&lt;S&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">fn </span>from(s: S) -&gt; <span class="self">Self </span>{
-        DefaultTableContainer::&lt;S, T, O&gt;(<span class="macro">vec!</span>[s.into()], PhantomData, PhantomData)
+        DefaultTableContainer::&lt;S, T, O&gt;(<span class="macro">vec!</span>[s.into()], TableOutputFormat::Table, PhantomData, PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; From&lt;IntoIter&lt;S&gt;&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; From&lt;IntoIter&lt;S&gt;&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">fn </span>from(iter: IntoIter&lt;S&gt;) -&gt; <span class="self">Self </span>{
-        DefaultTableContainer::&lt;S, T, O&gt;(iter.map(From::from).collect(), PhantomData, PhantomData)
+        DefaultTableContainer::&lt;S, T, O&gt;(iter.map(From::from).collect(), TableOutputFormat::Table, PhantomData, PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; FromIterator&lt;S&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt;
-<span class="kw">where
-    </span>Vec&lt;T&gt;: FromIterator&lt;S&gt;,
-{
+<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; FromIterator&lt;S&gt; <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">fn </span>from_iter&lt;TT: IntoIterator&lt;Item = S&gt;&gt;(iter: TT) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>entries = iter.into_iter().map(From::from).collect();
-        DefaultTableContainer::&lt;S, T, O&gt;(entries, PhantomData, PhantomData)
+        DefaultTableContainer::&lt;S, T, O&gt;(entries, TableOutputFormat::Table, PhantomData, PhantomData)
     }
 }
 
-<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt;, O: TableOptions&gt; Display <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
+<span class="kw">impl</span>&lt;S, T: Clone + Tabled + From&lt;S&gt; + TableInlineFormatSetter, O: TableOptions&gt; Display <span class="kw">for </span>DefaultTableContainer&lt;S, T, O&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="self">self</span>.table())
+        <span class="kw">match </span><span class="self">self</span>.<span class="number">1 </span>{
+            TableOutputFormat::Table =&gt; {
+                <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="self">self</span>.table())
+            }
+            TableOutputFormat::MarkdownTable =&gt; {
+                <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="self">self</span>.markdown_table())
+            }
+            TableOutputFormat::HtmlTable =&gt; {
+                <span class="macro">write!</span>(f, <span class="string">"{}"</span>, <span class="self">self</span>.html_table().to_string().trim())
+            }
+        }
     }
 }
 </code></pre></div></section></main></body></html>
