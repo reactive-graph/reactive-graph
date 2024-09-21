@@ -26,5 +26,5 @@ pub(crate) struct ComponentsArgs {
 
 pub fn parse_component_ty(s: &str) -> Result<ComponentTypeId, Box<dyn Error + Send + Sync + 'static>> {
     let pos = s.find("__").ok_or_else(|| format!("no namespace delimiter `__` found in `{s}`"))?;
-    Ok(ComponentTypeId::new_from_type(s[..pos].to_string(), s[pos + 2..].to_string()).into())
+    Ok(ComponentTypeId::new_from_type(s[..pos].to_string(), s[pos + 2..].to_string()))
 }

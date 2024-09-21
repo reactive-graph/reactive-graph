@@ -41,5 +41,5 @@ pub fn parse_property(s: &str) -> Result<(String, Value), Box<dyn Error + Send +
 }
 
 pub fn parse_json(s: &str) -> Result<Value, Box<dyn Error + Send + Sync + 'static>> {
-    Ok(Value::from_str(&s)?)
+    Ok(Value::from_str(s)?)
 }

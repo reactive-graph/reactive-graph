@@ -34,6 +34,6 @@ pub mod mutations {
         properties: PropertyInstances,
     ) -> Operation<CreateRelationInstance, CreateRelationInstanceVariables> {
         use cynic::MutationBuilder;
-        CreateRelationInstance::build(CreateRelationInstanceVariables::new(id, description, properties).into())
+        CreateRelationInstance::build(CreateRelationInstanceVariables::new(id, description, properties))
     }
 }

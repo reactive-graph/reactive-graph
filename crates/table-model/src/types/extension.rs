@@ -68,7 +68,7 @@ pub fn display_extensions_inline(extensions: &[Extension]) -> Table {
         .to_owned()
 }
 
-pub fn display_extensions_html_inline(extensions: &Vec<Extension>) -> String {
+pub fn display_extensions_html_inline(extensions: &[Extension]) -> String {
     let extensions = extensions.to_vec();
     if extensions.is_empty() {
         return String::new();

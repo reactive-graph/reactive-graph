@@ -140,19 +140,13 @@ async fn tokio_main(cli_args: CliArguments) {
 
 #[cfg(target_os = "linux")]
 fn post_fork_parent(_parent_pid: i32, _child_pid: i32) -> ! {
-    // println!("Exiting parent process. Parent PID: {}, Child PID {}", parent_pid, child_pid);
     exit(0);
 }
 
 #[cfg(target_os = "linux")]
 fn post_fork_child(_parent_pid: i32, _child_pid: i32) {
-    // println!("Forked into child process. Parent PID: {}, Child PID {}", parent_pid, child_pid);
     // Child hook must return
-    return;
 }
 
 #[cfg(target_os = "linux")]
-fn after_init(_: Option<&dyn Any>) {
-    // println!("Daemon has been initialized");
-    return;
-}
+fn after_init(_: Option<&dyn Any>) {}

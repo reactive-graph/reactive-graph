@@ -30,12 +30,12 @@ pub mod mutations {
 
     pub fn remove_properties(id: &RelationInstanceId, property_names: Vec<String>) -> Operation<RemoveProperties, RemovePropertiesVariables> {
         use cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new(id, property_names).into())
+        RemoveProperties::build(RemovePropertiesVariables::new(id, property_names))
     }
 
     pub fn remove_property<S: Into<String>>(id: &RelationInstanceId, property_name: S) -> Operation<RemoveProperties, RemovePropertiesVariables> {
         use cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new_from_property_name(id, property_name.into()).into())
+        RemoveProperties::build(RemovePropertiesVariables::new_from_property_name(id, property_name.into()))
     }
 
     pub fn remove_properties_by_property_types<P: Into<PropertyTypes>>(
@@ -43,13 +43,13 @@ pub mod mutations {
         property_types: P,
     ) -> Operation<RemoveProperties, RemovePropertiesVariables> {
         use cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new_from_property_types(id, property_types).into())
+        RemoveProperties::build(RemovePropertiesVariables::new_from_property_types(id, property_types))
     }
     pub fn remove_property_by_property_type<P: Into<PropertyType>>(
         id: &RelationInstanceId,
         property_type: P,
     ) -> Operation<RemoveProperties, RemovePropertiesVariables> {
         use cynic::MutationBuilder;
-        RemoveProperties::build(RemovePropertiesVariables::new_from_property_type(id, property_type).into())
+        RemoveProperties::build(RemovePropertiesVariables::new_from_property_type(id, property_type))
     }
 }

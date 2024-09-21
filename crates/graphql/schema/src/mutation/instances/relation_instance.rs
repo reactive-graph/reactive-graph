@@ -179,6 +179,7 @@ impl MutationRelationInstances {
     }
 
     /// Updates the properties of the given relation instance by its relation instance id.
+    #[allow(clippy::too_many_arguments)]
     async fn update(
         &self,
         context: &Context<'_>,

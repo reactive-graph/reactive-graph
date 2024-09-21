@@ -37,12 +37,11 @@ pub mod mutations {
 
     pub fn set_property(id: Uuid, name: String, value: Value) -> Operation<SetProperty, SetPropertyVariables> {
         use cynic::MutationBuilder;
-
-        let vars = SetPropertyVariables::builder()
-            .id(id.into())
-            .properties(Some(vec![PropertyInstanceDefinition { name, value }]))
-            .build();
-
-        SetProperty::build(vars.into())
+        SetProperty::build(
+            SetPropertyVariables::builder()
+                .id(id.into())
+                .properties(Some(vec![PropertyInstanceDefinition { name, value }]))
+                .build(),
+        )
     }
 }

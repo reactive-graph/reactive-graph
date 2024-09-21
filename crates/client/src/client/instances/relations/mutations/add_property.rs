@@ -30,13 +30,11 @@ pub mod mutations {
 
     pub fn add_property(id: &RelationInstanceId, property_type: PropertyType) -> Operation<AddProperty, AddPropertiesVariables> {
         use cynic::MutationBuilder;
-        let vars = AddPropertiesVariables::new(id, PropertyTypes::new().property(property_type));
-        AddProperty::build(vars.into())
+        AddProperty::build(AddPropertiesVariables::new(id, PropertyTypes::new().property(property_type)))
     }
 
     pub fn add_properties(id: &RelationInstanceId, property_types: PropertyTypes) -> Operation<AddProperty, AddPropertiesVariables> {
         use cynic::MutationBuilder;
-        let vars = AddPropertiesVariables::new(id, property_types);
-        AddProperty::build(vars.into())
+        AddProperty::build(AddPropertiesVariables::new(id, property_types))
     }
 }

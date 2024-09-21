@@ -28,9 +28,9 @@ impl From<PropertyTypeDefinitionArgs> for reactive_graph_graph::PropertyType {
     fn from(property_type: PropertyTypeDefinitionArgs) -> Self {
         reactive_graph_graph::PropertyType::builder()
             .name(property_type.property_name)
-            .data_type(property_type.data_type.into())
-            .socket_type(property_type.socket_type.into())
-            .mutability(property_type.mutability.into())
+            .data_type(property_type.data_type)
+            .socket_type(property_type.socket_type)
+            .mutability(property_type.mutability)
             .description(property_type.description.unwrap_or_default())
             .build()
     }

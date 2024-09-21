@@ -133,7 +133,7 @@ impl PluginRepositoryManagerImpl {
                             let Some(id) = plugin_container_manager.get_id(&stem) else {
                                 continue;
                             };
-                            let name = plugin_container_manager.name(&id).unwrap_or_default().replace(&PLUGIN_NAME_PREFIX, "");
+                            let name = plugin_container_manager.name(&id).unwrap_or_default().replace(PLUGIN_NAME_PREFIX, "");
                             let version = plugin_container_manager.version(&id).unwrap_or(String::from("?.?.?"));
                             // Warn about disabled plugins
                             if let Some(state) = plugin_container_manager.get_plugin_state(&id) {
@@ -143,25 +143,19 @@ impl PluginRepositoryManagerImpl {
                             }
                             // Warn about unsatisfied dependencies
                             for d in plugin_container_manager.get_unsatisfied_dependencies(&id) {
-                                trace!(
-                                    "Plugin {} {} has unsatisfied dependency: {}:{}",
-                                    id,
-                                    &name,
-                                    d.name.replace(&PLUGIN_NAME_PREFIX, ""),
-                                    d.version
-                                );
+                                trace!("Plugin {} {} has unsatisfied dependency: {}:{}", id, &name, d.name.replace(PLUGIN_NAME_PREFIX, ""), d.version);
                                 match plugin_container_manager.get_plugin_by_dependency(&d) {
                                     Some(dependency_id) => {
                                         let dependency_name = plugin_container_manager
                                             .name(&dependency_id)
                                             .unwrap_or_default()
-                                            .replace(&PLUGIN_NAME_PREFIX, "");
+                                            .replace(PLUGIN_NAME_PREFIX, "");
                                         let dependency_version = plugin_container_manager.version(&dependency_id).unwrap_or(String::from("?.?.?"));
                                         let dependency_state = plugin_container_manager.get_plugin_state(&dependency_id).unwrap_or(PluginState::Uninstalled);
                                         warn!(
                                             "Plugin {} has unsatisfied dependency: {}:{} - which exists ({} {}) but has state {:?}",
                                             &name,
-                                            d.name.replace(&PLUGIN_NAME_PREFIX, ""),
+                                            d.name.replace(PLUGIN_NAME_PREFIX, ""),
                                             d.version,
                                             dependency_name,
                                             dependency_version,
@@ -172,7 +166,7 @@ impl PluginRepositoryManagerImpl {
                                         warn!(
                                             "Plugin {} has unsatisfied dependency: {}:{} - which doesn't exist",
                                             &name,
-                                            d.name.replace(&PLUGIN_NAME_PREFIX, ""),
+                                            d.name.replace(PLUGIN_NAME_PREFIX, ""),
                                             d.version
                                         );
                                     }

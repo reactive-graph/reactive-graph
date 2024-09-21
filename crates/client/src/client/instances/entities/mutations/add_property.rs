@@ -40,14 +40,12 @@ pub mod mutations {
     pub fn add_property(id: Uuid, property: PropertyType) -> Operation<AddProperty, AddPropertiesVariables> {
         use cynic::MutationBuilder;
         let property = property.into();
-        let vars = AddPropertiesVariables::builder().id(id.into()).properties(Some(vec![property])).build();
-        AddProperty::build(vars.into())
+        AddProperty::build(AddPropertiesVariables::builder().id(id.into()).properties(Some(vec![property])).build())
     }
 
     pub fn add_properties(id: Uuid, properties: PropertyTypes) -> Operation<AddProperty, AddPropertiesVariables> {
         use cynic::MutationBuilder;
         let properties: PropertyTypeDefinitions = properties.into();
-        let vars = AddPropertiesVariables::builder().id(id.into()).properties(Some(properties.0)).build();
-        AddProperty::build(vars.into())
+        AddProperty::build(AddPropertiesVariables::builder().id(id.into()).properties(Some(properties.0)).build())
     }
 }
