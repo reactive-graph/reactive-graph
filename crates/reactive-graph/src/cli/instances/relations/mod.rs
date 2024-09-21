@@ -87,7 +87,7 @@ pub(crate) async fn relation_instances(client: &Arc<InexorRgfClient>, relation_i
         RelationInstancesCommands::ListComponents(args) => match client.instances().relation_instances().get_by_id(&args).await {
             Ok(Some(relation_instance)) => {
                 let output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = relation_instances_args.output_format.into();
-                let component_tys = relation_instance.components.iter().map(|ty| ty.clone().into()).collect();
+                let component_tys = relation_instance.components.iter().map(|ty| ty.clone()).collect();
                 output_format_wrapper.collection(component_tys)
             }
             Ok(None) => Err(args.not_found()),

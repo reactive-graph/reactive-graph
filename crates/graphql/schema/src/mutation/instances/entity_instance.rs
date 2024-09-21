@@ -84,6 +84,7 @@ impl MutationEntityInstances {
     }
 
     /// Updates the properties of the entity instance with the given id.
+    #[allow(clippy::too_many_arguments)]
     async fn update(
         &self,
         context: &Context<'_>,

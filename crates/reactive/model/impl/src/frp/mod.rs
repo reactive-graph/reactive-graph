@@ -191,7 +191,7 @@
 //! ```
 
 use dashmap::DashMap;
-use rayon::prelude::*;
+// use rayon::prelude::*;
 use std::hash::Hash;
 use std::ops::Deref;
 use std::sync::mpsc::channel;
@@ -286,6 +286,7 @@ where
     /// Observe a stream signal output flowing out of the stream.
     ///
     /// Do not abuse this function, as its primary use is to build other combinators.
+    #[allow(clippy::readonly_write_lock)]
     pub fn observe<F>(&self, subscriber: F) -> u128
     where
         F: 'a + FnMut(&Sig) + Send,
@@ -308,6 +309,7 @@ where
     /// Observe a stream signal output flowing out of the stream.
     ///
     /// Do not abuse this function, as its primary use is to build other combinators.
+    #[allow(clippy::readonly_write_lock)]
     pub fn observe_with_handle<F>(&self, subscriber: F, handle_id: u128)
     where
         F: 'a + FnMut(&Sig) + Send,
@@ -326,6 +328,7 @@ where
     }
 
     /// Removes the subscriber with the given handle_id.
+    #[allow(clippy::readonly_write_lock)]
     pub fn remove(&self, handle_id: u128) {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
@@ -342,6 +345,7 @@ where
     }
 
     /// Removes all subscribers without dropping the stream.
+    #[allow(clippy::readonly_write_lock)]
     pub fn clear(&self) {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
@@ -358,6 +362,7 @@ where
     }
 
     /// Send a signal down the stream.
+    #[allow(clippy::readonly_write_lock)]
     pub fn send(&self, signal: &Sig) {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
@@ -366,7 +371,7 @@ where
                 //     subscriber(&signal);
                 // });
                 subscribers.iter_mut().for_each(|mut subscriber| {
-                    subscriber(&signal);
+                    subscriber(signal);
                 });
             }
 
@@ -376,7 +381,7 @@ where
                     //     subscriber(&signal);
                     // });
                     subscribers.iter_mut().for_each(|mut subscriber| {
-                        subscriber(&signal);
+                        subscriber(signal);
                     });
                 }
             }

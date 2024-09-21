@@ -47,6 +47,7 @@ pub struct PropertyType {
 }
 
 impl PropertyType {
+    #[allow(dead_code)]
     fn display_extensions(&self) -> String {
         match self.inline_format {
             TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
@@ -107,7 +108,7 @@ pub fn display_property_types_inline(property_types: &[PropertyType]) -> Table {
         .to_owned()
 }
 
-pub fn display_property_types_html_inline(property_types: &Vec<PropertyType>) -> String {
+pub fn display_property_types_html_inline(property_types: &[PropertyType]) -> String {
     let property_types = property_types.to_vec();
     if property_types.is_empty() {
         return String::new();

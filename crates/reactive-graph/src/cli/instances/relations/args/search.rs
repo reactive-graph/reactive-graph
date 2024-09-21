@@ -38,7 +38,7 @@ impl SearchRelationInstancesArgs {
     pub fn properties(&self) -> PropertyInstances {
         match &self.properties {
             None => PropertyInstances::new(),
-            Some(properties) => properties.into_iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
+            Some(properties) => properties.iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
         }
     }
 
@@ -54,15 +54,13 @@ impl From<&SearchRelationInstancesArgs> for SearchRelationInstancesVariables {
     fn from(search: &SearchRelationInstancesArgs) -> Self {
         let ty: Option<reactive_graph_graph::RelationTypeId> = search.ty.clone().into();
         let properties: PropertyInstanceDefinitions = search.properties().into();
-        let properties = Some(properties.0);
-        let components: ComponentTypeIds = search.components().into();
-        let components = Some(components.0);
+        let components: ComponentTypeIds = search.components();
         SearchRelationInstancesVariables::builder()
             .outbound_id(search.outbound_id.map(From::from))
             .ty(ty.map(From::from))
             .inbound_id(search.inbound_id.map(From::from))
-            .properties(properties)
-            .components(components)
+            .properties(Some(properties.0))
+            .components(Some(components.0))
             .build()
     }
 }

@@ -48,7 +48,7 @@ impl GraphQLPlugin {
         let plugin_container_manager = context.data::<Arc<dyn PluginContainerManager + Send + Sync>>()?;
         plugin_container_manager
             .name(&self.id)
-            .map(|name| name.replace(&PLUGIN_NAME_PREFIX, ""))
+            .map(|name| name.replace(PLUGIN_NAME_PREFIX, ""))
             .ok_or_else(|| Error::new("Failed to resolve plugin short name"))
     }
 

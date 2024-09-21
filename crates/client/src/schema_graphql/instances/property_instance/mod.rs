@@ -1,3 +1,4 @@
+#[allow(clippy::module_inception)]
 pub mod property_instance;
 pub mod property_instance_definition;
 

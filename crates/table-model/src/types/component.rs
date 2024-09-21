@@ -109,7 +109,7 @@ impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
     }
 }
 
-pub fn display_component_type_ids_inline_str(tys: &Vec<ComponentTypeId>) -> String {
+pub fn display_component_type_ids_inline_str(tys: &[ComponentTypeId]) -> String {
     if tys.is_empty() {
         String::new()
     } else {
@@ -117,7 +117,7 @@ pub fn display_component_type_ids_inline_str(tys: &Vec<ComponentTypeId>) -> Stri
     }
 }
 
-pub fn display_component_type_ids_inline(tys: &Vec<ComponentTypeId>) -> Table {
+pub fn display_component_type_ids_inline(tys: &[ComponentTypeId]) -> Table {
     let tys = tys.to_vec();
     Table::new(tys)
         .with(modern_inline())
@@ -126,7 +126,7 @@ pub fn display_component_type_ids_inline(tys: &Vec<ComponentTypeId>) -> Table {
         .to_owned()
 }
 
-pub fn display_component_type_ids_html_inline(tys: &Vec<ComponentTypeId>) -> String {
+pub fn display_component_type_ids_html_inline(tys: &[ComponentTypeId]) -> String {
     let tys = tys.to_vec();
     if tys.is_empty() {
         return String::new();

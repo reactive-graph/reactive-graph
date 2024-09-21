@@ -29,8 +29,6 @@ pub mod mutations {
 
     pub fn set_property(id: &RelationInstanceId, name: String, value: Value) -> Operation<SetProperty, SetPropertyVariables> {
         use cynic::MutationBuilder;
-        let id = id.into();
-        let vars = SetPropertyVariables::new(id, name, value);
-        SetProperty::build(vars.into())
+        SetProperty::build(SetPropertyVariables::new(id, name, value))
     }
 }

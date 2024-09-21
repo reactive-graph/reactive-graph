@@ -57,7 +57,7 @@ pub fn display_property_instances_inline(property_instances: &[PropertyInstance]
     Table::new(property_instances).with(modern_inline()).to_owned()
 }
 
-pub fn display_property_instances_html_inline(property_instances: &Vec<PropertyInstance>) -> String {
+pub fn display_property_instances_html_inline(property_instances: &[PropertyInstance]) -> String {
     let property_instances = property_instances.to_vec();
     if property_instances.is_empty() {
         return String::new();

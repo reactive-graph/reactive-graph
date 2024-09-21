@@ -38,6 +38,12 @@ impl ComponentTypeIds {
     }
 }
 
+impl Default for ComponentTypeIds {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl From<ComponentTypeIds> for reactive_graph_graph::ComponentTypeIds {
     fn from(component_type_ids: ComponentTypeIds) -> Self {
         component_type_ids

@@ -126,7 +126,7 @@ impl<S, T: Clone + Tabled + From<S> + TableInlineFormatSetter, O: TableOptions> 
                 write!(f, "{}", self.markdown_table())
             }
             TableOutputFormat::HtmlTable => {
-                write!(f, "{}", self.html_table().to_string().trim().to_string())
+                write!(f, "{}", self.html_table().to_string().trim())
             }
         }
     }

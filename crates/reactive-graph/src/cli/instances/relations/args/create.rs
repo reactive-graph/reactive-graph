@@ -23,7 +23,7 @@ impl CreateRelationInstanceArgs {
     pub fn properties(&self) -> PropertyInstances {
         match &self.properties {
             None => PropertyInstances::new(),
-            Some(properties) => properties.into_iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
+            Some(properties) => properties.iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
         }
     }
 }

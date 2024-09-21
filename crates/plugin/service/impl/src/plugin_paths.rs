@@ -35,7 +35,7 @@ pub fn get_stem(path: &Path) -> Option<String> {
 
 // Use this workaround until #![feature(path_file_prefix)] is stabilized
 pub fn file_prefix(path: &Path) -> Option<&OsStr> {
-    path.file_name().map(split_file_at_dot).and_then(|(before, _after)| Some(before))
+    path.file_name().map(split_file_at_dot).map(|(before, _after)| before)
 }
 
 // Use this workaround until #![feature(path_file_prefix)] is stabilized

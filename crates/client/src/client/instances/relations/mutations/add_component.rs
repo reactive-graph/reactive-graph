@@ -33,7 +33,7 @@ pub mod mutations {
         component_ty: TY,
     ) -> Operation<AddComponent, RelationInstanceIdAndComponentsVariables> {
         use cynic::MutationBuilder;
-        AddComponent::build(RelationInstanceIdAndComponentsVariables::new_from_component_type(id, component_ty).into())
+        AddComponent::build(RelationInstanceIdAndComponentsVariables::new_from_component_type(id, component_ty))
     }
 
     pub fn add_components<TY: Into<ComponentTypeIds>>(
@@ -41,6 +41,6 @@ pub mod mutations {
         component_tys: TY,
     ) -> Operation<AddComponent, RelationInstanceIdAndComponentsVariables> {
         use cynic::MutationBuilder;
-        AddComponent::build(RelationInstanceIdAndComponentsVariables::new(id, component_tys).into())
+        AddComponent::build(RelationInstanceIdAndComponentsVariables::new(id, component_tys))
     }
 }

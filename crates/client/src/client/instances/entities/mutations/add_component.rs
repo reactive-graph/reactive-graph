@@ -30,14 +30,12 @@ pub mod mutations {
     pub fn add_component(id: Uuid, component_ty: reactive_graph_graph::ComponentTypeId) -> Operation<AddComponent, IdAndComponentVariables> {
         use cynic::MutationBuilder;
         let component_ty = component_ty.into();
-        let vars = IdAndComponentVariables::builder().id(id.into()).components(Some(vec![component_ty])).build();
-        AddComponent::build(vars.into())
+        AddComponent::build(IdAndComponentVariables::builder().id(id.into()).components(Some(vec![component_ty])).build())
     }
 
     pub fn add_components(id: Uuid, component_tys: reactive_graph_graph::ComponentTypeIds) -> Operation<AddComponent, IdAndComponentVariables> {
         use cynic::MutationBuilder;
         let component_tys: ComponentTypeIds = component_tys.into();
-        let vars = IdAndComponentVariables::builder().id(id.into()).components(Some(component_tys.0)).build();
-        AddComponent::build(vars.into())
+        AddComponent::build(IdAndComponentVariables::builder().id(id.into()).components(Some(component_tys.0)).build())
     }
 }

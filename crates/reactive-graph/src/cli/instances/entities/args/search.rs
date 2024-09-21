@@ -38,7 +38,7 @@ impl SearchEntityInstancesArgs {
     pub fn properties(&self) -> PropertyInstances {
         match &self.properties {
             None => PropertyInstances::new(),
-            Some(properties) => properties.into_iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
+            Some(properties) => properties.iter().map(|(name, value)| (name.clone(), value.clone())).collect(),
         }
     }
 
@@ -54,15 +54,13 @@ impl From<&SearchEntityInstancesArgs> for SearchEntityInstancesVariables {
     fn from(search: &SearchEntityInstancesArgs) -> Self {
         let ty: Option<reactive_graph_graph::EntityTypeId> = search.ty.clone().into();
         let properties: PropertyInstanceDefinitions = search.properties().into();
-        let properties = Some(properties.0);
-        let components: ComponentTypeIds = search.components().into();
-        let components = Some(components.0);
+        let components: ComponentTypeIds = search.components();
         SearchEntityInstancesVariables::builder()
             .ty(ty.map(From::from))
             .id(search.id.map(From::from))
             .label(search.label.clone())
-            .properties(properties)
-            .components(components)
+            .properties(Some(properties.0))
+            .components(Some(components.0))
             .build()
     }
 }

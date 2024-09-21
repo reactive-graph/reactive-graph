@@ -84,7 +84,7 @@ pub(crate) async fn entity_instances(client: &Arc<InexorRgfClient>, entity_insta
         EntityInstancesCommands::ListComponents(args) => match client.instances().entity_instances().get_entity_instance_by_id(args.clone()).await {
             Ok(Some(entity_instance)) => {
                 let output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = entity_instances_args.output_format.into();
-                let component_tys = entity_instance.components.iter().map(|ty| ty.clone().into()).collect();
+                let component_tys = entity_instance.components.iter().map(|ty| ty.clone()).collect();
                 output_format_wrapper.collection(component_tys)
             }
             Ok(None) => Err(args.not_found()),

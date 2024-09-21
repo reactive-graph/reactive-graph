@@ -322,6 +322,7 @@ impl PluginContainer {
     }
 
     /// Constructs the proxy for the plugin.
+    #[allow(clippy::collapsible_match)]
     pub fn construct_proxy(&mut self, plugin_context: Arc<dyn PluginContext + Send + Sync>) -> PluginTransitionResult {
         if self.state != PluginState::Starting(PluginStartingState::ConstructingProxy)
             && self.state != PluginState::Refreshing(PluginRefreshingState::Starting(PluginStartingState::ConstructingProxy))
@@ -390,14 +391,14 @@ impl PluginContainer {
                 self.state = PluginState::Active;
                 info!(
                     "[ACTIVE] {} {}",
-                    self.name().unwrap_or_default().replace(&PLUGIN_NAME_PREFIX, ""),
+                    self.name().unwrap_or_default().replace(PLUGIN_NAME_PREFIX, ""),
                     self.version().unwrap_or_default()
                 );
             }
             Err(e) => {
                 error!(
                     "[FAILED] {} {}: {}",
-                    self.name().unwrap_or_default().replace(&PLUGIN_NAME_PREFIX, ""),
+                    self.name().unwrap_or_default().replace(PLUGIN_NAME_PREFIX, ""),
                     self.version().unwrap_or_default(),
                     e
                 );
