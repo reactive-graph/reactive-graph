@@ -40,6 +40,14 @@ impl TableInlineFormatSetter for PropertyInstance {
     }
 }
 
+pub fn display_property_instances_inline_str(property_instances: &[PropertyInstance]) -> String {
+    if property_instances.is_empty() {
+        String::new()
+    } else {
+        display_property_instances_inline(property_instances).to_string()
+    }
+}
+
 pub fn display_property_instances_inline(property_instances: &[PropertyInstance]) -> Table {
     let property_instances = property_instances.to_vec();
     if property_instances.is_empty() {

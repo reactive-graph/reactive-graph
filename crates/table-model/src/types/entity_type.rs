@@ -9,15 +9,15 @@ use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::types::component::display_component_type_ids_html_inline;
-use crate::types::component::display_component_type_ids_inline;
+use crate::types::component::display_component_type_ids_inline_str;
 use crate::types::component::ComponentTypeId;
 use crate::types::component::ComponentTypeIds;
 use crate::types::extension::display_extensions_html_inline;
-use crate::types::extension::display_extensions_inline;
+use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
 use crate::types::property_type::display_property_types_html_inline;
-use crate::types::property_type::display_property_types_inline;
+use crate::types::property_type::display_property_types_inline_str;
 use crate::types::property_type::PropertyType;
 use crate::types::property_type::PropertyTypes;
 use reactive_graph_graph::NamespacedTypeGetter;
@@ -52,14 +52,14 @@ pub struct EntityType {
 impl EntityType {
     fn display_component_type_ids(&self) -> String {
         match self.inline_format {
-            TableInlineFormat::Table => display_component_type_ids_inline(&self.components).to_string(),
+            TableInlineFormat::Table => display_component_type_ids_inline_str(&self.components),
             TableInlineFormat::Html => display_component_type_ids_html_inline(&self.components),
         }
     }
 
     fn display_property_types(&self) -> String {
         match self.inline_format {
-            TableInlineFormat::Table => display_property_types_inline(&self.properties).to_string(),
+            TableInlineFormat::Table => display_property_types_inline_str(&self.properties),
             TableInlineFormat::Html => display_property_types_html_inline(&self.properties),
         }
     }
@@ -67,7 +67,7 @@ impl EntityType {
     fn display_extensions(&self) -> String {
         // println!("{:?}", &self.inline_format);
         match self.inline_format {
-            TableInlineFormat::Table => display_extensions_inline(&self.extensions).to_string(),
+            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
             TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
         }
     }

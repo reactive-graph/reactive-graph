@@ -6,7 +6,6 @@ use serde_json::Value;
 use table_to_html::HtmlTable;
 use tabled::settings::object::Columns;
 use tabled::settings::Modify;
-use tabled::settings::Panel;
 use tabled::settings::Style;
 use tabled::settings::Width;
 use tabled::Table;
@@ -50,15 +49,16 @@ impl From<reactive_graph_graph::Extension> for ExtensionDefinition {
     }
 }
 
+pub fn display_extensions_inline_str(extensions: &[Extension]) -> String {
+    if extensions.is_empty() {
+        String::new()
+    } else {
+        display_extensions_inline(extensions).to_string()
+    }
+}
+
 pub fn display_extensions_inline(extensions: &[Extension]) -> Table {
     let extensions = extensions.to_vec();
-    if extensions.is_empty() {
-        return Table::new::<[_; 1], String>([String::from("No extensions")])
-            .with(Panel::header("Extensions"))
-            .with(modern_inline())
-            .to_owned();
-    }
-
     Table::new(extensions)
         .with(modern_inline())
         .with(Modify::new(Columns::new(0..1)).with(Width::increase(22)))

@@ -13,11 +13,11 @@ use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
 use crate::types::extension::display_extensions_html_inline;
-use crate::types::extension::display_extensions_inline;
+use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
 use crate::types::property_type::display_property_types_html_inline;
-use crate::types::property_type::display_property_types_inline;
+use crate::types::property_type::display_property_types_inline_str;
 use crate::types::property_type::PropertyType;
 use crate::types::property_type::PropertyTypes;
 use reactive_graph_graph::NamespacedTypeGetter;
@@ -49,13 +49,14 @@ pub struct Component {
 impl Component {
     fn display_property_types(&self) -> String {
         match self.inline_format {
-            TableInlineFormat::Table => display_property_types_inline(&self.properties).to_string(),
+            TableInlineFormat::Table => display_property_types_inline_str(&self.properties),
             TableInlineFormat::Html => display_property_types_html_inline(&self.properties),
         }
     }
+
     fn display_extensions(&self) -> String {
         match self.inline_format {
-            TableInlineFormat::Table => display_extensions_inline(&self.extensions).to_string(),
+            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
             TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
         }
     }
@@ -108,12 +109,16 @@ impl From<reactive_graph_graph::ComponentTypeId> for ComponentTypeId {
     }
 }
 
+pub fn display_component_type_ids_inline_str(tys: &Vec<ComponentTypeId>) -> String {
+    if tys.is_empty() {
+        String::new()
+    } else {
+        display_component_type_ids_inline(tys).to_string()
+    }
+}
+
 pub fn display_component_type_ids_inline(tys: &Vec<ComponentTypeId>) -> Table {
     let tys = tys.to_vec();
-    if tys.is_empty() {
-        return Table::new(["No components"]).with(modern_inline()).to_owned();
-    }
-
     Table::new(tys)
         .with(modern_inline())
         .with(Modify::new(Columns::new(0..1)).with(Width::increase(15)))

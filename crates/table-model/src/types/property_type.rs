@@ -3,6 +3,8 @@ use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
 use crate::types::data_type::DataType;
+use crate::types::extension::display_extensions_html_inline;
+use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
 use crate::types::mutability::Mutability;
@@ -36,12 +38,21 @@ pub struct PropertyType {
     pub mutability: Mutability,
 
     /// Property specific extensions.
-    #[tabled(display_with("display_extensions"))]
+    #[tabled(display_with("Self::display_extensions", self))]
     #[tabled(skip)]
     pub extensions: Vec<Extension>,
 
     #[tabled(skip)]
     inline_format: TableInlineFormat,
+}
+
+impl PropertyType {
+    fn display_extensions(&self) -> String {
+        match self.inline_format {
+            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
+            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
+        }
+    }
 }
 
 impl TableInlineFormatSetter for PropertyType {
@@ -77,11 +88,16 @@ impl From<reactive_graph_graph::PropertyType> for PropertyType {
     }
 }
 
-pub fn display_property_types_inline(property_types: &Vec<PropertyType>) -> Table {
-    let property_types = property_types.to_vec();
+pub fn display_property_types_inline_str(property_types: &[PropertyType]) -> String {
     if property_types.is_empty() {
-        return Table::new(["no properties"]);
+        String::new()
+    } else {
+        display_property_types_inline(property_types).to_string()
     }
+}
+
+pub fn display_property_types_inline(property_types: &[PropertyType]) -> Table {
+    let property_types = property_types.to_vec();
     Table::new(property_types)
         .with(modern_inline())
         .with(Modify::new(Columns::new(0..1)).with(Width::increase(35)))
