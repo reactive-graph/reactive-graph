@@ -10,11 +10,11 @@ pub mod instances;
 // pub mod system;
 pub mod types;
 
-pub struct InexorQuery;
+pub struct ReactiveGraphQuery;
 
 /// Search queries for the type system, the instances and the flows.
 #[Object(name = "Query")]
-impl InexorQuery {
+impl ReactiveGraphQuery {
     /// Search for types (components, entity types, relation types).
     async fn types(&self) -> Types {
         Types
