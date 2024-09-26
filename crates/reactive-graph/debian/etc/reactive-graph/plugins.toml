@@ -1,4 +1,20 @@
 disabled = false
 
 disabled_plugins = [
+    # Full name
+    # "reactive-graph-plugin-file",
+    # Short name
+    # "graphql-schema-visualization"
 ]
+
+#enabled_plugins = [
+#    # Full name
+#    "reactive-graph-plugin-base",
+#    # Short name
+#    "trigger",
+#    "result",
+#    "file",
+#    "connector",
+#    "json",
+#    "taxonomy",
+#]
