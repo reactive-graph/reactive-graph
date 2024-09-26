@@ -6,13 +6,13 @@ use crate::cli::error::CommandError::NotFound;
 use crate::cli::result::CommandResult;
 use crate::cli::system::plugin::args::PluginsArgs;
 use crate::cli::system::plugin::commands::PluginsCommands;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_table_model::system::plugin::PluginsTableContainer;
 
 pub(crate) mod args;
 pub(crate) mod commands;
 
-pub(crate) async fn plugins(client: &Arc<InexorRgfClient>, plugins_args: PluginsArgs) -> CommandResult {
+pub(crate) async fn plugins(client: &Arc<ReactiveGraphClient>, plugins_args: PluginsArgs) -> CommandResult {
     let Some(command) = plugins_args.commands else {
         return Err(CommandError::MissingSubCommand);
     };

@@ -10,8 +10,8 @@ use crate::client::instances::relations::mutations::set_property::mutations::set
 use crate::client::instances::relations::queries::get_by_id::queries::get_by_id;
 use crate::client::instances::relations::queries::search::queries::search;
 use crate::client::instances::relations::variables::search::variables::SearchRelationInstancesVariables;
-use crate::client::InexorRgfClient;
-use crate::client::InexorRgfClientExecutionError;
+use crate::client::ReactiveGraphClient;
+use crate::client::ReactiveGraphClientExecutionError;
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstances;
@@ -21,29 +21,29 @@ use reactive_graph_graph::RelationInstanceId;
 use serde_json::Value;
 
 pub struct RelationInstances {
-    client: Arc<InexorRgfClient>,
+    client: Arc<ReactiveGraphClient>,
 }
 
 impl RelationInstances {
-    pub fn new(client: Arc<InexorRgfClient>) -> Self {
+    pub fn new(client: Arc<ReactiveGraphClient>) -> Self {
         Self { client }
     }
 
-    pub async fn search(&self, search_query: SearchRelationInstancesVariables) -> Result<Option<Vec<RelationInstance>>, InexorRgfClientExecutionError> {
+    pub async fn search(&self, search_query: SearchRelationInstancesVariables) -> Result<Option<Vec<RelationInstance>>, ReactiveGraphClientExecutionError> {
         let relation_instances = self
             .client
             .client
             .post(self.client.url_graphql())
             .run_graphql(search(search_query))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| crate::schema_graphql::instances::relation_instance::RelationInstances(data.instances.relations))
             .map(From::from);
         Ok(relation_instances)
     }
 
-    pub async fn get_by_id<ID: Into<RelationInstanceId>>(&self, id: ID) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    pub async fn get_by_id<ID: Into<RelationInstanceId>>(&self, id: ID) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let relation_instance = self
             .client
@@ -51,7 +51,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(get_by_id(&id))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.relations.first().cloned())
             .map(From::from);
@@ -63,7 +63,7 @@ impl RelationInstances {
         id: ID,
         name: S,
         value: V,
-    ) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let name = name.into();
         let value = value.into();
@@ -73,7 +73,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(set_property(&id, name, value))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.update)
             .map(From::from);
@@ -84,7 +84,7 @@ impl RelationInstances {
         &self,
         id: ID,
         property_type: PT,
-    ) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let property_type = property_type.into();
         let relation_instance = self
@@ -93,7 +93,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(add_property(&id, property_type))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.update)
             .map(From::from);
@@ -104,7 +104,7 @@ impl RelationInstances {
         &self,
         id: ID,
         property_name: S,
-    ) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let property_name = property_name.into();
         let relation_instance = self
@@ -113,7 +113,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(remove_property(&id, property_name))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.update)
             .map(From::from);
@@ -124,7 +124,7 @@ impl RelationInstances {
         &self,
         id: ID,
         component_ty: C,
-    ) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let component_ty = component_ty.into();
         let relation_instance = self
@@ -133,7 +133,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(add_component(&id, component_ty))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.update)
             .map(From::from);
@@ -144,7 +144,7 @@ impl RelationInstances {
         &self,
         id: ID,
         component_ty: C,
-    ) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let component_ty = component_ty.into();
         let relation_instance = self
@@ -153,7 +153,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(remove_component(&id, component_ty))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.update)
             .map(From::from);
@@ -165,7 +165,7 @@ impl RelationInstances {
         id: ID,
         description: Option<String>,
         properties: PropertyInstances,
-    ) -> Result<Option<RelationInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<RelationInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let relation_instance = self
             .client
@@ -173,14 +173,14 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(create(&id, description, properties))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.create)
             .map(From::from);
         Ok(relation_instance)
     }
 
-    pub async fn delete<ID: Into<RelationInstanceId>>(&self, id: ID) -> Result<Option<bool>, InexorRgfClientExecutionError> {
+    pub async fn delete<ID: Into<RelationInstanceId>>(&self, id: ID) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let relation_instance = self
             .client
@@ -188,7 +188,7 @@ impl RelationInstances {
             .post(self.client.url_graphql())
             .run_graphql(delete(&id))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.relations.delete)
             .map(From::from);

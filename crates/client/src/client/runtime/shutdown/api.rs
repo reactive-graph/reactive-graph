@@ -1,19 +1,19 @@
 use crate::client::runtime::shutdown::mutations::shutdown::mutations::shutdown;
 use std::sync::Arc;
 
-use crate::InexorRgfClient;
-use crate::InexorRgfClientExecutionError;
+use crate::ReactiveGraphClient;
+use crate::ReactiveGraphClientExecutionError;
 
 pub struct Shutdown {
-    client: Arc<InexorRgfClient>,
+    client: Arc<ReactiveGraphClient>,
 }
 
 impl Shutdown {
-    pub fn new(client: Arc<InexorRgfClient>) -> Self {
+    pub fn new(client: Arc<ReactiveGraphClient>) -> Self {
         Self { client }
     }
 
-    pub async fn shutdown(&self) -> Result<bool, InexorRgfClientExecutionError> {
+    pub async fn shutdown(&self) -> Result<bool, ReactiveGraphClientExecutionError> {
         self.client.execute_runtime(shutdown(), |data| data.shutdown).await
     }
 }

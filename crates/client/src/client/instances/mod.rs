@@ -1,6 +1,6 @@
 use crate::client::instances::entities::api::EntityInstances;
 use crate::client::instances::relations::api::RelationInstances;
-use crate::InexorRgfClient;
+use crate::ReactiveGraphClient;
 use std::sync::Arc;
 
 pub mod entities;
@@ -8,11 +8,11 @@ pub mod relations;
 pub mod variables;
 
 pub struct Instances {
-    client: Arc<InexorRgfClient>,
+    client: Arc<ReactiveGraphClient>,
 }
 
 impl Instances {
-    pub fn new(client: Arc<InexorRgfClient>) -> Self {
+    pub fn new(client: Arc<ReactiveGraphClient>) -> Self {
         Self { client }
     }
 

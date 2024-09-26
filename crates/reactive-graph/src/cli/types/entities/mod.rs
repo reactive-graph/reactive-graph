@@ -11,14 +11,14 @@ use crate::cli::types::entities::commands::EntityTypesCommands;
 use crate::cli::types::entities::output_format::EntityTypesOutputFormatWrapper;
 use crate::cli::types::extension::output_format::ExtensionsOutputFormatWrapper;
 use crate::cli::types::property_type::output_format::PropertyTypesOutputFormatWrapper;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_graph::NamespacedTypeContainer;
 
 pub(crate) mod args;
 pub(crate) mod commands;
 pub(crate) mod output_format;
 
-pub(crate) async fn entity_types(client: &Arc<InexorRgfClient>, entity_type_args: EntityTypesArgs) -> CommandResult {
+pub(crate) async fn entity_types(client: &Arc<ReactiveGraphClient>, entity_type_args: EntityTypesArgs) -> CommandResult {
     let output_format_wrapper: EntityTypesOutputFormatWrapper = entity_type_args.output_format.clone().into();
     let Some(command) = entity_type_args.commands else {
         return Err(CommandError::MissingSubCommand);

@@ -16,7 +16,7 @@ pub mod queries {
 
 #[cfg(test)]
 pub mod test {
-    use crate::InexorRgfClient;
+    use crate::ReactiveGraphClient;
     use reactive_graph_runtime_api::Runtime;
     use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
@@ -38,7 +38,7 @@ pub mod test {
                 assert_eq!(plugin_container_manager.get_plugins().len(), 0);
 
                 // Client: Connect to self and get all remotes
-                let client = InexorRgfClient::new(runtime.address()).expect("Cannot create client");
+                let client = ReactiveGraphClient::new(runtime.address()).expect("Cannot create client");
                 let plugins = client.plugins().get_all().await.expect("Failed to get list of plugins");
                 assert_eq!(plugins.len(), 0);
             })

@@ -17,7 +17,7 @@ use crate::cli::repl::args::ReplArgs;
 use crate::cli::repl::chars::*;
 use crate::cli::repl::repl_helper::ReplHelper;
 use crate::cli::repl::return_state::ReturnState;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 
 pub(crate) mod args;
 pub(crate) mod chars;
@@ -25,7 +25,7 @@ pub(crate) mod hint;
 pub(crate) mod repl_helper;
 pub(crate) mod return_state;
 
-pub(crate) async fn repl(client: &Arc<InexorRgfClient>) -> Result<(), i32> {
+pub(crate) async fn repl(client: &Arc<ReactiveGraphClient>) -> Result<(), i32> {
     let mut rl = Editor::<ReplHelper, DefaultHistory>::new().map_err(|_| 255)?;
     rl.set_helper(Some(ReplHelper::new()));
     rl.bind_sequence(Event::KeySeq(vec![KeyEvent(KeyCode::Tab, Modifiers::NONE)]), Cmd::CompleteHint);

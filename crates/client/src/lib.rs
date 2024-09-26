@@ -3,9 +3,9 @@ pub use client::runtime::instance::api::Instance;
 pub use client::runtime::remotes::api::Remotes;
 pub use client::types;
 pub use client::types::components::api::Components;
-pub use client::InexorRgfClient;
-pub use client::InexorRgfClientError;
-pub use client::InexorRgfClientExecutionError;
+pub use client::ReactiveGraphClient;
+pub use client::ReactiveGraphClientError;
+pub use client::ReactiveGraphClientExecutionError;
 
 pub use schema_graphql::instances::property_instance::*;
 pub use schema_graphql::types::component::*;

@@ -10,14 +10,14 @@ use crate::cli::types::components::commands::ComponentsCommands;
 use crate::cli::types::components::output_format::ComponentsOutputFormatWrapper;
 use crate::cli::types::extension::output_format::ExtensionsOutputFormatWrapper;
 use crate::cli::types::property_type::output_format::PropertyTypesOutputFormatWrapper;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_graph::NamespacedTypeContainer;
 
 pub(crate) mod args;
 pub(crate) mod commands;
 pub(crate) mod output_format;
 
-pub(crate) async fn components(client: &Arc<InexorRgfClient>, component_args: ComponentsArgs) -> CommandResult {
+pub(crate) async fn components(client: &Arc<ReactiveGraphClient>, component_args: ComponentsArgs) -> CommandResult {
     let output_format_wrapper: ComponentsOutputFormatWrapper = component_args.output_format.clone().into();
     let Some(command) = component_args.commands else {
         return Err(CommandError::MissingSubCommand);
