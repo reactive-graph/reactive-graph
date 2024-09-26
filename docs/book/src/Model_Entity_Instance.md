@@ -18,7 +18,6 @@ also on the server and on clients connected to it.
 * UUIDs can be represented as string and as a 128 bit unsigned integer
 ```
 
-
 ## Labels
 
 Labels are also unique, but optional. While UUIDs are hard to remember, labels are easier to remember. This allows
@@ -34,7 +33,7 @@ Labels are optional
 ```graphql
 query {
   instances {
-    entities(label: "/org/inexor/input/any_device/key/key_f7") {
+    entities(label: "/io/reactive-graph/input/any_device/key/key_f7") {
       properties(name: "key_down") {
         value
       }

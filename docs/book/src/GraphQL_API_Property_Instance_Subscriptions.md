@@ -10,7 +10,7 @@ Explore the subscriptions using the [Plugin GraphQL Schema Visualization](./Plug
 ```graphql
 subscription keyDownRightCtrl {
   entity(
-    label: "/org/inexor/input/any_device/key/key_rightctrl",
+    label: "/io/reactive-graph/input/any_device/key/key_rightctrl",
     propertyName: "key_down"
   ) {
     name

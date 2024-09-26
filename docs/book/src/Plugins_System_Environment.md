@@ -13,10 +13,10 @@ The UUIDs of the entity instances are stable.
 
 Each entity instance which represents a system environment variable has a label.
 
-| System Env | Label                         |
-|------------|-------------------------------|
-| `$HOME`    | `/org/inexor/system/env/home` |
-| `$PATH`    | `/org/inexor/system/env/path` |
+| System Env | Label                                |
+|------------|--------------------------------------|
+| `$HOME`    | `/io/reactive-graph/system/env/home` |
+| `$PATH`    | `/io/reactive-graph/system/env/path` |
 
 ## Entity Types
 

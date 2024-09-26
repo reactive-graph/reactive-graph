@@ -1,6 +1,6 @@
 query findSystemEnvHome {
   instances {
-    entities(label: "/org/inexor/system/env/home") {
+    entities(label: "/io/reactive-graph/system/env/home") {
       id
       label
       type {

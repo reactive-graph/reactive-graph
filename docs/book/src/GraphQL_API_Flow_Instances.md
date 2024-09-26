@@ -41,7 +41,7 @@ query {
 ```graphql
 query {
   instances {
-    flows(label: "/org/inexor/flows/game-servers") {
+    flows(label: "/io/reactive-graph/flows/game-servers") {
       id
     }
   }

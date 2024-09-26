@@ -24,7 +24,7 @@ query {
 ```graphql
 query {
   instances {
-    entities(label: "/org/inexor/input/any_device/key_f10") {
+    entities(label: "/io/reactive-graph/input/any_device/key_f10") {
       properties(name: "key_down") {
         value
       }
@@ -38,7 +38,7 @@ query {
 ```graphql
 query {
   instances {
-    entities(type: "player", label: "/org/inexor/game/players/Hanack") {
+    entities(type: "player", label: "/io/reactive-graph/game/players/Hanack") {
       inbound(type: "look_at") {
         outbound {
           properties(name: "position") {

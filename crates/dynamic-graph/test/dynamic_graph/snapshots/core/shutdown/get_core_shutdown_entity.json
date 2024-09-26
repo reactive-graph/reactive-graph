@@ -4,7 +4,7 @@
       {
         "id": "6ba7b810-9e15-11d1-50b4-00c04fd530c7",
         "trigger": false,
-        "label": "/org/inexor/commands/core/shutdown",
+        "label": "/io/reactive-graph/commands/core/shutdown",
         "command": "shutdown",
         "args": [
           {

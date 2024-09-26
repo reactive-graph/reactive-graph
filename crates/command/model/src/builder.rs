@@ -16,9 +16,8 @@ use crate::entity::CommandArgs;
 use reactive_graph_graph::ComponentTypeIds;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::NamespacedTypeGetter;
-use reactive_graph_graph::PropertyInstances;
-// use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyInstanceSetter;
+use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_model_impl::ReactiveProperties;
@@ -58,7 +57,7 @@ pub struct CommandDefinition {
     // scope: String,
     // .scope("testing")
     // .name("concat")
-    // .label("/org/inexor/test/concat")
+    // .label("/io/reactive-graph/test/concat")
     // .help("Concatenates two strings")
 }
 
@@ -69,7 +68,7 @@ impl From<CommandDefinition> for Command {
         let namespace = definition.namespace.unwrap_or_else(|| definition.ty.namespace());
         let name = definition.name.unwrap_or_else(|| definition.ty.type_name());
 
-        let label = format!("/org/inexor/commands/{namespace}/{name}");
+        let label = format!("/io/reactive-graph/commands/{namespace}/{name}");
 
         let components = ComponentTypeIds::new()
             .component(COMPONENT_LABELED.deref())
@@ -81,7 +80,7 @@ impl From<CommandDefinition> for Command {
         // let properties = PropertyTypes::new()
         //     .property(PropertyType::string("help"));
 
-        //         let label = format!("/org/inexor/commands/{scope}/{name}");
+        //         let label = format!("/io/reactive-graph/commands/{scope}/{name}");
         //         builder.property(COMMAND_NAMESPACE, json!(scope));
         //         builder.property(COMMAND_NAME, json!(name));
         //         builder.component(&COMPONENT_LABELED.clone());
@@ -235,7 +234,7 @@ mod tests {
 //         builder.property(COMMAND_RESULT, json!(0));
 //         let scope = ty.namespace();
 //         let name = ty.type_name();
-//         let label = format!("/org/inexor/commands/{scope}/{name}");
+//         let label = format!("/io/reactive-graph/commands/{scope}/{name}");
 //         builder.property(COMMAND_NAMESPACE, json!(scope));
 //         builder.property(COMMAND_NAME, json!(name));
 //         builder.component(&COMPONENT_LABELED.clone());
@@ -275,7 +274,7 @@ mod tests {
 //         if let Some(builder) = self.builder.as_mut() {
 //             let scope = scope.into();
 //             let name = name.into();
-//             let label = format!("/org/inexor/commands/{scope}/{name}");
+//             let label = format!("/io/reactive-graph/commands/{scope}/{name}");
 //             builder.property(COMMAND_NAMESPACE, json!(scope));
 //             builder.property(COMMAND_NAME, json!(name));
 //             builder.component(&COMPONENT_LABELED.clone());
@@ -587,7 +586,7 @@ mod tests {
 //             .ty(&EntityTypeId::new_from_type("testing", "concat"))
 //             .scope("testing")
 //             .name("concat")
-//             .label("/org/inexor/test/concat")
+//             .label("/io/reactive-graph/test/concat")
 //             .help("Concatenates two strings")
 //             // Additional components
 //             .component(&ComponentTypeId::new_from_type("test", "test"))
@@ -658,7 +657,7 @@ mod tests {
 //         assert_eq!("testing", command.namespace().expect("No command namespace"));
 //         assert_eq!("test", command.name().expect("No command name"));
 //         // Automatically generated label
-//         assert_eq!("/org/inexor/commands/testing/test", command.label().expect("No label"));
+//         assert_eq!("/io/reactive-graph/commands/testing/test", command.label().expect("No label"));
 //         assert_eq!("A test command", command.help().expect("No help text"));
 //     }
 //
@@ -693,7 +692,7 @@ mod tests {
 //         assert_eq!("testing", command.namespace().expect("No command namespace"));
 //         assert_eq!("add", command.name().expect("No command name"));
 //         // Automatically generated label
-//         assert_eq!("/org/inexor/commands/testing/add", command.label().expect("No label"));
+//         assert_eq!("/io/reactive-graph/commands/testing/add", command.label().expect("No label"));
 //         assert_eq!("Adds two numbers", command.help().expect("No help text"));
 //         let mut exec_args = HashMap::new();
 //         exec_args.insert(String::from("lhs"), json!(1));
