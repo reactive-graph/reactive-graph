@@ -3,9 +3,9 @@ projects:
     schema: ./schema.graphql
     extensions:
       endpoints:
-        Inexor GraphQL http:
+        ReactiveGraph@http:
           url: http://localhost:31415/graphql
           introspect: true
-        Inexor GraphQL https:
+        ReactiveGraph@https:
           url: https://localhost:31415/graphql
           introspect: true

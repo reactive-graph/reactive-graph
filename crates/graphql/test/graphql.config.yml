@@ -3,9 +3,9 @@ projects:
     schema: ./schema.graphql
     extensions:
       endpoints:
-        Runtime http:
+        ReactiveGraph@http:
           url: http://localhost:31415/graphql
           introspect: true
-        Runtime https:
+        ReactiveGraph@https:
           url: https://localhost:31415/graphql
           introspect: true
