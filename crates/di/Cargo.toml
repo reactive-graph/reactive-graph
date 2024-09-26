@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-di"
-description = "Inexor - Reactive Graph Flow - DI"
+description = "Reactive Graph - DI"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-runtime-graphql-web"
-description = "Inexor - Reactive Graph Flow - Runtime - GraphQL - Web"
+description = "Reactive Graph - Runtime - GraphQL - Web"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

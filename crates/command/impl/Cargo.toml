@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-command-impl"
-description = "Inexor - Reactive Graph Flow - Command - Implementation"
+description = "Reactive Graph - Command - Implementation"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

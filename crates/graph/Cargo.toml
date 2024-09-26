@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-graph"
-description = "Inexor - Reactive Graph Flow - Core - Model"
+description = "Reactive Graph - Core - Model"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

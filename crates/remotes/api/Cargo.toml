@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-remotes-api"
-description = "Inexor - Reactive Graph Flow - Remotes - API"
+description = "Reactive Graph - Remotes - API"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

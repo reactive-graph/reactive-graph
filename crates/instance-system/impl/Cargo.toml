@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-instance-system-impl"
-description = "Inexor - Reactive Graph Flow - Instance System - Implementation"
+description = "Reactive Graph - Instance System - Implementation"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

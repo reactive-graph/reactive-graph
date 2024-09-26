@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-dynamic-graph-model"
-description = "Inexor - Reactive Graph Flow - Dynamic Graph - Model"
+description = "Reactive Graph - Dynamic Graph - Model"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

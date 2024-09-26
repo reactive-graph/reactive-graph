@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-graphql-impl"
-description = "Inexor - Reactive Graph Flow - GraphQL - Service - Implementation"
+description = "Reactive Graph - GraphQL - Service - Implementation"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

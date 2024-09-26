@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-client"
-description = "Inexor - Reactive Graph Flow - Client"
+description = "Reactive Graph - Client"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

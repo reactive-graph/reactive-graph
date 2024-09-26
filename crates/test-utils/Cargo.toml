@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-test-utils"
-description = "Inexor - Reactive Graph Flow - Test Utils"
+description = "Reactive Graph - Test Utils"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

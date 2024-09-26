@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-table-model"
-description = "Reactive Graph Flow"
+description = "Reactive Graph - Table Model"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
