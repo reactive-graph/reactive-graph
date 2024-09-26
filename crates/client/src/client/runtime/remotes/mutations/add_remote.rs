@@ -25,7 +25,7 @@ pub mod mutations {
 
 #[cfg(test)]
 pub mod test {
-    use crate::InexorRgfClient;
+    use crate::ReactiveGraphClient;
     use reactive_graph_runtime_api::Runtime;
     use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
@@ -52,7 +52,7 @@ pub mod test {
                 assert_eq!(remotes_manager.get_all().len(), 0);
 
                 // Client: Connect to self and get all remotes
-                let client = InexorRgfClient::new(rt_address.clone()).expect("Cannot create client");
+                let client = ReactiveGraphClient::new(rt_address.clone()).expect("Cannot create client");
                 let remote = client.runtime().remotes().add(&rt_address).await.expect("Failed to add remote");
 
                 // Check that there is a new remote

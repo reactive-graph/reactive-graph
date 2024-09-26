@@ -4,7 +4,7 @@ use crate::client::plugin::api::Plugins;
 use crate::client::runtime::instance::api::Instance;
 use crate::client::runtime::remotes::api::Remotes;
 use crate::client::runtime::shutdown::api::Shutdown;
-use crate::client::InexorRgfClient;
+use crate::client::ReactiveGraphClient;
 use command::api::Command;
 
 pub mod command;
@@ -13,11 +13,11 @@ pub mod remotes;
 pub mod shutdown;
 
 pub struct Runtime {
-    client: Arc<InexorRgfClient>,
+    client: Arc<ReactiveGraphClient>,
 }
 
 impl Runtime {
-    pub fn new(client: Arc<InexorRgfClient>) -> Self {
+    pub fn new(client: Arc<ReactiveGraphClient>) -> Self {
         Self { client }
     }
 

@@ -9,7 +9,7 @@ use crate::cli::types::property_type::output_format::PropertyTypesOutputFormatWr
 use crate::cli::types::relations::args::RelationTypesArgs;
 use crate::cli::types::relations::commands::RelationTypesCommands;
 use crate::cli::types::relations::output_format::RelationTypesOutputFormatWrapper;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_graph::NamespacedTypeContainer;
 use std::sync::Arc;
 
@@ -17,7 +17,7 @@ pub(crate) mod args;
 pub(crate) mod commands;
 pub(crate) mod output_format;
 
-pub(crate) async fn relation_types(client: &Arc<InexorRgfClient>, relation_type_args: RelationTypesArgs) -> CommandResult {
+pub(crate) async fn relation_types(client: &Arc<ReactiveGraphClient>, relation_type_args: RelationTypesArgs) -> CommandResult {
     let output_format_wrapper: RelationTypesOutputFormatWrapper = relation_type_args.output_format.clone().into();
     let Some(command) = relation_type_args.commands else {
         return Err(CommandError::MissingSubCommand);

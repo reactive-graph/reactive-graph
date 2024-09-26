@@ -12,9 +12,9 @@ use crate::cli::system::shutdown::shutdown;
 use crate::cli::types::components::components;
 use crate::cli::types::entities::entity_types;
 use crate::cli::types::relations::relation_types;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 
-pub(crate) async fn handle_command(client: &Arc<InexorRgfClient>, command: ClientCommands) -> CommandResult {
+pub(crate) async fn handle_command(client: &Arc<ReactiveGraphClient>, command: ClientCommands) -> CommandResult {
     match command {
         // System
         ClientCommands::ExecuteCommand(args) => execute_command(client, args).await,

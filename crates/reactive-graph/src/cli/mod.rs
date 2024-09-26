@@ -2,7 +2,7 @@ use std::process::exit;
 
 use colored::Colorize;
 
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 
 use crate::cli::args::ClientArgs;
 use crate::cli::handler::handle_command;
@@ -20,7 +20,7 @@ pub(crate) mod system;
 pub(crate) mod types;
 
 pub(crate) async fn client(client_args: ClientArgs) {
-    let client = match InexorRgfClient::new(&client_args) {
+    let client = match ReactiveGraphClient::new(&client_args) {
         Ok(client) => client,
         Err(e) => {
             eprintln!("{}: {}", "Failed to create client".red(), e);

@@ -1,7 +1,7 @@
 use crate::client::types::components::api::Components;
 use crate::client::types::entities::api::EntityTypes;
 use crate::client::types::relations::api::RelationTypes;
-use crate::client::InexorRgfClient;
+use crate::client::ReactiveGraphClient;
 use std::sync::Arc;
 
 pub mod components;
@@ -11,11 +11,11 @@ pub mod properties;
 pub mod relations;
 
 pub struct Types {
-    client: Arc<InexorRgfClient>,
+    client: Arc<ReactiveGraphClient>,
 }
 
 impl Types {
-    pub fn new(client: Arc<InexorRgfClient>) -> Self {
+    pub fn new(client: Arc<ReactiveGraphClient>) -> Self {
         Self { client }
     }
 

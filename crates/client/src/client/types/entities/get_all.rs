@@ -49,39 +49,3 @@ pub mod queries {
         }
     }
 }
-//
-// pub mod api {
-//     use std::sync::Arc;
-//
-//     use cynic::http::ReqwestExt;
-//
-//     use crate::client::InexorRgfClient;
-//     use crate::client::InexorRgfClientExecutionError;
-//     use crate::schema_graphql::types::entity_type::EntityTypes as EntityTypesVec;
-//     use crate::types::entity_types::get_all::queries::get_all_entity_types_query;
-//     use reactive_graph_graph::EntityType;
-//
-//     pub struct EntityTypes {
-//         client: Arc<InexorRgfClient>,
-//     }
-//
-//     impl EntityTypes {
-//         pub fn new(client: Arc<InexorRgfClient>) -> Self {
-//             Self { client }
-//         }
-//
-//         pub async fn get_all_entity_types(&self) -> Result<Option<Vec<EntityType>>, InexorRgfClientExecutionError> {
-//             let entity_types = self
-//                 .client
-//                 .client
-//                 .post(self.client.url_graphql())
-//                 .run_graphql(get_all_entity_types_query())
-//                 .await
-//                 .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
-//                 .data
-//                 .map(|data| EntityTypesVec(data.types.entities))
-//                 .map(From::from);
-//             Ok(entity_types)
-//         }
-//     }
-// }

@@ -22,49 +22,49 @@ pub mod runtime;
 pub mod types;
 
 #[derive(Debug)]
-pub enum InexorRgfClientError {
+pub enum ReactiveGraphClientError {
     InvalidBearer(InvalidHeaderValue),
     ClientCreationError(Error),
 }
 
-impl Display for InexorRgfClientError {
+impl Display for ReactiveGraphClientError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            InexorRgfClientError::InvalidBearer(e) => {
+            ReactiveGraphClientError::InvalidBearer(e) => {
                 writeln!(f, "{}", e)
             }
-            InexorRgfClientError::ClientCreationError(e) => {
+            ReactiveGraphClientError::ClientCreationError(e) => {
                 writeln!(f, "{}", e)
             }
         }
     }
 }
 
-impl std::error::Error for InexorRgfClientError {}
+impl std::error::Error for ReactiveGraphClientError {}
 
 #[derive(Debug)]
-pub enum InexorRgfClientExecutionError {
+pub enum ReactiveGraphClientExecutionError {
     FailedToSendRequest(CynicReqwestError),
     FailedToParseResponse(Error),
     GraphQlError(Vec<GraphQlError>),
 }
 
-impl From<CynicReqwestError> for InexorRgfClientExecutionError {
+impl From<CynicReqwestError> for ReactiveGraphClientExecutionError {
     fn from(e: CynicReqwestError) -> Self {
-        InexorRgfClientExecutionError::FailedToSendRequest(e)
+        ReactiveGraphClientExecutionError::FailedToSendRequest(e)
     }
 }
 
-impl Display for InexorRgfClientExecutionError {
+impl Display for ReactiveGraphClientExecutionError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            InexorRgfClientExecutionError::FailedToSendRequest(e) => {
+            ReactiveGraphClientExecutionError::FailedToSendRequest(e) => {
                 writeln!(f, "Failed to send request:\n{e:?}")
             }
-            InexorRgfClientExecutionError::FailedToParseResponse(e) => {
+            ReactiveGraphClientExecutionError::FailedToParseResponse(e) => {
                 writeln!(f, "Failed to parse response:\n{e:?}")
             }
-            InexorRgfClientExecutionError::GraphQlError(e) => {
+            ReactiveGraphClientExecutionError::GraphQlError(e) => {
                 let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{}", graphql_error)).collect();
                 writeln!(f, "The response returned errors:\n{}", graphql_errors.join("\n"))
             }
@@ -72,26 +72,26 @@ impl Display for InexorRgfClientExecutionError {
     }
 }
 
-impl std::error::Error for InexorRgfClientExecutionError {}
+impl std::error::Error for ReactiveGraphClientExecutionError {}
 
-pub struct InexorRgfClient {
+pub struct ReactiveGraphClient {
     remote: InstanceAddress,
     pub client: Client,
 }
 
-impl InexorRgfClient {
-    pub fn new_default() -> Result<Arc<Self>, InexorRgfClientError> {
-        InexorRgfClient::new(InstanceAddress::default())
+impl ReactiveGraphClient {
+    pub fn new_default() -> Result<Arc<Self>, ReactiveGraphClientError> {
+        ReactiveGraphClient::new(InstanceAddress::default())
     }
 
-    pub fn new<A: Into<InstanceAddress>>(remote: A) -> Result<Arc<Self>, InexorRgfClientError> {
+    pub fn new<A: Into<InstanceAddress>>(remote: A) -> Result<Arc<Self>, ReactiveGraphClientError> {
         let remote = remote.into();
         let mut client_builder = Client::builder().user_agent(remote.user_agent.clone());
         if let Some(bearer) = remote.bearer.clone() {
-            let header_value = reqwest::header::HeaderValue::from_str(&format!("Bearer {}", bearer)).map_err(InexorRgfClientError::InvalidBearer)?;
+            let header_value = reqwest::header::HeaderValue::from_str(&format!("Bearer {}", bearer)).map_err(ReactiveGraphClientError::InvalidBearer)?;
             client_builder = client_builder.default_headers(std::iter::once((reqwest::header::AUTHORIZATION, header_value)).collect());
         }
-        let client = client_builder.build().map_err(InexorRgfClientError::ClientCreationError)?;
+        let client = client_builder.build().map_err(ReactiveGraphClientError::ClientCreationError)?;
         Ok(Arc::new(Self { remote, client }))
     }
 
@@ -141,7 +141,7 @@ impl InexorRgfClient {
         &self,
         operation: Operation<ResponseData, Vars>,
         extractor: impl FnOnce(ResponseData) -> ResponseType,
-    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    ) -> Result<ResponseType, ReactiveGraphClientExecutionError>
     where
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
@@ -154,7 +154,7 @@ impl InexorRgfClient {
         &self,
         operation: Operation<ResponseData, Vars>,
         extractor: impl FnOnce(ResponseData) -> ResponseType,
-    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    ) -> Result<ResponseType, ReactiveGraphClientExecutionError>
     where
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
@@ -167,7 +167,7 @@ impl InexorRgfClient {
         &self,
         operation: Operation<ResponseData, Vars>,
         extractor: impl FnOnce(ResponseData) -> ResponseType,
-    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    ) -> Result<ResponseType, ReactiveGraphClientExecutionError>
     where
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
@@ -180,7 +180,7 @@ impl InexorRgfClient {
         &self,
         operation: Operation<ResponseData, Vars>,
         extractor: impl FnOnce(ResponseData) -> ResponseType,
-    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    ) -> Result<ResponseType, ReactiveGraphClientExecutionError>
     where
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
@@ -194,7 +194,7 @@ impl InexorRgfClient {
         endpoint: String,
         operation: Operation<ResponseData, Vars>,
         extractor: impl FnOnce(ResponseData) -> ResponseType,
-    ) -> Result<ResponseType, InexorRgfClientExecutionError>
+    ) -> Result<ResponseType, ReactiveGraphClientExecutionError>
     where
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
@@ -208,6 +208,6 @@ impl InexorRgfClient {
         if let Some(data) = response.data.map(extractor) {
             return Ok(data);
         }
-        Err(InexorRgfClientExecutionError::GraphQlError(response.errors.unwrap_or(vec![])))
+        Err(ReactiveGraphClientExecutionError::GraphQlError(response.errors.unwrap_or(vec![])))
     }
 }

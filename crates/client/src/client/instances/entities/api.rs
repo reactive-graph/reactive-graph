@@ -11,8 +11,8 @@ use crate::client::instances::entities::queries::get_by_id::queries::get_entity_
 use crate::client::instances::entities::queries::get_by_label::queries::get_entity_instance_by_label;
 use crate::client::instances::entities::queries::search::queries::search;
 use crate::client::instances::entities::queries::search::queries::SearchEntityInstancesVariables;
-use crate::client::InexorRgfClient;
-use crate::client::InexorRgfClientExecutionError;
+use crate::client::ReactiveGraphClient;
+use crate::client::ReactiveGraphClientExecutionError;
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::EntityInstance;
@@ -23,29 +23,29 @@ use serde_json::Value;
 use uuid::Uuid;
 
 pub struct EntityInstances {
-    client: Arc<InexorRgfClient>,
+    client: Arc<ReactiveGraphClient>,
 }
 
 impl EntityInstances {
-    pub fn new(client: Arc<InexorRgfClient>) -> Self {
+    pub fn new(client: Arc<ReactiveGraphClient>) -> Self {
         Self { client }
     }
 
-    pub async fn search(&self, search_query: SearchEntityInstancesVariables) -> Result<Option<Vec<EntityInstance>>, InexorRgfClientExecutionError> {
+    pub async fn search(&self, search_query: SearchEntityInstancesVariables) -> Result<Option<Vec<EntityInstance>>, ReactiveGraphClientExecutionError> {
         let entity_instances = self
             .client
             .client
             .post(self.client.url_graphql())
             .run_graphql(search(search_query))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| crate::schema_graphql::instances::entity_instance::EntityInstances(data.instances.entities))
             .map(From::from);
         Ok(entity_instances)
     }
 
-    pub async fn get_entity_instance_by_id<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    pub async fn get_entity_instance_by_id<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let entity_instance = self
             .client
@@ -53,14 +53,14 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(get_entity_instance_by_id(id))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.entities.first().cloned())
             .map(From::from);
         Ok(entity_instance)
     }
 
-    pub async fn get_entity_instance_by_label<L: Into<String>>(&self, label: L) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    pub async fn get_entity_instance_by_label<L: Into<String>>(&self, label: L) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let label = label.into();
         let entity_instance = self
             .client
@@ -68,7 +68,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(get_entity_instance_by_label(label))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .and_then(|data| data.instances.entities.first().cloned())
             .map(From::from);
@@ -80,7 +80,7 @@ impl EntityInstances {
         id: ID,
         name: S,
         value: V,
-    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let name = name.into();
         let value = value.into();
@@ -90,7 +90,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(set_property(id, name, value))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -101,7 +101,7 @@ impl EntityInstances {
         &self,
         id: ID,
         property_type: PT,
-    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let property_type = property_type.into();
         let entity_instance = self
@@ -110,7 +110,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(add_property(id, property_type))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -121,7 +121,7 @@ impl EntityInstances {
         &self,
         id: ID,
         property_name: S,
-    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let property_name = property_name.into();
         let entity_instance = self
@@ -130,7 +130,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(remove_property(id, property_name))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -141,7 +141,7 @@ impl EntityInstances {
         &self,
         id: ID,
         component_ty: C,
-    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let component_ty = component_ty.into();
         let entity_instance = self
@@ -150,7 +150,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(add_component(id, component_ty))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -161,7 +161,7 @@ impl EntityInstances {
         &self,
         id: ID,
         component_ty: C,
-    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let component_ty = component_ty.into();
         let entity_instance = self
@@ -170,7 +170,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(remove_component(id, component_ty))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -183,7 +183,7 @@ impl EntityInstances {
         id: Option<ID>,
         description: Option<String>,
         properties: PropertyInstances,
-    ) -> Result<Option<EntityInstance>, InexorRgfClientExecutionError> {
+    ) -> Result<Option<EntityInstance>, ReactiveGraphClientExecutionError> {
         let ty = ty.into();
         let id = id.map(|id| id.into());
         let entity_instance = self
@@ -192,14 +192,14 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(create(ty, id, description, properties))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.create)
             .map(From::from);
         Ok(entity_instance)
     }
 
-    pub async fn delete_entity_instance<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<bool>, InexorRgfClientExecutionError> {
+    pub async fn delete_entity_instance<ID: Into<Uuid>>(&self, id: ID) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let id = id.into();
         let entity_instance = self
             .client
@@ -207,7 +207,7 @@ impl EntityInstances {
             .post(self.client.url_graphql())
             .run_graphql(delete_entity_instance_mutation(id))
             .await
-            .map_err(InexorRgfClientExecutionError::FailedToSendRequest)?
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
             .map(|data| data.instances.entities.delete)
             .map(From::from);

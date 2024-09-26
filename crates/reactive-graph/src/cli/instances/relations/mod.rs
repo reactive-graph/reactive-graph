@@ -6,7 +6,7 @@ use crate::cli::instances::relations::commands::RelationInstancesCommands;
 use crate::cli::instances::relations::output_format::RelationInstancesOutputFormatWrapper;
 use crate::cli::result::CommandResult;
 use crate::cli::types::components::output_format::ComponentTypeIdsOutputFormatWrapper;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_graph::PropertyType;
@@ -17,7 +17,7 @@ pub(crate) mod args;
 pub(crate) mod commands;
 pub(crate) mod output_format;
 
-pub(crate) async fn relation_instances(client: &Arc<InexorRgfClient>, relation_instances_args: RelationInstancesArgs) -> CommandResult {
+pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relation_instances_args: RelationInstancesArgs) -> CommandResult {
     let output_format_wrapper: RelationInstancesOutputFormatWrapper = relation_instances_args.output_format.clone().into();
     let Some(command) = relation_instances_args.commands else {
         return Err(CommandError::MissingSubCommand);

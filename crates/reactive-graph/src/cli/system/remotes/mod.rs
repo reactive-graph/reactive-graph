@@ -5,13 +5,13 @@ use crate::cli::error::CommandError::NoChange;
 use crate::cli::result::CommandResult;
 use crate::cli::system::remotes::args::RemotesArgs;
 use crate::cli::system::remotes::commands::RemotesCommands;
-use reactive_graph_client::InexorRgfClient;
+use reactive_graph_client::ReactiveGraphClient;
 use reactive_graph_table_model::system::instance::InstanceInfos;
 
 pub(crate) mod args;
 pub(crate) mod commands;
 
-pub(crate) async fn remotes(client: &Arc<InexorRgfClient>, args: RemotesArgs) -> CommandResult {
+pub(crate) async fn remotes(client: &Arc<ReactiveGraphClient>, args: RemotesArgs) -> CommandResult {
     let Some(command) = args.commands else {
         return Err(CommandError::MissingSubCommand);
     };

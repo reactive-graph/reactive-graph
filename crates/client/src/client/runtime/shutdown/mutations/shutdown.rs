@@ -20,7 +20,7 @@ pub mod test {
     use reactive_graph_runtime_api::Runtime;
     use reactive_graph_runtime_impl::RuntimeBuilder;
 
-    use crate::InexorRgfClient;
+    use crate::ReactiveGraphClient;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_shutdown() {
@@ -43,7 +43,7 @@ pub mod test {
 
                 let address = runtime.get_instance_service().get_instance_info().address();
 
-                let client = InexorRgfClient::new(address).expect("Cannot create client");
+                let client = ReactiveGraphClient::new(address).expect("Cannot create client");
                 let result = client.runtime().shutdown().shutdown().await.expect("Failed to send shutdown command");
                 assert!(result);
 

@@ -8,11 +8,11 @@ pub mod instances;
 // pub mod system;
 pub mod types;
 
-pub struct InexorMutation;
+pub struct ReactiveGraphMutation;
 
 /// Mutations for the type system, the instances and the flows.
 #[Object(name = "Mutation")]
-impl InexorMutation {
+impl ReactiveGraphMutation {
     /// Mutations for types (components, entity types, relation types).
     async fn types(&self) -> MutationTypes {
         MutationTypes
