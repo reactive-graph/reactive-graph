@@ -3,9 +3,9 @@ projects:
     schema: ./schema.graphql
     extensions:
       endpoints:
-        Runtime http:
+        DynamicGraph@http:
           url: http://localhost:31415/dynamic_graph
           introspect: true
-        Runtime https:
+        DynamicGraph@https:
           url: https://localhost:31415/dynamic_graph
           introspect: true
