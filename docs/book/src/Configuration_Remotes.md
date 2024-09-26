@@ -11,10 +11,10 @@ default port `31415` is used.
 
 ### Examples
 
-1. https://demo.rgf.app/graphql
+1. https://demo.reactive-graph.io/graphql
     ```toml
     [[remotes]]
-    hostname = "demo.rgf.app"
+    hostname = "demo.reactive-graph.io"
     port = 443
     secure = true
     ```
