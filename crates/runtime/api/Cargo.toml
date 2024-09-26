@@ -14,13 +14,6 @@ keywords = [
     "entity-system",
     "ecs"
 ]
-categories = [
-    "desktop-automation",
-    "entity-component-system",
-    "game-engine",
-    "home-automation",
-    "iot"
-]
 
 [dependencies]
 async-trait = { workspace = true }
