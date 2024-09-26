@@ -9,15 +9,7 @@ repository.workspace = true
 readme = "../../../README.md"
 
 [dependencies]
-#async-trait = { workspace = true }
-#dashmap = { workspace = true }
-#serde = { workspace = true, features = ["derive"] }
-#springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
-#strum_macros = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
-
-#reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
-#reactive-graph-plugin-api = { version = "0.10.0", path = "../../api" }
 
 [lib]
 crate-type = ["lib"]
