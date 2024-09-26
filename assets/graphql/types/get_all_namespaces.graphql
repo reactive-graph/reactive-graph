@@ -1,5 +1,0 @@
-query GetAllNamespaces {
-  types {
-    namespaces
-  }
-}

@@ -1,9 +1,0 @@
-query listEntityBehaviourInstances {
-  behaviours {
-    entities {
-      namespace
-      name
-      instances { id }
-    }
-  }
-}
