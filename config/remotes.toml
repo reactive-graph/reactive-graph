@@ -1,17 +1,4 @@
 [[remotes]]
-hostname = "demo.rgf.app"
+hostname = "demo.reactive-graph.io"
 port = 443
 secure = true
-
-[[remotes]]
-hostname = "localhost"
-port = 31416
-userAgent = "Noob Agent"
-
-[[remotes]]
-hostname = "localhost"
-port = 31417
-
-[[remotes]]
-hostname = "localhost"
-port = 31418
