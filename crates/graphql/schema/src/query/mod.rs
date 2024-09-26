@@ -7,7 +7,6 @@ pub use types::*;
 
 pub mod behaviours;
 pub mod instances;
-// pub mod system;
 pub mod types;
 
 pub struct ReactiveGraphQuery;
@@ -30,10 +29,6 @@ impl ReactiveGraphQuery {
     async fn behaviours(&self) -> Behaviours {
         Behaviours
     }
-
-    // async fn system(&self) -> System {
-    //     System
-    // }
 
     async fn random_uuid(&self, _context: &Context<'_>) -> String {
         Uuid::new_v4().to_string()
