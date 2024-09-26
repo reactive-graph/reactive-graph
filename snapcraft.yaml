@@ -23,5 +23,5 @@ apps:
   reactive-graph:
     command: bin/reactive-graph
     environment:
-      INEXOR_RGF_PLUGINS: $SNAP/plugins
+      REACTIVE_GRAPH_PLUGINS: $SNAP/plugins
     plugs: [ home ]
