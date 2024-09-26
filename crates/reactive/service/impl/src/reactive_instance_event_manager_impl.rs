@@ -56,27 +56,27 @@ impl ReactiveInstanceEventManagerImpl {
     pub(crate) fn create_event_instances(&self) {
         self.event_instances.insert(
             ReactiveInstanceEventTypes::EntityInstanceCreated,
-            self.create_event_instance("/org/inexor/event/instance/entity/created"),
+            self.create_event_instance("/io/reactive-graph/event/instance/entity/created"),
         );
         self.event_instances.insert(
             ReactiveInstanceEventTypes::EntityInstanceDeleted,
-            self.create_event_instance("/org/inexor/event/instance/entity/deleted"),
+            self.create_event_instance("/io/reactive-graph/event/instance/entity/deleted"),
         );
         self.event_instances.insert(
             ReactiveInstanceEventTypes::RelationInstanceCreated,
-            self.create_event_instance("/org/inexor/event/instance/relation/created"),
+            self.create_event_instance("/io/reactive-graph/event/instance/relation/created"),
         );
         self.event_instances.insert(
             ReactiveInstanceEventTypes::RelationInstanceDeleted,
-            self.create_event_instance("/org/inexor/event/instance/relation/deleted"),
+            self.create_event_instance("/io/reactive-graph/event/instance/relation/deleted"),
         );
         self.event_instances.insert(
             ReactiveInstanceEventTypes::FlowInstanceCreated,
-            self.create_event_instance("/org/inexor/event/instance/flow/created"),
+            self.create_event_instance("/io/reactive-graph/event/instance/flow/created"),
         );
         self.event_instances.insert(
             ReactiveInstanceEventTypes::FlowInstanceDeleted,
-            self.create_event_instance("/org/inexor/event/instance/flow/deleted"),
+            self.create_event_instance("/io/reactive-graph/event/instance/flow/deleted"),
         );
     }
 

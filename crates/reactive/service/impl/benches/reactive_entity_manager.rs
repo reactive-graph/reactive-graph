@@ -71,7 +71,7 @@ fn get_reactive_entity_by_label(criterion: &mut Criterion) {
 
         let entity_type = entity_type_manager.register(entity_type).expect("Failed to register entity type");
 
-        let label = String::from("/org/inexor/test");
+        let label = String::from("/io/reactive-graph/test");
 
         let reactive_entity = ReactiveEntity::builder_from_entity_type(&entity_type).build();
         reactive_entity.set("label", json!(label.clone()));

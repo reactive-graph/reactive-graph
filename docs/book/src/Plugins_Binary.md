@@ -49,10 +49,10 @@ Download binary resources via HTTP.
 
 ### Examples
 
-| Request                                                            | Entity Instance                           | Property Name |
-|--------------------------------------------------------------------|-------------------------------------------|---------------|
-| `GET /binary/entity/dce4bd25-7b25-4a6a-8567-5429a2b3a101/data_url` | id=`dce4bd25-7b25-4a6a-8567-5429a2b3a101` | `data_url`    |
-| `GET /binary/entity/label/org/inexor/logo/data_url`                | label=`/org/inexor/logo/{:property}`      | `data_url`    |
+| Request                                                            | Entity Instance                             | Property Name |
+|--------------------------------------------------------------------|---------------------------------------------|---------------|
+| `GET /binary/entity/dce4bd25-7b25-4a6a-8567-5429a2b3a101/data_url` | id=`dce4bd25-7b25-4a6a-8567-5429a2b3a101`   | `data_url`    |
+| `GET /binary/entity/label/io/reactive-graph/logo/data_url`         | label=`/io/reactive-graph/logo/{:property}` | `data_url`    |
 
 ## Platform Compatibility
 

@@ -14,7 +14,7 @@ mutation {
   instances {
     entities {
       update(
-        label: "/org/inexor/commands/core/shutdown"
+        label: "/io/reactive-graph/commands/core/shutdown"
         properties: [
           {
             name: "shutdown"

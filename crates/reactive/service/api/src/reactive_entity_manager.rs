@@ -34,8 +34,8 @@ pub trait ReactiveEntityManager: Send + Sync + Lifecycle {
     fn get_by_label(&self, label: &str) -> Option<ReactiveEntity>;
 
     /// Returns the reactive entity instance and the matched path parameters that matches the given label or None.
-    /// /org/inexor/local/users/:user_id
-    /// /org/inexor/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
+    /// /io/reactive-graph/local/users/:user_id
+    /// /io/reactive-graph/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
     fn get_by_label_with_params(&self, label: &str) -> Option<(ReactiveEntity, HashMap<String, String>)>;
 
     /// Returns all registered reactive entity instances.

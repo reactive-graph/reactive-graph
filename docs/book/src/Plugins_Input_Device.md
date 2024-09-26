@@ -40,7 +40,7 @@ UUID (by device name and key/led/... id) or a stable human-readable label.
 ```graphql
 query getKeyStateF7 {
   instances {
-    entities(label: "/org/inexor/input/any_device/key/key_f7") {
+    entities(label: "/io/reactive-graph/input/any_device/key/key_f7") {
       label
       properties(name: "key_down") {
         value
@@ -54,10 +54,10 @@ query getKeyStateF7 {
 
 Each event is forwarded twice:
 
-| Device    | Event  | Entity Instance Label                                                                                    |
-|-----------|--------|----------------------------------------------------------------------------------------------------------|
-| keyboard1 | key_f7 | <ul><li>/org/inexor/input/keyboard1/key/key_f7</li><li>/org/inexor/input/any_device/key/key_f7</li></ul> |
-| keyboard2 | key_f7 | <ul><li>/org/inexor/input/keyboard1/key/key_f7</li><li>/org/inexor/input/any_device/key/key_f7</li></ul> |
+| Device    | Event  | Entity Instance Label                                                                                                  |
+|-----------|--------|------------------------------------------------------------------------------------------------------------------------|
+| keyboard1 | key_f7 | <ul><li>/io/reactive-graph/input/keyboard1/key/key_f7</li><li>/io/reactive-graph/input/any_device/key/key_f7</li></ul> |
+| keyboard2 | key_f7 | <ul><li>/io/reactive-graph/input/keyboard1/key/key_f7</li><li>/io/reactive-graph/input/any_device/key/key_f7</li></ul> |
 
 This allows you to address a key/led/... event on a specific device or the key/led/... event on all devices.
 
