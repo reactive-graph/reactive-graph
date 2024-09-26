@@ -1,9 +1,0 @@
-query GetSnakeCase {
-  string {
-    snakeCase {
-      id
-      lhs
-      result
-    }
-  }
-}
