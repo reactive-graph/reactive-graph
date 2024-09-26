@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-type-system-derive"
-description = "Inexor - Reactive Graph Flow - Type System - Derive Macros"
+description = "Reactive Graph - Type System - Derive Macros"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

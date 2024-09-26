@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-dynamic-graph-test"
-description = "Inexor - Reactive Graph Flow - Dynamic Graph - Service - Integration Test"
+description = "Reactive Graph - Dynamic Graph - Service - Integration Test"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-behaviour-service-api"
-description = "Inexor - Reactive Graph Flow - Behaviour - Service - API"
+description = "Reactive Graph - Behaviour - Service - API"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-runtime-api"
-description = "Inexor - Reactive Graph Flow - Runtime - API"
+description = "Reactive Graph - Runtime - API"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

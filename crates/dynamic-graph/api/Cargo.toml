@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-dynamic-graph-api"
-description = "Inexor - Reactive Graph Flow - Dynamic Graph - API"
+description = "Reactive Graph - Dynamic Graph - API"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

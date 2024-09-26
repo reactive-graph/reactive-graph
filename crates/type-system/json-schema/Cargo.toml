@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-type-system-json-schema"
-description = "Inexor - Reactive Graph Flow - Type System - JSON Schema"
+description = "Reactive Graph - Type System - JSON Schema"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

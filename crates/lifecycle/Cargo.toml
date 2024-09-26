@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-lifecycle"
-description = "Inexor - Reactive Graph Flow - Lifecycle"
+description = "Reactive Graph - Lifecycle"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-graphql-schema"
-description = "Inexor - Reactive Graph Flow - GraphQL - Schema"
+description = "Reactive Graph - GraphQL - Schema"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

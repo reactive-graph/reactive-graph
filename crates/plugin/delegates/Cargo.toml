@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph-plugin-delegates"
-description = "Inexor - Reactive Graph Flow - Plugin - Delegates"
+description = "Reactive Graph - Plugin - Delegates"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
