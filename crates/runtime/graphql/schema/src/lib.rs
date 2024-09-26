@@ -10,5 +10,5 @@ use crate::query::RuntimeQuery;
 pub mod instance_address;
 pub mod properties;
 
-/// Inexor GraphQL Interface
+/// GraphQL Schema for the Reactive Graph Runtime
 pub type RuntimeSchema = Schema<RuntimeQuery, RuntimeMutation, EmptySubscription>;

@@ -8,10 +8,10 @@ use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 use async_graphql_actix_web::GraphQLSubscription;
 use log::trace;
-use reactive_graph_graphql_schema::InexorSchema;
+use reactive_graph_graphql_schema::ReactiveGraphSchema;
 
 #[post("/graphql")]
-pub async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequest) -> GraphQLResponse {
+pub async fn query_graphql(schema: web::Data<ReactiveGraphSchema>, request: GraphQLRequest) -> GraphQLResponse {
     let request = request.into_inner();
     trace!("{request:?}");
     let response = schema.execute(request).await;
@@ -19,7 +19,7 @@ pub async fn query_graphql(schema: web::Data<InexorSchema>, request: GraphQLRequ
     response.into()
 }
 
-pub async fn subscription_websocket(schema: web::Data<InexorSchema>, request: HttpRequest, payload: web::Payload) -> Result<HttpResponse> {
+pub async fn subscription_websocket(schema: web::Data<ReactiveGraphSchema>, request: HttpRequest, payload: web::Payload) -> Result<HttpResponse> {
     // let mut data = Data::default();
     // if let Some(token) = get_token_from_headers(request.headers()) {
     //     data.insert(token);

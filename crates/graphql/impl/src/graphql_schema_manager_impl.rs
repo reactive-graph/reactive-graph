@@ -15,10 +15,10 @@ use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_graphql_api::GraphQLSchemaManager;
 use reactive_graph_graphql_schema::directives;
-use reactive_graph_graphql_schema::InexorMutation;
-use reactive_graph_graphql_schema::InexorQuery;
-use reactive_graph_graphql_schema::InexorSchema;
-use reactive_graph_graphql_schema::InexorSubscription;
+use reactive_graph_graphql_schema::ReactiveGraphMutation;
+use reactive_graph_graphql_schema::ReactiveGraphQuery;
+use reactive_graph_graphql_schema::ReactiveGraphSchema;
+use reactive_graph_graphql_schema::ReactiveGraphSubscription;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;
@@ -69,8 +69,8 @@ impl GraphQLSchemaManagerImpl {}
 #[async_trait]
 #[component_alias]
 impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
-    fn get_schema(&self) -> InexorSchema {
-        Schema::build(InexorQuery, InexorMutation, InexorSubscription)
+    fn get_schema(&self) -> ReactiveGraphSchema {
+        Schema::build(ReactiveGraphQuery, ReactiveGraphMutation, ReactiveGraphSubscription)
             .data(self.component_manager.clone())
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())

@@ -22,11 +22,11 @@ use reactive_graph_reactive_service_api::ReactiveRelationManager;
 pub mod entity_instance;
 pub mod relation_instance;
 
-pub struct InexorSubscription;
+pub struct ReactiveGraphSubscription;
 
 /// Subscriptions for the reactive property instances.
 #[Subscription(name = "Subscription")]
-impl InexorSubscription {
+impl ReactiveGraphSubscription {
     async fn entity(
         &self,
         context: &Context<'_>,
