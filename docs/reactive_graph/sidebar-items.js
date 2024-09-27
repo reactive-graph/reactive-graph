@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["after_init","main","post_fork_child","post_fork_parent","tokio_main"],"mod":["cli","server"],"static":["ALLOCATOR"]};
+window.SIDEBAR_ITEMS = {"fn":["after_init","main","post_fork_child","post_fork_parent","tokio_main"],"mod":["cli","completions","manpages","server"],"static":["ALLOCATOR"]};

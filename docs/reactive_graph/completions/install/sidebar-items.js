@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["InstallShellCompletionError"],"fn":["install_shell_completions"]};

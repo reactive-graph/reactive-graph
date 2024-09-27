@@ -63,6 +63,8 @@
 <a href="#63" id="63">63</a>
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_runtime.graphql"#</span>, module = <span class="string">"crate::schema_runtime::schema"</span>)]
 </span><span class="kw">pub mod </span>mutations {
     <span class="attr">#[derive(Debug, cynic::QueryFragment)]
@@ -77,13 +79,13 @@
     }
 }
 
-<span class="attr">#[cfg(test)]
+<span class="attr">#[cfg(all(test, feature = <span class="string">"integration-tests"</span>))]
 </span><span class="kw">pub mod </span>test {
-    <span class="kw">use </span>std::sync::Arc;
-    <span class="kw">use </span>std::time::Duration;
-
     <span class="kw">use </span>reactive_graph_runtime_api::Runtime;
     <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
+    <span class="kw">use </span>std::sync::Arc;
+    <span class="kw">use </span>std::time::Duration;
+    <span class="kw">use </span>tokio::time::sleep;
 
     <span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
 
@@ -100,6 +102,8 @@
             </span>.spawn()
             .<span class="kw">await
             </span>.with_runtime(|runtime: Arc&lt;<span class="kw">dyn </span>Runtime + Send + Sync&gt;| <span class="kw">async move </span>{
+                sleep(Duration::from_millis(<span class="number">2000</span>)).<span class="kw">await</span>;
+
                 <span class="kw">let </span>count_before = Arc::strong_count(<span class="kw-2">&amp;</span>runtime);
 
                 <span class="comment">// Check that the shutdown manager is not shutting down and the runtime is in running state

@@ -93,7 +93,7 @@
         GetEntityTypeByType::build(ty.clone().into())
     }
 
-    <span class="attr">#[cfg(test)]
+    <span class="attr">#[cfg(all(test, feature = <span class="string">"integration-tests"</span>))]
     </span><span class="kw">mod </span>tests {
         <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
 

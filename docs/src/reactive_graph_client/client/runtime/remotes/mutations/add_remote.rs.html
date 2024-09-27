@@ -68,6 +68,10 @@
 <a href="#68" id="68">68</a>
 <a href="#69" id="69">69</a>
 <a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
 </pre></div><pre class="rust"><code><span class="attr">#[cynic::schema_for_derives(file = <span class="string">r#"schema_runtime.graphql"#</span>, module = <span class="string">"crate::schema_runtime::schema"</span>)]
 </span><span class="kw">pub mod </span>mutations {
     <span class="kw">use </span><span class="kw">crate</span>::client::runtime::instance::variables::address::variables::InstanceAddressVariables;
@@ -93,12 +97,14 @@
     }
 }
 
-<span class="attr">#[cfg(test)]
+<span class="attr">#[cfg(all(test, feature = <span class="string">"integration-tests"</span>))]
 </span><span class="kw">pub mod </span>test {
     <span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
     <span class="kw">use </span>reactive_graph_runtime_api::Runtime;
     <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
     <span class="kw">use </span>std::sync::Arc;
+    <span class="kw">use </span>std::time::Duration;
+    <span class="kw">use </span>tokio::time::sleep;
 
     <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
     </span><span class="kw">async fn </span>test_add_remote() {
@@ -113,6 +119,8 @@
             </span>.spawn()
             .<span class="kw">await
             </span>.with_runtime(|runtime: Arc&lt;<span class="kw">dyn </span>Runtime + Send + Sync&gt;| <span class="kw">async move </span>{
+                sleep(Duration::from_millis(<span class="number">2000</span>)).<span class="kw">await</span>;
+
                 <span class="kw">let </span>remotes_manager = runtime.get_remotes_manager();
 
                 <span class="comment">// Get instance info from the runtime

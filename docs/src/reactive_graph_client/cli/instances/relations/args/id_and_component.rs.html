@@ -29,7 +29,7 @@
 <a href="#29" id="29">29</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::cli::error::CommandError;
 <span class="kw">use </span><span class="kw">crate</span>::cli::instances::relations::args::id::RelationInstanceIdArgs;
-<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::type_id::ComponentTypeIdArgs;
+<span class="kw">use </span><span class="kw">crate</span>::cli::types::components::args::type_id::ComponentContainerTypeIdArgs;
 <span class="kw">use </span>clap::Args;
 <span class="kw">use </span>reactive_graph_graph::RelationInstanceId;
 
@@ -42,7 +42,7 @@
 
     <span class="doccomment">/// The component type of the reactive instance.
     </span><span class="attr">#[clap(flatten)]
-    </span><span class="kw">pub </span>component_ty: ComponentTypeIdArgs,
+    </span><span class="kw">pub </span>component_ty: ComponentContainerTypeIdArgs,
 }
 
 <span class="kw">impl </span>RelationInstanceIdAndComponentArgs {
