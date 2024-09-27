@@ -14,12 +14,14 @@ pub mod queries {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "integration-tests"))]
 pub mod test {
     use crate::ReactiveGraphClient;
     use reactive_graph_runtime_api::Runtime;
     use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
+    use std::time::Duration;
+    use tokio::time::sleep;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_get_all_remotes() {
@@ -34,6 +36,8 @@ pub mod test {
             .spawn()
             .await
             .with_runtime(|runtime: Arc<dyn Runtime + Send + Sync>| async move {
+                sleep(Duration::from_millis(2000)).await;
+
                 let remotes_manager = runtime.get_remotes_manager();
 
                 let rt_address = runtime.address();

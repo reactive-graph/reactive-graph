@@ -1,11 +1,11 @@
-use std::sync::Arc;
-
-use serde::Deserialize;
-
 use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_runtime_api::Runtime;
 use reactive_graph_runtime_graphql_api::RuntimeQueryService;
 use reactive_graph_runtime_impl::RuntimeBuilder;
+use serde::Deserialize;
+use std::sync::Arc;
+use std::time::Duration;
+use tokio::time::sleep;
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -26,6 +26,8 @@ async fn test_get_all_remotes() {
         .spawn()
         .await
         .with_runtime(|runtime: Arc<dyn Runtime + Send + Sync>| async move {
+            sleep(Duration::from_millis(2000)).await;
+
             let query_service = runtime.get_runtime_query_service();
             let instance_service = runtime.get_instance_service();
             let remotes_manager = runtime.get_remotes_manager();
