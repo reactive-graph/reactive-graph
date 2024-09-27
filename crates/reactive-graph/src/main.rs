@@ -1,12 +1,21 @@
 use std::alloc::System;
 use std::process::exit;
 
+use clap::CommandFactory;
 use clap::Parser;
 use log::LevelFilter;
 use log4rs::append::console::ConsoleAppender;
 use log4rs::config::Appender;
 use log4rs::config::Root;
 use log4rs::Config;
+
+#[cfg(target_os = "linux")]
+use crate::completions::install_shell_completions;
+use crate::completions::print_shell_completions;
+#[cfg(target_os = "linux")]
+use crate::manpages::install_man_pages;
+#[cfg(target_os = "linux")]
+use crate::manpages::print_man_pages;
 
 #[cfg(feature = "client")]
 use crate::cli::client;
@@ -33,6 +42,11 @@ mod cli;
 #[cfg(feature = "server")]
 mod server;
 
+mod completions;
+
+#[cfg(target_os = "linux")]
+mod manpages;
+
 #[global_allocator]
 static ALLOCATOR: System = System;
 
@@ -44,6 +58,44 @@ fn main() {
     // Export CLI help as markdown
     if cli_args.markdown_help {
         clap_markdown::print_help_markdown::<CliArguments>();
+        exit(0);
+    }
+
+    // Print man pages
+    #[cfg(target_os = "linux")]
+    if cli_args.print_man_pages {
+        if let Err(e) = print_man_pages(CliArguments::command()) {
+            eprintln!("Failed to print man pages: {e}");
+            exit(1);
+        };
+        exit(0);
+    }
+
+    // Install man pages
+    #[cfg(target_os = "linux")]
+    if cli_args.install_man_pages {
+        if let Err(e) = install_man_pages(CliArguments::command()) {
+            eprintln!("Failed to install man pages: {e}");
+            exit(1);
+        }
+        exit(0);
+    }
+
+    // Print shell completions
+    if let Some(completions) = cli_args.print_shell_completions {
+        let mut cmd = CliArguments::command();
+        print_shell_completions(completions, &mut cmd);
+        exit(0);
+    }
+
+    // Install shell completions
+    #[cfg(target_os = "linux")]
+    if let Some(completions) = cli_args.install_shell_completions {
+        let mut cmd = CliArguments::command();
+        if let Err(e) = install_shell_completions(completions, completions, &mut cmd) {
+            eprintln!("Failed to install shell completions: {e}");
+            exit(1);
+        }
         exit(0);
     }
 

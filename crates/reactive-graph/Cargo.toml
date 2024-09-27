@@ -1,6 +1,6 @@
 [package]
 name = "reactive-graph"
-description = "Reactive Graph Flow"
+description = "Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software."
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
@@ -8,6 +8,8 @@ license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 readme = "../../README.md"
+
+keywords = ["reactive", "runtime", "graph", "control-flow"]
 
 [package.metadata.deb]
 name = "reactive-graph"
@@ -25,6 +27,10 @@ assets = [
     ["debian/etc/reactive-graph/instance.toml", "etc/reactive-graph/default/instance.toml", "644"],
     ["debian/etc/reactive-graph/logging.toml", "etc/reactive-graph/default/logging.toml", "644"],
     ["debian/etc/reactive-graph/plugins.toml", "etc/reactive-graph/default/plugins.toml", "644"],
+    ["debian/usr/share/bash-completion/completions/reactive-graph", "usr/share/bash-completion/completions/reactive-graph", "644"],
+    ["debian/usr/share/bash-completion/completions/reactive-graph-client", "usr/share/bash-completion/completions/reactive-graph-client", "644"],
+    ["debian/usr/share/zsh/functions/Completion/Base/_reactive-graph", "usr/share/zsh/functions/Completion/Base/_reactive-graph", "644"],
+    ["debian/usr/share/zsh/functions/Completion/Base/_reactive-graph-client", "usr/share/zsh/functions/Completion/Base/_reactive-graph-client", "644"],
     ["debian/usr/share/reactive-graph/plugins/deploy/.gitkeep", "usr/share/reactive-graph/default/plugins/deploy/.gitkeep", "644"],
     ["debian/usr/share/reactive-graph/plugins/installed/.gitkeep", "usr/share/reactive-graph/default/plugins/installed/.gitkeep", "644"],
     ["debian/var/lib/reactive-graph/repositories/flows/.gitkeep", "var/lib/reactive-graph/default/repositories/flows/.gitkeep", "644"],
@@ -39,6 +45,7 @@ restart-after-upgrade = true
 actix-web = { workspace = true, features = ["rustls-0_23"] }
 clap = { workspace = true, features = ["derive", "env"] }
 clap-markdown = { workspace = true }
+clap_complete = { workspace = true }
 colored = { workspace = true }
 json5 = { workspace = true, optional = true }
 log = { workspace = true, features = ["std", "serde"] }
@@ -64,7 +71,9 @@ reactive-graph-client = { version = "0.10.0", path = "../client", optional = tru
 reactive-graph-table-model = { version = "0.10.0", path = "../table-model", optional = true }
 
 [target.'cfg(target_os = "linux")'.dependencies]
+clap_mangen = { workspace = true }
 daemonize-me = { workspace = true }
+xdg = { workspace = true }
 
 [features]
 default = ["server", "client", "json5", "toml"]

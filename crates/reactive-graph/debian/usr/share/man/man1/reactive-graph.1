@@ -1,0 +1,236 @@
+.ie \n(.g .ds Aq \(aq
+.el .ds Aq '
+.TH reactive-graph 1  "reactive-graph 0.10.0" 
+.SH NAME
+reactive\-graph \- Reactive Graph Flow
+.SH SYNOPSIS
+\fBreactive\-graph\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-\-print\-shell\-completions\fR] [\fB\-\-install\-shell\-completions\fR] [\fB\-D\fR|\fB\-\-daemon\fR] [\fB\-\-daemon\-name\fR] [\fB\-\-daemon\-pid\fR] [\fB\-\-daemon\-working\-directory\fR] [\fB\-\-daemon\-stdout\fR] [\fB\-\-daemon\-stderr\fR] [\fB\-\-daemon\-user\fR] [\fB\-\-daemon\-group\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
+.SH DESCRIPTION
+Reactive Graph Flow
+.SH OPTIONS
+.TP
+\fB\-\-logging\-config\fR=\fILOGGING_CONFIG\fR
+The logging config location
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_LOGGING_CONFIG\fR environment variable. 
+.RE
+.TP
+\fB\-\-instance\-config\fR=\fIINSTANCE_CONFIG\fR
+The instance config location
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_CONFIG\fR environment variable. 
+.RE
+.TP
+\fB\-\-graphql\-config\fR=\fIGRAPHQL_CONFIG\fR
+The GraphQL config location
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_GRAPHQL_CONFIG\fR environment variable. 
+.RE
+.TP
+\fB\-\-plugins\-config\fR=\fIPLUGINS_CONFIG\fR
+The plugins config location
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_PLUGINS_CONFIG\fR environment variable. 
+.RE
+.TP
+\fB\-n\fR, \fB\-\-instance\-name\fR=\fIINSTANCE_NAME\fR
+The name of the instance
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_NAME\fR environment variable. 
+.RE
+.TP
+\fB\-d\fR, \fB\-\-instance\-description\fR=\fIINSTANCE_DESCRIPTION\fR
+The description of the instance
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_DESCRIPTION\fR environment variable. 
+.RE
+.TP
+\fB\-\-hostname\fR=\fIHOSTNAME\fR
+The hostname to bind the GraphQL HTTP server
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_HOSTNAME\fR environment variable. 
+.RE
+.TP
+\fB\-\-port\fR=\fIPORT\fR
+The port to bind the GraphQL HTTP server
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_PORT\fR environment variable. 
+.RE
+.TP
+\fB\-\-secure\fR=\fISECURE\fR
+If true, HTTPS is enabled
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_SECURE\fR environment variable. 
+.RE
+.TP
+\fB\-\-ssl\-certificate\-path\fR=\fISSL_CERTIFICATE_PATH\fR
+The location of the certificate
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_SSL_CERTIFICATE_PATH\fR environment variable. 
+.RE
+.TP
+\fB\-\-ssl\-private\-key\-path\fR=\fISSL_PRIVATE_KEY_PATH\fR
+The location of the private key
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_SSL_PRIVATE_KEY_PATH\fR environment variable. 
+.RE
+.TP
+\fB\-\-shutdown\-timeout\fR=\fISHUTDOWN_TIMEOUT\fR
+Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_SHUTDOWN_TIMEOUT\fR environment variable. 
+.RE
+.TP
+\fB\-w\fR, \fB\-\-workers\fR=\fIWORKERS\fR
+The number of workers to start. The default worker count is the number of physical CPU cores available
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_WORKERS\fR environment variable. 
+.RE
+.TP
+\fB\-c\fR, \fB\-\-default\-context\-path\fR=\fIDEFAULT_CONTEXT_PATH\fR
+The default context path which redirects the root context to a web resource provider
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DEFAULT_CONTEXT_PATH\fR environment variable. 
+.RE
+.TP
+\fB\-x\fR, \fB\-\-disable\-all\-plugins\fR=\fIDISABLE_ALL_PLUGINS\fR
+If true, all plugins will be disabled
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DISABLE_ALL_PLUGINS\fR environment variable. 
+.RE
+.TP
+\fB\-p\fR, \fB\-\-disabled\-plugins\fR=\fIDISABLED_PLUGINS\fR
+The list of plugins to disable
+.TP
+\fB\-P\fR, \fB\-\-enabled\-plugins\fR=\fIENABLED_PLUGINS\fR
+The list of plugins to enable
+.TP
+\fB\-\-disable\-hot\-deploy\fR=\fIDISABLE_HOT_DEPLOY\fR
+If true, hot deployment will be disabled
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DISABLE_HOT_DEPLOY\fR environment variable. 
+.RE
+.TP
+\fB\-\-hot\-deploy\-location\fR=\fIHOT_DEPLOY_LOCATION\fR
+The folder which is watched for hot deployment
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_HOT_DEPLOY_LOCATION\fR environment variable. 
+.RE
+.TP
+\fB\-\-install\-location\fR=\fIINSTALL_LOCATION\fR
+The folder which plugins are installed permanently
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_INSTALL_LOCATION\fR environment variable. 
+.RE
+.TP
+\fB\-\-stop\-immediately\fR=\fISTOP_IMMEDIATELY\fR
+If true, the runtime does not wait before exiting
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_STOP_IMMEDIATELY\fR environment variable. 
+.RE
+.TP
+\fB\-q\fR, \fB\-\-quiet\fR=\fIQUIET\fR
+If true, logging is disabled completely
+.br
+
+.br
+[\fIpossible values: \fRtrue, false]
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_QUIET\fR environment variable. 
+.RE
+.TP
+\fB\-\-print\-shell\-completions\fR=\fIPRINT_SHELL_COMPLETIONS\fR
+If true, prints shell completions
+.br
+
+.br
+[\fIpossible values: \fRbash, elvish, fish, powershell, zsh]
+.TP
+\fB\-\-install\-shell\-completions\fR=\fIINSTALL_SHELL_COMPLETIONS\fR
+If true, installs shell completions
+.br
+
+.br
+[\fIpossible values: \fRbash, elvish, fish, powershell, zsh]
+.TP
+\fB\-D\fR, \fB\-\-daemon\fR
+If true, the process will run as daemon
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-name\fR=\fIDAEMON_NAME\fR
+Sets the name of the daemon
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_NAME\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-pid\fR=\fIDAEMON_PID\fR
+The location of the daemon PID file. By default, no PID file will be created
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_PID\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-working\-directory\fR=\fIDAEMON_WORKING_DIRECTORY\fR
+The working directory of the daemon
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_WORKING_DIRECTORY\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-stdout\fR=\fIDAEMON_STDOUT\fR
+Stdout will be written into this file
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_STDOUT\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-stderr\fR=\fIDAEMON_STDERR\fR
+Stderr will be written into this file
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_STDERR\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-user\fR=\fIDAEMON_USER\fR
+If set will drop privileges to the specified user. Note: Both must be given: user and group
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_USER\fR environment variable. 
+.RE
+.TP
+\fB\-\-daemon\-group\fR=\fIDAEMON_GROUP\fR
+If set will drop privileges to the specified group. Note: Both must be given: user and group
+.RS
+May also be specified with the \fBREACTIVE_GRAPH_DAEMON_GROUP\fR environment variable. 
+.RE
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+Print help
+.TP
+\fB\-V\fR, \fB\-\-version\fR
+Print version
+.SH SUBCOMMANDS
+.TP
+reactive\-graph\-client(1)
+Connects to a client
+.TP
+reactive\-graph\-help(1)
+Print this message or the help of the given subcommand(s)
+.SH VERSION
+v0.10.0
+.SH AUTHORS
+Andreas Schaeffer <hanack@nooblounge.net>
+
