@@ -1,0 +1,3831 @@
+#compdef reactive-graph-client
+
+autoload -U is-at-least
+
+_reactive-graph-client() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname to connect to]:HOSTNAME: ' \
+'--port=[The port to connect to]:PORT: ' \
+'--secure=[If true, connects via HTTPS]:SECURE:(true false)' \
+'--endpoint-graphql=[The endpoint to use]:ENDPOINT_GRAPHQL: ' \
+'--endpoint-dynamic-graph=[The endpoint to use]:ENDPOINT_DYNAMIC_GRAPH: ' \
+'--endpoint-runtime=[The endpoint to use]:ENDPOINT_RUNTIME: ' \
+'--endpoint-plugins=[The endpoint to use]:ENDPOINT_PLUGINS: ' \
+'--bearer=[The authentication token]:BEARER: ' \
+'--print-shell-completions=[If true, prints shell completions]:PRINT_SHELL_COMPLETIONS:(bash elvish fish powershell zsh)' \
+'--install-shell-completions=[If true, installs shell completions]:INSTALL_SHELL_COMPLETIONS:(bash elvish fish powershell zsh)' \
+'--markdown-help[If true, generates command line documentation]' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-client_commands" \
+"*::: :->reactive-graph-client" \
+&& ret=0
+    case $state in
+    (reactive-graph-client)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-command-$line[1]:"
+        case $line[1] in
+            (execute-command)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':command_name -- The command name:' \
+'*::command_arguments -- The command arguments:' \
+&& ret=0
+;;
+(instance-info)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__instance-info_commands" \
+"*::: :->instance-info" \
+&& ret=0
+
+    case $state in
+    (instance-info)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-instance-info-command-$line[1]:"
+        case $line[1] in
+            (get)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__instance-info__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-instance-info-help-command-$line[1]:"
+        case $line[1] in
+            (get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-plugins-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(search)
+_arguments "${_arguments_options[@]}" : \
+'--name=[The plugin name]:NAME: ' \
+'--state=[The plugin state]:STATE: ' \
+'--stem=[The plugin file stem]:STEM: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(dependencies)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(dependents)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(start)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(stop)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(restart)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':name -- The plugin name:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__plugins__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-plugins-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(search)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dependencies)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dependents)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(start)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(stop)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(restart)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(remotes)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__remotes_commands" \
+"*::: :->remotes" \
+&& ret=0
+
+    case $state in
+    (remotes)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-remotes-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname]:HOSTNAME: ' \
+'--port=[The port]:PORT: ' \
+'--secure=[The protocol]:SECURE:(true false)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname]:HOSTNAME: ' \
+'--port=[The port]:PORT: ' \
+'--secure=[The protocol]:SECURE:(true false)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(remove-all)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname]:HOSTNAME: ' \
+'--port=[The port]:PORT: ' \
+'--secure=[The protocol]:SECURE:(true false)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(update-all)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(fetch-remotes-from-remote)
+_arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname]:HOSTNAME: ' \
+'--port=[The port]:PORT: ' \
+'--secure=[The protocol]:SECURE:(true false)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(fetch-remotes-from-all-remotes)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__remotes__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-remotes-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-all)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-all)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(fetch-remotes-from-remote)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(fetch-remotes-from-all-remotes)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(shutdown)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(components)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__components_commands" \
+"*::: :->components" \
+&& ret=0
+
+    case $state in
+    (components)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-components-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+'::description -- The component description:' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+':property_name -- The name of the property:' \
+':data_type -- The data type of the property:' \
+':socket_type -- The socket type of the property:' \
+':mutability -- If the property is mutable or not:' \
+'::description -- Description of the property:' \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+':extension_namespace -- The extension namespace:' \
+':extension_name -- The extension name:' \
+':description -- Textual description of the extension:' \
+':extension -- The extension as JSON representation:' \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+':extension_namespace -- The extension namespace:' \
+':extension_name -- The extension name:' \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+':description -- The description to update:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__components__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-components-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(entity-types)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__entity-types_commands" \
+"*::: :->entity-types" \
+&& ret=0
+
+    case $state in
+    (entity-types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-entity-types-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+'::description -- The entity type description:' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':property_name -- The name of the property:' \
+':data_type -- The data type of the property:' \
+':socket_type -- The socket type of the property:' \
+':mutability -- If the property is mutable or not:' \
+'::description -- Description of the property:' \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':extension_namespace -- The extension namespace:' \
+':extension_name -- The extension name:' \
+':description -- Textual description of the extension:' \
+':extension -- The extension as JSON representation:' \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':extension_namespace -- The extension namespace:' \
+':extension_name -- The extension name:' \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':component_namespace -- The component namespace:' \
+':component_name -- The component name:' \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':component_namespace -- The component namespace:' \
+':component_name -- The component name:' \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+':description -- The description to update:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__entity-types__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-entity-types-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(relation-types)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__relation-types_commands" \
+"*::: :->relation-types" \
+&& ret=0
+
+    case $state in
+    (relation-types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-relation-types-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':outbound_type_namespace -- The outbound entity type namespace:' \
+':outbound_type_name -- The outbound entity type name:' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':inbound_type_namespace -- The inbound entity type namespace:' \
+':inbound_type_name -- The inbound entity type name:' \
+'::description -- The relation type description:' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':property_name -- The name of the property:' \
+':data_type -- The data type of the property:' \
+':socket_type -- The socket type of the property:' \
+':mutability -- If the property is mutable or not:' \
+'::description -- Description of the property:' \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':extension_namespace -- The extension namespace:' \
+':extension_name -- The extension name:' \
+':description -- Textual description of the extension:' \
+':extension -- The extension as JSON representation:' \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':extension_namespace -- The extension namespace:' \
+':extension_name -- The extension name:' \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':component_namespace -- The component namespace:' \
+':component_name -- The component name:' \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':component_namespace -- The component namespace:' \
+':component_name -- The component name:' \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':description -- The description to update:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__relation-types__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-relation-types-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(entity-instances)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__entity-instances_commands" \
+"*::: :->entity-instances" \
+&& ret=0
+
+    case $state in
+    (entity-instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-entity-instances-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'--namespace=[The entity type namespace]:NAMESPACE: ' \
+'-n+[The entity type name]:NAME: ' \
+'--name=[The entity type name]:NAME: ' \
+'-i+[The id of the entity instance]:ID: ' \
+'--id=[The id of the entity instance]:ID: ' \
+'-l+[The label of the entity instance]:LABEL: ' \
+'--label=[The label of the entity instance]:LABEL: ' \
+'*-p+[The properties to search for]:PROPERTIES: ' \
+'*--properties=[The properties to search for]:PROPERTIES: ' \
+'*-c+[The components to search for]:COMPONENTS: ' \
+'*--components=[The components to search for]:COMPONENTS: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the entity instance:' \
+&& ret=0
+;;
+(get-by-label)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':label -- The label of the reactive instance:' \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the entity instance:' \
+&& ret=0
+;;
+(get-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the entity instance:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(set-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':id -- The id of the reactive instance:' \
+':name -- The name of the property:' \
+':value -- The new JSON value of the property:' \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the reactive instance:' \
+':property_name -- The name of the property:' \
+':data_type -- The data type of the property:' \
+':socket_type -- The socket type of the property:' \
+':mutability -- If the property is mutable or not:' \
+'::description -- Description of the property:' \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the entity instance:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the entity instance:' \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the reactive instance:' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the reactive instance:' \
+':namespace -- The component namespace:' \
+':name -- The component name:' \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+'-i+[The entity instance id]:ID: ' \
+'--id=[The entity instance id]:ID: ' \
+'-d+[The entity instance description]:DESCRIPTION: ' \
+'--description=[The entity instance description]:DESCRIPTION: ' \
+'*-p+[The entity instance properties]:PROPERTIES: ' \
+'*--properties=[The entity instance properties]:PROPERTIES: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The entity type namespace:' \
+':name -- The entity type name:' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':id -- The id of the entity instance:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__entity-instances__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-entity-instances-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-by-label)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(set-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(relation-instances)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_reactive-graph-client__relation-instances_commands" \
+"*::: :->relation-instances" \
+&& ret=0
+
+    case $state in
+    (relation-instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-relation-instances-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'--namespace=[The relation type namespace]:NAMESPACE: ' \
+'-n+[The relation type name]:NAME: ' \
+'--name=[The relation type name]:NAME: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'*-p+[The properties to search for]:PROPERTIES: ' \
+'*--properties=[The properties to search for]:PROPERTIES: ' \
+'*-c+[The components to search for]:COMPONENTS: ' \
+'*--components=[The components to search for]:COMPONENTS: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+&& ret=0
+;;
+(get-property)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(set-property)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help (see more with '\''--help'\'')]' \
+'--help[Print help (see more with '\''--help'\'')]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+':property_name -- The name of the property:' \
+':property_value -- The JSON value of the property:' \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+':property_name -- The name of the property:' \
+':data_type -- The data type of the property:' \
+':socket_type -- The socket type of the property:' \
+':mutability -- If the property is mutable or not:' \
+'::description -- Description of the property:' \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+':property_name -- The name of the property:' \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+':component_namespace -- The component namespace:' \
+':component_name -- The component name:' \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+':component_namespace -- The component namespace:' \
+':component_name -- The component name:' \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-d+[The relation instance description]:DESCRIPTION: ' \
+'--description=[The relation instance description]:DESCRIPTION: ' \
+'*-p+[The relation instance properties]:PROPERTIES: ' \
+'*--properties=[The relation instance properties]:PROPERTIES: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+':namespace -- The relation type namespace:' \
+':name -- The relation type name:' \
+':instance_id -- The instance id:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__relation-instances__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-relation-instances-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(set-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-command-$line[1]:"
+        case $line[1] in
+            (execute-command)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(instance-info)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__instance-info_commands" \
+"*::: :->instance-info" \
+&& ret=0
+
+    case $state in
+    (instance-info)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-instance-info-command-$line[1]:"
+        case $line[1] in
+            (get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-plugins-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(search)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dependencies)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dependents)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(start)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(stop)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(restart)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(remotes)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__remotes_commands" \
+"*::: :->remotes" \
+&& ret=0
+
+    case $state in
+    (remotes)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-remotes-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-all)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-all)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(fetch-remotes-from-remote)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(fetch-remotes-from-all-remotes)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(shutdown)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(components)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__components_commands" \
+"*::: :->components" \
+&& ret=0
+
+    case $state in
+    (components)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-components-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(entity-types)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__entity-types_commands" \
+"*::: :->entity-types" \
+&& ret=0
+
+    case $state in
+    (entity-types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-entity-types-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(relation-types)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__relation-types_commands" \
+"*::: :->relation-types" \
+&& ret=0
+
+    case $state in
+    (relation-types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-relation-types-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(entity-instances)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__entity-instances_commands" \
+"*::: :->entity-instances" \
+&& ret=0
+
+    case $state in
+    (entity-instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-entity-instances-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-by-label)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(set-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(relation-instances)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__relation-instances_commands" \
+"*::: :->relation-instances" \
+&& ret=0
+
+    case $state in
+    (relation-instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-relation-instances-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-properties)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(set-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-property)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-components)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-component)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_reactive-graph-client_commands] )) ||
+_reactive-graph-client_commands() {
+    local commands; commands=(
+'execute-command:Executes a command on the client' \
+'instance-info:Prints information about the instance' \
+'plugins:Manage plugins' \
+'remotes:Manage remotes' \
+'shutdown:Shutdown the runtime' \
+'components:Manage components' \
+'entity-types:Manage entity types' \
+'relation-types:Manage entity types' \
+'entity-instances:Manage entity instances' \
+'relation-instances:Manage relation instances' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components_commands] )) ||
+_reactive-graph-client__components_commands() {
+    local commands; commands=(
+'list:List all components' \
+'get:Prints a single component' \
+'list-properties:List the properties of a component' \
+'list-extensions:List the extensions of a component' \
+'create:Creates a new component' \
+'delete:Deletes a component' \
+'add-property:Adds a property to a component' \
+'remove-property:Removes a property from a component' \
+'add-extension:Adds an extension to a component' \
+'remove-extension:Removes an extension from a component' \
+'update-description:Updates the description of a component' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__add-extension_commands] )) ||
+_reactive-graph-client__components__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__add-property_commands] )) ||
+_reactive-graph-client__components__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__create_commands] )) ||
+_reactive-graph-client__components__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__delete_commands] )) ||
+_reactive-graph-client__components__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__get_commands] )) ||
+_reactive-graph-client__components__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help_commands] )) ||
+_reactive-graph-client__components__help_commands() {
+    local commands; commands=(
+'list:List all components' \
+'get:Prints a single component' \
+'list-properties:List the properties of a component' \
+'list-extensions:List the extensions of a component' \
+'create:Creates a new component' \
+'delete:Deletes a component' \
+'add-property:Adds a property to a component' \
+'remove-property:Removes a property from a component' \
+'add-extension:Adds an extension to a component' \
+'remove-extension:Removes an extension from a component' \
+'update-description:Updates the description of a component' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client components help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__add-extension_commands] )) ||
+_reactive-graph-client__components__help__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__add-property_commands] )) ||
+_reactive-graph-client__components__help__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__create_commands] )) ||
+_reactive-graph-client__components__help__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__delete_commands] )) ||
+_reactive-graph-client__components__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__get_commands] )) ||
+_reactive-graph-client__components__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__help_commands] )) ||
+_reactive-graph-client__components__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__list_commands] )) ||
+_reactive-graph-client__components__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__list-extensions_commands] )) ||
+_reactive-graph-client__components__help__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__list-properties_commands] )) ||
+_reactive-graph-client__components__help__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__remove-extension_commands] )) ||
+_reactive-graph-client__components__help__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__remove-property_commands] )) ||
+_reactive-graph-client__components__help__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__help__update-description_commands] )) ||
+_reactive-graph-client__components__help__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__list_commands] )) ||
+_reactive-graph-client__components__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__list-extensions_commands] )) ||
+_reactive-graph-client__components__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__list-properties_commands] )) ||
+_reactive-graph-client__components__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__remove-extension_commands] )) ||
+_reactive-graph-client__components__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__remove-property_commands] )) ||
+_reactive-graph-client__components__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__components__update-description_commands] )) ||
+_reactive-graph-client__components__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client components update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances_commands] )) ||
+_reactive-graph-client__entity-instances_commands() {
+    local commands; commands=(
+'list:List all entity instances' \
+'get:Prints a single entity instance' \
+'get-by-label:Prints a single entity instance' \
+'list-properties:Lists the properties of an entity instance' \
+'get-property:Prints the value of a property of an entity instance' \
+'set-property:Sets the value of a property of an entity instance' \
+'add-property:Adds a new property to an entity instance' \
+'remove-property:Removes a property from an entity instance' \
+'list-components:Lists the components of an entity instance' \
+'add-component:Adds a component to an entity instance' \
+'remove-component:Removes a component from an entity instance' \
+'create:Creates a new entity type' \
+'delete:CLI argument which identifies an entity instance by its id' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client entity-instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__add-component_commands] )) ||
+_reactive-graph-client__entity-instances__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__add-property_commands] )) ||
+_reactive-graph-client__entity-instances__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__create_commands] )) ||
+_reactive-graph-client__entity-instances__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__delete_commands] )) ||
+_reactive-graph-client__entity-instances__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__get_commands] )) ||
+_reactive-graph-client__entity-instances__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__get-by-label_commands] )) ||
+_reactive-graph-client__entity-instances__get-by-label_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances get-by-label commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__get-property_commands] )) ||
+_reactive-graph-client__entity-instances__get-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help_commands] )) ||
+_reactive-graph-client__entity-instances__help_commands() {
+    local commands; commands=(
+'list:List all entity instances' \
+'get:Prints a single entity instance' \
+'get-by-label:Prints a single entity instance' \
+'list-properties:Lists the properties of an entity instance' \
+'get-property:Prints the value of a property of an entity instance' \
+'set-property:Sets the value of a property of an entity instance' \
+'add-property:Adds a new property to an entity instance' \
+'remove-property:Removes a property from an entity instance' \
+'list-components:Lists the components of an entity instance' \
+'add-component:Adds a component to an entity instance' \
+'remove-component:Removes a component from an entity instance' \
+'create:Creates a new entity type' \
+'delete:CLI argument which identifies an entity instance by its id' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client entity-instances help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__add-component_commands] )) ||
+_reactive-graph-client__entity-instances__help__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__add-property_commands] )) ||
+_reactive-graph-client__entity-instances__help__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__create_commands] )) ||
+_reactive-graph-client__entity-instances__help__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__delete_commands] )) ||
+_reactive-graph-client__entity-instances__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__get_commands] )) ||
+_reactive-graph-client__entity-instances__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__get-by-label_commands] )) ||
+_reactive-graph-client__entity-instances__help__get-by-label_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help get-by-label commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__get-property_commands] )) ||
+_reactive-graph-client__entity-instances__help__get-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__help_commands] )) ||
+_reactive-graph-client__entity-instances__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__list_commands] )) ||
+_reactive-graph-client__entity-instances__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__list-components_commands] )) ||
+_reactive-graph-client__entity-instances__help__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__list-properties_commands] )) ||
+_reactive-graph-client__entity-instances__help__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__remove-component_commands] )) ||
+_reactive-graph-client__entity-instances__help__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__remove-property_commands] )) ||
+_reactive-graph-client__entity-instances__help__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__help__set-property_commands] )) ||
+_reactive-graph-client__entity-instances__help__set-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances help set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__list_commands] )) ||
+_reactive-graph-client__entity-instances__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__list-components_commands] )) ||
+_reactive-graph-client__entity-instances__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__list-properties_commands] )) ||
+_reactive-graph-client__entity-instances__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__remove-component_commands] )) ||
+_reactive-graph-client__entity-instances__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__remove-property_commands] )) ||
+_reactive-graph-client__entity-instances__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-instances__set-property_commands] )) ||
+_reactive-graph-client__entity-instances__set-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-instances set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types_commands] )) ||
+_reactive-graph-client__entity-types_commands() {
+    local commands; commands=(
+'list:List all entity types' \
+'get:Prints a single entity type' \
+'list-properties:List the properties of an entity type' \
+'list-extensions:List the extensions of an entity type' \
+'list-components:List the components of an entity type' \
+'create:Creates a new entity type' \
+'delete:Deletes a entity type' \
+'add-property:Adds a property to an entity type' \
+'remove-property:Removes a property from an entity type' \
+'add-extension:Adds an extension to an entity type' \
+'remove-extension:Removes an extension from an entity type' \
+'add-component:Adds a component to an entity type' \
+'remove-component:Removes a component from an entity type' \
+'update-description:Updates the description of an entity type' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client entity-types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__add-component_commands] )) ||
+_reactive-graph-client__entity-types__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__add-extension_commands] )) ||
+_reactive-graph-client__entity-types__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__add-property_commands] )) ||
+_reactive-graph-client__entity-types__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__create_commands] )) ||
+_reactive-graph-client__entity-types__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__delete_commands] )) ||
+_reactive-graph-client__entity-types__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__get_commands] )) ||
+_reactive-graph-client__entity-types__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help_commands] )) ||
+_reactive-graph-client__entity-types__help_commands() {
+    local commands; commands=(
+'list:List all entity types' \
+'get:Prints a single entity type' \
+'list-properties:List the properties of an entity type' \
+'list-extensions:List the extensions of an entity type' \
+'list-components:List the components of an entity type' \
+'create:Creates a new entity type' \
+'delete:Deletes a entity type' \
+'add-property:Adds a property to an entity type' \
+'remove-property:Removes a property from an entity type' \
+'add-extension:Adds an extension to an entity type' \
+'remove-extension:Removes an extension from an entity type' \
+'add-component:Adds a component to an entity type' \
+'remove-component:Removes a component from an entity type' \
+'update-description:Updates the description of an entity type' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client entity-types help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__add-component_commands] )) ||
+_reactive-graph-client__entity-types__help__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__add-extension_commands] )) ||
+_reactive-graph-client__entity-types__help__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__add-property_commands] )) ||
+_reactive-graph-client__entity-types__help__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__create_commands] )) ||
+_reactive-graph-client__entity-types__help__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__delete_commands] )) ||
+_reactive-graph-client__entity-types__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__get_commands] )) ||
+_reactive-graph-client__entity-types__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__help_commands] )) ||
+_reactive-graph-client__entity-types__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__list_commands] )) ||
+_reactive-graph-client__entity-types__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__list-components_commands] )) ||
+_reactive-graph-client__entity-types__help__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__list-extensions_commands] )) ||
+_reactive-graph-client__entity-types__help__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__list-properties_commands] )) ||
+_reactive-graph-client__entity-types__help__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__remove-component_commands] )) ||
+_reactive-graph-client__entity-types__help__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__remove-extension_commands] )) ||
+_reactive-graph-client__entity-types__help__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__remove-property_commands] )) ||
+_reactive-graph-client__entity-types__help__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__help__update-description_commands] )) ||
+_reactive-graph-client__entity-types__help__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__list_commands] )) ||
+_reactive-graph-client__entity-types__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__list-components_commands] )) ||
+_reactive-graph-client__entity-types__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__list-extensions_commands] )) ||
+_reactive-graph-client__entity-types__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__list-properties_commands] )) ||
+_reactive-graph-client__entity-types__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__remove-component_commands] )) ||
+_reactive-graph-client__entity-types__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__remove-extension_commands] )) ||
+_reactive-graph-client__entity-types__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__remove-property_commands] )) ||
+_reactive-graph-client__entity-types__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__entity-types__update-description_commands] )) ||
+_reactive-graph-client__entity-types__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client entity-types update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__execute-command_commands] )) ||
+_reactive-graph-client__execute-command_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client execute-command commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help_commands] )) ||
+_reactive-graph-client__help_commands() {
+    local commands; commands=(
+'execute-command:Executes a command on the client' \
+'instance-info:Prints information about the instance' \
+'plugins:Manage plugins' \
+'remotes:Manage remotes' \
+'shutdown:Shutdown the runtime' \
+'components:Manage components' \
+'entity-types:Manage entity types' \
+'relation-types:Manage entity types' \
+'entity-instances:Manage entity instances' \
+'relation-instances:Manage relation instances' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components_commands] )) ||
+_reactive-graph-client__help__components_commands() {
+    local commands; commands=(
+'list:List all components' \
+'get:Prints a single component' \
+'list-properties:List the properties of a component' \
+'list-extensions:List the extensions of a component' \
+'create:Creates a new component' \
+'delete:Deletes a component' \
+'add-property:Adds a property to a component' \
+'remove-property:Removes a property from a component' \
+'add-extension:Adds an extension to a component' \
+'remove-extension:Removes an extension from a component' \
+'update-description:Updates the description of a component' \
+    )
+    _describe -t commands 'reactive-graph-client help components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__add-extension_commands] )) ||
+_reactive-graph-client__help__components__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__add-property_commands] )) ||
+_reactive-graph-client__help__components__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__create_commands] )) ||
+_reactive-graph-client__help__components__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__delete_commands] )) ||
+_reactive-graph-client__help__components__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__get_commands] )) ||
+_reactive-graph-client__help__components__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__list_commands] )) ||
+_reactive-graph-client__help__components__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__list-extensions_commands] )) ||
+_reactive-graph-client__help__components__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__list-properties_commands] )) ||
+_reactive-graph-client__help__components__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__remove-extension_commands] )) ||
+_reactive-graph-client__help__components__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__remove-property_commands] )) ||
+_reactive-graph-client__help__components__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__components__update-description_commands] )) ||
+_reactive-graph-client__help__components__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help components update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances_commands] )) ||
+_reactive-graph-client__help__entity-instances_commands() {
+    local commands; commands=(
+'list:List all entity instances' \
+'get:Prints a single entity instance' \
+'get-by-label:Prints a single entity instance' \
+'list-properties:Lists the properties of an entity instance' \
+'get-property:Prints the value of a property of an entity instance' \
+'set-property:Sets the value of a property of an entity instance' \
+'add-property:Adds a new property to an entity instance' \
+'remove-property:Removes a property from an entity instance' \
+'list-components:Lists the components of an entity instance' \
+'add-component:Adds a component to an entity instance' \
+'remove-component:Removes a component from an entity instance' \
+'create:Creates a new entity type' \
+'delete:CLI argument which identifies an entity instance by its id' \
+    )
+    _describe -t commands 'reactive-graph-client help entity-instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__add-component_commands] )) ||
+_reactive-graph-client__help__entity-instances__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__add-property_commands] )) ||
+_reactive-graph-client__help__entity-instances__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__create_commands] )) ||
+_reactive-graph-client__help__entity-instances__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__delete_commands] )) ||
+_reactive-graph-client__help__entity-instances__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__get_commands] )) ||
+_reactive-graph-client__help__entity-instances__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__get-by-label_commands] )) ||
+_reactive-graph-client__help__entity-instances__get-by-label_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances get-by-label commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__get-property_commands] )) ||
+_reactive-graph-client__help__entity-instances__get-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__list_commands] )) ||
+_reactive-graph-client__help__entity-instances__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__list-components_commands] )) ||
+_reactive-graph-client__help__entity-instances__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__list-properties_commands] )) ||
+_reactive-graph-client__help__entity-instances__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__remove-component_commands] )) ||
+_reactive-graph-client__help__entity-instances__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__remove-property_commands] )) ||
+_reactive-graph-client__help__entity-instances__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-instances__set-property_commands] )) ||
+_reactive-graph-client__help__entity-instances__set-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-instances set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types_commands] )) ||
+_reactive-graph-client__help__entity-types_commands() {
+    local commands; commands=(
+'list:List all entity types' \
+'get:Prints a single entity type' \
+'list-properties:List the properties of an entity type' \
+'list-extensions:List the extensions of an entity type' \
+'list-components:List the components of an entity type' \
+'create:Creates a new entity type' \
+'delete:Deletes a entity type' \
+'add-property:Adds a property to an entity type' \
+'remove-property:Removes a property from an entity type' \
+'add-extension:Adds an extension to an entity type' \
+'remove-extension:Removes an extension from an entity type' \
+'add-component:Adds a component to an entity type' \
+'remove-component:Removes a component from an entity type' \
+'update-description:Updates the description of an entity type' \
+    )
+    _describe -t commands 'reactive-graph-client help entity-types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__add-component_commands] )) ||
+_reactive-graph-client__help__entity-types__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__add-extension_commands] )) ||
+_reactive-graph-client__help__entity-types__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__add-property_commands] )) ||
+_reactive-graph-client__help__entity-types__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__create_commands] )) ||
+_reactive-graph-client__help__entity-types__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__delete_commands] )) ||
+_reactive-graph-client__help__entity-types__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__get_commands] )) ||
+_reactive-graph-client__help__entity-types__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__list_commands] )) ||
+_reactive-graph-client__help__entity-types__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__list-components_commands] )) ||
+_reactive-graph-client__help__entity-types__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__list-extensions_commands] )) ||
+_reactive-graph-client__help__entity-types__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__list-properties_commands] )) ||
+_reactive-graph-client__help__entity-types__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__remove-component_commands] )) ||
+_reactive-graph-client__help__entity-types__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__remove-extension_commands] )) ||
+_reactive-graph-client__help__entity-types__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__remove-property_commands] )) ||
+_reactive-graph-client__help__entity-types__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__entity-types__update-description_commands] )) ||
+_reactive-graph-client__help__entity-types__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help entity-types update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__execute-command_commands] )) ||
+_reactive-graph-client__help__execute-command_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help execute-command commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__help_commands] )) ||
+_reactive-graph-client__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__instance-info_commands] )) ||
+_reactive-graph-client__help__instance-info_commands() {
+    local commands; commands=(
+'get:Get instance information' \
+    )
+    _describe -t commands 'reactive-graph-client help instance-info commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__instance-info__get_commands] )) ||
+_reactive-graph-client__help__instance-info__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help instance-info get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins_commands] )) ||
+_reactive-graph-client__help__plugins_commands() {
+    local commands; commands=(
+'list:Lists all plugins' \
+'search:Search for plugins by name, state or stem' \
+'get:Prints a single plugin' \
+'dependencies:Depends on' \
+'dependents:Dependent plugins' \
+'start:Starts a plugin' \
+'stop:Stops a plugin' \
+'restart:Restarts a plugin' \
+'uninstall:Uninstall a plugin' \
+    )
+    _describe -t commands 'reactive-graph-client help plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__dependencies_commands] )) ||
+_reactive-graph-client__help__plugins__dependencies_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins dependencies commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__dependents_commands] )) ||
+_reactive-graph-client__help__plugins__dependents_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins dependents commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__get_commands] )) ||
+_reactive-graph-client__help__plugins__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__list_commands] )) ||
+_reactive-graph-client__help__plugins__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__restart_commands] )) ||
+_reactive-graph-client__help__plugins__restart_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins restart commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__search_commands] )) ||
+_reactive-graph-client__help__plugins__search_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins search commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__start_commands] )) ||
+_reactive-graph-client__help__plugins__start_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins start commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__stop_commands] )) ||
+_reactive-graph-client__help__plugins__stop_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins stop commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__plugins__uninstall_commands] )) ||
+_reactive-graph-client__help__plugins__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances_commands] )) ||
+_reactive-graph-client__help__relation-instances_commands() {
+    local commands; commands=(
+'list:List all relation instances' \
+'get:Prints a single relation instance' \
+'list-properties:Lists the properties of a relation instance' \
+'get-property:Prints the value of a property of a relation instance' \
+'set-property:Sets the value of a property of a relation instance' \
+'add-property:Adds a new property to a relation instance' \
+'remove-property:Removes a property from a relation instance' \
+'list-components:Lists the components of a relation instance' \
+'add-component:Adds a component to a relation instance' \
+'remove-component:Removes a component from a relation instance' \
+'create:Creates a new relation type' \
+'delete:CLI argument which identifies an relation instance by its id' \
+    )
+    _describe -t commands 'reactive-graph-client help relation-instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__add-component_commands] )) ||
+_reactive-graph-client__help__relation-instances__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__add-property_commands] )) ||
+_reactive-graph-client__help__relation-instances__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__create_commands] )) ||
+_reactive-graph-client__help__relation-instances__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__delete_commands] )) ||
+_reactive-graph-client__help__relation-instances__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__get_commands] )) ||
+_reactive-graph-client__help__relation-instances__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__get-property_commands] )) ||
+_reactive-graph-client__help__relation-instances__get-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__list_commands] )) ||
+_reactive-graph-client__help__relation-instances__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__list-components_commands] )) ||
+_reactive-graph-client__help__relation-instances__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__list-properties_commands] )) ||
+_reactive-graph-client__help__relation-instances__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__remove-component_commands] )) ||
+_reactive-graph-client__help__relation-instances__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__remove-property_commands] )) ||
+_reactive-graph-client__help__relation-instances__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-instances__set-property_commands] )) ||
+_reactive-graph-client__help__relation-instances__set-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-instances set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types_commands] )) ||
+_reactive-graph-client__help__relation-types_commands() {
+    local commands; commands=(
+'list:List all relation types' \
+'get:Prints a single relation type' \
+'list-properties:List the properties of an relation type' \
+'list-extensions:List the extensions of an relation type' \
+'list-components:List the components of an relation type' \
+'create:Creates a new relation type' \
+'delete:Deletes a relation type' \
+'add-property:Adds a property to a relation type' \
+'remove-property:Removes a property from a relation type' \
+'add-extension:Adds an extension to a relation type' \
+'remove-extension:Removes an extension from a relation type' \
+'add-component:Adds a component to a relation type' \
+'remove-component:Removes a component from a relation type' \
+'update-description:Updates the description of a relation type' \
+    )
+    _describe -t commands 'reactive-graph-client help relation-types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__add-component_commands] )) ||
+_reactive-graph-client__help__relation-types__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__add-extension_commands] )) ||
+_reactive-graph-client__help__relation-types__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__add-property_commands] )) ||
+_reactive-graph-client__help__relation-types__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__create_commands] )) ||
+_reactive-graph-client__help__relation-types__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__delete_commands] )) ||
+_reactive-graph-client__help__relation-types__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__get_commands] )) ||
+_reactive-graph-client__help__relation-types__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__list_commands] )) ||
+_reactive-graph-client__help__relation-types__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__list-components_commands] )) ||
+_reactive-graph-client__help__relation-types__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__list-extensions_commands] )) ||
+_reactive-graph-client__help__relation-types__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__list-properties_commands] )) ||
+_reactive-graph-client__help__relation-types__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__remove-component_commands] )) ||
+_reactive-graph-client__help__relation-types__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__remove-extension_commands] )) ||
+_reactive-graph-client__help__relation-types__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__remove-property_commands] )) ||
+_reactive-graph-client__help__relation-types__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__relation-types__update-description_commands] )) ||
+_reactive-graph-client__help__relation-types__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help relation-types update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes_commands] )) ||
+_reactive-graph-client__help__remotes_commands() {
+    local commands; commands=(
+'list:Lists the remotes' \
+'add:Adds a remote' \
+'remove:Removes a remote' \
+'remove-all:Removes all remotes' \
+'update:Updates a remote' \
+'update-all:Updates all remotes' \
+'fetch-remotes-from-remote:Fetches the remotes from the given remote' \
+'fetch-remotes-from-all-remotes:Fetches all remotes from all remotes' \
+    )
+    _describe -t commands 'reactive-graph-client help remotes commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__add_commands] )) ||
+_reactive-graph-client__help__remotes__add_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes add commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__fetch-remotes-from-all-remotes_commands] )) ||
+_reactive-graph-client__help__remotes__fetch-remotes-from-all-remotes_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes fetch-remotes-from-all-remotes commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__fetch-remotes-from-remote_commands] )) ||
+_reactive-graph-client__help__remotes__fetch-remotes-from-remote_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes fetch-remotes-from-remote commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__list_commands] )) ||
+_reactive-graph-client__help__remotes__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__remove_commands] )) ||
+_reactive-graph-client__help__remotes__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes remove commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__remove-all_commands] )) ||
+_reactive-graph-client__help__remotes__remove-all_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes remove-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__update_commands] )) ||
+_reactive-graph-client__help__remotes__update_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes update commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__remotes__update-all_commands] )) ||
+_reactive-graph-client__help__remotes__update-all_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help remotes update-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__shutdown_commands] )) ||
+_reactive-graph-client__help__shutdown_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help shutdown commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__instance-info_commands] )) ||
+_reactive-graph-client__instance-info_commands() {
+    local commands; commands=(
+'get:Get instance information' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client instance-info commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__instance-info__get_commands] )) ||
+_reactive-graph-client__instance-info__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client instance-info get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__instance-info__help_commands] )) ||
+_reactive-graph-client__instance-info__help_commands() {
+    local commands; commands=(
+'get:Get instance information' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client instance-info help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__instance-info__help__get_commands] )) ||
+_reactive-graph-client__instance-info__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client instance-info help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__instance-info__help__help_commands] )) ||
+_reactive-graph-client__instance-info__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client instance-info help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins_commands] )) ||
+_reactive-graph-client__plugins_commands() {
+    local commands; commands=(
+'list:Lists all plugins' \
+'search:Search for plugins by name, state or stem' \
+'get:Prints a single plugin' \
+'dependencies:Depends on' \
+'dependents:Dependent plugins' \
+'start:Starts a plugin' \
+'stop:Stops a plugin' \
+'restart:Restarts a plugin' \
+'uninstall:Uninstall a plugin' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__dependencies_commands] )) ||
+_reactive-graph-client__plugins__dependencies_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins dependencies commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__dependents_commands] )) ||
+_reactive-graph-client__plugins__dependents_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins dependents commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__get_commands] )) ||
+_reactive-graph-client__plugins__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help_commands] )) ||
+_reactive-graph-client__plugins__help_commands() {
+    local commands; commands=(
+'list:Lists all plugins' \
+'search:Search for plugins by name, state or stem' \
+'get:Prints a single plugin' \
+'dependencies:Depends on' \
+'dependents:Dependent plugins' \
+'start:Starts a plugin' \
+'stop:Stops a plugin' \
+'restart:Restarts a plugin' \
+'uninstall:Uninstall a plugin' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client plugins help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__dependencies_commands] )) ||
+_reactive-graph-client__plugins__help__dependencies_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help dependencies commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__dependents_commands] )) ||
+_reactive-graph-client__plugins__help__dependents_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help dependents commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__get_commands] )) ||
+_reactive-graph-client__plugins__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__help_commands] )) ||
+_reactive-graph-client__plugins__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__list_commands] )) ||
+_reactive-graph-client__plugins__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__restart_commands] )) ||
+_reactive-graph-client__plugins__help__restart_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help restart commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__search_commands] )) ||
+_reactive-graph-client__plugins__help__search_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help search commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__start_commands] )) ||
+_reactive-graph-client__plugins__help__start_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help start commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__stop_commands] )) ||
+_reactive-graph-client__plugins__help__stop_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help stop commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__help__uninstall_commands] )) ||
+_reactive-graph-client__plugins__help__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins help uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__list_commands] )) ||
+_reactive-graph-client__plugins__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__restart_commands] )) ||
+_reactive-graph-client__plugins__restart_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins restart commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__search_commands] )) ||
+_reactive-graph-client__plugins__search_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins search commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__start_commands] )) ||
+_reactive-graph-client__plugins__start_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins start commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__stop_commands] )) ||
+_reactive-graph-client__plugins__stop_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins stop commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__plugins__uninstall_commands] )) ||
+_reactive-graph-client__plugins__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances_commands] )) ||
+_reactive-graph-client__relation-instances_commands() {
+    local commands; commands=(
+'list:List all relation instances' \
+'get:Prints a single relation instance' \
+'list-properties:Lists the properties of a relation instance' \
+'get-property:Prints the value of a property of a relation instance' \
+'set-property:Sets the value of a property of a relation instance' \
+'add-property:Adds a new property to a relation instance' \
+'remove-property:Removes a property from a relation instance' \
+'list-components:Lists the components of a relation instance' \
+'add-component:Adds a component to a relation instance' \
+'remove-component:Removes a component from a relation instance' \
+'create:Creates a new relation type' \
+'delete:CLI argument which identifies an relation instance by its id' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client relation-instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__add-component_commands] )) ||
+_reactive-graph-client__relation-instances__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__add-property_commands] )) ||
+_reactive-graph-client__relation-instances__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__create_commands] )) ||
+_reactive-graph-client__relation-instances__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__delete_commands] )) ||
+_reactive-graph-client__relation-instances__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__get_commands] )) ||
+_reactive-graph-client__relation-instances__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__get-property_commands] )) ||
+_reactive-graph-client__relation-instances__get-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help_commands] )) ||
+_reactive-graph-client__relation-instances__help_commands() {
+    local commands; commands=(
+'list:List all relation instances' \
+'get:Prints a single relation instance' \
+'list-properties:Lists the properties of a relation instance' \
+'get-property:Prints the value of a property of a relation instance' \
+'set-property:Sets the value of a property of a relation instance' \
+'add-property:Adds a new property to a relation instance' \
+'remove-property:Removes a property from a relation instance' \
+'list-components:Lists the components of a relation instance' \
+'add-component:Adds a component to a relation instance' \
+'remove-component:Removes a component from a relation instance' \
+'create:Creates a new relation type' \
+'delete:CLI argument which identifies an relation instance by its id' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client relation-instances help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__add-component_commands] )) ||
+_reactive-graph-client__relation-instances__help__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__add-property_commands] )) ||
+_reactive-graph-client__relation-instances__help__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__create_commands] )) ||
+_reactive-graph-client__relation-instances__help__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__delete_commands] )) ||
+_reactive-graph-client__relation-instances__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__get_commands] )) ||
+_reactive-graph-client__relation-instances__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__get-property_commands] )) ||
+_reactive-graph-client__relation-instances__help__get-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__help_commands] )) ||
+_reactive-graph-client__relation-instances__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__list_commands] )) ||
+_reactive-graph-client__relation-instances__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__list-components_commands] )) ||
+_reactive-graph-client__relation-instances__help__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__list-properties_commands] )) ||
+_reactive-graph-client__relation-instances__help__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__remove-component_commands] )) ||
+_reactive-graph-client__relation-instances__help__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__remove-property_commands] )) ||
+_reactive-graph-client__relation-instances__help__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__help__set-property_commands] )) ||
+_reactive-graph-client__relation-instances__help__set-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances help set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__list_commands] )) ||
+_reactive-graph-client__relation-instances__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__list-components_commands] )) ||
+_reactive-graph-client__relation-instances__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__list-properties_commands] )) ||
+_reactive-graph-client__relation-instances__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__remove-component_commands] )) ||
+_reactive-graph-client__relation-instances__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__remove-property_commands] )) ||
+_reactive-graph-client__relation-instances__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-instances__set-property_commands] )) ||
+_reactive-graph-client__relation-instances__set-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-instances set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types_commands] )) ||
+_reactive-graph-client__relation-types_commands() {
+    local commands; commands=(
+'list:List all relation types' \
+'get:Prints a single relation type' \
+'list-properties:List the properties of an relation type' \
+'list-extensions:List the extensions of an relation type' \
+'list-components:List the components of an relation type' \
+'create:Creates a new relation type' \
+'delete:Deletes a relation type' \
+'add-property:Adds a property to a relation type' \
+'remove-property:Removes a property from a relation type' \
+'add-extension:Adds an extension to a relation type' \
+'remove-extension:Removes an extension from a relation type' \
+'add-component:Adds a component to a relation type' \
+'remove-component:Removes a component from a relation type' \
+'update-description:Updates the description of a relation type' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client relation-types commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__add-component_commands] )) ||
+_reactive-graph-client__relation-types__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__add-extension_commands] )) ||
+_reactive-graph-client__relation-types__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__add-property_commands] )) ||
+_reactive-graph-client__relation-types__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__create_commands] )) ||
+_reactive-graph-client__relation-types__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__delete_commands] )) ||
+_reactive-graph-client__relation-types__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__get_commands] )) ||
+_reactive-graph-client__relation-types__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help_commands] )) ||
+_reactive-graph-client__relation-types__help_commands() {
+    local commands; commands=(
+'list:List all relation types' \
+'get:Prints a single relation type' \
+'list-properties:List the properties of an relation type' \
+'list-extensions:List the extensions of an relation type' \
+'list-components:List the components of an relation type' \
+'create:Creates a new relation type' \
+'delete:Deletes a relation type' \
+'add-property:Adds a property to a relation type' \
+'remove-property:Removes a property from a relation type' \
+'add-extension:Adds an extension to a relation type' \
+'remove-extension:Removes an extension from a relation type' \
+'add-component:Adds a component to a relation type' \
+'remove-component:Removes a component from a relation type' \
+'update-description:Updates the description of a relation type' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client relation-types help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__add-component_commands] )) ||
+_reactive-graph-client__relation-types__help__add-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help add-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__add-extension_commands] )) ||
+_reactive-graph-client__relation-types__help__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__add-property_commands] )) ||
+_reactive-graph-client__relation-types__help__add-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help add-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__create_commands] )) ||
+_reactive-graph-client__relation-types__help__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help create commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__delete_commands] )) ||
+_reactive-graph-client__relation-types__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__get_commands] )) ||
+_reactive-graph-client__relation-types__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__help_commands] )) ||
+_reactive-graph-client__relation-types__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__list_commands] )) ||
+_reactive-graph-client__relation-types__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__list-components_commands] )) ||
+_reactive-graph-client__relation-types__help__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__list-extensions_commands] )) ||
+_reactive-graph-client__relation-types__help__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__list-properties_commands] )) ||
+_reactive-graph-client__relation-types__help__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__remove-component_commands] )) ||
+_reactive-graph-client__relation-types__help__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__remove-extension_commands] )) ||
+_reactive-graph-client__relation-types__help__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__remove-property_commands] )) ||
+_reactive-graph-client__relation-types__help__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__help__update-description_commands] )) ||
+_reactive-graph-client__relation-types__help__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__list_commands] )) ||
+_reactive-graph-client__relation-types__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__list-components_commands] )) ||
+_reactive-graph-client__relation-types__list-components_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types list-components commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__list-extensions_commands] )) ||
+_reactive-graph-client__relation-types__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__list-properties_commands] )) ||
+_reactive-graph-client__relation-types__list-properties_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types list-properties commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__remove-component_commands] )) ||
+_reactive-graph-client__relation-types__remove-component_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types remove-component commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__remove-extension_commands] )) ||
+_reactive-graph-client__relation-types__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__remove-property_commands] )) ||
+_reactive-graph-client__relation-types__remove-property_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types remove-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__relation-types__update-description_commands] )) ||
+_reactive-graph-client__relation-types__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client relation-types update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes_commands] )) ||
+_reactive-graph-client__remotes_commands() {
+    local commands; commands=(
+'list:Lists the remotes' \
+'add:Adds a remote' \
+'remove:Removes a remote' \
+'remove-all:Removes all remotes' \
+'update:Updates a remote' \
+'update-all:Updates all remotes' \
+'fetch-remotes-from-remote:Fetches the remotes from the given remote' \
+'fetch-remotes-from-all-remotes:Fetches all remotes from all remotes' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client remotes commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__add_commands] )) ||
+_reactive-graph-client__remotes__add_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes add commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__fetch-remotes-from-all-remotes_commands] )) ||
+_reactive-graph-client__remotes__fetch-remotes-from-all-remotes_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes fetch-remotes-from-all-remotes commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__fetch-remotes-from-remote_commands] )) ||
+_reactive-graph-client__remotes__fetch-remotes-from-remote_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes fetch-remotes-from-remote commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help_commands] )) ||
+_reactive-graph-client__remotes__help_commands() {
+    local commands; commands=(
+'list:Lists the remotes' \
+'add:Adds a remote' \
+'remove:Removes a remote' \
+'remove-all:Removes all remotes' \
+'update:Updates a remote' \
+'update-all:Updates all remotes' \
+'fetch-remotes-from-remote:Fetches the remotes from the given remote' \
+'fetch-remotes-from-all-remotes:Fetches all remotes from all remotes' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client remotes help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__add_commands] )) ||
+_reactive-graph-client__remotes__help__add_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help add commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__fetch-remotes-from-all-remotes_commands] )) ||
+_reactive-graph-client__remotes__help__fetch-remotes-from-all-remotes_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help fetch-remotes-from-all-remotes commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__fetch-remotes-from-remote_commands] )) ||
+_reactive-graph-client__remotes__help__fetch-remotes-from-remote_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help fetch-remotes-from-remote commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__help_commands] )) ||
+_reactive-graph-client__remotes__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__list_commands] )) ||
+_reactive-graph-client__remotes__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__remove_commands] )) ||
+_reactive-graph-client__remotes__help__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help remove commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__remove-all_commands] )) ||
+_reactive-graph-client__remotes__help__remove-all_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help remove-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__update_commands] )) ||
+_reactive-graph-client__remotes__help__update_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help update commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__help__update-all_commands] )) ||
+_reactive-graph-client__remotes__help__update-all_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes help update-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__list_commands] )) ||
+_reactive-graph-client__remotes__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes list commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__remove_commands] )) ||
+_reactive-graph-client__remotes__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes remove commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__remove-all_commands] )) ||
+_reactive-graph-client__remotes__remove-all_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes remove-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__update_commands] )) ||
+_reactive-graph-client__remotes__update_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes update commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__remotes__update-all_commands] )) ||
+_reactive-graph-client__remotes__update-all_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client remotes update-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shutdown_commands] )) ||
+_reactive-graph-client__shutdown_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client shutdown commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_reactive-graph-client" ]; then
+    _reactive-graph-client "$@"
+else
+    compdef _reactive-graph-client reactive-graph-client
+fi

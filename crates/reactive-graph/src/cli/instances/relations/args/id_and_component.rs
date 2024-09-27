@@ -1,6 +1,6 @@
 use crate::cli::error::CommandError;
 use crate::cli::instances::relations::args::id::RelationInstanceIdArgs;
-use crate::cli::types::components::args::type_id::ComponentTypeIdArgs;
+use crate::cli::types::components::args::type_id::ComponentContainerTypeIdArgs;
 use clap::Args;
 use reactive_graph_graph::RelationInstanceId;
 
@@ -13,7 +13,7 @@ pub(crate) struct RelationInstanceIdAndComponentArgs {
 
     /// The component type of the reactive instance.
     #[clap(flatten)]
-    pub component_ty: ComponentTypeIdArgs,
+    pub component_ty: ComponentContainerTypeIdArgs,
 }
 
 impl RelationInstanceIdAndComponentArgs {

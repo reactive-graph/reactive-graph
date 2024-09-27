@@ -96,6 +96,8 @@ async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
 aws-lc-rs = { version = "1.9.0", features = ["prebuilt-nasm"] }
 clap = { version = "4.1", features = ["derive", "env"] }
+clap_complete = "4.5"
+clap_mangen = "0.2"
 clap-markdown = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 colored = "2.0"
@@ -168,6 +170,7 @@ uuid = { version = "1.4", features = ["serde", "v4"] }
 vergen = { version = "8.2" }
 walkdir = "2.3"
 wildmatch = "2.1"
+xdg = "2.4"
 
 [profile.dev]
 opt-level = 0

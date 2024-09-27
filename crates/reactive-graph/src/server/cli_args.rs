@@ -1,10 +1,9 @@
-use clap::Parser;
-use clap::Subcommand;
-
 #[cfg(feature = "client")]
 use crate::cli::args::ClientArgs;
+use clap::Parser;
+use clap::Subcommand;
+use clap_complete::Shell;
 
-/// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[command(name = "reactive-graph", author, version, about, long_about = None)]
 #[command(propagate_version = true)]
@@ -111,6 +110,25 @@ pub struct CliArguments {
     #[arg(long, hide = true)]
     pub(crate) markdown_help: bool,
 
+    /// If true, generates man pages.
+    #[cfg(target_os = "linux")]
+    #[arg(long)]
+    pub(crate) print_man_pages: bool,
+
+    /// If true, installs man pages.
+    #[cfg(target_os = "linux")]
+    #[arg(long)]
+    pub(crate) install_man_pages: bool,
+
+    /// If true, prints shell completions.
+    #[arg(long, value_enum)]
+    pub(crate) print_shell_completions: Option<Shell>,
+
+    /// If true, installs shell completions.
+    #[cfg(target_os = "linux")]
+    #[arg(long, value_enum)]
+    pub(crate) install_shell_completions: Option<Shell>,
+
     /// If true, the process will run as daemon.
     #[cfg(target_os = "linux")]
     #[arg(short = 'D', long, env = "REACTIVE_GRAPH_DAEMON")]
@@ -161,4 +179,22 @@ pub enum Commands {
     #[cfg(feature = "client")]
     #[non_exhaustive]
     Client(ClientArgs),
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::completions::print_shell_completions;
+    use clap::CommandFactory;
+
+    #[test]
+    fn test_print_completions() {
+        let mut cmd = CliArguments::command();
+        print_shell_completions(Shell::Zsh, &mut cmd);
+    }
+
+    #[test]
+    fn test_print_markdown_help() {
+        clap_markdown::print_help_markdown::<CliArguments>();
+    }
 }

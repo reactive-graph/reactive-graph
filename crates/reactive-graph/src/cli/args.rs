@@ -1,4 +1,5 @@
 use clap::Parser;
+use clap_complete::Shell;
 
 use crate::cli::commands::ClientCommands;
 use reactive_graph_remotes_model::InstanceAddress;
@@ -47,6 +48,25 @@ pub struct ClientArgs {
     /// If true, generates command line documentation.
     #[arg(long, hide = true)]
     pub(crate) markdown_help: bool,
+
+    /// If true, generates man pages.
+    #[cfg(target_os = "linux")]
+    #[arg(long)]
+    pub(crate) print_man_pages: bool,
+
+    /// If true, installs man pages.
+    #[cfg(target_os = "linux")]
+    #[arg(long)]
+    pub(crate) install_man_pages: bool,
+
+    /// If true, prints shell completions.
+    #[arg(long, value_enum)]
+    pub(crate) print_shell_completions: Option<Shell>,
+
+    /// If true, installs shell completions.
+    #[cfg(target_os = "linux")]
+    #[arg(long, value_enum)]
+    pub(crate) install_shell_completions: Option<Shell>,
 
     #[command(subcommand)]
     pub(crate) commands: Option<ClientCommands>,
