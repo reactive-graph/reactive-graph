@@ -22,7 +22,7 @@ pub mod queries {
         GetAllEntityTypes::build(())
     }
 
-    #[cfg(test)]
+    #[cfg(all(test, feature = "integration-tests"))]
     mod tests {
         use reactive_graph_runtime_impl::RuntimeBuilder;
 

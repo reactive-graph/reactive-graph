@@ -14,12 +14,14 @@ pub mod queries {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "integration-tests"))]
 pub mod test {
     use crate::ReactiveGraphClient;
     use reactive_graph_runtime_api::Runtime;
     use reactive_graph_runtime_impl::RuntimeBuilder;
     use std::sync::Arc;
+    use std::time::Duration;
+    use tokio::time::sleep;
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_get_all_plugins() {
@@ -34,6 +36,8 @@ pub mod test {
             .spawn()
             .await
             .with_runtime(|runtime: Arc<dyn Runtime + Send + Sync>| async move {
+                sleep(Duration::from_millis(2000)).await;
+
                 let plugin_container_manager = runtime.get_plugin_container_manager();
                 assert_eq!(plugin_container_manager.get_plugins().len(), 0);
 

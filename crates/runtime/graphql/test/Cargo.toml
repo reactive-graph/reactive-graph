@@ -27,5 +27,9 @@ reactive-graph-runtime-api = { version = "0.10.0", path = "../../api" }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../../impl" }
 reactive-graph-runtime-graphql-api = { version = "0.10.0", path = "../api" }
 
+[features]
+default = []
+integration-tests = []
+
 [lib]
 crate-type = ["lib"]

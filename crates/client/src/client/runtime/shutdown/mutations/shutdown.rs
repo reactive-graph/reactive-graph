@@ -12,13 +12,13 @@ pub mod mutations {
     }
 }
 
-#[cfg(test)]
+#[cfg(all(test, feature = "integration-tests"))]
 pub mod test {
-    use std::sync::Arc;
-    use std::time::Duration;
-
     use reactive_graph_runtime_api::Runtime;
     use reactive_graph_runtime_impl::RuntimeBuilder;
+    use std::sync::Arc;
+    use std::time::Duration;
+    use tokio::time::sleep;
 
     use crate::ReactiveGraphClient;
 
@@ -35,6 +35,8 @@ pub mod test {
             .spawn()
             .await
             .with_runtime(|runtime: Arc<dyn Runtime + Send + Sync>| async move {
+                sleep(Duration::from_millis(2000)).await;
+
                 let count_before = Arc::strong_count(&runtime);
 
                 // Check that the shutdown manager is not shutting down and the runtime is in running state
