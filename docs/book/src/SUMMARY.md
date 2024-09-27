@@ -93,4 +93,5 @@
     - [Binaries](./Development_Binaries.md)
     - [Packaging](./Development_Packaging.md)
     - [Documentation](./Development_Documentation.md)
+    - [Contributing](./Development_Contributing.md)
 - [Limitations](./Limitations.md)
