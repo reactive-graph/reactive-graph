@@ -33,11 +33,11 @@
 <span class="comment">// pub mod system;
 </span><span class="kw">pub mod </span>types;
 
-<span class="kw">pub struct </span>InexorMutation;
+<span class="kw">pub struct </span>ReactiveGraphMutation;
 
 <span class="doccomment">/// Mutations for the type system, the instances and the flows.
 </span><span class="attr">#[Object(name = <span class="string">"Mutation"</span>)]
-</span><span class="kw">impl </span>InexorMutation {
+</span><span class="kw">impl </span>ReactiveGraphMutation {
     <span class="doccomment">/// Mutations for types (components, entity types, relation types).
     </span><span class="kw">async fn </span>types(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; MutationTypes {
         MutationTypes

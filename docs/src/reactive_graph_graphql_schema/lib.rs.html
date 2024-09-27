@@ -17,9 +17,9 @@
 <a href="#17" id="17">17</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_graphql::Schema;
 
-<span class="kw">pub use </span>mutation::InexorMutation;
-<span class="kw">pub use </span>query::InexorQuery;
-<span class="kw">pub use </span>subscription::InexorSubscription;
+<span class="kw">pub use </span>mutation::ReactiveGraphMutation;
+<span class="kw">pub use </span>query::ReactiveGraphQuery;
+<span class="kw">pub use </span>subscription::ReactiveGraphSubscription;
 
 <span class="kw">pub mod </span>directives;
 <span class="kw">pub mod </span>error;
@@ -27,8 +27,8 @@
 <span class="kw">pub mod </span>query;
 <span class="kw">pub mod </span>subscription;
 
-<span class="doccomment">/// Inexor GraphQL Interface
-</span><span class="kw">pub type </span>InexorSchema = Schema&lt;InexorQuery, InexorMutation, InexorSubscription&gt;;
+<span class="doccomment">/// GraphQL Schema for the Reactive Graph
+</span><span class="kw">pub type </span>ReactiveGraphSchema = Schema&lt;ReactiveGraphQuery, ReactiveGraphMutation, ReactiveGraphSubscription&gt;;
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests;

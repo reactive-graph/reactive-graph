@@ -163,27 +163,27 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>create_event_instances(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.event_instances.insert(
             ReactiveInstanceEventTypes::EntityInstanceCreated,
-            <span class="self">self</span>.create_event_instance(<span class="string">"/org/inexor/event/instance/entity/created"</span>),
+            <span class="self">self</span>.create_event_instance(<span class="string">"/io/reactive-graph/event/instance/entity/created"</span>),
         );
         <span class="self">self</span>.event_instances.insert(
             ReactiveInstanceEventTypes::EntityInstanceDeleted,
-            <span class="self">self</span>.create_event_instance(<span class="string">"/org/inexor/event/instance/entity/deleted"</span>),
+            <span class="self">self</span>.create_event_instance(<span class="string">"/io/reactive-graph/event/instance/entity/deleted"</span>),
         );
         <span class="self">self</span>.event_instances.insert(
             ReactiveInstanceEventTypes::RelationInstanceCreated,
-            <span class="self">self</span>.create_event_instance(<span class="string">"/org/inexor/event/instance/relation/created"</span>),
+            <span class="self">self</span>.create_event_instance(<span class="string">"/io/reactive-graph/event/instance/relation/created"</span>),
         );
         <span class="self">self</span>.event_instances.insert(
             ReactiveInstanceEventTypes::RelationInstanceDeleted,
-            <span class="self">self</span>.create_event_instance(<span class="string">"/org/inexor/event/instance/relation/deleted"</span>),
+            <span class="self">self</span>.create_event_instance(<span class="string">"/io/reactive-graph/event/instance/relation/deleted"</span>),
         );
         <span class="self">self</span>.event_instances.insert(
             ReactiveInstanceEventTypes::FlowInstanceCreated,
-            <span class="self">self</span>.create_event_instance(<span class="string">"/org/inexor/event/instance/flow/created"</span>),
+            <span class="self">self</span>.create_event_instance(<span class="string">"/io/reactive-graph/event/instance/flow/created"</span>),
         );
         <span class="self">self</span>.event_instances.insert(
             ReactiveInstanceEventTypes::FlowInstanceDeleted,
-            <span class="self">self</span>.create_event_instance(<span class="string">"/org/inexor/event/instance/flow/deleted"</span>),
+            <span class="self">self</span>.create_event_instance(<span class="string">"/io/reactive-graph/event/instance/flow/deleted"</span>),
         );
     }
 

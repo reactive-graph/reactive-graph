@@ -13,13 +13,13 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_trait::async_trait;
 <span class="kw">use </span>springtime_di::injectable;
 
-<span class="kw">use </span>reactive_graph_graphql_schema::InexorSchema;
+<span class="kw">use </span>reactive_graph_graphql_schema::ReactiveGraphSchema;
 <span class="kw">use </span>reactive_graph_lifecycle::Lifecycle;
 
 <span class="attr">#[injectable]
 #[async_trait]
 </span><span class="kw">pub trait </span>GraphQLSchemaManager: Send + Sync + Lifecycle {
     <span class="doccomment">/// Returns the GraphQL schema.
-    </span><span class="kw">fn </span>get_schema(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InexorSchema;
+    </span><span class="kw">fn </span>get_schema(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReactiveGraphSchema;
 }
 </code></pre></div></section></main></body></html>

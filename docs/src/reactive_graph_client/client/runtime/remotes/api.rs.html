@@ -72,53 +72,53 @@
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::remotes::mutations::update_remote::mutations::update;
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::remotes::queries::get_all::queries::get_all;
 <span class="kw">use </span><span class="kw">crate</span>::schema_runtime::InstanceInfos;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClientExecutionError;
 <span class="kw">use </span>reactive_graph_remotes_model::InstanceAddress;
 <span class="kw">use </span>reactive_graph_remotes_model::InstanceInfo;
 
 <span class="kw">pub struct </span>Remotes {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Remotes {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>get_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(get_all(), |data| InstanceInfos(data.remotes).into()).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(add(address.into()), |data| data.remotes.add.into()).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;bool, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;bool, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(remove(address.into()), |data| data.remotes.remove).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>remove_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;bool, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>remove_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;bool, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(remove_all(), |data| data.remotes.remove_all).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>update(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>update(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(update(address.into()), |data| data.remotes.update.into()).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>update_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>update_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_runtime(update_all(), |data| InstanceInfos(data.remotes.update_all).into())
             .<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>fetch_remotes_from_remote(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>fetch_remotes_from_remote(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_runtime(fetch_remotes_from_remote(address.into()), |data| InstanceInfos(data.remotes.fetch_remotes_from_remote).into())
             .<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>fetch_remotes_from_all_remotes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>fetch_remotes_from_all_remotes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceInfo&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_runtime(fetch_remotes_from_all_remotes(), |data| InstanceInfos(data.remotes.fetch_remotes_from_all_remotes).into())
             .<span class="kw">await

@@ -21,20 +21,20 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::instance::queries::get_instance_info::queries::get_instance_info;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClientExecutionError;
 <span class="kw">use </span>reactive_graph_remotes_model::InstanceInfo;
 
 <span class="kw">pub struct </span>Instance {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Instance {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>get_instance_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_instance_info(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(get_instance_info(), |data| data.instance_info.into()).<span class="kw">await
     </span>}
 }

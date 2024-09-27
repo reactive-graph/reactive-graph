@@ -370,6 +370,8 @@
 <a href="#370" id="370">370</a>
 <a href="#371" id="371">371</a>
 <a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::Deref;
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -564,154 +566,156 @@
         <span class="comment">// let mut writer = self.system_event_instances.write().unwrap();
         </span><span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentCreated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/created"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/created"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentPropertyAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/property/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/property/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentPropertyRenamed,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/property/renamed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/property/renamed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentPropertyUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/property/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/property/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentPropertyRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/property/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/property/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentExtensionAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/extension/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/extension/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentExtensionRenamed,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/extension/renamed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/extension/renamed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentExtensionUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/extension/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/extension/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentExtensionRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/extension/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/extension/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::ComponentDeleted,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/component/deleted"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/component/deleted"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeCreated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/created"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/created"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeComponentAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/component/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/component/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeComponentRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/component/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/component/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypePropertyAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/property/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/property/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypePropertyUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/property/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/property/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypePropertyRenamed,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/property/renamed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/property/renamed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypePropertyRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/property/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/property/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeExtensionAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/extension/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/extension/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeExtensionUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/extension/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/extension/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeExtensionRenamed,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/extension/renamed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/extension/renamed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeExtensionRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/extension/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/extension/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::EntityTypeDeleted,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/entity/deleted"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/entity/deleted"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeCreated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/created"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/created"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeComponentAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/component/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/component/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeComponentRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/component/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/component/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypePropertyAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/property/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/property/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypePropertyUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/property/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/property/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypePropertyRenamed,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/property/renamed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/property/renamed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypePropertyRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/property/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/property/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeExtensionAdded,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/extension/added"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/extension/added"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeExtensionUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/extension/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/extension/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeExtensionRenamed,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/extension/renamed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/extension/renamed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeExtensionRemoved,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/extension/removed"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/extension/removed"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::RelationTypeDeleted,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/relation/deleted"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/relation/deleted"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::FlowTypeCreated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/flow/created"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/flow/created"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::FlowTypeUpdated,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/flow/updated"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/flow/updated"</span>),
         );
         <span class="self">self</span>.system_event_instances.insert(
             TypeSystemEventTypes::FlowTypeDeleted,
-            <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/flow/deleted"</span>),
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/flow/deleted"</span>),
         );
-        <span class="self">self</span>.system_event_instances
-            .insert(TypeSystemEventTypes::TypeSystemChanged, <span class="self">self</span>.create_system_event_instance(<span class="string">"/org/inexor/event/type/changed"</span>));
+        <span class="self">self</span>.system_event_instances.insert(
+            TypeSystemEventTypes::TypeSystemChanged,
+            <span class="self">self</span>.create_system_event_instance(<span class="string">"/io/reactive-graph/event/type/changed"</span>),
+        );
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>create_system_event_instance&lt;S: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, label: S) -&gt; ReactiveEntity {

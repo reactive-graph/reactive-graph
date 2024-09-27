@@ -150,11 +150,11 @@
 <span class="kw">pub mod </span>entity_instance;
 <span class="kw">pub mod </span>relation_instance;
 
-<span class="kw">pub struct </span>InexorSubscription;
+<span class="kw">pub struct </span>ReactiveGraphSubscription;
 
 <span class="doccomment">/// Subscriptions for the reactive property instances.
 </span><span class="attr">#[Subscription(name = <span class="string">"Subscription"</span>)]
-</span><span class="kw">impl </span>InexorSubscription {
+</span><span class="kw">impl </span>ReactiveGraphSubscription {
     <span class="kw">async fn </span>entity(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;,

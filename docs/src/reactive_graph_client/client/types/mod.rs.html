@@ -34,7 +34,7 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::types::components::api::Components;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::entities::api::EntityTypes;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::relations::api::RelationTypes;
-<span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
+<span class="kw">use </span><span class="kw">crate</span>::client::ReactiveGraphClient;
 <span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">pub mod </span>components;
@@ -44,11 +44,11 @@
 <span class="kw">pub mod </span>relations;
 
 <span class="kw">pub struct </span>Types {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Types {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 

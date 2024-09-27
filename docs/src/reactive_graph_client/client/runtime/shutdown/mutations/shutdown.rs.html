@@ -85,7 +85,7 @@
     <span class="kw">use </span>reactive_graph_runtime_api::Runtime;
     <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
 
-    <span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
+    <span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
 
     <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
     </span><span class="kw">async fn </span>test_shutdown() {
@@ -108,7 +108,7 @@
 
                 <span class="kw">let </span>address = runtime.get_instance_service().get_instance_info().address();
 
-                <span class="kw">let </span>client = InexorRgfClient::new(address).expect(<span class="string">"Cannot create client"</span>);
+                <span class="kw">let </span>client = ReactiveGraphClient::new(address).expect(<span class="string">"Cannot create client"</span>);
                 <span class="kw">let </span>result = client.runtime().shutdown().shutdown().<span class="kw">await</span>.expect(<span class="string">"Failed to send shutdown command"</span>);
                 <span class="macro">assert!</span>(result);
 

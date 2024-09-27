@@ -116,7 +116,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::relations::args::RelationTypesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::relations::commands::RelationTypesCommands;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::relations::output_format::RelationTypesOutputFormatWrapper;
-<span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_client::ReactiveGraphClient;
 <span class="kw">use </span>reactive_graph_graph::NamespacedTypeContainer;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -124,7 +124,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>commands;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>output_format;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>relation_types(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, relation_type_args: RelationTypesArgs) -&gt; CommandResult {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>relation_types(client: <span class="kw-2">&amp;</span>Arc&lt;ReactiveGraphClient&gt;, relation_type_args: RelationTypesArgs) -&gt; CommandResult {
     <span class="kw">let </span>output_format_wrapper: RelationTypesOutputFormatWrapper = relation_type_args.output_format.clone().into();
     <span class="kw">let </span><span class="prelude-val">Some</span>(command) = relation_type_args.commands <span class="kw">else </span>{
         <span class="kw">return </span><span class="prelude-val">Err</span>(CommandError::MissingSubCommand);

@@ -235,49 +235,49 @@
 <span class="kw">pub mod </span>types;
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>InexorRgfClientError {
+</span><span class="kw">pub enum </span>ReactiveGraphClientError {
     InvalidBearer(InvalidHeaderValue),
     ClientCreationError(Error),
 }
 
-<span class="kw">impl </span>Display <span class="kw">for </span>InexorRgfClientError {
+<span class="kw">impl </span>Display <span class="kw">for </span>ReactiveGraphClientError {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            InexorRgfClientError::InvalidBearer(e) =&gt; {
+            ReactiveGraphClientError::InvalidBearer(e) =&gt; {
                 <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, e)
             }
-            InexorRgfClientError::ClientCreationError(e) =&gt; {
+            ReactiveGraphClientError::ClientCreationError(e) =&gt; {
                 <span class="macro">writeln!</span>(f, <span class="string">"{}"</span>, e)
             }
         }
     }
 }
 
-<span class="kw">impl </span>std::error::Error <span class="kw">for </span>InexorRgfClientError {}
+<span class="kw">impl </span>std::error::Error <span class="kw">for </span>ReactiveGraphClientError {}
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub enum </span>InexorRgfClientExecutionError {
+</span><span class="kw">pub enum </span>ReactiveGraphClientExecutionError {
     FailedToSendRequest(CynicReqwestError),
     FailedToParseResponse(Error),
     GraphQlError(Vec&lt;GraphQlError&gt;),
 }
 
-<span class="kw">impl </span>From&lt;CynicReqwestError&gt; <span class="kw">for </span>InexorRgfClientExecutionError {
+<span class="kw">impl </span>From&lt;CynicReqwestError&gt; <span class="kw">for </span>ReactiveGraphClientExecutionError {
     <span class="kw">fn </span>from(e: CynicReqwestError) -&gt; <span class="self">Self </span>{
-        InexorRgfClientExecutionError::FailedToSendRequest(e)
+        ReactiveGraphClientExecutionError::FailedToSendRequest(e)
     }
 }
 
-<span class="kw">impl </span>Display <span class="kw">for </span>InexorRgfClientExecutionError {
+<span class="kw">impl </span>Display <span class="kw">for </span>ReactiveGraphClientExecutionError {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            InexorRgfClientExecutionError::FailedToSendRequest(e) =&gt; {
+            ReactiveGraphClientExecutionError::FailedToSendRequest(e) =&gt; {
                 <span class="macro">writeln!</span>(f, <span class="string">"Failed to send request:\n{e:?}"</span>)
             }
-            InexorRgfClientExecutionError::FailedToParseResponse(e) =&gt; {
+            ReactiveGraphClientExecutionError::FailedToParseResponse(e) =&gt; {
                 <span class="macro">writeln!</span>(f, <span class="string">"Failed to parse response:\n{e:?}"</span>)
             }
-            InexorRgfClientExecutionError::GraphQlError(e) =&gt; {
+            ReactiveGraphClientExecutionError::GraphQlError(e) =&gt; {
                 <span class="kw">let </span>graphql_errors: Vec&lt;String&gt; = e.iter().map(|graphql_error| <span class="macro">format!</span>(<span class="string">"{}"</span>, graphql_error)).collect();
                 <span class="macro">writeln!</span>(f, <span class="string">"The response returned errors:\n{}"</span>, graphql_errors.join(<span class="string">"\n"</span>))
             }
@@ -285,26 +285,26 @@
     }
 }
 
-<span class="kw">impl </span>std::error::Error <span class="kw">for </span>InexorRgfClientExecutionError {}
+<span class="kw">impl </span>std::error::Error <span class="kw">for </span>ReactiveGraphClientExecutionError {}
 
-<span class="kw">pub struct </span>InexorRgfClient {
+<span class="kw">pub struct </span>ReactiveGraphClient {
     remote: InstanceAddress,
     <span class="kw">pub </span>client: Client,
 }
 
-<span class="kw">impl </span>InexorRgfClient {
-    <span class="kw">pub fn </span>new_default() -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;, InexorRgfClientError&gt; {
-        InexorRgfClient::new(InstanceAddress::default())
+<span class="kw">impl </span>ReactiveGraphClient {
+    <span class="kw">pub fn </span>new_default() -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;, ReactiveGraphClientError&gt; {
+        ReactiveGraphClient::new(InstanceAddress::default())
     }
 
-    <span class="kw">pub fn </span>new&lt;A: Into&lt;InstanceAddress&gt;&gt;(remote: A) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;, InexorRgfClientError&gt; {
+    <span class="kw">pub fn </span>new&lt;A: Into&lt;InstanceAddress&gt;&gt;(remote: A) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;, ReactiveGraphClientError&gt; {
         <span class="kw">let </span>remote = remote.into();
         <span class="kw">let </span><span class="kw-2">mut </span>client_builder = Client::builder().user_agent(remote.user_agent.clone());
         <span class="kw">if let </span><span class="prelude-val">Some</span>(bearer) = remote.bearer.clone() {
-            <span class="kw">let </span>header_value = reqwest::header::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"Bearer {}"</span>, bearer)).map_err(InexorRgfClientError::InvalidBearer)<span class="question-mark">?</span>;
+            <span class="kw">let </span>header_value = reqwest::header::HeaderValue::from_str(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"Bearer {}"</span>, bearer)).map_err(ReactiveGraphClientError::InvalidBearer)<span class="question-mark">?</span>;
             client_builder = client_builder.default_headers(std::iter::once((reqwest::header::AUTHORIZATION, header_value)).collect());
         }
-        <span class="kw">let </span>client = client_builder.build().map_err(InexorRgfClientError::ClientCreationError)<span class="question-mark">?</span>;
+        <span class="kw">let </span>client = client_builder.build().map_err(ReactiveGraphClientError::ClientCreationError)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(Arc::new(<span class="self">Self </span>{ remote, client }))
     }
 
@@ -354,7 +354,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         operation: Operation&lt;ResponseData, Vars&gt;,
         extractor: <span class="kw">impl </span>FnOnce(ResponseData) -&gt; ResponseType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, InexorRgfClientExecutionError&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, ReactiveGraphClientExecutionError&gt;
     <span class="kw">where
         </span>Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + <span class="lifetime">'static</span>,
@@ -367,7 +367,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         operation: Operation&lt;ResponseData, Vars&gt;,
         extractor: <span class="kw">impl </span>FnOnce(ResponseData) -&gt; ResponseType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, InexorRgfClientExecutionError&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, ReactiveGraphClientExecutionError&gt;
     <span class="kw">where
         </span>Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + <span class="lifetime">'static</span>,
@@ -380,7 +380,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         operation: Operation&lt;ResponseData, Vars&gt;,
         extractor: <span class="kw">impl </span>FnOnce(ResponseData) -&gt; ResponseType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, InexorRgfClientExecutionError&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, ReactiveGraphClientExecutionError&gt;
     <span class="kw">where
         </span>Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + <span class="lifetime">'static</span>,
@@ -393,7 +393,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         operation: Operation&lt;ResponseData, Vars&gt;,
         extractor: <span class="kw">impl </span>FnOnce(ResponseData) -&gt; ResponseType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, InexorRgfClientExecutionError&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, ReactiveGraphClientExecutionError&gt;
     <span class="kw">where
         </span>Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + <span class="lifetime">'static</span>,
@@ -407,7 +407,7 @@
         endpoint: String,
         operation: Operation&lt;ResponseData, Vars&gt;,
         extractor: <span class="kw">impl </span>FnOnce(ResponseData) -&gt; ResponseType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, InexorRgfClientExecutionError&gt;
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ResponseType, ReactiveGraphClientExecutionError&gt;
     <span class="kw">where
         </span>Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + <span class="lifetime">'static</span>,
@@ -421,7 +421,7 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(data) = response.data.map(extractor) {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(data);
         }
-        <span class="prelude-val">Err</span>(InexorRgfClientExecutionError::GraphQlError(response.errors.unwrap_or(<span class="macro">vec!</span>[])))
+        <span class="prelude-val">Err</span>(ReactiveGraphClientExecutionError::GraphQlError(response.errors.unwrap_or(<span class="macro">vec!</span>[])))
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["behaviours","instances","types"],"struct":["InexorQuery"]};
+window.SIDEBAR_ITEMS = {"mod":["behaviours","instances","types"],"struct":["ReactiveGraphQuery"]};

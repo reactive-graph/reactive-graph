@@ -704,7 +704,6 @@
 <a href="#704" id="704">704</a>
 <a href="#705" id="705">705</a>
 <a href="#706" id="706">706</a>
-<a href="#707" id="707">707</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::ops::Deref;
 
 <span class="kw">use </span>serde_json::json;
@@ -723,9 +722,8 @@
 <span class="kw">use </span>reactive_graph_graph::ComponentTypeIds;
 <span class="kw">use </span>reactive_graph_graph::EntityTypeId;
 <span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
+<span class="kw">use </span>reactive_graph_graph::PropertyInstanceSetter;
 <span class="kw">use </span>reactive_graph_graph::PropertyInstances;
-<span class="comment">// use reactive_graph_graph::PropertyInstanceGetter;
-</span><span class="kw">use </span>reactive_graph_graph::PropertyInstanceSetter;
 <span class="kw">use </span>reactive_graph_graph::PropertyTypeDefinition;
 <span class="kw">use </span>reactive_graph_reactive_model_impl::ReactiveEntity;
 <span class="kw">use </span>reactive_graph_reactive_model_impl::ReactiveProperties;
@@ -765,7 +763,7 @@
     // scope: String,
     // .scope("testing")
     // .name("concat")
-    // .label("/org/inexor/test/concat")
+    // .label("/io/reactive-graph/test/concat")
     // .help("Concatenates two strings")
 </span>}
 
@@ -776,7 +774,7 @@
         <span class="kw">let </span>namespace = definition.namespace.unwrap_or_else(|| definition.ty.namespace());
         <span class="kw">let </span>name = definition.name.unwrap_or_else(|| definition.ty.type_name());
 
-        <span class="kw">let </span>label = <span class="macro">format!</span>(<span class="string">"/org/inexor/commands/{namespace}/{name}"</span>);
+        <span class="kw">let </span>label = <span class="macro">format!</span>(<span class="string">"/io/reactive-graph/commands/{namespace}/{name}"</span>);
 
         <span class="kw">let </span>components = ComponentTypeIds::new()
             .component(COMPONENT_LABELED.deref())
@@ -788,7 +786,7 @@
         // let properties = PropertyTypes::new()
         //     .property(PropertyType::string("help"));
 
-        //         let label = format!("/org/inexor/commands/{scope}/{name}");
+        //         let label = format!("/io/reactive-graph/commands/{scope}/{name}");
         //         builder.property(COMMAND_NAMESPACE, json!(scope));
         //         builder.property(COMMAND_NAME, json!(name));
         //         builder.component(&amp;COMPONENT_LABELED.clone());
@@ -942,7 +940,7 @@
 //         builder.property(COMMAND_RESULT, json!(0));
 //         let scope = ty.namespace();
 //         let name = ty.type_name();
-//         let label = format!("/org/inexor/commands/{scope}/{name}");
+//         let label = format!("/io/reactive-graph/commands/{scope}/{name}");
 //         builder.property(COMMAND_NAMESPACE, json!(scope));
 //         builder.property(COMMAND_NAME, json!(name));
 //         builder.component(&amp;COMPONENT_LABELED.clone());
@@ -982,7 +980,7 @@
 //         if let Some(builder) = self.builder.as_mut() {
 //             let scope = scope.into();
 //             let name = name.into();
-//             let label = format!("/org/inexor/commands/{scope}/{name}");
+//             let label = format!("/io/reactive-graph/commands/{scope}/{name}");
 //             builder.property(COMMAND_NAMESPACE, json!(scope));
 //             builder.property(COMMAND_NAME, json!(name));
 //             builder.component(&amp;COMPONENT_LABELED.clone());
@@ -1294,7 +1292,7 @@
 //             .ty(&amp;EntityTypeId::new_from_type("testing", "concat"))
 //             .scope("testing")
 //             .name("concat")
-//             .label("/org/inexor/test/concat")
+//             .label("/io/reactive-graph/test/concat")
 //             .help("Concatenates two strings")
 //             // Additional components
 //             .component(&amp;ComponentTypeId::new_from_type("test", "test"))
@@ -1365,7 +1363,7 @@
 //         assert_eq!("testing", command.namespace().expect("No command namespace"));
 //         assert_eq!("test", command.name().expect("No command name"));
 //         // Automatically generated label
-//         assert_eq!("/org/inexor/commands/testing/test", command.label().expect("No label"));
+//         assert_eq!("/io/reactive-graph/commands/testing/test", command.label().expect("No label"));
 //         assert_eq!("A test command", command.help().expect("No help text"));
 //     }
 //
@@ -1400,7 +1398,7 @@
 //         assert_eq!("testing", command.namespace().expect("No command namespace"));
 //         assert_eq!("add", command.name().expect("No command name"));
 //         // Automatically generated label
-//         assert_eq!("/org/inexor/commands/testing/add", command.label().expect("No label"));
+//         assert_eq!("/io/reactive-graph/commands/testing/add", command.label().expect("No label"));
 //         assert_eq!("Adds two numbers", command.help().expect("No help text"));
 //         let mut exec_args = HashMap::new();
 //         exec_args.insert(String::from("lhs"), json!(1));

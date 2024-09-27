@@ -69,7 +69,7 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">pub mod </span>test {
-    <span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
+    <span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
     <span class="kw">use </span>reactive_graph_runtime_api::Runtime;
     <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
     <span class="kw">use </span>std::sync::Arc;
@@ -91,7 +91,7 @@
                 <span class="macro">assert_eq!</span>(plugin_container_manager.get_plugins().len(), <span class="number">0</span>);
 
                 <span class="comment">// Client: Connect to self and get all remotes
-                </span><span class="kw">let </span>client = InexorRgfClient::new(runtime.address()).expect(<span class="string">"Cannot create client"</span>);
+                </span><span class="kw">let </span>client = ReactiveGraphClient::new(runtime.address()).expect(<span class="string">"Cannot create client"</span>);
                 <span class="kw">let </span>plugins = client.plugins().get_all().<span class="kw">await</span>.expect(<span class="string">"Failed to get list of plugins"</span>);
                 <span class="macro">assert_eq!</span>(plugins.len(), <span class="number">0</span>);
             })

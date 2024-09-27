@@ -26,7 +26,7 @@
 <a href="#26" id="26">26</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::api::EntityInstances;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::relations::api::RelationInstances;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
 <span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">pub mod </span>entities;
@@ -34,11 +34,11 @@
 <span class="kw">pub mod </span>variables;
 
 <span class="kw">pub struct </span>Instances {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Instances {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 

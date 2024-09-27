@@ -143,7 +143,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::cli::repl::chars::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::cli::repl::repl_helper::ReplHelper;
 <span class="kw">use </span><span class="kw">crate</span>::cli::repl::return_state::ReturnState;
-<span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_client::ReactiveGraphClient;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>args;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>chars;
@@ -151,7 +151,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>repl_helper;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>return_state;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>repl(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), i32&gt; {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>repl(client: <span class="kw-2">&amp;</span>Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), i32&gt; {
     <span class="kw">let </span><span class="kw-2">mut </span>rl = Editor::&lt;ReplHelper, DefaultHistory&gt;::new().map_err(|<span class="kw">_</span>| <span class="number">255</span>)<span class="question-mark">?</span>;
     rl.set_helper(<span class="prelude-val">Some</span>(ReplHelper::new()));
     rl.bind_sequence(Event::KeySeq(<span class="macro">vec!</span>[KeyEvent(KeyCode::Tab, Modifiers::NONE)]), Cmd::CompleteHint);

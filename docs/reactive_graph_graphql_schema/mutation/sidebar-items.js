@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["instances","types"],"struct":["InexorMutation"]};
+window.SIDEBAR_ITEMS = {"mod":["instances","types"],"struct":["ReactiveGraphMutation"]};

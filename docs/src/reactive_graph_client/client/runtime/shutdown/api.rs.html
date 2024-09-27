@@ -20,19 +20,19 @@
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::runtime::shutdown::mutations::shutdown::mutations::shutdown;
 <span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClientExecutionError;
 
 <span class="kw">pub struct </span>Shutdown {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Shutdown {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>shutdown(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;bool, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>shutdown(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;bool, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_runtime(shutdown(), |data| data.shutdown).<span class="kw">await
     </span>}
 }

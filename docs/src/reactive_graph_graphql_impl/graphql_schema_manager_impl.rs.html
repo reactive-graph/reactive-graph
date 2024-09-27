@@ -120,10 +120,10 @@
 <span class="kw">use </span>reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 <span class="kw">use </span>reactive_graph_graphql_api::GraphQLSchemaManager;
 <span class="kw">use </span>reactive_graph_graphql_schema::directives;
-<span class="kw">use </span>reactive_graph_graphql_schema::InexorMutation;
-<span class="kw">use </span>reactive_graph_graphql_schema::InexorQuery;
-<span class="kw">use </span>reactive_graph_graphql_schema::InexorSchema;
-<span class="kw">use </span>reactive_graph_graphql_schema::InexorSubscription;
+<span class="kw">use </span>reactive_graph_graphql_schema::ReactiveGraphMutation;
+<span class="kw">use </span>reactive_graph_graphql_schema::ReactiveGraphQuery;
+<span class="kw">use </span>reactive_graph_graphql_schema::ReactiveGraphSchema;
+<span class="kw">use </span>reactive_graph_graphql_schema::ReactiveGraphSubscription;
 <span class="kw">use </span>reactive_graph_lifecycle::Lifecycle;
 <span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveEntityManager;
 <span class="kw">use </span>reactive_graph_reactive_service_api::ReactiveFlowManager;
@@ -174,8 +174,8 @@
 <span class="attr">#[async_trait]
 #[component_alias]
 </span><span class="kw">impl </span>GraphQLSchemaManager <span class="kw">for </span>GraphQLSchemaManagerImpl {
-    <span class="kw">fn </span>get_schema(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InexorSchema {
-        Schema::build(InexorQuery, InexorMutation, InexorSubscription)
+    <span class="kw">fn </span>get_schema(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReactiveGraphSchema {
+        Schema::build(ReactiveGraphQuery, ReactiveGraphMutation, ReactiveGraphSubscription)
             .data(<span class="self">self</span>.component_manager.clone())
             .data(<span class="self">self</span>.entity_type_manager.clone())
             .data(<span class="self">self</span>.relation_type_manager.clone())

@@ -86,8 +86,8 @@
     </span><span class="kw">fn </span>get_by_label(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;ReactiveEntity&gt;;
 
     <span class="doccomment">/// Returns the reactive entity instance and the matched path parameters that matches the given label or None.
-    /// /org/inexor/local/users/:user_id
-    /// /org/inexor/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
+    /// /io/reactive-graph/local/users/:user_id
+    /// /io/reactive-graph/local/users/PeterPenacka returns: (instance, {"user_id": "PeterPenacka"})
     </span><span class="kw">fn </span>get_by_label_with_params(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;(ReactiveEntity, HashMap&lt;String, String&gt;)&gt;;
 
     <span class="doccomment">/// Returns all reactive entity instances.

@@ -50,7 +50,7 @@
 
 <span class="kw">use </span>colored::Colorize;
 
-<span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_client::ReactiveGraphClient;
 
 <span class="kw">use </span><span class="kw">crate</span>::cli::args::ClientArgs;
 <span class="kw">use </span><span class="kw">crate</span>::cli::handler::handle_command;
@@ -68,7 +68,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>types;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>client(client_args: ClientArgs) {
-    <span class="kw">let </span>client = <span class="kw">match </span>InexorRgfClient::new(<span class="kw-2">&amp;</span>client_args) {
+    <span class="kw">let </span>client = <span class="kw">match </span>ReactiveGraphClient::new(<span class="kw-2">&amp;</span>client_args) {
         <span class="prelude-val">Ok</span>(client) =&gt; client,
         <span class="prelude-val">Err</span>(e) =&gt; {
             <span class="macro">eprintln!</span>(<span class="string">"{}: {}"</span>, <span class="string">"Failed to create client"</span>.red(), e);

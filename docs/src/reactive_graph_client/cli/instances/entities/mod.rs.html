@@ -132,7 +132,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::cli::instances::properties::output_format::PropertyInstancesOutputFormatWrapper;
 <span class="kw">use </span><span class="kw">crate</span>::cli::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::components::output_format::ComponentTypeIdsOutputFormatWrapper;
-<span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_client::ReactiveGraphClient;
 <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
 <span class="kw">use </span>reactive_graph_graph::PropertyInstanceGetter;
 <span class="kw">use </span>reactive_graph_graph::PropertyType;
@@ -143,7 +143,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>commands;
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod </span>output_format;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>entity_instances(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, entity_instances_args: EntityInstancesArgs) -&gt; CommandResult {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>entity_instances(client: <span class="kw-2">&amp;</span>Arc&lt;ReactiveGraphClient&gt;, entity_instances_args: EntityInstancesArgs) -&gt; CommandResult {
     <span class="kw">let </span>output_format_wrapper: EntityInstancesOutputFormatWrapper = entity_instances_args.output_format.clone().into();
     <span class="kw">let </span><span class="prelude-val">Some</span>(command) = entity_instances_args.commands <span class="kw">else </span>{
         <span class="kw">return </span><span class="prelude-val">Err</span>(CommandError::MissingSubCommand);

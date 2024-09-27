@@ -79,7 +79,7 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">pub mod </span>test {
-    <span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
+    <span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
     <span class="kw">use </span>reactive_graph_runtime_api::Runtime;
     <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
     <span class="kw">use </span>std::sync::Arc;
@@ -104,7 +104,7 @@
                 <span class="kw">let </span>rt_address = rt_instance_info.address();
 
                 <span class="comment">// Create a client
-                </span><span class="kw">let </span>client = InexorRgfClient::new(rt_address.clone()).expect(<span class="string">"Cannot create client"</span>);
+                </span><span class="kw">let </span>client = ReactiveGraphClient::new(rt_address.clone()).expect(<span class="string">"Cannot create client"</span>);
 
                 <span class="comment">// Fetch instance info via client &amp; graphql
                 </span><span class="kw">let </span>instance_info = client.runtime().instance().get_instance_info().<span class="kw">await</span>.expect(<span class="string">"Cannot fetch instance info"</span>);

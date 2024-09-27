@@ -227,8 +227,8 @@
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::get_by_label::queries::get_entity_instance_by_label;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::search::queries::search;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::queries::search::queries::SearchEntityInstancesVariables;
-<span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::client::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::client::ReactiveGraphClientExecutionError;
 <span class="kw">use </span>cynic::http::ReqwestExt;
 <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
 <span class="kw">use </span>reactive_graph_graph::EntityInstance;
@@ -239,29 +239,29 @@
 <span class="kw">use </span>uuid::Uuid;
 
 <span class="kw">pub struct </span>EntityInstances {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>EntityInstances {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>search(<span class="kw-2">&amp;</span><span class="self">self</span>, search_query: SearchEntityInstancesVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;EntityInstance&gt;&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>search(<span class="kw-2">&amp;</span><span class="self">self</span>, search_query: SearchEntityInstancesVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;EntityInstance&gt;&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>entity_instances = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(search(search_query))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| <span class="kw">crate</span>::schema_graphql::instances::entity_instance::EntityInstances(data.instances.entities))
             .map(From::from);
         <span class="prelude-val">Ok</span>(entity_instances)
     }
 
-    <span class="kw">pub async fn </span>get_entity_instance_by_id&lt;ID: Into&lt;Uuid&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: ID) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_entity_instance_by_id&lt;ID: Into&lt;Uuid&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: ID) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
             </span>.client
@@ -269,14 +269,14 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(get_entity_instance_by_id(id))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .and_then(|data| data.instances.entities.first().cloned())
             .map(From::from);
         <span class="prelude-val">Ok</span>(entity_instance)
     }
 
-    <span class="kw">pub async fn </span>get_entity_instance_by_label&lt;L: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, label: L) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_entity_instance_by_label&lt;L: Into&lt;String&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, label: L) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>label = label.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
             </span>.client
@@ -284,7 +284,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(get_entity_instance_by_label(label))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .and_then(|data| data.instances.entities.first().cloned())
             .map(From::from);
@@ -296,7 +296,7 @@
         id: ID,
         name: S,
         value: V,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>name = name.into();
         <span class="kw">let </span>value = value.into();
@@ -306,7 +306,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(set_property(id, name, value))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -317,7 +317,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         id: ID,
         property_type: PT,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>property_type = property_type.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
@@ -326,7 +326,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(add_property(id, property_type))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -337,7 +337,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         id: ID,
         property_name: S,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>property_name = property_name.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
@@ -346,7 +346,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(remove_property(id, property_name))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -357,7 +357,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         id: ID,
         component_ty: C,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>component_ty = component_ty.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
@@ -366,7 +366,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(add_component(id, component_ty))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -377,7 +377,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         id: ID,
         component_ty: C,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>component_ty = component_ty.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
@@ -386,7 +386,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(remove_component(id, component_ty))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.update)
             .map(From::from);
@@ -399,7 +399,7 @@
         id: <span class="prelude-ty">Option</span>&lt;ID&gt;,
         description: <span class="prelude-ty">Option</span>&lt;String&gt;,
         properties: PropertyInstances,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;EntityInstance&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>ty = ty.into();
         <span class="kw">let </span>id = id.map(|id| id.into());
         <span class="kw">let </span>entity_instance = <span class="self">self
@@ -408,14 +408,14 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(create(ty, id, description, properties))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.create)
             .map(From::from);
         <span class="prelude-val">Ok</span>(entity_instance)
     }
 
-    <span class="kw">pub async fn </span>delete_entity_instance&lt;ID: Into&lt;Uuid&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: ID) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>delete_entity_instance&lt;ID: Into&lt;Uuid&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, id: ID) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>id = id.into();
         <span class="kw">let </span>entity_instance = <span class="self">self
             </span>.client
@@ -423,7 +423,7 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(delete_entity_instance_mutation(id))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.instances.entities.delete)
             .map(From::from);

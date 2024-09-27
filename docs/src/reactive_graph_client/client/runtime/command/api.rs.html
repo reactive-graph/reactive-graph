@@ -36,26 +36,26 @@
 <span class="kw">use </span>serde_json::Value;
 
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::command::mutations::execute_command::mutations::execute_command;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClientExecutionError;
 
 <span class="kw">pub struct </span>Command {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Command {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>execute(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String, args: <span class="prelude-ty">Option</span>&lt;Value&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Value&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>execute(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String, args: <span class="prelude-ty">Option</span>&lt;Value&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Value&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>value = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_runtime())
             .run_graphql(execute_command(name, args))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .and_then(|data| data.commands.execute)
             .map(|property_instance| property_instance.value.<span class="number">0</span>);

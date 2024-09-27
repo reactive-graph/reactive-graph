@@ -95,7 +95,7 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">pub mod </span>test {
-    <span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
+    <span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
     <span class="kw">use </span>reactive_graph_runtime_api::Runtime;
     <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
     <span class="kw">use </span>std::sync::Arc;
@@ -122,7 +122,7 @@
                 </span><span class="macro">assert_eq!</span>(remotes_manager.get_all().len(), <span class="number">0</span>);
 
                 <span class="comment">// Client: Connect to self and get all remotes
-                </span><span class="kw">let </span>client = InexorRgfClient::new(rt_address.clone()).expect(<span class="string">"Cannot create client"</span>);
+                </span><span class="kw">let </span>client = ReactiveGraphClient::new(rt_address.clone()).expect(<span class="string">"Cannot create client"</span>);
                 <span class="kw">let </span>remote = client.runtime().remotes().add(<span class="kw-2">&amp;</span>rt_address).<span class="kw">await</span>.expect(<span class="string">"Failed to add remote"</span>);
 
                 <span class="comment">// Check that there is a new remote

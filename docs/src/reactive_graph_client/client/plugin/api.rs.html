@@ -112,27 +112,27 @@
 <span class="kw">use </span><span class="kw">crate</span>::client::plugin::variables::search::variables::SearchPluginVariables;
 <span class="kw">use </span>std::sync::Arc;
 
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::ReactiveGraphClientExecutionError;
 
 <span class="kw">use </span>reactive_graph_plugin_model::Plugin;
 
 <span class="kw">pub struct </span>Plugins {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Plugins {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>get_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Plugin&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_all(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Plugin&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_plugins(get_all(), |data| data.plugins.iter().map(|plugin| plugin.into()).collect())
             .<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>search(<span class="kw-2">&amp;</span><span class="self">self</span>, vars: SearchPluginVariables) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Plugin&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>search(<span class="kw-2">&amp;</span><span class="self">self</span>, vars: SearchPluginVariables) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;Plugin&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_plugins(search(vars), |data| data.plugins.iter().map(|plugin| plugin.into()).collect())
             .<span class="kw">await
@@ -140,7 +140,7 @@
 
     <span class="doccomment">/// Returns the plugin with the given name.
     /// If no plugin was found an empty optional will be returned.
-    </span><span class="kw">pub async fn </span>get_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Plugin&gt;, InexorRgfClientExecutionError&gt; {
+    </span><span class="kw">pub async fn </span>get_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Plugin&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_plugins(get_by_name(name), |data| data.plugins.iter().map(|plugin| plugin.into()).collect())
             .<span class="kw">await
@@ -149,7 +149,7 @@
 
     <span class="doccomment">/// Returns the dependencies of the plugin with the given name.
     /// If no plugin was found an empty optional will be returned.
-    </span><span class="kw">pub async fn </span>get_dependencies(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Plugin&gt;&gt;, InexorRgfClientExecutionError&gt; {
+    </span><span class="kw">pub async fn </span>get_dependencies(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Plugin&gt;&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_plugins(get_dependencies(name), |data| data.plugins)
             .<span class="kw">await
@@ -160,7 +160,7 @@
 
     <span class="doccomment">/// Returns the dependents of the plugin with the given name.
     /// If no plugin was found an empty optional will be returned.
-    </span><span class="kw">pub async fn </span>get_dependents(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Plugin&gt;&gt;, InexorRgfClientExecutionError&gt; {
+    </span><span class="kw">pub async fn </span>get_dependents(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Plugin&gt;&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_plugins(get_dependents(name), |data| data.plugins)
             .<span class="kw">await
@@ -171,7 +171,7 @@
 
     <span class="doccomment">/// Returns the unsatisfied dependencies of the plugin with the given name.
     /// If no plugin was found an empty optional will be returned.
-    </span><span class="kw">pub async fn </span>get_unsatisfied_dependencies(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Plugin&gt;&gt;, InexorRgfClientExecutionError&gt; {
+    </span><span class="kw">pub async fn </span>get_unsatisfied_dependencies(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Plugin&gt;&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client
             .execute_plugins(get_unsatisfied_dependencies(name), |data| data.plugins)
             .<span class="kw">await
@@ -180,19 +180,19 @@
             .map(|plugins| plugins.map(|plugins| plugins.iter().map(|plugin| plugin.into()).collect()))
     }
 
-    <span class="kw">pub async fn </span>start(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;Plugin, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>start(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;Plugin, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_plugins(start(name), |data| (<span class="kw-2">&amp;</span>data.start).into()).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>stop(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;Plugin, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>stop(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;Plugin, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_plugins(stop(name), |data| (<span class="kw-2">&amp;</span>data.stop).into()).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>restart(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;Plugin, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>restart(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;Plugin, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_plugins(restart(name), |data| (<span class="kw-2">&amp;</span>data.restart).into()).<span class="kw">await
     </span>}
 
-    <span class="kw">pub async fn </span>uninstall(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;bool, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>uninstall(<span class="kw-2">&amp;</span><span class="self">self</span>, name: String) -&gt; <span class="prelude-ty">Result</span>&lt;bool, ReactiveGraphClientExecutionError&gt; {
         <span class="self">self</span>.client.execute_plugins(uninstall(name), |data| data.uninstall).<span class="kw">await
     </span>}
 

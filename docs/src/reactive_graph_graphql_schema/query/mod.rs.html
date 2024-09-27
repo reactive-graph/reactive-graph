@@ -34,11 +34,6 @@
 <a href="#34" id="34">34</a>
 <a href="#35" id="35">35</a>
 <a href="#36" id="36">36</a>
-<a href="#37" id="37">37</a>
-<a href="#38" id="38">38</a>
-<a href="#39" id="39">39</a>
-<a href="#40" id="40">40</a>
-<a href="#41" id="41">41</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>async_graphql::<span class="kw-2">*</span>;
 <span class="kw">use </span>uuid::Uuid;
 
@@ -48,14 +43,13 @@
 
 <span class="kw">pub mod </span>behaviours;
 <span class="kw">pub mod </span>instances;
-<span class="comment">// pub mod system;
-</span><span class="kw">pub mod </span>types;
+<span class="kw">pub mod </span>types;
 
-<span class="kw">pub struct </span>InexorQuery;
+<span class="kw">pub struct </span>ReactiveGraphQuery;
 
 <span class="doccomment">/// Search queries for the type system, the instances and the flows.
 </span><span class="attr">#[Object(name = <span class="string">"Query"</span>)]
-</span><span class="kw">impl </span>InexorQuery {
+</span><span class="kw">impl </span>ReactiveGraphQuery {
     <span class="doccomment">/// Search for types (components, entity types, relation types).
     </span><span class="kw">async fn </span>types(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Types {
         Types
@@ -72,11 +66,7 @@
         Behaviours
     }
 
-    <span class="comment">// async fn system(&amp;self) -&gt; System {
-    //     System
-    // }
-
-    </span><span class="kw">async fn </span>random_uuid(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; String {
+    <span class="kw">async fn </span>random_uuid(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; String {
         Uuid::new_v4().to_string()
     }
 }

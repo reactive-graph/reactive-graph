@@ -274,6 +274,12 @@
 <a href="#274" id="274">274</a>
 <a href="#275" id="275">275</a>
 <a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>cynic::http::ReqwestExt;
@@ -301,79 +307,79 @@
 <span class="kw">use </span><span class="kw">crate</span>::client::types::components::update_description::queries::UpdateDescriptionVariables;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::extensions::container::queries::ExtensionContainerVariables;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::properties::container::queries::PropertyContainerVariables;
-<span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClient;
-<span class="kw">use </span><span class="kw">crate</span>::client::InexorRgfClientExecutionError;
+<span class="kw">use </span><span class="kw">crate</span>::client::ReactiveGraphClient;
+<span class="kw">use </span><span class="kw">crate</span>::client::ReactiveGraphClientExecutionError;
 <span class="kw">use </span><span class="kw">crate</span>::schema_graphql::types::component::Components <span class="kw">as </span>ComponentsVec;
 <span class="kw">use </span>reactive_graph_graph::Component;
 <span class="kw">use </span>reactive_graph_graph::ComponentTypeId;
 <span class="kw">use </span>reactive_graph_graph::ExtensionTypeId;
 
 <span class="kw">pub struct </span>Components {
-    client: Arc&lt;InexorRgfClient&gt;,
+    client: Arc&lt;ReactiveGraphClient&gt;,
 }
 
 <span class="kw">impl </span>Components {
-    <span class="kw">pub fn </span>new(client: Arc&lt;InexorRgfClient&gt;) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>new(client: Arc&lt;ReactiveGraphClient&gt;) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{ client }
     }
 
-    <span class="kw">pub async fn </span>get_all_components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Component&gt;&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_all_components(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Vec&lt;Component&gt;&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>components = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(get_all_components_query())
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| ComponentsVec(data.types.components))
             .map(From::from);
         <span class="prelude-val">Ok</span>(components)
     }
 
-    <span class="kw">pub async fn </span>get_component_by_type&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>get_component_by_type&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(get_component_by_type_query(<span class="kw-2">&amp;</span>ty.into()))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .and_then(|data| data.types.components.first().cloned())
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>create_component&lt;C: Into&lt;Component&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, component: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>create_component&lt;C: Into&lt;Component&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, component: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(create_component_mutation(component.into()))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.create)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>create_component_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: CreateComponentVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>create_component_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: CreateComponentVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(create_component_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.create)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>delete_component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>delete_component&lt;C: Into&lt;ComponentTypeId&gt;&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: C) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>ty: ComponentTypeId = ty.into();
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
@@ -381,21 +387,21 @@
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(delete_component_mutation(ty))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.delete)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>delete_component_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: ComponentTypeIdVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>delete_component_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: ComponentTypeIdVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;bool&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(delete_component_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.delete)
             .map(From::from);
@@ -406,56 +412,56 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         ty: ComponentTypeId,
         property_type: reactive_graph_graph::PropertyType,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(add_property_mutation(ty, property_type))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.add_property)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>add_property_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: AddPropertyVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>add_property_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: AddPropertyVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(add_property_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.add_property)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>remove_property(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: ComponentTypeId, property_name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>remove_property(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: ComponentTypeId, property_name: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(remove_property_mutation(ty, property_name))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.remove_property)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>remove_property_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: PropertyContainerVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>remove_property_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: PropertyContainerVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(remove_property_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.remove_property)
             .map(From::from);
@@ -466,84 +472,90 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         ty: ComponentTypeId,
         extension: reactive_graph_graph::Extension,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(add_extension_mutation(ty, extension))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.add_extension)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>add_extension_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: AddExtensionVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>add_extension_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: AddExtensionVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(add_extension_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.add_extension)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>remove_extension(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: ComponentTypeId, extension_ty: ExtensionTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>remove_extension(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: ComponentTypeId, extension_ty: ExtensionTypeId) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(remove_extension_mutation(ty, extension_ty))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.remove_extension)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>remove_extension_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: ExtensionContainerVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>remove_extension_with_variables(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        variables: ExtensionContainerVariables,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(remove_extension_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.remove_extension)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: ComponentTypeId, description: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>update_description(<span class="kw-2">&amp;</span><span class="self">self</span>, ty: ComponentTypeId, description: String) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(update_description_mutation(ty, description))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.update_description)
             .map(From::from);
         <span class="prelude-val">Ok</span>(component)
     }
 
-    <span class="kw">pub async fn </span>update_description_with_variables(<span class="kw-2">&amp;</span><span class="self">self</span>, variables: UpdateDescriptionVariables) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, InexorRgfClientExecutionError&gt; {
+    <span class="kw">pub async fn </span>update_description_with_variables(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        variables: UpdateDescriptionVariables,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Component&gt;, ReactiveGraphClientExecutionError&gt; {
         <span class="kw">let </span>component = <span class="self">self
             </span>.client
             .client
             .post(<span class="self">self</span>.client.url_graphql())
             .run_graphql(update_description_with_variables(variables))
             .<span class="kw">await
-            </span>.map_err(InexorRgfClientExecutionError::FailedToSendRequest)<span class="question-mark">?
+            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
             </span>.data
             .map(|data| data.types.components.update_description)
             .map(From::from);

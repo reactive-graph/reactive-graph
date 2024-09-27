@@ -46,9 +46,9 @@
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::components::components;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::entities::entity_types;
 <span class="kw">use </span><span class="kw">crate</span>::cli::types::relations::relation_types;
-<span class="kw">use </span>reactive_graph_client::InexorRgfClient;
+<span class="kw">use </span>reactive_graph_client::ReactiveGraphClient;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>handle_command(client: <span class="kw-2">&amp;</span>Arc&lt;InexorRgfClient&gt;, command: ClientCommands) -&gt; CommandResult {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>handle_command(client: <span class="kw-2">&amp;</span>Arc&lt;ReactiveGraphClient&gt;, command: ClientCommands) -&gt; CommandResult {
     <span class="kw">match </span>command {
         <span class="comment">// System
         </span>ClientCommands::ExecuteCommand(args) =&gt; execute_command(client, args).<span class="kw">await</span>,

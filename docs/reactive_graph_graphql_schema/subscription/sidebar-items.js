@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["entity_instance","relation_instance"],"struct":["GraphQLPropertyValueChanged","InexorSubscription"]};
+window.SIDEBAR_ITEMS = {"mod":["entity_instance","relation_instance"],"struct":["GraphQLPropertyValueChanged","ReactiveGraphSubscription"]};

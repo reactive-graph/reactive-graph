@@ -39,10 +39,10 @@
 <span class="kw">use </span>async_graphql_actix_web::GraphQLResponse;
 <span class="kw">use </span>async_graphql_actix_web::GraphQLSubscription;
 <span class="kw">use </span>log::trace;
-<span class="kw">use </span>reactive_graph_graphql_schema::InexorSchema;
+<span class="kw">use </span>reactive_graph_graphql_schema::ReactiveGraphSchema;
 
 <span class="attr">#[post(<span class="string">"/graphql"</span>)]
-</span><span class="kw">pub async fn </span>query_graphql(schema: web::Data&lt;InexorSchema&gt;, request: GraphQLRequest) -&gt; GraphQLResponse {
+</span><span class="kw">pub async fn </span>query_graphql(schema: web::Data&lt;ReactiveGraphSchema&gt;, request: GraphQLRequest) -&gt; GraphQLResponse {
     <span class="kw">let </span>request = request.into_inner();
     <span class="macro">trace!</span>(<span class="string">"{request:?}"</span>);
     <span class="kw">let </span>response = schema.execute(request).<span class="kw">await</span>;
@@ -50,7 +50,7 @@
     response.into()
 }
 
-<span class="kw">pub async fn </span>subscription_websocket(schema: web::Data&lt;InexorSchema&gt;, request: HttpRequest, payload: web::Payload) -&gt; <span class="prelude-ty">Result</span>&lt;HttpResponse&gt; {
+<span class="kw">pub async fn </span>subscription_websocket(schema: web::Data&lt;ReactiveGraphSchema&gt;, request: HttpRequest, payload: web::Payload) -&gt; <span class="prelude-ty">Result</span>&lt;HttpResponse&gt; {
     <span class="comment">// let mut data = Data::default();
     // if let Some(token) = get_token_from_headers(request.headers()) {
     //     data.insert(token);
