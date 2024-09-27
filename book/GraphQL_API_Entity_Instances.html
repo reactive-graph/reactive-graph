@@ -196,7 +196,7 @@
 <h2 id="query-a-property-instance-by-name-of-an-entity-instance-by-label"><a class="header" href="#query-a-property-instance-by-name-of-an-entity-instance-by-label">Query a property instance by name of an entity instance by label</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(label: "/org/inexor/input/any_device/key_f10") {
+    entities(label: "/io/reactive-graph/input/any_device/key_f10") {
       properties(name: "key_down") {
         value
       }
@@ -207,7 +207,7 @@
 <h2 id="query-the-positions-of-all-cameras-that-are-looking-at-a-player"><a class="header" href="#query-the-positions-of-all-cameras-that-are-looking-at-a-player">Query the positions of all cameras that are looking at a player</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(type: "player", label: "/org/inexor/game/players/Hanack") {
+    entities(type: "player", label: "/io/reactive-graph/game/players/Hanack") {
       inbound(type: "look_at") {
         outbound {
           properties(name: "position") {

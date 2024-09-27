@@ -737,7 +737,7 @@ representative at an online or offline event. Representation of a project may be
 further defined and clarified by project maintainers.</p>
 <h2 id="enforcement"><a class="header" href="#enforcement">Enforcement</a></h2>
 <p>Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at <code>info@inexor.org</code>. All
+reported by contacting the project team at <code>info@reactive-graph.io</code>. All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
 obligated to maintain confidentiality with regard to the reporter of an incident.
@@ -1199,9 +1199,9 @@ default port <code>31415</code> is used.</p>
 <p><code>secure</code> defines if a secure connection shall be used (https or wss). By default, <code>secure</code> is false.</p>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
 <ol>
-<li>https://demo.rgf.app/graphql
+<li>https://demo.reactive-graph.io/graphql
 <pre><code class="language-toml">[[remotes]]
-hostname = "demo.rgf.app"
+hostname = "demo.reactive-graph.io"
 port = 443
 secure = true
 </code></pre>
@@ -1967,7 +1967,7 @@ label and transports significantly more information about what is actually happe
 </div>
 <pre><code class="language-graphql">query {
   instances {
-    entities(label: "/org/inexor/input/any_device/key/key_f7") {
+    entities(label: "/io/reactive-graph/input/any_device/key/key_f7") {
       properties(name: "key_down") {
         value
       }
@@ -2399,16 +2399,16 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="1746f7bf-435a-4d37-8c47-22bd4e30e8ca" src="/examples/graphql/types/components/tabs.json">
+<graphql-playground id="f0a08ff4-0677-4508-94a5-990abd463dee" src="/examples/graphql/types/components/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="ed2d4571-7dd1-489a-b7ef-132371c1782e" src="/examples/graphql/types/entities/tabs.json">
+<graphql-playground id="b927bad6-9569-4475-afcb-43233ebab134" src="/examples/graphql/types/entities/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
-<graphql-playground id="38952c50-ece7-4250-a6f0-94dfadd499c9" src="/examples/graphql/types/relations/tabs.json">
+<graphql-playground id="cdf6e711-f4da-4a8f-8a0a-823da0f703a6" src="/examples/graphql/types/relations/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-types"><a class="header" href="#flow-types">Flow Types</a></h1>
-<graphql-playground id="b47288f3-d440-4420-9184-e43c2d54fee2" src="/examples/graphql/types/flows/tabs.json">
+<graphql-playground id="af9746a8-ba41-4bf7-a64a-7807bce1f456" src="/examples/graphql/types/flows/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
 <h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
@@ -2460,7 +2460,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="query-a-property-instance-by-name-of-an-entity-instance-by-label"><a class="header" href="#query-a-property-instance-by-name-of-an-entity-instance-by-label">Query a property instance by name of an entity instance by label</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(label: "/org/inexor/input/any_device/key_f10") {
+    entities(label: "/io/reactive-graph/input/any_device/key_f10") {
       properties(name: "key_down") {
         value
       }
@@ -2471,7 +2471,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="query-the-positions-of-all-cameras-that-are-looking-at-a-player"><a class="header" href="#query-the-positions-of-all-cameras-that-are-looking-at-a-player">Query the positions of all cameras that are looking at a player</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    entities(type: "player", label: "/org/inexor/game/players/Hanack") {
+    entities(type: "player", label: "/io/reactive-graph/game/players/Hanack") {
       inbound(type: "look_at") {
         outbound {
           properties(name: "position") {
@@ -2586,7 +2586,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="get-the-id-of-a-flows-by-label"><a class="header" href="#get-the-id-of-a-flows-by-label">Get the id of a flows by label</a></h2>
 <pre><code class="language-graphql">query {
   instances {
-    flows(label: "/org/inexor/flows/game-servers") {
+    flows(label: "/io/reactive-graph/flows/game-servers") {
       id
     }
   }
@@ -2694,7 +2694,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <h2 id="subscribe-changes-of-the-key-right-ctrl"><a class="header" href="#subscribe-changes-of-the-key-right-ctrl">Subscribe changes of the key <code>right-ctrl</code></a></h2>
 <pre><code class="language-graphql">subscription keyDownRightCtrl {
   entity(
-    label: "/org/inexor/input/any_device/key/key_rightctrl",
+    label: "/io/reactive-graph/input/any_device/key/key_rightctrl",
     propertyName: "key_down"
   ) {
     name
@@ -2712,7 +2712,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-instance-info"><a class="header" href="#graphql-api-instance-info"><center>GraphQL API: Instance Info</center></a></h1>
-<graphql-playground id="177b4e72-ee7f-45cd-a3eb-875de0e7f769" src="/examples/graphql/system/instance_info/tabs.json">
+<graphql-playground id="1bc74021-95f0-4e29-b886-c77cad20bb93" src="/examples/graphql/system/instance_info/tabs.json">
 </graphql-playground>
 <h2 id="functionality"><a class="header" href="#functionality">Functionality</a></h2>
 <ul>
@@ -2745,7 +2745,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-plugins"><a class="header" href="#graphql-api-plugins"><center>GraphQL API: Plugins</center></a></h1>
-<graphql-playground id="4647af4b-2f24-46b4-bfbc-8470e65b4287" src="/examples/graphql/system/plugins/tabs.json">
+<graphql-playground id="ac50f295-cf27-4185-972a-ba73e90a3b88" src="/examples/graphql/system/plugins/tabs.json">
 </graphql-playground>
 <h2 id="functionality-1"><a class="header" href="#functionality-1">Functionality</a></h2>
 <ul>
@@ -2761,7 +2761,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li>Unsatisfied dependencies</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-remotes"><a class="header" href="#graphql-api-remotes"><center>GraphQL API: Remotes</center></a></h1>
-<graphql-playground id="1e085baa-0a64-427e-9f79-2ff220812b33" src="/examples/graphql/system/remotes/tabs.json">
+<graphql-playground id="23a9ecc6-dca1-46ae-83f0-dbc5c99f9225" src="/examples/graphql/system/remotes/tabs.json">
 </graphql-playground>
 <h2 id="functionality-2"><a class="header" href="#functionality-2">Functionality</a></h2>
 <ul>
@@ -2780,7 +2780,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-shutdown"><a class="header" href="#graphql-api-shutdown"><center>GraphQL API: Shutdown</center></a></h1>
-<graphql-playground id="905e6de5-6fe4-48c2-8078-306519feba47" src="/examples/graphql/system/shutdown/tabs.json">
+<graphql-playground id="73b2f819-039e-4467-8acd-67a9e3079858" src="/examples/graphql/system/shutdown/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-graph-api"><a class="header" href="#dynamic-graph-api">Dynamic Graph API</a></h1>
 <h3 id="advantages"><a class="header" href="#advantages">Advantages</a></h3>
@@ -2830,7 +2830,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="0ea21e4c-7d56-47b9-8c44-f2910f9d9bf3" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="a98c5114-8558-4a40-800c-f47b8e42dee2" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -3309,10 +3309,10 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="b0952888-8cde-4668-9b9b-b3b32bbadcda" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
+<graphql-playground id="855d1101-10f0-49ec-8603-795879c64b78" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="abbb7ba4-df2e-4de2-ac28-6f96b8e1928b" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
+<graphql-playground id="210a1235-f286-4060-8d20-17a690c62e7d" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -3328,7 +3328,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="f4424c2c-cb66-4955-aebf-3d960db8f453" src="/examples/graphql/plugins/asset/tabs.json">
+<graphql-playground id="7e263979-29d6-41bf-84b6-0939c34d471b" src="/examples/graphql/plugins/asset/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3407,7 +3407,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <h3 id="examples-1"><a class="header" href="#examples-1">Examples</a></h3>
 <div class="table-wrapper"><table><thead><tr><th>Request</th><th>Entity Instance</th><th>Property Name</th></tr></thead><tbody>
 <tr><td><code>GET /binary/entity/dce4bd25-7b25-4a6a-8567-5429a2b3a101/data_url</code></td><td>id=<code>dce4bd25-7b25-4a6a-8567-5429a2b3a101</code></td><td><code>data_url</code></td></tr>
-<tr><td><code>GET /binary/entity/label/org/inexor/logo/data_url</code></td><td>label=<code>/org/inexor/logo/{:property}</code></td><td><code>data_url</code></td></tr>
+<tr><td><code>GET /binary/entity/label/io/reactive-graph/logo/data_url</code></td><td>label=<code>/io/reactive-graph/logo/{:property}</code></td><td><code>data_url</code></td></tr>
 </tbody></table>
 </div>
 <h2 id="platform-compatibility-3"><a class="header" href="#platform-compatibility-3">Platform Compatibility</a></h2>
@@ -3427,9 +3427,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="80c3f538-8a1f-4ce8-a442-8fe623c1154c" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
+<graphql-playground id="99d8011e-0022-42c4-93b2-a66630ca46e7" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
 </graphql-playground>
-<graphql-playground id="e4683d41-30d7-4605-a772-29bb906793f9" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
+<graphql-playground id="bd44029d-8bfb-4a59-a2f8-275573f89f40" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3462,7 +3462,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="f398d34c-5412-4a43-9bd1-6c89107f29ab" src="/examples/graphql/plugins/comparison/tabs.json">
+<graphql-playground id="5c0198c1-3ee6-402a-bfba-e84288457ed9" src="/examples/graphql/plugins/comparison/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3485,7 +3485,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="fdda1452-3e47-47be-b866-8a8ffc19cd08" src="/examples/graphql/plugins/config/tabs.json">
+<graphql-playground id="aceb3a84-6033-4be4-b0ee-9814e604cfae" src="/examples/graphql/plugins/config/tabs.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3633,7 +3633,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="6905cd8d-9903-4587-a07e-b6c15460ab3b" src="/examples/graphql/plugins/connector/tabs.json">
+<graphql-playground id="ead7e78a-b5ec-412a-ba7c-b01a4d1c5c05" src="/examples/graphql/plugins/connector/tabs.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3766,7 +3766,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="e57defd5-d6c8-4c5e-b6af-7e174ffc1223" src="/examples/graphql/plugins/http/tabs.json">
+<graphql-playground id="4217912b-880f-4e99-81c4-e9f4e315d6fa" src="/examples/graphql/plugins/http/tabs.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
@@ -3929,7 +3929,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="c7470a91-eb8d-4c9f-a537-aed7d7e5a8aa" src="/examples/graphql/plugins/json/tabs.json">
+<graphql-playground id="4858e54c-e16d-4175-a5d0-3cbcf0664fe5" src="/examples/graphql/plugins/json/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4007,7 +4007,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="15ca181a-d26a-41ad-92b3-e7a391ad1774" src="/examples/graphql/plugins/logical/tabs.json">
+<graphql-playground id="61d81276-fc15-47b9-a444-f761804343f5" src="/examples/graphql/plugins/logical/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
@@ -4044,7 +4044,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<graphql-playground id="f96d542d-04c5-4371-973f-735d9e1a5fe7" src="/examples/graphql/plugins/metadata/tabs.json">
+<graphql-playground id="359a4089-c102-441d-b96b-5d8c0df42336" src="/examples/graphql/plugins/metadata/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4227,7 +4227,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="fb307faf-0acc-4101-b19d-477e5b359640" src="/examples/graphql/plugins/numeric/tabs.json">
+<graphql-playground id="641c1641-0c75-4520-8a88-f863526b9334" src="/examples/graphql/plugins/numeric/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4270,9 +4270,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="6a804385-09bd-4da6-8b3d-d08bfe9b9ec0" src="/examples/graphql/plugins/random/number/tabs.json">
+<graphql-playground id="7e38efd6-76d0-43e7-89f4-deb1736fcb2b" src="/examples/graphql/plugins/random/number/tabs.json">
 </graphql-playground>
-<graphql-playground id="e25b2a0b-74c5-4b75-b4f5-01614739c93f" src="/examples/graphql/plugins/random/string/tabs.json">
+<graphql-playground id="f98a2314-080d-4db4-9abb-350a4c3b9b2d" src="/examples/graphql/plugins/random/string/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-state"><a class="header" href="#plugin-state">Plugin: State</a></h1>
 <p>This plugin provides state components. States extends <a href="./Plugins_Value.html">values</a> with debounce mechanism. States are
@@ -4422,7 +4422,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
-<graphql-playground id="4dd4a577-3fdb-425f-9f54-070baf69f239" src="/examples/graphql/plugins/scheduler/tabs.json">
+<graphql-playground id="439c6ccc-4812-4ab9-a211-74811dba4209" src="/examples/graphql/plugins/scheduler/tabs.json">
 </graphql-playground>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4595,11 +4595,11 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-18"><a class="header" href="#usage-18">Usage</a></h2>
-<graphql-playground id="f7374e30-a3e9-46b7-aa5a-16794dceaf87" src="/examples/graphql/plugins/string/concat/tabs.json">
+<graphql-playground id="5de67d2c-7d2e-45d3-b611-6512c5b04268" src="/examples/graphql/plugins/string/concat/tabs.json">
 </graphql-playground>
-<graphql-playground id="c3bc87a2-41e2-4574-bed9-4ea8f199fe88" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
+<graphql-playground id="0ea5d8ab-0f4f-4ad4-ada2-a07282f7a1bd" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
 </graphql-playground>
-<graphql-playground id="d60882d0-e542-4b32-853f-ab6e8f455f00" src="/examples/graphql/plugins/string/trim/tabs.json">
+<graphql-playground id="c2974d34-6614-4c0c-8af6-305440157fc2" src="/examples/graphql/plugins/string/trim/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4759,8 +4759,8 @@ this happens only at initialization.</p>
 <h2 id="labels-1"><a class="header" href="#labels-1">Labels</a></h2>
 <p>Each entity instance which represents a system environment variable has a label.</p>
 <div class="table-wrapper"><table><thead><tr><th>System Env</th><th>Label</th></tr></thead><tbody>
-<tr><td><code>$HOME</code></td><td><code>/org/inexor/system/env/home</code></td></tr>
-<tr><td><code>$PATH</code></td><td><code>/org/inexor/system/env/path</code></td></tr>
+<tr><td><code>$HOME</code></td><td><code>/io/reactive-graph/system/env/home</code></td></tr>
+<tr><td><code>$PATH</code></td><td><code>/io/reactive-graph/system/env/path</code></td></tr>
 </tbody></table>
 </div>
 <h2 id="entity-types-14"><a class="header" href="#entity-types-14">Entity Types</a></h2>
@@ -4783,7 +4783,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="9faaa6ee-8bcc-4bf3-a827-4ee1160decd3" src="/examples/graphql/plugins/system-environment/tabs.json">
+<graphql-playground id="3f6cb715-821e-4848-9635-6041a9866f18" src="/examples/graphql/plugins/system-environment/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -4831,9 +4831,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-21"><a class="header" href="#usage-21">Usage</a></h2>
-<graphql-playground id="176475a9-8540-4df8-a173-0e47d55e360a" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
+<graphql-playground id="696e4e65-706f-4139-a5d1-0af4ce3ebbae" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
 </graphql-playground>
-<graphql-playground id="10ffb316-a310-4f80-9f11-90de5ec5c08b" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
+<graphql-playground id="48c93589-cf6f-44f1-beab-424f3ec1ab2a" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value components. Value components contains a single property of a specific data type.
@@ -4886,7 +4886,7 @@ rather than implementation.</p>
 <tr><td>Event</td><td>event</td><td>Any</td><td>Output</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="events-system-events"><a class="header" href="#events-system-events">Events: System Events</a></h1>
-<p>System events are events that are emitted by the system itself.  There is no other way to get this information than
+<p>System events are events that are emitted by the system itself. There is no other way to get this information than
 through these events.</p>
 <h2 id="entity-types-17"><a class="header" href="#entity-types-17">Entity Types</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Entity Type</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
@@ -4896,19 +4896,19 @@ through these events.</p>
 </div>
 <h2 id="types-of-events"><a class="header" href="#types-of-events">Types of Events</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Label</th><th>Description</th><th>Payload</th></tr></thead><tbody>
-<tr><td><code>/org/inexor/events/type/component/created</code></td><td>Triggered if a component has been created</td><td>Name of the created component</td></tr>
-<tr><td><code>/org/inexor/events/type/component/deleted</code></td><td>Triggered if a component has been deleted</td><td>Name of the deleted component</td></tr>
-<tr><td><code>/org/inexor/events/type/entity/created</code></td><td>Triggered if an entity type has been created</td><td>Name of the created entity type</td></tr>
-<tr><td><code>/org/inexor/events/type/entity/deleted</code></td><td>Triggered if an entity type has been deleted</td><td>Name of the deleted entity type</td></tr>
-<tr><td><code>/org/inexor/events/type/relation/created</code></td><td>Triggered if a relation type has been created</td><td>Name of the created relation type</td></tr>
-<tr><td><code>/org/inexor/events/type/relation/deleted</code></td><td>Triggered if a relation type has been deleted</td><td>Name of the deleted relation type</td></tr>
-<tr><td><code>/org/inexor/event/type/changed</code></td><td>Triggered if the type system has changed</td><td></td></tr>
-<tr><td><code>/org/inexor/events/instance/entity/created</code></td><td>Triggered if an entity instance has been created</td><td>UUID of the created entity instance</td></tr>
-<tr><td><code>/org/inexor/events/instance/entity/deleted</code></td><td>Triggered if an entity instance has been deleted</td><td>UUID of the deleted entity instance</td></tr>
-<tr><td><code>/org/inexor/events/instance/relation/created</code></td><td>Triggered if a relation instance has been created</td><td>Edge key of the created relation instance</td></tr>
-<tr><td><code>/org/inexor/events/instance/relation/deleted</code></td><td>Triggered if a relation instance has been deleted</td><td>Edge key of the deleted relation instance</td></tr>
-<tr><td><code>/org/inexor/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
-<tr><td><code>/org/inexor/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/component/created</code></td><td>Triggered if a component has been created</td><td>Name of the created component</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/component/deleted</code></td><td>Triggered if a component has been deleted</td><td>Name of the deleted component</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/entity/created</code></td><td>Triggered if an entity type has been created</td><td>Name of the created entity type</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/entity/deleted</code></td><td>Triggered if an entity type has been deleted</td><td>Name of the deleted entity type</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/relation/created</code></td><td>Triggered if a relation type has been created</td><td>Name of the created relation type</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/relation/deleted</code></td><td>Triggered if a relation type has been deleted</td><td>Name of the deleted relation type</td></tr>
+<tr><td><code>/io/reactive-graph/event/type/changed</code></td><td>Triggered if the type system has changed</td><td></td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/entity/created</code></td><td>Triggered if an entity instance has been created</td><td>UUID of the created entity instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/entity/deleted</code></td><td>Triggered if an entity instance has been deleted</td><td>UUID of the deleted entity instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/relation/created</code></td><td>Triggered if a relation instance has been created</td><td>Edge key of the created relation instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/relation/deleted</code></td><td>Triggered if a relation instance has been deleted</td><td>Edge key of the deleted relation instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
+<tr><td><code>/io/reactive-graph/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
 </tbody></table>
 </div><div id="admonition-label" class="admonition admonish-tip" role="note" aria-labelledby="admonition-label-title">
 <div class="admonition-title">
@@ -4936,7 +4936,7 @@ through these events.</p>
 </div>
 <h3 id="get-new-components"><a class="header" href="#get-new-components">Get new components</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventComponentCreated {
-  entity(label: "/org/inexor/event/type/component/created", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/type/component/created", propertyName: "event") {
     name
     value
     type {
@@ -4948,7 +4948,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-which-components-have-been-deleted"><a class="header" href="#get-which-components-have-been-deleted">Get which components have been deleted</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventComponentDeleted {
-  entity(label: "/org/inexor/event/type/component/deleted", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/type/component/deleted", propertyName: "event") {
     name
     value
     type {
@@ -4960,7 +4960,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-new-flows"><a class="header" href="#get-new-flows">Get new flows</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventFlowCreated {
-  entity(label: "/org/inexor/event/instance/flow/created", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/instance/flow/created", propertyName: "event") {
     name
     value
     type {
@@ -4972,7 +4972,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-which-flows-have-been-deleted"><a class="header" href="#get-which-flows-have-been-deleted">Get which flows have been deleted</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventCFlowDeleted {
-  entity(label: "/org/inexor/event/instance/flow/deleted", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/instance/flow/deleted", propertyName: "event") {
     name
     value
     type {
@@ -4994,7 +4994,7 @@ through these events.</p>
   instances {
     entities {
       update(
-        label: "/org/inexor/commands/core/shutdown"
+        label: "/io/reactive-graph/commands/core/shutdown"
         properties: [
           {
             name: "shutdown"

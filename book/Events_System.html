@@ -177,7 +177,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="events-system-events"><a class="header" href="#events-system-events">Events: System Events</a></h1>
-<p>System events are events that are emitted by the system itself.  There is no other way to get this information than
+<p>System events are events that are emitted by the system itself. There is no other way to get this information than
 through these events.</p>
 <h2 id="entity-types"><a class="header" href="#entity-types">Entity Types</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Entity Type</th><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
@@ -187,19 +187,19 @@ through these events.</p>
 </div>
 <h2 id="types-of-events"><a class="header" href="#types-of-events">Types of Events</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Label</th><th>Description</th><th>Payload</th></tr></thead><tbody>
-<tr><td><code>/org/inexor/events/type/component/created</code></td><td>Triggered if a component has been created</td><td>Name of the created component</td></tr>
-<tr><td><code>/org/inexor/events/type/component/deleted</code></td><td>Triggered if a component has been deleted</td><td>Name of the deleted component</td></tr>
-<tr><td><code>/org/inexor/events/type/entity/created</code></td><td>Triggered if an entity type has been created</td><td>Name of the created entity type</td></tr>
-<tr><td><code>/org/inexor/events/type/entity/deleted</code></td><td>Triggered if an entity type has been deleted</td><td>Name of the deleted entity type</td></tr>
-<tr><td><code>/org/inexor/events/type/relation/created</code></td><td>Triggered if a relation type has been created</td><td>Name of the created relation type</td></tr>
-<tr><td><code>/org/inexor/events/type/relation/deleted</code></td><td>Triggered if a relation type has been deleted</td><td>Name of the deleted relation type</td></tr>
-<tr><td><code>/org/inexor/event/type/changed</code></td><td>Triggered if the type system has changed</td><td></td></tr>
-<tr><td><code>/org/inexor/events/instance/entity/created</code></td><td>Triggered if an entity instance has been created</td><td>UUID of the created entity instance</td></tr>
-<tr><td><code>/org/inexor/events/instance/entity/deleted</code></td><td>Triggered if an entity instance has been deleted</td><td>UUID of the deleted entity instance</td></tr>
-<tr><td><code>/org/inexor/events/instance/relation/created</code></td><td>Triggered if a relation instance has been created</td><td>Edge key of the created relation instance</td></tr>
-<tr><td><code>/org/inexor/events/instance/relation/deleted</code></td><td>Triggered if a relation instance has been deleted</td><td>Edge key of the deleted relation instance</td></tr>
-<tr><td><code>/org/inexor/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
-<tr><td><code>/org/inexor/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/component/created</code></td><td>Triggered if a component has been created</td><td>Name of the created component</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/component/deleted</code></td><td>Triggered if a component has been deleted</td><td>Name of the deleted component</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/entity/created</code></td><td>Triggered if an entity type has been created</td><td>Name of the created entity type</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/entity/deleted</code></td><td>Triggered if an entity type has been deleted</td><td>Name of the deleted entity type</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/relation/created</code></td><td>Triggered if a relation type has been created</td><td>Name of the created relation type</td></tr>
+<tr><td><code>/io/reactive-graph/events/type/relation/deleted</code></td><td>Triggered if a relation type has been deleted</td><td>Name of the deleted relation type</td></tr>
+<tr><td><code>/io/reactive-graph/event/type/changed</code></td><td>Triggered if the type system has changed</td><td></td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/entity/created</code></td><td>Triggered if an entity instance has been created</td><td>UUID of the created entity instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/entity/deleted</code></td><td>Triggered if an entity instance has been deleted</td><td>UUID of the deleted entity instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/relation/created</code></td><td>Triggered if a relation instance has been created</td><td>Edge key of the created relation instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/instance/relation/deleted</code></td><td>Triggered if a relation instance has been deleted</td><td>Edge key of the deleted relation instance</td></tr>
+<tr><td><code>/io/reactive-graph/events/flow/created</code></td><td>Triggered if a flow has been created</td><td>UUID of the created flow</td></tr>
+<tr><td><code>/io/reactive-graph/events/flow/deleted</code></td><td>Triggered if a flow has been deleted</td><td>UUID of the deleted flow</td></tr>
 </tbody></table>
 </div><div id="admonition-label" class="admonition admonish-tip" role="note" aria-labelledby="admonition-label-title">
 <div class="admonition-title">
@@ -227,7 +227,7 @@ through these events.</p>
 </div>
 <h3 id="get-new-components"><a class="header" href="#get-new-components">Get new components</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventComponentCreated {
-  entity(label: "/org/inexor/event/type/component/created", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/type/component/created", propertyName: "event") {
     name
     value
     type {
@@ -239,7 +239,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-which-components-have-been-deleted"><a class="header" href="#get-which-components-have-been-deleted">Get which components have been deleted</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventComponentDeleted {
-  entity(label: "/org/inexor/event/type/component/deleted", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/type/component/deleted", propertyName: "event") {
     name
     value
     type {
@@ -251,7 +251,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-new-flows"><a class="header" href="#get-new-flows">Get new flows</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventFlowCreated {
-  entity(label: "/org/inexor/event/instance/flow/created", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/instance/flow/created", propertyName: "event") {
     name
     value
     type {
@@ -263,7 +263,7 @@ through these events.</p>
 </code></pre>
 <h3 id="get-which-flows-have-been-deleted"><a class="header" href="#get-which-flows-have-been-deleted">Get which flows have been deleted</a></h3>
 <pre><code class="language-graphql">subscription getSystemEventCFlowDeleted {
-  entity(label: "/org/inexor/event/instance/flow/deleted", propertyName: "event") {
+  entity(label: "/io/reactive-graph/event/instance/flow/deleted", propertyName: "event") {
     name
     value
     type {

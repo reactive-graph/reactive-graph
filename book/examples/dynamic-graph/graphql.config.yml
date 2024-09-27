@@ -1,9 +1,9 @@
 schema: ./schema.graphql
 extensions:
   endpoints:
-    InexorDynamicGraph@localhost:
+    DynamicGraph@http:
       url: http://localhost:31415/dynamic_graph
       introspect: true
-    InexorDynamicGraph@https:
+    DynamicGraph@https:
       url: https://localhost:31415/dynamic_graph
       introspect: false
