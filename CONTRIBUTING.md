@@ -5,7 +5,7 @@ We want to make contributing to this project as easy and transparent as possible
 ## First Steps
 
 If you're new, we encourage you to take a look at issues tagged
-with [good first issue](https://github.com/reactive-graph/plugins-core/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+with [good first issue](https://github.com/reactive-graph/reactive-graph/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 ## Social Media
 
@@ -14,7 +14,8 @@ Join our [Discord server](https://discord.gg/KQgk5CmZQn) or follow us at [Mastod
 
 ## Code of Conduct
 
-Please review our [Code of Conduct](https://github.com/reactive-graph/plugins-core/blob/main/CODE_OF_CONDUCT.md). It is in effect at all times. We expect it to
+Please review our [Code of Conduct](https://github.com/reactive-graph/reactive-graph/blob/main/CODE_OF_CONDUCT.md). It is in effect at all times. We expect it
+to
 be honored by everyone who contributes to this project.
 
 ## Opening an Issue
@@ -23,7 +24,7 @@ Before creating an issue, check if you are using the latest version of the proje
 
 ## Reporting Security Issues
 
-Review our [Security Policy](https://github.com/reactive-graph/plugins-core/blob/main/SECURITY.md). Do not file a public issue for security vulnerabilities.
+Review our [Security Policy](https://github.com/reactive-graph/reactive-graph/blob/main/SECURITY.md). Do not file a public issue for security vulnerabilities.
 
 ## Bug Reports and Other Issues
 
