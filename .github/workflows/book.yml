@@ -4,20 +4,24 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "docs/**"
+      - "book/**"
       - "CHANGELOG.md"
       - "CODE_OF_CONDUCT.md"
+      - "CONTRIBUTING.md"
       - "LICENSE.md"
       - "README.md"
+      - "SECURITY.md"
       - ".github/workflows/book.yml"
   pull_request:
     branches: [ main ]
     paths:
-      - "docs/**"
+      - "book/**"
       - "CHANGELOG.md"
       - "CODE_OF_CONDUCT.md"
+      - "CONTRIBUTING.md"
       - "LICENSE.md"
       - "README.md"
+      - "SECURITY.md"
       - ".github/workflows/book.yml"
 
 env:
@@ -59,5 +63,5 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/book/book
+          publish_dir: ./book/book
           destination_dir: book
