@@ -1,4 +1,4 @@
-{{#include ../../../CODE_OF_CONDUCT.md:0:63}}
+{{#include ../../CODE_OF_CONDUCT.md:0:63}}
 
 ```admonish info "Attribution"
 This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org), version 1.4,
