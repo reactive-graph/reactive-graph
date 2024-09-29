@@ -197,9 +197,9 @@ emitter. The possibilities for this are endless and want to be used!
 
 <h2 align="center" style="text-align: center;">GraphQL Type System</h2>
 
-<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/queries.png" alt="GraphQL Type System Queries">
+<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/book/src/images/queries.png" alt="GraphQL Type System Queries">
 
-<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/docs/graphql/mutations.png" alt="GraphQL Type System Mutations">
+<img src="https://raw.githubusercontent.com/reactive-graph/reactive-graph/main/book/src/images/mutations.png" alt="GraphQL Type System Mutations">
 
 
 <h2 align="center" style="text-align: center;">Flow Editor</h2>
