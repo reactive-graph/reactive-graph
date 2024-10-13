@@ -15,7 +15,7 @@ use args::ServerArguments;
 pub async fn server(args: ServerArguments) {
     init_logging(&args);
     if let Some(commands) = &args.commands {
-        #[allow(unreachable_patterns)]
+        #[allow(unreachable_patterns, clippy::collapsible_match)]
         match commands {
             #[cfg(target_os = "linux")]
             ServerCommands::Daemon(_) => {

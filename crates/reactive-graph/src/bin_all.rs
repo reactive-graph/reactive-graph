@@ -18,6 +18,7 @@ use crate::server::daemon::daemonize;
 use crate::server::server;
 use crate::shared::completions::handle_completions;
 use crate::shared::info::handle_info_command;
+#[cfg(target_os = "linux")]
 use crate::shared::manpages::handle_man_pages;
 use crate::shared::markdown_help::handle_markdown_help;
 #[cfg(feature = "tooling")]
@@ -33,6 +34,7 @@ fn main() {
 
     handle_markdown_help::<AllInOneArguments>(&args.shared.markdown_help);
 
+    #[cfg(target_os = "linux")]
     handle_man_pages::<AllInOneArguments>(&args.shared.man_pages);
 
     handle_completions::<AllInOneArguments>(&args.shared.completions);
