@@ -119,3 +119,17 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.6
       - name: Test (Release Mode)
         run: cargo test --release --verbose --target ${{ matrix.target }}
+  update-tag:
+    name: Update Tag
+    needs: [ build, test ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Update Tag nightly
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git push origin :refs/tags/nightly
+          git tag -fa nightly
+          git push origin --tags

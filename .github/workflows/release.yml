@@ -6,6 +6,7 @@ permissions:
 on:
   push:
     tags:
+      - nightly
       - v[0-9]+.*
 
 env:
