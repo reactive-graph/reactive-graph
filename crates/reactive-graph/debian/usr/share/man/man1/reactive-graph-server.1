@@ -1,10 +1,10 @@
 .ie \n(.g .ds Aq \(aq
 .el .ds Aq '
-.TH reactive-graph 1  "reactive-graph 0.10.0" 
+.TH reactive-graph-server 1  "reactive-graph-server 0.10.0" 
 .SH NAME
-reactive\-graph \- Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
+reactive\-graph\-server \- Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH SYNOPSIS
-\fBreactive\-graph\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
+\fBreactive\-graph\-server\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
 .SH DESCRIPTION
 Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH OPTIONS
@@ -155,34 +155,6 @@ If true, logging is disabled completely
 May also be specified with the \fBREACTIVE_GRAPH_QUIET\fR environment variable. 
 .RE
 .TP
-\fB\-\-client\-hostname\fR=\fICLIENT_HOSTNAME\fR
-The hostname to connect to
-.TP
-\fB\-\-client\-port\fR=\fICLIENT_PORT\fR
-The port to connect to
-.TP
-\fB\-\-client\-secure\fR=\fICLIENT_SECURE\fR
-If true, connects via HTTPS
-.br
-
-.br
-[\fIpossible values: \fRtrue, false]
-.TP
-\fB\-\-endpoint\-graphql\fR=\fIENDPOINT_GRAPHQL\fR
-The endpoint to use
-.TP
-\fB\-\-endpoint\-dynamic\-graph\fR=\fIENDPOINT_DYNAMIC_GRAPH\fR
-The endpoint to use
-.TP
-\fB\-\-endpoint\-runtime\fR=\fIENDPOINT_RUNTIME\fR
-The endpoint to use
-.TP
-\fB\-\-endpoint\-plugins\fR=\fIENDPOINT_PLUGINS\fR
-The endpoint to use
-.TP
-\fB\-\-bearer\fR=\fIBEARER\fR
-The authentication token
-.TP
 \fB\-h\fR, \fB\-\-help\fR
 Print help
 .TP
@@ -190,58 +162,22 @@ Print help
 Print version
 .SH SUBCOMMANDS
 .TP
-reactive\-graph\-shell\-completions(1)
+reactive\-graph\-server\-shell\-completions(1)
 Prints or installs Shell completions
 .TP
-reactive\-graph\-man\-pages(1)
+reactive\-graph\-server\-man\-pages(1)
 Prints or installs man pages
 .TP
-reactive\-graph\-print\-markdown\-help(1)
+reactive\-graph\-server\-print\-markdown\-help(1)
 Prints the markdown help to stdout
 .TP
-reactive\-graph\-info(1)
+reactive\-graph\-server\-info(1)
 Prints info about this binary
 .TP
-reactive\-graph\-daemon(1)
+reactive\-graph\-server\-daemon(1)
 Runs the server as daemon
 .TP
-reactive\-graph\-execute\-command(1)
-Executes a command on the client
-.TP
-reactive\-graph\-instance\-info(1)
-Prints information about the instance
-.TP
-reactive\-graph\-plugins(1)
-Manage plugins
-.TP
-reactive\-graph\-remotes(1)
-Manage remotes
-.TP
-reactive\-graph\-shutdown(1)
-Shutdown the runtime
-.TP
-reactive\-graph\-components(1)
-Manage components
-.TP
-reactive\-graph\-entity\-types(1)
-Manage entity types
-.TP
-reactive\-graph\-relation\-types(1)
-Manage entity types
-.TP
-reactive\-graph\-entity\-instances(1)
-Manage entity instances
-.TP
-reactive\-graph\-relation\-instances(1)
-Manage relation instances
-.TP
-reactive\-graph\-instances(1)
-Manage instances
-.TP
-reactive\-graph\-install(1)
-Manage instances
-.TP
-reactive\-graph\-help(1)
+reactive\-graph\-server\-help(1)
 Print this message or the help of the given subcommand(s)
 .SH VERSION
 v0.10.0

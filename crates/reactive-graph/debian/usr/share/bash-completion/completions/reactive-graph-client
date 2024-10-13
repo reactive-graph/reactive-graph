@@ -27,11 +27,20 @@ _reactive-graph-client() {
             reactive__graph__client,help)
                 cmd="reactive__graph__client__help"
                 ;;
+            reactive__graph__client,info)
+                cmd="reactive__graph__client__info"
+                ;;
             reactive__graph__client,instance-info)
                 cmd="reactive__graph__client__instance__info"
                 ;;
+            reactive__graph__client,man-pages)
+                cmd="reactive__graph__client__man__pages"
+                ;;
             reactive__graph__client,plugins)
                 cmd="reactive__graph__client__plugins"
+                ;;
+            reactive__graph__client,print-markdown-help)
+                cmd="reactive__graph__client__print__markdown__help"
                 ;;
             reactive__graph__client,relation-instances)
                 cmd="reactive__graph__client__relation__instances"
@@ -41,6 +50,9 @@ _reactive-graph-client() {
                 ;;
             reactive__graph__client,remotes)
                 cmd="reactive__graph__client__remotes"
+                ;;
+            reactive__graph__client,shell-completions)
+                cmd="reactive__graph__client__shell__completions"
                 ;;
             reactive__graph__client,shutdown)
                 cmd="reactive__graph__client__shutdown"
@@ -306,11 +318,20 @@ _reactive-graph-client() {
             reactive__graph__client__help,help)
                 cmd="reactive__graph__client__help__help"
                 ;;
+            reactive__graph__client__help,info)
+                cmd="reactive__graph__client__help__info"
+                ;;
             reactive__graph__client__help,instance-info)
                 cmd="reactive__graph__client__help__instance__info"
                 ;;
+            reactive__graph__client__help,man-pages)
+                cmd="reactive__graph__client__help__man__pages"
+                ;;
             reactive__graph__client__help,plugins)
                 cmd="reactive__graph__client__help__plugins"
+                ;;
+            reactive__graph__client__help,print-markdown-help)
+                cmd="reactive__graph__client__help__print__markdown__help"
                 ;;
             reactive__graph__client__help,relation-instances)
                 cmd="reactive__graph__client__help__relation__instances"
@@ -320,6 +341,9 @@ _reactive-graph-client() {
                 ;;
             reactive__graph__client__help,remotes)
                 cmd="reactive__graph__client__help__remotes"
+                ;;
+            reactive__graph__client__help,shell-completions)
+                cmd="reactive__graph__client__help__shell__completions"
                 ;;
             reactive__graph__client__help,shutdown)
                 cmd="reactive__graph__client__help__shutdown"
@@ -440,6 +464,12 @@ _reactive-graph-client() {
                 ;;
             reactive__graph__client__help__instance__info,get)
                 cmd="reactive__graph__client__help__instance__info__get"
+                ;;
+            reactive__graph__client__help__man__pages,install)
+                cmd="reactive__graph__client__help__man__pages__install"
+                ;;
+            reactive__graph__client__help__man__pages,print)
+                cmd="reactive__graph__client__help__man__pages__print"
                 ;;
             reactive__graph__client__help__plugins,dependencies)
                 cmd="reactive__graph__client__help__plugins__dependencies"
@@ -570,6 +600,12 @@ _reactive-graph-client() {
             reactive__graph__client__help__remotes,update-all)
                 cmd="reactive__graph__client__help__remotes__update__all"
                 ;;
+            reactive__graph__client__help__shell__completions,install)
+                cmd="reactive__graph__client__help__shell__completions__install"
+                ;;
+            reactive__graph__client__help__shell__completions,print)
+                cmd="reactive__graph__client__help__shell__completions__print"
+                ;;
             reactive__graph__client__instance__info,get)
                 cmd="reactive__graph__client__instance__info__get"
                 ;;
@@ -581,6 +617,24 @@ _reactive-graph-client() {
                 ;;
             reactive__graph__client__instance__info__help,help)
                 cmd="reactive__graph__client__instance__info__help__help"
+                ;;
+            reactive__graph__client__man__pages,help)
+                cmd="reactive__graph__client__man__pages__help"
+                ;;
+            reactive__graph__client__man__pages,install)
+                cmd="reactive__graph__client__man__pages__install"
+                ;;
+            reactive__graph__client__man__pages,print)
+                cmd="reactive__graph__client__man__pages__print"
+                ;;
+            reactive__graph__client__man__pages__help,help)
+                cmd="reactive__graph__client__man__pages__help__help"
+                ;;
+            reactive__graph__client__man__pages__help,install)
+                cmd="reactive__graph__client__man__pages__help__install"
+                ;;
+            reactive__graph__client__man__pages__help,print)
+                cmd="reactive__graph__client__man__pages__help__print"
                 ;;
             reactive__graph__client__plugins,dependencies)
                 cmd="reactive__graph__client__plugins__dependencies"
@@ -864,6 +918,24 @@ _reactive-graph-client() {
             reactive__graph__client__remotes__help,update-all)
                 cmd="reactive__graph__client__remotes__help__update__all"
                 ;;
+            reactive__graph__client__shell__completions,help)
+                cmd="reactive__graph__client__shell__completions__help"
+                ;;
+            reactive__graph__client__shell__completions,install)
+                cmd="reactive__graph__client__shell__completions__install"
+                ;;
+            reactive__graph__client__shell__completions,print)
+                cmd="reactive__graph__client__shell__completions__print"
+                ;;
+            reactive__graph__client__shell__completions__help,help)
+                cmd="reactive__graph__client__shell__completions__help__help"
+                ;;
+            reactive__graph__client__shell__completions__help,install)
+                cmd="reactive__graph__client__shell__completions__help__install"
+                ;;
+            reactive__graph__client__shell__completions__help,print)
+                cmd="reactive__graph__client__shell__completions__help__print"
+                ;;
             *)
                 ;;
         esac
@@ -871,21 +943,21 @@ _reactive-graph-client() {
 
     case "${cmd}" in
         reactive__graph__client)
-            opts="-h -V --hostname --port --secure --endpoint-graphql --endpoint-dynamic-graph --endpoint-runtime --endpoint-plugins --bearer --markdown-help --print-shell-completions --install-shell-completions --help --version execute-command instance-info plugins remotes shutdown components entity-types relation-types entity-instances relation-instances help"
+            opts="-h -V --client-hostname --client-port --client-secure --endpoint-graphql --endpoint-dynamic-graph --endpoint-runtime --endpoint-plugins --bearer --help --version shell-completions man-pages print-markdown-help info execute-command instance-info plugins remotes shutdown components entity-types relation-types entity-instances relation-instances help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                --hostname)
+                --client-hostname)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --port)
+                --client-port)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --secure)
+                --client-secure)
                     COMPREPLY=($(compgen -W "true false" -- "${cur}"))
                     return 0
                     ;;
@@ -909,14 +981,6 @@ _reactive-graph-client() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --print-shell-completions)
-                    COMPREPLY=($(compgen -W "bash elvish fish powershell zsh" -- "${cur}"))
-                    return 0
-                    ;;
-                --install-shell-completions)
-                    COMPREPLY=($(compgen -W "bash elvish fish powershell zsh" -- "${cur}"))
-                    return 0
-                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -925,7 +989,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components)
-            opts="-o -h --output-format --help list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description help"
+            opts="-o -h -V --output-format --help --version list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -947,7 +1011,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__add__extension)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -969,7 +1033,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__add__property)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -991,7 +1055,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__create)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1013,7 +1077,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__delete)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1035,7 +1099,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__get)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1239,7 +1303,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__list)
-            opts="-o -h --output-format --help"
+            opts="-o -h -V --output-format --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1261,7 +1325,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__list__extensions)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1283,7 +1347,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__list__properties)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1305,7 +1369,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__remove__extension)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1327,7 +1391,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__remove__property)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <PROPERTY_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1349,7 +1413,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__components__update__description)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <DESCRIPTION>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <DESCRIPTION>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1371,7 +1435,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances)
-            opts="-o -h --output-format --help list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
+            opts="-o -h -V --output-format --help --version list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1393,7 +1457,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__add__component)
-            opts="-o -h --output-format --help <ID> <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <ID> <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1415,7 +1479,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__add__property)
-            opts="-o -h --output-format --help <ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1437,7 +1501,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__create)
-            opts="-i -d -p -o -h --id --description --properties --output-format --help <NAMESPACE> <NAME>"
+            opts="-i -d -p -o -h -V --id --description --properties --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1483,7 +1547,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__delete)
-            opts="-o -h --output-format --help <ID>"
+            opts="-o -h -V --output-format --help --version <ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1505,7 +1569,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__get)
-            opts="-o -h --output-format --help <ID>"
+            opts="-o -h -V --output-format --help --version <ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1527,7 +1591,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__get__by__label)
-            opts="-o -h --output-format --help <LABEL>"
+            opts="-o -h -V --output-format --help --version <LABEL>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1549,7 +1613,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__get__property)
-            opts="-o -h --output-format --help <ID> <PROPERTY_NAME>"
+            opts="-o -h -V --output-format --help --version <ID> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1781,7 +1845,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__list)
-            opts="-n -i -l -p -c -o -h --namespace --name --id --label --properties --components --output-format --help"
+            opts="-n -i -l -p -c -o -h -V --namespace --name --id --label --properties --components --output-format --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1847,7 +1911,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__list__components)
-            opts="-o -h --output-format --help <ID>"
+            opts="-o -h -V --output-format --help --version <ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1869,7 +1933,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__list__properties)
-            opts="-o -h --output-format --help <ID>"
+            opts="-o -h -V --output-format --help --version <ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1891,7 +1955,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__remove__component)
-            opts="-o -h --output-format --help <ID> <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <ID> <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1913,7 +1977,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__remove__property)
-            opts="-o -h --output-format --help <ID> <PROPERTY_NAME>"
+            opts="-o -h -V --output-format --help --version <ID> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1935,7 +1999,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__instances__set__property)
-            opts="-o -h --output-format --help <ID> <NAME> <VALUE>"
+            opts="-o -h -V --output-format --help --version <ID> <NAME> <VALUE>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1957,7 +2021,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types)
-            opts="-o -h --output-format --help list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
+            opts="-o -h -V --output-format --help --version list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1979,7 +2043,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__add__component)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2001,7 +2065,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__add__extension)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2023,7 +2087,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__add__property)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2045,7 +2109,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__create)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2067,7 +2131,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__delete)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2089,7 +2153,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__get)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2335,7 +2399,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__list)
-            opts="-o -h --output-format --help"
+            opts="-o -h -V --output-format --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2357,7 +2421,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__list__components)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2379,7 +2443,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__list__extensions)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2401,7 +2465,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__list__properties)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2423,7 +2487,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__remove__component)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2445,7 +2509,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__remove__extension)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2467,7 +2531,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__remove__property)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <PROPERTY_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2489,7 +2553,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__entity__types__update__description)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <DESCRIPTION>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <DESCRIPTION>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2511,7 +2575,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__execute__command)
-            opts="-h --help <COMMAND_NAME> [COMMAND_ARGUMENTS]..."
+            opts="-h -V --help --version <COMMAND_NAME> [COMMAND_ARGUMENTS]..."
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2525,7 +2589,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__help)
-            opts="execute-command instance-info plugins remotes shutdown components entity-types relation-types entity-instances relation-instances help"
+            opts="shell-completions man-pages print-markdown-help info execute-command instance-info plugins remotes shutdown components entity-types relation-types entity-instances relation-instances help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3140,6 +3204,20 @@ _reactive-graph-client() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__client__help__info)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__client__help__instance__info)
             opts="get"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
@@ -3155,6 +3233,48 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__help__instance__info__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__help__man__pages)
+            opts="print install"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__help__man__pages__install)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__help__man__pages__print)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -3297,6 +3417,20 @@ _reactive-graph-client() {
         reactive__graph__client__help__plugins__uninstall)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__help__print__markdown__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
@@ -3826,6 +3960,48 @@ _reactive-graph-client() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__client__help__shell__completions)
+            opts="print install"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__help__shell__completions__install)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__help__shell__completions__print)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__client__help__shutdown)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
@@ -3840,8 +4016,26 @@ _reactive-graph-client() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__client__info)
+            opts="-h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "default json toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__client__instance__info)
-            opts="-h --help get help"
+            opts="-h -V --help --version get help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3855,7 +4049,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__instance__info__get)
-            opts="-h --help"
+            opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3910,8 +4104,106 @@ _reactive-graph-client() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__client__man__pages)
+            opts="-h -V --help --version print install help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__man__pages__help)
+            opts="print install help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__man__pages__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__man__pages__help__install)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__man__pages__help__print)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__man__pages__install)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__man__pages__print)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__client__plugins)
-            opts="-h --help list search get dependencies dependents start stop restart uninstall help"
+            opts="-h -V --help --version list search get dependencies dependents start stop restart uninstall help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3925,7 +4217,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__dependencies)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3939,7 +4231,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__dependents)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3953,7 +4245,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__get)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4121,7 +4413,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__list)
-            opts="-h --help"
+            opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4135,7 +4427,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__restart)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4149,7 +4441,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__search)
-            opts="-h --name --state --stem --help"
+            opts="-h -V --name --state --stem --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4175,7 +4467,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__start)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4189,7 +4481,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__stop)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4203,7 +4495,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__plugins__uninstall)
-            opts="-h --help <NAME>"
+            opts="-h -V --help --version <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4216,8 +4508,22 @@ _reactive-graph-client() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__client__print__markdown__help)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__client__relation__instances)
-            opts="-o -h --output-format --help list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
+            opts="-o -h -V --output-format --help --version list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4239,7 +4545,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__add__component)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4273,7 +4579,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__add__property)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4307,7 +4613,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__create)
-            opts="-i -d -p -o -h --outbound-id --inbound-id --description --properties --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID>"
+            opts="-i -d -p -o -h -V --outbound-id --inbound-id --description --properties --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4357,7 +4663,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__delete)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4391,7 +4697,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__get)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4425,7 +4731,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__get__property)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4655,7 +4961,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__list)
-            opts="-n -i -p -c -o -h --outbound-id --namespace --name --inbound-id --properties --components --output-format --help"
+            opts="-n -i -p -c -o -h -V --outbound-id --namespace --name --inbound-id --properties --components --output-format --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4717,7 +5023,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__list__components)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4751,7 +5057,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__list__properties)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4785,7 +5091,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__remove__component)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4819,7 +5125,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__remove__property)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4853,7 +5159,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__instances__set__property)
-            opts="-i -o -h --outbound-id --inbound-id --output-format --help <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <PROPERTY_VALUE>"
+            opts="-i -o -h -V --outbound-id --inbound-id --output-format --help --version <NAMESPACE> <NAME> <INSTANCE_ID> <PROPERTY_NAME> <PROPERTY_VALUE>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4887,7 +5193,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types)
-            opts="-o -h --output-format --help list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
+            opts="-o -h -V --output-format --help --version list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4909,7 +5215,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__add__component)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4931,7 +5237,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__add__extension)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4953,7 +5259,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__add__property)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4975,7 +5281,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__create)
-            opts="-o -h --output-format --help <OUTBOUND_TYPE_NAMESPACE> <OUTBOUND_TYPE_NAME> <NAMESPACE> <NAME> <INBOUND_TYPE_NAMESPACE> <INBOUND_TYPE_NAME> [DESCRIPTION]"
+            opts="-o -h -V --output-format --help --version <OUTBOUND_TYPE_NAMESPACE> <OUTBOUND_TYPE_NAME> <NAMESPACE> <NAME> <INBOUND_TYPE_NAMESPACE> <INBOUND_TYPE_NAME> [DESCRIPTION]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4997,7 +5303,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__delete)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5019,7 +5325,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__get)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5265,7 +5571,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__list)
-            opts="-o -h --output-format --help"
+            opts="-o -h -V --output-format --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5287,7 +5593,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__list__components)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5309,7 +5615,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__list__extensions)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5331,7 +5637,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__list__properties)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5353,7 +5659,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__remove__component)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <COMPONENT_NAMESPACE> <COMPONENT_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5375,7 +5681,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__remove__extension)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5397,7 +5703,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__remove__property)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <PROPERTY_NAME>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5419,7 +5725,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__relation__types__update__description)
-            opts="-o -h --output-format --help <NAMESPACE> <NAME> <DESCRIPTION>"
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <DESCRIPTION>"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5441,7 +5747,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes)
-            opts="-h --help list add remove remove-all update update-all fetch-remotes-from-remote fetch-remotes-from-all-remotes help"
+            opts="-h -V --help --version list add remove remove-all update update-all fetch-remotes-from-remote fetch-remotes-from-all-remotes help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5455,7 +5761,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__add)
-            opts="-h --hostname --port --secure --help"
+            opts="-h -V --hostname --port --secure --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5481,7 +5787,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__fetch__remotes__from__all__remotes)
-            opts="-h --help"
+            opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5495,7 +5801,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__fetch__remotes__from__remote)
-            opts="-h --hostname --port --secure --help"
+            opts="-h -V --hostname --port --secure --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5661,7 +5967,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__list)
-            opts="-h --help"
+            opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5675,7 +5981,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__remove)
-            opts="-h --hostname --port --secure --help"
+            opts="-h -V --hostname --port --secure --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5701,7 +6007,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__remove__all)
-            opts="-h --help"
+            opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5715,7 +6021,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__update)
-            opts="-h --hostname --port --secure --help"
+            opts="-h -V --hostname --port --secure --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5741,7 +6047,105 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__remotes__update__all)
-            opts="-h --help"
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions)
+            opts="-h -V --help --version print install help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions__help)
+            opts="print install help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions__help__install)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions__help__print)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions__install)
+            opts="-h -V --help --version bash elvish fish powershell zsh"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__client__shell__completions__print)
+            opts="-h -V --help --version bash elvish fish powershell zsh"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5755,7 +6159,7 @@ _reactive-graph-client() {
             return 0
             ;;
         reactive__graph__client__shutdown)
-            opts="-h --help"
+            opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0

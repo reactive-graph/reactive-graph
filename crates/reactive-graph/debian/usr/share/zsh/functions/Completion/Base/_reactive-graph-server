@@ -1,0 +1,494 @@
+#compdef reactive-graph-server
+
+autoload -U is-at-least
+
+_reactive-graph-server() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'--logging-config=[The logging config location]:LOGGING_CONFIG: ' \
+'--instance-config=[The instance config location]:INSTANCE_CONFIG: ' \
+'--graphql-config=[The GraphQL config location]:GRAPHQL_CONFIG: ' \
+'--plugins-config=[The plugins config location]:PLUGINS_CONFIG: ' \
+'-n+[The name of the instance]:INSTANCE_NAME: ' \
+'--instance-name=[The name of the instance]:INSTANCE_NAME: ' \
+'-d+[The description of the instance]:INSTANCE_DESCRIPTION: ' \
+'--instance-description=[The description of the instance]:INSTANCE_DESCRIPTION: ' \
+'--hostname=[The hostname to bind the GraphQL HTTP server]:HOSTNAME: ' \
+'--port=[The port to bind the GraphQL HTTP server]:PORT: ' \
+'--secure=[If true, HTTPS is enabled]:SECURE:(true false)' \
+'--ssl-certificate-path=[The location of the certificate]:SSL_CERTIFICATE_PATH: ' \
+'--ssl-private-key-path=[The location of the private key]:SSL_PRIVATE_KEY_PATH: ' \
+'--shutdown-timeout=[Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds]:SHUTDOWN_TIMEOUT: ' \
+'-w+[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS: ' \
+'--workers=[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS: ' \
+'-c+[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH: ' \
+'--default-context-path=[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH: ' \
+'-x+[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
+'--disable-all-plugins=[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
+'*-p+[The list of plugins to disable]:DISABLED_PLUGINS: ' \
+'*--disabled-plugins=[The list of plugins to disable]:DISABLED_PLUGINS: ' \
+'*-P+[The list of plugins to enable]:ENABLED_PLUGINS: ' \
+'*--enabled-plugins=[The list of plugins to enable]:ENABLED_PLUGINS: ' \
+'--disable-hot-deploy=[If true, hot deployment will be disabled]:DISABLE_HOT_DEPLOY:(true false)' \
+'--hot-deploy-location=[The folder which is watched for hot deployment]:HOT_DEPLOY_LOCATION: ' \
+'--install-location=[The folder which plugins are installed permanently]:INSTALL_LOCATION: ' \
+'--stop-immediately=[If true, the runtime does not wait before exiting]:STOP_IMMEDIATELY:(true false)' \
+'-q+[If true, logging is disabled completely]:QUIET:(true false)' \
+'--quiet=[If true, logging is disabled completely]:QUIET:(true false)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-server_commands" \
+"*::: :->reactive-graph-server" \
+&& ret=0
+    case $state in
+    (reactive-graph-server)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-command-$line[1]:"
+        case $line[1] in
+            (shell-completions)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-server__shell-completions_commands" \
+"*::: :->shell-completions" \
+&& ret=0
+
+    case $state in
+    (shell-completions)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-shell-completions-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':shell -- The shell:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':shell -- The shell:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__shell-completions__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-shell-completions-help-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(man-pages)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-server__man-pages_commands" \
+"*::: :->man-pages" \
+&& ret=0
+
+    case $state in
+    (man-pages)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-man-pages-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__man-pages__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-man-pages-help-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(print-markdown-help)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(info)
+_arguments "${_arguments_options[@]}" : \
+'--output-format=[]:OUTPUT_FORMAT:(default json toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(daemon)
+_arguments "${_arguments_options[@]}" : \
+'--daemon-name=[Sets the name of the daemon]:DAEMON_NAME: ' \
+'--daemon-pid=[The location of the daemon PID file. By default, no PID file will be created]:DAEMON_PID: ' \
+'--daemon-working-directory=[The working directory of the daemon]:DAEMON_WORKING_DIRECTORY: ' \
+'--daemon-stdout=[Stdout will be written into this file]:DAEMON_STDOUT: ' \
+'--daemon-stderr=[Stderr will be written into this file]:DAEMON_STDERR: ' \
+'--daemon-user=[If set will drop privileges to the specified user. Note\: Both must be given\: user and group]:DAEMON_USER: ' \
+'--daemon-group=[If set will drop privileges to the specified group. Note\: Both must be given\: user and group]:DAEMON_GROUP: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-command-$line[1]:"
+        case $line[1] in
+            (shell-completions)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__help__shell-completions_commands" \
+"*::: :->shell-completions" \
+&& ret=0
+
+    case $state in
+    (shell-completions)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-shell-completions-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(man-pages)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-server__help__man-pages_commands" \
+"*::: :->man-pages" \
+&& ret=0
+
+    case $state in
+    (man-pages)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-server-help-man-pages-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(print-markdown-help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(info)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(daemon)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_reactive-graph-server_commands] )) ||
+_reactive-graph-server_commands() {
+    local commands; commands=(
+'shell-completions:Prints or installs Shell completions' \
+'man-pages:Prints or installs man pages' \
+'print-markdown-help:Prints the markdown help to stdout' \
+'info:Prints info about this binary' \
+'daemon:Runs the server as daemon' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__daemon_commands] )) ||
+_reactive-graph-server__daemon_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server daemon commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help_commands] )) ||
+_reactive-graph-server__help_commands() {
+    local commands; commands=(
+'shell-completions:Prints or installs Shell completions' \
+'man-pages:Prints or installs man pages' \
+'print-markdown-help:Prints the markdown help to stdout' \
+'info:Prints info about this binary' \
+'daemon:Runs the server as daemon' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__daemon_commands] )) ||
+_reactive-graph-server__help__daemon_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help daemon commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__help_commands] )) ||
+_reactive-graph-server__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__info_commands] )) ||
+_reactive-graph-server__help__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help info commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__man-pages_commands] )) ||
+_reactive-graph-server__help__man-pages_commands() {
+    local commands; commands=(
+'print:Prints the man pages to stdout' \
+'install:Installs the man pages' \
+    )
+    _describe -t commands 'reactive-graph-server help man-pages commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__man-pages__install_commands] )) ||
+_reactive-graph-server__help__man-pages__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help man-pages install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__man-pages__print_commands] )) ||
+_reactive-graph-server__help__man-pages__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help man-pages print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__print-markdown-help_commands] )) ||
+_reactive-graph-server__help__print-markdown-help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help print-markdown-help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__shell-completions_commands] )) ||
+_reactive-graph-server__help__shell-completions_commands() {
+    local commands; commands=(
+'print:Prints the shell completions to stdout' \
+'install:Installs the shell completions' \
+    )
+    _describe -t commands 'reactive-graph-server help shell-completions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__shell-completions__install_commands] )) ||
+_reactive-graph-server__help__shell-completions__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help shell-completions install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__help__shell-completions__print_commands] )) ||
+_reactive-graph-server__help__shell-completions__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server help shell-completions print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__info_commands] )) ||
+_reactive-graph-server__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server info commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages_commands] )) ||
+_reactive-graph-server__man-pages_commands() {
+    local commands; commands=(
+'print:Prints the man pages to stdout' \
+'install:Installs the man pages' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server man-pages commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages__help_commands] )) ||
+_reactive-graph-server__man-pages__help_commands() {
+    local commands; commands=(
+'print:Prints the man pages to stdout' \
+'install:Installs the man pages' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server man-pages help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages__help__help_commands] )) ||
+_reactive-graph-server__man-pages__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server man-pages help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages__help__install_commands] )) ||
+_reactive-graph-server__man-pages__help__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server man-pages help install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages__help__print_commands] )) ||
+_reactive-graph-server__man-pages__help__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server man-pages help print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages__install_commands] )) ||
+_reactive-graph-server__man-pages__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server man-pages install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__man-pages__print_commands] )) ||
+_reactive-graph-server__man-pages__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server man-pages print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__print-markdown-help_commands] )) ||
+_reactive-graph-server__print-markdown-help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server print-markdown-help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions_commands] )) ||
+_reactive-graph-server__shell-completions_commands() {
+    local commands; commands=(
+'print:Prints the shell completions to stdout' \
+'install:Installs the shell completions' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server shell-completions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions__help_commands] )) ||
+_reactive-graph-server__shell-completions__help_commands() {
+    local commands; commands=(
+'print:Prints the shell completions to stdout' \
+'install:Installs the shell completions' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-server shell-completions help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions__help__help_commands] )) ||
+_reactive-graph-server__shell-completions__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server shell-completions help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions__help__install_commands] )) ||
+_reactive-graph-server__shell-completions__help__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server shell-completions help install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions__help__print_commands] )) ||
+_reactive-graph-server__shell-completions__help__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server shell-completions help print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions__install_commands] )) ||
+_reactive-graph-server__shell-completions__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server shell-completions install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-server__shell-completions__print_commands] )) ||
+_reactive-graph-server__shell-completions__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-server shell-completions print commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_reactive-graph-server" ]; then
+    _reactive-graph-server "$@"
+else
+    compdef _reactive-graph-server reactive-graph-server
+fi
