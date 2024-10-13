@@ -31,8 +31,8 @@ jobs:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
           # Tier 1
-          # - target: x86_64-unknown-linux-musl
-          #   os: ubuntu-latest
+          - target: x86_64-unknown-linux-musl
+            os: ubuntu-latest
           # Tier 1
           - target: aarch64-unknown-linux-gnu
             os: ubuntu-latest
