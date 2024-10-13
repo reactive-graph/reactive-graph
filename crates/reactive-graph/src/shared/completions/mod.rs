@@ -1,5 +1,6 @@
 pub mod args;
 pub mod commands;
+#[cfg(target_os = "linux")]
 pub mod error;
 #[cfg(target_os = "linux")]
 pub mod install;
