@@ -83,6 +83,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
   crates-io:
     name: Publish on crates.io
+    if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
