@@ -7,6 +7,7 @@ on:
       - "crates/**/*.rs"
       - "crates/**/Cargo.toml"
       - "Cargo.toml"
+      - "Cargo.lock"
       - ".github/workflows/msrv.yml"
   pull_request:
     branches: [ main ]
@@ -14,6 +15,7 @@ on:
       - "crates/**/*.rs"
       - "crates/**/Cargo.toml"
       - "Cargo.toml"
+      - "Cargo.lock"
       - ".github/workflows/msrv.yml"
 
 env:
