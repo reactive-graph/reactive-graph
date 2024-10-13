@@ -45,6 +45,7 @@
 <a href="#45" id="45">45</a>
 <a href="#46" id="46">46</a>
 <a href="#47" id="47">47</a>
+<a href="#48" id="48">48</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>async_trait::async_trait;
@@ -59,9 +60,10 @@
 <span class="kw">use </span>reactive_graph_remotes_model::InstanceInfo;
 
 <span class="kw">pub static </span>VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>);
-<span class="kw">pub static </span>BUILD_DATE: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_BUILD_DATE"</span>);
-<span class="kw">pub static </span>GIT_BRANCH: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_GIT_BRANCH"</span>);
+<span class="kw">pub static </span>TARGET_TRIPLE: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_CARGO_TARGET_TRIPLE"</span>);
+<span class="kw">pub static </span>GIT_TAG: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_GIT_DESCRIBE"</span>);
 <span class="kw">pub static </span>GIT_COMMIT: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_GIT_SHA"</span>);
+<span class="kw">pub static </span>RUSTC_CHANNEL: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_RUSTC_CHANNEL"</span>);
 <span class="kw">pub static </span>RUSTC_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_RUSTC_SEMVER"</span>);
 
 <span class="attr">#[derive(Component)]
@@ -80,9 +82,9 @@
             description: instance_config.description,
             address: graphql_server_config.address(),
             version: String::from(VERSION),
-            build_date: String::from(BUILD_DATE),
-            git_branch: String::from(GIT_BRANCH),
             git_commit: String::from(GIT_COMMIT),
+            git_tag: String::from(GIT_TAG),
+            rustc_channel: String::from(RUSTC_CHANNEL),
             rustc_version: String::from(RUSTC_VERSION),
             plugin_api_version: String::from(PLUGIN_API_VERSION),
             last_seen: Utc::now(),

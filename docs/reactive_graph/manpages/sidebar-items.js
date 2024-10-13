@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["ManPagesGenerationError"],"fn":["generate_man_pages","install_man_pages","print_man_pages"]};

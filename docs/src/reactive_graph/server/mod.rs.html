@@ -51,39 +51,81 @@
 <a href="#51" id="51">51</a>
 <a href="#52" id="52">52</a>
 <a href="#53" id="53">53</a>
-</pre></div><pre class="rust"><code><span class="kw">pub mod </span>cli_args;
+<a href="#54" id="54">54</a>
+<a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+</pre></div><pre class="rust"><code><span class="kw">pub mod </span>args;
+<span class="kw">pub mod </span>commands;
+<span class="attr">#[cfg(target_os = <span class="string">"linux"</span>)]
+</span><span class="kw">pub mod </span>daemon;
 
 <span class="kw">use </span>std::time::Duration;
 
 <span class="kw">use </span>reactive_graph_runtime_impl::RuntimeBuilder;
 
-<span class="kw">use </span>cli_args::CliArguments;
+<span class="kw">use </span><span class="kw">crate</span>::server::args::logging::init_logging;
+<span class="kw">use </span><span class="kw">crate</span>::server::commands::ServerCommands;
+<span class="kw">use </span>args::ServerArguments;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>server(cli_args: CliArguments) {
+<span class="attr">#[tokio::main]
+</span><span class="kw">pub async fn </span>server(args: ServerArguments) {
+    init_logging(<span class="kw-2">&amp;</span>args);
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(commands) = <span class="kw-2">&amp;</span>args.commands {
+        <span class="attr">#[allow(unreachable_patterns, clippy::collapsible_match)]
+        </span><span class="kw">match </span>commands {
+            <span class="attr">#[cfg(target_os = <span class="string">"linux"</span>)]
+            </span>ServerCommands::Daemon(<span class="kw">_</span>) =&gt; {
+                <span class="comment">// already handled.
+            </span>}
+            <span class="kw">_ </span>=&gt; {}
+        }
+    }
+    run(args).<span class="kw">await
+</span>}
+
+<span class="kw">pub async fn </span>run(args: ServerArguments) {
     RuntimeBuilder::new()
         <span class="comment">// Locations of the config files
-        </span>.instance_config(cli_args.instance_config)
-        .graphql_server_config(cli_args.graphql_config)
-        .plugins_config(cli_args.plugins_config)
+        </span>.instance_config(args.runtime.config_locations.instance_config)
+        .graphql_server_config(args.runtime.config_locations.graphql_config)
+        .plugins_config(args.runtime.config_locations.plugins_config)
         .load_config_files()
         .<span class="kw">await
         </span><span class="comment">// Configure CLI arguments
-        </span>.instance_name(cli_args.instance_name)
-        .instance_description(cli_args.instance_description)
-        .hostname(cli_args.hostname)
-        .port(cli_args.port)
-        .secure(cli_args.secure)
-        .ssl_certificate_path(cli_args.ssl_certificate_path)
-        .ssl_private_key_path(cli_args.ssl_private_key_path)
-        .shutdown_timeout(cli_args.shutdown_timeout)
-        .workers(cli_args.workers)
-        .default_context_path(cli_args.default_context_path)
-        .disable_all_plugins(cli_args.disable_all_plugins)
-        .disabled_plugins(cli_args.disabled_plugins)
-        .enabled_plugins(cli_args.enabled_plugins)
-        .disable_hot_deploy(cli_args.disable_hot_deploy)
-        .hot_deploy_location(cli_args.hot_deploy_location)
-        .install_location(cli_args.install_location)
+        </span>.instance_name(args.runtime.instance_config.instance_name)
+        .instance_description(args.runtime.instance_config.instance_description)
+        .hostname(args.runtime.graphql_server.hostname)
+        .port(args.runtime.graphql_server.port)
+        .secure(args.runtime.graphql_server.secure)
+        .ssl_certificate_path(args.runtime.graphql_server.ssl_certificate_path)
+        .ssl_private_key_path(args.runtime.graphql_server.ssl_private_key_path)
+        .shutdown_timeout(args.runtime.graphql_server.shutdown_timeout)
+        .workers(args.runtime.graphql_server.workers)
+        .default_context_path(args.runtime.graphql_server.default_context_path)
+        .disable_all_plugins(args.runtime.plugins.disable_all_plugins)
+        .disabled_plugins(args.runtime.plugins.disabled_plugins)
+        .enabled_plugins(args.runtime.plugins.enabled_plugins)
+        .disable_hot_deploy(args.runtime.plugins.disable_hot_deploy)
+        .hot_deploy_location(args.runtime.plugins.hot_deploy_location)
+        .install_location(args.runtime.plugins.install_location)
         .init()
         .<span class="kw">await
         </span>.post_init()
@@ -97,7 +139,7 @@
         </span>.shutdown()
         .<span class="kw">await
         </span><span class="comment">// Wait for 2 more seconds before exiting
-        </span>.wait_for(<span class="kw">if </span>cli_args.stop_immediately.unwrap_or(<span class="bool-val">false</span>) {
+        </span>.wait_for(<span class="kw">if </span>args.runtime.stop_immediately.unwrap_or(<span class="bool-val">false</span>) {
             Duration::from_millis(<span class="number">10</span>)
         } <span class="kw">else </span>{
             Duration::from_secs(<span class="number">2</span>)

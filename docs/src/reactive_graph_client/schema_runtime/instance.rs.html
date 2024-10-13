@@ -73,13 +73,13 @@
     <span class="kw">pub </span>description: String,
     <span class="kw">pub </span>version: String,
     <span class="kw">pub </span>plugin_api_version: String,
+    <span class="kw">pub </span>rustc_channel: String,
     <span class="kw">pub </span>rustc_version: String,
     <span class="kw">pub </span>hostname: String,
     <span class="kw">pub </span>port: i32,
     <span class="kw">pub </span>secure: bool,
-    <span class="kw">pub </span>git_branch: String,
     <span class="kw">pub </span>git_commit: String,
-    <span class="kw">pub </span>build_date: String,
+    <span class="kw">pub </span>git_tag: String,
     <span class="kw">pub </span>last_seen: String,
 }
 
@@ -93,11 +93,11 @@
             description: instance_info.description,
             version: instance_info.version,
             plugin_api_version: instance_info.plugin_api_version,
+            rustc_channel: instance_info.rustc_channel,
             rustc_version: instance_info.rustc_version,
             address: InstanceAddress::new(instance_info.hostname, u16::try_from(instance_info.port).unwrap_or(<span class="number">0</span>), instance_info.secure),
-            git_branch: instance_info.git_branch,
             git_commit: instance_info.git_commit,
-            build_date: instance_info.build_date,
+            git_tag: instance_info.git_tag,
             last_seen,
         }
     }

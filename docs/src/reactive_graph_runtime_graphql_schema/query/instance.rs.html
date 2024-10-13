@@ -99,16 +99,16 @@
         <span class="self">self</span>.instance_info.version.clone()
     }
 
-    <span class="kw">async fn </span>build_date(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="self">self</span>.instance_info.build_date.clone()
-    }
-
-    <span class="kw">async fn </span>git_branch(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
-        <span class="self">self</span>.instance_info.git_branch.clone()
-    }
-
     <span class="kw">async fn </span>git_commit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
         <span class="self">self</span>.instance_info.git_commit.clone()
+    }
+
+    <span class="kw">async fn </span>git_tag(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="self">self</span>.instance_info.git_tag.clone()
+    }
+
+    <span class="kw">async fn </span>rustc_channel(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+        <span class="self">self</span>.instance_info.rustc_channel.clone()
     }
 
     <span class="kw">async fn </span>rustc_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
