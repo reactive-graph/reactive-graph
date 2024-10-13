@@ -122,7 +122,7 @@ jobs:
   update-tag:
     name: Update Tag
     needs: [ build, test ]
-    # if: ${{ github.ref == 'refs/heads/main' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
