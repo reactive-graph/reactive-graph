@@ -70,7 +70,7 @@ jobs:
       - name: Upload Rust Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
-          bin: reactive-graph
+          bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
           target: ${{ matrix.target }}
           include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
           tar: unix
