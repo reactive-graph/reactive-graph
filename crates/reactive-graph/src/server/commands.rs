@@ -1,3 +1,4 @@
+#[cfg(target_os = "linux")]
 use crate::server::daemon::args::DaemonArguments;
 use clap::Subcommand;
 

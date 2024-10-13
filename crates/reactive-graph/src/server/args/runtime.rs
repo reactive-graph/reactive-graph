@@ -7,16 +7,16 @@ use clap::Parser;
 #[derive(Parser, Debug)]
 pub struct RuntimeArguments {
     #[clap(flatten)]
-    pub(crate) config_locations: ConfigLocationsArguments,
+    pub config_locations: ConfigLocationsArguments,
 
     #[clap(flatten)]
-    pub(crate) instance_config: InstanceConfigArguments,
+    pub instance_config: InstanceConfigArguments,
 
     #[clap(flatten)]
-    pub(crate) graphql_server: GraphQLServerArguments,
+    pub graphql_server: GraphQLServerArguments,
 
     #[clap(flatten)]
-    pub(crate) plugins: PluginsArguments,
+    pub plugins: PluginsArguments,
 
     /// If true, the runtime does not wait before exiting.
     #[arg(long, env = "REACTIVE_GRAPH_STOP_IMMEDIATELY")]
