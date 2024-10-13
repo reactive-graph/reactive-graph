@@ -88,10 +88,10 @@ jobs:
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
-      - name: Install latest nightly
+      - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly-2024-08-19
+          toolchain: stable
       - name: Install cargo-workspaces
         uses: taiki-e/cache-cargo-install-action@v2
         with:
@@ -136,10 +136,10 @@ jobs:
           packages: binutils-arm-none-eabi gcc-arm-linux-gnueabihf
           version: 1.0
         if: matrix.target == 'armv7-unknown-linux-gnueabihf'
-      - name: Install latest nightly
+      - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly-2024-08-19
+          toolchain: stable
       - name: Install Cargo Deb
         uses: taiki-e/cache-cargo-install-action@v2
         with:
