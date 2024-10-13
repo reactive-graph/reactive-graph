@@ -15,17 +15,14 @@ _reactive-graph-client() {
 
     local context curcontext="$curcontext" state line
     _arguments "${_arguments_options[@]}" : \
-'--hostname=[The hostname to connect to]:HOSTNAME: ' \
-'--port=[The port to connect to]:PORT: ' \
-'--secure=[If true, connects via HTTPS]:SECURE:(true false)' \
+'--client-hostname=[The hostname to connect to]:CLIENT_HOSTNAME: ' \
+'--client-port=[The port to connect to]:CLIENT_PORT: ' \
+'--client-secure=[If true, connects via HTTPS]:CLIENT_SECURE:(true false)' \
 '--endpoint-graphql=[The endpoint to use]:ENDPOINT_GRAPHQL: ' \
 '--endpoint-dynamic-graph=[The endpoint to use]:ENDPOINT_DYNAMIC_GRAPH: ' \
 '--endpoint-runtime=[The endpoint to use]:ENDPOINT_RUNTIME: ' \
 '--endpoint-plugins=[The endpoint to use]:ENDPOINT_PLUGINS: ' \
 '--bearer=[The authentication token]:BEARER: ' \
-'--print-shell-completions=[If true, prints shell completions]:PRINT_SHELL_COMPLETIONS:(bash elvish fish powershell zsh)' \
-'--install-shell-completions=[If true, installs shell completions]:INSTALL_SHELL_COMPLETIONS:(bash elvish fish powershell zsh)' \
-'--markdown-help[If true, generates command line documentation]' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
@@ -39,10 +36,159 @@ _reactive-graph-client() {
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-client-command-$line[1]:"
         case $line[1] in
-            (execute-command)
+            (shell-completions)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-client__shell-completions_commands" \
+"*::: :->shell-completions" \
+&& ret=0
+
+    case $state in
+    (shell-completions)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-shell-completions-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':shell -- The shell:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':shell -- The shell:(bash elvish fish powershell zsh)' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__shell-completions__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-shell-completions-help-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(man-pages)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-client__man-pages_commands" \
+"*::: :->man-pages" \
+&& ret=0
+
+    case $state in
+    (man-pages)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-man-pages-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__man-pages__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-man-pages-help-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(print-markdown-help)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(info)
+_arguments "${_arguments_options[@]}" : \
+'--output-format=[]:OUTPUT_FORMAT:(default json toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(execute-command)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':command_name -- The command name:' \
 '*::command_arguments -- The command arguments:' \
 && ret=0
@@ -51,6 +197,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__instance-info_commands" \
 "*::: :->instance-info" \
 && ret=0
@@ -65,6 +213,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -99,6 +249,8 @@ esac
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__plugins_commands" \
 "*::: :->plugins" \
 && ret=0
@@ -113,6 +265,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (search)
@@ -122,12 +276,16 @@ _arguments "${_arguments_options[@]}" : \
 '--stem=[The plugin file stem]:STEM: ' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (get)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -135,6 +293,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -142,6 +302,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -149,6 +311,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -156,6 +320,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -163,6 +329,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -170,6 +338,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':name -- The plugin name:' \
 && ret=0
 ;;
@@ -237,6 +407,8 @@ esac
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__remotes_commands" \
 "*::: :->remotes" \
 && ret=0
@@ -251,6 +423,8 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (add)
@@ -260,6 +434,8 @@ _arguments "${_arguments_options[@]}" : \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (remove)
@@ -269,12 +445,16 @@ _arguments "${_arguments_options[@]}" : \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (remove-all)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (update)
@@ -284,12 +464,16 @@ _arguments "${_arguments_options[@]}" : \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (update-all)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (fetch-remotes-from-remote)
@@ -299,12 +483,16 @@ _arguments "${_arguments_options[@]}" : \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (fetch-remotes-from-all-remotes)
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -367,6 +555,8 @@ esac
 _arguments "${_arguments_options[@]}" : \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (components)
@@ -375,6 +565,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__components_commands" \
 "*::: :->components" \
 && ret=0
@@ -391,6 +583,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (get)
@@ -399,6 +593,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 && ret=0
@@ -409,6 +605,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 && ret=0
@@ -419,6 +617,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 && ret=0
@@ -429,6 +629,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 '::description -- The component description:' \
@@ -440,6 +642,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 && ret=0
@@ -450,6 +654,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 ':property_name -- The name of the property:' \
@@ -465,6 +671,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 ':property_name -- The name of the property:' \
@@ -476,6 +684,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 ':extension_namespace -- The extension namespace:' \
@@ -490,6 +700,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 ':extension_namespace -- The extension namespace:' \
@@ -502,6 +714,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
 ':description -- The description to update:' \
@@ -581,6 +795,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__entity-types_commands" \
 "*::: :->entity-types" \
 && ret=0
@@ -597,6 +813,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (get)
@@ -605,6 +823,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 && ret=0
@@ -615,6 +835,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 && ret=0
@@ -625,6 +847,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 && ret=0
@@ -635,6 +859,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 && ret=0
@@ -645,6 +871,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 '::description -- The entity type description:' \
@@ -656,6 +884,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 && ret=0
@@ -666,6 +896,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':property_name -- The name of the property:' \
@@ -681,6 +913,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':property_name -- The name of the property:' \
@@ -692,6 +926,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':extension_namespace -- The extension namespace:' \
@@ -706,6 +942,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':extension_namespace -- The extension namespace:' \
@@ -718,6 +956,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':component_namespace -- The component namespace:' \
@@ -730,6 +970,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':component_namespace -- The component namespace:' \
@@ -742,6 +984,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 ':description -- The description to update:' \
@@ -833,6 +1077,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__relation-types_commands" \
 "*::: :->relation-types" \
 && ret=0
@@ -849,6 +1095,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (get)
@@ -857,6 +1105,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 && ret=0
@@ -867,6 +1117,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 && ret=0
@@ -877,6 +1129,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 && ret=0
@@ -887,6 +1141,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 && ret=0
@@ -897,6 +1153,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':outbound_type_namespace -- The outbound entity type namespace:' \
 ':outbound_type_name -- The outbound entity type name:' \
 ':namespace -- The relation type namespace:' \
@@ -912,6 +1170,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 && ret=0
@@ -922,6 +1182,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':property_name -- The name of the property:' \
@@ -937,6 +1199,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':property_name -- The name of the property:' \
@@ -948,6 +1212,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':extension_namespace -- The extension namespace:' \
@@ -962,6 +1228,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':extension_namespace -- The extension namespace:' \
@@ -974,6 +1242,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':component_namespace -- The component namespace:' \
@@ -986,6 +1256,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':component_namespace -- The component namespace:' \
@@ -998,6 +1270,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':description -- The description to update:' \
@@ -1089,6 +1363,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__entity-instances_commands" \
 "*::: :->entity-instances" \
 && ret=0
@@ -1116,6 +1392,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (get)
@@ -1124,6 +1402,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the entity instance:' \
 && ret=0
 ;;
@@ -1133,6 +1413,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':label -- The label of the reactive instance:' \
 && ret=0
 ;;
@@ -1142,6 +1424,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the entity instance:' \
 && ret=0
 ;;
@@ -1151,6 +1435,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the entity instance:' \
 ':property_name -- The name of the property:' \
 && ret=0
@@ -1161,6 +1447,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the reactive instance:' \
 ':name -- The name of the property:' \
 ':value -- The new JSON value of the property:' \
@@ -1172,6 +1460,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the reactive instance:' \
 ':property_name -- The name of the property:' \
 ':data_type -- The data type of the property:' \
@@ -1186,6 +1476,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the entity instance:' \
 ':property_name -- The name of the property:' \
 && ret=0
@@ -1196,6 +1488,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the entity instance:' \
 && ret=0
 ;;
@@ -1205,6 +1499,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the reactive instance:' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
@@ -1216,6 +1512,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the reactive instance:' \
 ':namespace -- The component namespace:' \
 ':name -- The component name:' \
@@ -1233,6 +1531,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The entity type namespace:' \
 ':name -- The entity type name:' \
 && ret=0
@@ -1243,6 +1543,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':id -- The id of the entity instance:' \
 && ret=0
 ;;
@@ -1328,6 +1630,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ":: :_reactive-graph-client__relation-instances_commands" \
 "*::: :->relation-instances" \
 && ret=0
@@ -1354,6 +1658,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (get)
@@ -1365,6 +1671,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1379,6 +1687,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1393,6 +1703,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1408,6 +1720,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1424,6 +1738,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1443,6 +1759,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1458,6 +1776,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1472,6 +1792,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1488,6 +1810,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1508,6 +1832,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1522,6 +1848,8 @@ _arguments "${_arguments_options[@]}" : \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 ':namespace -- The relation type namespace:' \
 ':name -- The relation type name:' \
 ':instance_id -- The instance id:' \
@@ -1611,7 +1939,63 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-client-help-command-$line[1]:"
         case $line[1] in
-            (execute-command)
+            (shell-completions)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__shell-completions_commands" \
+"*::: :->shell-completions" \
+&& ret=0
+
+    case $state in
+    (shell-completions)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-shell-completions-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(man-pages)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-client__help__man-pages_commands" \
+"*::: :->man-pages" \
+&& ret=0
+
+    case $state in
+    (man-pages)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-client-help-man-pages-command-$line[1]:"
+        case $line[1] in
+            (print)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(print-markdown-help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(info)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(execute-command)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -2091,6 +2475,10 @@ esac
 (( $+functions[_reactive-graph-client_commands] )) ||
 _reactive-graph-client_commands() {
     local commands; commands=(
+'shell-completions:Prints or installs Shell completions' \
+'man-pages:Prints or installs man pages' \
+'print-markdown-help:Prints the markdown help to stdout' \
+'info:Prints info about this binary' \
 'execute-command:Executes a command on the client' \
 'instance-info:Prints information about the instance' \
 'plugins:Manage plugins' \
@@ -2626,6 +3014,10 @@ _reactive-graph-client__execute-command_commands() {
 (( $+functions[_reactive-graph-client__help_commands] )) ||
 _reactive-graph-client__help_commands() {
     local commands; commands=(
+'shell-completions:Prints or installs Shell completions' \
+'man-pages:Prints or installs man pages' \
+'print-markdown-help:Prints the markdown help to stdout' \
+'info:Prints info about this binary' \
 'execute-command:Executes a command on the client' \
 'instance-info:Prints information about the instance' \
 'plugins:Manage plugins' \
@@ -2896,6 +3288,11 @@ _reactive-graph-client__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client help help commands' commands "$@"
 }
+(( $+functions[_reactive-graph-client__help__info_commands] )) ||
+_reactive-graph-client__help__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help info commands' commands "$@"
+}
 (( $+functions[_reactive-graph-client__help__instance-info_commands] )) ||
 _reactive-graph-client__help__instance-info_commands() {
     local commands; commands=(
@@ -2907,6 +3304,24 @@ _reactive-graph-client__help__instance-info_commands() {
 _reactive-graph-client__help__instance-info__get_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client help instance-info get commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__man-pages_commands] )) ||
+_reactive-graph-client__help__man-pages_commands() {
+    local commands; commands=(
+'print:Prints the man pages to stdout' \
+'install:Installs the man pages' \
+    )
+    _describe -t commands 'reactive-graph-client help man-pages commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__man-pages__install_commands] )) ||
+_reactive-graph-client__help__man-pages__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help man-pages install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__man-pages__print_commands] )) ||
+_reactive-graph-client__help__man-pages__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help man-pages print commands' commands "$@"
 }
 (( $+functions[_reactive-graph-client__help__plugins_commands] )) ||
 _reactive-graph-client__help__plugins_commands() {
@@ -2967,6 +3382,11 @@ _reactive-graph-client__help__plugins__stop_commands() {
 _reactive-graph-client__help__plugins__uninstall_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client help plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__print-markdown-help_commands] )) ||
+_reactive-graph-client__help__print-markdown-help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help print-markdown-help commands' commands "$@"
 }
 (( $+functions[_reactive-graph-client__help__relation-instances_commands] )) ||
 _reactive-graph-client__help__relation-instances_commands() {
@@ -3190,10 +3610,33 @@ _reactive-graph-client__help__remotes__update-all_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client help remotes update-all commands' commands "$@"
 }
+(( $+functions[_reactive-graph-client__help__shell-completions_commands] )) ||
+_reactive-graph-client__help__shell-completions_commands() {
+    local commands; commands=(
+'print:Prints the shell completions to stdout' \
+'install:Installs the shell completions' \
+    )
+    _describe -t commands 'reactive-graph-client help shell-completions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__shell-completions__install_commands] )) ||
+_reactive-graph-client__help__shell-completions__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help shell-completions install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__help__shell-completions__print_commands] )) ||
+_reactive-graph-client__help__shell-completions__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client help shell-completions print commands' commands "$@"
+}
 (( $+functions[_reactive-graph-client__help__shutdown_commands] )) ||
 _reactive-graph-client__help__shutdown_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client help shutdown commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__info_commands] )) ||
+_reactive-graph-client__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client info commands' commands "$@"
 }
 (( $+functions[_reactive-graph-client__instance-info_commands] )) ||
 _reactive-graph-client__instance-info_commands() {
@@ -3225,6 +3668,49 @@ _reactive-graph-client__instance-info__help__get_commands() {
 _reactive-graph-client__instance-info__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client instance-info help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages_commands] )) ||
+_reactive-graph-client__man-pages_commands() {
+    local commands; commands=(
+'print:Prints the man pages to stdout' \
+'install:Installs the man pages' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client man-pages commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages__help_commands] )) ||
+_reactive-graph-client__man-pages__help_commands() {
+    local commands; commands=(
+'print:Prints the man pages to stdout' \
+'install:Installs the man pages' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client man-pages help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages__help__help_commands] )) ||
+_reactive-graph-client__man-pages__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client man-pages help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages__help__install_commands] )) ||
+_reactive-graph-client__man-pages__help__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client man-pages help install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages__help__print_commands] )) ||
+_reactive-graph-client__man-pages__help__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client man-pages help print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages__install_commands] )) ||
+_reactive-graph-client__man-pages__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client man-pages install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__man-pages__print_commands] )) ||
+_reactive-graph-client__man-pages__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client man-pages print commands' commands "$@"
 }
 (( $+functions[_reactive-graph-client__plugins_commands] )) ||
 _reactive-graph-client__plugins_commands() {
@@ -3352,6 +3838,11 @@ _reactive-graph-client__plugins__stop_commands() {
 _reactive-graph-client__plugins__uninstall_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__print-markdown-help_commands] )) ||
+_reactive-graph-client__print-markdown-help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client print-markdown-help commands' commands "$@"
 }
 (( $+functions[_reactive-graph-client__relation-instances_commands] )) ||
 _reactive-graph-client__relation-instances_commands() {
@@ -3817,6 +4308,49 @@ _reactive-graph-client__remotes__update_commands() {
 _reactive-graph-client__remotes__update-all_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph-client remotes update-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions_commands] )) ||
+_reactive-graph-client__shell-completions_commands() {
+    local commands; commands=(
+'print:Prints the shell completions to stdout' \
+'install:Installs the shell completions' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client shell-completions commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions__help_commands] )) ||
+_reactive-graph-client__shell-completions__help_commands() {
+    local commands; commands=(
+'print:Prints the shell completions to stdout' \
+'install:Installs the shell completions' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-client shell-completions help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions__help__help_commands] )) ||
+_reactive-graph-client__shell-completions__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client shell-completions help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions__help__install_commands] )) ||
+_reactive-graph-client__shell-completions__help__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client shell-completions help install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions__help__print_commands] )) ||
+_reactive-graph-client__shell-completions__help__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client shell-completions help print commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions__install_commands] )) ||
+_reactive-graph-client__shell-completions__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client shell-completions install commands' commands "$@"
+}
+(( $+functions[_reactive-graph-client__shell-completions__print_commands] )) ||
+_reactive-graph-client__shell-completions__print_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-client shell-completions print commands' commands "$@"
 }
 (( $+functions[_reactive-graph-client__shutdown_commands] )) ||
 _reactive-graph-client__shutdown_commands() {
