@@ -15,6 +15,8 @@ env:
 
 jobs:
   create-release:
+    name: Create Release
+    if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: VCS Checkout
