@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Check in lock file
 - CI: Create tag nightly after merge and successful build on main branch
 - CI: Publish nightly releases to GitHub Releases
+- CI: Automatic labeling
 
 ## [0.10.0-1] - 2024-03-24
 
