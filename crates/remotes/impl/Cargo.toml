@@ -29,7 +29,8 @@ reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
 
 [build-dependencies]
-vergen = { workspace = true, features = ["build", "cargo", "git", "gitcl", "rustc", "si"] }
+anyhow = { workspace = true }
+vergen-gix = { workspace = true, features = ["build", "cargo", "rustc", "si"] }
 
 [lib]
 crate-type = ["lib"]

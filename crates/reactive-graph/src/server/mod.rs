@@ -1,36 +1,57 @@
-pub mod cli_args;
+pub mod args;
+pub mod commands;
+#[cfg(target_os = "linux")]
+pub mod daemon;
 
 use std::time::Duration;
 
 use reactive_graph_runtime_impl::RuntimeBuilder;
 
-use cli_args::CliArguments;
+use crate::server::args::logging::init_logging;
+use crate::server::commands::ServerCommands;
+use args::ServerArguments;
 
-pub(crate) async fn server(cli_args: CliArguments) {
+#[tokio::main]
+pub async fn server(args: ServerArguments) {
+    init_logging(&args);
+    if let Some(commands) = &args.commands {
+        #[allow(unreachable_patterns)]
+        match commands {
+            #[cfg(target_os = "linux")]
+            ServerCommands::Daemon(_) => {
+                // already handled.
+            }
+            _ => {}
+        }
+    }
+    run(args).await
+}
+
+pub async fn run(args: ServerArguments) {
     RuntimeBuilder::new()
         // Locations of the config files
-        .instance_config(cli_args.instance_config)
-        .graphql_server_config(cli_args.graphql_config)
-        .plugins_config(cli_args.plugins_config)
+        .instance_config(args.runtime.config_locations.instance_config)
+        .graphql_server_config(args.runtime.config_locations.graphql_config)
+        .plugins_config(args.runtime.config_locations.plugins_config)
         .load_config_files()
         .await
         // Configure CLI arguments
-        .instance_name(cli_args.instance_name)
-        .instance_description(cli_args.instance_description)
-        .hostname(cli_args.hostname)
-        .port(cli_args.port)
-        .secure(cli_args.secure)
-        .ssl_certificate_path(cli_args.ssl_certificate_path)
-        .ssl_private_key_path(cli_args.ssl_private_key_path)
-        .shutdown_timeout(cli_args.shutdown_timeout)
-        .workers(cli_args.workers)
-        .default_context_path(cli_args.default_context_path)
-        .disable_all_plugins(cli_args.disable_all_plugins)
-        .disabled_plugins(cli_args.disabled_plugins)
-        .enabled_plugins(cli_args.enabled_plugins)
-        .disable_hot_deploy(cli_args.disable_hot_deploy)
-        .hot_deploy_location(cli_args.hot_deploy_location)
-        .install_location(cli_args.install_location)
+        .instance_name(args.runtime.instance_config.instance_name)
+        .instance_description(args.runtime.instance_config.instance_description)
+        .hostname(args.runtime.graphql_server.hostname)
+        .port(args.runtime.graphql_server.port)
+        .secure(args.runtime.graphql_server.secure)
+        .ssl_certificate_path(args.runtime.graphql_server.ssl_certificate_path)
+        .ssl_private_key_path(args.runtime.graphql_server.ssl_private_key_path)
+        .shutdown_timeout(args.runtime.graphql_server.shutdown_timeout)
+        .workers(args.runtime.graphql_server.workers)
+        .default_context_path(args.runtime.graphql_server.default_context_path)
+        .disable_all_plugins(args.runtime.plugins.disable_all_plugins)
+        .disabled_plugins(args.runtime.plugins.disabled_plugins)
+        .enabled_plugins(args.runtime.plugins.enabled_plugins)
+        .disable_hot_deploy(args.runtime.plugins.disable_hot_deploy)
+        .hot_deploy_location(args.runtime.plugins.hot_deploy_location)
+        .install_location(args.runtime.plugins.install_location)
         .init()
         .await
         .post_init()
@@ -44,7 +65,7 @@ pub(crate) async fn server(cli_args: CliArguments) {
         .shutdown()
         .await
         // Wait for 2 more seconds before exiting
-        .wait_for(if cli_args.stop_immediately.unwrap_or(false) {
+        .wait_for(if args.runtime.stop_immediately.unwrap_or(false) {
             Duration::from_millis(10)
         } else {
             Duration::from_secs(2)

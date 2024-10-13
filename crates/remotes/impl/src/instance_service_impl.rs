@@ -12,9 +12,10 @@ use reactive_graph_remotes_api::InstanceService;
 use reactive_graph_remotes_model::InstanceInfo;
 
 pub static VERSION: &str = env!("CARGO_PKG_VERSION");
-pub static BUILD_DATE: &str = env!("VERGEN_BUILD_DATE");
-pub static GIT_BRANCH: &str = env!("VERGEN_GIT_BRANCH");
+pub static TARGET_TRIPLE: &str = env!("VERGEN_CARGO_TARGET_TRIPLE");
+pub static GIT_TAG: &str = env!("VERGEN_GIT_DESCRIBE");
 pub static GIT_COMMIT: &str = env!("VERGEN_GIT_SHA");
+pub static RUSTC_CHANNEL: &str = env!("VERGEN_RUSTC_CHANNEL");
 pub static RUSTC_VERSION: &str = env!("VERGEN_RUSTC_SEMVER");
 
 #[derive(Component)]
@@ -33,9 +34,9 @@ impl InstanceService for InstanceServiceImpl {
             description: instance_config.description,
             address: graphql_server_config.address(),
             version: String::from(VERSION),
-            build_date: String::from(BUILD_DATE),
-            git_branch: String::from(GIT_BRANCH),
             git_commit: String::from(GIT_COMMIT),
+            git_tag: String::from(GIT_TAG),
+            rustc_channel: String::from(RUSTC_CHANNEL),
             rustc_version: String::from(RUSTC_VERSION),
             plugin_api_version: String::from(PLUGIN_API_VERSION),
             last_seen: Utc::now(),

@@ -21,14 +21,14 @@ pub struct InstanceInfo {
     /// The version of the runtime (version field in Cargo.toml).
     pub version: String,
 
-    /// The build date of the runtime.
-    pub build_date: String,
-
-    /// The git branch.
-    pub git_branch: String,
-
     /// The git commit.
     pub git_commit: String,
+
+    /// The git tag.
+    pub git_tag: String,
+
+    /// The rust compiler channel.
+    pub rustc_channel: String,
 
     /// The rust compiler version.
     pub rustc_version: String,

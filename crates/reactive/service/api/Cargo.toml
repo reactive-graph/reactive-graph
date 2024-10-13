@@ -13,6 +13,7 @@ readme = "../../../../README.md"
 async-trait = { workspace = true }
 crossbeam = { workspace = true }
 dashmap = { workspace = true }
+rustversion = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
@@ -30,7 +31,7 @@ reactive-graph-behaviour-service-api = { version = "0.10.0", path = "../../../be
 reactive-graph-type-system-api = { version = "0.10.0", path = "../../../type-system/api" }
 
 [build-dependencies]
-rustc_version = { workspace = true }
+rustversion = { workspace = true }
 
 [dev-dependencies]
 default-test = { workspace = true }
@@ -40,10 +41,9 @@ reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
 [features]
 default = ["derive"]
 derive = ["reactive-graph-reactive-derive"]
-rustc_nightly = []
 
 [lib]
 crate-type = ["lib"]
 
 [lints.rust]
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(rustc_nightly)'] }
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(fn_traits)', 'cfg(unboxed_closures)'] }
