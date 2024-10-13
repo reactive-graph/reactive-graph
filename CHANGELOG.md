@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages
 - CI: Check in lock file
+- CLI: Tooling subcommands
 
 ## [0.10.0-1] - 2024-03-24
 
