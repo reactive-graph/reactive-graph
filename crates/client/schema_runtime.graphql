@@ -5,6 +5,13 @@ schema {
   mutation: Mutation
 }
 
+"""
+
+Indicates that an Input Object is a OneOf Input Object (and thus requires
+exactly one of its field be provided)
+"""
+directive @oneOf on INPUT_OBJECT
+
 type Command {
   arguments(name: String): [CommandArgument!]!
   help: String
@@ -37,16 +44,16 @@ type CommandResult {
 }
 
 type InstanceInfo {
-  buildDate: String!
   description: String!
-  gitBranch: String!
   gitCommit: String!
+  gitTag: String!
   hostname: String!
   "When the remote instance was last seen (ISO8601 / RFC3339)."
   lastSeen: String!
   name: String!
   pluginApiVersion: String!
   port: Int!
+  rustcChannel: String!
   rustcVersion: String!
   secure: Boolean!
   version: String!
