@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["add_remote","fetch_remotes_from_all_remotes","fetch_remotes_from_remote","remove_all_remotes","remove_remote","update_all_remotes","update_remote"]};

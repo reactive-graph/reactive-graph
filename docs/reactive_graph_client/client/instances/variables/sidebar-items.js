@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["id_and_component","label","uuid"]};

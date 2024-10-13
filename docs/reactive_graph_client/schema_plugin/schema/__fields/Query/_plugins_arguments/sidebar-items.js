@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["hasDependencies","hasUnsatisfiedDependencies","id","name","state","stem"]};

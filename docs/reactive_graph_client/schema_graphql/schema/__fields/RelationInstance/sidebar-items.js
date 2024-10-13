@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["_properties_arguments"],"struct":["__typename","behaviours","componentBehaviours","components","description","inbound","instanceId","outbound","properties","type"]};
