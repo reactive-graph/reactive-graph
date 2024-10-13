@@ -1,4 +1,5 @@
-#![cfg_attr(feature = "rustc_nightly", feature(unboxed_closures, fn_traits))]
+#![cfg_attr(unboxed_closures, feature(unboxed_closures))]
+#![cfg_attr(fn_traits, feature(fn_traits))]
 
 pub use error::entity::*;
 pub use error::flow::*;

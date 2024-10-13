@@ -13,6 +13,7 @@ pub struct InstanceInfo {
     pub description: String,
     pub version: String,
     pub plugin_api_version: String,
+    pub rustc_channel: String,
     pub rustc_version: String,
     pub hostname: String,
     pub port: i32,
@@ -21,13 +22,10 @@ pub struct InstanceInfo {
     pub secure: bool,
     #[allow(unused)]
     #[tabled(skip)]
-    pub git_branch: String,
-    #[allow(unused)]
-    #[tabled(skip)]
     pub git_commit: String,
     #[allow(unused)]
     #[tabled(skip)]
-    pub build_date: String,
+    pub git_tag: String,
     #[allow(unused)]
     #[tabled(skip)]
     pub last_seen: String,
@@ -49,13 +47,13 @@ impl From<reactive_graph_remotes_model::InstanceInfo> for InstanceInfo {
             description: instance_info.description,
             version: instance_info.version,
             plugin_api_version: instance_info.plugin_api_version,
+            rustc_channel: instance_info.rustc_channel,
             rustc_version: instance_info.rustc_version,
             hostname: instance_info.address.hostname,
             port: i32::from(instance_info.address.port),
             secure: instance_info.address.secure,
-            git_branch: instance_info.git_branch,
             git_commit: instance_info.git_commit,
-            build_date: instance_info.build_date,
+            git_tag: instance_info.git_tag,
             last_seen: instance_info.last_seen.to_rfc3339(),
             inline_format: Default::default(),
         }

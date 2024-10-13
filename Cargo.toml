@@ -89,13 +89,14 @@ actix-http = { version = "3.9", features = ["rustls-0_23"] }
 actix-rt = "2.10"
 actix-web = { version = "4.9", features = ["rustls-0_23"] }
 actix-web-extras = "0.1"
+anyhow = "1.0"
 # async-graphql features: uuid, chrono, url, log
 async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "7.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
-aws-lc-rs = { version = "1.9.0", features = ["prebuilt-nasm"] }
-clap = { version = "4.1", features = ["derive", "env"] }
+aws-lc-rs = { version = "1.10.0", features = ["prebuilt-nasm"] }
+clap = { version = "4.5", features = ["derive", "env"] }
 clap_complete = "4.5"
 clap_mangen = "0.2"
 clap-markdown = "0.1"
@@ -136,13 +137,14 @@ rand = "0.8"
 rand_derive2 = "0.1"
 random-string = "1.0"
 rayon = "1.6"
-regex = "1.9"
+regex = "1.11"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
-rustc_version = "0.4"
-rustls = { version = "0.23.13", features = ["aws_lc_rs"] }
+#rustc_version = "0.4"
+rustls = { version = "0.23.14", features = ["aws_lc_rs"] }
 rustls-pki-types = "1.4.0"
-rustls-pemfile = "2.1.1"
+rustls-pemfile = "2.2"
+rustversion = "1.0"
 rustyline = "14.0"
 schemars = { version = "0.8", features = ["uuid1"] }
 semver = "1"
@@ -167,9 +169,9 @@ tokio-stream = "0.1"
 toml = "0.8"
 typed-builder = "0.20"
 uuid = { version = "1.4", features = ["serde", "v4"] }
-vergen = { version = "8.2" }
+vergen-gix = { version = "1.0" }
 walkdir = "2.3"
-wildmatch = "2.1"
+wildmatch = "2.4"
 xdg = "2.4"
 
 [profile.dev]

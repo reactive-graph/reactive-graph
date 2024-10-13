@@ -33,16 +33,16 @@ impl GraphQLInstanceInfo {
         self.instance_info.version.clone()
     }
 
-    async fn build_date(&self) -> String {
-        self.instance_info.build_date.clone()
-    }
-
-    async fn git_branch(&self) -> String {
-        self.instance_info.git_branch.clone()
-    }
-
     async fn git_commit(&self) -> String {
         self.instance_info.git_commit.clone()
+    }
+
+    async fn git_tag(&self) -> String {
+        self.instance_info.git_tag.clone()
+    }
+
+    async fn rustc_channel(&self) -> String {
+        self.instance_info.rustc_channel.clone()
     }
 
     async fn rustc_version(&self) -> String {
