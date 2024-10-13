@@ -132,5 +132,5 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "github-actions@users.noreply.github.com"
           git push origin :refs/tags/nightly
-          git tag -fa nightly
+          git tag -fa nightly -m "Nightly Build"
           git push origin --tags
