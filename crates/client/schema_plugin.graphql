@@ -5,6 +5,13 @@ schema {
   mutation: Mutation
 }
 
+"""
+
+Indicates that an Input Object is a OneOf Input Object (and thus requires
+exactly one of its field be provided)
+"""
+directive @oneOf on INPUT_OBJECT
+
 "Mutations for the type system, the instances and the flows."
 type Mutation {
   "Redeploys a plugin which is already installed, resolved or active."
