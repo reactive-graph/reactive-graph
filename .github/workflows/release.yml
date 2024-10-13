@@ -8,6 +8,8 @@ on:
     tags:
       - nightly
       - v[0-9]+.*
+  # Run manually
+  workflow_dispatch:
 
 env:
   CARGO_TERM_COLOR: always
