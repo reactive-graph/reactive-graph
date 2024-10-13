@@ -1,5 +1,4 @@
 use crate::server::args::ServerAndSharedArguments;
-use crate::server::commands::ServerCommands;
 #[cfg(target_os = "linux")]
 use crate::server::daemon::daemonize;
 use crate::server::server;
@@ -33,7 +32,7 @@ fn main() {
         #[allow(unreachable_patterns, clippy::collapsible_match)]
         match commands {
             #[cfg(target_os = "linux")]
-            ServerCommands::Daemon(args) => daemonize(args),
+            crate::server::commands::ServerCommands::Daemon(args) => daemonize(args),
             _ => {}
         }
     }
