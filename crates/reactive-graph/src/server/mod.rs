@@ -8,7 +8,6 @@ use std::time::Duration;
 use reactive_graph_runtime_impl::RuntimeBuilder;
 
 use crate::server::args::logging::init_logging;
-use crate::server::commands::ServerCommands;
 use args::ServerArguments;
 
 #[tokio::main]
@@ -18,7 +17,7 @@ pub async fn server(args: ServerArguments) {
         #[allow(unreachable_patterns, clippy::collapsible_match)]
         match commands {
             #[cfg(target_os = "linux")]
-            ServerCommands::Daemon(_) => {
+            commands::ServerCommands::Daemon(_) => {
                 // already handled.
             }
             _ => {}
