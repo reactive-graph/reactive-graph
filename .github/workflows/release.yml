@@ -17,6 +17,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   VERGEN_IDEMPOTENT: true
+  AWS_LC_SYS_PREBUILT_NASM: 1
 
 jobs:
   create-release:
