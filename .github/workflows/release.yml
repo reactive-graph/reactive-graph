@@ -82,6 +82,7 @@ jobs:
       - name: Install packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
+          # TODO: remove openssl
           packages: pkg-config openssl libssl-dev
           version: 1.1
         if: matrix.os == 'ubuntu-latest'
@@ -95,6 +96,19 @@ jobs:
           zip: windows
           leading_dir: true
           token: ${{ secrets.GITHUB_TOKEN }}
+        if: startsWith(github.event.ref, 'refs/tags/v')
+      - name: Upload Nightly Binary
+        uses: taiki-e/upload-rust-binary-action@v1
+        with:
+          bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
+          target: ${{ matrix.target }}
+          include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
+          tar: unix
+          zip: windows
+          leading_dir: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: refs/tags/nightly
+        if: ${{ github.ref == 'refs/heads/main' }}
   crates-io:
     name: Publish on crates.io
     if: startsWith(github.event.ref, 'refs/tags/v')
@@ -138,6 +152,7 @@ jobs:
         uses: devops-actions/action-get-tag@v1.0.3
         with:
           strip_v: true
+          default: nightly
       - name: Install aarch64 packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
