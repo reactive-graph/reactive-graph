@@ -8,9 +8,13 @@ on:
     tags:
       - nightly
       - v[0-9]+.*
-  create:
-    tags:
-      - nightly
+  workflow_run:
+    workflows:
+      - Rust
+    branches:
+      - main
+    types:
+      - completed
   # Run manually
   workflow_dispatch:
 
