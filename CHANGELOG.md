@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages
 - CLI: Tooling subcommands
 - CI: Check in lock file
+- CI: Create tag nightly after merge and successful build on main branch
 - CI: Publish nightly releases
 
 ## [0.10.0-1] - 2024-03-24
