@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["parse_component_ty"],"mod":["add_extension","add_property","component_extension_type","component_property","create","type_id","update_description"],"struct":["ComponentsArgs"]};
