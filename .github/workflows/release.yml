@@ -90,6 +90,7 @@ jobs:
         with:
           bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
           target: ${{ matrix.target }}
+          archive: 'reactive-graph-$tag-$target'
           include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
           tar: unix
           zip: windows
@@ -101,6 +102,7 @@ jobs:
         with:
           bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
           target: ${{ matrix.target }}
+          archive: 'reactive-graph-nightly-$target'
           include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
           tar: unix
           zip: windows
