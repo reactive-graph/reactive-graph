@@ -89,7 +89,7 @@ jobs:
       - name: Upload Regular Release Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
-          bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
+          bin: reactive-graph,reactive-graph-client,reactive-graph-server,reactive-graph-tooling
           target: ${{ matrix.target }}
           archive: 'reactive-graph-$tag-$target'
           include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
@@ -101,7 +101,7 @@ jobs:
       - name: Upload Nightly Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
-          bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
+          bin: reactive-graph,reactive-graph-client,reactive-graph-server,reactive-graph-tooling
           target: ${{ matrix.target }}
           archive: 'reactive-graph-nightly-$target'
           include: LICENSE.md,README.md,CHANGELOG.md,config,plugins
