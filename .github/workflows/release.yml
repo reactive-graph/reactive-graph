@@ -78,15 +78,14 @@ jobs:
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
-      # Required by arm targets
-      - name: Install packages
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          # TODO: remove openssl
-          packages: pkg-config openssl libssl-dev
-          version: 1.1
-        if: matrix.os == 'ubuntu-latest'
-      - name: Upload Rust Binary
+      # OpenSSL (required by arm targets)
+      #- name: Install packages
+      #  uses: awalsh128/cache-apt-pkgs-action@latest
+      #  with:
+      #    packages: pkg-config openssl libssl-dev
+      #    version: 1.1
+      #  if: matrix.os == 'ubuntu-latest'
+      - name: Upload Regular Release Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
           bin: reactive-graph, reactive-graph-client, reactive-graph-server, reactive-graph-tooling
