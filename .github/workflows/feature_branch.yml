@@ -17,6 +17,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: Create Pull Request
-        run: gh pr create --base main --head ${{github.ref}} --fill --reviewer reactive-graph/code-contributors
+        run: gh pr create --base main --head ${{github.ref}} --fill
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
