@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Create Pull Request
         run: gh pr create --base main --head ${{github.ref}} --fill --reviewer reactive-graph/code-contributors
         env:
