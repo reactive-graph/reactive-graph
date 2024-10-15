@@ -1,5 +1,5 @@
 name: Release
-run-name: Release ${{ github.ref }} by @${{ github.actor }}
+run-name: Release ${{ github.ref == 'refs/heads/main' && 'nightly' || github.ref_name }} by @${{ github.actor }}
 
 permissions:
   contents: write
