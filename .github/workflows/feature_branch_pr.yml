@@ -5,6 +5,9 @@ on:
     branches:
       - "feature/*.*.*/**"
 
+permissions:
+  pull-requests: write
+
 jobs:
   create_pr_repo_sync:
     runs-on: ubuntu-latest
