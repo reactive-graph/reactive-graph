@@ -155,6 +155,9 @@ jobs:
         with:
           strip_v: true
           default: nightly
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Install aarch64 packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
@@ -179,10 +182,18 @@ jobs:
         uses: taiki-e/setup-cross-toolchain-action@v1
         with:
           target: ${{ matrix.target }}
-      - name: Create Debian Package
+      - name: Create Regular Debian Package
+        if: startsWith(github.event.ref, 'refs/tags/v')
         run: |
           cd ./crates/reactive-graph
           cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-version ${{steps.tag.outputs.tag}}
+        env:
+          VERGEN_IDEMPOTENT: true
+      - name: Create Debian Nightly Package
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          cd ./crates/reactive-graph
+          cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-revision nightly-${{ steps.date.outputs.date }}
         env:
           VERGEN_IDEMPOTENT: true
       - name: Upload debian package to release
