@@ -7,7 +7,7 @@ on:
     types: [ closed ]
 
 jobs:
-  add_labels:
+  remove_labels:
     runs-on: ubuntu-latest
     steps:
       - name: Remove labels
