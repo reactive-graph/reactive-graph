@@ -51,6 +51,7 @@ jobs:
       - uses: tarides/changelog-check-action@v3
         with:
           changelog: CHANGELOG.md
+    if: ${{ github.actor != 'dependabot[bot]' }}
   lint:
     name: Lint
     needs: [ formatting, check_changelog ]
