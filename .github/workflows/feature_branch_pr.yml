@@ -1,5 +1,5 @@
 name: Feature Branch PR
-run-name: Create a Pull Request for ${{ github.ref_name }}
+run-name: Create a Pull Request for Feature Branch ${{ github.ref_name }}
 
 on:
   push:
