@@ -20,6 +20,9 @@ on:
       - "CHANGELOG.md"
       - ".github/workflows/rust.yml"
 
+permissions:
+  pull-requests: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
@@ -139,3 +142,14 @@ jobs:
           git push origin :refs/tags/nightly
           git tag -fa nightly -m "Nightly Build"
           git push origin --tags
+  dependabot-auto-merge:
+    name: Auto Merge
+    needs: [ update-tag ]
+    if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.repository == 'reactive-graph/reactive-graph'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Automatically Merge
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
