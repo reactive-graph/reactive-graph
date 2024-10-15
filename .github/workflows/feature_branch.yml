@@ -2,9 +2,7 @@ name: Feature Branch
 run-name: Feature Branch ${{ github.ref_name }}
 
 on:
-  push:
-    branches:
-      - "feature/*.*.*/**"
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
