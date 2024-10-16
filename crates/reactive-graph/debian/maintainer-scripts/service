@@ -16,10 +16,11 @@ EnvironmentFile=/etc/reactive-graph/%i/var_file
 ExecStart=/usr/bin/reactive-graph
 
 ExecStartPre=/bin/mkdir -m 710 -p /etc/reactive-graph/%i
-ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/graphql.toml /etc/reactive-graph/%i/graphql.toml
-ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/instance.toml /etc/reactive-graph/%i/instance.toml
-ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/logging.toml /etc/reactive-graph/%i/logging.toml
-ExecStartPre=/bin/cp -a -n /etc/reactive-graph/default/plugins.toml /etc/reactive-graph/%i/plugins.toml
+ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/graphql.toml.template /etc/reactive-graph/%i/graphql.toml
+ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/instance.toml.template /etc/reactive-graph/%i/instance.toml
+ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/logging.toml.template /etc/reactive-graph/%i/logging.toml
+ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/plugins.toml.template /etc/reactive-graph/%i/plugins.toml
+ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/remotes.toml.template /etc/reactive-graph/%i/remotes.toml
 ExecStartPre=/bin/mkdir -m 710 -p /usr/share/reactive-graph/%i/plugins/deploy
 ExecStartPre=/bin/mkdir -m 710 -p /usr/share/reactive-graph/%i/plugins/installed
 ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/flows
