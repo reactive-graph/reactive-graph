@@ -36,14 +36,14 @@ git clone https://github.com/reactive-graph/reactive-graph.git
 Build in development mode:
 
 ```shell
-cd inexor-rgf-application
+cd reactive-graph
 cargo build
 ```
 
 Build in release mode (takes longer, smaller binaries):
 
 ```shell
-cd inexor-rgf-application
+cd reactive-graph
 cargo build --release
 ```
 
@@ -121,7 +121,7 @@ application.
 [[plugin]]
 name = "plugin-mqtt"
 active = true
-path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+path = "../plugin-mqtt/target/debug/libreactive-graph_plugin_mqtt.so"
 ```
 
 ```admonish tip "Artifact Location"

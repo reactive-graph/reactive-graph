@@ -6,17 +6,16 @@
 
 ```admonish info "Supported Distributions"
 The installation instructions below are tested on:
-* Ubuntu 23.04
+* Ubuntu 24.04
 * Ubuntu 22.04
-* Ubuntu 20.04
 * Raspberry Pi OS (Bullseye)
 
 Other debian based distributions will also work if the following requirement is satisfied:
-* libc6 (>= 2.31)
+* libc6 (>= 2.35)
 ```
 
 ```admonish info "APT Repository"
-An APT repository is available at [https://apt.rgf.app/](https://apt.rgf.app/).
+An APT repository is available at [https://apt.reactive-graph.io/](https://apt.reactive-graph.io/).
 
 Packages are currently available for these architectures:
 * amd64
@@ -27,36 +26,36 @@ Packages are currently available for these architectures:
 #### Setup APT repository and download GPG keys
 
 ```shell
-echo "deb https://apt.rgf.app/ focal main" | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
+echo "deb https://apt.reactive-graph.io/ focal main" | sudo tee -a /etc/apt/sources.list.d/reactive-graph.list
 gpg --recv-keys --keyserver keyserver.ubuntu.com 1F7F762FFE6BF816DB4C41D218D6C25399307BA5
 gpg --recv-keys --keyserver keyserver.ubuntu.com 18D6C25399307BA5
-gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.rgf.app.gpg
-gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/inexor-rgf.gpg
+gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.reactive-graph.io.gpg
+gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/reactive-graph.gpg
 sudo apt update
 ```
 
 ### Install the runtime
 
 ```shell
-sudo apt install inexor-rgf
+sudo apt install reactive-graph
 ```
 
 ### Create the first (default) instance of the runtime
 
 ```shell
 sudo systemctl daemon-reload
-sudo systemctl start inexor-rgf@default
+sudo systemctl start reactive-graph@default
 ```
 
 ### Configure the default instance
 
 ```admonish info "Configuration Files"
-The configuration files are located at `/etc/inexor-rgf/{instance-name}/`.
+The configuration files are located at `/etc/reactive-graph/{instance-name}/`.
 ```
 
 ```shell
-sudo nano /etc/inexor-rgf/default/graphql.toml
-sudo systemctl restart inexor-rgf@default
+sudo nano /etc/reactive-graph/default/graphql.toml
+sudo systemctl restart reactive-graph@default
 ```
 
 ### Optional: Create further instances
@@ -68,48 +67,48 @@ since they are copied from the default instance.
 ```
 
 ```shell
-sudo systemctl start inexor-rgf@second
-sudo nano /etc/inexor-rgf/second/graphql.toml
+sudo systemctl start reactive-graph@second
+sudo nano /etc/reactive-graph/second/graphql.toml
 ```
 
 ### Optional: Install plugins
 
 Once you have the runtime running you can install the plugins.
 
-The package names starts with `libinexor-rgf-plugin`.
+The package names starts with `libreactive-graph-plugin`.
 
 To get a list of available plugins, you can search for it like so:
 
 ```shell
-apt search libinexor-rgf-plugin
+apt search libreactive-graph-plugin
 ```
 
 To install a plugin for the default instance you just have to install the package and restart the service:
 
 ```shell
 sudo apt install libreactive-graph-plugin-base
-sudo systemctl start inexor-rgf@default
+sudo systemctl start reactive-graph@default
 ```
 
 Similarly, you can just install all available plugins:
 
 ```shell
 sudo apt install "libreactive-graph-plugin-*"
-sudo systemctl start inexor-rgf@default
+sudo systemctl start reactive-graph@default
 ```
 
 ```admonish info "Plugins and multi tenancy"
 If you want to run multiple instances, each instance has it's own set of plugins.
 
 The installed plugins for the default instance are located at:
-`/usr/share/inexor-rgf/default/plugins/installed`
+`/usr/share/reactive-graph/default/plugins/installed`
 
 Likewise plugins for another instance are located at:
-`/usr/share/inexor-rgf/{instance-name}/plugins/installed`
+`/usr/share/reactive-graph/{instance-name}/plugins/installed`
 
 To install a plugin you can copy it from the default instance install folder into the deploy folder
 of the other instance like so:
-`cp /usr/share/inexor-rgf/default/plugins/installed/{plugin.so} /usr/share/inexor-rgf/{instance-name}/plugins/deploy`
+`cp /usr/share/reactive-graph/default/plugins/installed/{plugin.so} /usr/share/reactive-graph/{instance-name}/plugins/deploy`
 
 If the other instance is already running, it's not necessary to restart the instance runtime,
 because the runtime is able to hot deploy plugins.
@@ -122,15 +121,15 @@ Another way is to install the debian packages manually:
 1. Download the debian package from [GitHub](https://github.com/reactive-graph/reactive-graph/releases)
 
     ```shell
-    mkdir -p /tmp/inexor-rgf
-    cd /tmp/inexor-rgf
-    wget https://github.com/reactive-graph/reactive-graph/releases/download/{version}/inexor-rgf_{version}_amd64.deb
+    mkdir -p /tmp/reactive-graph
+    cd /tmp/reactive-graph
+    wget https://github.com/reactive-graph/reactive-graph/releases/download/{version}/reactive-graph_{version}_amd64.deb
     ```
 
 2. Install the package via `dpkg`
 
     ```shell
-    sudo dpkg -i inexor-rgf_0.9.1_amd64.deb
+    sudo dpkg -i reactive-graph_0.10.0_amd64.deb
     ```
 
 3. Reload systemctl units
@@ -142,26 +141,28 @@ Another way is to install the debian packages manually:
 4. Start the `default` instance
 
     ```shell
-    sudo systemctl start inexor-rgf@default
+    sudo systemctl start reactive-graph@default
     ```
 
 #### Configure an instance
 
 ```shell
 # Name, Description
-sudo nano /etc/inexor-rgf/instance-name/instance.toml
+sudo nano /etc/reactive-graph/instance-name/instance.toml
 # Port
-sudo nano /etc/inexor-rgf/instance-name/graphql.toml
+sudo nano /etc/reactive-graph/instance-name/graphql.toml
 # Log levels
-sudo nano /etc/inexor-rgf/instance-name/logging.toml
+sudo nano /etc/reactive-graph/instance-name/logging.toml
 # Enable / disable plugin(s)
-sudo nano /etc/inexor-rgf/instance-name/plugins.toml
+sudo nano /etc/reactive-graph/instance-name/plugins.toml
+# Manage remotes
+sudo nano /etc/reactive-graph/instance-name/remotes.toml
 ```
 
 Then restart the service:
 
 ```shell
-sudo systemctl restart inexor-rgf@instance-name
+sudo systemctl restart reactive-graph@instance-name
 ```
 
 #### Create a new instance (system wide)
@@ -169,13 +170,13 @@ sudo systemctl restart inexor-rgf@instance-name
 Create a new instance by using a new instance name:
 
 ```shell
-sudo systemctl start inexor-rgf@instance-name
+sudo systemctl start reactive-graph@instance-name
 ```
 
 Adjust the GraphQL configuration (port, hostname) and the instance configuration (name). Then restart
 
 ```shell
-sudo systemctl restart inexor-rgf@instance-name
+sudo systemctl restart reactive-graph@instance-name
 ```
 
 ### Other distributions / Manually Install Binary

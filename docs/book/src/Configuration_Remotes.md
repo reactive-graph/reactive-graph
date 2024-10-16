@@ -37,7 +37,7 @@ endpoint = "/graphql"
 ## User Agent
 
 You can configure the user agent which shall be used for communication with the remote. By
-default, the user agent is `inexor_rgf_client`.
+default, the user agent is `reactive_graph`.
 
 ```toml
 [[remotes]]
