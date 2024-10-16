@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Reactive Graph
+Comment=Reactive Graph
+Exec=/usr/bin/reactive-graph --daemon --init-config --config-location=~/.config/reactive-graph/
+Terminal=false
+Icon=/usr/share/pixmaps/reactive-graph.png
+Type=Application
+Categories=Graphics;Photography;
