@@ -198,7 +198,7 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: |
           cd ./crates/reactive-graph
-          cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-revision nightly-${{ steps.date.outputs.date }}
+          cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-revision nightly
         env:
           VERGEN_IDEMPOTENT: true
       - name: Upload Regular Debian Package
