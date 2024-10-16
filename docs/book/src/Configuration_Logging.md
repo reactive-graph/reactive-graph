@@ -31,7 +31,7 @@ Writes to file.
 ```toml
 [appenders.file-application]
 kind = "file"
-path = "log/inexor-rgf-application.log"
+path = "log/reactive-graph.log"
 
 [appenders.file-application.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
