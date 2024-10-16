@@ -127,24 +127,9 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.6
       - name: Test (Release Mode)
         run: cargo test --release --verbose --target ${{ matrix.target }}
-  update-tag:
-    name: Update Tag
-    needs: [ build, test ]
-    if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: VCS Checkout
-        uses: actions/checkout@v4
-      - name: Update Tag nightly
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git push origin :refs/tags/nightly
-          git tag -fa nightly -m "Nightly Build"
-          git push origin --tags
   dependabot-auto-merge:
     name: Auto Merge
-    needs: [ update-tag ]
+    needs: [ build, test ]
     if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.repository == 'reactive-graph/reactive-graph'
     runs-on: ubuntu-latest
     steps:
