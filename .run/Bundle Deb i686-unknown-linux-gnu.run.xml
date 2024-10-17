@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Bundle Deb x86_64" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="command" value="deb -p reactive-graph --target x86_64-unknown-linux-gnu" />
+  <configuration default="false" name="Bundle Deb i686-unknown-linux-gnu" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="deb -p reactive-graph --target i686-unknown-linux-gnu" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$/crates/reactive-graph" />
     <envs>
       <env name="RUSTC_WRAPPER" value="sccache" />
     </envs>
     <option name="emulateTerminal" value="false" />
-    <option name="channel" value="NIGHTLY" />
+    <option name="channel" value="STABLE" />
     <option name="requiredFeatures" value="true" />
     <option name="allFeatures" value="false" />
     <option name="withSudo" value="false" />
