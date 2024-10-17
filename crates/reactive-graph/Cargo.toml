@@ -45,9 +45,15 @@ assets = [
     ["debian/usr/share/zsh/functions/Completion/Base/_reactive-graph-client", "usr/share/zsh/functions/Completion/Base/_reactive-graph-client", "644"],
     ["debian/usr/share/zsh/functions/Completion/Base/_reactive-graph-server", "usr/share/zsh/functions/Completion/Base/_reactive-graph-server", "644"],
     ["debian/usr/share/zsh/functions/Completion/Base/_reactive-graph-tooling", "usr/share/zsh/functions/Completion/Base/_reactive-graph-tooling", "644"],
-    ["debian/usr/share/reactive-graph/plugins/deploy/.gitkeep", "usr/share/reactive-graph/default/plugins/deploy/.gitkeep", "644"],
-    ["debian/usr/share/reactive-graph/plugins/installed/.gitkeep", "usr/share/reactive-graph/default/plugins/installed/.gitkeep", "644"],
-    ["debian/var/lib/reactive-graph/repositories/flows/.gitkeep", "var/lib/reactive-graph/default/repositories/flows/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/plugins/deploy/.gitkeep", "var/lib/reactive-graph/default/plugins/deploy/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/plugins/installed/.gitkeep", "var/lib/reactive-graph/default/plugins/installed/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/types/components/.gitkeep", "var/lib/reactive-graph/default/repositories/default/types/components/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/types/entities/.gitkeep", "var/lib/reactive-graph/default/repositories/default/types/entities/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/types/relations/.gitkeep", "var/lib/reactive-graph/default/repositories/default/types/relations/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/types/flows/.gitkeep", "var/lib/reactive-graph/default/repositories/default/types/flows/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/instances/entities/.gitkeep", "var/lib/reactive-graph/default/repositories/default/instances/entities/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/instances/relations/.gitkeep", "var/lib/reactive-graph/default/repositories/default/instances/relations/.gitkeep", "644"],
+    ["debian/var/lib/reactive-graph/default/repositories/default/instances/flows/.gitkeep", "var/lib/reactive-graph/default/repositories/default/instances/flows/.gitkeep", "644"],
 ]
 
 [package.metadata.deb.systemd-units]
