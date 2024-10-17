@@ -3,11 +3,11 @@ Description=Reactive Graph
 
 [Service]
 
-Environment="REACTIVE_GRAPH_GRAPHQL_CONFIG=/etc/reactive-graph/%i/graphql.toml"
-Environment="REACTIVE_GRAPH_INSTANCE_CONFIG=/etc/reactive-graph/%i/instance.toml"
-Environment="REACTIVE_GRAPH_LOGGING_CONFIG=/etc/reactive-graph/%i/logging.toml"
-Environment="REACTIVE_GRAPH_PLUGINS_CONFIG=/etc/reactive-graph/%i/plugins.toml"
-Environment="REACTIVE_GRAPH_PLUGINS_CONFIG=/etc/reactive-graph/%i/remotes.toml"
+Environment="REACTIVE_GRAPH_GRAPHQL_CONFIG=/var/lib/reactive-graph/%i/graphql.toml"
+Environment="REACTIVE_GRAPH_INSTANCE_CONFIG=/var/lib/reactive-graph/%i/instance.toml"
+Environment="REACTIVE_GRAPH_LOGGING_CONFIG=/var/lib/reactive-graph/%i/logging.toml"
+Environment="REACTIVE_GRAPH_PLUGINS_CONFIG=/var/lib/reactive-graph/%i/plugins.toml"
+Environment="REACTIVE_GRAPH_PLUGINS_CONFIG=/var/lib/reactive-graph/%i/remotes.toml"
 Environment="REACTIVE_GRAPH_HOT_DEPLOY_LOCATION=/var/lib/reactive-graph/%i/plugins/deploy"
 Environment="REACTIVE_GRAPH_INSTALL_LOCATION=/var/lib/reactive-graph/%i/plugins/installed"
 Environment="REACTIVE_GRAPH_REPOSITORIES_LOCATION=/var/lib/reactive-graph/%i/repositories"
