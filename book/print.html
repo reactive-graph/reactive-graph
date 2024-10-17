@@ -448,7 +448,6 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>CI: Create tag nightly after merge and successful build on main branch</li>
 <li>CI: Publish nightly releases to GitHub Releases</li>
 <li>CI: Automatic labeling</li>
-<li>CI: Automatically open pull requests for feature branches <code>feature/x.y.z/name</code></li>
 </ul>
 <h2 id="0100-1---2024-03-24"><a class="header" href="#0100-1---2024-03-24">[0.10.0-1] - 2024-03-24</a></h2>
 <p>This is a highly technical release with a lot of major refactorings and design changes.</p>
@@ -783,14 +782,13 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 <div>
 <p>The installation instructions below are tested on:</p>
 <ul>
-<li>Ubuntu 23.04</li>
+<li>Ubuntu 24.04</li>
 <li>Ubuntu 22.04</li>
-<li>Ubuntu 20.04</li>
 <li>Raspberry Pi OS (Bullseye)</li>
 </ul>
 <p>Other debian based distributions will also work if the following requirement is satisfied:</p>
 <ul>
-<li>libc6 (&gt;= 2.31)</li>
+<li>libc6 (&gt;= 2.35)</li>
 </ul>
 </div>
 </div>
@@ -802,7 +800,7 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 <a class="admonition-anchor-link" href="Installation.html#admonition-apt-repository"></a>
 </div>
 <div>
-<p>An APT repository is available at <a href="https://apt.rgf.app/">https://apt.rgf.app/</a>.</p>
+<p>An APT repository is available at <a href="https://apt.reactive-graph.io/">https://apt.reactive-graph.io/</a>.</p>
 <p>Packages are currently available for these architectures:</p>
 <ul>
 <li>amd64</li>
@@ -812,19 +810,19 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 </div>
 </div>
 <h4 id="setup-apt-repository-and-download-gpg-keys"><a class="header" href="#setup-apt-repository-and-download-gpg-keys">Setup APT repository and download GPG keys</a></h4>
-<pre><code class="language-shell">echo "deb https://apt.rgf.app/ focal main" | sudo tee -a /etc/apt/sources.list.d/inexor-rgf.list
+<pre><code class="language-shell">echo "deb https://apt.reactive-graph.io/ focal main" | sudo tee -a /etc/apt/sources.list.d/reactive-graph.list
 gpg --recv-keys --keyserver keyserver.ubuntu.com 1F7F762FFE6BF816DB4C41D218D6C25399307BA5
 gpg --recv-keys --keyserver keyserver.ubuntu.com 18D6C25399307BA5
-gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.rgf.app.gpg
-gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/inexor-rgf.gpg
+gpg --export 1F7F762FFE6BF816DB4C41D218D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/apt.reactive-graph.io.gpg
+gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/reactive-graph.gpg
 sudo apt update
 </code></pre>
 <h3 id="install-the-runtime"><a class="header" href="#install-the-runtime">Install the runtime</a></h3>
-<pre><code class="language-shell">sudo apt install inexor-rgf
+<pre><code class="language-shell">sudo apt install reactive-graph
 </code></pre>
 <h3 id="create-the-first-default-instance-of-the-runtime"><a class="header" href="#create-the-first-default-instance-of-the-runtime">Create the first (default) instance of the runtime</a></h3>
 <pre><code class="language-shell">sudo systemctl daemon-reload
-sudo systemctl start inexor-rgf@default
+sudo systemctl start reactive-graph@default
 </code></pre>
 <h3 id="configure-the-default-instance"><a class="header" href="#configure-the-default-instance">Configure the default instance</a></h3>
 <div id="admonition-configuration-files" class="admonition admonish-info" role="note" aria-labelledby="admonition-configuration-files-title">
@@ -835,11 +833,11 @@ sudo systemctl start inexor-rgf@default
 <a class="admonition-anchor-link" href="Installation.html#admonition-configuration-files"></a>
 </div>
 <div>
-<p>The configuration files are located at <code>/etc/inexor-rgf/{instance-name}/</code>.</p>
+<p>The configuration files are located at <code>/etc/reactive-graph/{instance-name}/</code>.</p>
 </div>
 </div>
-<pre><code class="language-shell">sudo nano /etc/inexor-rgf/default/graphql.toml
-sudo systemctl restart inexor-rgf@default
+<pre><code class="language-shell">sudo nano /etc/reactive-graph/default/graphql.toml
+sudo systemctl restart reactive-graph@default
 </code></pre>
 <h3 id="optional-create-further-instances"><a class="header" href="#optional-create-further-instances">Optional: Create further instances</a></h3>
 <div id="admonition-multi-tenancy" class="admonition admonish-info" role="note" aria-labelledby="admonition-multi-tenancy-title">
@@ -855,22 +853,22 @@ configuration files are created at the first start. You propaply want to change 
 since they are copied from the default instance.</p>
 </div>
 </div>
-<pre><code class="language-shell">sudo systemctl start inexor-rgf@second
-sudo nano /etc/inexor-rgf/second/graphql.toml
+<pre><code class="language-shell">sudo systemctl start reactive-graph@second
+sudo nano /etc/reactive-graph/second/graphql.toml
 </code></pre>
 <h3 id="optional-install-plugins"><a class="header" href="#optional-install-plugins">Optional: Install plugins</a></h3>
 <p>Once you have the runtime running you can install the plugins.</p>
-<p>The package names starts with <code>libinexor-rgf-plugin</code>.</p>
+<p>The package names starts with <code>libreactive-graph-plugin</code>.</p>
 <p>To get a list of available plugins, you can search for it like so:</p>
-<pre><code class="language-shell">apt search libinexor-rgf-plugin
+<pre><code class="language-shell">apt search libreactive-graph-plugin
 </code></pre>
 <p>To install a plugin for the default instance you just have to install the package and restart the service:</p>
 <pre><code class="language-shell">sudo apt install libreactive-graph-plugin-base
-sudo systemctl start inexor-rgf@default
+sudo systemctl start reactive-graph@default
 </code></pre>
 <p>Similarly, you can just install all available plugins:</p>
 <pre><code class="language-shell">sudo apt install "libreactive-graph-plugin-*"
-sudo systemctl start inexor-rgf@default
+sudo systemctl start reactive-graph@default
 </code></pre>
 <div id="admonition-plugins-and-multi-tenancy" class="admonition admonish-info" role="note" aria-labelledby="admonition-plugins-and-multi-tenancy-title">
 <div class="admonition-title">
@@ -882,12 +880,12 @@ sudo systemctl start inexor-rgf@default
 <div>
 <p>If you want to run multiple instances, each instance has it's own set of plugins.</p>
 <p>The installed plugins for the default instance are located at:
-<code>/usr/share/inexor-rgf/default/plugins/installed</code></p>
+<code>/usr/share/reactive-graph/default/plugins/installed</code></p>
 <p>Likewise plugins for another instance are located at:
-<code>/usr/share/inexor-rgf/{instance-name}/plugins/installed</code></p>
+<code>/usr/share/reactive-graph/{instance-name}/plugins/installed</code></p>
 <p>To install a plugin you can copy it from the default instance install folder into the deploy folder
 of the other instance like so:
-<code>cp /usr/share/inexor-rgf/default/plugins/installed/{plugin.so} /usr/share/inexor-rgf/{instance-name}/plugins/deploy</code></p>
+<code>cp /usr/share/reactive-graph/default/plugins/installed/{plugin.so} /usr/share/reactive-graph/{instance-name}/plugins/deploy</code></p>
 <p>If the other instance is already running, it's not necessary to restart the instance runtime,
 because the runtime is able to hot deploy plugins.</p>
 </div>
@@ -897,14 +895,14 @@ because the runtime is able to hot deploy plugins.</p>
 <ol>
 <li>
 <p>Download the debian package from <a href="https://github.com/reactive-graph/reactive-graph/releases">GitHub</a></p>
-<pre><code class="language-shell">mkdir -p /tmp/inexor-rgf
-cd /tmp/inexor-rgf
-wget https://github.com/reactive-graph/reactive-graph/releases/download/{version}/inexor-rgf_{version}_amd64.deb
+<pre><code class="language-shell">mkdir -p /tmp/reactive-graph
+cd /tmp/reactive-graph
+wget https://github.com/reactive-graph/reactive-graph/releases/download/{version}/reactive-graph_{version}_amd64.deb
 </code></pre>
 </li>
 <li>
 <p>Install the package via <code>dpkg</code></p>
-<pre><code class="language-shell">sudo dpkg -i inexor-rgf_0.9.1_amd64.deb
+<pre><code class="language-shell">sudo dpkg -i reactive-graph_0.10.0_amd64.deb
 </code></pre>
 </li>
 <li>
@@ -914,29 +912,31 @@ wget https://github.com/reactive-graph/reactive-graph/releases/download/{version
 </li>
 <li>
 <p>Start the <code>default</code> instance</p>
-<pre><code class="language-shell">sudo systemctl start inexor-rgf@default
+<pre><code class="language-shell">sudo systemctl start reactive-graph@default
 </code></pre>
 </li>
 </ol>
 <h4 id="configure-an-instance"><a class="header" href="#configure-an-instance">Configure an instance</a></h4>
 <pre><code class="language-shell"># Name, Description
-sudo nano /etc/inexor-rgf/instance-name/instance.toml
+sudo nano /etc/reactive-graph/instance-name/instance.toml
 # Port
-sudo nano /etc/inexor-rgf/instance-name/graphql.toml
+sudo nano /etc/reactive-graph/instance-name/graphql.toml
 # Log levels
-sudo nano /etc/inexor-rgf/instance-name/logging.toml
+sudo nano /etc/reactive-graph/instance-name/logging.toml
 # Enable / disable plugin(s)
-sudo nano /etc/inexor-rgf/instance-name/plugins.toml
+sudo nano /etc/reactive-graph/instance-name/plugins.toml
+# Manage remotes
+sudo nano /etc/reactive-graph/instance-name/remotes.toml
 </code></pre>
 <p>Then restart the service:</p>
-<pre><code class="language-shell">sudo systemctl restart inexor-rgf@instance-name
+<pre><code class="language-shell">sudo systemctl restart reactive-graph@instance-name
 </code></pre>
 <h4 id="create-a-new-instance-system-wide"><a class="header" href="#create-a-new-instance-system-wide">Create a new instance (system wide)</a></h4>
 <p>Create a new instance by using a new instance name:</p>
-<pre><code class="language-shell">sudo systemctl start inexor-rgf@instance-name
+<pre><code class="language-shell">sudo systemctl start reactive-graph@instance-name
 </code></pre>
 <p>Adjust the GraphQL configuration (port, hostname) and the instance configuration (name). Then restart</p>
-<pre><code class="language-shell">sudo systemctl restart inexor-rgf@instance-name
+<pre><code class="language-shell">sudo systemctl restart reactive-graph@instance-name
 </code></pre>
 <h3 id="other-distributions--manually-install-binary"><a class="header" href="#other-distributions--manually-install-binary">Other distributions / Manually Install Binary</a></h3>
 <p>You can install the binary packages manually:</p>
@@ -1037,7 +1037,7 @@ pattern = "{d(%H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 <p>Writes to file.</p>
 <pre><code class="language-toml">[appenders.file-application]
 kind = "file"
-path = "log/inexor-rgf-application.log"
+path = "log/reactive-graph.log"
 
 [appenders.file-application.encoder]
 pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
@@ -1231,7 +1231,7 @@ endpoint = "/graphql"
 </code></pre>
 <h2 id="user-agent"><a class="header" href="#user-agent">User Agent</a></h2>
 <p>You can configure the user agent which shall be used for communication with the remote. By
-default, the user agent is <code>inexor_rgf_client</code>.</p>
+default, the user agent is <code>reactive_graph</code>.</p>
 <pre><code class="language-toml">[[remotes]]
 # hostname, port omitted
 userAgent = "Noob Agent"
@@ -2410,16 +2410,16 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="6747f57c-4fe1-42bf-a06d-bac0505e7778" src="/examples/graphql/types/components/tabs.json">
+<graphql-playground id="e44900c2-965e-4b39-a56e-840fb95f59f3" src="/examples/graphql/types/components/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="14699d91-671d-41f7-9fbe-a67d6332826f" src="/examples/graphql/types/entities/tabs.json">
+<graphql-playground id="d6816ad2-7af4-4eb7-829a-3b3f66650304" src="/examples/graphql/types/entities/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
-<graphql-playground id="0f9129dc-c0af-45f5-afce-5a5c55bde786" src="/examples/graphql/types/relations/tabs.json">
+<graphql-playground id="9deb057a-6308-4772-9cc3-19df4e3bb9b6" src="/examples/graphql/types/relations/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-types"><a class="header" href="#flow-types">Flow Types</a></h1>
-<graphql-playground id="e9a35e15-cd84-4ad0-a241-43ed7a133386" src="/examples/graphql/types/flows/tabs.json">
+<graphql-playground id="6e78b211-bc77-4eb6-bb49-dfa9d8bf1207" src="/examples/graphql/types/flows/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
 <h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
@@ -2723,7 +2723,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-instance-info"><a class="header" href="#graphql-api-instance-info"><center>GraphQL API: Instance Info</center></a></h1>
-<graphql-playground id="a6004a6e-eea2-4eff-bcc3-5a31fee6d5a9" src="/examples/graphql/system/instance_info/tabs.json">
+<graphql-playground id="e9cdf703-bec4-429e-967e-93e093c9f021" src="/examples/graphql/system/instance_info/tabs.json">
 </graphql-playground>
 <h2 id="functionality"><a class="header" href="#functionality">Functionality</a></h2>
 <ul>
@@ -2756,7 +2756,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-plugins"><a class="header" href="#graphql-api-plugins"><center>GraphQL API: Plugins</center></a></h1>
-<graphql-playground id="32bdccb5-95bc-419f-8300-0b8b1d6d8f4c" src="/examples/graphql/system/plugins/tabs.json">
+<graphql-playground id="faca03d4-3bca-45ce-bc3a-24a2297bc0c9" src="/examples/graphql/system/plugins/tabs.json">
 </graphql-playground>
 <h2 id="functionality-1"><a class="header" href="#functionality-1">Functionality</a></h2>
 <ul>
@@ -2772,7 +2772,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li>Unsatisfied dependencies</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-remotes"><a class="header" href="#graphql-api-remotes"><center>GraphQL API: Remotes</center></a></h1>
-<graphql-playground id="fb08b958-8419-48d4-bcca-a78fed2c6f28" src="/examples/graphql/system/remotes/tabs.json">
+<graphql-playground id="b66988cb-3073-4894-a793-3cf069c78b4a" src="/examples/graphql/system/remotes/tabs.json">
 </graphql-playground>
 <h2 id="functionality-2"><a class="header" href="#functionality-2">Functionality</a></h2>
 <ul>
@@ -2791,7 +2791,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-shutdown"><a class="header" href="#graphql-api-shutdown"><center>GraphQL API: Shutdown</center></a></h1>
-<graphql-playground id="9db5580c-8e2b-43cb-bc48-1d009a160ffd" src="/examples/graphql/system/shutdown/tabs.json">
+<graphql-playground id="ce61c7dc-b7c2-4b17-a617-2e43be9a3229" src="/examples/graphql/system/shutdown/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-graph-api"><a class="header" href="#dynamic-graph-api">Dynamic Graph API</a></h1>
 <h3 id="advantages"><a class="header" href="#advantages">Advantages</a></h3>
@@ -2841,7 +2841,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="bcedc41f-2ef7-49b8-99d1-c7bf0c12c349" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="0baff5ca-0eb8-4f98-bee9-3f101961315b" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -3320,10 +3320,10 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="e7cdc875-e5ba-4dea-8b3c-5ec1e276c3ca" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
+<graphql-playground id="fdaa50dd-3d7c-49c9-916d-391ab1e06e76" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="9c84d6e8-460a-4d16-9cbc-6cd6012df454" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
+<graphql-playground id="42f1c4be-832b-4f70-b84e-cca3fafc7d1b" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -3339,7 +3339,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="4d706d32-38ea-484c-bc49-3c9971f14bd4" src="/examples/graphql/plugins/asset/tabs.json">
+<graphql-playground id="876185c4-9609-474f-adbd-acf80c0ca654" src="/examples/graphql/plugins/asset/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3438,9 +3438,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="37371b23-728a-4229-909e-987d621e86f4" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
+<graphql-playground id="5a559999-ea00-4d53-9f17-784d5afd6812" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
 </graphql-playground>
-<graphql-playground id="8c5e3c1c-ff77-40e7-8398-bb96905202ea" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
+<graphql-playground id="638038ce-d751-40e5-8cac-198d0055af6e" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3473,7 +3473,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="4b5406d0-a987-4db9-99d9-320a90cc2d52" src="/examples/graphql/plugins/comparison/tabs.json">
+<graphql-playground id="28c2e329-1ec1-4463-bcbf-23531a09d54e" src="/examples/graphql/plugins/comparison/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3496,7 +3496,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="02a50297-94cc-4502-892b-879fb65730fb" src="/examples/graphql/plugins/config/tabs.json">
+<graphql-playground id="4dc3730f-e74e-4373-afd8-9f5084968bbb" src="/examples/graphql/plugins/config/tabs.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3644,7 +3644,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="f62b6f08-3a7f-415a-bae2-b16570d4eaac" src="/examples/graphql/plugins/connector/tabs.json">
+<graphql-playground id="6642fa25-9797-4935-a59a-49e57dbd2896" src="/examples/graphql/plugins/connector/tabs.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3777,7 +3777,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="1994c072-e959-4a8d-b90b-0a2590585dcd" src="/examples/graphql/plugins/http/tabs.json">
+<graphql-playground id="be7d58e3-6c10-480a-8851-4612f851be29" src="/examples/graphql/plugins/http/tabs.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
@@ -3940,7 +3940,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="a9a05058-9659-4a3b-821e-4fb2ffeabcc3" src="/examples/graphql/plugins/json/tabs.json">
+<graphql-playground id="9b3705ed-4014-4358-adb3-f0c801e82908" src="/examples/graphql/plugins/json/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4018,7 +4018,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="599d53ce-cb0d-461d-b090-8d31f3a0799b" src="/examples/graphql/plugins/logical/tabs.json">
+<graphql-playground id="35eea7ef-4a14-440d-a52c-82cc8e2f876a" src="/examples/graphql/plugins/logical/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
@@ -4055,7 +4055,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<graphql-playground id="ac994d91-3048-43f5-8f6b-c773839cded8" src="/examples/graphql/plugins/metadata/tabs.json">
+<graphql-playground id="000ef115-d116-48e4-8dd6-5dc53a0cbe61" src="/examples/graphql/plugins/metadata/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4238,7 +4238,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="2f76712d-ce62-48ad-a8b1-94b781438cc1" src="/examples/graphql/plugins/numeric/tabs.json">
+<graphql-playground id="96fe1da1-ef7d-4f53-86ae-b14010ca0f9f" src="/examples/graphql/plugins/numeric/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4281,9 +4281,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="a86e6c73-4246-40bd-a523-35e4d1f8dc69" src="/examples/graphql/plugins/random/number/tabs.json">
+<graphql-playground id="146157bb-25cb-46dc-9287-5687bb0e2b21" src="/examples/graphql/plugins/random/number/tabs.json">
 </graphql-playground>
-<graphql-playground id="be1c73d3-64e3-4964-a2fd-14dc1092b850" src="/examples/graphql/plugins/random/string/tabs.json">
+<graphql-playground id="edb4daeb-d842-4ba1-b9a0-03c133585554" src="/examples/graphql/plugins/random/string/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-state"><a class="header" href="#plugin-state">Plugin: State</a></h1>
 <p>This plugin provides state components. States extends <a href="./Plugins_Value.html">values</a> with debounce mechanism. States are
@@ -4433,7 +4433,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
-<graphql-playground id="10df1da3-3dbc-4e4a-9253-119e3a9d1f21" src="/examples/graphql/plugins/scheduler/tabs.json">
+<graphql-playground id="17c9726a-5f27-447a-9bb7-5d71c6536605" src="/examples/graphql/plugins/scheduler/tabs.json">
 </graphql-playground>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4606,11 +4606,11 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-18"><a class="header" href="#usage-18">Usage</a></h2>
-<graphql-playground id="b6aac3d3-3426-4ad9-99d6-3819c62b440b" src="/examples/graphql/plugins/string/concat/tabs.json">
+<graphql-playground id="1ab46d6e-106d-426d-ba6c-a1a360f14a17" src="/examples/graphql/plugins/string/concat/tabs.json">
 </graphql-playground>
-<graphql-playground id="f9433748-26cd-4e5c-93d8-0b8d1ce09cc5" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
+<graphql-playground id="f570ebb2-1626-461a-8abe-27f72ef2e51a" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
 </graphql-playground>
-<graphql-playground id="e5d30284-a6c7-4513-9095-564ebeabfdf4" src="/examples/graphql/plugins/string/trim/tabs.json">
+<graphql-playground id="6c1ff8c5-7a3e-4e1f-8cf8-5b5c75cd5aa7" src="/examples/graphql/plugins/string/trim/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4794,7 +4794,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="354ee150-afba-4a95-a8fe-68af0411781f" src="/examples/graphql/plugins/system-environment/tabs.json">
+<graphql-playground id="0f3228aa-377a-445a-a065-9a426aa817e5" src="/examples/graphql/plugins/system-environment/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -4842,9 +4842,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-21"><a class="header" href="#usage-21">Usage</a></h2>
-<graphql-playground id="e60eb0b1-8855-42d6-8faf-2bc6e8d20265" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
+<graphql-playground id="2eba6cbb-5127-49b9-85bd-2f7cc2e109ac" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
 </graphql-playground>
-<graphql-playground id="210c2dce-dbc0-4f0a-b846-5361ed330454" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
+<graphql-playground id="4b1d7a5e-1b07-4296-8202-4eb8b6cf729b" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value components. Value components contains a single property of a specific data type.
@@ -7033,11 +7033,11 @@ for <a href="https://rust-lang.github.io/rustup/installation/other.html">Install
 </code></pre>
 <h2 id="build-the-application"><a class="header" href="#build-the-application">Build the application</a></h2>
 <p>Build in development mode:</p>
-<pre><code class="language-shell">cd inexor-rgf-application
+<pre><code class="language-shell">cd reactive-graph
 cargo build
 </code></pre>
 <p>Build in release mode (takes longer, smaller binaries):</p>
-<pre><code class="language-shell">cd inexor-rgf-application
+<pre><code class="language-shell">cd reactive-graph
 cargo build --release
 </code></pre>
 <div id="admonition-cargo" class="admonition admonish-info" role="note" aria-labelledby="admonition-cargo-title">
@@ -7109,7 +7109,7 @@ application.</p>
 <pre><code class="language-toml">[[plugin]]
 name = "plugin-mqtt"
 active = true
-path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+path = "../plugin-mqtt/target/debug/libreactive-graph_plugin_mqtt.so"
 </code></pre>
 <div id="admonition-artifact-location" class="admonition admonish-tip" role="note" aria-labelledby="admonition-artifact-location-title">
 <div class="admonition-title">

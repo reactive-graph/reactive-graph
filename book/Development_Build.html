@@ -204,11 +204,11 @@ for <a href="https://rust-lang.github.io/rustup/installation/other.html">Install
 </code></pre>
 <h2 id="build-the-application"><a class="header" href="#build-the-application">Build the application</a></h2>
 <p>Build in development mode:</p>
-<pre><code class="language-shell">cd inexor-rgf-application
+<pre><code class="language-shell">cd reactive-graph
 cargo build
 </code></pre>
 <p>Build in release mode (takes longer, smaller binaries):</p>
-<pre><code class="language-shell">cd inexor-rgf-application
+<pre><code class="language-shell">cd reactive-graph
 cargo build --release
 </code></pre>
 <div id="admonition-cargo" class="admonition admonish-info" role="note" aria-labelledby="admonition-cargo-title">
@@ -280,7 +280,7 @@ application.</p>
 <pre><code class="language-toml">[[plugin]]
 name = "plugin-mqtt"
 active = true
-path = "../plugin-mqtt/target/debug/libinexor_rgf_plugin_mqtt.so"
+path = "../plugin-mqtt/target/debug/libreactive-graph_plugin_mqtt.so"
 </code></pre>
 <div id="admonition-artifact-location" class="admonition admonish-tip" role="note" aria-labelledby="admonition-artifact-location-title">
 <div class="admonition-title">
