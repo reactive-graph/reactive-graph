@@ -44,6 +44,7 @@ jobs:
   upload-assets:
     name: Upload Release Binaries
     needs: [ create-release ]
+    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
       fail-fast: false
       matrix:
@@ -137,6 +138,7 @@ jobs:
   debian-package:
     name: Publish Debian Packages
     needs: [ create-release ]
+    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
       fail-fast: false
       matrix:
