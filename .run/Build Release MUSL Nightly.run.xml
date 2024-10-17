@@ -1,7 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Build" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-    <option name="buildProfileId" value="dev" />
-    <option name="command" value="build" />
+  <configuration default="false" name="Build Release MUSL Nightly" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="command" value="build --release --target=x86_64-unknown-linux-musl" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <envs>
       <env name="RUSTC_WRAPPER" value="sccache" />
@@ -12,7 +11,7 @@
     <option name="allFeatures" value="false" />
     <option name="withSudo" value="false" />
     <option name="buildTarget" value="REMOTE" />
-    <option name="backtrace" value="FULL" />
+    <option name="backtrace" value="NO" />
     <option name="isRedirectInput" value="false" />
     <option name="redirectInputPath" value="" />
     <method v="2">
