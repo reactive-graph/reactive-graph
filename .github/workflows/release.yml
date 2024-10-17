@@ -48,12 +48,12 @@ jobs:
         run: |
           git config user.name "Reactive Graph"
           git config user.email "info@reactive-graph.io"
-          git show nightly
+          git show nightly || true
           git log --oneline
-          git tag -d nightly
-          git tag --annotate --message "Nightly Release" --sign nightly
+          git tag -d nightly || true
+          git tag --annotate --message "Nightly Release" --sign nightly || true
           git push --force origin nightly
-          git show nightly
+          git show nightly || true
           git log --oneline --decorate
   create-release:
     name: Create Release
