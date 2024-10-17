@@ -36,7 +36,7 @@ env:
 jobs:
   formatting:
     name: Verify code formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
         run: cargo fmt --all -- --check
   check_changelog:
     name: Check Changelog
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: tarides/changelog-check-action@v3
         with:
@@ -58,7 +58,7 @@ jobs:
   lint:
     name: Lint
     needs: [ formatting, check_changelog ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         toolchain: [ stable, nightly-2024-08-19 ]
@@ -83,7 +83,7 @@ jobs:
     needs: [ lint ]
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os: [ ubuntu-22.04, macos-latest, windows-latest ]
         toolchain: [ stable, nightly-2024-08-19 ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -106,7 +106,7 @@ jobs:
       matrix:
         toolchain: [ stable, nightly-2024-08-19 ]
         target: [ x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl ]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
@@ -131,7 +131,7 @@ jobs:
     name: Auto Merge
     needs: [ build, test ]
     if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.repository == 'reactive-graph/reactive-graph'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Automatically Merge
         run: gh pr merge --auto --merge "$PR_URL"

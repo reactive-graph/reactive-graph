@@ -8,7 +8,7 @@ on:
 
 jobs:
   remove_labels:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Remove labels
         uses: andymckay/labeler@master
