@@ -32,7 +32,7 @@ jobs:
   create-release:
     name: Create Release
     if: startsWith(github.event.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
@@ -50,16 +50,16 @@ jobs:
         include:
           # Tier 1
           - target: x86_64-unknown-linux-gnu
-            os: ubuntu-latest
+            os: ubuntu-22.04
           # Tier 1
           - target: x86_64-unknown-linux-musl
-            os: ubuntu-latest
+            os: ubuntu-22.04
           # Tier 1
           - target: aarch64-unknown-linux-gnu
-            os: ubuntu-latest
+            os: ubuntu-22.04
           # Tier 2
           - target: armv7-unknown-linux-gnueabihf
-            os: ubuntu-latest
+            os: ubuntu-22.04
           # Tier 1
           - target: x86_64-apple-darwin
             os: macos-latest
@@ -73,7 +73,7 @@ jobs:
           - target: x86_64-pc-windows-msvc
             os: windows-latest
           # - target: x86_64-pc-windows-gnu
-          #   os: ubuntu-latest
+          #   os: ubuntu-22.04
           # Tier 2
           # - target: aarch64-pc-windows-msvc
           #   os: windows-latest
@@ -221,7 +221,7 @@ jobs:
     name: Update Tag
     needs: [ upload-assets, debian-package ]
     if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
