@@ -86,6 +86,12 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
+      - name: Install libclang1
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libclang1
+          version: 1.0
+        if: matrix.target == 'armv7-unknown-linux-gnueabihf'
       - name: Install bindgen-cli
         uses: taiki-e/cache-cargo-install-action@v2
         with:
@@ -115,7 +121,7 @@ jobs:
           leading_dir: true
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: refs/tags/nightly
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main'
   #  crates-io:
   #    name: Publish on crates.io
   #    if: startsWith(github.event.ref, 'refs/tags/v')
@@ -197,7 +203,7 @@ jobs:
         env:
           VERGEN_IDEMPOTENT: true
       - name: Create Nightly Debian Package
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main'
         run: |
           cd ./crates/reactive-graph
           cargo deb -p reactive-graph --target=${{ matrix.target }} --deb-revision nightly
@@ -213,7 +219,7 @@ jobs:
           tag: ${{ github.ref }}
       - name: Upload Nightly Debian Package
         uses: svenstaro/upload-release-action@v2
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/${{ matrix.target }}/debian/reactive-graph_*_*.deb
@@ -222,7 +228,7 @@ jobs:
   create-or-update-nightly-tag:
     name: Create or Update Nightly Tag
     needs: [ upload-assets, debian-package ]
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: always() && github.ref == 'refs/heads/main' #  && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     runs-on: ubuntu-22.04
     steps:
       - name: VCS Checkout

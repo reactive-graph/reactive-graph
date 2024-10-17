@@ -8,8 +8,9 @@ Environment="REACTIVE_GRAPH_INSTANCE_CONFIG=/etc/reactive-graph/%i/instance.toml
 Environment="REACTIVE_GRAPH_LOGGING_CONFIG=/etc/reactive-graph/%i/logging.toml"
 Environment="REACTIVE_GRAPH_PLUGINS_CONFIG=/etc/reactive-graph/%i/plugins.toml"
 Environment="REACTIVE_GRAPH_PLUGINS_CONFIG=/etc/reactive-graph/%i/remotes.toml"
-Environment="REACTIVE_GRAPH_HOT_DEPLOY_LOCATION=/usr/share/reactive-graph/%i/plugins/deploy"
-Environment="REACTIVE_GRAPH_INSTALL_LOCATION=/usr/share/reactive-graph/%i/plugins/installed"
+Environment="REACTIVE_GRAPH_HOT_DEPLOY_LOCATION=/var/lib/reactive-graph/%i/plugins/deploy"
+Environment="REACTIVE_GRAPH_INSTALL_LOCATION=/var/lib/reactive-graph/%i/plugins/installed"
+Environment="REACTIVE_GRAPH_REPOSITORIES_LOCATION=/var/lib/reactive-graph/%i/repositories"
 
 EnvironmentFile=/etc/reactive-graph/%i/var_file
 
@@ -21,10 +22,18 @@ ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/instance.toml.template 
 ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/logging.toml.template /etc/reactive-graph/%i/logging.toml
 ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/plugins.toml.template /etc/reactive-graph/%i/plugins.toml
 ExecStartPre=/bin/cp -a -n /usr/share/reactive-graph/etc/remotes.toml.template /etc/reactive-graph/%i/remotes.toml
-ExecStartPre=/bin/mkdir -m 710 -p /usr/share/reactive-graph/%i/plugins/deploy
-ExecStartPre=/bin/mkdir -m 710 -p /usr/share/reactive-graph/%i/plugins/installed
-ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/flows
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/plugins/deploy
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/plugins/installed
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/types/components
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/types/entities
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/types/relations
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/types/flows
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/instances/entities
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/instances/relations
+ExecStartPre=/bin/mkdir -m 710 -p /var/lib/reactive-graph/%i/repositories/default/instances/flows
 ExecStartPre=/bin/mkdir -m 710 -p /var/log/reactive-graph/%i
+ExecStartPre=/bin/ln -s /var/log/reactive-graph/%i /var/lib/reactive-graph/%i/log
+ExecStartPre=/bin/ln -s /etc/reactive-graph/%i /var/lib/reactive-graph/%i/config
 
 [Install]
 WantedBy=multi-user.target

@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Create tag nightly after merge and successful build on main branch
 - CI: Publish nightly releases to GitHub Releases
 - CI: Automatic labeling
+- CI: Sign nightly tag with GPG
+- CI: New layout for debian packages
 
 ## [0.10.0-1] - 2024-03-24
 
