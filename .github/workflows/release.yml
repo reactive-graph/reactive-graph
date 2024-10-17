@@ -217,8 +217,8 @@ jobs:
           file: target/${{ matrix.target }}/debian/reactive-graph_*_*.deb
           file_glob: true
           tag: 'nightly'
-  update-tag:
-    name: Update Tag
+  create-or-update-nightly-tag:
+    name: Create or Update Nightly Tag
     needs: [ upload-assets, debian-package ]
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-22.04
