@@ -235,8 +235,12 @@ jobs:
       - name: Update Tag nightly
         continue-on-error: true
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "github-actions@users.noreply.github.com"
-          git push origin :refs/tags/nightly
-          git tag -fa nightly -m "Nightly Build"
-          git push origin --tags
+          git config user.name "Reactive Graph"
+          git config user.email "info@reactive-graph.io"
+          git show nightly
+          git log --oneline
+          git tag -d nightly
+          git tag --annotate --message "Nightly Release" --sign nightly
+          git push --force origin nightly
+          git show nightly
+          git log --oneline --decorate
