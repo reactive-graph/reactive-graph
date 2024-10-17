@@ -115,25 +115,25 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: refs/tags/nightly
         if: ${{ github.ref == 'refs/heads/main' }}
-  crates-io:
-    name: Publish on crates.io
-    if: startsWith(github.event.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    steps:
-      - name: VCS Checkout
-        uses: actions/checkout@v4
-      - name: Install rust toolchain
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: stable
-      - name: Install cargo-workspaces
-        uses: taiki-e/cache-cargo-install-action@v2
-        with:
-          tool: cargo-workspaces
-      - name: Publish on crates.io
-        run: cargo publish --from-git
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+  #  crates-io:
+  #    name: Publish on crates.io
+  #    if: startsWith(github.event.ref, 'refs/tags/v')
+  #    runs-on: ubuntu-22.04
+  #    steps:
+  #      - name: VCS Checkout
+  #        uses: actions/checkout@v4
+  #      - name: Install rust toolchain
+  #        uses: dtolnay/rust-toolchain@master
+  #        with:
+  #          toolchain: stable
+  #      - name: Install cargo-workspaces
+  #        uses: taiki-e/cache-cargo-install-action@v2
+  #        with:
+  #          tool: cargo-workspaces
+  #      - name: Publish on crates.io
+  #        run: cargo publish --from-git
+  #        env:
+  #          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
   debian-package:
     name: Publish Debian Packages
     needs: [ create-release ]
