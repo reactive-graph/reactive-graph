@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Cross Build Release aarch64-unknown-linux-gnu" type="ShConfigurationType">
-    <option name="SCRIPT_TEXT" value="cross build --release --target aarch64-unknown-linux-gnu" />
+    <option name="SCRIPT_TEXT" value="cross +stable build --release --target aarch64-unknown-linux-gnu" />
     <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
     <option name="SCRIPT_PATH" value="" />
     <option name="SCRIPT_OPTIONS" value="" />
