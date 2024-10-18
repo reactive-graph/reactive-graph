@@ -68,7 +68,7 @@ jobs:
           changelog: CHANGELOG.md
           token: ${{ secrets.GITHUB_TOKEN }}
   upload-assets:
-    name: Upload Release Binaries
+    name: Binary
     needs: [ create-or-update-nightly-tag, create-release ]
     if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
@@ -204,7 +204,7 @@ jobs:
   #        env:
   #          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
   debian-package:
-    name: Publish Debian Packages
+    name: Debian Package
     needs: [ create-or-update-nightly-tag, create-release ]
     if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
