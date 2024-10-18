@@ -1,17 +1,23 @@
-#[build]
-#rustflags = ["-Z", "threads=8"]
+# Tier 1
 
 [target.aarch64-unknown-linux-gnu]
 objcopy = { path = "aarch64-linux-gnu-objcopy" }
 strip = { path = "aarch64-linux-gnu-strip" }
 linker = "aarch64-linux-gnu-gcc"
 
-[target.armv7-unknown-linux-gnueabihf]
-objcopy = { path = "arm-none-eabi-objcopy" }
-strip = { path = "arm-none-eabi-strip" }
-linker = "arm-linux-gnueabihf-gcc"
+[target.i686-unknown-linux-gnu]
+objcopy = { path = "i686-linux-gnu-objcopy" }
+strip = { path = "i686-linux-gnu-strip" }
+linker = "i686-linux-gnu-gcc"
 
 [target.x86_64-pc-windows-gnu]
 objcopy = { path = "x86_64-w64-mingw32-objcopy" }
 strip = { path = "x86_64-w64-mingw32-strip" }
 linker = "x86_64-w64-mingw32-gcc"
+
+# Tier 2
+
+[target.armv7-unknown-linux-gnueabihf]
+objcopy = { path = "arm-none-eabi-objcopy" }
+strip = { path = "arm-none-eabi-strip" }
+linker = "arm-linux-gnueabihf-gcc"
