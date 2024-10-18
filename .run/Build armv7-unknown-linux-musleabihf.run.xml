@@ -1,0 +1,24 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build armv7-unknown-linux-musleabihf" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+    <option name="buildProfileId" value="dev" />
+    <option name="command" value="build --target armv7-unknown-linux-musleabihf" />
+    <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+    <envs>
+      <env name="RUSTC_WRAPPER" value="sccache" />
+      <env name="TARGET_CC" value="arm-linux-gnueabihf-gcc" />
+      <env name="TARGET_AR" value="arm-linux-gnueabihf-ar" />
+    </envs>
+    <option name="emulateTerminal" value="false" />
+    <option name="channel" value="STABLE" />
+    <option name="requiredFeatures" value="true" />
+    <option name="allFeatures" value="false" />
+    <option name="withSudo" value="false" />
+    <option name="buildTarget" value="REMOTE" />
+    <option name="backtrace" value="FULL" />
+    <option name="isRedirectInput" value="false" />
+    <option name="redirectInputPath" value="" />
+    <method v="2">
+      <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+    </method>
+  </configuration>
+</component>
