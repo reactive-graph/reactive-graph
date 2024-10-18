@@ -134,7 +134,9 @@ jobs:
         with:
           packages: binutils-arm-none-eabi gcc-arm-linux-gnueabihf libclang1
           version: 1.0
-        if: matrix.target == 'armv7-unknown-linux-gnueabihf' || matrix.target == 'armv7-unknown-linux-musleabihf'
+        if: |
+          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
+          matrix.target == 'armv7-unknown-linux-musleabihf'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -143,12 +145,20 @@ jobs:
         uses: taiki-e/cache-cargo-install-action@v2
         with:
           tool: bindgen-cli
-        if: matrix.target == 'armv7-unknown-linux-gnueabihf' || matrix.target == 'armv7-unknown-linux-musleabihf'
+        if: |
+          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
+          matrix.target == 'armv7-unknown-linux-musleabihf' ||
+          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
+          matrix.target == 'armv7-unknown-linux-musleabihf'
       - name: Install cross-compilation tools
         uses: taiki-e/setup-cross-toolchain-action@v1
         with:
           target: ${{ matrix.target }}
-        if: matrix.target == 'armv7-unknown-linux-gnueabihf' || matrix.target == 'armv7-unknown-linux-musleabihf'
+        if: |
+          matrix.target == 'i686-unknown-linux-gnu' ||
+          matrix.target == 'x86_64-pc-windows-gnu' ||
+          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
+          matrix.target == 'armv7-unknown-linux-musleabihf'
       - name: Upload Regular Release Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
