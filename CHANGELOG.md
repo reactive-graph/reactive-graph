@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Sign nightly tag with GPG
 - CI: New layout for debian packages
 - CI: Added support for i686 Linux (32-bit)
+- CI: Added support for armv7-unknown-linux-musleabihf
+- CI: Added support for x86_64-pc-windows-gnu
 
 ## [0.10.0-1] - 2024-03-24
 
