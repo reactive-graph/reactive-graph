@@ -66,4 +66,19 @@ The binutils for specific targets are configured at .cargo/config.toml
 
 ```admonish tip title = "Rust Platform Support"
 Please check out the [platform support of the rust language](https://doc.rust-lang.org/nightly/rustc/platform-support.html).
+[rustup components](https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu.html)
 ```
+
+#### AWS Libcrypto Platform Support
+
+```admonish tip title = "aws-lc-rs Platform Support"
+Please check out the [platform support of aws-lc-rs](https://aws.github.io/aws-lc-rs/platform_support.html).
+```
+
+#### Setup Cross Toolchain GitHub Action
+
+* https://github.com/taiki-e/setup-cross-toolchain-action
+
+#### Debian: Supported Architectures
+
+* https://wiki.debian.org/SupportedArchitectures
