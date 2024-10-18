@@ -10,14 +10,14 @@ We have build instructions for Windows.
 
 ### Linux
 
-We support x86_64 / arm7 / aarch Linux. Chances are that it works with other targets, too, but haven't been tested.
+We support x86_64 / i686 / arm7 / aarch Linux. Chances are that it works with other targets, too, but haven't been tested.
 
 We have specific build instructions for Ubuntu and Raspberry Pi 2-4.
 
 ```admonish tip title = "libc"
-The continuous integration is configured to use `ubuntu-20.04` in order to support older libc versions.
+The continuous integration is configured to use `ubuntu-22.04` in order to support older libc versions.
 > target: x86_64-unknown-linux-gnu
-> os: ubuntu-20.04
+> os: ubuntu-22.04
 ```
 
 ### macOS and iOS
@@ -45,13 +45,14 @@ cargo install cross
 | Linux | Windows 64-bit MinGW   | x86_64-pc-windows-gnu         | `cross +nightly build --release --target x86_64-pc-windows-gnu`     |
 | Linux | 64-bit macOS           | x86_64-apple-darwin           | `cross +nightly build --release --target x86_64-apple-darwin`       |
 
-#### Binutils
+#### Binutils and GCC
 
-| target                        | Ubuntu binutils package      |
-|-------------------------------|------------------------------|
-| aarch64-unknown-linux-gnu     | binutils-aarch64-linux-gnu   |
-| armv7-unknown-linux-gnueabihf | binutils-arm-linux-gnueabihf |
-| x86_64-pc-windows-gnu         | binutils-mingw-w64-x86-64    |
+| target                        | Ubuntu binutils package      | Ubuntu GCC package      |
+|-------------------------------|------------------------------|-------------------------|
+| aarch64-unknown-linux-gnu     | binutils-aarch64-linux-gnu   | gcc-aarch64-linux-gnu   |
+| armv7-unknown-linux-gnueabihf | binutils-arm-linux-gnueabihf | gcc-arm-linux-gnueabihf |
+| i686-unknown-linux-gnu        | binutils-i686-linux-gnu      | gcc-i686-linux-gnu      |
+| x86_64-pc-windows-gnu         | binutils-mingw-w64-x86-64    | gcc-mingw-w64-x86-64    |
 
 ```admonish tip title = "Ubuntu packages for binutils"
 Run `apt-cache search binutils` for getting a list of possible binutils packages. 

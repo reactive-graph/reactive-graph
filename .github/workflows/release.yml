@@ -82,6 +82,9 @@ jobs:
           # ARM64 macOS (11.0+, Big Sur+)
           - target: aarch64-apple-darwin
             os: macos-latest
+          # 32-bit Linux (kernel 3.2+, glibc 2.17+) 1
+          - target: i686-unknown-linux-gnu
+            os: ubuntu-22.04
           # 64-bit macOS (10.12+, Sierra+)
           - target: x86_64-apple-darwin
             os: macos-latest
@@ -95,10 +98,13 @@ jobs:
           - target: universal-apple-darwin
             os: macos-latest
           # Tier 2
+          # ARM64 Linux with musl 1.2.3
           - target: aarch64-unknown-linux-musl
             os: ubuntu-22.04
+          # Armv7-A Linux, hardfloat (kernel 3.2, glibc 2.17)
           - target: armv7-unknown-linux-gnueabihf
             os: ubuntu-22.04
+          # 64-bit Linux with musl 1.2.3
           - target: x86_64-unknown-linux-musl
             os: ubuntu-22.04
     runs-on: ${{ matrix.os }}
@@ -178,6 +184,9 @@ jobs:
           - target: aarch64-unknown-linux-gnu
             # libc 2.35
             os: ubuntu-22.04
+          - target: i686-unknown-linux-gnu
+            # libc 2.35
+            os: ubuntu-22.04
           - target: armv7-unknown-linux-gnueabihf
             # libc 2.35
             os: ubuntu-22.04
@@ -200,6 +209,12 @@ jobs:
           packages: binutils-aarch64-linux-gnu gcc-aarch64-linux-gnu
           version: 1.0
         if: matrix.target == 'aarch64-unknown-linux-gnu'
+      - name: Install i686 packages
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-i686-linux-gnu gcc-i686-linux-gnu
+          version: 1.0
+        if: matrix.target == 'i686-unknown-linux-gnu'
       - name: Install armv7 packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
