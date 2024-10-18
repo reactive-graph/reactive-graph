@@ -263,3 +263,4 @@ jobs:
           file: target/${{ matrix.target }}/debian/reactive-graph_*_*.deb
           file_glob: true
           tag: 'nightly'
+          overwrite: true
