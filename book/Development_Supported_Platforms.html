@@ -182,7 +182,7 @@
 <p>We support x64 Microsoft Windows 8, 8.1 and 10.</p>
 <p>We have build instructions for Windows.</p>
 <h3 id="linux"><a class="header" href="#linux">Linux</a></h3>
-<p>We support x86_64 / arm7 / aarch Linux. Chances are that it works with other targets, too, but haven't been tested.</p>
+<p>We support x86_64 / i686 / arm7 / aarch Linux. Chances are that it works with other targets, too, but haven't been tested.</p>
 <p>We have specific build instructions for Ubuntu and Raspberry Pi 2-4.</p>
 <div id="admonition-libc" class="admonition admonish-tip" role="note" aria-labelledby="admonition-libc-title">
 <div class="admonition-title">
@@ -192,10 +192,10 @@
 <a class="admonition-anchor-link" href="#admonition-libc"></a>
 </div>
 <div>
-<p>The continuous integration is configured to use <code>ubuntu-20.04</code> in order to support older libc versions.</p>
+<p>The continuous integration is configured to use <code>ubuntu-22.04</code> in order to support older libc versions.</p>
 <blockquote>
 <p>target: x86_64-unknown-linux-gnu
-os: ubuntu-20.04</p>
+os: ubuntu-22.04</p>
 </blockquote>
 </div>
 </div>
@@ -215,11 +215,12 @@ os: ubuntu-20.04</p>
 <tr><td>Linux</td><td>64-bit macOS</td><td>x86_64-apple-darwin</td><td><code>cross +nightly build --release --target x86_64-apple-darwin</code></td></tr>
 </tbody></table>
 </div>
-<h4 id="binutils"><a class="header" href="#binutils">Binutils</a></h4>
-<div class="table-wrapper"><table><thead><tr><th>target</th><th>Ubuntu binutils package</th></tr></thead><tbody>
-<tr><td>aarch64-unknown-linux-gnu</td><td>binutils-aarch64-linux-gnu</td></tr>
-<tr><td>armv7-unknown-linux-gnueabihf</td><td>binutils-arm-linux-gnueabihf</td></tr>
-<tr><td>x86_64-pc-windows-gnu</td><td>binutils-mingw-w64-x86-64</td></tr>
+<h4 id="binutils-and-gcc"><a class="header" href="#binutils-and-gcc">Binutils and GCC</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>target</th><th>Ubuntu binutils package</th><th>Ubuntu GCC package</th></tr></thead><tbody>
+<tr><td>aarch64-unknown-linux-gnu</td><td>binutils-aarch64-linux-gnu</td><td>gcc-aarch64-linux-gnu</td></tr>
+<tr><td>armv7-unknown-linux-gnueabihf</td><td>binutils-arm-linux-gnueabihf</td><td>gcc-arm-linux-gnueabihf</td></tr>
+<tr><td>i686-unknown-linux-gnu</td><td>binutils-i686-linux-gnu</td><td>gcc-i686-linux-gnu</td></tr>
+<tr><td>x86_64-pc-windows-gnu</td><td>binutils-mingw-w64-x86-64</td><td>gcc-mingw-w64-x86-64</td></tr>
 </tbody></table>
 </div><div id="admonition-ubuntu-packages-for-binutils" class="admonition admonish-tip" role="note" aria-labelledby="admonition-ubuntu-packages-for-binutils-title">
 <div class="admonition-title">
