@@ -111,20 +111,31 @@ jobs:
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
+      - name: Install Compiler Tools for Target i686-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-i686-linux-gnu gcc-i686-linux-gnu
+          version: 1.0
+        if: matrix.target == 'i686-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target armv7-unknown-linux-gnueabihf
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-arm-none-eabi gcc-arm-linux-gnueabihf libclang1
+          version: 1.0
+        if: matrix.target == 'armv7-unknown-linux-gnueabihf'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: stable
-      - name: Install libclang1
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: libclang1
-          version: 1.0
-        if: matrix.target == 'armv7-unknown-linux-gnueabihf'
       - name: Install bindgen-cli
         uses: taiki-e/cache-cargo-install-action@v2
         with:
           tool: bindgen-cli
+        if: matrix.target == 'armv7-unknown-linux-gnueabihf'
+      - name: Install cross-compilation tools
+        uses: taiki-e/setup-cross-toolchain-action@v1
+        with:
+          target: ${{ matrix.target }}
         if: matrix.target == 'armv7-unknown-linux-gnueabihf'
       - name: Upload Regular Release Binary
         uses: taiki-e/upload-rust-binary-action@v1
