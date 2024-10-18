@@ -88,6 +88,9 @@ jobs:
           # 64-bit macOS (10.12+, Sierra+)
           - target: x86_64-apple-darwin
             os: macos-latest
+          # 64-bit MinGW (Windows 10+, Windows Server 2016+)
+          - target: x86_64-pc-windows-gnu
+            os: ubuntu-22.04
           # 64-bit MSVC (Windows 10+, Windows Server 2016+)
           - target: x86_64-pc-windows-msvc
             os: windows-latest
@@ -120,6 +123,12 @@ jobs:
           packages: binutils-i686-linux-gnu gcc-i686-linux-gnu
           version: 1.0
         if: matrix.target == 'i686-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target x86_64-pc-windows-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-mingw-w64-x86-64 gcc-mingw-w64-x86-64 nasm
+          version: 1.0
+        if: matrix.target == 'x86_64-pc-windows-gnu'
       - name: Install Compiler Tools for Target armv7-unknown-linux-gnueabihf
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
