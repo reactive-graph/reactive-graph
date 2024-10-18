@@ -58,6 +58,7 @@ jobs:
   lint:
     name: Lint
     needs: [ formatting, check_changelog ]
+    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     runs-on: ubuntu-22.04
     strategy:
       matrix:
