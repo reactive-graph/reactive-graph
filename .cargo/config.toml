@@ -17,6 +17,16 @@ linker = "x86_64-w64-mingw32-gcc"
 
 # Tier 2
 
+#[target.aarch64-unknown-linux-musl]
+#objcopy = { path = "aarch64-linux-gnu-objcopy" }
+#strip = { path = "aarch64-linux-gnu-strip" }
+#linker = "aarch64-linux-gnu-gcc"
+
+[target.armv7-unknown-linux-musleabihf]
+objcopy = { path = "arm-none-eabi-objcopy" }
+strip = { path = "arm-none-eabi-strip" }
+linker = "arm-linux-gnueabihf-gcc"
+
 [target.armv7-unknown-linux-gnueabihf]
 objcopy = { path = "arm-none-eabi-objcopy" }
 strip = { path = "arm-none-eabi-strip" }
