@@ -46,3 +46,8 @@ linker = "powerpc64-linux-gnu-gcc"
 objcopy = { path = "powerpc64le-linux-gnu-objcopy" }
 strip = { path = "powerpc64le-linux-gnu-strip" }
 linker = "powerpc64le-linux-gnu-gcc"
+
+[target.riscv64gc-unknown-linux-gnu]
+objcopy = { path = "riscv64-linux-gnu-objcopy" }
+strip = { path = "riscv64-linux-gnu-strip" }
+linker = "riscv64-linux-gnu-gcc"
