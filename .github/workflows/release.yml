@@ -113,6 +113,15 @@ jobs:
           # 64-bit Linux with musl 1.2.3
           - target: x86_64-unknown-linux-musl
             os: ubuntu-22.04
+          # PowerPC Linux (kernel 3.2, glibc 2.17)
+          - target: powerpc-unknown-linux-gnu
+            os: ubuntu-22.04
+          # PPC64 Linux (kernel 3.2, glibc 2.17)
+          - target: powerpc64-unknown-linux-gnu
+            os: ubuntu-22.04
+          # PPC64LE Linux (kernel 3.10, glibc 2.17)
+          - target: powerpc64le-unknown-linux-gnu
+            os: ubuntu-22.04
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
@@ -137,6 +146,27 @@ jobs:
         if: |
           matrix.target == 'armv7-unknown-linux-gnueabihf' ||
           matrix.target == 'armv7-unknown-linux-musleabihf'
+      - name: Install Compiler Tools for Target powerpc-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-powerpc-linux-gnu gcc-powerpc-linux-gnu
+          version: 1.0
+        if: |
+          matrix.target == 'powerpc-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target powerpc64-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-powerpc64-linux-gnu gcc-powerpc64-linux-gnu
+          version: 1.0
+        if: |
+          matrix.target == 'powerpc64-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target powerpc64le-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-powerpc64le-linux-gnu gcc-powerpc64le-linux-gnu
+          version: 1.0
+        if: |
+          matrix.target == 'powerpc64le-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -146,10 +176,13 @@ jobs:
         with:
           tool: bindgen-cli
         if: |
+          matrix.target == 'i686-unknown-linux-gnu' ||
+          matrix.target == 'x86_64-pc-windows-gnu' ||
           matrix.target == 'armv7-unknown-linux-gnueabihf' ||
           matrix.target == 'armv7-unknown-linux-musleabihf' ||
-          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
-          matrix.target == 'armv7-unknown-linux-musleabihf'
+          matrix.target == 'powerpc-unknown-linux-gnu' ||
+          matrix.target == 'powerpc64-unknown-linux-gnu' ||
+          matrix.target == 'powerpc64le-unknown-linux-gnu'
       - name: Install cross-compilation tools
         uses: taiki-e/setup-cross-toolchain-action@v1
         with:
@@ -158,7 +191,10 @@ jobs:
           matrix.target == 'i686-unknown-linux-gnu' ||
           matrix.target == 'x86_64-pc-windows-gnu' ||
           matrix.target == 'armv7-unknown-linux-gnueabihf' ||
-          matrix.target == 'armv7-unknown-linux-musleabihf'
+          matrix.target == 'armv7-unknown-linux-musleabihf' ||
+          matrix.target == 'powerpc-unknown-linux-gnu' ||
+          matrix.target == 'powerpc64-unknown-linux-gnu' ||
+          matrix.target == 'powerpc64le-unknown-linux-gnu'
       - name: Upload Regular Release Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
@@ -223,6 +259,15 @@ jobs:
           - target: armv7-unknown-linux-gnueabihf
             # libc 2.35
             os: ubuntu-22.04
+          - target: powerpc-unknown-linux-gnu
+            # libc 2.35
+            os: ubuntu-22.04
+          - target: powerpc64-unknown-linux-gnu
+            # libc 2.35
+            os: ubuntu-22.04
+          - target: powerpc64le-unknown-linux-gnu
+            # libc 2.35
+            os: ubuntu-22.04
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
@@ -253,7 +298,27 @@ jobs:
         with:
           packages: binutils-arm-none-eabi gcc-arm-linux-gnueabihf
           version: 1.0
-        if: matrix.target == 'armv7-unknown-linux-gnueabihf' || matrix.target == 'armv7-unknown-linux-musleabihf'
+        if: |
+          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
+          matrix.target == 'armv7-unknown-linux-musleabihf'
+      - name: Install Compiler Tools for Target powerpc-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-powerpc-linux-gnu gcc-powerpc-linux-gnu g++-powerpc-linux-gnu
+          version: 1.0
+        if: matrix.target == 'powerpc-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target powerpc64-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-powerpc64-linux-gnu gcc-powerpc64-linux-gnu g++-powerpc64-linux-gnu
+          version: 1.0
+        if: matrix.target == 'powerpc64-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target powerpc64le-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-powerpc64le-linux-gnu gcc-powerpc64le-linux-gnu g++-powerpc64le-linux-gnu
+          version: 1.0
+        if: matrix.target == 'powerpc64le-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:

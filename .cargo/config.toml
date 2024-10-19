@@ -31,3 +31,18 @@ linker = "arm-linux-gnueabihf-gcc"
 objcopy = { path = "arm-none-eabi-objcopy" }
 strip = { path = "arm-none-eabi-strip" }
 linker = "arm-linux-gnueabihf-gcc"
+
+[target.powerpc-unknown-linux-gnu]
+objcopy = { path = "powerpc-linux-gnu-objcopy" }
+strip = { path = "powerpc-linux-gnu-strip" }
+linker = "powerpc-linux-gnu-gcc"
+
+[target.powerpc64-unknown-linux-gnu]
+objcopy = { path = "powerpc64-linux-gnu-objcopy" }
+strip = { path = "powerpc64-linux-gnu-strip" }
+linker = "powerpc64-linux-gnu-gcc"
+
+[target.powerpc64le-unknown-linux-gnu]
+objcopy = { path = "powerpc64le-linux-gnu-objcopy" }
+strip = { path = "powerpc64le-linux-gnu-strip" }
+linker = "powerpc64le-linux-gnu-gcc"
