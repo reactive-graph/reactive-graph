@@ -154,29 +154,30 @@ jobs:
         with:
           packages: binutils-powerpc-linux-gnu gcc-powerpc-linux-gnu
           version: 1.0
-        if: |
-          matrix.target == 'powerpc-unknown-linux-gnu'
+        if: matrix.target == 'powerpc-unknown-linux-gnu'
       - name: Install Compiler Tools for Target powerpc64-unknown-linux-gnu
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: binutils-powerpc64-linux-gnu gcc-powerpc64-linux-gnu
           version: 1.0
-        if: |
-          matrix.target == 'powerpc64-unknown-linux-gnu'
+        if: matrix.target == 'powerpc64-unknown-linux-gnu'
       - name: Install Compiler Tools for Target powerpc64le-unknown-linux-gnu
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: binutils-powerpc64le-linux-gnu gcc-powerpc64le-linux-gnu
           version: 1.0
-        if: |
-          matrix.target == 'powerpc64le-unknown-linux-gnu'
+        if: matrix.target == 'powerpc64le-unknown-linux-gnu'
       - name: Install Compiler Tools for Target riscv64gc-unknown-linux-gnu
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
           packages: binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu
           version: 1.0
-        if: |
-          matrix.target == 'riscv64gc-unknown-linux-gnu'
+        if: matrix.target == 'riscv64gc-unknown-linux-gnu'
+      # The flag below is set to avoid the following error with GCC 11.4.0 on the riscv64 platform:
+      # error: 'strncmp' of strings of length 1 and 9 and bound of 9 evaluates to nonzero [-Werror=string-compare]
+      - name: Set AWS_LC_SYS_CFLAGS on riscv64gc-unknown-linux-gnu
+        run: echo 'AWS_LC_SYS_CFLAGS="-Wno-string-compare"' >> "$GITHUB_ENV"
+        if: matrix.target == 'riscv64gc-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -339,8 +340,12 @@ jobs:
         with:
           packages: binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu
           version: 1.0
-        if: |
-          matrix.target == 'riscv64gc-unknown-linux-gnu'
+        if: matrix.target == 'riscv64gc-unknown-linux-gnu'
+      # The flag below is set to avoid the following error with GCC 11.4.0 on the riscv64 platform:
+      # error: 'strncmp' of strings of length 1 and 9 and bound of 9 evaluates to nonzero [-Werror=string-compare]
+      - name: Set AWS_LC_SYS_CFLAGS on riscv64gc-unknown-linux-gnu
+        run: echo 'AWS_LC_SYS_CFLAGS="-Wno-string-compare"' >> "$GITHUB_ENV"
+        if: matrix.target == 'riscv64gc-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
