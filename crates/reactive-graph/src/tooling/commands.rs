@@ -1,5 +1,5 @@
-use crate::tooling::install::args::InstallArgs;
 use crate::tooling::instances::args::InstancesArgs;
+use crate::tooling::update::args::UpdateArgs;
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug)]
@@ -7,6 +7,6 @@ pub enum ToolingCommands {
     /// Manage instances.
     Instances(InstancesArgs),
 
-    /// Manage instances.
-    Install(InstallArgs),
+    /// Update the Reactive Graph binary.
+    Update(UpdateArgs),
 }

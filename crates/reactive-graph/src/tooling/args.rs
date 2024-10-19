@@ -5,8 +5,6 @@ use crate::tooling::commands::ToolingCommands;
 
 #[derive(Parser, Debug)]
 pub struct ToolingArguments {
-    // #[clap(flatten)]
-    // pub(crate) connection: ClientConnectionArguments,
     #[command(subcommand)]
     pub commands: Option<ToolingCommands>,
 }
