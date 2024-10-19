@@ -5,16 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.10.0-2] - 2024-09-27
+## [0.10.0-alpha-1] - 2024-10-20
 
 ### Added
 
 - CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages
-- CLI: Tooling subcommands
-- CI: Check in lock file
+- CLI: Self Update `reactive-graph update`
+- CLI: Init instance `reactive-graph instance init <path>`
+
+### Infrastructure
+
 - CI: Create tag nightly after merge and successful build on main branch
 - CI: Publish nightly releases to GitHub Releases
-- CI: Automatic labeling
 - CI: Sign nightly tag with GPG
 - CI: New layout for debian packages
 - CI: Added support for `i686-unknown-linux-gnu` (32-bit)
@@ -22,8 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Added support for `x86_64-pc-windows-gnu` (MinGW)
 - CI: Added support for `powerpc-unknown-linux-gnu`, `powerpc64-unknown-linux-gnu` and `powerpc64le-unknown-linux-gnu`
 - CI: Added support for `riscv64gc-unknown-linux-gnu`
+- CI: Check in lock file for security audit workflow
+- CI: Automatic labeling
 
-## [0.10.0-1] - 2024-03-24
+## [0.10.0-alpha-0] - 2024-03-24
 
 This is a highly technical release with a lot of major refactorings and design changes.
 

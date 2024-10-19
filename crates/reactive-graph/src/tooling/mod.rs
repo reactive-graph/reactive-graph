@@ -1,23 +1,21 @@
 use crate::tooling::args::ToolingArguments;
 use crate::tooling::commands::ToolingCommands;
-use std::process::exit;
+use crate::tooling::instances::handle_instance;
+use crate::tooling::update::handle_update;
 
 pub mod args;
 pub mod commands;
-pub mod install;
 pub mod instances;
+pub mod update;
 
-#[tokio::main]
-pub async fn tooling(args: ToolingArguments) {
+pub fn tooling(args: ToolingArguments) {
     if let Some(commands) = args.commands {
         match commands {
-            ToolingCommands::Install(_args) => {
-                // TODO: implement
-                exit(0);
+            ToolingCommands::Instances(args) => {
+                handle_instance(args);
             }
-            ToolingCommands::Instances(_args) => {
-                // TODO: implement
-                exit(0);
+            ToolingCommands::Update(args) => {
+                handle_update(args);
             }
         }
     }
