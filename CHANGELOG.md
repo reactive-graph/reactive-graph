@@ -17,11 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Automatic labeling
 - CI: Sign nightly tag with GPG
 - CI: New layout for debian packages
-- CI: Added support for i686-unknown-linux-gnu (32-bit)
-- CI: Added support for armv7-unknown-linux-musleabihf (MUSL)
-- CI: Added support for x86_64-pc-windows-gnu (MinGW)
-- CI: Added support for powerpc-unknown-linux-gnu, powerpc64-unknown-linux-gnu and powerpc64le-unknown-linux-gnu
-- CI: Added support for riscv64gc-unknown-linux-gnu
+- CI: Added support for `i686-unknown-linux-gnu` (32-bit)
+- CI: Added support for `armv7-unknown-linux-musleabihf` (MUSL)
+- CI: Added support for `x86_64-pc-windows-gnu` (MinGW)
+- CI: Added support for `powerpc-unknown-linux-gnu`, `powerpc64-unknown-linux-gnu` and `powerpc64le-unknown-linux-gnu`
+- CI: Added support for `riscv64gc-unknown-linux-gnu`
 
 ## [0.10.0-1] - 2024-03-24
 
