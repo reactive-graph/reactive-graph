@@ -117,6 +117,7 @@ futures-timer = "3.0"
 futures-util = "0.3"
 glob = "0.3.1"
 gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-client-rs.git", features = ["rustls-tls"], default-features = false }
+# Note: actix-web 5 will likely upgrade http from 0.2 to >= 1.0 (https://github.com/actix/actix-web/issues/3384)
 http = "0.2"
 itertools = "0.13"
 json5 = "0.4"
@@ -140,7 +141,6 @@ rayon = "1.6"
 regex = "1.11"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
-#rustc_version = "0.4"
 rustls = { version = "0.23.15", features = ["aws_lc_rs"] }
 rustls-pki-types = "1.10.0"
 rustls-pemfile = "2.2"
