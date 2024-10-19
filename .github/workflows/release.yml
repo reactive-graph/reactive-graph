@@ -122,6 +122,9 @@ jobs:
           # PPC64LE Linux (kernel 3.10, glibc 2.17)
           - target: powerpc64le-unknown-linux-gnu
             os: ubuntu-22.04
+          # RISC-V Linux (kernel 4.20, glibc 2.29)
+          - target: riscv64gc-unknown-linux-gnu
+            os: ubuntu-22.04
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
@@ -167,6 +170,13 @@ jobs:
           version: 1.0
         if: |
           matrix.target == 'powerpc64le-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target riscv64gc-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu
+          version: 1.0
+        if: |
+          matrix.target == 'riscv64gc-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -182,7 +192,8 @@ jobs:
           matrix.target == 'armv7-unknown-linux-musleabihf' ||
           matrix.target == 'powerpc-unknown-linux-gnu' ||
           matrix.target == 'powerpc64-unknown-linux-gnu' ||
-          matrix.target == 'powerpc64le-unknown-linux-gnu'
+          matrix.target == 'powerpc64le-unknown-linux-gnu' ||
+          matrix.target == 'riscv64gc-unknown-linux-gnu'
       - name: Install cross-compilation tools
         uses: taiki-e/setup-cross-toolchain-action@v1
         with:
@@ -194,7 +205,8 @@ jobs:
           matrix.target == 'armv7-unknown-linux-musleabihf' ||
           matrix.target == 'powerpc-unknown-linux-gnu' ||
           matrix.target == 'powerpc64-unknown-linux-gnu' ||
-          matrix.target == 'powerpc64le-unknown-linux-gnu'
+          matrix.target == 'powerpc64le-unknown-linux-gnu' ||
+          matrix.target == 'riscv64gc-unknown-linux-gnu'
       - name: Upload Regular Release Binary
         uses: taiki-e/upload-rust-binary-action@v1
         with:
@@ -268,6 +280,9 @@ jobs:
           - target: powerpc64le-unknown-linux-gnu
             # libc 2.35
             os: ubuntu-22.04
+          - target: riscv64gc-unknown-linux-gnu
+            # libc 2.35
+            os: ubuntu-22.04
     runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
@@ -319,6 +334,13 @@ jobs:
           packages: binutils-powerpc64le-linux-gnu gcc-powerpc64le-linux-gnu g++-powerpc64le-linux-gnu
           version: 1.0
         if: matrix.target == 'powerpc64le-unknown-linux-gnu'
+      - name: Install Compiler Tools for Target riscv64gc-unknown-linux-gnu
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu
+          version: 1.0
+        if: |
+          matrix.target == 'riscv64gc-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
