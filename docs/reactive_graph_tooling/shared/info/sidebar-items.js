@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["handle_info_command"],"mod":["args","commands","model"],"static":["BIN_INFO","GIT_COMMIT","GIT_TAG","RUSTC_CHANNEL","RUSTC_VERSION","TARGET_TRIPLE","VERSION"]};
+window.SIDEBAR_ITEMS = {"fn":["handle_info_command"],"mod":["args","binary_info","commands"],"static":["BINARY_INFO","GIT_COMMIT","GIT_TAG","RUSTC_CHANNEL","RUSTC_VERSION","TARGET_TRIPLE","VERSION"]};

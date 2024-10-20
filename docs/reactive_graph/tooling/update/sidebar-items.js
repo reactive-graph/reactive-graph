@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["RELEASE_TAG_LATEST","RELEASE_TAG_NIGHTLY","REPO_NAME","REPO_OWNER","TARGET_TRIPLE"],"enum":["ReleaseTag"],"fn":["execute_update","handle_update","list_releases","print_release","print_release_info","update_from_github"],"mod":["args","commands"]};
+window.SIDEBAR_ITEMS = {"constant":["REPO_NAME","REPO_OWNER","TARGET_TRIPLE"],"fn":["execute_update","handle_update","update_from_github"],"mod":["args","commands","release","release_info","release_tag"]};

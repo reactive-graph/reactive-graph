@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_component_mutation","create_component_with_variables"],"struct":["CreateComponent","CreateComponentVariables","CreateComponentVariablesFields","MutationComponents","MutationTypes"]};

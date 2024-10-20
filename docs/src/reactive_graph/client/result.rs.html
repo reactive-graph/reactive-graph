@@ -147,8 +147,8 @@
 <a href="#147" id="147">147</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError;
 <span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError::NotImplemented;
-<span class="kw">use </span><span class="kw">crate</span>::client::error::SerializationError;
-<span class="kw">use </span><span class="kw">crate</span>::client::output_format::OutputFormatArgs;
+<span class="kw">use </span><span class="kw">crate</span>::shared::output_format::OutputFormatArgs;
+<span class="kw">use </span>reactive_graph_serde::error::SerializationError;
 <span class="kw">use </span>reactive_graph_table_model::container::DefaultTableContainer;
 <span class="kw">use </span>reactive_graph_table_model::container::TableContainer;
 <span class="kw">use </span>reactive_graph_table_model::container::TableInlineFormatSetter;

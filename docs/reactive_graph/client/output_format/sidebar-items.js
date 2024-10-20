@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["OutputFormatArgs"],"struct":["OutputFormatWrapper"]};
+window.SIDEBAR_ITEMS = {"struct":["OutputFormatWrapper"]};

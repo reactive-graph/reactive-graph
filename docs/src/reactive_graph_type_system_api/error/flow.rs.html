@@ -43,13 +43,11 @@
 <a href="#43" id="43">43</a>
 <a href="#44" id="44">44</a>
 <a href="#45" id="45">45</a>
-<a href="#46" id="46">46</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>thiserror::Error;
 
 <span class="kw">use </span>reactive_graph_graph::prelude::<span class="kw-2">*</span>;
-
-<span class="kw">use </span><span class="kw">crate</span>::error::serde::DeserializationError;
-<span class="kw">use </span><span class="kw">crate</span>::error::serde::SerializationError;
+<span class="kw">use </span>reactive_graph_serde::error::DeserializationError;
+<span class="kw">use </span>reactive_graph_serde::error::SerializationError;
 
 <span class="attr">#[derive(Debug, Error)]
 </span><span class="kw">pub enum </span>FlowTypeRegistrationError {

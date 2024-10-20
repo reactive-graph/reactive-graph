@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["print_release_info","print_release_list"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["CommandError","SerializationError"]};
+window.SIDEBAR_ITEMS = {"enum":["CommandError"]};

@@ -161,12 +161,12 @@
 <span class="kw">use </span>reactive_graph_graph::RelationType;
 <span class="kw">use </span>reactive_graph_graph::RelationTypeId;
 <span class="kw">use </span>reactive_graph_lifecycle::Lifecycle;
-<span class="kw">use </span>reactive_graph_type_system_api::DeserializationError;
+<span class="kw">use </span>reactive_graph_serde::error::DeserializationError;
+<span class="kw">use </span>reactive_graph_serde::error::SerializationError;
 <span class="kw">use </span>reactive_graph_type_system_api::RelationTypeExportError;
 <span class="kw">use </span>reactive_graph_type_system_api::RelationTypeImportError;
 <span class="kw">use </span>reactive_graph_type_system_api::RelationTypeImportExportManager;
 <span class="kw">use </span>reactive_graph_type_system_api::RelationTypeManager;
-<span class="kw">use </span>reactive_graph_type_system_api::SerializationError;
 
 <span class="attr">#[derive(Component)]
 </span><span class="kw">pub struct </span>RelationTypeImportExportManagerImpl {
