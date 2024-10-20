@@ -1,0 +1,106 @@
+:root {
+  --adaptive: var(--black);
+
+  --malachite: #04e762;
+  --malachite-1: color-mix(in srgb, var(--malachite) 90%, transparent);
+  --malachite-2: color-mix(in srgb, var(--malachite) 80%, transparent);
+  --malachite-3: color-mix(in srgb, var(--malachite) 70%, transparent);
+  --malachite-4: color-mix(in srgb, var(--malachite) 60%, transparent);
+  --malachite-5: color-mix(in srgb, var(--malachite) 50%, transparent);
+  --malachite-6: color-mix(in srgb, var(--malachite) 40%, transparent);
+  --malachite-7: color-mix(in srgb, var(--malachite) 30%, transparent);
+  --malachite-1--adaptive: color-mix(in srgb, var(--malachite) 90%, var(--adaptive));
+  --malachite-2--adaptive: color-mix(in srgb, var(--malachite) 80%, var(--adaptive));
+  --malachite-3--adaptive: color-mix(in srgb, var(--malachite) 70%, var(--adaptive));
+  --malachite-4--adaptive: color-mix(in srgb, var(--malachite) 60%, var(--adaptive));
+  --malachite-5--adaptive: color-mix(in srgb, var(--malachite) 50%, var(--adaptive));
+  --malachite-6--adaptive: color-mix(in srgb, var(--malachite) 40%, var(--adaptive));
+  --malachite-7--adaptive: color-mix(in srgb, var(--malachite) 30%, var(--adaptive));
+
+  --selective-yellow: #f5b700ff;
+  --selective-yellow-1: color-mix(in srgb, var(--selective-yellow) 90%, transparent);
+  --selective-yellow-2: color-mix(in srgb, var(--selective-yellow) 80%, transparent);
+  --selective-yellow-3: color-mix(in srgb, var(--selective-yellow) 70%, transparent);
+  --selective-yellow-4: color-mix(in srgb, var(--selective-yellow) 60%, transparent);
+  --selective-yellow-5: color-mix(in srgb, var(--selective-yellow) 50%, transparent);
+  --selective-yellow-6: color-mix(in srgb, var(--selective-yellow) 40%, transparent);
+  --selective-yellow-7: color-mix(in srgb, var(--selective-yellow) 30%, transparent);
+  --selective-yellow-1--adaptive: color-mix(in srgb, var(--selective-yellow) 90%, var(--adaptive));
+  --selective-yellow-2--adaptive: color-mix(in srgb, var(--selective-yellow) 80%, var(--adaptive));
+  --selective-yellow-3--adaptive: color-mix(in srgb, var(--selective-yellow) 70%, var(--adaptive));
+  --selective-yellow-4--adaptive: color-mix(in srgb, var(--selective-yellow) 60%, var(--adaptive));
+  --selective-yellow-5--adaptive: color-mix(in srgb, var(--selective-yellow) 50%, var(--adaptive));
+  --selective-yellow-6--adaptive: color-mix(in srgb, var(--selective-yellow) 40%, var(--adaptive));
+  --selective-yellow-7--adaptive: color-mix(in srgb, var(--selective-yellow) 30%, var(--adaptive));
+
+  --celestial-blue: #00a1e4ff;
+  --celestial-blue-1: color-mix(in srgb, var(--celestial-blue) 90%, transparent);
+  --celestial-blue-2: color-mix(in srgb, var(--celestial-blue) 80%, transparent);
+  --celestial-blue-3: color-mix(in srgb, var(--celestial-blue) 70%, transparent);
+  --celestial-blue-4: color-mix(in srgb, var(--celestial-blue) 60%, transparent);
+  --celestial-blue-5: color-mix(in srgb, var(--celestial-blue) 50%, transparent);
+  --celestial-blue-6: color-mix(in srgb, var(--celestial-blue) 40%, transparent);
+  --celestial-blue-7: color-mix(in srgb, var(--celestial-blue) 30%, transparent);
+  --celestial-blue-1--adaptive: color-mix(in srgb, var(--celestial-blue) 90%, var(--adaptive));
+  --celestial-blue-2--adaptive: color-mix(in srgb, var(--celestial-blue) 80%, var(--adaptive));
+  --celestial-blue-3--adaptive: color-mix(in srgb, var(--celestial-blue) 70%, var(--adaptive));
+  --celestial-blue-4--adaptive: color-mix(in srgb, var(--celestial-blue) 60%, var(--adaptive));
+  --celestial-blue-5--adaptive: color-mix(in srgb, var(--celestial-blue) 50%, var(--adaptive));
+  --celestial-blue-6--adaptive: color-mix(in srgb, var(--celestial-blue) 40%, var(--adaptive));
+  --celestial-blue-7--adaptive: color-mix(in srgb, var(--celestial-blue) 30%, var(--adaptive));
+
+  --mexican-pink: #dc0073ff;
+  --mexican-pink-1: color-mix(in srgb, var(--mexican-pink) 90%, transparent);
+  --mexican-pink-2: color-mix(in srgb, var(--mexican-pink) 80%, transparent);
+  --mexican-pink-3: color-mix(in srgb, var(--mexican-pink) 70%, transparent);
+  --mexican-pink-4: color-mix(in srgb, var(--mexican-pink) 60%, transparent);
+  --mexican-pink-5: color-mix(in srgb, var(--mexican-pink) 50%, transparent);
+  --mexican-pink-6: color-mix(in srgb, var(--mexican-pink) 40%, transparent);
+  --mexican-pink-7: color-mix(in srgb, var(--mexican-pink) 30%, transparent);
+  --mexican-pink-1--adaptive: color-mix(in srgb, var(--mexican-pink) 90%, var(--adaptive));
+  --mexican-pink-2--adaptive: color-mix(in srgb, var(--mexican-pink) 80%, var(--adaptive));
+  --mexican-pink-3--adaptive: color-mix(in srgb, var(--mexican-pink) 70%, var(--adaptive));
+  --mexican-pink-4--adaptive: color-mix(in srgb, var(--mexican-pink) 60%, var(--adaptive));
+  --mexican-pink-5--adaptive: color-mix(in srgb, var(--mexican-pink) 50%, var(--adaptive));
+  --mexican-pink-6--adaptive: color-mix(in srgb, var(--mexican-pink) 40%, var(--adaptive));
+  --mexican-pink-7--adaptive: color-mix(in srgb, var(--mexican-pink) 30%, var(--adaptive));
+
+  --chartreuse: #89fc00ff;
+  --chartreuse-1: color-mix(in srgb, var(--chartreuse) 90%, transparent);
+  --chartreuse-2: color-mix(in srgb, var(--chartreuse) 80%, transparent);
+  --chartreuse-3: color-mix(in srgb, var(--chartreuse) 70%, transparent);
+  --chartreuse-4: color-mix(in srgb, var(--chartreuse) 60%, transparent);
+  --chartreuse-5: color-mix(in srgb, var(--chartreuse) 50%, transparent);
+  --chartreuse-6: color-mix(in srgb, var(--chartreuse) 40%, transparent);
+  --chartreuse-7: color-mix(in srgb, var(--chartreuse) 30%, transparent);
+  --chartreuse-1--adaptive: color-mix(in srgb, var(--chartreuse) 90%, var(--adaptive));
+  --chartreuse-2--adaptive: color-mix(in srgb, var(--chartreuse) 80%, var(--adaptive));
+  --chartreuse-3--adaptive: color-mix(in srgb, var(--chartreuse) 70%, var(--adaptive));
+  --chartreuse-4--adaptive: color-mix(in srgb, var(--chartreuse) 60%, var(--adaptive));
+  --chartreuse-5--adaptive: color-mix(in srgb, var(--chartreuse) 50%, var(--adaptive));
+  --chartreuse-6--adaptive: color-mix(in srgb, var(--chartreuse) 40%, var(--adaptive));
+  --chartreuse-7--adaptive: color-mix(in srgb, var(--chartreuse) 30%, var(--adaptive));
+
+  --surface-opaque-1: color-mix(in srgb, var(--surface-1) 90%, transparent);
+  --surface-opaque-2: color-mix(in srgb, var(--surface-1) 80%, transparent);
+  --surface-opaque-3: color-mix(in srgb, var(--surface-1) 70%, transparent);
+  --surface-opaque-4: color-mix(in srgb, var(--surface-1) 60%, transparent);
+  --surface-opaque-5: color-mix(in srgb, var(--surface-1) 50%, transparent);
+  --surface-opaque-6: color-mix(in srgb, var(--surface-1) 40%, transparent);
+  --surface-opaque-7: color-mix(in srgb, var(--surface-1) 30%, transparent);
+
+  --black: #000000ff;
+  --white: #ffffffff;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --adaptive: var(--black);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --adaptive: var(--white);
+  }
+}

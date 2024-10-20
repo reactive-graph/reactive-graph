@@ -1,0 +1,155 @@
+nav.breadcrumb {
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: inline;
+      font-size: var(--font-size-3);
+      font-family: var(--font-sans);
+
+
+      a {
+        color: var(--link);
+        text-decoration: none;
+        white-space: nowrap;
+
+        i.ti {
+          color: var(--mexican-pink);
+        }
+      }
+
+      a:hover {
+        color: var(--mexican-pink);
+      }
+    }
+
+    li + li:before {
+      padding: var(--size-2);
+      color: var(--mexican-pink);
+      content: "\eb5f";
+      font-family: "tabler-icons";
+    }
+  }
+}
+
+nav.breadcrumb.no-caret ul {
+  li + li:before {
+    padding: 0;
+    content: "";
+  }
+}
+
+nav.breadcrumb.size-00 ul li {
+  font-size: var(--font-size-1);
+}
+
+nav.breadcrumb.size-0 ul li {
+  font-size: var(--font-size-2);
+}
+
+nav.breadcrumb.size-1 ul li {
+  font-size: var(--font-size-4);
+}
+
+nav.breadcrumb.size-2 ul li {
+  font-size: var(--font-size-5);
+}
+
+nav.breadcrumb.size-3 ul li {
+  font-size: var(--font-size-6);
+}
+
+nav.breadcrumb.size-4 ul li {
+  font-size: var(--font-size-7);
+}
+
+nav.breadcrumb.malachite ul li {
+  a {
+    color: var(--malachite);
+
+    i.ti {
+      color: var(--malachite-5--adaptive);
+    }
+
+    &:hover {
+      color: var(--malachite-5--adaptive);
+    }
+  }
+
+  &:before {
+    color: var(--malachite-5--adaptive);
+  }
+}
+
+nav.breadcrumb.selective-yellow ul li {
+  a {
+    color: var(--selective-yellow);
+
+    i.ti {
+      color: var(--selective-yellow-5--adaptive);
+    }
+
+    &:hover {
+      color: var(--selective-yellow-5--adaptive);
+    }
+  }
+
+  &:before {
+    color: var(--selective-yellow-5--adaptive);
+  }
+}
+
+nav.breadcrumb.celestial-blue ul li {
+  a {
+    color: var(--celestial-blue);
+
+    i.ti {
+      color: var(--celestial-blue-5--adaptive);
+    }
+
+    &:hover {
+      color: var(--celestial-blue-5--adaptive);
+    }
+  }
+
+  &:before {
+    color: var(--celestial-blue-5--adaptive);
+  }
+}
+
+nav.breadcrumb.mexican-pink ul li {
+  a {
+    color: var(--mexican-pink);
+
+    i.ti {
+      color: var(--mexican-pink-5--adaptive);
+    }
+
+    &:hover {
+      color: var(--mexican-pink-5--adaptive);
+    }
+  }
+
+  &:before {
+    color: var(--mexican-pink-5--adaptive);
+  }
+}
+
+nav.breadcrumb.chartreuse ul li {
+  a {
+    color: var(--chartreuse);
+
+    i.ti {
+      color: var(--chartreuse-5--adaptive);
+    }
+
+    &:hover {
+      color: var(--chartreuse-5--adaptive);
+    }
+  }
+
+  &:before {
+    color: var(--chartreuse-5--adaptive);
+  }
+}

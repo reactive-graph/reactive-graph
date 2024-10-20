@@ -1,0 +1,98 @@
+img.story-button,
+.story-button-group img {
+  width: var(--size-11);
+  height: var(--size-11);
+  aspect-ratio: var(--ratio-square);
+  border-radius: 50%;
+  border: var(--border-size-2) solid var(--accent-color);
+  box-shadow: 0 0 5px 2px var(--accent-color);
+}
+
+img.story-button.size-1 {
+  width: var(--size-12);
+  height: var(--size-12);
+}
+
+img.story-button.size-2 {
+  width: var(--size-13);
+  height: var(--size-13);
+}
+
+img.story-button.size-3 {
+  width: var(--size-14);
+  height: var(--size-14);
+}
+
+img.story-button.size-4 {
+  width: var(--size-15);
+  height: var(--size-15);
+}
+
+img.story-button.square,
+.story-button-group.square img {
+  border-radius: var(--size-2);
+}
+
+img.story-button.default,
+.story-button-group.default img {
+  border-color: var(--text-1);
+}
+
+img.story-button.surface-1,
+.story-button-group.surface-1 img {
+  border-color: var(--surface-4);
+  box-shadow: 0 0 5px 2px var(--surface-1);
+}
+
+img.story-button.surface-2,
+.story-button-group.surface-2 img {
+  border-color: var(--surface-3);
+  box-shadow: 0 0 5px 2px var(--surface-2);
+}
+
+img.story-button.surface-3,
+.story-button-group.surface-3 img {
+  border-color: var(--surface-2);
+  box-shadow: 0 0 5px 2px var(--surface-3);
+}
+
+img.story-button.surface-4,
+.story-button-group.surface-4 img {
+  border-color: var(--surface-1);
+  box-shadow: 0 0 5px 2px var(--surface-4);
+}
+
+img.story-button.malachite,
+.story-button-group.malachite img {
+  color: var(--malachite);
+  border-color: var(--malachite-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--malachite-5);
+}
+
+img.story-button.selective-yellow,
+.story-button-group.selective-yellow img {
+  color: var(--selective-yellow);
+  border-color: var(--selective-yellow-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--selective-yellow-5);
+}
+
+img.story-button.celestial-blue,
+.story-button-group.celestial-blue img {
+  color: var(--celestial-blue);
+  border-color: var(--celestial-blue-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--celestial-blue-5);
+}
+
+img.story-button.mexican-pink,
+.story-button-group.mexican-pink img {
+  color: var(--mexican-pink);
+  border-color: var(--mexican-pink-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--mexican-pink-5);
+}
+
+img.story-button.chartreuse,
+.story-button-group.chartreuse img {
+  color: var(--chartreuse);
+  border-color: var(--chartreuse-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--chartreuse-5);
+}

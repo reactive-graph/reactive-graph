@@ -1,0 +1,38 @@
+.token:is(.rg-component) {
+  color: var(--chartreuse-1--adaptive);
+  text-shadow: 0 0 10px var(--chartreuse-2), 0 0 25px var(--chartreuse-7);
+}
+
+.token:is(.rg-entity-type) {
+  color: var(--selective-yellow-1--adaptive);
+  text-shadow: 0 0 10px var(--selective-yellow-2), 0 0 25px var(--selective-yellow-7);
+}
+
+.token:is(.rg-relation-type) {
+  color: var(--malachite-1--adaptive);
+  text-shadow: 0 0 10px var(--malachite-2), 0 0 25px var(--malachite-7);
+}
+
+.token:is(.rg-entity-instance) {
+  color: var(--celestial-blue-1--adaptive);
+  text-shadow: 0 0 10px var(--celestial-blue-2), 0 0 25px var(--celestial-blue-7);
+}
+
+.token:is(.rg-relation-instance) {
+  color: var(--mexican-pink-1--adaptive);
+  text-shadow: 0 0 10px var(--mexican-pink-2), 0 0 25px var(--mexican-pink-7);
+}
+
+.token:is(.string, .attr-value) {
+  color: var(--teal-0);
+  text-shadow: 0 0 10px var(--teal-5), 0 0 25px var(--teal-7);
+}
+
+.token:is(.comment, .punctuation) {
+  color: var(--gray-5);
+  text-shadow: none;
+}
+
+blockquote .token {
+  display: inline;
+}

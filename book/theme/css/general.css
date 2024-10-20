@@ -2,33 +2,95 @@
 
 @import 'variables.css';
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 :root {
     /* Browser default font-size is 16px, this way 1 rem = 10px */
-    font-size: 62.5%;
+    color-scheme: var(--color-scheme);
 }
 
 html {
-    font-family: "Open Sans", sans-serif;
-    color: var(--fg);
-    background-color: var(--bg);
+    font-family: var(--font-sans);
+    color: var(--text-1);
     text-size-adjust: none;
     -webkit-text-size-adjust: none;
 }
 
 body {
     margin: 0;
-    font-size: 1.6rem;
+    line-height: var(--font-lineheight-4);
     overflow-x: hidden;
 }
 
+a {
+    color: var(--link);
+
+    &:hover {
+        color: var(--link-hover);
+    }
+
+    &:visited {
+        color: var(--link-visited);
+    }
+}
+
 code {
-    font-family: "Source Code Pro", Consolas, "Ubuntu Mono", Menlo, "DejaVu Sans Mono", monospace, monospace !important;
-    font-size: 0.875em; /* please adjust the ace font size accordingly in editor.js */
+    font-family: var(--font-code) !important;
+    font-size: var(--font-size-0) !important;
+    font-variant-ligatures: contextual;
+    direction: ltr !important;
+}
+
+/* make long words/inline code not x overflow */
+main {
+    overflow-wrap: break-word;
+}
+
+main ul li::marker {
+    color: var(--celestial-blue);
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\eddc";
+}
+
+main ol li::marker {
+    color: var(--celestial-blue);
+}
+
+footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    place-content: center;
+    justify-content: space-around;
+    gap: var(--size-3);
+    padding: var(--size-3);
+}
+
+/* make wide tables scroll if they overflow */
+.table-wrapper {
+    overflow-x: auto;
 }
 
 /* Don't change font size in headers. */
 h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
     font-size: unset;
+}
+
+h1 {
+    font-family: var(--font-sans-black);
+    color: var(--brand);
+}
+
+h2, h3 {
+    font-family: var(--font-sans-light);
+}
+
+h3 {
+    margin-top: var(--size-3);
 }
 
 .left { float: left; }
@@ -37,13 +99,10 @@ h1 code, h2 code, h3 code, h4 code, h5 code, h6 code {
 .hide-boring .boring { display: none; }
 .hidden { display: none !important; }
 
-h2, h3 { margin-top: 2.5em; }
-h4, h5 { margin-top: 2em; }
-
 .header + .header h3,
 .header + .header h4,
 .header + .header h5 {
-    margin-top: 1em;
+    margin-block-start: 1em;
 }
 
 h1:target::before,
@@ -54,7 +113,7 @@ h5:target::before,
 h6:target::before {
     display: inline-block;
     content: "»";
-    margin-left: -30px;
+    margin-inline-start: -30px;
     width: 30px;
 }
 
@@ -63,88 +122,94 @@ h6:target::before {
    https://bugs.webkit.org/show_bug.cgi?id=218076
 */
 :target {
+    /* Safari does not support logical properties */
     scroll-margin-top: calc(var(--menu-bar-height) + 0.5em);
 }
 
 .page {
     outline: 0;
     padding: 0 var(--page-padding);
-    margin-top: calc(0px - var(--menu-bar-height)); /* Compensate for the #menu-bar-hover-placeholder */
+    margin-block-start: calc(0px - var(--menu-bar-height)); /* Compensate for the #menu-bar-hover-placeholder */
 }
 .page-wrapper {
     box-sizing: border-box;
+    background-color: var(--surface-1);
 }
+.no-js .page-wrapper,
 .js:not(.sidebar-resizing) .page-wrapper {
     transition: margin-left 0.3s ease, transform 0.3s ease; /* Animation: slide away */
+}
+[dir=rtl] .js:not(.sidebar-resizing) .page-wrapper {
+    transition: margin-right 0.3s ease, transform 0.3s ease; /* Animation: slide away */
 }
 
 .content {
     overflow-y: auto;
-    padding: 0 15px;
-    padding-bottom: 50px;
+    padding: 0 5px 50px 5px;
 }
 .content main {
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
     max-width: var(--content-max-width);
 }
-.content p { line-height: 1.45em; }
-.content ol { line-height: 1.45em; }
-.content ul { line-height: 1.45em; }
-.content a { text-decoration: none; }
-.content a:hover { text-decoration: underline; }
-.content img, .content video { max-width: 100%; }
-.content .header:link,
-.content .header:visited {
-    color: var(--fg);
+.content p {
+    line-height: var(--font-lineheight-4);
 }
+.content ol {
+    line-height: var(--font-lineheight-4);
+}
+.content ul {
+    line-height: var(--font-lineheight-4);
+}
+.content img, .content video { max-width: 100%; }
 .content .header:link,
 .content .header:visited:hover {
     text-decoration: none;
 }
 
 table {
-    /* margin: 0 auto; */
-    margin: 0;
     width: 100%;
-    border-collapse: collapse;
-}
-table td {
-    padding: 3px 20px;
-    border: 1px var(--table-border-color) solid;
-}
-table thead {
-    background: var(--table-header-bg);
-}
-table thead td {
-    font-weight: 700;
-    border: none;
-}
-table thead th {
-    padding: 3px 20px;
-}
-table thead tr {
-    border: 1px var(--table-header-bg) solid;
-}
-/* Alternate background colors for rows */
-table tbody tr:nth-child(2n) {
-    background: var(--table-alternate-bg);
 }
 
-
-blockquote {
-    margin: 20px 0;
+.warning {
+    margin: 20px;
     padding: 0 20px;
-    color: var(--fg);
-    background-color: var(--quote-bg);
-    border-top: .1em solid var(--quote-border);
-    border-bottom: .1em solid var(--quote-border);
+    border-inline-start: 2px solid var(--warning-border);
 }
 
+.warning:before {
+    position: absolute;
+    width: 3rem;
+    height: 3rem;
+    margin-inline-start: calc(-1.5rem - 21px);
+    content: "ⓘ";
+    text-align: center;
+    background-color: var(--bg);
+    color: var(--warning-border);
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+blockquote .warning:before {
+    background-color: var(--quote-bg);
+}
+
+kbd {
+    background-color: var(--table-border-color);
+    border-radius: 4px;
+    border: solid 1px var(--theme-popup-border);
+    box-shadow: inset 0 -1px 0 var(--theme-hover);
+    display: inline-block;
+    font-size: var(--code-font-size);
+    font-family: var(--mono-font);
+    line-height: 10px;
+    padding: 4px 5px;
+    vertical-align: middle;
+}
 
 :not(.footnote-definition) + .footnote-definition,
 .footnote-definition + :not(.footnote-definition) {
-    margin-top: 2em;
+    margin-block-start: 2em;
 }
 .footnote-definition {
     font-size: 0.9em;
@@ -181,4 +246,33 @@ blockquote {
 
 .result-no-output {
     font-style: italic;
+}
+
+:where(html) {
+    background-color: var(--surface-1);
+}
+
+:where(h1, h2, h3, h4, h5. h6) {
+    max-inline-size: none !important;
+}
+
+:where(h2) {
+    font-size: var(--font-size-6);
+}
+
+:where(li, dd, figcaption) {
+    max-inline-size: none !important;
+}
+
+:where(p) {
+    max-inline-size: none !important;
+    margin-bottom: var(--size-8);
+}
+
+:where(pre) {
+    max-inline-size: none !important;
+}
+
+:where(pre, svg) {
+    max-inline-size: none !important;
 }

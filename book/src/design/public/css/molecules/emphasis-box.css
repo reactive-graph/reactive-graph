@@ -1,0 +1,83 @@
+section.rg-emphasis-box {
+  --emphasis-gradient-1: transparent;
+  --emphasis-gradient-2: transparent;
+  --emphasis-gradient-3: transparent;
+
+  border-radius: var(--radius-3);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--size-3);
+  place-content: center;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-4);
+  box-shadow: var(--shadow-6);
+  padding-inline: var(--size-5);
+  margin-block: var(--size-3);
+  padding-block: var(--size-5);
+
+  background: linear-gradient(90deg, var(--emphasis-gradient-1) 0%, var(--emphasis-gradient-2) 35%, var(--emphasis-gradient-3) 100%);
+
+  & h3 {
+    font-family: var(--font-sans-black);
+    font-size: var(--font-size-8);
+    rotate: -1deg;
+  }
+
+  & p {
+    font-family: var(--font-sans-light);
+    font-size: var(--font-size-3);
+    rotate: -1deg;
+    padding-inline-start: var(--size-8);
+
+    &.intro {
+      font-size: var(--font-size-fluid-1);
+      font-weight: bolder;
+      text-shadow: 0 0 10px var(--text-1--inverse), 0 0 25px var(--text-1);
+
+      margin-block-end: var(--size-3);
+    }
+  }
+
+  & ul {
+    font-family: var(--font-sans-thin);
+    font-size: var(--font-size-2);
+    rotate: -1deg;
+    padding-inline-start: var(--size-8);
+  }
+
+  &.malachite {
+    --emphasis-gradient-1: var(--malachite);
+    --emphasis-gradient-2: var(--malachite-1--adaptive);
+    --emphasis-gradient-3: var(--malachite-4--adaptive);
+    color: var(--text-1--dark);
+  }
+
+  &.selective-yellow {
+    --emphasis-gradient-1: var(--selective-yellow);
+    --emphasis-gradient-2: var(--selective-yellow-1--adaptive);
+    --emphasis-gradient-3: var(--selective-yellow-3--adaptive);
+    color: var(--text-1--dark);
+  }
+
+  &.celestial-blue {
+    --emphasis-gradient-1: var(--celestial-blue);
+    --emphasis-gradient-2: var(--celestial-blue-1--adaptive);
+    --emphasis-gradient-3: var(--celestial-blue-4--adaptive);
+  }
+
+  &.mexican-pink {
+    --emphasis-gradient-1: var(--mexican-pink);
+    --emphasis-gradient-2: var(--mexican-pink-1--adaptive);
+    --emphasis-gradient-3: var(--mexican-pink-4--adaptive);
+    color: var(--text-1--dark);
+  }
+
+  &.chartreuse {
+    --emphasis-gradient-1: var(--chartreuse);
+    --emphasis-gradient-2: var(--chartreuse-1--adaptive);
+    --emphasis-gradient-3: var(--chartreuse-4--adaptive);
+    color: var(--text-1--dark);
+  }
+
+}

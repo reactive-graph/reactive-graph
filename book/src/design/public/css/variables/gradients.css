@@ -1,0 +1,77 @@
+:root {
+  --linear-gradient-1: linear-gradient(
+    90deg,
+    var(--malachite) 0%,
+    var(--selective-yellow-1--adaptive) 35%,
+    var(--malachite-3--adaptive) 100%
+  );
+
+  --linear-gradient-2: linear-gradient(
+    90deg,
+    var(--selective-yellow) 0%,
+    var(--mexican-pink-1--adaptive) 35%,
+    var(--celestial-blue-3--adaptive) 100%
+  );
+
+  --linear-gradient-3: linear-gradient(
+    90deg,
+    var(--mexican-pink) 0%,
+    var(--celestial-blue-1--adaptive) 35%,
+    var(--malachite-3--adaptive) 100%
+  );
+
+  --linear-gradient-4: linear-gradient(
+    90deg,
+    var(--chartreuse) 0%,
+    var(--selective-yellow-4--adaptive) 35%,
+    var(--mexican-pink-3--adaptive) 100%
+  );
+
+  --striped-gradient-1: repeating-linear-gradient(
+    45deg,
+    var(--malachite),
+    var(--malachite) var(--size-6),
+    var(--selective-yellow) var(--size-6),
+    var(--selective-yellow) var(--size-9)
+  );
+
+  --striped-gradient-2: repeating-linear-gradient(
+    45deg,
+    var(--mexican-pink),
+    var(--mexican-pink) var(--size-6),
+    var(--celestial-blue) var(--size-6),
+    var(--celestial-blue) var(--size-9)
+  );
+
+  --striped-gradient-3: repeating-linear-gradient(
+    45deg,
+    var(--malachite),
+    var(--malachite) var(--size-3),
+    var(--selective-yellow) var(--size-3),
+    var(--selective-yellow) var(--size-6),
+    var(--celestial-blue) var(--size-6),
+    var(--celestial-blue) var(--size-8),
+    var(--mexican-pink) var(--size-8),
+    var(--mexican-pink) var(--size-9),
+    var(--chartreuse) var(--size-9),
+    var(--chartreuse) var(--size-10),
+    transparent var(--size-10),
+    transparent var(--size-12)
+  );
+
+  --striped-gradient-4: repeating-linear-gradient(
+    135deg,
+    var(--malachite),
+    var(--malachite) var(--size-3),
+    var(--selective-yellow) var(--size-3),
+    var(--selective-yellow) var(--size-6),
+    var(--celestial-blue) var(--size-6),
+    var(--celestial-blue) var(--size-8),
+    var(--mexican-pink) var(--size-8),
+    var(--mexican-pink) var(--size-9),
+    var(--chartreuse) var(--size-9),
+    var(--chartreuse) var(--size-10),
+    transparent var(--size-10),
+    transparent var(--size-12)
+  );
+}

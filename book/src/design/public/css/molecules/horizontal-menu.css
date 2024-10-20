@@ -1,0 +1,300 @@
+nav.horizontal-menu {
+  ul {
+    li {
+      display: inline;
+
+      a {
+        color: var(--link);
+      }
+
+      a:hover {
+        text-decoration: none;
+        color: var(--mexican-pink);
+      }
+    }
+  }
+}
+
+nav.horizontal-menu.square ul li,
+nav.horizontal-menu.pills ul li {
+  background-color: var(--accent-color);
+  padding: var(--size-1) var(--size-3);
+  margin: var(--size-2) var(--size-1);
+  line-height: var(--font-lineheight-5);
+  border-radius: var(--size-4);
+
+  a {
+    color: var(--text-1--inverse);
+    font-weight: var(--font-weight-5);
+  }
+
+  &:hover {
+    background-color: var(--brand);
+  }
+}
+
+nav.horizontal-menu.square ul li {
+  border-radius: var(--size-1);
+}
+
+nav.horizontal-menu.square.size-00 ul li {
+  padding: var(--size-1) var(--size-1);
+  font-size: var(--font-size-1);
+}
+
+nav.horizontal-menu.square.size-0 ul li {
+  padding: var(--size-1) var(--size-2);
+  font-size: var(--font-size-2);
+}
+
+nav.horizontal-menu.square.size-1 ul li {
+  padding: var(--size-1) var(--size-4);
+  font-size: var(--font-size-3);
+}
+
+nav.horizontal-menu.square.size-2 ul li {
+  padding: var(--size-1) var(--size-5);
+  font-size: var(--font-size-4);
+  line-height: var(--font-lineheight-4);
+}
+
+nav.horizontal-menu.square.size-3 ul li {
+  padding: var(--size-2) var(--size-6);
+  font-size: var(--font-size-5);
+  line-height: var(--font-lineheight-5);
+}
+
+nav.horizontal-menu.square.size-4 ul li {
+  padding: var(--size-3) var(--size-4);
+  font-size: var(--font-size-6);
+  line-height: var(--font-lineheight-5);
+}
+
+nav.horizontal-menu.surface-1 ul li a {
+  color: var(--text-1);
+
+  &:hover {
+    color: var(--text-2);
+  }
+}
+
+nav.horizontal-menu.pills.surface-1 ul li,
+nav.horizontal-menu.square.surface-1 ul li {
+  background-color: var(--surface-1);
+  border: 1px solid var(--surface-2);
+
+  a {
+    color: var(--text-1);
+  }
+
+  &:hover {
+    background-color: var(--text-1);
+
+    a {
+      color: var(--text-1--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.surface-2 ul li a {
+  color: var(--text-2);
+
+  &:hover {
+    color: var(--text-1);
+  }
+}
+
+nav.horizontal-menu.pills.surface-2 ul li,
+nav.horizontal-menu.square.surface-2 ul li {
+  background-color: var(--surface-2);
+  border: 1px solid var(--surface-1);
+
+  a {
+    color: var(--text-2);
+  }
+
+  &:hover {
+    background-color: var(--text-2);
+
+    a {
+      color: var(--text-2--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.surface-3 ul li a {
+  color: var(--text-2);
+
+  &:hover {
+    color: var(--text-1);
+  }
+}
+
+nav.horizontal-menu.pills.surface-3 ul li,
+nav.horizontal-menu.square.surface-3 ul li {
+  background-color: var(--surface-3);
+  border: 1px solid var(--surface-4);
+
+  a {
+    color: var(--text-2);
+  }
+
+  &:hover {
+    background-color: var(--text-2);
+
+    a {
+      color: var(--text-2--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.surface-4 ul li a {
+  color: var(--text-1);
+
+  &:hover {
+    color: var(--text-2);
+  }
+}
+
+nav.horizontal-menu.pills.surface-4 ul li,
+nav.horizontal-menu.square.surface-4 ul li {
+  background-color: var(--surface-1);
+  border: 1px solid var(--surface-3);
+
+  a {
+    color: var(--text-1);
+  }
+
+  &:hover {
+    background-color: var(--surface-2);
+
+    a {
+      color: var(--text-2);
+    }
+  }
+}
+
+nav.horizontal-menu.malachite ul li a {
+  color: var(--malachite-2--adaptive);
+
+  &:hover {
+    color: var(--malachite-5--adaptive);
+  }
+}
+
+nav.horizontal-menu.pills.malachite ul li,
+nav.horizontal-menu.square.malachite ul li {
+  background-color: var(--malachite);
+
+  a {
+    color: var(--text-1--dark);
+  }
+
+  &:hover {
+    background-color: var(--malachite-5--adaptive);
+
+    a {
+      color: var(--text-1--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.selective-yellow ul li a {
+  color: var(--selective-yellow-2--adaptive);
+
+  &:hover {
+    color: var(--selective-yellow-5--adaptive);
+  }
+}
+
+nav.horizontal-menu.pills.selective-yellow ul li,
+nav.horizontal-menu.square.selective-yellow ul li {
+  background-color: var(--selective-yellow);
+
+  a {
+    color: var(--text-1--dark);
+  }
+
+  &:hover {
+    background-color: var(--selective-yellow-5--adaptive);
+
+    a {
+      color: var(--text-1--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.celestial-blue ul li a {
+  color: var(--celestial-blue-2--adaptive);
+
+  &:hover {
+    color: var(--celestial-blue-5--adaptive);
+  }
+}
+
+nav.horizontal-menu.pills.celestial-blue ul li,
+nav.horizontal-menu.square.celestial-blue ul li {
+  background-color: var(--celestial-blue);
+
+  a {
+    color: var(--text-1--dark);
+  }
+
+  &:hover {
+    background-color: var(--celestial-blue-5--adaptive);
+
+    a {
+      color: var(--text-1--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.mexican-pink ul li a {
+  color: var(--mexican-pink-2--adaptive);
+
+  &:hover {
+    color: var(--mexican-pink-5--adaptive);
+  }
+}
+
+nav.horizontal-menu.pills.mexican-pink ul li,
+nav.horizontal-menu.square.mexican-pink ul li {
+  background-color: var(--mexican-pink);
+
+  a {
+    color: var(--text-1--dark);
+  }
+
+  &:hover {
+    background-color: var(--mexican-pink-5--adaptive);
+
+    a {
+      color: var(--text-1--inverse);
+    }
+  }
+}
+
+nav.horizontal-menu.chartreuse ul li a {
+  color: var(--chartreuse-2--adaptive);
+
+  &:hover {
+    color: var(--chartreuse-5--adaptive);
+  }
+}
+
+nav.horizontal-menu.pills.chartreuse ul li,
+nav.horizontal-menu.square.chartreuse ul li {
+  background-color: var(--chartreuse);
+
+  a {
+    color: var(--text-1--dark);
+  }
+
+  &:hover {
+    background-color: var(--chartreuse-5--adaptive);
+
+    a {
+      color: var(--text-1--inverse);
+    }
+  }
+}

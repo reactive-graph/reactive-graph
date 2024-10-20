@@ -1,0 +1,181 @@
+span.tooltip {
+  position: relative;
+  border-bottom: 1px dashed var(--brand);
+
+  &:before {
+    content: attr(data-tooltip);
+
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 100%;
+    margin-left: var(--size-2);
+    width: 200px;
+    padding: var(--size-2);
+    text-align: center;
+
+    color: var(--accent-color);
+    background: var(--surface-1);
+    border: 1px solid var(--accent-color);
+    border-radius: var(--size-2);
+
+    visibility: hidden;
+    opacity: 0.5;
+    transition: opacity 0.2s, visibility 0.2s;
+  }
+
+  &:hover {
+    cursor: help;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &:hover:before {
+    visibility: visible;
+    opacity: 1;
+    z-index: 1;
+  }
+
+}
+
+span.tooltip.button {
+  padding-inline-start: var(--size-1);
+  background-color: transparent;
+  border: none;
+
+  &.size-1:after {
+    font-size: var(--font-size-5);
+  }
+
+  &:after {
+    font-family: "tabler-icons";
+    content: "\f91d";
+    font-style: normal;
+    font-size: var(--font-size-4);
+    color: var(--brand);
+    position: relative;
+    line-height: 0;
+    top: var(--size-1);
+  }
+
+  &:hover:after {
+    color: var(--accent-color);;
+  }
+
+  &.square:after {
+    content: "\fa41";
+  }
+
+  &.info:after {
+    content: "\f6d8";
+  }
+
+  &.square.info:after {
+    content: "\f6d9";
+  }
+}
+
+span.tooltip.malachite {
+  border-bottom: 1px dashed var(--malachite-2--adaptive);
+
+  &:before {
+    color: var(--malachite);
+    border: 1px solid var(--malachite-2--adaptive);
+  }
+
+  &.button {
+    border: none;
+
+    &:after {
+      color: var(--malachite);
+    }
+
+    &:hover:after {
+      color: var(--malachite-5--adaptive);;
+    }
+  }
+}
+
+span.tooltip.selective-yellow {
+  border-bottom: 1px dashed var(--selective-yellow-2--adaptive);
+
+  &:before {
+    color: var(--selective-yellow);
+    border: 1px solid var(--selective-yellow-2--adaptive);
+  }
+
+  &.button {
+    border: none;
+
+    &:after {
+      color: var(--selective-yellow);
+    }
+
+    &:hover:after {
+      color: var(--selective-yellow-5--adaptive);;
+    }
+  }
+}
+
+span.tooltip.celestial-blue {
+  border-bottom: 1px dashed var(--celestial-blue-2--adaptive);
+
+  &:before {
+    color: var(--celestial-blue);
+    border: 1px solid var(--celestial-blue-2--adaptive);
+  }
+
+  &.button {
+    border: none;
+
+    &:after {
+      color: var(--celestial-blue);
+    }
+
+    &:hover:after {
+      color: var(--celestial-blue-5--adaptive);;
+    }
+  }
+}
+
+span.tooltip.mexican-pink {
+  border-bottom: 1px dashed var(--mexican-pink-2--adaptive);
+
+  &:before {
+    color: var(--mexican-pink);
+    border: 1px solid var(--mexican-pink-2--adaptive);
+  }
+
+  &.button {
+    border: none;
+
+    &:after {
+      color: var(--mexican-pink);
+    }
+
+    &:hover:after {
+      color: var(--mexican-pink-5--adaptive);;
+    }
+  }
+}
+
+span.tooltip.chartreuse {
+  border-bottom: 1px dashed var(--chartreuse-2--adaptive);
+
+  &:before {
+    color: var(--chartreuse);
+    border: 1px solid var(--chartreuse-2--adaptive);
+  }
+
+  &.button {
+    border: none;
+
+    &:after {
+      color: var(--chartreuse);
+    }
+
+    &:hover:after {
+      color: var(--chartreuse-5--adaptive);;
+    }
+  }
+}

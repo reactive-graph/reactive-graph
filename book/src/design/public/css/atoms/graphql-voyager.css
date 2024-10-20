@@ -1,0 +1,829 @@
+.graphql-voyager-wrapper {
+  /*height: 100%;*/
+  /*height: 800px;*/
+  /*height: 80dvh;*/
+  height: 75dvh;
+
+  background: var(--surface-2);
+  border-radius: var(--radius-2);
+
+}
+
+/*!
+ * GraphQL Voyager - Represent any GraphQL API as an interactive graph
+ * -------------------------------------------------------------
+ *   Version: 2.0.0
+ *   Repo: https://github.com/graphql-kit/graphql-voyager.git
+ */
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+/* fix height of element */
+
+[data-reactroot] {
+  height: 100%;
+}
+
+.graphql-voyager {
+  font-family: var(--font-sans);
+  font-size: var(--font-size-1);
+  /*font: 14px 'helvetica neue', helvetica, arial, sans-serif;*/
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+
+  .graphql-voyager {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+}
+
+.graphql-voyager > .doc-panel {
+  width: 320px;
+  min-width: 320px;
+  padding-block: var(--size-4);
+  /*max-height: 100%;*/
+  /*background-color: var(--surface-2);*/
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+.graphql-voyager > .doc-panel .contents .type-doc .MuiBox-root {
+  margin: var(--size-2);
+  /*border: 1px solid red;*/
+
+  &:before {
+    border-bottom: 1x solid var(--surface-3);
+    margin-top: var(--size-2);
+  }
+
+  & input.MuiInputBase-input {
+    color: var(--text-1);
+  }
+}
+
+@media (max-width: 900px) {
+
+  .graphql-voyager > .doc-panel {
+    height: 50%;
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.graphql-voyager > .menu-content {
+  position: absolute;
+  z-index: 5;
+  bottom: var(--size-8);
+  /*right: var(--size-8);*/
+  margin-block: auto;
+  width: var(--size-15);
+  right: calc(50% - var(--size-15) / 2);
+  /*bottom: 15px;*/
+  /*left: 335px;*/
+  /*background: #fff;*/
+  background: var(--surface-1);
+  -webkit-box-shadow: 0 4px 4px -2px rgba(0, 0, 0, .1);
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, .1);
+  /*border: 1px solid rgba(0, 0, 0, .1);*/
+  border: 1px solid var(--surface-2);
+  padding: 5px;
+}
+
+.graphql-voyager > .menu-content > .setting-other-options {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.graphql-voyager > .menu-content > .setting-other-options > label:first-of-type {
+  padding-right: 5px;
+}
+
+.graphql-voyager > .menu-content > .setting-other-options > label {
+  margin-bottom: 10px;
+}
+
+.graphql-voyager > .menu-content > .root-selector > .MuiSelect-select {
+  color: var(--text-1);
+}
+
+.graphql-voyager > .menu-content > .setting-other-options .MuiCheckbox-root {
+  /*background-color: var(--text-1);*/
+  color: var(--text-1);
+}
+
+@media (max-width: 900px) {
+
+  .graphql-voyager > .menu-content {
+    left: 10px;
+  }
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+g.graph > polygon {
+  fill: transparent;
+}
+
+/* Nodes Styling */
+
+.node {
+  pointer-events: bounding-box;
+  cursor: pointer
+}
+
+.node polygon {
+  /*stroke: #548f9e;*/
+  stroke: var(--celestial-blue);
+  /*fill: #f6f8f8;*/
+  fill: var(--surface-1);
+}
+
+.node .type-title polygon {
+  /*fill: #548f9e;*/
+  fill: var(--celestial-blue);
+}
+
+.node .type-title text {
+  /*fill: white;*/
+  fill: var(--text-1);
+}
+
+.node.type .field text.field-name {
+  /*fill: var(--text-1--inverse);*/
+  fill: var(--text-1);
+}
+
+.node.selected polygon {
+  /*stroke: #00bcd4;*/
+  stroke: var(--celestial-blue-2--adaptive);
+  stroke-width: 3;
+}
+
+.node.selected .type-title polygon {
+  /*fill: #00bcd4;*/
+  fill: var(--celestial-blue-2--adaptive);
+}
+
+/* field */
+
+.field.selected > polygon {
+  /*fill: rgba(255, 0, 0, .18);*/
+  fill: var(--mexican-pink-2--adaptive);
+}
+
+.field.selected > text.field-name {
+  /*fill: rgba(255, 0, 0, .18);*/
+  fill: var(--text-2--inverse);
+}
+
+.node.type > .field > text.field-type {
+  /*fill: rgba(255, 0, 0, .18);*/
+  fill: var(--text-2);
+
+  &.type-link {
+    fill: var(--malachite);
+  }
+}
+
+/* Edges Styling */
+
+.edge {
+  cursor: pointer
+}
+
+.edge path {
+  /*stroke: rgb(56, 97, 107);*/
+  stroke: var(--celestial-blue-5--adaptive);
+  stroke-width: 2;
+}
+
+.edge path.hover-path {
+  stroke: transparent;
+  stroke-width: 15;
+}
+
+.edge.highlighted path:not(.hover-path), .edge.hovered path:not(.hover-path), .edge:hover path:not(.hover-path) {
+  /*stroke: #00bcd4;*/
+  stroke: var(--celestial-blue-2--adaptive);
+  stroke-width: 3;
+}
+
+.edge.highlighted polygon, .edge.hovered polygon, .edge:hover polygon {
+  /*stroke: rgb(0, 99, 112);*/
+  stroke: var(--celestial-blue-2--adaptive);
+  /*stroke: var(--mexican-pink-2--adaptive);*/
+  /*fill: rgb(0, 99, 112);*/
+  fill: var(--celestial-blue-2--adaptive);
+  /*fill: var(--mexican-pink-2--adaptive);*/
+  opacity: 1;
+}
+
+.edge polygon {
+  /*fill: rgb(48, 82, 90);*/
+  fill: var(--celestial-blue);
+  /*stroke: rgb(48, 82, 90);*/
+  stroke: var(--celestial-blue);
+}
+
+.edge text {
+  /*font-family: 'helvetica neue', helvetica, arial, sans-serif;*/
+  font-family: var(--font-sans);
+  /*fill: #224d6f;*/
+  fill: var(--celestial-blue);
+  display: none;
+}
+
+.edge:hover text, .edge.highlighted text, .edge.hovered text {
+  display: block;
+}
+
+.edge.selected path:not(.hover-path) {
+  /*stroke: red;*/
+  stroke: var(--mexican-pink);
+}
+
+.edge.selected polygon {
+  stroke: var(--mexican-pink);
+  fill: var(--mexican-pink);
+  /*stroke: rgb(204, 0, 0);*/
+  /*fill: rgb(204, 0, 0);*/
+}
+
+.edge.selected text {
+  fill: var(--mexican-pink);
+}
+
+/* selection fade */
+
+.selection-active .edge,
+.selection-active .node {
+  opacity: 0.2;
+}
+
+.selection-active .node.selected-reachable,
+.selection-active .node.selected,
+.selection-active .edge.highlighted {
+  opacity: 1;
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.doc-wrapper {
+  position: relative;
+  z-index: 1;
+  /*background-color: var(--surface-2);*/
+}
+
+.doc-panel > .contents {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  /*background-color: var(--surface-2);*/
+  position: relative;
+  z-index: 5;
+  /*border-right: 1px solid rgba(0, 0, 0, .1);*/
+  border-right: 1px solid var(--surface-1);
+  height: 100%;
+}
+
+.doc-navigation {
+  min-height: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between
+}
+
+.doc-navigation > span {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+  line-height: 24px;
+}
+
+.doc-navigation > .back {
+  /*color: #224d6f;*/
+  color: var(--brand);
+  cursor: pointer;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-left: 2px;
+  font-weight: normal;
+}
+
+.doc-navigation > .back:before {
+  border-left: 2px solid var(--brand);
+  border-top: 2px solid var(--brand);
+  /*border-left: 2px solid #224d6f;*/
+  /*border-top: 2px solid #224d6f;*/
+  content: '';
+  display: inline-block;
+  height: 9px;
+  margin: 0 3px -1px 0;
+  position: relative;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  width: 9px;
+}
+
+.doc-navigation > .active {
+  /*font-weight: bold;*/
+  /*color: #00bcd4;*/
+  /*color: var(--celestial-blue);*/
+  color: var(--malachite);
+  font-weight: var(--font-weight-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.doc-navigation > .header {
+  font-weight: var(--font-weight-5);
+  color: var(--brand);
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.eye-button {
+  height: 24px;
+  width: 24px;
+  min-width: 24px;
+  padding: 0;
+  vertical-align: middle
+}
+
+.eye-button svg {
+  line-height: 24px;
+  height: 24px
+}
+
+.eye-button svg path:not([fill]) {
+  fill: var(--celestial-blue-7--adaptive);
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+/* common type doc styling */
+
+.field-name {
+  color: var(--celestial-blue);
+}
+
+.type-name + .field-name::before {
+  content: '.';
+  color: var(--text-1);
+  /*color: var(--text-1--inverse);*/
+}
+
+.doc-alert-text {
+  color: var(--mexican-pink);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-1);
+}
+
+.doc-alert-text.-search {
+  padding: 8px 15px;
+}
+
+.value-name {
+  color: var(--celestial-blue);
+}
+
+.arg-name {
+  color: var(--selective-yellow);
+}
+
+.type-doc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  /*margin-top: 15px;*/
+  position: relative;
+
+  /* Overwrite min-height: https://drafts.csswg.org/css-flexbox/#min-size-auto */
+  min-height: 0
+}
+
+.type-doc > div {
+  position: relative;
+  z-index: 1;
+  background: var(--surface-2);
+}
+
+.type-doc > .loading {
+  padding: 0 15px;
+  font-weight: bold;
+  color: var(--text-1);
+}
+
+.type-doc a {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.type-doc > .scroll-area {
+  padding-top: 15px;
+  overflow-y: auto;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+}
+
+.type-doc > .scroll-area .description-box.-doc-type {
+  padding: 0 15px;
+
+  p {
+    font-size: var(--font-size-1);
+  }
+}
+
+/*.type-doc > .scroll-area .description-box.-doc-type {*/
+
+/*}*/
+
+.type-doc > .doc-navigation {
+  padding: 5px 20px 5px 18px;
+}
+
+.doc-category {
+  margin: 15px 0 0;
+  cursor: pointer
+}
+
+.doc-category > .item {
+  padding: 8px 15px;
+  /*color: #666;*/
+  color: var(--text-1);
+  position: relative;
+  border-left: 3px solid transparent;
+}
+
+.doc-category > .item > .description-box {
+  margin-top: 5px;
+}
+
+.doc-category > .title {
+  border-bottom: 1px solid #e0e0e0;
+  padding: 0 15px;
+  /*color: #666;*/
+  color: var(--malachite);
+  cursor: default;
+  font-size: var(--font-size-1);
+  -webkit-font-feature-settings: "c2sc";
+  font-feature-settings: "c2sc";
+  font-variant: small-caps;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin: 0 -15px 10px 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.doc-category > .item:nth-child(odd) {
+  /*background-color: rgba(158, 158, 158, .07);*/
+  background-color: var(--surface-3);
+}
+
+.doc-category > .item:hover {
+  /*background-color: rgba(214, 236, 238, .6);*/
+  background-color: var(--surface--celestial-blue-7);
+}
+
+.doc-category > .item.-with-args:before {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  /*border-top: 5px solid #224d6f;*/
+  border-top: 5px solid var(--celestial-blue-2--adaptive);
+  display: block;
+  content: '';
+  float: right;
+  margin-top: 8px;
+  margin-right: -8px;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.doc-category > .item.-with-args:hover:before,
+.doc-category > .item.-with-args.-selected:before {
+  opacity: 1;
+}
+
+.doc-category > .item.-with-args.-selected:before {
+  -webkit-transform: rotateZ(180deg);
+  transform: rotateZ(180deg);
+}
+
+.doc-category > .item.-selected {
+  /*background-color: var(--surface--mexican-pink-1);*/
+  /*background-color: rgba(214, 236, 238, 0.75);*/
+  /*border-left: 3px solid #00bcd4;*/
+  border-left: 3px solid var(--mexican-pink);
+}
+
+.doc-category > .item.-selected .args {
+  display: block;
+  padding-left: 15px;
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.args-wrap:before {
+
+  content: '( ';
+
+  display: inline;
+}
+
+.args-wrap:after {
+
+  content: ' )';
+
+  display: inline;
+}
+
+.args-wrap.-empty:before,
+.args-wrap.-empty:after {
+
+  display: none !important;
+}
+
+.arg-wrap > .arg {
+
+  display: inline;
+}
+
+.arg-wrap > .arg:after {
+
+  content: ', ';
+}
+
+.arg-wrap > .arg > .default-value {
+
+  color: #0b7fc7;
+}
+
+.arg-wrap:last-child .arg:after {
+
+  content: '';
+}
+
+.arg-wrap > .arg-description,
+.arg-wrap .arg > .wrapped-type-name {
+
+  display: none;
+
+  p {
+    font-size: var(--font-size-1);
+  }
+}
+
+.arg-wrap.-expanded:before,
+.arg-wrap.-expanded:after {
+
+  display: none;
+}
+
+.arg-wrap.-expanded .arg {
+
+  display: block;
+
+  margin: 5px 0;
+}
+
+.arg-wrap.-expanded .arg-description {
+
+  display: block;
+
+  /*color: #666;*/
+  color: var(--text-1)
+}
+
+.arg-wrap.-expanded .wrapped-type-name {
+
+  display: inline-block;
+}
+
+.arg-wrap.-expanded .arg-description > p {
+
+  margin: 0;
+}
+
+.arg-wrap.-expanded .arg-description:before {
+
+  display: block;
+
+  content: '#';
+
+  float: left;
+
+  margin-right: 5px;
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.wrapped-type-name::before {
+  content: ': ';
+}
+
+.relay-icon {
+  height: 24px;
+  line-height: 24px;
+  width: 24px;
+  margin-left: 5px
+}
+
+.relay-icon svg {
+  height: 24px;
+  line-height: 24px;
+  width: 24px;
+  min-height: 24px;
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.type-link {
+  fill: var(--malachite);
+}
+
+.type-link:hover {
+  fill: var(--malachite-2--adaptive);
+}
+
+.type-name.-input-obj,
+.type-name.-object {
+  color: var(--malachite);
+}
+
+.type-name.-input-obj:hover, .type-name.-object:hover {
+  color: var(--celestial-blue-2--adaptive);
+}
+
+.type-name.-scalar,
+.type-name.-built-in {
+  color: var(--mexican-pink);
+}
+
+.type-name.-scalar:hover, .type-name.-built-in:hover {
+  color: var(--mexican-pink-2--adaptive);
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.description-box blockquote {
+
+  border: 2px solid var(--celestial-blue-2--adaptive);
+  /*border-left: 2px solid rgba(84, 143, 158, 0.5);*/
+
+  margin: 5px 15px;
+
+  padding-left: 10px;
+}
+
+.description-box a {
+
+  word-break: break-all;
+}
+
+.description-box p:first-child {
+
+  margin-top: 0;
+  max-inline-size: unset;
+}
+
+.description-box.-no-description {
+
+  font-style: italic;
+
+  color: #666;
+}
+
+.description-box.-linked-type p, .description-box.-field p, .description-box.-enum-value p {
+
+  margin: 0;
+}
+
+.description-box.-enum-value {
+
+  padding: 5px 0 0 5px;
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.type-doc > .type-info-popover {
+  z-index: 0;
+  position: absolute;
+}
+
+.type-info-popover {
+  left: 320px;
+  top: 35px;
+  bottom: 75px;
+  overflow-y: auto;
+
+  -webkit-transform: translateX(-110%);
+
+  transform: translateX(-110%);
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 320px;
+  padding: 10px 15px;
+  position: absolute;
+  background: white;
+  -webkit-box-shadow: 0px 0 10px 3px rgba(0, 0, 0, .1);
+  box-shadow: 0px 0 10px 3px rgba(0, 0, 0, .1);
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-left: 0px;
+
+  -webkit-transition: all 0.45s ease-out;
+
+  transition: all 0.45s ease-out
+}
+
+.type-info-popover.-opened {
+  -webkit-transform: none;
+  transform: none;
+}
+
+.type-info-popover > button {
+  position: absolute;
+  right: 10px;
+}
+
+/* match mui md breakpoint,
+   see https://mui.com/material-ui/customization/breakpoints/#default-breakpoints */
+
+.typelist-item > .type-name {
+  padding-left: 15px;
+}
+
+.typelist-item.-root .type-name:after {
+  content: 'root';
+  display: inline-block;
+  vertical-align: middle;
+  /*background: #00bcd4;*/
+  background: var(--brand);
+  color: white;
+  padding: 0 5px;
+  margin-left: 5px;
+  font-size: var(--font-size-0);
+}
+
+.typelist-item > .description-box p,
+.item > .description-box.-field p {
+  font-size: var(--font-size-1);
+}
+
+.type-details > header > .description-box.-doc-type p {
+  font-size: var(--font-size-1);
+}
+
+.type-details > header > h3 {
+  font-size: var(--font-size-3);
+}
+
+.doc-panel .contents p.MuiTypography-root {
+  display: none;
+}
+
+/*# sourceMappingURL=voyager.css.map*/

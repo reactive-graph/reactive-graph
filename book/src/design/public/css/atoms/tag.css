@@ -1,0 +1,40 @@
+.tag {
+  padding-inline: var(--size-2);
+  border-radius: var(--radius-3);
+}
+
+.tag:is(.rg-component) {
+  color: var(--text-1--dark);
+  background: var(--chartreuse-1--adaptive);
+  text-shadow: 0 0 10px var(--chartreuse-2), 0 0 25px var(--chartreuse-7);
+}
+
+.tag:is(.rg-entity-type) {
+  color: var(--text-1--dark);
+  background: var(--selective-yellow-1--adaptive);
+  text-shadow: 0 0 10px var(--selective-yellow-2), 0 0 25px var(--selective-yellow-7);
+}
+
+.tag:is(.rg-relation-type) {
+  color: var(--text-1--dark);
+  background: var(--malachite-1--adaptive);
+  text-shadow: 0 0 10px var(--malachite-2), 0 0 25px var(--malachite-7);
+}
+
+.tag:is(.rg-entity-instance) {
+  color: var(--text-1);
+  background: var(--celestial-blue-1--adaptive);
+  text-shadow: 0 0 10px var(--celestial-blue-2), 0 0 25px var(--celestial-blue-7);
+}
+
+.tag:is(.rg-relation-instance) {
+  color: var(--text-1--dark);
+  background: var(--mexican-pink-1--adaptive);
+  text-shadow: 0 0 10px var(--mexican-pink-2), 0 0 25px var(--mexican-pink-7);
+}
+
+.tag:is(.string, .attr-value) {
+  color: var(--text-1--dark);
+  background: var(--teal-5);
+  text-shadow: 0 0 10px var(--teal-0), 0 0 25px var(--teal-7);
+}
