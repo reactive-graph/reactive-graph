@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["__typename","description","gitCommit","gitTag","hostname","lastSeen","name","pluginApiVersion","port","rustcChannel","rustcVersion","secure","version"]};
