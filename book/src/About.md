@@ -24,9 +24,9 @@ The main benefits of a graph are:
 * Benefit from the semantics of highly connected, intuitive data
 * Properties can store not only certain primitive data but complete documents
 
-### What type of graph does Inexor implement?
+### What type of graph does Reactive Graph implement?
 
-Internally, Inexor is an in-memory graph database with the following characteristics:
+Internally, **Reactive Graph** is an in-memory graph database with the following characteristics:
 
 | Characteristics | Description                                                                                                                  |
 |-----------------|------------------------------------------------------------------------------------------------------------------------------|
@@ -34,14 +34,14 @@ Internally, Inexor is an in-memory graph database with the following characteris
 | Typed Graph     | <ul><li>Node: Each entity instance is of an entity type</li><li>Edge: Each relation instance is of a relation type</li></ul> |
 | Property Graph  | <ul><li>Entities have properties</li><li>Relations have properties</li></ul>                                                 | 
 
-In addition, Inexor takes up concepts from entity component systems. Types, i.e. entity types and relation types, are
-assembled using components. The type system itself is flat and supports composition rather than inheritance. Components
-can be added or removed from instances, i.e. entity instances or relation instances.
+In addition, **Reactive Graph** takes up concepts from entity component systems. Types, i.e. entity types and relation
+types, are assembled using components. The type system itself is flat and supports composition rather than inheritance.
+Components can be added or removed from instances, i.e. entity instances or relation instances.
 
 ## What is Reactive?
 
 Now that we understand how data is stored, here's how data interacts. The approach is that the data itself is "alive".
-To do this, Inexor adopts a concept from reactive programming.
+To do this, **Reactive Graph** adopts a concept from reactive programming.
 
 > In computing, reactive programming is a declarative programming paradigm concerned with data streams and the propagation of change.
 
@@ -62,8 +62,8 @@ graph TD;
     B-->|stream|F(Property Instance 6);
 ```
 
-In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your own data
-stream and caching it. This allows subsequent querying of the value of a property instance.
+In addition, **Reactive Graph** remembers the last value in each property instance. This is done by subscribing to your
+own data stream and caching it. This allows subsequent querying of the value of a property instance.
 
 Remember this basic concept:
 
@@ -73,8 +73,8 @@ Remember this basic concept:
 
 ### Behaviour driven design
 
-The data flow is therefore automatic. Building on this, Inexor applies the concept of behaviour-driven design. The goal
-is to use these data streams to simulate behaviour.
+The data flow is therefore automatic. Building on this, **Reactive Graph** applies the concept of behaviour-driven design.
+The goal is to use these data streams to simulate behaviour.
 
 Behaviors can be implemented on components, entities and relations. To do this, one or more incoming data streams are
 combined, calculations are performed and written to one or more outgoing data streams.
