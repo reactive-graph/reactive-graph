@@ -12,44 +12,44 @@ In this document we describe...
 First things first: It's important to understand which component is responsible for which task and how they
 are connected.
 
-### Inexor RGF Client API `inexor_rgf_client`
+### Reactive Graph Client API `reactive_graph_client`
 
-The **Client API** (`inexor_rgf_client`) is a rust crate which can be used to communicate with a runtime via it's
+The **Client API** (`reactive_graph_client`) is a rust crate which can be used to communicate with a runtime via it's
 GraphQL API. Instead of writing GraphQL queries one just have to call a (rust) method of the **Client API**.
 
-### GraphQL Server `inexor_rgf_rt_standalone`
+### GraphQL Server `reactive_graph_server`
 
 The **GraphQL Server** is part of the standalone executable. It is integrated in a HTTP webserver and accepts
 requests with GraphQL queries and mutations. The GraphQL Server calls the GraphQL Query Service of the runtime.
 
-### GraphQL Query Service `inexor_rgf_rt`
+### GraphQL Query Service `reactive-graph-graphql-api`
 
 The **GraphQL Query Service** is part of the runtime. It can be used to execute GraphQL queries and mutations. The
 GraphQL Query Service uses the GraphQL API.
 
-### GraphQL API `inexor_rgf_rt`
+### GraphQL API `reactive-graph-graphql-web`
 
 The **GraphQL API** is part of the runtime. The GraphQL API encapsulates calls to the APIs of the Type System API, the
 Instance System API and the System API in GraphQL resolvers. It converts internal data structures to and from the types
 of the GraphQL schema.
 
-### Type System API `inexor_rgf_rt`
+### Type System API `reactive-graph-type-system-api`
 
 The **Type System API** is part of the runtime. It manages the type system, allows to create, read, update and delete
 types of the **reactive graph**. You can manage components, entity types, relation types and flow types.
 
-### Instance System API `inexor_rgf_rt`
+### Instance System API `reactive-graph-instance-system-api`
 
 The **Instance System API** is part of the runtime. It manages the reactive instances, allows to create, read, update
-and delete reactive instances within the **reactive graph**. You can manage entity instances, relation instances
+and delete reactive instances within the **Reactive Graph**. You can manage entity instances, relation instances
 (including flow connectors) and flow instances.
 
-### System API `inexor_rgf_rt`
+### Runtime Service API `reactive-graph-runtime-service-api`
 
 The **System API** is part of the runtime. It manages commands, plugins, the instance information and remote
 instances.
 
-### Command Line Interface API `inexor_rgf_rt_standalone`
+### Command Line Interface API `reactive-graph`
 
 The **Command Line Interface API (CLI)** is part of the standalone executable.
 
@@ -66,7 +66,7 @@ the runtime to connect to.
 The components can be used for different use cases:
 
 * Command Line Interface within the standalone executable
-* Embed the runtime `inexor-rgf-rt` in your application
+* Embed the runtime `reactive-graph-runtime-api` in your application
 * Communicate from one runtime to another
 * Let your application communicate with a (remote) runtime
 * Integration tests
@@ -81,20 +81,20 @@ graph TD
 subgraph Command Line Interface[ ]
     USR([User])
     
-    subgraph Inexor Standalone Client
+    subgraph Reactive Graph Client
       direction LR
       CLI[Command Line Interface]
-      subgraph `inexor_rgf_client`
+      subgraph `reactive_graph_client`
         CA(Client API)
       end
-      subgraph `inexor_rgf_rt_client`[inexor_rgf_rt]
+      subgraph `reactive_graph_client`[reactive_graph_runtime]
         UNUSED(Unused if in CLI mode)
       end
     end
 
-    subgraph Inexor Standalone Server
+    subgraph Reactive Graph Server
       GS[GraphQL Server]
-      subgraph `inexor_rgf_rt_server`[inexor_rgf_rt]
+      subgraph `reactive_graph_server`[reactive_graph_runtime]
         GQS[GraphQL Query Service]
         GA[GraphQL API]
         TSA[Type System API]
@@ -114,9 +114,9 @@ subgraph Command Line Interface[ ]
 end
 ```
 
-### Embedded runtime in an application `inexor-rgf-rt`
+### Embedded runtime in an application `reactive-graph-runtime-service-api`
 
-Any rust application can embed the Inexor RGF runtime (`inexor-rgf-rt`).
+Any rust application can embed the Reactive Graph runtime (`reactive-graph-runtime-service-api`).
 
 The following diagram shows that the application can:
 
@@ -133,7 +133,7 @@ subgraph Embedded Runtime[ ]
     SRV1[Application's Service 1]
     SRV2[Application's Service 2]
   
-    subgraph "inexor_rgf_rt"
+    subgraph "reactive_graph_runtime"
       GQS[GraphQL Query Service]
       GA[GraphQL API]
       TSA[Type System API]
@@ -159,11 +159,11 @@ end
 
 ### Communicate from the runtime with another runtime
 
-In order to communicate from one runtime to another runtime you can use the **Inexor RGF Client**
-(`inexor_rgf_client`).
+In order to communicate from one runtime to another runtime you can use the **Reactive Graph Client**
+(`reactive_graph_client`).
 
 In this example two runtimes are calling methods of the own runtime and execute queries on the other runtime via the
-**Inexor RGF Client**.
+**Reactive Graph Client**.
 
 ```mermaid
 graph TD
@@ -176,7 +176,7 @@ subgraph RuntimeToRuntime[ ]
     SRV1_1[Service 1]
     SRV1_2[Service 2]
   
-    subgraph "inexor_rgf_rt_1"[inexor_rgf_rt]
+    subgraph "reactive_graph_runtime_1"[reactive_graph_runtime]
       GQS1[GraphQL Query Service]
       GA1[GraphQL API]
       TSA1[Type System API]
@@ -184,7 +184,7 @@ subgraph RuntimeToRuntime[ ]
       SYSA1[System API]
     end
     
-    subgraph "inexor_rgf_client_1"[inexor_rgf_client]
+    subgraph "reactive_graph_client_1"[reactive_graph_client]
       CA1(Client API)
     end
 
@@ -196,7 +196,7 @@ subgraph RuntimeToRuntime[ ]
     SRV2_1[Service 1]
     SRV2_2[Service 2]
   
-    subgraph "inexor_rgf_rt_2"[inexor_rgf_rt]
+    subgraph "reactive_graph_runtime_2"[reactive_graph_runtime]
       GQS2[GraphQL Query Service]
       GA2[GraphQL API]
       TSA2[Type System API]
@@ -204,7 +204,7 @@ subgraph RuntimeToRuntime[ ]
       SYSA2[System API]
     end
     
-    subgraph "inexor_rgf_client_2"[inexor_rgf_client]
+    subgraph "reactive_graph_client_2"[reactive_graph_client]
       CA2(Client API)
     end
   end
@@ -236,10 +236,10 @@ The same applies to two applications which have embedded runtimes.
 
 ### Let your application communicate with a (remote) runtime
 
-In order to communicate from your application to a (remote) runtime you can use the **Inexor RGF Client**
-(`inexor_rgf_client`).
+In order to communicate from your application to a (remote) runtime you can use the **Reactive Graph Client**
+(`reactive_graph_client`).
 
-This example shows the application which uses the **Inexor RGF Client** to execute queries on the (remote) runtime:
+This example shows the application which uses the **Reactive Graph Client** to execute queries on the (remote) runtime:
 
 ```mermaid
 graph TD
@@ -252,16 +252,16 @@ subgraph ApplicationToRuntime[ ]
     SRV1[Service 1]
     SRV2[Service 2]
   
-    subgraph "inexor_rgf_client_1"[inexor_rgf_client]
+    subgraph "reactive_graph_client_1"[reactive_graph_client]
       CA(Client API)
     end
 
   end
 
-  subgraph Inexor Standalone Server
+  subgraph Reactive Graph Server
     direction TB
     GS[GraphQL Server]
-    subgraph inexor_rgf_rt
+    subgraph reactive_graph_runtime
       GQS[GraphQL Query Service]
       GA[GraphQL API]
       TSA[Type System API]
@@ -299,7 +299,7 @@ subgraph Integration Tests[ ]
   CA(Client API)
   style IT fill:#333,stroke:#633,stroke-width:4px,margin-top:10px
 
-  subgraph "inexor_rgf_rt"
+  subgraph "reactive_graph_runtime"
     GQS[GraphQL Query Service]
     GA[GraphQL API]
     TSA[Type System API]
@@ -307,7 +307,7 @@ subgraph Integration Tests[ ]
     SYSA[System API]
   end
 
-  subgraph "inexor_rgf_client"
+  subgraph "reactive_graph_client"
     CA -->|query| GQS
   end
 
