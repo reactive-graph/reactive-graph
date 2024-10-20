@@ -1,6 +1,6 @@
 # Model
 
-The data model of Inexor Reactive Graph Flow can be divided into the type system and the instance system.
+The data model of **Reactive Graph** can be divided into the type system and the instance system.
 
 ## Type System
 
