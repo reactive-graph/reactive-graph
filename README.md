@@ -62,7 +62,7 @@
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
 A **graph** organizes highly interconnected data. The state of an `Entity Component System` can be ideally represented
-with the help of the graph. Inexor is the first game engine to introduce a graph as a basis.
+with the help of the graph.
 
 The main benefits of a graph are:
 
