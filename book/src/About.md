@@ -1,18 +1,6 @@
 # About `Reactive Graph`
 
-## What is Inexor?
-
-<img src="images/rgf_logo.png" style="float: right; text-align: right; width: 200px; height: 200px; margin-left: 50px;" />
-
-* Inexor will be a new first-person shooter game which is based on a new octree-based game engine.
-* Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.
-* Inexor will be written from ground up new in C++17 and Rust.
-* You can contribute anything you want: code, content, ideas...
-* Inexor and all its content is 100% open source!
-
-## Graph
-
-### What is a Graph?
+## What is a Graph?
 
 A graph organizes highly interconnected data. The state of an Entity Component System can be ideally represented with
 the help of the graph. Inexor is the first game engine to introduce a graph as a basis.
@@ -62,7 +50,7 @@ contain data. Rather, they are streams of data. If you change the value of a pro
 stream of this property instance. Data streams are linked together. For example, if the stream of one property instance
 is linked to the stream of another property instance and you change the value of the first property instance, the value
 of the second property instance will automatically change as well. Data is thus propagated from one station to the next,
-triggering a cascade of propagations. 
+triggering a cascade of propagations.
 
 ```mermaid
 graph TD;
@@ -101,7 +89,6 @@ another and thus depict behavior.
 It is interesting that this behavior also works for relations. For example, connectors are also implemented behaviors of
 streams. It is interesting that connectors connect the data stream from a property instance of the outgoing entity
 instance with the data stream from a property instance of the incoming entity instance.
-
 
 ```mermaid
 graph TD;
