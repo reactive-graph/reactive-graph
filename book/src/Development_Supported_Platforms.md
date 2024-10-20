@@ -1,6 +1,6 @@
 # Development / Supported Platforms
 
-The inexor reactive graph flow is completely platform-agnostic, which allows it to run on various operating systems.
+**Reactive Graph** is completely platform-agnostic, which allows it to run on various operating systems.
 
 ### Microsoft Windows
 
