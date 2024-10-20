@@ -3,18 +3,7 @@ use std::fmt::Debug;
 use thiserror::Error;
 
 use reactive_graph_client::ReactiveGraphClientExecutionError;
-
-#[derive(Debug, Error)]
-pub enum SerializationError {
-    #[error("Failed to serialize JSON: {0}")]
-    Json(#[from] serde_json::Error),
-    #[cfg(feature = "json5")]
-    #[error("Failed to serialize JSON5: {0}")]
-    Json5(#[from] json5::Error),
-    #[cfg(feature = "toml")]
-    #[error("Failed to serialize TOML: {0}")]
-    Toml(#[from] toml::ser::Error),
-}
+use reactive_graph_serde::error::SerializationError;
 
 #[derive(Debug, Error)]
 pub enum CommandError {

@@ -9,7 +9,6 @@ pub use error::component::*;
 pub use error::entity::*;
 pub use error::flow::*;
 pub use error::relation::*;
-pub use error::serde::*;
 pub use flow_type_import_export_manager::*;
 pub use flow_type_manager::*;
 pub use flow_type_provider_registry::*;

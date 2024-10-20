@@ -6,10 +6,10 @@ use springtime_di::Component;
 
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_lifecycle::Lifecycle;
+use reactive_graph_serde::error::SerializationError;
 use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::ComponentSerializationManager;
 use reactive_graph_type_system_api::ComponentSerializeError;
-use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct ComponentSerializationManagerImpl {

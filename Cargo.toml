@@ -61,6 +61,7 @@ members = [
     "crates/runtime/web/api",
     "crates/runtime/web/impl",
     "crates/client",
+    "crates/serde",
     "crates/table-model",
     "crates/type-system/api",
     "crates/type-system/derive",

@@ -23,8 +23,9 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-runtime-model = { version = "0.10.0", path = "../../runtime/model" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
-reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = ["derive"] }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+reactive-graph-serde = { version = "0.10.0", path = "../../serde" }
+reactive-graph-type-system-api = { version = "0.10.0", path = "../api", features = ["derive"] }
 
 [dev-dependencies]
 criterion = { workspace = true, features = ["html_reports"] }
@@ -39,8 +40,8 @@ reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
 [features]
 default = ["springtime", "json5", "toml"]
 springtime = ["springtime-di/threadsafe", "springtime-di/derive"]
-json5 = ["dep:json5", "reactive-graph-type-system-api/json5"]
-toml = ["dep:toml", "reactive-graph-type-system-api/toml"]
+json5 = ["dep:json5", "reactive-graph-serde/json5"]
+toml = ["dep:toml", "reactive-graph-serde/toml"]
 full = ["springtime", "json5", "toml"]
 
 [lib]

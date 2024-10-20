@@ -1,6 +1,6 @@
 use crate::shared::info::commands::InfoCommands;
+use crate::shared::output_format::OutputFormatArgsOptional;
 use clap::Parser;
-use serde::Serialize;
 
 #[derive(Parser, Debug)]
 pub struct InfoArgs {
@@ -10,15 +10,6 @@ pub struct InfoArgs {
 
 #[derive(Parser, Debug)]
 pub struct InfoCommandArgs {
-    #[arg(long)]
-    pub output_format: Option<OutputFormatArgs>,
-}
-
-#[derive(clap::ValueEnum, Default, Debug, Clone, Serialize)]
-pub enum OutputFormatArgs {
-    #[default]
-    Default,
-    Json,
-    #[cfg(feature = "toml")]
-    Toml,
+    #[clap(flatten)]
+    pub output_format: OutputFormatArgsOptional,
 }

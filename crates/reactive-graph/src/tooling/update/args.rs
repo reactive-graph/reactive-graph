@@ -1,3 +1,4 @@
+use crate::shared::output_format::OutputFormatArgsOptional;
 use crate::tooling::update::commands::UpdateCommands;
 use clap::ArgAction;
 use clap::Parser;
@@ -54,4 +55,16 @@ impl UpdateArgs {
     pub fn no_confirm(&self) -> bool {
         self.no_confirm.unwrap_or_default()
     }
+}
+
+#[derive(Parser, Debug)]
+pub struct UpdateInfoArgs {
+    #[clap(flatten)]
+    pub output_format: OutputFormatArgsOptional,
+}
+
+#[derive(Parser, Debug)]
+pub struct UpdateListArgs {
+    #[clap(flatten)]
+    pub output_format: OutputFormatArgsOptional,
 }
