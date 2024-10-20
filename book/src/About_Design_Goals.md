@@ -89,5 +89,3 @@ The application should be able to be used as required in the specific case:
 * Use either the CLI, the flow editor or any other tool to manipulate the type system and/or the instance system
 
 [System Architecture](./System_Architecture.md)
-
-<img src="images/rgf_logo_k1_h1_sm.png" />
