@@ -41,3 +41,17 @@ pub struct UpdateArgs {
     #[command(subcommand)]
     pub commands: Option<UpdateCommands>,
 }
+
+impl UpdateArgs {
+    pub fn show_download_progress(&self) -> bool {
+        !(self.hide_download_progress.unwrap_or_default() || self.quiet.unwrap_or_default())
+    }
+
+    pub fn show_output(&self) -> bool {
+        !(self.hide_output.unwrap_or_default() || self.quiet.unwrap_or_default())
+    }
+
+    pub fn no_confirm(&self) -> bool {
+        self.no_confirm.unwrap_or_default()
+    }
+}
