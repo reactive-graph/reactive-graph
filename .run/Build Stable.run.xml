@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Build" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+  <configuration default="false" name="Build Stable" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
     <option name="buildProfileId" value="dev" />
     <option name="command" value="build" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -7,7 +7,7 @@
       <env name="RUSTC_WRAPPER" value="sccache" />
     </envs>
     <option name="emulateTerminal" value="false" />
-    <option name="channel" value="NIGHTLY" />
+    <option name="channel" value="STABLE" />
     <option name="requiredFeatures" value="true" />
     <option name="allFeatures" value="false" />
     <option name="withSudo" value="false" />
