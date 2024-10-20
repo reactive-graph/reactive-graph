@@ -81,7 +81,7 @@ The main benefits of a graph are:
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
 Now that we understand how data is stored, here's how data interacts. The approach is that the data itself is "alive".
-To do this, Inexor adopts a concept from reactive programming.
+To do this, **Reactive Graph** adopts a concept from reactive programming.
 
 In computing, reactive programming is a declarative programming paradigm concerned with data streams and the
 propagation of change.
@@ -93,7 +93,7 @@ of one property instance is linked to the stream of another property instance an
 first property instance, the value of the second property instance will automatically change as well. Data is
 thus propagated from one station to the next, triggering a cascade of propagations.
 
-In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your
+In addition, **Reactive Graph** remembers the last value in each property instance. This is done by subscribing to your
 own data stream and caching it. This allows subsequent querying of the value of a property instance.
 
 Remember this basic concept:
@@ -109,7 +109,7 @@ Remember this basic concept:
 
 <div style="background-color: #333333; padding: 10px 50px; font-size: 12pt;">
 
-The data flow is therefore automatic. Building on this, Inexor applies the concept of behaviour-driven design.
+The data flow is therefore automatic. Building on this, **Reactive Graph** applies the concept of behaviour-driven design.
 The goal is to use these data streams to simulate behaviour.
 
 Behaviors can be implemented on components, entities and relations. To do this, one or more incoming data streams
