@@ -1,4 +1,4 @@
-# About `Inexor Reactive Graph Flow`
+# About `Reactive Graph`
 
 ## What is Inexor?
 
