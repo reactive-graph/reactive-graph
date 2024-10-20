@@ -26,6 +26,23 @@ pub enum ReleaseTag {
     Version(String),
 }
 
+impl ReleaseTag {
+    pub fn bin_path_in_archive(&self, current_bin_name: &str) -> String {
+        match self {
+            ReleaseTag::Nightly | ReleaseTag::Latest => format!("reactive-graph-{{{{ version }}}}-{{{{ target }}}}/{current_bin_name}"),
+            ReleaseTag::Current | ReleaseTag::Version(_) => format!("reactive-graph-v{{{{ version }}}}-{{{{ target }}}}/{current_bin_name}"),
+        }
+    }
+
+    pub fn target_version_tag(&self) -> String {
+        prefix_version(match self {
+            ReleaseTag::Nightly | ReleaseTag::Latest => RELEASE_TAG_NIGHTLY,
+            ReleaseTag::Current => cargo_crate_version!(),
+            ReleaseTag::Version(version) => version,
+        })
+    }
+}
+
 impl From<&UpdateArgs> for ReleaseTag {
     fn from(args: &UpdateArgs) -> Self {
         if args.nightly.unwrap_or_default() {
@@ -38,10 +55,7 @@ impl From<&UpdateArgs> for ReleaseTag {
             return ReleaseTag::Current;
         }
         if let Some(version) = &args.version {
-            if version.starts_with("v") {
-                return ReleaseTag::Version(version.to_string());
-            }
-            return ReleaseTag::Version(format!("v{version}"));
+            return ReleaseTag::Version(prefix_version(version));
         }
         ReleaseTag::Latest
     }
@@ -150,44 +164,33 @@ fn print_release(release: Release) {
 }
 
 fn update_from_github(args: &UpdateArgs) -> Box<dyn ReleaseUpdate> {
-    let show_download_progress = !(args.hide_download_progress.unwrap_or_default() || args.quiet.unwrap_or_default());
-    let show_output = !(args.hide_output.unwrap_or_default() || args.quiet.unwrap_or_default());
-    let no_confirm = args.no_confirm.unwrap_or_default();
-    let current_version = cargo_crate_version!();
     let current_bin_name = env!("CARGO_BIN_NAME");
-    let bin_path_in_archive = format!("reactive-graph-{{{{ version }}}}-{{{{ target }}}}/{current_bin_name}");
+    let current_version = cargo_crate_version!();
     let release_tag = ReleaseTag::from(args);
-
-    let mut update_builder = Update::configure();
-    update_builder
-        .show_download_progress(show_download_progress)
-        .show_output(show_output)
-        .no_confirm(no_confirm)
+    match Update::configure()
+        .show_download_progress(args.show_download_progress())
+        .show_output(args.show_output())
+        .no_confirm(args.no_confirm())
         .repo_owner(REPO_OWNER)
         .repo_name(REPO_NAME)
-        .bin_path_in_archive(&bin_path_in_archive)
+        .bin_path_in_archive(&release_tag.bin_path_in_archive(current_bin_name))
         .bin_name(current_bin_name)
-        .current_version(current_version);
-
-    match release_tag {
-        ReleaseTag::Nightly => {
-            update_builder.target_version_tag(RELEASE_TAG_NIGHTLY);
-        }
-        ReleaseTag::Latest => {
-            update_builder.target_version_tag(RELEASE_TAG_NIGHTLY);
-        }
-        ReleaseTag::Current => {
-            update_builder.target_version_tag(current_version);
-        }
-        ReleaseTag::Version(version) => {
-            update_builder.target_version_tag(&version);
-        }
-    }
-    match update_builder.build() {
+        .current_version(current_version)
+        .target_version_tag(&release_tag.target_version_tag())
+        .build()
+    {
         Ok(release_update) => release_update,
         Err(e) => {
             eprintln!("Can't construct release update: {}", e);
             exit(1);
         }
+    }
+}
+
+fn prefix_version(version: &str) -> String {
+    if version.starts_with("v") || version == RELEASE_TAG_NIGHTLY {
+        version.to_string()
+    } else {
+        format!("v{version}")
     }
 }
