@@ -180,15 +180,17 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="0100-2---2024-09-27"><a class="header" href="#0100-2---2024-09-27">[0.10.0-2] - 2024-09-27</a></h2>
+<h2 id="0100-alpha-1---2024-10-20"><a class="header" href="#0100-alpha-1---2024-10-20">[0.10.0-alpha-1] - 2024-10-20</a></h2>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
 <ul>
 <li>CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages</li>
-<li>CLI: Tooling subcommands</li>
-<li>CI: Check in lock file</li>
+<li>CLI: Self Update <code>reactive-graph update</code></li>
+<li>CLI: Init instance <code>reactive-graph instance init &lt;path&gt;</code></li>
+</ul>
+<h3 id="infrastructure"><a class="header" href="#infrastructure">Infrastructure</a></h3>
+<ul>
 <li>CI: Create tag nightly after merge and successful build on main branch</li>
 <li>CI: Publish nightly releases to GitHub Releases</li>
-<li>CI: Automatic labeling</li>
 <li>CI: Sign nightly tag with GPG</li>
 <li>CI: New layout for debian packages</li>
 <li>CI: Added support for <code>i686-unknown-linux-gnu</code> (32-bit)</li>
@@ -196,8 +198,10 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>CI: Added support for <code>x86_64-pc-windows-gnu</code> (MinGW)</li>
 <li>CI: Added support for <code>powerpc-unknown-linux-gnu</code>, <code>powerpc64-unknown-linux-gnu</code> and <code>powerpc64le-unknown-linux-gnu</code></li>
 <li>CI: Added support for <code>riscv64gc-unknown-linux-gnu</code></li>
+<li>CI: Check in lock file for security audit workflow</li>
+<li>CI: Automatic labeling</li>
 </ul>
-<h2 id="0100-1---2024-03-24"><a class="header" href="#0100-1---2024-03-24">[0.10.0-1] - 2024-03-24</a></h2>
+<h2 id="0100-alpha-0---2024-03-24"><a class="header" href="#0100-alpha-0---2024-03-24">[0.10.0-alpha-0] - 2024-03-24</a></h2>
 <p>This is a highly technical release with a lot of major refactorings and design changes.</p>
 <h3 id="highlights"><a class="header" href="#highlights">Highlights</a></h3>
 <ul>
