@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CLI: Self-Updater
 
+### Infrastructure
+
+- CI: Update rust nightly toolchain to nightly-2024-10-19
+
 ## [0.10.0-alpha-1] - 2024-10-20
 
 ### Added
