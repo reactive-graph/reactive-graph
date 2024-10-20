@@ -1,5 +1,5 @@
-use crate::client::output_format::OutputFormatArgs;
 use crate::client::types::relations::commands::RelationTypesCommands;
+use crate::shared::output_format::OutputFormatArgs;
 use clap::Args;
 
 pub mod add_extension;

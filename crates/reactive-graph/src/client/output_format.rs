@@ -3,27 +3,10 @@ use crate::client::result::CommandResultBuilder;
 use reactive_graph_table_model::container::TableInlineFormatSetter;
 use reactive_graph_table_model::container::TableOptions;
 
+use crate::shared::output_format::OutputFormatArgs;
 use serde::Serialize;
 use std::marker::PhantomData;
 use tabled::Tabled;
-
-#[derive(clap::ValueEnum, Default, Debug, Clone, Serialize)]
-pub(crate) enum OutputFormatArgs {
-    // The output is formatted as a table.
-    #[default]
-    Table,
-    // The output is formatted as a HTML table.
-    HtmlTable,
-    // The output is formatted as a Markdown table.
-    MarkdownTable,
-    Count,
-    // The output is returned as JSON.
-    Json,
-    // The output is returned as JSON5.
-    Json5,
-    // The output is returned as TOML.
-    Toml,
-}
 
 pub(crate) struct OutputFormatWrapper<S: Serialize, T: Clone + Tabled + From<S> + TableInlineFormatSetter, O: TableOptions>(
     pub Option<OutputFormatArgs>,

@@ -6,7 +6,7 @@ pub mod create;
 pub mod type_id;
 pub mod update_description;
 
-use crate::client::output_format::OutputFormatArgs;
+use crate::shared::output_format::OutputFormatArgs;
 
 use crate::client::types::components::args::type_id::ComponentTypeIdArgs;
 use crate::client::types::components::commands::ComponentsCommands;
