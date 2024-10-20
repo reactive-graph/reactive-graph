@@ -22,8 +22,8 @@ renderer = ["html"]
 
 [output.html]
 additional-js = [
-    "mermaid.min.js",
-    "mermaid-init.js",
+    "./src/design/public/js/mermaid/mermaid.min.js",
+    "./src/design/public/js/mermaid/init-mermaid.js",
     "graphql-playground-react-middleware.js",
     "graphql-playground.js"
 ]
