@@ -3,7 +3,7 @@
 ## What is a Graph?
 
 A graph organizes highly interconnected data. The state of an Entity Component System can be ideally represented with
-the help of the graph. Inexor is the first game engine to introduce a graph as a basis.
+the help of the graph.
 
 ```mermaid
 graph TD;
