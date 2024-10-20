@@ -26,8 +26,8 @@ In addition, only what is actually used is loaded. Plugins that are not required
 
 ## Runtime
 
-The **Inexor RGF Runtime** (`inexor_rgf_rt`) consists of a few central building blocks. As already mentioned in the
-introduction, this includes a built-in graph database.
+The **Reactive Graph** runtime (`reactive_graph_runtime_api`) consists of a few central building blocks. As already
+mentioned in the introduction, this includes a built-in graph database.
 
 Based on this, the type system is managed by the runtime. This means that in the business logic layer there is
 a management service to edit the type system. With the help of these services, new types can be created, queried,
@@ -81,7 +81,7 @@ This section explains which goals are not pursued in the runtime.
 The application should be able to be used as required in the specific case:
 
 * Just run and use it
-* Let two or multiple instances talk to each other 
+* Let two or multiple instances talk to each other
 * Use the runtime as integration bus for different applications or systems
 * Embed the runtime in your own application which empowers you have a platform
   for an embedded zero code flow control and an embedded graph database
