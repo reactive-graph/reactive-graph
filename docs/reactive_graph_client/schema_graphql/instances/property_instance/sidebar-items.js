@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["property_instance","property_instance_definition"]};

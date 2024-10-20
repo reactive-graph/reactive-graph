@@ -10,8 +10,8 @@
 <a href="#10" id="10">10</a>
 <a href="#11" id="11">11</a>
 <a href="#12" id="12">12</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::install::args::InstallArgs;
-<span class="kw">use </span><span class="kw">crate</span>::tooling::instances::args::InstancesArgs;
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::instances::args::InstancesArgs;
+<span class="kw">use </span><span class="kw">crate</span>::tooling::update::args::UpdateArgs;
 <span class="kw">use </span>clap::Subcommand;
 
 <span class="attr">#[derive(Subcommand, Debug)]
@@ -19,7 +19,7 @@
     <span class="doccomment">/// Manage instances.
     </span>Instances(InstancesArgs),
 
-    <span class="doccomment">/// Manage instances.
-    </span>Install(InstallArgs),
+    <span class="doccomment">/// Update the Reactive Graph binary.
+    </span>Update(UpdateArgs),
 }
 </code></pre></div></section></main></body></html>

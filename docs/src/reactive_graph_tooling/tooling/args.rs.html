@@ -40,8 +40,6 @@
 <a href="#40" id="40">40</a>
 <a href="#41" id="41">41</a>
 <a href="#42" id="42">42</a>
-<a href="#43" id="43">43</a>
-<a href="#44" id="44">44</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::Parser;
 
 <span class="kw">use </span><span class="kw">crate</span>::shared::args::SharedArguments;
@@ -49,9 +47,7 @@
 
 <span class="attr">#[derive(Parser, Debug)]
 </span><span class="kw">pub struct </span>ToolingArguments {
-    <span class="comment">// #[clap(flatten)]
-    // pub(crate) connection: ClientConnectionArguments,
-    </span><span class="attr">#[command(subcommand)]
+    <span class="attr">#[command(subcommand)]
     </span><span class="kw">pub </span>commands: <span class="prelude-ty">Option</span>&lt;ToolingCommands&gt;,
 }
 

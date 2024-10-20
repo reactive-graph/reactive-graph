@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["tooling"],"mod":["args","commands","install","instances"]};
+window.SIDEBAR_ITEMS = {"fn":["tooling"],"mod":["args","commands","instances","update"]};

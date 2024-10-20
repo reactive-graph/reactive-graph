@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["bearer","endpointDynamicGraph","endpointGraphql","endpointPlugin","endpointRuntime","hostname","port","secure","userAgent"]};

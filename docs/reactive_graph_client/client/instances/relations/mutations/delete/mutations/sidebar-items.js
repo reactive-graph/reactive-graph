@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["delete"],"struct":["DeleteRelationInstance","MutationInstances","MutationRelationInstances"]};

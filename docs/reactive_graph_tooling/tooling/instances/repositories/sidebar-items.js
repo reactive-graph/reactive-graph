@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["handle_repository"],"mod":["args","commands","init","remove"]};

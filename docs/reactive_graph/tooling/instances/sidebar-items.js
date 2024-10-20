@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["args","commands"]};
+window.SIDEBAR_ITEMS = {"fn":["handle_instance"],"mod":["args","commands","create_dir","init","plugins","repositories"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["__typename","entities","id","label","relations","type","wrapper"]};

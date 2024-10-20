@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["handle_plugins"],"mod":["args","commands","install","uninstall"]};
