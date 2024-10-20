@@ -1,17 +1,126 @@
-.float-left {
-  float: left;
+h1 {
+  color: var(--brand);
 }
 
-.sidebar {
-  background: url("images/reactive-graph.svg") var(--sidebar-bg) no-repeat;
-  background-size: 250px;
-  background-position-x: center;
+h2, h3 {
+  font-family: var(--font-sans-light);
+  margin-block-start: var(--size-1);
+  margin-block-end: var(--size-3);
 }
 
-.sidebar .chapter {
-  margin-top: 300px;
-  background-color: var(--sidebar-bg);
+h4, h5, h6 {
+  font-family: var(--font-sans-light);
+  margin-block-start: var(--size-1);
+  margin-block-end: var(--size-2);
 }
+
+ul {
+  margin-block-start: var(--size-1);
+  margin-block-end: var(--size-3);
+}
+
+p {
+  font-family: var(--font-sans);
+  margin-block-end: var(--size-3);
+}
+
+details {
+  margin-block-start: var(--size-1);
+  margin-block-end: var(--size-3);
+}
+
+code {
+  margin-block-end: var(--size-3);
+}
+
+main img {
+  margin-block-start: var(--size-1);
+  margin-block-end: var(--size-3);
+}
+
+.rg-ti {
+  font-family: "tabler-icons" !important;
+}
+
+.container {
+  width: min(100% - 2rem, 50rem);
+  margin-inline: auto;
+}
+
+.sidebar-logo {
+  width: 100%;
+  max-width: 250px;
+  vertical-align: middle;
+}
+
+.rg-alert-body {
+  margin-top: var(--size-3);
+  font-size: var(--font-size-5);
+  line-height: var(--font-lineheight-4);
+  font-weight: var(--font-weight-6);
+}
+
+.rg-icon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: space-around;
+  gap: var(--size-1);
+  padding: var(--size-1);
+  align-items: center;
+}
+
+.rg-icon-grid-1 {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  align-items: center;
+  justify-content: space-around;
+  gap: var(--size-1);
+  padding: var(--size-1);
+  height: 100%;
+}
+
+.rg-icon-grid img {
+  width: 100%;
+  height: var(--size-8);
+}
+
+.rg-icon-grid img:hover {
+  opacity: 0.5;
+  transition: 0.25s;
+  filter: glow();
+  /*background-color: var(--theme-hover)*/
+}
+
+img.rg-icon-logo {
+  width: 100%;
+  vertical-align: middle;
+}
+
+#search-wrapper {
+  margin-top: var(--size-8);
+  margin-bottom: var(--size-8);
+}
+
+@media (prefers-color-scheme: dark) {
+  .rg-header-icons {
+    filter: invert(1);
+  }
+}
+
+/*.float-left {*/
+/*  float: left;*/
+/*}*/
+
+/*.sidebar {*/
+/*  background: url("images/reactive-graph.svg") var(--sidebar-bg) no-repeat;*/
+/*  background-size: 250px;*/
+/*  background-position-x: center;*/
+/*}*/
+
+/*.sidebar .chapter {*/
+/*  margin-top: 300px;*/
+/*  background-color: var(--sidebar-bg);*/
+/*}*/
 
 /*:root {*/
 /*    --content-max-width: 850px;*/

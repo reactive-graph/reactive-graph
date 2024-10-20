@@ -1,0 +1,28 @@
+pre.graphql-playground {
+  max-inline-size: unset;
+
+  &.malachite {
+    border-color: var(--malachite-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--malachite-5);
+  }
+
+  &.selective-yellow {
+    border-color: var(--selective-yellow-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--selective-yellow-5);
+  }
+
+  &.celestial-blue {
+    border-color: var(--celestial-blue-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--celestial-blue-5);
+  }
+
+  &.mexican-pink {
+    border-color: var(--mexican-pink-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--mexican-pink-5);
+  }
+
+  &.chartreuse {
+    border-color: var(--chartreuse-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--chartreuse-5);
+  }
+}

@@ -1,0 +1,46 @@
+:root {
+  --surface--malachite: var(--malachite);
+  --surface--malachite-1: var(--malachite-1);
+  --surface--malachite-2: var(--malachite-2);
+  --surface--malachite-3: var(--malachite-3);
+  --surface--malachite-4: var(--malachite-4);
+  --surface--malachite-5: var(--malachite-5);
+  --surface--malachite-6: var(--malachite-6);
+  --surface--malachite-7: var(--malachite-7);
+
+  --surface--mexican-pink: var(--mexican-pink);
+  --surface--mexican-pink-1: var(--mexican-pink-1);
+  --surface--mexican-pink-2: var(--mexican-pink-2);
+  --surface--mexican-pink-3: var(--mexican-pink-3);
+  --surface--mexican-pink-4: var(--mexican-pink-4);
+  --surface--mexican-pink-5: var(--mexican-pink-5);
+  --surface--mexican-pink-6: var(--mexican-pink-6);
+  --surface--mexican-pink-7: var(--mexican-pink-7);
+
+  --surface--celestial-blue: var(--celestial-blue);
+  --surface--celestial-blue-1: var(--celestial-blue-1);
+  --surface--celestial-blue-2: var(--celestial-blue-2);
+  --surface--celestial-blue-3: var(--celestial-blue-3);
+  --surface--celestial-blue-4: var(--celestial-blue-4);
+  --surface--celestial-blue-5: var(--celestial-blue-5);
+  --surface--celestial-blue-6: var(--celestial-blue-6);
+  --surface--celestial-blue-7: var(--celestial-blue-7);
+
+  --surface--selective-yellow: var(--selective-yellow);
+  --surface--selective-yellow-1: var(--selective-yellow-1);
+  --surface--selective-yellow-2: var(--selective-yellow-2);
+  --surface--selective-yellow-3: var(--selective-yellow-3);
+  --surface--selective-yellow-4: var(--selective-yellow-4);
+  --surface--selective-yellow-5: var(--selective-yellow-5);
+  --surface--selective-yellow-6: var(--selective-yellow-6);
+  --surface--selective-yellow-7: var(--selective-yellow-7);
+
+  --surface--chartreuse: var(--chartreuse);
+  --surface--chartreuse-1: var(--chartreuse-1);
+  --surface--chartreuse-2: var(--chartreuse-2);
+  --surface--chartreuse-3: var(--chartreuse-3);
+  --surface--chartreuse-4: var(--chartreuse-4);
+  --surface--chartreuse-5: var(--chartreuse-5);
+  --surface--chartreuse-6: var(--chartreuse-6);
+  --surface--chartreuse-7: var(--chartreuse-7);
+}

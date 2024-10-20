@@ -1,0 +1,16 @@
+article {
+  .rg-article {
+
+  }
+  h1.rg-article-title {
+    margin-block-end: var(--size-3);
+  }
+  p.rg-article-intro {
+    color: var(--accent-color);
+    font-size: var(--font-size-fluid-1);
+    margin-block-end: var(--size-3);
+  }
+  p {
+    color: var(--text-1);
+  }
+}

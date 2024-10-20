@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- DOCS: Moved book to root folder + Rename
+- DOCS: Moved book to root folder
+- DOCS: Applied Reactive Graph Design System
 
 ### Fixed
 

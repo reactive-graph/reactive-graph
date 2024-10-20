@@ -1,0 +1,13 @@
+
+@font-face {
+  font-family: "Source Code Pro";
+  font-style: normal;
+  font-weight: 500;
+  src: url("source-code-pro-v11-all-charsets-500.woff2") format("woff2");
+}
+
+.rg-font {
+  &.source-code-pro {
+    font-family: "Source Code Pro", monospace;
+  }
+}

@@ -1,0 +1,370 @@
+.sticky-slides {
+  block-size: 100dvh;
+  overflow-y: auto;
+
+  &.height-75 {
+    block-size: 75dvh;
+
+    & figure {
+      block-size: 75dvh;
+    }
+  }
+
+  &.height-50 {
+    block-size: 50dvh;
+
+    & figure {
+      block-size: 50dvh;
+    }
+  }
+
+  &.height-25 {
+    block-size: 25dvh;
+
+    & figure {
+      block-size: 25dvh;
+    }
+  }
+
+  /* Hide scrollbar */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  & figure {
+    block-size: 100dvh;
+    inline-size: 100%;
+
+    inset-block-start: 0;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--surface-1);
+
+    /* Fix for Firefox sticky bug */
+    @supports not (-moz-appearance: none) {
+      position: sticky;
+    }
+
+    div.slide.text {
+      padding-block: 0;
+      padding-inline: 0;
+
+      inline-size: 100%;
+      block-size: 100%;
+      margin-inline: auto;
+
+      > article {
+        max-block-size: 100%;
+      }
+
+      > picture {
+        object-position: center center;
+        object-fit: cover;
+        inline-size: 100%;
+        block-size: 100%;
+        overflow: hidden;
+      }
+
+      &.overlay {
+        grid-template-areas: "overlay";
+
+        & picture {
+          grid-area: overlay;
+          block-size: unset;
+        }
+
+        > h1,
+        > h2,
+        > h3,
+        > h4,
+        > h5,
+        > h6 {
+          grid-area: overlay;
+          margin-inline: auto;
+          margin-block: auto;
+          max-inline-size: unset;
+          inline-size: 75%;
+          /*block-size: 75%;*/
+          /*padding-block: 25%;*/
+
+          text-align: center;
+        }
+
+        > article {
+          grid-area: overlay;
+          margin-inline: auto;
+          margin-block: auto;
+        }
+
+        &.surface-1 {
+          > h1,
+          > h2,
+          > h3,
+          > h4,
+          > h5,
+          > h6 {
+            background-color: var(--surface-1);
+          }
+
+          > article {
+            background-color: var(--surface-1);
+          }
+        }
+
+        &.surface-opaque-3 {
+          > h1,
+          > h2,
+          > h3,
+          > h4,
+          > h5,
+          > h6 {
+            background-color: var(--surface-opaque-3);
+          }
+
+          > article {
+            background-color: var(--surface-opaque-3);
+          }
+        }
+
+        &.surface-opaque-7 {
+          > h1,
+          > h2,
+          > h3,
+          > h4,
+          > h5,
+          > h6 {
+            background-color: var(--surface-opaque-7);
+          }
+
+          > article {
+            background-color: var(--surface-opaque-7);
+          }
+        }
+      }
+    }
+  }
+
+  :is(picture, img) {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  & img,
+  & picture {
+    object-position: center center;
+    object-fit: cover;
+    overflow: hidden;
+  }
+
+  & div.controls {
+    position: absolute;
+    right: var(--size-6);
+    height: 100%;
+    z-index: var(--layer-important);
+    display: grid;
+    grid-template-rows: auto 1fr 1fr auto;
+    justify-content: space-evenly;
+    gap: var(--size-3);
+    padding: var(--size-3);
+  }
+
+  & div.progress {
+    background: var(--accent-color);
+
+    position: absolute;
+    z-index: var(--layer-3);
+    inline-size: calc(100% - 2 * var(--size-4));
+    block-size: var(--border-size-4);
+    transform-origin: 0 50%;
+  }
+
+  &.fixed {
+    & div.controls {
+      position: fixed;
+      inset-block-start: 0;
+      block-size: 100%;
+    }
+
+    & div.progress {
+      position: fixed;
+      inset-inline-start: 0;
+      inset-block-end: 0;
+      inline-size: 100%;
+    }
+  }
+
+  &.malachite {
+    & div.controls {
+      a.nav-button {
+        color: var(--malachite);
+        border-color: var(--malachite-2--adaptive);
+        box-shadow: 0 0 5px 2px var(--malachite-5);
+
+        &:hover {
+          color: var(--malachite-7--adaptive);
+        }
+      }
+    }
+
+    & div.progress {
+      background: var(--malachite);
+    }
+  }
+
+  &.selective-yellow {
+    & div.controls {
+      a.nav-button {
+        color: var(--selective-yellow);
+        border-color: var(--selective-yellow-2--adaptive);
+        box-shadow: 0 0 5px 2px var(--selective-yellow-5);
+
+        &:hover {
+          color: var(--selective-yellow-7--adaptive);
+        }
+      }
+    }
+
+    & div.progress {
+      background: var(--selective-yellow);
+    }
+  }
+
+  &.celestial-blue {
+    & div.controls {
+      a.nav-button {
+        color: var(--celestial-blue);
+        border-color: var(--celestial-blue-2--adaptive);
+        box-shadow: 0 0 5px 2px var(--celestial-blue-5);
+
+        &:hover {
+          color: var(--celestial-blue-7--adaptive);
+        }
+      }
+    }
+
+    & div.progress {
+      background: var(--celestial-blue);
+    }
+  }
+
+  &.mexican-pink {
+    & div.controls {
+      a.nav-button {
+        color: var(--mexican-pink);
+        border-color: var(--mexican-pink-2--adaptive);
+        box-shadow: 0 0 5px 2px var(--mexican-pink-5);
+
+        &:hover {
+          color: var(--mexican-pink-7--adaptive);
+        }
+      }
+    }
+
+    & div.progress {
+      background: var(--mexican-pink);
+    }
+  }
+
+  &.chartreuse {
+    & div.controls {
+      a.nav-button {
+        color: var(--chartreuse);
+        border-color: var(--chartreuse-2--adaptive);
+        box-shadow: 0 0 5px 2px var(--chartreuse-5);
+
+        &:hover {
+          color: var(--chartreuse-7--adaptive);
+        }
+      }
+    }
+
+    & div.progress {
+      background: var(--chartreuse);
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .sticky-slides > figure {
+    display: grid;
+    grid-template-areas: "overlay-mobile";
+    background-color: var(--surface-1);
+
+    & picture {
+      grid-area: overlay-mobile;
+    }
+
+    > div.slide.text {
+      grid-area: overlay-mobile;
+      padding-block: 0;
+      padding-inline: 0;
+
+      inline-size: 100%;
+      block-size: 100%;
+      margin-inline: auto;
+      z-index: 3;
+
+      & article {
+        margin-inline: auto;
+        margin-block: auto;
+        background-color: var(--surface-opaque-3);
+      }
+    }
+  }
+}
+
+@layer animation.scroll-driven {
+  .sticky-slides {
+    scroll-snap-type: y mandatory;
+    scroll-timeline: --hero block;
+    scroll-behavior: smooth;
+    overscroll-behavior-block: contain;
+
+    & figure {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    & div.controls {
+      a.nav-button:nth-child(1) {
+        animation: auto prev ease;
+        animation-timeline: --hero;
+      }
+
+      a.nav-button:nth-child(2) {
+        animation: auto next ease;
+        animation-timeline: --hero;
+      }
+    }
+
+    & div.progress {
+      animation: auto grow-progress linear forwards;
+      animation-timeline: --hero;
+    }
+  }
+
+  @keyframes grow-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes prev {
+    from {
+      visibility: hidden;
+    }
+  }
+
+  @keyframes next {
+    to {
+      visibility: hidden;
+    }
+  }
+}
