@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0-alpha-2] - 2024-10-20
 
+### Changed
+
+- DOCS: Moved book to root folder + Rename
+
 ### Fixed
 
 - CLI: Self-Updater
