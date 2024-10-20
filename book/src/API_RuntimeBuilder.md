@@ -1,6 +1,6 @@
 # Runtime Builder
 
-The `RuntimeBuilder` is a builder for `inexor_rgf_rt`.
+The `RuntimeBuilder` is a builder for `reactive_graph_runtime_api`.
 
 ```admonish tip title = "Use cases"
 Read about the use cases of the RuntimeBuilder in [System Architecture](./System_Architecture.md#use-cases).
