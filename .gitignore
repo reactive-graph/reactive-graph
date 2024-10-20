@@ -23,8 +23,7 @@ cobertura.xml
 
 *.snap
 
-/docs/book/book/
-/docs/graphql-docs/
+/book/book/
 
 /plugins/deploy/*
 /plugins/installed/*
