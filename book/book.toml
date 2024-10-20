@@ -5,7 +5,7 @@ authors = [
 language = "en"
 multilingual = false
 src = "src"
-title = "Inexor Reactive Graph Flow"
+title = "Reactive Graph"
 
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
