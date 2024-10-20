@@ -9,8 +9,8 @@ queried and selectively modified.
 
 ## Why do we use GraphQL?
 
-As already described, Inexor uses a graph to hold the highly interconnected data of the Entity Component System. A query
-language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
+As already described, **Reactive Graph** uses a graph to hold the highly interconnected data of the Entity Component System.
+A query language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
 to its entity type. It is best described by the three graphics that show the possibilities available through the GraphQL
 interface.
 
