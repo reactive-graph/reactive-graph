@@ -1,5 +1,9 @@
 pre.mermaid {
   max-inline-size: unset;
+
+  svg {
+    max-height: 800px;
+  }
 }
 
 .mermaid {
