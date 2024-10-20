@@ -1,7 +1,7 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotImplemented;
-use crate::client::error::SerializationError;
 use crate::shared::output_format::OutputFormatArgs;
+use reactive_graph_serde::error::SerializationError;
 use reactive_graph_table_model::container::DefaultTableContainer;
 use reactive_graph_table_model::container::TableContainer;
 use reactive_graph_table_model::container::TableInlineFormatSetter;

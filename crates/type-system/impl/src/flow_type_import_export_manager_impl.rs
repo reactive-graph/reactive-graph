@@ -13,12 +13,12 @@ use springtime_di::Component;
 use reactive_graph_graph::FlowType;
 use reactive_graph_graph::FlowTypeId;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_serde::error::DeserializationError;
+use reactive_graph_serde::error::SerializationError;
 use reactive_graph_type_system_api::FlowTypeExportError;
 use reactive_graph_type_system_api::FlowTypeImportError;
 use reactive_graph_type_system_api::FlowTypeImportExportManager;
 use reactive_graph_type_system_api::FlowTypeManager;
-use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct FlowTypeImportExportManagerImpl {

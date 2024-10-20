@@ -63,6 +63,7 @@ restart-after-upgrade = true
 
 [dependencies]
 actix-web = { workspace = true, features = ["rustls-0_23"] }
+anyhow = { workspace = true }
 clap = { workspace = true, features = ["derive", "env"] }
 clap-markdown = { workspace = true }
 clap_complete = { workspace = true }
@@ -77,6 +78,7 @@ serde_json = { workspace = true }
 shellwords = { workspace = true }
 tabled = { workspace = true }
 thiserror = { workspace = true }
+table_to_html = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread"] }
 toml = { workspace = true, optional = true }
 typed-builder = { workspace = true }
@@ -89,6 +91,7 @@ reactive-graph-runtime-model = { version = "0.10.0", path = "../runtime/model" }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api", optional = true }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl", optional = true }
 reactive-graph-client = { version = "0.10.0", path = "../client", optional = true }
+reactive-graph-serde = { version = "0.10.0", path = "../serde" }
 reactive-graph-table-model = { version = "0.10.0", path = "../table-model", optional = true }
 
 [target.'cfg(target_os = "linux")'.dependencies]
@@ -105,8 +108,8 @@ default = ["server", "client", "tooling", "json5", "toml"]
 client = ["reactive-graph-client", "reactive-graph-table-model"]
 server = ["reactive-graph-runtime-api", "reactive-graph-runtime-impl"]
 tooling = []
-json5 = ["dep:json5"]
-toml = ["dep:toml"]
+json5 = ["dep:json5", "reactive-graph-serde/json5"]
+toml = ["dep:toml", "reactive-graph-serde/toml"]
 
 [[bin]]
 name = "reactive-graph"

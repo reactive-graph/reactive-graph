@@ -22,14 +22,15 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
+reactive-graph-serde = { version = "0.10.0", path = "../../serde" }
 reactive-graph-type-system-derive = { version = "0.10.0", path = "../derive", optional = true }
 
 [features]
 default = ["derive", "springtime"]
 derive = ["reactive-graph-type-system-derive", "rust-embed"]
 springtime = ["springtime-di/threadsafe", "springtime-di/derive"]
-json5 = ["dep:json5", "reactive-graph-type-system-derive/json5"]
-toml = ["dep:toml", "reactive-graph-type-system-derive/toml"]
+json5 = ["dep:json5", "reactive-graph-serde/json5", "reactive-graph-type-system-derive/json5"]
+toml = ["dep:toml", "reactive-graph-serde/toml", "reactive-graph-type-system-derive/toml"]
 full = ["derive", "springtime", "json5", "toml"]
 
 [lib]

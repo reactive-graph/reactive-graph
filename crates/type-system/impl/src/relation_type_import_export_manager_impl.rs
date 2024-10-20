@@ -13,12 +13,12 @@ use springtime_di::Component;
 use reactive_graph_graph::RelationType;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_serde::error::DeserializationError;
+use reactive_graph_serde::error::SerializationError;
 use reactive_graph_type_system_api::RelationTypeExportError;
 use reactive_graph_type_system_api::RelationTypeImportError;
 use reactive_graph_type_system_api::RelationTypeImportExportManager;
 use reactive_graph_type_system_api::RelationTypeManager;
-use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct RelationTypeImportExportManagerImpl {

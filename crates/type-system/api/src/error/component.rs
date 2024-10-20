@@ -1,9 +1,8 @@
 use thiserror::Error;
 
 use reactive_graph_graph::prelude::*;
-
-use crate::error::serde::DeserializationError;
-use crate::error::serde::SerializationError;
+use reactive_graph_serde::error::DeserializationError;
+use reactive_graph_serde::error::SerializationError;
 
 #[derive(Debug, Error)]
 pub enum ComponentRegistrationError {

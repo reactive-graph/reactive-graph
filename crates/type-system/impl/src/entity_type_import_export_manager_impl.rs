@@ -13,12 +13,12 @@ use springtime_di::Component;
 use reactive_graph_graph::EntityType;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_lifecycle::Lifecycle;
-use reactive_graph_type_system_api::DeserializationError;
+use reactive_graph_serde::error::DeserializationError;
+use reactive_graph_serde::error::SerializationError;
 use reactive_graph_type_system_api::EntityTypeExportError;
 use reactive_graph_type_system_api::EntityTypeImportError;
 use reactive_graph_type_system_api::EntityTypeImportExportManager;
 use reactive_graph_type_system_api::EntityTypeManager;
-use reactive_graph_type_system_api::SerializationError;
 
 #[derive(Component)]
 pub struct EntityTypeImportExportManagerImpl {
