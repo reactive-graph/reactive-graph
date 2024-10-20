@@ -135,7 +135,7 @@ Please consult the documentation for [configuring plugins](./Configuration_Plugi
 ### Plugin Compatibility
 
 ```log
-17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../reactive-graph-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
+17:18:18.642 [ERROR] [main] Cannot load plugin path/libreactive_graph_plugin_base.so because of a compiler version mismatch: rustc 1.81.0 (expected: 1.82.0)
 ```
 
 ```admonish warning "Rust Compiler"
