@@ -1,0 +1,49 @@
+@import "open-props.min.css";
+@import "open-props-normalize.min.css";
+@import "open-props-buttons.min.css";
+@import "../fonts/fonts.css";
+@import "variables/palette.css";
+@import "variables/gradients.css";
+@import "variables/surface.css";
+@import "variables/patterns.css";
+@import "variables/text.css";
+@import "variables/brand.css";
+@import "atoms/atoms.css";
+@import "molecules/molecules.css";
+@import "organisms/organisms.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  line-height: var(--font-lineheight-4);
+}
+
+a {
+  color: var(--link);
+
+  &:hover {
+    color: var(--link-hover);
+  }
+
+  &:visited {
+    color: var(--link-visited);
+  }
+}
+
+h1 {
+  color: var(--brand);
+}
+
+code {
+  font-family: var(--font-code);
+}
+
+.container {
+  width: min(100% - 2rem, 50rem);
+  margin-inline: auto;
+}

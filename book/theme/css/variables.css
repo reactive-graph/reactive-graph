@@ -2,10 +2,16 @@
 /* Globals */
 
 :root {
-    --sidebar-width: 350px;
+    --sidebar-width: 300px;
+    --sidebar-resize-indicator-width: 8px;
+    --sidebar-resize-indicator-space: 2px;
     --page-padding: 15px;
-    --content-max-width: 750px;
+    --content-max-width: 1024px;
     --menu-bar-height: 50px;
+    --mono-font: var(--font-mono);
+    --code-font-size: var(--font-size-0);
+    --size-content-4: 120ch;
+    --inline-code-color: var(--text-1);
 }
 
 /* Themes */
@@ -36,18 +42,22 @@
     --quote-bg: hsl(226, 15%, 17%);
     --quote-border: hsl(226, 15%, 22%);
 
+    --warning-border: #ff8e00;
+
     --table-border-color: hsl(210, 25%, 13%);
     --table-header-bg: hsl(210, 25%, 28%);
     --table-alternate-bg: hsl(210, 25%, 11%);
 
     --searchbar-border-color: #848484;
-    --searchbar-bg: #424242;
+    --searchbar-bg: var(--surface--celestial-blue-7);
     --searchbar-fg: #fff;
     --searchbar-shadow-color: #d4c89f;
     --searchresults-header-fg: #666;
     --searchresults-border-color: #888;
     --searchresults-li-bg: #252932;
     --search-mark-bg: #e3b171;
+
+    --color-scheme: dark;
 }
 
 .coal {
@@ -76,6 +86,8 @@
     --quote-bg: hsl(234, 21%, 18%);
     --quote-border: hsl(234, 21%, 23%);
 
+    --warning-border: #ff8e00;
+
     --table-border-color: hsl(200, 7%, 13%);
     --table-header-bg: hsl(200, 7%, 28%);
     --table-alternate-bg: hsl(200, 7%, 11%);
@@ -88,6 +100,8 @@
     --searchresults-border-color: #98a3ad;
     --searchresults-li-bg: #2b2b2f;
     --search-mark-bg: #355c7d;
+
+    --color-scheme: dark;
 }
 
 .light {
@@ -116,6 +130,8 @@
     --quote-bg: hsl(197, 37%, 96%);
     --quote-border: hsl(197, 37%, 91%);
 
+    --warning-border: #ff8e00;
+
     --table-border-color: hsl(0, 0%, 95%);
     --table-header-bg: hsl(0, 0%, 80%);
     --table-alternate-bg: hsl(0, 0%, 97%);
@@ -128,8 +144,11 @@
     --searchresults-border-color: #888;
     --searchresults-li-bg: #e4f2fe;
     --search-mark-bg: #a2cff5;
+
+    --color-scheme: light;
 }
 
+.theme,
 .navy {
     --bg: hsl(226, 23%, 11%);
     --fg: #bcbdd0;
@@ -147,27 +166,31 @@
 
     --links: #2b79a2;
 
-    --inline-code-color: #c5c8c6;
+    --inline-code-color: var(--text-1);
 
     --theme-popup-bg: #161923;
     --theme-popup-border: #737480;
-    --theme-hover: #282e40;
+    --theme-hover: var(--surface--celestial-blue-7);
 
     --quote-bg: hsl(226, 15%, 17%);
     --quote-border: hsl(226, 15%, 22%);
+
+    --warning-border: #ff8e00;
 
     --table-border-color: hsl(226, 23%, 16%);
     --table-header-bg: hsl(226, 23%, 31%);
     --table-alternate-bg: hsl(226, 23%, 14%);
 
-    --searchbar-border-color: #aaa;
-    --searchbar-bg: #aeaec6;
-    --searchbar-fg: #000;
-    --searchbar-shadow-color: #aaa;
+    --searchbar-border-color: var(--celestial-blue-3--adaptive);
+    --searchbar-bg: var(--celestial-blue-7--adaptive);
+    --searchbar-fg: var(--text-1--inverse);
+    --searchbar-shadow-color: var(--text-1--inverse);
     --searchresults-header-fg: #5f5f71;
     --searchresults-border-color: #5c5c68;
     --searchresults-li-bg: #242430;
     --search-mark-bg: #a2cff5;
+
+    --color-scheme: dark;
 }
 
 .rust {
@@ -196,6 +219,8 @@
     --quote-bg: hsl(60, 5%, 75%);
     --quote-border: hsl(60, 5%, 70%);
 
+    --warning-border: #ff8e00;
+
     --table-border-color: hsl(60, 9%, 82%);
     --table-header-bg: #b3a497;
     --table-alternate-bg: hsl(60, 9%, 84%);
@@ -208,6 +233,8 @@
     --searchresults-border-color: #888;
     --searchresults-li-bg: #dec2a2;
     --search-mark-bg: #e69f67;
+
+    --color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -228,7 +255,7 @@
 
         --links: #2b79a2;
 
-        --inline-code-color: #c5c8c6;
+        --inline-code-color: var(--text-1);
 
         --theme-popup-bg: #141617;
         --theme-popup-border: #43484d;
@@ -236,6 +263,8 @@
 
         --quote-bg: hsl(234, 21%, 18%);
         --quote-border: hsl(234, 21%, 23%);
+
+        --warning-border: #ff8e00;
 
         --table-border-color: hsl(200, 7%, 13%);
         --table-header-bg: hsl(200, 7%, 28%);

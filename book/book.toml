@@ -21,5 +21,67 @@ renderer = ["html"]
 [output]
 
 [output.html]
-additional-js = ["mermaid.min.js", "mermaid-init.js", "graphql-playground-react-middleware.js", "graphql-playground.js"]
-additional-css = ["././book.css", "././mdbook-admonish.css", "graphql-playground.css", "./mdbook-admonish.css"]
+additional-js = [
+    "mermaid.min.js",
+    "mermaid-init.js",
+    "graphql-playground-react-middleware.js",
+    "graphql-playground.js"
+]
+additional-css = [
+    "./src/design/public/css/open-props.min.css",
+    "./src/design/public/css/open-props-buttons.min.css",
+    "./src/design/public/css/open-props-normalize.min.css",
+    "./src/design/public/css/variables/palette.css",
+    "./src/design/public/css/variables/gradients.css",
+    "./src/design/public/css/variables/surface.css",
+    "./src/design/public/css/variables/patterns.css",
+    "./src/design/public/css/variables/text.css",
+    "./src/design/public/css/variables/brand.css",
+    "./src/design/public/css/atoms/avatar.css",
+    "./src/design/public/css/atoms/blockquote.css",
+    "./src/design/public/css/atoms/code-block.css",
+    "./src/design/public/css/atoms/details.css",
+    "./src/design/public/css/atoms/diagram.css",
+    "./src/design/public/css/atoms/first-graph.css",
+    "./src/design/public/css/atoms/graphiql.css",
+    "./src/design/public/css/atoms/graphql-playground.css",
+    "./src/design/public/css/atoms/graphql-voyager.css",
+    "./src/design/public/css/atoms/heading.css",
+    "./src/design/public/css/atoms/hr.css",
+    "./src/design/public/css/atoms/kbd.css",
+    "./src/design/public/css/atoms/lists.css",
+    "./src/design/public/css/atoms/nav-button.css",
+    "./src/design/public/css/atoms/progress.css",
+    "./src/design/public/css/atoms/slide.css",
+    "./src/design/public/css/atoms/story-button.css",
+    "./src/design/public/css/atoms/subtitle.css",
+    "./src/design/public/css/atoms/surface.css",
+    "./src/design/public/css/atoms/tag.css",
+    "./src/design/public/css/atoms/title.css",
+    "./src/design/public/css/atoms/token.css",
+    "./src/design/public/css/atoms/tooltip.css",
+    "./src/design/public/css/molecules/alert.css",
+    "./src/design/public/css/molecules/article.css",
+    "./src/design/public/css/molecules/breadcrumb.css",
+    "./src/design/public/css/molecules/card.css",
+    "./src/design/public/css/molecules/code-file.css",
+    "./src/design/public/css/molecules/emphasis-box.css",
+    "./src/design/public/css/molecules/horizontal-menu.css",
+    "./src/design/public/css/molecules/intro.css",
+    "./src/design/public/css/molecules/list-box.css",
+    "./src/design/public/css/molecules/logo.css",
+    "./src/design/public/css/molecules/sticky-slides.css",
+    "./src/design/public/css/molecules/story-button-group.css",
+    "./src/design/public/css/molecules/vertical-menu.css",
+    "./src/design/public/css/molecules/zebra-box.css",
+    "./src/design/public/css/organisms/organisms.css",
+    "./src/design/public/css/organisms/footer.css",
+    "./src/design/public/css/organisms/story-matrix.css",
+    "././book.css",
+    "././mdbook-admonish.css",
+    "././graphql-playground.css"
+]
+theme = "theme"
+default-theme = "theme"
+preferred-dark-theme = "theme"
+cname = "docs.reactive-graph.io"

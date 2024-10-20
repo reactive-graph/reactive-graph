@@ -1,0 +1,107 @@
+img.avatar {
+  width: var(--size-10);
+  height: var(--size-10);
+  border-radius: 50%;
+  border: var(--border-size-2) solid var(--accent-color);
+  box-shadow: 0 0 5px 2px var(--accent-color);
+}
+
+img.avatar.square,
+i.avatar.square,
+span.avatar.square {
+  border-radius: var(--size-2);
+}
+
+img.avatar.default,
+i.avatar.default,
+span.avatar.default {
+  border-color: var(--text-1);
+}
+
+img.avatar.surface-1,
+i.avatar.surface-1,
+span.avatar.surface-1 {
+  border-color: var(--surface-4);
+  box-shadow: 0 0 5px 2px var(--surface-1);
+}
+
+img.avatar.surface-2,
+i.avatar.surface-2,
+span.avatar.surface-2 {
+  border-color: var(--surface-3);
+  box-shadow: 0 0 5px 2px var(--surface-2);
+}
+
+img.avatar.surface-3,
+i.avatar.surface-3,
+span.avatar.surface-3 {
+  border-color: var(--surface-2);
+  box-shadow: 0 0 5px 2px var(--surface-3);
+}
+
+img.avatar.surface-4,
+i.avatar.surface-4,
+span.avatar.surface-4 {
+  border-color: var(--surface-1);
+  box-shadow: 0 0 5px 2px var(--surface-4);
+}
+
+img.avatar.malachite,
+i.avatar.malachite,
+span.avatar.malachite {
+  color: var(--malachite);
+  border-color: var(--malachite-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--malachite-5);
+}
+
+img.avatar.selective-yellow,
+i.avatar.selective-yellow,
+span.avatar.selective-yellow {
+  color: var(--selective-yellow);
+  border-color: var(--selective-yellow-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--selective-yellow-5);
+}
+
+img.avatar.celestial-blue,
+i.avatar.celestial-blue,
+span.avatar.celestial-blue {
+  color: var(--celestial-blue);
+  border-color: var(--celestial-blue-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--celestial-blue-5);
+}
+
+img.avatar.mexican-pink,
+i.avatar.mexican-pink,
+span.avatar.mexican-pink {
+  color: var(--mexican-pink);
+  border-color: var(--mexican-pink-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--mexican-pink-5);
+}
+
+img.avatar.chartreuse,
+i.avatar.chartreuse,
+span.avatar.chartreuse {
+  color: var(--chartreuse);
+  border-color: var(--chartreuse-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--chartreuse-5);
+}
+
+/* =============================================================== */
+
+i.avatar,
+span.avatar {
+  display: flex;
+  width: var(--size-10);
+  height: var(--size-10);
+  border-radius: 50%;
+  border: var(--border-size-2) solid var(--accent-color);
+  box-shadow: 0 0 5px 2px var(--accent-color);
+  font-size: var(--font-size-5);
+  align-items: center;
+  justify-content: center;
+}
+
+i.avatar.square,
+span.avatar.square {
+  border-radius: var(--size-2);
+}

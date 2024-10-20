@@ -1,0 +1,19 @@
+progress.malachite {
+  accent-color: var(--malachite);
+}
+
+progress.selective-yellow {
+  accent-color: var(--selective-yellow);
+}
+
+progress.celestial-blue {
+  accent-color: var(--celestial-blue);
+}
+
+progress.mexican-pink {
+  accent-color: var(--mexican-pink);
+}
+
+progress.chartreuse {
+  accent-color: var(--chartreuse);
+}

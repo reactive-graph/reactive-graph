@@ -1,0 +1,220 @@
+details:has(pre.code-block) {
+  summary {
+    font-family: var(--font-code);
+
+    &:after {
+      float: right;
+      content: "CODE";
+    }
+
+    &:has(i.ti-json) {
+      i.ti-json
+    }
+  }
+
+  pre.code-block.hljs {
+    font-size: var(--font-size-fluid-0);
+    max-height: var(--size-15);
+    border: 0;
+    box-shadow: unset;
+  }
+
+  & pre.code-block:before {
+    float: right;
+    margin-top: var(--size-9);
+    transform: translateY(-100%);
+    font-family: "tabler-icons";
+    font-size: var(--font-size-8);
+    color: var(--surface-opaque-3);
+  }
+
+  border: 1px solid var(--surface-3);
+  border-radius: var(--radius-2);
+
+  &.malachite {
+    border-color: var(--malachite-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--malachite-5);
+
+    & pre.code-block:before {
+      color: var(--malachite-2--adaptive);
+    }
+  }
+
+  &.selective-yellow {
+    border-color: var(--selective-yellow-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--selective-yellow-5);
+
+    & pre.code-block:before {
+      color: var(--selective-yellow-2--adaptive);
+    }
+  }
+
+  &.celestial-blue {
+    border-color: var(--celestial-blue-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--celestial-blue-5);
+
+    & pre.code-block:before {
+      color: var(--celestial-blue-2--adaptive);
+    }
+  }
+
+  &.mexican-pink {
+    border-color: var(--mexican-pink-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--mexican-pink-5);
+
+    & pre.code-block:before {
+      color: var(--mexican-pink-2--adaptive);
+    }
+  }
+
+  &.chartreuse {
+    border-color: var(--chartreuse-2--adaptive);
+    box-shadow: 0 0 5px 2px var(--chartreuse-5);
+
+    & pre.code-block:before {
+      color: var(--chartreuse-2--adaptive);
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-diff) {
+  summary {
+    &:after {
+      content: "DIFF";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-diff:before {
+      content: "\ecf1";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-graphql) {
+  summary {
+    &:after {
+      content: "GraphQL";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-graphql:before {
+      content: "\f32c";
+    }
+  }
+}
+
+/* tabler-icons has no icon for java (yet) */
+details:has(pre.code-block.hljs.language-java) {
+  summary {
+    &:after {
+      content: "JAVA";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-java:before {
+      content: "\ef0e";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-javascript) {
+  summary {
+    &:after {
+      content: "JAVASCRIPT";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-javascript:before {
+      content: "\ef0c";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-json) {
+  summary {
+    &:after {
+      content: "JSON";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-json:before {
+      content: "\f7b2";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-python) {
+  summary {
+    &:after {
+      content: "PYTHON";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-python:before {
+      content: "\ed01";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-rust) {
+  summary {
+    &:after {
+      content: "RUST";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-rust:before {
+      content: "\fa53";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-toml) {
+  summary {
+    &:after {
+      content: "TOML";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-toml:before {
+      content: "\fa5d";
+    }
+  }
+}
+
+details:has(pre.code-block.hljs.language-typescript) {
+  summary {
+    &:after {
+      content: "TYPESCRIPT";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-typescript:before {
+      content: "\f5f1";
+    }
+  }
+}
+
+/* tabler-icons has no icon for yaml (yet) */
+details:has(pre.code-block.hljs.language-yaml) {
+  summary {
+    &:after {
+      content: "YAML";
+    }
+  }
+
+  @media (width > 800px) {
+    & pre.code-block.hljs.language-yaml:before {
+      content: "\f47a";
+    }
+  }
+}

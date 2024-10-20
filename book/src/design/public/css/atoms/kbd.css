@@ -1,0 +1,46 @@
+kbd.size-1 {
+  font-size: var(--font-size-2);
+}
+
+kbd.size-2 {
+  font-size: var(--font-size-3);
+}
+
+kbd.size-3 {
+  font-size: var(--font-size-4);
+}
+
+kbd.size-4 {
+  font-size: var(--font-size-5);
+}
+
+
+kbd.default {
+  color: var(--text-1--inverse);
+  background-color: var(--text-1);
+}
+
+kbd.malachite {
+  color: var(--text-1--dark);
+  background-color: var(--malachite-3--adaptive);
+}
+
+kbd.selective-yellow {
+  color: var(--text-1--dark);
+  background-color: var(--selective-yellow-3--adaptive);
+}
+
+kbd.celestial-blue {
+  color: var(--text-1--inverse);
+  background-color: var(--celestial-blue-3--adaptive);
+}
+
+kbd.mexican-pink {
+  color: var(--text-1--light);
+  background-color: var(--mexican-pink-3--adaptive);
+}
+
+kbd.chartreuse {
+  color: var(--text-1--dark);
+  background-color: var(--chartreuse-3--adaptive);
+}
