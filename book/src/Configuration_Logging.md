@@ -44,7 +44,7 @@ Set the default logging level to "debug" and attach the `stdout` and `file-appli
 ```toml
 [root]
 level = "debug"
-appenders = [ "stdout", "file-application" ]
+appenders = ["stdout", "file-application"]
 ```
 
 ## Per Log levels
@@ -52,7 +52,7 @@ appenders = [ "stdout", "file-application" ]
 Set the log level for a specific module:
 
 ```toml
-[loggers."inexor_rgf_application::implementation::component_manager_impl"]
+[loggers."reactive_graph_type_system_impl::component_manager_impl"]
 level = "info"
 ```
 
@@ -62,12 +62,12 @@ level = "info"
 
 ## Additive
 
-Route log events sent to the `inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes` logger
-to the `file-plugin-mqtt` appender, and *not* the normal appenders installed at the root.
+Route log events sent to the `reactive_graph_plugin_service_impl::plugin_resolver_impl` logger
+to the `plugin_resolver` appender, and *not* the normal appenders installed at the root.
 
 ```toml
-[loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
+[loggers."reactive_graph_plugin_service_impl::plugin_resolver_impl"]
 level = "debug"
-appenders = [ "file-plugin-mqtt" ]
+appenders = ["plugin_resolver"]
 additive = false
 ```
