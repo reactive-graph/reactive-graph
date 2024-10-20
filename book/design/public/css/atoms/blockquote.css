@@ -1,0 +1,63 @@
+blockquote {
+  color: var(--text-1);
+  border-color: var(--brand);
+  background-color: var(--surface-2);
+  justify-self: flex-start;
+
+  & cite {
+    rotate: -1deg;
+  }
+}
+
+blockquote.default {
+  color: var(--text-2);
+  border-color: var(--brand);
+  & a {
+    color: var(--mexican-pink-3--adaptive);
+  }
+}
+
+blockquote.malachite {
+  color: var(--text-2);
+  border-color: var(--malachite);
+  & a {
+    color: var(--malachite-3--adaptive);
+  }
+  background-image: var(--pattern-1--malachite);
+}
+
+blockquote.selective-yellow {
+  color: var(--text-2);
+  border-color: var(--selective-yellow);
+  & a {
+    color: var(--selective-yellow-3--adaptive);
+  }
+  background-image: var(--pattern-1--selective-yellow);
+}
+
+blockquote.celestial-blue {
+  color: var(--text-2);
+  border-color: var(--celestial-blue);
+  & a {
+    color: var(--celestial-blue-3--adaptive);
+  }
+  background-image: var(--pattern-1--celestial-blue);
+}
+
+blockquote.mexican-pink {
+  color: var(--text-2);
+  border-color: var(--mexican-pink);
+  & a {
+    color: var(--mexican-pink-3--adaptive);
+  }
+  background-image: var(--pattern-1--mexican-pink);
+}
+
+blockquote.chartreuse {
+  color: var(--text-2);
+  border-color: var(--chartreuse);
+  & a {
+    color: var(--chartreuse-3--adaptive);
+  }
+  background-image: var(--pattern-1--chartreuse);
+}

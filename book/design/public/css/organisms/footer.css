@@ -1,0 +1,180 @@
+.footer {
+  background-color: var(--surface-3);
+}
+
+footer.rg-footer {
+  --section-size: 250px;
+
+  padding-block: var(--size-3);
+  background-color: var(--surface-1);
+
+  .rg-footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, var(--section-size));
+    gap: var(--size-6);
+    place-content: center;
+
+    & .rg-footer-primary-logo {
+      /*grid-column: span 2;*/
+      /*grid-column-start: 1;*/
+      /*grid-column-end: 6;*/
+    }
+  }
+
+  section.rg-footer-section {
+    border-radius: var(--radius-3);
+    padding-block: var(--size-3);
+    padding-inline: var(--size-3);
+    width: var(--section-size);
+    background-image: var(--pattern-1--celestial-blue);
+
+    & h4.rg-footer-heading {
+      font-family: var(--font-sans-light);
+      font-size: var(--size-8);
+      display: flex;
+      /*grid-template-columns: 1fr;*/
+      /*place-content: start;*/
+
+      img {
+        align-content: start;
+        width: 200px;
+        height: 200px;
+
+        &:hover {
+          animation: var(--animation-spin) forwards;
+          /*rotate: var(--rotate-1);*/
+        }
+      }
+
+      & a {
+        padding-left: var(--size-2);
+        color: var(--text-1);
+      }
+    }
+
+    &.rg-footer-product-name {
+      border: 1px solid red;
+
+      & h4.rg-footer-product-name {
+        background: var(--surface-1);
+        padding: var(--size-2);
+      }
+    }
+
+    & h5.rg-footer-heading {
+      border-radius: var(--radius-2);
+      background: var(--surface-1);
+      padding: var(--size-2);
+      text-align: center;
+      font-family: var(--font-sans);
+      font-size: var(--size-4);
+    }
+
+    & ul.rg-footer-list {
+      list-style: none;
+      padding: 0;
+
+      & li {
+        padding-inline: 0;
+        padding-block: var(--size-2);
+
+        & a {
+          font-family: var(--font-sans);
+          font-size: var(--size-3);
+          border-radius: var(--radius-2);
+          display: block;
+          width: 100%;
+          background: var(--surface-1);
+          color: var(--text-1);
+          text-align: center;
+          padding-block: var(--size-1);
+        }
+      }
+    }
+
+    &:nth-child(5n-3) {
+      background-image: var(--pattern-1--malachite);
+      color: var(--malachite);
+
+      & h5.rg-footer-heading {
+        background: var(--surface--malachite-3);
+        color: var(--text-1--dark);
+      }
+
+      &:hover {
+        background-image: var(--pattern-1--malachite--fill);
+
+        & h5.rg-footer-heading {
+          background: var(--surface--malachite-1);
+          color: var(--text-1--dark);
+        }
+
+        a {
+          color: var(--text-1);
+        }
+      }
+    }
+
+    &:nth-child(5n-2) {
+      background-image: var(--pattern-1--selective-yellow);
+      color: var(--selective-yellow);
+
+      & h5.rg-footer-heading {
+        background: var(--surface--selective-yellow-3);
+        color: var(--text-1--dark);
+      }
+
+      &:hover {
+        background-image: var(--pattern-1--selective-yellow--fill);
+
+        & h5.rg-footer-heading {
+          background: var(--surface--selective-yellow-1);
+          color: var(--text-1--dark);
+        }
+      }
+    }
+
+    &:nth-child(5n-1) {
+      background-image: var(--pattern-1--celestial-blue);
+      color: var(--celestial-blue);
+
+      & h5.rg-footer-heading {
+        background: var(--surface--celestial-blue-3);
+        color: var(--text-1--dark);
+      }
+
+      &:hover {
+        background-image: var(--pattern-1--celestial-blue--fill);
+      }
+    }
+
+    &:nth-child(5n) {
+      background-image: var(--pattern-1--mexican-pink);
+      color: var(--mexican-pink);
+
+      & h5.rg-footer-heading {
+        background: var(--surface--mexican-pink-3);
+        color: var(--text-1--dark);
+      }
+
+      &:hover {
+        background-image: var(--pattern-1--mexican-pink--fill);
+      }
+    }
+
+    &:nth-child(5n+1) {
+      background-image: var(--pattern-1--chartreuse);
+      color: var(--chartreuse);
+
+      & h5.rg-footer-heading {
+        background: var(--surface--chartreuse-3);
+        color: var(--text-1--dark);
+      }
+
+      &:hover {
+        background-image: var(--pattern-1--chartreuse--fill);
+      }
+    }
+
+  }
+}

@@ -1,196 +1,331 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
-    <head>
-        <!-- Book generated using mdBook -->
-        <meta charset="UTF-8">
-        <title>Inexor Reactive Graph Flow</title>
-        <meta name="robots" content="noindex">
+<html lang="en" class="theme" dir="ltr">
+<head>
+  <!-- Book generated using mdBook -->
+  <meta charset="UTF-8">
+  <title>Reactive Graph</title>
+    <meta name="robots" content="noindex">
 
 
-        <!-- Custom HTML head -->
-        
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff">
+  <!-- Custom HTML head -->
+  
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+    <link rel="icon" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.png">
+  <link rel="stylesheet" href="./src/design/public/css/open-props.min.css">
+  <link rel="stylesheet" href="./src/design/public/css/open-props-buttons.min.css">
+  <link rel="stylesheet" href="./src/design/public/css/open-props-normalize.min.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <!--  <link rel="stylesheet" href="css/variables.css">-->
+  <link rel="stylesheet" href="css/general.css">
+  <link rel="stylesheet" href="css/chrome.css">
+    <link rel="stylesheet" href="css/print.css" media="print">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+  <!-- Fonts -->
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="fonts/tabler-icons.css">
 
-        <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+  <!-- Highlight.js Stylesheets -->
+  <!--  <link rel="stylesheet" href="highlight.css">-->
+  <!--  <link rel="stylesheet" href="tomorrow-night.css">-->
+  <!--  <link rel="stylesheet" href="ayu-highlight.css">-->
+  <script src="./design/public/js/highlight/highlight.min.js"></script>
+  <script src="./design/public/js/highlight/highlight-copy.min.js"></script>
 
-        <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="././book.css">
-        <link rel="stylesheet" href="././mdbook-admonish.css">
-        <link rel="stylesheet" href="graphql-playground.css">
-        <link rel="stylesheet" href="./mdbook-admonish.css">
+  <!-- Custom theme stylesheets -->
+    <link rel="stylesheet" href="./src/design/public/css/open-props.min.css">
+    <link rel="stylesheet" href="./src/design/public/css/open-props-buttons.min.css">
+    <link rel="stylesheet" href="./src/design/public/css/open-props-normalize.min.css">
+    <link rel="stylesheet" href="./src/design/public/css/variables/palette.css">
+    <link rel="stylesheet" href="./src/design/public/css/variables/gradients.css">
+    <link rel="stylesheet" href="./src/design/public/css/variables/surface.css">
+    <link rel="stylesheet" href="./src/design/public/css/variables/patterns.css">
+    <link rel="stylesheet" href="./src/design/public/css/variables/text.css">
+    <link rel="stylesheet" href="./src/design/public/css/variables/brand.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/avatar.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/blockquote.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/code-block.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/details.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/diagram.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/first-graph.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/graphiql.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/graphql-playground.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/graphql-voyager.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/heading.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/hr.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/kbd.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/lists.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/nav-button.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/progress.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/slide.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/story-button.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/subtitle.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/surface.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/tag.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/title.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/token.css">
+    <link rel="stylesheet" href="./src/design/public/css/atoms/tooltip.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/alert.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/article.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/breadcrumb.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/card.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/code-file.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/emphasis-box.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/horizontal-menu.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/intro.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/list-box.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/logo.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/sticky-slides.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/story-button-group.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/vertical-menu.css">
+    <link rel="stylesheet" href="./src/design/public/css/molecules/zebra-box.css">
+    <link rel="stylesheet" href="./src/design/public/css/organisms/organisms.css">
+    <link rel="stylesheet" href="./src/design/public/css/organisms/footer.css">
+    <link rel="stylesheet" href="./src/design/public/css/organisms/story-matrix.css">
+    <link rel="stylesheet" href="././book.css">
+    <link rel="stylesheet" href="././mdbook-admonish.css">
+    <link rel="stylesheet" href="././graphql-playground.css">
 
-    </head>
-    <body class="sidebar-visible no-js">
-    <div id="body-container">
-        <!-- Provide site root to javascript -->
-        <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
-        </script>
 
-        <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script>
-            try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+</head>
+<body class="sidebar-visible no-js">
+<div id="body-container">
+  <!-- Provide site root to javascript -->
+  <script>
+    var path_to_root = "";
+    var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "theme" : "theme";
+  </script>
 
-                if (theme.startsWith('"') && theme.endsWith('"')) {
-                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
-                }
+  <!-- Work around some values being stored in localStorage wrapped in quotes -->
+  <script>
+    try {
+      var theme = localStorage.getItem('mdbook-theme');
+      var sidebar = localStorage.getItem('mdbook-sidebar');
 
-                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
-                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
-                }
-            } catch (e) { }
-        </script>
+      if (theme.startsWith('"') && theme.endsWith('"')) {
+        localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+      }
 
-        <!-- Set the theme before any content is loaded, prevents flash -->
-        <script>
-            var theme;
-            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
-            if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
-            html.classList.remove('light')
-            html.classList.add(theme);
-            var body = document.querySelector('body');
-            body.classList.remove('no-js')
-            body.classList.add('js');
-        </script>
+      if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+        localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+      }
+    } catch (e) {
+    }
+  </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+  <!-- Set the theme before any content is loaded, prevents flash -->
+  <script>
+    var theme;
+    try {
+      theme = localStorage.getItem('mdbook-theme');
+    } catch (e) {
+    }
+    if (theme === null || theme === undefined) {
+      theme = default_theme;
+    }
+    var html = document.querySelector('html');
+    html.classList.remove('theme')
+    html.classList.add(theme);
+    var body = document.querySelector('body');
+    body.classList.remove('no-js')
+    body.classList.add('js');
+  </script>
 
-        <!-- Hide / unhide sidebar before it is displayed -->
-        <script>
-            var body = document.querySelector('body');
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
-            if (document.body.clientWidth >= 1080) {
-                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
-                sidebar = sidebar || 'visible';
-            } else {
-                sidebar = 'hidden';
-            }
-            sidebar_toggle.checked = sidebar === 'visible';
-            body.classList.remove('sidebar-visible');
-            body.classList.add("sidebar-" + sidebar);
-        </script>
+  <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="About.html"><strong aria-hidden="true">1.</strong> About</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="About_Design_Goals.html"><strong aria-hidden="true">1.1.</strong> Design Goals</a></li><li class="chapter-item expanded "><a href="About_Roadmap.html"><strong aria-hidden="true">1.2.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="About_Changelog.html"><strong aria-hidden="true">1.3.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="Development_License.html"><strong aria-hidden="true">1.4.</strong> License</a></li><li class="chapter-item expanded "><a href="Development_Code_of_Conduct.html"><strong aria-hidden="true">1.5.</strong> Code of Conduct</a></li></ol></li><li class="chapter-item expanded "><a href="Installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="Configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Configuration_Logging.html"><strong aria-hidden="true">3.1.</strong> Logging</a></li><li class="chapter-item expanded "><a href="Configuration_Instance.html"><strong aria-hidden="true">3.2.</strong> Instance</a></li><li class="chapter-item expanded "><a href="Configuration_HTTP_GraphQL_Server.html"><strong aria-hidden="true">3.3.</strong> HTTP/GraphQL Server</a></li><li class="chapter-item expanded "><a href="Configuration_Plugins.html"><strong aria-hidden="true">3.4.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="Configuration_Remotes.html"><strong aria-hidden="true">3.5.</strong> Remotes</a></li></ol></li><li class="chapter-item expanded "><a href="Model.html"><strong aria-hidden="true">4.</strong> Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Model_Component.html"><strong aria-hidden="true">4.1.</strong> Component</a></li><li class="chapter-item expanded "><a href="Model_Entity_Type.html"><strong aria-hidden="true">4.2.</strong> Entity Type</a></li><li class="chapter-item expanded "><a href="Model_Relation_Type.html"><strong aria-hidden="true">4.3.</strong> Relation Type</a></li><li class="chapter-item expanded "><a href="Model_Property_Type.html"><strong aria-hidden="true">4.4.</strong> Property Type</a></li><li class="chapter-item expanded "><a href="Model_Flow_Type.html"><strong aria-hidden="true">4.5.</strong> Flow Type</a></li><li class="chapter-item expanded "><a href="Model_Extension.html"><strong aria-hidden="true">4.6.</strong> Extension</a></li><li class="chapter-item expanded "><a href="Model_Entity_Instance.html"><strong aria-hidden="true">4.7.</strong> Entity Instance</a></li><li class="chapter-item expanded "><a href="Model_Relation_Instance.html"><strong aria-hidden="true">4.8.</strong> Relation Instance</a></li><li class="chapter-item expanded "><a href="Model_Property_Instance.html"><strong aria-hidden="true">4.9.</strong> Property Instance</a></li><li class="chapter-item expanded "><a href="Model_Flow_Instances.html"><strong aria-hidden="true">4.10.</strong> Flow Instances</a></li></ol></li><li class="chapter-item expanded "><a href="GraphQL_API.html"><strong aria-hidden="true">5.</strong> GraphQL API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="GraphQL_API_Components.html"><strong aria-hidden="true">5.1.</strong> Components</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Types.html"><strong aria-hidden="true">5.2.</strong> Entity Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Types.html"><strong aria-hidden="true">5.3.</strong> Relation Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Types.html"><strong aria-hidden="true">5.4.</strong> Flow Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Extension.html"><strong aria-hidden="true">5.5.</strong> Extension</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Instances.html"><strong aria-hidden="true">5.6.</strong> Entity Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Instances.html"><strong aria-hidden="true">5.7.</strong> Relation Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Instances.html"><strong aria-hidden="true">5.8.</strong> Flow Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Property_Instance_Subscriptions.html"><strong aria-hidden="true">5.9.</strong> Property Instance Subscriptions</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Instance_info.html"><strong aria-hidden="true">5.10.</strong> Instance Info</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Plugins.html"><strong aria-hidden="true">5.11.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Remotes.html"><strong aria-hidden="true">5.12.</strong> Remotes</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Shutdown.html"><strong aria-hidden="true">5.13.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Dynamic_Graph_API.html"><strong aria-hidden="true">6.</strong> Dynamic Graph API</a></li><li class="chapter-item expanded "><a href="Plugin_System.html"><strong aria-hidden="true">7.</strong> Plugin System</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugin_System_Component_Provider.html"><strong aria-hidden="true">7.1.</strong> Component Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Type_Provider.html"><strong aria-hidden="true">7.2.</strong> Entity Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Type_Provider.html"><strong aria-hidden="true">7.3.</strong> Relation Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Flow_Provider.html"><strong aria-hidden="true">7.4.</strong> Flow Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Component_Behaviour_Provider.html"><strong aria-hidden="true">7.5.</strong> Component Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Behaviour_Provider.html"><strong aria-hidden="true">7.6.</strong> Entity Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Behaviour_Provider.html"><strong aria-hidden="true">7.7.</strong> Relation Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Web_Resource_Provider.html"><strong aria-hidden="true">7.8.</strong> Web Resource Provider</a></li></ol></li><li class="chapter-item expanded "><a href="Plugins.html"><strong aria-hidden="true">8.</strong> Plugins</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugins_Arithmetic.html"><strong aria-hidden="true">8.1.</strong> Arithmetic</a></li><li class="chapter-item expanded "><a href="Plugins_Asset.html"><strong aria-hidden="true">8.2.</strong> Asset</a></li><li class="chapter-item expanded "><a href="Plugins_Base.html"><strong aria-hidden="true">8.3.</strong> Base</a></li><li class="chapter-item expanded "><a href="Plugins_Binary.html"><strong aria-hidden="true">8.4.</strong> Binary</a></li><li class="chapter-item expanded "><a href="Plugins_Comparison.html"><strong aria-hidden="true">8.5.</strong> Comparison</a></li><li class="chapter-item expanded "><a href="Plugins_Config.html"><strong aria-hidden="true">8.6.</strong> Config</a></li><li class="chapter-item expanded "><a href="Plugins_Connector.html"><strong aria-hidden="true">8.7.</strong> Connector</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Client.html"><strong aria-hidden="true">8.8.</strong> GraphQL Client</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Schema_Visualization.html"><strong aria-hidden="true">8.9.</strong> GraphQL Schema Visualization</a></li><li class="chapter-item expanded "><a href="Plugins_HTTP.html"><strong aria-hidden="true">8.10.</strong> HTTP</a></li><li class="chapter-item expanded "><a href="Plugins_JSON.html"><strong aria-hidden="true">8.11.</strong> JSON</a></li><li class="chapter-item expanded "><a href="Plugins_Logical.html"><strong aria-hidden="true">8.12.</strong> Logical</a></li><li class="chapter-item expanded "><a href="Plugins_Meta_Data.html"><strong aria-hidden="true">8.13.</strong> Meta Data</a></li><li class="chapter-item expanded "><a href="Plugins_Notification.html"><strong aria-hidden="true">8.14.</strong> Notification</a></li><li class="chapter-item expanded "><a href="Plugins_Numeric.html"><strong aria-hidden="true">8.15.</strong> Numeric</a></li><li class="chapter-item expanded "><a href="Plugins_Random.html"><strong aria-hidden="true">8.16.</strong> Random</a></li><li class="chapter-item expanded "><a href="Plugins_State.html"><strong aria-hidden="true">8.17.</strong> State</a></li><li class="chapter-item expanded "><a href="Plugins_Scheduler.html"><strong aria-hidden="true">8.18.</strong> Scheduler</a></li><li class="chapter-item expanded "><a href="Plugins_String.html"><strong aria-hidden="true">8.19.</strong> String</a></li><li class="chapter-item expanded "><a href="Plugins_System_Command.html"><strong aria-hidden="true">8.20.</strong> System Command</a></li><li class="chapter-item expanded "><a href="Plugins_System_Environment.html"><strong aria-hidden="true">8.21.</strong> System Environment</a></li><li class="chapter-item expanded "><a href="Plugins_Taxonomy.html"><strong aria-hidden="true">8.22.</strong> Taxonomy</a></li><li class="chapter-item expanded "><a href="Plugins_Value.html"><strong aria-hidden="true">8.23.</strong> Value</a></li></ol></li><li class="chapter-item expanded "><a href="Events.html"><strong aria-hidden="true">9.</strong> Events</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Events_System.html"><strong aria-hidden="true">9.1.</strong> System Events</a></li><li class="chapter-item expanded "><a href="Events_Shutdown.html"><strong aria-hidden="true">9.2.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns.html"><strong aria-hidden="true">10.</strong> Reactive Graph Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Generator_Action.html"><strong aria-hidden="true">10.1.</strong> Generators & Actions</a></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Time_Graph.html"><strong aria-hidden="true">10.2.</strong> Time Graph</a></li></ol></li><li class="chapter-item expanded "><a href="System_Architecture.html"><strong aria-hidden="true">11.</strong> System Architecture</a></li><li class="chapter-item expanded "><a href="API.html"><strong aria-hidden="true">12.</strong> Application Programming Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="API_Builders.html"><strong aria-hidden="true">12.1.</strong> Builders</a></li><li class="chapter-item expanded "><a href="API_RuntimeBuilder.html"><strong aria-hidden="true">12.2.</strong> RuntimeBuilder</a></li></ol></li><li class="chapter-item expanded "><a href="CLI.html"><strong aria-hidden="true">13.</strong> CLI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="CLI_Usage.html"><strong aria-hidden="true">13.1.</strong> General Usage</a></li><li class="chapter-item expanded "><a href="CLI_REPL.html"><strong aria-hidden="true">13.2.</strong> REPL</a></li><li class="chapter-item expanded "><a href="CLI_Reference.html"><strong aria-hidden="true">13.3.</strong> Command Reference</a></li></ol></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">14.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Development_Supported_Platforms.html"><strong aria-hidden="true">14.1.</strong> Supported Platforms</a></li><li class="chapter-item expanded "><a href="Development_Build.html"><strong aria-hidden="true">14.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="Development_Code_Formatting.html"><strong aria-hidden="true">14.3.</strong> Code Formatting</a></li><li class="chapter-item expanded "><a href="Development_Binaries.html"><strong aria-hidden="true">14.4.</strong> Binaries</a></li><li class="chapter-item expanded "><a href="Development_Packaging.html"><strong aria-hidden="true">14.5.</strong> Packaging</a></li><li class="chapter-item expanded "><a href="Development_Documentation.html"><strong aria-hidden="true">14.6.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="Development_Contributing.html"><strong aria-hidden="true">14.7.</strong> Contributing</a></li><li class="chapter-item expanded "><a href="Development_Security.html"><strong aria-hidden="true">14.8.</strong> Security</a></li></ol></li><li class="chapter-item expanded "><a href="Limitations.html"><strong aria-hidden="true">15.</strong> Limitations</a></li></ol>
-            </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
-                <div class="sidebar-resize-indicator"></div>
-            </div>
-        </nav>
+  <!-- Hide / unhide sidebar before it is displayed -->
+  <script>
+    var body = document.querySelector('body');
+    var sidebar = null;
+    var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+    if (document.body.clientWidth >= 1080) {
+      try {
+        sidebar = localStorage.getItem('mdbook-sidebar');
+      } catch (e) {
+      }
+      sidebar = sidebar || 'visible';
+    } else {
+      sidebar = 'hidden';
+    }
+    sidebar_toggle.checked = sidebar === 'visible';
+    body.classList.remove('sidebar-visible');
+    body.classList.add("sidebar-" + sidebar);
+  </script>
 
-        <!-- Track and set sidebar scroll position -->
-        <script>
-            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
-            sidebarScrollbox.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
-                }
-            }, { passive: true });
-            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
-            sessionStorage.removeItem('sidebar-scroll');
-            if (sidebarScrollTop) {
-                // preserve sidebar scroll position when navigating via links within sidebar
-                sidebarScrollbox.scrollTop = sidebarScrollTop;
-            } else {
-                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
-                var activeSection = document.querySelector('#sidebar .active');
-                if (activeSection) {
-                    activeSection.scrollIntoView({ block: 'center' });
-                }
-            }
-        </script>
+  <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+    <div class="sidebar-header">
+      <h3>
+        <img src="design/public/logo/rendered/mexican-pink/reactive-graph-200x200.png" alt="This Month in Reactive Graph!" class="sidebar-logo">
+      </h3>
+    </div>
+    <div class="sidebar-footer">
+      <div class="rg-icon-grid">
+        <div>
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" title="Creative Commons Attribution-ShareAlike 4.0">
+            <img src="images/creative-commons.svg" alt="Creative Commons Attribution-ShareAlike 4.0">
+          </a>
+        </div>
+        <div>
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" title="Creative Commons Attribution-ShareAlike 4.0">
+            <img src="images/creative-commons-by.svg" alt="Creative Commons Attribution-ShareAlike 4.0">
+          </a>
+        </div>
+        <div>
+          <a href="https://creativecommons.org/licenses/by-sa/4.0/" title="Creative Commons Attribution-ShareAlike 4.0">
+            <img src="images/creative-commons-sa.svg" alt="Creative Commons Attribution-ShareAlike 4.0">
+          </a>
+        </div>
+        <div>
+          <a href="https://github.com/reactive-graph/reactive-graph" title="Git repository" aria-label="Git repository">
+            <img src="images/brand-github.svg" alt="Git repository">
+          </a>
+        </div>
+        <div>
+          <a href="https://www.youtube.com/@reactive-graph" title="YouTube" aria-label="YouTube">
+            <img src="images/brand-youtube.svg" alt="YouTube">
+          </a>
+        </div>
+        <div>
+          <a href="https://www.facebook.com/reactive.graph" title="Facebook" aria-label="Facebook">
+            <img src="images/brand-facebook.svg" alt="Facebook">
+          </a>
+        </div>
+        <div>
+          <a href="https://floss.social/@reactive_graph" title="Mastodon" aria-label="Mastodon">
+            <img src="images/brand-mastodon.svg" alt="Mastodon">
+          </a>
+        </div>
+        <div>
+          <a href="/rss.xml" title="RSS Feed">
+            <img src="images/rss.svg" alt="RSS Feed">
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-scrollbox">
+      <ol class="chapter"><li class="chapter-item expanded "><a href="About.html"><strong aria-hidden="true">1.</strong> About</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="About_Design_Goals.html"><strong aria-hidden="true">1.1.</strong> Design Goals</a></li><li class="chapter-item expanded "><a href="About_Roadmap.html"><strong aria-hidden="true">1.2.</strong> Roadmap</a></li><li class="chapter-item expanded "><a href="About_Changelog.html"><strong aria-hidden="true">1.3.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="Development_License.html"><strong aria-hidden="true">1.4.</strong> License</a></li><li class="chapter-item expanded "><a href="Development_Code_of_Conduct.html"><strong aria-hidden="true">1.5.</strong> Code of Conduct</a></li></ol></li><li class="chapter-item expanded "><a href="Installation.html"><strong aria-hidden="true">2.</strong> Installation</a></li><li class="chapter-item expanded "><a href="Configuration.html"><strong aria-hidden="true">3.</strong> Configuration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Configuration_Logging.html"><strong aria-hidden="true">3.1.</strong> Logging</a></li><li class="chapter-item expanded "><a href="Configuration_Instance.html"><strong aria-hidden="true">3.2.</strong> Instance</a></li><li class="chapter-item expanded "><a href="Configuration_HTTP_GraphQL_Server.html"><strong aria-hidden="true">3.3.</strong> HTTP/GraphQL Server</a></li><li class="chapter-item expanded "><a href="Configuration_Plugins.html"><strong aria-hidden="true">3.4.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="Configuration_Remotes.html"><strong aria-hidden="true">3.5.</strong> Remotes</a></li></ol></li><li class="chapter-item expanded "><a href="Model.html"><strong aria-hidden="true">4.</strong> Model</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Model_Component.html"><strong aria-hidden="true">4.1.</strong> Component</a></li><li class="chapter-item expanded "><a href="Model_Entity_Type.html"><strong aria-hidden="true">4.2.</strong> Entity Type</a></li><li class="chapter-item expanded "><a href="Model_Relation_Type.html"><strong aria-hidden="true">4.3.</strong> Relation Type</a></li><li class="chapter-item expanded "><a href="Model_Property_Type.html"><strong aria-hidden="true">4.4.</strong> Property Type</a></li><li class="chapter-item expanded "><a href="Model_Flow_Type.html"><strong aria-hidden="true">4.5.</strong> Flow Type</a></li><li class="chapter-item expanded "><a href="Model_Extension.html"><strong aria-hidden="true">4.6.</strong> Extension</a></li><li class="chapter-item expanded "><a href="Model_Entity_Instance.html"><strong aria-hidden="true">4.7.</strong> Entity Instance</a></li><li class="chapter-item expanded "><a href="Model_Relation_Instance.html"><strong aria-hidden="true">4.8.</strong> Relation Instance</a></li><li class="chapter-item expanded "><a href="Model_Property_Instance.html"><strong aria-hidden="true">4.9.</strong> Property Instance</a></li><li class="chapter-item expanded "><a href="Model_Flow_Instances.html"><strong aria-hidden="true">4.10.</strong> Flow Instances</a></li></ol></li><li class="chapter-item expanded "><a href="GraphQL_API.html"><strong aria-hidden="true">5.</strong> GraphQL API</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="GraphQL_API_Components.html"><strong aria-hidden="true">5.1.</strong> Components</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Types.html"><strong aria-hidden="true">5.2.</strong> Entity Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Types.html"><strong aria-hidden="true">5.3.</strong> Relation Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Types.html"><strong aria-hidden="true">5.4.</strong> Flow Types</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Extension.html"><strong aria-hidden="true">5.5.</strong> Extension</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Entity_Instances.html"><strong aria-hidden="true">5.6.</strong> Entity Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Relation_Instances.html"><strong aria-hidden="true">5.7.</strong> Relation Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Flow_Instances.html"><strong aria-hidden="true">5.8.</strong> Flow Instances</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Property_Instance_Subscriptions.html"><strong aria-hidden="true">5.9.</strong> Property Instance Subscriptions</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Instance_info.html"><strong aria-hidden="true">5.10.</strong> Instance Info</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Plugins.html"><strong aria-hidden="true">5.11.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Remotes.html"><strong aria-hidden="true">5.12.</strong> Remotes</a></li><li class="chapter-item expanded "><a href="GraphQL_API_Shutdown.html"><strong aria-hidden="true">5.13.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Dynamic_Graph_API.html"><strong aria-hidden="true">6.</strong> Dynamic Graph API</a></li><li class="chapter-item expanded "><a href="Plugin_System.html"><strong aria-hidden="true">7.</strong> Plugin System</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugin_System_Component_Provider.html"><strong aria-hidden="true">7.1.</strong> Component Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Type_Provider.html"><strong aria-hidden="true">7.2.</strong> Entity Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Type_Provider.html"><strong aria-hidden="true">7.3.</strong> Relation Type Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Flow_Provider.html"><strong aria-hidden="true">7.4.</strong> Flow Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Component_Behaviour_Provider.html"><strong aria-hidden="true">7.5.</strong> Component Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Entity_Behaviour_Provider.html"><strong aria-hidden="true">7.6.</strong> Entity Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Relation_Behaviour_Provider.html"><strong aria-hidden="true">7.7.</strong> Relation Behaviour Provider</a></li><li class="chapter-item expanded "><a href="Plugin_System_Web_Resource_Provider.html"><strong aria-hidden="true">7.8.</strong> Web Resource Provider</a></li></ol></li><li class="chapter-item expanded "><a href="Plugins.html"><strong aria-hidden="true">8.</strong> Plugins</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Plugins_Arithmetic.html"><strong aria-hidden="true">8.1.</strong> Arithmetic</a></li><li class="chapter-item expanded "><a href="Plugins_Asset.html"><strong aria-hidden="true">8.2.</strong> Asset</a></li><li class="chapter-item expanded "><a href="Plugins_Base.html"><strong aria-hidden="true">8.3.</strong> Base</a></li><li class="chapter-item expanded "><a href="Plugins_Binary.html"><strong aria-hidden="true">8.4.</strong> Binary</a></li><li class="chapter-item expanded "><a href="Plugins_Comparison.html"><strong aria-hidden="true">8.5.</strong> Comparison</a></li><li class="chapter-item expanded "><a href="Plugins_Config.html"><strong aria-hidden="true">8.6.</strong> Config</a></li><li class="chapter-item expanded "><a href="Plugins_Connector.html"><strong aria-hidden="true">8.7.</strong> Connector</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Client.html"><strong aria-hidden="true">8.8.</strong> GraphQL Client</a></li><li class="chapter-item expanded "><a href="Plugins_GraphQL_Schema_Visualization.html"><strong aria-hidden="true">8.9.</strong> GraphQL Schema Visualization</a></li><li class="chapter-item expanded "><a href="Plugins_HTTP.html"><strong aria-hidden="true">8.10.</strong> HTTP</a></li><li class="chapter-item expanded "><a href="Plugins_JSON.html"><strong aria-hidden="true">8.11.</strong> JSON</a></li><li class="chapter-item expanded "><a href="Plugins_Logical.html"><strong aria-hidden="true">8.12.</strong> Logical</a></li><li class="chapter-item expanded "><a href="Plugins_Meta_Data.html"><strong aria-hidden="true">8.13.</strong> Meta Data</a></li><li class="chapter-item expanded "><a href="Plugins_Notification.html"><strong aria-hidden="true">8.14.</strong> Notification</a></li><li class="chapter-item expanded "><a href="Plugins_Numeric.html"><strong aria-hidden="true">8.15.</strong> Numeric</a></li><li class="chapter-item expanded "><a href="Plugins_Random.html"><strong aria-hidden="true">8.16.</strong> Random</a></li><li class="chapter-item expanded "><a href="Plugins_State.html"><strong aria-hidden="true">8.17.</strong> State</a></li><li class="chapter-item expanded "><a href="Plugins_Scheduler.html"><strong aria-hidden="true">8.18.</strong> Scheduler</a></li><li class="chapter-item expanded "><a href="Plugins_String.html"><strong aria-hidden="true">8.19.</strong> String</a></li><li class="chapter-item expanded "><a href="Plugins_System_Command.html"><strong aria-hidden="true">8.20.</strong> System Command</a></li><li class="chapter-item expanded "><a href="Plugins_System_Environment.html"><strong aria-hidden="true">8.21.</strong> System Environment</a></li><li class="chapter-item expanded "><a href="Plugins_Taxonomy.html"><strong aria-hidden="true">8.22.</strong> Taxonomy</a></li><li class="chapter-item expanded "><a href="Plugins_Value.html"><strong aria-hidden="true">8.23.</strong> Value</a></li></ol></li><li class="chapter-item expanded "><a href="Events.html"><strong aria-hidden="true">9.</strong> Events</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Events_System.html"><strong aria-hidden="true">9.1.</strong> System Events</a></li><li class="chapter-item expanded "><a href="Events_Shutdown.html"><strong aria-hidden="true">9.2.</strong> Shutdown</a></li></ol></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns.html"><strong aria-hidden="true">10.</strong> Reactive Graph Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Generator_Action.html"><strong aria-hidden="true">10.1.</strong> Generators & Actions</a></li><li class="chapter-item expanded "><a href="Reactive_Graph_Patterns_Time_Graph.html"><strong aria-hidden="true">10.2.</strong> Time Graph</a></li></ol></li><li class="chapter-item expanded "><a href="System_Architecture.html"><strong aria-hidden="true">11.</strong> System Architecture</a></li><li class="chapter-item expanded "><a href="API.html"><strong aria-hidden="true">12.</strong> Application Programming Interface</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="API_Builders.html"><strong aria-hidden="true">12.1.</strong> Builders</a></li><li class="chapter-item expanded "><a href="API_RuntimeBuilder.html"><strong aria-hidden="true">12.2.</strong> RuntimeBuilder</a></li></ol></li><li class="chapter-item expanded "><a href="CLI.html"><strong aria-hidden="true">13.</strong> CLI</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="CLI_Usage.html"><strong aria-hidden="true">13.1.</strong> General Usage</a></li><li class="chapter-item expanded "><a href="CLI_REPL.html"><strong aria-hidden="true">13.2.</strong> REPL</a></li><li class="chapter-item expanded "><a href="CLI_Reference.html"><strong aria-hidden="true">13.3.</strong> Command Reference</a></li></ol></li><li class="chapter-item expanded "><a href="Development.html"><strong aria-hidden="true">14.</strong> Development</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="Development_Supported_Platforms.html"><strong aria-hidden="true">14.1.</strong> Supported Platforms</a></li><li class="chapter-item expanded "><a href="Development_Build.html"><strong aria-hidden="true">14.2.</strong> Build</a></li><li class="chapter-item expanded "><a href="Development_Code_Formatting.html"><strong aria-hidden="true">14.3.</strong> Code Formatting</a></li><li class="chapter-item expanded "><a href="Development_Binaries.html"><strong aria-hidden="true">14.4.</strong> Binaries</a></li><li class="chapter-item expanded "><a href="Development_Packaging.html"><strong aria-hidden="true">14.5.</strong> Packaging</a></li><li class="chapter-item expanded "><a href="Development_Documentation.html"><strong aria-hidden="true">14.6.</strong> Documentation</a></li><li class="chapter-item expanded "><a href="Development_Contributing.html"><strong aria-hidden="true">14.7.</strong> Contributing</a></li><li class="chapter-item expanded "><a href="Development_Security.html"><strong aria-hidden="true">14.8.</strong> Security</a></li></ol></li><li class="chapter-item expanded "><a href="Limitations.html"><strong aria-hidden="true">15.</strong> Limitations</a></li></ol>
+    </div>
+    <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+      <div class="sidebar-resize-indicator"></div>
+    </div>
+  </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+  <!-- Track and set sidebar scroll position -->
+  <script>
+    var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+    sidebarScrollbox.addEventListener('click', function (e) {
+      if (e.target.tagName === 'A') {
+        sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+      }
+    }, {passive: true});
+    var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+    sessionStorage.removeItem('sidebar-scroll');
+    if (sidebarScrollTop) {
+      // preserve sidebar scroll position when navigating via links within sidebar
+      sidebarScrollbox.scrollTop = sidebarScrollTop;
+    } else {
+      // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+      var activeSection = document.querySelector('#sidebar .active');
+      if (activeSection) {
+        activeSection.scrollIntoView({block: 'center'});
+      }
+    }
+  </script>
 
-            <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
-                    <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
-                        </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
-                        </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
-                        </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
+  <div id="page-wrapper" class="page-wrapper">
 
-                    <h1 class="menu-title">Inexor Reactive Graph Flow</h1>
+    <div class="page">
+            <div id="menu-bar-hover-placeholder"></div>
+      <div id="menu-bar" class="menu-bar sticky">
+        <div class="left-buttons">
+          <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents"
+                 aria-controls="sidebar">
+            <img src="images/menu-2.svg" alt="Search" class="rg-header-icons">
+          </label>
+          <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false"
+                  aria-controls="theme-list" style="display: none;">
+            <i class="ti ti-paint-filled"></i>
+          </button>
+          <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+            <li role="none">
+              <button role="menuitem" class="theme" id="light">Light</button>
+            </li>
+            <li role="none">
+              <button role="menuitem" class="theme" id="rust">Rust</button>
+            </li>
+            <li role="none">
+              <button role="menuitem" class="theme" id="coal">Coal</button>
+            </li>
+            <li role="none">
+              <button role="menuitem" class="theme" id="navy">Navy</button>
+            </li>
+            <li role="none">
+              <button role="menuitem" class="theme" id="ayu">Ayu</button>
+            </li>
+            <li role="none">
+              <button role="menuitem" class="theme" id="theme">Reactive Graph</button>
+            </li>
+          </ul>
+            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false"
+                    aria-keyshortcuts="S" aria-controls="searchbar">
+              <img src="images/search.svg" alt="Search" class="rg-header-icons">
+            </button>
+        </div>
 
-                    <div class="right-buttons">
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
-                        </a>
+        <h1 class="menu-title">
+          Reactive Graph
+        </h1>
 
-                    </div>
-                </div>
+        <div class="right-buttons">
+          <a href="https://www.reactive-graph.io/" title="www.reactive-graph.io" aria-label="www.reactive-graph.io">
+            <img src="design/public/logo/mono/reactive-graph-black.svg" alt="www.reactive-graph.io" class="rg-header-icons right-buttons-logo">
+          </a>
+          <a href="https://github.com/reactive-graph/reactive-graph" title="Git repository" aria-label="Git repository">
+            <img src="images/brand-github.svg" alt="Git repository" class="rg-header-icons">
+          </a>
+          <a href="https://www.youtube.com/@reactive-graph" title="YouTube" aria-label="YouTube">
+            <img src="images/brand-youtube.svg" alt="YouTube" class="rg-header-icons">
+          </a>
+          <a href="https://www.facebook.com/reactive.graph" title="Facebook" aria-label="Facebook">
+            <img src="images/brand-facebook.svg" alt="Facebook" class="rg-header-icons">
+          </a>
+          <a href="https://floss.social/@reactive_graph" title="Mastodon" aria-label="Mastodon">
+            <img src="images/brand-mastodon.svg" alt="Mastodon" class="rg-header-icons">
+          </a>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
-                    </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
-                        </ul>
-                    </div>
-                </div>
+        </div>
+      </div>
 
-                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
-                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
-                    });
-                </script>
+        <div id="search-wrapper" class="hidden">
+          <form id="searchbar-outer" class="searchbar-outer">
+            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer"
+                   aria-describedby="searchresults-header">
+          </form>
+          <div id="searchresults-outer" class="searchresults-outer hidden">
+            <div id="searchresults-header" class="searchresults-header"></div>
+            <ul id="searchresults">
+            </ul>
+          </div>
+        </div>
 
-                <div id="content" class="content">
-                    <main>
-                        <h1 id="about-inexor-reactive-graph-flow"><a class="header" href="#about-inexor-reactive-graph-flow">About <code>Inexor Reactive Graph Flow</code></a></h1>
-<h2 id="what-is-inexor"><a class="header" href="#what-is-inexor">What is Inexor?</a></h2>
-<img src="images/rgf_logo.png" style="float: right; text-align: right; width: 200px; height: 200px; margin-left: 50px;" />
-<ul>
-<li>Inexor will be a new first-person shooter game which is based on a new octree-based game engine.</li>
-<li>Inexor focuses on classic gameplay as we've seen in Cube2 or the Quake series.</li>
-<li>Inexor will be written from ground up new in C++17 and Rust.</li>
-<li>You can contribute anything you want: code, content, ideas...</li>
-<li>Inexor and all its content is 100% open source!</li>
-</ul>
-<h2 id="graph"><a class="header" href="#graph">Graph</a></h2>
-<h3 id="what-is-a-graph"><a class="header" href="#what-is-a-graph">What is a Graph?</a></h3>
+      <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+      <script>
+        document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+        document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+        Array.from(document.querySelectorAll('#sidebar a')).forEach(function (link) {
+          link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+        });
+      </script>
+
+      <div id="content" class="content">
+        <main>
+          <h1 id="about-reactive-graph"><a class="header" href="#about-reactive-graph">About <code>Reactive Graph</code></a></h1>
+<h2 id="what-is-a-graph"><a class="header" href="#what-is-a-graph">What is a Graph?</a></h2>
 <p>A graph organizes highly interconnected data. The state of an Entity Component System can be ideally represented with
-the help of the graph. Inexor is the first game engine to introduce a graph as a basis.</p>
+the help of the graph.</p>
 <pre class="mermaid">graph TD;
     A(Entity A)===&gt;|Relation A|B(Entity B);
     A(Entity A)===&gt;|Relation B|C(Entity C);
@@ -207,20 +342,20 @@ the help of the graph. Inexor is the first game engine to introduce a graph as a
 <li>Benefit from the semantics of highly connected, intuitive data</li>
 <li>Properties can store not only certain primitive data but complete documents</li>
 </ul>
-<h3 id="what-type-of-graph-does-inexor-implement"><a class="header" href="#what-type-of-graph-does-inexor-implement">What type of graph does Inexor implement?</a></h3>
-<p>Internally, Inexor is an in-memory graph database with the following characteristics:</p>
+<h3 id="what-type-of-graph-does-reactive-graph-implement"><a class="header" href="#what-type-of-graph-does-reactive-graph-implement">What type of graph does Reactive Graph implement?</a></h3>
+<p>Internally, <strong>Reactive Graph</strong> is an in-memory graph database with the following characteristics:</p>
 <div class="table-wrapper"><table><thead><tr><th>Characteristics</th><th>Description</th></tr></thead><tbody>
 <tr><td>Directed Graph</td><td>Each relation points from one entity to another entity</td></tr>
 <tr><td>Typed Graph</td><td><ul><li>Node: Each entity instance is of an entity type</li><li>Edge: Each relation instance is of a relation type</li></ul></td></tr>
 <tr><td>Property Graph</td><td><ul><li>Entities have properties</li><li>Relations have properties</li></ul></td></tr>
 </tbody></table>
 </div>
-<p>In addition, Inexor takes up concepts from entity component systems. Types, i.e. entity types and relation types, are
-assembled using components. The type system itself is flat and supports composition rather than inheritance. Components
-can be added or removed from instances, i.e. entity instances or relation instances.</p>
+<p>In addition, <strong>Reactive Graph</strong> takes up concepts from entity component systems. Types, i.e. entity types and relation
+types, are assembled using components. The type system itself is flat and supports composition rather than inheritance.
+Components can be added or removed from instances, i.e. entity instances or relation instances.</p>
 <h2 id="what-is-reactive"><a class="header" href="#what-is-reactive">What is Reactive?</a></h2>
 <p>Now that we understand how data is stored, here's how data interacts. The approach is that the data itself is "alive".
-To do this, Inexor adopts a concept from reactive programming.</p>
+To do this, <strong>Reactive Graph</strong> adopts a concept from reactive programming.</p>
 <blockquote>
 <p>In computing, reactive programming is a declarative programming paradigm concerned with data streams and the propagation of change.</p>
 </blockquote>
@@ -238,8 +373,8 @@ triggering a cascade of propagations.</p>
     D--&gt;|stream|E(Property Instance 5);
     B--&gt;|stream|F(Property Instance 6);
 </pre>
-<p>In addition, Inexor remembers the last value in each property instance. This is done by subscribing to your own data
-stream and caching it. This allows subsequent querying of the value of a property instance.</p>
+<p>In addition, <strong>Reactive Graph</strong> remembers the last value in each property instance. This is done by subscribing to your
+own data stream and caching it. This allows subsequent querying of the value of a property instance.</p>
 <p>Remember this basic concept:</p>
 <ol>
 <li>Every property is a stream not only data</li>
@@ -247,8 +382,8 @@ stream and caching it. This allows subsequent querying of the value of a propert
 <li>The streams of two properties can be connected and changes will be propagated (cascade)</li>
 </ol>
 <h3 id="behaviour-driven-design"><a class="header" href="#behaviour-driven-design">Behaviour driven design</a></h3>
-<p>The data flow is therefore automatic. Building on this, Inexor applies the concept of behaviour-driven design. The goal
-is to use these data streams to simulate behaviour.</p>
+<p>The data flow is therefore automatic. Building on this, <strong>Reactive Graph</strong> applies the concept of behaviour-driven design.
+The goal is to use these data streams to simulate behaviour.</p>
 <p>Behaviors can be implemented on components, entities and relations. To do this, one or more incoming data streams are
 combined, calculations are performed and written to one or more outgoing data streams.</p>
 <p>For example, the entity type "AND gate" implements a behavior by subscribing to the two input properties, combining them
@@ -372,8 +507,8 @@ restarting the core application.</p>
 </div>
 </div>
 <h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
-<p>The <strong>Inexor RGF Runtime</strong> (<code>inexor_rgf_rt</code>) consists of a few central building blocks. As already mentioned in the
-introduction, this includes a built-in graph database.</p>
+<p>The <strong>Reactive Graph</strong> runtime (<code>reactive_graph_runtime_api</code>) consists of a few central building blocks. As already
+mentioned in the introduction, this includes a built-in graph database.</p>
 <p>Based on this, the type system is managed by the runtime. This means that in the business logic layer there is
 a management service to edit the type system. With the help of these services, new types can be created, queried,
 searched for and deleted.</p>
@@ -432,7 +567,6 @@ for an embedded zero code flow control and an embedded graph database</li>
 <li>Use either the CLI, the flow editor or any other tool to manipulate the type system and/or the instance system</li>
 </ul>
 <p><a href="./System_Architecture.html">System Architecture</a></p>
-<img src="images/rgf_logo_k1_h1_sm.png" />
 <div style="break-before: page; page-break-before: always;"></div><h1 id="roadmap"><a class="header" href="#roadmap">Roadmap</a></h1>
 <p>See <a href="https://github.com/reactive-graph/reactive-graph/milestones">Milestones</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changelog"><a class="header" href="#changelog">Changelog</a></h1>
@@ -440,6 +574,11 @@ for an embedded zero code flow control and an embedded graph database</li>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="0100-alpha-2---2024-10-20"><a class="header" href="#0100-alpha-2---2024-10-20">[0.10.0-alpha-2] - 2024-10-20</a></h2>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li>DOCS: Moved book to root folder</li>
+<li>DOCS: Applied Reactive Graph Design System</li>
+</ul>
 <h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
 <ul>
 <li>CLI: Self-Updater</li>
@@ -492,7 +631,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>JSON-Schemas</li>
 <li>CLI REPL + Improved CLI</li>
 </ul>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
 <ul>
 <li>Use TypedBuilder in core-model + migrate all calls to the new builders</li>
 <li>Refactored reactive layer out of core-model</li>
@@ -543,7 +682,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation: Cross compilation and supported platforms</li>
 <li>Documentation: Packaging for debian</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>All APIs: Delete methods returns boolean</li>
 <li>CLI: refactored CLI tables from the client to the CLI crate</li>
@@ -600,7 +739,7 @@ changes</li>
 <li>GraphQL: Allow sorting of type properties</li>
 <li>GraphQL: Allow sorting of type extensions</li>
 </ul>
-<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
 <ul>
 <li>Workspace: Create mono repository</li>
 <li>Workspace: Migrate repository frp into workspace</li>
@@ -636,7 +775,7 @@ changes</li>
 <li>Model: Use concrete type system identifiers instead of strings</li>
 <li>API: Validate types on construction (validate that components or entity types are present)</li>
 </ul>
-<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
 <ul>
 <li>Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)</li>
 <li>Behaviours: Reimplemented lots of reactive behaviours</li>
@@ -654,7 +793,7 @@ changes</li>
 <li>Plugins: Dependency information</li>
 <li>Plugins: Expose GraphQL query service to plugins</li>
 </ul>
-<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
+<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
 <ul>
 <li>Plugin: Dedicated error messages for the plugin API</li>
 <li>Plugin: Default trait implementations for the plugin API to reduce boilerplate</li>
@@ -676,7 +815,7 @@ changes</li>
 <li>Core: Provide required components and entity types in the application core</li>
 <li>Core: Event System for Type System and Instance System</li>
 </ul>
-<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
+<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
 <ul>
 <li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
 <li>GraphQL: Rename type_name to type</li>
@@ -695,7 +834,7 @@ changes</li>
 <li>Plugin API: Added find, import &amp; export methods for all managers</li>
 <li>Core: Search for type names with wildcards</li>
 </ul>
-<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
+<h3 id="changed-7"><a class="header" href="#changed-7">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
@@ -705,7 +844,6 @@ changes</li>
 <li>Plugin-API: Removed dependencies for faster builds and smaller plugin
 binaries: <code>actix-http</code>, <code>actix-web</code>, <code>async-std</code>, <code>query_interface</code>, <code>inexor-rgf-core-reactive</code></li>
 </ul>
-<img src="images/rgf_logo_k1_fg_sm.png" />
 <div style="break-before: page; page-break-before: always;"></div><h1 id="mit-license"><a class="header" href="#mit-license">MIT License</a></h1>
 <p>Copyright (c) 2011-2024 Andreas Schaeffer, the Reactive Graph Contributors and the Inexor Collective.</p>
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1066,11 +1204,11 @@ pattern = "{d(%Y-%m-%d %H:%M:%S%.3f)} [{l}] [{T}] {M}:{L} - {m}{n}"
 <p>Set the default logging level to "debug" and attach the <code>stdout</code> and <code>file-application</code> appender to the root.</p>
 <pre><code class="language-toml">[root]
 level = "debug"
-appenders = [ "stdout", "file-application" ]
+appenders = ["stdout", "file-application"]
 </code></pre>
 <h2 id="per-log-levels"><a class="header" href="#per-log-levels">Per Log levels</a></h2>
 <p>Set the log level for a specific module:</p>
-<pre><code class="language-toml">[loggers."inexor_rgf_application::implementation::component_manager_impl"]
+<pre><code class="language-toml">[loggers."reactive_graph_type_system_impl::component_manager_impl"]
 level = "info"
 </code></pre>
 <div id="admonition-documentation-of-the-logging-library" class="admonition admonish-tip" role="note" aria-labelledby="admonition-documentation-of-the-logging-library-title">
@@ -1085,11 +1223,11 @@ level = "info"
 </div>
 </div>
 <h2 id="additive"><a class="header" href="#additive">Additive</a></h2>
-<p>Route log events sent to the <code>inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes</code> logger
-to the <code>file-plugin-mqtt</code> appender, and <em>not</em> the normal appenders installed at the root.</p>
-<pre><code class="language-toml">[loggers."inexor_rgf_plugin_mqtt::behaviour::relation::mqtt_subscribes"]
+<p>Route log events sent to the <code>reactive_graph_plugin_service_impl::plugin_resolver_impl</code> logger
+to the <code>plugin_resolver</code> appender, and <em>not</em> the normal appenders installed at the root.</p>
+<pre><code class="language-toml">[loggers."reactive_graph_plugin_service_impl::plugin_resolver_impl"]
 level = "debug"
-appenders = [ "file-plugin-mqtt" ]
+appenders = ["plugin_resolver"]
 additive = false
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configure-instance"><a class="header" href="#configure-instance">Configure Instance</a></h1>
@@ -1264,7 +1402,7 @@ no bearer token is used.</p>
 bearer = "..."
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="model"><a class="header" href="#model">Model</a></h1>
-<p>The data model of Inexor Reactive Graph Flow can be divided into the type system and the instance system.</p>
+<p>The data model of <strong>Reactive Graph</strong> can be divided into the type system and the instance system.</p>
 <h2 id="type-system"><a class="header" href="#type-system">Type System</a></h2>
 <p>The type system is similar to type systems in programming languages. An object is of a specific, previously defined
 type.</p>
@@ -1555,7 +1693,7 @@ appearance of a connector of this type in the flow editor.</p>
 <tr><td>Extensions</td><td>Vec&lt;<a href="./Model_Extension.html">Extension</a>&gt;</td><td>A list of extensions which contains additional information</td></tr>
 </tbody></table>
 </div>
-<h2 id="graph-1"><a class="header" href="#graph-1">Graph</a></h2>
+<h2 id="graph"><a class="header" href="#graph">Graph</a></h2>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Type)===&gt;|&quot;Relation Type&quot;|B(Inbound Entity Type);
 </pre>
@@ -2027,7 +2165,7 @@ label and transports significantly more information about what is actually happe
 <tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
 </div>
-<h2 id="graph-2"><a class="header" href="#graph-2">Graph</a></h2>
+<h2 id="graph-1"><a class="header" href="#graph-1">Graph</a></h2>
 <pre class="mermaid">graph LR;
     EI(Entity Instance);
     I1(Entity Instance)===&gt;|&quot;Relation Instance&quot;|EI;
@@ -2162,7 +2300,7 @@ multiple relation instances of the same type between the same outbound entity in
 <tr><td>Behaviours</td><td>Vec<String></td><td>The currently applied behaviours</td></tr>
 </tbody></table>
 </div>
-<h2 id="graph-3"><a class="header" href="#graph-3">Graph</a></h2>
+<h2 id="graph-2"><a class="header" href="#graph-2">Graph</a></h2>
 <pre class="mermaid">graph LR;
     A(Outbound Entity Instance)===&gt;|&quot;Relation Instance&quot;|B(Inbound Entity Instance);
 </pre>
@@ -2243,7 +2381,7 @@ instances).</p>
 <tr><td>Type</td><td><a href="./Model_Property_Type.html">Property Type</a></td><td>The type of the property</td></tr>
 </tbody></table>
 </div>
-<h2 id="graph-4"><a class="header" href="#graph-4">Graph</a></h2>
+<h2 id="graph-3"><a class="header" href="#graph-3">Graph</a></h2>
 <pre class="mermaid">graph TD;
     PI1(Property Instance);
     PI2(Property Instance);
@@ -2365,8 +2503,8 @@ an entity instance can be used in multiple flow instances.</p>
 <p>GraphQL stands for "Graph Query Language". It is a query language with which data present in graphs can be efficiently
 queried and selectively modified.</p>
 <h2 id="why-do-we-use-graphql"><a class="header" href="#why-do-we-use-graphql">Why do we use GraphQL?</a></h2>
-<p>As already described, Inexor uses a graph to hold the highly interconnected data of the Entity Component System. A query
-language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
+<p>As already described, <strong>Reactive Graph</strong> uses a graph to hold the highly interconnected data of the Entity Component System.
+A query language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
 to its entity type. It is best described by the three graphics that show the possibilities available through the GraphQL
 interface.</p>
 <p>GraphQL was chosen as the query language because it is independent of a specific programming language and because it can
@@ -2430,16 +2568,16 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="60036e93-6133-4445-a77c-1da4a164d4e8" src="/examples/graphql/types/components/tabs.json">
+<graphql-playground id="854eb1b5-6521-4244-beb9-933e7f532c39" src="/examples/graphql/types/components/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="7f507aed-335e-4c82-b0b0-7e6eadf8c272" src="/examples/graphql/types/entities/tabs.json">
+<graphql-playground id="973eb782-60ef-4250-aa95-450c8f9b4255" src="/examples/graphql/types/entities/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
-<graphql-playground id="772a7051-5644-42df-a1ec-e25c42767ee5" src="/examples/graphql/types/relations/tabs.json">
+<graphql-playground id="7d1bd7a1-665f-4481-8677-56c03d35de4b" src="/examples/graphql/types/relations/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-types"><a class="header" href="#flow-types">Flow Types</a></h1>
-<graphql-playground id="f00a3dc6-7557-4579-98a5-26da31efe6fc" src="/examples/graphql/types/flows/tabs.json">
+<graphql-playground id="7c6dd199-5c4c-46c6-9b0f-0ca5a6c61a8e" src="/examples/graphql/types/flows/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
 <h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
@@ -2743,7 +2881,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-instance-info"><a class="header" href="#graphql-api-instance-info"><center>GraphQL API: Instance Info</center></a></h1>
-<graphql-playground id="ab16fc21-488c-41a9-8ca8-85ed1a78cef1" src="/examples/graphql/system/instance_info/tabs.json">
+<graphql-playground id="cfd27f3b-81a8-441e-ad14-38da899eb54c" src="/examples/graphql/system/instance_info/tabs.json">
 </graphql-playground>
 <h2 id="functionality"><a class="header" href="#functionality">Functionality</a></h2>
 <ul>
@@ -2776,7 +2914,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-plugins"><a class="header" href="#graphql-api-plugins"><center>GraphQL API: Plugins</center></a></h1>
-<graphql-playground id="f34beace-d61a-480e-a857-3c4673b722d3" src="/examples/graphql/system/plugins/tabs.json">
+<graphql-playground id="e2148d53-6a63-4de8-94b7-7b4a263acef0" src="/examples/graphql/system/plugins/tabs.json">
 </graphql-playground>
 <h2 id="functionality-1"><a class="header" href="#functionality-1">Functionality</a></h2>
 <ul>
@@ -2792,7 +2930,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li>Unsatisfied dependencies</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-remotes"><a class="header" href="#graphql-api-remotes"><center>GraphQL API: Remotes</center></a></h1>
-<graphql-playground id="0f5b8c71-36e4-4470-97e7-4b37151cfb04" src="/examples/graphql/system/remotes/tabs.json">
+<graphql-playground id="da90bd24-3c37-423a-acb6-451add675b6f" src="/examples/graphql/system/remotes/tabs.json">
 </graphql-playground>
 <h2 id="functionality-2"><a class="header" href="#functionality-2">Functionality</a></h2>
 <ul>
@@ -2811,7 +2949,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-shutdown"><a class="header" href="#graphql-api-shutdown"><center>GraphQL API: Shutdown</center></a></h1>
-<graphql-playground id="88a54a24-c741-4c3e-938e-36dfc0f0a33d" src="/examples/graphql/system/shutdown/tabs.json">
+<graphql-playground id="af01fd58-678c-411f-b9b6-a519aa85c825" src="/examples/graphql/system/shutdown/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-graph-api"><a class="header" href="#dynamic-graph-api">Dynamic Graph API</a></h1>
 <h3 id="advantages"><a class="header" href="#advantages">Advantages</a></h3>
@@ -2861,7 +2999,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="faf36caf-66c2-4081-9934-8938848d9968" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="19aad82f-dae6-44ec-942d-1e3f66d94e42" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -3340,10 +3478,10 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="e74f813c-ad64-473c-8afe-b79d464a37a0" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
+<graphql-playground id="0e5cdf7e-f744-4db5-9642-5d97590625ab" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="b07c4110-8a59-41e6-badb-ef61c67970ba" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
+<graphql-playground id="750bec61-9f68-43b5-80b3-4c4c502a4b09" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -3359,7 +3497,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="0d0f4aa6-aa78-46d3-a10b-0bb4776132cc" src="/examples/graphql/plugins/asset/tabs.json">
+<graphql-playground id="2c979bae-5214-4ec2-b1a6-29fcbd466d77" src="/examples/graphql/plugins/asset/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3458,9 +3596,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="4c515729-ace2-4616-ad77-a969b6d95e2a" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
+<graphql-playground id="7ace567d-38c3-4c1b-92f1-2ad31bd055a2" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
 </graphql-playground>
-<graphql-playground id="da6f7330-79b3-400c-a8c6-a67da45de232" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
+<graphql-playground id="cea66d5d-4e18-4e18-9a2a-9bc066802256" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3493,7 +3631,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="52915c01-fdf2-4156-bbb3-8ba53a3a7ad7" src="/examples/graphql/plugins/comparison/tabs.json">
+<graphql-playground id="b0ec0d94-1515-4e1b-8daf-8817872d6e55" src="/examples/graphql/plugins/comparison/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3516,7 +3654,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="0be9f992-c1c6-4442-8f73-6e4e1d108d13" src="/examples/graphql/plugins/config/tabs.json">
+<graphql-playground id="92186b9e-6dbe-45c6-a27b-210acd92eaea" src="/examples/graphql/plugins/config/tabs.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3664,7 +3802,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="5731e9f9-8387-4d4a-993a-396595741276" src="/examples/graphql/plugins/connector/tabs.json">
+<graphql-playground id="d9c38ea0-1f43-4c19-9de0-cc6d06e6c9f0" src="/examples/graphql/plugins/connector/tabs.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3797,7 +3935,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="e84d9a53-52de-4bf2-b370-4c2c6dfd0481" src="/examples/graphql/plugins/http/tabs.json">
+<graphql-playground id="261ccaff-fe77-41dd-8e05-aebe2333769b" src="/examples/graphql/plugins/http/tabs.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
@@ -3960,7 +4098,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="a2521d13-7246-4515-9843-f6180c55ab0a" src="/examples/graphql/plugins/json/tabs.json">
+<graphql-playground id="a061608f-705a-4759-8623-0169a59eeebf" src="/examples/graphql/plugins/json/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4038,7 +4176,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="a886181e-05b0-4d9e-a84c-a04e637387fb" src="/examples/graphql/plugins/logical/tabs.json">
+<graphql-playground id="770a49cc-e376-440f-afd4-bb6983615251" src="/examples/graphql/plugins/logical/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
@@ -4075,7 +4213,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<graphql-playground id="93964378-b819-431b-a123-b13270b61fdc" src="/examples/graphql/plugins/metadata/tabs.json">
+<graphql-playground id="1b83a53d-85a8-44f8-af93-16632b670d02" src="/examples/graphql/plugins/metadata/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4258,7 +4396,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="4a884677-9e24-4662-8140-b4d35c05ca92" src="/examples/graphql/plugins/numeric/tabs.json">
+<graphql-playground id="8d533197-b661-4791-9d03-dc3d1f80d4ff" src="/examples/graphql/plugins/numeric/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4301,9 +4439,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="259a1e9e-4186-4d8f-8126-fd0c574a25fe" src="/examples/graphql/plugins/random/number/tabs.json">
+<graphql-playground id="acbbdb35-5cf6-461b-ae81-bb43edd4c072" src="/examples/graphql/plugins/random/number/tabs.json">
 </graphql-playground>
-<graphql-playground id="5b489a9e-fe59-456d-ac98-77cd28ca870e" src="/examples/graphql/plugins/random/string/tabs.json">
+<graphql-playground id="a02c1047-d6b1-41af-ac96-6ad9e26f8f82" src="/examples/graphql/plugins/random/string/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-state"><a class="header" href="#plugin-state">Plugin: State</a></h1>
 <p>This plugin provides state components. States extends <a href="./Plugins_Value.html">values</a> with debounce mechanism. States are
@@ -4453,7 +4591,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
-<graphql-playground id="1e3ba709-e00b-40b5-a83e-596dc6657bba" src="/examples/graphql/plugins/scheduler/tabs.json">
+<graphql-playground id="35c7ff4e-55b9-4d59-8254-506a9f0a4084" src="/examples/graphql/plugins/scheduler/tabs.json">
 </graphql-playground>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4626,11 +4764,11 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-18"><a class="header" href="#usage-18">Usage</a></h2>
-<graphql-playground id="2040f8d3-a013-4250-9fa5-430afb032526" src="/examples/graphql/plugins/string/concat/tabs.json">
+<graphql-playground id="cf91b758-6a01-494f-8dce-6400fc40e41e" src="/examples/graphql/plugins/string/concat/tabs.json">
 </graphql-playground>
-<graphql-playground id="1ce12a36-d40d-49c0-ab12-8d4694b3c78f" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
+<graphql-playground id="d604eca6-c910-4e98-991b-288c334e99d0" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
 </graphql-playground>
-<graphql-playground id="3fa83978-0f46-4440-8428-d6523880563b" src="/examples/graphql/plugins/string/trim/tabs.json">
+<graphql-playground id="a5d4a55a-b4c4-46ab-bc60-6f06e6b9ac6e" src="/examples/graphql/plugins/string/trim/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4814,7 +4952,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="6954bb87-1053-4195-8570-f78b2f241f2c" src="/examples/graphql/plugins/system-environment/tabs.json">
+<graphql-playground id="5c056df1-7dda-42c5-b130-5ff4be386364" src="/examples/graphql/plugins/system-environment/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -4862,9 +5000,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-21"><a class="header" href="#usage-21">Usage</a></h2>
-<graphql-playground id="152f8cf1-a183-42bb-b515-0bc467433da4" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
+<graphql-playground id="fccd8b03-3d6d-42c9-b7b4-223f64e4ee0a" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
 </graphql-playground>
-<graphql-playground id="f8dde2b0-f7f5-4070-8d3f-d4eee5d0501d" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
+<graphql-playground id="72ebc3f7-5f3a-422d-a378-3c0597c5515c" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value components. Value components contains a single property of a specific data type.
@@ -4908,9 +5046,9 @@ this happens only at initialization.</p>
 <li><a href="./Plugins_State.html">States</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="events"><a class="header" href="#events">Events</a></h1>
-<p>Events are (of course!) represented as reactive entity instances that have a component <code>event</code>. Since Inexor is already
-a reactive system it wouldn't make sense to implement another event system. So, basically the events are conventions
-rather than implementation.</p>
+<p>Events are (of course!) represented as reactive entity instances that have a component <code>event</code>. Since Reactive Graph
+is already a reactive system it wouldn't make sense to implement another event system. So, basically the events are
+conventions rather than implementation.</p>
 <h2 id="component"><a class="header" href="#component">Component</a></h2>
 <p>Entity types or relation types can be composed with the component <code>event</code> in order to have an property <code>event</code>.</p>
 <div class="table-wrapper"><table><thead><tr><th>Component</th><th>Property</th><th>Data Type</th><th>Socket Type</th></tr></thead><tbody>
@@ -5184,30 +5322,30 @@ an action.</p>
 <h2 id="components-12"><a class="header" href="#components-12">Components</a></h2>
 <p>First things first: It's important to understand which component is responsible for which task and how they
 are connected.</p>
-<h3 id="inexor-rgf-client-api-inexor_rgf_client"><a class="header" href="#inexor-rgf-client-api-inexor_rgf_client">Inexor RGF Client API <code>inexor_rgf_client</code></a></h3>
-<p>The <strong>Client API</strong> (<code>inexor_rgf_client</code>) is a rust crate which can be used to communicate with a runtime via it's
+<h3 id="reactive-graph-client-api-reactive_graph_client"><a class="header" href="#reactive-graph-client-api-reactive_graph_client">Reactive Graph Client API <code>reactive_graph_client</code></a></h3>
+<p>The <strong>Client API</strong> (<code>reactive_graph_client</code>) is a rust crate which can be used to communicate with a runtime via it's
 GraphQL API. Instead of writing GraphQL queries one just have to call a (rust) method of the <strong>Client API</strong>.</p>
-<h3 id="graphql-server-inexor_rgf_rt_standalone"><a class="header" href="#graphql-server-inexor_rgf_rt_standalone">GraphQL Server <code>inexor_rgf_rt_standalone</code></a></h3>
+<h3 id="graphql-server-reactive_graph_server"><a class="header" href="#graphql-server-reactive_graph_server">GraphQL Server <code>reactive_graph_server</code></a></h3>
 <p>The <strong>GraphQL Server</strong> is part of the standalone executable. It is integrated in a HTTP webserver and accepts
 requests with GraphQL queries and mutations. The GraphQL Server calls the GraphQL Query Service of the runtime.</p>
-<h3 id="graphql-query-service-inexor_rgf_rt"><a class="header" href="#graphql-query-service-inexor_rgf_rt">GraphQL Query Service <code>inexor_rgf_rt</code></a></h3>
+<h3 id="graphql-query-service-reactive-graph-graphql-api"><a class="header" href="#graphql-query-service-reactive-graph-graphql-api">GraphQL Query Service <code>reactive-graph-graphql-api</code></a></h3>
 <p>The <strong>GraphQL Query Service</strong> is part of the runtime. It can be used to execute GraphQL queries and mutations. The
 GraphQL Query Service uses the GraphQL API.</p>
-<h3 id="graphql-api-inexor_rgf_rt"><a class="header" href="#graphql-api-inexor_rgf_rt">GraphQL API <code>inexor_rgf_rt</code></a></h3>
+<h3 id="graphql-api-reactive-graph-graphql-web"><a class="header" href="#graphql-api-reactive-graph-graphql-web">GraphQL API <code>reactive-graph-graphql-web</code></a></h3>
 <p>The <strong>GraphQL API</strong> is part of the runtime. The GraphQL API encapsulates calls to the APIs of the Type System API, the
 Instance System API and the System API in GraphQL resolvers. It converts internal data structures to and from the types
 of the GraphQL schema.</p>
-<h3 id="type-system-api-inexor_rgf_rt"><a class="header" href="#type-system-api-inexor_rgf_rt">Type System API <code>inexor_rgf_rt</code></a></h3>
+<h3 id="type-system-api-reactive-graph-type-system-api"><a class="header" href="#type-system-api-reactive-graph-type-system-api">Type System API <code>reactive-graph-type-system-api</code></a></h3>
 <p>The <strong>Type System API</strong> is part of the runtime. It manages the type system, allows to create, read, update and delete
 types of the <strong>reactive graph</strong>. You can manage components, entity types, relation types and flow types.</p>
-<h3 id="instance-system-api-inexor_rgf_rt"><a class="header" href="#instance-system-api-inexor_rgf_rt">Instance System API <code>inexor_rgf_rt</code></a></h3>
+<h3 id="instance-system-api-reactive-graph-instance-system-api"><a class="header" href="#instance-system-api-reactive-graph-instance-system-api">Instance System API <code>reactive-graph-instance-system-api</code></a></h3>
 <p>The <strong>Instance System API</strong> is part of the runtime. It manages the reactive instances, allows to create, read, update
-and delete reactive instances within the <strong>reactive graph</strong>. You can manage entity instances, relation instances
+and delete reactive instances within the <strong>Reactive Graph</strong>. You can manage entity instances, relation instances
 (including flow connectors) and flow instances.</p>
-<h3 id="system-api-inexor_rgf_rt"><a class="header" href="#system-api-inexor_rgf_rt">System API <code>inexor_rgf_rt</code></a></h3>
+<h3 id="runtime-service-api-reactive-graph-runtime-service-api"><a class="header" href="#runtime-service-api-reactive-graph-runtime-service-api">Runtime Service API <code>reactive-graph-runtime-service-api</code></a></h3>
 <p>The <strong>System API</strong> is part of the runtime. It manages commands, plugins, the instance information and remote
 instances.</p>
-<h3 id="command-line-interface-api-inexor_rgf_rt_standalone"><a class="header" href="#command-line-interface-api-inexor_rgf_rt_standalone">Command Line Interface API <code>inexor_rgf_rt_standalone</code></a></h3>
+<h3 id="command-line-interface-api-reactive-graph"><a class="header" href="#command-line-interface-api-reactive-graph">Command Line Interface API <code>reactive-graph</code></a></h3>
 <p>The <strong>Command Line Interface API (CLI)</strong> is part of the standalone executable.</p>
 <p>It is possible to use the standalone executable as</p>
 <ul>
@@ -5220,7 +5358,7 @@ the runtime to connect to.</p>
 <p>The components can be used for different use cases:</p>
 <ul>
 <li>Command Line Interface within the standalone executable</li>
-<li>Embed the runtime <code>inexor-rgf-rt</code> in your application</li>
+<li>Embed the runtime <code>reactive-graph-runtime-api</code> in your application</li>
 <li>Communicate from one runtime to another</li>
 <li>Let your application communicate with a (remote) runtime</li>
 <li>Integration tests</li>
@@ -5232,20 +5370,20 @@ can specify to hostname and port of the GraphQL server to connect to.</p>
 subgraph Command Line Interface[ ]
     USR([User])
     
-    subgraph Inexor Standalone Client
+    subgraph Reactive Graph Client
       direction LR
       CLI[Command Line Interface]
-      subgraph `inexor_rgf_client`
+      subgraph `reactive_graph_client`
         CA(Client API)
       end
-      subgraph `inexor_rgf_rt_client`[inexor_rgf_rt]
+      subgraph `reactive_graph_client`[reactive_graph_runtime]
         UNUSED(Unused if in CLI mode)
       end
     end
 
-    subgraph Inexor Standalone Server
+    subgraph Reactive Graph Server
       GS[GraphQL Server]
-      subgraph `inexor_rgf_rt_server`[inexor_rgf_rt]
+      subgraph `reactive_graph_server`[reactive_graph_runtime]
         GQS[GraphQL Query Service]
         GA[GraphQL API]
         TSA[Type System API]
@@ -5264,8 +5402,8 @@ subgraph Command Line Interface[ ]
     GA ---&gt;|call| SYSA
 end
 </pre>
-<h3 id="embedded-runtime-in-an-application-inexor-rgf-rt"><a class="header" href="#embedded-runtime-in-an-application-inexor-rgf-rt">Embedded runtime in an application <code>inexor-rgf-rt</code></a></h3>
-<p>Any rust application can embed the Inexor RGF runtime (<code>inexor-rgf-rt</code>).</p>
+<h3 id="embedded-runtime-in-an-application-reactive-graph-runtime-service-api"><a class="header" href="#embedded-runtime-in-an-application-reactive-graph-runtime-service-api">Embedded runtime in an application <code>reactive-graph-runtime-service-api</code></a></h3>
+<p>Any rust application can embed the Reactive Graph runtime (<code>reactive-graph-runtime-service-api</code>).</p>
 <p>The following diagram shows that the application can:</p>
 <ul>
 <li>Call the <strong>Type System API</strong>, <strong>Instance System API</strong> and <strong>System API</strong> directly via the runtime.</li>
@@ -5280,7 +5418,7 @@ subgraph Embedded Runtime[ ]
     SRV1[Application's Service 1]
     SRV2[Application's Service 2]
   
-    subgraph &quot;inexor_rgf_rt&quot;
+    subgraph &quot;reactive_graph_runtime&quot;
       GQS[GraphQL Query Service]
       GA[GraphQL API]
       TSA[Type System API]
@@ -5304,10 +5442,10 @@ subgraph Embedded Runtime[ ]
 end
 </pre>
 <h3 id="communicate-from-the-runtime-with-another-runtime"><a class="header" href="#communicate-from-the-runtime-with-another-runtime">Communicate from the runtime with another runtime</a></h3>
-<p>In order to communicate from one runtime to another runtime you can use the <strong>Inexor RGF Client</strong>
-(<code>inexor_rgf_client</code>).</p>
+<p>In order to communicate from one runtime to another runtime you can use the <strong>Reactive Graph Client</strong>
+(<code>reactive_graph_client</code>).</p>
 <p>In this example two runtimes are calling methods of the own runtime and execute queries on the other runtime via the
-<strong>Inexor RGF Client</strong>.</p>
+<strong>Reactive Graph Client</strong>.</p>
 <pre class="mermaid">graph TD
 subgraph RuntimeToRuntime[ ]
   direction LR
@@ -5318,7 +5456,7 @@ subgraph RuntimeToRuntime[ ]
     SRV1_1[Service 1]
     SRV1_2[Service 2]
   
-    subgraph &quot;inexor_rgf_rt_1&quot;[inexor_rgf_rt]
+    subgraph &quot;reactive_graph_runtime_1&quot;[reactive_graph_runtime]
       GQS1[GraphQL Query Service]
       GA1[GraphQL API]
       TSA1[Type System API]
@@ -5326,7 +5464,7 @@ subgraph RuntimeToRuntime[ ]
       SYSA1[System API]
     end
     
-    subgraph &quot;inexor_rgf_client_1&quot;[inexor_rgf_client]
+    subgraph &quot;reactive_graph_client_1&quot;[reactive_graph_client]
       CA1(Client API)
     end
 
@@ -5338,7 +5476,7 @@ subgraph RuntimeToRuntime[ ]
     SRV2_1[Service 1]
     SRV2_2[Service 2]
   
-    subgraph &quot;inexor_rgf_rt_2&quot;[inexor_rgf_rt]
+    subgraph &quot;reactive_graph_runtime_2&quot;[reactive_graph_runtime]
       GQS2[GraphQL Query Service]
       GA2[GraphQL API]
       TSA2[Type System API]
@@ -5346,7 +5484,7 @@ subgraph RuntimeToRuntime[ ]
       SYSA2[System API]
     end
     
-    subgraph &quot;inexor_rgf_client_2&quot;[inexor_rgf_client]
+    subgraph &quot;reactive_graph_client_2&quot;[reactive_graph_client]
       CA2(Client API)
     end
   end
@@ -5375,9 +5513,9 @@ end
 </pre>
 <p>The same applies to two applications which have embedded runtimes.</p>
 <h3 id="let-your-application-communicate-with-a-remote-runtime"><a class="header" href="#let-your-application-communicate-with-a-remote-runtime">Let your application communicate with a (remote) runtime</a></h3>
-<p>In order to communicate from your application to a (remote) runtime you can use the <strong>Inexor RGF Client</strong>
-(<code>inexor_rgf_client</code>).</p>
-<p>This example shows the application which uses the <strong>Inexor RGF Client</strong> to execute queries on the (remote) runtime:</p>
+<p>In order to communicate from your application to a (remote) runtime you can use the <strong>Reactive Graph Client</strong>
+(<code>reactive_graph_client</code>).</p>
+<p>This example shows the application which uses the <strong>Reactive Graph Client</strong> to execute queries on the (remote) runtime:</p>
 <pre class="mermaid">graph TD
 subgraph ApplicationToRuntime[ ]
   direction LR
@@ -5388,16 +5526,16 @@ subgraph ApplicationToRuntime[ ]
     SRV1[Service 1]
     SRV2[Service 2]
   
-    subgraph &quot;inexor_rgf_client_1&quot;[inexor_rgf_client]
+    subgraph &quot;reactive_graph_client_1&quot;[reactive_graph_client]
       CA(Client API)
     end
 
   end
 
-  subgraph Inexor Standalone Server
+  subgraph Reactive Graph Server
     direction TB
     GS[GraphQL Server]
-    subgraph inexor_rgf_rt
+    subgraph reactive_graph_runtime
       GQS[GraphQL Query Service]
       GA[GraphQL API]
       TSA[Type System API]
@@ -5432,7 +5570,7 @@ subgraph Integration Tests[ ]
   CA(Client API)
   style IT fill:#333,stroke:#633,stroke-width:4px,margin-top:10px
 
-  subgraph &quot;inexor_rgf_rt&quot;
+  subgraph &quot;reactive_graph_runtime&quot;
     GQS[GraphQL Query Service]
     GA[GraphQL API]
     TSA[Type System API]
@@ -5440,7 +5578,7 @@ subgraph Integration Tests[ ]
     SYSA[System API]
   end
 
-  subgraph &quot;inexor_rgf_client&quot;
+  subgraph &quot;reactive_graph_client&quot;
     CA --&gt;|query| GQS
   end
 
@@ -5653,7 +5791,7 @@ fn build_entity_instance_from_type(entity_type: EntityType) -&gt; EntityInstance
 </div>
 <h2 id="flow-builder"><a class="header" href="#flow-builder">Flow Builder</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="runtime-builder"><a class="header" href="#runtime-builder">Runtime Builder</a></h1>
-<p>The <code>RuntimeBuilder</code> is a builder for <code>inexor_rgf_rt</code>.</p>
+<p>The <code>RuntimeBuilder</code> is a builder for <code>reactive_graph_runtime_api</code>.</p>
 <div id="admonition-use-cases" class="admonition admonish-tip" role="note" aria-labelledby="admonition-use-cases-title">
 <div class="admonition-title">
 <div id="admonition-use-cases-title">
@@ -6947,7 +7085,7 @@ This document was generated automatically by
 </i></small></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="7-development"><a class="header" href="#7-development">7. Development</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="development--supported-platforms"><a class="header" href="#development--supported-platforms">Development / Supported Platforms</a></h1>
-<p>The inexor reactive graph flow is completely platform-agnostic, which allows it to run on various operating systems.</p>
+<p><strong>Reactive Graph</strong> is completely platform-agnostic, which allows it to run on various operating systems.</p>
 <h3 id="microsoft-windows"><a class="header" href="#microsoft-windows">Microsoft Windows</a></h3>
 <p>We support x64 Microsoft Windows 8, 8.1 and 10.</p>
 <p>We have build instructions for Windows.</p>
@@ -7176,7 +7314,7 @@ path = "../plugin-mqtt/target/debug/libreactive-graph_plugin_mqtt.so"
 </div>
 </div>
 <h3 id="plugin-compatibility"><a class="header" href="#plugin-compatibility">Plugin Compatibility</a></h3>
-<pre><code class="language-log">17:18:18.642 [ERROR] [main] inexor_rgf_application::implementation::plugin_registry_impl:198 - Cannot load plugin ../reactive-graph-plugin-flow-manager/target/debug/libinexor_rgf_plugin_flow_manager.so because of a compiler version mismatch: rustc 1.61.0-nightly (expected: 1.63.0-nightly)
+<pre><code class="language-log">17:18:18.642 [ERROR] [main] Cannot load plugin path/libreactive_graph_plugin_base.so because of a compiler version mismatch: rustc 1.81.0 (expected: 1.82.0)
 </code></pre>
 <div id="admonition-rust-compiler" class="admonition admonish-warning" role="note" aria-labelledby="admonition-rust-compiler-title">
 <div class="admonition-title">
@@ -7521,51 +7659,53 @@ Currently, these limitations exist:</p>
 <li>Missing features: no flow editor, CLI not complete, client library not complete</li>
 </ol>
 
-                    </main>
+        </main>
 
-                    <nav class="nav-wrapper" aria-label="Page navigation">
-                        <!-- Mobile navigation buttons -->
-
-
-                        <div style="clear: both"></div>
-                    </nav>
-                </div>
-            </div>
-
-            <nav class="nav-wide-wrapper" aria-label="Page navigation">
-
-            </nav>
-
-        </div>
+        <nav class="nav-wrapper" aria-label="Page navigation">
+          <!-- Mobile navigation buttons -->
 
 
-
-
-        <script>
-            window.playground_copyable = true;
-        </script>
-
-
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
-
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
-
-        <!-- Custom JS scripts -->
-        <script src="mermaid.min.js"></script>
-        <script src="mermaid-init.js"></script>
-        <script src="graphql-playground-react-middleware.js"></script>
-        <script src="graphql-playground.js"></script>
-
-        <script>
-        window.addEventListener('load', function() {
-            window.setTimeout(window.print, 100);
-        });
-        </script>
-
+          <div style="clear: both"></div>
+        </nav>
+      </div>
     </div>
-    </body>
+
+    <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+    </nav>
+
+  </div>
+
+
+
+
+    <script>
+      window.playground_copyable = true;
+    </script>
+
+
+    <script src="elasticlunr.min.js"></script>
+    <script src="mark.min.js"></script>
+    <script src="searcher.js"></script>
+
+  <!--  <script src="clipboard.min.js"></script>-->
+  <!--  <script src="highlight.js"></script>-->
+  <!--  <script src="book.js"></script>-->
+
+  <!-- Custom JS scripts -->
+    <script src="./src/design/public/js/mermaid/mermaid.min.js"></script>
+    <script src="./src/design/public/js/mermaid/init-mermaid.js"></script>
+    <script src="graphql-playground-react-middleware.js"></script>
+    <script src="graphql-playground.js"></script>
+
+      <script>
+        window.addEventListener('load', function () {
+          window.setTimeout(window.print, 100);
+        });
+      </script>
+
+</div>
+<script src="./design/public/js/highlight/init.js"></script>
+<script src="./design/public/js/mermaid/init-mermaid.js"></script>
+</body>
 </html>

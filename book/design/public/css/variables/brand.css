@@ -1,0 +1,11 @@
+:root {
+  --brand: var(--celestial-blue);
+  --accent-color: var(--mexican-pink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand: var(--mexican-pink);
+    --accent-color: var(--celestial-blue);
+  }
+}

@@ -1,0 +1,53 @@
+h1.full-width,
+h2.full-width,
+h3.full-width,
+h4.full-width,
+h5.full-width,
+h6.full-width {
+  max-inline-size: unset;
+}
+
+h1.malachite,
+h2.malachite,
+h3.malachite,
+h4.malachite,
+h5.malachite,
+h6.malachite {
+  color: var(--malachite);
+}
+
+h1.selective-yellow,
+h2.selective-yellow,
+h3.selective-yellow,
+h4.selective-yellow,
+h5.selective-yellow,
+h6.selective-yellow {
+  color: var(--selective-yellow);
+}
+
+h1.celestial-blue,
+h2.celestial-blue,
+h3.celestial-blue,
+h4.celestial-blue,
+h5.celestial-blue,
+h6.celestial-blue {
+  color: var(--celestial-blue);
+}
+
+h1.mexican-pink,
+h2.mexican-pink,
+h3.mexican-pink,
+h4.mexican-pink,
+h5.mexican-pink,
+h6.mexican-pink {
+  color: var(--mexican-pink);
+}
+
+h1.chartreuse,
+h2.chartreuse,
+h3.chartreuse,
+h4.chartreuse,
+h5.chartreuse,
+h6.chartreuse {
+  color: var(--chartreuse);
+}

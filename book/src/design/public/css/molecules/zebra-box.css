@@ -1,0 +1,60 @@
+section.rg-zebra-box {
+  border-radius: var(--radius-3);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--size-3);
+  place-content: center;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-4);
+  box-shadow: var(--shadow-6);
+  padding-inline: var(--size-5);
+  margin-block-end: var(--size-3);
+  padding-block: var(--size-5);
+  background-image: var(--pattern-2);
+
+  & h3 {
+    font-family: var(--font-sans-black);
+    font-size: var(--font-size-8);
+    rotate: -1deg;
+  }
+
+  & p {
+    font-family: var(--font-sans-black);
+    font-size: var(--font-size-3);
+    rotate: -1deg;
+    padding-inline-start: var(--size-8);
+  }
+
+  &.malachite {
+    background-image: var(--pattern-2--malachite);
+    color: var(--text-1--dark);
+  }
+
+  &.selective-yellow {
+    background-image: var(--pattern-2--selective-yellow);
+    color: var(--text-1--dark);
+  }
+
+  &.celestial-blue {
+    background-image: var(--pattern-2--celestial-blue);
+    color: var(--text-1--dark);
+  }
+
+  &.mexican-pink {
+    background-image: var(--pattern-2--mexican-pink);
+    color: var(--text-1--dark);
+  }
+
+  &.chartreuse {
+    background-image: var(--pattern-2--chartreuse);
+    color: var(--text-1--dark);
+  }
+
+}
+
+@media (prefers-color-scheme: dark) {
+  section.rg-zebra-box {
+    background-image: var(--pattern-2--inverse);
+  }
+}

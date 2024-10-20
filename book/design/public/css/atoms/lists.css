@@ -1,0 +1,126 @@
+ol.rg-list {
+  &.circle {
+    list-style: none;
+    counter-reset: steps;
+
+    & li {
+      counter-increment: steps;
+    }
+
+    & li::before {
+      content: counter(steps);
+      margin-right: var(--size-2);
+      background: var(--text-1);
+      color: var(--text-1--inverse);
+      width: var(--size-5);
+      height: var(--size-5);
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      line-height: var(--size-5);
+    }
+
+    &.malachite li::before {
+      background: var(--malachite);
+      color: var(--text-1--dark);
+    }
+
+    &.selective-yellow li::before {
+      background: var(--selective-yellow);
+      color: var(--text-1--dark);
+    }
+
+    &.celestial-blue li::before {
+      background: var(--celestial-blue);
+      color: var(--text-1--dark);
+    }
+
+    &.mexican-pink li::before {
+      background: var(--mexican-pink);
+      color: var(--text-1--dark);
+    }
+
+    &.chartreuse li::before {
+      background: var(--chartreuse);
+      color: var(--text-1--dark);
+    }
+  }
+}
+
+ul.rg-list {
+
+  &.circle li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ea6b";
+  }
+
+  &.circle-arrow-right li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\f6fc";
+  }
+
+  &.arrow-big-right li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\eddc";
+  }
+
+  &.grain li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ee92";
+  }
+
+  &.circle-plus li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ea69";
+  }
+
+  &.circle-minus li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ea68";
+  }
+
+  &.circle-check li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ea67";
+  }
+
+  &.circle-dashed li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ed27";
+  }
+
+  &.circle-dotted li::marker {
+    list-style-type: none;
+    font-family: "tabler-icons";
+    content: "\ed28";
+  }
+
+  &.malachite li::marker {
+    color: var(--malachite);
+  }
+
+  &.selective-yellow li::marker {
+    color: var(--selective-yellow);
+  }
+
+  &.celestial-blue li::marker {
+    color: var(--celestial-blue);
+  }
+
+  &.mexican-pink li::marker {
+    color: var(--mexican-pink);
+  }
+
+  &.chartreuse li::marker {
+    color: var(--chartreuse);
+  }
+
+}

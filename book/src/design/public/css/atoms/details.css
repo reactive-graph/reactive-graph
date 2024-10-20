@@ -1,0 +1,36 @@
+details {
+  &.malachite {
+    summary {
+      background-color: var(--malachite);
+      color: var(--text-1--dark);
+    }
+  }
+
+  &.selective-yellow {
+    summary {
+      background-color: var(--selective-yellow);
+      color: var(--text-1--dark);
+    }
+  }
+
+  &.celestial-blue {
+    summary {
+      background-color: var(--celestial-blue);
+      color: var(--text-1--dark);
+    }
+  }
+
+  &.mexican-pink {
+    summary {
+      background-color: var(--mexican-pink);
+      color: var(--text-1);
+    }
+  }
+
+  &.chartreuse {
+    summary {
+      background-color: var(--chartreuse);
+      color: var(--text-1--dark);
+    }
+  }
+}

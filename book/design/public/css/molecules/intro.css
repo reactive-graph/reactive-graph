@@ -1,0 +1,53 @@
+.rg-intro {
+  padding-block: var(--size-9);
+  margin-block-end: var(--size-9);
+  box-shadow: var(--shadow-3);
+}
+
+.rg-intro--default {
+  background-color: var(--surface-2);
+}
+
+.rg-intro--malachite {
+  background-color: var(--malachite);
+}
+
+.rg-intro--malachite .title {
+  color: var(--text-1);
+}
+
+.rg-intro--selective-yellow {
+  background-color: var(--selective-yellow);
+}
+
+.rg-intro--selective-yellow .subtitle,
+.rg-intro--selective-yellow .title {
+  color: var(--text-1--dark);
+}
+
+.rg-intro--celestial-blue {
+  background-color: var(--celestial-blue);
+}
+
+.rg-intro--celestial-blue .subtitle,
+.rg-intro--celestial-blue .title {
+  color: var(--text-1);
+}
+
+.rg-intro--mexican-pink {
+  background-color: var(--mexican-pink);
+}
+
+.rg-intro--mexican-pink .subtitle,
+.rg-intro--mexican-pink .title {
+  color: var(--text-1);
+}
+
+.rg-intro--chartreuse {
+  background-color: var(--chartreuse);
+}
+
+.rg-intro--chartreuse .subtitle,
+.rg-intro--chartreuse .title {
+  color: var(--text-1--dark);
+}

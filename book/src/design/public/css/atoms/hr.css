@@ -1,0 +1,80 @@
+hr {
+  color: var(--text-1);
+  border: 0;
+  height: 1px;
+  background-color: var(--text-1);
+
+  margin-block: var(--size-fluid-3);
+}
+
+hr.size-1 {
+  height: var(--size-1);
+}
+
+hr.size-2 {
+  height: var(--size-2);
+}
+
+hr.size-3 {
+  height: var(--size-3);
+}
+
+hr.size-4 {
+  height: var(--size-4);
+}
+
+hr.default {
+  background-color: var(--text-1);
+}
+
+hr.surface-1 {
+  background-color: var(--surface-1);
+}
+
+hr.surface-2 {
+  background-color: var(--surface-2);
+}
+
+hr.surface-3 {
+  background-color: var(--surface-3);
+}
+
+hr.surface-4 {
+  background-color: var(--surface-4);
+}
+
+hr.malachite {
+  background-color: var(--malachite-3--adaptive);
+}
+
+hr.selective-yellow {
+  background-color: var(--selective-yellow-3--adaptive);
+}
+
+hr.celestial-blue {
+  background-color: var(--celestial-blue-3--adaptive);
+}
+
+hr.mexican-pink {
+  background-color: var(--mexican-pink-3--adaptive);
+}
+
+hr.chartreuse {
+  background-color: var(--chartreuse-3--adaptive);
+}
+
+hr.pattern-3 {
+  background: var(--pattern-3--fill);
+}
+
+hr.pattern-4--celestial-blue--mexican-pink--fill {
+  background: var(--pattern-4--celestial-blue--mexican-pink--fill);
+}
+
+hr.pattern-4--malachite--selective-yellow--fill {
+  background: var(--pattern-4--malachite--selective-yellow--fill);
+}
+
+hr.pattern-4--selective-yellow--mexican-pink--fill {
+  background: var(--pattern-4--selective-yellow--mexican-pink--fill);
+}

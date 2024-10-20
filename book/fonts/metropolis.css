@@ -1,0 +1,146 @@
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: normal;
+  font-weight: 400;
+  src: url("Metropolis-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: italic;
+  font-weight: 400;
+  src: url("Metropolis-RegularItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis ExtraLight";
+  font-style: normal;
+  font-weight: 400;
+  src: url("Metropolis-ExtraLight.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Light";
+  font-style: normal;
+  font-weight: 400;
+  src: url("Metropolis-Light.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Thin";
+  font-style: normal;
+  font-weight: 400;
+  src: url("Metropolis-Thin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis ExtraLight";
+  font-style: italic;
+  font-weight: 400;
+  src: url("Metropolis-ExtraLightItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Light";
+  font-style: italic;
+  font-weight: 400;
+  src: url("Metropolis-LightItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Thin";
+  font-style: italic;
+  font-weight: 400;
+  src: url("Metropolis-ThinItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Medium";
+  font-style: normal;
+  font-weight: 500;
+  src: url("Metropolis-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: normal;
+  font-weight: 600;
+  src: url("Metropolis-SemiBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: normal;
+  font-weight: 700;
+  src: url("Metropolis-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: italic;
+  font-weight: 700;
+  src: url("Metropolis-BoldItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Medium";
+  font-style: italic;
+  font-weight: 700;
+  src: url("Metropolis-MediumItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: italic;
+  font-weight: 700;
+  src: url("Metropolis-SemiBoldItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: normal;
+  font-weight: 800;
+  src: url("Metropolis-ExtraBold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Regular";
+  font-style: italic;
+  font-weight: 800;
+  src: url("Metropolis-ExtraBoldItalic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Black";
+  font-style: normal;
+  font-weight: 900;
+  src: url("Metropolis-Black.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Metropolis Black";
+  font-style: italic;
+  font-weight: 900;
+  src: url("Metropolis-BlackItalic.woff2") format("woff2");
+}
+
+.rg-font {
+  &.metropolis {
+    font-family: "Metropolis", sans-serif;
+    &.thin {
+      font-family: "Metropolis Thin", sans-serif;
+    }
+    &.light {
+      font-family: "Metropolis Light", sans-serif;
+    }
+    &.regular {
+      font-family: "Metropolis", sans-serif;
+    }
+    &.medium {
+      font-family: "Metropolis Medium", sans-serif;
+    }
+    &.black {
+      font-family: "Metropolis Black", sans-serif;
+    }
+  }
+}

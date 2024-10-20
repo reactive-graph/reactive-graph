@@ -1,0 +1,30 @@
+:root {
+  --text-1--light: var(--gray-4);
+  --text-2--light: var(--gray-1);
+  --text-1--dark: var(--gray-12);
+  --text-2--dark: var(--gray-7);
+  --text-1--inverse: var(--text-1--light);
+  --text-2--inverse: var(--text-2--light);
+
+  --link: var(--celestial-blue);
+  --link-hover: var(--celestial-blue-2);
+  --link-visited: var(--celestial-blue-4);
+
+  --font-sans: "Metropolis Regular", sans-serif;
+  --font-sans-black: "Metropolis Black", sans-serif;
+  --font-sans-light: "Metropolis Light", sans-serif;
+  --font-sans-thin: "Metropolis Thin", sans-serif;
+  --font-serif: "Roboto", serif;
+  --font-serif-black: "Roboto Black", serif;
+  --font-serif-light: "Roboto Light", sans-serif;
+  --font-serif-thin: "Roboto Thin", "Roboto Light", sans-serif;
+  --font-mono: "Source Code Pro", monospace;
+  --font-code: "Fira Code", monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-1--inverse: var(--text-1--dark);
+    --text-2--inverse: var(--text-2--dark);
+  }
+}

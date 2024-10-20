@@ -1,0 +1,38 @@
+.card {
+  flex-basis: var(--size-content-1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-2);
+  background: var(--surface-3);
+  border: 1px solid var(--surface-1);
+  padding: var(--size-4);
+  border-radius: var(--radius-3);
+  box-shadow: var(--shadow-2);
+}
+
+.card--mexican-pink {
+  background-color: var(--mexican-pink);
+}
+
+.card--celestial-blue {
+  background-color: var(--celestial-blue);
+}
+
+.card--selective-yellow {
+  background-color: var(--selective-yellow);
+  color: var(--text-1--dark);
+}
+
+.card--malachite {
+  background-color: var(--malachite);
+  color: var(--text-1--dark);
+}
+
+.card--chartreuse {
+  background-color: var(--chartreuse);
+  color: var(--text-1--dark);
+}
+
+.card > h5 {
+  line-height: var(--font-lineheight-1);
+}

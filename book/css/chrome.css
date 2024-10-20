@@ -1,13 +1,9 @@
 /* CSS for UI elements (a.k.a. chrome) */
 
+@import 'variables.css';
+
 html {
     scrollbar-color: var(--scrollbar) var(--bg);
-}
-#searchresults a,
-.content a:link,
-a:visited,
-a > .hljs {
-    color: var(--links);
 }
 
 /*
@@ -34,8 +30,8 @@ a > .hljs {
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    background-color: var(--bg);
-    border-block-end-color: var(--bg);
+    background-color: var(--surface-2);
+    border-block-end-color: var(--surface-3);
     border-block-end-width: 1px;
     border-block-end-style: solid;
 }
@@ -81,27 +77,43 @@ a > .hljs {
 }
 
 .right-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    justify-content: space-around;
+    gap: var(--size-3);
+    padding: var(--size-3);
+    align-items: center;
     margin: 0 15px;
 }
 .right-buttons a {
     text-decoration: none;
 }
+.right-buttons-logo {
+    width: 32px;
+    height: 32px;
+}
 
 .left-buttons {
-    display: flex;
-    margin: 0 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-around;
+    gap: var(--size-3);
+    padding: var(--size-3);
+    align-items: center;
+    margin: 0 15px;
 }
+
 .no-js .left-buttons button {
     display: none;
 }
 
 .menu-title {
     display: inline-block;
-    font-weight: 200;
-    font-size: 2.4rem;
+    font-weight: var(--font-weight-2);
+    font-size: var(--font-size-5);
     line-height: var(--menu-bar-height);
     text-align: center;
-    margin: 0;
+    margin: var(--size-2) 0 0;
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -218,9 +230,24 @@ a:hover > .hljs {
     text-decoration: underline;
 }
 
-pre {
-    position: relative;
+.theme :not(pre) > .hljs {
+    background: var(--surface-1);
 }
+
+.theme pre > .hljs {
+    color: var(--text-1);
+    background: var(--surface-2);
+}
+
+.theme details pre > .hljs {
+    color: var(--text-1);
+    background: var(--surface-1);
+}
+
+
+/*pre {*/
+/*    position: relative;*/
+/*}*/
 pre > .buttons {
     position: absolute;
     z-index: 100;
@@ -241,7 +268,7 @@ pre:hover > .buttons {
 }
 pre > .buttons :hover {
     color: var(--sidebar-active);
-    border-color: var(--icons-hover);
+    /*border-color: var(--icons-hover);*/
     background-color: var(--theme-hover);
 }
 pre > .buttons i {
@@ -396,10 +423,38 @@ ul#searchresults span.teaser em {
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-y: contain;
-    background-color: var(--sidebar-bg);
+    background-color: var(--surface-3);
+    background-position-x: center;
+    background-position-y: 50px;
     color: var(--sidebar-fg);
+    box-shadow: 5px 0 5px var(--surface-4);
 }
 [dir=rtl] .sidebar { left: unset; right: 0; }
+.sidebar-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: space-around;
+    gap: var(--size-1);
+    padding: var(--size-3);
+}
+.sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 220px;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: space-around;
+    gap: var(--size-2);
+    padding: var(--size-4);
+}
+.sidebar-logo {
+    width: 100%;
+    vertical-align: middle;
+}
 .sidebar-resizing {
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -416,8 +471,8 @@ ul#searchresults span.teaser em {
 .sidebar .sidebar-scrollbox {
     overflow-y: auto;
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 350px;
+    bottom: 250px;
     left: 0;
     right: 0;
     padding: 10px 10px;
@@ -481,6 +536,7 @@ ul#searchresults span.teaser em {
 }
 
 .chapter {
+    margin-bottom: 50px;
     list-style: none outside none;
     padding-inline-start: 0;
     line-height: 2.2em;
@@ -498,15 +554,19 @@ ul#searchresults span.teaser em {
     display: block;
     padding: 0;
     text-decoration: none;
-    color: var(--sidebar-fg);
+    color: var(--text-1--dark);
+    font-family: var(--font-sans);
 }
 
 .chapter li a:hover {
-    color: var(--sidebar-active);
+    color: var(--text-1--dark);
+    text-shadow: 0 0 10px var(--text-1), 0 0 25px var(--mexican-pink-1--adaptive);
 }
 
 .chapter li a.active {
-    color: var(--sidebar-active);
+    color: black;
+    font-family: var(--font-sans);
+    text-shadow: 0 0 5px var(--text-1), 0 0 10px var(--mexican-pink-1--adaptive);
 }
 
 .chapter li > a.toggle {
@@ -535,6 +595,7 @@ ul#searchresults span.teaser em {
 .chapter li.expanded > a.toggle div {
     transform: rotate(90deg);
 }
+
 
 .spacer {
     width: 100%;

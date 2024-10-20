@@ -1,0 +1,46 @@
+article p.first-graph::first-letter {
+  color: var(--accent-color);
+  padding: var(--size-3);
+  margin: var(--size-2);
+  border: var(--border-size-2) solid var(--accent-color);
+  border-radius: var(--size-1);
+
+  font-family: var(--font-serif-black);
+  font-size: var(--font-size-6);
+  line-height: 1;
+  float: left;
+}
+
+article p.first-graph.circle::first-letter {
+  border-radius: var(--size-7);
+}
+
+article p.first-graph.malachite::first-letter {
+  color: var(--malachite);
+  border-color: var(--malachite-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--malachite-5);
+}
+
+article p.first-graph.selective-yellow::first-letter {
+  color: var(--selective-yellow);
+  border-color: var(--selective-yellow-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--selective-yellow-5);
+}
+
+article p.first-graph.celestial-blue::first-letter {
+  color: var(--celestial-blue);
+  border-color: var(--celestial-blue-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--celestial-blue-5);
+}
+
+article p.first-graph.mexican-pink::first-letter {
+  color: var(--mexican-pink);
+  border-color: var(--mexican-pink-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--mexican-pink-5);
+}
+
+article p.first-graph.chartreuse::first-letter {
+  color: var(--chartreuse);
+  border-color: var(--chartreuse-2--adaptive);
+  box-shadow: 0 0 5px 2px var(--chartreuse-5);
+}
