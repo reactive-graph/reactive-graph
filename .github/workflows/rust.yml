@@ -82,6 +82,7 @@ jobs:
   build:
     name: Release Build
     needs: [ lint ]
+    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
       matrix:
         os: [ ubuntu-22.04, macos-latest, windows-latest ]
@@ -103,6 +104,7 @@ jobs:
   test:
     name: Tests
     needs: [ lint ]
+    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     strategy:
       matrix:
         toolchain: [ stable, nightly-2024-10-19 ]
@@ -131,7 +133,7 @@ jobs:
   dependabot-auto-merge:
     name: Auto Merge
     needs: [ build, test ]
-    if: github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.repository == 'reactive-graph/reactive-graph'
+    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')) && github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.repository == 'reactive-graph/reactive-graph'
     runs-on: ubuntu-22.04
     steps:
       - name: Automatically Merge
