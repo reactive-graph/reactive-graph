@@ -206,7 +206,7 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (info)
 _arguments "${_arguments_options[@]}" : \
-'--output-format=[]:OUTPUT_FORMAT:(default json toml)' \
+'--output-format=[The output format]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
@@ -1978,15 +1978,44 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
+'::working_directory -- The working directory of the instance:_files' \
 ":: :_reactive-graph__instances_commands" \
 "*::: :->instances" \
 && ret=0
 
     case $state in
     (instances)
+        words=($line[2] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-command-$line[2]:"
+        case $line[2] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+'-n+[The name of the instance]:NAME: ' \
+'--name=[The name of the instance]:NAME: ' \
+'-d+[The description of the instance]:DESCRIPTION: ' \
+'--description=[The description of the instance]:DESCRIPTION: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__instances__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-instances-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-repository-command-$line[1]:"
         case $line[1] in
             (init)
 _arguments "${_arguments_options[@]}" : \
@@ -1994,7 +2023,117 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
+':local_name -- The local name of the repository:' \
+'::url -- The remote URL of the repository:' \
 && ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':local_name -- The local name of the repository:' \
+'::force -- If true, the default repository will be deleted:(true false)' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__repository__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-repository-help-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__instances__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-plugins-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':plugin_name -- The name of the plugin:' \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':plugin_name -- The name of the plugin:' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__plugins__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-plugins-help-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
@@ -2012,6 +2151,54 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__help__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-help-repository-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__help__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-help-plugins-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -2024,13 +2211,79 @@ esac
     ;;
 esac
 ;;
-(install)
+(update)
 _arguments "${_arguments_options[@]}" : \
+'(-n --nightly -l --latest -c --current)-v+[Updates to a specific version]:VERSION: ' \
+'(-n --nightly -l --latest -c --current)--version=[Updates to a specific version]:VERSION: ' \
+'(-l --latest -c --current -v --version)-n[Updates to the nightly release]' \
+'(-l --latest -c --current -v --version)--nightly[Updates to the nightly release]' \
+'(-n --nightly -c --current -v --version)-l[Updates to the latest release. Currently, the latest release is the nightly release. This will change in the future]' \
+'(-n --nightly -c --current -v --version)--latest[Updates to the latest release. Currently, the latest release is the nightly release. This will change in the future]' \
+'(-n --nightly -l --latest -v --version)-c[Updates to the current release]' \
+'(-n --nightly -l --latest -v --version)--current[Updates to the current release]' \
+'--hide-download-progress[Hides the download progress]' \
+'--hide-output[Hides the output]' \
+'-q[Hides the download progress and the output]' \
+'--quiet[Hides the download progress and the output]' \
+'-y[Don'\''t ask]' \
+'--no-confirm[Don'\''t ask]' \
 '-h[Print help]' \
 '--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
+":: :_reactive-graph__update_commands" \
+"*::: :->update" \
 && ret=0
+
+    case $state in
+    (update)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-update-command-$line[1]:"
+        case $line[1] in
+            (info)
+_arguments "${_arguments_options[@]}" : \
+'--output-format=[The output format]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(list)
+_arguments "${_arguments_options[@]}" : \
+'--output-format=[The output format]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__update__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-update-help-command-$line[1]:"
+        case $line[1] in
+            (info)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
@@ -2584,13 +2837,81 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__instances__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-instances-repository-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
         esac
     ;;
 esac
 ;;
-(install)
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__instances__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-instances-plugins-command-$line[1]:"
+        case $line[1] in
+            (install)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(update)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__update_commands" \
+"*::: :->update" \
+&& ret=0
+
+    case $state in
+    (update)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-update-command-$line[1]:"
+        case $line[1] in
+            (info)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
 ;;
 (help)
 _arguments "${_arguments_options[@]}" : \
@@ -2624,7 +2945,7 @@ _reactive-graph_commands() {
 'entity-instances:Manage entity instances' \
 'relation-instances:Manage relation instances' \
 'instances:Manage instances' \
-'install:Manage instances' \
+'update:Update the Reactive Graph binary' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph commands' commands "$@"
@@ -3171,7 +3492,7 @@ _reactive-graph__help_commands() {
 'entity-instances:Manage entity instances' \
 'relation-instances:Manage relation instances' \
 'instances:Manage instances' \
-'install:Manage instances' \
+'update:Update the Reactive Graph binary' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph help commands' commands "$@"
@@ -3442,11 +3763,6 @@ _reactive-graph__help__info_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help info commands' commands "$@"
 }
-(( $+functions[_reactive-graph__help__install_commands] )) ||
-_reactive-graph__help__install_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph help install commands' commands "$@"
-}
 (( $+functions[_reactive-graph__help__instance-info_commands] )) ||
 _reactive-graph__help__instance-info_commands() {
     local commands; commands=(
@@ -3462,7 +3778,9 @@ _reactive-graph__help__instance-info__get_commands() {
 (( $+functions[_reactive-graph__help__instances_commands] )) ||
 _reactive-graph__help__instances_commands() {
     local commands; commands=(
-'init:Manage instances' \
+'init:Initialize the filesystem structure of a new local instance' \
+'repository:Manage the repositories of a local instance' \
+'plugins:Manage the repositories of a local instance' \
     )
     _describe -t commands 'reactive-graph help instances commands' commands "$@"
 }
@@ -3470,6 +3788,42 @@ _reactive-graph__help__instances_commands() {
 _reactive-graph__help__instances__init_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help instances init commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__plugins_commands] )) ||
+_reactive-graph__help__instances__plugins_commands() {
+    local commands; commands=(
+'install:Installs a plugin' \
+'uninstall:Uninstalls a plugin' \
+    )
+    _describe -t commands 'reactive-graph help instances plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__plugins__install_commands] )) ||
+_reactive-graph__help__instances__plugins__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances plugins install commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__plugins__uninstall_commands] )) ||
+_reactive-graph__help__instances__plugins__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__repository_commands] )) ||
+_reactive-graph__help__instances__repository_commands() {
+    local commands; commands=(
+'init:Initializes a new local repository in a local instance' \
+'remove:Removes a local repository' \
+    )
+    _describe -t commands 'reactive-graph help instances repository commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__repository__init_commands] )) ||
+_reactive-graph__help__instances__repository__init_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances repository init commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__repository__remove_commands] )) ||
+_reactive-graph__help__instances__repository__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances repository remove commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__man-pages_commands] )) ||
 _reactive-graph__help__man-pages_commands() {
@@ -3799,15 +4153,28 @@ _reactive-graph__help__shutdown_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help shutdown commands' commands "$@"
 }
+(( $+functions[_reactive-graph__help__update_commands] )) ||
+_reactive-graph__help__update_commands() {
+    local commands; commands=(
+'info:Shows information about the selected release' \
+'list:Lists the releases' \
+    )
+    _describe -t commands 'reactive-graph help update commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__update__info_commands] )) ||
+_reactive-graph__help__update__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help update info commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__update__list_commands] )) ||
+_reactive-graph__help__update__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help update list commands' commands "$@"
+}
 (( $+functions[_reactive-graph__info_commands] )) ||
 _reactive-graph__info_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph info commands' commands "$@"
-}
-(( $+functions[_reactive-graph__install_commands] )) ||
-_reactive-graph__install_commands() {
-    local commands; commands=()
-    _describe -t commands 'reactive-graph install commands' commands "$@"
 }
 (( $+functions[_reactive-graph__instance-info_commands] )) ||
 _reactive-graph__instance-info_commands() {
@@ -3843,7 +4210,9 @@ _reactive-graph__instance-info__help__help_commands() {
 (( $+functions[_reactive-graph__instances_commands] )) ||
 _reactive-graph__instances_commands() {
     local commands; commands=(
-'init:Manage instances' \
+'init:Initialize the filesystem structure of a new local instance' \
+'repository:Manage the repositories of a local instance' \
+'plugins:Manage the repositories of a local instance' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph instances commands' commands "$@"
@@ -3851,7 +4220,9 @@ _reactive-graph__instances_commands() {
 (( $+functions[_reactive-graph__instances__help_commands] )) ||
 _reactive-graph__instances__help_commands() {
     local commands; commands=(
-'init:Manage instances' \
+'init:Initialize the filesystem structure of a new local instance' \
+'repository:Manage the repositories of a local instance' \
+'plugins:Manage the repositories of a local instance' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph instances help commands' commands "$@"
@@ -3866,10 +4237,132 @@ _reactive-graph__instances__help__init_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph instances help init commands' commands "$@"
 }
+(( $+functions[_reactive-graph__instances__help__plugins_commands] )) ||
+_reactive-graph__instances__help__plugins_commands() {
+    local commands; commands=(
+'install:Installs a plugin' \
+'uninstall:Uninstalls a plugin' \
+    )
+    _describe -t commands 'reactive-graph instances help plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__plugins__install_commands] )) ||
+_reactive-graph__instances__help__plugins__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help plugins install commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__plugins__uninstall_commands] )) ||
+_reactive-graph__instances__help__plugins__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__repository_commands] )) ||
+_reactive-graph__instances__help__repository_commands() {
+    local commands; commands=(
+'init:Initializes a new local repository in a local instance' \
+'remove:Removes a local repository' \
+    )
+    _describe -t commands 'reactive-graph instances help repository commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__repository__init_commands] )) ||
+_reactive-graph__instances__help__repository__init_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help repository init commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__repository__remove_commands] )) ||
+_reactive-graph__instances__help__repository__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help repository remove commands' commands "$@"
+}
 (( $+functions[_reactive-graph__instances__init_commands] )) ||
 _reactive-graph__instances__init_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph instances init commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins_commands] )) ||
+_reactive-graph__instances__plugins_commands() {
+    local commands; commands=(
+'install:Installs a plugin' \
+'uninstall:Uninstalls a plugin' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph instances plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins__help_commands] )) ||
+_reactive-graph__instances__plugins__help_commands() {
+    local commands; commands=(
+'install:Installs a plugin' \
+'uninstall:Uninstalls a plugin' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph instances plugins help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins__help__help_commands] )) ||
+_reactive-graph__instances__plugins__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances plugins help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins__help__install_commands] )) ||
+_reactive-graph__instances__plugins__help__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances plugins help install commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins__help__uninstall_commands] )) ||
+_reactive-graph__instances__plugins__help__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances plugins help uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins__install_commands] )) ||
+_reactive-graph__instances__plugins__install_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances plugins install commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__plugins__uninstall_commands] )) ||
+_reactive-graph__instances__plugins__uninstall_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances plugins uninstall commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository_commands] )) ||
+_reactive-graph__instances__repository_commands() {
+    local commands; commands=(
+'init:Initializes a new local repository in a local instance' \
+'remove:Removes a local repository' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph instances repository commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository__help_commands] )) ||
+_reactive-graph__instances__repository__help_commands() {
+    local commands; commands=(
+'init:Initializes a new local repository in a local instance' \
+'remove:Removes a local repository' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph instances repository help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository__help__help_commands] )) ||
+_reactive-graph__instances__repository__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances repository help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository__help__init_commands] )) ||
+_reactive-graph__instances__repository__help__init_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances repository help init commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository__help__remove_commands] )) ||
+_reactive-graph__instances__repository__help__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances repository help remove commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository__init_commands] )) ||
+_reactive-graph__instances__repository__init_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances repository init commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__repository__remove_commands] )) ||
+_reactive-graph__instances__repository__remove_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances repository remove commands' commands "$@"
 }
 (( $+functions[_reactive-graph__man-pages_commands] )) ||
 _reactive-graph__man-pages_commands() {
@@ -4558,6 +5051,49 @@ _reactive-graph__shell-completions__print_commands() {
 _reactive-graph__shutdown_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph shutdown commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update_commands] )) ||
+_reactive-graph__update_commands() {
+    local commands; commands=(
+'info:Shows information about the selected release' \
+'list:Lists the releases' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph update commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update__help_commands] )) ||
+_reactive-graph__update__help_commands() {
+    local commands; commands=(
+'info:Shows information about the selected release' \
+'list:Lists the releases' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph update help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update__help__help_commands] )) ||
+_reactive-graph__update__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph update help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update__help__info_commands] )) ||
+_reactive-graph__update__help__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph update help info commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update__help__list_commands] )) ||
+_reactive-graph__update__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph update help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update__info_commands] )) ||
+_reactive-graph__update__info_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph update info commands' commands "$@"
+}
+(( $+functions[_reactive-graph__update__list_commands] )) ||
+_reactive-graph__update__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph update list commands' commands "$@"
 }
 
 if [ "$funcstack[1]" = "_reactive-graph" ]; then
