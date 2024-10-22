@@ -176,7 +176,7 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (info)
 _arguments "${_arguments_options[@]}" : \
-'--output-format=[]:OUTPUT_FORMAT:(default json toml)' \
+'--output-format=[The output format]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \

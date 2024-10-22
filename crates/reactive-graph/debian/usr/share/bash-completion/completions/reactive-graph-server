@@ -440,7 +440,7 @@ _reactive-graph-server() {
             fi
             case "${prev}" in
                 --output-format)
-                    COMPREPLY=($(compgen -W "default json toml" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
                     return 0
                     ;;
                 *)
