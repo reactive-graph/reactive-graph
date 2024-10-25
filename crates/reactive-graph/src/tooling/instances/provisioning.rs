@@ -63,7 +63,7 @@ pub fn create_empty_file(target_file: &Path, chown: &Option<Chown>) -> Result<()
             #[cfg(target_os = "linux")]
             if let Some(chown) = chown {
                 use std::os::unix::fs;
-                fs::chown(&target_file, Some(chown.uid), Some(chown.gid))?;
+                fs::chown(target_file, Some(chown.uid), Some(chown.gid))?;
             }
             Ok(())
         }
