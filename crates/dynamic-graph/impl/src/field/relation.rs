@@ -111,7 +111,7 @@ pub fn relation_query_field(relation_ty: &RelationTypeId, relation_type: &Relati
                     None => false,
                 });
             }
-            return Ok(Some(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))));
+            Ok(Some(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))))
         })
     })
     .description(relation_type.description.clone());

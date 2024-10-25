@@ -127,7 +127,7 @@ impl GraphQLComponent {
     async fn outbound_of(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        return Ok(relation_type_manager
+        Ok(relation_type_manager
             .get_all()
             .iter()
             .filter(|relation_type| {
@@ -140,14 +140,14 @@ impl GraphQLComponent {
             })
             // .cloned()
             .map(|relation_type| relation_type.value().clone().into())
-            .collect());
+            .collect())
     }
 
     /// Query which relation types are using this component as inbound type
     async fn inbound_of(&self, context: &Context<'_>) -> Result<Vec<GraphQLRelationType>> {
         let relation_type_manager = context.data::<Arc<dyn RelationTypeManager + Send + Sync>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
-        return Ok(relation_type_manager
+        Ok(relation_type_manager
             .get_all()
             .iter()
             .filter(|relation_type| {
@@ -160,7 +160,7 @@ impl GraphQLComponent {
             })
             // .cloned()
             .map(|relation_type| relation_type.value().clone().into())
-            .collect());
+            .collect())
     }
 
     async fn behaviours(&self, context: &Context<'_>) -> Result<Vec<GraphQLComponentBehaviour>> {
