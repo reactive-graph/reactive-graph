@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0-alpha-2] - 2024-10-20
 
+### Added
+
+- CLI: Provisioning config files `reactive-graph instances init`
+- CLI: Generate and provisioning certificates using `reactive-graph instances generate-certificate`
+- CLI: Manage repositories of a local instance using `reactive-graph instances repository`
+- CLI: Set config values of a local instance using `reactive-graph instances config graphql --secure true`
+- Distribution: Dockerfile and Run configuration
+
 ### Changed
 
 - DOCS: Moved book to root folder
@@ -19,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Infrastructure
 
 - CI: Update rust nightly toolchain to nightly-2024-10-19
+- CI: Auto-merge dependabot PRs
 
 ## [0.10.0-alpha-1] - 2024-10-20
 
@@ -26,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages
 - CLI: Self Update `reactive-graph update`
-- CLI: Init instance `reactive-graph instance init <path>`
+- CLI: Init instance `reactive-graph instances init <path>`
 
 ### Infrastructure
 
