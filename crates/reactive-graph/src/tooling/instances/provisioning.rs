@@ -16,8 +16,8 @@ impl Chown {
     }
 }
 
-pub fn create_dir<S: Into<String>>(working_dir: &PathBuf, sub_dir: S, chown: &Option<Chown>) -> Result<PathBuf> {
-    let mut target_dir = working_dir.clone();
+pub fn create_dir<S: Into<String>>(working_dir: &Path, sub_dir: S, chown: &Option<Chown>) -> Result<PathBuf> {
+    let mut target_dir = working_dir.to_owned();
     target_dir.push(sub_dir.into());
     match create_dir_all(&target_dir) {
         Ok(_) => {
