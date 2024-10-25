@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_dir","create_empty_file","write_file"],"struct":["Chown"]};

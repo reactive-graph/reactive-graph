@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["update_description_mutation","update_description_with_variables"],"struct":["MutationRelationTypes","MutationTypes","UpdateDescription","UpdateDescriptionVariables","UpdateDescriptionVariablesFields"]};

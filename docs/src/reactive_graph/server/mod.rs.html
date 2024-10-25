@@ -108,8 +108,8 @@
         .load_config_files()
         .<span class="kw">await
         </span><span class="comment">// Configure CLI arguments
-        </span>.instance_name(args.runtime.instance_config.instance_name)
-        .instance_description(args.runtime.instance_config.instance_description)
+        </span>.instance_name(args.runtime.instance.name)
+        .instance_description(args.runtime.instance.description)
         .hostname(args.runtime.graphql_server.hostname)
         .port(args.runtime.graphql_server.port)
         .secure(args.runtime.graphql_server.secure)

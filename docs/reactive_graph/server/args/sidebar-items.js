@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["config_locations","graphql_server","instance_config","logging","plugins","runtime"],"struct":["ServerAndSharedArguments","ServerArguments"]};
+window.SIDEBAR_ITEMS = {"mod":["config_locations","logging","runtime"],"struct":["ServerAndSharedArguments","ServerArguments"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fetch_remotes_from_all_remotes"],"struct":["FetchRemotesFromAllRemotes","FetchRemotesFromAllRemotesMutationRemotes"]};

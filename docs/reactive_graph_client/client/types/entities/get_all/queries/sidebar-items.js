@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_all_entity_types_query"],"struct":["GetAllEntityTypes","GetAllEntityTypesTypes"]};

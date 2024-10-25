@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["PLUGINS_CONFIG_FILENAME"],"fn":["get_plugins_config_path","handle_plugins_config"]};

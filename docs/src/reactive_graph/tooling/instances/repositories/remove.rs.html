@@ -19,26 +19,24 @@
 <a href="#18" id="18">18</a>
 <a href="#19" id="19">19</a>
 <a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::instances::repositories::args::DeleteRepositoryArgs;
-<span class="kw">use </span>std::path::PathBuf;
-<span class="kw">use </span>std::process::exit;
+<a href="#21" id="21">21</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::instances::repositories::args::DeleteRepositoryArgs;
+<span class="kw">use </span>anyhow::anyhow;
+<span class="kw">use </span>std::path::Path;
 
-<span class="kw">pub fn </span>remove_repository(instance_dir: <span class="kw-2">&amp;</span>PathBuf, args: DeleteRepositoryArgs) {
+<span class="kw">pub fn </span>remove_repository(instance_dir: <span class="kw-2">&amp;</span>Path, args: DeleteRepositoryArgs) -&gt; anyhow::Result&lt;()&gt; {
     <span class="kw">if </span>args.local_name == <span class="string">"default" </span>&amp;&amp; !args.force.unwrap_or(<span class="bool-val">false</span>) {
-        <span class="macro">eprintln!</span>(<span class="string">"The default repository cannot be removed!"</span>);
-        exit(<span class="number">1</span>);
+        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(<span class="string">"The default repository cannot be removed!"</span>));
     }
-    <span class="kw">let </span><span class="kw-2">mut </span>repository_dir = instance_dir.clone();
+    <span class="kw">let </span><span class="kw-2">mut </span>repository_dir = instance_dir.to_owned();
     repository_dir.push(<span class="kw-2">&amp;</span>args.local_name);
     <span class="kw">match </span>std::fs::remove_dir_all(<span class="kw-2">&amp;</span>repository_dir) {
         <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
             <span class="macro">println!</span>(<span class="string">"Removed repository {} from {}"</span>, args.local_name, repository_dir.to_string_lossy());
-            exit(<span class="number">0</span>);
+            <span class="prelude-val">Ok</span>(())
         }
         <span class="prelude-val">Err</span>(e) =&gt; {
             <span class="macro">eprintln!</span>(<span class="string">"Cannot remove repository {} from {}: {}"</span>, args.local_name, repository_dir.to_string_lossy(), e);
-            exit(<span class="number">1</span>);
+            <span class="prelude-val">Err</span>(e.into())
         }
     }
 }

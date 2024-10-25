@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["init_instance"]};
+window.SIDEBAR_ITEMS = {"fn":["init_instance"],"mod":["args"],"static":["CONFIG_DIR"]};

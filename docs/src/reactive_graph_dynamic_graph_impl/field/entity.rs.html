@@ -687,7 +687,7 @@
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::list(<span class="macro">vec!</span>[FieldValue::owned_any(entity_instance)])));
             }
             <span class="kw">let </span>instances = get_entity_instances_by_type_filter_by_properties(<span class="kw-2">&amp;</span>ctx, <span class="kw-2">&amp;</span>entity_type, entity_instance_manager);
-            <span class="kw">return </span><span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))));
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(FieldValue::list(instances.into_iter().map(FieldValue::owned_any))))
         })
     })
     .description(entity_type.description.clone())

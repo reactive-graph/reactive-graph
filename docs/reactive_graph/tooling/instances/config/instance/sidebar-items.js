@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["INSTANCE_CONFIG_FILENAME"],"fn":["get_instance_config_path","handle_instance_config"]};

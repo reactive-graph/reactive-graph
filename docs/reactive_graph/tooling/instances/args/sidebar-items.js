@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["InitInstanceArgs","InstancesArgs"]};
+window.SIDEBAR_ITEMS = {"struct":["ChownArgs","InstancesArgs"]};

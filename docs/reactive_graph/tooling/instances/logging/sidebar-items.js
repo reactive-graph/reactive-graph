@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ERROR_LOG_FILE_NAME","LOG_DIR_NAME","LOG_FILE_NAME"],"fn":["create_log_files","get_log_dir"]};

@@ -7,11 +7,11 @@
 <a href="#6" id="6">6</a>
 <a href="#7" id="7">7</a>
 <a href="#8" id="8">8</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::args::InstallPluginArgs;
-<span class="kw">use </span>std::path::PathBuf;
-<span class="kw">use </span>std::process::exit;
+<span class="kw">use </span>anyhow::anyhow;
+<span class="kw">use </span>anyhow::Result;
+<span class="kw">use </span>std::path::Path;
 
-<span class="kw">pub fn </span>install_plugin(_instance_dir: <span class="kw-2">&amp;</span>PathBuf, _args: InstallPluginArgs) {
-    <span class="macro">eprintln!</span>(<span class="string">"Not yet implemented"</span>);
-    exit(<span class="number">1</span>);
+<span class="kw">pub fn </span>install_plugin(_instance_dir: <span class="kw-2">&amp;</span>Path, _args: InstallPluginArgs) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="prelude-val">Err</span>(<span class="macro">anyhow!</span>(<span class="string">"Not yet implemented"</span>))
 }
 </code></pre></div></section></main></body></html>

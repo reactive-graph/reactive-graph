@@ -32,7 +32,8 @@
 <a href="#31" id="31">31</a>
 <a href="#32" id="32">32</a>
 <a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::shared::output_format::RenderTable;
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::shared::output_format::RenderTable;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::update::args::UpdateArgs;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::update::args::UpdateInfoArgs;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::update::args::UpdateListArgs;
@@ -42,9 +43,10 @@
 <span class="kw">use </span><span class="kw">crate</span>::tooling::update::update_from_github;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::update::REPO_NAME;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::update::REPO_OWNER;
+<span class="kw">use </span>anyhow::Result;
 <span class="kw">use </span>self_update::cargo_crate_version;
 
-<span class="kw">pub fn </span>print_release_info(args: <span class="kw-2">&amp;</span>UpdateArgs, info_args: <span class="kw-2">&amp;</span>UpdateInfoArgs) -&gt; anyhow::Result&lt;()&gt; {
+<span class="kw">pub fn </span>print_release_info(args: <span class="kw-2">&amp;</span>UpdateArgs, info_args: <span class="kw-2">&amp;</span>UpdateInfoArgs) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">let </span>release_update = update_from_github(args)<span class="question-mark">?</span>;
     <span class="kw">let </span>release_info = <span class="kw">match </span>ReleaseTag::from(args) {
         ReleaseTag::Nightly =&gt; release_update.get_release_version(RELEASE_TAG_NIGHTLY),
@@ -55,7 +57,7 @@
     <span class="macro">vec!</span>[Release::from(<span class="kw-2">&amp;</span>release_info)].print_table_and_exit(<span class="kw-2">&amp;</span>info_args.output_format)
 }
 
-<span class="kw">pub fn </span>print_release_list(args: <span class="kw-2">&amp;</span>UpdateListArgs) -&gt; anyhow::Result&lt;()&gt; {
+<span class="kw">pub fn </span>print_release_list(args: <span class="kw-2">&amp;</span>UpdateListArgs) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     self_update::backends::github::ReleaseList::configure()
         .repo_owner(REPO_OWNER)
         .repo_name(REPO_NAME)

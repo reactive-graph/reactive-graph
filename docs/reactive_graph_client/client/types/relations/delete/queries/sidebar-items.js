@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["delete_relation_type_mutation","delete_relation_type_with_variables"],"struct":["DeleteRelationType","MutationRelationTypes","MutationTypes"]};

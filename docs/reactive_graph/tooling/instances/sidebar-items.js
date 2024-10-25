@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["handle_instance"],"mod":["args","commands","create_dir","init","plugins","repositories"]};
+window.SIDEBAR_ITEMS = {"fn":["handle_instance"],"mod":["args","certificates","commands","config","init","logging","plugins","provisioning","repositories"]};

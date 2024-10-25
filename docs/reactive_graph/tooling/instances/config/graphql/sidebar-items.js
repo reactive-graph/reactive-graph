@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["GRAPHQL_CONFIG_FILENAME"],"fn":["get_graphql_config_path","handle_graphql_config"]};

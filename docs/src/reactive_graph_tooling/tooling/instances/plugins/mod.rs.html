@@ -17,27 +17,23 @@
 <a href="#16" id="16">16</a>
 <a href="#17" id="17">17</a>
 <a href="#18" id="18">18</a>
-<a href="#19" id="19">19</a>
-<a href="#20" id="20">20</a>
-<a href="#21" id="21">21</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::args::PluginsArgs;
+<a href="#19" id="19">19</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::args::PluginsArgs;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::commands::PluginsCommands;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::install::install_plugin;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::uninstall::uninstall_plugin;
-<span class="kw">use </span>std::path::PathBuf;
+<span class="kw">use </span>anyhow::Result;
+<span class="kw">use </span>std::path::Path;
 
 <span class="kw">pub mod </span>args;
 <span class="kw">pub mod </span>commands;
 <span class="kw">pub mod </span>install;
 <span class="kw">pub mod </span>uninstall;
 
-<span class="kw">pub fn </span>handle_plugins(instance_dir: <span class="kw-2">&amp;</span>PathBuf, args: PluginsArgs) {
+<span class="kw">pub fn </span>handle_plugins(instance_dir: <span class="kw-2">&amp;</span>Path, args: PluginsArgs) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">match </span>args.commands {
-        PluginsCommands::Install(args) =&gt; {
-            install_plugin(instance_dir, args);
-        }
-        PluginsCommands::Uninstall(args) =&gt; {
-            uninstall_plugin(instance_dir, args);
-        }
+        PluginsCommands::Install(args) =&gt; install_plugin(instance_dir, args)<span class="question-mark">?</span>,
+        PluginsCommands::Uninstall(args) =&gt; uninstall_plugin(instance_dir, args)<span class="question-mark">?</span>,
     }
+    <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div></section></main></body></html>

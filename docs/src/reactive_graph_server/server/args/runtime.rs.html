@@ -23,9 +23,9 @@
 <a href="#22" id="22">22</a>
 <a href="#23" id="23">23</a>
 <a href="#24" id="24">24</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::server::args::config_locations::ConfigLocationsArguments;
-<span class="kw">use </span><span class="kw">crate</span>::server::args::graphql_server::GraphQLServerArguments;
-<span class="kw">use </span><span class="kw">crate</span>::server::args::instance_config::InstanceConfigArguments;
-<span class="kw">use </span><span class="kw">crate</span>::server::args::plugins::PluginsArguments;
+<span class="kw">use </span><span class="kw">crate</span>::shared::config::graphql::GraphQLServerConfigArgs;
+<span class="kw">use </span><span class="kw">crate</span>::shared::config::instance::InstanceConfigArgs;
+<span class="kw">use </span><span class="kw">crate</span>::shared::config::plugins::PluginsConfigArgs;
 <span class="kw">use </span>clap::Parser;
 
 <span class="attr">#[derive(Parser, Debug)]
@@ -34,13 +34,13 @@
     </span><span class="kw">pub </span>config_locations: ConfigLocationsArguments,
 
     <span class="attr">#[clap(flatten)]
-    </span><span class="kw">pub </span>instance_config: InstanceConfigArguments,
+    </span><span class="kw">pub </span>instance: InstanceConfigArgs,
 
     <span class="attr">#[clap(flatten)]
-    </span><span class="kw">pub </span>graphql_server: GraphQLServerArguments,
+    </span><span class="kw">pub </span>graphql_server: GraphQLServerConfigArgs,
 
     <span class="attr">#[clap(flatten)]
-    </span><span class="kw">pub </span>plugins: PluginsArguments,
+    </span><span class="kw">pub </span>plugins: PluginsConfigArgs,
 
     <span class="doccomment">/// If true, the runtime does not wait before exiting.
     </span><span class="attr">#[arg(long, env = <span class="string">"REACTIVE_GRAPH_STOP_IMMEDIATELY"</span>)]

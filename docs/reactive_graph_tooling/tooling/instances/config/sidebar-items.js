@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CONFIG_DIR_NAME"],"fn":["get_config_dir","handle_config"],"mod":["args","commands","graphql","instance","plugins","serde"]};

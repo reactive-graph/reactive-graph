@@ -20,26 +20,44 @@
 <a href="#19" id="19">19</a>
 <a href="#20" id="20">20</a>
 <a href="#21" id="21">21</a>
-<a href="#22" id="22">22</a></pre></div><pre class="rust"><code><span class="kw">pub mod </span>args;
+<a href="#22" id="22">22</a>
+<a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
+<a href="#27" id="27">27</a>
+<a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a></pre></div><pre class="rust"><code><span class="kw">pub mod </span>args;
+<span class="kw">pub mod </span>certificates;
 <span class="kw">pub mod </span>commands;
-<span class="kw">pub mod </span>create_dir;
+<span class="kw">pub mod </span>config;
 <span class="kw">pub mod </span>init;
+<span class="kw">pub mod </span>logging;
 <span class="kw">pub mod </span>plugins;
+<span class="kw">pub mod </span>provisioning;
 <span class="kw">pub mod </span>repositories;
 
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::args::InstancesArgs;
+<span class="kw">use </span><span class="kw">crate</span>::tooling::instances::certificates::handle_generate_certificate;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::commands::InstancesCommands;
+<span class="kw">use </span><span class="kw">crate</span>::tooling::instances::config::handle_config;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::init::init_instance;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::plugins::handle_plugins;
 <span class="kw">use </span><span class="kw">crate</span>::tooling::instances::repositories::handle_repository;
+<span class="kw">use </span>anyhow::Result;
 <span class="kw">use </span>std::path::PathBuf;
 
-<span class="kw">pub fn </span>handle_instance(args: InstancesArgs) {
+<span class="kw">pub fn </span>handle_instance(args: InstancesArgs) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
     <span class="kw">let </span>instance_dir = args.working_directory.unwrap_or(PathBuf::from(<span class="string">"."</span>));
     <span class="kw">match </span>args.commands {
-        InstancesCommands::Init(args) =&gt; init_instance(<span class="kw-2">&amp;</span>instance_dir, args),
-        InstancesCommands::Repository(args) =&gt; handle_repository(<span class="kw-2">&amp;</span>instance_dir, args),
-        InstancesCommands::Plugins(args) =&gt; handle_plugins(<span class="kw-2">&amp;</span>instance_dir, args),
-    }
+        InstancesCommands::Config(args) =&gt; handle_config(<span class="kw-2">&amp;</span>instance_dir, args)<span class="question-mark">?</span>,
+        InstancesCommands::GenerateCertificate(args) =&gt; handle_generate_certificate(<span class="kw-2">&amp;</span>instance_dir, args)<span class="question-mark">?</span>,
+        InstancesCommands::Init(args) =&gt; init_instance(<span class="kw-2">&amp;</span>instance_dir, args)<span class="question-mark">?</span>,
+        InstancesCommands::Plugins(args) =&gt; handle_plugins(<span class="kw-2">&amp;</span>instance_dir, args)<span class="question-mark">?</span>,
+        InstancesCommands::Repository(args) =&gt; handle_repository(<span class="kw-2">&amp;</span>instance_dir, args)<span class="question-mark">?</span>,
+    };
+    <span class="prelude-val">Ok</span>(())
 }
 </code></pre></div></section></main></body></html>

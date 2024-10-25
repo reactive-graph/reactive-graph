@@ -325,7 +325,7 @@
     </span><span class="kw">async fn </span>outbound_of(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLRelationType&gt;&gt; {
         <span class="kw">let </span>relation_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>entity_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">return </span><span class="prelude-val">Ok</span>(relation_type_manager
+        <span class="prelude-val">Ok</span>(relation_type_manager
             .get_all()
             .iter()
             .filter(|relation_type| {
@@ -338,14 +338,14 @@
             })
             <span class="comment">// .cloned()
             </span>.map(|relation_type| relation_type.value().clone().into())
-            .collect());
+            .collect())
     }
 
     <span class="doccomment">/// Query which relation types are using this component as inbound type
     </span><span class="kw">async fn </span>inbound_of(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLRelationType&gt;&gt; {
         <span class="kw">let </span>relation_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>RelationTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
         <span class="kw">let </span>entity_type_manager = context.data::&lt;Arc&lt;<span class="kw">dyn </span>EntityTypeManager + Send + Sync&gt;&gt;()<span class="question-mark">?</span>;
-        <span class="kw">return </span><span class="prelude-val">Ok</span>(relation_type_manager
+        <span class="prelude-val">Ok</span>(relation_type_manager
             .get_all()
             .iter()
             .filter(|relation_type| {
@@ -358,7 +358,7 @@
             })
             <span class="comment">// .cloned()
             </span>.map(|relation_type| relation_type.value().clone().into())
-            .collect());
+            .collect())
     }
 
     <span class="kw">async fn </span>behaviours(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;GraphQLComponentBehaviour&gt;&gt; {
