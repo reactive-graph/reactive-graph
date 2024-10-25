@@ -120,6 +120,7 @@ glob = "0.3.1"
 gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-client-rs.git", features = ["rustls-tls"], default-features = false }
 # Note: actix-web 5 will likely upgrade http from 0.2 to >= 1.0 (https://github.com/actix/actix-web/issues/3384)
 http = "0.2"
+include_dir = "0.7"
 itertools = "0.13"
 json5 = "0.4"
 lazy_static = "1.4.0"
@@ -139,10 +140,12 @@ rand = "0.8"
 rand_derive2 = "0.1"
 random-string = "1.0"
 rayon = "1.6"
+rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
 regex = "1.11"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
 rustls = { version = "0.23.15", features = ["aws_lc_rs"] }
+rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
 rustls-pki-types = "1.10.0"
 rustls-pemfile = "2.2"
 rustversion = "1.0"
@@ -169,6 +172,7 @@ thiserror = "1.0"
 tokio = { version = "1", features = ["time", "rt"] }
 tokio-stream = "0.1"
 toml = "0.8"
+toml_edit = "0.22"
 typed-builder = "0.20"
 uuid = { version = "1.11", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
