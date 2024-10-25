@@ -2,12 +2,12 @@ hostname = "localhost"
 port = 31415
 
 # Enable HTTPS and WSS
-secure = false
+secure = true
 
 # Certificate path
 ssl_certificate_path = "./keys/cert.pem"
 # Private key path
-ssl_private_key_path = "./keys/key.pem"
+ssl_private_key_path = "./keys/cert.key.pem"
 
 # Timeout for graceful workers shutdown in seconds.
 # After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the
