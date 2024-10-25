@@ -15,7 +15,7 @@ pub const PUBLIC_KEY_FILE_NAME: &str = "cert.pem";
 
 pub const PRIVATE_KEY_FILE_NAME: &str = "cert.key.pem";
 
-pub fn handle_generate_certificate(instance_dir: &PathBuf, args: GenerateCertificateArgs) -> anyhow::Result<()> {
+pub fn handle_generate_certificate(instance_dir: &Path, args: GenerateCertificateArgs) -> anyhow::Result<()> {
     let keys_dir = get_keys_dir(instance_dir);
     generate_certificate(&keys_dir, args)?;
     Ok(())

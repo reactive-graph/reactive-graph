@@ -1,12 +1,12 @@
 use crate::tooling::instances::repositories::args::DeleteRepositoryArgs;
 use anyhow::anyhow;
-use std::path::PathBuf;
+use std::path::Path;
 
-pub fn remove_repository(instance_dir: &PathBuf, args: DeleteRepositoryArgs) -> anyhow::Result<()> {
+pub fn remove_repository(instance_dir: &Path, args: DeleteRepositoryArgs) -> anyhow::Result<()> {
     if args.local_name == "default" && !args.force.unwrap_or(false) {
         return Err(anyhow!("The default repository cannot be removed!"));
     }
-    let mut repository_dir = instance_dir.clone();
+    let mut repository_dir = instance_dir.to_owned();
     repository_dir.push(&args.local_name);
     match std::fs::remove_dir_all(&repository_dir) {
         Ok(_) => {
