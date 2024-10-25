@@ -1,3 +1,4 @@
+use crate::tooling::instances::args::ChownArgs;
 use crate::tooling::instances::repositories::commands::RepositoriesCommands;
 use clap::Parser;
 
@@ -14,6 +15,19 @@ pub struct InitRepositoryArgs {
 
     /// The remote URL of the repository.
     pub url: Option<String>,
+
+    #[clap(flatten)]
+    pub chown: ChownArgs,
+}
+
+impl InitRepositoryArgs {
+    pub fn chown(self, chown: ChownArgs) -> Self {
+        Self {
+            local_name: self.local_name,
+            url: self.url,
+            chown,
+        }
+    }
 }
 
 impl Default for InitRepositoryArgs {
@@ -21,6 +35,7 @@ impl Default for InitRepositoryArgs {
         InitRepositoryArgs {
             local_name: "default".to_string(),
             url: None,
+            chown: ChownArgs { uid: None, gid: None },
         }
     }
 }

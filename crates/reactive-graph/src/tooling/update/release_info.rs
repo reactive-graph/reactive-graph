@@ -8,9 +8,10 @@ use crate::tooling::update::release_tag::RELEASE_TAG_NIGHTLY;
 use crate::tooling::update::update_from_github;
 use crate::tooling::update::REPO_NAME;
 use crate::tooling::update::REPO_OWNER;
+use anyhow::Result;
 use self_update::cargo_crate_version;
 
-pub fn print_release_info(args: &UpdateArgs, info_args: &UpdateInfoArgs) -> anyhow::Result<()> {
+pub fn print_release_info(args: &UpdateArgs, info_args: &UpdateInfoArgs) -> Result<()> {
     let release_update = update_from_github(args)?;
     let release_info = match ReleaseTag::from(args) {
         ReleaseTag::Nightly => release_update.get_release_version(RELEASE_TAG_NIGHTLY),
@@ -21,7 +22,7 @@ pub fn print_release_info(args: &UpdateArgs, info_args: &UpdateInfoArgs) -> anyh
     vec![Release::from(&release_info)].print_table_and_exit(&info_args.output_format)
 }
 
-pub fn print_release_list(args: &UpdateListArgs) -> anyhow::Result<()> {
+pub fn print_release_list(args: &UpdateListArgs) -> Result<()> {
     self_update::backends::github::ReleaseList::configure()
         .repo_owner(REPO_OWNER)
         .repo_name(REPO_NAME)

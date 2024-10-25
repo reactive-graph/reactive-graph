@@ -1,8 +1,8 @@
 use crate::tooling::instances::plugins::args::UninstallPluginArgs;
+use anyhow::anyhow;
+use anyhow::Result;
 use std::path::PathBuf;
-use std::process::exit;
 
-pub fn uninstall_plugin(_instance_dir: &PathBuf, _args: UninstallPluginArgs) {
-    eprintln!("Not yet implemented");
-    exit(1);
+pub fn uninstall_plugin(_instance_dir: &PathBuf, _args: UninstallPluginArgs) -> Result<()> {
+    Err(anyhow!("Not yet implemented"))
 }

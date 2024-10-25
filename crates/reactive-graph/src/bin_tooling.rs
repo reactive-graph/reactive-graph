@@ -5,6 +5,7 @@ use crate::shared::manpages::handle_man_pages;
 use crate::shared::markdown_help::handle_markdown_help;
 use crate::tooling::args::ToolingAndSharedArguments;
 use crate::tooling::tooling;
+use anyhow::Result;
 use clap::Parser;
 use std::alloc::System;
 
@@ -14,7 +15,7 @@ pub mod tooling;
 #[global_allocator]
 static ALLOCATOR: System = System;
 
-fn main() {
+fn main() -> Result<()> {
     let args = ToolingAndSharedArguments::parse();
 
     handle_markdown_help::<ToolingAndSharedArguments>(&args.shared.markdown_help);

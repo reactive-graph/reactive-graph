@@ -35,8 +35,8 @@ pub async fn run(args: ServerArguments) {
         .load_config_files()
         .await
         // Configure CLI arguments
-        .instance_name(args.runtime.instance_config.instance_name)
-        .instance_description(args.runtime.instance_config.instance_description)
+        .instance_name(args.runtime.instance.name)
+        .instance_description(args.runtime.instance.description)
         .hostname(args.runtime.graphql_server.hostname)
         .port(args.runtime.graphql_server.port)
         .secure(args.runtime.graphql_server.secure)

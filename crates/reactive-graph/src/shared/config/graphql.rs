@@ -1,8 +1,7 @@
 use clap::Parser;
 
 #[derive(Parser, Debug)]
-pub struct GraphQLServerArguments {
-    // GraphQL Server
+pub struct GraphQLServerConfigArgs {
     /// The hostname to bind the GraphQL HTTP server.
     #[arg(long, env = "REACTIVE_GRAPH_HOSTNAME")]
     pub hostname: Option<String>,

@@ -8,7 +8,6 @@ use self_update::backends::github::Update;
 use self_update::cargo_crate_version;
 use self_update::update::ReleaseUpdate;
 use self_update::Status;
-use std::process::exit;
 
 pub mod args;
 pub mod commands;
@@ -21,26 +20,16 @@ pub const REPO_OWNER: &str = "reactive-graph";
 pub const REPO_NAME: &str = "reactive-graph";
 pub const TARGET_TRIPLE: &str = env!("VERGEN_CARGO_TARGET_TRIPLE");
 
-pub fn handle_update(args: UpdateArgs) -> ! {
+pub fn handle_update(args: UpdateArgs) -> Result<()> {
     if let Some(commands) = &args.commands {
-        if let Err(e) = match commands {
+        return match commands {
             UpdateCommands::Info(info_args) => print_release_info(&args, info_args),
             UpdateCommands::List(list_args) => print_release_list(list_args),
-        } {
-            eprintln!("{e}");
-            exit(1);
-        }
+        };
     };
-    match execute_update(&args) {
-        Ok(status) => {
-            println!("Successfully updated to version: {}", status.version());
-            exit(0);
-        }
-        Err(e) => {
-            eprintln!("Failed to update: {e}");
-            exit(1);
-        }
-    }
+    let status = execute_update(&args)?;
+    println!("Successfully updated to version: {}", status.version());
+    Ok(())
 }
 
 fn execute_update(args: &UpdateArgs) -> Result<Status> {
