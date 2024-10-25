@@ -10,10 +10,10 @@ pub fn create_log_files(instance_dir: &PathBuf, chown: &Option<Chown>) -> anyhow
     let log_dir = get_log_dir(instance_dir);
     let mut log_file = log_dir.to_owned();
     log_file.push(LOG_FILE_NAME);
-    create_empty_file(&log_file, &chown)?;
+    create_empty_file(&log_file, chown)?;
     let mut error_log_file = log_dir.to_owned();
     error_log_file.push(ERROR_LOG_FILE_NAME);
-    create_empty_file(&error_log_file, &chown)?;
+    create_empty_file(&error_log_file, chown)?;
     Ok(())
 }
 
