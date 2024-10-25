@@ -131,14 +131,3 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.6
       - name: Test (Release Mode)
         run: cargo test --release --verbose --target ${{ matrix.target }}
-  dependabot-auto-merge:
-    name: Auto Merge
-    needs: [ build, test ]
-    if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')) && github.event_name == 'pull_request' && github.actor == 'dependabot[bot]' && github.repository == 'reactive-graph/reactive-graph'
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Automatically Merge
-        run: gh pr merge --auto --merge "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
