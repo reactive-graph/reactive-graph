@@ -32,7 +32,7 @@ fn main() {
         #[allow(unreachable_patterns, clippy::collapsible_match)]
         match commands {
             #[cfg(target_os = "linux")]
-            crate::server::commands::ServerCommands::Daemon(args) => daemonize(args),
+            server::commands::ServerCommands::Daemon(args) => daemonize(args),
             _ => {}
         }
     }
