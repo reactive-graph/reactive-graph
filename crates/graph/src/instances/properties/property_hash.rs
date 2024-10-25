@@ -6,7 +6,7 @@ use std::hash::Hasher;
 /// This enables implementing Hash for property instances.
 pub struct HashableValue<'a>(pub &'a Value);
 
-impl<'a> Hash for HashableValue<'a> {
+impl Hash for HashableValue<'_> {
     fn hash<H: Hasher>(&self, state: &mut H) {
         match &self.0 {
             Value::Null => 0.hash(state),
