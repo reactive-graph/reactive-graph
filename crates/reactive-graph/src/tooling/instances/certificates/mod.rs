@@ -2,6 +2,7 @@ use crate::tooling::instances::certificates::args::GenerateCertificateArgs;
 use rcgen::Ia5String;
 use rcgen::SanType;
 use rustls_cert_gen::CertificateBuilder;
+use std::path::Path;
 use std::path::PathBuf;
 
 pub mod args;
@@ -20,7 +21,7 @@ pub fn handle_generate_certificate(instance_dir: &PathBuf, args: GenerateCertifi
     Ok(())
 }
 
-pub fn generate_certificate(keys_dir: &PathBuf, args: GenerateCertificateArgs) -> anyhow::Result<()> {
+pub fn generate_certificate(keys_dir: &Path, args: GenerateCertificateArgs) -> anyhow::Result<()> {
     let country_name = args.country_name.unwrap_or(String::from("de"));
     let organization_name = args.organization_name.unwrap_or(String::from("Reactive Graph"));
     let common_name = args.common_name.unwrap_or(String::from("localhost"));
@@ -42,7 +43,7 @@ pub fn generate_certificate(keys_dir: &PathBuf, args: GenerateCertificateArgs) -
     Ok(())
 }
 
-pub fn get_keys_dir(instance_dir: &PathBuf) -> PathBuf {
+pub fn get_keys_dir(instance_dir: &Path) -> PathBuf {
     let mut keys_dir = instance_dir.to_owned();
     keys_dir.push(KEYS_DIR_NAME);
     keys_dir
