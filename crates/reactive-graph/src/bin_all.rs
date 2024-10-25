@@ -25,6 +25,7 @@ use crate::shared::markdown_help::handle_markdown_help;
 use crate::tooling::tooling;
 use clap::Parser;
 use std::alloc::System;
+use std::process::exit;
 
 #[global_allocator]
 static ALLOCATOR: System = System;
@@ -43,7 +44,15 @@ fn main() {
 
     #[cfg(feature = "tooling")]
     if let Some(_commands) = &args.tooling.commands {
-        return tooling(args.tooling);
+        match tooling(args.tooling) {
+            Ok(_) => {
+                exit(0);
+            }
+            Err(e) => {
+                eprintln!("{e}");
+                exit(1);
+            }
+        }
     }
 
     #[cfg(feature = "client")]

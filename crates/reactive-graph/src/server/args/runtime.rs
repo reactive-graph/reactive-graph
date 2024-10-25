@@ -1,7 +1,7 @@
 use crate::server::args::config_locations::ConfigLocationsArguments;
-use crate::server::args::graphql_server::GraphQLServerArguments;
-use crate::server::args::instance_config::InstanceConfigArguments;
-use crate::server::args::plugins::PluginsArguments;
+use crate::shared::config::graphql::GraphQLServerConfigArgs;
+use crate::shared::config::instance::InstanceConfigArgs;
+use crate::shared::config::plugins::PluginsConfigArgs;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -10,13 +10,13 @@ pub struct RuntimeArguments {
     pub config_locations: ConfigLocationsArguments,
 
     #[clap(flatten)]
-    pub instance_config: InstanceConfigArguments,
+    pub instance: InstanceConfigArgs,
 
     #[clap(flatten)]
-    pub graphql_server: GraphQLServerArguments,
+    pub graphql_server: GraphQLServerConfigArgs,
 
     #[clap(flatten)]
-    pub plugins: PluginsArguments,
+    pub plugins: PluginsConfigArgs,
 
     /// If true, the runtime does not wait before exiting.
     #[arg(long, env = "REACTIVE_GRAPH_STOP_IMMEDIATELY")]

@@ -1,8 +1,7 @@
 use clap::Parser;
 
 #[derive(Parser, Debug)]
-pub struct PluginsArguments {
-    // Plugins
+pub struct PluginsConfigArgs {
     /// If true, all plugins will be disabled.
     #[arg(short = 'x', long, env = "REACTIVE_GRAPH_DISABLE_ALL_PLUGINS")]
     pub disable_all_plugins: Option<bool>,
