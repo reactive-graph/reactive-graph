@@ -114,8 +114,8 @@ jobs:
           - target: x86_64-unknown-linux-musl
             os: ubuntu-22.04
           # PowerPC Linux (kernel 3.2, glibc 2.17)
-          - target: powerpc-unknown-linux-gnu
-            os: ubuntu-22.04
+          #- target: powerpc-unknown-linux-gnu
+          #  os: ubuntu-22.04
           # PPC64 Linux (kernel 3.2, glibc 2.17)
           - target: powerpc64-unknown-linux-gnu
             os: ubuntu-22.04
@@ -272,9 +272,9 @@ jobs:
           - target: armv7-unknown-linux-gnueabihf
             # libc 2.35
             os: ubuntu-22.04
-          - target: powerpc-unknown-linux-gnu
-            # libc 2.35
-            os: ubuntu-22.04
+          #- target: powerpc-unknown-linux-gnu
+          #  # libc 2.35
+          #  os: ubuntu-22.04
           - target: powerpc64-unknown-linux-gnu
             # libc 2.35
             os: ubuntu-22.04
