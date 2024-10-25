@@ -35,7 +35,7 @@ impl Default for InitRepositoryArgs {
         InitRepositoryArgs {
             local_name: "default".to_string(),
             url: None,
-            chown: ChownArgs { uid: None, gid: None },
+            chown: ChownArgs::default(),
         }
     }
 }

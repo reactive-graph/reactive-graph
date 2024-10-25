@@ -35,3 +35,14 @@ impl ChownArgs {
         None
     }
 }
+
+impl Default for ChownArgs {
+    #[cfg(target_os = "linux")]
+    fn default() -> Self {
+        Self { uid: None, gid: None }
+    }
+    #[cfg(not(target_os = "linux"))]
+    fn default() -> Self {
+        Self {}
+    }
+}
