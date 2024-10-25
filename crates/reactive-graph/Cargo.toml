@@ -68,9 +68,12 @@ clap = { workspace = true, features = ["derive", "env"] }
 clap-markdown = { workspace = true }
 clap_complete = { workspace = true }
 colored = { workspace = true }
+include_dir = { workspace = true }
 json5 = { workspace = true, optional = true }
 log = { workspace = true, features = ["std", "serde"] }
 log4rs = { workspace = true, features = ["console_appender", "file_appender", "toml_format", "ansi_writer"] }
+rustls-cert-gen = { workspace = true, default-features = false, features = ["aws_lc_rs"] }
+rcgen = { workspace = true, default-features = false, features = ["aws_lc_rs", "x509-parser"] }
 rustyline = { workspace = true }
 self_update = { workspace = true, default-features = false, features = ["archive-tar", "archive-zip", "compression-flate2", "compression-zip-deflate", "rustls"] }
 serde = { workspace = true, features = ["derive"] }
@@ -81,6 +84,7 @@ thiserror = { workspace = true }
 table_to_html = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread"] }
 toml = { workspace = true, optional = true }
+toml_edit = { workspace = true, features = ["serde", "parse"] }
 typed-builder = { workspace = true }
 uuid = { workspace = true }
 
