@@ -257,6 +257,10 @@ impl GraphQLServerImpl {
                 error!("Could not load private keys.");
                 return Err(GraphQLServerError::NoPrivateKeyFound.into());
             }
+            if let Err(_) = rustls::crypto::aws_lc_rs::default_provider().install_default() {
+                error!("CryptoProvider Error");
+                return Err(GraphQLServerError::NoPrivateKeyFound.into());
+            }
             let tls_config = ServerConfig::builder()
                 .with_no_client_auth()
                 .with_single_cert(cert_chain, keys.remove(0))
