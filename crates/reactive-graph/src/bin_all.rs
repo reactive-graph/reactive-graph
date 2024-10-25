@@ -51,6 +51,11 @@ fn main() {
         return client(args.client);
     }
 
+    #[cfg(feature = "client")]
+    if args.interactive.unwrap_or_default() {
+        return client(args.client);
+    }
+
     #[cfg(feature = "server")]
     if let Some(commands) = &args.server.commands {
         #[allow(unreachable_patterns)]

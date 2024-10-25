@@ -5,6 +5,8 @@ use crate::server::args::ServerArguments;
 use crate::shared::args::SharedArguments;
 #[cfg(feature = "tooling")]
 use crate::tooling::args::ToolingArguments;
+#[cfg(feature = "client")]
+use clap::ArgAction;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -21,6 +23,11 @@ pub struct AllInOneArguments {
     #[cfg(feature = "client")]
     #[clap(flatten)]
     pub client: ClientArguments,
+
+    /// Enter the interactive client mode.
+    #[cfg(feature = "client")]
+    #[clap(short = 'i', long, action=ArgAction::SetTrue)]
+    pub interactive: Option<bool>,
 
     #[cfg(feature = "tooling")]
     #[clap(flatten)]
