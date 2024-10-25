@@ -1,0 +1,69 @@
+name: Docker
+run-name: Docker Image ${{ github.ref == 'refs/heads/main' && 'nightly' || github.ref_name }} by @${{ github.actor }}
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - nightly
+      - v[0-9]+.*
+  workflow_run:
+    workflows:
+      - Rust
+    branches:
+      - main
+    types:
+      - completed
+  # Run manually
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  CARGO_TERM_COLOR: always
+  VERGEN_IDEMPOTENT: true
+  AWS_LC_SYS_PREBUILT_NASM: 1
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  docker-image:
+    name: Docker Image
+    runs-on: ubuntu-22.04
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: type=semver,pattern={{version}}
+      - name: Build and Push Regular Docker image
+        uses: docker/build-push-action@v4
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Build and Push Nightly Docker Image
+        uses: docker/build-push-action@v4
+        if: github.ref == 'refs/heads/main'
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: nightly
