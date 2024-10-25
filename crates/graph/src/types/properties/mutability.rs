@@ -32,11 +32,11 @@ impl Mutability {
 
 impl From<&str> for Mutability {
     fn from(value: &str) -> Self {
-        return match value.to_lowercase().as_str() {
+        match value.to_lowercase().as_str() {
             "mutable" => Self::Mutable,
             "immutable" => Self::Immutable,
             _ => Self::Mutable,
-        };
+        }
     }
 }
 

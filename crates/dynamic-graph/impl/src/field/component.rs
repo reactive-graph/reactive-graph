@@ -30,7 +30,7 @@ pub fn component_query_field(component_ty: &ComponentTypeId, component: &Compone
             let entity_instances = entity_instance_manager.get_by_component(&ty).into_iter().map(entity_instance_component);
             let relation_instances = relation_instance_manager.get_by_component(&ty).into_iter().map(relation_instance_component);
             let field_values = entity_instances.chain(relation_instances);
-            return Ok(Some(FieldValue::list(field_values)));
+            Ok(Some(FieldValue::list(field_values)))
         })
     })
     .description(component.description.clone())

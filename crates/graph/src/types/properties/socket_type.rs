@@ -39,12 +39,12 @@ impl SocketType {
 
 impl From<&str> for SocketType {
     fn from(value: &str) -> Self {
-        return match value.to_lowercase().as_str() {
+        match value.to_lowercase().as_str() {
             "none" => Self::None,
             "input" => Self::Input,
             "output" => Self::Output,
             _ => Self::None,
-        };
+        }
     }
 }
 

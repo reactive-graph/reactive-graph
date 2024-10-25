@@ -72,7 +72,7 @@ impl DataType {
 
 impl From<&str> for DataType {
     fn from(value: &str) -> Self {
-        return match value.to_lowercase().as_str() {
+        match value.to_lowercase().as_str() {
             "bool" => Self::Bool,
             "number" => Self::Number,
             "string" => Self::String,
@@ -80,7 +80,7 @@ impl From<&str> for DataType {
             "object" => Self::Object,
             "any" => Self::Any,
             _ => Self::String,
-        };
+        }
     }
 }
 
