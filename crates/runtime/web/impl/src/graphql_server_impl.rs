@@ -232,6 +232,7 @@ impl GraphQLServerImpl {
             let cert_file = &mut BufReader::new(cert_file);
             let cert_chain: Vec<CertificateDer> = certs(cert_file).filter_map(|cert| cert.ok()).collect();
             if cert_chain.is_empty() {
+                error!("The certificate chain is empty.");
                 return Err(GraphQLServerError::EmptyCertificateChain.into());
             }
 
