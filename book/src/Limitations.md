@@ -8,11 +8,22 @@ Currently there are limitations which prevents to use this software in productio
 
 Currently, there is no security layer. The HTTP/GraphQL/DynamicGraph endpoint needs to be protected.
 
-## 2. Building requires rust nightly
+## 2. No Type System Persistence
 
-There are specific features in rust nightly we are building 
-Currently, these limitations exist:
+Currently, types are created at runtime by plugins or manually by the user via the GraphQL API. Adding or altering types will not be persisted.
 
-1. No security layer yet
-2. Building requires rust nightly
-3. Missing features: no flow editor, CLI not complete, client library not complete
+## 3. No Instance System Persistence
+
+Currently, instances are created at runtime by plugins or manually by the user via the GraphQL API. Adding or altering instances will not be persisted.
+
+## 4. No Flow Editor
+
+Currently, it's not possible to edit flows visually.
+
+## 5. Command Line API
+
+Currently, the Command Line API is not yet complete.
+
+## 6. Client API
+
+Currently, the (rust) client library is not yet complete.
