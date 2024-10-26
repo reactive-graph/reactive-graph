@@ -14,11 +14,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI: Manage repositories of a local instance using `reactive-graph instances repository`
 - CLI: Set config values of a local instance using `reactive-graph instances config graphql --secure true`
 - Distribution: Dockerfile and Run configuration
+- Docs: Documented installation via Docker
 
 ### Changed
 
-- DOCS: Moved book to root folder
-- DOCS: Applied Reactive Graph Design System
+- Docs: Moved book to root folder
+- Docs: Applied Reactive Graph Design System
 
 ### Fixed
 
