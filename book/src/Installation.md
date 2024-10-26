@@ -2,6 +2,20 @@
 
 ## Linux
 
+### Docker
+
+Pull the docker image:
+
+```shell
+docker pull ghcr.io/reactive-graph/reactive-graph:latest
+```
+
+Create and start a container:
+
+```shell
+docker run --name reactive-graph ghcr.io/reactive-graph/reactive-graph:latest -p 0.0.0.0:31415:31415
+```
+
 ### Ubuntu / Debian / Raspberry Pi OS
 
 ```admonish info "Supported Distributions"
@@ -21,6 +35,10 @@ Packages are currently available for these architectures:
 * amd64
 * arm64
 * armhf
+* i386
+* ppc64
+* ppc64el
+* riscv64
 ```
 
 #### Setup APT repository and download GPG keys
@@ -34,7 +52,7 @@ gpg --export 18D6C25399307BA5 | sudo tee /etc/apt/trusted.gpg.d/reactive-graph.g
 sudo apt update
 ```
 
-### Install the runtime
+### Install Reactive Graph
 
 ```shell
 sudo apt install reactive-graph
