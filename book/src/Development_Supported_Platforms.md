@@ -47,12 +47,16 @@ cargo install cross
 
 #### Binutils and GCC
 
-| target                        | Ubuntu binutils package      | Ubuntu GCC package      |
-|-------------------------------|------------------------------|-------------------------|
-| aarch64-unknown-linux-gnu     | binutils-aarch64-linux-gnu   | gcc-aarch64-linux-gnu   |
-| armv7-unknown-linux-gnueabihf | binutils-arm-linux-gnueabihf | gcc-arm-linux-gnueabihf |
-| i686-unknown-linux-gnu        | binutils-i686-linux-gnu      | gcc-i686-linux-gnu      |
-| x86_64-pc-windows-gnu         | binutils-mingw-w64-x86-64    | gcc-mingw-w64-x86-64    |
+| target                        | Ubuntu binutils package        | Ubuntu GCC package        |
+|-------------------------------|--------------------------------|---------------------------|
+| aarch64-unknown-linux-gnu     | binutils-aarch64-linux-gnu     | gcc-aarch64-linux-gnu     |
+| armv7-unknown-linux-gnueabihf | binutils-arm-none-gnueabihf    | gcc-arm-linux-gnueabihf   |
+| i686-unknown-linux-gnu        | binutils-i686-linux-gnu        | gcc-i686-linux-gnu        |
+| powerpc-unknown-linux-gnu     | binutils-powerpc-linux-gnu     | gcc-powerpc-linux-gnu     |
+| powerpc64-unknown-linux-gnu   | binutils-powerpc64-linux-gnu   | gcc-powerpc64-linux-gnu   |
+| powerpc64le-unknown-linux-gnu | binutils-powerpc64le-linux-gnu | gcc-powerpc64le-linux-gnu |
+| riscv64gc-unknown-linux-gnu   | binutils-riscv64-linux-gnu     | gcc-riscv64-linux-gnu     |
+| x86_64-pc-windows-gnu         | binutils-mingw-w64-x86-64      | gcc-mingw-w64-x86-64      |
 
 ```admonish tip title = "Ubuntu packages for binutils"
 Run `apt-cache search binutils` for getting a list of possible binutils packages. 
