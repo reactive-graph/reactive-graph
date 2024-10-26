@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Reactive Graph" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
-    <deployment type="dockerfile">
+  <configuration default="false" name="Reactive Graph Latest" type="docker-deploy" factoryName="docker-image" server-name="Docker">
+    <deployment type="docker-image">
       <settings>
-        <option name="containerName" value="ReactiveGraph" />
+        <option name="imageTag" value="ghcr.io/reactive-graph/reactive-graph:latest" />
+        <option name="containerName" value="reactive-graph-latest" />
         <option name="portBindings">
           <list>
             <DockerPortBindingImpl>
@@ -11,7 +12,6 @@
             </DockerPortBindingImpl>
           </list>
         </option>
-        <option name="sourceFilePath" value="Dockerfile" />
       </settings>
     </deployment>
     <method v="2" />
