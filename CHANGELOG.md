@@ -13,8 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CLI: Generate and provisioning certificates using `reactive-graph instances generate-certificate`
 - CLI: Manage repositories of a local instance using `reactive-graph instances repository`
 - CLI: Set config values of a local instance using `reactive-graph instances config graphql --secure true`
-- Distribution: Dockerfile and Run configuration
-- Docs: Documented installation via Docker
+- Distribution: Dockerfile and run configurations for docker
+- Docs: Documented installation via docker
 
 ### Changed
 
