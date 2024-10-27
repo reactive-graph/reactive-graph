@@ -302,7 +302,7 @@ jobs:
           default: nightly
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Install aarch64 packages
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
