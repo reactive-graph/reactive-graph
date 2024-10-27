@@ -352,6 +352,12 @@ jobs:
       - name: Set AWS_LC_SYS_CFLAGS on riscv64gc-unknown-linux-gnu
         run: echo 'AWS_LC_SYS_CFLAGS="-Wno-string-compare"' >> "$GITHUB_ENV"
         if: matrix.target == 'riscv64gc-unknown-linux-gnu'
+      - name: Set optimization level 2 for powerpc targets
+        run: echo 'CARGO_PROFILE_RELEASE_OPT_LEVEL=2' >> "$GITHUB_ENV"
+        if: |
+          matrix.target == 'powerpc-unknown-linux-gnu' ||
+          matrix.target == 'powerpc64-unknown-linux-gnu' ||
+          matrix.target == 'powerpc64le-unknown-linux-gnu'
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
