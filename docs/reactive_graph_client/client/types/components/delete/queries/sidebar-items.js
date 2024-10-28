@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["delete_component_mutation","delete_component_with_variables"],"struct":["DeleteComponent","MutationComponents","MutationTypes"]};

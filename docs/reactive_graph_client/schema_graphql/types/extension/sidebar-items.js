@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["Extension","ExtensionDefinition","ExtensionDefinitions","ExtensionTypeId","Extensions"]};

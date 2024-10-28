@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["namespace","properties","typeName","variables"]};
