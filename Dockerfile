@@ -16,6 +16,14 @@ COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry --mount=type=cache,target=/usr/local/cargo/git --mount=type=cache,target=$SCCACHE_DIR,sharing=locked cargo build --release --bin reactive-graph
 
 FROM alpine as reactive-graph
+LABEL org.opencontainers.image.title="Reactive Graph"
+LABEL org.opencontainers.image.description="Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software"
+LABEL org.opencontainers.image.vendor="Reactive Graph"
+LABEL org.opencontainers.image.url="https://www.reactive-graph.io/"
+LABEL org.opencontainers.image.source="https://github.com/reactive-graph/reactive-graph"
+LABEL org.opencontainers.image.authors="info@reactive-graph.io"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.documentation="https://docs.reactive-graph.io/book/"
 RUN apk add zsh nano curl
 WORKDIR /opt/reactive-graph
 COPY --from=builder --chown=reactive-graph:reactive-graph /app/target/release/reactive-graph .
