@@ -8,14 +8,14 @@ WORKDIR /app
 COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry --mount=type=cache,target=/usr/local/cargo/git --mount=type=cache,target=$SCCACHE_DIR,sharing=locked cargo chef prepare --recipe-path recipe.json
 
-FROM base as builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=planner /app/recipe.json recipe.json
 RUN --mount=type=cache,target=/usr/local/cargo/registry --mount=type=cache,target=/usr/local/cargo/git --mount=type=cache,target=$SCCACHE_DIR,sharing=locked cargo chef cook --release --recipe-path recipe.json
 COPY . .
 RUN --mount=type=cache,target=/usr/local/cargo/registry --mount=type=cache,target=/usr/local/cargo/git --mount=type=cache,target=$SCCACHE_DIR,sharing=locked cargo build --release --bin reactive-graph
 
-FROM alpine as reactive-graph
+FROM alpine AS reactive-graph
 LABEL org.opencontainers.image.title="Reactive Graph"
 LABEL org.opencontainers.image.description="Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software"
 LABEL org.opencontainers.image.vendor="Reactive Graph"
