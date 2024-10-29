@@ -573,8 +573,17 @@ for an embedded zero code flow control and an embedded graph database</li>
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="0100-alpha-2---2024-10-20"><a class="header" href="#0100-alpha-2---2024-10-20">[0.10.0-alpha-2] - 2024-10-20</a></h2>
+<h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<h3 id="distribution"><a class="header" href="#distribution">Distribution</a></h3>
+<ul>
+<li>Docker: Added static labels (org.opencontainers.image)</li>
+</ul>
+<h3 id="infrastructure"><a class="header" href="#infrastructure">Infrastructure</a></h3>
+<h2 id="0100-alpha-2---2024-10-27"><a class="header" href="#0100-alpha-2---2024-10-27">[0.10.0-alpha-2] - 2024-10-27</a></h2>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>CLI: Provisioning config files <code>reactive-graph instances init</code></li>
 <li>CLI: Generate and provisioning certificates using <code>reactive-graph instances generate-certificate</code></li>
@@ -583,28 +592,28 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Distribution: Dockerfile and run configurations for docker</li>
 <li>Docs: Documented installation via docker</li>
 </ul>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
 <ul>
 <li>Docs: Moved book to root folder</li>
 <li>Docs: Applied Reactive Graph Design System</li>
 </ul>
-<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
 <ul>
 <li>CLI: Self-Updater</li>
 </ul>
-<h3 id="infrastructure"><a class="header" href="#infrastructure">Infrastructure</a></h3>
+<h3 id="infrastructure-1"><a class="header" href="#infrastructure-1">Infrastructure</a></h3>
 <ul>
 <li>CI: Update rust nightly toolchain to nightly-2024-10-19</li>
 <li>CI: Auto-merge dependabot PRs</li>
 </ul>
 <h2 id="0100-alpha-1---2024-10-20"><a class="header" href="#0100-alpha-1---2024-10-20">[0.10.0-alpha-1] - 2024-10-20</a></h2>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>CLI: Print or install shell completions (bash, fish, zsh, powershell) and man pages</li>
 <li>CLI: Self Update <code>reactive-graph update</code></li>
 <li>CLI: Init instance <code>reactive-graph instances init &lt;path&gt;</code></li>
 </ul>
-<h3 id="infrastructure-1"><a class="header" href="#infrastructure-1">Infrastructure</a></h3>
+<h3 id="infrastructure-2"><a class="header" href="#infrastructure-2">Infrastructure</a></h3>
 <ul>
 <li>CI: Create tag nightly after merge and successful build on main branch</li>
 <li>CI: Publish nightly releases to GitHub Releases</li>
@@ -626,7 +635,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>API separation</li>
 <li>Replaced dependency injection framework</li>
 </ul>
-<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
 <ul>
 <li>Added plural types (<code>EntityTypes</code> for a set of <code>EntityType</code>s) + Changed API to use plural types</li>
 <li>Handle reactive instances ReactiveEntity + ReactiveRelation like smart pointers (is this an anti-pattern?)</li>
@@ -641,7 +650,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>JSON-Schemas</li>
 <li>CLI REPL + Improved CLI</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Use TypedBuilder in core-model + migrate all calls to the new builders</li>
 <li>Refactored reactive layer out of core-model</li>
@@ -675,7 +684,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>CLI REPL + Improved CLI</li>
 <li>Documentation</li>
 </ul>
-<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
 <ul>
 <li>Remotes Management</li>
 <li>JSON-Schemas for all types and instances</li>
@@ -692,7 +701,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation: Cross compilation and supported platforms</li>
 <li>Documentation: Packaging for debian</li>
 </ul>
-<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
 <ul>
 <li>All APIs: Delete methods returns boolean</li>
 <li>CLI: refactored CLI tables from the client to the CLI crate</li>
@@ -702,33 +711,33 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Documentation: Updated lots of GraphQL examples</li>
 <li>Documentation: Updated installation instructions</li>
 </ul>
-<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
+<h3 id="fixed-2"><a class="header" href="#fixed-2">Fixed</a></h3>
 <ul>
 <li>Don't block runtime shutdown at a specific situation</li>
 </ul>
 <h2 id="091-22---2023-05-07"><a class="header" href="#091-22---2023-05-07">[0.9.1-22] - 2023-05-07</a></h2>
-<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
+<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
 <ul>
 <li>Publish debian package for x86_64, aarch64 and armv7</li>
 </ul>
 <h2 id="091-14---2023-05-07"><a class="header" href="#091-14---2023-05-07">[0.9.1-14] - 2023-05-07</a></h2>
-<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
+<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
 <ul>
 <li>Publish binaries for more targets, including Raspberry Pi</li>
 </ul>
 <h2 id="091-4---2023-05-07"><a class="header" href="#091-4---2023-05-07">[0.9.1-4] - 2023-05-07</a></h2>
-<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
+<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
 <ul>
 <li>Configure the application using environment variables</li>
 <li>Generate Debian Package</li>
 </ul>
 <h2 id="091---2023-05-01"><a class="header" href="#091---2023-05-01">[0.9.1] - 2023-05-01</a></h2>
-<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
+<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
 <ul>
 <li>First public release on crates.io</li>
 </ul>
 <h2 id="090-15---2023-03-26"><a class="header" href="#090-15---2023-03-26">[0.9.0-15] - 2023-03-26</a></h2>
-<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
+<h3 id="added-9"><a class="header" href="#added-9">Added</a></h3>
 <ul>
 <li>Configuration: Configure the instance</li>
 <li>Configuration: Configure the graphql server</li>
@@ -749,7 +758,7 @@ changes</li>
 <li>GraphQL: Allow sorting of type properties</li>
 <li>GraphQL: Allow sorting of type extensions</li>
 </ul>
-<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
 <ul>
 <li>Workspace: Create mono repository</li>
 <li>Workspace: Migrate repository frp into workspace</li>
@@ -763,7 +772,7 @@ changes</li>
 <li>GraphQL: Generate dynamic GraphQL schema using async-graphql 5.0.0</li>
 </ul>
 <h2 id="080---2022-02-01"><a class="header" href="#080---2022-02-01">[0.8.0] - 2022-02-01</a></h2>
-<h3 id="added-9"><a class="header" href="#added-9">Added</a></h3>
+<h3 id="added-10"><a class="header" href="#added-10">Added</a></h3>
 <ul>
 <li>Plugins: Plugin resolver state machine</li>
 <li>Plugins: Plugin dependencies and plugin versioning</li>
@@ -785,7 +794,7 @@ changes</li>
 <li>Model: Use concrete type system identifiers instead of strings</li>
 <li>API: Validate types on construction (validate that components or entity types are present)</li>
 </ul>
-<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
+<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
 <ul>
 <li>Behaviours: Centralized behaviour storage (no more store behaviours in the plugins)</li>
 <li>Behaviours: Reimplemented lots of reactive behaviours</li>
@@ -794,7 +803,7 @@ changes</li>
 <li>Tooling: rustfmt uses separate lines per import</li>
 </ul>
 <h2 id="070---2022-09-25"><a class="header" href="#070---2022-09-25">[0.7.0] - 2022-09-25</a></h2>
-<h3 id="added-10"><a class="header" href="#added-10">Added</a></h3>
+<h3 id="added-11"><a class="header" href="#added-11">Added</a></h3>
 <ul>
 <li>Flow Types: Replicate and instantiate flows multiple times (like flow templates)</li>
 <li>Dynamic Graph: A second GraphQL api make the access to the instance system more intuitive</li>
@@ -803,14 +812,14 @@ changes</li>
 <li>Plugins: Dependency information</li>
 <li>Plugins: Expose GraphQL query service to plugins</li>
 </ul>
-<h3 id="changed-5"><a class="header" href="#changed-5">Changed</a></h3>
+<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
 <ul>
 <li>Plugin: Dedicated error messages for the plugin API</li>
 <li>Plugin: Default trait implementations for the plugin API to reduce boilerplate</li>
 <li>Plugin: Return option none if a plugin doesn't use certain functionality</li>
 </ul>
 <h2 id="060---2022-02-26"><a class="header" href="#060---2022-02-26">[0.6.0] - 2022-02-26</a></h2>
-<h3 id="added-11"><a class="header" href="#added-11">Added</a></h3>
+<h3 id="added-12"><a class="header" href="#added-12">Added</a></h3>
 <ul>
 <li>Documentation: Added initial documentation as book (using mdBook)</li>
 <li>GraphQL: Navigate from components to entity types and to relation types</li>
@@ -825,7 +834,7 @@ changes</li>
 <li>Core: Provide required components and entity types in the application core</li>
 <li>Core: Event System for Type System and Instance System</li>
 </ul>
-<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
+<h3 id="changed-7"><a class="header" href="#changed-7">Changed</a></h3>
 <ul>
 <li>GraphQL: Rename mutation types (Remove prefix GraphQl)</li>
 <li>GraphQL: Rename type_name to type</li>
@@ -839,12 +848,12 @@ changes</li>
 <li>Documentation: Added code of conduct and changelog to book</li>
 </ul>
 <h2 id="050---2022-01-20"><a class="header" href="#050---2022-01-20">[0.5.0] - 2022-01-20</a></h2>
-<h3 id="added-12"><a class="header" href="#added-12">Added</a></h3>
+<h3 id="added-13"><a class="header" href="#added-13">Added</a></h3>
 <ul>
 <li>Plugin API: Added find, import &amp; export methods for all managers</li>
 <li>Core: Search for type names with wildcards</li>
 </ul>
-<h3 id="changed-7"><a class="header" href="#changed-7">Changed</a></h3>
+<h3 id="changed-8"><a class="header" href="#changed-8">Changed</a></h3>
 <ul>
 <li>Refactored dependency injection library</li>
 <li>Updated dependencies of the dependency injection library</li>
@@ -2589,16 +2598,16 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="41c893fe-71b6-4f03-8ab4-4d282f3df595" src="/examples/graphql/types/components/tabs.json">
+<graphql-playground id="0df2ca37-21ed-4d18-ac9a-480323e24cdf" src="/examples/graphql/types/components/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="a3a6a4c5-be6d-4b16-801d-4de47e724b92" src="/examples/graphql/types/entities/tabs.json">
+<graphql-playground id="6c504b61-06e0-4623-8ffc-6b0bfcb1a0e3" src="/examples/graphql/types/entities/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
-<graphql-playground id="7d89fb32-525d-4672-b08f-5984cff0cbfb" src="/examples/graphql/types/relations/tabs.json">
+<graphql-playground id="8cf29519-9c5d-4d41-92fa-7458fbacb87a" src="/examples/graphql/types/relations/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-types"><a class="header" href="#flow-types">Flow Types</a></h1>
-<graphql-playground id="4eb1dfa1-2531-44fd-a998-0f776f251a96" src="/examples/graphql/types/flows/tabs.json">
+<graphql-playground id="14e94962-7f64-4084-8961-e4b751393296" src="/examples/graphql/types/flows/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
 <h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
@@ -2902,7 +2911,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-instance-info"><a class="header" href="#graphql-api-instance-info"><center>GraphQL API: Instance Info</center></a></h1>
-<graphql-playground id="f56e135f-d1a9-4412-99a9-b7badeabde6a" src="/examples/graphql/system/instance_info/tabs.json">
+<graphql-playground id="7aedfb61-fa30-41e7-9e75-dc43f7763128" src="/examples/graphql/system/instance_info/tabs.json">
 </graphql-playground>
 <h2 id="functionality"><a class="header" href="#functionality">Functionality</a></h2>
 <ul>
@@ -2935,7 +2944,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-plugins"><a class="header" href="#graphql-api-plugins"><center>GraphQL API: Plugins</center></a></h1>
-<graphql-playground id="8eeaa334-0ab5-460a-a1eb-9de602b7ee35" src="/examples/graphql/system/plugins/tabs.json">
+<graphql-playground id="ad82002b-dcc6-49b3-b31b-644ef4870b0b" src="/examples/graphql/system/plugins/tabs.json">
 </graphql-playground>
 <h2 id="functionality-1"><a class="header" href="#functionality-1">Functionality</a></h2>
 <ul>
@@ -2951,7 +2960,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li>Unsatisfied dependencies</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-remotes"><a class="header" href="#graphql-api-remotes"><center>GraphQL API: Remotes</center></a></h1>
-<graphql-playground id="3f40c47b-7299-4266-8f11-18c500bb4698" src="/examples/graphql/system/remotes/tabs.json">
+<graphql-playground id="62325962-5281-4283-96aa-0b78fd026efc" src="/examples/graphql/system/remotes/tabs.json">
 </graphql-playground>
 <h2 id="functionality-2"><a class="header" href="#functionality-2">Functionality</a></h2>
 <ul>
@@ -2970,7 +2979,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-shutdown"><a class="header" href="#graphql-api-shutdown"><center>GraphQL API: Shutdown</center></a></h1>
-<graphql-playground id="c9482f08-10ab-4248-ae38-7d87ed5002d1" src="/examples/graphql/system/shutdown/tabs.json">
+<graphql-playground id="1091499f-40cf-42a9-891b-5ac4ac54ed34" src="/examples/graphql/system/shutdown/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-graph-api"><a class="header" href="#dynamic-graph-api">Dynamic Graph API</a></h1>
 <h3 id="advantages"><a class="header" href="#advantages">Advantages</a></h3>
@@ -3020,7 +3029,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="249742dc-1552-406c-a40e-483482a2ac13" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="798e1edd-6517-4927-ba62-b9403ef39180" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -3499,10 +3508,10 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="36901f51-c8eb-4eef-afd4-447d65a56f9d" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
+<graphql-playground id="a02d05c8-ff93-4a0f-9507-306a92670f60" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="e7d5cdae-1e9a-4f39-8d8b-b10f199768fe" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
+<graphql-playground id="54699536-f113-40db-a150-3b2b5e691faf" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -3518,7 +3527,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="5216d6da-abec-492c-8584-034c7c25e263" src="/examples/graphql/plugins/asset/tabs.json">
+<graphql-playground id="a9d2e698-b728-42f7-8c7f-510e42e31cc0" src="/examples/graphql/plugins/asset/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3617,9 +3626,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="c350ee4d-7109-4a5f-b665-3dae8f064a55" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
+<graphql-playground id="3bb91b03-5ba4-4704-8e8b-51ec897de0d0" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
 </graphql-playground>
-<graphql-playground id="879124f7-8555-467b-8e34-e6125d502438" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
+<graphql-playground id="6b7bdc1b-97c2-4773-8642-5f4b0b06803b" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3652,7 +3661,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="fda341d8-b558-4ed2-bd49-176aac4b9bea" src="/examples/graphql/plugins/comparison/tabs.json">
+<graphql-playground id="ad949cf3-ef87-4126-874f-b162b5744763" src="/examples/graphql/plugins/comparison/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3675,7 +3684,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="866a89ef-9d8e-4ca8-b9ae-12e78972ac42" src="/examples/graphql/plugins/config/tabs.json">
+<graphql-playground id="08a87667-aef6-4ec0-8471-147425bc3f61" src="/examples/graphql/plugins/config/tabs.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3823,7 +3832,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="ec7c47a5-80d6-425a-8a54-9099b182011e" src="/examples/graphql/plugins/connector/tabs.json">
+<graphql-playground id="b78262d7-f2d6-4c56-8779-6faf19f88646" src="/examples/graphql/plugins/connector/tabs.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3956,7 +3965,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="fe5d99e5-e733-4750-a401-7cb34b212796" src="/examples/graphql/plugins/http/tabs.json">
+<graphql-playground id="6d0cd934-803e-43f5-9ecb-810012ce87b6" src="/examples/graphql/plugins/http/tabs.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
@@ -4119,7 +4128,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="bc9720e3-a5a0-4dfe-84a0-2976caaf19fa" src="/examples/graphql/plugins/json/tabs.json">
+<graphql-playground id="cd85eb69-c8e5-4ffd-9d41-32d894a25451" src="/examples/graphql/plugins/json/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4197,7 +4206,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="5bfd18ae-ad36-42c6-9292-89554ae5a78c" src="/examples/graphql/plugins/logical/tabs.json">
+<graphql-playground id="8a51bd5d-b8f8-4bca-8278-9b4d4488f442" src="/examples/graphql/plugins/logical/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
@@ -4234,7 +4243,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<graphql-playground id="c6e31f21-a440-41af-84de-687d50fd3cff" src="/examples/graphql/plugins/metadata/tabs.json">
+<graphql-playground id="a5eb7e64-6847-44ef-96b5-2d6b7528dc0a" src="/examples/graphql/plugins/metadata/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4417,7 +4426,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="fef6a11f-577d-41c6-8ead-7dbba15e7598" src="/examples/graphql/plugins/numeric/tabs.json">
+<graphql-playground id="5056ca36-3b57-4a79-82ea-d33d75f1b9eb" src="/examples/graphql/plugins/numeric/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4460,9 +4469,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="4d081702-a935-4f27-96d5-fa4422b8327e" src="/examples/graphql/plugins/random/number/tabs.json">
+<graphql-playground id="05a169b1-b04f-476d-96e7-5b8b31e090f1" src="/examples/graphql/plugins/random/number/tabs.json">
 </graphql-playground>
-<graphql-playground id="2a6541b3-5111-42c1-ae77-6d51fd0144b3" src="/examples/graphql/plugins/random/string/tabs.json">
+<graphql-playground id="87fff149-6965-4691-8b8f-508aed7985f3" src="/examples/graphql/plugins/random/string/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-state"><a class="header" href="#plugin-state">Plugin: State</a></h1>
 <p>This plugin provides state components. States extends <a href="./Plugins_Value.html">values</a> with debounce mechanism. States are
@@ -4612,7 +4621,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
-<graphql-playground id="92111ef4-bbba-4668-bb68-31f653fab83c" src="/examples/graphql/plugins/scheduler/tabs.json">
+<graphql-playground id="fb109f3c-7a55-434f-b991-d92ce16d01ac" src="/examples/graphql/plugins/scheduler/tabs.json">
 </graphql-playground>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4785,11 +4794,11 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-18"><a class="header" href="#usage-18">Usage</a></h2>
-<graphql-playground id="0c9f485e-e4c4-47d4-aa12-3ad5cfc65f67" src="/examples/graphql/plugins/string/concat/tabs.json">
+<graphql-playground id="d2ee4719-9b67-4e5a-b430-923c9a937817" src="/examples/graphql/plugins/string/concat/tabs.json">
 </graphql-playground>
-<graphql-playground id="3723cca0-7cc4-4592-b1ce-01f4b8b97b15" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
+<graphql-playground id="ead0b249-9dc7-488d-91b1-d7740ae571dd" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
 </graphql-playground>
-<graphql-playground id="d306b056-a641-4831-91ce-ad45802addce" src="/examples/graphql/plugins/string/trim/tabs.json">
+<graphql-playground id="55fbfe15-c0b6-4ce1-87c2-909acc3f4bd8" src="/examples/graphql/plugins/string/trim/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4973,7 +4982,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="730b0d0c-1e50-4173-a6da-92af9846637c" src="/examples/graphql/plugins/system-environment/tabs.json">
+<graphql-playground id="5b330ae6-b222-4db6-8ce9-a88dd182ffb5" src="/examples/graphql/plugins/system-environment/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -5021,9 +5030,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-21"><a class="header" href="#usage-21">Usage</a></h2>
-<graphql-playground id="72f6cf01-8527-4d60-9dde-59f714b61cfa" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
+<graphql-playground id="d3f2ce23-de5f-4ec7-835b-5ce0592577bb" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
 </graphql-playground>
-<graphql-playground id="f2017e94-5549-4031-ba4f-6ca8e83fd1f1" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
+<graphql-playground id="2123b180-ddaf-42b0-9e97-01920fca0c23" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value components. Value components contains a single property of a specific data type.
