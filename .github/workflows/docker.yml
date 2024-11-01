@@ -57,7 +57,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: type=semver,pattern={{version}}
       - name: Build and Push Regular Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         if: startsWith(github.event.ref, 'refs/tags/v')
         with:
           # platforms: linux/amd64,linux/arm64
