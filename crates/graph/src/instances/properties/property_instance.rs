@@ -6,16 +6,15 @@ use std::ops::DerefMut;
 
 use dashmap::DashMap;
 use dashmap::DashSet;
-use schemars::gen::SchemaGenerator;
-use schemars::schema::InstanceType;
-use schemars::schema::ObjectValidation;
-use schemars::schema::Schema;
-use schemars::schema::SchemaObject;
+use schemars::json_schema;
 use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Map;
 use serde_json::Value;
+use std::borrow::Cow;
 
 use crate::HashableValue;
 use crate::MutablePropertyInstanceSetter;
@@ -170,21 +169,17 @@ impl Hash for PropertyInstances {
 }
 
 impl JsonSchema for PropertyInstances {
-    fn schema_name() -> String {
-        "PropertyInstances".to_owned()
+    fn schema_name() -> Cow<'static, str> {
+        "PropertyInstances".into()
     }
 
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let subschema = gen.subschema_for::<Value>();
-        SchemaObject {
-            instance_type: Some(InstanceType::Object.into()),
-            object: Some(Box::new(ObjectValidation {
-                additional_properties: Some(Box::new(subschema)),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        // let sub_schema: Schema = gen.subschema_for::<PropertyInstance>().into();
+        json_schema!({
+            "type": "object",
+            // "instance_type": sub_schema,
+            "description": "Properties",
+        })
     }
 }
 

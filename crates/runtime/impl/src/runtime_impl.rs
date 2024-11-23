@@ -131,7 +131,8 @@ impl Runtime for RuntimeImpl {
         // Clone GraphQL server and move the reference into the GraphQL server thread
         let graphql_server = self.web_system.get_graphql_server();
         // GraphQL server thread: Create a new thread for the GraphQL server
-        // TODO: add thread name
+        // TODO: Use tokio task Builder to name the task
+        // tokio::task::Builder::new().name("rg_server").spawn()
         let graphql_server_handle = tokio::spawn(async move {
             // Run the GraphQL server
             info!("Run the GraphQL server.");

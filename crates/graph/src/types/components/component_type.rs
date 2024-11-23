@@ -7,14 +7,13 @@ use std::ops::DerefMut;
 use dashmap::iter::OwningIter;
 use dashmap::mapref::multiple::RefMulti;
 use dashmap::DashMap;
-use schemars::gen::SchemaGenerator;
-use schemars::schema::ArrayValidation;
-use schemars::schema::InstanceType;
-use schemars::schema::Schema;
-use schemars::schema::SchemaObject;
+use schemars::json_schema;
 use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
 use serde::Deserialize;
 use serde::Serialize;
+use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use wildmatch::WildMatch;
 
@@ -334,20 +333,17 @@ impl Hash for Components {
 }
 
 impl JsonSchema for Components {
-    fn schema_name() -> String {
-        "Components".to_owned()
+    fn schema_name() -> Cow<'static, str> {
+        "Components".into()
     }
 
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        SchemaObject {
-            instance_type: Some(InstanceType::Array.into()),
-            array: Some(Box::new(ArrayValidation {
-                items: Some(gen.subschema_for::<Component>().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        let sub_schema: Schema = gen.subschema_for::<Component>().into();
+        json_schema!({
+            "type": "array",
+            "instance_type": sub_schema,
+            "description": "Components",
+        })
     }
 }
 

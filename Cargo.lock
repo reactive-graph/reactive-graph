@@ -4268,6 +4268,7 @@ dependencies = [
  "reactive-graph-runtime-model",
  "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
+ "schemars",
  "serde",
  "serde_json",
  "similar",
@@ -5461,11 +5462,11 @@ dependencies = [
 
 [[package]]
 name = "schemars"
-version = "0.8.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09c024468a378b7e36765cd36702b7a90cc3cba11654f6685c8f233408e89e92"
+version = "1.0.0-alpha.15"
+source = "git+https://github.com/GREsau/schemars.git#e5168819a41469465171e12c8d48f53dc9160821"
 dependencies = [
  "dyn-clone",
+ "ref-cast",
  "schemars_derive",
  "serde",
  "serde_json",
@@ -5474,9 +5475,8 @@ dependencies = [
 
 [[package]]
 name = "schemars_derive"
-version = "0.8.21"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1eee588578aff73f856ab961cd2f79e36bc45d7ded33a7562adba4667aecc0e"
+version = "1.0.0-alpha.15"
+source = "git+https://github.com/GREsau/schemars.git#e5168819a41469465171e12c8d48f53dc9160821"
 dependencies = [
  "proc-macro2",
  "quote",
