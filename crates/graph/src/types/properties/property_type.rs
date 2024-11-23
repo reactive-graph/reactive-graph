@@ -5,17 +5,16 @@ use std::ops::Deref;
 use std::ops::DerefMut;
 
 use dashmap::DashMap;
-use schemars::gen::SchemaGenerator;
-use schemars::schema::InstanceType;
-use schemars::schema::ObjectValidation;
-use schemars::schema::Schema;
-use schemars::schema::SchemaObject;
+use schemars::json_schema;
 use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
 use serde::Serializer;
 use serde_json::Value;
+use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
@@ -416,21 +415,17 @@ impl<'de> Deserialize<'de> for PropertyTypes {
 }
 
 impl JsonSchema for PropertyTypes {
-    fn schema_name() -> String {
-        "PropertyTypes".to_owned()
+    fn schema_name() -> Cow<'static, str> {
+        "PropertyTypes".into()
     }
 
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let subschema = gen.subschema_for::<Value>();
-        SchemaObject {
-            instance_type: Some(InstanceType::Object.into()),
-            object: Some(Box::new(ObjectValidation {
-                additional_properties: Some(Box::new(subschema)),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        let sub_schema: Schema = gen.subschema_for::<PropertyType>().into();
+        json_schema!({
+            "type": "array",
+            "instance_type": sub_schema,
+            "description": "Property Types",
+        })
     }
 }
 

@@ -14,14 +14,13 @@ use default_test::DefaultTest;
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use rand_derive2::RandGen;
-use schemars::gen::SchemaGenerator;
-use schemars::schema::ArrayValidation;
-use schemars::schema::InstanceType;
-use schemars::schema::Schema;
-use schemars::schema::SchemaObject;
+use schemars::json_schema;
 use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
 use serde::Deserialize;
 use serde::Serialize;
+use std::borrow::Cow;
 
 use crate::ComponentTypeIdContainer;
 use crate::NamespacedType;
@@ -232,20 +231,17 @@ impl Hash for ComponentTypeIds {
 }
 
 impl JsonSchema for ComponentTypeIds {
-    fn schema_name() -> String {
-        "ComponentTypeIds".to_owned()
+    fn schema_name() -> Cow<'static, str> {
+        "ComponentTypeIds".into()
     }
 
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        SchemaObject {
-            instance_type: Some(InstanceType::Array.into()),
-            array: Some(Box::new(ArrayValidation {
-                items: Some(gen.subschema_for::<ComponentTypeId>().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        let sub_schema: Schema = gen.subschema_for::<ComponentTypeId>().into();
+        json_schema!({
+            "type": "array",
+            "instance_type": sub_schema,
+            "description": "Component Type Ids",
+        })
     }
 }
 

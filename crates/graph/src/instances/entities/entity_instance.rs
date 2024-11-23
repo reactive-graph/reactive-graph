@@ -12,18 +12,17 @@ use dashmap::DashMap;
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::gen::SchemaGenerator;
-use schemars::schema::ArrayValidation;
-use schemars::schema::InstanceType;
-use schemars::schema::Schema;
-use schemars::schema::SchemaObject;
+use schemars::json_schema;
 use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
 use serde::Serializer;
 use serde_json::Map;
 use serde_json::Value;
+use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
@@ -74,7 +73,7 @@ pub struct EntityInstance {
     #[builder(default, setter(into))]
     pub description: String,
 
-    /// The properties of then entity instance.
+    /// The properties of the entity instance.
     ///
     /// Each property is represented by its name (String) and it's value. The value is
     /// a representation of a JSON. Therefore, the value can be boolean, number, string,
@@ -351,20 +350,17 @@ impl<'de> Deserialize<'de> for EntityInstances {
 }
 
 impl JsonSchema for EntityInstances {
-    fn schema_name() -> String {
-        "EntityInstances".to_owned()
+    fn schema_name() -> Cow<'static, str> {
+        "EntityInstances".into()
     }
 
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        SchemaObject {
-            instance_type: Some(InstanceType::Array.into()),
-            array: Some(Box::new(ArrayValidation {
-                items: Some(gen.subschema_for::<EntityInstance>().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        let sub_schema: Schema = gen.subschema_for::<EntityInstance>().into();
+        json_schema!({
+            "type": "array",
+            "instance_type": sub_schema,
+            "description": "Entity Instances",
+        })
     }
 }
 

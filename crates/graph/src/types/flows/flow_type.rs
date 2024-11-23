@@ -10,14 +10,13 @@ use dashmap::DashMap;
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::gen::SchemaGenerator;
-use schemars::schema::ArrayValidation;
-use schemars::schema::InstanceType;
-use schemars::schema::Schema;
-use schemars::schema::SchemaObject;
+use schemars::json_schema;
 use schemars::JsonSchema;
+use schemars::Schema;
+use schemars::SchemaGenerator;
 use serde::Deserialize;
 use serde::Serialize;
+use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
@@ -677,20 +676,17 @@ impl Hash for FlowTypes {
 }
 
 impl JsonSchema for FlowTypes {
-    fn schema_name() -> String {
-        "FlowTypes".to_owned()
+    fn schema_name() -> Cow<'static, str> {
+        "FlowTypes".into()
     }
 
     fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        SchemaObject {
-            instance_type: Some(InstanceType::Array.into()),
-            array: Some(Box::new(ArrayValidation {
-                items: Some(gen.subschema_for::<FlowType>().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        let sub_schema: Schema = gen.subschema_for::<FlowType>().into();
+        json_schema!({
+            "type": "array",
+            "instance_type": sub_schema,
+            "description": "Flow Types",
+        })
     }
 }
 
