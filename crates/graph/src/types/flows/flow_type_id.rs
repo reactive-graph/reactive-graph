@@ -210,8 +210,7 @@ impl JsonSchema for FlowTypeIds {
         let sub_schema: Schema = gen.subschema_for::<FlowTypeId>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
-            "description": "Flow Type Ids",
+            "items": sub_schema,
         })
     }
 }

@@ -1,16 +1,5 @@
 use std::sync::Arc;
 
-use async_graphql::Context;
-use async_graphql::Object;
-use async_graphql::Result;
-
-use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
-use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
-use reactive_graph_graph::Component;
-use reactive_graph_graph::NamespacedTypeGetter;
-use reactive_graph_type_system_api::EntityTypeManager;
-use reactive_graph_type_system_api::RelationTypeManager;
-
 use crate::mutation::ExtensionTypeIdDefinition;
 use crate::query::GraphQLComponentBehaviour;
 use crate::query::GraphQLEntityType;
@@ -19,6 +8,15 @@ use crate::query::GraphQLExtension;
 use crate::query::GraphQLPropertyType;
 use crate::query::GraphQLRelationType;
 use crate::query::GraphQLRelationTypes;
+use async_graphql::Context;
+use async_graphql::Object;
+use async_graphql::Result;
+use reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
+use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
+use reactive_graph_graph::Component;
+use reactive_graph_graph::NamespacedTypeGetter;
+use reactive_graph_type_system_api::EntityTypeManager;
+use reactive_graph_type_system_api::RelationTypeManager;
 
 pub struct GraphQLComponent {
     component: Component,

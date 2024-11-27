@@ -58,8 +58,9 @@ use reactive_graph_test_utils::r_string;
 /// (name, data type, socket type) a relation instance have to have.
 ///
 /// In contrast to the relation type, the relation instance stores values/
-/// documents in it's properties.
+/// documents in its properties.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct RelationInstance {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
@@ -424,7 +425,7 @@ impl JsonSchema for RelationInstances {
         let sub_schema: Schema = gen.subschema_for::<RelationInstance>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Relation Instances",
         })
     }

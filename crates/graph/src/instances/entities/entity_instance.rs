@@ -55,9 +55,10 @@ use reactive_graph_test_utils::r_string;
 ///
 /// The entity type defines the properties (name, data type and socket type).
 ///
-/// In contrast to the entity type the entity instance stores values in it's
+/// In contrast to the entity type the entity instance stores values in its
 /// properties.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct EntityInstance {
     /// The type definition of the entity type.
     #[serde(flatten)]
@@ -358,7 +359,7 @@ impl JsonSchema for EntityInstances {
         let sub_schema: Schema = gen.subschema_for::<EntityInstance>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Entity Instances",
         })
     }

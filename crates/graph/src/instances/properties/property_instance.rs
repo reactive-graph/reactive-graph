@@ -173,11 +173,9 @@ impl JsonSchema for PropertyInstances {
         "PropertyInstances".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        // let sub_schema: Schema = gen.subschema_for::<PropertyInstance>().into();
+    fn json_schema(_: &mut SchemaGenerator) -> Schema {
         json_schema!({
             "type": "object",
-            // "instance_type": sub_schema,
             "description": "Properties",
         })
     }

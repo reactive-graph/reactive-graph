@@ -59,8 +59,9 @@ use crate::UpdatePropertyError;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::r_string;
 
-/// Entity types defines the type of an entity instance.
+/// Entity types defines the type of entity instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct EntityType {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
@@ -453,7 +454,7 @@ impl JsonSchema for EntityTypes {
         let sub_schema: Schema = gen.subschema_for::<EntityType>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Entity Types",
         })
     }

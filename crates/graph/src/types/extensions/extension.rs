@@ -43,6 +43,7 @@ use reactive_graph_test_utils::r_string;
 pub struct Extension {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
+    #[schemars(required)]
     pub ty: ExtensionTypeId,
 
     /// Textual description of the extension.
@@ -296,7 +297,7 @@ impl JsonSchema for Extensions {
         let sub_schema: Schema = gen.subschema_for::<Extension>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Extensions",
         })
     }

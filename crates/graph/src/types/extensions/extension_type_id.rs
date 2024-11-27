@@ -190,8 +190,7 @@ impl JsonSchema for ExtensionTypeIds {
         let sub_schema: Schema = gen.subschema_for::<ExtensionTypeId>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
-            "description": "Extension Type Ids",
+            "items": sub_schema,
         })
     }
 }

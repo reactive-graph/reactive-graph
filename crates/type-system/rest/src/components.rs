@@ -13,13 +13,8 @@ pub async fn get_components(component_manager: web::Data<Arc<dyn ComponentManage
 }
 
 #[get("/types/components/{namespace}/{type_name}")]
-pub async fn get_component(
-    namespace: web::Path<(String,)>,
-    type_name: web::Path<(String,)>,
-    component_manager: web::Data<Arc<dyn ComponentManager + Send + Sync>>,
-) -> HttpResponse {
-    let namespace = namespace.into_inner().0;
-    let type_name = type_name.into_inner().0;
+pub async fn get_component(path: web::Path<(String, String)>, component_manager: web::Data<Arc<dyn ComponentManager + Send + Sync>>) -> HttpResponse {
+    let (namespace, type_name) = path.into_inner();
     match component_manager.get_by_type(&namespace, &type_name) {
         Some(component) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&component),
         None => HttpResponse::NotFound()

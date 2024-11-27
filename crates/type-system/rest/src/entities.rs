@@ -15,13 +15,8 @@ pub async fn get_entity_types(entity_type_manager: web::Data<Arc<dyn EntityTypeM
 }
 
 #[get("/types/entities/{namespace}/{type_name}")]
-pub async fn get_entity_type(
-    namespace: web::Path<(String,)>,
-    type_name: web::Path<(String,)>,
-    entity_type_manager: web::Data<Arc<dyn EntityTypeManager + Send + Sync>>,
-) -> HttpResponse {
-    let namespace = namespace.into_inner().0;
-    let type_name = type_name.into_inner().0;
+pub async fn get_entity_type(path: web::Path<(String, String)>, entity_type_manager: web::Data<Arc<dyn EntityTypeManager + Send + Sync>>) -> HttpResponse {
+    let (namespace, type_name) = path.into_inner();
     match entity_type_manager.get_by_type(&namespace, &type_name) {
         Some(entity_type) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&entity_type),
         None => HttpResponse::NotFound()

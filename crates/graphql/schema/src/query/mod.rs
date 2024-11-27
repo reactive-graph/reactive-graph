@@ -3,10 +3,12 @@ use uuid::Uuid;
 
 pub use behaviours::*;
 pub use instances::*;
+pub use json_schema::*;
 pub use types::*;
 
 pub mod behaviours;
 pub mod instances;
+pub mod json_schema;
 pub mod types;
 
 pub struct ReactiveGraphQuery;
@@ -28,6 +30,11 @@ impl ReactiveGraphQuery {
     /// relation component behaviours).
     async fn behaviours(&self) -> Behaviours {
         Behaviours
+    }
+
+    /// JSON Schema definitions.
+    async fn json_schema(&self) -> JsonSchema {
+        JsonSchema
     }
 
     async fn random_uuid(&self, _context: &Context<'_>) -> String {
