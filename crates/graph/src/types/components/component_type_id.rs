@@ -34,6 +34,7 @@ use crate::TYPE_ID_TYPE_SEPARATOR;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
+#[schemars(deny_unknown_fields)]
 pub struct ComponentTypeId(NamespacedType);
 
 impl ComponentTypeId {
@@ -239,8 +240,7 @@ impl JsonSchema for ComponentTypeIds {
         let sub_schema: Schema = gen.subschema_for::<ComponentTypeId>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
-            "description": "Component Type Ids",
+            "items": sub_schema,
         })
     }
 }

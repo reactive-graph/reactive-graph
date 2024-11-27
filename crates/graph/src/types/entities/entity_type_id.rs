@@ -209,8 +209,7 @@ impl JsonSchema for EntityTypeIds {
         let sub_schema: Schema = gen.subschema_for::<EntityTypeId>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
-            "description": "Entity Type Ids",
+            "items": sub_schema,
         })
     }
 }

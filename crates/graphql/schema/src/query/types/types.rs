@@ -4,7 +4,6 @@ use std::sync::Arc;
 use async_graphql::Context;
 use async_graphql::Object;
 use async_graphql::Result;
-use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ComponentTypeIdContainer;
@@ -18,8 +17,6 @@ use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
 use reactive_graph_type_system_api::NamespaceManager;
 use reactive_graph_type_system_api::RelationTypeManager;
-use schemars::schema_for;
-use serde_json::Value;
 
 use crate::mutation::ComponentTypeIdDefinition;
 use crate::mutation::EntityTypeIdDefinition;
@@ -122,11 +119,6 @@ impl Types {
             return component_manager.count();
         }
         0
-    }
-
-    async fn components_schema(&self, _context: &Context<'_>) -> Result<Value> {
-        let schema = schema_for!(Component);
-        Ok(schema.to_value())
     }
 
     /// Search for entity types.

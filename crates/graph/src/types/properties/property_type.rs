@@ -39,9 +39,11 @@ pub static NAMESPACE_PROPERTY_TYPE: Uuid = Uuid::from_u128(0x1ab7c8109dcd11c180b
 /// the name of the property, the data type and the socket
 /// type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct PropertyType {
     /// The name of the property
     #[builder(setter(into))]
+    #[schemars(required)]
     pub name: String,
 
     /// The description of the property.
@@ -50,15 +52,18 @@ pub struct PropertyType {
     pub description: String,
 
     /// The data type of the property
+    #[schemars(required)]
     pub data_type: DataType,
 
     /// Specifies the type of socket - either input socket or output socket or none
     #[serde(default = "SocketType::none")]
+    #[schemars(required)]
     #[builder(default = SocketType::None)]
     pub socket_type: SocketType,
 
     /// Specifies if the property is mutable.
     #[serde(default = "Mutability::mutable")]
+    #[schemars(required)]
     #[builder(default = Mutability::Mutable)]
     pub mutability: Mutability,
 
@@ -423,7 +428,7 @@ impl JsonSchema for PropertyTypes {
         let sub_schema: Schema = gen.subschema_for::<PropertyType>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Property Types",
         })
     }

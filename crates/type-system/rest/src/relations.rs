@@ -16,12 +16,10 @@ pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn Relatio
 
 #[get("/types/relations/{namespace}/{type_name}")]
 pub async fn get_relation_type(
-    namespace: web::Path<(String,)>,
-    type_name: web::Path<(String,)>,
+    path: web::Path<(String, String)>,
     relation_type_manager: web::Data<Arc<dyn RelationTypeManager + Send + Sync>>,
 ) -> HttpResponse {
-    let namespace = namespace.into_inner().0;
-    let type_name = type_name.into_inner().0;
+    let (namespace, type_name) = path.into_inner();
     match relation_type_manager.get_by_type(&namespace, &type_name) {
         Some(relation_type) => HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(&relation_type),
         None => HttpResponse::NotFound()

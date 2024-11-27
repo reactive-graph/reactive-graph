@@ -136,8 +136,7 @@ impl JsonSchema for ComponentBehaviourTypeIds {
         let sub_schema: Schema = gen.subschema_for::<ComponentBehaviourTypeId>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
-            "description": "Component Behaviour Type Ids",
+            "items": sub_schema,
         })
     }
 }

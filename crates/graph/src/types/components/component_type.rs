@@ -43,6 +43,7 @@ use crate::UpdatePropertyError;
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct Component {
     /// The type definition of the component.
     #[serde(flatten)]
@@ -51,16 +52,19 @@ pub struct Component {
 
     /// Textual description of the component.
     #[serde(default = "String::new")]
+    #[schemars(required)]
     #[builder(default, setter(into))]
     pub description: String,
 
     /// The properties which are applied on entity or relation instances.
     #[serde(default = "PropertyTypes::new")]
+    #[schemars(required)]
     #[builder(default, setter(into))]
     pub properties: PropertyTypes,
 
     /// Component specific extensions
     #[serde(default = "Extensions::new")]
+    #[schemars(required)]
     #[builder(default, setter(into))]
     pub extensions: Extensions,
 }
@@ -341,7 +345,7 @@ impl JsonSchema for Components {
         let sub_schema: Schema = gen.subschema_for::<Component>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Components",
         })
     }

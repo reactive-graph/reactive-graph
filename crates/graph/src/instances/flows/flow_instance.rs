@@ -31,6 +31,7 @@ pub struct FlowInstanceCreationError;
 /// instances.
 ///
 #[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct FlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///

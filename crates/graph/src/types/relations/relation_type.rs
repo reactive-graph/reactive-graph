@@ -58,11 +58,12 @@ use crate::UpdatePropertyError;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::r_string;
 
-/// A relation type defines the type of an relation instance.
+/// A relation type defines the type of relation instance.
 ///
 /// The relation type defines the entity types of the outbound and inbound entity instances.
-/// Also the relation type defines the properties of the relation instance.
+/// Also, the relation type defines the properties of the relation instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 pub struct RelationType {
     /// The outbound component or entity type.
     #[serde(rename = "outbound", alias = "outbound")]
@@ -468,7 +469,7 @@ impl JsonSchema for RelationTypes {
         let sub_schema: Schema = gen.subschema_for::<RelationType>().into();
         json_schema!({
             "type": "array",
-            "instance_type": sub_schema,
+            "items": sub_schema,
             "description": "Relation Types",
         })
     }

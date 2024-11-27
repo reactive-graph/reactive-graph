@@ -22,12 +22,12 @@ pub trait NamespacedTypeGetter {
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
 pub struct NamespacedType {
     /// The namespace of the type.
-    // TODO: Should be mandatory!
-    #[serde(default = "String::new")]
+    #[schemars(required)]
     pub namespace: String,
 
     /// The name of the type.
     #[serde(alias = "name")]
+    #[schemars(required)]
     pub type_name: String,
 }
 
