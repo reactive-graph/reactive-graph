@@ -13,4 +13,4 @@ jobs:
       - name: Remove labels
         uses: andymckay/labeler@master
         with:
-          remove-labels: "triage, good first issue, help wanted, question"
+          remove-labels: "o:triage, o:good-first-issue, o:help-wanted, o:question"
