@@ -81,7 +81,7 @@ readme = "README.md"
 repository = "https://github.com/reactive-graph/reactive-graph"
 homepage = "https://reactive-graph.io/"
 keywords = ["graph", "reactive", "control-flow", "inexor"]
-rust-version = "1.80.1"
+rust-version = "1.81.0"
 
 [workspace.dependencies]
 actix = "0.13"
