@@ -663,17 +663,16 @@
 <span class="kw">use </span>std::ops::DerefMut;
 
 <span class="kw">use </span>dashmap::DashMap;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::ObjectValidation;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Deserializer;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>serde::Serializer;
 <span class="kw">use </span>serde_json::Value;
+<span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>typed_builder::TypedBuilder;
 <span class="kw">use </span>uuid::Uuid;
 
@@ -698,9 +697,11 @@
 /// the name of the property, the data type and the socket
 /// type.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>PropertyType {
     <span class="doccomment">/// The name of the property
     </span><span class="attr">#[builder(setter(into))]
+    #[schemars(required)]
     </span><span class="kw">pub </span>name: String,
 
     <span class="doccomment">/// The description of the property.
@@ -709,15 +710,18 @@
     </span><span class="kw">pub </span>description: String,
 
     <span class="doccomment">/// The data type of the property
+    </span><span class="attr">#[schemars(required)]
     </span><span class="kw">pub </span>data_type: DataType,
 
     <span class="doccomment">/// Specifies the type of socket - either input socket or output socket or none
     </span><span class="attr">#[serde(default = <span class="string">"SocketType::none"</span>)]
+    #[schemars(required)]
     #[builder(default = SocketType::None)]
     </span><span class="kw">pub </span>socket_type: SocketType,
 
     <span class="doccomment">/// Specifies if the property is mutable.
     </span><span class="attr">#[serde(default = <span class="string">"Mutability::mutable"</span>)]
+    #[schemars(required)]
     #[builder(default = Mutability::Mutable)]
     </span><span class="kw">pub </span>mutability: Mutability,
 
@@ -1074,21 +1078,17 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>PropertyTypes {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"PropertyTypes"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"PropertyTypes"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        <span class="kw">let </span>subschema = gen.subschema_for::&lt;Value&gt;();
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Object.into()),
-            object: <span class="prelude-val">Some</span>(Box::new(ObjectValidation {
-                additional_properties: <span class="prelude-val">Some</span>(Box::new(subschema)),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;PropertyType&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+            <span class="string">"description"</span>: <span class="string">"Property Types"</span>,
+        })
     }
 }
 

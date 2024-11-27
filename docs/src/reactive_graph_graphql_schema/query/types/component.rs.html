@@ -194,20 +194,7 @@
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
 <a href="#195" id="195">195</a>
-<a href="#196" id="196">196</a>
-<a href="#197" id="197">197</a>
-<a href="#198" id="198">198</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
-
-<span class="kw">use </span>async_graphql::Context;
-<span class="kw">use </span>async_graphql::Object;
-<span class="kw">use </span>async_graphql::Result;
-
-<span class="kw">use </span>reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
-<span class="kw">use </span>reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
-<span class="kw">use </span>reactive_graph_graph::Component;
-<span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
-<span class="kw">use </span>reactive_graph_type_system_api::EntityTypeManager;
-<span class="kw">use </span>reactive_graph_type_system_api::RelationTypeManager;
+<a href="#196" id="196">196</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::mutation::ExtensionTypeIdDefinition;
 <span class="kw">use </span><span class="kw">crate</span>::query::GraphQLComponentBehaviour;
@@ -217,6 +204,15 @@
 <span class="kw">use </span><span class="kw">crate</span>::query::GraphQLPropertyType;
 <span class="kw">use </span><span class="kw">crate</span>::query::GraphQLRelationType;
 <span class="kw">use </span><span class="kw">crate</span>::query::GraphQLRelationTypes;
+<span class="kw">use </span>async_graphql::Context;
+<span class="kw">use </span>async_graphql::Object;
+<span class="kw">use </span>async_graphql::Result;
+<span class="kw">use </span>reactive_graph_behaviour_service_api::EntityComponentBehaviourRegistry;
+<span class="kw">use </span>reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
+<span class="kw">use </span>reactive_graph_graph::Component;
+<span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
+<span class="kw">use </span>reactive_graph_type_system_api::EntityTypeManager;
+<span class="kw">use </span>reactive_graph_type_system_api::RelationTypeManager;
 
 <span class="kw">pub struct </span>GraphQLComponent {
     component: Component,

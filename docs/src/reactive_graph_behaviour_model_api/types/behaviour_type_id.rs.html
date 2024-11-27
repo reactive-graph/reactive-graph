@@ -415,12 +415,8 @@
 <a href="#414" id="414">414</a>
 <a href="#415" id="415">415</a>
 <a href="#416" id="416">416</a>
-<a href="#417" id="417">417</a>
-<a href="#418" id="418">418</a>
-<a href="#419" id="419">419</a>
-<a href="#420" id="420">420</a>
-<a href="#421" id="421">421</a>
-<a href="#422" id="422">422</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::hash_map::RandomState;
+<a href="#417" id="417">417</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::borrow::Cow;
+<span class="kw">use </span>std::collections::hash_map::RandomState;
 <span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::hash::Hash;
@@ -437,12 +433,10 @@
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>rand_derive2::RandGen;
 <span class="kw">use </span>reactive_graph_graph::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
 
@@ -611,20 +605,16 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>BehaviourTypeIds {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"ComponentTypeIds"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"BehaviourTypeIds"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;BehaviourTypeId&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;BehaviourTypeId&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+        })
     }
 }
 

@@ -24,12 +24,7 @@
 <a href="#23" id="23">23</a>
 <a href="#24" id="24">24</a>
 <a href="#25" id="25">25</a>
-<a href="#26" id="26">26</a>
-<a href="#27" id="27">27</a>
-<a href="#28" id="28">28</a>
-<a href="#29" id="29">29</a>
-<a href="#30" id="30">30</a>
-<a href="#31" id="31">31</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
+<a href="#26" id="26">26</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span>actix_web::get;
 <span class="kw">use </span>actix_web::web;
@@ -45,13 +40,8 @@
 }
 
 <span class="attr">#[get(<span class="string">"/types/flows/{namespace}/{type_name}"</span>)]
-</span><span class="kw">pub async fn </span>get_flow_type(
-    namespace: web::Path&lt;(String,)&gt;,
-    type_name: web::Path&lt;(String,)&gt;,
-    flow_type_manager: web::Data&lt;Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;&gt;,
-) -&gt; HttpResponse {
-    <span class="kw">let </span>namespace = namespace.into_inner().<span class="number">0</span>;
-    <span class="kw">let </span>type_name = type_name.into_inner().<span class="number">0</span>;
+</span><span class="kw">pub async fn </span>get_flow_type(path: web::Path&lt;(String, String)&gt;, flow_type_manager: web::Data&lt;Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;&gt;) -&gt; HttpResponse {
+    <span class="kw">let </span>(namespace, type_name) = path.into_inner();
     <span class="kw">let </span>flow_ty = FlowTypeId::new_from_type(namespace, type_name);
     <span class="kw">match </span>flow_type_manager.get(<span class="kw-2">&amp;</span>flow_ty) {
         <span class="prelude-val">Some</span>(flow_type) =&gt; HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(<span class="kw-2">&amp;</span>flow_type),

@@ -428,11 +428,7 @@
 <a href="#427" id="427">427</a>
 <a href="#428" id="428">428</a>
 <a href="#429" id="429">429</a>
-<a href="#430" id="430">430</a>
-<a href="#431" id="431">431</a>
-<a href="#432" id="432">432</a>
-<a href="#433" id="433">433</a>
-<a href="#434" id="434">434</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::hash_map::RandomState;
+<a href="#430" id="430">430</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::collections::hash_map::RandomState;
 <span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::hash::Hash;
@@ -448,14 +444,13 @@
 </span><span class="kw">use </span>rand::Rng;
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>rand_derive2::RandGen;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
+<span class="kw">use </span>std::borrow::Cow;
 
 <span class="kw">use </span><span class="kw">crate</span>::ComponentTypeIdContainer;
 <span class="kw">use </span><span class="kw">crate</span>::NamespacedType;
@@ -469,6 +464,7 @@
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = <span class="string">"test"</span>), derive(RandGen))]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>ComponentTypeId(NamespacedType);
 
 <span class="kw">impl </span>ComponentTypeId {
@@ -666,20 +662,16 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>ComponentTypeIds {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"ComponentTypeIds"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"ComponentTypeIds"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;ComponentTypeId&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;ComponentTypeId&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+        })
     }
 }
 

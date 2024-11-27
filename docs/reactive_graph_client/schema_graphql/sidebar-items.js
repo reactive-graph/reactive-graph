@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["instances","scalar","schema","system","types"]};

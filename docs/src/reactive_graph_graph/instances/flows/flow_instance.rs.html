@@ -112,7 +112,8 @@
 <a href="#111" id="111">111</a>
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
-<a href="#114" id="114">114</a></pre></div><pre class="rust"><code><span class="kw">use </span>schemars::JsonSchema;
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a></pre></div><pre class="rust"><code><span class="kw">use </span>schemars::JsonSchema;
 
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
@@ -145,6 +146,7 @@
 /// instances.
 ///
 </span><span class="attr">#[derive(Clone, Debug, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>FlowInstance {
     <span class="doccomment">/// The id of the flow corresponds to the id of the wrapper entity instance
     ///

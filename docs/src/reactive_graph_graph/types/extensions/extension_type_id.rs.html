@@ -372,12 +372,7 @@
 <a href="#371" id="371">371</a>
 <a href="#372" id="372">372</a>
 <a href="#373" id="373">373</a>
-<a href="#374" id="374">374</a>
-<a href="#375" id="375">375</a>
-<a href="#376" id="376">376</a>
-<a href="#377" id="377">377</a>
-<a href="#378" id="378">378</a>
-<a href="#379" id="379">379</a></pre></div><pre class="rust"><code><span class="kw">use </span>dashmap::iter_set::OwningIter;
+<a href="#374" id="374">374</a></pre></div><pre class="rust"><code><span class="kw">use </span>dashmap::iter_set::OwningIter;
 <span class="kw">use </span>dashmap::DashSet;
 <span class="kw">use </span>std::collections::hash_map::RandomState;
 <span class="kw">use </span>std::fmt::Display;
@@ -400,11 +395,10 @@
 
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>rand_derive2::RandGen;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
+<span class="kw">use </span>std::borrow::Cow;
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = <span class="string">"test"</span>), derive(RandGen))]
@@ -562,20 +556,16 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>ExtensionTypeIds {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"ExtensionTypeIds"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"ExtensionTypeIds"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;ExtensionTypeId&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;ExtensionTypeId&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+        })
     }
 }
 

@@ -864,10 +864,7 @@
 <a href="#863" id="863">863</a>
 <a href="#864" id="864">864</a>
 <a href="#865" id="865">865</a>
-<a href="#866" id="866">866</a>
-<a href="#867" id="867">867</a>
-<a href="#868" id="868">868</a>
-<a href="#869" id="869">869</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
+<a href="#866" id="866">866</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::hash::Hash;
@@ -881,18 +878,17 @@
 </span><span class="kw">use </span>default_test::DefaultTest;
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>rand::Rng;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Deserializer;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>serde::Serializer;
 <span class="kw">use </span>serde_json::Map;
 <span class="kw">use </span>serde_json::Value;
+<span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>typed_builder::TypedBuilder;
 <span class="kw">use </span>uuid::Uuid;
 
@@ -928,8 +924,9 @@
 /// (name, data type, socket type) a relation instance have to have.
 ///
 /// In contrast to the relation type, the relation instance stores values/
-/// documents in it's properties.
+/// documents in its properties.
 </span><span class="attr">#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>RelationInstance {
     <span class="doccomment">/// The id of the outbound vertex.
     </span><span class="kw">pub </span>outbound_id: Uuid,
@@ -1286,20 +1283,17 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>RelationInstances {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"RelationInstances"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"RelationInstances"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;RelationInstance&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;RelationInstance&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+            <span class="string">"description"</span>: <span class="string">"Relation Instances"</span>,
+        })
     }
 }
 

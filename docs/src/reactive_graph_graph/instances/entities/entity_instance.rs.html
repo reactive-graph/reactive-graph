@@ -732,10 +732,7 @@
 <a href="#731" id="731">731</a>
 <a href="#732" id="732">732</a>
 <a href="#733" id="733">733</a>
-<a href="#734" id="734">734</a>
-<a href="#735" id="735">735</a>
-<a href="#736" id="736">736</a>
-<a href="#737" id="737">737</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
+<a href="#734" id="734">734</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::hash::Hash;
@@ -749,18 +746,17 @@
 </span><span class="kw">use </span>default_test::DefaultTest;
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>rand::Rng;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Deserializer;
 <span class="kw">use </span>serde::Serialize;
 <span class="kw">use </span>serde::Serializer;
 <span class="kw">use </span>serde_json::Map;
 <span class="kw">use </span>serde_json::Value;
+<span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>typed_builder::TypedBuilder;
 <span class="kw">use </span>uuid::Uuid;
 
@@ -793,9 +789,10 @@
 ///
 /// The entity type defines the properties (name, data type and socket type).
 ///
-/// In contrast to the entity type the entity instance stores values in it's
+/// In contrast to the entity type the entity instance stores values in its
 /// properties.
 </span><span class="attr">#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>EntityInstance {
     <span class="doccomment">/// The type definition of the entity type.
     </span><span class="attr">#[serde(flatten)]
@@ -811,7 +808,7 @@
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>description: String,
 
-    <span class="doccomment">/// The properties of then entity instance.
+    <span class="doccomment">/// The properties of the entity instance.
     ///
     /// Each property is represented by its name (String) and it's value. The value is
     /// a representation of a JSON. Therefore, the value can be boolean, number, string,
@@ -1088,20 +1085,17 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>EntityInstances {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"EntityInstances"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"EntityInstances"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;EntityInstance&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;EntityInstance&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+            <span class="string">"description"</span>: <span class="string">"Entity Instances"</span>,
+        })
     }
 }
 

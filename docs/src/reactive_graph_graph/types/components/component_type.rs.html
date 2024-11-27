@@ -683,14 +683,13 @@
 <span class="kw">use </span>dashmap::iter::OwningIter;
 <span class="kw">use </span>dashmap::mapref::multiple::RefMulti;
 <span class="kw">use </span>dashmap::DashMap;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
+<span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>typed_builder::TypedBuilder;
 <span class="kw">use </span>wildmatch::WildMatch;
 
@@ -720,6 +719,7 @@
 <span class="doccomment">/// A component defines a set of properties to be applied to entity
 /// types and relation types.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>Component {
     <span class="doccomment">/// The type definition of the component.
     </span><span class="attr">#[serde(flatten)]
@@ -728,16 +728,19 @@
 
     <span class="doccomment">/// Textual description of the component.
     </span><span class="attr">#[serde(default = <span class="string">"String::new"</span>)]
+    #[schemars(required)]
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>description: String,
 
     <span class="doccomment">/// The properties which are applied on entity or relation instances.
     </span><span class="attr">#[serde(default = <span class="string">"PropertyTypes::new"</span>)]
+    #[schemars(required)]
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>properties: PropertyTypes,
 
     <span class="doccomment">/// Component specific extensions
     </span><span class="attr">#[serde(default = <span class="string">"Extensions::new"</span>)]
+    #[schemars(required)]
     #[builder(default, setter(into))]
     </span><span class="kw">pub </span>extensions: Extensions,
 }
@@ -1010,20 +1013,17 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>Components {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"Components"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"Components"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;Component&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;Component&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+            <span class="string">"description"</span>: <span class="string">"Components"</span>,
+        })
     }
 }
 

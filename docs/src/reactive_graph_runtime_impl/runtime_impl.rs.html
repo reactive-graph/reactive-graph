@@ -623,7 +623,8 @@
 <a href="#622" id="622">622</a>
 <a href="#623" id="623">623</a>
 <a href="#624" id="624">624</a>
-<a href="#625" id="625">625</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::atomic::AtomicBool;
+<a href="#625" id="625">625</a>
+<a href="#626" id="626">626</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::atomic::AtomicBool;
 <span class="kw">use </span>std::sync::atomic::Ordering;
 <span class="kw">use </span>std::sync::Arc;
 <span class="kw">use </span>std::time::Duration;
@@ -756,7 +757,8 @@
         <span class="comment">// Clone GraphQL server and move the reference into the GraphQL server thread
         </span><span class="kw">let </span>graphql_server = <span class="self">self</span>.web_system.get_graphql_server();
         <span class="comment">// GraphQL server thread: Create a new thread for the GraphQL server
-        // TODO: add thread name
+        // TODO: Use tokio task Builder to name the task
+        // tokio::task::Builder::new().name("rg_server").spawn()
         </span><span class="kw">let </span>graphql_server_handle = tokio::spawn(<span class="kw">async move </span>{
             <span class="comment">// Run the GraphQL server
             </span><span class="macro">info!</span>(<span class="string">"Run the GraphQL server."</span>);

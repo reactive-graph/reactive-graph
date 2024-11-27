@@ -120,12 +120,12 @@
 #[cfg_attr(any(test, feature = <span class="string">"test"</span>), derive(RandGen))]
 </span><span class="kw">pub struct </span>NamespacedType {
     <span class="doccomment">/// The namespace of the type.
-    </span><span class="comment">// TODO: Should be mandatory!
-    </span><span class="attr">#[serde(default = <span class="string">"String::new"</span>)]
+    </span><span class="attr">#[schemars(required)]
     </span><span class="kw">pub </span>namespace: String,
 
     <span class="doccomment">/// The name of the type.
     </span><span class="attr">#[serde(alias = <span class="string">"name"</span>)]
+    #[schemars(required)]
     </span><span class="kw">pub </span>type_name: String,
 }
 

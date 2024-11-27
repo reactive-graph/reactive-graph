@@ -949,10 +949,7 @@
 <a href="#948" id="948">948</a>
 <a href="#949" id="949">949</a>
 <a href="#950" id="950">950</a>
-<a href="#951" id="951">951</a>
-<a href="#952" id="952">952</a>
-<a href="#953" id="953">953</a>
-<a href="#954" id="954">954</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
+<a href="#951" id="951">951</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>std::hash::Hasher;
 <span class="kw">use </span>std::ops::Deref;
@@ -964,14 +961,13 @@
 </span><span class="kw">use </span>default_test::DefaultTest;
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>rand::Rng;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
+<span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>typed_builder::TypedBuilder;
 <span class="kw">use </span>uuid::Uuid;
 
@@ -1038,13 +1034,14 @@
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>FlowTypeCreationError;
 
-<span class="doccomment">/// Flow types defines the type of an flow instance like a template
+<span class="doccomment">/// Flow types defines the type of flow instance like a template
 /// for flow instances.
 ///
 /// They contain entity instances and relation instances. The wrapper
 /// entity instance is mandatory and used for input and outputs.
 ///
 </span><span class="attr">#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>FlowType {
     <span class="doccomment">/// The type definition of the entity type.
     </span><span class="attr">#[serde(flatten)]
@@ -1631,20 +1628,17 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>FlowTypes {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"FlowTypes"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"FlowTypes"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;FlowType&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;FlowType&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+            <span class="string">"description"</span>: <span class="string">"Flow Types"</span>,
+        })
     }
 }
 

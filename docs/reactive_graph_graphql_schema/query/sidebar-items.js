@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["behaviours","instances","types"],"struct":["ReactiveGraphQuery"]};
+window.SIDEBAR_ITEMS = {"mod":["behaviours","instances","json_schema","types"],"struct":["ReactiveGraphQuery"]};

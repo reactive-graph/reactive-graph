@@ -843,10 +843,7 @@
 <a href="#842" id="842">842</a>
 <a href="#843" id="843">843</a>
 <a href="#844" id="844">844</a>
-<a href="#845" id="845">845</a>
-<a href="#846" id="846">846</a>
-<a href="#847" id="847">847</a>
-<a href="#848" id="848">848</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
+<a href="#845" id="845">845</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::cmp::Ordering;
 <span class="kw">use </span>std::hash::Hash;
 <span class="kw">use </span>std::hash::Hasher;
 <span class="kw">use </span>std::ops::Deref;
@@ -856,14 +853,13 @@
 <span class="kw">use </span>dashmap::DashMap;
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>default_test::DefaultTest;
-<span class="kw">use </span>schemars::gen::SchemaGenerator;
-<span class="kw">use </span>schemars::schema::ArrayValidation;
-<span class="kw">use </span>schemars::schema::InstanceType;
-<span class="kw">use </span>schemars::schema::Schema;
-<span class="kw">use </span>schemars::schema::SchemaObject;
+<span class="kw">use </span>schemars::json_schema;
 <span class="kw">use </span>schemars::JsonSchema;
+<span class="kw">use </span>schemars::Schema;
+<span class="kw">use </span>schemars::SchemaGenerator;
 <span class="kw">use </span>serde::Deserialize;
 <span class="kw">use </span>serde::Serialize;
+<span class="kw">use </span>std::borrow::Cow;
 <span class="kw">use </span>typed_builder::TypedBuilder;
 
 <span class="kw">use </span><span class="kw">crate</span>::AddExtensionError;
@@ -907,11 +903,12 @@
 <span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 </span><span class="kw">use </span>reactive_graph_test_utils::r_string;
 
-<span class="doccomment">/// A relation type defines the type of an relation instance.
+<span class="doccomment">/// A relation type defines the type of relation instance.
 ///
 /// The relation type defines the entity types of the outbound and inbound entity instances.
-/// Also the relation type defines the properties of the relation instance.
+/// Also, the relation type defines the properties of the relation instance.
 </span><span class="attr">#[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
+#[schemars(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>RelationType {
     <span class="doccomment">/// The outbound component or entity type.
     </span><span class="attr">#[serde(rename = <span class="string">"outbound"</span>, alias = <span class="string">"outbound"</span>)]
@@ -1309,20 +1306,17 @@
 }
 
 <span class="kw">impl </span>JsonSchema <span class="kw">for </span>RelationTypes {
-    <span class="kw">fn </span>schema_name() -&gt; String {
-        <span class="string">"RelationTypes"</span>.to_owned()
+    <span class="kw">fn </span>schema_name() -&gt; Cow&lt;<span class="lifetime">'static</span>, str&gt; {
+        <span class="string">"RelationTypes"</span>.into()
     }
 
     <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-        SchemaObject {
-            instance_type: <span class="prelude-val">Some</span>(InstanceType::Array.into()),
-            array: <span class="prelude-val">Some</span>(Box::new(ArrayValidation {
-                items: <span class="prelude-val">Some</span>(gen.subschema_for::&lt;RelationType&gt;().into()),
-                ..Default::default()
-            })),
-            ..Default::default()
-        }
-        .into()
+        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;RelationType&gt;().into();
+        <span class="macro">json_schema!</span>({
+            <span class="string">"type"</span>: <span class="string">"array"</span>,
+            <span class="string">"items"</span>: sub_schema,
+            <span class="string">"description"</span>: <span class="string">"Relation Types"</span>,
+        })
     }
 }
 
