@@ -3892,7 +3892,7 @@ dependencies = [
  "shellwords",
  "table_to_html",
  "tabled",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "tokio",
  "toml",
  "toml_edit",
@@ -3917,7 +3917,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "typed-builder",
  "uuid",
 ]
@@ -4104,7 +4104,7 @@ dependencies = [
  "reactive-graph-type-system-api",
  "serde_json",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "uuid",
 ]
 
@@ -4137,7 +4137,7 @@ dependencies = [
  "similar",
  "similar-asserts",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "tokio",
  "uuid",
 ]
@@ -4196,7 +4196,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "typed-builder",
  "uuid",
  "wildmatch",
@@ -4238,7 +4238,7 @@ dependencies = [
  "reactive-graph-type-system-api",
  "serde_json",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "tokio",
  "uuid",
 ]
@@ -4390,7 +4390,7 @@ dependencies = [
  "serde",
  "serde_json",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "tokio",
  "tokio-stream",
  "toml",
@@ -4572,7 +4572,7 @@ dependencies = [
  "reactive-graph-graph",
  "reactive-graph-test-utils",
  "serde_json",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "uuid",
 ]
 
@@ -4620,7 +4620,7 @@ dependencies = [
  "serde",
  "serde_json",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "uuid",
 ]
 
@@ -4666,7 +4666,7 @@ dependencies = [
  "reactive-graph-lifecycle",
  "reactive-graph-remotes-model",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
 ]
 
 [[package]]
@@ -4928,7 +4928,7 @@ dependencies = [
  "async-trait",
  "reactive-graph-lifecycle",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "uuid",
 ]
 
@@ -5023,7 +5023,7 @@ dependencies = [
  "serde",
  "serde_json",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "tokio",
  "uuid",
 ]
@@ -5034,7 +5034,7 @@ version = "0.10.0"
 dependencies = [
  "json5",
  "serde_json",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "toml",
 ]
 
@@ -5080,7 +5080,7 @@ dependencies = [
  "rust-embed",
  "serde_json",
  "springtime-di",
- "thiserror 1.0.69",
+ "thiserror 2.0.3",
  "toml",
  "uuid",
 ]
