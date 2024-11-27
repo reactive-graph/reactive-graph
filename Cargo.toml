@@ -149,7 +149,7 @@ rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_
 rustls-pki-types = "1.10.0"
 rustls-pemfile = "2.2"
 rustversion = "1.0"
-rustyline = "14.0"
+rustyline = "15.0"
 schemars = { version = "1.0.0-alpha.15", features = ["uuid1"], git = "https://github.com/GREsau/schemars.git" }
 self_update = { version = "0.41", default-features = false, features = ["archive-tar", "archive-zip", "compression-flate2", "compression-zip-deflate", "rustls"] }
 semver = "1"
