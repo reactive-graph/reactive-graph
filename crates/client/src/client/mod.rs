@@ -11,12 +11,14 @@ use reqwest::Client;
 use reqwest::Error;
 
 use crate::client::instances::Instances;
+use crate::client::json_schema::JsonSchema;
 use crate::client::plugin::api::Plugins;
 use crate::client::runtime::Runtime;
 use crate::client::types::Types;
 use reactive_graph_remotes_model::InstanceAddress;
 
 pub mod instances;
+pub mod json_schema;
 pub mod plugin;
 pub mod runtime;
 pub mod types;
@@ -95,6 +97,13 @@ impl ReactiveGraphClient {
         Ok(Arc::new(Self { remote, client }))
     }
 
+    #[cfg(all(test, feature = "integration-tests"))]
+    pub fn new_from_runtime(runtime: Arc<dyn reactive_graph_runtime_api::Runtime>) -> Result<Arc<Self>, ReactiveGraphClientError> {
+        let config = runtime.get_config_manager().get_graphql_server_config();
+        let address = InstanceAddress::new(config.hostname(), config.port(), config.is_secure());
+        ReactiveGraphClient::new(address)
+    }
+
     /// Returns the instance address.
     pub fn remote(&self) -> InstanceAddress {
         self.remote.clone()
@@ -126,6 +135,10 @@ impl ReactiveGraphClient {
 
     pub fn instances(self: &Arc<Self>) -> Instances {
         Instances::new(self.clone())
+    }
+
+    pub fn json_schema(self: &Arc<Self>) -> JsonSchema {
+        JsonSchema::new(self.clone())
     }
 
     pub fn runtime(self: &Arc<Self>) -> Runtime {

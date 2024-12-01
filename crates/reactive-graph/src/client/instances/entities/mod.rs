@@ -1,5 +1,6 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NoContent;
+use crate::client::error::CommandError::NotFound;
 use crate::client::instances::entities::args::EntityInstancesArgs;
 use crate::client::instances::entities::commands::EntityInstancesCommands;
 use crate::client::instances::entities::output_format::EntityInstancesOutputFormatWrapper;
@@ -120,6 +121,11 @@ pub(crate) async fn entity_instances(client: &Arc<ReactiveGraphClient>, entity_i
             Ok(Some(true)) => Ok(format!("Entity instance {} deleted", args.id).into()),
             Ok(Some(false)) => Ok(format!("Entity instance {} not deleted", args.id).into()),
             Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        EntityInstancesCommands::JsonSchema => match client.json_schema().instances().entities().await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(NotFound("JSON Schema not available".to_string())),
             Err(e) => Err(e.into()),
         },
     }

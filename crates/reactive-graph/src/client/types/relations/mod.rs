@@ -103,5 +103,10 @@ pub(crate) async fn relation_types(client: &Arc<ReactiveGraphClient>, relation_t
             Ok(None) => Err(args.ty.not_found()),
             Err(e) => Err(e.into()),
         },
+        RelationTypesCommands::JsonSchema => match client.json_schema().types().relations().await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(NotFound("JSON Schema not available".to_string())),
+            Err(e) => Err(e.into()),
+        },
     }
 }

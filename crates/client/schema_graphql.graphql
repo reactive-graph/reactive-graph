@@ -402,6 +402,34 @@ type Instances {
   ): [RelationInstance!]!
 }
 
+"Get the JSON schema of the type system and instance system."
+type JsonSchema {
+  instances: JsonSchemaInstanceSystem!
+  types: JsonSchemaTypeSystem!
+}
+
+"Get the JSON schema of the instance system (entity instances, relation instances or flow instances)."
+type JsonSchemaInstanceSystem {
+  "Returns the JSON schema for entity instances."
+  entities: JSON!
+  "Returns the JSON schema for flow instances."
+  flows: JSON!
+  "Returns the JSON schema for relation instances."
+  relations: JSON!
+}
+
+"Get the JSON schema of the type system (components, entity types, relation types or flow types)."
+type JsonSchemaTypeSystem {
+  "Returns the JSON schema for components."
+  components: JSON!
+  "Returns the JSON schema for entity types."
+  entities: JSON!
+  "Returns the JSON schema for flow types."
+  flows: JSON!
+  "Returns the JSON schema for relation types."
+  relations: JSON!
+}
+
 "Mutations for the type system, the instances and the flows."
 type Mutation {
   "Mutations for instances (entity instances, relation instances)."
@@ -796,6 +824,8 @@ type Query {
   behaviours: Behaviours!
   "Search for instances (entity instances, relation instances)."
   instances: Instances!
+  "JSON Schema definitions."
+  jsonSchema: JsonSchema!
   randomUuid: String!
   "Search for types (components, entity types, relation types)."
   types: Types!

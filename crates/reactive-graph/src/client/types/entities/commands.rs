@@ -52,4 +52,7 @@ pub(crate) enum EntityTypesCommands {
     /// Updates the description of an entity type.
     #[non_exhaustive]
     UpdateDescription(EntityTypeUpdateDescriptionArgs),
+    /// Prints the JSON Schema of entity types.
+    #[non_exhaustive]
+    JsonSchema,
 }

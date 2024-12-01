@@ -52,4 +52,7 @@ pub(crate) enum RelationTypesCommands {
     /// Updates the description of a relation type.
     #[non_exhaustive]
     UpdateDescription(RelationTypeUpdateDescriptionArgs),
+    /// Prints the JSON Schema of relation types.
+    #[non_exhaustive]
+    JsonSchema,
 }

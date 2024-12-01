@@ -1,5 +1,6 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NoContent;
+use crate::client::error::CommandError::NotFound;
 use crate::client::instances::properties::output_format::PropertyInstancesOutputFormatWrapper;
 use crate::client::instances::relations::args::RelationInstancesArgs;
 use crate::client::instances::relations::commands::RelationInstancesCommands;
@@ -123,6 +124,11 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
             Ok(Some(true)) => Ok(format!("Relation instance {} deleted", &args).into()),
             Ok(Some(false)) => Ok(format!("Relation instance {} not deleted", &args).into()),
             Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        RelationInstancesCommands::JsonSchema => match client.json_schema().instances().relations().await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(NotFound("JSON Schema not available".to_string())),
             Err(e) => Err(e.into()),
         },
     }
