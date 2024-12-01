@@ -49,4 +49,7 @@ pub(crate) enum EntityInstancesCommands {
     // Deletes an entity instance.
     #[non_exhaustive]
     Delete(IdArgs),
+    /// Prints the JSON Schema of entity instances.
+    #[non_exhaustive]
+    JsonSchema,
 }

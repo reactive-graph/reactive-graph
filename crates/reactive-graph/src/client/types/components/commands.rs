@@ -43,4 +43,7 @@ pub(crate) enum ComponentsCommands {
     /// Updates the description of a component.
     #[non_exhaustive]
     UpdateDescription(ComponentUpdateDescriptionArgs),
+    /// Prints the JSON Schema of components.
+    #[non_exhaustive]
+    JsonSchema,
 }

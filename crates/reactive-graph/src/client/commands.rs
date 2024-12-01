@@ -1,4 +1,5 @@
 use crate::client::instances::entities::args::EntityInstancesArgs;
+use crate::client::instances::flows::args::FlowInstancesArgs;
 use crate::client::instances::relations::args::RelationInstancesArgs;
 use crate::client::system::command::args::ExecuteCommandArgs;
 use crate::client::system::instance::args::InstanceInfoArgs;
@@ -6,6 +7,7 @@ use crate::client::system::plugin::args::PluginsArgs;
 use crate::client::system::remotes::args::RemotesArgs;
 use crate::client::types::components::args::ComponentsArgs;
 use crate::client::types::entities::args::EntityTypesArgs;
+use crate::client::types::flows::args::FlowTypesArgs;
 use crate::client::types::relations::args::RelationTypesArgs;
 use clap::Subcommand;
 
@@ -32,7 +34,7 @@ pub(crate) enum ClientCommands {
     #[non_exhaustive]
     Shutdown,
 
-    // --- Types ---
+    // --- Type System ---
     /// Manage components.
     #[non_exhaustive]
     Components(ComponentsArgs),
@@ -45,7 +47,11 @@ pub(crate) enum ClientCommands {
     #[non_exhaustive]
     RelationTypes(RelationTypesArgs),
 
-    // --- Instances ---
+    /// Manage entity types.
+    #[non_exhaustive]
+    FlowTypes(FlowTypesArgs),
+
+    // --- Instance System ---
     /// Manage entity instances.
     #[non_exhaustive]
     EntityInstances(EntityInstancesArgs),
@@ -53,4 +59,8 @@ pub(crate) enum ClientCommands {
     /// Manage relation instances.
     #[non_exhaustive]
     RelationInstances(RelationInstancesArgs),
+
+    /// Manage flow instances.
+    #[non_exhaustive]
+    FlowInstances(FlowInstancesArgs),
 }

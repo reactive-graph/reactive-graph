@@ -16,10 +16,10 @@ use crate::types::extension::display_extensions_html_inline;
 use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
-use crate::types::property_type::display_property_types_html_inline;
-use crate::types::property_type::display_property_types_inline_str;
-use crate::types::property_type::PropertyType;
-use crate::types::property_type::PropertyTypes;
+use crate::types::properties::display_property_types_html_inline;
+use crate::types::properties::display_property_types_inline_str;
+use crate::types::properties::PropertyType;
+use crate::types::properties::PropertyTypes;
 use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]

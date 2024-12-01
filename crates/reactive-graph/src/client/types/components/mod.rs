@@ -85,5 +85,10 @@ pub(crate) async fn components(client: &Arc<ReactiveGraphClient>, component_args
             Ok(None) => Err(args.ty.not_found()),
             Err(e) => Err(e.into()),
         },
+        ComponentsCommands::JsonSchema => match client.json_schema().types().components().await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(NotFound("JSON Schema not available".to_string())),
+            Err(e) => Err(e.into()),
+        },
     }
 }

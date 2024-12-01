@@ -104,5 +104,10 @@ pub(crate) async fn entity_types(client: &Arc<ReactiveGraphClient>, entity_type_
             Ok(None) => Err(args.ty.not_found()),
             Err(e) => Err(e.into()),
         },
+        EntityTypesCommands::JsonSchema => match client.json_schema().types().entities().await {
+            Ok(Some(json_schema)) => Ok(json_schema.into()),
+            Ok(None) => Err(NotFound("JSON Schema not available".to_string())),
+            Err(e) => Err(e.into()),
+        },
     }
 }

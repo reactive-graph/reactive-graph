@@ -45,4 +45,7 @@ pub(crate) enum RelationInstancesCommands {
     // Deletes a relation instance.
     #[non_exhaustive]
     Delete(RelationInstanceIdArgs),
+    /// Prints the JSON Schema of relation instances.
+    #[non_exhaustive]
+    JsonSchema,
 }

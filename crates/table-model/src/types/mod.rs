@@ -1,9 +1,10 @@
 pub mod component;
 pub mod data_type;
-pub mod entity_type;
+pub mod entities;
 pub mod extension;
+pub mod flows;
 pub mod json_value;
 pub mod mutability;
-pub mod property_type;
-pub mod relation_type;
+pub mod properties;
+pub mod relations;
 pub mod socket_type;
