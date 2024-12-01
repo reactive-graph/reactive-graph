@@ -53,7 +53,10 @@
 <a href="#52" id="52">52</a>
 <a href="#53" id="53">53</a>
 <a href="#54" id="54">54</a>
-<a href="#55" id="55">55</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::types::relations::args::add_extension::RelationTypeAddExtensionArgs;
+<a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::types::relations::args::add_extension::RelationTypeAddExtensionArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::relations::args::add_property::RelationTypeAddPropertyArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::relations::args::create::CreateRelationTypeArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::relations::args::relation_component_type::RelationComponentTypeIdArgs;
@@ -107,5 +110,8 @@
     <span class="doccomment">/// Updates the description of a relation type.
     </span><span class="attr">#[non_exhaustive]
     </span>UpdateDescription(RelationTypeUpdateDescriptionArgs),
+    <span class="doccomment">/// Prints the JSON Schema of relation types.
+    </span><span class="attr">#[non_exhaustive]
+    </span>JsonSchema,
 }
 </code></pre></div></section></main></body></html>

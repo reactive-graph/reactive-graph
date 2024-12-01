@@ -53,7 +53,10 @@
 <a href="#52" id="52">52</a>
 <a href="#53" id="53">53</a>
 <a href="#54" id="54">54</a>
-<a href="#55" id="55">55</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::types::entities::args::add_extension::EntityTypeAddExtensionArgs;
+<a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::types::entities::args::add_extension::EntityTypeAddExtensionArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::entities::args::add_property::EntityTypeAddPropertyArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::entities::args::create::CreateEntityTypeArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::entities::args::entity_component_type::EntityComponentTypeIdArgs;
@@ -107,5 +110,8 @@
     <span class="doccomment">/// Updates the description of an entity type.
     </span><span class="attr">#[non_exhaustive]
     </span>UpdateDescription(EntityTypeUpdateDescriptionArgs),
+    <span class="doccomment">/// Prints the JSON Schema of entity types.
+    </span><span class="attr">#[non_exhaustive]
+    </span>JsonSchema,
 }
 </code></pre></div></section></main></body></html>

@@ -32,10 +32,14 @@
 <a href="#31" id="31">31</a>
 <a href="#32" id="32">32</a>
 <a href="#33" id="33">33</a>
-<a href="#34" id="34">34</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a>
+<a href="#36" id="36">36</a>
+<a href="#37" id="37">37</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::client::commands::ClientCommands;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::entity_instances;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::flows::flow_instances;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::relations::relation_instances;
 <span class="kw">use </span><span class="kw">crate</span>::client::result::CommandResult;
 <span class="kw">use </span><span class="kw">crate</span>::client::system::command::execute_command;
@@ -45,6 +49,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::client::system::shutdown::shutdown;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::components::components;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::entities::entity_types;
+<span class="kw">use </span><span class="kw">crate</span>::client::types::flows::flow_types;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::relations::relation_types;
 <span class="kw">use </span>reactive_graph_client::ReactiveGraphClient;
 
@@ -56,14 +61,15 @@
         ClientCommands::Plugins(args) =&gt; plugins(client, args).<span class="kw">await</span>,
         ClientCommands::Remotes(args) =&gt; remotes(client, args).<span class="kw">await</span>,
         ClientCommands::Shutdown =&gt; shutdown(client).<span class="kw">await</span>,
-        <span class="comment">// Types
+        <span class="comment">// Type System
         </span>ClientCommands::Components(args) =&gt; components(client, args).<span class="kw">await</span>,
         ClientCommands::EntityTypes(args) =&gt; entity_types(client, args).<span class="kw">await</span>,
         ClientCommands::RelationTypes(args) =&gt; relation_types(client, args).<span class="kw">await</span>,
-        <span class="comment">// TODO: Flow Types
+        ClientCommands::FlowTypes(args) =&gt; flow_types(client, args).<span class="kw">await</span>,
+        <span class="comment">// Instance System
         </span>ClientCommands::EntityInstances(args) =&gt; entity_instances(client, args).<span class="kw">await</span>,
         ClientCommands::RelationInstances(args) =&gt; relation_instances(client, args).<span class="kw">await</span>,
-        <span class="comment">// TODO: Flow Instances
-    </span>}
+        ClientCommands::FlowInstances(args) =&gt; flow_instances(client, args).<span class="kw">await</span>,
+    }
 }
 </code></pre></div></section></main></body></html>

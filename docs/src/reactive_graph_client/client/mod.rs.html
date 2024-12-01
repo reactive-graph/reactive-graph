@@ -211,7 +211,20 @@
 <a href="#210" id="210">210</a>
 <a href="#211" id="211">211</a>
 <a href="#212" id="212">212</a>
-<a href="#213" id="213">213</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Display;
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::fmt::Display;
 <span class="kw">use </span>std::fmt::Formatter;
 <span class="kw">use </span>std::sync::Arc;
 
@@ -224,12 +237,14 @@
 <span class="kw">use </span>reqwest::Error;
 
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::Instances;
+<span class="kw">use </span><span class="kw">crate</span>::client::json_schema::JsonSchema;
 <span class="kw">use </span><span class="kw">crate</span>::client::plugin::api::Plugins;
 <span class="kw">use </span><span class="kw">crate</span>::client::runtime::Runtime;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::Types;
 <span class="kw">use </span>reactive_graph_remotes_model::InstanceAddress;
 
 <span class="kw">pub mod </span>instances;
+<span class="kw">pub mod </span>json_schema;
 <span class="kw">pub mod </span>plugin;
 <span class="kw">pub mod </span>runtime;
 <span class="kw">pub mod </span>types;
@@ -308,6 +323,13 @@
         <span class="prelude-val">Ok</span>(Arc::new(<span class="self">Self </span>{ remote, client }))
     }
 
+    <span class="attr">#[cfg(all(test, feature = <span class="string">"integration-tests"</span>))]
+    </span><span class="kw">pub fn </span>new_from_runtime(runtime: Arc&lt;<span class="kw">dyn </span>reactive_graph_runtime_api::Runtime&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;<span class="self">Self</span>&gt;, ReactiveGraphClientError&gt; {
+        <span class="kw">let </span>config = runtime.get_config_manager().get_graphql_server_config();
+        <span class="kw">let </span>address = InstanceAddress::new(config.hostname(), config.port(), config.is_secure());
+        ReactiveGraphClient::new(address)
+    }
+
     <span class="doccomment">/// Returns the instance address.
     </span><span class="kw">pub fn </span>remote(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; InstanceAddress {
         <span class="self">self</span>.remote.clone()
@@ -339,6 +361,10 @@
 
     <span class="kw">pub fn </span>instances(<span class="self">self</span>: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;) -&gt; Instances {
         Instances::new(<span class="self">self</span>.clone())
+    }
+
+    <span class="kw">pub fn </span>json_schema(<span class="self">self</span>: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;) -&gt; JsonSchema {
+        JsonSchema::new(<span class="self">self</span>.clone())
     }
 
     <span class="kw">pub fn </span>runtime(<span class="self">self</span>: <span class="kw-2">&amp;</span>Arc&lt;<span class="self">Self</span>&gt;) -&gt; Runtime {

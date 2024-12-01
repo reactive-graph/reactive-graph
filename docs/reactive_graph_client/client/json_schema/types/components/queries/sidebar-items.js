@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_json_schema_for_components"],"struct":["JsonSchema","JsonSchemaComponents","JsonSchemaTypeSystem"]};

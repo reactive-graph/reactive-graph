@@ -50,7 +50,10 @@
 <a href="#49" id="49">49</a>
 <a href="#50" id="50">50</a>
 <a href="#51" id="51">51</a>
-<a href="#52" id="52">52</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::add_property::AddPropertyArgs;
+<a href="#52" id="52">52</a>
+<a href="#53" id="53">53</a>
+<a href="#54" id="54">54</a>
+<a href="#55" id="55">55</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::add_property::AddPropertyArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::create::CreateEntityInstanceArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::id::IdArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::id_and_component::IdAndComponentArgs;
@@ -101,5 +104,8 @@
     <span class="comment">// Deletes an entity instance.
     </span><span class="attr">#[non_exhaustive]
     </span>Delete(IdArgs),
+    <span class="doccomment">/// Prints the JSON Schema of entity instances.
+    </span><span class="attr">#[non_exhaustive]
+    </span>JsonSchema,
 }
 </code></pre></div></section></main></body></html>

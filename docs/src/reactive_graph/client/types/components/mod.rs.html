@@ -87,7 +87,12 @@
 <a href="#86" id="86">86</a>
 <a href="#87" id="87">87</a>
 <a href="#88" id="88">88</a>
-<a href="#89" id="89">89</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a></pre></div><pre class="rust"><code><span class="kw">use </span>std::sync::Arc;
 
 <span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError;
 <span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError::NoContent;
@@ -172,6 +177,11 @@
         ComponentsCommands::UpdateDescription(args) =&gt; <span class="kw">match </span>client.types().components().update_description_with_variables((<span class="kw-2">&amp;</span>args).into()).<span class="kw">await </span>{
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(component)) =&gt; output_format_wrapper.single(component),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.ty.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        ComponentsCommands::JsonSchema =&gt; <span class="kw">match </span>client.json_schema().types().components().<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(json_schema)) =&gt; <span class="prelude-val">Ok</span>(json_schema.into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="string">"JSON Schema not available"</span>.to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
     }

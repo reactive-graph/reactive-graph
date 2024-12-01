@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["__typename","behaviours","instances","randomUuid","types"]};
+window.SIDEBAR_ITEMS = {"struct":["__typename","behaviours","instances","jsonSchema","randomUuid","types"]};

@@ -124,8 +124,15 @@
 <a href="#123" id="123">123</a>
 <a href="#124" id="124">124</a>
 <a href="#125" id="125">125</a>
-<a href="#126" id="126">126</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError;
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError;
 <span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError::NoContent;
+<span class="kw">use </span><span class="kw">crate</span>::client::error::CommandError::NotFound;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::EntityInstancesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::commands::EntityInstancesCommands;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::output_format::EntityInstancesOutputFormatWrapper;
@@ -246,6 +253,11 @@
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="bool-val">true</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"Entity instance {} deleted"</span>, args.id).into()),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="bool-val">false</span>)) =&gt; <span class="prelude-val">Ok</span>(<span class="macro">format!</span>(<span class="string">"Entity instance {} not deleted"</span>, args.id).into()),
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(args.not_found()),
+            <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
+        },
+        EntityInstancesCommands::JsonSchema =&gt; <span class="kw">match </span>client.json_schema().instances().entities().<span class="kw">await </span>{
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(json_schema)) =&gt; <span class="prelude-val">Ok</span>(json_schema.into()),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="prelude-val">Err</span>(NotFound(<span class="string">"JSON Schema not available"</span>.to_string())),
             <span class="prelude-val">Err</span>(e) =&gt; <span class="prelude-val">Err</span>(e.into()),
         },
     }

@@ -54,7 +54,18 @@
 <a href="#53" id="53">53</a>
 <a href="#54" id="54">54</a>
 <a href="#55" id="55">55</a>
-<a href="#56" id="56">56</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::EntityInstancesArgs;
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a></pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::client::instances::entities::args::EntityInstancesArgs;
+<span class="kw">use </span><span class="kw">crate</span>::client::instances::flows::args::FlowInstancesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::instances::relations::args::RelationInstancesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::system::command::args::ExecuteCommandArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::system::instance::args::InstanceInfoArgs;
@@ -62,6 +73,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::client::system::remotes::args::RemotesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::components::args::ComponentsArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::entities::args::EntityTypesArgs;
+<span class="kw">use </span><span class="kw">crate</span>::client::types::flows::args::FlowTypesArgs;
 <span class="kw">use </span><span class="kw">crate</span>::client::types::relations::args::RelationTypesArgs;
 <span class="kw">use </span>clap::Subcommand;
 
@@ -88,7 +100,7 @@
     </span><span class="attr">#[non_exhaustive]
     </span>Shutdown,
 
-    <span class="comment">// --- Types ---
+    <span class="comment">// --- Type System ---
     </span><span class="doccomment">/// Manage components.
     </span><span class="attr">#[non_exhaustive]
     </span>Components(ComponentsArgs),
@@ -101,7 +113,11 @@
     </span><span class="attr">#[non_exhaustive]
     </span>RelationTypes(RelationTypesArgs),
 
-    <span class="comment">// --- Instances ---
+    <span class="doccomment">/// Manage entity types.
+    </span><span class="attr">#[non_exhaustive]
+    </span>FlowTypes(FlowTypesArgs),
+
+    <span class="comment">// --- Instance System ---
     </span><span class="doccomment">/// Manage entity instances.
     </span><span class="attr">#[non_exhaustive]
     </span>EntityInstances(EntityInstancesArgs),
@@ -109,5 +125,9 @@
     <span class="doccomment">/// Manage relation instances.
     </span><span class="attr">#[non_exhaustive]
     </span>RelationInstances(RelationInstancesArgs),
+
+    <span class="doccomment">/// Manage flow instances.
+    </span><span class="attr">#[non_exhaustive]
+    </span>FlowInstances(FlowInstancesArgs),
 }
 </code></pre></div></section></main></body></html>
