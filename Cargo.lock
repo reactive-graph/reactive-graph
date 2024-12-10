@@ -518,9 +518,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql"
-version = "7.0.12"
+version = "7.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10db7e8b2042f8d7ebcfebc482622411c23f88f3e9cd7fac74465b78fdab65f0"
+checksum = "59fd6bd734afb8b6e4d0f84a3e77305ce0a7ccc60d70f6001cb5e1c3f38d8ff1"
 dependencies = [
  "async-graphql-derive",
  "async-graphql-parser",
@@ -552,9 +552,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-actix-web"
-version = "7.0.12"
+version = "7.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0489e9ca687cd8396ad5e15e909497315e85a73544b626983275daf068c873fa"
+checksum = "7a26490dc60996a7d9c579b25e6879d3a5acba886a96b0931005e71f14a7ef6a"
 dependencies = [
  "actix",
  "actix-http",
@@ -571,9 +571,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-derive"
-version = "7.0.12"
+version = "7.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ad560d871a344178c35568a15be1bbb40cbcaced57838bf2eb1f654802000df7"
+checksum = "ac38b4dd452d529d6c0248b51df23603f0a875770352e26ae8c346ce6c149b3e"
 dependencies = [
  "Inflector",
  "async-graphql-parser",
@@ -588,9 +588,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-parser"
-version = "7.0.12"
+version = "7.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1df338e3e6469f86cce1e2b0226644e9fd82ec04790e199f8dd06416632d89ea"
+checksum = "42d271ddda2f55b13970928abbcbc3423cfc18187c60e8769b48f21a93b7adaa"
 dependencies = [
  "async-graphql-value",
  "pest",
@@ -600,9 +600,9 @@ dependencies = [
 
 [[package]]
 name = "async-graphql-value"
-version = "7.0.12"
+version = "7.0.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4cffd8bb84bc7895672c4e9b71d21e35526ffd645a29aedeed165a3f4a7ba9b"
+checksum = "aefe909173a037eaf3281b046dc22580b59a38b765d7b8d5116f2ffef098048d"
 dependencies = [
  "bytes",
  "indexmap",
@@ -734,7 +734,7 @@ dependencies = [
  "bitflags 2.6.0",
  "cexpr",
  "clang-sys",
- "itertools 0.12.1",
+ "itertools 0.10.5",
  "lazy_static",
  "lazycell",
  "log",
@@ -3128,7 +3128,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc2f4eb4bc735547cfed7c0a4922cbd04a4655978c09b54f1f7b228750664c34"
 dependencies = [
  "cfg-if",
- "windows-targets 0.48.5",
+ "windows-targets 0.52.6",
 ]
 
 [[package]]
