@@ -146,7 +146,7 @@ reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-feature
 rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
 rustls = { version = "0.23.20", features = ["aws_lc_rs"] }
 rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
-rustls-pki-types = "1.10.0"
+rustls-pki-types = "1.10.1"
 rustls-pemfile = "2.2"
 rustversion = "1.0"
 rustyline = "15.0"
