@@ -116,7 +116,7 @@ futures = "0.3"
 futures-await-test = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
-glob = "0.3.1"
+glob = "0.3.2"
 gql_client = { version = "1.0.7", git = "https://github.com/reactive-graph/gql-client-rs.git", features = ["rustls-tls"], default-features = false }
 # Note: actix-web 5 will likely upgrade http from 0.2 to >= 1.0 (https://github.com/actix/actix-web/issues/3384)
 http = "0.2"
