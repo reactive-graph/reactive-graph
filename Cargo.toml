@@ -174,7 +174,7 @@ tokio-stream = "0.1"
 toml = "0.8"
 toml_edit = "0.22"
 typed-builder = "0.20"
-uuid = { version = "1.11", features = ["serde", "v4"] }
+uuid = { version = "1.12", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.3"
 wildmatch = "2.4"
