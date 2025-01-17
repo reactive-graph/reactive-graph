@@ -10,7 +10,7 @@ rust-version.workspace = true
 readme = "../../../../README.md"
 
 [dependencies]
-log = "0.4.20"
+log = "0.4.25"
 
 [dev-dependencies]
 async-graphql = { workspace = true, features = ["uuid"] }

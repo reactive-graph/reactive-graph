@@ -96,7 +96,7 @@ async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "7.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
-aws-lc-rs = { version = "1.12.0", features = ["prebuilt-nasm"] }
+aws-lc-rs = { version = "1.12.1", features = ["prebuilt-nasm"] }
 clap = { version = "4.5", features = ["derive", "env"] }
 clap_complete = "4.5"
 clap_mangen = "0.2"
@@ -174,7 +174,7 @@ tokio-stream = "0.1"
 toml = "0.8"
 toml_edit = "0.22"
 typed-builder = "0.20"
-uuid = { version = "1.11", features = ["serde", "v4"] }
+uuid = { version = "1.12", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.3"
 wildmatch = "2.4"
