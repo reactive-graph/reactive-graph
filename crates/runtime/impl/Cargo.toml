@@ -111,7 +111,7 @@ reactive-graph-plugin-graphql-api = { version = "0.10.0", path = "../../plugin/g
 reactive-graph-plugin-graphql-impl = { version = "0.10.0", path = "../../plugin/graphql/impl" }
 
 [target.armv7-unknown-linux-gnueabihf.dependencies]
-aws-lc-rs = { version = "1.12.0", features = ["prebuilt-nasm", "bindgen"] }
+aws-lc-rs = { version = "1.12.3", features = ["prebuilt-nasm", "bindgen"] }
 
 [dev-dependencies]
 colored = { workspace = true }
