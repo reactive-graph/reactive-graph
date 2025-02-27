@@ -96,7 +96,7 @@ async-graphql = { version = "7.0", features = ["uuid", "dynamic-schema"] }
 async-graphql-actix-web = { version = "7.0" }
 async-trait = "0.1"
 async-std = { version = "1.10", features = ["attributes", "tokio1"] }
-aws-lc-rs = { version = "1.12.0", features = ["prebuilt-nasm"] }
+aws-lc-rs = { version = "1.12.4", features = ["prebuilt-nasm"] }
 clap = { version = "4.5", features = ["derive", "env"] }
 clap_complete = "4.5"
 clap_mangen = "0.2"
@@ -107,7 +107,7 @@ config = "0.14.0"
 convert_case = "0.6"
 criterion = { version = "0.5", features = ["html_reports"] }
 crossbeam = "0.8"
-cynic = { version = "3.9", features = ["http-reqwest"], default-features = false }
+cynic = { version = "3.10", features = ["http-reqwest"], default-features = false }
 daemonize-me = "2.0"
 darling = "0.20"
 dashmap = { version = "6.0", features = ["serde"] }
@@ -143,10 +143,10 @@ rayon = "1.6"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
 regex = "1.11"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
-rust-embed = { version = "8.0", features = ["debug-embed", "compression"] }
-rustls = { version = "0.23.21", features = ["aws_lc_rs"] }
+rust-embed = { version = "8.6", features = ["debug-embed", "compression"] }
+rustls = { version = "0.23.23", features = ["aws_lc_rs"] }
 rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
-rustls-pki-types = "1.10.1"
+rustls-pki-types = "1.11.0"
 rustls-pemfile = "2.2"
 rustversion = "1.0"
 rustyline = "15.0"
@@ -157,8 +157,8 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 shellwords = "1.1"
 signal-hook = "0.3.13"
-similar = "2.2.1"
-similar-asserts = "1.4.2"
+similar = "2.7.0"
+similar-asserts = "1.7.0"
 springtime = "1.0"
 springtime-di = { version = "1.0", features = ["threadsafe", "derive"] }
 springtime-di-derive = "0.3"
@@ -174,7 +174,7 @@ tokio-stream = "0.1"
 toml = "0.8"
 toml_edit = "0.22"
 typed-builder = "0.20"
-uuid = { version = "1.11", features = ["serde", "v4"] }
+uuid = { version = "1.15", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.3"
 wildmatch = "2.4"
