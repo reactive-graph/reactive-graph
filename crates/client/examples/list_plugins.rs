@@ -8,6 +8,7 @@ use reactive_graph_table_model::container::TableContainer;
 use reactive_graph_table_model::system::plugin::PluginsTableContainer;
 
 #[derive(Debug)]
+#[allow(unused)]
 enum ListPluginsError {
     ReactiveGraphClientError(ReactiveGraphClientError),
     ReactiveGraphClientExecutionError(ReactiveGraphClientExecutionError),
