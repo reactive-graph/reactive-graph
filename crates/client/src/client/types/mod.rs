@@ -1,5 +1,6 @@
 use crate::client::types::components::api::Components;
 use crate::client::types::entities::api::EntityTypes;
+use crate::client::types::flows::api::FlowTypes;
 use crate::client::types::relations::api::RelationTypes;
 use crate::client::ReactiveGraphClient;
 use std::sync::Arc;
@@ -7,6 +8,7 @@ use std::sync::Arc;
 pub mod components;
 pub mod entities;
 pub mod extensions;
+pub mod flows;
 pub mod properties;
 pub mod relations;
 
@@ -23,11 +25,15 @@ impl Types {
         Components::new(self.client.clone())
     }
 
-    pub fn entity_types(&self) -> EntityTypes {
+    pub fn entities(&self) -> EntityTypes {
         EntityTypes::new(self.client.clone())
     }
 
-    pub fn relation_types(&self) -> RelationTypes {
+    pub fn relations(&self) -> RelationTypes {
         RelationTypes::new(self.client.clone())
+    }
+
+    pub fn flows(&self) -> FlowTypes {
+        FlowTypes::new(self.client.clone())
     }
 }

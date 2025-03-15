@@ -10,7 +10,7 @@ use crate::client::instances::entities::mutations::set_property::mutations::set_
 use crate::client::instances::entities::queries::get_by_id::queries::get_entity_instance_by_id;
 use crate::client::instances::entities::queries::get_by_label::queries::get_entity_instance_by_label;
 use crate::client::instances::entities::queries::search::queries::search;
-use crate::client::instances::entities::queries::search::queries::SearchEntityInstancesVariables;
+use crate::client::instances::entities::variables::search::variables::SearchEntityInstancesVariables;
 use crate::client::ReactiveGraphClient;
 use crate::client::ReactiveGraphClientExecutionError;
 use cynic::http::ReqwestExt;

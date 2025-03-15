@@ -1,6 +1,19 @@
 use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
+use crate::instances::entities::display_entity_instances_html_inline;
+use crate::instances::entities::display_entity_instances_inline_str;
+use crate::instances::entities::EntityInstance;
+use crate::instances::relations::display_relation_instances_html_inline;
+use crate::instances::relations::display_relation_instances_inline_str;
+use crate::instances::relations::RelationInstance;
+use crate::types::extension::display_extensions_html_inline;
+use crate::types::extension::display_extensions_inline_str;
+use crate::types::extension::Extension;
+use crate::types::extension::Extensions;
+use crate::types::properties::display_property_types_html_inline;
+use crate::types::properties::display_property_types_inline_str;
+use crate::types::variables::Variables;
 use reactive_graph_graph::NamespacedTypeGetter;
 use tabled::settings::object::Segment;
 use tabled::settings::Modify;
@@ -20,43 +33,64 @@ pub struct FlowType {
     /// Textual description of the extension.
     pub description: String,
 
-    // /// The components.
-    // #[tabled(display_with("Self::display_component_type_ids", self))]
-    // pub components: Vec<ComponentTypeId>,
-    //
-    // /// The property types.
-    // #[tabled(display_with("Self::display_property_types", self))]
-    // pub properties: Vec<PropertyType>,
-    //
-    // /// The extensions.
-    // #[tabled(display_with("Self::display_extensions", self))]
-    // pub extensions: Vec<Extension>,
+    /// The wrapper entity instance.
+    #[tabled(skip)]
+    pub wrapper_entity_instance: EntityInstance,
+
+    /// The entity instances.
+    // [tabled(display_with("Self::display_entity_instances", self))]
+    #[tabled(skip)]
+    pub entity_instances: Vec<EntityInstance>,
+
+    /// The relation instances.
+    // [tabled(display_with("Self::display_relation_instances", self))]
+    #[tabled(skip)]
+    pub relation_instances: Vec<RelationInstance>,
+
+    // pub wrapper_entity_instance: EntityInstance,
+    /// The variables.
+    #[tabled(display_with("Self::display_variables", self))]
+    pub variables: Variables,
+
+    /// The extensions.
+    #[tabled(display_with("Self::display_extensions", self))]
+    pub extensions: Vec<Extension>,
+
     #[tabled(skip)]
     inline_format: TableInlineFormat,
 }
 
 impl FlowType {
-    // fn display_component_type_ids(&self) -> String {
-    //     match self.inline_format {
-    //         TableInlineFormat::Table => display_component_type_ids_inline_str(&self.components),
-    //         TableInlineFormat::Html => display_component_type_ids_html_inline(&self.components),
-    //     }
-    // }
-    //
-    // fn display_property_types(&self) -> String {
-    //     match self.inline_format {
-    //         TableInlineFormat::Table => display_property_types_inline_str(&self.properties),
-    //         TableInlineFormat::Html => display_property_types_html_inline(&self.properties),
-    //     }
-    // }
-    //
-    // fn display_extensions(&self) -> String {
-    //     // println!("{:?}", &self.inline_format);
-    //     match self.inline_format {
-    //         TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
-    //         TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
-    //     }
-    // }
+    #[allow(unused)]
+    fn display_entity_instances(&self) -> String {
+        match self.inline_format {
+            TableInlineFormat::Table => display_entity_instances_inline_str(&self.entity_instances),
+            TableInlineFormat::Html => display_entity_instances_html_inline(&self.entity_instances),
+        }
+    }
+
+    #[allow(unused)]
+    fn display_relation_instances(&self) -> String {
+        match self.inline_format {
+            TableInlineFormat::Table => display_relation_instances_inline_str(&self.relation_instances),
+            TableInlineFormat::Html => display_relation_instances_html_inline(&self.relation_instances),
+        }
+    }
+
+    fn display_variables(&self) -> String {
+        match self.inline_format {
+            TableInlineFormat::Table => display_property_types_inline_str(&self.variables.0),
+            TableInlineFormat::Html => display_property_types_html_inline(&self.variables.0),
+        }
+    }
+
+    fn display_extensions(&self) -> String {
+        // println!("{:?}", &self.inline_format);
+        match self.inline_format {
+            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
+            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
+        }
+    }
 }
 
 impl TableInlineFormatSetter for FlowType {
@@ -67,13 +101,29 @@ impl TableInlineFormatSetter for FlowType {
 
 impl From<reactive_graph_graph::FlowType> for FlowType {
     fn from(flow_type: reactive_graph_graph::FlowType) -> Self {
+        // let x = flow_type.wrapper_entity_instance;
+        let namespace = flow_type.namespace();
+        let name = flow_type.type_name();
+        let variables = Variables::from(flow_type.variables.clone());
+        let entity_instances = flow_type
+            .entity_instances
+            .into_iter()
+            .map(|(_, entity_instance)| entity_instance.into())
+            .collect();
+        let relation_instances = flow_type
+            .relation_instances
+            .into_iter()
+            .map(|(_, relation_instance)| relation_instance.into())
+            .collect();
         FlowType {
-            namespace: flow_type.namespace(),
-            name: flow_type.type_name(),
+            namespace,
+            name,
             description: flow_type.description,
-            // components: ComponentTypeIds::from(entity_type.components).0,
-            // properties: PropertyTypes::from(entity_type.properties).0,
-            // extensions: Extensions::from(entity_type.extensions).0,
+            wrapper_entity_instance: flow_type.wrapper_entity_instance.into(),
+            entity_instances,
+            relation_instances,
+            variables,
+            extensions: Extensions::from(flow_type.extensions).0,
             inline_format: Default::default(),
         }
     }

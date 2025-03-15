@@ -5,6 +5,7 @@ use crate::instances::properties::display_property_instances_html_inline;
 use crate::instances::properties::display_property_instances_inline_str;
 use crate::instances::properties::PropertyInstance;
 use crate::instances::properties::PropertyInstances;
+use crate::styles::modern_inline::modern_inline;
 use crate::types::component::display_component_type_ids_html_inline;
 use crate::types::component::display_component_type_ids_inline_str;
 use crate::types::component::ComponentTypeId;
@@ -14,6 +15,8 @@ use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
 use reactive_graph_graph::NamespacedTypeGetter;
+use table_to_html::HtmlTable;
+use tabled::settings::object::Columns;
 use tabled::settings::object::Segment;
 use tabled::settings::Modify;
 use tabled::settings::Style;
@@ -108,4 +111,34 @@ impl TableOptions for EntityInstancesTableOptions {
                 .with(Width::wrap(40).keep_words(true)),
         )
     }
+}
+
+pub fn display_entity_instances_inline_str(entity_instances: &[EntityInstance]) -> String {
+    if entity_instances.is_empty() {
+        String::new()
+    } else {
+        display_entity_instances_inline(entity_instances).to_string()
+    }
+}
+
+pub fn display_entity_instances_inline(entity_instances: &[EntityInstance]) -> Table {
+    let entity_instances = entity_instances.to_vec();
+    Table::new(entity_instances)
+        .with(modern_inline())
+        .with(Modify::new(Columns::new(0..1)).with(Width::increase(22)))
+        // .with(Modify::new(Columns::new(1..2)).with(Width::increase(22)))
+        // .with(Modify::new(Columns::new(2..3)).with(Width::wrap(40)))
+        // .with(Modify::new(Columns::new(3..4)).with(Width::wrap(80)))
+        .to_owned()
+}
+
+pub fn display_entity_instances_html_inline(entity_instances: &[EntityInstance]) -> String {
+    let entity_instances = entity_instances.to_vec();
+    if entity_instances.is_empty() {
+        return String::new();
+    }
+    HtmlTable::with_header(Vec::<Vec<String>>::from(Table::builder(&entity_instances)))
+        .to_string()
+        .split_whitespace()
+        .collect()
 }

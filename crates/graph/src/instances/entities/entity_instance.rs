@@ -26,6 +26,7 @@ use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
+use crate::instances::named::NamedInstanceContainer;
 #[cfg(any(test, feature = "test"))]
 use crate::test_utils::default_from::DefaultFrom;
 use crate::AddExtensionError;
@@ -69,6 +70,11 @@ pub struct EntityInstance {
     #[builder(default=Uuid::new_v4())]
     pub id: Uuid,
 
+    /// The name of the entity instance.
+    #[serde(default = "String::new")]
+    #[builder(default, setter(into))]
+    pub name: String,
+
     /// The description of the entity instance.
     #[serde(default = "String::new")]
     #[builder(default, setter(into))]
@@ -104,6 +110,7 @@ impl EntityInstance {
         EntityInstance {
             ty: ty.into(),
             id,
+            name: String::new(),
             description: String::new(),
             properties: properties.into(),
             components: ComponentTypeIds::new(),
@@ -116,6 +123,7 @@ impl EntityInstance {
         EntityInstance {
             ty: EntityTypeId::new_from_type(namespace.into(), type_name.into()),
             id,
+            name: String::new(),
             description: String::new(),
             properties: properties.into(),
             components: ComponentTypeIds::new(),
@@ -128,11 +136,22 @@ impl EntityInstance {
         EntityInstance {
             ty: ty.into(),
             id,
+            name: String::new(),
             description: String::new(),
             properties: PropertyInstances::new(),
             components: ComponentTypeIds::new(),
             extensions: Extensions::new(),
         }
+    }
+}
+
+impl NamedInstanceContainer for EntityInstance {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -289,6 +308,7 @@ impl EntityInstances {
         items
     }
 
+    // TODO: deduplicate?
     pub fn get_type_ids(&self) -> EntityTypeIds {
         self.iter().map(|entity_instance| entity_instance.ty.clone()).collect()
     }
@@ -421,6 +441,7 @@ impl DefaultTest for EntityInstance {
     fn default_test() -> Self {
         EntityInstance::builder()
             .ty(EntityTypeId::default_test())
+            .name(r_string())
             .description(r_string())
             .properties(PropertyInstances::default_test())
             .extensions(Extensions::default_test())
@@ -434,6 +455,7 @@ impl DefaultFrom<EntityType> for EntityInstance {
         let properties = PropertyInstances::default_from(&entity_type.properties);
         EntityInstance::builder()
             .ty(&entity_type.ty)
+            .name(r_string())
             .description(&entity_type.description)
             .properties(properties)
             .extensions(Extensions::default_test())
@@ -482,6 +504,7 @@ pub mod entity_instance_tests {
         // properties.insert(property_name.into(), json!(r_string()));
         EntityInstance::builder()
             .ty(EntityTypeId::default_test())
+            .name(r_string())
             .description(r_string())
             .properties(properties)
             .extensions(Extensions::default_test())
@@ -499,6 +522,7 @@ pub mod entity_instance_tests {
         let uuid = Uuid::new_v4();
         let namespace = r_string();
         let type_name = r_string();
+        let name = r_string();
         let description = r_string();
         let property_name = r_string();
         let property_value = json!(r_string());
@@ -530,6 +554,7 @@ pub mod entity_instance_tests {
         let entity_instance = EntityInstance {
             ty: ty.clone(),
             id: uuid.clone(),
+            name: name.to_string(),
             description: description.to_string(),
             properties: properties.clone(),
             components: components.clone(),
@@ -538,6 +563,7 @@ pub mod entity_instance_tests {
         assert_eq!(namespace, entity_instance.namespace());
         assert_eq!(type_name, entity_instance.type_name());
         assert_eq!(uuid.clone(), entity_instance.id.clone());
+        assert_eq!(name.clone(), entity_instance.name.clone());
         assert_eq!(description.clone(), entity_instance.description.clone());
         assert_eq!(properties.clone(), entity_instance.properties.clone());
         assert!(entity_instance.get(property_name.clone()).is_some());
@@ -626,6 +652,7 @@ pub mod entity_instance_tests {
         let uuid = Uuid::new_v4();
         let namespace = r_string();
         let type_name = r_string();
+        let name = r_string();
         let description = r_string();
         let property_name = r_string();
         let property_value = json!(r_string());
@@ -652,6 +679,7 @@ pub mod entity_instance_tests {
         let entity_instance = EntityInstance {
             ty: ty.clone(),
             id: uuid.clone(),
+            name: name.to_string(),
             description: description.to_string(),
             properties: properties.clone(),
             components: components.clone(),
@@ -666,6 +694,7 @@ pub mod entity_instance_tests {
   "namespace": "XARPbZkHrU",
   "type_name": "zHMZhLUpeH",
   "id": "590f4446-b080-48d3-bd14-05e09de89e62",
+  "name": "PRAwNv1I",
   "description": "gDyZTYONjh",
   "properties": {
     "NaUPOBoqyp": "qEnGqwNeEL"
@@ -693,6 +722,7 @@ pub mod entity_instance_tests {
         assert_eq!("XARPbZkHrU", entity_instance.namespace());
         assert_eq!("zHMZhLUpeH", entity_instance.type_name());
         assert_eq!("e__XARPbZkHrU__zHMZhLUpeH", entity_instance.ty.to_string());
+        assert_eq!("PRAwNv1I", entity_instance.name);
         assert_eq!("gDyZTYONjh", entity_instance.description);
         assert_eq!(1, entity_instance.properties.len());
         let property = entity_instance.properties.get("NaUPOBoqyp").expect("Missing property");

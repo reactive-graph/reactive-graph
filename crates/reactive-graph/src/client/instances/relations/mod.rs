@@ -24,17 +24,17 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
         return Err(CommandError::MissingSubCommand);
     };
     match command {
-        RelationInstancesCommands::List(args) => match client.instances().relation_instances().search((&args).into()).await {
+        RelationInstancesCommands::List(args) => match client.instances().relations().search((&args).into()).await {
             Ok(Some(relation_instances)) => output_format_wrapper.collection(relation_instances),
             Ok(None) => Err(NoContent("No relation instances found".to_string())),
             Err(e) => Err(e.into()),
         },
-        RelationInstancesCommands::Get(args) => match client.instances().relation_instances().get_by_id(&args).await {
+        RelationInstancesCommands::Get(args) => match client.instances().relations().get_by_id(&args).await {
             Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
-        RelationInstancesCommands::ListProperties(args) => match client.instances().relation_instances().get_by_id(&args).await {
+        RelationInstancesCommands::ListProperties(args) => match client.instances().relations().get_by_id(&args).await {
             Ok(Some(relation_instance)) => {
                 let output_format_wrapper: PropertyInstancesOutputFormatWrapper = relation_instances_args.output_format.into();
                 let property_instances = relation_instance
@@ -47,14 +47,14 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
-        RelationInstancesCommands::GetProperty(args) => match client.instances().relation_instances().get_by_id(&args).await {
+        RelationInstancesCommands::GetProperty(args) => match client.instances().relations().get_by_id(&args).await {
             Ok(Some(relation_instance)) => Ok(relation_instance.get(args.property_name.clone()).ok_or(args.property_not_found())?.into()),
             Ok(None) => Err(args.not_found()),
             Err(e) => Err(e.into()),
         },
         RelationInstancesCommands::SetProperty(args) => match client
             .instances()
-            .relation_instances()
+            .relations()
             .set_property(&args.id, &args.property_instance.property_name, args.property_instance.property_value.clone())
             .await
         {
@@ -67,25 +67,18 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
         },
         RelationInstancesCommands::AddProperty(args) => {
             let property_type: PropertyType = args.property_type.clone().into();
-            match client.instances().relation_instances().add_property(&args.id, property_type.clone()).await {
+            match client.instances().relations().add_property(&args.id, property_type.clone()).await {
                 Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
                 Ok(None) => Err(args.id_not_found()),
                 Err(e) => Err(e.into()),
             }
         }
-        RelationInstancesCommands::RemoveProperty(args) => {
-            match client
-                .instances()
-                .relation_instances()
-                .remove_property(&args.id, args.property_name.clone())
-                .await
-            {
-                Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
-                Ok(None) => Err(args.not_found()),
-                Err(e) => Err(e.into()),
-            }
-        }
-        RelationInstancesCommands::ListComponents(args) => match client.instances().relation_instances().get_by_id(&args).await {
+        RelationInstancesCommands::RemoveProperty(args) => match client.instances().relations().remove_property(&args.id, args.property_name.clone()).await {
+            Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
+            Ok(None) => Err(args.not_found()),
+            Err(e) => Err(e.into()),
+        },
+        RelationInstancesCommands::ListComponents(args) => match client.instances().relations().get_by_id(&args).await {
             Ok(Some(relation_instance)) => {
                 let output_format_wrapper: ComponentTypeIdsOutputFormatWrapper = relation_instances_args.output_format.into();
                 let component_tys = relation_instance.components.iter().map(|ty| ty.clone()).collect();
@@ -96,7 +89,7 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
         },
         RelationInstancesCommands::AddComponent(args) => {
             let component_ty: ComponentTypeId = args.component_ty.clone().into();
-            match client.instances().relation_instances().add_component(&args, component_ty).await {
+            match client.instances().relations().add_component(&args, component_ty).await {
                 Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
                 Ok(None) => Err(args.not_found()),
                 Err(e) => Err(e.into()),
@@ -104,7 +97,7 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
         }
         RelationInstancesCommands::RemoveComponent(args) => {
             let component_ty: ComponentTypeId = args.component_ty.clone().into();
-            match client.instances().relation_instances().remove_component(&args, component_ty).await {
+            match client.instances().relations().remove_component(&args, component_ty).await {
                 Ok(Some(relation_instance)) => output_format_wrapper.single(relation_instance),
                 Ok(None) => Err(args.not_found()),
                 Err(e) => Err(e.into()),
@@ -112,7 +105,7 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
         }
         RelationInstancesCommands::Create(args) => match client
             .instances()
-            .relation_instances()
+            .relations()
             .create(&args.id, args.description.clone(), args.properties())
             .await
         {
@@ -120,7 +113,7 @@ pub(crate) async fn relation_instances(client: &Arc<ReactiveGraphClient>, relati
             Ok(None) => Err(NoContent("Relation instance not created".to_string())),
             Err(e) => Err(e.into()),
         },
-        RelationInstancesCommands::Delete(args) => match client.instances().relation_instances().delete(&args).await {
+        RelationInstancesCommands::Delete(args) => match client.instances().relations().delete(&args).await {
             Ok(Some(true)) => Ok(format!("Relation instance {} deleted", &args).into()),
             Ok(Some(false)) => Ok(format!("Relation instance {} not deleted", &args).into()),
             Ok(None) => Err(args.not_found()),

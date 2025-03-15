@@ -8,3 +8,4 @@ pub mod mutability;
 pub mod properties;
 pub mod relations;
 pub mod socket_type;
+pub mod variables;

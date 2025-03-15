@@ -26,6 +26,7 @@ use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
+use crate::instances::named::NamedInstanceContainer;
 use crate::AddExtensionError;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIdContainer;
@@ -73,6 +74,11 @@ pub struct RelationInstance {
     /// The id of the inbound vertex.
     pub inbound_id: Uuid,
 
+    /// The name of the relation instance.
+    #[serde(default = "String::new")]
+    #[builder(default, setter(into))]
+    pub name: String,
+
     /// Textual description of the relation instance.
     #[serde(default = "String::new")]
     #[builder(default, setter(into))]
@@ -106,6 +112,7 @@ impl RelationInstance {
             outbound_id,
             ty: ty.into(),
             inbound_id,
+            name: String::new(),
             description: String::new(),
             properties: properties.into(),
             components: ComponentTypeIds::new(),
@@ -125,6 +132,7 @@ impl RelationInstance {
             outbound_id,
             ty: RelationInstanceTypeId::new_from_type_unique_id(namespace, type_name),
             inbound_id,
+            name: String::new(),
             description: String::new(),
             properties: properties.into(),
             components: ComponentTypeIds::new(),
@@ -145,6 +153,7 @@ impl RelationInstance {
             outbound_id,
             ty: RelationInstanceTypeId::new_from_type_unique_for_instance_id(namespace, type_name, instance_id),
             inbound_id,
+            name: String::new(),
             description: String::new(),
             properties: properties.into(),
             components: ComponentTypeIds::new(),
@@ -164,6 +173,7 @@ impl RelationInstance {
             outbound_id,
             ty: RelationInstanceTypeId::new_from_type_with_random_instance_id(namespace, type_name),
             inbound_id,
+            name: String::new(),
             description: String::new(),
             properties: properties.into(),
             components: ComponentTypeIds::new(),
@@ -177,6 +187,7 @@ impl RelationInstance {
             outbound_id,
             ty: ty.into(),
             inbound_id,
+            name: String::new(),
             description: String::new(),
             properties: PropertyInstances::new(),
             components: ComponentTypeIds::new(),
@@ -201,6 +212,16 @@ impl RelationInstance {
     /// Returns the relation instance type id.
     pub fn instance_id(&self) -> String {
         self.ty.instance_id()
+    }
+}
+
+impl NamedInstanceContainer for RelationInstance {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -355,6 +376,7 @@ impl RelationInstances {
         items
     }
 
+    // TODO: deduplicate?
     pub fn get_type_ids(&self) -> RelationTypeIds {
         self.iter().map(|r| r.relation_type_id()).collect()
     }
@@ -489,6 +511,7 @@ impl DefaultTest for RelationInstance {
             .outbound_id(Uuid::new_v4())
             .ty(RelationInstanceTypeId::default_test())
             .inbound_id(Uuid::new_v4())
+            .name(r_string())
             .description(r_string())
             .properties(PropertyInstances::default_test())
             .extensions(Extensions::default_test())
@@ -554,6 +577,8 @@ mod tests {
         let relation_instance = RelationInstance::builder()
             .outbound_id(outbound_id)
             .ty(instance_ty)
+            .name(r_string())
+            .description(r_string())
             .inbound_id(inbound_id)
             .properties(properties)
             .build();
@@ -571,6 +596,7 @@ mod tests {
         let outbound_id = Uuid::new_v4();
         let inbound_id = Uuid::new_v4();
         let type_name = r_string();
+        let name = r_string();
         let description = r_string();
         let property_name = r_string();
         let property_value = json!(r_string());
@@ -599,6 +625,7 @@ mod tests {
             outbound_id,
             ty: ty.clone(),
             inbound_id,
+            name: name.to_string(),
             description: description.to_string(),
             properties: properties.clone(),
             components: components.clone(),
@@ -608,6 +635,7 @@ mod tests {
         assert_eq!(outbound_id, relation_instance.outbound_id);
         assert_eq!(type_name.clone(), relation_instance.type_name());
         assert_eq!(inbound_id, relation_instance.inbound_id);
+        assert_eq!(name, relation_instance.name);
         assert_eq!(description, relation_instance.description);
         assert_eq!(properties.clone(), relation_instance.properties.clone());
         assert!(relation_instance.get(property_name.clone()).is_some());
@@ -643,6 +671,7 @@ mod tests {
             outbound_id,
             ty: ty.clone(),
             inbound_id,
+            name: r_string(),
             description: r_string(),
             properties: PropertyInstances::new(),
             components: ComponentTypeIds::new(),
@@ -676,6 +705,7 @@ mod tests {
             outbound_id,
             ty: ty.clone(),
             inbound_id,
+            name: r_string(),
             description: r_string(),
             properties: PropertyInstances::new(),
             components: ComponentTypeIds::new(),
@@ -766,12 +796,14 @@ mod tests {
         let outbound_id = Uuid::new_v4();
         let inbound_id = Uuid::new_v4();
         let type_name = r_string();
+        let name = r_string();
         let description = r_string();
         let ty = RelationInstanceTypeId::new_from_type_unique_id(&namespace, &type_name);
         let relation_instance = RelationInstance {
             outbound_id,
             ty: ty.clone(),
             inbound_id,
+            name: name.to_string(),
             description: description.to_string(),
             properties: PropertyInstances::new(),
             components: ComponentTypeIds::new(),
@@ -799,7 +831,8 @@ mod tests {
   "type_name": "rtr",
   "instance_id": "result__lhs",
   "inbound_id": "3f13400e-9286-441d-b85f-ef5df2177e7c",
-  "description": "d",
+  "name": "BIVS93iu",
+  "description": "B0IgcIiV",
   "components": [
     {
       "namespace": "mno",
@@ -831,7 +864,8 @@ mod tests {
         assert_eq!("result__lhs", relation_instance.instance_id());
         assert_eq!("r__rnr__rtr__result__lhs", relation_instance.ty.to_string());
         assert_eq!(TypeIdType::RelationType, relation_instance.type_definition().type_id_type);
-        assert_eq!("d", relation_instance.description);
+        assert_eq!("BIVS93iu", relation_instance.name);
+        assert_eq!("B0IgcIiV", relation_instance.description);
         assert_eq!("property_value", relation_instance.properties.get("property_name").unwrap().as_str().unwrap());
         assert_eq!(2, relation_instance.extensions.len());
         assert!(relation_instance

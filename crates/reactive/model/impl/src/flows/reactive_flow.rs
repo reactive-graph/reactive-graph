@@ -12,10 +12,11 @@ use uuid::Uuid;
 
 use crate::ReactiveEntity;
 use crate::ReactiveRelation;
+use reactive_graph_graph::instances::named::NamedInstanceContainer;
+use reactive_graph_graph::CreateFlowInstanceError;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
 use reactive_graph_graph::FlowInstance;
-use reactive_graph_graph::FlowInstanceCreationError;
 use reactive_graph_graph::Mutability;
 use reactive_graph_graph::NamespacedTypeGetter;
 use reactive_graph_graph::PropertyInstanceGetter;
@@ -34,6 +35,12 @@ pub struct ReactiveFlowInstance {
 
     /// The type definition of the entity type of the wrapper entity instance.
     pub ty: EntityTypeId,
+
+    /// The name of the flow instance.
+    pub name: String,
+
+    /// Textual description of the flow instance.
+    pub description: String,
 
     /// The flow contains entity instances. The entity instance may also
     /// be contained in other flows.
@@ -63,6 +70,8 @@ impl ReactiveFlowInstance {
         ReactiveFlowInstance {
             id: wrapper_entity_instance.id,
             ty: wrapper_entity_instance.ty.clone(),
+            name: String::new(),
+            description: String::new(),
             entity_instances: RwLock::new(entity_instances),
             relation_instances: RwLock::new(HashMap::new()),
             entities_added: RwLock::new(Vec::new()),
@@ -181,6 +190,8 @@ impl TryFrom<FlowInstance> for ReactiveFlowInstance {
         Ok(ReactiveFlowInstance {
             id: flow_id,
             ty: flow_instance.ty,
+            name: flow_instance.name.clone(),
+            description: flow_instance.description.clone(),
             entity_instances: RwLock::new(entity_instances),
             relation_instances: RwLock::new(relation_instances),
             // wrapper: wrapper.unwrap(),
@@ -306,12 +317,12 @@ impl Display for ReactiveFlowInstance {
 }
 
 impl TryFrom<ReactiveFlowInstance> for FlowInstance {
-    type Error = FlowInstanceCreationError;
+    type Error = CreateFlowInstanceError;
 
-    fn try_from(reactive_flow: ReactiveFlowInstance) -> Result<Self, FlowInstanceCreationError> {
+    fn try_from(reactive_flow: ReactiveFlowInstance) -> Result<Self, CreateFlowInstanceError> {
         let wrapper = reactive_flow.get_entity(reactive_flow.id);
         if wrapper.is_none() {
-            return Err(FlowInstanceCreationError);
+            return Err(CreateFlowInstanceError::CantGetWrapperEntity(reactive_flow.id));
         }
         let wrapper = wrapper.unwrap();
         let entity_instance: EntityInstance = wrapper.clone().into();
@@ -332,12 +343,12 @@ impl TryFrom<ReactiveFlowInstance> for FlowInstance {
 }
 
 impl TryFrom<&ReactiveFlowInstance> for FlowInstance {
-    type Error = FlowInstanceCreationError;
+    type Error = CreateFlowInstanceError;
 
-    fn try_from(reactive_flow: &ReactiveFlowInstance) -> Result<Self, FlowInstanceCreationError> {
+    fn try_from(reactive_flow: &ReactiveFlowInstance) -> Result<Self, CreateFlowInstanceError> {
         let wrapper = reactive_flow.get_entity(reactive_flow.id);
         if wrapper.is_none() {
-            return Err(FlowInstanceCreationError);
+            return Err(CreateFlowInstanceError::CantGetWrapperEntity(reactive_flow.id));
         }
         let wrapper = wrapper.unwrap();
         let entity_instance: EntityInstance = wrapper.clone().into();
@@ -365,6 +376,17 @@ impl ReactiveFlow {
         ReactiveFlowInstance::new(wrapper_entity_instance).into()
     }
 }
+
+impl NamedInstanceContainer for ReactiveFlow {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn description(&self) -> String {
+        self.description.clone()
+    }
+}
+
 impl Deref for ReactiveFlow {
     type Target = Arc<ReactiveFlowInstance>;
 
@@ -388,9 +410,9 @@ impl TryFrom<FlowInstance> for ReactiveFlow {
 }
 
 impl TryFrom<ReactiveFlow> for FlowInstance {
-    type Error = FlowInstanceCreationError;
+    type Error = CreateFlowInstanceError;
 
-    fn try_from(reactive_flow: ReactiveFlow) -> Result<Self, FlowInstanceCreationError> {
+    fn try_from(reactive_flow: ReactiveFlow) -> Result<Self, CreateFlowInstanceError> {
         FlowInstance::try_from(reactive_flow.0.deref())
     }
 }

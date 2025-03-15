@@ -55,7 +55,12 @@ impl GraphQLEntityInstance {
             .and_then(|property_instance| property_instance.as_string())
     }
 
-    /// The description of the entity instance.
+    /// The name of the entity instance.
+    async fn name(&self) -> String {
+        self.entity_instance.name.clone()
+    }
+
+    /// Textual description of the entity instance.
     async fn description(&self) -> String {
         self.entity_instance.description.clone()
     }

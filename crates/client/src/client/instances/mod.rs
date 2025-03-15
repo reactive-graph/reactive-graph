@@ -1,9 +1,11 @@
 use crate::client::instances::entities::api::EntityInstances;
+use crate::client::instances::flows::api::FlowInstances;
 use crate::client::instances::relations::api::RelationInstances;
 use crate::ReactiveGraphClient;
 use std::sync::Arc;
 
 pub mod entities;
+pub mod flows;
 pub mod relations;
 pub mod variables;
 
@@ -16,11 +18,15 @@ impl Instances {
         Self { client }
     }
 
-    pub fn entity_instances(&self) -> EntityInstances {
+    pub fn entities(&self) -> EntityInstances {
         EntityInstances::new(self.client.clone())
     }
 
-    pub fn relation_instances(&self) -> RelationInstances {
+    pub fn relations(&self) -> RelationInstances {
         RelationInstances::new(self.client.clone())
+    }
+
+    pub fn flows(&self) -> FlowInstances {
+        FlowInstances::new(self.client.clone())
     }
 }
