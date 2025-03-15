@@ -15,8 +15,6 @@ use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
-#[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::DefaultFrom;
 use schemars::json_schema;
 use schemars::JsonSchema;
@@ -318,10 +316,18 @@ impl FromIterator<FlowInstance> for FlowInstances {
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for FlowInstance {
     fn default_test() -> Self {
-        let wrapper_entity_instance = EntityInstance::default_test();
-        let mut entity_instances = EntityInstances::default_test();
-        entity_instances.push(&wrapper_entity_instance);
-        FlowInstance::from(wrapper_entity_instance)
+        let entity_type = EntityType::default_test();
+        let wrapper_entity_instance = EntityInstance::default_from(&entity_type);
+        let id = wrapper_entity_instance.id;
+
+        let entity_instances = EntityInstances::default_test();
+        entity_instances.push(wrapper_entity_instance);
+
+        FlowInstance::builder()
+            .ty(entity_type.ty.clone())
+            .id(id)
+            .entity_instances(entity_instances)
+            .build()
     }
 }
 
@@ -335,7 +341,7 @@ impl DefaultFrom<EntityType> for FlowInstance {
 #[cfg(any(test, feature = "test"))]
 impl DefaultFrom<EntityInstance> for FlowInstance {
     fn default_from(wrapper_entity_instance: &EntityInstance) -> Self {
-        FlowInstance::from(wrapper_entity_instance)
+        FlowInstance::from(wrapper_entity_instance.clone())
     }
 }
 

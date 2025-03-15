@@ -5,6 +5,7 @@ use client::ReactiveGraphClientError;
 use client::ReactiveGraphClientExecutionError;
 
 #[derive(Debug)]
+#[allow(unused)]
 enum DumpComponentsError {
     ReactiveGraphClient(ReactiveGraphClientError),
     ReactiveGraphClientExecution(ReactiveGraphClientExecutionError),

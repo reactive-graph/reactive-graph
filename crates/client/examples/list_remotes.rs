@@ -5,6 +5,7 @@ use reactive_graph_table_model::container::TableContainer;
 use reactive_graph_table_model::system::instance::InstanceInfos;
 
 #[derive(Debug)]
+#[allow(unused)]
 enum ListRemotesError {
     ReactiveGraphClientError(ReactiveGraphClientError),
     ReactiveGraphClientExecutionError(ReactiveGraphClientExecutionError),

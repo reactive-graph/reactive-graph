@@ -26,6 +26,7 @@ use crate::RelationTypeProviderRegistry;
 use crate::TypeSystemEventManager;
 use crate::WebResourceManager;
 
+#[allow(dead_code)]
 struct TestPluginContext {}
 impl PluginContext for TestPluginContext {
     fn get_component_manager(&self) -> Arc<dyn ComponentManager + Send + Sync> {

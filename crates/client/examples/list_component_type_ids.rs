@@ -8,6 +8,7 @@ use reactive_graph_table_model::container::TableContainer;
 use reactive_graph_table_model::types::component::ComponentTypeIdTableContainer;
 
 #[derive(Debug)]
+#[allow(unused)]
 enum ListComponentTypeIdsError {
     ReactiveGraphClientError(ReactiveGraphClientError),
     ReactiveGraphClientExecutionError(ReactiveGraphClientExecutionError),
