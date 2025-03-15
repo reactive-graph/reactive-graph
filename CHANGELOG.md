@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Interfaces: Provide JSON schemas of the type system and instance system via GraphQL API
 - Interfaces: Query for JSON Schemas of the type system and instance system via the Rust Client
 - CLI: Print the JSON Schemas of the type system and instance system
+- CLI: Manage flow types
+- CLI: Manage flow instances
+- GraphQL: Manage flow types
+- GraphQL: Manage flow instances
 
 ### Changed
 
