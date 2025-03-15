@@ -9,6 +9,15 @@ pub struct PropertyInstanceDefinition {
     pub value: Value,
 }
 
+impl From<(&String, &Value)> for PropertyInstanceDefinition {
+    fn from(entry: (&String, &Value)) -> Self {
+        PropertyInstanceDefinition {
+            name: entry.0.clone(),
+            value: entry.1.clone(),
+        }
+    }
+}
+
 pub struct PropertyInstanceDefinitions(pub Vec<PropertyInstanceDefinition>);
 
 impl PropertyInstanceDefinitions {

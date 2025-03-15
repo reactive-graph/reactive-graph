@@ -63,6 +63,11 @@ impl GraphQLRelationInstance {
         self.relation_instance.inbound.clone().into()
     }
 
+    /// The name of the relation instance.
+    async fn name(&self) -> String {
+        self.relation_instance.name.clone()
+    }
+
     /// Textual description of the relation instance.
     async fn description(&self) -> String {
         self.relation_instance.description.clone()

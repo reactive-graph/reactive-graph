@@ -1,50 +1,43 @@
-// use crate::client::instances::flows::args::add_property::AddPropertyArgs;
-// use crate::client::instances::flows::args::create::CreateFlowInstanceArgs;
-// use crate::client::instances::flows::args::id::FlowInstanceIdArgs;
-// use crate::client::instances::flows::args::id_and_component::FlowInstanceIdAndComponentArgs;
-// use crate::client::instances::flows::args::id_and_property::FlowInstanceIdAndPropertyArgs;
-// use crate::client::instances::flows::args::search::SearchFlowInstancesArgs;
-// use crate::client::instances::flows::args::set_property::SetPropertyArgs;
+use crate::client::instances::flows::args::create_from_type::CreateFlowInstanceFromTypeArgs;
+use crate::client::instances::flows::args::id::IdArgs;
+use crate::client::instances::flows::args::label::LabelArgs;
+use crate::client::instances::flows::args::search::SearchFlowInstancesArgs;
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug, Clone)]
 pub(crate) enum FlowInstancesCommands {
-    // /// List all flow instances.
-    // #[non_exhaustive]
-    // List(SearchFlowInstancesArgs),
-    // /// Prints a single flow instance.
-    // #[non_exhaustive]
-    // Get(FlowInstanceIdArgs),
-    // /// Lists the properties of a flow instance.
-    // #[non_exhaustive]
-    // ListProperties(FlowInstanceIdArgs),
-    // /// Prints the value of a property of a flow instance.
-    // #[non_exhaustive]
-    // GetProperty(FlowInstanceIdAndPropertyArgs),
-    // /// Sets the value of a property of a flow instance.
-    // #[non_exhaustive]
-    // SetProperty(SetPropertyArgs),
-    // /// Adds a new property to a flow instance.
-    // #[non_exhaustive]
-    // AddProperty(AddPropertyArgs),
-    // /// Removes a property from a flow instance.
-    // #[non_exhaustive]
-    // RemoveProperty(FlowInstanceIdAndPropertyArgs),
-    // /// Lists the components of a flow instance.
-    // #[non_exhaustive]
-    // ListComponents(FlowInstanceIdArgs),
-    // /// Adds a component to a flow instance.
-    // #[non_exhaustive]
-    // AddComponent(FlowInstanceIdAndComponentArgs),
-    // /// Removes a component from a flow instance.
-    // #[non_exhaustive]
-    // RemoveComponent(FlowInstanceIdAndComponentArgs),
-    // /// Creates a new flow type.
+    /// List all flow instances.
+    #[non_exhaustive]
+    List(SearchFlowInstancesArgs),
+    /// Prints a single flow instance.
+    #[non_exhaustive]
+    Get(IdArgs),
+    /// Prints a single flow instance.
+    #[non_exhaustive]
+    GetByLabel(LabelArgs),
+
+    //
+    // /// Creates a new flow and a corresponding wrapper entity instance.
     // #[non_exhaustive]
     // Create(CreateFlowInstanceArgs),
-    // // Deletes a flow instance.
-    // #[non_exhaustive]
-    // Delete(FlowInstanceIdArgs),
+    //
+    /// Creates a new flow from the given type.
+    #[non_exhaustive]
+    CreateFromType(CreateFlowInstanceFromTypeArgs),
+
+    //
+    // TODO: create_entity
+    // TODO: add_entity
+    // TODO: remove_entity
+    //
+    // TODO: create_relation
+    // TODO: add_relation
+    // TODO: remove_relation
+    //
+
+    // Deletes a flow instance.
+    #[non_exhaustive]
+    Delete(IdArgs),
     /// Prints the JSON Schema of flow instances.
     #[non_exhaustive]
     JsonSchema,

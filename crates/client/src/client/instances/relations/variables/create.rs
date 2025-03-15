@@ -15,7 +15,7 @@ pub mod variables {
         /// The relation type id namespace.
         pub namespace: String,
         /// The relation type id type name.
-        pub name: String,
+        pub type_name: String,
         /// The relation type id type name.
         pub instance_id: String,
         /// The id of the inbound entity instance.
@@ -36,7 +36,7 @@ pub mod variables {
             Self {
                 outbound_id: id.outbound_id.into(),
                 namespace: ty.namespace(),
-                name: ty.type_name(),
+                type_name: ty.type_name(),
                 instance_id: id.ty.instance_id(),
                 inbound_id: id.inbound_id.into(),
                 description,

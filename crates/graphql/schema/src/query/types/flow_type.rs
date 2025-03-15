@@ -51,6 +51,13 @@ impl GraphQLFlowType {
         self.flow_type.description.clone()
     }
 
+    /// The wrapper entity instance.
+    async fn wrapper_entity_instance(&self) -> GraphQLEntityInstance {
+        let entity_instance = self.flow_type.wrapper_entity_instance.clone();
+        let reactive_entity = ReactiveEntity::from(entity_instance); // temporary, non-registered
+        GraphQLEntityInstance::from(reactive_entity)
+    }
+
     /// The entity instances contained by the flow type
     async fn entity_instances(&self) -> Vec<GraphQLEntityInstance> {
         self.flow_type
@@ -107,7 +114,7 @@ impl GraphQLFlowType {
     }
 
     /// The properties of the flow type.
-    /// This are the properties of the wrapper entity instance.
+    /// These are the properties of the wrapper entity instance.
     async fn properties(
         &self,
         #[graphql(desc = "Filters by property name")] name: Option<String>,
@@ -191,13 +198,6 @@ impl GraphQLFlowType {
             Err(_) => false,
         }
     }
-
-    // /// Type category.
-    // async fn type_category(&self) -> Option<GraphQLTypeCategory> {
-    //     get_type_category_extension(&self.flow_type)
-    //         .and_then(get_type_category)
-    //         .map(|category| category.into())
-    // }
 }
 
 impl From<FlowType> for GraphQLFlowType {

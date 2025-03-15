@@ -50,7 +50,7 @@ impl MutationEntityInstances {
         #[graphql(desc = "Creates the entity instance with the given components.")] components: Option<Vec<ComponentTypeIdDefinition>>,
         properties: Option<Vec<GraphQLPropertyInstance>>,
     ) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
 
         let entity_ty = entity_ty.into();
@@ -66,7 +66,7 @@ impl MutationEntityInstances {
             .description(description.unwrap_or_default())
             .properties(properties)
             .build();
-        let entity_instance = entity_instance_manager.create_reactive_instance(entity_instance);
+        let entity_instance = reactive_entity_manager.create_reactive_instance(entity_instance);
         match entity_instance {
             Ok(entity_instance) => {
                 if let Some(components) = components {
@@ -74,7 +74,7 @@ impl MutationEntityInstances {
                         // TODO: handle the case when one or multiple components wasn't added
                         // How to handle this?
                         let component_ty = component.into();
-                        let _ = entity_instance_manager.add_component(entity_instance.id, &component_ty);
+                        let _ = reactive_entity_manager.add_component(entity_instance.id, &component_ty);
                     }
                 }
                 Ok(entity_instance.into())
@@ -96,12 +96,12 @@ impl MutationEntityInstances {
         #[graphql(desc = "Adds the given properties")] add_properties: Option<Vec<crate::mutation::PropertyTypeDefinition>>,
         #[graphql(desc = "Removes the given properties")] remove_properties: Option<Vec<String>>,
     ) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_instance;
         if id.is_some() {
-            entity_instance = entity_instance_manager.get(id.unwrap());
+            entity_instance = reactive_entity_manager.get(id.unwrap());
         } else if label.is_some() {
-            entity_instance = entity_instance_manager.get_by_label(label.unwrap().as_str());
+            entity_instance = reactive_entity_manager.get_by_label(label.unwrap().as_str());
         } else {
             return Err("Either id or label must be given!".into());
         }
@@ -114,13 +114,13 @@ impl MutationEntityInstances {
             for component in components {
                 // TODO: handle the case when one or multiple components wasn't added
                 let component = component.into();
-                let _ = entity_instance_manager.add_component(entity_instance.id, &component);
+                let _ = reactive_entity_manager.add_component(entity_instance.id, &component);
             }
         }
         if let Some(components) = remove_components {
             for component in components {
                 let component = component.into();
-                entity_instance_manager.remove_component(entity_instance.id, &component);
+                reactive_entity_manager.remove_component(entity_instance.id, &component);
             }
         }
         if let Some(properties) = properties {
@@ -164,11 +164,11 @@ impl MutationEntityInstances {
         #[graphql(desc = "Triggers the entity instance with the given id.")] id: Option<Uuid>,
         #[graphql(desc = "Triggers the entity instance with the given label.")] label: Option<String>,
     ) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let Some(entity_instance) = (if let Some(id) = id {
-            entity_instance_manager.get(id)
+            reactive_entity_manager.get(id)
         } else if let Some(label) = label {
-            entity_instance_manager.get_by_label(label.as_str())
+            reactive_entity_manager.get_by_label(label.as_str())
         } else {
             return Err("Either id or label must be given!".into());
         }) else {
@@ -191,8 +191,8 @@ impl MutationEntityInstances {
     /// Furthermore this leads to a new value propagation if the output property is connected
     /// to other properties.
     async fn tick(&self, context: &Context<'_>, id: Uuid) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
-        let entity_instance = entity_instance_manager.get(id);
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let entity_instance = reactive_entity_manager.get(id);
         if entity_instance.is_none() {
             return Err(Error::new(format!("Entity instance {} does not exist!", id)));
         }
@@ -208,7 +208,7 @@ impl MutationEntityInstances {
         #[graphql(desc = "The id of the entity instance")] id: Uuid,
         #[graphql(desc = "If true, all relations to and from the entity instance will be deleted as well")] delete_relations: Option<bool>,
     ) -> Result<bool> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         if delete_relations.is_some() && delete_relations.unwrap() {
             let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
             relation_instance_manager.get_by_inbound_entity(id).iter().for_each(|reactive_relation| {
@@ -220,7 +220,7 @@ impl MutationEntityInstances {
                 relation_instance_manager.delete(&id);
             });
         }
-        Ok(entity_instance_manager.delete(id))
+        Ok(reactive_entity_manager.delete(id))
     }
 
     async fn connect(
@@ -229,10 +229,10 @@ impl MutationEntityInstances {
         id: Uuid,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager + Send + Sync>>()?;
         let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager + Send + Sync>>()?;
-        let reactive_instance = entity_instance_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
+        let reactive_instance = reactive_entity_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
         let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_behaviour_manager
@@ -253,10 +253,10 @@ impl MutationEntityInstances {
         id: Uuid,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager + Send + Sync>>()?;
         let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager + Send + Sync>>()?;
-        let reactive_instance = entity_instance_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
+        let reactive_instance = reactive_entity_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
         let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_behaviour_manager
@@ -277,10 +277,10 @@ impl MutationEntityInstances {
         id: Uuid,
         #[graphql(name = "type")] behaviour_ty: BehaviourTypeIdDefinition,
     ) -> Result<GraphQLEntityInstance> {
-        let entity_instance_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
+        let reactive_entity_manager = context.data::<Arc<dyn ReactiveEntityManager + Send + Sync>>()?;
         let entity_behaviour_manager = context.data::<Arc<dyn EntityBehaviourManager + Send + Sync>>()?;
         let entity_component_behaviour_manager = context.data::<Arc<dyn EntityComponentBehaviourManager + Send + Sync>>()?;
-        let reactive_instance = entity_instance_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
+        let reactive_instance = reactive_entity_manager.get(id).ok_or(Error::new("Entity instance not found"))?;
         let behaviour_ty = BehaviourTypeId::from(behaviour_ty);
         if entity_behaviour_manager.has(reactive_instance.clone(), &behaviour_ty) {
             entity_behaviour_manager

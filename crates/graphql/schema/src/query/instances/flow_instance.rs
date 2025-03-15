@@ -2,10 +2,11 @@ use std::sync::Arc;
 
 use async_graphql::Context;
 use async_graphql::Object;
-use uuid::Uuid;
-
+use async_graphql::Result;
+use reactive_graph_graph::InvalidFlowInstanceError;
 use reactive_graph_reactive_model_impl::ReactiveFlow;
 use reactive_graph_type_system_api::EntityTypeManager;
+use uuid::Uuid;
 
 use crate::query::GraphQLEntityInstance;
 use crate::query::GraphQLEntityType;
@@ -48,16 +49,24 @@ impl GraphQLFlowInstance {
             .and_then(|property_instance| property_instance.as_string())
     }
 
+    /// The name of the flow instance.
+    async fn name(&self) -> String {
+        self.flow_instance.name.clone()
+    }
+
+    /// Textual description of the flow instance.
+    async fn description(&self) -> String {
+        self.flow_instance.description.clone()
+    }
+
     /// The (entity-) type of the flow.
     #[graphql(name = "type")]
-    async fn entity_type(&self, context: &Context<'_>) -> Option<GraphQLEntityType> {
-        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>();
-        if entity_type_manager.is_err() {
-            return None;
-        }
-        let entity_type_manager = entity_type_manager.unwrap();
-        let entity_type = entity_type_manager.get(&self.flow_instance.ty)?;
-        Some(entity_type.into())
+    async fn entity_type(&self, context: &Context<'_>) -> Result<GraphQLEntityType> {
+        let entity_type_manager = context.data::<Arc<dyn EntityTypeManager + Send + Sync>>()?;
+        entity_type_manager
+            .get(&self.flow_instance.ty)
+            .map(Into::into)
+            .ok_or(InvalidFlowInstanceError::EntityTypeDoesNotExist(self.flow_instance.ty.clone()).into())
     }
 
     /// The entity instance which is the wrapper for this flow.

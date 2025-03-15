@@ -15,7 +15,7 @@ pub mod mutations {
     #[derive(QueryVariables, Debug, TypedBuilder)]
     pub struct CreateEntityInstanceVariables {
         pub namespace: String,
-        pub name: String,
+        pub type_name: String,
         pub id: Option<UUID>,
         #[builder(default)]
         pub description: Option<String>,
@@ -38,7 +38,7 @@ pub mod mutations {
     #[derive(QueryFragment, Debug)]
     #[cynic(variables = "CreateEntityInstanceVariables")]
     pub struct MutationEntityInstances {
-        #[arguments(type: { namespace: $namespace, name: $name}, id: $id , description: $description, properties: $properties
+        #[arguments(type: { namespace: $namespace, name: $type_name}, id: $id , description: $description, properties: $properties
         )]
         pub create: EntityInstance,
     }
@@ -55,7 +55,7 @@ pub mod mutations {
         let properties = Some(properties.0);
         let vars = CreateEntityInstanceVariables::builder()
             .namespace(ty.namespace())
-            .name(ty.type_name())
+            .type_name(ty.type_name())
             .id(id)
             .description(description)
             .properties(properties)

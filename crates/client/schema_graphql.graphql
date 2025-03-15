@@ -127,7 +127,7 @@ type EntityInstance {
   components which have been added after creation.
   """
   components: [Component!]!
-  "The description of the entity instance."
+  "Textual description of the entity instance."
   description: String!
   "The unique identifier of the entity instance."
   id: UUID!
@@ -138,6 +138,8 @@ type EntityInstance {
   ): [RelationInstance!]!
   "The label of the entity instance if available."
   label: String
+  "The name of the entity instance."
+  name: String!
   "List of relation instances which starts at this entity instance."
   outbound(
     "The outbound relation type"
@@ -248,6 +250,8 @@ It's even possible to connect entity instances from different flows with relatio
 instances.
 """
 type FlowInstance {
+  "Textual description of the flow instance."
+  description: String!
   "The entity instances contained by this flow."
   entities: [EntityInstance!]!
   """
@@ -260,10 +264,12 @@ type FlowInstance {
   id: UUID!
   "The label of the entity instance if available."
   label: String
+  "The name of the flow instance."
+  name: String!
   "The relation instances contained by this flow."
   relations: [RelationInstance!]!
   "The (entity-) type of the flow."
-  type: EntityType
+  type: EntityType!
   "The entity instance which is the wrapper for this flow."
   wrapper: EntityInstance
 }
@@ -305,7 +311,7 @@ type FlowType {
   """
 
   The properties of the flow type.
-  This are the properties of the wrapper entity instance.
+  These are the properties of the wrapper entity instance.
   """
   properties(
     "Filters by property name"
@@ -319,6 +325,8 @@ type FlowType {
   type: EntityType
   "The variables of the flow type."
   variables(name: String): [PropertyType!]!
+  "The wrapper entity instance."
+  wrapperEntityInstance: EntityInstance!
 }
 
 "Search for instances"
@@ -331,7 +339,10 @@ type Instances {
     "Counts the entity instances of the given type only."
     type: EntityTypeId
   ): Int!
-  countFlowInstances: Int!
+  countFlowInstances(
+    "Counts the flow instances of the given entity type only."
+    type: EntityTypeId
+  ): Int!
   countRelationInstances(
     "Counts the entity instances of the given type only."
     type: RelationTypeId
@@ -364,7 +375,7 @@ type Instances {
     id: UUID,
     "Filters by the label of the flow"
     label: String,
-    "Filters by the flow type"
+    "Filters by the entity type of the flow instance"
     type: EntityTypeId
   ): [FlowInstance!]!
   """
@@ -584,13 +595,20 @@ type MutationFlowInstances {
   The given entity type must exist. It provides the properties for the wrapper entity instance
   and therefore defines which properties of the flow are the inputs and outputs.
 
-  Optionally, an UUID can be specified.
+  Optionally, a UUID can be specified.
 
   Optionally, the initial values of the properties can be specified. Specified properties
   which are not provided by the given entity type are lacking of a definition (data type,
   socket type).
   """
-  create(flowId: UUID, namespace: String!, properties: [PropertyInstanceDefinition!], type: String!): FlowInstance!
+  create(
+    "The unique identifier of the flow instance and the wrapper entity instance"
+    flowId: UUID,
+    "The properties of the flow instance and the wrapper entity instance"
+    properties: [PropertyInstanceDefinition!],
+    "The entity type"
+    type: EntityTypeId!
+  ): FlowInstance!
   "Creates a new entity instance and adds the entity instance to the given flow by id."
   createEntity(entityId: UUID, flowId: UUID!, namespace: String!, properties: [PropertyInstanceDefinition!], type: String!): FlowInstance!
   """
@@ -608,9 +626,20 @@ type MutationFlowInstances {
   which are not provided by the given entity type are lacking of a definition (data type,
   socket type).
   """
-  createFromType(namespace: String!, properties: [PropertyInstanceDefinition!], typeName: String!, variables: [PropertyInstanceDefinition!]): FlowInstance!
+  createFromType(
+    "A list of properties of the wrapper entity instance."
+    properties: [PropertyInstanceDefinition!],
+    "The flow type"
+    type: FlowTypeId!,
+    "Parametrized construction of a flow instance using variables of a flow type."
+    variables: [PropertyInstanceDefinition!]
+  ): FlowInstance!
   "Creates a new relation instance and adds the relation instance to the given flow by id."
   createRelation(flowId: UUID!, properties: [PropertyInstanceDefinition!], relationInstanceId: RelationInstanceIdDefinition!): FlowInstance!
+  delete(
+    "The id of the entity instance"
+    id: UUID!
+  ): Boolean!
   """
 
   Imports the given flow. Creates entity instances and relation instances which are contained
@@ -621,6 +650,88 @@ type MutationFlowInstances {
   removeEntity(entityId: UUID!, flowId: UUID!): FlowInstance!
   "Removes an existing relation instance by relation_instance_id from the given flow by id"
   removeRelation(flowId: UUID!, relationInstanceId: RelationInstanceIdDefinition!): FlowInstance!
+}
+
+"Mutations for flow types"
+type MutationFlowTypes {
+  "Adds the given entity instance to the flow type with the given name."
+  addEntityInstance(
+    entityInstance: EntityInstanceDefinition!,
+    "The flow type."
+    type: FlowTypeId!
+  ): FlowType!
+  "Adds the given extension to the flow type with the given name."
+  addExtension(
+    extension: ExtensionDefinition!,
+    "The flow type."
+    type: FlowTypeId!
+  ): FlowType!
+  "Adds the given variable to the flow type with the given name."
+  addVariable(
+    "The flow type."
+    type: FlowTypeId!,
+    variable: PropertyTypeDefinition!
+  ): FlowType!
+  "Creates a new flow type with the given name and components and properties."
+  create(
+    "Textual description of the flow type."
+    description: String,
+    entityInstances: [EntityInstanceDefinition!],
+    "The extension on the entity type."
+    extensions: [ExtensionDefinition!],
+    relationInstances: [RelationInstanceDefinition!],
+    "The flow type."
+    type: FlowTypeId!,
+    "The variables of the flow type."
+    variables: [PropertyTypeDefinition!],
+    wrapperEntityInstance: EntityInstanceDefinition!
+  ): FlowType!
+  "Deletes the flow type with the given name."
+  delete(
+    "The flow type."
+    type: FlowTypeId!
+  ): Boolean!
+  "Removes the entity instance with the given id from the flow type with the given name."
+  removeEntityInstance(
+    id: UUID!,
+    "The flow type."
+    type: FlowTypeId!
+  ): FlowType!
+  "Removes the extension with the given name from the flow type with the given name."
+  removeExtension(
+    "The extension type."
+    extension: ExtensionTypeId!,
+    "The flow type."
+    type: FlowTypeId!
+  ): FlowType!
+  "Removes the variable with the given name from the flow type with the given name."
+  removeVariable(
+    "The flow type."
+    type: FlowTypeId!,
+    variableName: String!
+  ): FlowType!
+  "Updates the description of the given flow type."
+  updateDescription(description: String!, type: FlowTypeId!): FlowType!
+  "Updates the entity instance with the given id of the flow type with the given name."
+  updateEntityInstance(
+    entityInstance: EntityInstanceDefinition!,
+    id: UUID!,
+    "The flow type."
+    type: FlowTypeId!
+  ): FlowType!
+  "Updates the extension with the given name of the flow type with the given name."
+  updateExtension(
+    extension: ExtensionDefinition!,
+    "The flow type."
+    type: FlowTypeId!
+  ): FlowType!
+  "Updates the variable with the given name of the flow type with the given name."
+  updateVariable(
+    "The flow type."
+    type: FlowTypeId!,
+    variable: PropertyTypeDefinition!,
+    variableName: String!
+  ): FlowType!
 }
 
 "Mutations on instances."
@@ -760,12 +871,14 @@ type MutationRelationTypes {
   updateProperty(property: PropertyTypeDefinition!, propertyName: String!, type: RelationTypeId!): RelationType!
 }
 
-"Mutations for types (components, entity types, relation types)."
+"Mutations for types (components, entity types, relation types and flow types)."
 type MutationTypes {
   "Mutations for components"
   components: MutationComponents!
   "Mutations for entity types"
   entities: MutationEntityTypes!
+  "Mutations for flow types"
+  flows: MutationFlowTypes!
   "Mutations for relation types"
   relations: MutationRelationTypes!
 }
@@ -889,6 +1002,8 @@ type RelationInstance {
   inbound: EntityInstance!
   "The instance id of the relation instance type."
   instanceId: String!
+  "The name of the relation instance."
+  name: String!
   """
 
   The outbound entity instance.

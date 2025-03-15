@@ -16,6 +16,7 @@ pub struct RelationInstance {
     ty: Option<RelationType>,
     instance_id: String,
     outbound: EntityInstance,
+    name: String,
     description: String,
     properties: Vec<PropertyInstance>,
     components: Vec<Component>,
@@ -52,6 +53,7 @@ impl From<RelationInstance> for reactive_graph_graph::RelationInstance {
             outbound_id,
             ty,
             inbound_id,
+            name: relation_instance.name.clone(),
             description: relation_instance.description.clone(),
             properties,
             components,
@@ -71,7 +73,13 @@ impl Deref for RelationInstances {
 }
 
 impl From<RelationInstances> for Vec<reactive_graph_graph::RelationInstance> {
-    fn from(relation_types: RelationInstances) -> Self {
-        relation_types.0.into_iter().map(From::from).collect()
+    fn from(relations: RelationInstances) -> Self {
+        relations.0.into_iter().map(From::from).collect()
+    }
+}
+
+impl From<RelationInstances> for reactive_graph_graph::RelationInstances {
+    fn from(relations: RelationInstances) -> Self {
+        relations.0.into_iter().map(From::from).collect()
     }
 }

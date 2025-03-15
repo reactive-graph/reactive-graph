@@ -11,6 +11,7 @@ use uuid::Uuid;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_model_api::BehaviourTypeIds;
 use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
+use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
@@ -49,7 +50,11 @@ pub struct ReactiveEntityInstance {
     #[builder(default=Uuid::new_v4())]
     pub id: Uuid,
 
-    /// An optional description of the entity instance.
+    /// The name of the entity instance.
+    #[builder(default, setter(into))]
+    pub name: String,
+
+    /// Textual description of the entity instance.
     #[builder(default, setter(into))]
     pub description: String,
 
@@ -80,11 +85,21 @@ impl ReactiveEntity {
     #[allow(clippy::type_complexity)]
     pub fn builder_from_entity_type(
         entity_type: &EntityType,
-    ) -> ReactiveEntityInstanceBuilder<((EntityTypeId,), (Uuid,), (), (ReactiveProperties<Uuid>,), (), ())> {
+    ) -> ReactiveEntityInstanceBuilder<((EntityTypeId,), (Uuid,), (), (), (ReactiveProperties<Uuid>,), (), ())> {
         let id = Uuid::new_v4();
         let properties = PropertyInstances::new_from_property_types_with_defaults(&entity_type.properties);
         let reactive_properties = ReactiveProperties::new_with_id_from_properties(id, properties);
         ReactiveEntity::builder().ty(&entity_type.ty).id(id).properties(reactive_properties)
+    }
+}
+
+impl NamedInstanceContainer for ReactiveEntity {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn description(&self) -> String {
+        self.description.clone()
     }
 }
 
@@ -311,6 +326,7 @@ impl From<ReactiveEntity> for EntityInstance {
         EntityInstance {
             ty: entity.ty.clone(),
             id: entity.id,
+            name: entity.name.clone(),
             description: entity.description.clone(),
             properties: PropertyInstances::from(&entity.properties),
             components: entity.components.clone(),
@@ -324,6 +340,7 @@ impl From<&ReactiveEntity> for EntityInstance {
         EntityInstance {
             ty: entity.ty.clone(),
             id: entity.id,
+            name: entity.name.clone(),
             description: entity.description.clone(),
             properties: PropertyInstances::from(&entity.properties),
             components: entity.components.clone(),
@@ -349,6 +366,7 @@ impl From<EntityInstance> for ReactiveEntity {
         let entity_instance = ReactiveEntityInstance {
             ty: instance.ty.clone(),
             id: instance.id,
+            name: instance.name.clone(),
             description: instance.description,
             properties,
             components: ComponentTypeIds::new(),

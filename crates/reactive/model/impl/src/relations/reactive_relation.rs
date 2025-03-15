@@ -14,6 +14,7 @@ use crate::ReactiveProperty;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_model_api::BehaviourTypeIds;
 use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
+use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
@@ -77,7 +78,11 @@ pub struct ReactiveRelationInstance {
     /// The outbound entity instance.
     pub inbound: ReactiveEntity,
 
-    /// An optional description of the relation instance.
+    /// The name of the relation instance.
+    #[builder(default, setter(into))]
+    pub name: String,
+
+    /// Textual description of the relation instance.
     #[builder(default, setter(into))]
     pub description: String,
 
@@ -109,6 +114,7 @@ impl ReactiveRelationInstance {
             outbound,
             ty,
             inbound,
+            name: String::new(),
             description: String::new(),
             properties,
             components: ComponentTypeIds::new(),
@@ -131,6 +137,7 @@ impl ReactiveRelationInstance {
             outbound,
             ty: instance.ty,
             inbound,
+            name: instance.name,
             description: instance.description,
             properties,
             components: ComponentTypeIds::new(),
@@ -201,7 +208,7 @@ impl ReactiveRelation {
         outbound: ReactiveEntity,
         ty: &RelationInstanceTypeId,
         inbound: ReactiveEntity,
-    ) -> ReactiveRelationInstanceBuilder<((ReactiveEntity,), (RelationInstanceTypeId,), (ReactiveEntity,), (), (), (), ())> {
+    ) -> ReactiveRelationInstanceBuilder<((ReactiveEntity,), (RelationInstanceTypeId,), (ReactiveEntity,), (), (), (), (), ())> {
         ReactiveRelation::builder().outbound(outbound).ty(ty).inbound(inbound)
     }
 
@@ -218,6 +225,7 @@ impl ReactiveRelation {
         (ReactiveEntity,),
         (RelationInstanceTypeId,),
         (ReactiveEntity,),
+        (),
         (),
         (ReactiveProperties<RelationInstanceId>,),
         (),
@@ -239,6 +247,7 @@ impl ReactiveRelation {
         (RelationInstanceTypeId,),
         (ReactiveEntity,),
         (),
+        (),
         (ReactiveProperties<RelationInstanceId>,),
         (),
         (),
@@ -258,6 +267,7 @@ impl ReactiveRelation {
         (RelationInstanceTypeId,),
         (ReactiveEntity,),
         (),
+        (),
         (ReactiveProperties<RelationInstanceId>,),
         (),
         (),
@@ -276,6 +286,7 @@ impl ReactiveRelation {
         (RelationInstanceTypeId,),
         (ReactiveEntity,),
         (),
+        (),
         (ReactiveProperties<RelationInstanceId>,),
         (),
         (),
@@ -283,16 +294,9 @@ impl ReactiveRelation {
         let ty = RelationInstanceTypeId::new_with_random_instance_id(&relation_type.ty);
         ReactiveRelation::builder_with_entities_and_properties(outbound, &ty, inbound, &relation_type.properties)
     }
-}
-
-impl ReactiveInstance<RelationInstanceId> for ReactiveRelation {
-    /// Returns the relation instance id.
-    fn id(&self) -> RelationInstanceId {
-        RelationInstanceId::new(self.outbound.id, self.ty.clone(), self.inbound.id)
-    }
-}
-
-impl ReactiveRelation {
+    // }
+    //
+    // impl ReactiveRelation {
     pub fn new_from_properties(
         outbound: ReactiveEntity,
         ty: RelationInstanceTypeId,
@@ -317,11 +321,28 @@ impl ReactiveRelation {
     // }
 }
 
+impl NamedInstanceContainer for ReactiveRelation {
+    fn name(&self) -> String {
+        self.name.clone()
+    }
+
+    fn description(&self) -> String {
+        self.description.clone()
+    }
+}
+
 impl Deref for ReactiveRelation {
     type Target = Arc<ReactiveRelationInstance>;
 
     fn deref(&self) -> &Self::Target {
         &self.0
+    }
+}
+
+impl ReactiveInstance<RelationInstanceId> for ReactiveRelation {
+    /// Returns the relation instance id.
+    fn id(&self) -> RelationInstanceId {
+        RelationInstanceId::new(self.outbound.id, self.ty.clone(), self.inbound.id)
     }
 }
 
@@ -533,6 +554,7 @@ impl From<ReactiveRelation> for RelationInstance {
             outbound_id: relation.outbound.id,
             ty: relation.ty.clone(),
             inbound_id: relation.inbound.id,
+            name: relation.name.clone(),
             description: relation.description.clone(),
             properties: PropertyInstances::from(&relation.properties),
             components: relation.components.clone(),
@@ -547,6 +569,7 @@ impl From<&ReactiveRelation> for RelationInstance {
             outbound_id: relation.outbound.id,
             ty: relation.ty.clone(),
             inbound_id: relation.inbound.id,
+            name: relation.name.clone(),
             description: relation.description.clone(),
             properties: PropertyInstances::from(&relation.properties),
             components: relation.components.clone(),

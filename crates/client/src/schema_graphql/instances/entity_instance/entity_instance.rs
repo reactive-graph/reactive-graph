@@ -12,6 +12,7 @@ pub struct EntityInstance {
     #[cynic(rename = "type")]
     pub ty: Option<EntityType>,
     pub id: UUID,
+    pub name: String,
     pub description: String,
     pub properties: Vec<PropertyInstance>,
     pub components: Vec<Component>,
@@ -42,6 +43,7 @@ impl From<EntityInstance> for reactive_graph_graph::EntityInstance {
         reactive_graph_graph::EntityInstance {
             ty,
             id,
+            name: entity_instance.name.clone(),
             description: entity_instance.description.clone(),
             properties,
             components,
@@ -61,7 +63,13 @@ impl Deref for EntityInstances {
 }
 
 impl From<EntityInstances> for Vec<reactive_graph_graph::EntityInstance> {
-    fn from(entity_types: EntityInstances) -> Self {
-        entity_types.0.into_iter().map(From::from).collect()
+    fn from(entities: EntityInstances) -> Self {
+        entities.0.into_iter().map(From::from).collect()
+    }
+}
+
+impl From<EntityInstances> for reactive_graph_graph::EntityInstances {
+    fn from(entities: EntityInstances) -> Self {
+        entities.0.into_iter().map(From::from).collect()
     }
 }

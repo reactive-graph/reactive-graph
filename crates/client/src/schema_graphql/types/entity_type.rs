@@ -36,7 +36,7 @@ pub struct EntityType {
     /// Textual description of the extension.
     pub description: String,
 
-    /// The property types.
+    /// The applied components.
     pub components: Vec<Component>,
 
     /// The property types.
