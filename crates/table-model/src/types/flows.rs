@@ -38,58 +38,55 @@ pub struct FlowType {
     pub wrapper_entity_instance: EntityInstance,
 
     /// The entity instances.
-    // [tabled(display_with("Self::display_entity_instances", self))]
+    // [tabled(display("Self::display_entity_instances", self))]
     #[tabled(skip)]
     pub entity_instances: Vec<EntityInstance>,
 
     /// The relation instances.
-    // [tabled(display_with("Self::display_relation_instances", self))]
+    // [tabled(display("Self::display_relation_instances", self))]
     #[tabled(skip)]
     pub relation_instances: Vec<RelationInstance>,
 
     // pub wrapper_entity_instance: EntityInstance,
     /// The variables.
-    #[tabled(display_with("Self::display_variables", self))]
+    #[tabled(display("display_variables", self))]
     pub variables: Variables,
 
     /// The extensions.
-    #[tabled(display_with("Self::display_extensions", self))]
+    #[tabled(display("display_extensions", self))]
     pub extensions: Vec<Extension>,
 
     #[tabled(skip)]
     inline_format: TableInlineFormat,
 }
 
-impl FlowType {
-    #[allow(unused)]
-    fn display_entity_instances(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_entity_instances_inline_str(&self.entity_instances),
-            TableInlineFormat::Html => display_entity_instances_html_inline(&self.entity_instances),
-        }
+#[allow(unused)]
+fn display_entity_instances(entity_instances: &[EntityInstance], flow_type: &FlowType) -> String {
+    match flow_type.inline_format {
+        TableInlineFormat::Table => display_entity_instances_inline_str(entity_instances),
+        TableInlineFormat::Html => display_entity_instances_html_inline(entity_instances),
     }
+}
 
-    #[allow(unused)]
-    fn display_relation_instances(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_relation_instances_inline_str(&self.relation_instances),
-            TableInlineFormat::Html => display_relation_instances_html_inline(&self.relation_instances),
-        }
+#[allow(unused)]
+fn display_relation_instances(relation_instances: &[RelationInstance], flow_type: &FlowType) -> String {
+    match flow_type.inline_format {
+        TableInlineFormat::Table => display_relation_instances_inline_str(relation_instances),
+        TableInlineFormat::Html => display_relation_instances_html_inline(relation_instances),
     }
+}
 
-    fn display_variables(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_property_types_inline_str(&self.variables.0),
-            TableInlineFormat::Html => display_property_types_html_inline(&self.variables.0),
-        }
+fn display_variables(variables: &Variables, flow_type: &FlowType) -> String {
+    match flow_type.inline_format {
+        TableInlineFormat::Table => display_property_types_inline_str(&variables.0),
+        TableInlineFormat::Html => display_property_types_html_inline(&variables.0),
     }
+}
 
-    fn display_extensions(&self) -> String {
-        // println!("{:?}", &self.inline_format);
-        match self.inline_format {
-            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
-            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
-        }
+fn display_extensions(extensions: &[Extension], flow_type: &FlowType) -> String {
+    match flow_type.inline_format {
+        TableInlineFormat::Table => display_extensions_inline_str(extensions),
+        TableInlineFormat::Html => display_extensions_html_inline(extensions),
     }
 }
 

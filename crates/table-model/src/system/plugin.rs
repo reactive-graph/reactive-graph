@@ -27,14 +27,14 @@ pub struct Plugin {
 #[allow(unused)]
 #[derive(Clone, Debug, Tabled)]
 pub(crate) struct PluginDependencies {
-    #[tabled(display_with("display_plugins"))]
+    #[tabled(display("display_plugins"))]
     pub dependencies: Vec<Plugin>,
 }
 
 #[allow(unused)]
 #[derive(Clone, Debug, Tabled)]
 pub(crate) struct PluginDependents {
-    #[tabled(display_with("display_plugins"))]
+    #[tabled(display("display_plugins"))]
     pub dependents: Vec<Plugin>,
 }
 

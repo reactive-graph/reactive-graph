@@ -3669,17 +3669,6 @@ dependencies = [
 
 [[package]]
 name = "papergrid"
-version = "0.13.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d2b0f8def1f117e13c895f3eda65a7b5650688da29d6ad04635f61bc7b92eebd"
-dependencies = [
- "bytecount",
- "fnv",
- "unicode-width",
-]
-
-[[package]]
-name = "papergrid"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b915f831b85d984193fdc3d3611505871dc139b2534530fa01c1a6a6707b6723"
@@ -4199,7 +4188,7 @@ dependencies = [
  "serde_json",
  "shellwords",
  "table_to_html",
- "tabled 0.17.0",
+ "tabled",
  "thiserror 2.0.12",
  "tokio",
  "toml",
@@ -5357,7 +5346,7 @@ dependencies = [
  "serde",
  "serde_json",
  "table_to_html",
- "tabled 0.17.0",
+ "tabled",
  "uuid",
 ]
 
@@ -6268,17 +6257,7 @@ version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d70ba737c12de7ce03b877c8899543bf5b7555fd4b5cf202b59415ff950b1317"
 dependencies = [
- "tabled 0.18.0",
-]
-
-[[package]]
-name = "tabled"
-version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6709222f3973137427ce50559cd564dc187a95b9cfe01613d2f4e93610e510a"
-dependencies = [
- "papergrid 0.13.0",
- "tabled_derive",
+ "tabled",
 ]
 
 [[package]]
@@ -6287,20 +6266,21 @@ version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "121d8171ee5687a4978d1b244f7d99c43e7385a272185a2f1e1fa4dc0979d444"
 dependencies = [
- "papergrid 0.14.0",
+ "papergrid",
+ "tabled_derive",
 ]
 
 [[package]]
 name = "tabled_derive"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "931be476627d4c54070a1f3a9739ccbfec9b36b39815106a20cce2243bbcefe1"
+checksum = "52d9946811baad81710ec921809e2af67ad77719418673b2a3794932d57b7538"
 dependencies = [
- "heck 0.4.1",
+ "heck 0.5.0",
  "proc-macro-error2",
  "proc-macro2",
  "quote",
- "syn 1.0.109",
+ "syn 2.0.100",
 ]
 
 [[package]]

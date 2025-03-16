@@ -108,7 +108,7 @@ pub struct Extension {
     pub description: String,
 
     /// The extension as JSON representation.
-    #[tabled(rename = "Extension", display_with("pretty_json"))]
+    #[tabled(rename = "Extension", display("pretty_json"))]
     pub extension: Value,
 
     #[tabled(skip)]

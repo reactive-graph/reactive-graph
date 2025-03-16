@@ -34,42 +34,40 @@ pub struct EntityType {
     pub description: String,
 
     /// The components.
-    #[tabled(display_with("Self::display_component_type_ids", self))]
+    #[tabled(display("display_component_type_ids", self))]
     pub components: Vec<ComponentTypeId>,
 
     /// The property types.
-    #[tabled(display_with("Self::display_property_types", self))]
+    #[tabled(display("display_property_types", self))]
     pub properties: Vec<PropertyType>,
 
     /// The extensions.
-    #[tabled(display_with("Self::display_extensions", self))]
+    #[tabled(display("display_extensions", self))]
     pub extensions: Vec<Extension>,
 
     #[tabled(skip)]
     inline_format: TableInlineFormat,
 }
 
-impl EntityType {
-    fn display_component_type_ids(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_component_type_ids_inline_str(&self.components),
-            TableInlineFormat::Html => display_component_type_ids_html_inline(&self.components),
-        }
+fn display_component_type_ids(components: &[ComponentTypeId], entity_type: &EntityType) -> String {
+    match entity_type.inline_format {
+        TableInlineFormat::Table => display_component_type_ids_inline_str(components),
+        TableInlineFormat::Html => display_component_type_ids_html_inline(components),
     }
+}
 
-    fn display_property_types(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_property_types_inline_str(&self.properties),
-            TableInlineFormat::Html => display_property_types_html_inline(&self.properties),
-        }
+fn display_property_types(properties: &[PropertyType], entity_type: &EntityType) -> String {
+    match entity_type.inline_format {
+        TableInlineFormat::Table => display_property_types_inline_str(properties),
+        TableInlineFormat::Html => display_property_types_html_inline(properties),
     }
+}
 
-    fn display_extensions(&self) -> String {
-        // println!("{:?}", &self.inline_format);
-        match self.inline_format {
-            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
-            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
-        }
+fn display_extensions(extensions: &[Extension], entity_type: &EntityType) -> String {
+    // println!("{:?}", &self.inline_format);
+    match entity_type.inline_format {
+        TableInlineFormat::Table => display_extensions_inline_str(extensions),
+        TableInlineFormat::Html => display_extensions_html_inline(extensions),
     }
 }
 
