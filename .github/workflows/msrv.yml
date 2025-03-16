@@ -31,7 +31,7 @@ jobs:
       - name: Install rust toolchain
         uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: nightly-2024-10-19
+          toolchain: nightly-2025-03-14
       - name: Install cargo msrv
         uses: taiki-e/cache-cargo-install-action@v2
         with:
