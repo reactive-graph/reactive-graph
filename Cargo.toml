@@ -139,7 +139,7 @@ quote = "1.0"
 rand = "0.9"
 rand_derive3 = { version = "0.2", git = "https://github.com/reactive-graph/rand_derive3.git", branch = "rust-edition-2024" }
 random-string = "1.1"
-rayon = "1.6"
+rayon = "1.10"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
 regex = "1.11"
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
@@ -163,11 +163,11 @@ springtime = "1.0"
 springtime-di = { version = "1.0", features = ["threadsafe", "derive"] }
 springtime-di-derive = "0.3"
 stopwatch2 = "2.0"
-strum = { version = "0.26", features = ["derive"] }
-strum_macros = "0.26"
+strum = { version = "0.27", features = ["derive"] }
+strum_macros = "0.27"
 syn = { version = "2.0", features = ["full"] }
 tabled = "0.17"
-table_to_html = "0.6"
+table_to_html = "0.7"
 thiserror = "2.0"
 tokio = { version = "1", features = ["time", "rt"] }
 tokio-stream = "0.1"
@@ -176,9 +176,9 @@ toml_edit = "0.22"
 typed-builder = "0.20"
 uuid = { version = "1.16", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
-walkdir = "2.3"
+walkdir = "2.5"
 wildmatch = "2.4"
-xdg = "2.4"
+xdg = "2.5"
 
 [profile.dev]
 opt-level = 0
