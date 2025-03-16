@@ -13,8 +13,6 @@ readme = "../../../README.md"
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 strum_macros = { workspace = true }
-typed-builder = { workspace = true }
-uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 

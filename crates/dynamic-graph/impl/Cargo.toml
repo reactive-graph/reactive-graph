@@ -17,11 +17,9 @@ log = { workspace = true, features = ["std", "serde"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
-thiserror = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-reactive-graph-di = { version = "0.10.0", path = "../../di" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-type-system-api = { version = "0.10.0", path = "../../type-system/api" }
@@ -33,17 +31,9 @@ reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactiv
 reactive-graph-dynamic-graph-api = { version = "0.10.0", path = "../api" }
 
 [dev-dependencies]
-colored = { workspace = true }
-default-test = { workspace = true }
-glob = { workspace = true }
-similar = { workspace = true }
-similar-asserts = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
-reactive-graph-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
-reactive-graph-reactive-service-impl = { version = "0.10.0", path = "../../reactive/service/impl" }
 
 [lib]
 crate-type = ["lib"]

@@ -16,7 +16,6 @@ log = { workspace = true, features = ["std", "serde"] }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
-reactive-graph-di = { version = "0.10.0", path = "../../../di" }
 reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../../model/api" }
 reactive-graph-behaviour-model-impl = { version = "0.10.0", path = "../../model/impl" }
 reactive-graph-behaviour-service-api = { version = "0.10.0", path = "../api" }

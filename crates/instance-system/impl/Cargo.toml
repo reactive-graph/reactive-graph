@@ -19,7 +19,6 @@ reactive-graph-di = { version = "0.10.0", path = "../../di" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-instance-system-api = { version = "0.10.0", path = "../api" }
-reactive-graph-plugin-api = { version = "0.10.0", path = "../../plugin/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
 

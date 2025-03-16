@@ -10,18 +10,13 @@ rust-version.workspace = true
 readme = "../../../../README.md"
 
 [dependencies]
-log = "0.4.20"
 
 [dev-dependencies]
 async-graphql = { workspace = true, features = ["uuid"] }
-default-test = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
-reactive-graph-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }
-reactive-graph-graphql-api = { version = "0.10.0", path = "../../../graphql/api" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
 reactive-graph-remotes-model = { version = "0.10.0", path = "../../../remotes/model" }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../../api" }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../../impl" }

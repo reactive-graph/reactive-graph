@@ -16,7 +16,6 @@ rust-embed = { workspace = true, features = ["debug-embed", "compression"] }
 serde_json = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 
-reactive-graph-di = { version = "0.10.0", path = "../../di" }
 reactive-graph-command-api = { version = "0.10.0", path = "../api" }
 reactive-graph-command-model = { version = "0.10.0", path = "../model" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
@@ -26,10 +25,7 @@ reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reacti
 reactive-graph-type-system-api = { version = "0.10.0", path = "../../type-system/api" }
 
 [dev-dependencies]
-reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
-reactive-graph-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
-reactive-graph-reactive-service-impl = { version = "0.10.0", path = "../../reactive/service/impl" }
 
 [lib]
 crate-type = ["lib"]

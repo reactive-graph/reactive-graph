@@ -34,7 +34,6 @@ reactive-graph-type-system-api = { version = "0.10.0", path = "../../../type-sys
 [dev-dependencies]
 criterion = { workspace = true, features = ["html_reports"] }
 default-test = { workspace = true }
-log4rs = { workspace = true, features = ["console_appender"] }
 
 reactive-graph-di = { version = "0.10.0", path = "../../../di" }
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph", features = ["test"] }

@@ -10,12 +10,9 @@ rust-version.workspace = true
 readme = "../../README.md"
 
 [dependencies]
-async-trait = { workspace = true }
 fxhash = { version = "0.2.1" }
 log = { workspace = true, features = ["std", "serde"] }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
-
-reactive-graph-lifecycle = { version = "0.10.0", path = "../lifecycle" }
 
 [lib]
 crate-type = ["lib"]
