@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["add_component","add_property","create","delete","remove_component","remove_property","set_property"]};

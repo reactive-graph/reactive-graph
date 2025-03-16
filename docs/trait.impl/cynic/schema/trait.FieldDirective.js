@@ -1,0 +1,9 @@
+(function() {
+    var implementors = Object.fromEntries([["reactive_graph_client",[["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_graphql/schema/struct.concat.html\" title=\"struct reactive_graph_client::schema_graphql::schema::concat\">concat</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_graphql/schema/struct.include.html\" title=\"struct reactive_graph_client::schema_graphql::schema::include\">include</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_graphql/schema/struct.random_uuid.html\" title=\"struct reactive_graph_client::schema_graphql::schema::random_uuid\">random_uuid</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_graphql/schema/struct.skip.html\" title=\"struct reactive_graph_client::schema_graphql::schema::skip\">skip</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_plugin/schema/struct.include.html\" title=\"struct reactive_graph_client::schema_plugin::schema::include\">include</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_plugin/schema/struct.skip.html\" title=\"struct reactive_graph_client::schema_plugin::schema::skip\">skip</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_runtime/schema/struct.include.html\" title=\"struct reactive_graph_client::schema_runtime::schema::include\">include</a>"],["impl FieldDirective for <a class=\"struct\" href=\"reactive_graph_client/schema_runtime/schema/struct.skip.html\" title=\"struct reactive_graph_client::schema_runtime::schema::skip\">skip</a>"]]]]);
+    if (window.register_implementors) {
+        window.register_implementors(implementors);
+    } else {
+        window.pending_implementors = implementors;
+    }
+})()
+//{"start":57,"fragment_lengths":[1645]}

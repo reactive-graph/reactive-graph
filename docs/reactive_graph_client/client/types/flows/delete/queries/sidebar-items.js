@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["delete_flow_type_mutation","delete_flow_type_with_variables"],"struct":["DeleteFlowType","MutationFlowTypes","MutationTypes"]};

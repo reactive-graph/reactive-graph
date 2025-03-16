@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_dependents"],"struct":["GetDependents","GetDependentsPlugin"]};

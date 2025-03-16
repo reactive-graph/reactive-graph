@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_relation_type_mutation","create_relation_type_with_variables"],"struct":["CreateRelationType","CreateRelationTypeVariables","CreateRelationTypeVariablesFields","MutationRelationTypes","MutationTypes"]};

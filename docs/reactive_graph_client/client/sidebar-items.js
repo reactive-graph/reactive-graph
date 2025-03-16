@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ReactiveGraphClientError","ReactiveGraphClientExecutionError"],"mod":["instances","json_schema","plugin","runtime","types"],"struct":["ReactiveGraphClient"]};
+window.SIDEBAR_ITEMS = {"fn":["client"],"mod":["args","commands","error","handler","instances","output_format","repl","result","system","types"]};

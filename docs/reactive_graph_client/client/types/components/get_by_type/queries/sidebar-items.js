@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_component_by_type_query"],"struct":["GetComponentByType","GetComponentByTypeTypes"]};

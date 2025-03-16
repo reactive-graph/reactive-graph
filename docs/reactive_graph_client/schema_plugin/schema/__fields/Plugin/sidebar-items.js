@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["__typename","dependencies","dependents","description","id","name","path","pluginApiVersion","rustcVersion","shortName","state","stem","unsatisfiedDependencies","version"]};
