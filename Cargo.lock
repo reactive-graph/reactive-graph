@@ -140,7 +140,6 @@ version = "2.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "24eda4e2a6e042aa4e55ac438a2ae052d3b5da0ecf83d7411e1a368946925208"
 dependencies = [
- "actix-macros",
  "futures-core",
  "tokio",
 ]
@@ -1811,27 +1810,6 @@ dependencies = [
  "futures-sink",
  "futures-task",
  "futures-util",
-]
-
-[[package]]
-name = "futures-await-test"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae0d3d05bce73a572ba581e4f4a7f20164c18150169c3a67f406aada3e48c7e8"
-dependencies = [
- "futures-await-test-macro",
- "futures-executor",
-]
-
-[[package]]
-name = "futures-await-test-macro"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4f150175e6832600500334550e00e4dc563a0b32f58a9d1ad407f6473378c839"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 1.0.109",
 ]
 
 [[package]]
@@ -5100,67 +5078,32 @@ dependencies = [
 name = "reactive-graph-runtime-impl"
 version = "0.10.0"
 dependencies = [
- "actix",
- "actix-cors",
- "actix-http",
- "actix-rt",
- "actix-web",
- "actix-web-extras",
  "async-graphql",
- "async-graphql-actix-web",
  "async-trait",
  "aws-lc-rs",
- "chrono",
- "colored",
- "convert_case 0.8.0",
  "crossbeam",
- "dashmap",
- "default-test",
- "futures",
- "futures-await-test",
- "futures-timer",
- "futures-util",
- "glob",
- "gql_client",
- "http 0.2.12",
- "json5",
- "lazy_static",
- "libloading",
  "log",
  "log4rs",
- "mime",
- "notify",
- "path-tree",
  "portpicker",
- "rand 0.9.0",
- "rayon",
- "reactive-graph-behaviour-model-api",
- "reactive-graph-behaviour-model-impl",
  "reactive-graph-behaviour-service-api",
  "reactive-graph-behaviour-service-impl",
  "reactive-graph-command-api",
  "reactive-graph-command-impl",
- "reactive-graph-command-model",
  "reactive-graph-config-api",
  "reactive-graph-config-impl",
- "reactive-graph-config-model",
  "reactive-graph-di",
  "reactive-graph-dynamic-graph-api",
  "reactive-graph-dynamic-graph-impl",
- "reactive-graph-dynamic-graph-model",
  "reactive-graph-graph",
  "reactive-graph-graphql-api",
  "reactive-graph-graphql-impl",
  "reactive-graph-instance-system-api",
  "reactive-graph-instance-system-impl",
  "reactive-graph-lifecycle",
- "reactive-graph-model-flow",
- "reactive-graph-plugin-api",
  "reactive-graph-plugin-graphql-api",
  "reactive-graph-plugin-graphql-impl",
  "reactive-graph-plugin-service-api",
  "reactive-graph-plugin-service-impl",
- "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-reactive-service-impl",
@@ -5170,33 +5113,17 @@ dependencies = [
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-graphql-api",
  "reactive-graph-runtime-graphql-impl",
- "reactive-graph-runtime-model",
  "reactive-graph-runtime-service-api",
  "reactive-graph-runtime-service-impl",
  "reactive-graph-runtime-web-api",
  "reactive-graph-runtime-web-impl",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
  "reactive-graph-type-system-impl",
- "reqwest",
- "rust-embed",
- "rustls",
- "rustls-pemfile",
- "schemars",
- "semver",
  "serde",
  "serde_json",
  "signal-hook",
- "similar",
- "similar-asserts",
  "springtime-di",
- "strum 0.27.1",
- "strum_macros 0.27.1",
  "tokio",
- "toml",
- "uuid",
- "walkdir",
- "wildmatch",
 ]
 
 [[package]]

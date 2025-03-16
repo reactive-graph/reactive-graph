@@ -87,7 +87,6 @@ rust-version = "1.85.0"
 actix = "0.13"
 actix-cors = "0.7"
 actix-http = { version = "3.10", features = ["rustls-0_23"] }
-actix-rt = "2.10"
 actix-web = { version = "4.10", features = ["rustls-0_23"] }
 actix-web-extras = "0.1"
 anyhow = "1.0"
@@ -112,7 +111,6 @@ darling = "0.20"
 dashmap = { version = "6.0", features = ["serde"] }
 default-test = "0.1"
 futures = "0.3"
-futures-await-test = "0.3"
 futures-timer = "3.0"
 futures-util = "0.3"
 glob = "0.3.2"
