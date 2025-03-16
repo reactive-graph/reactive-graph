@@ -596,6 +596,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h3 id="infrastructure"><a class="header" href="#infrastructure">Infrastructure</a></h3>
 <ul>
 <li>CI: Update rust nightly toolchain to nightly-2025-03-14</li>
+<li>CI: Added GitHub Actions runner for arm64 ubuntu-22.04-arm</li>
 </ul>
 <h2 id="0100-alpha-2---2024-10-27"><a class="header" href="#0100-alpha-2---2024-10-27">[0.10.0-alpha-2] - 2024-10-27</a></h2>
 <h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
@@ -2613,16 +2614,16 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-components"><a class="header" href="#graphql-api-components"><center>GraphQL API: Components</center></a></h1>
-<graphql-playground id="de13f8de-355d-4681-8124-d43acaca7acd" src="/examples/graphql/types/components/tabs.json">
+<graphql-playground id="e03a1de2-4f5a-47fd-8a1b-9bee85f8c5f1" src="/examples/graphql/types/components/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-entity-types"><a class="header" href="#graphql-api-entity-types"><center>GraphQL API: Entity Types</center></a></h1>
-<graphql-playground id="a87a2e4c-6e98-4b31-b858-dcb16351b7e5" src="/examples/graphql/types/entities/tabs.json">
+<graphql-playground id="c1fbbeef-d443-430b-932c-425e4e7db57d" src="/examples/graphql/types/entities/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="relation-types"><a class="header" href="#relation-types">Relation Types</a></h1>
-<graphql-playground id="c56359dc-a717-4d26-9001-30c78fa4e97f" src="/examples/graphql/types/relations/tabs.json">
+<graphql-playground id="b4e2b8a0-11be-456c-8a00-c806c96f19db" src="/examples/graphql/types/relations/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="flow-types"><a class="header" href="#flow-types">Flow Types</a></h1>
-<graphql-playground id="40766cf3-a90b-46a9-a9ff-0cfcc8e90cef" src="/examples/graphql/types/flows/tabs.json">
+<graphql-playground id="3184a868-0c4e-45ea-a0da-e4a8d4b75683" src="/examples/graphql/types/flows/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="extension"><a class="header" href="#extension">Extension</a></h1>
 <h2 id="query-extensions-of-an-entity-type"><a class="header" href="#query-extensions-of-an-entity-type">Query extensions of an entity type</a></h2>
@@ -2926,7 +2927,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-instance-info"><a class="header" href="#graphql-api-instance-info"><center>GraphQL API: Instance Info</center></a></h1>
-<graphql-playground id="5473e701-500a-48b8-a1a9-7de654f68ce4" src="/examples/graphql/system/instance_info/tabs.json">
+<graphql-playground id="b2e4edba-40bb-4e4e-8290-c024029a916e" src="/examples/graphql/system/instance_info/tabs.json">
 </graphql-playground>
 <h2 id="functionality"><a class="header" href="#functionality">Functionality</a></h2>
 <ul>
@@ -2959,7 +2960,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-plugins"><a class="header" href="#graphql-api-plugins"><center>GraphQL API: Plugins</center></a></h1>
-<graphql-playground id="3f249f88-cd17-458b-b0e4-2133b88d988b" src="/examples/graphql/system/plugins/tabs.json">
+<graphql-playground id="1b9063a2-fd4f-4162-960c-5fdb064a89b9" src="/examples/graphql/system/plugins/tabs.json">
 </graphql-playground>
 <h2 id="functionality-1"><a class="header" href="#functionality-1">Functionality</a></h2>
 <ul>
@@ -2975,7 +2976,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li>Unsatisfied dependencies</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-remotes"><a class="header" href="#graphql-api-remotes"><center>GraphQL API: Remotes</center></a></h1>
-<graphql-playground id="91efba03-f4fa-4ec3-b60e-12cff48f7f61" src="/examples/graphql/system/remotes/tabs.json">
+<graphql-playground id="cc53110c-8df9-4264-ba38-3ea379dd5862" src="/examples/graphql/system/remotes/tabs.json">
 </graphql-playground>
 <h2 id="functionality-2"><a class="header" href="#functionality-2">Functionality</a></h2>
 <ul>
@@ -2994,7 +2995,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="graphql-api-shutdown"><a class="header" href="#graphql-api-shutdown"><center>GraphQL API: Shutdown</center></a></h1>
-<graphql-playground id="223bb03d-5288-4e6a-a526-555f30afdf96" src="/examples/graphql/system/shutdown/tabs.json">
+<graphql-playground id="fadceef0-bfbf-4ad3-8630-c829708fce2a" src="/examples/graphql/system/shutdown/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dynamic-graph-api"><a class="header" href="#dynamic-graph-api">Dynamic Graph API</a></h1>
 <h3 id="advantages"><a class="header" href="#advantages">Advantages</a></h3>
@@ -3044,7 +3045,7 @@ to validate queries and mutations and some tools can use the schema to provide a
 <li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
 </ul>
 <h2 id="usage"><a class="header" href="#usage">Usage</a></h2>
-<graphql-playground id="4f052504-2cad-4e6e-9977-6ed6fafd05dc" src="/examples/dynamic-graph/dynamic-graph.json">
+<graphql-playground id="50463c99-65a8-4dc5-8f76-feac8ec6eafe" src="/examples/dynamic-graph/dynamic-graph.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="5-plugin-system"><a class="header" href="#5-plugin-system">5. Plugin System</a></h1>
 <p>The plugin system is a central building block and is therefore mentioned first. The goal of the plugin system is to keep
@@ -3523,10 +3524,10 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-1"><a class="header" href="#usage-1">Usage</a></h2>
-<graphql-playground id="92f41af4-ab7d-4457-921a-be074b1e76e5" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
+<graphql-playground id="7f8635a4-91f3-414d-a42e-523c7d1bfae5" src="/examples/graphql/plugins/arithmetic/add/tabs.json">
 </graphql-playground>
 <hr />
-<graphql-playground id="d66c57b4-a3e4-4ebe-b0a9-2cc44f7e0db8" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
+<graphql-playground id="9a38b52f-acfe-44ce-80a6-0c9e6180a292" src="/examples/graphql/plugins/arithmetic/counter/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="asset"><a class="header" href="#asset">Asset</a></h1>
 <h2 id="platform-compatibility-1"><a class="header" href="#platform-compatibility-1">Platform Compatibility</a></h2>
@@ -3542,7 +3543,7 @@ impl EntityBehaviourProvider for ExampleEntityBehaviourProviderImpl {
 </tbody></table>
 </div>
 <h2 id="usage-2"><a class="header" href="#usage-2">Usage</a></h2>
-<graphql-playground id="e1ad2968-b61a-41dd-9102-782100d7c89c" src="/examples/graphql/plugins/asset/tabs.json">
+<graphql-playground id="467634d4-5581-4bb5-97a4-5e232986112b" src="/examples/graphql/plugins/asset/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-base"><a class="header" href="#plugin-base">Plugin Base</a></h1>
 <p>Basic components and entity types.</p>
@@ -3641,9 +3642,9 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 <li>https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs</li>
 </ul>
 <h2 id="usage-3"><a class="header" href="#usage-3">Usage</a></h2>
-<graphql-playground id="9a51958b-d65b-473b-b174-dc01f6638087" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
+<graphql-playground id="2735b943-cedd-4975-83d3-5dedd2e0c3b3" src="/examples/graphql/plugins/binary/load-binary/tabs.json">
 </graphql-playground>
-<graphql-playground id="4c894503-be12-40b8-8566-743747c5b573" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
+<graphql-playground id="d304a84a-26f9-4959-8ee5-adeaec10abc8" src="/examples/graphql/plugins/binary/save-binary/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-comparison"><a class="header" href="#plugin-comparison">Plugin Comparison</a></h1>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
@@ -3676,7 +3677,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-4"><a class="header" href="#usage-4">Usage</a></h2>
-<graphql-playground id="3d7ba42f-5995-48ae-b28c-b0ccad94f7fc" src="/examples/graphql/plugins/comparison/tabs.json">
+<graphql-playground id="b675ecf3-bb0d-4f6e-8ca5-60c8daa76274" src="/examples/graphql/plugins/comparison/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-config"><a class="header" href="#plugin-config">Plugin Config</a></h1>
 <p>Read configuration files (TOML) into an entity instance.</p>
@@ -3699,7 +3700,7 @@ vr4MkhoXe0rZigAAAABJRU5ErkJggg==
 </tbody></table>
 </div>
 <h2 id="usage-5"><a class="header" href="#usage-5">Usage</a></h2>
-<graphql-playground id="97c324c6-149f-4fc2-af2c-ef6963b69df7" src="/examples/graphql/plugins/config/tabs.json">
+<graphql-playground id="436323c6-1c3c-4a59-b766-1f9aaa8d2a28" src="/examples/graphql/plugins/config/tabs.json">
 </graphql-playground>
 <h2 id="usage-graphql" class="tabset"><a class="header" href="#usage-graphql">Usage (GraphQL)</a></h2>
 <h3 id="read-in-a-configuration"><a class="header" href="#read-in-a-configuration">Read in a configuration</a></h3>
@@ -3847,7 +3848,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-6"><a class="header" href="#usage-6">Usage</a></h2>
-<graphql-playground id="3427b444-c73f-4585-85d5-ca2f2f567dd2" src="/examples/graphql/plugins/connector/tabs.json">
+<graphql-playground id="77507e92-3993-443d-a4d9-f73fa5f5cae7" src="/examples/graphql/plugins/connector/tabs.json">
 </graphql-playground>
 <h2 id="usage-7"><a class="header" href="#usage-7">Usage</a></h2>
 <h3 id="graphql-create-a-new-connector"><a class="header" href="#graphql-create-a-new-connector">GraphQL: Create a new connector</a></h3>
@@ -3980,7 +3981,7 @@ effect (yet). You have to remove the old connector and recreate a new connector.
 </tbody></table>
 </div>
 <h2 id="usage-8"><a class="header" href="#usage-8">Usage</a></h2>
-<graphql-playground id="f94725ee-3789-4753-9a61-93729958483b" src="/examples/graphql/plugins/http/tabs.json">
+<graphql-playground id="e107fe86-cebd-4ecb-9bc2-682b816375a3" src="/examples/graphql/plugins/http/tabs.json">
 </graphql-playground>
 <h2 id="usage-9"><a class="header" href="#usage-9">Usage</a></h2>
 <h3 id="graphql-8"><a class="header" href="#graphql-8">GraphQL</a></h3>
@@ -4143,7 +4144,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-10"><a class="header" href="#usage-10">Usage</a></h2>
-<graphql-playground id="d1fdc11e-fa3e-491e-9ea6-43d4cd5a387c" src="/examples/graphql/plugins/json/tabs.json">
+<graphql-playground id="4dc1e405-b416-4964-9cac-39a70cb943fe" src="/examples/graphql/plugins/json/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-logical"><a class="header" href="#plugin-logical">Plugin Logical</a></h1>
 <p>This plugin provides logical gates and operations.</p>
@@ -4221,7 +4222,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-11"><a class="header" href="#usage-11">Usage</a></h2>
-<graphql-playground id="3e17d90a-bc38-44e9-9f15-1b88010cc189" src="/examples/graphql/plugins/logical/tabs.json">
+<graphql-playground id="ad5a5316-3f47-487b-b7d0-0cf6ce152503" src="/examples/graphql/plugins/logical/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-meta-data"><a class="header" href="#plugin-meta-data">Plugin Meta Data</a></h1>
 <p>This plugin provides generic components for meta data.</p>
@@ -4258,7 +4259,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-12"><a class="header" href="#usage-12">Usage</a></h2>
-<graphql-playground id="308509c6-ac22-421f-bd63-450465802031" src="/examples/graphql/plugins/metadata/tabs.json">
+<graphql-playground id="fdba19b1-e5c3-4c10-af53-d6f910f1c500" src="/examples/graphql/plugins/metadata/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-notification"><a class="header" href="#plugin-notification">Plugin: Notification</a></h1>
 <p>Create desktop notifications.</p>
@@ -4441,7 +4442,7 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-14"><a class="header" href="#usage-14">Usage</a></h2>
-<graphql-playground id="a234dfa9-d137-483e-8cf2-3c254de7fd3d" src="/examples/graphql/plugins/numeric/tabs.json">
+<graphql-playground id="0d773de6-7137-4baf-8f08-1a46ad53716f" src="/examples/graphql/plugins/numeric/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-random"><a class="header" href="#plugin-random">Plugin: Random</a></h1>
 <p>Generate random numbers, strings, UUIDs or booleans.</p>
@@ -4484,9 +4485,9 @@ makes it also necessary to unpack or pack these data in order to operate with it
 </tbody></table>
 </div>
 <h2 id="usage-15"><a class="header" href="#usage-15">Usage</a></h2>
-<graphql-playground id="dd90dbf3-2c71-4c4d-b3d6-7f38c5e95b78" src="/examples/graphql/plugins/random/number/tabs.json">
+<graphql-playground id="2f3ad272-7d1e-490f-84e4-768bdf80ab0a" src="/examples/graphql/plugins/random/number/tabs.json">
 </graphql-playground>
-<graphql-playground id="6e3712c1-83a1-47c5-9d98-944dcee1f650" src="/examples/graphql/plugins/random/string/tabs.json">
+<graphql-playground id="d44e2591-cadd-4519-8f87-5cb897b11fb5" src="/examples/graphql/plugins/random/string/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-state"><a class="header" href="#plugin-state">Plugin: State</a></h1>
 <p>This plugin provides state components. States extends <a href="./Plugins_Value.html">values</a> with debounce mechanism. States are
@@ -4636,7 +4637,7 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-16"><a class="header" href="#usage-16">Usage</a></h2>
-<graphql-playground id="f44ccab8-b34f-4b83-88e6-6823b9e6fd8b" src="/examples/graphql/plugins/scheduler/tabs.json">
+<graphql-playground id="ec2eddf3-0978-4cd4-a693-fb26fe457bf7" src="/examples/graphql/plugins/scheduler/tabs.json">
 </graphql-playground>
 <h2 id="usage-17"><a class="header" href="#usage-17">Usage</a></h2>
 <h3 id="graphql-create-a-new-timer"><a class="header" href="#graphql-create-a-new-timer">GraphQL: Create a new timer</a></h3>
@@ -4809,11 +4810,11 @@ and time elements and are not replaced.</p>
 </tbody></table>
 </div>
 <h2 id="usage-18"><a class="header" href="#usage-18">Usage</a></h2>
-<graphql-playground id="2c95991a-0148-4a01-967d-a9e289ebe66c" src="/examples/graphql/plugins/string/concat/tabs.json">
+<graphql-playground id="2f17c6f6-82e6-4e4e-80b6-6087dae8609a" src="/examples/graphql/plugins/string/concat/tabs.json">
 </graphql-playground>
-<graphql-playground id="3a7f7f36-8233-400a-b319-0e868a10bc85" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
+<graphql-playground id="e297a56d-d076-4c35-9edf-ddfb14d0149c" src="/examples/graphql/plugins/string/pascal_case/tabs.json">
 </graphql-playground>
-<graphql-playground id="21172df4-97a0-4322-90e8-0663d59cc682" src="/examples/graphql/plugins/string/trim/tabs.json">
+<graphql-playground id="397ef95e-92cf-4a32-94a1-35e1561b24a2" src="/examples/graphql/plugins/string/trim/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-system-command"><a class="header" href="#plugin-system-command">Plugin: System Command</a></h1>
 <p>This plugin enables system commands to be executed. This is useful in home automation applications, e.g. if you want to
@@ -4997,7 +4998,7 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-20"><a class="header" href="#usage-20">Usage</a></h2>
-<graphql-playground id="4084a981-34b0-4c2c-9535-bae10b4c4ea7" src="/examples/graphql/plugins/system-environment/tabs.json">
+<graphql-playground id="cbc99be5-34ec-42c5-844c-bca5a55bf4d7" src="/examples/graphql/plugins/system-environment/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-taxonomy"><a class="header" href="#plugin-taxonomy">Plugin: Taxonomy</a></h1>
 <p>This plugin provides a generic <a href="https://en.wikipedia.org/wiki/Taxonomy">taxonomy</a> system with categories and tags.</p>
@@ -5045,9 +5046,9 @@ this happens only at initialization.</p>
 </tbody></table>
 </div>
 <h2 id="usage-21"><a class="header" href="#usage-21">Usage</a></h2>
-<graphql-playground id="af105719-9b45-4544-ac28-7b43608bd0b6" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
+<graphql-playground id="483c8fd6-58a0-440a-9da5-44bc248fea81" src="/examples/graphql/plugins/taxonomy/categories/tabs.json">
 </graphql-playground>
-<graphql-playground id="a321fa03-7f78-4e2d-a1ab-e3bda3089eee" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
+<graphql-playground id="eccbf232-66bf-42dd-b4d5-70328e56132b" src="/examples/graphql/plugins/taxonomy/tags/tabs.json">
 </graphql-playground>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugin-value"><a class="header" href="#plugin-value">Plugin: Value</a></h1>
 <p>This plugin provides value components. Value components contains a single property of a specific data type.
