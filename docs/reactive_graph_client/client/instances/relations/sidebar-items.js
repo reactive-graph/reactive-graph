@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["api","mutations","queries","variables"]};
+window.SIDEBAR_ITEMS = {"fn":["relation_instances"],"mod":["args","commands","output_format"]};

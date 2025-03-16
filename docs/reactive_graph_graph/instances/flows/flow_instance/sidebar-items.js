@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["FlowInstance","FlowInstanceCreationError"]};
+window.SIDEBAR_ITEMS = {"struct":["FlowInstance","FlowInstances"]};

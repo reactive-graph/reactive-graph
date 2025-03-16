@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["remove_all"],"struct":["RemoveAllRemotes","RemoveAllRemotesMutationRemotes"]};

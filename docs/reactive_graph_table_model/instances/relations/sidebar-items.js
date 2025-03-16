@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RelationInstance","RelationInstancesTableOptions"]};
+window.SIDEBAR_ITEMS = {"fn":["display_relation_instances_html_inline","display_relation_instances_inline","display_relation_instances_inline_str"],"struct":["RelationInstance","RelationInstancesTableOptions"]};

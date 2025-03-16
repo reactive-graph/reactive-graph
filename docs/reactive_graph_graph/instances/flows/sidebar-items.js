@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["flow_instance"]};
+window.SIDEBAR_ITEMS = {"mod":["flow_instance","flow_instance_errors"]};

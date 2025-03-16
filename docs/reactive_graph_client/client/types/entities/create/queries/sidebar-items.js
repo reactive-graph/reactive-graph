@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["create_entity_type_mutation","create_entity_type_with_variables"],"struct":["CreateEntityType","CreateEntityTypeVariables","CreateEntityTypeVariablesFields","MutationEntityTypes","MutationTypes"]};
