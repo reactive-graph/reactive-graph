@@ -102,7 +102,7 @@ clap_complete = "4.5"
 clap_mangen = "0.2"
 clap-markdown = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
-colored = "2.2"
+colored = "3.0"
 convert_case = "0.8"
 criterion = { version = "0.5", features = ["html_reports"] }
 crossbeam = "0.8"
