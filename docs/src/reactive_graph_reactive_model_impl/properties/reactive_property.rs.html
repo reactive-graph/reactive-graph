@@ -3,8 +3,8 @@
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>std::sync::Arc;
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>std::sync::RwLock;
 <a href=#5 id=5 data-nosnippet>5</a>
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>dashmap::iter::OwningIter;
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>dashmap::DashMap;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>dashmap::DashMap;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>dashmap::iter::OwningIter;
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>serde_json::Map;
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>serde_json::Value;
 <a href=#10 id=10 data-nosnippet>10</a>
@@ -261,10 +261,10 @@
 <a href=#261 id=261 data-nosnippet>261</a></span><span class="kw">pub mod </span>tests {
 <a href=#262 id=262 data-nosnippet>262</a>    <span class="kw">use </span>std::ops::DerefMut;
 <a href=#263 id=263 data-nosnippet>263</a>    <span class="kw">use </span>std::ops::Index;
-<a href=#264 id=264 data-nosnippet>264</a>    <span class="kw">use </span>std::sync::atomic::AtomicU64;
-<a href=#265 id=265 data-nosnippet>265</a>    <span class="kw">use </span>std::sync::atomic::Ordering;
-<a href=#266 id=266 data-nosnippet>266</a>    <span class="kw">use </span>std::sync::Arc;
-<a href=#267 id=267 data-nosnippet>267</a>    <span class="kw">use </span>std::sync::RwLock;
+<a href=#264 id=264 data-nosnippet>264</a>    <span class="kw">use </span>std::sync::Arc;
+<a href=#265 id=265 data-nosnippet>265</a>    <span class="kw">use </span>std::sync::RwLock;
+<a href=#266 id=266 data-nosnippet>266</a>    <span class="kw">use </span>std::sync::atomic::AtomicU64;
+<a href=#267 id=267 data-nosnippet>267</a>    <span class="kw">use </span>std::sync::atomic::Ordering;
 <a href=#268 id=268 data-nosnippet>268</a>    <span class="kw">use </span>std::thread;
 <a href=#269 id=269 data-nosnippet>269</a>
 <a href=#270 id=270 data-nosnippet>270</a>    <span class="kw">use </span>rand::Rng;
@@ -558,9 +558,9 @@
 <a href=#558 id=558 data-nosnippet>558</a>            );
 <a href=#559 id=559 data-nosnippet>559</a>        }
 <a href=#560 id=560 data-nosnippet>560</a>
-<a href=#561 id=561 data-nosnippet>561</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::thread_rng();
+<a href=#561 id=561 data-nosnippet>561</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rng();
 <a href=#562 id=562 data-nosnippet>562</a>
-<a href=#563 id=563 data-nosnippet>563</a>        <span class="kw">let </span>number: u64 = rng.gen();
+<a href=#563 id=563 data-nosnippet>563</a>        <span class="kw">let </span>number: u64 = rng.random();
 <a href=#564 id=564 data-nosnippet>564</a>        instance1.set(<span class="macro">json!</span>(number));
 <a href=#565 id=565 data-nosnippet>565</a>    }
 <a href=#566 id=566 data-nosnippet>566</a>
@@ -606,11 +606,11 @@
 <a href=#606 id=606 data-nosnippet>606</a>            <span class="kw">let </span>v = v.clone();
 <a href=#607 id=607 data-nosnippet>607</a>            <span class="kw">let </span>stream = instance1.stream.clone();
 <a href=#608 id=608 data-nosnippet>608</a>            <span class="kw">let </span>handle = thread::spawn(<span class="kw">move </span>|| {
-<a href=#609 id=609 data-nosnippet>609</a>                <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::thread_rng();
+<a href=#609 id=609 data-nosnippet>609</a>                <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rng();
 <a href=#610 id=610 data-nosnippet>610</a>                <span class="kw">let </span><span class="kw-2">mut </span>s = Stopwatch::default();
 <a href=#611 id=611 data-nosnippet>611</a>                s.start();
 <a href=#612 id=612 data-nosnippet>612</a>                <span class="kw">for </span>_iteration <span class="kw">in </span><span class="number">1</span>..NUM_ITERATIONS {
-<a href=#613 id=613 data-nosnippet>613</a>                    <span class="kw">let </span>number: u64 = rng.gen();
+<a href=#613 id=613 data-nosnippet>613</a>                    <span class="kw">let </span>number: u64 = rng.random();
 <a href=#614 id=614 data-nosnippet>614</a>                    <span class="kw">let </span>value = <span class="macro">json!</span>(number);
 <a href=#615 id=615 data-nosnippet>615</a>                    <span class="kw">let </span>writer = stream.write().unwrap();
 <a href=#616 id=616 data-nosnippet>616</a>                    writer.send(<span class="kw-2">&amp;</span>value);

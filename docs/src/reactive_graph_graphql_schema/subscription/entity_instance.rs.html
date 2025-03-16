@@ -20,8 +20,8 @@
 <a href=#20 id=20 data-nosnippet>20</a><span class="kw">impl </span>EntityPropertyInstanceStream {
 <a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">pub fn </span>new(entity_instance: ReactiveEntity, property_name: String) -&gt; EntityPropertyInstanceStream {
 <a href=#22 id=22 data-nosnippet>22</a>        <span class="macro">debug!</span>(<span class="string">"Opened subscription entity({})[{}]"</span>, entity_instance.id, property_name);
-<a href=#23 id=23 data-nosnippet>23</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::thread_rng();
-<a href=#24 id=24 data-nosnippet>24</a>        <span class="kw">let </span>handle_id = rng.gen::&lt;u128&gt;();
+<a href=#23 id=23 data-nosnippet>23</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rng();
+<a href=#24 id=24 data-nosnippet>24</a>        <span class="kw">let </span>handle_id = rng.random::&lt;u128&gt;();
 <a href=#25 id=25 data-nosnippet>25</a>        <span class="kw">let </span>entity_instance2 = entity_instance.clone();
 <a href=#26 id=26 data-nosnippet>26</a>        <span class="kw">let </span>property_instance = entity_instance2.properties.get(<span class="kw-2">&amp;</span>property_name).unwrap();
 <a href=#27 id=27 data-nosnippet>27</a>        <span class="kw">let </span>(sender, receiver) = crossbeam::channel::unbounded();

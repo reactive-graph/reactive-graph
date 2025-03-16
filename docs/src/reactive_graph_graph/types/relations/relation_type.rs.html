@@ -4,14 +4,14 @@
 <a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>std::ops::Deref;
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>std::ops::DerefMut;
 <a href=#6 id=6 data-nosnippet>6</a>
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>dashmap::iter::OwningIter;
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>dashmap::DashMap;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>dashmap::DashMap;
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>dashmap::iter::OwningIter;
 <a href=#9 id=9 data-nosnippet>9</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 <a href=#10 id=10 data-nosnippet>10</a></span><span class="kw">use </span>default_test::DefaultTest;
-<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>schemars::json_schema;
-<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>schemars::JsonSchema;
-<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>schemars::Schema;
-<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>schemars::SchemaGenerator;
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>schemars::JsonSchema;
+<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>schemars::Schema;
+<a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>schemars::SchemaGenerator;
+<a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>schemars::json_schema;
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span>serde::Deserialize;
 <a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span>serde::Serialize;
 <a href=#17 id=17 data-nosnippet>17</a><span class="kw">use </span>std::borrow::Cow;
@@ -465,8 +465,8 @@
 <a href=#465 id=465 data-nosnippet>465</a>        <span class="string">"RelationTypes"</span>.into()
 <a href=#466 id=466 data-nosnippet>466</a>    }
 <a href=#467 id=467 data-nosnippet>467</a>
-<a href=#468 id=468 data-nosnippet>468</a>    <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-<a href=#469 id=469 data-nosnippet>469</a>        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;RelationType&gt;().into();
+<a href=#468 id=468 data-nosnippet>468</a>    <span class="kw">fn </span>json_schema(schema_generator: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
+<a href=#469 id=469 data-nosnippet>469</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;RelationType&gt;().into();
 <a href=#470 id=470 data-nosnippet>470</a>        <span class="macro">json_schema!</span>({
 <a href=#471 id=471 data-nosnippet>471</a>            <span class="string">"type"</span>: <span class="string">"array"</span>,
 <a href=#472 id=472 data-nosnippet>472</a>            <span class="string">"items"</span>: sub_schema,
@@ -556,7 +556,7 @@
 <a href=#556 id=556 data-nosnippet>556</a>        <span class="self">self</span>,
 <a href=#557 id=557 data-nosnippet>557</a>        ty: C,
 <a href=#558 id=558 data-nosnippet>558</a>    ) -&gt; RelationTypeBuilder&lt;((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())&gt; {
-<a href=#559 id=559 data-nosnippet>559</a>        <span class="self">self</span>.fields.<span class="number">4 </span>.<span class="number">0</span>.insert(ty.into());
+<a href=#559 id=559 data-nosnippet>559</a>        <span class="self">self</span>.fields.<span class="number">4.0</span>.insert(ty.into());
 <a href=#560 id=560 data-nosnippet>560</a>        <span class="self">self
 <a href=#561 id=561 data-nosnippet>561</a>    </span>}
 <a href=#562 id=562 data-nosnippet>562</a>}
@@ -617,7 +617,7 @@
 <a href=#617 id=617 data-nosnippet>617</a>        (PropertyTypes,),
 <a href=#618 id=618 data-nosnippet>618</a>        (),
 <a href=#619 id=619 data-nosnippet>619</a>    )&gt; {
-<a href=#620 id=620 data-nosnippet>620</a>        <span class="self">self</span>.fields.<span class="number">5 </span>.<span class="number">0</span>.push(property.into());
+<a href=#620 id=620 data-nosnippet>620</a>        <span class="self">self</span>.fields.<span class="number">5.0</span>.push(property.into());
 <a href=#621 id=621 data-nosnippet>621</a>        <span class="self">self
 <a href=#622 id=622 data-nosnippet>622</a>    </span>}
 <a href=#623 id=623 data-nosnippet>623</a>}

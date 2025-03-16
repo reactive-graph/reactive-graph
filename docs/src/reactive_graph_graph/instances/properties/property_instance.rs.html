@@ -6,10 +6,10 @@
 <a href=#6 id=6 data-nosnippet>6</a>
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>dashmap::DashMap;
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>dashmap::DashSet;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>schemars::json_schema;
-<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>schemars::JsonSchema;
-<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>schemars::Schema;
-<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>schemars::SchemaGenerator;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>schemars::JsonSchema;
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>schemars::Schema;
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>schemars::SchemaGenerator;
+<a href=#12 id=12 data-nosnippet>12</a><span class="kw">use </span>schemars::json_schema;
 <a href=#13 id=13 data-nosnippet>13</a><span class="kw">use </span>serde::Deserialize;
 <a href=#14 id=14 data-nosnippet>14</a><span class="kw">use </span>serde::Serialize;
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">use </span>serde_json::Map;
@@ -260,8 +260,8 @@
 <a href=#260 id=260 data-nosnippet>260</a></span><span class="kw">impl </span>DefaultTest <span class="kw">for </span>PropertyInstances {
 <a href=#261 id=261 data-nosnippet>261</a>    <span class="kw">fn </span>default_test() -&gt; <span class="self">Self </span>{
 <a href=#262 id=262 data-nosnippet>262</a>        <span class="kw">let </span>property_instances = PropertyInstances::new();
-<a href=#263 id=263 data-nosnippet>263</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::thread_rng();
-<a href=#264 id=264 data-nosnippet>264</a>        <span class="kw">for _ in </span><span class="number">0</span>..rng.gen_range(<span class="number">0</span>..<span class="number">10</span>) {
+<a href=#263 id=263 data-nosnippet>263</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rng();
+<a href=#264 id=264 data-nosnippet>264</a>        <span class="kw">for _ in </span><span class="number">0</span>..rng.random_range(<span class="number">0</span>..<span class="number">10</span>) {
 <a href=#265 id=265 data-nosnippet>265</a>            property_instances.insert(r_string(), <span class="macro">json!</span>(r_string()));
 <a href=#266 id=266 data-nosnippet>266</a>        }
 <a href=#267 id=267 data-nosnippet>267</a>        property_instances

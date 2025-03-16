@@ -152,8 +152,8 @@
 <a href=#152 id=152 data-nosnippet>152</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 <a href=#153 id=153 data-nosnippet>153</a></span><span class="kw">impl </span>DefaultTest <span class="kw">for </span>ComponentOrEntityTypeId {
 <a href=#154 id=154 data-nosnippet>154</a>    <span class="kw">fn </span>default_test() -&gt; <span class="self">Self </span>{
-<a href=#155 id=155 data-nosnippet>155</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::thread_rng();
-<a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">let </span>b: bool = rng.gen();
+<a href=#155 id=155 data-nosnippet>155</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rng();
+<a href=#156 id=156 data-nosnippet>156</a>        <span class="kw">let </span>b: bool = rng.random();
 <a href=#157 id=157 data-nosnippet>157</a>        <span class="kw">if </span>b {
 <a href=#158 id=158 data-nosnippet>158</a>            ComponentOrEntityTypeId::Component(NamespacedType::generate_random().into())
 <a href=#159 id=159 data-nosnippet>159</a>        } <span class="kw">else </span>{

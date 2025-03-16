@@ -7,18 +7,18 @@
 <a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>std::ops::Deref;
 <a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>std::ops::DerefMut;
 <a href=#9 id=9 data-nosnippet>9</a>
-<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>dashmap::iter_set::OwningIter;
-<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>dashmap::DashSet;
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>dashmap::DashSet;
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>dashmap::iter_set::OwningIter;
 <a href=#12 id=12 data-nosnippet>12</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 <a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">use </span>default_test::DefaultTest;
 <a href=#14 id=14 data-nosnippet>14</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 <a href=#15 id=15 data-nosnippet>15</a></span><span class="kw">use </span>rand::Rng;
 <a href=#16 id=16 data-nosnippet>16</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
-<a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">use </span>rand_derive2::RandGen;
-<a href=#18 id=18 data-nosnippet>18</a><span class="kw">use </span>schemars::json_schema;
-<a href=#19 id=19 data-nosnippet>19</a><span class="kw">use </span>schemars::JsonSchema;
-<a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span>schemars::Schema;
-<a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span>schemars::SchemaGenerator;
+<a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">use </span>rand_derive3::RandGen;
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">use </span>schemars::JsonSchema;
+<a href=#19 id=19 data-nosnippet>19</a><span class="kw">use </span>schemars::Schema;
+<a href=#20 id=20 data-nosnippet>20</a><span class="kw">use </span>schemars::SchemaGenerator;
+<a href=#21 id=21 data-nosnippet>21</a><span class="kw">use </span>schemars::json_schema;
 <a href=#22 id=22 data-nosnippet>22</a><span class="kw">use </span>serde::Deserialize;
 <a href=#23 id=23 data-nosnippet>23</a><span class="kw">use </span>serde::Serialize;
 <a href=#24 id=24 data-nosnippet>24</a><span class="kw">use </span>typed_builder::TypedBuilder;
@@ -132,8 +132,8 @@
 <a href=#132 id=132 data-nosnippet>132</a>        <span class="string">"ComponentBehaviourTypeIds"</span>.into()
 <a href=#133 id=133 data-nosnippet>133</a>    }
 <a href=#134 id=134 data-nosnippet>134</a>
-<a href=#135 id=135 data-nosnippet>135</a>    <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-<a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">let </span>sub_schema: Schema = gen.subschema_for::&lt;ComponentBehaviourTypeId&gt;().into();
+<a href=#135 id=135 data-nosnippet>135</a>    <span class="kw">fn </span>json_schema(schema_generator: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
+<a href=#136 id=136 data-nosnippet>136</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;ComponentBehaviourTypeId&gt;().into();
 <a href=#137 id=137 data-nosnippet>137</a>        <span class="macro">json_schema!</span>({
 <a href=#138 id=138 data-nosnippet>138</a>            <span class="string">"type"</span>: <span class="string">"array"</span>,
 <a href=#139 id=139 data-nosnippet>139</a>            <span class="string">"items"</span>: sub_schema,
@@ -218,8 +218,8 @@
 <a href=#218 id=218 data-nosnippet>218</a></span><span class="kw">impl </span>DefaultTest <span class="kw">for </span>ComponentBehaviourTypeIds {
 <a href=#219 id=219 data-nosnippet>219</a>    <span class="kw">fn </span>default_test() -&gt; <span class="self">Self </span>{
 <a href=#220 id=220 data-nosnippet>220</a>        <span class="kw">let </span>tys = <span class="self">Self</span>::new();
-<a href=#221 id=221 data-nosnippet>221</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::thread_rng();
-<a href=#222 id=222 data-nosnippet>222</a>        <span class="kw">for _ in </span><span class="number">0</span>..rng.gen_range(<span class="number">0</span>..<span class="number">10</span>) {
+<a href=#221 id=221 data-nosnippet>221</a>        <span class="kw">let </span><span class="kw-2">mut </span>rng = rand::rng();
+<a href=#222 id=222 data-nosnippet>222</a>        <span class="kw">for _ in </span><span class="number">0</span>..rng.random_range(<span class="number">0</span>..<span class="number">10</span>) {
 <a href=#223 id=223 data-nosnippet>223</a>            tys.insert(ComponentBehaviourTypeId::default_test());
 <a href=#224 id=224 data-nosnippet>224</a>        }
 <a href=#225 id=225 data-nosnippet>225</a>        tys
