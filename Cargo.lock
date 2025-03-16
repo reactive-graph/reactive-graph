@@ -4178,7 +4178,6 @@ dependencies = [
  "default-test",
  "rand 0.9.0",
  "rand_derive3",
- "random-string",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
  "reactive-graph-test-utils",
@@ -4187,7 +4186,6 @@ dependencies = [
  "serde_json",
  "thiserror 2.0.12",
  "typed-builder",
- "uuid",
 ]
 
 [[package]]
@@ -4204,7 +4202,6 @@ dependencies = [
  "serde",
  "serde_json",
  "strum 0.27.1",
- "strum_macros 0.27.1",
  "uuid",
 ]
 
@@ -4232,7 +4229,6 @@ dependencies = [
  "reactive-graph-behaviour-model-api",
  "reactive-graph-behaviour-model-impl",
  "reactive-graph-behaviour-service-api",
- "reactive-graph-di",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
  "reactive-graph-reactive-model-api",
@@ -4284,15 +4280,11 @@ dependencies = [
  "log",
  "reactive-graph-command-api",
  "reactive-graph-command-model",
- "reactive-graph-di",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
- "reactive-graph-reactive-service-impl",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
- "reactive-graph-type-system-impl",
  "rust-embed",
  "serde_json",
  "springtime-di",
@@ -4333,7 +4325,6 @@ dependencies = [
  "log",
  "reactive-graph-config-api",
  "reactive-graph-config-model",
- "reactive-graph-di",
  "reactive-graph-lifecycle",
  "springtime-di",
  "toml",
@@ -4346,17 +4337,14 @@ dependencies = [
  "num_cpus",
  "reactive-graph-remotes-model",
  "serde",
- "typed-builder",
 ]
 
 [[package]]
 name = "reactive-graph-di"
 version = "0.10.0"
 dependencies = [
- "async-trait",
  "fxhash",
  "log",
- "reactive-graph-lifecycle",
  "springtime-di",
 ]
 
@@ -4382,12 +4370,8 @@ version = "0.10.0"
 dependencies = [
  "async-graphql",
  "async-trait",
- "colored",
  "convert_case 0.8.0",
- "default-test",
- "glob",
  "log",
- "reactive-graph-di",
  "reactive-graph-dynamic-graph-api",
  "reactive-graph-dynamic-graph-model",
  "reactive-graph-graph",
@@ -4395,17 +4379,11 @@ dependencies = [
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
- "reactive-graph-reactive-service-impl",
  "reactive-graph-runtime-model",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
- "reactive-graph-type-system-impl",
  "serde",
  "serde_json",
- "similar",
- "similar-asserts",
  "springtime-di",
- "thiserror 2.0.12",
  "tokio",
  "uuid",
 ]
@@ -4415,9 +4393,6 @@ name = "reactive-graph-dynamic-graph-model"
 version = "0.10.0"
 dependencies = [
  "reactive-graph-graph",
- "serde",
- "serde_json",
- "uuid",
 ]
 
 [[package]]
@@ -4430,14 +4405,12 @@ dependencies = [
  "glob",
  "log",
  "log4rs",
- "reactive-graph-di",
  "reactive-graph-graph",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
  "reactive-graph-test-utils",
  "serde_json",
  "similar",
- "similar-asserts",
  "tokio",
 ]
 
@@ -4459,7 +4432,6 @@ dependencies = [
  "default-test",
  "rand 0.9.0",
  "rand_derive3",
- "random-string",
  "reactive-graph-test-utils",
  "schemars",
  "serde",
@@ -4476,13 +4448,10 @@ version = "0.10.0"
 dependencies = [
  "async-graphql",
  "async-trait",
- "reactive-graph-graph",
  "reactive-graph-graphql-schema",
  "reactive-graph-lifecycle",
- "reactive-graph-type-system-api",
  "serde_json",
  "springtime-di",
- "uuid",
 ]
 
 [[package]]
@@ -4491,24 +4460,16 @@ version = "0.10.0"
 dependencies = [
  "async-graphql",
  "async-trait",
- "default-test",
  "log",
  "reactive-graph-behaviour-service-api",
  "reactive-graph-di",
- "reactive-graph-graph",
  "reactive-graph-graphql-api",
  "reactive-graph-graphql-schema",
  "reactive-graph-lifecycle",
  "reactive-graph-reactive-service-api",
- "reactive-graph-runtime-api",
- "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
  "serde_json",
  "springtime-di",
- "thiserror 2.0.12",
- "tokio",
- "uuid",
 ]
 
 [[package]]
@@ -4519,7 +4480,6 @@ dependencies = [
  "async-trait",
  "colored",
  "crossbeam",
- "default-test",
  "futures-timer",
  "futures-util",
  "glob",
@@ -4531,7 +4491,6 @@ dependencies = [
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
- "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
  "reactive-graph-runtime-model",
  "reactive-graph-test-utils",
@@ -4540,9 +4499,7 @@ dependencies = [
  "serde",
  "serde_json",
  "similar",
- "similar-asserts",
  "strum 0.27.1",
- "strum_macros 0.27.1",
  "tokio",
  "uuid",
 ]
@@ -4551,20 +4508,8 @@ dependencies = [
 name = "reactive-graph-graphql-test"
 version = "0.10.0"
 dependencies = [
- "async-graphql",
- "async-trait",
- "default-test",
- "log",
- "reactive-graph-graph",
- "reactive-graph-graphql-api",
- "reactive-graph-graphql-impl",
- "reactive-graph-lifecycle",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
- "serde",
- "serde_json",
- "springtime-di",
  "tokio",
 ]
 
@@ -4586,7 +4531,6 @@ dependencies = [
  "async-trait",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
- "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "serde_json",
@@ -4605,7 +4549,6 @@ dependencies = [
  "reactive-graph-graph",
  "reactive-graph-instance-system-api",
  "reactive-graph-lifecycle",
- "reactive-graph-plugin-api",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
@@ -4630,10 +4573,6 @@ name = "reactive-graph-model-flow"
 version = "0.10.0"
 dependencies = [
  "reactive-graph-graph",
- "serde",
- "serde_json",
- "toml",
- "uuid",
 ]
 
 [[package]]
@@ -4643,14 +4582,11 @@ dependencies = [
  "async-trait",
  "http 0.2.12",
  "json5",
- "random-string",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-command-model",
  "reactive-graph-config-model",
  "reactive-graph-graph",
- "reactive-graph-lifecycle",
  "reactive-graph-plugin-derive",
- "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-type-system-api",
@@ -4692,12 +4628,6 @@ dependencies = [
 [[package]]
 name = "reactive-graph-plugin-derive"
 version = "0.10.0"
-dependencies = [
- "darling",
- "proc-macro2",
- "quote",
- "syn 2.0.100",
-]
 
 [[package]]
 name = "reactive-graph-plugin-graphql-api"
@@ -4734,17 +4664,8 @@ name = "reactive-graph-plugin-graphql-schema"
 version = "0.10.0"
 dependencies = [
  "async-graphql",
- "default-test",
- "reactive-graph-graph",
- "reactive-graph-graphql-api",
  "reactive-graph-plugin-api",
  "reactive-graph-plugin-service-api",
- "reactive-graph-runtime-api",
- "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
- "serde",
- "serde_json",
- "tokio",
  "uuid",
 ]
 
@@ -4752,8 +4673,6 @@ dependencies = [
 name = "reactive-graph-plugin-graphql-test"
 version = "0.10.0"
 dependencies = [
- "default-test",
- "reactive-graph-graph",
  "reactive-graph-plugin-graphql-api",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
@@ -4777,9 +4696,6 @@ dependencies = [
 [[package]]
 name = "reactive-graph-plugin-model"
 version = "0.10.0"
-dependencies = [
- "uuid",
-]
 
 [[package]]
 name = "reactive-graph-plugin-service-api"
@@ -4839,7 +4755,6 @@ name = "reactive-graph-reactive-model-api"
 version = "0.10.0"
 dependencies = [
  "reactive-graph-graph",
- "reactive-graph-test-utils",
  "serde_json",
  "thiserror 2.0.12",
  "uuid",
@@ -4851,16 +4766,11 @@ version = "0.10.0"
 dependencies = [
  "criterion",
  "dashmap",
- "default-test",
  "rand 0.9.0",
- "rand_derive3",
- "random-string",
- "rayon",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
  "reactive-graph-test-utils",
- "schemars",
  "serde",
  "serde_json",
  "stopwatch2",
@@ -4875,7 +4785,6 @@ dependencies = [
  "async-trait",
  "crossbeam",
  "dashmap",
- "default-test",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-behaviour-service-api",
  "reactive-graph-graph",
@@ -4883,7 +4792,6 @@ dependencies = [
  "reactive-graph-reactive-derive",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
  "rustversion",
  "serde",
@@ -4903,7 +4811,6 @@ dependencies = [
  "dashmap",
  "default-test",
  "log",
- "log4rs",
  "path-tree",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-behaviour-service-api",
@@ -4977,7 +4884,6 @@ dependencies = [
  "reactive-graph-behaviour-service-api",
  "reactive-graph-command-api",
  "reactive-graph-config-api",
- "reactive-graph-config-model",
  "reactive-graph-dynamic-graph-api",
  "reactive-graph-graphql-api",
  "reactive-graph-instance-system-api",
@@ -5005,7 +4911,6 @@ dependencies = [
  "reactive-graph-runtime-graphql-schema",
  "serde_json",
  "springtime-di",
- "uuid",
 ]
 
 [[package]]
@@ -5022,7 +4927,6 @@ dependencies = [
  "reactive-graph-runtime-service-api",
  "serde_json",
  "springtime-di",
- "uuid",
 ]
 
 [[package]]
@@ -5030,19 +4934,14 @@ name = "reactive-graph-runtime-graphql-schema"
 version = "0.10.0"
 dependencies = [
  "async-graphql",
- "default-test",
  "reactive-graph-command-api",
  "reactive-graph-command-model",
  "reactive-graph-graph",
- "reactive-graph-graphql-api",
  "reactive-graph-remotes-api",
  "reactive-graph-remotes-model",
- "reactive-graph-runtime-model",
  "reactive-graph-runtime-service-api",
- "reactive-graph-test-utils",
  "serde",
  "serde_json",
- "tokio",
 ]
 
 [[package]]
@@ -5050,15 +4949,10 @@ name = "reactive-graph-runtime-graphql-test"
 version = "0.10.0"
 dependencies = [
  "async-graphql",
- "default-test",
- "log",
- "reactive-graph-graph",
- "reactive-graph-graphql-api",
  "reactive-graph-remotes-model",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-graphql-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
  "serde",
  "serde_json",
  "tokio",
@@ -5134,8 +5028,6 @@ dependencies = [
  "serde",
  "serde_json",
  "strum_macros 0.27.1",
- "typed-builder",
- "uuid",
 ]
 
 [[package]]
@@ -5145,7 +5037,6 @@ dependencies = [
  "async-trait",
  "reactive-graph-lifecycle",
  "springtime-di",
- "thiserror 2.0.12",
  "uuid",
 ]
 
@@ -5154,9 +5045,6 @@ name = "reactive-graph-runtime-service-impl"
 version = "0.10.0"
 dependencies = [
  "async-trait",
- "dashmap",
- "default-test",
- "log",
  "reactive-graph-command-model",
  "reactive-graph-graph",
  "reactive-graph-lifecycle",
@@ -5165,19 +5053,16 @@ dependencies = [
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-model",
  "reactive-graph-runtime-service-api",
- "reactive-graph-test-utils",
  "serde",
  "serde_json",
  "springtime-di",
  "tokio",
- "toml",
 ]
 
 [[package]]
 name = "reactive-graph-runtime-service-test"
 version = "0.10.0"
 dependencies = [
- "default-test",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
  "reactive-graph-test-utils",
@@ -5230,7 +5115,6 @@ dependencies = [
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-graphql-api",
  "reactive-graph-runtime-graphql-web",
- "reactive-graph-runtime-service-api",
  "reactive-graph-runtime-web-api",
  "reactive-graph-type-system-api",
  "reactive-graph-type-system-json-schema",
@@ -5274,11 +5158,8 @@ name = "reactive-graph-test-utils"
 version = "0.10.0"
 dependencies = [
  "colored",
- "default-test",
  "log",
  "log4rs",
- "rand 0.9.0",
- "rand_derive3",
  "random-string",
  "serde_json",
 ]
@@ -5944,20 +5825,6 @@ name = "similar"
 version = "2.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bbbb5d9659141646ae647b42fe094daf6c6192d1620870b449d9557f748b2daa"
-dependencies = [
- "bstr",
- "unicode-segmentation",
-]
-
-[[package]]
-name = "similar-asserts"
-version = "1.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5b441962c817e33508847a22bd82f03a30cff43642dc2fae8b050566121eb9a"
-dependencies = [
- "console",
- "similar",
-]
 
 [[package]]
 name = "slab"

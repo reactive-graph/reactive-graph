@@ -26,7 +26,7 @@ reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils", option
 
 [dev-dependencies]
 default-test = { workspace = true }
-random-string = { workspace = true }
+#random-string = { workspace = true }
 rand = { workspace = true }
 rand_derive3 = { workspace = true }
 

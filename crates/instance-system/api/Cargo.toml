@@ -18,7 +18,6 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
 reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reactive/service/api" }
-reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactive/model/impl" }
 
 [lib]

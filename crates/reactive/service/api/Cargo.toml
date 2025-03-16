@@ -21,7 +21,6 @@ thiserror = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils", optional = true }
 reactive-graph-reactive-derive = { version = "0.10.0", path = "../../derive", optional = true }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../model/api" }
 reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../model/impl" }
@@ -34,9 +33,6 @@ reactive-graph-type-system-api = { version = "0.10.0", path = "../../../type-sys
 rustversion = { workspace = true }
 
 [dev-dependencies]
-default-test = { workspace = true }
-
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
 
 [features]
 default = ["derive"]

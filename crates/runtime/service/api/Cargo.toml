@@ -12,7 +12,6 @@ readme = "../../../../README.md"
 [dependencies]
 async-trait = { workspace = true }
 springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
-thiserror = { workspace = true }
 uuid = { workspace = true, features = ["serde", "v4"] }
 
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../../lifecycle" }
