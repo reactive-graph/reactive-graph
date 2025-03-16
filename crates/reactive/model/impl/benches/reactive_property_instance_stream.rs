@@ -1,14 +1,14 @@
+use criterion::Criterion;
 use criterion::criterion_group;
 use criterion::criterion_main;
-use criterion::Criterion;
 use rand::Rng;
 use reactive_graph_graph::Mutability::Mutable;
 use reactive_graph_reactive_model_impl::ReactiveProperty;
 use reactive_graph_test_utils::r_string;
 use serde_json::json;
+use std::sync::Arc;
 use std::sync::atomic::AtomicU64;
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
 use uuid::Uuid;
 
 fn reactive_property_instance_stream(criterion: &mut Criterion) {
@@ -43,7 +43,7 @@ fn reactive_property_instance_stream(criterion: &mut Criterion) {
 
         let mut rng = rand::rng();
         bencher.iter(move || {
-            let number: u64 = rng.gen();
+            let number: u64 = rng.random();
             instance1.set(json!(number));
             assert_eq!(number, v.load(Ordering::Relaxed));
         })
