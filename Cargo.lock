@@ -581,7 +581,7 @@ dependencies = [
  "proc-macro-crate",
  "proc-macro2",
  "quote",
- "strum",
+ "strum 0.26.3",
  "syn 2.0.100",
  "thiserror 1.0.69",
 ]
@@ -3679,6 +3679,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "papergrid"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b915f831b85d984193fdc3d3611505871dc139b2534530fa01c1a6a6707b6723"
+dependencies = [
+ "bytecount",
+ "fnv",
+ "unicode-width",
+]
+
+[[package]]
 name = "parking"
 version = "2.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4188,7 +4199,7 @@ dependencies = [
  "serde_json",
  "shellwords",
  "table_to_html",
- "tabled",
+ "tabled 0.17.0",
  "thiserror 2.0.12",
  "tokio",
  "toml",
@@ -4232,8 +4243,8 @@ dependencies = [
  "reactive-graph-reactive-model-impl",
  "serde",
  "serde_json",
- "strum",
- "strum_macros",
+ "strum 0.27.1",
+ "strum_macros 0.27.1",
  "uuid",
 ]
 
@@ -4339,7 +4350,7 @@ dependencies = [
  "reactive-graph-runtime-model",
  "serde",
  "serde_json",
- "strum_macros",
+ "strum_macros 0.27.1",
  "typed-builder",
  "uuid",
 ]
@@ -4570,8 +4581,8 @@ dependencies = [
  "serde_json",
  "similar",
  "similar-asserts",
- "strum",
- "strum_macros",
+ "strum 0.27.1",
+ "strum_macros 0.27.1",
  "tokio",
  "uuid",
 ]
@@ -4820,7 +4831,7 @@ dependencies = [
  "reactive-graph-plugin-api",
  "serde",
  "springtime-di",
- "strum_macros",
+ "strum_macros 0.27.1",
  "uuid",
 ]
 
@@ -5198,8 +5209,8 @@ dependencies = [
  "similar",
  "similar-asserts",
  "springtime-di",
- "strum",
- "strum_macros",
+ "strum 0.27.1",
+ "strum_macros 0.27.1",
  "tokio",
  "toml",
  "uuid",
@@ -5214,7 +5225,7 @@ dependencies = [
  "reactive-graph-graph",
  "serde",
  "serde_json",
- "strum_macros",
+ "strum_macros 0.27.1",
  "typed-builder",
  "uuid",
 ]
@@ -5346,7 +5357,7 @@ dependencies = [
  "serde",
  "serde_json",
  "table_to_html",
- "tabled",
+ "tabled 0.17.0",
  "uuid",
 ]
 
@@ -6151,7 +6162,16 @@ version = "0.26.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8fec0f0aef304996cf250b31b5a10dee7980c85da9d759361292b8bca5a18f06"
 dependencies = [
- "strum_macros",
+ "strum_macros 0.26.4",
+]
+
+[[package]]
+name = "strum"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f64def088c51c9510a8579e3c5d67c65349dcf755e5479ad3d010aa6454e2c32"
+dependencies = [
+ "strum_macros 0.27.1",
 ]
 
 [[package]]
@@ -6159,6 +6179,19 @@ name = "strum_macros"
 version = "0.26.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c6bee85a5a24955dc440386795aa378cd9cf82acd5f764469152d2270e581be"
+dependencies = [
+ "heck 0.5.0",
+ "proc-macro2",
+ "quote",
+ "rustversion",
+ "syn 2.0.100",
+]
+
+[[package]]
+name = "strum_macros"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c77a8c5abcaf0f9ce05d62342b7d298c346515365c36b673df4ebe3ced01fde8"
 dependencies = [
  "heck 0.5.0",
  "proc-macro2",
@@ -6231,11 +6264,11 @@ dependencies = [
 
 [[package]]
 name = "table_to_html"
-version = "0.6.0"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aa4073c2a3be9a1146492e31367d4a2bffddd5e32bf04b42eeff97b73e0de3c8"
+checksum = "d70ba737c12de7ce03b877c8899543bf5b7555fd4b5cf202b59415ff950b1317"
 dependencies = [
- "tabled",
+ "tabled 0.18.0",
 ]
 
 [[package]]
@@ -6244,8 +6277,17 @@ version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c6709222f3973137427ce50559cd564dc187a95b9cfe01613d2f4e93610e510a"
 dependencies = [
- "papergrid",
+ "papergrid 0.13.0",
  "tabled_derive",
+]
+
+[[package]]
+name = "tabled"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "121d8171ee5687a4978d1b244f7d99c43e7385a272185a2f1e1fa4dc0979d444"
+dependencies = [
+ "papergrid 0.14.0",
 ]
 
 [[package]]
