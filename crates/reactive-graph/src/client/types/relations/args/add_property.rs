@@ -1,8 +1,8 @@
 use crate::client::types::property_type::args::PropertyTypeDefinitionArgs;
 use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::relations::add_property::queries::AddPropertyVariables;
 use reactive_graph_client::PropertyTypeDefinition;
+use reactive_graph_client::types::relations::add_property::queries::AddPropertyVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypeAddPropertyArgs {

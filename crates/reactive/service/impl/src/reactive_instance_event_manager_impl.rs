@@ -3,8 +3,8 @@ use std::ops::Deref;
 use async_trait::async_trait;
 use dashmap::DashMap;
 use serde_json::json;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::PropertyInstanceSetter;
@@ -12,12 +12,12 @@ use reactive_graph_graph::PropertyInstances;
 use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
+use reactive_graph_reactive_service_api::REACTIVE_INSTANCE_EVENT_PROPERTY_LABEL;
 use reactive_graph_reactive_service_api::ReactiveInstanceEvent;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventManager;
 use reactive_graph_reactive_service_api::ReactiveInstanceEventTypes;
-use reactive_graph_reactive_service_api::REACTIVE_INSTANCE_EVENT_PROPERTY_LABEL;
-use reactive_graph_runtime_model::EventProperties::EVENT;
 use reactive_graph_runtime_model::ENTITY_TYPE_SYSTEM_EVENT;
+use reactive_graph_runtime_model::EventProperties::EVENT;
 
 #[derive(Component)]
 pub struct ReactiveInstanceEventManagerImpl {

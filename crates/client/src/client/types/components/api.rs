@@ -2,15 +2,17 @@ use std::sync::Arc;
 
 use cynic::http::ReqwestExt;
 
+use crate::client::ReactiveGraphClient;
+use crate::client::ReactiveGraphClientExecutionError;
+use crate::client::types::components::add_extension::queries::AddExtensionVariables;
 use crate::client::types::components::add_extension::queries::add_extension_mutation;
 use crate::client::types::components::add_extension::queries::add_extension_with_variables;
-use crate::client::types::components::add_extension::queries::AddExtensionVariables;
+use crate::client::types::components::add_property::queries::AddPropertyVariables;
 use crate::client::types::components::add_property::queries::add_property_mutation;
 use crate::client::types::components::add_property::queries::add_property_with_variables;
-use crate::client::types::components::add_property::queries::AddPropertyVariables;
+use crate::client::types::components::create::queries::CreateComponentVariables;
 use crate::client::types::components::create::queries::create_component_mutation;
 use crate::client::types::components::create::queries::create_component_with_variables;
-use crate::client::types::components::create::queries::CreateComponentVariables;
 use crate::client::types::components::delete::queries::delete_component_mutation;
 use crate::client::types::components::delete::queries::delete_component_with_variables;
 use crate::client::types::components::get_all::queries::get_all_components_query;
@@ -20,13 +22,11 @@ use crate::client::types::components::remove_extension::queries::remove_extensio
 use crate::client::types::components::remove_property::queries::remove_property_mutation;
 use crate::client::types::components::remove_property::queries::remove_property_with_variables;
 use crate::client::types::components::type_id::queries::ComponentTypeIdVariables;
+use crate::client::types::components::update_description::queries::UpdateDescriptionVariables;
 use crate::client::types::components::update_description::queries::update_description_mutation;
 use crate::client::types::components::update_description::queries::update_description_with_variables;
-use crate::client::types::components::update_description::queries::UpdateDescriptionVariables;
 use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
 use crate::client::types::properties::container::queries::PropertyContainerVariables;
-use crate::client::ReactiveGraphClient;
-use crate::client::ReactiveGraphClientExecutionError;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;

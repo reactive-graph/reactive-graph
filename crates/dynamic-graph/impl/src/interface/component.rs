@@ -1,11 +1,11 @@
 use async_graphql::dynamic::Interface;
 use async_graphql::dynamic::SchemaBuilder;
 
+use crate::DynamicGraphTypeDefinition;
 use crate::component_id_field;
 use crate::component_property_field;
 use crate::get_entity_interface;
 use crate::get_relation_interface;
-use crate::DynamicGraphTypeDefinition;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 use reactive_graph_graph::Component;
 

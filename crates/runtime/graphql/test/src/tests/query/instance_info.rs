@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use serde::Deserialize;
 
-use reactive_graph_remotes_model::InstanceInfo;
 use reactive_graph_remotes_model::DEFAULT_HOSTNAME;
+use reactive_graph_remotes_model::InstanceInfo;
 use reactive_graph_runtime_api::Runtime;
 use reactive_graph_runtime_impl::RuntimeBuilder;
 

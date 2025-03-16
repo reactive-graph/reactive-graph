@@ -1,8 +1,8 @@
+use crate::client::ReactiveGraphClient;
 use crate::client::types::components::api::Components;
 use crate::client::types::entities::api::EntityTypes;
 use crate::client::types::flows::api::FlowTypes;
 use crate::client::types::relations::api::RelationTypes;
-use crate::client::ReactiveGraphClient;
 use std::sync::Arc;
 
 pub mod components;

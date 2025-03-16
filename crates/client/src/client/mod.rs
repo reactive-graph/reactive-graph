@@ -2,13 +2,13 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 use std::sync::Arc;
 
-use cynic::http::CynicReqwestError;
-use cynic::http::ReqwestExt;
 use cynic::GraphQlError;
 use cynic::Operation;
-use reqwest::header::InvalidHeaderValue;
+use cynic::http::CynicReqwestError;
+use cynic::http::ReqwestExt;
 use reqwest::Client;
 use reqwest::Error;
+use reqwest::header::InvalidHeaderValue;
 
 use crate::client::instances::Instances;
 use crate::client::json_schema::JsonSchema;

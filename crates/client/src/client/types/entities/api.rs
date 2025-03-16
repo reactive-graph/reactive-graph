@@ -1,14 +1,16 @@
 use std::sync::Arc;
 
+use crate::client::ReactiveGraphClient;
+use crate::client::ReactiveGraphClientExecutionError;
+use crate::client::types::entities::add_extension::queries::AddExtensionVariables;
 use crate::client::types::entities::add_extension::queries::add_extension_mutation;
 use crate::client::types::entities::add_extension::queries::add_extension_with_variables;
-use crate::client::types::entities::add_extension::queries::AddExtensionVariables;
+use crate::client::types::entities::add_property::queries::AddPropertyVariables;
 use crate::client::types::entities::add_property::queries::add_property_mutation;
 use crate::client::types::entities::add_property::queries::add_property_with_variables;
-use crate::client::types::entities::add_property::queries::AddPropertyVariables;
+use crate::client::types::entities::create::queries::CreateEntityTypeVariables;
 use crate::client::types::entities::create::queries::create_entity_type_mutation;
 use crate::client::types::entities::create::queries::create_entity_type_with_variables;
-use crate::client::types::entities::create::queries::CreateEntityTypeVariables;
 use crate::client::types::entities::delete::queries::delete_entity_type_mutation;
 use crate::client::types::entities::delete::queries::delete_entity_type_with_variables;
 use crate::client::types::entities::get_all::queries::get_all_entity_types_query;
@@ -18,12 +20,10 @@ use crate::client::types::entities::remove_extension::queries::remove_extension_
 use crate::client::types::entities::remove_property::queries::remove_property_mutation;
 use crate::client::types::entities::remove_property::queries::remove_property_with_variables;
 use crate::client::types::entities::type_id::queries::EntityTypeIdVariables;
+use crate::client::types::entities::update_description::queries::UpdateDescriptionVariables;
 use crate::client::types::entities::update_description::queries::update_description_mutation;
 use crate::client::types::entities::update_description::queries::update_description_with_variables;
-use crate::client::types::entities::update_description::queries::UpdateDescriptionVariables;
 use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
-use crate::client::ReactiveGraphClient;
-use crate::client::ReactiveGraphClientExecutionError;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
 use crate::schema_graphql::types::entity_type::EntityTypes as EntityTypesVec;
 use crate::types::components::container::queries::ComponentContainerVariables;

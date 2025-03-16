@@ -1,10 +1,10 @@
-use tabled::settings::object::Rows;
-use tabled::settings::peaker::Priority;
+use tabled::Table;
+use tabled::Tabled;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
+use tabled::settings::object::Rows;
+use tabled::settings::peaker::Priority;
 
 use crate::container::DefaultTableContainer;
 use crate::container::TableInlineFormat;

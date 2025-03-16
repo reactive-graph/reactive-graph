@@ -3,8 +3,8 @@ use std::io::BufReader;
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;

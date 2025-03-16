@@ -13,8 +13,8 @@ use reactive_graph_graph::EntityTypeId;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_type_system_api::EntityTypeManager;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 #[derive(Component)]
 pub struct EntityBehaviourRegistryImpl {

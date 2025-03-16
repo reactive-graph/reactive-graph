@@ -1,6 +1,6 @@
+use crate::ReactiveGraphClient;
 use crate::client::json_schema::instances::JsonSchemaInstanceSystem;
 use crate::client::json_schema::types::JsonSchemaTypeSystem;
-use crate::ReactiveGraphClient;
 use std::sync::Arc;
 
 pub mod instances;

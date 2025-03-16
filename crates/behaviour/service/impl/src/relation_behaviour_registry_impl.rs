@@ -4,8 +4,8 @@ use async_trait::async_trait;
 use dashmap::DashMap;
 use log::debug;
 use log::warn;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_behaviour_model_api::prelude::*;
 use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;

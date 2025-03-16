@@ -1,9 +1,9 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
+    use crate::PropertyInstanceDefinitions;
     use crate::client::instances::flows::variables::create_from_type::variables::CreateFlowInstanceFromTypeVariables;
     use crate::client::instances::flows::variables::create_from_type::variables::CreateFlowInstanceFromTypeVariablesFields;
     use crate::schema_graphql::instances::flow_instance::FlowInstance;
-    use crate::PropertyInstanceDefinitions;
     use cynic::Operation;
     use cynic::QueryFragment;
     use reactive_graph_graph::FlowTypeId;

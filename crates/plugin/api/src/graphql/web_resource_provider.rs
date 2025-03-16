@@ -4,8 +4,8 @@ use http::Response;
 use http::Result;
 use uuid::Uuid;
 
-use crate::injectable;
 use crate::HttpBody;
+use crate::injectable;
 
 #[async_trait]
 #[injectable]

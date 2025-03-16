@@ -9,8 +9,8 @@ use reactive_graph_config_api::ConfigManager;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_plugin_api::WebResourceProvider;
 use reactive_graph_runtime_web_api::WebResourceManager;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 #[derive(Component)]
 pub struct WebResourceManagerImpl {

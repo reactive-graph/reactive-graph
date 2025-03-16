@@ -1,8 +1,8 @@
 #[cynic::schema_for_derives(file = r#"schema_plugin.graphql"#, module = "crate::schema_plugin::schema")]
 pub mod mutations {
+    use crate::Plugin;
     use crate::client::plugin::variables::by_name::variables::PluginByNameVariables;
     use crate::client::plugin::variables::by_name::variables::PluginByNameVariablesFields;
-    use crate::Plugin;
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Mutation", variables = "PluginByNameVariables")]

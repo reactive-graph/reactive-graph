@@ -1,8 +1,8 @@
 use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use crate::client::types::property_type::args::PropertyTypeDefinitionArgs;
 use clap::Args;
-use reactive_graph_client::types::flows::add_variable::queries::AddVariableVariables;
 use reactive_graph_client::PropertyTypeDefinition;
+use reactive_graph_client::types::flows::add_variable::queries::AddVariableVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowTypeAddVariableArgs {

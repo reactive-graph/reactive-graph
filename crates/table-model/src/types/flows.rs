@@ -1,26 +1,26 @@
 use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
+use crate::instances::entities::EntityInstance;
 use crate::instances::entities::display_entity_instances_html_inline;
 use crate::instances::entities::display_entity_instances_inline_str;
-use crate::instances::entities::EntityInstance;
+use crate::instances::relations::RelationInstance;
 use crate::instances::relations::display_relation_instances_html_inline;
 use crate::instances::relations::display_relation_instances_inline_str;
-use crate::instances::relations::RelationInstance;
-use crate::types::extension::display_extensions_html_inline;
-use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
+use crate::types::extension::display_extensions_html_inline;
+use crate::types::extension::display_extensions_inline_str;
 use crate::types::properties::display_property_types_html_inline;
 use crate::types::properties::display_property_types_inline_str;
 use crate::types::variables::Variables;
 use reactive_graph_graph::NamespacedTypeGetter;
-use tabled::settings::object::Segment;
+use tabled::Table;
+use tabled::Tabled;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
+use tabled::settings::object::Segment;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct FlowType {

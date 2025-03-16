@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
-use crate::client::runtime::instance::queries::get_instance_info::queries::get_instance_info;
 use crate::ReactiveGraphClient;
 use crate::ReactiveGraphClientExecutionError;
+use crate::client::runtime::instance::queries::get_instance_info::queries::get_instance_info;
 use reactive_graph_remotes_model::InstanceInfo;
 
 pub struct Instance {

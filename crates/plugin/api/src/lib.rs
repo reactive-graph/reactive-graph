@@ -2,15 +2,18 @@
 pub use json5;
 pub use serde_json;
 pub use springtime_di;
+pub use springtime_di::Component;
 pub use springtime_di::component_alias;
 pub use springtime_di::injectable;
 pub use springtime_di::instance_provider::ComponentInstancePtr;
 pub use springtime_di::instance_provider::ErrorPtr;
-pub use springtime_di::Component;
 #[cfg(feature = "toml")]
 pub use toml;
 
 pub use crate::PluginLoadingError;
+pub use PluginActivationError;
+pub use PluginDeactivationError;
+pub use PluginUnloadingError;
 pub use behaviours::entities::entity_behaviour_registry::*;
 pub use behaviours::entities::entity_component_behaviour_registry::*;
 pub use behaviours::relations::relation_behaviour_registry::*;
@@ -26,8 +29,8 @@ pub use graphql::web_resource_provider::*;
 pub use instances::entities::entity_instance_manager::*;
 pub use instances::flows::flow_instance_manager::*;
 pub use instances::relations::relation_instance_manager::*;
-pub use plugin::Plugin;
 pub use plugin::PLUGIN_NAME_PREFIX;
+pub use plugin::Plugin;
 pub use plugin_context::*;
 pub use plugin_declaration::*;
 pub use plugin_dependency::*;
@@ -58,9 +61,6 @@ pub use types::relations::relation_type_import_export_manager::*;
 pub use types::relations::relation_type_manager::*;
 pub use types::relations::relation_type_provider_registry::*;
 pub use types::type_system_event_manager::*;
-pub use PluginActivationError;
-pub use PluginDeactivationError;
-pub use PluginUnloadingError;
 
 pub use reactive_graph_type_system_api::TypeProvider;
 // TODO: pub use reactive_graph_type_system_api::*;

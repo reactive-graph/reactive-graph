@@ -1,8 +1,8 @@
 #[cynic::schema_for_derives(file = r#"schema_runtime.graphql"#, module = "crate::schema_runtime::schema")]
 pub mod mutations {
+    use crate::InstanceInfo;
     use crate::client::runtime::instance::variables::address::variables::InstanceAddressVariables;
     use crate::client::runtime::instance::variables::address::variables::InstanceAddressVariablesFields;
-    use crate::InstanceInfo;
 
     #[derive(Debug, cynic::QueryFragment)]
     #[cynic(graphql_type = "Mutation", variables = "InstanceAddressVariables")]

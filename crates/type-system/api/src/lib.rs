@@ -30,11 +30,11 @@ pub use serde_json;
 pub use toml;
 
 pub use springtime_di;
+pub use springtime_di::Component;
 pub use springtime_di::component_alias;
 pub use springtime_di::injectable;
 pub use springtime_di::instance_provider::ComponentInstancePtr;
 pub use springtime_di::instance_provider::ErrorPtr;
-pub use springtime_di::Component;
 
 #[cfg(feature = "derive")]
 pub use reactive_graph_type_system_derive::TypeProvider;

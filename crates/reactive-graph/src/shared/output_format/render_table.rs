@@ -4,11 +4,11 @@ use reactive_graph_serde::error::SerializationError;
 use serde::Serialize;
 use std::process::exit;
 use table_to_html::HtmlTable;
-use tabled::settings::object::Rows;
-use tabled::settings::Style;
-use tabled::settings::Width;
 use tabled::Table;
 use tabled::Tabled;
+use tabled::settings::Style;
+use tabled::settings::Width;
+use tabled::settings::object::Rows;
 use thiserror::Error;
 use toml::map::Map;
 

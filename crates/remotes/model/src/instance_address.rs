@@ -75,11 +75,7 @@ impl InstanceAddress {
     }
 
     pub fn protocol(&self) -> String {
-        if self.secure {
-            "https".to_string()
-        } else {
-            "http".to_string()
-        }
+        if self.secure { "https".to_string() } else { "http".to_string() }
     }
 
     pub fn base_url(&self) -> String {

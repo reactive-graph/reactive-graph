@@ -1,8 +1,8 @@
+use clap::CommandFactory;
+use clap::Error;
 use clap::error::ContextKind;
 use clap::error::ContextValue;
 use clap::error::ErrorKind;
-use clap::CommandFactory;
-use clap::Error;
 use colored::Colorize;
 use rustyline::hint::Hint;
 

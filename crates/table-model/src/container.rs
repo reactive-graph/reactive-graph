@@ -3,9 +3,9 @@ use std::fmt::Formatter;
 use std::marker::PhantomData;
 use std::vec::IntoIter;
 use table_to_html::HtmlTable;
-use tabled::settings::Style;
 use tabled::Table;
 use tabled::Tabled;
+use tabled::settings::Style;
 
 pub trait TableContainer: Display {
     fn table(&self) -> Table;

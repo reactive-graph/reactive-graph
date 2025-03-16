@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
-use std::collections::hash_set::IntoIter;
 use std::collections::HashSet;
+use std::collections::hash_set::IntoIter;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
@@ -8,12 +8,12 @@ use serde::Deserialize;
 use serde::Serialize;
 use serde::Serializer;
 
-use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_DYNAMIC_GRAPH;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_GRAPHQL;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_PLUGIN;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_RUNTIME;
 use reactive_graph_remotes_model::DEFAULT_USER_AGENT;
+use reactive_graph_remotes_model::InstanceAddress;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct RemotesConfig {

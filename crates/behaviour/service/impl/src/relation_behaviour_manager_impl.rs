@@ -14,8 +14,8 @@ use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_impl::ReactiveRelation;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 #[derive(Component)]
 pub struct RelationBehaviourManagerImpl {

@@ -59,10 +59,18 @@ impl fmt::Display for ReactiveFlowCreationError {
                 )
             }
             ReactiveFlowCreationError::InvalidOutboundId(id) => {
-                write!(f, "Failed to construct reactive flow instance: Flow type provides relation instance which outbound refers to a entity instance with id {} which doesn't exist", id)
+                write!(
+                    f,
+                    "Failed to construct reactive flow instance: Flow type provides relation instance which outbound refers to a entity instance with id {} which doesn't exist",
+                    id
+                )
             }
             ReactiveFlowCreationError::InvalidInboundId(id) => {
-                write!(f, "Failed to construct reactive flow instance: Flow type provides relation instance which inbound refers to entity instance with id {} which doesn't exist", id)
+                write!(
+                    f,
+                    "Failed to construct reactive flow instance: Flow type provides relation instance which inbound refers to entity instance with id {} which doesn't exist",
+                    id
+                )
             }
         }
     }

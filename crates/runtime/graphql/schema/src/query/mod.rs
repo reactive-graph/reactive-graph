@@ -41,11 +41,7 @@ impl RuntimeQuery {
             .filter_map(|command| match name.clone() {
                 Some(name) => {
                     if let Some(command_name) = command.name() {
-                        if name == command_name {
-                            Some(GraphQLCommand { command })
-                        } else {
-                            None
-                        }
+                        if name == command_name { Some(GraphQLCommand { command }) } else { None }
                     } else {
                         None
                     }

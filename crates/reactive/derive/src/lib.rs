@@ -2,20 +2,20 @@ extern crate proc_macro;
 
 use proc_macro::TokenStream;
 
-use quote::format_ident;
-use quote::quote;
 use quote::ToTokens;
 use quote::TokenStreamExt;
-use syn::parse_macro_input;
+use quote::format_ident;
+use quote::quote;
 use syn::DeriveInput;
 use syn::Ident;
 use syn::PathArguments;
 use syn::Type;
+use syn::parse_macro_input;
 
-use darling::ast::NestedMeta;
 use darling::Error;
 use darling::FromDeriveInput;
 use darling::FromMeta;
+use darling::ast::NestedMeta;
 use proc_macro2::Span;
 
 #[derive(FromMeta)]

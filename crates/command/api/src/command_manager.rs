@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 use springtime_di::injectable;
 
-use reactive_graph_command_model::error::NoSuchCommand;
 use reactive_graph_command_model::Command;
+use reactive_graph_command_model::error::NoSuchCommand;
 use reactive_graph_graph::EntityType;
 use reactive_graph_lifecycle::Lifecycle;
 

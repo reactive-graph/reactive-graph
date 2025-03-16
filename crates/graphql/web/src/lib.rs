@@ -1,8 +1,8 @@
-use actix_web::post;
-use actix_web::web;
 use actix_web::HttpRequest;
 use actix_web::HttpResponse;
 use actix_web::Result;
+use actix_web::post;
+use actix_web::web;
 use async_graphql::Schema;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;

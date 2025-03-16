@@ -5,8 +5,8 @@ use async_trait::async_trait;
 use log::debug;
 use log::warn;
 use serde_json::json;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;

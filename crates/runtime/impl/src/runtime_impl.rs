@@ -1,13 +1,13 @@
+use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
 use std::time::Duration;
 
 use async_trait::async_trait;
 use log::debug;
 use log::info;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 use tokio::time::error::Elapsed;
 
 use reactive_graph_behaviour_service_api::BehaviourSystem;
@@ -589,10 +589,10 @@ mod tests {
     use std::time::Duration;
 
     use log::LevelFilter;
+    use log4rs::Config;
     use log4rs::append::console::ConsoleAppender;
     use log4rs::config::Appender;
     use log4rs::config::Root;
-    use log4rs::Config;
 
     use crate::get_runtime;
 

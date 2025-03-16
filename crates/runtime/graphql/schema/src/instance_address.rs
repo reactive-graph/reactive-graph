@@ -2,12 +2,12 @@ use async_graphql::InputObject;
 use serde::Deserialize;
 use serde::Serialize;
 
-use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_DYNAMIC_GRAPH;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_GRAPHQL;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_PLUGIN;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_RUNTIME;
 use reactive_graph_remotes_model::DEFAULT_USER_AGENT;
+use reactive_graph_remotes_model::InstanceAddress;
 
 #[derive(Clone, Debug, Serialize, Deserialize, InputObject)]
 #[graphql(name = "InstanceAddress")]

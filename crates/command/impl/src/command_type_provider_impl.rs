@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use reactive_graph_command_api::CommandTypeProvider;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_graph::Components;
 use reactive_graph_lifecycle::Lifecycle;

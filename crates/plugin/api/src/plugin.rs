@@ -1,8 +1,8 @@
 use async_trait::async_trait;
 
-use crate::injectable;
 use crate::PluginActivationError;
 use crate::PluginDeactivationError;
+use crate::injectable;
 
 pub const PLUGIN_NAME_PREFIX: &str = "reactive-graph-plugin-";
 

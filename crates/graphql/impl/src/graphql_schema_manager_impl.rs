@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use async_graphql::Schema;
 use async_trait::async_trait;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_behaviour_service_api::EntityBehaviourManager;
 use reactive_graph_behaviour_service_api::EntityBehaviourRegistry;
@@ -14,11 +14,11 @@ use reactive_graph_behaviour_service_api::RelationBehaviourRegistry;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourManager;
 use reactive_graph_behaviour_service_api::RelationComponentBehaviourRegistry;
 use reactive_graph_graphql_api::GraphQLSchemaManager;
-use reactive_graph_graphql_schema::directives;
 use reactive_graph_graphql_schema::ReactiveGraphMutation;
 use reactive_graph_graphql_schema::ReactiveGraphQuery;
 use reactive_graph_graphql_schema::ReactiveGraphSchema;
 use reactive_graph_graphql_schema::ReactiveGraphSubscription;
+use reactive_graph_graphql_schema::directives;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_reactive_service_api::ReactiveFlowManager;

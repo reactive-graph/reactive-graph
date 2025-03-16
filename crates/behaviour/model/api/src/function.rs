@@ -95,7 +95,7 @@ impl<ID: Clone, T: ReactiveInstance<ID>, FnType: Clone> NamespacedBehaviourFunct
     }
 
     pub fn behaviour<TN: Into<String>>(self, type_name: TN, f: FnType) -> Self {
-        self.1 .0.insert(BehaviourTypeId::new_from_type(self.0.clone(), type_name), f);
+        self.1.0.insert(BehaviourTypeId::new_from_type(self.0.clone(), type_name), f);
         self
     }
 

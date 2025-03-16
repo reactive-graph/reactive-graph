@@ -1,13 +1,15 @@
 use std::sync::Arc;
 
-use async_graphql::dynamic::*;
 use async_graphql::ID;
+use async_graphql::dynamic::*;
 use log::trace;
 use reactive_graph_dynamic_graph_api::ImmutablePropertyError;
 use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
-use serde_json::json;
 use serde_json::Value;
+use serde_json::json;
 
+use crate::DynamicGraphTypeDefinition;
+use crate::INTERFACE_RELATION;
 use crate::field_description::get_dynamic_graph_field_descriptions;
 use crate::field_name::get_dynamic_graph_field_names;
 use crate::instance_component_id_field;
@@ -18,8 +20,6 @@ use crate::relation_key_field;
 use crate::relation_outbound_field;
 use crate::relation_property_field;
 use crate::to_input_type_ref;
-use crate::DynamicGraphTypeDefinition;
-use crate::INTERFACE_RELATION;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 use reactive_graph_graph::Mutability::Immutable;
 use reactive_graph_graph::Mutability::Mutable;

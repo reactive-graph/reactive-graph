@@ -1,7 +1,7 @@
 use crate::tooling::instances::provisioning::create_dir;
 use crate::tooling::instances::repositories::args::InitRepositoryArgs;
-use anyhow::anyhow;
 use anyhow::Result;
+use anyhow::anyhow;
 use std::path::Path;
 
 pub fn init_repository(instance_dir: &Path, args: InitRepositoryArgs) -> Result<()> {

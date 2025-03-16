@@ -1,10 +1,10 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use async_graphql::async_stream;
 use async_graphql::Context;
 use async_graphql::Result;
 use async_graphql::Subscription;
+use async_graphql::async_stream;
 use futures_util::Stream;
 use futures_util::StreamExt;
 use serde::Serialize;

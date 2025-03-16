@@ -3,8 +3,8 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use log::debug;
 use log::warn;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 use uuid::Uuid;
 
 use reactive_graph_graph::EntityInstance;

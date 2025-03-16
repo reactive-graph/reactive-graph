@@ -4,12 +4,12 @@ use std::ops::Deref;
 
 use serde_json::Value;
 use table_to_html::HtmlTable;
-use tabled::settings::object::Columns;
+use tabled::Table;
+use tabled::Tabled;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
+use tabled::settings::object::Columns;
 
 use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;

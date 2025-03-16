@@ -6,8 +6,8 @@ use async_trait::async_trait;
 use log::info;
 use log::trace;
 use log::warn;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 use tokio::task::yield_now;
 use uuid::Uuid;
 

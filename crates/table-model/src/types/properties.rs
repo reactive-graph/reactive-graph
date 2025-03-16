@@ -3,21 +3,21 @@ use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
 use crate::types::data_type::DataType;
-use crate::types::extension::display_extensions_html_inline;
-use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
+use crate::types::extension::display_extensions_html_inline;
+use crate::types::extension::display_extensions_inline_str;
 use crate::types::mutability::Mutability;
 use crate::types::socket_type::SocketType;
 use std::fmt;
 use std::fmt::Formatter;
 use table_to_html::HtmlTable;
-use tabled::settings::object::Columns;
+use tabled::Table;
+use tabled::Tabled;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
+use tabled::settings::object::Columns;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct PropertyType {

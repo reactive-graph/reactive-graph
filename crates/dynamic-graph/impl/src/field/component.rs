@@ -1,16 +1,14 @@
 use std::sync::Arc;
 
+use async_graphql::ID;
 use async_graphql::dynamic::Field;
 use async_graphql::dynamic::FieldFuture;
 use async_graphql::dynamic::FieldValue;
 use async_graphql::dynamic::InterfaceField;
 use async_graphql::dynamic::TypeRef;
-use async_graphql::ID;
 
-// use crate::graphql::dynamic::to_type_ref;
-// use crate::graphql::dynamic::DynamicGraphTypeDefinition;
-use crate::to_type_ref;
 use crate::DynamicGraphTypeDefinition;
+use crate::to_type_ref;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::PropertyType;

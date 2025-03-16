@@ -83,11 +83,7 @@ impl GraphQLServerConfig {
     }
 
     pub fn protocol(&self) -> &str {
-        if self.is_secure() {
-            "https"
-        } else {
-            "http"
-        }
+        if self.is_secure() { "https" } else { "http" }
     }
 
     pub fn is_secure(&self) -> bool {

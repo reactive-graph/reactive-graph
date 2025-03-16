@@ -1,19 +1,19 @@
 use std::ops::Deref;
+use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
 use std::time;
 
 use serde_json::json;
 use tokio::task;
 
+use reactive_graph_command_model::CommandArgs;
 use reactive_graph_command_model::entity::Command;
 use reactive_graph_command_model::entity::CommandArg;
-use reactive_graph_command_model::CommandArgs;
 use reactive_graph_graph::PropertyInstanceGetter;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
-use reactive_graph_runtime_model::ShutdownProperties::DELAY;
 use reactive_graph_runtime_model::ENTITY_TYPE_SHUTDOWN;
+use reactive_graph_runtime_model::ShutdownProperties::DELAY;
 use reactive_graph_runtime_service_api::UUID_SHUTDOWN;
 
 pub(crate) fn shutdown_command(shutdown_state: Arc<AtomicBool>) -> Command {

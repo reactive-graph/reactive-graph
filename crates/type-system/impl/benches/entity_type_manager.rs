@@ -1,6 +1,6 @@
+use criterion::Criterion;
 use criterion::criterion_group;
 use criterion::criterion_main;
-use criterion::Criterion;
 use default_test::DefaultTest;
 use reactive_graph_graph::EntityType;
 use reactive_graph_type_system_api::TypeSystem;

@@ -1,9 +1,9 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod variables {
-    use crate::schema_graphql::scalar::UUID;
-    use crate::schema_graphql::types::entity_type::EntityTypeId;
     use crate::ComponentTypeId;
     use crate::PropertyInstanceDefinition;
+    use crate::schema_graphql::scalar::UUID;
+    use crate::schema_graphql::types::entity_type::EntityTypeId;
     use cynic::QueryVariables;
     use typed_builder::TypedBuilder;
 

@@ -1,9 +1,10 @@
 #[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod mutations {
+
+    use crate::PropertyTypeDefinitions;
     use crate::schema_graphql::instances::entity_instance::EntityInstance;
     use crate::schema_graphql::scalar::UUID;
     use crate::schema_graphql::types::property_type::PropertyTypeDefinition;
-    use crate::PropertyTypeDefinitions;
     use cynic::Operation;
     use cynic::QueryFragment;
     use cynic::QueryVariables;

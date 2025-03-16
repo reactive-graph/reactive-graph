@@ -12,7 +12,6 @@ use uuid::Uuid;
 
 use crate::ReactiveEntity;
 use crate::ReactiveRelation;
-use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_graph::CreateFlowInstanceError;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityTypeId;
@@ -25,6 +24,7 @@ use reactive_graph_graph::RelationInstance;
 use reactive_graph_graph::RelationInstanceId;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_reactive_model_api::ReactiveFlowConstructionError;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;

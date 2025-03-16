@@ -3,12 +3,12 @@ pub mod entities;
 pub mod flows;
 pub mod relations;
 
+use crate::ReactiveGraphClientExecutionError;
+use crate::client::ReactiveGraphClient;
 use crate::client::json_schema::types::components::queries::get_json_schema_for_components;
 use crate::client::json_schema::types::entities::queries::get_json_schema_for_entity_types;
 use crate::client::json_schema::types::flows::queries::get_json_schema_for_flow_types;
 use crate::client::json_schema::types::relations::queries::get_json_schema_for_relation_types;
-use crate::client::ReactiveGraphClient;
-use crate::ReactiveGraphClientExecutionError;
 use cynic::http::ReqwestExt;
 use serde_json::Value;
 use std::sync::Arc;
