@@ -43,7 +43,6 @@ libloading = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 mime = { workspace = true }
 notify = { workspace = true }
-paste = { workspace = true }
 path-tree = { workspace = true }
 portpicker = { workspace = true }
 rand = { workspace = true }
