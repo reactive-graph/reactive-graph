@@ -4,23 +4,23 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
 use serde::Serializer;
+use serde_json::Value;
 #[cfg(any(test, feature = "test"))]
 use serde_json::json;
-use serde_json::Value;
 use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 
@@ -293,8 +293,8 @@ impl JsonSchema for Extensions {
         "Extensions".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<Extension>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<Extension>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -340,8 +340,8 @@ impl DefaultTest for Extension {
 impl DefaultTest for Extensions {
     fn default_test() -> Self {
         let extensions = Extensions::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             extensions.push(Extension::default_test());
         }
         extensions

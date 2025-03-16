@@ -1,5 +1,5 @@
-use dashmap::iter_set::OwningIter;
 use dashmap::DashSet;
+use dashmap::iter_set::OwningIter;
 use std::collections::hash_map::RandomState;
 use std::fmt::Display;
 use std::fmt::Formatter;
@@ -14,16 +14,16 @@ use serde::Serialize;
 
 use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
+use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
-use schemars::json_schema;
+use rand_derive3::RandGen;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use std::borrow::Cow;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
@@ -186,8 +186,8 @@ impl JsonSchema for ExtensionTypeIds {
         "ExtensionTypeIds".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<ExtensionTypeId>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<ExtensionTypeId>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -278,8 +278,8 @@ mod tests {
     impl DefaultTest for ExtensionTypeIds {
         fn default_test() -> Self {
             let tys = ExtensionTypeIds::new();
-            let mut rng = rand::thread_rng();
-            for _ in 0..rng.gen_range(0..10) {
+            let mut rng = rand::rng();
+            for _ in 0..rng.random_range(0..10) {
                 tys.insert(ExtensionTypeId::default_test());
             }
             tys

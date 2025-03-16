@@ -41,7 +41,7 @@ fn reactive_property_instance_stream(criterion: &mut Criterion) {
             );
         }
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         bencher.iter(move || {
             let number: u64 = rng.gen();
             instance1.set(json!(number));

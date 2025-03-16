@@ -1,4 +1,3 @@
-use crate::instances::named::NamedInstanceContainer;
 use crate::EntityInstance;
 use crate::EntityInstances;
 #[cfg(any(test, feature = "test"))]
@@ -8,18 +7,19 @@ use crate::NamespacedTypeGetter;
 use crate::RelationInstances;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
-use dashmap::iter::OwningIter;
+use crate::instances::named::NamedInstanceContainer;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::DefaultFrom;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
@@ -257,8 +257,8 @@ impl JsonSchema for FlowInstances {
         "FlowInstances".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<FlowInstance>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<FlowInstance>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -349,8 +349,8 @@ impl DefaultFrom<EntityInstance> for FlowInstance {
 impl DefaultTest for FlowInstances {
     fn default_test() -> Self {
         let flow_instances = FlowInstances::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             flow_instances.push(FlowInstance::default_test());
         }
         flow_instances

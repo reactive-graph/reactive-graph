@@ -13,7 +13,7 @@ readme = "../../README.md"
 dashmap = { workspace = true, features = ["serde"] }
 default-test = { workspace = true, optional = true }
 rand = { workspace = true, optional = true }
-rand_derive2 = { workspace = true, optional = true }
+rand_derive3 = { workspace = true, optional = true }
 schemars = { workspace = true, features = ["uuid1"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
@@ -28,12 +28,12 @@ reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils", option
 default-test = { workspace = true }
 random-string = { workspace = true }
 rand = { workspace = true }
-rand_derive2 = { workspace = true }
+rand_derive3 = { workspace = true }
 
 reactive-graph-test-utils = { version = "0.10.0", path = "../test-utils" }
 
 [features]
-test = ["default-test", "rand", "rand_derive2", "reactive-graph-test-utils"]
+test = ["default-test", "rand", "rand_derive3", "reactive-graph-test-utils"]
 
 [lib]
 crate-type = ["lib"]

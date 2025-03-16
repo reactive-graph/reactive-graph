@@ -3,7 +3,7 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
+use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
@@ -12,10 +12,10 @@ use uuid::Uuid;
 use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::RelationTypeId;
+use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 
 /// Type identifier of a relation instance.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema)]

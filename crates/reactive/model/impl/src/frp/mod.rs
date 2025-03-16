@@ -194,11 +194,11 @@ use dashmap::DashMap;
 // use rayon::prelude::*;
 use std::hash::Hash;
 use std::ops::Deref;
-use std::sync::mpsc::channel;
-use std::sync::mpsc::Receiver;
 use std::sync::Arc;
 use std::sync::RwLock;
 use std::sync::Weak;
+use std::sync::mpsc::Receiver;
+use std::sync::mpsc::channel;
 use uuid::Uuid;
 
 /// The subscriber stores the handle_id and the closure.
@@ -265,8 +265,8 @@ where
     fn new_same(&self) -> Self {
         let guard = self.subscribers.read().unwrap();
         let subscribers = RwLock::new(match guard.deref() {
-            DependentStreams::Own(ref rc) => DependentStreams::Own(rc.clone()),
-            DependentStreams::Weak(ref weak) => DependentStreams::Weak(weak.clone()),
+            DependentStreams::Own(rc) => DependentStreams::Own(rc.clone()),
+            DependentStreams::Weak(weak) => DependentStreams::Weak(weak.clone()),
         });
 
         Stream { subscribers }
@@ -276,8 +276,8 @@ where
     fn new_weak(&self) -> Self {
         let guard = self.subscribers.read().unwrap();
         let subscribers = RwLock::new(match guard.deref() {
-            DependentStreams::Own(ref rc) => DependentStreams::Weak(Arc::downgrade(rc)),
-            DependentStreams::Weak(ref weak) => DependentStreams::Weak(weak.clone()),
+            DependentStreams::Own(rc) => DependentStreams::Weak(Arc::downgrade(rc)),
+            DependentStreams::Weak(weak) => DependentStreams::Weak(weak.clone()),
         });
 
         Stream { subscribers }
@@ -294,10 +294,10 @@ where
         let handle_id = Uuid::new_v4().as_u128();
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
-            DependentStreams::Own(ref subscribers) => {
+            DependentStreams::Own(subscribers) => {
                 subscribers.insert(handle_id, Box::new(subscriber));
             }
-            DependentStreams::Weak(ref weak) => {
+            DependentStreams::Weak(weak) => {
                 if let Some(subscribers) = weak.upgrade() {
                     subscribers.insert(handle_id, Box::new(subscriber));
                 }
@@ -316,10 +316,10 @@ where
     {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
-            DependentStreams::Own(ref subscribers) => {
+            DependentStreams::Own(subscribers) => {
                 subscribers.insert(handle_id, Box::new(subscriber));
             }
-            DependentStreams::Weak(ref weak) => {
+            DependentStreams::Weak(weak) => {
                 if let Some(subscribers) = weak.upgrade() {
                     subscribers.insert(handle_id, Box::new(subscriber));
                 }
@@ -332,11 +332,11 @@ where
     pub fn remove(&self, handle_id: u128) {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
-            DependentStreams::Own(ref subscribers) => {
+            DependentStreams::Own(subscribers) => {
                 subscribers.remove(&handle_id);
             }
 
-            DependentStreams::Weak(ref weak) => {
+            DependentStreams::Weak(weak) => {
                 if let Some(subscribers) = weak.upgrade() {
                     subscribers.remove(&handle_id);
                 }
@@ -349,11 +349,11 @@ where
     pub fn clear(&self) {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
-            DependentStreams::Own(ref subscribers) => {
+            DependentStreams::Own(subscribers) => {
                 subscribers.clear();
             }
 
-            DependentStreams::Weak(ref weak) => {
+            DependentStreams::Weak(weak) => {
                 if let Some(subscribers) = weak.upgrade() {
                     subscribers.clear();
                 }
@@ -366,7 +366,7 @@ where
     pub fn send(&self, signal: &Sig) {
         let guard = self.subscribers.write().unwrap();
         match guard.deref() {
-            DependentStreams::Own(ref subscribers) => {
+            DependentStreams::Own(subscribers) => {
                 // subscribers.par_iter_mut().for_each(|mut subscriber| {
                 //     subscriber(&signal);
                 // });
@@ -375,7 +375,7 @@ where
                 });
             }
 
-            DependentStreams::Weak(ref weak) => {
+            DependentStreams::Weak(weak) => {
                 if let Some(subscribers) = weak.upgrade() {
                     // subscribers.deref().par_iter_mut().for_each(|mut subscriber| {
                     //     subscriber(&signal);

@@ -152,8 +152,8 @@ impl From<&ComponentOrEntityTypeId> for NamespacedType {
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for ComponentOrEntityTypeId {
     fn default_test() -> Self {
-        let mut rng = rand::thread_rng();
-        let b: bool = rng.gen();
+        let mut rng = rand::rng();
+        let b: bool = rng.random();
         if b {
             ComponentOrEntityTypeId::Component(NamespacedType::generate_random().into())
         } else {

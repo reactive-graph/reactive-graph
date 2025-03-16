@@ -5,10 +5,10 @@ use std::ops::Deref;
 use std::ops::DerefMut;
 
 use dashmap::DashMap;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
@@ -254,7 +254,7 @@ pub trait PropertyTypeDefinition {
 }
 
 #[derive(Clone, Debug, Default)] // , Serialize, Deserialize
-                                 // #[serde(serialize_with="serialize_property_types", deserialize_with="deserialize_property_types")]
+// #[serde(serialize_with="serialize_property_types", deserialize_with="deserialize_property_types")]
 pub struct PropertyTypes(DashMap<String, PropertyType>);
 
 impl PropertyTypes {
@@ -424,8 +424,8 @@ impl JsonSchema for PropertyTypes {
         "PropertyTypes".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<PropertyType>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<PropertyType>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -482,8 +482,8 @@ impl DefaultTest for PropertyType {
 impl DefaultTest for PropertyTypes {
     fn default_test() -> Self {
         let property_types = PropertyTypes::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             property_types.push(PropertyType::default_test());
         }
         property_types

@@ -7,7 +7,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
+use rand_derive3::RandGen;
 
 /// The socket type defines if the property acts as an input or output socket
 /// or is an hidden property

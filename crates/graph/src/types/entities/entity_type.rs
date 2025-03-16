@@ -4,22 +4,21 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 
-use crate::extension::Extension;
 use crate::AddExtensionError;
 use crate::AddPropertyError;
 use crate::ComponentTypeId;
@@ -56,6 +55,7 @@ use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
+use crate::extension::Extension;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::r_string;
 
@@ -450,8 +450,8 @@ impl JsonSchema for EntityTypes {
         "EntityTypes".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<EntityType>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<EntityType>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -522,7 +522,7 @@ impl EntityTypeBuilder<((EntityTypeId,), (), (), (), ())> {
 impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
     #[allow(clippy::type_complexity)]
     pub fn component<C: Into<ComponentTypeId>>(self, ty: C) -> EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
-        self.fields.2 .0.insert(ty.into());
+        self.fields.2.0.insert(ty.into());
         self
     }
 }
@@ -543,7 +543,7 @@ impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (), ())> {
 impl EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())> {
     #[allow(clippy::type_complexity)]
     pub fn property<P: Into<PropertyType>>(self, property: P) -> EntityTypeBuilder<((EntityTypeId,), (), (ComponentTypeIds,), (PropertyTypes,), ())> {
-        self.fields.3 .0.push(property.into());
+        self.fields.3.0.push(property.into());
         self
     }
 }
@@ -565,8 +565,8 @@ impl DefaultTest for EntityType {
 impl DefaultTest for EntityTypes {
     fn default_test() -> Self {
         let entity_types = EntityTypes::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             entity_types.push(EntityType::default_test());
         }
         entity_types

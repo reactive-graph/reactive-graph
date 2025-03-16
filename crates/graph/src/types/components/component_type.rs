@@ -4,13 +4,13 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
+use dashmap::DashMap;
 use dashmap::iter::OwningIter;
 use dashmap::mapref::multiple::RefMulti;
-use dashmap::DashMap;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::borrow::Cow;
@@ -341,8 +341,8 @@ impl JsonSchema for Components {
         "Components".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<Component>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<Component>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -440,8 +440,8 @@ impl DefaultTest for Component {
 impl DefaultTest for Components {
     fn default_test() -> Self {
         let components = Components::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             components.push(Component::default_test());
         }
         components

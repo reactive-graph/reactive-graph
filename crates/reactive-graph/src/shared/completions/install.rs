@@ -1,11 +1,11 @@
 use crate::shared::completions::error::InstallShellCompletionError;
 use clap::Command;
-use clap_complete::generate;
 use clap_complete::Generator;
 use clap_complete::Shell;
+use clap_complete::generate;
 use std::fs::create_dir_all;
 
-pub fn install_shell_completions<G: Generator>(gen: G, shell: Shell, cmd: &mut Command) -> Result<(), InstallShellCompletionError> {
+pub fn install_shell_completions<G: Generator>(generator: G, shell: Shell, cmd: &mut Command) -> Result<(), InstallShellCompletionError> {
     let bin_name = cmd.get_name().to_string();
 
     let path = match shell {
@@ -28,7 +28,7 @@ pub fn install_shell_completions<G: Generator>(gen: G, shell: Shell, cmd: &mut C
     eprintln!("Writing completions to {}", path.display());
 
     let mut buffer = Vec::with_capacity(512);
-    generate(gen, cmd, &bin_name, &mut buffer);
+    generate(generator, cmd, &bin_name, &mut buffer);
     std::fs::write(path, buffer).map_err(InstallShellCompletionError::Io)?;
     Ok(())
 }
