@@ -20,43 +20,9 @@ pub struct FlowInstance {
     /// Textual description of the flow instance.
     pub description: String,
 
-    // /// The components.
-    // #[tabled(display_with("Self::display_component_type_ids", self))]
-    // pub components: Vec<ComponentTypeId>,
-    //
-    // /// The property instances.
-    // #[tabled(display_with("Self::display_property_instances", self))]
-    // pub properties: Vec<PropertyInstance>,
-    //
-    // /// The extensions.
-    // #[tabled(display_with("Self::display_extensions", self))]
     // pub extensions: Vec<Extension>,
     #[tabled(skip)]
     inline_format: TableInlineFormat,
-}
-
-impl FlowInstance {
-    // fn display_component_type_ids(&self) -> String {
-    //     match self.inline_format {
-    //         TableInlineFormat::Table => display_component_type_ids_inline_str(&self.components),
-    //         TableInlineFormat::Html => display_component_type_ids_html_inline(&self.components),
-    //     }
-    // }
-    //
-    // fn display_property_instances(&self) -> String {
-    //     match self.inline_format {
-    //         TableInlineFormat::Table => display_property_instances_inline_str(&self.properties),
-    //         TableInlineFormat::Html => display_property_instances_html_inline(&self.properties),
-    //     }
-    // }
-    //
-    // fn display_extensions(&self) -> String {
-    //     // println!("{:?}", &self.inline_format);
-    //     match self.inline_format {
-    //         TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
-    //         TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
-    //     }
-    // }
 }
 
 impl TableInlineFormatSetter for FlowInstance {
@@ -71,9 +37,6 @@ impl From<reactive_graph_graph::FlowInstance> for FlowInstance {
             namespace: flow_instance.namespace(),
             name: flow_instance.type_name(),
             description: flow_instance.description,
-            // properties: PropertyInstances::from(flow_instance.properties).0,
-            // components: ComponentTypeIds::from(flow_instance.components).0,
-            // extensions: Extensions::from(flow_instance.extensions).0,
             inline_format: Default::default(),
         }
     }

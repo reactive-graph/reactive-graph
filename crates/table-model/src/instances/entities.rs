@@ -40,44 +40,45 @@ pub struct EntityInstance {
     pub description: String,
 
     /// The components.
-    #[tabled(display_with("Self::display_component_type_ids", self))]
+    #[tabled(display("display_component_type_ids", self))]
     pub components: Vec<ComponentTypeId>,
 
     /// The property instances.
-    #[tabled(display_with("Self::display_property_instances", self))]
+    #[tabled(display("display_property_instances", self))]
     pub properties: Vec<PropertyInstance>,
 
     /// The extensions.
-    #[tabled(display_with("Self::display_extensions", self))]
+    #[tabled(display("display_extensions", self))]
     pub extensions: Vec<Extension>,
 
     #[tabled(skip)]
     inline_format: TableInlineFormat,
 }
 
-impl EntityInstance {
-    fn display_component_type_ids(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_component_type_ids_inline_str(&self.components),
-            TableInlineFormat::Html => display_component_type_ids_html_inline(&self.components),
-        }
-    }
-
-    fn display_property_instances(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_property_instances_inline_str(&self.properties),
-            TableInlineFormat::Html => display_property_instances_html_inline(&self.properties),
-        }
-    }
-
-    fn display_extensions(&self) -> String {
-        // println!("{:?}", &self.inline_format);
-        match self.inline_format {
-            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
-            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
-        }
+fn display_component_type_ids(components: &[ComponentTypeId], entity_instance: &EntityInstance) -> String {
+    match entity_instance.inline_format {
+        TableInlineFormat::Table => display_component_type_ids_inline_str(components),
+        TableInlineFormat::Html => display_component_type_ids_html_inline(components),
     }
 }
+
+fn display_property_instances(properties: &[PropertyInstance], entity_instance: &EntityInstance) -> String {
+    match entity_instance.inline_format {
+        TableInlineFormat::Table => display_property_instances_inline_str(properties),
+        TableInlineFormat::Html => display_property_instances_html_inline(properties),
+    }
+}
+
+fn display_extensions(extensions: &[Extension], entity_instance: &EntityInstance) -> String {
+    // println!("{:?}", &self.inline_format);
+    match entity_instance.inline_format {
+        TableInlineFormat::Table => display_extensions_inline_str(extensions),
+        TableInlineFormat::Html => display_extensions_html_inline(extensions),
+    }
+}
+
+// impl EntityInstance {
+// }
 
 impl TableInlineFormatSetter for EntityInstance {
     fn set_table_inline_format(&mut self, table_inline_format: TableInlineFormat) {

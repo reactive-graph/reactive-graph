@@ -38,7 +38,7 @@ pub struct PropertyType {
     pub mutability: Mutability,
 
     /// Property specific extensions.
-    #[tabled(display_with("Self::display_extensions", self))]
+    #[tabled(display("display_extensions", self))]
     #[tabled(skip)]
     pub extensions: Vec<Extension>,
 
@@ -46,13 +46,11 @@ pub struct PropertyType {
     inline_format: TableInlineFormat,
 }
 
-impl PropertyType {
-    #[allow(dead_code)]
-    fn display_extensions(&self) -> String {
-        match self.inline_format {
-            TableInlineFormat::Table => display_extensions_inline_str(&self.extensions),
-            TableInlineFormat::Html => display_extensions_html_inline(&self.extensions),
-        }
+#[allow(dead_code)]
+fn display_extensions(extensions: &[Extension], property_type: &PropertyType) -> String {
+    match property_type.inline_format {
+        TableInlineFormat::Table => display_extensions_inline_str(extensions),
+        TableInlineFormat::Html => display_extensions_html_inline(extensions),
     }
 }
 
