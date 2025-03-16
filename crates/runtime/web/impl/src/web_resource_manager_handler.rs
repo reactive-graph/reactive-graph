@@ -1,13 +1,13 @@
 use std::sync::Arc;
 
 use actix_http::body::BoxBody;
-use actix_web::web;
 use actix_web::HttpRequest;
 use actix_web::HttpResponse;
 use actix_web::HttpResponseBuilder;
-use http::header::CONTENT_TYPE;
+use actix_web::web;
 use http::Request;
 use http::Response;
+use http::header::CONTENT_TYPE;
 use log::debug;
 
 use reactive_graph_plugin_api::HttpBody;

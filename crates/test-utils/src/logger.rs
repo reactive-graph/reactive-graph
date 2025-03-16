@@ -1,11 +1,11 @@
-use log::trace;
 use log::LevelFilter;
+use log::trace;
+use log4rs::Config;
 use log4rs::append::console::ConsoleAppender;
 use log4rs::config::Appender;
 use log4rs::config::Root;
 use log4rs::encode::pattern::PatternEncoder;
 use log4rs::init_config;
-use log4rs::Config;
 
 pub fn init_logger() {
     let encoder = PatternEncoder::new("[{f}:{L}] {h([{l}])} {m}{n}");

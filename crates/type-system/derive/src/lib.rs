@@ -7,9 +7,9 @@ use proc_macro2::TokenStream as TokenStream2;
 
 use quote::format_ident;
 use quote::quote;
-use syn::parse_macro_input;
 use syn::DeriveInput;
 use syn::Ident;
+use syn::parse_macro_input;
 
 use crate::darling::FromDeriveInput;
 

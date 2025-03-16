@@ -2,15 +2,15 @@ use std::borrow::Cow;
 
 use clap::Parser;
 use colored::Colorize;
+use rustyline::Context;
+use rustyline::Helper;
+use rustyline::Result;
 use rustyline::completion::Completer;
 use rustyline::highlight::Highlighter;
 use rustyline::hint::Hinter;
 use rustyline::validate::ValidationContext;
 use rustyline::validate::ValidationResult;
 use rustyline::validate::Validator;
-use rustyline::Context;
-use rustyline::Helper;
-use rustyline::Result;
 use shellwords::split;
 
 use crate::client::repl::args::ReplArgs;

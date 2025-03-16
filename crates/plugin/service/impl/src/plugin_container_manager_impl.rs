@@ -8,8 +8,8 @@ use log::debug;
 use log::trace;
 use semver::Version;
 use semver::VersionReq;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 use uuid::Uuid;
 
 use reactive_graph_lifecycle::Lifecycle;

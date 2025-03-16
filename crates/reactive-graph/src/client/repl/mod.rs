@@ -2,14 +2,14 @@ use std::sync::Arc;
 
 use clap::Parser;
 use colored::*;
-use rustyline::error::ReadlineError;
-use rustyline::history::DefaultHistory;
 use rustyline::Cmd;
 use rustyline::Editor;
 use rustyline::Event;
 use rustyline::KeyCode;
 use rustyline::KeyEvent;
 use rustyline::Modifiers;
+use rustyline::error::ReadlineError;
+use rustyline::history::DefaultHistory;
 use shellwords::split;
 
 use crate::client::handler::handle_command;

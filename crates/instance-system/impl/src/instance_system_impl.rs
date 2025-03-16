@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_instance_system_api::EntityInstanceImportExportManager;
 use reactive_graph_instance_system_api::InstanceSystem;

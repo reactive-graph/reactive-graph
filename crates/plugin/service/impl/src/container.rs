@@ -14,6 +14,8 @@ use uuid::Uuid;
 
 use crate::plugin_paths::get_deploy_path;
 use crate::plugin_paths::get_install_path;
+use reactive_graph_plugin_api::PLUGIN_API_VERSION;
+use reactive_graph_plugin_api::PLUGIN_NAME_PREFIX;
 use reactive_graph_plugin_api::Plugin;
 use reactive_graph_plugin_api::PluginContext;
 use reactive_graph_plugin_api::PluginDeclaration;
@@ -30,8 +32,6 @@ use reactive_graph_plugin_api::PluginStopError;
 use reactive_graph_plugin_api::PluginStoppingState;
 use reactive_graph_plugin_api::PluginUninstallError;
 use reactive_graph_plugin_api::PluginUninstallingState;
-use reactive_graph_plugin_api::PLUGIN_API_VERSION;
-use reactive_graph_plugin_api::PLUGIN_NAME_PREFIX;
 use reactive_graph_plugin_api::RUSTC_VERSION;
 use reactive_graph_plugin_service_api::PluginTransitionResult;
 use reactive_graph_plugin_service_api::PluginTransitionResult::Changed;

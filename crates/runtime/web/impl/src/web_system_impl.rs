@@ -4,8 +4,8 @@ use async_trait::async_trait;
 use reactive_graph_config_api::ConfigSystem;
 use reactive_graph_dynamic_graph_api::DynamicGraphSystem;
 use reactive_graph_graphql_api::GraphQLSystem;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_plugin_graphql_api::PluginGraphQLSystem;

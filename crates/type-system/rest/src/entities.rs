@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
+use actix_web::HttpResponse;
 use actix_web::get;
 use actix_web::web;
-use actix_web::HttpResponse;
 use mime::APPLICATION_JSON;
 
 use reactive_graph_type_system_api::EntityTypeManager;

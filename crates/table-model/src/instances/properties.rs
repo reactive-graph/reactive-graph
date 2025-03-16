@@ -7,9 +7,9 @@ use serde_json::Value;
 use std::fmt;
 use std::fmt::Formatter;
 use table_to_html::HtmlTable;
-use tabled::settings::Style;
 use tabled::Table;
 use tabled::Tabled;
+use tabled::settings::Style;
 
 #[derive(Clone, Debug, Serialize, Tabled)]
 pub struct PropertyInstance {

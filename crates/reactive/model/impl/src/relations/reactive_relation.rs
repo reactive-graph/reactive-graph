@@ -14,7 +14,6 @@ use crate::ReactiveProperty;
 use reactive_graph_behaviour_model_api::BehaviourTypeId;
 use reactive_graph_behaviour_model_api::BehaviourTypeIds;
 use reactive_graph_behaviour_model_api::BehaviourTypesContainer;
-use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentContainer;
 use reactive_graph_graph::ComponentTypeId;
@@ -34,6 +33,7 @@ use reactive_graph_graph::RelationType;
 use reactive_graph_graph::RelationTypeId;
 use reactive_graph_graph::TypeDefinition;
 use reactive_graph_graph::TypeDefinitionGetter;
+use reactive_graph_graph::instances::named::NamedInstanceContainer;
 use reactive_graph_reactive_model_api::ReactiveInstance;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 

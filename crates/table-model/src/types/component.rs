@@ -1,25 +1,25 @@
 use table_to_html::HtmlTable;
-use tabled::settings::object::Columns;
-use tabled::settings::object::Segment;
+use tabled::Table;
+use tabled::Tabled;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
+use tabled::settings::object::Columns;
+use tabled::settings::object::Segment;
 
 use crate::container::DefaultTableContainer;
 use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use crate::styles::modern_inline::modern_inline;
-use crate::types::extension::display_extensions_html_inline;
-use crate::types::extension::display_extensions_inline_str;
 use crate::types::extension::Extension;
 use crate::types::extension::Extensions;
-use crate::types::properties::display_property_types_html_inline;
-use crate::types::properties::display_property_types_inline_str;
+use crate::types::extension::display_extensions_html_inline;
+use crate::types::extension::display_extensions_inline_str;
 use crate::types::properties::PropertyType;
 use crate::types::properties::PropertyTypes;
+use crate::types::properties::display_property_types_html_inline;
+use crate::types::properties::display_property_types_inline_str;
 use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(Clone, Debug, Tabled)]

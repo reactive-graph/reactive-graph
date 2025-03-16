@@ -1,7 +1,7 @@
+use crate::ReactiveGraphClient;
 use crate::client::instances::entities::api::EntityInstances;
 use crate::client::instances::flows::api::FlowInstances;
 use crate::client::instances::relations::api::RelationInstances;
-use crate::ReactiveGraphClient;
 use std::sync::Arc;
 
 pub mod entities;

@@ -1,9 +1,9 @@
 #[cynic::schema_for_derives(file = r#"schema_plugin.graphql"#, module = "crate::schema_plugin::schema")]
 pub mod queries {
-    use crate::client::plugin::variables::by_name::variables::PluginByNameVariables;
-    use crate::client::plugin::variables::by_name::variables::PluginByNameVariablesFields;
     use crate::Plugin;
     use crate::PluginDependencies;
+    use crate::client::plugin::variables::by_name::variables::PluginByNameVariables;
+    use crate::client::plugin::variables::by_name::variables::PluginByNameVariablesFields;
 
     #[derive(cynic::QueryFragment, Debug)]
     #[cynic(graphql_type = "Query", variables = "PluginByNameVariables")]

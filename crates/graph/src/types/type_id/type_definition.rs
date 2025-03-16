@@ -7,8 +7,8 @@ use typed_builder::TypedBuilder;
 
 use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
-use crate::TypeIdType;
 use crate::TYPE_ID_TYPE_SEPARATOR;
+use crate::TypeIdType;
 
 /// Definition of a type with the type of the type, the namespace and the name of the type.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema, TypedBuilder)]

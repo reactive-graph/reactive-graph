@@ -3,9 +3,9 @@ use std::sync::Arc;
 use cynic::http::ReqwestExt;
 use serde_json::Value;
 
-use crate::client::runtime::command::mutations::execute_command::mutations::execute_command;
 use crate::ReactiveGraphClient;
 use crate::ReactiveGraphClientExecutionError;
+use crate::client::runtime::command::mutations::execute_command::mutations::execute_command;
 
 pub struct Command {
     client: Arc<ReactiveGraphClient>,

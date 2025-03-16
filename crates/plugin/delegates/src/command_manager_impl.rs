@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_command_model::entity::Command;
 use reactive_graph_command_model::error::NoSuchCommand;

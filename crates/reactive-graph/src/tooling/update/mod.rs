@@ -4,10 +4,10 @@ use crate::tooling::update::release_info::print_release_info;
 use crate::tooling::update::release_info::print_release_list;
 use crate::tooling::update::release_tag::ReleaseTag;
 use anyhow::Result;
+use self_update::Status;
 use self_update::backends::github::Update;
 use self_update::cargo_crate_version;
 use self_update::update::ReleaseUpdate;
-use self_update::Status;
 
 pub mod args;
 pub mod commands;

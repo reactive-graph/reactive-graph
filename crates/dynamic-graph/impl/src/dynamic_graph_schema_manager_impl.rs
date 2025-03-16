@@ -1,8 +1,8 @@
 use std::ops::Deref;
-use std::sync::atomic::AtomicBool;
-use std::sync::atomic::Ordering;
 use std::sync::Arc;
 use std::sync::RwLock;
+use std::sync::atomic::AtomicBool;
+use std::sync::atomic::Ordering;
 use std::time::Instant;
 
 use async_graphql::dynamic::Schema;
@@ -13,8 +13,8 @@ use log::debug;
 use log::error;
 use log::info;
 use log::trace;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 use uuid::Uuid;
 
 use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;

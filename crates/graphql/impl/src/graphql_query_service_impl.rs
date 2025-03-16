@@ -4,8 +4,8 @@ use async_graphql::Request;
 use async_graphql::Response;
 use async_trait::async_trait;
 use log::info;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_graphql_api::GraphQLQueryService;
 use reactive_graph_graphql_api::GraphQLSchemaManager;

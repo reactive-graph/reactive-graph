@@ -1,5 +1,5 @@
-use actix_web::get;
 use actix_web::HttpResponse;
+use actix_web::get;
 use schemars::schema_for;
 
 use reactive_graph_graph::FlowInstance;

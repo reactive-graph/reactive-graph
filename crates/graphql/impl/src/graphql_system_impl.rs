@@ -2,10 +2,9 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 use reactive_graph_di::get_shared_component_factory;
-use springtime_di::component_alias;
-// use springtime_di::factory::ComponentFactoryBuilder;
-use springtime_di::instance_provider::TypedComponentInstanceProvider;
 use springtime_di::Component;
+use springtime_di::component_alias;
+use springtime_di::instance_provider::TypedComponentInstanceProvider;
 
 use reactive_graph_graphql_api::GraphQLQueryService;
 use reactive_graph_graphql_api::GraphQLSchemaManager;

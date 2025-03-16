@@ -1,6 +1,6 @@
 use random_string::generate;
-use serde_json::json;
 use serde_json::Value;
+use serde_json::json;
 
 const CHARSET_LETTERS: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

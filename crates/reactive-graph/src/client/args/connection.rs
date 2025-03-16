@@ -1,11 +1,11 @@
 use clap::Parser;
-use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_DYNAMIC_GRAPH;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_GRAPHQL;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_PLUGIN;
 use reactive_graph_remotes_model::DEFAULT_ENDPOINT_RUNTIME;
 use reactive_graph_remotes_model::DEFAULT_HOSTNAME;
 use reactive_graph_remotes_model::DEFAULT_PORT;
+use reactive_graph_remotes_model::InstanceAddress;
 
 #[derive(Parser, Debug, Clone)]
 pub struct ClientConnectionArguments {

@@ -2,8 +2,8 @@ use std::sync::Arc;
 
 use actix_web::post;
 use actix_web::web;
-use async_graphql::dynamic::DynamicRequest;
 use async_graphql::ServerError;
+use async_graphql::dynamic::DynamicRequest;
 use async_graphql_actix_web::GraphQLRequest;
 use async_graphql_actix_web::GraphQLResponse;
 

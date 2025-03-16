@@ -108,13 +108,13 @@ impl TryFrom<&str> for TypeIdType {
 
 #[cfg(test)]
 mod tests {
-    use crate::TypeIdType;
     use crate::TYPE_ID_TYPE_NAMESPACE_BEHAVIOUR;
     use crate::TYPE_ID_TYPE_NAMESPACE_COMPONENT;
     use crate::TYPE_ID_TYPE_NAMESPACE_ENTITY_TYPE;
     use crate::TYPE_ID_TYPE_NAMESPACE_EXTENSION;
     use crate::TYPE_ID_TYPE_NAMESPACE_FLOW_TYPE;
     use crate::TYPE_ID_TYPE_NAMESPACE_RELATION_TYPE;
+    use crate::TypeIdType;
     use schemars::schema_for;
 
     #[test]

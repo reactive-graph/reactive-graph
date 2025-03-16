@@ -4,8 +4,8 @@ use std::sync::Arc;
 
 use reactive_graph_command_api::CommandManager;
 use reactive_graph_command_api::CommandRegistrationError;
-use reactive_graph_command_model::component::CommandProperties::COMMAND_NAME;
 use reactive_graph_command_model::component::COMPONENT_COMMAND;
+use reactive_graph_command_model::component::CommandProperties::COMMAND_NAME;
 use reactive_graph_command_model::entity::Command;
 use reactive_graph_command_model::error::NoSuchCommand;
 use reactive_graph_graph::EntityType;
@@ -15,8 +15,8 @@ use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_service_api::ReactiveEntityManager;
 use reactive_graph_type_system_api::EntityTypeManager;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 #[derive(Component)]
 pub struct CommandManagerImpl {

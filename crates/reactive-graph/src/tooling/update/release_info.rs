@@ -1,13 +1,13 @@
 use crate::shared::output_format::RenderTable;
+use crate::tooling::update::REPO_NAME;
+use crate::tooling::update::REPO_OWNER;
 use crate::tooling::update::args::UpdateArgs;
 use crate::tooling::update::args::UpdateInfoArgs;
 use crate::tooling::update::args::UpdateListArgs;
 use crate::tooling::update::release::Release;
-use crate::tooling::update::release_tag::ReleaseTag;
 use crate::tooling::update::release_tag::RELEASE_TAG_NIGHTLY;
+use crate::tooling::update::release_tag::ReleaseTag;
 use crate::tooling::update::update_from_github;
-use crate::tooling::update::REPO_NAME;
-use crate::tooling::update::REPO_OWNER;
 use anyhow::Result;
 use self_update::cargo_crate_version;
 

@@ -1,9 +1,9 @@
 use crate::client::types::extension::args::ExtensionDefinitionArgs;
 use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
 use clap::Args;
+use reactive_graph_client::ExtensionDefinition;
 use reactive_graph_client::schema_graphql::scalar::Json;
 use reactive_graph_client::types::relations::add_extension::queries::AddExtensionVariables;
-use reactive_graph_client::ExtensionDefinition;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypeAddExtensionArgs {

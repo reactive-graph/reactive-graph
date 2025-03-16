@@ -3,14 +3,14 @@ use std::sync::Arc;
 use async_graphql::EmptySubscription;
 use async_graphql::Schema;
 use async_trait::async_trait;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_plugin_graphql_api::PluginSchemaManager;
+use reactive_graph_plugin_graphql_schema::PluginSchema;
 use reactive_graph_plugin_graphql_schema::mutation::PluginMutation;
 use reactive_graph_plugin_graphql_schema::query::PluginQuery;
-use reactive_graph_plugin_graphql_schema::PluginSchema;
 use reactive_graph_plugin_service_api::PluginContainerManager;
 use reactive_graph_plugin_service_api::PluginResolver;
 

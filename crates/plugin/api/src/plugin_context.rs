@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-use crate::springtime_di::injectable;
 use crate::CommandManager;
 use crate::ComponentImportExportManager;
 use crate::ComponentManager;
@@ -25,6 +24,7 @@ use crate::RelationTypeManager;
 use crate::RelationTypeProviderRegistry;
 use crate::TypeSystemEventManager;
 use crate::WebResourceManager;
+use crate::springtime_di::injectable;
 
 // #[injectable]
 #[cfg_attr(feature = "springtime", injectable)]

@@ -75,9 +75,5 @@ pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> 
         }
     }
 
-    if contains_field {
-        Some(namespace)
-    } else {
-        None
-    }
+    if contains_field { Some(namespace) } else { None }
 }

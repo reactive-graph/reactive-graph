@@ -1,16 +1,16 @@
 use std::ops::Deref;
 
-use serde_json::json;
 use serde_json::Value;
+use serde_json::json;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
+use crate::component::COMPONENT_COMMAND;
 use crate::component::CommandProperties::COMMAND_ARGS;
 use crate::component::CommandProperties::COMMAND_HELP;
 use crate::component::CommandProperties::COMMAND_NAME;
 use crate::component::CommandProperties::COMMAND_NAMESPACE;
 use crate::component::CommandProperties::COMMAND_RESULT;
-use crate::component::COMPONENT_COMMAND;
 use crate::entity::Command;
 use crate::entity::CommandArgs;
 use reactive_graph_graph::ComponentTypeIds;
@@ -22,9 +22,9 @@ use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_reactive_model_impl::ReactiveProperties;
 use reactive_graph_runtime_model::ActionProperties::TRIGGER;
-use reactive_graph_runtime_model::LabeledProperties::LABEL;
 use reactive_graph_runtime_model::COMPONENT_ACTION;
 use reactive_graph_runtime_model::COMPONENT_LABELED;
+use reactive_graph_runtime_model::LabeledProperties::LABEL;
 
 pub type CommandExecutor = dyn FnMut(&ReactiveEntity) -> Value + 'static + Send;
 

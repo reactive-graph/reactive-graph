@@ -1,15 +1,17 @@
 use std::str::FromStr;
 use std::sync::Arc;
 
-use async_graphql::dynamic::*;
 use async_graphql::Error;
 use async_graphql::ID;
+use async_graphql::dynamic::*;
 use log::trace;
 use reactive_graph_dynamic_graph_api::EntityInstanceIsNotOfType;
 use reactive_graph_dynamic_graph_api::EntityInstanceNotFound;
 use serde_json::Value;
 use uuid::Uuid;
 
+use crate::DynamicGraphTypeDefinition;
+use crate::UNION_ALL_ENTITIES;
 use crate::create_properties_from_field_arguments;
 use crate::field_description::DynamicGraphFieldDescriptionExtension;
 use crate::field_name::DynamicGraphFieldNameExtension;
@@ -18,8 +20,6 @@ use crate::namespace_entities_union_type_name;
 use crate::to_field_value;
 use crate::to_input_type_ref;
 use crate::to_type_ref;
-use crate::DynamicGraphTypeDefinition;
-use crate::UNION_ALL_ENTITIES;
 use reactive_graph_dynamic_graph_api::SchemaBuilderContext;
 use reactive_graph_graph::ComponentOrEntityTypeId;
 use reactive_graph_graph::ComponentTypeId;

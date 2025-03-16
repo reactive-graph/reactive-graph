@@ -6,13 +6,13 @@ use serde_json::Value;
 
 use crate::builder::CommandDefinition;
 use crate::builder::CommandDefinitionBuilder;
-use crate::component::command::COMPONENT_COMMAND;
+use crate::component::COMMAND_PROPERTIES;
 use crate::component::CommandProperties::COMMAND_ARGS;
 use crate::component::CommandProperties::COMMAND_HELP;
 use crate::component::CommandProperties::COMMAND_NAME;
 use crate::component::CommandProperties::COMMAND_NAMESPACE;
 use crate::component::CommandProperties::COMMAND_RESULT;
-use crate::component::COMMAND_PROPERTIES;
+use crate::component::command::COMPONENT_COMMAND;
 use crate::entity::arg::CommandArgs;
 use crate::error::CommandArgsError;
 use crate::error::CommandExecutionFailed;
@@ -31,9 +31,9 @@ use reactive_graph_graph::SocketType;
 use reactive_graph_reactive_model_api::ReactivePropertyContainer;
 use reactive_graph_reactive_model_impl::ReactiveEntity;
 use reactive_graph_runtime_model::ActionProperties::TRIGGER;
-use reactive_graph_runtime_model::LabeledProperties::LABEL;
 use reactive_graph_runtime_model::COMPONENT_ACTION;
 use reactive_graph_runtime_model::COMPONENT_LABELED;
+use reactive_graph_runtime_model::LabeledProperties::LABEL;
 
 pub struct Command(ReactiveEntity);
 
@@ -251,13 +251,13 @@ mod tests {
     use reactive_graph_reactive_model_impl::ReactiveEntity;
     use reactive_graph_reactive_model_impl::ReactiveProperties;
 
+    use crate::CommandProperties::COMMAND_RESULT;
+    use crate::component::COMPONENT_COMMAND;
     use crate::component::CommandProperties::COMMAND_ARGS;
     use crate::component::CommandProperties::COMMAND_HELP;
     use crate::component::CommandProperties::COMMAND_NAME;
-    use crate::component::COMPONENT_COMMAND;
     use crate::entity::Command;
     use crate::error::CommandExecutionFailed;
-    use crate::CommandProperties::COMMAND_RESULT;
     use reactive_graph_graph::EntityTypeId;
     use reactive_graph_graph::PropertyInstanceGetter;
     use reactive_graph_graph::PropertyInstanceSetter;

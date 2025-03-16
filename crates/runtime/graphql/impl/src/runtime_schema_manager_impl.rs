@@ -3,17 +3,17 @@ use std::sync::Arc;
 use async_graphql::EmptySubscription;
 use async_graphql::Schema;
 use async_trait::async_trait;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_command_api::CommandManager;
 use reactive_graph_lifecycle::Lifecycle;
 use reactive_graph_remotes_api::InstanceService;
 use reactive_graph_remotes_api::RemotesManager;
 use reactive_graph_runtime_graphql_api::RuntimeSchemaManager;
+use reactive_graph_runtime_graphql_schema::RuntimeSchema;
 use reactive_graph_runtime_graphql_schema::mutation::RuntimeMutation;
 use reactive_graph_runtime_graphql_schema::query::RuntimeQuery;
-use reactive_graph_runtime_graphql_schema::RuntimeSchema;
 use reactive_graph_runtime_service_api::ShutdownManager;
 
 #[derive(Component)]

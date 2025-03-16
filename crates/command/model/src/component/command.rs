@@ -1,14 +1,14 @@
 use serde_json::json;
 
-use reactive_graph_graph::component_model;
-use reactive_graph_graph::component_ty;
-use reactive_graph_graph::properties;
 use reactive_graph_graph::DataType;
 use reactive_graph_graph::Mutability::Immutable;
 use reactive_graph_graph::PropertyType;
 use reactive_graph_graph::PropertyTypeDefinition;
 use reactive_graph_graph::PropertyTypes;
 use reactive_graph_graph::SocketType;
+use reactive_graph_graph::component_model;
+use reactive_graph_graph::component_ty;
+use reactive_graph_graph::properties;
 use reactive_graph_runtime_model::ActionProperties::TRIGGER;
 use reactive_graph_runtime_model::LabeledProperties::LABEL;
 use reactive_graph_runtime_model::NAMESPACE_CORE;

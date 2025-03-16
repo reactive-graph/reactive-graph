@@ -1,6 +1,6 @@
-use crate::schema_graphql::scalar::UUID;
 use crate::ExtensionDefinition;
 use crate::PropertyInstanceDefinition;
+use crate::schema_graphql::scalar::UUID;
 use reactive_graph_graph::EntityInstance;
 use reactive_graph_graph::EntityInstances;
 use reactive_graph_graph::NamespacedTypeGetter;

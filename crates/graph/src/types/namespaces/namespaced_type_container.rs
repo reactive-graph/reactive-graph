@@ -5,8 +5,8 @@ use dashmap::DashMap;
 use dashmap::DashSet;
 use wildmatch::WildMatch;
 
-use crate::types::Namespaces;
 use crate::NamespacedTypeGetter;
+use crate::types::Namespaces;
 
 pub trait NamespacedTypeContainer
 where

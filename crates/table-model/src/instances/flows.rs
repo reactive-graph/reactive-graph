@@ -2,12 +2,12 @@ use crate::container::TableInlineFormat;
 use crate::container::TableInlineFormatSetter;
 use crate::container::TableOptions;
 use reactive_graph_graph::NamespacedTypeGetter;
-use tabled::settings::object::Segment;
+use tabled::Table;
+use tabled::Tabled;
 use tabled::settings::Modify;
 use tabled::settings::Style;
 use tabled::settings::Width;
-use tabled::Table;
-use tabled::Tabled;
+use tabled::settings::object::Segment;
 
 #[derive(Clone, Debug, Tabled)]
 pub struct FlowInstance {

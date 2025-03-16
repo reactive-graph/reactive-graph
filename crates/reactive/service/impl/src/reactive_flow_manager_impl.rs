@@ -9,8 +9,8 @@ use log::error;
 use log::trace;
 use path_tree::PathTree;
 use serde_json::Value;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 use uuid::Uuid;
 
 use reactive_graph_graph::EntityInstance;

@@ -1,7 +1,7 @@
 use std::ops::Deref;
+use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
-use std::sync::Arc;
 
 use async_trait::async_trait;
 use dashmap::DashMap;
@@ -17,8 +17,8 @@ use reactive_graph_reactive_service_api::ReactiveRelationPropertyRemoveError;
 use reactive_graph_reactive_service_api::ReactiveRelationRegistrationError;
 use serde_json::Value;
 use springtime_di::Component;
-use tokio::time::sleep;
 use tokio::time::Duration;
+use tokio::time::sleep;
 use uuid::Uuid;
 
 use reactive_graph_behaviour_model_api::BehaviourTypeId;

@@ -3,8 +3,8 @@ use std::sync::Arc;
 use async_graphql::Response;
 use async_trait::async_trait;
 use log::trace;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 use reactive_graph_dynamic_graph_api::DynamicGraphQueryService;
 use reactive_graph_dynamic_graph_api::DynamicGraphSchemaManager;

@@ -1,8 +1,8 @@
-use async_graphql::dynamic::ResolverContext;
 use async_graphql::Error;
+use async_graphql::dynamic::ResolverContext;
 use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
-use serde_json::json;
 use serde_json::Value;
+use serde_json::json;
 
 use reactive_graph_graph::DataType;
 use reactive_graph_graph::PropertyInstances;

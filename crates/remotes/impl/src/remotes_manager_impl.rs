@@ -19,8 +19,8 @@ use reactive_graph_remotes_api::FailedToUpdateInstance;
 use reactive_graph_remotes_api::RemotesManager;
 use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_remotes_model::InstanceInfo;
-use springtime_di::component_alias;
 use springtime_di::Component;
+use springtime_di::component_alias;
 
 #[derive(Component)]
 pub struct RemotesManagerImpl {

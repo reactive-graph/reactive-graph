@@ -1,12 +1,12 @@
 use schemars::schema_for;
 use uuid::Uuid;
 
-use crate::entity_instance_tests::create_entity_instance_from_type;
 use crate::EntityInstances;
 use crate::EntityTypeId;
 use crate::FlowInstance;
 use crate::NamespacedTypeGetter;
 use crate::RelationInstances;
+use crate::entity_instance_tests::create_entity_instance_from_type;
 use reactive_graph_test_utils::r_string;
 
 #[test]

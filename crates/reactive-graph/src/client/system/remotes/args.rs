@@ -1,8 +1,8 @@
 use clap::Args;
 
 use crate::client::system::remotes::commands::RemotesCommands;
-use reactive_graph_remotes_model::InstanceAddress;
 use reactive_graph_remotes_model::DEFAULT_PORT;
+use reactive_graph_remotes_model::InstanceAddress;
 
 #[derive(Args, Debug, Clone)]
 #[clap(subcommand_required = true)]
