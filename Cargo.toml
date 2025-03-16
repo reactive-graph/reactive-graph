@@ -75,7 +75,7 @@ resolver = "2"
 [workspace.package]
 version = "0.10.0"
 authors = ["Andreas Schaeffer <hanack@nooblounge.net>"]
-edition = "2021"
+edition = "2024"
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/reactive-graph/reactive-graph"
@@ -136,8 +136,8 @@ portpicker = "0.1.1"
 proc-macro2 = "1.0"
 query_interface = "0.3"
 quote = "1.0"
-rand = "0.8"
-rand_derive2 = "0.1"
+rand = "0.9"
+rand_derive3 = { version = "0.2", git = "https://github.com/reactive-graph/rand_derive3.git", branch = "rust-edition-2024" }
 random-string = "1.0"
 rayon = "1.6"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }

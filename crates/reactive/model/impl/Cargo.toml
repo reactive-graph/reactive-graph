@@ -28,7 +28,7 @@ criterion = { workspace = true, features = ["html_reports"] }
 default-test = { workspace = true }
 random-string = { workspace = true }
 rand = { workspace = true }
-rand_derive2 = { workspace = true }
+rand_derive3 = { workspace = true }
 stopwatch2 = { workspace = true }
 
 reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }

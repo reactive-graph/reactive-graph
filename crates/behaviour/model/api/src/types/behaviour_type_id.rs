@@ -7,19 +7,19 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter_set::OwningIter;
 use dashmap::DashSet;
+use dashmap::iter_set::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
+use rand_derive3::RandGen;
 use reactive_graph_graph::prelude::*;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 
@@ -192,8 +192,8 @@ impl JsonSchema for BehaviourTypeIds {
         "BehaviourTypeIds".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<BehaviourTypeId>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<BehaviourTypeId>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -309,8 +309,8 @@ impl DefaultTest for BehaviourTypeId {
 impl DefaultTest for BehaviourTypeIds {
     fn default_test() -> Self {
         let tys = Self::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             tys.insert(BehaviourTypeId::default_test());
         }
         tys

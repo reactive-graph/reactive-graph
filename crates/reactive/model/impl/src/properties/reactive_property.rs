@@ -3,8 +3,8 @@ use std::ops::DerefMut;
 use std::sync::Arc;
 use std::sync::RwLock;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 use serde_json::Map;
 use serde_json::Value;
 
@@ -261,10 +261,10 @@ impl<IdType: Clone> From<&ReactiveProperties<IdType>> for PropertyInstances {
 pub mod tests {
     use std::ops::DerefMut;
     use std::ops::Index;
-    use std::sync::atomic::AtomicU64;
-    use std::sync::atomic::Ordering;
     use std::sync::Arc;
     use std::sync::RwLock;
+    use std::sync::atomic::AtomicU64;
+    use std::sync::atomic::Ordering;
     use std::thread;
 
     use rand::Rng;
@@ -558,9 +558,9 @@ pub mod tests {
             );
         }
 
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
 
-        let number: u64 = rng.gen();
+        let number: u64 = rng.random();
         instance1.set(json!(number));
     }
 
@@ -606,11 +606,11 @@ pub mod tests {
             let v = v.clone();
             let stream = instance1.stream.clone();
             let handle = thread::spawn(move || {
-                let mut rng = rand::thread_rng();
+                let mut rng = rand::rng();
                 let mut s = Stopwatch::default();
                 s.start();
                 for _iteration in 1..NUM_ITERATIONS {
-                    let number: u64 = rng.gen();
+                    let number: u64 = rng.random();
                     let value = json!(number);
                     let writer = stream.write().unwrap();
                     writer.send(&value);

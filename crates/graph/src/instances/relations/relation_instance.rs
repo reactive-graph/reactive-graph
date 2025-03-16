@@ -6,16 +6,16 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
@@ -26,7 +26,6 @@ use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
-use crate::instances::named::NamedInstanceContainer;
 use crate::AddExtensionError;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIdContainer;
@@ -47,6 +46,7 @@ use crate::RemoveExtensionError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
+use crate::instances::named::NamedInstanceContainer;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::r_string;
 
@@ -443,8 +443,8 @@ impl JsonSchema for RelationInstances {
         "RelationInstances".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<RelationInstance>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<RelationInstance>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -523,8 +523,8 @@ impl DefaultTest for RelationInstance {
 impl DefaultTest for RelationInstances {
     fn default_test() -> Self {
         let relation_instances = RelationInstances::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             relation_instances.push(RelationInstance::default_test());
         }
         relation_instances
@@ -868,9 +868,11 @@ mod tests {
         assert_eq!("B0IgcIiV", relation_instance.description);
         assert_eq!("property_value", relation_instance.properties.get("property_name").unwrap().as_str().unwrap());
         assert_eq!(2, relation_instance.extensions.len());
-        assert!(relation_instance
-            .extensions
-            .has_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name")));
+        assert!(
+            relation_instance
+                .extensions
+                .has_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name"))
+        );
         assert_eq!(
             json!("ext_value"),
             relation_instance
@@ -879,9 +881,11 @@ mod tests {
                 .unwrap()
                 .extension
         );
-        assert!(relation_instance
-            .extensions
-            .has_own_extension(&ExtensionTypeId::new_from_type("other_ext_namespace", "other_ext_name")));
+        assert!(
+            relation_instance
+                .extensions
+                .has_own_extension(&ExtensionTypeId::new_from_type("other_ext_namespace", "other_ext_name"))
+        );
         assert_eq!(
             json!("other_extension_value"),
             relation_instance

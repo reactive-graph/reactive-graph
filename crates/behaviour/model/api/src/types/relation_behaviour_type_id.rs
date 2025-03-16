@@ -7,12 +7,12 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter_set::OwningIter;
 use dashmap::DashSet;
-use schemars::json_schema;
+use dashmap::iter_set::OwningIter;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use typed_builder::TypedBuilder;
@@ -26,7 +26,7 @@ use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
+use rand_derive3::RandGen;
 
 /// The behaviour of a relation type.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -132,8 +132,8 @@ impl JsonSchema for RelationBehaviourTypeIds {
         "RelationBehaviourTypeIds".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<RelationBehaviourTypeId>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<RelationBehaviourTypeId>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -212,8 +212,8 @@ impl DefaultTest for RelationBehaviourTypeId {
 impl DefaultTest for RelationBehaviourTypeIds {
     fn default_test() -> Self {
         let tys = Self::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             tys.insert(RelationBehaviourTypeId::default_test());
         }
         tys

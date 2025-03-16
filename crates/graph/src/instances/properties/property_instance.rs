@@ -6,10 +6,10 @@ use std::ops::DerefMut;
 
 use dashmap::DashMap;
 use dashmap::DashSet;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use serde_json::Map;
@@ -260,8 +260,8 @@ use serde_json::json;
 impl DefaultTest for PropertyInstances {
     fn default_test() -> Self {
         let property_instances = PropertyInstances::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             property_instances.insert(r_string(), json!(r_string()));
         }
         property_instances

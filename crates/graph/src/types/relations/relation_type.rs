@@ -4,14 +4,14 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::borrow::Cow;
@@ -465,8 +465,8 @@ impl JsonSchema for RelationTypes {
         "RelationTypes".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<RelationType>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<RelationType>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -556,7 +556,7 @@ impl RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (Compon
         self,
         ty: C,
     ) -> RelationTypeBuilder<((ComponentOrEntityTypeId,), (RelationTypeId,), (ComponentOrEntityTypeId,), (), (ComponentTypeIds,), (), ())> {
-        self.fields.4 .0.insert(ty.into());
+        self.fields.4.0.insert(ty.into());
         self
     }
 }
@@ -617,7 +617,7 @@ impl
         (PropertyTypes,),
         (),
     )> {
-        self.fields.5 .0.push(property.into());
+        self.fields.5.0.push(property.into());
         self
     }
 }

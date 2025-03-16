@@ -7,7 +7,7 @@ use serde::Deserialize;
 use serde::Serialize;
 
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
+use rand_derive3::RandGen;
 
 /// The mutability of a property.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]

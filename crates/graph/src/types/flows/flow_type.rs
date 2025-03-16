@@ -4,16 +4,16 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::borrow::Cow;
@@ -681,8 +681,8 @@ impl JsonSchema for FlowTypes {
         "FlowTypes".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<FlowType>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<FlowType>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -757,8 +757,8 @@ impl DefaultTest for FlowType {
 impl DefaultTest for FlowTypes {
     fn default_test() -> Self {
         let flow_types = FlowTypes::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             flow_types.push(FlowType::default_test());
         }
         flow_types
@@ -771,7 +771,6 @@ mod tests {
     use serde_json::json;
     use uuid::Uuid;
 
-    use crate::entity_instance_tests::create_entity_instance_with_property;
     use crate::DataType;
     use crate::EntityInstanceContainer;
     use crate::Extension;
@@ -788,6 +787,7 @@ mod tests {
     use crate::Variable;
     use crate::Variables;
     use crate::VariablesContainer;
+    use crate::entity_instance_tests::create_entity_instance_with_property;
     use reactive_graph_test_utils::r_string;
 
     #[test]

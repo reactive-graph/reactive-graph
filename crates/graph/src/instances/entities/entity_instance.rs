@@ -6,16 +6,16 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter::OwningIter;
 use dashmap::DashMap;
+use dashmap::iter::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
-use schemars::json_schema;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Deserializer;
 use serde::Serialize;
@@ -26,9 +26,6 @@ use std::borrow::Cow;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
-use crate::instances::named::NamedInstanceContainer;
-#[cfg(any(test, feature = "test"))]
-use crate::test_utils::default_from::DefaultFrom;
 use crate::AddExtensionError;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIdContainer;
@@ -49,6 +46,9 @@ use crate::RemoveExtensionError;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::UpdateExtensionError;
+use crate::instances::named::NamedInstanceContainer;
+#[cfg(any(test, feature = "test"))]
+use crate::test_utils::default_from::DefaultFrom;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::r_string;
 
@@ -375,8 +375,8 @@ impl JsonSchema for EntityInstances {
         "EntityInstances".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<EntityInstance>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<EntityInstance>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -467,8 +467,8 @@ impl DefaultFrom<EntityType> for EntityInstance {
 impl DefaultTest for EntityInstances {
     fn default_test() -> Self {
         let entity_instances = EntityInstances::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             entity_instances.push(EntityInstance::default_test());
         }
         entity_instances
@@ -732,9 +732,11 @@ pub mod entity_instance_tests {
         assert!(entity_instance.components.is_a(&ComponentTypeId::new_from_type("c_namespace", "c_name")));
         assert!(entity_instance.is_a(&ComponentTypeId::new_from_type("c_namespace", "c_name")));
         assert_eq!(2, entity_instance.extensions.len());
-        assert!(entity_instance
-            .extensions
-            .has_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name")));
+        assert!(
+            entity_instance
+                .extensions
+                .has_own_extension(&ExtensionTypeId::new_from_type("ext_namespace", "ext_name"))
+        );
         assert_eq!(
             json!("extension_value"),
             entity_instance
@@ -743,9 +745,11 @@ pub mod entity_instance_tests {
                 .unwrap()
                 .extension
         );
-        assert!(entity_instance
-            .extensions
-            .has_own_extension(&ExtensionTypeId::new_from_type("other_ext_namespace", "other_ext_name")));
+        assert!(
+            entity_instance
+                .extensions
+                .has_own_extension(&ExtensionTypeId::new_from_type("other_ext_namespace", "other_ext_name"))
+        );
         assert_eq!(
             json!("other_extension_value"),
             entity_instance

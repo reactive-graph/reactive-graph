@@ -20,8 +20,8 @@ pub struct EntityPropertyInstanceStream {
 impl EntityPropertyInstanceStream {
     pub fn new(entity_instance: ReactiveEntity, property_name: String) -> EntityPropertyInstanceStream {
         debug!("Opened subscription entity({})[{}]", entity_instance.id, property_name);
-        let mut rng = rand::thread_rng();
-        let handle_id = rng.gen::<u128>();
+        let mut rng = rand::rng();
+        let handle_id = rng.random::<u128>();
         let entity_instance2 = entity_instance.clone();
         let property_instance = entity_instance2.properties.get(&property_name).unwrap();
         let (sender, receiver) = crossbeam::channel::unbounded();

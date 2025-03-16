@@ -6,18 +6,18 @@ use std::hash::Hasher;
 use std::ops::Deref;
 use std::ops::DerefMut;
 
-use dashmap::iter_set::OwningIter;
 use dashmap::DashSet;
+use dashmap::iter_set::OwningIter;
 #[cfg(any(test, feature = "test"))]
 use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
-use schemars::json_schema;
+use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;
+use schemars::json_schema;
 use serde::Deserialize;
 use serde::Serialize;
 use std::borrow::Cow;
@@ -27,10 +27,10 @@ use crate::NamespacedType;
 use crate::NamespacedTypeGetter;
 use crate::NamespacedTypeIdContainer;
 use crate::NamespacedTypeIds;
+use crate::TYPE_ID_TYPE_SEPARATOR;
 use crate::TypeDefinition;
 use crate::TypeDefinitionGetter;
 use crate::TypeIdType;
-use crate::TYPE_ID_TYPE_SEPARATOR;
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[cfg_attr(any(test, feature = "test"), derive(RandGen))]
@@ -236,8 +236,8 @@ impl JsonSchema for ComponentTypeIds {
         "ComponentTypeIds".into()
     }
 
-    fn json_schema(gen: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = gen.subschema_for::<ComponentTypeId>().into();
+    fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
+        let sub_schema: Schema = schema_generator.subschema_for::<ComponentTypeId>().into();
         json_schema!({
             "type": "array",
             "items": sub_schema,
@@ -322,8 +322,8 @@ impl DefaultTest for ComponentTypeId {
 impl DefaultTest for ComponentTypeIds {
     fn default_test() -> Self {
         let tys = Self::new();
-        let mut rng = rand::thread_rng();
-        for _ in 0..rng.gen_range(0..10) {
+        let mut rng = rand::rng();
+        for _ in 0..rng.random_range(0..10) {
             tys.insert(ComponentTypeId::default_test());
         }
         tys

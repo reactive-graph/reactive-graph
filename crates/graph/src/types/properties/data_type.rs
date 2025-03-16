@@ -8,12 +8,12 @@ use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use rand_derive2::RandGen;
+use rand_derive3::RandGen;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use serde::Serialize;
-use serde_json::json;
 use serde_json::Value;
+use serde_json::json;
 
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_test_utils::r_string;
@@ -103,27 +103,27 @@ impl DataType {
     /// in tests. Default values may contain literals, unique numbers, etc, to make test
     /// assertions easier to work with.
     pub fn default_value_test(&self) -> Value {
-        let mut rng = rand::thread_rng();
+        let mut rng = rand::rng();
         match self {
             DataType::Bool => {
-                let b: bool = rng.gen();
+                let b: bool = rng.random();
                 json!(b)
             }
             DataType::Number => {
-                let number: i64 = rng.gen();
+                let number: i64 = rng.random();
                 json!(number)
             }
             DataType::String => json!(r_string()),
             DataType::Array => {
                 let mut array = Vec::<Value>::new();
-                for _ in 0..rng.gen_range(0..10) {
+                for _ in 0..rng.random_range(0..10) {
                     array.push(DataType::generate_random_primitive().default_value_test());
                 }
                 json!(array)
             }
             DataType::Object => {
                 let mut object = HashMap::<String, Value>::new();
-                for _ in 0..rng.gen_range(0..10) {
+                for _ in 0..rng.random_range(0..10) {
                     object.insert(r_string(), DataType::generate_random_primitive().default_value_test());
                 }
                 json!(object)
