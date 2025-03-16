@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["create_flow_type_mutation","create_flow_type_with_variables"],"struct":["CreateFlowType","CreateFlowTypeVariables","CreateFlowTypeVariablesFields","MutationFlowTypes","MutationTypes"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["__typename","countEntityBehaviours","countEntityComponentBehaviours","countRelationBehaviours","countRelationComponentBehaviours","entities","entityComponents","relationComponents","relations"]};

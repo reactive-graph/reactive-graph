@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["get_by_id","get_by_label","search"]};

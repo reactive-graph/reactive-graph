@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["instance","instance_address","property_instance","scalar","schema"]};
