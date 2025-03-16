@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Infrastructure
 
+- CI: Update rust nightly toolchain to nightly-2024-10-19
+
 ## [0.10.0-alpha-2] - 2024-10-27
 
 ### Added
