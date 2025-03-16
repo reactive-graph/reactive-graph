@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- `#[unsafe(no_mangle)]`
+
 ### Distribution
 
 - Docker: Added static labels (org.opencontainers.image)
