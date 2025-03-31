@@ -34,7 +34,13 @@ env:
 jobs:
   docker-image:
     name: Docker Image
-    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-22.04
+          - os: ubuntu-22.04-arm
+    runs-on: ${{ matrix.os }}
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
