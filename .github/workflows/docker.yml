@@ -71,7 +71,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=workflow_dispatch
             type=semver,pattern={{version}}
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=nightly,enable={{is_default_branch}}
@@ -126,7 +125,6 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=workflow_dispatch
             type=semver,pattern={{version}}
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value=nightly,enable={{is_default_branch}}
