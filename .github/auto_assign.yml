@@ -1,0 +1,6 @@
+addAssignees: author
+numberOfAssignees: 0
+addReviewers: true
+numberOfReviewers: 0
+reviewers:
+  - aschaeffer
