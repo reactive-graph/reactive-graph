@@ -280,7 +280,7 @@ jobs:
             os: ubuntu-22.04
           - target: armv7-unknown-linux-gnueabihf
             # libc 2.35
-            os: ubuntu-22.04
+            os: ubuntu-22.04-arm
           - target: powerpc-unknown-linux-gnu
             # libc 2.35
             os: ubuntu-22.04
