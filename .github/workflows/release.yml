@@ -103,13 +103,13 @@ jobs:
           # Tier 2
           # ARM64 Linux with musl 1.2.3
           - target: aarch64-unknown-linux-musl
-            os: ubuntu-22.04-arm
+            os: ubuntu-24.04-arm
           # Armv7-A Linux, hardfloat (kernel 3.2, glibc 2.17)
           - target: armv7-unknown-linux-gnueabihf
             os: ubuntu-22.04
           # Armv7-A Linux with musl 1.2.3, hardfloat
           - target: armv7-unknown-linux-musleabihf
-            os: ubuntu-22.04
+            os: ubuntu-24.04-arm
           # 64-bit Linux with musl 1.2.3
           - target: x86_64-unknown-linux-musl
             os: ubuntu-22.04
