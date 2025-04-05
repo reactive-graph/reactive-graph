@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Added multi platform docker image (amd64 + arm64)
 - CI: Automatically label pull requests
 - CI: Automatically mark pull requests as stale
+- CI: Automatically assign assignee and reviewers
 - CI: Fix powerpc and arm64 release targets
 
 ## [0.10.0-alpha-2] - 2024-10-27
