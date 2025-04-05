@@ -173,6 +173,9 @@ jobs:
           packages: binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu
           version: 1.0
         if: matrix.target == 'riscv64gc-unknown-linux-gnu'
+      - name: Set AWS_LC_SYS_CFLAGS on powerpc-unknown-linux-gnu
+        run: echo 'AWS_LC_SYS_CFLAGS="-Wno-stringop-overflow"' >> "$GITHUB_ENV"
+        if: matrix.target == 'powerpc-unknown-linux-gnu'
       # The flag below is set to avoid the following error with GCC 11.4.0 on the riscv64 platform:
       # error: 'strncmp' of strings of length 1 and 9 and bound of 9 evaluates to nonzero [-Werror=string-compare]
       - name: Set AWS_LC_SYS_CFLAGS on riscv64gc-unknown-linux-gnu
@@ -341,6 +344,9 @@ jobs:
           packages: binutils-riscv64-linux-gnu gcc-riscv64-linux-gnu
           version: 1.0
         if: matrix.target == 'riscv64gc-unknown-linux-gnu'
+      - name: Set AWS_LC_SYS_CFLAGS on powerpc-unknown-linux-gnu
+        run: echo 'AWS_LC_SYS_CFLAGS="-Wno-stringop-overflow"' >> "$GITHUB_ENV"
+        if: matrix.target == 'powerpc-unknown-linux-gnu'
       # The flag below is set to avoid the following error with GCC 11.4.0 on the riscv64 platform:
       # error: 'strncmp' of strings of length 1 and 9 and bound of 9 evaluates to nonzero [-Werror=string-compare]
       - name: Set AWS_LC_SYS_CFLAGS on riscv64gc-unknown-linux-gnu
