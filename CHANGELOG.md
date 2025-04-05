@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Added GitHub Actions runner for arm64 ubuntu-22.04-arm
 - CI: Generate release binaries and debian packages for arm64 using the arm64 runner
 - CI: Added support for arm64 docker images
-- CI: Merge docker manifests for different arch
+- CI: Added multi platform docker image (amd64 + arm64)
 - CI: Automatically label pull requests
 - CI: Automatically mark pull requests as stale
 
