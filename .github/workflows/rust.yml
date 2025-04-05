@@ -1,4 +1,5 @@
 name: Rust
+run-name: Build ${{ github.ref == 'refs/heads/main' && 'nightly' || github.ref_name }} by @${{ github.actor }}
 
 on:
   push:
