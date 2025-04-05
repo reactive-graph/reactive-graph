@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Added support for arm64 docker images
 - CI: Merge docker manifests for different arch
 - CI: Automatically label pull requests
+- CI: Automatically mark pull requests as stale
 
 ## [0.10.0-alpha-2] - 2024-10-27
 
