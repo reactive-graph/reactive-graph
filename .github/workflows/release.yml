@@ -121,7 +121,7 @@ jobs:
             os: ubuntu-22.04
           # PPC64LE Linux (kernel 3.10, glibc 2.17)
           - target: powerpc64le-unknown-linux-gnu
-            os: ubuntu-22.04
+            os: ubuntu-24.04
           # RISC-V Linux (kernel 4.20, glibc 2.29)
           - target: riscv64gc-unknown-linux-gnu
             os: ubuntu-22.04
@@ -288,8 +288,8 @@ jobs:
             # libc 2.35
             os: ubuntu-22.04
           - target: powerpc64le-unknown-linux-gnu
-            # libc 2.35
-            os: ubuntu-22.04
+            # libc 2.39
+            os: ubuntu-24.04
           - target: riscv64gc-unknown-linux-gnu
             # libc 2.35
             os: ubuntu-22.04
