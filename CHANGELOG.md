@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Generate release binaries and debian packages for arm64 using the arm64 runner
 - CI: Added support for arm64 docker images
 - CI: Merge docker manifests for different arch
+- CI: Automatically label pull requests
 
 ## [0.10.0-alpha-2] - 2024-10-27
 
