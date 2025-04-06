@@ -1,12 +1,18 @@
-name: "Auto Assign"
+name: Auto Assign
 run-name: Auto Assign Pull Request  ${{ github.ref_name }} by @${{ github.actor }}
 
 on:
-  pull_request:
-    types: [ opened, ready_for_review ]
+  pull_request_target:
+    types:
+      - opened
+      - ready_for_review
+
+permissions:
+  pull-requests: write
+  contents: write
 
 jobs:
-  add-reviewers:
+  auto-assign:
     runs-on: ubuntu-22.04
     steps:
       - uses: kentaro-m/auto-assign-action@v2.0.0
