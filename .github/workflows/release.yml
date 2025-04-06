@@ -106,7 +106,7 @@ jobs:
             os: ubuntu-24.04-arm
           # Armv7-A Linux, hardfloat (kernel 3.2, glibc 2.17)
           - target: armv7-unknown-linux-gnueabihf
-            os: ubuntu-22.04
+            os: ubuntu-24.04-arm
           # Armv7-A Linux with musl 1.2.3, hardfloat
           - target: armv7-unknown-linux-musleabihf
             os: ubuntu-24.04-arm
