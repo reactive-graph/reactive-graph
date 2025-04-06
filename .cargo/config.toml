@@ -23,13 +23,13 @@ linker = "x86_64-w64-mingw32-gcc"
 #linker = "aarch64-linux-gnu-gcc"
 
 [target.armv7-unknown-linux-musleabihf]
-objcopy = { path = "arm-none-eabi-objcopy" }
-strip = { path = "arm-none-eabi-strip" }
+objcopy = { path = "arm-linux-gnueabihf-objcopy" }
+strip = { path = "arm-linux-gnueabihf-strip" }
 linker = "arm-linux-gnueabihf-gcc"
 
 [target.armv7-unknown-linux-gnueabihf]
-objcopy = { path = "arm-none-eabi-objcopy" }
-strip = { path = "arm-none-eabi-strip" }
+objcopy = { path = "arm-linux-gnueabihf-objcopy" }
+strip = { path = "arm-linux-gnueabihf-strip" }
 linker = "arm-linux-gnueabihf-gcc"
 
 [target.powerpc-unknown-linux-gnu]
