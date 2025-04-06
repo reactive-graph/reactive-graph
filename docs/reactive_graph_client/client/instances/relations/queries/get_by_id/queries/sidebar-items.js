@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_by_id"],"struct":["GetRelationInstanceById","GetRelationInstanceByIdInstances"]};

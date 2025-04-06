@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_relation_type_components_query"],"struct":["GetRelationTypeComponents","GetRelationTypeComponentsComponents","GetRelationTypeComponentsTypes"]};

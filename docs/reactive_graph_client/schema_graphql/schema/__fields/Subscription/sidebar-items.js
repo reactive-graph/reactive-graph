@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["_entity_arguments","_relation_arguments"],"struct":["__typename","entity","relation"]};

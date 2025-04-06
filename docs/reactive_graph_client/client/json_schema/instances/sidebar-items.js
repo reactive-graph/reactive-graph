@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["entities","flows","relations"],"struct":["JsonSchemaInstanceSystem"]};
