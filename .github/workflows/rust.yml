@@ -1,5 +1,5 @@
 name: Rust
-run-name: Build ${{ github.ref == 'refs/heads/main' && 'nightly' || github.ref_name }} by @${{ github.actor }}
+run-name: Build ${{ github.ref == 'refs/heads/main' && 'Nightly' || github.event_name == 'pull_request' && format('{0} {1}', 'Pull Request', github.event.pull_request.number) || format('{0} {1}', 'Branch', github.ref) }} by @${{ github.actor }}
 
 on:
   push:
