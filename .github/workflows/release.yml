@@ -144,7 +144,7 @@ jobs:
       - name: Install Compiler Tools for Target armv7-unknown-linux-gnueabihf
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: binutils-arm-none-eabi gcc-arm-linux-gnueabihf libclang1
+          packages: binutils-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
           version: 1.0
         if: |
           matrix.target == 'armv7-unknown-linux-gnueabihf' ||
@@ -315,11 +315,10 @@ jobs:
       - name: Install Compiler Tools for Target armv7-unknown-linux-gnueabihf
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: binutils-arm-none-eabi gcc-arm-linux-gnueabihf
+          packages: binutils-arm-linux-gnueabihf gcc-arm-linux-gnueabihf
           version: 1.0
         if: |
-          matrix.target == 'armv7-unknown-linux-gnueabihf' ||
-          matrix.target == 'armv7-unknown-linux-musleabihf'
+          matrix.target == 'armv7-unknown-linux-gnueabihf'
       - name: Install Compiler Tools for Target powerpc-unknown-linux-gnu
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
