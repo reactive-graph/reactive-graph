@@ -1,4 +1,4 @@
-name: "Pull Request Labeler"
+name: Pull Request Labeler
 run-name: Labeling Pull Request on ${{ github.ref_name }} by @${{ github.actor }}
 
 on:
