@@ -137,7 +137,7 @@ random-string = "1.1"
 rcgen = { version = "0.13", default-features = false, features = ["aws_lc_rs"] }
 reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
 rust-embed = { version = "8.6", features = ["debug-embed", "compression"] }
-rustls = { version = "0.23.25", features = ["aws_lc_rs"] }
+rustls = { version = "0.23.26", features = ["aws_lc_rs"] }
 rustls-cert-gen = { version = "0.1", default-features = false, features = ["aws_lc_rs"] }
 rustls-pemfile = "2.2"
 rustversion = "1.0"
