@@ -95,6 +95,7 @@ jobs:
           retention-days: 1
 
   merge:
+    name: Merge Digests
     runs-on: ubuntu-22.04
     needs:
       - docker-image
