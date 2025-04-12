@@ -39,28 +39,28 @@ p:dependencies:
 c:command-system:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/command/**
+          - crates/command/**
 c:plugin-system:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/plugin/**
+          - crates/plugin/**
 c:runtime:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/runtime/**
+          - crates/runtime/**
 c:rust-client:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/client/**
+          - crates/client/**
 c:instance-system:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/instance-system/**
+          - crates/instance-system/**
 c:reactive-behaviour-system:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/behaviour/**
-          - creates/reactive/**
+          - crates/behaviour/**
+          - crates/reactive/**
 c:security:
   - changed-files:
       - any-glob-to-any-file:
@@ -68,13 +68,13 @@ c:security:
 c:type-system:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/type-system/**
+          - crates/type-system/**
 i:dynamic-graph:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/dynamic-graph/**
+          - crates/dynamic-graph/**
 i:graphql:
   - changed-files:
       - any-glob-to-any-file:
-          - creates/graphql/**
-          - creates/runtime/graphql/**
+          - crates/graphql/**
+          - crates/runtime/graphql/**
