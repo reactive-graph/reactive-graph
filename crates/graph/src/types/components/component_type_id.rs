@@ -237,7 +237,7 @@ impl JsonSchema for ComponentTypeIds {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<ComponentTypeId>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<ComponentTypeId>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

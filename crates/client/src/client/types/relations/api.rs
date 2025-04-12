@@ -140,8 +140,7 @@ impl RelationTypes {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.relations.delete)
-            .map(From::from);
+            .map(|data| data.types.relations.delete);
         Ok(relation_type)
     }
 
@@ -154,8 +153,7 @@ impl RelationTypes {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.relations.delete)
-            .map(From::from);
+            .map(|data| data.types.relations.delete);
         Ok(relation_type)
     }
 

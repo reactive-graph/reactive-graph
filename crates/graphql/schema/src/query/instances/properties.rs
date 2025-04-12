@@ -64,28 +64,22 @@ impl GraphQLPropertyInstance {
             GraphQLPropertyTypeContainer::None => None,
             GraphQLPropertyTypeContainer::Entity(ty) => match context.data::<Arc<dyn EntityTypeManager + Send + Sync>>() {
                 Ok(entity_type_manager) => match entity_type_manager.get(ty) {
-                    Some(entity_type) => {
-                        let property_type = entity_type
-                            .properties
-                            .iter()
-                            .find(|property_type| property_type.name == property_name)
-                            .map(|property_type| property_type.value().clone().into());
-                        property_type
-                    }
+                    Some(entity_type) => entity_type
+                        .properties
+                        .iter()
+                        .find(|property_type| property_type.name == property_name)
+                        .map(|property_type| property_type.value().clone().into()),
                     None => None,
                 },
                 Err(_) => None,
             },
             GraphQLPropertyTypeContainer::Relation(ty) => match context.data::<Arc<dyn RelationTypeManager + Send + Sync>>() {
                 Ok(relation_type_manager) => match relation_type_manager.get(ty) {
-                    Some(relation_type) => {
-                        let property_type = relation_type
-                            .properties
-                            .iter()
-                            .find(|property_type| property_type.name == property_name)
-                            .map(|property_type| property_type.value().clone().into());
-                        property_type
-                    }
+                    Some(relation_type) => relation_type
+                        .properties
+                        .iter()
+                        .find(|property_type| property_type.name == property_name)
+                        .map(|property_type| property_type.value().clone().into()),
                     None => None,
                 },
                 Err(_) => None,

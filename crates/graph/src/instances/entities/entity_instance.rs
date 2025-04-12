@@ -376,7 +376,7 @@ impl JsonSchema for EntityInstances {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<EntityInstance>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<EntityInstance>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

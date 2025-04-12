@@ -101,8 +101,7 @@ impl FlowInstances {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.instances.flows.delete)
-            .map(From::from);
+            .map(|data| data.instances.flows.delete);
         Ok(flow_instance)
     }
 }

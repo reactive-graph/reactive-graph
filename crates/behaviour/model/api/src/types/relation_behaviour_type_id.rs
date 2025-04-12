@@ -133,7 +133,7 @@ impl JsonSchema for RelationBehaviourTypeIds {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<RelationBehaviourTypeId>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<RelationBehaviourTypeId>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

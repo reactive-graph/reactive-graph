@@ -190,8 +190,7 @@ impl RelationInstances {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.instances.relations.delete)
-            .map(From::from);
+            .map(|data| data.instances.relations.delete);
         Ok(relation_instance)
     }
 }

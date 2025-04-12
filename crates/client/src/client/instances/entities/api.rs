@@ -209,8 +209,7 @@ impl EntityInstances {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.instances.entities.delete)
-            .map(From::from);
+            .map(|data| data.instances.entities.delete);
         Ok(entity_instance)
     }
 }

@@ -207,7 +207,7 @@ impl JsonSchema for FlowTypeIds {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<FlowTypeId>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<FlowTypeId>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

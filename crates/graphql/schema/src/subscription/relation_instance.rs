@@ -23,7 +23,7 @@ impl RelationPropertyInstanceStream {
         debug!(
             "Opened subscription relation({}__{}__{})[{}]",
             relation_instance.inbound.id,
-            relation_instance.type_definition().to_string(),
+            relation_instance.type_definition(),
             relation_instance.outbound.id,
             property_name
         );
@@ -69,7 +69,7 @@ impl Drop for RelationPropertyInstanceStream {
         debug!(
             "Closing subscription relation({}__{}__{})[{}]",
             self.relation_instance.inbound.id,
-            self.relation_instance.type_definition().to_string(),
+            self.relation_instance.type_definition(),
             self.relation_instance.outbound.id,
             self.property_name.clone()
         );
