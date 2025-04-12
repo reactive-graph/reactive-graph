@@ -28,17 +28,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Distribution
 
 - Docker: Added static labels (org.opencontainers.image)
+- Docker: Added multi platform docker image (amd64 + arm64)
 
 ### Infrastructure
 
 - CI: Update rust nightly toolchain to nightly-2025-03-14
 - CI: Added GitHub Actions runner for arm64 ubuntu-22.04-arm
 - CI: Generate release binaries and debian packages for arm64 using the arm64 runner
-- CI: Added support for arm64 docker images
-- CI: Added multi platform docker image (amd64 + arm64)
 - CI: Automatically label pull requests
 - CI: Automatically mark pull requests as stale
 - CI: Automatically assign assignee and reviewers
+
+### Dependencies
+
+- actions/stale
 
 ## [0.10.0-alpha-2] - 2024-10-27
 
