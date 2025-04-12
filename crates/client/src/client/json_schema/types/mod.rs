@@ -31,8 +31,7 @@ impl JsonSchemaTypeSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.types.components)
-            .map(From::from);
+            .map(|data| data.json_schema.types.components);
         Ok(json_schema)
     }
 
@@ -45,8 +44,7 @@ impl JsonSchemaTypeSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.types.entities)
-            .map(From::from);
+            .map(|data| data.json_schema.types.entities);
         Ok(json_schema)
     }
 
@@ -59,8 +57,7 @@ impl JsonSchemaTypeSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.types.relations)
-            .map(From::from);
+            .map(|data| data.json_schema.types.relations);
         Ok(json_schema)
     }
 
@@ -73,8 +70,7 @@ impl JsonSchemaTypeSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.types.flows)
-            .map(From::from);
+            .map(|data| data.json_schema.types.flows);
         Ok(json_schema)
     }
 }

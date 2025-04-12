@@ -107,8 +107,7 @@ impl FlowTypes {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.flows.delete)
-            .map(From::from);
+            .map(|data| data.types.flows.delete);
         Ok(flow_type)
     }
 
@@ -121,8 +120,7 @@ impl FlowTypes {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.flows.delete)
-            .map(From::from);
+            .map(|data| data.types.flows.delete);
         Ok(flow_type)
     }
 

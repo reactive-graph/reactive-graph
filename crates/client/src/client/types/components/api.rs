@@ -107,8 +107,7 @@ impl Components {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.components.delete)
-            .map(From::from);
+            .map(|data| data.types.components.delete);
         Ok(component)
     }
 
@@ -121,8 +120,7 @@ impl Components {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.components.delete)
-            .map(From::from);
+            .map(|data| data.types.components.delete);
         Ok(component)
     }
 

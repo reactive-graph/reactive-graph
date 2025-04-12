@@ -294,7 +294,7 @@ impl JsonSchema for Extensions {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<Extension>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<Extension>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

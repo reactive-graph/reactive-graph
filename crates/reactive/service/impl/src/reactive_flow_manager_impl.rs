@@ -49,7 +49,6 @@ use reactive_graph_type_system_api::ComponentManager;
 use reactive_graph_type_system_api::EntityTypeManager;
 use reactive_graph_type_system_api::FlowTypeManager;
 use reactive_graph_type_system_api::RelationTypeManager;
-// use reactive_graph_type_system_api::TypeSystemEventManager;
 
 fn create_label_path_tree() -> RwLock<PathTree<Uuid>> {
     RwLock::new(PathTree::<Uuid>::new())
@@ -122,8 +121,6 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
 
     fn get(&self, id: Uuid) -> Option<ReactiveFlow> {
         self.reactive_flow_instances.get(&id).map(|reactive_flow| reactive_flow.value().clone())
-        // let reader = self.reactive_flow_instances.read().unwrap();
-        // reader.get(&id).cloned()
     }
 
     fn get_by_label(&self, label: &str) -> Option<ReactiveFlow> {
@@ -132,15 +129,11 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
     }
 
     fn get_all(&self) -> Vec<ReactiveFlow> {
-        let a = self.reactive_flow_instances.iter().map(|reactive_flow| reactive_flow.value().clone()).collect();
-        a
-        // let reader = self.reactive_flow_instances.read().unwrap();
-        // reader.values().cloned().collect()
+        self.reactive_flow_instances.iter().map(|reactive_flow| reactive_flow.value().clone()).collect()
     }
 
     fn count_flow_instances(&self) -> usize {
         self.reactive_flow_instances.len()
-        // self.reactive_flow_instances.read().unwrap().len()
     }
 
     fn create_reactive_flow(&self, flow_instance: FlowInstance) -> Result<ReactiveFlow, ReactiveFlowCreationError> {
@@ -238,7 +231,7 @@ impl ReactiveFlowManager for ReactiveFlowManagerImpl {
             for component_ty in entity_type.components.iter() {
                 if let Some(component) = self.component_manager.get(&component_ty) {
                     for property in component.properties.iter() {
-                        trace!("Adding property {} from component {}", &property.name, component_ty.type_definition().to_string());
+                        trace!("Adding property {} from component {}", &property.name, component_ty.type_definition());
                         if !entity_instance_copy.properties.contains_key(&property.name) {
                             entity_instance_copy
                                 .properties

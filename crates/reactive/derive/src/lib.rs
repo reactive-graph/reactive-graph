@@ -128,10 +128,7 @@ pub fn reactive_entity_derive(input: TokenStream) -> TokenStream {
                                 _ => None,
                             })
                             .map(|type_parameters| type_parameters.args)
-                            .filter_map(|type_parameters| {
-                                let type_parameter = type_parameters.last().cloned();
-                                type_parameter
-                            })
+                            .filter_map(|type_parameters| type_parameters.last().cloned())
                             .collect();
                         let target_type = target_types.first().cloned().unwrap();
                         target_type.to_token_stream()

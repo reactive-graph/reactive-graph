@@ -229,13 +229,13 @@ impl MutationRelationInstances {
         if let Some(properties) = properties {
             // fill all values first without propagation
             for property in properties.clone() {
-                debug!("set property {} = {}", property.name.clone(), property.value.clone().to_string());
+                debug!("set property {} = {}", property.name.clone(), property.value.clone());
                 // Set with respect to the mutability state
                 relation_instance.set_no_propagate_checked(property.name.clone(), property.value.clone());
             }
             // tick every property that has been changed before, this is still not transactional
             for property in properties {
-                debug!("tick property {} = {}", property.name.clone(), property.value.clone().to_string());
+                debug!("tick property {} = {}", property.name.clone(), property.value.clone());
                 if let Some(property_instance) = relation_instance.properties.get(property.name.as_str()) {
                     // Tick with respect to the mutability state
                     property_instance.tick_checked();

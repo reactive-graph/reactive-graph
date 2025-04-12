@@ -101,8 +101,8 @@ impl EntityTypeManager for EntityTypeManagerImpl {
                     is_divergent = true;
                     warn!(
                         "Entity type {} not fully initialized: No component named {}",
-                        entity_type.type_definition().to_string(),
-                        component_ty.type_definition().to_string()
+                        entity_type.type_definition(),
+                        component_ty.type_definition()
                     )
                 }
             }
@@ -117,7 +117,7 @@ impl EntityTypeManager for EntityTypeManagerImpl {
         //     .push(Extension::new(EXTENSION_DIVERGENT.clone(), String::new(), json!(divergent)));
         self.entity_types.push(entity_type.clone());
         // self.entity_types.0.write().unwrap().push(entity_type.clone());
-        debug!("Registered entity type {}", entity_type.type_definition().to_string());
+        debug!("Registered entity type {}", entity_type.type_definition());
         self.event_manager.emit_event(TypeSystemEvent::EntityTypeCreated(entity_type.ty.clone()));
         Ok(entity_type)
     }

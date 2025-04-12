@@ -132,7 +132,7 @@ impl JsonSchema for EntityBehaviourTypeIds {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<EntityBehaviourTypeId>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<EntityBehaviourTypeId>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

@@ -206,7 +206,7 @@ impl JsonSchema for EntityTypeIds {
     }
 
     fn json_schema(schema_generator: &mut SchemaGenerator) -> Schema {
-        let sub_schema: Schema = schema_generator.subschema_for::<EntityTypeId>().into();
+        let sub_schema: Schema = schema_generator.subschema_for::<EntityTypeId>();
         json_schema!({
             "type": "array",
             "items": sub_schema,

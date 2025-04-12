@@ -257,7 +257,7 @@ impl Instances {
         let relation_instance_manager = context.data::<Arc<dyn ReactiveRelationManager + Send + Sync>>()?;
         let ty: Option<RelationTypeId> = ty.map(|ty| ty.into());
         let count = match ty {
-            Some(ty) => relation_instance_manager.count_by_type(&ty.into()),
+            Some(ty) => relation_instance_manager.count_by_type(&ty),
             None => relation_instance_manager.count(),
         };
         Ok(count)

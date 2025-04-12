@@ -33,7 +33,7 @@ impl CommandManager for CommandManagerImpl {
             .reactive_entity_manager
             .get_by_component(&COMPONENT_COMMAND)
             .iter()
-            .find(|e| e.as_string(COMMAND_NAME).map_or(false, |command_name| command_name == name))
+            .find(|e| e.as_string(COMMAND_NAME).is_some_and(|command_name| command_name == name))
         {
             Some(e) => Command::try_from(e.clone()).map_err(NoSuchCommand::NotACommand),
             None => Err(NoSuchCommand::CommandNotFound(name)),

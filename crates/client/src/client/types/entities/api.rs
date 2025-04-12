@@ -134,8 +134,7 @@ impl EntityTypes {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.entities.delete)
-            .map(From::from);
+            .map(|data| data.types.entities.delete);
         Ok(entity_type)
     }
 
@@ -148,8 +147,7 @@ impl EntityTypes {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.types.entities.delete)
-            .map(From::from);
+            .map(|data| data.types.entities.delete);
         Ok(entity_type)
     }
 

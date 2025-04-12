@@ -29,8 +29,7 @@ impl JsonSchemaInstanceSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.instances.entities)
-            .map(From::from);
+            .map(|data| data.json_schema.instances.entities);
         Ok(json_schema)
     }
 
@@ -43,8 +42,7 @@ impl JsonSchemaInstanceSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.instances.relations)
-            .map(From::from);
+            .map(|data| data.json_schema.instances.relations);
         Ok(json_schema)
     }
 
@@ -57,8 +55,7 @@ impl JsonSchemaInstanceSystem {
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
             .data
-            .map(|data| data.json_schema.instances.flows)
-            .map(From::from);
+            .map(|data| data.json_schema.instances.flows);
         Ok(json_schema)
     }
 }

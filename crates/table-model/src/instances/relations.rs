@@ -75,8 +75,7 @@ fn display_property_instances(properties: &[PropertyInstance], relation_instance
     }
 }
 
-fn display_extensions(extensions: &Vec<Extension>, relation_instance: &RelationInstance) -> String {
-    // println!("{:?}", &self.inline_format);
+fn display_extensions(extensions: &[Extension], relation_instance: &RelationInstance) -> String {
     match relation_instance.inline_format {
         TableInlineFormat::Table => display_extensions_inline_str(extensions),
         TableInlineFormat::Html => display_extensions_html_inline(extensions),
