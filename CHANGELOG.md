@@ -43,6 +43,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - actions/stale
 
+### Other
+
+- Fixed clippy lints for 1.85.0
+
 ## [0.10.0-alpha-2] - 2024-10-27
 
 ### Added
