@@ -126,13 +126,13 @@
 <a href=#126 id=126 data-nosnippet>126</a>        <span class="kw">if let </span><span class="prelude-val">Some</span>(properties) = properties {
 <a href=#127 id=127 data-nosnippet>127</a>            <span class="comment">// fill all values first without propagation
 <a href=#128 id=128 data-nosnippet>128</a>            </span><span class="kw">for </span>property <span class="kw">in </span>properties.clone() {
-<a href=#129 id=129 data-nosnippet>129</a>                <span class="macro">debug!</span>(<span class="string">"set property {} = {}"</span>, property.name.clone(), property.value.clone().to_string());
+<a href=#129 id=129 data-nosnippet>129</a>                <span class="macro">debug!</span>(<span class="string">"set property {} = {}"</span>, property.name.clone(), property.value.clone());
 <a href=#130 id=130 data-nosnippet>130</a>                <span class="comment">// Set with respect to the mutability state
 <a href=#131 id=131 data-nosnippet>131</a>                </span>entity_instance.set_no_propagate_checked(property.name.clone(), property.value.clone());
 <a href=#132 id=132 data-nosnippet>132</a>            }
 <a href=#133 id=133 data-nosnippet>133</a>            <span class="comment">// tick every property that has been changed before, this is still not transactional
 <a href=#134 id=134 data-nosnippet>134</a>            </span><span class="kw">for </span>property <span class="kw">in </span>properties {
-<a href=#135 id=135 data-nosnippet>135</a>                <span class="macro">debug!</span>(<span class="string">"tick property {} = {}"</span>, property.name.clone(), property.value.clone().to_string());
+<a href=#135 id=135 data-nosnippet>135</a>                <span class="macro">debug!</span>(<span class="string">"tick property {} = {}"</span>, property.name.clone(), property.value.clone());
 <a href=#136 id=136 data-nosnippet>136</a>                <span class="kw">if let </span><span class="prelude-val">Some</span>(property_instance) = entity_instance.properties.get(property.name.as_str()) {
 <a href=#137 id=137 data-nosnippet>137</a>                    <span class="comment">// Tick with respect to the mutability state
 <a href=#138 id=138 data-nosnippet>138</a>                    </span>property_instance.tick_checked();

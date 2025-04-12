@@ -33,7 +33,7 @@
 <a href=#33 id=33 data-nosnippet>33</a>            </span>.reactive_entity_manager
 <a href=#34 id=34 data-nosnippet>34</a>            .get_by_component(<span class="kw-2">&amp;</span>COMPONENT_COMMAND)
 <a href=#35 id=35 data-nosnippet>35</a>            .iter()
-<a href=#36 id=36 data-nosnippet>36</a>            .find(|e| e.as_string(COMMAND_NAME).map_or(<span class="bool-val">false</span>, |command_name| command_name == name))
+<a href=#36 id=36 data-nosnippet>36</a>            .find(|e| e.as_string(COMMAND_NAME).is_some_and(|command_name| command_name == name))
 <a href=#37 id=37 data-nosnippet>37</a>        {
 <a href=#38 id=38 data-nosnippet>38</a>            <span class="prelude-val">Some</span>(e) =&gt; Command::try_from(e.clone()).map_err(NoSuchCommand::NotACommand),
 <a href=#39 id=39 data-nosnippet>39</a>            <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Err</span>(NoSuchCommand::CommandNotFound(name)),

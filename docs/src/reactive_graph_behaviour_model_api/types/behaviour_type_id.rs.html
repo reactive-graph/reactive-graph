@@ -193,7 +193,7 @@
 <a href=#193 id=193 data-nosnippet>193</a>    }
 <a href=#194 id=194 data-nosnippet>194</a>
 <a href=#195 id=195 data-nosnippet>195</a>    <span class="kw">fn </span>json_schema(schema_generator: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-<a href=#196 id=196 data-nosnippet>196</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;BehaviourTypeId&gt;().into();
+<a href=#196 id=196 data-nosnippet>196</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;BehaviourTypeId&gt;();
 <a href=#197 id=197 data-nosnippet>197</a>        <span class="macro">json_schema!</span>({
 <a href=#198 id=198 data-nosnippet>198</a>            <span class="string">"type"</span>: <span class="string">"array"</span>,
 <a href=#199 id=199 data-nosnippet>199</a>            <span class="string">"items"</span>: sub_schema,

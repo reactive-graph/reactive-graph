@@ -451,7 +451,7 @@
 <a href=#451 id=451 data-nosnippet>451</a>    }
 <a href=#452 id=452 data-nosnippet>452</a>
 <a href=#453 id=453 data-nosnippet>453</a>    <span class="kw">fn </span>json_schema(schema_generator: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-<a href=#454 id=454 data-nosnippet>454</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;EntityType&gt;().into();
+<a href=#454 id=454 data-nosnippet>454</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;EntityType&gt;();
 <a href=#455 id=455 data-nosnippet>455</a>        <span class="macro">json_schema!</span>({
 <a href=#456 id=456 data-nosnippet>456</a>            <span class="string">"type"</span>: <span class="string">"array"</span>,
 <a href=#457 id=457 data-nosnippet>457</a>            <span class="string">"items"</span>: sub_schema,

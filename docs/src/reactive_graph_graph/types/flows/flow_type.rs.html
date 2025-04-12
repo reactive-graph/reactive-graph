@@ -682,7 +682,7 @@
 <a href=#682 id=682 data-nosnippet>682</a>    }
 <a href=#683 id=683 data-nosnippet>683</a>
 <a href=#684 id=684 data-nosnippet>684</a>    <span class="kw">fn </span>json_schema(schema_generator: <span class="kw-2">&amp;mut </span>SchemaGenerator) -&gt; Schema {
-<a href=#685 id=685 data-nosnippet>685</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;FlowType&gt;().into();
+<a href=#685 id=685 data-nosnippet>685</a>        <span class="kw">let </span>sub_schema: Schema = schema_generator.subschema_for::&lt;FlowType&gt;();
 <a href=#686 id=686 data-nosnippet>686</a>        <span class="macro">json_schema!</span>({
 <a href=#687 id=687 data-nosnippet>687</a>            <span class="string">"type"</span>: <span class="string">"array"</span>,
 <a href=#688 id=688 data-nosnippet>688</a>            <span class="string">"items"</span>: sub_schema,
