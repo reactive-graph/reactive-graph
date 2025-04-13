@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Distribution
+
+### Infrastructure
+
+## [0.10.0-alpha-3] - 2025-04-13
+
+### Added
+
 - Interfaces: Provide JSON schemas of the type system and instance system via GraphQL API
 - Interfaces: Query for JSON Schemas of the type system and instance system via the Rust Client
 - CLI: Print the JSON Schemas of the type system and instance system
@@ -20,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Migrated to Rust Edition 2024
+- Fixed clippy lints for Rust 1.85.0
 
 ### Fixed
 
@@ -38,14 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CI: Automatically label pull requests
 - CI: Automatically mark pull requests as stale
 - CI: Automatically assign assignee and reviewers
-
-### Dependencies
-
-- actions/stale
-
-### Other
-
-- Fixed clippy lints for 1.85.0
 
 ## [0.10.0-alpha-2] - 2024-10-27
 
