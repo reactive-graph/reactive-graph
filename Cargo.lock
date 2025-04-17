@@ -100,7 +100,7 @@ dependencies = [
  "mime",
  "percent-encoding",
  "pin-project-lite",
- "rand 0.9.0",
+ "rand 0.9.1",
  "sha1",
  "smallvec",
  "tokio",
@@ -4249,13 +4249,12 @@ dependencies = [
 
 [[package]]
 name = "rand"
-version = "0.9.0"
+version = "0.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3779b94aeb87e8bd4e834cee3650289ee9e0d5677f976ecdb6d219e5f4f6cd94"
+checksum = "9fbfd9d094a40bf3ae768db9361049ace4c0e04a4fd6b359518bd7b73a73dd97"
 dependencies = [
  "rand_chacha 0.9.0",
  "rand_core 0.9.3",
- "zerocopy 0.8.23",
 ]
 
 [[package]]
@@ -4400,7 +4399,7 @@ version = "0.10.0"
 dependencies = [
  "dashmap",
  "default-test",
- "rand 0.9.0",
+ "rand 0.9.1",
  "rand_derive3",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
@@ -4654,7 +4653,7 @@ version = "0.10.0"
 dependencies = [
  "dashmap",
  "default-test",
- "rand 0.9.0",
+ "rand 0.9.1",
  "rand_derive3",
  "reactive-graph-test-utils",
  "schemars",
@@ -4708,7 +4707,7 @@ dependencies = [
  "futures-util",
  "glob",
  "log",
- "rand 0.9.0",
+ "rand 0.9.1",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-behaviour-service-api",
  "reactive-graph-graph",
@@ -4990,7 +4989,7 @@ version = "0.10.0"
 dependencies = [
  "criterion",
  "dashmap",
- "rand 0.9.0",
+ "rand 0.9.1",
  "reactive-graph-behaviour-model-api",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
