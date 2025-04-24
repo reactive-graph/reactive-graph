@@ -3,6 +3,7 @@ use crate::Extension;
 use crate::ExtensionTypeId;
 use crate::ExtensionTypeIds;
 use crate::Extensions;
+use crate::NamespacedType;
 use crate::RemoveExtensionError;
 use crate::UpdateExtensionError;
 
@@ -48,4 +49,12 @@ pub trait NamespacedTypeExtensionContainer<T, AddExtensionError, UpdateExtension
 
     /// Merge the given extensions into the own extensions.
     fn merge_extensions<E: Into<Extensions>>(&mut self, ty: &T, extensions_to_merge: E) -> Result<(), MergeExtensionsError>;
+}
+
+pub trait ExtensionContainerGetter {
+    /// Returns the container type id.
+    fn container_ty(&self) -> NamespacedType;
+
+    /// Returns the extension type id.
+    fn extension_ty(&self) -> ExtensionTypeId;
 }

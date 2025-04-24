@@ -1,12 +1,5 @@
-pub mod add_extension;
-pub mod add_property;
 pub mod api;
-pub mod container;
-pub mod create;
-pub mod delete;
-pub mod get_all;
-pub mod get_by_type;
-pub mod remove_extension;
-pub mod remove_property;
-pub mod type_id;
-pub mod update_description;
+
+pub mod mutations;
+pub mod queries;
+pub mod variables;

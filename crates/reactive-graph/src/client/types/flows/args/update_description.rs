@@ -1,6 +1,6 @@
 use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::flows::update_description::queries::UpdateDescriptionVariables;
+use reactive_graph_client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowTypeUpdateDescriptionArgs {

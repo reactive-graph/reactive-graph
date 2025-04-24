@@ -1,6 +1,6 @@
 use crate::client::types::components::args::type_id::ComponentTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::components::create::queries::CreateComponentVariables;
+use reactive_graph_client::types::components::variables::create::variables::CreateComponentVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateComponentArgs {

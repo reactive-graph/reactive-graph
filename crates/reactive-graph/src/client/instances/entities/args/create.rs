@@ -22,6 +22,9 @@ pub(crate) struct CreateEntityInstanceArgs {
     /// The entity instance properties.
     #[clap(short, long, value_parser = parse_property)]
     pub properties: Option<Vec<(String, Value)>>,
+    // TODO: The entity instance extensions.
+    // #[clap(short, long, value_parser = parse_extension)]
+    // pub extensions: Option<Vec<(String, Value)>>,
 }
 
 impl CreateEntityInstanceArgs {

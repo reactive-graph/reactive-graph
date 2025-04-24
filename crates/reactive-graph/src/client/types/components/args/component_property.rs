@@ -1,6 +1,7 @@
 use crate::client::types::components::args::ComponentTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::client::types::properties::container::queries::PropertyContainerVariables;
+use reactive_graph_client::client::types::properties::variables::container::variables::PropertyContainerVariables;
+use reactive_graph_graph::ComponentTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct ComponentPropertyArgs {
@@ -14,10 +15,7 @@ pub(crate) struct ComponentPropertyArgs {
 
 impl From<&ComponentPropertyArgs> for PropertyContainerVariables {
     fn from(args: &ComponentPropertyArgs) -> Self {
-        PropertyContainerVariables::builder()
-            .namespace(args.ty.namespace.clone())
-            .name(args.ty.name.clone())
-            .property_name(args.property_name.clone())
-            .build()
+        let ty: ComponentTypeId = args.ty.clone().into();
+        PropertyContainerVariables::new(ty, args.property_name.clone())
     }
 }

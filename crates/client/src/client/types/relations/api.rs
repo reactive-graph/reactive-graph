@@ -2,35 +2,35 @@ use std::sync::Arc;
 
 use crate::client::ReactiveGraphClient;
 use crate::client::ReactiveGraphClientExecutionError;
-use crate::client::types::components::container::queries::ComponentContainerVariables;
-use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
-use crate::client::types::properties::container::queries::PropertyContainerVariables;
-use crate::client::types::relations::add_component::queries::add_component_mutation;
-use crate::client::types::relations::add_component::queries::add_component_with_variables;
-use crate::client::types::relations::add_extension::queries::AddExtensionVariables;
-use crate::client::types::relations::add_extension::queries::add_extension_mutation;
-use crate::client::types::relations::add_extension::queries::add_extension_with_variables;
-use crate::client::types::relations::add_property::queries::AddPropertyVariables;
-use crate::client::types::relations::add_property::queries::add_property_mutation;
-use crate::client::types::relations::add_property::queries::add_property_with_variables;
-use crate::client::types::relations::create::queries::CreateRelationTypeVariables;
-use crate::client::types::relations::create::queries::create_relation_type_mutation;
-use crate::client::types::relations::create::queries::create_relation_type_with_variables;
-use crate::client::types::relations::delete::queries::delete_relation_type_mutation;
-use crate::client::types::relations::delete::queries::delete_relation_type_with_variables;
-use crate::client::types::relations::get_all::queries::get_all_relation_types_query;
-use crate::client::types::relations::get_by_type::queries::get_relation_type_by_type_query;
-use crate::client::types::relations::get_components::queries::get_relation_type_components_query;
-use crate::client::types::relations::remove_component::queries::remove_component_mutation;
-use crate::client::types::relations::remove_component::queries::remove_component_with_variables;
-use crate::client::types::relations::remove_extension::queries::remove_extension_mutation;
-use crate::client::types::relations::remove_extension::queries::remove_extension_with_variables;
-use crate::client::types::relations::remove_property::queries::remove_property_mutation;
-use crate::client::types::relations::remove_property::queries::remove_property_with_variables;
-use crate::client::types::relations::type_id::queries::RelationTypeIdVariables;
-use crate::client::types::relations::update_description::queries::UpdateDescriptionVariables;
-use crate::client::types::relations::update_description::queries::update_description_mutation;
-use crate::client::types::relations::update_description::queries::update_description_with_variables;
+use crate::client::types::common::variables::type_id::variables::TypeIdVariables;
+use crate::client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
+use crate::client::types::components::variables::container::variables::ComponentContainerVariables;
+use crate::client::types::extensions::variables::add_extension::variables::AddExtensionVariables;
+use crate::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
+use crate::client::types::properties::variables::add_property::variables::AddPropertyVariables;
+use crate::client::types::properties::variables::container::variables::PropertyContainerVariables;
+use crate::client::types::relations::mutations::add_component::mutations::add_component_mutation;
+use crate::client::types::relations::mutations::add_component::mutations::add_component_with_variables;
+use crate::client::types::relations::mutations::add_extension::mutations::add_extension_mutation;
+use crate::client::types::relations::mutations::add_extension::mutations::add_extension_with_variables;
+use crate::client::types::relations::mutations::add_property::mutations::add_property_mutation;
+use crate::client::types::relations::mutations::add_property::mutations::add_property_with_variables;
+use crate::client::types::relations::mutations::create::mutations::CreateRelationTypeVariables;
+use crate::client::types::relations::mutations::create::mutations::create_relation_type_mutation;
+use crate::client::types::relations::mutations::create::mutations::create_relation_type_with_variables;
+use crate::client::types::relations::mutations::delete::mutations::delete_relation_type_mutation;
+use crate::client::types::relations::mutations::delete::mutations::delete_relation_type_with_variables;
+use crate::client::types::relations::mutations::remove_component::mutations::remove_component_mutation;
+use crate::client::types::relations::mutations::remove_component::mutations::remove_component_with_variables;
+use crate::client::types::relations::mutations::remove_extension::mutations::remove_extension_mutation;
+use crate::client::types::relations::mutations::remove_extension::mutations::remove_extension_with_variables;
+use crate::client::types::relations::mutations::remove_property::mutations::remove_property_mutation;
+use crate::client::types::relations::mutations::remove_property::mutations::remove_property_with_variables;
+use crate::client::types::relations::mutations::update_description::mutations::update_description_mutation;
+use crate::client::types::relations::mutations::update_description::mutations::update_description_with_variables;
+use crate::client::types::relations::queries::get_all::queries::get_all_relation_types_query;
+use crate::client::types::relations::queries::get_by_type::queries::get_relation_type_by_type_query;
+use crate::client::types::relations::queries::get_components::queries::get_relation_type_components_query;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
 use crate::schema_graphql::types::relation_type::RelationTypes as RelationTypesVec;
 use cynic::http::ReqwestExt;
@@ -144,7 +144,7 @@ impl RelationTypes {
         Ok(relation_type)
     }
 
-    pub async fn delete_relation_type_with_variables(&self, variables: RelationTypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
+    pub async fn delete_relation_type_with_variables(&self, variables: TypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let relation_type = self
             .client
             .client

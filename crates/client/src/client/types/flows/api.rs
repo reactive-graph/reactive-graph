@@ -2,34 +2,41 @@ use std::sync::Arc;
 
 use crate::client::ReactiveGraphClient;
 use crate::client::ReactiveGraphClientExecutionError;
-use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
-use crate::client::types::flows::add_extension::queries::AddExtensionVariables;
-use crate::client::types::flows::add_extension::queries::add_extension_mutation;
-use crate::client::types::flows::add_extension::queries::add_extension_with_variables;
-use crate::client::types::flows::add_variable::queries::AddVariableVariables;
-use crate::client::types::flows::add_variable::queries::add_variable_mutation;
-use crate::client::types::flows::add_variable::queries::add_variable_with_variables;
-use crate::client::types::flows::create::queries::CreateFlowTypeVariables;
-use crate::client::types::flows::create::queries::create_flow_type_mutation;
-use crate::client::types::flows::create::queries::create_flow_type_with_variables;
-use crate::client::types::flows::delete::queries::delete_flow_type_mutation;
-use crate::client::types::flows::delete::queries::delete_flow_type_with_variables;
-use crate::client::types::flows::get_all::queries::get_all_flow_types_query;
-use crate::client::types::flows::get_by_type::queries::get_flow_type_by_type_query;
-use crate::client::types::flows::remove_extension::queries::remove_extension_mutation;
-use crate::client::types::flows::remove_extension::queries::remove_extension_with_variables;
-use crate::client::types::flows::remove_variable::queries::remove_variable_mutation;
-use crate::client::types::flows::remove_variable::queries::remove_variable_with_variables;
-use crate::client::types::flows::type_id::queries::FlowTypeIdVariables;
-use crate::client::types::flows::update_description::queries::UpdateDescriptionVariables;
-use crate::client::types::flows::update_description::queries::update_description_mutation;
-use crate::client::types::flows::update_description::queries::update_description_with_variables;
-use crate::client::types::properties::container::queries::PropertyContainerVariables;
+use crate::client::types::common::variables::type_id::variables::TypeIdVariables;
+use crate::client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
+use crate::client::types::extensions::variables::add_extension::variables::AddExtensionVariables;
+use crate::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
+use crate::client::types::flows::mutations::add_extension::mutations::add_extension_mutation;
+use crate::client::types::flows::mutations::add_extension::mutations::add_extension_with_variables;
+use crate::client::types::flows::mutations::add_variable::mutations::add_variable_mutation;
+use crate::client::types::flows::mutations::add_variable::mutations::add_variable_with_variables;
+use crate::client::types::flows::mutations::create::mutations::create_flow_type_mutation;
+use crate::client::types::flows::mutations::create::mutations::create_flow_type_with_variables;
+use crate::client::types::flows::mutations::delete::mutations::delete_flow_type_mutation;
+use crate::client::types::flows::mutations::delete::mutations::delete_flow_type_with_variables;
+use crate::client::types::flows::mutations::remove_extension::mutations::remove_extension_mutation;
+use crate::client::types::flows::mutations::remove_extension::mutations::remove_extension_with_variables;
+use crate::client::types::flows::mutations::remove_variable::mutations::remove_variable_mutation;
+use crate::client::types::flows::mutations::remove_variable::mutations::remove_variable_with_variables;
+use crate::client::types::flows::mutations::update_description::mutations::update_description_mutation;
+use crate::client::types::flows::mutations::update_description::mutations::update_description_with_variables;
+use crate::client::types::flows::queries::get_all::queries::get_all_flow_types_query;
+use crate::client::types::flows::queries::get_by_type::queries::get_flow_type_by_type_query;
+use crate::client::types::flows::variables::add_variable::variables::AddVariableVariables;
+use crate::client::types::flows::variables::create::variables::CreateFlowTypeVariables;
+use crate::client::types::properties::variables::container::variables::PropertyContainerVariables;
 use crate::schema_graphql::types::flow_type::FlowTypes as FlowTypesVec;
+use crate::types::flows::mutations::add_entity_instance::mutations::add_entity_instance_mutation;
+use crate::types::flows::mutations::add_entity_instance::mutations::add_entity_instance_with_variables;
+use crate::types::flows::mutations::remove_entity_instance::mutations::remove_entity_instance_mutation;
+use crate::types::flows::mutations::remove_entity_instance::mutations::remove_entity_instance_with_variables;
+use crate::types::flows::variables::add_entity_instance::variables::AddEntityInstanceVariables;
+use crate::types::flows::variables::remove_entity_instance::variables::RemoveEntityInstanceVariables;
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::ExtensionTypeId;
 use reactive_graph_graph::FlowType;
 use reactive_graph_graph::FlowTypeId;
+use uuid::Uuid;
 
 pub struct FlowTypes {
     client: Arc<ReactiveGraphClient>,
@@ -111,7 +118,7 @@ impl FlowTypes {
         Ok(flow_type)
     }
 
-    pub async fn delete_flow_type_with_variables(&self, variables: FlowTypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
+    pub async fn delete_flow_type_with_variables(&self, variables: TypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let flow_type = self
             .client
             .client
@@ -247,6 +254,76 @@ impl FlowTypes {
             .map(From::from);
         Ok(flow_type)
     }
+
+    // ========
+
+    pub async fn add_entity_instance(
+        &self,
+        ty: FlowTypeId,
+        entity_instance: reactive_graph_graph::EntityInstance,
+    ) -> Result<Option<FlowType>, ReactiveGraphClientExecutionError> {
+        let flow_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(add_entity_instance_mutation(ty, entity_instance))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.flows.add_entity_instance)
+            .map(From::from);
+        Ok(flow_type)
+    }
+
+    pub async fn add_entity_instance_with_variables(
+        &self,
+        variables: AddEntityInstanceVariables,
+    ) -> Result<Option<FlowType>, ReactiveGraphClientExecutionError> {
+        let flow_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(add_entity_instance_with_variables(variables))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.flows.add_entity_instance)
+            .map(From::from);
+        Ok(flow_type)
+    }
+
+    pub async fn remove_entity_instance<ID: Into<Uuid>>(&self, ty: FlowTypeId, id: ID) -> Result<Option<FlowType>, ReactiveGraphClientExecutionError> {
+        let flow_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_entity_instance_mutation(ty, id))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.flows.remove_entity_instance)
+            .map(From::from);
+        Ok(flow_type)
+    }
+
+    pub async fn remove_entity_instance_with_variables(
+        &self,
+        variables: RemoveEntityInstanceVariables,
+    ) -> Result<Option<FlowType>, ReactiveGraphClientExecutionError> {
+        let flow_type = self
+            .client
+            .client
+            .post(self.client.url_graphql())
+            .run_graphql(remove_entity_instance_with_variables(variables))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .map(|data| data.types.flows.remove_entity_instance)
+            .map(From::from);
+        Ok(flow_type)
+    }
+
+    // ========
 
     pub async fn update_description(&self, ty: FlowTypeId, description: String) -> Result<Option<FlowType>, ReactiveGraphClientExecutionError> {
         let flow_type = self

@@ -1,5 +1,5 @@
 use clap::Args;
-use reactive_graph_client::types::extensions::type_id::queries::ExtensionTypeIdVariables;
+use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::ExtensionTypeId;
 use serde_json::Value;
 
@@ -33,7 +33,7 @@ impl From<ExtensionTypeIdArgs> for ExtensionTypeId {
     }
 }
 
-impl From<&ExtensionTypeIdArgs> for ExtensionTypeIdVariables {
+impl From<&ExtensionTypeIdArgs> for TypeIdVariables {
     fn from(ty: &ExtensionTypeIdArgs) -> Self {
         let ty: ExtensionTypeId = ty.clone().into();
         ty.into()

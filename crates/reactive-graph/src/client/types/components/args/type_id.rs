@@ -1,7 +1,7 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotFound;
 use clap::Args;
-use reactive_graph_client::types::components::type_id::queries::ComponentTypeIdVariables;
+use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::ComponentTypeId;
 
 /// The component type.
@@ -26,7 +26,7 @@ impl From<ComponentTypeIdArgs> for ComponentTypeId {
     }
 }
 
-impl From<&ComponentTypeIdArgs> for ComponentTypeIdVariables {
+impl From<&ComponentTypeIdArgs> for TypeIdVariables {
     fn from(ty: &ComponentTypeIdArgs) -> Self {
         let ty: ComponentTypeId = ty.clone().into();
         ty.into()

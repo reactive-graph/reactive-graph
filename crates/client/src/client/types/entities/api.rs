@@ -2,37 +2,37 @@ use std::sync::Arc;
 
 use crate::client::ReactiveGraphClient;
 use crate::client::ReactiveGraphClientExecutionError;
-use crate::client::types::entities::add_extension::queries::AddExtensionVariables;
-use crate::client::types::entities::add_extension::queries::add_extension_mutation;
-use crate::client::types::entities::add_extension::queries::add_extension_with_variables;
-use crate::client::types::entities::add_property::queries::AddPropertyVariables;
-use crate::client::types::entities::add_property::queries::add_property_mutation;
-use crate::client::types::entities::add_property::queries::add_property_with_variables;
-use crate::client::types::entities::create::queries::CreateEntityTypeVariables;
-use crate::client::types::entities::create::queries::create_entity_type_mutation;
-use crate::client::types::entities::create::queries::create_entity_type_with_variables;
-use crate::client::types::entities::delete::queries::delete_entity_type_mutation;
-use crate::client::types::entities::delete::queries::delete_entity_type_with_variables;
-use crate::client::types::entities::get_all::queries::get_all_entity_types_query;
-use crate::client::types::entities::get_by_type::queries::get_entity_type_by_type_query;
-use crate::client::types::entities::remove_extension::queries::remove_extension_mutation;
-use crate::client::types::entities::remove_extension::queries::remove_extension_with_variables;
-use crate::client::types::entities::remove_property::queries::remove_property_mutation;
-use crate::client::types::entities::remove_property::queries::remove_property_with_variables;
-use crate::client::types::entities::type_id::queries::EntityTypeIdVariables;
-use crate::client::types::entities::update_description::queries::UpdateDescriptionVariables;
-use crate::client::types::entities::update_description::queries::update_description_mutation;
-use crate::client::types::entities::update_description::queries::update_description_with_variables;
-use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
+use crate::client::types::common::variables::type_id::variables::TypeIdVariables;
+use crate::client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
+use crate::client::types::entities::mutations::add_extension::mutations::add_extension_mutation;
+use crate::client::types::entities::mutations::add_extension::mutations::add_extension_with_variables;
+use crate::client::types::entities::mutations::add_property::mutations::add_property_mutation;
+use crate::client::types::entities::mutations::add_property::mutations::add_property_with_variables;
+use crate::client::types::entities::mutations::create::mutations::create_entity_type_mutation;
+use crate::client::types::entities::mutations::create::mutations::create_entity_type_with_variables;
+use crate::client::types::entities::mutations::delete::mutations::delete_entity_type_mutation;
+use crate::client::types::entities::mutations::delete::mutations::delete_entity_type_with_variables;
+use crate::client::types::entities::mutations::remove_extension::mutations::remove_extension_mutation;
+use crate::client::types::entities::mutations::remove_extension::mutations::remove_extension_with_variables;
+use crate::client::types::entities::mutations::remove_property::mutations::remove_property_mutation;
+use crate::client::types::entities::mutations::remove_property::mutations::remove_property_with_variables;
+use crate::client::types::entities::mutations::update_description::mutations::update_description_mutation;
+use crate::client::types::entities::mutations::update_description::mutations::update_description_with_variables;
+use crate::client::types::entities::queries::get_all::queries::get_all_entity_types_query;
+use crate::client::types::entities::queries::get_by_type::queries::get_entity_type_by_type_query;
+use crate::client::types::entities::variables::create::variables::CreateEntityTypeVariables;
+use crate::client::types::extensions::variables::add_extension::variables::AddExtensionVariables;
+use crate::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
+use crate::client::types::properties::variables::add_property::variables::AddPropertyVariables;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
 use crate::schema_graphql::types::entity_type::EntityTypes as EntityTypesVec;
-use crate::types::components::container::queries::ComponentContainerVariables;
-use crate::types::entities::add_component::queries::add_component_mutation;
-use crate::types::entities::add_component::queries::add_component_with_variables;
-use crate::types::entities::get_components::queries::get_entity_type_components_query;
-use crate::types::entities::remove_component::queries::remove_component_mutation;
-use crate::types::entities::remove_component::queries::remove_component_with_variables;
-use crate::types::properties::container::queries::PropertyContainerVariables;
+use crate::types::components::variables::container::variables::ComponentContainerVariables;
+use crate::types::entities::mutations::add_component::mutations::add_component_mutation;
+use crate::types::entities::mutations::add_component::mutations::add_component_with_variables;
+use crate::types::entities::mutations::remove_component::mutations::remove_component_mutation;
+use crate::types::entities::mutations::remove_component::mutations::remove_component_with_variables;
+use crate::types::entities::queries::get_components::queries::get_entity_type_components_query;
+use crate::types::properties::variables::container::variables::PropertyContainerVariables;
 use cynic::http::ReqwestExt;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::EntityComponentTypeId;
@@ -138,7 +138,7 @@ impl EntityTypes {
         Ok(entity_type)
     }
 
-    pub async fn delete_entity_type_with_variables(&self, variables: EntityTypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
+    pub async fn delete_entity_type_with_variables(&self, variables: TypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let entity_type = self
             .client
             .client

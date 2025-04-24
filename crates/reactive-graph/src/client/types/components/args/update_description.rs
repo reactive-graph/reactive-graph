@@ -1,6 +1,6 @@
 use crate::client::types::components::args::ComponentTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::components::update_description::queries::UpdateDescriptionVariables;
+use reactive_graph_client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct ComponentUpdateDescriptionArgs {

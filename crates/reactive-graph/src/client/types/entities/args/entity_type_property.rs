@@ -1,6 +1,7 @@
 use crate::client::types::entities::args::type_id::EntityTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::client::types::properties::container::queries::PropertyContainerVariables;
+use reactive_graph_client::client::types::properties::variables::container::variables::PropertyContainerVariables;
+use reactive_graph_graph::EntityTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct EntityTypePropertyArgs {
@@ -14,10 +15,7 @@ pub(crate) struct EntityTypePropertyArgs {
 
 impl From<&EntityTypePropertyArgs> for PropertyContainerVariables {
     fn from(args: &EntityTypePropertyArgs) -> Self {
-        PropertyContainerVariables::builder()
-            .namespace(args.ty.namespace.clone())
-            .name(args.ty.name.clone())
-            .property_name(args.property_name.clone())
-            .build()
+        let ty: EntityTypeId = args.ty.clone().into();
+        PropertyContainerVariables::new(ty, args.property_name.clone())
     }
 }

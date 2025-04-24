@@ -1,36 +1,34 @@
-use std::sync::Arc;
-
-use cynic::http::ReqwestExt;
-
 use crate::client::ReactiveGraphClient;
 use crate::client::ReactiveGraphClientExecutionError;
-use crate::client::types::components::add_extension::queries::AddExtensionVariables;
-use crate::client::types::components::add_extension::queries::add_extension_mutation;
-use crate::client::types::components::add_extension::queries::add_extension_with_variables;
-use crate::client::types::components::add_property::queries::AddPropertyVariables;
-use crate::client::types::components::add_property::queries::add_property_mutation;
-use crate::client::types::components::add_property::queries::add_property_with_variables;
-use crate::client::types::components::create::queries::CreateComponentVariables;
-use crate::client::types::components::create::queries::create_component_mutation;
-use crate::client::types::components::create::queries::create_component_with_variables;
-use crate::client::types::components::delete::queries::delete_component_mutation;
-use crate::client::types::components::delete::queries::delete_component_with_variables;
-use crate::client::types::components::get_all::queries::get_all_components_query;
-use crate::client::types::components::get_by_type::queries::get_component_by_type_query;
-use crate::client::types::components::remove_extension::queries::remove_extension_mutation;
-use crate::client::types::components::remove_extension::queries::remove_extension_with_variables;
-use crate::client::types::components::remove_property::queries::remove_property_mutation;
-use crate::client::types::components::remove_property::queries::remove_property_with_variables;
-use crate::client::types::components::type_id::queries::ComponentTypeIdVariables;
-use crate::client::types::components::update_description::queries::UpdateDescriptionVariables;
-use crate::client::types::components::update_description::queries::update_description_mutation;
-use crate::client::types::components::update_description::queries::update_description_with_variables;
-use crate::client::types::extensions::container::queries::ExtensionContainerVariables;
-use crate::client::types::properties::container::queries::PropertyContainerVariables;
+use crate::client::types::common::variables::type_id::variables::TypeIdVariables;
+use crate::client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
+use crate::client::types::components::mutations::add_extension::mutations::add_extension_mutation;
+use crate::client::types::components::mutations::add_extension::mutations::add_extension_with_variables;
+use crate::client::types::components::mutations::add_property::mutations::add_property_mutation;
+use crate::client::types::components::mutations::add_property::mutations::add_property_with_variables;
+use crate::client::types::components::mutations::create::mutations::create_component_mutation;
+use crate::client::types::components::mutations::create::mutations::create_component_with_variables;
+use crate::client::types::components::mutations::delete::mutations::delete_component_mutation;
+use crate::client::types::components::mutations::delete::mutations::delete_component_with_variables;
+use crate::client::types::components::mutations::remove_extension::mutations::remove_extension_mutation;
+use crate::client::types::components::mutations::remove_extension::mutations::remove_extension_with_variables;
+use crate::client::types::components::mutations::remove_property::mutations::remove_property_mutation;
+use crate::client::types::components::mutations::remove_property::mutations::remove_property_with_variables;
+use crate::client::types::components::mutations::update_description::mutations::update_description_mutation;
+use crate::client::types::components::mutations::update_description::mutations::update_description_with_variables;
+use crate::client::types::components::queries::get_all::queries::get_all_components_query;
+use crate::client::types::components::queries::get_by_type::queries::get_component_by_type_query;
+use crate::client::types::components::variables::create::variables::CreateComponentVariables;
+use crate::client::types::extensions::variables::add_extension::variables::AddExtensionVariables;
+use crate::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
+use crate::client::types::properties::variables::add_property::variables::AddPropertyVariables;
+use crate::client::types::properties::variables::container::variables::PropertyContainerVariables;
 use crate::schema_graphql::types::component::Components as ComponentsVec;
+use cynic::http::ReqwestExt;
 use reactive_graph_graph::Component;
 use reactive_graph_graph::ComponentTypeId;
 use reactive_graph_graph::ExtensionTypeId;
+use std::sync::Arc;
 
 pub struct Components {
     client: Arc<ReactiveGraphClient>,
@@ -111,7 +109,7 @@ impl Components {
         Ok(component)
     }
 
-    pub async fn delete_component_with_variables(&self, variables: ComponentTypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
+    pub async fn delete_component_with_variables(&self, variables: TypeIdVariables) -> Result<Option<bool>, ReactiveGraphClientExecutionError> {
         let component = self
             .client
             .client

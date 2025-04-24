@@ -1,7 +1,7 @@
 use crate::client::types::components::args::ComponentTypeIdArgs;
 use crate::client::types::extension::args::ExtensionTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::client::types::extensions::container::queries::ExtensionContainerVariables;
+use reactive_graph_client::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct ComponentExtensionTypeIdArgs {
