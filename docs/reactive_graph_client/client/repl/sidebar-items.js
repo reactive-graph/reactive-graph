@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["longest_common_prefix","repl"],"mod":["args","chars","hint","repl_helper","return_state"]};

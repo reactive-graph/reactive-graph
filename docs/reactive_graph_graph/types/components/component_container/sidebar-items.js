@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":["ComponentContainer"]};
+window.SIDEBAR_ITEMS = {"trait":["ComponentContainer","ComponentContainerGetter"]};

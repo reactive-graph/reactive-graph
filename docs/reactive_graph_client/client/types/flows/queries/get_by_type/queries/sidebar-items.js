@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_flow_type_by_type_query"],"struct":["GetFlowTypeByType","GetFlowTypeByTypeTypes"]};

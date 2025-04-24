@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["extension","extension_type","type"]};

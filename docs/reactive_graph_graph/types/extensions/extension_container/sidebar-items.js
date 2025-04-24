@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":["ExtensionContainer","NamespacedTypeExtensionContainer"]};
+window.SIDEBAR_ITEMS = {"trait":["ExtensionContainer","ExtensionContainerGetter","NamespacedTypeExtensionContainer"]};
