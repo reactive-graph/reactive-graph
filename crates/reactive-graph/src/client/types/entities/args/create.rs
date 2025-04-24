@@ -1,6 +1,6 @@
 use crate::client::types::entities::args::type_id::EntityTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::entities::create::queries::CreateEntityTypeVariables;
+use reactive_graph_client::types::entities::variables::create::variables::CreateEntityTypeVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateEntityTypeArgs {

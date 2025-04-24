@@ -4,6 +4,7 @@ pub use entity_type_errors::*;
 pub use entity_type_id::*;
 
 pub mod entity_component_type_id;
+pub mod entity_extension_type_id;
 pub mod entity_type;
 pub mod entity_type_errors;
 pub mod entity_type_id;

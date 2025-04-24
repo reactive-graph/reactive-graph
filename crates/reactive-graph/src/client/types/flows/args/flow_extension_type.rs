@@ -1,7 +1,7 @@
 use crate::client::types::extension::args::ExtensionTypeIdArgs;
 use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::client::types::extensions::container::queries::ExtensionContainerVariables;
+use reactive_graph_client::client::types::extensions::variables::container::variables::ExtensionContainerVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowExtensionTypeIdArgs {

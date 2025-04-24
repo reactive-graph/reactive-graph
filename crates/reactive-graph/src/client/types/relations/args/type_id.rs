@@ -1,7 +1,7 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotFound;
 use clap::Args;
-use reactive_graph_client::types::relations::type_id::queries::RelationTypeIdVariables;
+use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::RelationTypeId;
 
 /// The relation type.
@@ -26,7 +26,7 @@ impl From<RelationTypeIdArgs> for RelationTypeId {
     }
 }
 
-impl From<&RelationTypeIdArgs> for RelationTypeIdVariables {
+impl From<&RelationTypeIdArgs> for TypeIdVariables {
     fn from(ty: &RelationTypeIdArgs) -> Self {
         let ty: RelationTypeId = ty.clone().into();
         ty.into()

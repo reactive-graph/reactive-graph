@@ -2,7 +2,7 @@ use crate::client::types::components::args::ComponentTypeIdArgs;
 use crate::client::types::property_type::args::PropertyTypeDefinitionArgs;
 use clap::Args;
 use reactive_graph_client::PropertyTypeDefinition;
-use reactive_graph_client::types::components::add_property::queries::AddPropertyVariables;
+use reactive_graph_client::types::properties::variables::add_property::variables::AddPropertyVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct ComponentAddPropertyArgs {

@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- CLI: Add entity instances to flow types
+- GraphQL: Add entity instances to flow types
+
 ### Changed
 
 ### Fixed

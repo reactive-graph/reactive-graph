@@ -1,6 +1,6 @@
 use crate::client::types::entities::args::type_id::EntityTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::entities::update_description::queries::UpdateDescriptionVariables;
+use reactive_graph_client::types::common::variables::update_description::variables::UpdateDescriptionVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct EntityTypeUpdateDescriptionArgs {

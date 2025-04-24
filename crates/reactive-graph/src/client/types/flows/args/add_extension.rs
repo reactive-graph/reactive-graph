@@ -3,7 +3,7 @@ use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use clap::Args;
 use reactive_graph_client::ExtensionDefinition;
 use reactive_graph_client::schema_graphql::scalar::Json;
-use reactive_graph_client::types::flows::add_extension::queries::AddExtensionVariables;
+use reactive_graph_client::types::extensions::variables::add_extension::variables::AddExtensionVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowTypeAddExtensionArgs {

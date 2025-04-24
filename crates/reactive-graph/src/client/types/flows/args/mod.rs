@@ -2,11 +2,13 @@ use crate::client::types::flows::commands::FlowTypesCommands;
 use crate::shared::output_format::OutputFormatArgs;
 use clap::Args;
 
+pub mod add_entity_instance;
 pub mod add_extension;
 pub mod add_variable;
 pub mod create;
 pub mod flow_extension_type;
 pub mod flow_type_variable;
+pub mod remove_entity_instance;
 pub mod type_id;
 pub mod update_description;
 

@@ -1,6 +1,7 @@
 use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::client::types::properties::container::queries::PropertyContainerVariables;
+use reactive_graph_client::client::types::properties::variables::container::variables::PropertyContainerVariables;
+use reactive_graph_graph::RelationTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct RelationTypePropertyArgs {
@@ -14,10 +15,7 @@ pub(crate) struct RelationTypePropertyArgs {
 
 impl From<&RelationTypePropertyArgs> for PropertyContainerVariables {
     fn from(args: &RelationTypePropertyArgs) -> Self {
-        PropertyContainerVariables::builder()
-            .namespace(args.ty.namespace.clone())
-            .name(args.ty.name.clone())
-            .property_name(args.property_name.clone())
-            .build()
+        let ty: RelationTypeId = args.ty.clone().into();
+        PropertyContainerVariables::new(ty, args.property_name.clone())
     }
 }

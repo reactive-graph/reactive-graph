@@ -2,7 +2,7 @@ use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use clap::Args;
 use reactive_graph_client::schema_graphql::instances::entity_instance::EntityInstanceDefinition;
 use reactive_graph_client::schema_graphql::scalar::UUID;
-use reactive_graph_client::types::flows::create::queries::CreateFlowTypeVariables;
+use reactive_graph_client::types::flows::variables::create::variables::CreateFlowTypeVariables;
 use uuid::Uuid;
 
 #[derive(Args, Debug, Clone)]

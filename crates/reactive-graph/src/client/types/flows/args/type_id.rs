@@ -1,7 +1,7 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotFound;
 use clap::Args;
-use reactive_graph_client::types::flows::type_id::queries::FlowTypeIdVariables;
+use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::FlowTypeId;
 
 /// The flow type.
@@ -26,7 +26,7 @@ impl From<FlowTypeIdArgs> for FlowTypeId {
     }
 }
 
-impl From<&FlowTypeIdArgs> for FlowTypeIdVariables {
+impl From<&FlowTypeIdArgs> for TypeIdVariables {
     fn from(ty: &FlowTypeIdArgs) -> Self {
         let ty: FlowTypeId = ty.clone().into();
         ty.into()

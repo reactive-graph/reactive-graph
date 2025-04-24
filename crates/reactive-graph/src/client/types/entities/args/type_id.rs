@@ -1,7 +1,7 @@
 use crate::client::error::CommandError;
 use crate::client::error::CommandError::NotFound;
 use clap::Args;
-use reactive_graph_client::types::entities::type_id::queries::EntityTypeIdVariables;
+use reactive_graph_client::types::common::variables::type_id::variables::TypeIdVariables;
 use reactive_graph_graph::EntityTypeId;
 
 /// The entity type.
@@ -26,7 +26,7 @@ impl From<EntityTypeIdArgs> for EntityTypeId {
     }
 }
 
-impl From<&EntityTypeIdArgs> for EntityTypeIdVariables {
+impl From<&EntityTypeIdArgs> for TypeIdVariables {
     fn from(ty: &EntityTypeIdArgs) -> Self {
         let ty: EntityTypeId = ty.clone().into();
         ty.into()

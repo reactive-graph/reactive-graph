@@ -79,6 +79,16 @@ pub(crate) async fn flow_types(client: &Arc<ReactiveGraphClient>, flow_type_args
             Ok(None) => Err(args.flow_ty.not_found()),
             Err(e) => Err(e.into()),
         },
+        FlowTypesCommands::AddEntityInstance(args) => match client.types().flows().add_entity_instance_with_variables((&args).into()).await {
+            Ok(Some(flow_type)) => output_format_wrapper.single(flow_type),
+            Ok(None) => Err(NotCreated("Entity instance wasn't created".to_string())),
+            Err(e) => Err(e.into()),
+        },
+        FlowTypesCommands::RemoveEntityInstance(args) => match client.types().flows().remove_entity_instance_with_variables((&args).into()).await {
+            Ok(Some(flow_type)) => output_format_wrapper.single(flow_type),
+            Ok(None) => Err(NotCreated("Entity instance wasn't removed".to_string())),
+            Err(e) => Err(e.into()),
+        },
         FlowTypesCommands::UpdateDescription(args) => match client.types().flows().update_description_with_variables((&args).into()).await {
             Ok(Some(flow_type)) => output_format_wrapper.single(flow_type),
             Ok(None) => Err(args.ty.not_found()),

@@ -1,8 +1,10 @@
+use crate::client::types::flows::args::add_entity_instance::FlowTypeAddEntityInstanceArgs;
 use crate::client::types::flows::args::add_extension::FlowTypeAddExtensionArgs;
 use crate::client::types::flows::args::add_variable::FlowTypeAddVariableArgs;
 use crate::client::types::flows::args::create::CreateFlowTypeArgs;
 use crate::client::types::flows::args::flow_extension_type::FlowExtensionTypeIdArgs;
 use crate::client::types::flows::args::flow_type_variable::FlowTypeVariableArgs;
+use crate::client::types::flows::args::remove_entity_instance::FlowTypeRemoveEntityInstanceArgs;
 use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use crate::client::types::flows::args::update_description::FlowTypeUpdateDescriptionArgs;
 use clap::Subcommand;
@@ -42,6 +44,12 @@ pub(crate) enum FlowTypesCommands {
     /// Updates the description of a flow type.
     #[non_exhaustive]
     UpdateDescription(FlowTypeUpdateDescriptionArgs),
+    /// Adds a new entity instance to a flow type.
+    #[non_exhaustive]
+    AddEntityInstance(FlowTypeAddEntityInstanceArgs),
+    /// Removes an entity instance to a flow type.
+    #[non_exhaustive]
+    RemoveEntityInstance(FlowTypeRemoveEntityInstanceArgs),
     /// Prints the JSON Schema of flow types.
     #[non_exhaustive]
     JsonSchema,

@@ -1,6 +1,7 @@
 use crate::Component;
 use crate::ComponentTypeId;
 use crate::ComponentTypeIds;
+use crate::NamespacedType;
 
 /// Reactive instance container for components.
 pub trait ComponentContainer {
@@ -18,4 +19,12 @@ pub trait ComponentContainer {
 
     /// Returns true, if the reactive instance is composed with the given component.
     fn is_a(&self, ty: &ComponentTypeId) -> bool;
+}
+
+pub trait ComponentContainerGetter {
+    /// Returns the container type id.
+    fn container_ty(&self) -> NamespacedType;
+
+    /// Returns the component type id.
+    fn component_ty(&self) -> ComponentTypeId;
 }

@@ -3,7 +3,9 @@ use serde::Deserialize;
 use serde::Serialize;
 use typed_builder::TypedBuilder;
 
+use crate::ComponentContainerGetter;
 use crate::ComponentTypeId;
+use crate::NamespacedType;
 use crate::RelationTypeId;
 
 /// Addresses the component of a relation type.
@@ -24,5 +26,15 @@ impl RelationComponentTypeId {
             relation_ty: relation_ty.into(),
             component_ty: component_ty.into(),
         }
+    }
+}
+
+impl ComponentContainerGetter for RelationComponentTypeId {
+    fn container_ty(&self) -> NamespacedType {
+        NamespacedType::from(&self.relation_ty)
+    }
+
+    fn component_ty(&self) -> ComponentTypeId {
+        self.component_ty.clone()
     }
 }

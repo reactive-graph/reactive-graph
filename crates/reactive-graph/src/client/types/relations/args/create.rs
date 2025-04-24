@@ -2,7 +2,7 @@ use crate::client::types::entities::args::type_id::InboundEntityTypeIdArgs;
 use crate::client::types::entities::args::type_id::OutboundEntityTypeIdArgs;
 use crate::client::types::relations::args::type_id::RelationTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::types::relations::create::queries::CreateRelationTypeVariables;
+use reactive_graph_client::types::relations::mutations::create::mutations::CreateRelationTypeVariables;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct CreateRelationTypeArgs {

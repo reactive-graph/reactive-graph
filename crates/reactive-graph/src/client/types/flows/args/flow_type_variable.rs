@@ -1,6 +1,7 @@
 use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use clap::Args;
-use reactive_graph_client::client::types::properties::container::queries::PropertyContainerVariables;
+use reactive_graph_client::client::types::properties::variables::container::variables::PropertyContainerVariables;
+use reactive_graph_graph::FlowTypeId;
 
 #[derive(Args, Debug, Clone)]
 pub(crate) struct FlowTypeVariableArgs {
@@ -14,10 +15,7 @@ pub(crate) struct FlowTypeVariableArgs {
 
 impl From<&FlowTypeVariableArgs> for PropertyContainerVariables {
     fn from(args: &FlowTypeVariableArgs) -> Self {
-        PropertyContainerVariables::builder()
-            .namespace(args.ty.namespace.clone())
-            .name(args.ty.name.clone())
-            .property_name(args.variable_name.clone())
-            .build()
+        let ty: FlowTypeId = args.ty.clone().into();
+        PropertyContainerVariables::new(ty, args.variable_name.clone())
     }
 }
