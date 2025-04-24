@@ -31,7 +31,6 @@ pub mod mutations {
     pub fn remove_extension_mutation(
         ty: reactive_graph_graph::FlowTypeId,
         extension_ty: reactive_graph_graph::ExtensionTypeId,
-        x: reactive_graph_graph::FlowTypeAddExtensionError,
     ) -> Operation<RemoveExtension, ExtensionContainerVariables> {
         use cynic::MutationBuilder;
         let vars = ExtensionContainerVariables {
