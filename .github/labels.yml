@@ -1,0 +1,127 @@
+# Components (prefix: c:)
+
+- name: "c:cli"
+  description: "Component: Changes the Command Line Interface (CLI)."
+  color: "50747D"
+
+- name: "c:command-system"
+  description: "Component: Changes the command system."
+  color: "A4B464"
+
+- name: "c:instance-system"
+  description: "Component: Changes on the instance system."
+  color: "0C4BED"
+
+- name: "c:plugin-system"
+  description: "Component: Changes the plugin system or plugin related."
+  color: "8AFE57"
+
+- name: "c:reactive-behaviour-system"
+  description: "Component: Changes the reactive behaviour system."
+  color: "5DF5BC"
+
+- name: "c:runtime"
+  description: "Component: Changes the runtime."
+  color: "5BA3EB"
+
+- name: "c:rust-client"
+  description: "Component: Changes on the rust client library."
+  color: "fef2c0"
+
+- name: "c:security"
+  description: "Component: Security, Authentication, Authorization."
+  color: "F60205"
+
+- name: "c:type-system"
+  description: "Component: Changes the type system."
+  color: "006b75"
+
+- name: "c:user-interface"
+  description: "Component: Changes on the user interface."
+  color: "E0DE2F"
+
+# Interfaces (prefix: i; color: F028F9)
+
+- name: "i:dynamic-graph"
+  description: "Interface: Changes the Dynamic Graph interface."
+  color: "F028F9"
+
+- name: "i:graphql"
+  description: "Interface: Changes the GraphQL API."
+  color: "F028F9"
+
+- name: "i:jsonschema"
+  description: "Interface: Changes the JSON Schema."
+  color: "F028F9"
+
+# Organizational (prefix: o; color: #008672)
+
+- name: "o:good-first-issue"
+  description: "Organisational: Good for newcomers."
+  color: "008672"
+
+- name: "o:help-wanted"
+  description: "Organisational: Extra attention is needed."
+  color: "008672"
+
+- name: "o:question"
+  description: "Organisational: Further information is requested."
+  color: "008672"
+
+- name: "o:stale"
+  description: "Organisational: Stale"
+  color: "008672"
+
+- name: "o:triage"
+  description: "Organisational: Triage"
+  color: "008672"
+
+# Project Change (prefix: p; color: #0366d6)
+
+- name: "p:build-system"
+  description: "Project Change: Changes the build system"
+  color: "0366d6"
+
+- name: "p:continuous-integration"
+  description: "Project Change: Continuous Integration"
+  color: "0366d6"
+
+- name: "p:dependencies"
+  description: "Project Change: Pull requests that update a dependency file"
+  color: "0366d6"
+
+- name: "p:distribution"
+  description: "Project Change: Packaging & Distribution."
+  color: "0366d6"
+
+- name: "p:documentation"
+  description: "Project Change: Improvements or additions to documentation"
+  color: "0366d6"
+
+- name: "p:tooling"
+  description: "Project Change: Changes the tooling of the project."
+  color: "0366d6"
+
+# Resolution (prefix: r; color: #D8A094)
+
+- name: "r:duplicate"
+  description: "Resolution: This issue or pull request already exists."
+  color: "D8A094"
+
+- name: "r:invalid"
+  description: "Resolution: This doesn't seem right."
+  color: "D8A094"
+
+- name: "r:problem"
+  description: "Resolution: There is a problem which has no solution yet."
+  color: "D8A094"
+
+- name: "r:research"
+  description: "Resolution: More research or an experiment is necessary to solve a problem."
+  color: "D8A094"
+
+- name: "r:wontfix"
+  description: "Resolution: This will not be worked on."
+  color: "D8A094"
+
+#  aliases: ['first', 'second', 'third']
