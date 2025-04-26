@@ -1,4 +1,5 @@
 name: MSRV
+run-name: Minimum Supported Rust Version for ${{ github.ref == 'refs/heads/main' && 'Nightly' || github.event_name == 'pull_request' && format('{0} {1}', 'Pull Request', github.event.pull_request.number) || format('{0} {1}', 'Branch', github.ref) }} by @${{ github.actor }}
 
 on:
   push:
