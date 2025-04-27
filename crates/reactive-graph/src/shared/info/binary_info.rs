@@ -16,4 +16,8 @@ pub struct BinaryInfo {
     rustc_channel: String,
     #[builder(setter(into))]
     rustc_version: String,
+    #[builder(setter(into))]
+    rustc_host_triple: String,
+    #[builder(setter(into))]
+    rustc_commit_date: String,
 }

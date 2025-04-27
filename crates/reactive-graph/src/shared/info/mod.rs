@@ -15,6 +15,8 @@ pub static GIT_TAG: &str = env!("VERGEN_GIT_DESCRIBE");
 pub static GIT_COMMIT: &str = env!("VERGEN_GIT_SHA");
 pub static RUSTC_CHANNEL: &str = env!("VERGEN_RUSTC_CHANNEL");
 pub static RUSTC_VERSION: &str = env!("VERGEN_RUSTC_SEMVER");
+pub static RUSTC_HOST_TRIPLE: &str = env!("VERGEN_RUSTC_HOST_TRIPLE");
+pub static RUSTC_COMMIT_DATE: &str = env!("VERGEN_RUSTC_COMMIT_DATE");
 
 pub static BINARY_INFO: LazyLock<BinaryInfo> = LazyLock::new(|| {
     BinaryInfo::builder()
@@ -24,6 +26,8 @@ pub static BINARY_INFO: LazyLock<BinaryInfo> = LazyLock::new(|| {
         .git_commit(GIT_COMMIT)
         .rustc_version(RUSTC_VERSION)
         .rustc_channel(RUSTC_CHANNEL)
+        .rustc_host_triple(RUSTC_HOST_TRIPLE)
+        .rustc_commit_date(RUSTC_COMMIT_DATE)
         .build()
 });
 
