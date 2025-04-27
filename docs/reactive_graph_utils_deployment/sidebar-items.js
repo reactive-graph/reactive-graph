@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["DeploymentError"],"fn":["deploy_plugin"]};
