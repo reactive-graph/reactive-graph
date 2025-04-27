@@ -2,6 +2,7 @@
 
 members = [
     "crates/di",
+    "crates/utils/deployment",
     "crates/test-utils",
     "crates/behaviour/model/api",
     "crates/behaviour/model/impl",

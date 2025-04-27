@@ -5558,6 +5558,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "reactive-graph-utils-deployment"
+version = "0.10.0"
+dependencies = [
+ "glob",
+ "serde",
+ "thiserror 2.0.12",
+ "toml",
+]
+
+[[package]]
 name = "redox_syscall"
 version = "0.5.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"

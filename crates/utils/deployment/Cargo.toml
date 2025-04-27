@@ -1,0 +1,19 @@
+[package]
+name = "reactive-graph-utils-deployment"
+description = "Reactive Graph - Utils - Deployment"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+glob = "0.3"
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
+toml = "0.8"
+
+[lib]
+crate-type = ["lib"]
