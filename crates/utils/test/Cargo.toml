@@ -1,13 +1,13 @@
 [package]
-name = "reactive-graph-test-utils"
-description = "Reactive Graph - Test Utils"
+name = "reactive-graph-utils-test"
+description = "Reactive Graph - Utils - Test"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
 license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
-readme = "../../README.md"
+readme = "../../../README.md"
 
 [dependencies]
 colored = { workspace = true }

@@ -17,8 +17,8 @@ uuid = { workspace = true }
 
 reactive-graph-runtime-api = { version = "0.10.0", path = "../../../runtime/api" }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../../../runtime/impl" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
 reactive-graph-plugin-graphql-api = { version = "0.10.0", path = "../api" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../../utils/test" }
 
 [lib]
 crate-type = ["lib"]

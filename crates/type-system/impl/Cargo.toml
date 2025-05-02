@@ -35,7 +35,7 @@ tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread
 reactive-graph-di = { version = "0.10.0", path = "../../di" }
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
 reactive-graph-lifecycle = { version = "0.10.0", path = "../../lifecycle" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../utils/test" }
 
 [features]
 default = ["springtime", "json5", "toml"]
