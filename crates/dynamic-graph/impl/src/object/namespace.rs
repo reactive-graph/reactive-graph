@@ -54,18 +54,18 @@ pub fn namespace_mutation(context: SchemaBuilderContext, namespace: &String) -> 
 
     let mut contains_field = false;
 
-    for (entity_ty, entity_type) in entity_types {
-        if let Some(field) = entity_creation_field(&entity_ty, &entity_type) {
+    for entity_type in entity_types.iter().sorted_by(|a, b| Ord::cmp(&a.key(), &b.key())) {
+        if let Some(field) = entity_creation_field(entity_type.key(), entity_type.value()) {
             namespace = namespace.field(field);
             contains_field = true;
         }
-        if let Some(field) = entity_mutation_field(&entity_type) {
+        if let Some(field) = entity_mutation_field(entity_type.value()) {
             namespace = namespace.field(field);
             contains_field = true;
         }
     }
 
-    for relation_type in relation_types.iter() {
+    for relation_type in relation_types.iter().sorted_by(|a, b| Ord::cmp(&a.key(), &b.key())) {
         if let Some(field) = relation_creation_field(relation_type.key(), relation_type.value()) {
             namespace = namespace.field(field);
             contains_field = true;
