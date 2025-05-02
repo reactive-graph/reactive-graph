@@ -28,15 +28,15 @@ pub fn namespace_query(context: SchemaBuilderContext, namespace: &String) -> Opt
         Object::new(&type_name).description(format!("Queries for components, entities and relations on the namespace {}", &namespace.to_case(Pascal)));
 
     for component in components.iter().sorted_by(|a, b| Ord::cmp(&a.key(), &b.key())) {
-        namespace = namespace.field(component_query_field(&component.key(), &component.value()));
+        namespace = namespace.field(component_query_field(component.key(), component.value()));
     }
 
     for entity_type in entity_types.iter().sorted_by(|a, b| Ord::cmp(&a.key(), &b.key())) {
-        namespace = namespace.field(entity_query_field(&entity_type.key(), &entity_type.value()));
+        namespace = namespace.field(entity_query_field(entity_type.key(), entity_type.value()));
     }
 
     for relation_type in relation_types.iter().sorted_by(|a, b| Ord::cmp(&a.key(), &b.key())) {
-        namespace = namespace.field(relation_query_field(&relation_type.key(), &relation_type.value()));
+        namespace = namespace.field(relation_query_field(relation_type.key(), relation_type.value()));
     }
 
     Some(namespace)
