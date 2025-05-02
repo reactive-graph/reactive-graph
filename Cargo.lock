@@ -4690,6 +4690,7 @@ dependencies = [
  "async-graphql",
  "async-trait",
  "convert_case 0.8.0",
+ "itertools 0.14.0",
  "log",
  "reactive-graph-dynamic-graph-api",
  "reactive-graph-dynamic-graph-model",
