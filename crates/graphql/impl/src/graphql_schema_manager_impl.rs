@@ -71,6 +71,8 @@ impl GraphQLSchemaManagerImpl {}
 impl GraphQLSchemaManager for GraphQLSchemaManagerImpl {
     fn get_schema(&self) -> ReactiveGraphSchema {
         Schema::build(ReactiveGraphQuery, ReactiveGraphMutation, ReactiveGraphSubscription)
+            .with_sorted_fields()
+            .with_sorted_enums()
             .data(self.component_manager.clone())
             .data(self.entity_type_manager.clone())
             .data(self.relation_type_manager.clone())
