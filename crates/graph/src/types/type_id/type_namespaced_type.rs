@@ -72,7 +72,7 @@ pub mod tests {
 
     use crate::NamespacedType;
     use crate::NamespacedTypeGetter;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     impl DefaultTest for NamespacedType {
         fn default_test() -> Self {

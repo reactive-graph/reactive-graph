@@ -4,7 +4,7 @@ use criterion::criterion_main;
 use rand::Rng;
 use reactive_graph_graph::Mutability::Mutable;
 use reactive_graph_reactive_model_impl::ReactiveProperty;
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 use serde_json::json;
 use std::sync::Arc;
 use std::sync::atomic::AtomicU64;

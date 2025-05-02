@@ -9,14 +9,14 @@ use similar::ChangeTag;
 use colored::Colorize;
 
 use reactive_graph_runtime_impl::RuntimeBuilder;
-use reactive_graph_test_utils::error_verb;
-use reactive_graph_test_utils::status_failed;
-use reactive_graph_test_utils::status_ok;
-use reactive_graph_test_utils::verb;
+use reactive_graph_utils_test::error_verb;
+use reactive_graph_utils_test::status_failed;
+use reactive_graph_utils_test::status_ok;
+use reactive_graph_utils_test::verb;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_graphql_snapshots() {
-    reactive_graph_test_utils::init_logger();
+    reactive_graph_utils_test::init_logger();
     // TODO: compile runtime with graphql, but without plugin system, dynamic graph, ...!
     let runtime = RuntimeBuilder::new()
         .ignore_config_files()

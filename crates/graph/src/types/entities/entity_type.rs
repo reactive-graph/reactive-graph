@@ -57,7 +57,7 @@ use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 use crate::extension::Extension;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 
 /// Entity types defines the type of entity instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
@@ -591,7 +591,7 @@ mod tests {
     use crate::PropertyTypeContainer;
     use crate::SocketType;
     use crate::TypeDefinitionGetter;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn create_entity_type_test() {

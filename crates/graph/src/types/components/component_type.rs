@@ -423,7 +423,7 @@ use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for Component {
@@ -465,7 +465,7 @@ mod component_type_tests {
     use crate::PropertyTypeContainer;
     use crate::PropertyTypes;
     use crate::TypeDefinitionGetter;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn build_component() {

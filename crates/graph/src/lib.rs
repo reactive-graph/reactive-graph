@@ -16,7 +16,7 @@ pub use instances::properties::*;
 pub use instances::relations::*;
 
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils as test_utils;
+use reactive_graph_utils_test as test_utils;
 
 #[cfg(test)]
 pub use instances::entities::entity_instance_tests;

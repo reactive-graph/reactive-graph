@@ -133,7 +133,7 @@ mod tests {
     use crate::NamespacedTypeGetter;
     use crate::TypeDefinition;
     use crate::TypeIdType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn type_definition_component_test() {

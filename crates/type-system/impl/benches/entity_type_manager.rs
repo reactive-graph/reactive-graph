@@ -7,7 +7,7 @@ use reactive_graph_type_system_api::TypeSystem;
 use reactive_graph_type_system_impl::TypeSystemImpl;
 
 fn create_entity_type(criterion: &mut Criterion) {
-    reactive_graph_test_utils::init_logger();
+    reactive_graph_utils_test::init_logger();
     criterion.bench_function("create_reactive_entity", move |bencher| {
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();

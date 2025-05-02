@@ -21,7 +21,7 @@ struct Plugin {
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_get_all_plugins() {
-    reactive_graph_test_utils::init_logger();
+    reactive_graph_utils_test::init_logger();
     RuntimeBuilder::new()
         .ignore_config_files()
         .disable_all_plugins(true)

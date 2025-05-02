@@ -266,7 +266,7 @@ mod tests {
     use crate::TypeIdType;
     use default_test::DefaultTest;
     use rand::Rng;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
     use schemars::schema_for;
 
     impl DefaultTest for ExtensionTypeId {

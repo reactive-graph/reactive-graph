@@ -327,7 +327,7 @@ mod tests {
     use reactive_graph_graph::TypeDefinition;
     use reactive_graph_graph::TypeDefinitionGetter;
     use reactive_graph_graph::TypeIdType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn behaviour_type_id_test() {

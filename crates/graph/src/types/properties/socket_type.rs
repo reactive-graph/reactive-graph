@@ -69,7 +69,7 @@ mod tests {
     use schemars::schema_for;
 
     use crate::SocketType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn socket_type_should_be_created_using_static_method_call() {
