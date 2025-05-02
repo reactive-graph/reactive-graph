@@ -25,7 +25,7 @@ impl From<&FlowTypeAddEntityInstanceArgs> for AddEntityInstanceVariables {
             entity_instance: EntityInstanceDefinition {
                 namespace: args.entity_instance.entity_type_namespace.clone(),
                 type_name: args.entity_instance.entity_type_name.clone(),
-                id: args.entity_instance.id.unwrap_or_else(|| Uuid::new_v4()).into(),
+                id: args.entity_instance.id.unwrap_or_else(Uuid::new_v4).into(),
                 description: args.entity_instance.description.clone().unwrap_or_default(),
                 properties: PropertyInstanceDefinitions::from(args.entity_instance.properties()).into(),
                 extensions: vec![],
