@@ -40,7 +40,7 @@ tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../utils/test" }
 # TODO: compile runtime with graphql, but without plugin system, dynamic graph, ...!
 
 [lib]

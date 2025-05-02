@@ -22,17 +22,17 @@ typed-builder = { workspace = true }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../../reactive/model/api" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils", optional = true }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../../utils/test", optional = true }
 
 [dev-dependencies]
 default-test = { workspace = true }
 rand = { workspace = true }
 rand_derive3 = { workspace = true }
 
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../../utils/test" }
 
 [features]
-test = ["default-test", "rand", "rand_derive3", "reactive-graph-test-utils"]
+test = ["default-test", "rand", "rand_derive3", "reactive-graph-utils-test"]
 
 [lib]
 crate-type = ["lib"]

@@ -19,14 +19,14 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 reactive-graph-graph = { version = "0.10.0", path = "../../../graph" }
 reactive-graph-behaviour-model-api = { version = "0.10.0", path = "../../../behaviour/model/api" }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../api" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils", optional = true }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../../utils/test", optional = true }
 
 [dev-dependencies]
 criterion = { workspace = true, features = ["html_reports"] }
 rand = { workspace = true }
 stopwatch2 = { workspace = true }
 
-reactive-graph-test-utils = { version = "0.10.0", path = "../../../test-utils" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../../utils/test" }
 
 [lib]
 crate-type = ["lib"]
