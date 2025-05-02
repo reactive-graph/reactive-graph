@@ -36,6 +36,9 @@ integration-tests = []
 [lib]
 crate-type = ["lib"]
 
+[lints]
+workspace = true
+
 [[example]]
 name = "list_plugins"
 

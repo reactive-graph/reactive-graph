@@ -17,3 +17,6 @@ toml = "0.8"
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

@@ -16,3 +16,6 @@ typed-builder = { workspace = true }
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

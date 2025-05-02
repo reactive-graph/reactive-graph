@@ -34,3 +34,6 @@ vergen-gix = { workspace = true, features = ["build", "cargo", "rustc", "si"] }
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

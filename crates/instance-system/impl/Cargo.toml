@@ -36,3 +36,6 @@ reactive-graph-behaviour-service-impl = { version = "0.10.0", path = "../../beha
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

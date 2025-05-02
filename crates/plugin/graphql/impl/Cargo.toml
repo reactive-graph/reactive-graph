@@ -24,3 +24,6 @@ reactive-graph-plugin-service-api = { version = "0.10.0", path = "../../service/
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

@@ -24,3 +24,6 @@ reactive-graph-reactive-service-api = { version = "0.10.0", path = "../../reacti
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

@@ -24,3 +24,6 @@ full = ["json", "json5", "toml"]
 
 [lib]
 proc-macro = true
+
+[lints]
+workspace = true

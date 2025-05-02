@@ -13,3 +13,6 @@ readme = "../../../README.md"
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

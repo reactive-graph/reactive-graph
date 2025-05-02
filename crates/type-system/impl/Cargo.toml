@@ -47,6 +47,9 @@ full = ["springtime", "json5", "toml"]
 [lib]
 crate-type = ["lib"]
 
+[lints]
+workspace = true
+
 [[bench]]
 name = "component_manager"
 harness = false

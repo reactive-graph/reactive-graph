@@ -41,5 +41,5 @@ derive = ["reactive-graph-reactive-derive"]
 [lib]
 crate-type = ["lib"]
 
-[lints.rust]
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(fn_traits)', 'cfg(unboxed_closures)'] }
+[lints]
+workspace = true

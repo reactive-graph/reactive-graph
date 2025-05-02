@@ -23,3 +23,6 @@ reactive-graph-type-system-api = { version = "0.10.0", path = "../../type-system
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true
