@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use async_graphql::ID;
 use async_graphql::dynamic::*;
+use itertools::Itertools;
 use log::trace;
 use reactive_graph_dynamic_graph_api::ImmutablePropertyError;
 use reactive_graph_dynamic_graph_api::PropertyDataTypeError;
@@ -62,7 +63,7 @@ pub fn get_entity_type(entity_type: &EntityType, outbound_types: RelationTypes, 
     // ID field
     object = object.field(entity_id_field());
     // Property Fields
-    for property_type in entity_type.properties.iter() {
+    for property_type in entity_type.properties.iter().sorted_by(|a, b| Ord::cmp(&a.key(), &b.key())) {
         object = object.field(entity_property_field(&property_type));
     }
     // Outbound Relations
