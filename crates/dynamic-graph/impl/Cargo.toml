@@ -13,6 +13,7 @@ readme = "../../../README.md"
 async-graphql = { workspace = true, features = ["uuid", "dynamic-schema"] }
 async-trait = { workspace = true }
 convert_case = { workspace = true }
+itertools = { workspace = true }
 log = { workspace = true, features = ["std", "serde"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
