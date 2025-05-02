@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CLI: Add entity instances to flow types
 - GraphQL: Add entity instances to flow types
+- GraphQL: Sort fields and enums
+- Dynamic Graph: Sort components, entity types, relation types and properties
 
 ### Changed
 
