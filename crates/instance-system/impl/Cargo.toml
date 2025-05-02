@@ -28,7 +28,7 @@ tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph", features = ["test"] }
 reactive-graph-reactive-model-api = { version = "0.10.0", path = "../../reactive/model/api" }
-reactive-graph-test-utils = { version = "0.10.0", path = "../../test-utils" }
+reactive-graph-utils-test = { version = "0.10.0", path = "../../utils/test" }
 # Integration tests needs to import the actual implementations
 reactive-graph-type-system-impl = { version = "0.10.0", path = "../../type-system/impl" }
 reactive-graph-reactive-service-impl = { version = "0.10.0", path = "../../reactive/service/impl" }
