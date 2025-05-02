@@ -34,6 +34,8 @@ impl RuntimeSchemaManagerImpl {}
 impl RuntimeSchemaManager for RuntimeSchemaManagerImpl {
     fn get_schema(&self) -> RuntimeSchema {
         Schema::build(RuntimeQuery, RuntimeMutation, EmptySubscription)
+            .with_sorted_fields()
+            .with_sorted_enums()
             .data(self.instance_service.clone())
             .data(self.remotes_manager.clone())
             .data(self.command_manager.clone())

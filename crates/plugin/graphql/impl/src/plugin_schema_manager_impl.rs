@@ -25,6 +25,8 @@ pub struct PluginSchemaManagerImpl {
 impl PluginSchemaManager for PluginSchemaManagerImpl {
     fn get_schema(&self) -> PluginSchema {
         Schema::build(PluginQuery, PluginMutation, EmptySubscription)
+            .with_sorted_fields()
+            .with_sorted_enums()
             .data(self.plugin_container_manager.clone())
             .data(self.plugin_resolver.clone())
             .finish()
