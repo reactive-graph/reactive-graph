@@ -29,3 +29,6 @@ reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" 
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

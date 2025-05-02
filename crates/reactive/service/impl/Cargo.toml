@@ -45,6 +45,9 @@ reactive-graph-behaviour-service-impl = { version = "0.10.0", path = "../../../b
 [lib]
 crate-type = ["lib"]
 
+[lints]
+workspace = true
+
 [[bench]]
 name = "reactive_entity_manager"
 harness = false

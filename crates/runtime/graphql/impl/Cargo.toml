@@ -24,3 +24,6 @@ reactive-graph-remotes-api = { version = "0.10.0", path = "../../../remotes/api"
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

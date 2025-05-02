@@ -48,3 +48,6 @@ reactive-graph-runtime-graphql-web = { version = "0.10.0", path = "../../graphql
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

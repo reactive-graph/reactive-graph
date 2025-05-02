@@ -19,5 +19,5 @@ reactive-graph-utils-test = { version = "0.10.0", path = "../../../utils/test" }
 [lib]
 crate-type = ["lib"]
 
-[lints.rust]
-unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)'] }
+[lints]
+workspace = true

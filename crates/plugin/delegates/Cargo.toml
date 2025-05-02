@@ -31,3 +31,6 @@ reactive-graph-runtime-web-api = { version = "0.10.0", path = "../../runtime/web
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

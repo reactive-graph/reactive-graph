@@ -16,3 +16,6 @@ springtime-di = { workspace = true, features = ["threadsafe", "derive"] }
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

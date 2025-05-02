@@ -35,3 +35,6 @@ full = ["derive", "springtime", "json5", "toml"]
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

@@ -45,3 +45,6 @@ test = []
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

@@ -28,3 +28,6 @@ reactive-graph-dynamic-graph-api = { version = "0.10.0", path = "../../../dynami
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

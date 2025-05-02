@@ -18,3 +18,6 @@ serde_json = { workspace = true }
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

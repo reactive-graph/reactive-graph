@@ -28,3 +28,6 @@ integration-tests = []
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

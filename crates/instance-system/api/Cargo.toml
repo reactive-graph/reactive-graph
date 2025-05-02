@@ -22,3 +22,6 @@ reactive-graph-reactive-model-impl = { version = "0.10.0", path = "../../reactiv
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

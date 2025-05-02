@@ -171,6 +171,12 @@ walkdir = "2.5"
 wildmatch = "2.4"
 xdg = "2.5"
 
+[workspace.lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)', 'cfg(fn_traits)', 'cfg(unboxed_closures)'] }
+
+[workspace.lints.clippy]
+non_std_lazy_statics = "warn"
+
 [profile.dev]
 opt-level = 0
 

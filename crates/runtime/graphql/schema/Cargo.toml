@@ -26,3 +26,6 @@ reactive-graph-graph = { version = "0.10.0", path = "../../../graph", features =
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

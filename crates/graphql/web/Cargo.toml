@@ -19,3 +19,6 @@ reactive-graph-graphql-schema = { version = "0.10.0", path = "../schema" }
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true

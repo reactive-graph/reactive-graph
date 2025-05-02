@@ -17,3 +17,6 @@ reactive-graph-remotes-model = { version = "0.10.0", path = "../../remotes/model
 
 [lib]
 crate-type = ["lib"]
+
+[lints]
+workspace = true
