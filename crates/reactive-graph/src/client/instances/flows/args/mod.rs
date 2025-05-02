@@ -2,6 +2,7 @@ use crate::client::instances::flows::commands::FlowInstancesCommands;
 use crate::shared::output_format::OutputFormatArgs;
 use clap::Args;
 
+pub mod add_entity_instance;
 pub mod create;
 pub mod create_from_type;
 pub mod id;

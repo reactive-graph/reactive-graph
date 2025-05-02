@@ -1,4 +1,4 @@
-use crate::client::instances::entities::args::create::CreateEntityInstanceArgs;
+use crate::client::instances::flows::args::add_entity_instance::AddEntityInstanceArgs;
 use crate::client::types::flows::args::type_id::FlowTypeIdArgs;
 use clap::Args;
 use reactive_graph_client::PropertyInstanceDefinitions;
@@ -14,7 +14,7 @@ pub(crate) struct FlowTypeAddEntityInstanceArgs {
 
     /// The entity instance to add.
     #[clap(flatten)]
-    pub entity_instance: CreateEntityInstanceArgs,
+    pub entity_instance: AddEntityInstanceArgs,
 }
 
 impl From<&FlowTypeAddEntityInstanceArgs> for AddEntityInstanceVariables {
@@ -23,8 +23,8 @@ impl From<&FlowTypeAddEntityInstanceArgs> for AddEntityInstanceVariables {
             namespace: args.ty.namespace.clone(),
             name: args.ty.name.clone(),
             entity_instance: EntityInstanceDefinition {
-                namespace: args.entity_instance.ty.namespace.clone(),
-                type_name: args.entity_instance.ty.name.clone(),
+                namespace: args.entity_instance.entity_type_namespace.clone(),
+                type_name: args.entity_instance.entity_type_name.clone(),
                 id: args.entity_instance.id.unwrap_or_else(|| Uuid::new_v4()).into(),
                 description: args.entity_instance.description.clone().unwrap_or_default(),
                 properties: PropertyInstanceDefinitions::from(args.entity_instance.properties()).into(),
