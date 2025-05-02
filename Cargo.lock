@@ -4499,7 +4499,7 @@ dependencies = [
  "rand_derive3",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
- "reactive-graph-test-utils",
+ "reactive-graph-utils-test",
  "schemars",
  "serde",
  "serde_json",
@@ -4727,7 +4727,7 @@ dependencies = [
  "reactive-graph-graph",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
+ "reactive-graph-utils-test",
  "serde_json",
  "similar",
  "tokio",
@@ -4751,7 +4751,7 @@ dependencies = [
  "default-test",
  "rand 0.9.1",
  "rand_derive3",
- "reactive-graph-test-utils",
+ "reactive-graph-utils-test",
  "schemars",
  "serde",
  "serde_json",
@@ -4812,8 +4812,8 @@ dependencies = [
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-impl",
  "reactive-graph-runtime-model",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
+ "reactive-graph-utils-test",
  "schemars",
  "serde",
  "serde_json",
@@ -4872,7 +4872,6 @@ dependencies = [
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-reactive-service-impl",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-impl",
  "serde_json",
  "springtime-di",
@@ -4995,7 +4994,7 @@ dependencies = [
  "reactive-graph-plugin-graphql-api",
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
+ "reactive-graph-utils-test",
  "serde",
  "serde_json",
  "tokio",
@@ -5089,7 +5088,7 @@ dependencies = [
  "reactive-graph-behaviour-model-api",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
- "reactive-graph-test-utils",
+ "reactive-graph-utils-test",
  "serde",
  "serde_json",
  "stopwatch2",
@@ -5142,9 +5141,9 @@ dependencies = [
  "reactive-graph-reactive-model-impl",
  "reactive-graph-reactive-service-api",
  "reactive-graph-runtime-model",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
  "reactive-graph-type-system-impl",
+ "reactive-graph-utils-test",
  "serde_json",
  "springtime-di",
  "tokio",
@@ -5384,7 +5383,7 @@ version = "0.10.0"
 dependencies = [
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
- "reactive-graph-test-utils",
+ "reactive-graph-utils-test",
  "tokio",
 ]
 
@@ -5473,17 +5472,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "reactive-graph-test-utils"
-version = "0.10.0"
-dependencies = [
- "colored",
- "log",
- "log4rs",
- "random-string",
- "serde_json",
-]
-
-[[package]]
 name = "reactive-graph-type-system-api"
 version = "0.10.0"
 dependencies = [
@@ -5528,8 +5516,8 @@ dependencies = [
  "reactive-graph-reactive-model-impl",
  "reactive-graph-runtime-model",
  "reactive-graph-serde",
- "reactive-graph-test-utils",
  "reactive-graph-type-system-api",
+ "reactive-graph-utils-test",
  "rust-embed",
  "serde_json",
  "springtime-di",
@@ -5565,6 +5553,17 @@ dependencies = [
  "serde",
  "thiserror 2.0.12",
  "toml",
+]
+
+[[package]]
+name = "reactive-graph-utils-test"
+version = "0.10.0"
+dependencies = [
+ "colored",
+ "log",
+ "log4rs",
+ "random-string",
+ "serde_json",
 ]
 
 [[package]]
