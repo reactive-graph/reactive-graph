@@ -15,23 +15,27 @@
 <a href=#15 id=15 data-nosnippet>15</a><span class="kw">pub static </span>GIT_COMMIT: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_GIT_SHA"</span>);
 <a href=#16 id=16 data-nosnippet>16</a><span class="kw">pub static </span>RUSTC_CHANNEL: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_RUSTC_CHANNEL"</span>);
 <a href=#17 id=17 data-nosnippet>17</a><span class="kw">pub static </span>RUSTC_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_RUSTC_SEMVER"</span>);
-<a href=#18 id=18 data-nosnippet>18</a>
-<a href=#19 id=19 data-nosnippet>19</a><span class="kw">pub static </span>BINARY_INFO: LazyLock&lt;BinaryInfo&gt; = LazyLock::new(|| {
-<a href=#20 id=20 data-nosnippet>20</a>    BinaryInfo::builder()
-<a href=#21 id=21 data-nosnippet>21</a>        .version(VERSION)
-<a href=#22 id=22 data-nosnippet>22</a>        .target_triple(TARGET_TRIPLE)
-<a href=#23 id=23 data-nosnippet>23</a>        .git_tag(GIT_TAG)
-<a href=#24 id=24 data-nosnippet>24</a>        .git_commit(GIT_COMMIT)
-<a href=#25 id=25 data-nosnippet>25</a>        .rustc_version(RUSTC_VERSION)
-<a href=#26 id=26 data-nosnippet>26</a>        .rustc_channel(RUSTC_CHANNEL)
-<a href=#27 id=27 data-nosnippet>27</a>        .build()
-<a href=#28 id=28 data-nosnippet>28</a>});
-<a href=#29 id=29 data-nosnippet>29</a>
-<a href=#30 id=30 data-nosnippet>30</a><span class="kw">pub fn </span>handle_info_command(args: <span class="kw-2">&amp;</span>InfoArgs) {
-<a href=#31 id=31 data-nosnippet>31</a>    <span class="attr">#[allow(clippy::match_single_binding)]
-<a href=#32 id=32 data-nosnippet>32</a>    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(commands) = <span class="kw-2">&amp;</span>args.commands {
-<a href=#33 id=33 data-nosnippet>33</a>        <span class="kw">match </span>commands {
-<a href=#34 id=34 data-nosnippet>34</a>            InfoCommands::Info(args) =&gt; <span class="macro">vec!</span>[BINARY_INFO.deref()].print_table_and_exit(<span class="kw-2">&amp;</span>args.output_format),
-<a href=#35 id=35 data-nosnippet>35</a>        }
-<a href=#36 id=36 data-nosnippet>36</a>    }
-<a href=#37 id=37 data-nosnippet>37</a>}</code></pre></div></section></main></body></html>
+<a href=#18 id=18 data-nosnippet>18</a><span class="kw">pub static </span>RUSTC_HOST_TRIPLE: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_RUSTC_HOST_TRIPLE"</span>);
+<a href=#19 id=19 data-nosnippet>19</a><span class="kw">pub static </span>RUSTC_COMMIT_DATE: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"VERGEN_RUSTC_COMMIT_DATE"</span>);
+<a href=#20 id=20 data-nosnippet>20</a>
+<a href=#21 id=21 data-nosnippet>21</a><span class="kw">pub static </span>BINARY_INFO: LazyLock&lt;BinaryInfo&gt; = LazyLock::new(|| {
+<a href=#22 id=22 data-nosnippet>22</a>    BinaryInfo::builder()
+<a href=#23 id=23 data-nosnippet>23</a>        .version(VERSION)
+<a href=#24 id=24 data-nosnippet>24</a>        .target_triple(TARGET_TRIPLE)
+<a href=#25 id=25 data-nosnippet>25</a>        .git_tag(GIT_TAG)
+<a href=#26 id=26 data-nosnippet>26</a>        .git_commit(GIT_COMMIT)
+<a href=#27 id=27 data-nosnippet>27</a>        .rustc_version(RUSTC_VERSION)
+<a href=#28 id=28 data-nosnippet>28</a>        .rustc_channel(RUSTC_CHANNEL)
+<a href=#29 id=29 data-nosnippet>29</a>        .rustc_host_triple(RUSTC_HOST_TRIPLE)
+<a href=#30 id=30 data-nosnippet>30</a>        .rustc_commit_date(RUSTC_COMMIT_DATE)
+<a href=#31 id=31 data-nosnippet>31</a>        .build()
+<a href=#32 id=32 data-nosnippet>32</a>});
+<a href=#33 id=33 data-nosnippet>33</a>
+<a href=#34 id=34 data-nosnippet>34</a><span class="kw">pub fn </span>handle_info_command(args: <span class="kw-2">&amp;</span>InfoArgs) {
+<a href=#35 id=35 data-nosnippet>35</a>    <span class="attr">#[allow(clippy::match_single_binding)]
+<a href=#36 id=36 data-nosnippet>36</a>    </span><span class="kw">if let </span><span class="prelude-val">Some</span>(commands) = <span class="kw-2">&amp;</span>args.commands {
+<a href=#37 id=37 data-nosnippet>37</a>        <span class="kw">match </span>commands {
+<a href=#38 id=38 data-nosnippet>38</a>            InfoCommands::Info(args) =&gt; <span class="macro">vec!</span>[BINARY_INFO.deref()].print_table_and_exit(<span class="kw-2">&amp;</span>args.output_format),
+<a href=#39 id=39 data-nosnippet>39</a>        }
+<a href=#40 id=40 data-nosnippet>40</a>    }
+<a href=#41 id=41 data-nosnippet>41</a>}</code></pre></div></section></main></body></html>

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["add_entity_instance","add_extension","add_variable","create","flow_extension_type","flow_type_variable","remove_entity_instance","type_id","update_description"],"struct":["FlowTypesArgs"]};
