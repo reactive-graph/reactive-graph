@@ -78,7 +78,7 @@ use crate::Variable;
 use crate::Variables;
 use crate::VariablesContainer;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
@@ -788,7 +788,7 @@ mod tests {
     use crate::Variables;
     use crate::VariablesContainer;
     use crate::entity_instance_tests::create_entity_instance_with_property;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn create_flow_type_test() {

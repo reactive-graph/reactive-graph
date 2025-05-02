@@ -429,12 +429,12 @@ mod tests {
     use reactive_graph_graph::PropertyTypes;
     use reactive_graph_graph::RelationType;
     use reactive_graph_graph::RelationTypeId;
-    use reactive_graph_test_utils::r_string;
     use reactive_graph_type_system_api::TypeSystem;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn test_register_relation_type() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
@@ -468,7 +468,7 @@ mod tests {
 
     #[test]
     fn test_create_and_delete_relation_type() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
@@ -510,7 +510,7 @@ mod tests {
 
     #[test]
     fn test_get_relation_types() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();
@@ -546,7 +546,7 @@ mod tests {
 
     #[test]
     fn test_register_relation_type_has_component() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let entity_type_manager = type_system.get_entity_type_manager();
@@ -585,7 +585,7 @@ mod tests {
 
     #[test]
     fn test_register_relation_type_has_property() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();

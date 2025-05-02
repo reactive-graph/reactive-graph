@@ -628,7 +628,7 @@ mod tests {
     use reactive_graph_graph::PropertyTypes;
     use reactive_graph_reactive_model_impl::ReactiveEntity;
     use reactive_graph_reactive_service_api::ReactiveSystem;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
     use reactive_graph_type_system_impl::TypeSystemImpl;
@@ -637,7 +637,7 @@ mod tests {
 
     #[test]
     fn test_register_reactive_entity_instance() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
@@ -675,7 +675,7 @@ mod tests {
 
     #[test]
     fn test_unregister_reactive_entity_instance() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();
@@ -704,7 +704,7 @@ mod tests {
 
     #[test]
     fn test_not_register_twice_reactive_entity_instance() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
 
         let reactive_system = reactive_graph_di::get_container::<ReactiveSystemImpl>();
         let type_system = reactive_system.type_system();

@@ -16,7 +16,7 @@ use serde_json::Value;
 use serde_json::json;
 
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 
 /// Derived from serde_json::Value but without value payload.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]
@@ -151,7 +151,7 @@ mod tests {
     use serde_json::Value;
 
     use crate::DataType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn data_type_should_be_created_using_static_method_call() {

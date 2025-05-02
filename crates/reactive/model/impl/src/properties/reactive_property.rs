@@ -276,7 +276,7 @@ pub mod tests {
 
     use crate::ReactiveProperty;
     use reactive_graph_graph::Mutability::Mutable;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn reactive_property_instance_test() {

@@ -7,7 +7,7 @@ use reactive_graph_runtime_impl::RuntimeBuilder;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn integration_test_shutdown() {
-    reactive_graph_test_utils::init_logger();
+    reactive_graph_utils_test::init_logger();
     let start = Instant::now();
     RuntimeBuilder::new()
         .ignore_config_files()

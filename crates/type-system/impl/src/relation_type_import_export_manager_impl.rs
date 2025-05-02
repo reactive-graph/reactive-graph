@@ -95,7 +95,7 @@ mod tests {
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_relation_type() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let entity_type_manager = type_system.get_entity_type_manager();
         let relation_type_manager = type_system.get_relation_type_manager();

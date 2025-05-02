@@ -56,7 +56,7 @@ use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 
 /// A relation type defines the type of relation instance.
 ///
@@ -668,7 +668,7 @@ mod tests {
     use crate::SocketType;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn create_relation_type_test() {

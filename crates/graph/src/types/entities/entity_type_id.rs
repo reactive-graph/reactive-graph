@@ -309,7 +309,7 @@ mod tests {
     use crate::TypeDefinition;
     use crate::TypeDefinitionGetter;
     use crate::TypeIdType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn entity_type_id_test() {

@@ -61,7 +61,7 @@ mod tests {
     use reactive_graph_graph::EntityType;
     use reactive_graph_graph::NamespacedTypeGetter;
     use reactive_graph_instance_system_api::InstanceSystem;
-    use reactive_graph_test_utils::DefaultFrom;
+    use reactive_graph_utils_test::DefaultFrom;
 
     // Do not remove! This import is necessary to make the dependency injection work
     #[allow(unused_imports)]
@@ -75,7 +75,7 @@ mod tests {
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_entity_instance_import_export_manager() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let instance_system = reactive_graph_di::get_container::<InstanceSystemImpl>();
         let reactive_system = instance_system.reactive_system();
         let type_system = reactive_system.type_system();

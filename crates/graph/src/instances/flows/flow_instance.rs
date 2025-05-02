@@ -15,7 +15,7 @@ use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::DefaultFrom;
+use reactive_graph_utils_test::DefaultFrom;
 use schemars::JsonSchema;
 use schemars::Schema;
 use schemars::SchemaGenerator;

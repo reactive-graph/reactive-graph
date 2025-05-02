@@ -462,7 +462,7 @@ use default_test::DefaultTest;
 #[cfg(any(test, feature = "test"))]
 use rand::Rng;
 #[cfg(any(test, feature = "test"))]
-use reactive_graph_test_utils::r_string;
+use reactive_graph_utils_test::r_string;
 
 #[cfg(any(test, feature = "test"))]
 impl DefaultTest for PropertyType {
@@ -508,7 +508,7 @@ mod tests {
     use crate::Mutability;
     use crate::PropertyType;
     use crate::SocketType;
-    use reactive_graph_test_utils::r_string;
+    use reactive_graph_utils_test::r_string;
 
     #[test]
     fn property_type_test() {

@@ -93,7 +93,7 @@ mod test {
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_export_import_component() {
-        reactive_graph_test_utils::init_logger();
+        reactive_graph_utils_test::init_logger();
         let type_system = reactive_graph_di::get_container::<TypeSystemImpl>();
         let component_manager = type_system.get_component_manager();
         let component_import_export_manager = type_system.get_component_import_export_manager();
