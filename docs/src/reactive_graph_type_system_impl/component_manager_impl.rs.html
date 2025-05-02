@@ -268,12 +268,12 @@
 <a href=#268 id=268 data-nosnippet>268</a>    <span class="kw">use </span>serde_json::json;
 <a href=#269 id=269 data-nosnippet>269</a>
 <a href=#270 id=270 data-nosnippet>270</a>    <span class="kw">use </span><span class="kw">crate</span>::TypeSystemImpl;
-<a href=#271 id=271 data-nosnippet>271</a>    <span class="kw">use </span>reactive_graph_test_utils::r_string;
-<a href=#272 id=272 data-nosnippet>272</a>    <span class="kw">use </span>reactive_graph_type_system_api::TypeSystem;
+<a href=#271 id=271 data-nosnippet>271</a>    <span class="kw">use </span>reactive_graph_type_system_api::TypeSystem;
+<a href=#272 id=272 data-nosnippet>272</a>    <span class="kw">use </span>reactive_graph_utils_test::r_string;
 <a href=#273 id=273 data-nosnippet>273</a>
 <a href=#274 id=274 data-nosnippet>274</a>    <span class="attr">#[test]
 <a href=#275 id=275 data-nosnippet>275</a>    </span><span class="kw">fn </span>test_register_component() {
-<a href=#276 id=276 data-nosnippet>276</a>        reactive_graph_test_utils::init_logger();
+<a href=#276 id=276 data-nosnippet>276</a>        reactive_graph_utils_test::init_logger();
 <a href=#277 id=277 data-nosnippet>277</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#278 id=278 data-nosnippet>278</a>        <span class="kw">let </span>component_manager = type_system.get_component_manager();
 <a href=#279 id=279 data-nosnippet>279</a>        <span class="kw">let </span>namespace = r_string();
@@ -302,7 +302,7 @@
 <a href=#302 id=302 data-nosnippet>302</a>
 <a href=#303 id=303 data-nosnippet>303</a>    <span class="attr">#[test]
 <a href=#304 id=304 data-nosnippet>304</a>    </span><span class="kw">fn </span>test_get_components() {
-<a href=#305 id=305 data-nosnippet>305</a>        reactive_graph_test_utils::init_logger();
+<a href=#305 id=305 data-nosnippet>305</a>        reactive_graph_utils_test::init_logger();
 <a href=#306 id=306 data-nosnippet>306</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#307 id=307 data-nosnippet>307</a>        <span class="kw">let </span>component_manager = type_system.get_component_manager();
 <a href=#308 id=308 data-nosnippet>308</a>        <span class="kw">let </span>components = component_manager.get_all();

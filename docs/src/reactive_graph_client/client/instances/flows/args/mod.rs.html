@@ -2,18 +2,19 @@
 <a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span><span class="kw">crate</span>::shared::output_format::OutputFormatArgs;
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>clap::Args;
 <a href=#4 id=4 data-nosnippet>4</a>
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">pub mod </span>create;
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">pub mod </span>create_from_type;
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub mod </span>id;
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">pub mod </span>label;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub mod </span>search;
-<a href=#10 id=10 data-nosnippet>10</a>
-<a href=#11 id=11 data-nosnippet>11</a><span class="attr">#[derive(Args, Debug, Clone)]
-<a href=#12 id=12 data-nosnippet>12</a>#[clap(subcommand_required = <span class="bool-val">true</span>)]
-<a href=#13 id=13 data-nosnippet>13</a></span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>FlowInstancesArgs {
-<a href=#14 id=14 data-nosnippet>14</a>    <span class="attr">#[command(subcommand)]
-<a href=#15 id=15 data-nosnippet>15</a>    </span><span class="kw">pub</span>(<span class="kw">crate</span>) commands: <span class="prelude-ty">Option</span>&lt;FlowInstancesCommands&gt;,
-<a href=#16 id=16 data-nosnippet>16</a>
-<a href=#17 id=17 data-nosnippet>17</a>    <span class="attr">#[arg(global = <span class="bool-val">true</span>, short, long)]
-<a href=#18 id=18 data-nosnippet>18</a>    </span><span class="kw">pub </span>output_format: <span class="prelude-ty">Option</span>&lt;OutputFormatArgs&gt;,
-<a href=#19 id=19 data-nosnippet>19</a>}</code></pre></div></section></main></body></html>
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">pub mod </span>add_entity_instance;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">pub mod </span>create;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">pub mod </span>create_from_type;
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">pub mod </span>id;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">pub mod </span>label;
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">pub mod </span>search;
+<a href=#11 id=11 data-nosnippet>11</a>
+<a href=#12 id=12 data-nosnippet>12</a><span class="attr">#[derive(Args, Debug, Clone)]
+<a href=#13 id=13 data-nosnippet>13</a>#[clap(subcommand_required = <span class="bool-val">true</span>)]
+<a href=#14 id=14 data-nosnippet>14</a></span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>FlowInstancesArgs {
+<a href=#15 id=15 data-nosnippet>15</a>    <span class="attr">#[command(subcommand)]
+<a href=#16 id=16 data-nosnippet>16</a>    </span><span class="kw">pub</span>(<span class="kw">crate</span>) commands: <span class="prelude-ty">Option</span>&lt;FlowInstancesCommands&gt;,
+<a href=#17 id=17 data-nosnippet>17</a>
+<a href=#18 id=18 data-nosnippet>18</a>    <span class="attr">#[arg(global = <span class="bool-val">true</span>, short, long)]
+<a href=#19 id=19 data-nosnippet>19</a>    </span><span class="kw">pub </span>output_format: <span class="prelude-ty">Option</span>&lt;OutputFormatArgs&gt;,
+<a href=#20 id=20 data-nosnippet>20</a>}</code></pre></div></section></main></body></html>

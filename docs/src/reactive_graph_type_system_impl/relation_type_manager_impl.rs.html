@@ -429,12 +429,12 @@
 <a href=#429 id=429 data-nosnippet>429</a>    <span class="kw">use </span>reactive_graph_graph::PropertyTypes;
 <a href=#430 id=430 data-nosnippet>430</a>    <span class="kw">use </span>reactive_graph_graph::RelationType;
 <a href=#431 id=431 data-nosnippet>431</a>    <span class="kw">use </span>reactive_graph_graph::RelationTypeId;
-<a href=#432 id=432 data-nosnippet>432</a>    <span class="kw">use </span>reactive_graph_test_utils::r_string;
-<a href=#433 id=433 data-nosnippet>433</a>    <span class="kw">use </span>reactive_graph_type_system_api::TypeSystem;
+<a href=#432 id=432 data-nosnippet>432</a>    <span class="kw">use </span>reactive_graph_type_system_api::TypeSystem;
+<a href=#433 id=433 data-nosnippet>433</a>    <span class="kw">use </span>reactive_graph_utils_test::r_string;
 <a href=#434 id=434 data-nosnippet>434</a>
 <a href=#435 id=435 data-nosnippet>435</a>    <span class="attr">#[test]
 <a href=#436 id=436 data-nosnippet>436</a>    </span><span class="kw">fn </span>test_register_relation_type() {
-<a href=#437 id=437 data-nosnippet>437</a>        reactive_graph_test_utils::init_logger();
+<a href=#437 id=437 data-nosnippet>437</a>        reactive_graph_utils_test::init_logger();
 <a href=#438 id=438 data-nosnippet>438</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#439 id=439 data-nosnippet>439</a>        <span class="kw">let </span>entity_type_manager = type_system.get_entity_type_manager();
 <a href=#440 id=440 data-nosnippet>440</a>        <span class="kw">let </span>relation_type_manager = type_system.get_relation_type_manager();
@@ -468,7 +468,7 @@
 <a href=#468 id=468 data-nosnippet>468</a>
 <a href=#469 id=469 data-nosnippet>469</a>    <span class="attr">#[test]
 <a href=#470 id=470 data-nosnippet>470</a>    </span><span class="kw">fn </span>test_create_and_delete_relation_type() {
-<a href=#471 id=471 data-nosnippet>471</a>        reactive_graph_test_utils::init_logger();
+<a href=#471 id=471 data-nosnippet>471</a>        reactive_graph_utils_test::init_logger();
 <a href=#472 id=472 data-nosnippet>472</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#473 id=473 data-nosnippet>473</a>        <span class="kw">let </span>entity_type_manager = type_system.get_entity_type_manager();
 <a href=#474 id=474 data-nosnippet>474</a>        <span class="kw">let </span>relation_type_manager = type_system.get_relation_type_manager();
@@ -510,7 +510,7 @@
 <a href=#510 id=510 data-nosnippet>510</a>
 <a href=#511 id=511 data-nosnippet>511</a>    <span class="attr">#[test]
 <a href=#512 id=512 data-nosnippet>512</a>    </span><span class="kw">fn </span>test_get_relation_types() {
-<a href=#513 id=513 data-nosnippet>513</a>        reactive_graph_test_utils::init_logger();
+<a href=#513 id=513 data-nosnippet>513</a>        reactive_graph_utils_test::init_logger();
 <a href=#514 id=514 data-nosnippet>514</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#515 id=515 data-nosnippet>515</a>        <span class="kw">let </span>entity_type_manager = type_system.get_entity_type_manager();
 <a href=#516 id=516 data-nosnippet>516</a>        <span class="kw">let </span>relation_type_manager = type_system.get_relation_type_manager();
@@ -546,7 +546,7 @@
 <a href=#546 id=546 data-nosnippet>546</a>
 <a href=#547 id=547 data-nosnippet>547</a>    <span class="attr">#[test]
 <a href=#548 id=548 data-nosnippet>548</a>    </span><span class="kw">fn </span>test_register_relation_type_has_component() {
-<a href=#549 id=549 data-nosnippet>549</a>        reactive_graph_test_utils::init_logger();
+<a href=#549 id=549 data-nosnippet>549</a>        reactive_graph_utils_test::init_logger();
 <a href=#550 id=550 data-nosnippet>550</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#551 id=551 data-nosnippet>551</a>        <span class="kw">let </span>component_manager = type_system.get_component_manager();
 <a href=#552 id=552 data-nosnippet>552</a>        <span class="kw">let </span>entity_type_manager = type_system.get_entity_type_manager();
@@ -585,7 +585,7 @@
 <a href=#585 id=585 data-nosnippet>585</a>
 <a href=#586 id=586 data-nosnippet>586</a>    <span class="attr">#[test]
 <a href=#587 id=587 data-nosnippet>587</a>    </span><span class="kw">fn </span>test_register_relation_type_has_property() {
-<a href=#588 id=588 data-nosnippet>588</a>        reactive_graph_test_utils::init_logger();
+<a href=#588 id=588 data-nosnippet>588</a>        reactive_graph_utils_test::init_logger();
 <a href=#589 id=589 data-nosnippet>589</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#590 id=590 data-nosnippet>590</a>        <span class="kw">let </span>entity_type_manager = type_system.get_entity_type_manager();
 <a href=#591 id=591 data-nosnippet>591</a>        <span class="kw">let </span>relation_type_manager = type_system.get_relation_type_manager();

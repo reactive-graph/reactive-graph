@@ -94,7 +94,7 @@
 <a href=#94 id=94 data-nosnippet>94</a>
 <a href=#95 id=95 data-nosnippet>95</a>    <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
 <a href=#96 id=96 data-nosnippet>96</a>    </span><span class="kw">async fn </span>test_export_import_entity_type() {
-<a href=#97 id=97 data-nosnippet>97</a>        reactive_graph_test_utils::init_logger();
+<a href=#97 id=97 data-nosnippet>97</a>        reactive_graph_utils_test::init_logger();
 <a href=#98 id=98 data-nosnippet>98</a>        <span class="kw">let </span>type_system = reactive_graph_di::get_container::&lt;TypeSystemImpl&gt;();
 <a href=#99 id=99 data-nosnippet>99</a>        <span class="kw">let </span>entity_type_manager = type_system.get_entity_type_manager();
 <a href=#100 id=100 data-nosnippet>100</a>        <span class="kw">let </span>entity_type_import_export_manager = type_system.get_entity_type_import_export_manager();

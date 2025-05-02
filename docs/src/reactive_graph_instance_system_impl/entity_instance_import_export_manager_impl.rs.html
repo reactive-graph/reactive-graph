@@ -61,7 +61,7 @@
 <a href=#61 id=61 data-nosnippet>61</a>    <span class="kw">use </span>reactive_graph_graph::EntityType;
 <a href=#62 id=62 data-nosnippet>62</a>    <span class="kw">use </span>reactive_graph_graph::NamespacedTypeGetter;
 <a href=#63 id=63 data-nosnippet>63</a>    <span class="kw">use </span>reactive_graph_instance_system_api::InstanceSystem;
-<a href=#64 id=64 data-nosnippet>64</a>    <span class="kw">use </span>reactive_graph_test_utils::DefaultFrom;
+<a href=#64 id=64 data-nosnippet>64</a>    <span class="kw">use </span>reactive_graph_utils_test::DefaultFrom;
 <a href=#65 id=65 data-nosnippet>65</a>
 <a href=#66 id=66 data-nosnippet>66</a>    <span class="comment">// Do not remove! This import is necessary to make the dependency injection work
 <a href=#67 id=67 data-nosnippet>67</a>    </span><span class="attr">#[allow(unused_imports)]
@@ -75,7 +75,7 @@
 <a href=#75 id=75 data-nosnippet>75</a>
 <a href=#76 id=76 data-nosnippet>76</a>    <span class="attr">#[tokio::test(flavor = <span class="string">"multi_thread"</span>)]
 <a href=#77 id=77 data-nosnippet>77</a>    </span><span class="kw">async fn </span>test_entity_instance_import_export_manager() {
-<a href=#78 id=78 data-nosnippet>78</a>        reactive_graph_test_utils::init_logger();
+<a href=#78 id=78 data-nosnippet>78</a>        reactive_graph_utils_test::init_logger();
 <a href=#79 id=79 data-nosnippet>79</a>        <span class="kw">let </span>instance_system = reactive_graph_di::get_container::&lt;InstanceSystemImpl&gt;();
 <a href=#80 id=80 data-nosnippet>80</a>        <span class="kw">let </span>reactive_system = instance_system.reactive_system();
 <a href=#81 id=81 data-nosnippet>81</a>        <span class="kw">let </span>type_system = reactive_system.type_system();

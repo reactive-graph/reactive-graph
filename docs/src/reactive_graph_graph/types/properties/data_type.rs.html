@@ -16,7 +16,7 @@
 <a href=#16 id=16 data-nosnippet>16</a><span class="kw">use </span>serde_json::json;
 <a href=#17 id=17 data-nosnippet>17</a>
 <a href=#18 id=18 data-nosnippet>18</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
-<a href=#19 id=19 data-nosnippet>19</a></span><span class="kw">use </span>reactive_graph_test_utils::r_string;
+<a href=#19 id=19 data-nosnippet>19</a></span><span class="kw">use </span>reactive_graph_utils_test::r_string;
 <a href=#20 id=20 data-nosnippet>20</a>
 <a href=#21 id=21 data-nosnippet>21</a><span class="doccomment">/// Derived from serde_json::Value but without value payload.
 <a href=#22 id=22 data-nosnippet>22</a></span><span class="attr">#[derive(Clone, Debug, PartialEq, Eq, Hash, Copy, Serialize, Deserialize, JsonSchema)]
@@ -151,7 +151,7 @@
 <a href=#151 id=151 data-nosnippet>151</a>    <span class="kw">use </span>serde_json::Value;
 <a href=#152 id=152 data-nosnippet>152</a>
 <a href=#153 id=153 data-nosnippet>153</a>    <span class="kw">use </span><span class="kw">crate</span>::DataType;
-<a href=#154 id=154 data-nosnippet>154</a>    <span class="kw">use </span>reactive_graph_test_utils::r_string;
+<a href=#154 id=154 data-nosnippet>154</a>    <span class="kw">use </span>reactive_graph_utils_test::r_string;
 <a href=#155 id=155 data-nosnippet>155</a>
 <a href=#156 id=156 data-nosnippet>156</a>    <span class="attr">#[test]
 <a href=#157 id=157 data-nosnippet>157</a>    </span><span class="kw">fn </span>data_type_should_be_created_using_static_method_call() {

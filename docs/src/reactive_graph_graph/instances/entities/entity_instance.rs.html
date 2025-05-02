@@ -50,7 +50,7 @@
 <a href=#50 id=50 data-nosnippet>50</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
 <a href=#51 id=51 data-nosnippet>51</a></span><span class="kw">use </span><span class="kw">crate</span>::test_utils::default_from::DefaultFrom;
 <a href=#52 id=52 data-nosnippet>52</a><span class="attr">#[cfg(any(test, feature = <span class="string">"test"</span>))]
-<a href=#53 id=53 data-nosnippet>53</a></span><span class="kw">use </span>reactive_graph_test_utils::r_string;
+<a href=#53 id=53 data-nosnippet>53</a></span><span class="kw">use </span>reactive_graph_utils_test::r_string;
 <a href=#54 id=54 data-nosnippet>54</a>
 <a href=#55 id=55 data-nosnippet>55</a><span class="doccomment">/// Entity instances represents an typed object which contains properties.
 <a href=#56 id=56 data-nosnippet>56</a>///
@@ -497,7 +497,7 @@
 <a href=#497 id=497 data-nosnippet>497</a>    <span class="kw">use </span><span class="kw">crate</span>::NamespacedTypeGetter;
 <a href=#498 id=498 data-nosnippet>498</a>    <span class="kw">use </span><span class="kw">crate</span>::PropertyInstanceGetter;
 <a href=#499 id=499 data-nosnippet>499</a>    <span class="kw">use </span><span class="kw">crate</span>::PropertyInstances;
-<a href=#500 id=500 data-nosnippet>500</a>    <span class="kw">use </span>reactive_graph_test_utils::r_string;
+<a href=#500 id=500 data-nosnippet>500</a>    <span class="kw">use </span>reactive_graph_utils_test::r_string;
 <a href=#501 id=501 data-nosnippet>501</a>
 <a href=#502 id=502 data-nosnippet>502</a>    <span class="kw">pub fn </span>create_entity_instance_with_property&lt;S: Into&lt;String&gt;&gt;(property_name: S) -&gt; EntityInstance {
 <a href=#503 id=503 data-nosnippet>503</a>        <span class="kw">let </span>properties = PropertyInstances::new().property(property_name, <span class="macro">json!</span>(r_string()));
