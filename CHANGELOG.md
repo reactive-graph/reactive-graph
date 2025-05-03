@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extended binary info with rustc_host_triple and rustc_commit_date
 - Renamed test-utils to utils-test
 - Configure lints on workspace level
+- Replaced lazy_static with LazyLock
 
 ### Fixed
 
