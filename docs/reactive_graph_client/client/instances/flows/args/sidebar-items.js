@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["add_entity_instance","create","create_from_type","id","label","search"],"struct":["FlowInstancesArgs"]};

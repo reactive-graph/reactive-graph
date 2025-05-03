@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["COMPONENT_NAME_COMMAND"],"enum":["CommandProperties"],"static":["COMPONENT_COMMAND"],"struct":["COMMAND_PROPERTIES"],"trait":["CommandComponent"]};
+window.SIDEBAR_ITEMS = {"constant":["COMPONENT_NAME_COMMAND"],"enum":["CommandProperties"],"static":["COMMAND_PROPERTIES","COMPONENT_COMMAND"],"trait":["CommandComponent"]};

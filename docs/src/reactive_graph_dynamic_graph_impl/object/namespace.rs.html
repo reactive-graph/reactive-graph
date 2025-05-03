@@ -28,15 +28,15 @@
 <a href=#28 id=28 data-nosnippet>28</a>        Object::new(<span class="kw-2">&amp;</span>type_name).description(<span class="macro">format!</span>(<span class="string">"Queries for components, entities and relations on the namespace {}"</span>, <span class="kw-2">&amp;</span>namespace.to_case(Pascal)));
 <a href=#29 id=29 data-nosnippet>29</a>
 <a href=#30 id=30 data-nosnippet>30</a>    <span class="kw">for </span>component <span class="kw">in </span>components.iter().sorted_by(|a, b| Ord::cmp(<span class="kw-2">&amp;</span>a.key(), <span class="kw-2">&amp;</span>b.key())) {
-<a href=#31 id=31 data-nosnippet>31</a>        namespace = namespace.field(component_query_field(<span class="kw-2">&amp;</span>component.key(), <span class="kw-2">&amp;</span>component.value()));
+<a href=#31 id=31 data-nosnippet>31</a>        namespace = namespace.field(component_query_field(component.key(), component.value()));
 <a href=#32 id=32 data-nosnippet>32</a>    }
 <a href=#33 id=33 data-nosnippet>33</a>
 <a href=#34 id=34 data-nosnippet>34</a>    <span class="kw">for </span>entity_type <span class="kw">in </span>entity_types.iter().sorted_by(|a, b| Ord::cmp(<span class="kw-2">&amp;</span>a.key(), <span class="kw-2">&amp;</span>b.key())) {
-<a href=#35 id=35 data-nosnippet>35</a>        namespace = namespace.field(entity_query_field(<span class="kw-2">&amp;</span>entity_type.key(), <span class="kw-2">&amp;</span>entity_type.value()));
+<a href=#35 id=35 data-nosnippet>35</a>        namespace = namespace.field(entity_query_field(entity_type.key(), entity_type.value()));
 <a href=#36 id=36 data-nosnippet>36</a>    }
 <a href=#37 id=37 data-nosnippet>37</a>
 <a href=#38 id=38 data-nosnippet>38</a>    <span class="kw">for </span>relation_type <span class="kw">in </span>relation_types.iter().sorted_by(|a, b| Ord::cmp(<span class="kw-2">&amp;</span>a.key(), <span class="kw-2">&amp;</span>b.key())) {
-<a href=#39 id=39 data-nosnippet>39</a>        namespace = namespace.field(relation_query_field(<span class="kw-2">&amp;</span>relation_type.key(), <span class="kw-2">&amp;</span>relation_type.value()));
+<a href=#39 id=39 data-nosnippet>39</a>        namespace = namespace.field(relation_query_field(relation_type.key(), relation_type.value()));
 <a href=#40 id=40 data-nosnippet>40</a>    }
 <a href=#41 id=41 data-nosnippet>41</a>
 <a href=#42 id=42 data-nosnippet>42</a>    <span class="prelude-val">Some</span>(namespace)

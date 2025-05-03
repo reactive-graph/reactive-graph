@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["OutputFormatArgs"],"mod":["render_table"],"struct":["OutputFormatArgsOptional"]};

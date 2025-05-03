@@ -11,10 +11,8 @@
 <a href=#11 id=11 data-nosnippet>11</a>            )
 <a href=#12 id=12 data-nosnippet>12</a>        )*
 <a href=#13 id=13 data-nosnippet>13</a>    ) =&gt; {
-<a href=#14 id=14 data-nosnippet>14</a>        <span class="macro">lazy_static::lazy_static!</span> {
-<a href=#15 id=15 data-nosnippet>15</a>            <span class="kw">pub static </span><span class="kw-2">ref </span><span class="macro-nonterminal">$collection_name</span>: std::collections::HashMap&lt;reactive_graph_behaviour_model_api::BehaviourTypeId, <span class="macro-nonterminal">$function_type</span>&gt; = <span class="macro">vec!</span>[
-<a href=#16 id=16 data-nosnippet>16</a>                $((reactive_graph_behaviour_model_api::BehaviourTypeId::new_from_type(<span class="macro-nonterminal">$namespace</span>, <span class="macro-nonterminal">$type_name</span>), <span class="macro-nonterminal">$function</span>),)*
-<a href=#17 id=17 data-nosnippet>17</a>            ].into_iter().collect();
-<a href=#18 id=18 data-nosnippet>18</a>        }
-<a href=#19 id=19 data-nosnippet>19</a>    };
-<a href=#20 id=20 data-nosnippet>20</a>}</code></pre></div></section></main></body></html>
+<a href=#14 id=14 data-nosnippet>14</a>        <span class="kw">pub static </span><span class="macro-nonterminal">$collection_name</span>: std::sync::LazyLock&lt;std::collections::HashMap&lt;reactive_graph_behaviour_model_api::BehaviourTypeId, <span class="macro-nonterminal">$function_type</span>&gt;&gt; = std::sync::LazyLock(|| <span class="macro">vec!</span>[
+<a href=#15 id=15 data-nosnippet>15</a>                $((reactive_graph_behaviour_model_api::BehaviourTypeId::new_from_type(<span class="macro-nonterminal">$namespace</span>, <span class="macro-nonterminal">$type_name</span>), <span class="macro-nonterminal">$function</span>),)*
+<a href=#16 id=16 data-nosnippet>16</a>            ].into_iter().collect());
+<a href=#17 id=17 data-nosnippet>17</a>    };
+<a href=#18 id=18 data-nosnippet>18</a>}</code></pre></div></section></main></body></html>
