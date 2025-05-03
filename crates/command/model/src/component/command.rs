@@ -1,4 +1,5 @@
 use serde_json::json;
+use std::sync::LazyLock;
 
 use reactive_graph_graph::DataType;
 use reactive_graph_graph::Mutability::Immutable;
@@ -31,15 +32,15 @@ component_model!(
     get help string,
 );
 
-lazy_static::lazy_static! {
-    pub static ref COMMAND_PROPERTIES: PropertyTypes = PropertyTypes::new()
+pub static COMMAND_PROPERTIES: LazyLock<PropertyTypes> = LazyLock::new(|| {
+    PropertyTypes::new()
         .property(
             PropertyType::builder()
                 .name(LABEL.property_name())
                 .data_type(DataType::String)
                 .mutability(Immutable)
                 .socket_type(SocketType::None)
-                .build()
+                .build(),
         )
         .property(PropertyType::input(TRIGGER.property_name(), DataType::Bool))
         .property(
@@ -48,7 +49,7 @@ lazy_static::lazy_static! {
                 .data_type(DataType::String)
                 .mutability(Immutable)
                 .socket_type(SocketType::None)
-                .build()
+                .build(),
         )
         .property(
             PropertyType::builder()
@@ -56,7 +57,7 @@ lazy_static::lazy_static! {
                 .data_type(DataType::String)
                 .mutability(Immutable)
                 .socket_type(SocketType::None)
-                .build()
+                .build(),
         )
         .property(PropertyType::input(CommandProperties::COMMAND_ARGS.property_name(), DataType::Array))
         .property(
@@ -65,7 +66,7 @@ lazy_static::lazy_static! {
                 .data_type(DataType::String)
                 .mutability(Immutable)
                 .socket_type(SocketType::None)
-                .build()
+                .build(),
         )
-        .property(PropertyType::output(CommandProperties::COMMAND_RESULT.property_name(), DataType::Any));
-}
+        .property(PropertyType::output(CommandProperties::COMMAND_RESULT.property_name(), DataType::Any))
+});
