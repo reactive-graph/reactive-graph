@@ -4614,7 +4614,6 @@ name = "reactive-graph-command-model"
 version = "0.10.0"
 dependencies = [
  "clap",
- "lazy_static",
  "reactive-graph-graph",
  "reactive-graph-reactive-model-api",
  "reactive-graph-reactive-model-impl",

@@ -187,7 +187,6 @@ impl FromIterator<RelationBehaviourTypeId> for RelationBehaviourTypeIds {
     }
 }
 
-// TODO: Replace this with LazyLock / LazyCell
 #[macro_export]
 macro_rules! relation_behaviour_ty {
     (
@@ -195,9 +194,8 @@ macro_rules! relation_behaviour_ty {
         $relation_type_id: ident,
         $behaviour_type_id: ident
     ) => {
-        lazy_static::lazy_static! {
-            pub static ref $relation_behaviour_type_id: $crate::RelationBehaviourTypeId = $crate::RelationBehaviourTypeId::new($relation_type_id.clone(), $behaviour_type_id.clone());
-        }
+        pub static $relation_behaviour_type_id: std::sync::LazyLock<$crate::RelationBehaviourTypeId> =
+            std::sync::LazyLock::new(|| $crate::RelationBehaviourTypeId::new($relation_type_id.clone(), $behaviour_type_id.clone()));
     };
 }
 

@@ -186,7 +186,6 @@ impl FromIterator<EntityBehaviourTypeId> for EntityBehaviourTypeIds {
     }
 }
 
-// TODO: Replace this with LazyLock / LazyCell
 #[macro_export]
 macro_rules! entity_behaviour_ty {
     (
@@ -194,9 +193,8 @@ macro_rules! entity_behaviour_ty {
         $entity_type_id: ident,
         $behaviour_type_id: ident
     ) => {
-        lazy_static::lazy_static! {
-            pub static ref $entity_behaviour_type_id: $crate::EntityBehaviourTypeId = $crate::EntityBehaviourTypeId::new($entity_type_id.clone(), $behaviour_type_id.clone());
-        }
+        pub static $entity_behaviour_type_id: std::sync::LazyLock<$crate::EntityBehaviourTypeId> =
+            std::sync::LazyLock::new(|| $crate::EntityBehaviourTypeId::new($entity_type_id.clone(), $behaviour_type_id.clone()));
     };
 }
 

@@ -292,9 +292,8 @@ macro_rules! behaviour_ty {
         $behaviour_name: expr
     ) => {
         pub const $behaviour_name_const: &str = $behaviour_name;
-        lazy_static::lazy_static! {
-            pub static ref $behaviour_type_id: $crate::BehaviourTypeId = $crate::BehaviourTypeId::new_from_type($namespace, $behaviour_name_const);
-        }
+        pub static $behaviour_type_id: std::sync::LazyLock<$crate::BehaviourTypeId> =
+            std::sync::LazyLock::new(|| $crate::BehaviourTypeId::new_from_type($namespace, $behaviour_name_const));
     };
 }
 

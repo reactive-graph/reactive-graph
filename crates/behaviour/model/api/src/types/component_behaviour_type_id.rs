@@ -193,7 +193,6 @@ impl FromIterator<ComponentBehaviourTypeId> for ComponentBehaviourTypeIds {
     }
 }
 
-// TODO: Replace this with LazyLock / LazyCell
 #[macro_export]
 macro_rules! component_behaviour_ty {
     (
@@ -201,9 +200,8 @@ macro_rules! component_behaviour_ty {
         $component_type_id: ident,
         $behaviour_type_id: ident
     ) => {
-        lazy_static::lazy_static! {
-            pub static ref $component_behaviour_type_id: $crate::ComponentBehaviourTypeId = $crate::ComponentBehaviourTypeId::new($component_type_id.clone(), $behaviour_type_id.clone());
-        }
+        pub static $component_behaviour_type_id: std::sync::LazyLock<$crate::ComponentBehaviourTypeId> =
+            std::sync::LazyLock::new(|| $crate::ComponentBehaviourTypeId::new($component_type_id.clone(), $behaviour_type_id.clone()));
     };
 }
 

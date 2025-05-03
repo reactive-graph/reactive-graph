@@ -11,10 +11,8 @@ macro_rules! behaviour_functions {
             )
         )*
     ) => {
-        lazy_static::lazy_static! {
-            pub static ref $collection_name: std::collections::HashMap<reactive_graph_behaviour_model_api::BehaviourTypeId, $function_type> = vec![
+        pub static $collection_name: std::sync::LazyLock<std::collections::HashMap<reactive_graph_behaviour_model_api::BehaviourTypeId, $function_type>> = std::sync::LazyLock(|| vec![
                 $((reactive_graph_behaviour_model_api::BehaviourTypeId::new_from_type($namespace, $type_name), $function),)*
-            ].into_iter().collect();
-        }
+            ].into_iter().collect());
     };
 }
