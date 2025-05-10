@@ -20,6 +20,7 @@ p:distribution:
   - changed-files:
       - any-glob-to-any-file:
           - Dockerfile
+          - crates/reactive-graph/debian/**
           - .github/workflows/release.yml
           - .github/workflows/docker.yml
 p:build-system:
