@@ -1,12 +1,16 @@
 _reactive-graph-server() {
     local i cur prev opts cmd
     COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    if [[ "${BASH_VERSINFO[0]}" -ge 4 ]]; then
+        cur="$2"
+    else
+        cur="${COMP_WORDS[COMP_CWORD]}"
+    fi
+    prev="$3"
     cmd=""
     opts=""
 
-    for i in ${COMP_WORDS[@]}
+    for i in "${COMP_WORDS[@]:0:COMP_CWORD}"
     do
         case "${cmd},${i}" in
             ",$1")
@@ -27,6 +31,9 @@ _reactive-graph-server() {
             reactive__graph__server,print-markdown-help)
                 cmd="reactive__graph__server__print__markdown__help"
                 ;;
+            reactive__graph__server,schema)
+                cmd="reactive__graph__server__schema"
+                ;;
             reactive__graph__server,shell-completions)
                 cmd="reactive__graph__server__shell__completions"
                 ;;
@@ -45,6 +52,9 @@ _reactive-graph-server() {
             reactive__graph__server__help,print-markdown-help)
                 cmd="reactive__graph__server__help__print__markdown__help"
                 ;;
+            reactive__graph__server__help,schema)
+                cmd="reactive__graph__server__help__schema"
+                ;;
             reactive__graph__server__help,shell-completions)
                 cmd="reactive__graph__server__help__shell__completions"
                 ;;
@@ -53,6 +63,18 @@ _reactive-graph-server() {
                 ;;
             reactive__graph__server__help__man__pages,print)
                 cmd="reactive__graph__server__help__man__pages__print"
+                ;;
+            reactive__graph__server__help__schema,dynamic-graph-schema)
+                cmd="reactive__graph__server__help__schema__dynamic__graph__schema"
+                ;;
+            reactive__graph__server__help__schema,reactive-graph-plugin-schema)
+                cmd="reactive__graph__server__help__schema__reactive__graph__plugin__schema"
+                ;;
+            reactive__graph__server__help__schema,reactive-graph-runtime-schema)
+                cmd="reactive__graph__server__help__schema__reactive__graph__runtime__schema"
+                ;;
+            reactive__graph__server__help__schema,reactive-graph-schema)
+                cmd="reactive__graph__server__help__schema__reactive__graph__schema"
                 ;;
             reactive__graph__server__help__shell__completions,install)
                 cmd="reactive__graph__server__help__shell__completions__install"
@@ -77,6 +99,36 @@ _reactive-graph-server() {
                 ;;
             reactive__graph__server__man__pages__help,print)
                 cmd="reactive__graph__server__man__pages__help__print"
+                ;;
+            reactive__graph__server__schema,dynamic-graph-schema)
+                cmd="reactive__graph__server__schema__dynamic__graph__schema"
+                ;;
+            reactive__graph__server__schema,help)
+                cmd="reactive__graph__server__schema__help"
+                ;;
+            reactive__graph__server__schema,reactive-graph-plugin-schema)
+                cmd="reactive__graph__server__schema__reactive__graph__plugin__schema"
+                ;;
+            reactive__graph__server__schema,reactive-graph-runtime-schema)
+                cmd="reactive__graph__server__schema__reactive__graph__runtime__schema"
+                ;;
+            reactive__graph__server__schema,reactive-graph-schema)
+                cmd="reactive__graph__server__schema__reactive__graph__schema"
+                ;;
+            reactive__graph__server__schema__help,dynamic-graph-schema)
+                cmd="reactive__graph__server__schema__help__dynamic__graph__schema"
+                ;;
+            reactive__graph__server__schema__help,help)
+                cmd="reactive__graph__server__schema__help__help"
+                ;;
+            reactive__graph__server__schema__help,reactive-graph-plugin-schema)
+                cmd="reactive__graph__server__schema__help__reactive__graph__plugin__schema"
+                ;;
+            reactive__graph__server__schema__help,reactive-graph-runtime-schema)
+                cmd="reactive__graph__server__schema__help__reactive__graph__runtime__schema"
+                ;;
+            reactive__graph__server__schema__help,reactive-graph-schema)
+                cmd="reactive__graph__server__schema__help__reactive__graph__schema"
                 ;;
             reactive__graph__server__shell__completions,help)
                 cmd="reactive__graph__server__shell__completions__help"
@@ -103,7 +155,7 @@ _reactive-graph-server() {
 
     case "${cmd}" in
         reactive__graph__server)
-            opts="-n -d -w -c -x -p -P -q -h -V --logging-config --instance-config --graphql-config --plugins-config --instance-name --instance-description --hostname --port --secure --ssl-certificate-path --ssl-private-key-path --shutdown-timeout --workers --default-context-path --disable-all-plugins --disabled-plugins --enabled-plugins --disable-hot-deploy --hot-deploy-location --install-location --stop-immediately --quiet --help --version shell-completions man-pages print-markdown-help info daemon help"
+            opts="-n -d -w -c -x -p -P -q -h -V --logging-config --instance-config --graphql-config --plugins-config --instance-name --instance-description --hostname --port --secure --ssl-certificate-path --ssl-private-key-path --shutdown-timeout --workers --default-context-path --disable-all-plugins --disabled-plugins --enabled-plugins --disable-hot-deploy --hot-deploy-location --install-location --stop-immediately --quiet --help --version shell-completions man-pages print-markdown-help info daemon schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -279,7 +331,7 @@ _reactive-graph-server() {
             return 0
             ;;
         reactive__graph__server__help)
-            opts="shell-completions man-pages print-markdown-help info daemon help"
+            opts="shell-completions man-pages print-markdown-help info daemon schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -379,6 +431,76 @@ _reactive-graph-server() {
         reactive__graph__server__help__print__markdown__help)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__help__schema)
+            opts="reactive-graph-schema dynamic-graph-schema reactive-graph-plugin-schema reactive-graph-runtime-schema"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__help__schema__dynamic__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__help__schema__reactive__graph__plugin__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__help__schema__reactive__graph__runtime__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__help__schema__reactive__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
@@ -551,6 +673,160 @@ _reactive-graph-server() {
         reactive__graph__server__print__markdown__help)
             opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema)
+            opts="-h -V --help --version reactive-graph-schema dynamic-graph-schema reactive-graph-plugin-schema reactive-graph-runtime-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__dynamic__graph__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__help)
+            opts="reactive-graph-schema dynamic-graph-schema reactive-graph-plugin-schema reactive-graph-runtime-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__help__dynamic__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__help__reactive__graph__plugin__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__help__reactive__graph__runtime__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__help__reactive__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__reactive__graph__plugin__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__reactive__graph__runtime__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__server__schema__reactive__graph__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
