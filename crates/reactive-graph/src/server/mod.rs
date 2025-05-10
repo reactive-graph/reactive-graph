@@ -3,16 +3,18 @@ pub mod commands;
 #[cfg(target_os = "linux")]
 pub mod daemon;
 
+pub mod schema;
+
 use std::time::Duration;
 
 use reactive_graph_runtime_impl::RuntimeBuilder;
 
 use crate::server::args::logging::init_logging;
+use crate::server::schema::print_graphql_schema_and_exit;
 use args::ServerArguments;
 
 #[tokio::main]
 pub async fn server(args: ServerArguments) {
-    init_logging(&args);
     if let Some(commands) = &args.commands {
         #[allow(unreachable_patterns, clippy::collapsible_match)]
         match commands {
@@ -20,9 +22,13 @@ pub async fn server(args: ServerArguments) {
             commands::ServerCommands::Daemon(_) => {
                 // already handled.
             }
+            commands::ServerCommands::Schema(args) => {
+                print_graphql_schema_and_exit(&args.commands).await;
+            }
             _ => {}
         }
     }
+    init_logging(&args);
     run(args).await
 }
 
