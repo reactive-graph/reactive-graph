@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed test-utils to utils-test
 - Configure lints on workspace level
 - Replaced lazy_static with LazyLock
+- CLI: Updated shell completions
 
 ### Fixed
 
