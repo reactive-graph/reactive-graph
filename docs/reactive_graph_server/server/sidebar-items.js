@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["run","server"],"mod":["args","commands","daemon"]};
+window.SIDEBAR_ITEMS = {"fn":["run","server"],"mod":["args","commands","daemon","schema"]};

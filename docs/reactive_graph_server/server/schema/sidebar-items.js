@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["print_graphql_schema_and_exit"],"mod":["args","commands"]};

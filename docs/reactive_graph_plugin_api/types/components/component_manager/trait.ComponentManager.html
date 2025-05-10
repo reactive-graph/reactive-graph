@@ -15,7 +15,7 @@
         description: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         properties: PropertyTypes,
         extensions: Extensions,
-    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Component, <a class="enum" href="../../../../reactive_graph_type_system_api/error/component/enum.ComponentCreationError.html" title="enum reactive_graph_type_system_api::error::component::ComponentCreationError">ComponentCreationError</a>&gt;;
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Component, ComponentCreationError&gt;;
 <span class="item-spacer"></span>    fn <a href="#tymethod.replace" class="fn">replace</a>(&amp;self, ty: &amp;ComponentTypeId, component: Component);
 <span class="item-spacer"></span>    fn <a href="#tymethod.update_description" class="fn">update_description</a>(
         &amp;self,
@@ -70,7 +70,7 @@
     description: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     properties: PropertyTypes,
     extensions: Extensions,
-) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Component, <a class="enum" href="../../../../reactive_graph_type_system_api/error/component/enum.ComponentCreationError.html" title="enum reactive_graph_type_system_api::error::component::ComponentCreationError">ComponentCreationError</a>&gt;</h4></section></summary><div class="docblock"><p>Creates a new component with the given name and the given properties.</p>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;Component, ComponentCreationError&gt;</h4></section></summary><div class="docblock"><p>Creates a new component with the given name and the given properties.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.replace" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/types/components/component_manager.rs.html#50">Source</a><h4 class="code-header">fn <a href="#tymethod.replace" class="fn">replace</a>(&amp;self, ty: &amp;ComponentTypeId, component: Component)</h4></section></summary><div class="docblock"><p>Replaces the component with the given name with the given component.</p>
 </div></details><details class="toggle method-toggle" open><summary><section id="tymethod.update_description" class="method"><a class="src rightside" href="../../../../src/reactive_graph_plugin_api/types/components/component_manager.rs.html#53">Source</a><h4 class="code-header">fn <a href="#tymethod.update_description" class="fn">update_description</a>(
     &amp;self,
