@@ -181,7 +181,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-'::working_directory -- The working directory of the instance:_files' \
+'::working_directory -- The working directory of the instance. Defaults to the current directory:_files' \
 ":: :_reactive-graph-tooling__instances_commands" \
 "*::: :->instances" \
 && ret=0
@@ -192,17 +192,194 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-command-$line[2]:"
         case $line[2] in
-            (init)
+            (config)
 _arguments "${_arguments_options[@]}" : \
-'-n+[The name of the instance]:NAME: ' \
-'--name=[The name of the instance]:NAME: ' \
-'-d+[The description of the instance]:DESCRIPTION: ' \
-'--description=[The description of the instance]:DESCRIPTION: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-tooling__instances__config_commands" \
+"*::: :->config" \
+&& ret=0
+
+    case $state in
+    (config)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-config-command-$line[1]:"
+        case $line[1] in
+            (graphql)
+_arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname to bind the GraphQL HTTP server]:HOSTNAME:_default' \
+'--port=[The port to bind the GraphQL HTTP server]:PORT:_default' \
+'--secure=[If true, HTTPS is enabled]:SECURE:(true false)' \
+'--ssl-certificate-path=[The location of the certificate]:SSL_CERTIFICATE_PATH:_default' \
+'--ssl-private-key-path=[The location of the private key]:SSL_PRIVATE_KEY_PATH:_default' \
+'--shutdown-timeout=[Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds]:SHUTDOWN_TIMEOUT:_default' \
+'-w+[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS:_default' \
+'--workers=[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS:_default' \
+'-c+[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH:_default' \
+'--default-context-path=[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH:_default' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
 && ret=0
+;;
+(instance)
+_arguments "${_arguments_options[@]}" : \
+'-n+[The name of the instance]:NAME:_default' \
+'--instance-name=[The name of the instance]:NAME:_default' \
+'-d+[The description of the instance]:DESCRIPTION:_default' \
+'--instance-description=[The description of the instance]:DESCRIPTION:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+'-x+[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
+'--disable-all-plugins=[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
+'*-p+[The list of plugins to disable]:DISABLED_PLUGINS:_default' \
+'*--disabled-plugins=[The list of plugins to disable]:DISABLED_PLUGINS:_default' \
+'*-P+[The list of plugins to enable]:ENABLED_PLUGINS:_default' \
+'*--enabled-plugins=[The list of plugins to enable]:ENABLED_PLUGINS:_default' \
+'--disable-hot-deploy=[If true, hot deployment will be disabled]:DISABLE_HOT_DEPLOY:(true false)' \
+'--hot-deploy-location=[The folder which is watched for hot deployment]:HOT_DEPLOY_LOCATION:_default' \
+'--install-location=[The folder which plugins are installed permanently]:INSTALL_LOCATION:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-tooling__instances__config__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-config-help-command-$line[1]:"
+        case $line[1] in
+            (graphql)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(generate-certificate)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+'::country_name -- Country name:_default' \
+'::organization_name -- Organization name:_default' \
+'::common_name -- Common name:_default' \
+&& ret=0
+;;
+(init)
+_arguments "${_arguments_options[@]}" : \
+'--uid=[The numeric user id of the owner user]:UID:_default' \
+'--gid=[The numeric group id of the owner group]:GID:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+'::country_name -- Country name:_default' \
+'::organization_name -- Organization name:_default' \
+'::common_name -- Common name:_default' \
+&& ret=0
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph-tooling__instances__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-plugins-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':plugin_name -- The name of the plugin:_default' \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':plugin_name -- The name of the plugin:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-tooling__instances__plugins__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-plugins-help-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
 ;;
 (repository)
 _arguments "${_arguments_options[@]}" : \
@@ -222,12 +399,14 @@ _arguments "${_arguments_options[@]}" : \
         case $line[1] in
             (init)
 _arguments "${_arguments_options[@]}" : \
+'--uid=[The numeric user id of the owner user]:UID:_default' \
+'--gid=[The numeric group id of the owner group]:GID:_default' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':local_name -- The local name of the repository:' \
-'::url -- The remote URL of the repository:' \
+':local_name -- The local name of the repository:_default' \
+'::url -- The remote URL of the repository:_default' \
 && ret=0
 ;;
 (remove)
@@ -236,7 +415,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':local_name -- The local name of the repository:' \
+':local_name -- The local name of the repository:_default' \
 '::force -- If true, the default repository will be deleted:(true false)' \
 && ret=0
 ;;
@@ -272,72 +451,6 @@ esac
     ;;
 esac
 ;;
-(plugins)
-_arguments "${_arguments_options[@]}" : \
-'-h[Print help]' \
-'--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
-":: :_reactive-graph-tooling__instances__plugins_commands" \
-"*::: :->plugins" \
-&& ret=0
-
-    case $state in
-    (plugins)
-        words=($line[1] "${words[@]}")
-        (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-plugins-command-$line[1]:"
-        case $line[1] in
-            (install)
-_arguments "${_arguments_options[@]}" : \
-'-h[Print help]' \
-'--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
-':plugin_name -- The name of the plugin:' \
-&& ret=0
-;;
-(uninstall)
-_arguments "${_arguments_options[@]}" : \
-'-h[Print help]' \
-'--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
-':plugin_name -- The name of the plugin:' \
-&& ret=0
-;;
-(help)
-_arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph-tooling__instances__plugins__help_commands" \
-"*::: :->help" \
-&& ret=0
-
-    case $state in
-    (help)
-        words=($line[1] "${words[@]}")
-        (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-plugins-help-command-$line[1]:"
-        case $line[1] in
-            (install)
-_arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(uninstall)
-_arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(help)
-_arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-        esac
-    ;;
-esac
-;;
-        esac
-    ;;
-esac
-;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 ":: :_reactive-graph-tooling__instances__help_commands" \
@@ -350,33 +463,41 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-help-command-$line[1]:"
         case $line[1] in
-            (init)
+            (config)
 _arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(repository)
-_arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph-tooling__instances__help__repository_commands" \
-"*::: :->repository" \
+":: :_reactive-graph-tooling__instances__help__config_commands" \
+"*::: :->config" \
 && ret=0
 
     case $state in
-    (repository)
+    (config)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-help-repository-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-help-config-command-$line[1]:"
         case $line[1] in
-            (init)
+            (graphql)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
-(remove)
+(instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(plugins)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
         esac
     ;;
 esac
+;;
+(generate-certificate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
 ;;
 (plugins)
 _arguments "${_arguments_options[@]}" : \
@@ -402,6 +523,30 @@ _arguments "${_arguments_options[@]}" : \
     ;;
 esac
 ;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-tooling__instances__help__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-instances-help-repository-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -416,8 +561,8 @@ esac
 ;;
 (update)
 _arguments "${_arguments_options[@]}" : \
-'(-n --nightly -l --latest -c --current)-v+[Updates to a specific version]:VERSION: ' \
-'(-n --nightly -l --latest -c --current)--version=[Updates to a specific version]:VERSION: ' \
+'(-n --nightly -l --latest -c --current)-v+[Updates to a specific version]:VERSION:_default' \
+'(-n --nightly -l --latest -c --current)--version=[Updates to a specific version]:VERSION:_default' \
 '(-l --latest -c --current -v --version)-n[Updates to the nightly release]' \
 '(-l --latest -c --current -v --version)--nightly[Updates to the nightly release]' \
 '(-n --nightly -c --current -v --version)-l[Updates to the latest release. Currently, the latest release is the nightly release. This will change in the future]' \
@@ -568,33 +713,41 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-tooling-help-instances-command-$line[1]:"
         case $line[1] in
-            (init)
+            (config)
 _arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(repository)
-_arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph-tooling__help__instances__repository_commands" \
-"*::: :->repository" \
+":: :_reactive-graph-tooling__help__instances__config_commands" \
+"*::: :->config" \
 && ret=0
 
     case $state in
-    (repository)
+    (config)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-tooling-help-instances-repository-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-help-instances-config-command-$line[1]:"
         case $line[1] in
-            (init)
+            (graphql)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
-(remove)
+(instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(plugins)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
         esac
     ;;
 esac
+;;
+(generate-certificate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
 ;;
 (plugins)
 _arguments "${_arguments_options[@]}" : \
@@ -613,6 +766,30 @@ _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
 (uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph-tooling__help__instances__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-tooling-help-instances-repository-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -700,11 +877,42 @@ _reactive-graph-tooling__help__info_commands() {
 (( $+functions[_reactive-graph-tooling__help__instances_commands] )) ||
 _reactive-graph-tooling__help__instances_commands() {
     local commands; commands=(
+'config:Configures a local instance,' \
+'generate-certificate:Generates certificate of a local instance' \
 'init:Initialize the filesystem structure of a new local instance' \
+'plugins:Manage the plugins of a local instance' \
 'repository:Manage the repositories of a local instance' \
-'plugins:Manage the repositories of a local instance' \
     )
     _describe -t commands 'reactive-graph-tooling help instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__help__instances__config_commands] )) ||
+_reactive-graph-tooling__help__instances__config_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+    )
+    _describe -t commands 'reactive-graph-tooling help instances config commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__help__instances__config__graphql_commands] )) ||
+_reactive-graph-tooling__help__instances__config__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling help instances config graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__help__instances__config__instance_commands] )) ||
+_reactive-graph-tooling__help__instances__config__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling help instances config instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__help__instances__config__plugins_commands] )) ||
+_reactive-graph-tooling__help__instances__config__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling help instances config plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__help__instances__generate-certificate_commands] )) ||
+_reactive-graph-tooling__help__instances__generate-certificate_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling help instances generate-certificate commands' commands "$@"
 }
 (( $+functions[_reactive-graph-tooling__help__instances__init_commands] )) ||
 _reactive-graph-tooling__help__instances__init_commands() {
@@ -814,22 +1022,115 @@ _reactive-graph-tooling__info_commands() {
 (( $+functions[_reactive-graph-tooling__instances_commands] )) ||
 _reactive-graph-tooling__instances_commands() {
     local commands; commands=(
+'config:Configures a local instance,' \
+'generate-certificate:Generates certificate of a local instance' \
 'init:Initialize the filesystem structure of a new local instance' \
+'plugins:Manage the plugins of a local instance' \
 'repository:Manage the repositories of a local instance' \
-'plugins:Manage the repositories of a local instance' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph-tooling instances commands' commands "$@"
 }
+(( $+functions[_reactive-graph-tooling__instances__config_commands] )) ||
+_reactive-graph-tooling__instances__config_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-tooling instances config commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__graphql_commands] )) ||
+_reactive-graph-tooling__instances__config__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__help_commands] )) ||
+_reactive-graph-tooling__instances__config__help_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph-tooling instances config help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__help__graphql_commands] )) ||
+_reactive-graph-tooling__instances__config__help__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config help graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__help__help_commands] )) ||
+_reactive-graph-tooling__instances__config__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__help__instance_commands] )) ||
+_reactive-graph-tooling__instances__config__help__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config help instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__help__plugins_commands] )) ||
+_reactive-graph-tooling__instances__config__help__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config help plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__instance_commands] )) ||
+_reactive-graph-tooling__instances__config__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__config__plugins_commands] )) ||
+_reactive-graph-tooling__instances__config__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances config plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__generate-certificate_commands] )) ||
+_reactive-graph-tooling__instances__generate-certificate_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances generate-certificate commands' commands "$@"
+}
 (( $+functions[_reactive-graph-tooling__instances__help_commands] )) ||
 _reactive-graph-tooling__instances__help_commands() {
     local commands; commands=(
+'config:Configures a local instance,' \
+'generate-certificate:Generates certificate of a local instance' \
 'init:Initialize the filesystem structure of a new local instance' \
+'plugins:Manage the plugins of a local instance' \
 'repository:Manage the repositories of a local instance' \
-'plugins:Manage the repositories of a local instance' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph-tooling instances help commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__help__config_commands] )) ||
+_reactive-graph-tooling__instances__help__config_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+    )
+    _describe -t commands 'reactive-graph-tooling instances help config commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__help__config__graphql_commands] )) ||
+_reactive-graph-tooling__instances__help__config__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances help config graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__help__config__instance_commands] )) ||
+_reactive-graph-tooling__instances__help__config__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances help config instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__help__config__plugins_commands] )) ||
+_reactive-graph-tooling__instances__help__config__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances help config plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph-tooling__instances__help__generate-certificate_commands] )) ||
+_reactive-graph-tooling__instances__help__generate-certificate_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph-tooling instances help generate-certificate commands' commands "$@"
 }
 (( $+functions[_reactive-graph-tooling__instances__help__help_commands] )) ||
 _reactive-graph-tooling__instances__help__help_commands() {

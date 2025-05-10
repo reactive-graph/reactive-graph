@@ -4,7 +4,7 @@
 .SH NAME
 reactive\-graph \- Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH SYNOPSIS
-\fBreactive\-graph\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
+\fBreactive\-graph\fR [\fB\-\-logging\-config\fR] [\fB\-\-instance\-config\fR] [\fB\-\-graphql\-config\fR] [\fB\-\-plugins\-config\fR] [\fB\-n\fR|\fB\-\-instance\-name\fR] [\fB\-d\fR|\fB\-\-instance\-description\fR] [\fB\-\-hostname\fR] [\fB\-\-port\fR] [\fB\-\-secure\fR] [\fB\-\-ssl\-certificate\-path\fR] [\fB\-\-ssl\-private\-key\-path\fR] [\fB\-\-shutdown\-timeout\fR] [\fB\-w\fR|\fB\-\-workers\fR] [\fB\-c\fR|\fB\-\-default\-context\-path\fR] [\fB\-x\fR|\fB\-\-disable\-all\-plugins\fR] [\fB\-p\fR|\fB\-\-disabled\-plugins\fR] [\fB\-P\fR|\fB\-\-enabled\-plugins\fR] [\fB\-\-disable\-hot\-deploy\fR] [\fB\-\-hot\-deploy\-location\fR] [\fB\-\-install\-location\fR] [\fB\-\-stop\-immediately\fR] [\fB\-q\fR|\fB\-\-quiet\fR] [\fB\-\-client\-hostname\fR] [\fB\-\-client\-port\fR] [\fB\-\-client\-secure\fR] [\fB\-\-endpoint\-graphql\fR] [\fB\-\-endpoint\-dynamic\-graph\fR] [\fB\-\-endpoint\-runtime\fR] [\fB\-\-endpoint\-plugins\fR] [\fB\-\-bearer\fR] [\fB\-i\fR|\fB\-\-interactive\fR] [\fB\-h\fR|\fB\-\-help\fR] [\fB\-V\fR|\fB\-\-version\fR] [\fIsubcommands\fR]
 .SH DESCRIPTION
 Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.
 .SH OPTIONS
@@ -33,13 +33,13 @@ The plugins config location
 May also be specified with the \fBREACTIVE_GRAPH_PLUGINS_CONFIG\fR environment variable. 
 .RE
 .TP
-\fB\-n\fR, \fB\-\-instance\-name\fR=\fIINSTANCE_NAME\fR
+\fB\-n\fR, \fB\-\-instance\-name\fR=\fINAME\fR
 The name of the instance
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_NAME\fR environment variable. 
 .RE
 .TP
-\fB\-d\fR, \fB\-\-instance\-description\fR=\fIINSTANCE_DESCRIPTION\fR
+\fB\-d\fR, \fB\-\-instance\-description\fR=\fIDESCRIPTION\fR
 The description of the instance
 .RS
 May also be specified with the \fBREACTIVE_GRAPH_INSTANCE_DESCRIPTION\fR environment variable. 
@@ -183,6 +183,9 @@ The endpoint to use
 \fB\-\-bearer\fR=\fIBEARER\fR
 The authentication token
 .TP
+\fB\-i\fR, \fB\-\-interactive\fR
+Enter the interactive client mode
+.TP
 \fB\-h\fR, \fB\-\-help\fR
 Print help
 .TP
@@ -204,6 +207,9 @@ Prints info about this binary
 .TP
 reactive\-graph\-daemon(1)
 Runs the server as daemon
+.TP
+reactive\-graph\-schema(1)
+Prints the GraphQL schema and exits
 .TP
 reactive\-graph\-execute\-command(1)
 Executes a command on the client
@@ -229,11 +235,17 @@ Manage entity types
 reactive\-graph\-relation\-types(1)
 Manage entity types
 .TP
+reactive\-graph\-flow\-types(1)
+Manage entity types
+.TP
 reactive\-graph\-entity\-instances(1)
 Manage entity instances
 .TP
 reactive\-graph\-relation\-instances(1)
 Manage relation instances
+.TP
+reactive\-graph\-flow\-instances(1)
+Manage flow instances
 .TP
 reactive\-graph\-instances(1)
 Manage instances

@@ -1,12 +1,16 @@
 _reactive-graph() {
     local i cur prev opts cmd
     COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    if [[ "${BASH_VERSINFO[0]}" -ge 4 ]]; then
+        cur="$2"
+    else
+        cur="${COMP_WORDS[COMP_CWORD]}"
+    fi
+    prev="$3"
     cmd=""
     opts=""
 
-    for i in ${COMP_WORDS[@]}
+    for i in "${COMP_WORDS[@]:0:COMP_CWORD}"
     do
         case "${cmd},${i}" in
             ",$1")
@@ -26,6 +30,12 @@ _reactive-graph() {
                 ;;
             reactive__graph,execute-command)
                 cmd="reactive__graph__execute__command"
+                ;;
+            reactive__graph,flow-instances)
+                cmd="reactive__graph__flow__instances"
+                ;;
+            reactive__graph,flow-types)
+                cmd="reactive__graph__flow__types"
                 ;;
             reactive__graph,help)
                 cmd="reactive__graph__help"
@@ -57,6 +67,9 @@ _reactive-graph() {
             reactive__graph,remotes)
                 cmd="reactive__graph__remotes"
                 ;;
+            reactive__graph,schema)
+                cmd="reactive__graph__schema"
+                ;;
             reactive__graph,shell-completions)
                 cmd="reactive__graph__shell__completions"
                 ;;
@@ -83,6 +96,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__components,help)
                 cmd="reactive__graph__components__help"
+                ;;
+            reactive__graph__components,json-schema)
+                cmd="reactive__graph__components__json__schema"
                 ;;
             reactive__graph__components,list)
                 cmd="reactive__graph__components__list"
@@ -119,6 +135,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__components__help,help)
                 cmd="reactive__graph__components__help__help"
+                ;;
+            reactive__graph__components__help,json-schema)
+                cmd="reactive__graph__components__help__json__schema"
                 ;;
             reactive__graph__components__help,list)
                 cmd="reactive__graph__components__help__list"
@@ -162,6 +181,9 @@ _reactive-graph() {
             reactive__graph__entity__instances,help)
                 cmd="reactive__graph__entity__instances__help"
                 ;;
+            reactive__graph__entity__instances,json-schema)
+                cmd="reactive__graph__entity__instances__json__schema"
+                ;;
             reactive__graph__entity__instances,list)
                 cmd="reactive__graph__entity__instances__list"
                 ;;
@@ -204,6 +226,9 @@ _reactive-graph() {
             reactive__graph__entity__instances__help,help)
                 cmd="reactive__graph__entity__instances__help__help"
                 ;;
+            reactive__graph__entity__instances__help,json-schema)
+                cmd="reactive__graph__entity__instances__help__json__schema"
+                ;;
             reactive__graph__entity__instances__help,list)
                 cmd="reactive__graph__entity__instances__help__list"
                 ;;
@@ -242,6 +267,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__entity__types,help)
                 cmd="reactive__graph__entity__types__help"
+                ;;
+            reactive__graph__entity__types,json-schema)
+                cmd="reactive__graph__entity__types__json__schema"
                 ;;
             reactive__graph__entity__types,list)
                 cmd="reactive__graph__entity__types__list"
@@ -288,6 +316,9 @@ _reactive-graph() {
             reactive__graph__entity__types__help,help)
                 cmd="reactive__graph__entity__types__help__help"
                 ;;
+            reactive__graph__entity__types__help,json-schema)
+                cmd="reactive__graph__entity__types__help__json__schema"
+                ;;
             reactive__graph__entity__types__help,list)
                 cmd="reactive__graph__entity__types__help__list"
                 ;;
@@ -312,6 +343,138 @@ _reactive-graph() {
             reactive__graph__entity__types__help,update-description)
                 cmd="reactive__graph__entity__types__help__update__description"
                 ;;
+            reactive__graph__flow__instances,create-from-type)
+                cmd="reactive__graph__flow__instances__create__from__type"
+                ;;
+            reactive__graph__flow__instances,delete)
+                cmd="reactive__graph__flow__instances__delete"
+                ;;
+            reactive__graph__flow__instances,get)
+                cmd="reactive__graph__flow__instances__get"
+                ;;
+            reactive__graph__flow__instances,get-by-label)
+                cmd="reactive__graph__flow__instances__get__by__label"
+                ;;
+            reactive__graph__flow__instances,help)
+                cmd="reactive__graph__flow__instances__help"
+                ;;
+            reactive__graph__flow__instances,json-schema)
+                cmd="reactive__graph__flow__instances__json__schema"
+                ;;
+            reactive__graph__flow__instances,list)
+                cmd="reactive__graph__flow__instances__list"
+                ;;
+            reactive__graph__flow__instances__help,create-from-type)
+                cmd="reactive__graph__flow__instances__help__create__from__type"
+                ;;
+            reactive__graph__flow__instances__help,delete)
+                cmd="reactive__graph__flow__instances__help__delete"
+                ;;
+            reactive__graph__flow__instances__help,get)
+                cmd="reactive__graph__flow__instances__help__get"
+                ;;
+            reactive__graph__flow__instances__help,get-by-label)
+                cmd="reactive__graph__flow__instances__help__get__by__label"
+                ;;
+            reactive__graph__flow__instances__help,help)
+                cmd="reactive__graph__flow__instances__help__help"
+                ;;
+            reactive__graph__flow__instances__help,json-schema)
+                cmd="reactive__graph__flow__instances__help__json__schema"
+                ;;
+            reactive__graph__flow__instances__help,list)
+                cmd="reactive__graph__flow__instances__help__list"
+                ;;
+            reactive__graph__flow__types,add-entity-instance)
+                cmd="reactive__graph__flow__types__add__entity__instance"
+                ;;
+            reactive__graph__flow__types,add-extension)
+                cmd="reactive__graph__flow__types__add__extension"
+                ;;
+            reactive__graph__flow__types,add-variable)
+                cmd="reactive__graph__flow__types__add__variable"
+                ;;
+            reactive__graph__flow__types,create)
+                cmd="reactive__graph__flow__types__create"
+                ;;
+            reactive__graph__flow__types,delete)
+                cmd="reactive__graph__flow__types__delete"
+                ;;
+            reactive__graph__flow__types,get)
+                cmd="reactive__graph__flow__types__get"
+                ;;
+            reactive__graph__flow__types,help)
+                cmd="reactive__graph__flow__types__help"
+                ;;
+            reactive__graph__flow__types,json-schema)
+                cmd="reactive__graph__flow__types__json__schema"
+                ;;
+            reactive__graph__flow__types,list)
+                cmd="reactive__graph__flow__types__list"
+                ;;
+            reactive__graph__flow__types,list-extensions)
+                cmd="reactive__graph__flow__types__list__extensions"
+                ;;
+            reactive__graph__flow__types,list-variables)
+                cmd="reactive__graph__flow__types__list__variables"
+                ;;
+            reactive__graph__flow__types,remove-entity-instance)
+                cmd="reactive__graph__flow__types__remove__entity__instance"
+                ;;
+            reactive__graph__flow__types,remove-extension)
+                cmd="reactive__graph__flow__types__remove__extension"
+                ;;
+            reactive__graph__flow__types,remove-variable)
+                cmd="reactive__graph__flow__types__remove__variable"
+                ;;
+            reactive__graph__flow__types,update-description)
+                cmd="reactive__graph__flow__types__update__description"
+                ;;
+            reactive__graph__flow__types__help,add-entity-instance)
+                cmd="reactive__graph__flow__types__help__add__entity__instance"
+                ;;
+            reactive__graph__flow__types__help,add-extension)
+                cmd="reactive__graph__flow__types__help__add__extension"
+                ;;
+            reactive__graph__flow__types__help,add-variable)
+                cmd="reactive__graph__flow__types__help__add__variable"
+                ;;
+            reactive__graph__flow__types__help,create)
+                cmd="reactive__graph__flow__types__help__create"
+                ;;
+            reactive__graph__flow__types__help,delete)
+                cmd="reactive__graph__flow__types__help__delete"
+                ;;
+            reactive__graph__flow__types__help,get)
+                cmd="reactive__graph__flow__types__help__get"
+                ;;
+            reactive__graph__flow__types__help,help)
+                cmd="reactive__graph__flow__types__help__help"
+                ;;
+            reactive__graph__flow__types__help,json-schema)
+                cmd="reactive__graph__flow__types__help__json__schema"
+                ;;
+            reactive__graph__flow__types__help,list)
+                cmd="reactive__graph__flow__types__help__list"
+                ;;
+            reactive__graph__flow__types__help,list-extensions)
+                cmd="reactive__graph__flow__types__help__list__extensions"
+                ;;
+            reactive__graph__flow__types__help,list-variables)
+                cmd="reactive__graph__flow__types__help__list__variables"
+                ;;
+            reactive__graph__flow__types__help,remove-entity-instance)
+                cmd="reactive__graph__flow__types__help__remove__entity__instance"
+                ;;
+            reactive__graph__flow__types__help,remove-extension)
+                cmd="reactive__graph__flow__types__help__remove__extension"
+                ;;
+            reactive__graph__flow__types__help,remove-variable)
+                cmd="reactive__graph__flow__types__help__remove__variable"
+                ;;
+            reactive__graph__flow__types__help,update-description)
+                cmd="reactive__graph__flow__types__help__update__description"
+                ;;
             reactive__graph__help,components)
                 cmd="reactive__graph__help__components"
                 ;;
@@ -326,6 +489,12 @@ _reactive-graph() {
                 ;;
             reactive__graph__help,execute-command)
                 cmd="reactive__graph__help__execute__command"
+                ;;
+            reactive__graph__help,flow-instances)
+                cmd="reactive__graph__help__flow__instances"
+                ;;
+            reactive__graph__help,flow-types)
+                cmd="reactive__graph__help__flow__types"
                 ;;
             reactive__graph__help,help)
                 cmd="reactive__graph__help__help"
@@ -357,6 +526,9 @@ _reactive-graph() {
             reactive__graph__help,remotes)
                 cmd="reactive__graph__help__remotes"
                 ;;
+            reactive__graph__help,schema)
+                cmd="reactive__graph__help__schema"
+                ;;
             reactive__graph__help,shell-completions)
                 cmd="reactive__graph__help__shell__completions"
                 ;;
@@ -380,6 +552,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__help__components,get)
                 cmd="reactive__graph__help__components__get"
+                ;;
+            reactive__graph__help__components,json-schema)
+                cmd="reactive__graph__help__components__json__schema"
                 ;;
             reactive__graph__help__components,list)
                 cmd="reactive__graph__help__components__list"
@@ -420,6 +595,9 @@ _reactive-graph() {
             reactive__graph__help__entity__instances,get-property)
                 cmd="reactive__graph__help__entity__instances__get__property"
                 ;;
+            reactive__graph__help__entity__instances,json-schema)
+                cmd="reactive__graph__help__entity__instances__json__schema"
+                ;;
             reactive__graph__help__entity__instances,list)
                 cmd="reactive__graph__help__entity__instances__list"
                 ;;
@@ -456,6 +634,9 @@ _reactive-graph() {
             reactive__graph__help__entity__types,get)
                 cmd="reactive__graph__help__entity__types__get"
                 ;;
+            reactive__graph__help__entity__types,json-schema)
+                cmd="reactive__graph__help__entity__types__json__schema"
+                ;;
             reactive__graph__help__entity__types,list)
                 cmd="reactive__graph__help__entity__types__list"
                 ;;
@@ -480,8 +661,74 @@ _reactive-graph() {
             reactive__graph__help__entity__types,update-description)
                 cmd="reactive__graph__help__entity__types__update__description"
                 ;;
+            reactive__graph__help__flow__instances,create-from-type)
+                cmd="reactive__graph__help__flow__instances__create__from__type"
+                ;;
+            reactive__graph__help__flow__instances,delete)
+                cmd="reactive__graph__help__flow__instances__delete"
+                ;;
+            reactive__graph__help__flow__instances,get)
+                cmd="reactive__graph__help__flow__instances__get"
+                ;;
+            reactive__graph__help__flow__instances,get-by-label)
+                cmd="reactive__graph__help__flow__instances__get__by__label"
+                ;;
+            reactive__graph__help__flow__instances,json-schema)
+                cmd="reactive__graph__help__flow__instances__json__schema"
+                ;;
+            reactive__graph__help__flow__instances,list)
+                cmd="reactive__graph__help__flow__instances__list"
+                ;;
+            reactive__graph__help__flow__types,add-entity-instance)
+                cmd="reactive__graph__help__flow__types__add__entity__instance"
+                ;;
+            reactive__graph__help__flow__types,add-extension)
+                cmd="reactive__graph__help__flow__types__add__extension"
+                ;;
+            reactive__graph__help__flow__types,add-variable)
+                cmd="reactive__graph__help__flow__types__add__variable"
+                ;;
+            reactive__graph__help__flow__types,create)
+                cmd="reactive__graph__help__flow__types__create"
+                ;;
+            reactive__graph__help__flow__types,delete)
+                cmd="reactive__graph__help__flow__types__delete"
+                ;;
+            reactive__graph__help__flow__types,get)
+                cmd="reactive__graph__help__flow__types__get"
+                ;;
+            reactive__graph__help__flow__types,json-schema)
+                cmd="reactive__graph__help__flow__types__json__schema"
+                ;;
+            reactive__graph__help__flow__types,list)
+                cmd="reactive__graph__help__flow__types__list"
+                ;;
+            reactive__graph__help__flow__types,list-extensions)
+                cmd="reactive__graph__help__flow__types__list__extensions"
+                ;;
+            reactive__graph__help__flow__types,list-variables)
+                cmd="reactive__graph__help__flow__types__list__variables"
+                ;;
+            reactive__graph__help__flow__types,remove-entity-instance)
+                cmd="reactive__graph__help__flow__types__remove__entity__instance"
+                ;;
+            reactive__graph__help__flow__types,remove-extension)
+                cmd="reactive__graph__help__flow__types__remove__extension"
+                ;;
+            reactive__graph__help__flow__types,remove-variable)
+                cmd="reactive__graph__help__flow__types__remove__variable"
+                ;;
+            reactive__graph__help__flow__types,update-description)
+                cmd="reactive__graph__help__flow__types__update__description"
+                ;;
             reactive__graph__help__instance__info,get)
                 cmd="reactive__graph__help__instance__info__get"
+                ;;
+            reactive__graph__help__instances,config)
+                cmd="reactive__graph__help__instances__config"
+                ;;
+            reactive__graph__help__instances,generate-certificate)
+                cmd="reactive__graph__help__instances__generate__certificate"
                 ;;
             reactive__graph__help__instances,init)
                 cmd="reactive__graph__help__instances__init"
@@ -491,6 +738,15 @@ _reactive-graph() {
                 ;;
             reactive__graph__help__instances,repository)
                 cmd="reactive__graph__help__instances__repository"
+                ;;
+            reactive__graph__help__instances__config,graphql)
+                cmd="reactive__graph__help__instances__config__graphql"
+                ;;
+            reactive__graph__help__instances__config,instance)
+                cmd="reactive__graph__help__instances__config__instance"
+                ;;
+            reactive__graph__help__instances__config,plugins)
+                cmd="reactive__graph__help__instances__config__plugins"
                 ;;
             reactive__graph__help__instances__plugins,install)
                 cmd="reactive__graph__help__instances__plugins__install"
@@ -555,6 +811,9 @@ _reactive-graph() {
             reactive__graph__help__relation__instances,get-property)
                 cmd="reactive__graph__help__relation__instances__get__property"
                 ;;
+            reactive__graph__help__relation__instances,json-schema)
+                cmd="reactive__graph__help__relation__instances__json__schema"
+                ;;
             reactive__graph__help__relation__instances,list)
                 cmd="reactive__graph__help__relation__instances__list"
                 ;;
@@ -590,6 +849,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__help__relation__types,get)
                 cmd="reactive__graph__help__relation__types__get"
+                ;;
+            reactive__graph__help__relation__types,json-schema)
+                cmd="reactive__graph__help__relation__types__json__schema"
                 ;;
             reactive__graph__help__relation__types,list)
                 cmd="reactive__graph__help__relation__types__list"
@@ -639,6 +901,18 @@ _reactive-graph() {
             reactive__graph__help__remotes,update-all)
                 cmd="reactive__graph__help__remotes__update__all"
                 ;;
+            reactive__graph__help__schema,dynamic-graph-schema)
+                cmd="reactive__graph__help__schema__dynamic__graph__schema"
+                ;;
+            reactive__graph__help__schema,reactive-graph-plugin-schema)
+                cmd="reactive__graph__help__schema__reactive__graph__plugin__schema"
+                ;;
+            reactive__graph__help__schema,reactive-graph-runtime-schema)
+                cmd="reactive__graph__help__schema__reactive__graph__runtime__schema"
+                ;;
+            reactive__graph__help__schema,reactive-graph-schema)
+                cmd="reactive__graph__help__schema__reactive__graph__schema"
+                ;;
             reactive__graph__help__shell__completions,install)
                 cmd="reactive__graph__help__shell__completions__install"
                 ;;
@@ -663,6 +937,12 @@ _reactive-graph() {
             reactive__graph__instance__info__help,help)
                 cmd="reactive__graph__instance__info__help__help"
                 ;;
+            reactive__graph__instances,config)
+                cmd="reactive__graph__instances__config"
+                ;;
+            reactive__graph__instances,generate-certificate)
+                cmd="reactive__graph__instances__generate__certificate"
+                ;;
             reactive__graph__instances,help)
                 cmd="reactive__graph__instances__help"
                 ;;
@@ -675,6 +955,36 @@ _reactive-graph() {
             reactive__graph__instances,repository)
                 cmd="reactive__graph__instances__repository"
                 ;;
+            reactive__graph__instances__config,graphql)
+                cmd="reactive__graph__instances__config__graphql"
+                ;;
+            reactive__graph__instances__config,help)
+                cmd="reactive__graph__instances__config__help"
+                ;;
+            reactive__graph__instances__config,instance)
+                cmd="reactive__graph__instances__config__instance"
+                ;;
+            reactive__graph__instances__config,plugins)
+                cmd="reactive__graph__instances__config__plugins"
+                ;;
+            reactive__graph__instances__config__help,graphql)
+                cmd="reactive__graph__instances__config__help__graphql"
+                ;;
+            reactive__graph__instances__config__help,help)
+                cmd="reactive__graph__instances__config__help__help"
+                ;;
+            reactive__graph__instances__config__help,instance)
+                cmd="reactive__graph__instances__config__help__instance"
+                ;;
+            reactive__graph__instances__config__help,plugins)
+                cmd="reactive__graph__instances__config__help__plugins"
+                ;;
+            reactive__graph__instances__help,config)
+                cmd="reactive__graph__instances__help__config"
+                ;;
+            reactive__graph__instances__help,generate-certificate)
+                cmd="reactive__graph__instances__help__generate__certificate"
+                ;;
             reactive__graph__instances__help,help)
                 cmd="reactive__graph__instances__help__help"
                 ;;
@@ -686,6 +996,15 @@ _reactive-graph() {
                 ;;
             reactive__graph__instances__help,repository)
                 cmd="reactive__graph__instances__help__repository"
+                ;;
+            reactive__graph__instances__help__config,graphql)
+                cmd="reactive__graph__instances__help__config__graphql"
+                ;;
+            reactive__graph__instances__help__config,instance)
+                cmd="reactive__graph__instances__help__config__instance"
+                ;;
+            reactive__graph__instances__help__config,plugins)
+                cmd="reactive__graph__instances__help__config__plugins"
                 ;;
             reactive__graph__instances__help__plugins,install)
                 cmd="reactive__graph__instances__help__plugins__install"
@@ -834,6 +1153,9 @@ _reactive-graph() {
             reactive__graph__relation__instances,help)
                 cmd="reactive__graph__relation__instances__help"
                 ;;
+            reactive__graph__relation__instances,json-schema)
+                cmd="reactive__graph__relation__instances__json__schema"
+                ;;
             reactive__graph__relation__instances,list)
                 cmd="reactive__graph__relation__instances__list"
                 ;;
@@ -873,6 +1195,9 @@ _reactive-graph() {
             reactive__graph__relation__instances__help,help)
                 cmd="reactive__graph__relation__instances__help__help"
                 ;;
+            reactive__graph__relation__instances__help,json-schema)
+                cmd="reactive__graph__relation__instances__help__json__schema"
+                ;;
             reactive__graph__relation__instances__help,list)
                 cmd="reactive__graph__relation__instances__help__list"
                 ;;
@@ -911,6 +1236,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__relation__types,help)
                 cmd="reactive__graph__relation__types__help"
+                ;;
+            reactive__graph__relation__types,json-schema)
+                cmd="reactive__graph__relation__types__json__schema"
                 ;;
             reactive__graph__relation__types,list)
                 cmd="reactive__graph__relation__types__list"
@@ -956,6 +1284,9 @@ _reactive-graph() {
                 ;;
             reactive__graph__relation__types__help,help)
                 cmd="reactive__graph__relation__types__help__help"
+                ;;
+            reactive__graph__relation__types__help,json-schema)
+                cmd="reactive__graph__relation__types__help__json__schema"
                 ;;
             reactive__graph__relation__types__help,list)
                 cmd="reactive__graph__relation__types__help__list"
@@ -1035,6 +1366,36 @@ _reactive-graph() {
             reactive__graph__remotes__help,update-all)
                 cmd="reactive__graph__remotes__help__update__all"
                 ;;
+            reactive__graph__schema,dynamic-graph-schema)
+                cmd="reactive__graph__schema__dynamic__graph__schema"
+                ;;
+            reactive__graph__schema,help)
+                cmd="reactive__graph__schema__help"
+                ;;
+            reactive__graph__schema,reactive-graph-plugin-schema)
+                cmd="reactive__graph__schema__reactive__graph__plugin__schema"
+                ;;
+            reactive__graph__schema,reactive-graph-runtime-schema)
+                cmd="reactive__graph__schema__reactive__graph__runtime__schema"
+                ;;
+            reactive__graph__schema,reactive-graph-schema)
+                cmd="reactive__graph__schema__reactive__graph__schema"
+                ;;
+            reactive__graph__schema__help,dynamic-graph-schema)
+                cmd="reactive__graph__schema__help__dynamic__graph__schema"
+                ;;
+            reactive__graph__schema__help,help)
+                cmd="reactive__graph__schema__help__help"
+                ;;
+            reactive__graph__schema__help,reactive-graph-plugin-schema)
+                cmd="reactive__graph__schema__help__reactive__graph__plugin__schema"
+                ;;
+            reactive__graph__schema__help,reactive-graph-runtime-schema)
+                cmd="reactive__graph__schema__help__reactive__graph__runtime__schema"
+                ;;
+            reactive__graph__schema__help,reactive-graph-schema)
+                cmd="reactive__graph__schema__help__reactive__graph__schema"
+                ;;
             reactive__graph__shell__completions,help)
                 cmd="reactive__graph__shell__completions__help"
                 ;;
@@ -1078,7 +1439,7 @@ _reactive-graph() {
 
     case "${cmd}" in
         reactive__graph)
-            opts="-n -d -w -c -x -p -P -q -h -V --logging-config --instance-config --graphql-config --plugins-config --instance-name --instance-description --hostname --port --secure --ssl-certificate-path --ssl-private-key-path --shutdown-timeout --workers --default-context-path --disable-all-plugins --disabled-plugins --enabled-plugins --disable-hot-deploy --hot-deploy-location --install-location --stop-immediately --quiet --client-hostname --client-port --client-secure --endpoint-graphql --endpoint-dynamic-graph --endpoint-runtime --endpoint-plugins --bearer --help --version shell-completions man-pages print-markdown-help info daemon execute-command instance-info plugins remotes shutdown components entity-types relation-types entity-instances relation-instances instances update help"
+            opts="-n -d -w -c -x -p -P -q -i -h -V --logging-config --instance-config --graphql-config --plugins-config --instance-name --instance-description --hostname --port --secure --ssl-certificate-path --ssl-private-key-path --shutdown-timeout --workers --default-context-path --disable-all-plugins --disabled-plugins --enabled-plugins --disable-hot-deploy --hot-deploy-location --install-location --stop-immediately --quiet --client-hostname --client-port --client-secure --endpoint-graphql --endpoint-dynamic-graph --endpoint-runtime --endpoint-plugins --bearer --interactive --help --version shell-completions man-pages print-markdown-help info daemon schema execute-command instance-info plugins remotes shutdown components entity-types relation-types flow-types entity-instances relation-instances flow-instances instances update help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1244,7 +1605,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__components)
-            opts="-o -h -V --output-format --help --version list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description help"
+            opts="-o -h -V --output-format --help --version list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1376,7 +1737,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__components__help)
-            opts="list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description help"
+            opts="list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1473,6 +1834,20 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__components__help__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__components__help__list)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
@@ -1550,6 +1925,28 @@ _reactive-graph() {
                 return 0
             fi
             case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__components__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -1732,7 +2129,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__entity__instances)
-            opts="-o -h -V --output-format --help --version list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
+            opts="-o -h -V --output-format --help --version list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1932,7 +2329,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__entity__instances__help)
-            opts="list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
+            opts="list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2057,6 +2454,20 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__entity__instances__help__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__entity__instances__help__list)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
@@ -2134,6 +2545,28 @@ _reactive-graph() {
                 return 0
             fi
             case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__entity__instances__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -2318,7 +2751,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__entity__types)
-            opts="-o -h -V --output-format --help --version list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
+            opts="-o -h -V --output-format --help --version list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2472,7 +2905,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__entity__types__help)
-            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
+            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2570,6 +3003,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__entity__types__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__entity__types__help__json__schema)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -2688,6 +3135,28 @@ _reactive-graph() {
                 return 0
             fi
             case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__entity__types__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -2885,8 +3354,904 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__flow__instances)
+            opts="-o -h -V --output-format --help --version list get get-by-label create-from-type delete json-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__create__from__type)
+            opts="-i -v -p -o -h -V --id --variables --properties --output-format --help --version <NAMESPACE> <NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --id)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -i)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --variables)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -v)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --properties)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -p)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__delete)
+            opts="-o -h -V --output-format --help --version <ID>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__get)
+            opts="-o -h -V --output-format --help --version <ID>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__get__by__label)
+            opts="-o -h -V --output-format --help --version <LABEL>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help)
+            opts="list get get-by-label create-from-type delete json-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__create__from__type)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__delete)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__get__by__label)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__help__list)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__instances__list)
+            opts="-n -i -l -o -h -V --namespace --name --id --label --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --namespace)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --name)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -n)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --id)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -i)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --label)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -l)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types)
+            opts="-o -h -V --output-format --help --version list get list-variables list-extensions create delete add-variable remove-variable add-extension remove-extension update-description add-entity-instance remove-entity-instance json-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__add__entity__instance)
+            opts="-i -d -p -o -h -V --id --description --properties --output-format --help --version <NAMESPACE> <NAME> <ENTITY_TYPE_NAMESPACE> <ENTITY_TYPE_NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --id)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -i)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --description)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --properties)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -p)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__add__extension)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME> <DESCRIPTION> <EXTENSION>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__add__variable)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <PROPERTY_NAME> <DATA_TYPE> <SOCKET_TYPE> <MUTABILITY> [DESCRIPTION]"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__create)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <ENTITY_TYPE_NAMESPACE> <ENTITY_TYPE_NAME> <WRAPPER_ENTITY_INSTANCE_ID> [DESCRIPTION] [WRAPPER_ENTITY_INSTANCE_DESCRIPTION]"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__delete)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__get)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help)
+            opts="list get list-variables list-extensions create delete add-variable remove-variable add-extension remove-extension update-description add-entity-instance remove-entity-instance json-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__add__entity__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__add__extension)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__add__variable)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__create)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__delete)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__list)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__list__extensions)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__list__variables)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__remove__entity__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__remove__extension)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__remove__variable)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__help__update__description)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__list)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__list__extensions)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__list__variables)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__remove__entity__instance)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <ID>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__remove__extension)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <EXTENSION_NAMESPACE> <EXTENSION_NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__remove__variable)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <VARIABLE_NAME>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__flow__types__update__description)
+            opts="-o -h -V --output-format --help --version <NAMESPACE> <NAME> <DESCRIPTION>"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__help)
-            opts="shell-completions man-pages print-markdown-help info daemon execute-command instance-info plugins remotes shutdown components entity-types relation-types entity-instances relation-instances instances update help"
+            opts="shell-completions man-pages print-markdown-help info daemon schema execute-command instance-info plugins remotes shutdown components entity-types relation-types flow-types entity-instances relation-instances flow-instances instances update help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2900,7 +4265,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__components)
-            opts="list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description"
+            opts="list get list-properties list-extensions create delete add-property remove-property add-extension remove-extension update-description json-schema"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2970,6 +4335,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__components__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__components__json__schema)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -3082,7 +4461,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__entity__instances)
-            opts="list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete"
+            opts="list get get-by-label list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete json-schema"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3193,6 +4572,20 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__help__entity__instances__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__help__entity__instances__list)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
@@ -3278,7 +4671,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__entity__types)
-            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description"
+            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description json-schema"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3362,6 +4755,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__entity__types__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__entity__types__json__schema)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -3501,6 +4908,314 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__help__flow__instances)
+            opts="list get get-by-label create-from-type delete json-schema"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__instances__create__from__type)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__instances__delete)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__instances__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__instances__get__by__label)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__instances__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__instances__list)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types)
+            opts="list get list-variables list-extensions create delete add-variable remove-variable add-extension remove-extension update-description add-entity-instance remove-entity-instance json-schema"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__add__entity__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__add__extension)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__add__variable)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__create)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__delete)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__list)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__list__extensions)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__list__variables)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__remove__entity__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__remove__extension)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__remove__variable)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__flow__types__update__description)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__help__help)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
@@ -3558,8 +5273,78 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__instances)
-            opts="init repository plugins"
+            opts="config generate-certificate init plugins repository"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__instances__config)
+            opts="graphql instance plugins"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__instances__config__graphql)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__instances__config__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__instances__config__plugins)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__instances__generate__certificate)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
@@ -3866,7 +5651,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__relation__instances)
-            opts="list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete"
+            opts="list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete json-schema"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3950,6 +5735,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__relation__instances__get__property)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__relation__instances__json__schema)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -4048,7 +5847,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__relation__types)
-            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description"
+            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description json-schema"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4132,6 +5931,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__help__relation__types__get)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__relation__types__json__schema)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -4383,6 +6196,76 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__help__schema)
+            opts="reactive-graph-schema dynamic-graph-schema reactive-graph-plugin-schema reactive-graph-runtime-schema"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__schema__dynamic__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__schema__reactive__graph__plugin__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__schema__reactive__graph__runtime__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__help__schema__reactive__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__help__shell__completions)
             opts="print install"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
@@ -4570,7 +6453,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__instances)
-            opts="-h -V --help --version [WORKING_DIRECTORY] init repository plugins help"
+            opts="-h -V --help --version [WORKING_DIRECTORY] config generate-certificate init plugins repository help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -4583,9 +6466,311 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
-        reactive__graph__instances__help)
-            opts="init repository plugins help"
+        reactive__graph__instances__config)
+            opts="-h -V --help --version graphql instance plugins help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__graphql)
+            opts="-w -c -h -V --hostname --port --secure --ssl-certificate-path --ssl-private-key-path --shutdown-timeout --workers --default-context-path --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --hostname)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --port)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --secure)
+                    COMPREPLY=($(compgen -W "true false" -- "${cur}"))
+                    return 0
+                    ;;
+                --ssl-certificate-path)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --ssl-private-key-path)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --shutdown-timeout)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --workers)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -w)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --default-context-path)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -c)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__help)
+            opts="graphql instance plugins help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__help__graphql)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__help__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__help__plugins)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__instance)
+            opts="-n -d -h -V --instance-name --instance-description --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --instance-name)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -n)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --instance-description)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__config__plugins)
+            opts="-x -p -P -h -V --disable-all-plugins --disabled-plugins --enabled-plugins --disable-hot-deploy --hot-deploy-location --install-location --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --disable-all-plugins)
+                    COMPREPLY=($(compgen -W "true false" -- "${cur}"))
+                    return 0
+                    ;;
+                -x)
+                    COMPREPLY=($(compgen -W "true false" -- "${cur}"))
+                    return 0
+                    ;;
+                --disabled-plugins)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -p)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --enabled-plugins)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                -P)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --disable-hot-deploy)
+                    COMPREPLY=($(compgen -W "true false" -- "${cur}"))
+                    return 0
+                    ;;
+                --hot-deploy-location)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --install-location)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__generate__certificate)
+            opts="-h -V --help --version [COUNTRY_NAME] [ORGANIZATION_NAME] [COMMON_NAME]"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__help)
+            opts="config generate-certificate init plugins repository help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__help__config)
+            opts="graphql instance plugins"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__help__config__graphql)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__help__config__instance)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__help__config__plugins)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 5 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__instances__help__generate__certificate)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
@@ -4710,25 +6895,17 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__instances__init)
-            opts="-n -d -h -V --name --description --help --version"
+            opts="-h -V --uid --gid --help --version [COUNTRY_NAME] [ORGANIZATION_NAME] [COMMON_NAME]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
-                --name)
+                --uid)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                -n)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                --description)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                -d)
+                --gid)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -4908,12 +7085,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__instances__repository__init)
-            opts="-h -V --help --version <LOCAL_NAME> [URL]"
+            opts="-h -V --uid --gid --help --version <LOCAL_NAME> [URL]"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
+                --uid)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --gid)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -5354,7 +7539,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__relation__instances)
-            opts="-o -h -V --output-format --help --version list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
+            opts="-o -h -V --output-format --help --version list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5596,7 +7781,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__relation__instances__help)
-            opts="list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete help"
+            opts="list get list-properties get-property set-property add-property remove-property list-components add-component remove-component create delete json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -5707,6 +7892,20 @@ _reactive-graph() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
+        reactive__graph__relation__instances__help__json__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
         reactive__graph__relation__instances__help__list)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
@@ -5784,6 +7983,28 @@ _reactive-graph() {
                 return 0
             fi
             case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__relation__instances__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -6024,7 +8245,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__relation__types)
-            opts="-o -h -V --output-format --help --version list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
+            opts="-o -h -V --output-format --help --version list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -6178,7 +8399,7 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__relation__types__help)
-            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description help"
+            opts="list get list-properties list-extensions list-components create delete add-property remove-property add-extension remove-extension add-component remove-component update-description json-schema help"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -6276,6 +8497,20 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__relation__types__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__relation__types__help__json__schema)
             opts=""
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -6394,6 +8629,28 @@ _reactive-graph() {
                 return 0
             fi
             case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__relation__types__json__schema)
+            opts="-o -h -V --output-format --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                --output-format)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
+                -o)
+                    COMPREPLY=($(compgen -W "table html-table markdown-table count json json5 toml" -- "${cur}"))
+                    return 0
+                    ;;
                 *)
                     COMPREPLY=()
                     ;;
@@ -6878,6 +9135,160 @@ _reactive-graph() {
             return 0
             ;;
         reactive__graph__remotes__update__all)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema)
+            opts="-h -V --help --version reactive-graph-schema dynamic-graph-schema reactive-graph-plugin-schema reactive-graph-runtime-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__dynamic__graph__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__help)
+            opts="reactive-graph-schema dynamic-graph-schema reactive-graph-plugin-schema reactive-graph-runtime-schema help"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__help__dynamic__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__help__help)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__help__reactive__graph__plugin__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__help__reactive__graph__runtime__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__help__reactive__graph__schema)
+            opts=""
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__reactive__graph__plugin__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__reactive__graph__runtime__schema)
+            opts="-h -V --help --version"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        reactive__graph__schema__reactive__graph__schema)
             opts="-h -V --help --version"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )

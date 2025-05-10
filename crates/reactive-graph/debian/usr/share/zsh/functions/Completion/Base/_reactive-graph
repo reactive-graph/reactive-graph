@@ -15,44 +15,46 @@ _reactive-graph() {
 
     local context curcontext="$curcontext" state line
     _arguments "${_arguments_options[@]}" : \
-'--logging-config=[The logging config location]:LOGGING_CONFIG: ' \
-'--instance-config=[The instance config location]:INSTANCE_CONFIG: ' \
-'--graphql-config=[The GraphQL config location]:GRAPHQL_CONFIG: ' \
-'--plugins-config=[The plugins config location]:PLUGINS_CONFIG: ' \
-'-n+[The name of the instance]:INSTANCE_NAME: ' \
-'--instance-name=[The name of the instance]:INSTANCE_NAME: ' \
-'-d+[The description of the instance]:INSTANCE_DESCRIPTION: ' \
-'--instance-description=[The description of the instance]:INSTANCE_DESCRIPTION: ' \
-'--hostname=[The hostname to bind the GraphQL HTTP server]:HOSTNAME: ' \
-'--port=[The port to bind the GraphQL HTTP server]:PORT: ' \
+'--logging-config=[The logging config location]:LOGGING_CONFIG:_default' \
+'--instance-config=[The instance config location]:INSTANCE_CONFIG:_default' \
+'--graphql-config=[The GraphQL config location]:GRAPHQL_CONFIG:_default' \
+'--plugins-config=[The plugins config location]:PLUGINS_CONFIG:_default' \
+'-n+[The name of the instance]:NAME:_default' \
+'--instance-name=[The name of the instance]:NAME:_default' \
+'-d+[The description of the instance]:DESCRIPTION:_default' \
+'--instance-description=[The description of the instance]:DESCRIPTION:_default' \
+'--hostname=[The hostname to bind the GraphQL HTTP server]:HOSTNAME:_default' \
+'--port=[The port to bind the GraphQL HTTP server]:PORT:_default' \
 '--secure=[If true, HTTPS is enabled]:SECURE:(true false)' \
-'--ssl-certificate-path=[The location of the certificate]:SSL_CERTIFICATE_PATH: ' \
-'--ssl-private-key-path=[The location of the private key]:SSL_PRIVATE_KEY_PATH: ' \
-'--shutdown-timeout=[Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds]:SHUTDOWN_TIMEOUT: ' \
-'-w+[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS: ' \
-'--workers=[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS: ' \
-'-c+[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH: ' \
-'--default-context-path=[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH: ' \
+'--ssl-certificate-path=[The location of the certificate]:SSL_CERTIFICATE_PATH:_default' \
+'--ssl-private-key-path=[The location of the private key]:SSL_PRIVATE_KEY_PATH:_default' \
+'--shutdown-timeout=[Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds]:SHUTDOWN_TIMEOUT:_default' \
+'-w+[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS:_default' \
+'--workers=[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS:_default' \
+'-c+[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH:_default' \
+'--default-context-path=[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH:_default' \
 '-x+[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
 '--disable-all-plugins=[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
-'*-p+[The list of plugins to disable]:DISABLED_PLUGINS: ' \
-'*--disabled-plugins=[The list of plugins to disable]:DISABLED_PLUGINS: ' \
-'*-P+[The list of plugins to enable]:ENABLED_PLUGINS: ' \
-'*--enabled-plugins=[The list of plugins to enable]:ENABLED_PLUGINS: ' \
+'*-p+[The list of plugins to disable]:DISABLED_PLUGINS:_default' \
+'*--disabled-plugins=[The list of plugins to disable]:DISABLED_PLUGINS:_default' \
+'*-P+[The list of plugins to enable]:ENABLED_PLUGINS:_default' \
+'*--enabled-plugins=[The list of plugins to enable]:ENABLED_PLUGINS:_default' \
 '--disable-hot-deploy=[If true, hot deployment will be disabled]:DISABLE_HOT_DEPLOY:(true false)' \
-'--hot-deploy-location=[The folder which is watched for hot deployment]:HOT_DEPLOY_LOCATION: ' \
-'--install-location=[The folder which plugins are installed permanently]:INSTALL_LOCATION: ' \
+'--hot-deploy-location=[The folder which is watched for hot deployment]:HOT_DEPLOY_LOCATION:_default' \
+'--install-location=[The folder which plugins are installed permanently]:INSTALL_LOCATION:_default' \
 '--stop-immediately=[If true, the runtime does not wait before exiting]:STOP_IMMEDIATELY:(true false)' \
 '-q+[If true, logging is disabled completely]:QUIET:(true false)' \
 '--quiet=[If true, logging is disabled completely]:QUIET:(true false)' \
-'--client-hostname=[The hostname to connect to]:CLIENT_HOSTNAME: ' \
-'--client-port=[The port to connect to]:CLIENT_PORT: ' \
+'--client-hostname=[The hostname to connect to]:CLIENT_HOSTNAME:_default' \
+'--client-port=[The port to connect to]:CLIENT_PORT:_default' \
 '--client-secure=[If true, connects via HTTPS]:CLIENT_SECURE:(true false)' \
-'--endpoint-graphql=[The endpoint to use]:ENDPOINT_GRAPHQL: ' \
-'--endpoint-dynamic-graph=[The endpoint to use]:ENDPOINT_DYNAMIC_GRAPH: ' \
-'--endpoint-runtime=[The endpoint to use]:ENDPOINT_RUNTIME: ' \
-'--endpoint-plugins=[The endpoint to use]:ENDPOINT_PLUGINS: ' \
-'--bearer=[The authentication token]:BEARER: ' \
+'--endpoint-graphql=[The endpoint to use]:ENDPOINT_GRAPHQL:_default' \
+'--endpoint-dynamic-graph=[The endpoint to use]:ENDPOINT_DYNAMIC_GRAPH:_default' \
+'--endpoint-runtime=[The endpoint to use]:ENDPOINT_RUNTIME:_default' \
+'--endpoint-plugins=[The endpoint to use]:ENDPOINT_PLUGINS:_default' \
+'--bearer=[The authentication token]:BEARER:_default' \
+'-i[Enter the interactive client mode]' \
+'--interactive[Enter the interactive client mode]' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
@@ -215,18 +217,106 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (daemon)
 _arguments "${_arguments_options[@]}" : \
-'--daemon-name=[Sets the name of the daemon]:DAEMON_NAME: ' \
-'--daemon-pid=[The location of the daemon PID file. By default, no PID file will be created]:DAEMON_PID: ' \
-'--daemon-working-directory=[The working directory of the daemon]:DAEMON_WORKING_DIRECTORY: ' \
-'--daemon-stdout=[Stdout will be written into this file]:DAEMON_STDOUT: ' \
-'--daemon-stderr=[Stderr will be written into this file]:DAEMON_STDERR: ' \
-'--daemon-user=[If set will drop privileges to the specified user. Note\: Both must be given\: user and group]:DAEMON_USER: ' \
-'--daemon-group=[If set will drop privileges to the specified group. Note\: Both must be given\: user and group]:DAEMON_GROUP: ' \
+'--daemon-name=[Sets the name of the daemon]:DAEMON_NAME:_default' \
+'--daemon-pid=[The location of the daemon PID file. By default, no PID file will be created]:DAEMON_PID:_default' \
+'--daemon-working-directory=[The working directory of the daemon]:DAEMON_WORKING_DIRECTORY:_default' \
+'--daemon-stdout=[Stdout will be written into this file]:DAEMON_STDOUT:_default' \
+'--daemon-stderr=[Stderr will be written into this file]:DAEMON_STDERR:_default' \
+'--daemon-user=[If set will drop privileges to the specified user. Note\: Both must be given\: user and group]:DAEMON_USER:_default' \
+'--daemon-group=[If set will drop privileges to the specified group. Note\: Both must be given\: user and group]:DAEMON_GROUP:_default' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
 && ret=0
+;;
+(schema)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__schema_commands" \
+"*::: :->schema" \
+&& ret=0
+
+    case $state in
+    (schema)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-schema-command-$line[1]:"
+        case $line[1] in
+            (reactive-graph-schema)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(dynamic-graph-schema)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(reactive-graph-plugin-schema)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(reactive-graph-runtime-schema)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__schema__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-schema-help-command-$line[1]:"
+        case $line[1] in
+            (reactive-graph-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dynamic-graph-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(reactive-graph-plugin-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(reactive-graph-runtime-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
 ;;
 (execute-command)
 _arguments "${_arguments_options[@]}" : \
@@ -234,8 +324,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':command_name -- The command name:' \
-'*::command_arguments -- The command arguments:' \
+':command_name -- The command name:_default' \
+'*::command_arguments -- The command arguments:_default' \
 && ret=0
 ;;
 (instance-info)
@@ -316,9 +406,9 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (search)
 _arguments "${_arguments_options[@]}" : \
-'--name=[The plugin name]:NAME: ' \
-'--state=[The plugin state]:STATE: ' \
-'--stem=[The plugin file stem]:STEM: ' \
+'--name=[The plugin name]:NAME:_default' \
+'--state=[The plugin state]:STATE:_default' \
+'--stem=[The plugin file stem]:STEM:_default' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
@@ -331,7 +421,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (dependencies)
@@ -340,7 +430,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (dependents)
@@ -349,7 +439,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (start)
@@ -358,7 +448,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (stop)
@@ -367,7 +457,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (restart)
@@ -376,7 +466,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (uninstall)
@@ -385,7 +475,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':name -- The plugin name:' \
+':name -- The plugin name:_default' \
 && ret=0
 ;;
 (help)
@@ -474,8 +564,8 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (add)
 _arguments "${_arguments_options[@]}" : \
-'--hostname=[The hostname]:HOSTNAME: ' \
-'--port=[The port]:PORT: ' \
+'--hostname=[The hostname]:HOSTNAME:_default' \
+'--port=[The port]:PORT:_default' \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
@@ -485,8 +575,8 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (remove)
 _arguments "${_arguments_options[@]}" : \
-'--hostname=[The hostname]:HOSTNAME: ' \
-'--port=[The port]:PORT: ' \
+'--hostname=[The hostname]:HOSTNAME:_default' \
+'--port=[The port]:PORT:_default' \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
@@ -504,8 +594,8 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (update)
 _arguments "${_arguments_options[@]}" : \
-'--hostname=[The hostname]:HOSTNAME: ' \
-'--port=[The port]:PORT: ' \
+'--hostname=[The hostname]:HOSTNAME:_default' \
+'--port=[The port]:PORT:_default' \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
@@ -523,8 +613,8 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (fetch-remotes-from-remote)
 _arguments "${_arguments_options[@]}" : \
-'--hostname=[The hostname]:HOSTNAME: ' \
-'--port=[The port]:PORT: ' \
+'--hostname=[The hostname]:HOSTNAME:_default' \
+'--port=[The port]:PORT:_default' \
 '--secure=[The protocol]:SECURE:(true false)' \
 '-h[Print help]' \
 '--help[Print help]' \
@@ -640,8 +730,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
 && ret=0
 ;;
 (list-properties)
@@ -652,8 +742,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
 && ret=0
 ;;
 (list-extensions)
@@ -664,8 +754,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
 && ret=0
 ;;
 (create)
@@ -676,9 +766,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
-'::description -- The component description:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
+'::description -- The component description:_default' \
 && ret=0
 ;;
 (delete)
@@ -689,8 +779,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
 && ret=0
 ;;
 (add-property)
@@ -701,13 +791,13 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
-':property_name -- The name of the property:' \
-':data_type -- The data type of the property:' \
-':socket_type -- The socket type of the property:' \
-':mutability -- If the property is mutable or not:' \
-'::description -- Description of the property:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
+':property_name -- The name of the property:_default' \
+':data_type -- The data type of the property:_default' \
+':socket_type -- The socket type of the property:_default' \
+':mutability -- If the property is mutable or not:_default' \
+'::description -- Description of the property:_default' \
 && ret=0
 ;;
 (remove-property)
@@ -718,9 +808,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
-':property_name -- The name of the property:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (add-extension)
@@ -731,12 +821,12 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
-':extension_namespace -- The extension namespace:' \
-':extension_name -- The extension name:' \
-':description -- Textual description of the extension:' \
-':extension -- The extension as JSON representation:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
+':description -- Textual description of the extension:_default' \
+':extension -- The extension as JSON representation:_default' \
 && ret=0
 ;;
 (remove-extension)
@@ -747,10 +837,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
-':extension_namespace -- The extension namespace:' \
-':extension_name -- The extension name:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
 && ret=0
 ;;
 (update-description)
@@ -761,9 +851,19 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
-':description -- The description to update:' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
+':description -- The description to update:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -822,6 +922,10 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -870,8 +974,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
 && ret=0
 ;;
 (list-properties)
@@ -882,8 +986,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
 && ret=0
 ;;
 (list-extensions)
@@ -894,8 +998,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
 && ret=0
 ;;
 (list-components)
@@ -906,8 +1010,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
 && ret=0
 ;;
 (create)
@@ -918,9 +1022,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-'::description -- The entity type description:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+'::description -- The entity type description:_default' \
 && ret=0
 ;;
 (delete)
@@ -931,8 +1035,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
 && ret=0
 ;;
 (add-property)
@@ -943,13 +1047,13 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':property_name -- The name of the property:' \
-':data_type -- The data type of the property:' \
-':socket_type -- The socket type of the property:' \
-':mutability -- If the property is mutable or not:' \
-'::description -- Description of the property:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':property_name -- The name of the property:_default' \
+':data_type -- The data type of the property:_default' \
+':socket_type -- The socket type of the property:_default' \
+':mutability -- If the property is mutable or not:_default' \
+'::description -- Description of the property:_default' \
 && ret=0
 ;;
 (remove-property)
@@ -960,9 +1064,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':property_name -- The name of the property:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (add-extension)
@@ -973,12 +1077,12 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':extension_namespace -- The extension namespace:' \
-':extension_name -- The extension name:' \
-':description -- Textual description of the extension:' \
-':extension -- The extension as JSON representation:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
+':description -- Textual description of the extension:_default' \
+':extension -- The extension as JSON representation:_default' \
 && ret=0
 ;;
 (remove-extension)
@@ -989,10 +1093,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':extension_namespace -- The extension namespace:' \
-':extension_name -- The extension name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
 && ret=0
 ;;
 (add-component)
@@ -1003,10 +1107,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':component_namespace -- The component namespace:' \
-':component_name -- The component name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':component_namespace -- The component namespace:_default' \
+':component_name -- The component name:_default' \
 && ret=0
 ;;
 (remove-component)
@@ -1017,10 +1121,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':component_namespace -- The component namespace:' \
-':component_name -- The component name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':component_namespace -- The component namespace:_default' \
+':component_name -- The component name:_default' \
 && ret=0
 ;;
 (update-description)
@@ -1031,9 +1135,19 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
-':description -- The description to update:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
+':description -- The description to update:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -1104,6 +1218,10 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -1152,8 +1270,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
 && ret=0
 ;;
 (list-properties)
@@ -1164,8 +1282,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
 && ret=0
 ;;
 (list-extensions)
@@ -1176,8 +1294,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
 && ret=0
 ;;
 (list-components)
@@ -1188,8 +1306,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
 && ret=0
 ;;
 (create)
@@ -1200,13 +1318,13 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':outbound_type_namespace -- The outbound entity type namespace:' \
-':outbound_type_name -- The outbound entity type name:' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':inbound_type_namespace -- The inbound entity type namespace:' \
-':inbound_type_name -- The inbound entity type name:' \
-'::description -- The relation type description:' \
+':outbound_type_namespace -- The outbound entity type namespace:_default' \
+':outbound_type_name -- The outbound entity type name:_default' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':inbound_type_namespace -- The inbound entity type namespace:_default' \
+':inbound_type_name -- The inbound entity type name:_default' \
+'::description -- The relation type description:_default' \
 && ret=0
 ;;
 (delete)
@@ -1217,8 +1335,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
 && ret=0
 ;;
 (add-property)
@@ -1229,13 +1347,13 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':property_name -- The name of the property:' \
-':data_type -- The data type of the property:' \
-':socket_type -- The socket type of the property:' \
-':mutability -- If the property is mutable or not:' \
-'::description -- Description of the property:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':property_name -- The name of the property:_default' \
+':data_type -- The data type of the property:_default' \
+':socket_type -- The socket type of the property:_default' \
+':mutability -- If the property is mutable or not:_default' \
+'::description -- Description of the property:_default' \
 && ret=0
 ;;
 (remove-property)
@@ -1246,9 +1364,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':property_name -- The name of the property:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (add-extension)
@@ -1259,12 +1377,12 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':extension_namespace -- The extension namespace:' \
-':extension_name -- The extension name:' \
-':description -- Textual description of the extension:' \
-':extension -- The extension as JSON representation:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
+':description -- Textual description of the extension:_default' \
+':extension -- The extension as JSON representation:_default' \
 && ret=0
 ;;
 (remove-extension)
@@ -1275,10 +1393,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':extension_namespace -- The extension namespace:' \
-':extension_name -- The extension name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
 && ret=0
 ;;
 (add-component)
@@ -1289,10 +1407,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':component_namespace -- The component namespace:' \
-':component_name -- The component name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':component_namespace -- The component namespace:_default' \
+':component_name -- The component name:_default' \
 && ret=0
 ;;
 (remove-component)
@@ -1303,10 +1421,10 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':component_namespace -- The component namespace:' \
-':component_name -- The component name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':component_namespace -- The component namespace:_default' \
+':component_name -- The component name:_default' \
 && ret=0
 ;;
 (update-description)
@@ -1317,9 +1435,19 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':description -- The description to update:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':description -- The description to update:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -1390,6 +1518,299 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(flow-types)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__flow-types_commands" \
+"*::: :->flow-types" \
+&& ret=0
+
+    case $state in
+    (flow-types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-flow-types-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+&& ret=0
+;;
+(list-variables)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':entity_type_namespace -- The namespace of the entity type of the wrapper entity instance:_default' \
+':entity_type_name -- The type name of the entity type of the wrapper entity instance:_default' \
+':wrapper_entity_instance_id -- The id of the wrapper entity instance:_default' \
+'::description -- The flow type description:_default' \
+'::wrapper_entity_instance_description -- The description of the wrapper entity instance:_default' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+&& ret=0
+;;
+(add-variable)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':property_name -- The name of the property:_default' \
+':data_type -- The data type of the property:_default' \
+':socket_type -- The socket type of the property:_default' \
+':mutability -- If the property is mutable or not:_default' \
+'::description -- Description of the property:_default' \
+&& ret=0
+;;
+(remove-variable)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':variable_name -- The name of the variable:_default' \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
+':description -- Textual description of the extension:_default' \
+':extension -- The extension as JSON representation:_default' \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':extension_namespace -- The extension namespace:_default' \
+':extension_name -- The extension name:_default' \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':description -- The description to update:_default' \
+&& ret=0
+;;
+(add-entity-instance)
+_arguments "${_arguments_options[@]}" : \
+'-i+[The entity instance id]:ID:_default' \
+'--id=[The entity instance id]:ID:_default' \
+'-d+[The entity instance description]:DESCRIPTION:_default' \
+'--description=[The entity instance description]:DESCRIPTION:_default' \
+'*-p+[The entity instance properties]:PROPERTIES:_default' \
+'*--properties=[The entity instance properties]:PROPERTIES:_default' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':entity_type_namespace -- The entity type namespace:_default' \
+':entity_type_name -- The entity type name:_default' \
+&& ret=0
+;;
+(remove-entity-instance)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+':id -- The entity instance to remove from the flow type:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__flow-types__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-flow-types-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-variables)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-variable)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-variable)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-entity-instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-entity-instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -1422,17 +1843,17 @@ _arguments "${_arguments_options[@]}" : \
         case $line[1] in
             (list)
 _arguments "${_arguments_options[@]}" : \
-'--namespace=[The entity type namespace]:NAMESPACE: ' \
-'-n+[The entity type name]:NAME: ' \
-'--name=[The entity type name]:NAME: ' \
-'-i+[The id of the entity instance]:ID: ' \
-'--id=[The id of the entity instance]:ID: ' \
-'-l+[The label of the entity instance]:LABEL: ' \
-'--label=[The label of the entity instance]:LABEL: ' \
-'*-p+[The properties to search for]:PROPERTIES: ' \
-'*--properties=[The properties to search for]:PROPERTIES: ' \
-'*-c+[The components to search for]:COMPONENTS: ' \
-'*--components=[The components to search for]:COMPONENTS: ' \
+'--namespace=[The entity type namespace]:NAMESPACE:_default' \
+'-n+[The entity type name]:NAME:_default' \
+'--name=[The entity type name]:NAME:_default' \
+'-i+[The id of the entity instance]:ID:_default' \
+'--id=[The id of the entity instance]:ID:_default' \
+'-l+[The label of the entity instance]:LABEL:_default' \
+'--label=[The label of the entity instance]:LABEL:_default' \
+'*-p+[The properties to search for]:PROPERTIES:_default' \
+'*--properties=[The properties to search for]:PROPERTIES:_default' \
+'*-c+[The components to search for]:COMPONENTS:_default' \
+'*--components=[The components to search for]:COMPONENTS:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
@@ -1449,7 +1870,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the entity instance:' \
+':id -- The id of the entity instance:_default' \
 && ret=0
 ;;
 (get-by-label)
@@ -1460,7 +1881,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':label -- The label of the reactive instance:' \
+':label -- The label of the reactive instance:_default' \
 && ret=0
 ;;
 (list-properties)
@@ -1471,7 +1892,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the entity instance:' \
+':id -- The id of the entity instance:_default' \
 && ret=0
 ;;
 (get-property)
@@ -1482,8 +1903,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the entity instance:' \
-':property_name -- The name of the property:' \
+':id -- The id of the entity instance:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (set-property)
@@ -1494,9 +1915,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help (see more with '\''--help'\'')]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the reactive instance:' \
-':name -- The name of the property:' \
-':value -- The new JSON value of the property:' \
+':id -- The id of the reactive instance:_default' \
+':name -- The name of the property:_default' \
+':value -- The new JSON value of the property:_default' \
 && ret=0
 ;;
 (add-property)
@@ -1507,12 +1928,12 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the reactive instance:' \
-':property_name -- The name of the property:' \
-':data_type -- The data type of the property:' \
-':socket_type -- The socket type of the property:' \
-':mutability -- If the property is mutable or not:' \
-'::description -- Description of the property:' \
+':id -- The id of the reactive instance:_default' \
+':property_name -- The name of the property:_default' \
+':data_type -- The data type of the property:_default' \
+':socket_type -- The socket type of the property:_default' \
+':mutability -- If the property is mutable or not:_default' \
+'::description -- Description of the property:_default' \
 && ret=0
 ;;
 (remove-property)
@@ -1523,8 +1944,8 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the entity instance:' \
-':property_name -- The name of the property:' \
+':id -- The id of the entity instance:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (list-components)
@@ -1535,7 +1956,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the entity instance:' \
+':id -- The id of the entity instance:_default' \
 && ret=0
 ;;
 (add-component)
@@ -1546,9 +1967,9 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the reactive instance:' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
+':id -- The id of the reactive instance:_default' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
 && ret=0
 ;;
 (remove-component)
@@ -1559,27 +1980,27 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the reactive instance:' \
-':namespace -- The component namespace:' \
-':name -- The component name:' \
+':id -- The id of the reactive instance:_default' \
+':namespace -- The component namespace:_default' \
+':name -- The component name:_default' \
 && ret=0
 ;;
 (create)
 _arguments "${_arguments_options[@]}" : \
-'-i+[The entity instance id]:ID: ' \
-'--id=[The entity instance id]:ID: ' \
-'-d+[The entity instance description]:DESCRIPTION: ' \
-'--description=[The entity instance description]:DESCRIPTION: ' \
-'*-p+[The entity instance properties]:PROPERTIES: ' \
-'*--properties=[The entity instance properties]:PROPERTIES: ' \
+'-i+[The entity instance id]:ID:_default' \
+'--id=[The entity instance id]:ID:_default' \
+'-d+[The entity instance description]:DESCRIPTION:_default' \
+'--description=[The entity instance description]:DESCRIPTION:_default' \
+'*-p+[The entity instance properties]:PROPERTIES:_default' \
+'*--properties=[The entity instance properties]:PROPERTIES:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The entity type namespace:' \
-':name -- The entity type name:' \
+':namespace -- The entity type namespace:_default' \
+':name -- The entity type name:_default' \
 && ret=0
 ;;
 (delete)
@@ -1590,7 +2011,17 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':id -- The id of the entity instance:' \
+':id -- The id of the entity instance:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -1657,6 +2088,10 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -1689,16 +2124,16 @@ _arguments "${_arguments_options[@]}" : \
         case $line[1] in
             (list)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'--namespace=[The relation type namespace]:NAMESPACE: ' \
-'-n+[The relation type name]:NAME: ' \
-'--name=[The relation type name]:NAME: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
-'*-p+[The properties to search for]:PROPERTIES: ' \
-'*--properties=[The properties to search for]:PROPERTIES: ' \
-'*-c+[The components to search for]:COMPONENTS: ' \
-'*--components=[The components to search for]:COMPONENTS: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'--namespace=[The relation type namespace]:NAMESPACE:_default' \
+'-n+[The relation type name]:NAME:_default' \
+'--name=[The relation type name]:NAME:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'*-p+[The properties to search for]:PROPERTIES:_default' \
+'*--properties=[The properties to search for]:PROPERTIES:_default' \
+'*-c+[The components to search for]:COMPONENTS:_default' \
+'*--components=[The components to search for]:COMPONENTS:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
@@ -1709,195 +2144,205 @@ _arguments "${_arguments_options[@]}" : \
 ;;
 (get)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
 && ret=0
 ;;
 (list-properties)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
 && ret=0
 ;;
 (get-property)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
-':property_name -- The name of the property:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (set-property)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help (see more with '\''--help'\'')]' \
 '--help[Print help (see more with '\''--help'\'')]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
-':property_name -- The name of the property:' \
-':property_value -- The JSON value of the property:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+':property_name -- The name of the property:_default' \
+':property_value -- The JSON value of the property:_default' \
 && ret=0
 ;;
 (add-property)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
-':property_name -- The name of the property:' \
-':data_type -- The data type of the property:' \
-':socket_type -- The socket type of the property:' \
-':mutability -- If the property is mutable or not:' \
-'::description -- Description of the property:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+':property_name -- The name of the property:_default' \
+':data_type -- The data type of the property:_default' \
+':socket_type -- The socket type of the property:_default' \
+':mutability -- If the property is mutable or not:_default' \
+'::description -- Description of the property:_default' \
 && ret=0
 ;;
 (remove-property)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
-':property_name -- The name of the property:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+':property_name -- The name of the property:_default' \
 && ret=0
 ;;
 (list-components)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
 && ret=0
 ;;
 (add-component)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
-':component_namespace -- The component namespace:' \
-':component_name -- The component name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+':component_namespace -- The component namespace:_default' \
+':component_name -- The component name:_default' \
 && ret=0
 ;;
 (remove-component)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
-':component_namespace -- The component namespace:' \
-':component_name -- The component name:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+':component_namespace -- The component namespace:_default' \
+':component_name -- The component name:_default' \
 && ret=0
 ;;
 (create)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
-'-d+[The relation instance description]:DESCRIPTION: ' \
-'--description=[The relation instance description]:DESCRIPTION: ' \
-'*-p+[The relation instance properties]:PROPERTIES: ' \
-'*--properties=[The relation instance properties]:PROPERTIES: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'-d+[The relation instance description]:DESCRIPTION:_default' \
+'--description=[The relation instance description]:DESCRIPTION:_default' \
+'*-p+[The relation instance properties]:PROPERTIES:_default' \
+'*--properties=[The relation instance properties]:PROPERTIES:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
 && ret=0
 ;;
 (delete)
 _arguments "${_arguments_options[@]}" : \
-'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID: ' \
-'-i+[The id of the inbound entity instance]:INBOUND_ID: ' \
-'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID: ' \
+'--outbound-id=[The id of the outbound entity instance]:OUTBOUND_ID:_default' \
+'-i+[The id of the inbound entity instance]:INBOUND_ID:_default' \
+'--inbound-id=[The id of the inbound entity instance]:INBOUND_ID:_default' \
 '-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':namespace -- The relation type namespace:' \
-':name -- The relation type name:' \
-':instance_id -- The instance id:' \
+':namespace -- The relation type namespace:_default' \
+':name -- The relation type name:_default' \
+':instance_id -- The instance id:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
 && ret=0
 ;;
 (help)
@@ -1960,6 +2405,154 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(flow-instances)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__flow-instances_commands" \
+"*::: :->flow-instances" \
+&& ret=0
+
+    case $state in
+    (flow-instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-flow-instances-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'--namespace=[The entity type namespace]:NAMESPACE:_default' \
+'-n+[The entity type name]:NAME:_default' \
+'--name=[The entity type name]:NAME:_default' \
+'-i+[The id of the entity instance]:ID:_default' \
+'--id=[The id of the entity instance]:ID:_default' \
+'-l+[The label of the entity instance]:LABEL:_default' \
+'--label=[The label of the entity instance]:LABEL:_default' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':id -- The id of the flow instance:_default' \
+&& ret=0
+;;
+(get-by-label)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':label -- The label of the reactive instance:_default' \
+&& ret=0
+;;
+(create-from-type)
+_arguments "${_arguments_options[@]}" : \
+'-i+[The id of the flow instance and the wrapper entity instance]:ID:_default' \
+'--id=[The id of the flow instance and the wrapper entity instance]:ID:_default' \
+'*-v+[The entity instance properties]:VARIABLES:_default' \
+'*--variables=[The entity instance properties]:VARIABLES:_default' \
+'*-p+[The entity instance properties]:PROPERTIES:_default' \
+'*--properties=[The entity instance properties]:PROPERTIES:_default' \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':namespace -- The flow type namespace:_default' \
+':name -- The flow type name:_default' \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':id -- The id of the flow instance:_default' \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+'-o+[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'--output-format=[]:OUTPUT_FORMAT:(table html-table markdown-table count json json5 toml)' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__flow-instances__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-flow-instances-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-by-label)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create-from-type)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -1978,7 +2571,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-'::working_directory -- The working directory of the instance:_files' \
+'::working_directory -- The working directory of the instance. Defaults to the current directory:_files' \
 ":: :_reactive-graph__instances_commands" \
 "*::: :->instances" \
 && ret=0
@@ -1989,17 +2582,194 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-instances-command-$line[2]:"
         case $line[2] in
-            (init)
+            (config)
 _arguments "${_arguments_options[@]}" : \
-'-n+[The name of the instance]:NAME: ' \
-'--name=[The name of the instance]:NAME: ' \
-'-d+[The description of the instance]:DESCRIPTION: ' \
-'--description=[The description of the instance]:DESCRIPTION: ' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__instances__config_commands" \
+"*::: :->config" \
+&& ret=0
+
+    case $state in
+    (config)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-config-command-$line[1]:"
+        case $line[1] in
+            (graphql)
+_arguments "${_arguments_options[@]}" : \
+'--hostname=[The hostname to bind the GraphQL HTTP server]:HOSTNAME:_default' \
+'--port=[The port to bind the GraphQL HTTP server]:PORT:_default' \
+'--secure=[If true, HTTPS is enabled]:SECURE:(true false)' \
+'--ssl-certificate-path=[The location of the certificate]:SSL_CERTIFICATE_PATH:_default' \
+'--ssl-private-key-path=[The location of the private key]:SSL_PRIVATE_KEY_PATH:_default' \
+'--shutdown-timeout=[Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds]:SHUTDOWN_TIMEOUT:_default' \
+'-w+[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS:_default' \
+'--workers=[The number of workers to start. The default worker count is the number of physical CPU cores available]:WORKERS:_default' \
+'-c+[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH:_default' \
+'--default-context-path=[The default context path which redirects the root context to a web resource provider]:DEFAULT_CONTEXT_PATH:_default' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
 && ret=0
+;;
+(instance)
+_arguments "${_arguments_options[@]}" : \
+'-n+[The name of the instance]:NAME:_default' \
+'--instance-name=[The name of the instance]:NAME:_default' \
+'-d+[The description of the instance]:DESCRIPTION:_default' \
+'--instance-description=[The description of the instance]:DESCRIPTION:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+'-x+[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
+'--disable-all-plugins=[If true, all plugins will be disabled]:DISABLE_ALL_PLUGINS:(true false)' \
+'*-p+[The list of plugins to disable]:DISABLED_PLUGINS:_default' \
+'*--disabled-plugins=[The list of plugins to disable]:DISABLED_PLUGINS:_default' \
+'*-P+[The list of plugins to enable]:ENABLED_PLUGINS:_default' \
+'*--enabled-plugins=[The list of plugins to enable]:ENABLED_PLUGINS:_default' \
+'--disable-hot-deploy=[If true, hot deployment will be disabled]:DISABLE_HOT_DEPLOY:(true false)' \
+'--hot-deploy-location=[The folder which is watched for hot deployment]:HOT_DEPLOY_LOCATION:_default' \
+'--install-location=[The folder which plugins are installed permanently]:INSTALL_LOCATION:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__config__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-config-help-command-$line[1]:"
+        case $line[1] in
+            (graphql)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(generate-certificate)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+'::country_name -- Country name:_default' \
+'::organization_name -- Organization name:_default' \
+'::common_name -- Common name:_default' \
+&& ret=0
+;;
+(init)
+_arguments "${_arguments_options[@]}" : \
+'--uid=[The numeric user id of the owner user]:UID:_default' \
+'--gid=[The numeric group id of the owner group]:GID:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+'::country_name -- Country name:_default' \
+'::organization_name -- Organization name:_default' \
+'::common_name -- Common name:_default' \
+&& ret=0
+;;
+(plugins)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+":: :_reactive-graph__instances__plugins_commands" \
+"*::: :->plugins" \
+&& ret=0
+
+    case $state in
+    (plugins)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-plugins-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':plugin_name -- The name of the plugin:_default' \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+'-V[Print version]' \
+'--version[Print version]' \
+':plugin_name -- The name of the plugin:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__plugins__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-plugins-help-command-$line[1]:"
+        case $line[1] in
+            (install)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
 ;;
 (repository)
 _arguments "${_arguments_options[@]}" : \
@@ -2019,12 +2789,14 @@ _arguments "${_arguments_options[@]}" : \
         case $line[1] in
             (init)
 _arguments "${_arguments_options[@]}" : \
+'--uid=[The numeric user id of the owner user]:UID:_default' \
+'--gid=[The numeric group id of the owner group]:GID:_default' \
 '-h[Print help]' \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':local_name -- The local name of the repository:' \
-'::url -- The remote URL of the repository:' \
+':local_name -- The local name of the repository:_default' \
+'::url -- The remote URL of the repository:_default' \
 && ret=0
 ;;
 (remove)
@@ -2033,7 +2805,7 @@ _arguments "${_arguments_options[@]}" : \
 '--help[Print help]' \
 '-V[Print version]' \
 '--version[Print version]' \
-':local_name -- The local name of the repository:' \
+':local_name -- The local name of the repository:_default' \
 '::force -- If true, the default repository will be deleted:(true false)' \
 && ret=0
 ;;
@@ -2069,72 +2841,6 @@ esac
     ;;
 esac
 ;;
-(plugins)
-_arguments "${_arguments_options[@]}" : \
-'-h[Print help]' \
-'--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
-":: :_reactive-graph__instances__plugins_commands" \
-"*::: :->plugins" \
-&& ret=0
-
-    case $state in
-    (plugins)
-        words=($line[1] "${words[@]}")
-        (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-instances-plugins-command-$line[1]:"
-        case $line[1] in
-            (install)
-_arguments "${_arguments_options[@]}" : \
-'-h[Print help]' \
-'--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
-':plugin_name -- The name of the plugin:' \
-&& ret=0
-;;
-(uninstall)
-_arguments "${_arguments_options[@]}" : \
-'-h[Print help]' \
-'--help[Print help]' \
-'-V[Print version]' \
-'--version[Print version]' \
-':plugin_name -- The name of the plugin:' \
-&& ret=0
-;;
-(help)
-_arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph__instances__plugins__help_commands" \
-"*::: :->help" \
-&& ret=0
-
-    case $state in
-    (help)
-        words=($line[1] "${words[@]}")
-        (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-instances-plugins-help-command-$line[1]:"
-        case $line[1] in
-            (install)
-_arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(uninstall)
-_arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(help)
-_arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-        esac
-    ;;
-esac
-;;
-        esac
-    ;;
-esac
-;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 ":: :_reactive-graph__instances__help_commands" \
@@ -2147,33 +2853,41 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-instances-help-command-$line[1]:"
         case $line[1] in
-            (init)
+            (config)
 _arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(repository)
-_arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph__instances__help__repository_commands" \
-"*::: :->repository" \
+":: :_reactive-graph__instances__help__config_commands" \
+"*::: :->config" \
 && ret=0
 
     case $state in
-    (repository)
+    (config)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-instances-help-repository-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-help-config-command-$line[1]:"
         case $line[1] in
-            (init)
+            (graphql)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
-(remove)
+(instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(plugins)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
         esac
     ;;
 esac
+;;
+(generate-certificate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
 ;;
 (plugins)
 _arguments "${_arguments_options[@]}" : \
@@ -2199,6 +2913,30 @@ _arguments "${_arguments_options[@]}" : \
     ;;
 esac
 ;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__instances__help__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-instances-help-repository-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (help)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
@@ -2213,8 +2951,8 @@ esac
 ;;
 (update)
 _arguments "${_arguments_options[@]}" : \
-'(-n --nightly -l --latest -c --current)-v+[Updates to a specific version]:VERSION: ' \
-'(-n --nightly -l --latest -c --current)--version=[Updates to a specific version]:VERSION: ' \
+'(-n --nightly -l --latest -c --current)-v+[Updates to a specific version]:VERSION:_default' \
+'(-n --nightly -l --latest -c --current)--version=[Updates to a specific version]:VERSION:_default' \
 '(-l --latest -c --current -v --version)-n[Updates to the nightly release]' \
 '(-l --latest -c --current -v --version)--nightly[Updates to the nightly release]' \
 '(-n --nightly -c --current -v --version)-l[Updates to the latest release. Currently, the latest release is the nightly release. This will change in the future]' \
@@ -2356,6 +3094,38 @@ _arguments "${_arguments_options[@]}" : \
 (daemon)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
+;;
+(schema)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__schema_commands" \
+"*::: :->schema" \
+&& ret=0
+
+    case $state in
+    (schema)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-schema-command-$line[1]:"
+        case $line[1] in
+            (reactive-graph-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(dynamic-graph-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(reactive-graph-plugin-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(reactive-graph-runtime-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
 ;;
 (execute-command)
 _arguments "${_arguments_options[@]}" : \
@@ -2541,6 +3311,10 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
         esac
     ;;
 esac
@@ -2610,6 +3384,10 @@ _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
 (update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(json-schema)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -2685,6 +3463,82 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(flow-types)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__flow-types_commands" \
+"*::: :->flow-types" \
+&& ret=0
+
+    case $state in
+    (flow-types)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-flow-types-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-variables)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(list-extensions)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-variable)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-variable)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-extension)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(update-description)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(add-entity-instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove-entity-instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
         esac
     ;;
 esac
@@ -2753,6 +3607,10 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
         esac
     ;;
 esac
@@ -2817,6 +3675,50 @@ _arguments "${_arguments_options[@]}" : \
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(flow-instances)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__flow-instances_commands" \
+"*::: :->flow-instances" \
+&& ret=0
+
+    case $state in
+    (flow-instances)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-flow-instances-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get-by-label)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(create-from-type)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(delete)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(json-schema)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
         esac
     ;;
 esac
@@ -2833,33 +3735,41 @@ _arguments "${_arguments_options[@]}" : \
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:reactive-graph-help-instances-command-$line[1]:"
         case $line[1] in
-            (init)
+            (config)
 _arguments "${_arguments_options[@]}" : \
-&& ret=0
-;;
-(repository)
-_arguments "${_arguments_options[@]}" : \
-":: :_reactive-graph__help__instances__repository_commands" \
-"*::: :->repository" \
+":: :_reactive-graph__help__instances__config_commands" \
+"*::: :->config" \
 && ret=0
 
     case $state in
-    (repository)
+    (config)
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
-        curcontext="${curcontext%:*:*}:reactive-graph-help-instances-repository-command-$line[1]:"
+        curcontext="${curcontext%:*:*}:reactive-graph-help-instances-config-command-$line[1]:"
         case $line[1] in
-            (init)
+            (graphql)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
-(remove)
+(instance)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(plugins)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
         esac
     ;;
 esac
+;;
+(generate-certificate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
 ;;
 (plugins)
 _arguments "${_arguments_options[@]}" : \
@@ -2878,6 +3788,30 @@ _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
 (uninstall)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(repository)
+_arguments "${_arguments_options[@]}" : \
+":: :_reactive-graph__help__instances__repository_commands" \
+"*::: :->repository" \
+&& ret=0
+
+    case $state in
+    (repository)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:reactive-graph-help-instances-repository-command-$line[1]:"
+        case $line[1] in
+            (init)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(remove)
 _arguments "${_arguments_options[@]}" : \
 && ret=0
 ;;
@@ -2934,6 +3868,7 @@ _reactive-graph_commands() {
 'print-markdown-help:Prints the markdown help to stdout' \
 'info:Prints info about this binary' \
 'daemon:Runs the server as daemon' \
+'schema:Prints the GraphQL schema and exits' \
 'execute-command:Executes a command on the client' \
 'instance-info:Prints information about the instance' \
 'plugins:Manage plugins' \
@@ -2942,8 +3877,10 @@ _reactive-graph_commands() {
 'components:Manage components' \
 'entity-types:Manage entity types' \
 'relation-types:Manage entity types' \
+'flow-types:Manage entity types' \
 'entity-instances:Manage entity instances' \
 'relation-instances:Manage relation instances' \
+'flow-instances:Manage flow instances' \
 'instances:Manage instances' \
 'update:Update the Reactive Graph binary' \
 'help:Print this message or the help of the given subcommand(s)' \
@@ -2964,6 +3901,7 @@ _reactive-graph__components_commands() {
 'add-extension:Adds an extension to a component' \
 'remove-extension:Removes an extension from a component' \
 'update-description:Updates the description of a component' \
+'json-schema:Prints the JSON Schema of components' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph components commands' commands "$@"
@@ -3007,6 +3945,7 @@ _reactive-graph__components__help_commands() {
 'add-extension:Adds an extension to a component' \
 'remove-extension:Removes an extension from a component' \
 'update-description:Updates the description of a component' \
+'json-schema:Prints the JSON Schema of components' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph components help commands' commands "$@"
@@ -3041,6 +3980,11 @@ _reactive-graph__components__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph components help help commands' commands "$@"
 }
+(( $+functions[_reactive-graph__components__help__json-schema_commands] )) ||
+_reactive-graph__components__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph components help json-schema commands' commands "$@"
+}
 (( $+functions[_reactive-graph__components__help__list_commands] )) ||
 _reactive-graph__components__help__list_commands() {
     local commands; commands=()
@@ -3070,6 +4014,11 @@ _reactive-graph__components__help__remove-property_commands() {
 _reactive-graph__components__help__update-description_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph components help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph__components__json-schema_commands] )) ||
+_reactive-graph__components__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph components json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__components__list_commands] )) ||
 _reactive-graph__components__list_commands() {
@@ -3122,6 +4071,7 @@ _reactive-graph__entity-instances_commands() {
 'remove-component:Removes a component from an entity instance' \
 'create:Creates a new entity type' \
 'delete:CLI argument which identifies an entity instance by its id' \
+'json-schema:Prints the JSON Schema of entity instances' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph entity-instances commands' commands "$@"
@@ -3177,6 +4127,7 @@ _reactive-graph__entity-instances__help_commands() {
 'remove-component:Removes a component from an entity instance' \
 'create:Creates a new entity type' \
 'delete:CLI argument which identifies an entity instance by its id' \
+'json-schema:Prints the JSON Schema of entity instances' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph entity-instances help commands' commands "$@"
@@ -3221,6 +4172,11 @@ _reactive-graph__entity-instances__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph entity-instances help help commands' commands "$@"
 }
+(( $+functions[_reactive-graph__entity-instances__help__json-schema_commands] )) ||
+_reactive-graph__entity-instances__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph entity-instances help json-schema commands' commands "$@"
+}
 (( $+functions[_reactive-graph__entity-instances__help__list_commands] )) ||
 _reactive-graph__entity-instances__help__list_commands() {
     local commands; commands=()
@@ -3250,6 +4206,11 @@ _reactive-graph__entity-instances__help__remove-property_commands() {
 _reactive-graph__entity-instances__help__set-property_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph entity-instances help set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph__entity-instances__json-schema_commands] )) ||
+_reactive-graph__entity-instances__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph entity-instances json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__entity-instances__list_commands] )) ||
 _reactive-graph__entity-instances__list_commands() {
@@ -3298,6 +4259,7 @@ _reactive-graph__entity-types_commands() {
 'add-component:Adds a component to an entity type' \
 'remove-component:Removes a component from an entity type' \
 'update-description:Updates the description of an entity type' \
+'json-schema:Prints the JSON Schema of entity types' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph entity-types commands' commands "$@"
@@ -3349,6 +4311,7 @@ _reactive-graph__entity-types__help_commands() {
 'add-component:Adds a component to an entity type' \
 'remove-component:Removes a component from an entity type' \
 'update-description:Updates the description of an entity type' \
+'json-schema:Prints the JSON Schema of entity types' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph entity-types help commands' commands "$@"
@@ -3387,6 +4350,11 @@ _reactive-graph__entity-types__help__get_commands() {
 _reactive-graph__entity-types__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph entity-types help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__entity-types__help__json-schema_commands] )) ||
+_reactive-graph__entity-types__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph entity-types help json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__entity-types__help__list_commands] )) ||
 _reactive-graph__entity-types__help__list_commands() {
@@ -3427,6 +4395,11 @@ _reactive-graph__entity-types__help__remove-property_commands() {
 _reactive-graph__entity-types__help__update-description_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph entity-types help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph__entity-types__json-schema_commands] )) ||
+_reactive-graph__entity-types__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph entity-types json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__entity-types__list_commands] )) ||
 _reactive-graph__entity-types__list_commands() {
@@ -3473,6 +4446,284 @@ _reactive-graph__execute-command_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph execute-command commands' commands "$@"
 }
+(( $+functions[_reactive-graph__flow-instances_commands] )) ||
+_reactive-graph__flow-instances_commands() {
+    local commands; commands=(
+'list:List all flow instances' \
+'get:Prints a single flow instance' \
+'get-by-label:Prints a single flow instance' \
+'create-from-type:Creates a new flow from the given type' \
+'delete:CLI argument which identifies a flow instance by its id' \
+'json-schema:Prints the JSON Schema of flow instances' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph flow-instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__create-from-type_commands] )) ||
+_reactive-graph__flow-instances__create-from-type_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances create-from-type commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__delete_commands] )) ||
+_reactive-graph__flow-instances__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__get_commands] )) ||
+_reactive-graph__flow-instances__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__get-by-label_commands] )) ||
+_reactive-graph__flow-instances__get-by-label_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances get-by-label commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help_commands] )) ||
+_reactive-graph__flow-instances__help_commands() {
+    local commands; commands=(
+'list:List all flow instances' \
+'get:Prints a single flow instance' \
+'get-by-label:Prints a single flow instance' \
+'create-from-type:Creates a new flow from the given type' \
+'delete:CLI argument which identifies a flow instance by its id' \
+'json-schema:Prints the JSON Schema of flow instances' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph flow-instances help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__create-from-type_commands] )) ||
+_reactive-graph__flow-instances__help__create-from-type_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help create-from-type commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__delete_commands] )) ||
+_reactive-graph__flow-instances__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__get_commands] )) ||
+_reactive-graph__flow-instances__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__get-by-label_commands] )) ||
+_reactive-graph__flow-instances__help__get-by-label_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help get-by-label commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__help_commands] )) ||
+_reactive-graph__flow-instances__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__json-schema_commands] )) ||
+_reactive-graph__flow-instances__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__help__list_commands] )) ||
+_reactive-graph__flow-instances__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__json-schema_commands] )) ||
+_reactive-graph__flow-instances__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-instances__list_commands] )) ||
+_reactive-graph__flow-instances__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-instances list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types_commands] )) ||
+_reactive-graph__flow-types_commands() {
+    local commands; commands=(
+'list:List all flow types' \
+'get:Prints a single flow type' \
+'list-variables:List the variables of a flow type' \
+'list-extensions:List the extensions of a flow type' \
+'create:Creates a new flow type' \
+'delete:Deletes a flow type' \
+'add-variable:Adds a property to a flow type' \
+'remove-variable:Removes a property from a flow type' \
+'add-extension:Adds an extension to a flow type' \
+'remove-extension:Removes an extension from a flow type' \
+'update-description:Updates the description of a flow type' \
+'add-entity-instance:Adds a new entity instance to a flow type' \
+'remove-entity-instance:Removes an entity instance to a flow type' \
+'json-schema:Prints the JSON Schema of flow types' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph flow-types commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__add-entity-instance_commands] )) ||
+_reactive-graph__flow-types__add-entity-instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types add-entity-instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__add-extension_commands] )) ||
+_reactive-graph__flow-types__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__add-variable_commands] )) ||
+_reactive-graph__flow-types__add-variable_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types add-variable commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__create_commands] )) ||
+_reactive-graph__flow-types__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types create commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__delete_commands] )) ||
+_reactive-graph__flow-types__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__get_commands] )) ||
+_reactive-graph__flow-types__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help_commands] )) ||
+_reactive-graph__flow-types__help_commands() {
+    local commands; commands=(
+'list:List all flow types' \
+'get:Prints a single flow type' \
+'list-variables:List the variables of a flow type' \
+'list-extensions:List the extensions of a flow type' \
+'create:Creates a new flow type' \
+'delete:Deletes a flow type' \
+'add-variable:Adds a property to a flow type' \
+'remove-variable:Removes a property from a flow type' \
+'add-extension:Adds an extension to a flow type' \
+'remove-extension:Removes an extension from a flow type' \
+'update-description:Updates the description of a flow type' \
+'add-entity-instance:Adds a new entity instance to a flow type' \
+'remove-entity-instance:Removes an entity instance to a flow type' \
+'json-schema:Prints the JSON Schema of flow types' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph flow-types help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__add-entity-instance_commands] )) ||
+_reactive-graph__flow-types__help__add-entity-instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help add-entity-instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__add-extension_commands] )) ||
+_reactive-graph__flow-types__help__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__add-variable_commands] )) ||
+_reactive-graph__flow-types__help__add-variable_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help add-variable commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__create_commands] )) ||
+_reactive-graph__flow-types__help__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help create commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__delete_commands] )) ||
+_reactive-graph__flow-types__help__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__get_commands] )) ||
+_reactive-graph__flow-types__help__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__help_commands] )) ||
+_reactive-graph__flow-types__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__json-schema_commands] )) ||
+_reactive-graph__flow-types__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__list_commands] )) ||
+_reactive-graph__flow-types__help__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__list-extensions_commands] )) ||
+_reactive-graph__flow-types__help__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__list-variables_commands] )) ||
+_reactive-graph__flow-types__help__list-variables_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help list-variables commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__remove-entity-instance_commands] )) ||
+_reactive-graph__flow-types__help__remove-entity-instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help remove-entity-instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__remove-extension_commands] )) ||
+_reactive-graph__flow-types__help__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__remove-variable_commands] )) ||
+_reactive-graph__flow-types__help__remove-variable_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help remove-variable commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__help__update-description_commands] )) ||
+_reactive-graph__flow-types__help__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__json-schema_commands] )) ||
+_reactive-graph__flow-types__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__list_commands] )) ||
+_reactive-graph__flow-types__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__list-extensions_commands] )) ||
+_reactive-graph__flow-types__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__list-variables_commands] )) ||
+_reactive-graph__flow-types__list-variables_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types list-variables commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__remove-entity-instance_commands] )) ||
+_reactive-graph__flow-types__remove-entity-instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types remove-entity-instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__remove-extension_commands] )) ||
+_reactive-graph__flow-types__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__remove-variable_commands] )) ||
+_reactive-graph__flow-types__remove-variable_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types remove-variable commands' commands "$@"
+}
+(( $+functions[_reactive-graph__flow-types__update-description_commands] )) ||
+_reactive-graph__flow-types__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph flow-types update-description commands' commands "$@"
+}
 (( $+functions[_reactive-graph__help_commands] )) ||
 _reactive-graph__help_commands() {
     local commands; commands=(
@@ -3481,6 +4732,7 @@ _reactive-graph__help_commands() {
 'print-markdown-help:Prints the markdown help to stdout' \
 'info:Prints info about this binary' \
 'daemon:Runs the server as daemon' \
+'schema:Prints the GraphQL schema and exits' \
 'execute-command:Executes a command on the client' \
 'instance-info:Prints information about the instance' \
 'plugins:Manage plugins' \
@@ -3489,8 +4741,10 @@ _reactive-graph__help_commands() {
 'components:Manage components' \
 'entity-types:Manage entity types' \
 'relation-types:Manage entity types' \
+'flow-types:Manage entity types' \
 'entity-instances:Manage entity instances' \
 'relation-instances:Manage relation instances' \
+'flow-instances:Manage flow instances' \
 'instances:Manage instances' \
 'update:Update the Reactive Graph binary' \
 'help:Print this message or the help of the given subcommand(s)' \
@@ -3511,6 +4765,7 @@ _reactive-graph__help__components_commands() {
 'add-extension:Adds an extension to a component' \
 'remove-extension:Removes an extension from a component' \
 'update-description:Updates the description of a component' \
+'json-schema:Prints the JSON Schema of components' \
     )
     _describe -t commands 'reactive-graph help components commands' commands "$@"
 }
@@ -3538,6 +4793,11 @@ _reactive-graph__help__components__delete_commands() {
 _reactive-graph__help__components__get_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help components get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__components__json-schema_commands] )) ||
+_reactive-graph__help__components__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help components json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__components__list_commands] )) ||
 _reactive-graph__help__components__list_commands() {
@@ -3590,6 +4850,7 @@ _reactive-graph__help__entity-instances_commands() {
 'remove-component:Removes a component from an entity instance' \
 'create:Creates a new entity type' \
 'delete:CLI argument which identifies an entity instance by its id' \
+'json-schema:Prints the JSON Schema of entity instances' \
     )
     _describe -t commands 'reactive-graph help entity-instances commands' commands "$@"
 }
@@ -3627,6 +4888,11 @@ _reactive-graph__help__entity-instances__get-by-label_commands() {
 _reactive-graph__help__entity-instances__get-property_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help entity-instances get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__entity-instances__json-schema_commands] )) ||
+_reactive-graph__help__entity-instances__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help entity-instances json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__entity-instances__list_commands] )) ||
 _reactive-graph__help__entity-instances__list_commands() {
@@ -3675,6 +4941,7 @@ _reactive-graph__help__entity-types_commands() {
 'add-component:Adds a component to an entity type' \
 'remove-component:Removes a component from an entity type' \
 'update-description:Updates the description of an entity type' \
+'json-schema:Prints the JSON Schema of entity types' \
     )
     _describe -t commands 'reactive-graph help entity-types commands' commands "$@"
 }
@@ -3707,6 +4974,11 @@ _reactive-graph__help__entity-types__delete_commands() {
 _reactive-graph__help__entity-types__get_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help entity-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__entity-types__json-schema_commands] )) ||
+_reactive-graph__help__entity-types__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help entity-types json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__entity-types__list_commands] )) ||
 _reactive-graph__help__entity-types__list_commands() {
@@ -3753,6 +5025,138 @@ _reactive-graph__help__execute-command_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help execute-command commands' commands "$@"
 }
+(( $+functions[_reactive-graph__help__flow-instances_commands] )) ||
+_reactive-graph__help__flow-instances_commands() {
+    local commands; commands=(
+'list:List all flow instances' \
+'get:Prints a single flow instance' \
+'get-by-label:Prints a single flow instance' \
+'create-from-type:Creates a new flow from the given type' \
+'delete:CLI argument which identifies a flow instance by its id' \
+'json-schema:Prints the JSON Schema of flow instances' \
+    )
+    _describe -t commands 'reactive-graph help flow-instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-instances__create-from-type_commands] )) ||
+_reactive-graph__help__flow-instances__create-from-type_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-instances create-from-type commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-instances__delete_commands] )) ||
+_reactive-graph__help__flow-instances__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-instances delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-instances__get_commands] )) ||
+_reactive-graph__help__flow-instances__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-instances get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-instances__get-by-label_commands] )) ||
+_reactive-graph__help__flow-instances__get-by-label_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-instances get-by-label commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-instances__json-schema_commands] )) ||
+_reactive-graph__help__flow-instances__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-instances json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-instances__list_commands] )) ||
+_reactive-graph__help__flow-instances__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-instances list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types_commands] )) ||
+_reactive-graph__help__flow-types_commands() {
+    local commands; commands=(
+'list:List all flow types' \
+'get:Prints a single flow type' \
+'list-variables:List the variables of a flow type' \
+'list-extensions:List the extensions of a flow type' \
+'create:Creates a new flow type' \
+'delete:Deletes a flow type' \
+'add-variable:Adds a property to a flow type' \
+'remove-variable:Removes a property from a flow type' \
+'add-extension:Adds an extension to a flow type' \
+'remove-extension:Removes an extension from a flow type' \
+'update-description:Updates the description of a flow type' \
+'add-entity-instance:Adds a new entity instance to a flow type' \
+'remove-entity-instance:Removes an entity instance to a flow type' \
+'json-schema:Prints the JSON Schema of flow types' \
+    )
+    _describe -t commands 'reactive-graph help flow-types commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__add-entity-instance_commands] )) ||
+_reactive-graph__help__flow-types__add-entity-instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types add-entity-instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__add-extension_commands] )) ||
+_reactive-graph__help__flow-types__add-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types add-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__add-variable_commands] )) ||
+_reactive-graph__help__flow-types__add-variable_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types add-variable commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__create_commands] )) ||
+_reactive-graph__help__flow-types__create_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types create commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__delete_commands] )) ||
+_reactive-graph__help__flow-types__delete_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types delete commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__get_commands] )) ||
+_reactive-graph__help__flow-types__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__json-schema_commands] )) ||
+_reactive-graph__help__flow-types__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types json-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__list_commands] )) ||
+_reactive-graph__help__flow-types__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types list commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__list-extensions_commands] )) ||
+_reactive-graph__help__flow-types__list-extensions_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types list-extensions commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__list-variables_commands] )) ||
+_reactive-graph__help__flow-types__list-variables_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types list-variables commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__remove-entity-instance_commands] )) ||
+_reactive-graph__help__flow-types__remove-entity-instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types remove-entity-instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__remove-extension_commands] )) ||
+_reactive-graph__help__flow-types__remove-extension_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types remove-extension commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__remove-variable_commands] )) ||
+_reactive-graph__help__flow-types__remove-variable_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types remove-variable commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__flow-types__update-description_commands] )) ||
+_reactive-graph__help__flow-types__update-description_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help flow-types update-description commands' commands "$@"
+}
 (( $+functions[_reactive-graph__help__help_commands] )) ||
 _reactive-graph__help__help_commands() {
     local commands; commands=()
@@ -3778,11 +5182,42 @@ _reactive-graph__help__instance-info__get_commands() {
 (( $+functions[_reactive-graph__help__instances_commands] )) ||
 _reactive-graph__help__instances_commands() {
     local commands; commands=(
+'config:Configures a local instance,' \
+'generate-certificate:Generates certificate of a local instance' \
 'init:Initialize the filesystem structure of a new local instance' \
+'plugins:Manage the plugins of a local instance' \
 'repository:Manage the repositories of a local instance' \
-'plugins:Manage the repositories of a local instance' \
     )
     _describe -t commands 'reactive-graph help instances commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__config_commands] )) ||
+_reactive-graph__help__instances__config_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+    )
+    _describe -t commands 'reactive-graph help instances config commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__config__graphql_commands] )) ||
+_reactive-graph__help__instances__config__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances config graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__config__instance_commands] )) ||
+_reactive-graph__help__instances__config__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances config instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__config__plugins_commands] )) ||
+_reactive-graph__help__instances__config__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances config plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__instances__generate-certificate_commands] )) ||
+_reactive-graph__help__instances__generate-certificate_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help instances generate-certificate commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__instances__init_commands] )) ||
 _reactive-graph__help__instances__init_commands() {
@@ -3923,6 +5358,7 @@ _reactive-graph__help__relation-instances_commands() {
 'remove-component:Removes a component from a relation instance' \
 'create:Creates a new relation type' \
 'delete:CLI argument which identifies an relation instance by its id' \
+'json-schema:Prints the JSON Schema of relation instances' \
     )
     _describe -t commands 'reactive-graph help relation-instances commands' commands "$@"
 }
@@ -3955,6 +5391,11 @@ _reactive-graph__help__relation-instances__get_commands() {
 _reactive-graph__help__relation-instances__get-property_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help relation-instances get-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__relation-instances__json-schema_commands] )) ||
+_reactive-graph__help__relation-instances__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help relation-instances json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__relation-instances__list_commands] )) ||
 _reactive-graph__help__relation-instances__list_commands() {
@@ -4003,6 +5444,7 @@ _reactive-graph__help__relation-types_commands() {
 'add-component:Adds a component to a relation type' \
 'remove-component:Removes a component from a relation type' \
 'update-description:Updates the description of a relation type' \
+'json-schema:Prints the JSON Schema of relation types' \
     )
     _describe -t commands 'reactive-graph help relation-types commands' commands "$@"
 }
@@ -4035,6 +5477,11 @@ _reactive-graph__help__relation-types__delete_commands() {
 _reactive-graph__help__relation-types__get_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help relation-types get commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__relation-types__json-schema_commands] )) ||
+_reactive-graph__help__relation-types__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help relation-types json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__help__relation-types__list_commands] )) ||
 _reactive-graph__help__relation-types__list_commands() {
@@ -4130,6 +5577,36 @@ _reactive-graph__help__remotes__update-all_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph help remotes update-all commands' commands "$@"
 }
+(( $+functions[_reactive-graph__help__schema_commands] )) ||
+_reactive-graph__help__schema_commands() {
+    local commands; commands=(
+'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
+'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
+'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
+'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
+    )
+    _describe -t commands 'reactive-graph help schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__schema__dynamic-graph-schema_commands] )) ||
+_reactive-graph__help__schema__dynamic-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help schema dynamic-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__schema__reactive-graph-plugin-schema_commands] )) ||
+_reactive-graph__help__schema__reactive-graph-plugin-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help schema reactive-graph-plugin-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__schema__reactive-graph-runtime-schema_commands] )) ||
+_reactive-graph__help__schema__reactive-graph-runtime-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help schema reactive-graph-runtime-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__help__schema__reactive-graph-schema_commands] )) ||
+_reactive-graph__help__schema__reactive-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph help schema reactive-graph-schema commands' commands "$@"
+}
 (( $+functions[_reactive-graph__help__shell-completions_commands] )) ||
 _reactive-graph__help__shell-completions_commands() {
     local commands; commands=(
@@ -4210,22 +5687,115 @@ _reactive-graph__instance-info__help__help_commands() {
 (( $+functions[_reactive-graph__instances_commands] )) ||
 _reactive-graph__instances_commands() {
     local commands; commands=(
+'config:Configures a local instance,' \
+'generate-certificate:Generates certificate of a local instance' \
 'init:Initialize the filesystem structure of a new local instance' \
+'plugins:Manage the plugins of a local instance' \
 'repository:Manage the repositories of a local instance' \
-'plugins:Manage the repositories of a local instance' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph instances commands' commands "$@"
 }
+(( $+functions[_reactive-graph__instances__config_commands] )) ||
+_reactive-graph__instances__config_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph instances config commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__graphql_commands] )) ||
+_reactive-graph__instances__config__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__help_commands] )) ||
+_reactive-graph__instances__config__help_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph instances config help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__help__graphql_commands] )) ||
+_reactive-graph__instances__config__help__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config help graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__help__help_commands] )) ||
+_reactive-graph__instances__config__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__help__instance_commands] )) ||
+_reactive-graph__instances__config__help__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config help instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__help__plugins_commands] )) ||
+_reactive-graph__instances__config__help__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config help plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__instance_commands] )) ||
+_reactive-graph__instances__config__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__config__plugins_commands] )) ||
+_reactive-graph__instances__config__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances config plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__generate-certificate_commands] )) ||
+_reactive-graph__instances__generate-certificate_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances generate-certificate commands' commands "$@"
+}
 (( $+functions[_reactive-graph__instances__help_commands] )) ||
 _reactive-graph__instances__help_commands() {
     local commands; commands=(
+'config:Configures a local instance,' \
+'generate-certificate:Generates certificate of a local instance' \
 'init:Initialize the filesystem structure of a new local instance' \
+'plugins:Manage the plugins of a local instance' \
 'repository:Manage the repositories of a local instance' \
-'plugins:Manage the repositories of a local instance' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph instances help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__config_commands] )) ||
+_reactive-graph__instances__help__config_commands() {
+    local commands; commands=(
+'graphql:Configures the GraphQL server' \
+'instance:Configures the instance' \
+'plugins:Configures the instance' \
+    )
+    _describe -t commands 'reactive-graph instances help config commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__config__graphql_commands] )) ||
+_reactive-graph__instances__help__config__graphql_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help config graphql commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__config__instance_commands] )) ||
+_reactive-graph__instances__help__config__instance_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help config instance commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__config__plugins_commands] )) ||
+_reactive-graph__instances__help__config__plugins_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help config plugins commands' commands "$@"
+}
+(( $+functions[_reactive-graph__instances__help__generate-certificate_commands] )) ||
+_reactive-graph__instances__help__generate-certificate_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph instances help generate-certificate commands' commands "$@"
 }
 (( $+functions[_reactive-graph__instances__help__help_commands] )) ||
 _reactive-graph__instances__help__help_commands() {
@@ -4554,6 +6124,7 @@ _reactive-graph__relation-instances_commands() {
 'remove-component:Removes a component from a relation instance' \
 'create:Creates a new relation type' \
 'delete:CLI argument which identifies an relation instance by its id' \
+'json-schema:Prints the JSON Schema of relation instances' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph relation-instances commands' commands "$@"
@@ -4603,6 +6174,7 @@ _reactive-graph__relation-instances__help_commands() {
 'remove-component:Removes a component from a relation instance' \
 'create:Creates a new relation type' \
 'delete:CLI argument which identifies an relation instance by its id' \
+'json-schema:Prints the JSON Schema of relation instances' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph relation-instances help commands' commands "$@"
@@ -4642,6 +6214,11 @@ _reactive-graph__relation-instances__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph relation-instances help help commands' commands "$@"
 }
+(( $+functions[_reactive-graph__relation-instances__help__json-schema_commands] )) ||
+_reactive-graph__relation-instances__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph relation-instances help json-schema commands' commands "$@"
+}
 (( $+functions[_reactive-graph__relation-instances__help__list_commands] )) ||
 _reactive-graph__relation-instances__help__list_commands() {
     local commands; commands=()
@@ -4671,6 +6248,11 @@ _reactive-graph__relation-instances__help__remove-property_commands() {
 _reactive-graph__relation-instances__help__set-property_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph relation-instances help set-property commands' commands "$@"
+}
+(( $+functions[_reactive-graph__relation-instances__json-schema_commands] )) ||
+_reactive-graph__relation-instances__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph relation-instances json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__relation-instances__list_commands] )) ||
 _reactive-graph__relation-instances__list_commands() {
@@ -4719,6 +6301,7 @@ _reactive-graph__relation-types_commands() {
 'add-component:Adds a component to a relation type' \
 'remove-component:Removes a component from a relation type' \
 'update-description:Updates the description of a relation type' \
+'json-schema:Prints the JSON Schema of relation types' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph relation-types commands' commands "$@"
@@ -4770,6 +6353,7 @@ _reactive-graph__relation-types__help_commands() {
 'add-component:Adds a component to a relation type' \
 'remove-component:Removes a component from a relation type' \
 'update-description:Updates the description of a relation type' \
+'json-schema:Prints the JSON Schema of relation types' \
 'help:Print this message or the help of the given subcommand(s)' \
     )
     _describe -t commands 'reactive-graph relation-types help commands' commands "$@"
@@ -4808,6 +6392,11 @@ _reactive-graph__relation-types__help__get_commands() {
 _reactive-graph__relation-types__help__help_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph relation-types help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__relation-types__help__json-schema_commands] )) ||
+_reactive-graph__relation-types__help__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph relation-types help json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__relation-types__help__list_commands] )) ||
 _reactive-graph__relation-types__help__list_commands() {
@@ -4848,6 +6437,11 @@ _reactive-graph__relation-types__help__remove-property_commands() {
 _reactive-graph__relation-types__help__update-description_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph relation-types help update-description commands' commands "$@"
+}
+(( $+functions[_reactive-graph__relation-types__json-schema_commands] )) ||
+_reactive-graph__relation-types__json-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph relation-types json-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__relation-types__list_commands] )) ||
 _reactive-graph__relation-types__list_commands() {
@@ -5003,6 +6597,73 @@ _reactive-graph__remotes__update_commands() {
 _reactive-graph__remotes__update-all_commands() {
     local commands; commands=()
     _describe -t commands 'reactive-graph remotes update-all commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema_commands] )) ||
+_reactive-graph__schema_commands() {
+    local commands; commands=(
+'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
+'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
+'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
+'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__dynamic-graph-schema_commands] )) ||
+_reactive-graph__schema__dynamic-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema dynamic-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__help_commands] )) ||
+_reactive-graph__schema__help_commands() {
+    local commands; commands=(
+'reactive-graph-schema:Prints the GraphQL schema of the reactive graph' \
+'dynamic-graph-schema:Prints the GraphQL schema of the dynamic graph' \
+'reactive-graph-plugin-schema:Prints the GraphQL schema of the plugin system of the reactive graph' \
+'reactive-graph-runtime-schema:Prints the GraphQL schema of the runtime of the reactive graph' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'reactive-graph schema help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__help__dynamic-graph-schema_commands] )) ||
+_reactive-graph__schema__help__dynamic-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema help dynamic-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__help__help_commands] )) ||
+_reactive-graph__schema__help__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema help help commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__help__reactive-graph-plugin-schema_commands] )) ||
+_reactive-graph__schema__help__reactive-graph-plugin-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema help reactive-graph-plugin-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__help__reactive-graph-runtime-schema_commands] )) ||
+_reactive-graph__schema__help__reactive-graph-runtime-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema help reactive-graph-runtime-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__help__reactive-graph-schema_commands] )) ||
+_reactive-graph__schema__help__reactive-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema help reactive-graph-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__reactive-graph-plugin-schema_commands] )) ||
+_reactive-graph__schema__reactive-graph-plugin-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema reactive-graph-plugin-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__reactive-graph-runtime-schema_commands] )) ||
+_reactive-graph__schema__reactive-graph-runtime-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema reactive-graph-runtime-schema commands' commands "$@"
+}
+(( $+functions[_reactive-graph__schema__reactive-graph-schema_commands] )) ||
+_reactive-graph__schema__reactive-graph-schema_commands() {
+    local commands; commands=()
+    _describe -t commands 'reactive-graph schema reactive-graph-schema commands' commands "$@"
 }
 (( $+functions[_reactive-graph__shell-completions_commands] )) ||
 _reactive-graph__shell-completions_commands() {
