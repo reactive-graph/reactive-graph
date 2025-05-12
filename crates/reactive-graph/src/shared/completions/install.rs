@@ -9,11 +9,9 @@ pub fn install_shell_completions<G: Generator>(generator: G, shell: Shell, cmd: 
     let bin_name = cmd.get_name().to_string();
 
     let path = match shell {
-        Shell::Fish => {
-            let dirs = xdg::BaseDirectories::new().map_err(InstallShellCompletionError::BaseDirectories)?;
-            dirs.place_config_file(format!("fish/completions/{bin_name}.fish"))
-                .map_err(InstallShellCompletionError::Io)?
-        }
+        Shell::Fish => xdg::BaseDirectories::new()
+            .place_config_file(format!("fish/completions/{bin_name}.fish"))
+            .map_err(InstallShellCompletionError::Io)?,
         Shell::Bash => format!("/usr/share/bash-completion/completions/{bin_name}").into(),
         Shell::Zsh => format!("/usr/share/zsh/functions/Completion/Base/_{bin_name}").into(),
         _ => {

@@ -169,7 +169,7 @@ uuid = { version = "1.16", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.5"
 wildmatch = "2.4"
-xdg = "2.5"
+xdg = "3.0"
 
 [workspace.lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(tarpaulin_include)', 'cfg(fn_traits)', 'cfg(unboxed_closures)'] }
