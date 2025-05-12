@@ -1,6 +1,7 @@
 use crate::client::instances::entities::args::EntityInstancesArgs;
 use crate::client::instances::flows::args::FlowInstancesArgs;
 use crate::client::instances::relations::args::RelationInstancesArgs;
+use crate::client::introspection::args::IntrospectionQueryArgs;
 use crate::client::system::command::args::ExecuteCommandArgs;
 use crate::client::system::instance::args::InstanceInfoArgs;
 use crate::client::system::plugin::args::PluginsArgs;
@@ -63,4 +64,8 @@ pub(crate) enum ClientCommands {
     /// Manage flow instances.
     #[non_exhaustive]
     FlowInstances(FlowInstancesArgs),
+
+    // --- Introspection ---
+    #[non_exhaustive]
+    Introspection(IntrospectionQueryArgs),
 }

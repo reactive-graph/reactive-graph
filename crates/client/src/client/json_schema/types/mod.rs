@@ -26,7 +26,7 @@ impl JsonSchemaTypeSystem {
         let json_schema = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_json_schema_for_components())
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -39,7 +39,7 @@ impl JsonSchemaTypeSystem {
         let json_schema = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_json_schema_for_entity_types())
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -52,7 +52,7 @@ impl JsonSchemaTypeSystem {
         let json_schema = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_json_schema_for_relation_types())
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -65,7 +65,7 @@ impl JsonSchemaTypeSystem {
         let json_schema = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_json_schema_for_flow_types())
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?

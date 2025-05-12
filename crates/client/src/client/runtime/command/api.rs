@@ -20,7 +20,7 @@ impl Command {
         let value = self
             .client
             .client
-            .post(self.client.url_runtime())
+            .post(self.client.url_reactive_graph_runtime())
             .run_graphql(execute_command(name, args))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?

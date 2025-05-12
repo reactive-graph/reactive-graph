@@ -4,6 +4,7 @@ use crate::client::commands::ClientCommands;
 use crate::client::instances::entities::entity_instances;
 use crate::client::instances::flows::flow_instances;
 use crate::client::instances::relations::relation_instances;
+use crate::client::introspection::introspection_query;
 use crate::client::result::CommandResult;
 use crate::client::system::command::execute_command;
 use crate::client::system::instance::instance_info;
@@ -33,5 +34,7 @@ pub(crate) async fn handle_command(client: &Arc<ReactiveGraphClient>, command: C
         ClientCommands::EntityInstances(args) => entity_instances(client, args).await,
         ClientCommands::RelationInstances(args) => relation_instances(client, args).await,
         ClientCommands::FlowInstances(args) => flow_instances(client, args).await,
+        // Introspection
+        ClientCommands::Introspection(args) => introspection_query(client, args).await,
     }
 }

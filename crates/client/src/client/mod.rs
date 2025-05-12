@@ -4,8 +4,12 @@ use std::sync::Arc;
 
 use cynic::GraphQlError;
 use cynic::Operation;
+use cynic::QueryBuilder;
 use cynic::http::CynicReqwestError;
 use cynic::http::ReqwestExt;
+use cynic_introspection::IntrospectionQuery;
+use cynic_introspection::Schema;
+use cynic_introspection::SchemaError;
 use reqwest::Client;
 use reqwest::Error;
 use reqwest::header::InvalidHeaderValue;
@@ -49,6 +53,8 @@ pub enum ReactiveGraphClientExecutionError {
     FailedToSendRequest(CynicReqwestError),
     FailedToParseResponse(Error),
     GraphQlError(Vec<GraphQlError>),
+    IntrospectionQueryError,
+    IntrospectionQuerySchemaError(SchemaError),
 }
 
 impl From<CynicReqwestError> for ReactiveGraphClientExecutionError {
@@ -69,6 +75,12 @@ impl Display for ReactiveGraphClientExecutionError {
             ReactiveGraphClientExecutionError::GraphQlError(e) => {
                 let graphql_errors: Vec<String> = e.iter().map(|graphql_error| format!("{}", graphql_error)).collect();
                 writeln!(f, "The response returned errors:\n{}", graphql_errors.join("\n"))
+            }
+            ReactiveGraphClientExecutionError::IntrospectionQueryError => {
+                writeln!(f, "Failed to run introspection query")
+            }
+            ReactiveGraphClientExecutionError::IntrospectionQuerySchemaError(e) => {
+                writeln!(f, "Schema error on introspection query:\n{e:?}")
             }
         }
     }
@@ -110,8 +122,8 @@ impl ReactiveGraphClient {
     }
 
     /// Returns the URL of the graphql endpoint of the remote.
-    pub fn url_graphql(&self) -> String {
-        self.remote.url_graphql()
+    pub fn url_reactive_graph(&self) -> String {
+        self.remote.url_reactive_graph()
     }
 
     /// Returns the URL of the dynamic graph endpoint of the remote.
@@ -120,13 +132,43 @@ impl ReactiveGraphClient {
     }
 
     /// Returns the URL of the runtime endpoint of the remote.
-    pub fn url_runtime(&self) -> String {
-        self.remote.url_runtime()
+    pub fn url_reactive_graph_runtime(&self) -> String {
+        self.remote.url_reactive_graph_runtime()
     }
 
     /// Returns the URL of the plugins endpoint of the remote.
-    pub fn url_plugin(&self) -> String {
-        self.remote.url_plugin()
+    pub fn url_reactive_graph_plugins(&self) -> String {
+        self.remote.url_reactive_graph_plugins()
+    }
+
+    pub async fn introspection_query(&self, url: String) -> Result<Schema, ReactiveGraphClientExecutionError> {
+        self.client
+            .post(url)
+            .run_graphql(IntrospectionQuery::build(()))
+            .await
+            .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
+            .data
+            .ok_or(ReactiveGraphClientExecutionError::IntrospectionQueryError)
+            .and_then(|data| {
+                data.into_schema()
+                    .map_err(|e| ReactiveGraphClientExecutionError::IntrospectionQuerySchemaError(e))
+            })
+    }
+
+    pub async fn introspection_query_reactive_graph(&self) -> Result<Schema, ReactiveGraphClientExecutionError> {
+        self.introspection_query(self.url_reactive_graph()).await
+    }
+
+    pub async fn introspection_query_dynamic_graph(&self) -> Result<Schema, ReactiveGraphClientExecutionError> {
+        self.introspection_query(self.url_dynamic_graph()).await
+    }
+
+    pub async fn introspection_query_reactive_graph_runtime(&self) -> Result<Schema, ReactiveGraphClientExecutionError> {
+        self.introspection_query(self.url_reactive_graph_runtime()).await
+    }
+
+    pub async fn introspection_query_reactive_graph_plugins(&self) -> Result<Schema, ReactiveGraphClientExecutionError> {
+        self.introspection_query(self.url_reactive_graph_plugins()).await
     }
 
     pub fn types(self: &Arc<Self>) -> Types {
@@ -159,7 +201,7 @@ impl ReactiveGraphClient {
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
     {
-        self.execute(self.url_graphql(), operation, extractor).await
+        self.execute(self.url_reactive_graph(), operation, extractor).await
     }
 
     /// Runs a typed graphql query and extracts the response data.
@@ -185,7 +227,7 @@ impl ReactiveGraphClient {
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
     {
-        self.execute(self.url_runtime(), operation, extractor).await
+        self.execute(self.url_reactive_graph_runtime(), operation, extractor).await
     }
 
     /// Runs a typed graphql query and extracts the response data.
@@ -198,7 +240,7 @@ impl ReactiveGraphClient {
         Vars: serde::Serialize,
         ResponseData: serde::de::DeserializeOwned + 'static,
     {
-        self.execute(self.url_plugin(), operation, extractor).await
+        self.execute(self.url_reactive_graph_plugins(), operation, extractor).await
     }
 
     /// Runs a typed graphql query and extracts the response data.

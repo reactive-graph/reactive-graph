@@ -13,6 +13,7 @@ pub mod commands;
 pub mod error;
 pub mod handler;
 pub mod instances;
+pub mod introspection;
 pub mod output_format;
 pub mod repl;
 pub mod result;

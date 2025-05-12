@@ -12,6 +12,7 @@ readme = "../../README.md"
 [dependencies]
 chrono = { workspace = true }
 cynic = { workspace = true, features = ["http-reqwest"], default-features = false }
+cynic-introspection = { workspace = true }
 reqwest = { workspace = true, features = ["json", "rustls-tls"], default-features = false }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

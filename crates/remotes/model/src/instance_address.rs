@@ -82,7 +82,7 @@ impl InstanceAddress {
         format!("{}://{}:{}", self.protocol(), self.hostname, self.port)
     }
 
-    pub fn url_graphql(&self) -> String {
+    pub fn url_reactive_graph(&self) -> String {
         format!("{}{}", self.base_url(), self.endpoint_graphql)
     }
 
@@ -90,11 +90,11 @@ impl InstanceAddress {
         format!("{}{}", self.base_url(), self.endpoint_dynamic_graph)
     }
 
-    pub fn url_runtime(&self) -> String {
+    pub fn url_reactive_graph_runtime(&self) -> String {
         format!("{}{}", self.base_url(), self.endpoint_runtime)
     }
 
-    pub fn url_plugin(&self) -> String {
+    pub fn url_reactive_graph_plugins(&self) -> String {
         format!("{}{}", self.base_url(), self.endpoint_plugin)
     }
 }
