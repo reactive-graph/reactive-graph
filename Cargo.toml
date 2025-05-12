@@ -107,6 +107,7 @@ convert_case = "0.8"
 criterion = { version = "0.5", features = ["html_reports"] }
 crossbeam = "0.8"
 cynic = { version = "3.10", features = ["http-reqwest"], default-features = false }
+cynic-introspection = "3.10"
 daemonize-me = "2.0"
 darling = "0.20"
 dashmap = { version = "6.0", features = ["serde"] }
