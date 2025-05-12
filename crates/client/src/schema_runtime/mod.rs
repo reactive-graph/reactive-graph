@@ -8,5 +8,5 @@ pub mod scalar;
 
 #[allow(clippy::module_inception)]
 pub mod schema {
-    cynic::use_schema!("schema_runtime.graphql");
+    cynic::use_schema!("../../schema/graphql/reactive-graph-runtime-schema.graphql");
 }

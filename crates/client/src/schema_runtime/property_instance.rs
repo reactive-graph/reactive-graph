@@ -1,7 +1,10 @@
 use crate::schema_runtime::scalar::Json;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
-#[cynic(schema_path = "schema_runtime.graphql", schema_module = "crate::schema_runtime::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-runtime-schema.graphql",
+    schema_module = "crate::schema_runtime::schema"
+)]
 pub struct CommandResult {
     /// The name of the extension.
     pub name: String,

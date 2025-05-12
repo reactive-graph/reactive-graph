@@ -8,7 +8,10 @@ use reactive_graph_graph::NamespacedTypeGetter;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct FlowTypeId {
     pub name: String,
     pub namespace: String,
@@ -24,7 +27,10 @@ impl From<reactive_graph_graph::FlowTypeId> for FlowTypeId {
 }
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct FlowType {
     /// The namespace of the flow type.
     pub namespace: String,

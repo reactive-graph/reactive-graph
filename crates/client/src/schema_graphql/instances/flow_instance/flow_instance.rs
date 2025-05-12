@@ -8,7 +8,10 @@ use reactive_graph_graph::EntityTypeId;
 use std::ops::Deref;
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct FlowInstance {
     pub id: UUID,
     #[cynic(rename = "type")]

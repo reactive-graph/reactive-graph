@@ -8,7 +8,10 @@ use std::fmt::Formatter;
 use std::ops::Deref;
 
 #[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct ComponentTypeId {
     pub name: String,
     pub namespace: String,
@@ -90,7 +93,10 @@ impl fmt::Display for ComponentTypeIds {
 }
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct Component {
     /// The namespace of the extension.
     pub namespace: String,

@@ -7,7 +7,10 @@ use reactive_graph_graph::NamespacedTypeGetter;
 use typed_builder::TypedBuilder;
 
 #[derive(cynic::InputObject, Debug, TypedBuilder)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct EntityInstanceDefinition {
     pub namespace: String,
     pub type_name: String,

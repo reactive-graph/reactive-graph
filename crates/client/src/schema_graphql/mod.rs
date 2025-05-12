@@ -5,7 +5,7 @@ pub mod types;
 
 #[allow(clippy::module_inception)]
 pub mod schema {
-    cynic::use_schema!("schema_graphql.graphql");
+    cynic::use_schema!("../../schema/graphql/reactive-graph-schema.graphql");
 }
 
 #[allow(clippy::upper_case_acronyms)]

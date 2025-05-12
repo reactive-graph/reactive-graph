@@ -2,7 +2,10 @@ use std::fmt::Display;
 use std::fmt::Formatter;
 
 #[derive(cynic::Enum, Clone, Copy, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub enum SocketType {
     /// The property doesn't act as input or output socket.
     None,
