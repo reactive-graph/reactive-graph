@@ -5,7 +5,10 @@ use crate::schema_graphql::scalar::Json;
 use reactive_graph_graph::NamespacedTypeGetter;
 
 #[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct ExtensionTypeId {
     pub name: String,
     pub namespace: String,
@@ -21,7 +24,10 @@ impl From<reactive_graph_graph::ExtensionTypeId> for ExtensionTypeId {
 }
 
 #[derive(cynic::InputObject, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct ExtensionDefinition {
     #[cynic(rename = "type")]
     pub type_: ExtensionTypeId,
@@ -76,7 +82,10 @@ impl Default for ExtensionDefinitions {
 }
 
 #[derive(cynic::QueryFragment, Clone, Debug)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct Extension {
     /// The namespace of the extension.
     pub namespace: String,

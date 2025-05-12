@@ -6,7 +6,10 @@ use crate::SocketType;
 use typed_builder::TypedBuilder;
 
 #[derive(cynic::InputObject, Debug, TypedBuilder)]
-#[cynic(schema_path = "schema_graphql.graphql", schema_module = "crate::schema_graphql::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-schema.graphql",
+    schema_module = "crate::schema_graphql::schema"
+)]
 pub struct PropertyTypeDefinition {
     pub data_type: DataType,
     pub description: String,

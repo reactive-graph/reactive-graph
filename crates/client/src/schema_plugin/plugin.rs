@@ -1,5 +1,8 @@
 #[derive(Clone, Debug, cynic::QueryFragment)]
-#[cynic(schema_path = "schema_plugin.graphql", schema_module = "crate::schema_plugin::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-plugin-schema.graphql",
+    schema_module = "crate::schema_plugin::schema"
+)]
 pub struct Plugin {
     pub name: String,
     pub short_name: String,
@@ -13,19 +16,31 @@ pub struct Plugin {
 }
 
 #[derive(Clone, Debug, cynic::QueryFragment)]
-#[cynic(schema_path = "schema_plugin.graphql", schema_module = "crate::schema_plugin::schema", graphql_type = "Plugin")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-plugin-schema.graphql",
+    schema_module = "crate::schema_plugin::schema",
+    graphql_type = "Plugin"
+)]
 pub struct PluginDependencies {
     pub dependencies: Vec<Plugin>,
 }
 
 #[derive(Clone, Debug, cynic::QueryFragment)]
-#[cynic(schema_path = "schema_plugin.graphql", schema_module = "crate::schema_plugin::schema", graphql_type = "Plugin")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-plugin-schema.graphql",
+    schema_module = "crate::schema_plugin::schema",
+    graphql_type = "Plugin"
+)]
 pub struct PluginDependents {
     pub dependents: Vec<Plugin>,
 }
 
 #[derive(Clone, Debug, cynic::QueryFragment)]
-#[cynic(schema_path = "schema_plugin.graphql", schema_module = "crate::schema_plugin::schema", graphql_type = "Plugin")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-plugin-schema.graphql",
+    schema_module = "crate::schema_plugin::schema",
+    graphql_type = "Plugin"
+)]
 pub struct PluginUnsatisfiedDependencies {
     pub unsatisfied_dependencies: Vec<Plugin>,
 }

@@ -1,4 +1,4 @@
-#[cynic::schema_for_derives(file = r#"schema_graphql.graphql"#, module = "crate::schema_graphql::schema")]
+#[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-schema.graphql"#, module = "crate::schema_graphql::schema")]
 pub mod queries {
     use crate::client::instances::entities::variables::search::variables::SearchEntityInstancesVariables;
     use crate::client::instances::entities::variables::search::variables::SearchEntityInstancesVariablesFields;

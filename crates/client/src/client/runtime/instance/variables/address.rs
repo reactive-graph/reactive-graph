@@ -1,4 +1,4 @@
-#[cynic::schema_for_derives(file = r#"schema_runtime.graphql"#, module = "crate::schema_runtime::schema")]
+#[cynic::schema_for_derives(file = r#"../../schema/graphql/reactive-graph-runtime-schema.graphql"#, module = "crate::schema_runtime::schema")]
 pub mod variables {
     use crate::schema_runtime::InstanceAddress;
 

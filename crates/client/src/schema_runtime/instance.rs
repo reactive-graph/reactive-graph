@@ -7,7 +7,10 @@ use chrono::Utc;
 use reactive_graph_remotes_model::InstanceAddress;
 
 #[derive(Clone, Debug, cynic::QueryFragment)]
-#[cynic(schema_path = "schema_runtime.graphql", schema_module = "crate::schema_runtime::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-runtime-schema.graphql",
+    schema_module = "crate::schema_runtime::schema"
+)]
 pub struct InstanceInfo {
     pub name: String,
     pub description: String,

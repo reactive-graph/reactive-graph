@@ -1,5 +1,8 @@
 #[derive(Clone, Debug, cynic::InputObject)]
-#[cynic(schema_path = "schema_runtime.graphql", schema_module = "crate::schema_runtime::schema")]
+#[cynic(
+    schema_path = "../../schema/graphql/reactive-graph-runtime-schema.graphql",
+    schema_module = "crate::schema_runtime::schema"
+)]
 pub struct InstanceAddress {
     pub hostname: String,
     pub port: i32,
