@@ -1,9 +1,0 @@
-schema: ./schema.graphql
-extensions:
-  endpoints:
-    ReactiveGraph@http:
-      url: http://localhost:31415/graphql
-      introspect: true
-    ReactiveGraph@https:
-      url: https://localhost:31415/graphql
-      introspect: false

@@ -1,9 +1,0 @@
-schema: ./schema.graphql
-extensions:
-  endpoints:
-    DynamicGraph@http:
-      url: http://localhost:31415/dynamic_graph
-      introspect: true
-    DynamicGraph@https:
-      url: https://localhost:31415/dynamic_graph
-      introspect: false

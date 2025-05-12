@@ -1,39 +1,39 @@
 schema:
-  - ./reactive-graph-schema.graphql
-  - ./dynamic-graph-schema.graphql
-  - ./reactive-graph-runtime-schema.graphql
-  - ./reactive-graph-plugin-schema.graphql
+  - ./schema/graphql/reactive-graph-schema.graphql
+  - ./schema/graphql/dynamic-graph-schema.graphql
+  - ./schema/graphql/reactive-graph-runtime-schema.graphql
+  - ./schema/graphql/reactive-graph-plugin-schema.graphql
 extensions:
   endpoints:
     ReactiveGraph@http:
       url: http://localhost:31415/graphql
       introspect: true
-      schema: ./reactive-graph-schema.graphql
+      schema: ./schema/graphql/reactive-graph-schema.graphql
     ReactiveGraph@https:
       url: https://localhost:31415/graphql
       introspect: false
-      schema: ./reactive-graph-schema.graphql
+      schema: ./schema/graphql/reactive-graph-schema.graphql
     DynamicGraph@http:
       url: http://localhost:31415/dynamic_graph
       introspect: true
-      schema: ./dynamic-graph-schema.graphql
+      schema: ./schema/graphql/dynamic-graph-schema.graphql
     DynamicGraph@https:
       url: https://localhost:31415/dynamic_graph
       introspect: false
-      schema: ./dynamic-graph-schema.graphql
+      schema: ./schema/graphql/dynamic-graph-schema.graphql
     ReactiveGraphRuntime@http:
       url: http://localhost:31415/runtime/graphql
       introspect: true
-      schema: ./reactive-graph-runtime-schema.graphql
+      schema: ./schema/graphql/reactive-graph-runtime-schema.graphql
     ReactiveGraphRuntime@https:
       url: https://localhost:31415/runtime/graphql
       introspect: false
-      schema: ./reactive-graph-runtime-schema.graphql
+      schema: ./schema/graphql/reactive-graph-runtime-schema.graphql
     ReactiveGraphPlugins@http:
       url: http://localhost:31415/plugin/graphql
       introspect: true
-      schema: ./reactive-graph-plugin-schema.graphql
+      schema: ./schema/graphql/reactive-graph-plugin-schema.graphql
     ReactiveGraphPlugins@https:
       url: https://localhost:31415/plugin/graphql
       introspect: false
-      schema: ./reactive-graph-plugin-schema.graphql
+      schema: ./schema/graphql/reactive-graph-plugin-schema.graphql
