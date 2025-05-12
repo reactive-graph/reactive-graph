@@ -27,7 +27,7 @@ impl FlowInstances {
         let flow_instances = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(search(search_query))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -42,7 +42,7 @@ impl FlowInstances {
         let flow_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_flow_instance_by_id(id))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -57,7 +57,7 @@ impl FlowInstances {
         let flow_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_flow_instance_by_label(label))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -81,7 +81,7 @@ impl FlowInstances {
         let flow_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(create_flow_instance_from_type_mutation(ty, id, variables, properties))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -96,7 +96,7 @@ impl FlowInstances {
         let flow_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(delete_flow_instance_mutation(id))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?

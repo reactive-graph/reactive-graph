@@ -43,7 +43,7 @@ impl Components {
         let components = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_all_components_query())
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -57,7 +57,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_component_by_type_query(&ty.into()))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -71,7 +71,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(create_component_mutation(component.into()))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -85,7 +85,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(create_component_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -100,7 +100,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(delete_component_mutation(ty))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -113,7 +113,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(delete_component_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -130,7 +130,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(add_property_mutation(ty, property_type))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -144,7 +144,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(add_property_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -158,7 +158,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(remove_property_mutation(ty, property_name))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -172,7 +172,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(remove_property_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -190,7 +190,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(add_extension_mutation(ty, extension))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -204,7 +204,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(add_extension_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -218,7 +218,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(remove_extension_mutation(ty, extension_ty))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -235,7 +235,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(remove_extension_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -249,7 +249,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(update_description_mutation(ty, description))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -266,7 +266,7 @@ impl Components {
         let component = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(update_description_with_variables(variables))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?

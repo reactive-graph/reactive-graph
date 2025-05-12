@@ -114,7 +114,7 @@ impl RemotesManager for RemotesManagerImpl {
         let remote_instances = self.fetch_remotes_from_remote(address).await?;
         let mut added_instances = Vec::new();
         for remote_instance in remote_instances {
-            info!("{}", remote_instance.url_runtime());
+            info!("{}", remote_instance.url_reactive_graph_runtime());
             if let Ok(instance) = self.add(&remote_instance).await {
                 added_instances.push(instance);
             }
@@ -136,7 +136,7 @@ impl RemotesManager for RemotesManagerImpl {
 impl RemotesManagerImpl {
     async fn inspect_remote(&self, address: &InstanceAddress) -> Result<InstanceInfo, FailedToFetchInstanceInfo> {
         let query = include_str!("get_instance_info.graphql");
-        let client = Client::new(address.url_runtime());
+        let client = Client::new(address.url_reactive_graph_runtime());
         let data = client.query::<InstanceInfoQuery>(query).await;
         match data {
             Ok(Some(query)) => Ok(query.instance_info),
@@ -150,7 +150,7 @@ impl RemotesManagerImpl {
 
     async fn fetch_remotes_from_remote(&self, address: &InstanceAddress) -> Result<Vec<InstanceAddress>, FailedToFetchRemoteInstances> {
         let query = include_str!("get_all_remotes.graphql");
-        let client = Client::new(address.url_runtime());
+        let client = Client::new(address.url_reactive_graph_runtime());
         let data = client.query::<FetchRemotesFromRemoteQuery>(query).await;
         match data {
             Ok(Some(query)) => Ok(query.remotes),
@@ -192,10 +192,10 @@ impl Lifecycle for RemotesManagerImpl {
         for address in self.config_manager.get_remotes_config().into_iter() {
             match self.add(&address).await {
                 Ok(instance_info) => {
-                    info!("Added remote instance {} from {}", instance_info.name, instance_info.address().url_runtime());
+                    info!("Added remote instance {} from {}", instance_info.name, instance_info.address().url_reactive_graph_runtime());
                 }
                 Err(_) => {
-                    error!("Failed to add remote instance {}", address.url_runtime())
+                    error!("Failed to add remote instance {}", address.url_reactive_graph_runtime())
                 }
             }
         }

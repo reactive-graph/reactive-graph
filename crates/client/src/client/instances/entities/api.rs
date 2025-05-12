@@ -35,7 +35,7 @@ impl EntityInstances {
         let entity_instances = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(search(search_query))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -50,7 +50,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_entity_instance_by_id(id))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -65,7 +65,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(get_entity_instance_by_label(label))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -87,7 +87,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(set_property(id, name, value))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -107,7 +107,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(add_property(id, property_type))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -127,7 +127,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(remove_property(id, property_name))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -147,7 +147,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(add_component(id, component_ty))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -167,7 +167,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(remove_component(id, component_ty))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -189,7 +189,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(create(ty, id, description, properties))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
@@ -204,7 +204,7 @@ impl EntityInstances {
         let entity_instance = self
             .client
             .client
-            .post(self.client.url_graphql())
+            .post(self.client.url_reactive_graph())
             .run_graphql(delete_entity_instance_mutation(id))
             .await
             .map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)?
