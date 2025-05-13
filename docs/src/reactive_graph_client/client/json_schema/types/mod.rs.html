@@ -26,7 +26,7 @@
 <a href=#26 id=26 data-nosnippet>26</a>        <span class="kw">let </span>json_schema = <span class="self">self
 <a href=#27 id=27 data-nosnippet>27</a>            </span>.client
 <a href=#28 id=28 data-nosnippet>28</a>            .client
-<a href=#29 id=29 data-nosnippet>29</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#29 id=29 data-nosnippet>29</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#30 id=30 data-nosnippet>30</a>            .run_graphql(get_json_schema_for_components())
 <a href=#31 id=31 data-nosnippet>31</a>            .<span class="kw">await
 <a href=#32 id=32 data-nosnippet>32</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -39,7 +39,7 @@
 <a href=#39 id=39 data-nosnippet>39</a>        <span class="kw">let </span>json_schema = <span class="self">self
 <a href=#40 id=40 data-nosnippet>40</a>            </span>.client
 <a href=#41 id=41 data-nosnippet>41</a>            .client
-<a href=#42 id=42 data-nosnippet>42</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#42 id=42 data-nosnippet>42</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#43 id=43 data-nosnippet>43</a>            .run_graphql(get_json_schema_for_entity_types())
 <a href=#44 id=44 data-nosnippet>44</a>            .<span class="kw">await
 <a href=#45 id=45 data-nosnippet>45</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -52,7 +52,7 @@
 <a href=#52 id=52 data-nosnippet>52</a>        <span class="kw">let </span>json_schema = <span class="self">self
 <a href=#53 id=53 data-nosnippet>53</a>            </span>.client
 <a href=#54 id=54 data-nosnippet>54</a>            .client
-<a href=#55 id=55 data-nosnippet>55</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#55 id=55 data-nosnippet>55</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#56 id=56 data-nosnippet>56</a>            .run_graphql(get_json_schema_for_relation_types())
 <a href=#57 id=57 data-nosnippet>57</a>            .<span class="kw">await
 <a href=#58 id=58 data-nosnippet>58</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -65,7 +65,7 @@
 <a href=#65 id=65 data-nosnippet>65</a>        <span class="kw">let </span>json_schema = <span class="self">self
 <a href=#66 id=66 data-nosnippet>66</a>            </span>.client
 <a href=#67 id=67 data-nosnippet>67</a>            .client
-<a href=#68 id=68 data-nosnippet>68</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#68 id=68 data-nosnippet>68</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#69 id=69 data-nosnippet>69</a>            .run_graphql(get_json_schema_for_flow_types())
 <a href=#70 id=70 data-nosnippet>70</a>            .<span class="kw">await
 <a href=#71 id=71 data-nosnippet>71</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?

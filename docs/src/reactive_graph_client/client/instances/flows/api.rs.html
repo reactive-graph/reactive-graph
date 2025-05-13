@@ -27,7 +27,7 @@
 <a href=#27 id=27 data-nosnippet>27</a>        <span class="kw">let </span>flow_instances = <span class="self">self
 <a href=#28 id=28 data-nosnippet>28</a>            </span>.client
 <a href=#29 id=29 data-nosnippet>29</a>            .client
-<a href=#30 id=30 data-nosnippet>30</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#30 id=30 data-nosnippet>30</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#31 id=31 data-nosnippet>31</a>            .run_graphql(search(search_query))
 <a href=#32 id=32 data-nosnippet>32</a>            .<span class="kw">await
 <a href=#33 id=33 data-nosnippet>33</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -42,7 +42,7 @@
 <a href=#42 id=42 data-nosnippet>42</a>        <span class="kw">let </span>flow_instance = <span class="self">self
 <a href=#43 id=43 data-nosnippet>43</a>            </span>.client
 <a href=#44 id=44 data-nosnippet>44</a>            .client
-<a href=#45 id=45 data-nosnippet>45</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#45 id=45 data-nosnippet>45</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#46 id=46 data-nosnippet>46</a>            .run_graphql(get_flow_instance_by_id(id))
 <a href=#47 id=47 data-nosnippet>47</a>            .<span class="kw">await
 <a href=#48 id=48 data-nosnippet>48</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -57,7 +57,7 @@
 <a href=#57 id=57 data-nosnippet>57</a>        <span class="kw">let </span>flow_instance = <span class="self">self
 <a href=#58 id=58 data-nosnippet>58</a>            </span>.client
 <a href=#59 id=59 data-nosnippet>59</a>            .client
-<a href=#60 id=60 data-nosnippet>60</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#60 id=60 data-nosnippet>60</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#61 id=61 data-nosnippet>61</a>            .run_graphql(get_flow_instance_by_label(label))
 <a href=#62 id=62 data-nosnippet>62</a>            .<span class="kw">await
 <a href=#63 id=63 data-nosnippet>63</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -81,7 +81,7 @@
 <a href=#81 id=81 data-nosnippet>81</a>        <span class="kw">let </span>flow_instance = <span class="self">self
 <a href=#82 id=82 data-nosnippet>82</a>            </span>.client
 <a href=#83 id=83 data-nosnippet>83</a>            .client
-<a href=#84 id=84 data-nosnippet>84</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#84 id=84 data-nosnippet>84</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#85 id=85 data-nosnippet>85</a>            .run_graphql(create_flow_instance_from_type_mutation(ty, id, variables, properties))
 <a href=#86 id=86 data-nosnippet>86</a>            .<span class="kw">await
 <a href=#87 id=87 data-nosnippet>87</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -96,7 +96,7 @@
 <a href=#96 id=96 data-nosnippet>96</a>        <span class="kw">let </span>flow_instance = <span class="self">self
 <a href=#97 id=97 data-nosnippet>97</a>            </span>.client
 <a href=#98 id=98 data-nosnippet>98</a>            .client
-<a href=#99 id=99 data-nosnippet>99</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#99 id=99 data-nosnippet>99</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#100 id=100 data-nosnippet>100</a>            .run_graphql(delete_flow_instance_mutation(id))
 <a href=#101 id=101 data-nosnippet>101</a>            .<span class="kw">await
 <a href=#102 id=102 data-nosnippet>102</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?

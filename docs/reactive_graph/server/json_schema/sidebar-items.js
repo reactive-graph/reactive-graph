@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["print_json_schema_and_exit"],"mod":["args","commands"]};

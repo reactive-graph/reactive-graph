@@ -114,7 +114,7 @@
 <a href=#114 id=114 data-nosnippet>114</a>        <span class="kw">let </span>remote_instances = <span class="self">self</span>.fetch_remotes_from_remote(address).<span class="kw">await</span><span class="question-mark">?</span>;
 <a href=#115 id=115 data-nosnippet>115</a>        <span class="kw">let </span><span class="kw-2">mut </span>added_instances = Vec::new();
 <a href=#116 id=116 data-nosnippet>116</a>        <span class="kw">for </span>remote_instance <span class="kw">in </span>remote_instances {
-<a href=#117 id=117 data-nosnippet>117</a>            <span class="macro">info!</span>(<span class="string">"{}"</span>, remote_instance.url_runtime());
+<a href=#117 id=117 data-nosnippet>117</a>            <span class="macro">info!</span>(<span class="string">"{}"</span>, remote_instance.url_reactive_graph_runtime());
 <a href=#118 id=118 data-nosnippet>118</a>            <span class="kw">if let </span><span class="prelude-val">Ok</span>(instance) = <span class="self">self</span>.add(<span class="kw-2">&amp;</span>remote_instance).<span class="kw">await </span>{
 <a href=#119 id=119 data-nosnippet>119</a>                added_instances.push(instance);
 <a href=#120 id=120 data-nosnippet>120</a>            }
@@ -136,7 +136,7 @@
 <a href=#136 id=136 data-nosnippet>136</a><span class="kw">impl </span>RemotesManagerImpl {
 <a href=#137 id=137 data-nosnippet>137</a>    <span class="kw">async fn </span>inspect_remote(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;InstanceInfo, FailedToFetchInstanceInfo&gt; {
 <a href=#138 id=138 data-nosnippet>138</a>        <span class="kw">let </span>query = <span class="macro">include_str!</span>(<span class="string">"get_instance_info.graphql"</span>);
-<a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">let </span>client = Client::new(address.url_runtime());
+<a href=#139 id=139 data-nosnippet>139</a>        <span class="kw">let </span>client = Client::new(address.url_reactive_graph_runtime());
 <a href=#140 id=140 data-nosnippet>140</a>        <span class="kw">let </span>data = client.query::&lt;InstanceInfoQuery&gt;(query).<span class="kw">await</span>;
 <a href=#141 id=141 data-nosnippet>141</a>        <span class="kw">match </span>data {
 <a href=#142 id=142 data-nosnippet>142</a>            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(query)) =&gt; <span class="prelude-val">Ok</span>(query.instance_info),
@@ -150,7 +150,7 @@
 <a href=#150 id=150 data-nosnippet>150</a>
 <a href=#151 id=151 data-nosnippet>151</a>    <span class="kw">async fn </span>fetch_remotes_from_remote(<span class="kw-2">&amp;</span><span class="self">self</span>, address: <span class="kw-2">&amp;</span>InstanceAddress) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;InstanceAddress&gt;, FailedToFetchRemoteInstances&gt; {
 <a href=#152 id=152 data-nosnippet>152</a>        <span class="kw">let </span>query = <span class="macro">include_str!</span>(<span class="string">"get_all_remotes.graphql"</span>);
-<a href=#153 id=153 data-nosnippet>153</a>        <span class="kw">let </span>client = Client::new(address.url_runtime());
+<a href=#153 id=153 data-nosnippet>153</a>        <span class="kw">let </span>client = Client::new(address.url_reactive_graph_runtime());
 <a href=#154 id=154 data-nosnippet>154</a>        <span class="kw">let </span>data = client.query::&lt;FetchRemotesFromRemoteQuery&gt;(query).<span class="kw">await</span>;
 <a href=#155 id=155 data-nosnippet>155</a>        <span class="kw">match </span>data {
 <a href=#156 id=156 data-nosnippet>156</a>            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(query)) =&gt; <span class="prelude-val">Ok</span>(query.remotes),
@@ -192,10 +192,10 @@
 <a href=#192 id=192 data-nosnippet>192</a>        <span class="kw">for </span>address <span class="kw">in </span><span class="self">self</span>.config_manager.get_remotes_config().into_iter() {
 <a href=#193 id=193 data-nosnippet>193</a>            <span class="kw">match </span><span class="self">self</span>.add(<span class="kw-2">&amp;</span>address).<span class="kw">await </span>{
 <a href=#194 id=194 data-nosnippet>194</a>                <span class="prelude-val">Ok</span>(instance_info) =&gt; {
-<a href=#195 id=195 data-nosnippet>195</a>                    <span class="macro">info!</span>(<span class="string">"Added remote instance {} from {}"</span>, instance_info.name, instance_info.address().url_runtime());
+<a href=#195 id=195 data-nosnippet>195</a>                    <span class="macro">info!</span>(<span class="string">"Added remote instance {} from {}"</span>, instance_info.name, instance_info.address().url_reactive_graph_runtime());
 <a href=#196 id=196 data-nosnippet>196</a>                }
 <a href=#197 id=197 data-nosnippet>197</a>                <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-<a href=#198 id=198 data-nosnippet>198</a>                    <span class="macro">error!</span>(<span class="string">"Failed to add remote instance {}"</span>, address.url_runtime())
+<a href=#198 id=198 data-nosnippet>198</a>                    <span class="macro">error!</span>(<span class="string">"Failed to add remote instance {}"</span>, address.url_reactive_graph_runtime())
 <a href=#199 id=199 data-nosnippet>199</a>                }
 <a href=#200 id=200 data-nosnippet>200</a>            }
 <a href=#201 id=201 data-nosnippet>201</a>        }

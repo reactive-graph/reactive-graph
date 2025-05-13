@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["run","server"],"mod":["args","commands","daemon","schema"]};
+window.SIDEBAR_ITEMS = {"fn":["run","server"],"mod":["args","commands","daemon","graphql_schema","json_schema"]};

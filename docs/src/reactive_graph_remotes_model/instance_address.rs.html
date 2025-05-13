@@ -82,7 +82,7 @@
 <a href=#82 id=82 data-nosnippet>82</a>        <span class="macro">format!</span>(<span class="string">"{}://{}:{}"</span>, <span class="self">self</span>.protocol(), <span class="self">self</span>.hostname, <span class="self">self</span>.port)
 <a href=#83 id=83 data-nosnippet>83</a>    }
 <a href=#84 id=84 data-nosnippet>84</a>
-<a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">pub fn </span>url_graphql(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+<a href=#85 id=85 data-nosnippet>85</a>    <span class="kw">pub fn </span>url_reactive_graph(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
 <a href=#86 id=86 data-nosnippet>86</a>        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_graphql)
 <a href=#87 id=87 data-nosnippet>87</a>    }
 <a href=#88 id=88 data-nosnippet>88</a>
@@ -90,11 +90,11 @@
 <a href=#90 id=90 data-nosnippet>90</a>        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_dynamic_graph)
 <a href=#91 id=91 data-nosnippet>91</a>    }
 <a href=#92 id=92 data-nosnippet>92</a>
-<a href=#93 id=93 data-nosnippet>93</a>    <span class="kw">pub fn </span>url_runtime(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+<a href=#93 id=93 data-nosnippet>93</a>    <span class="kw">pub fn </span>url_reactive_graph_runtime(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
 <a href=#94 id=94 data-nosnippet>94</a>        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_runtime)
 <a href=#95 id=95 data-nosnippet>95</a>    }
 <a href=#96 id=96 data-nosnippet>96</a>
-<a href=#97 id=97 data-nosnippet>97</a>    <span class="kw">pub fn </span>url_plugin(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
+<a href=#97 id=97 data-nosnippet>97</a>    <span class="kw">pub fn </span>url_reactive_graph_plugins(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; String {
 <a href=#98 id=98 data-nosnippet>98</a>        <span class="macro">format!</span>(<span class="string">"{}{}"</span>, <span class="self">self</span>.base_url(), <span class="self">self</span>.endpoint_plugin)
 <a href=#99 id=99 data-nosnippet>99</a>    }
 <a href=#100 id=100 data-nosnippet>100</a>}

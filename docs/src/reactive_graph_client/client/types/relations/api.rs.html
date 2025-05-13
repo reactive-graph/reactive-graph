@@ -53,7 +53,7 @@
 <a href=#53 id=53 data-nosnippet>53</a>        <span class="kw">let </span>relation_types = <span class="self">self
 <a href=#54 id=54 data-nosnippet>54</a>            </span>.client
 <a href=#55 id=55 data-nosnippet>55</a>            .client
-<a href=#56 id=56 data-nosnippet>56</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#56 id=56 data-nosnippet>56</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#57 id=57 data-nosnippet>57</a>            .run_graphql(get_all_relation_types_query())
 <a href=#58 id=58 data-nosnippet>58</a>            .<span class="kw">await
 <a href=#59 id=59 data-nosnippet>59</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -68,7 +68,7 @@
 <a href=#68 id=68 data-nosnippet>68</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#69 id=69 data-nosnippet>69</a>            </span>.client
 <a href=#70 id=70 data-nosnippet>70</a>            .client
-<a href=#71 id=71 data-nosnippet>71</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#71 id=71 data-nosnippet>71</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#72 id=72 data-nosnippet>72</a>            .run_graphql(get_relation_type_by_type_query(<span class="kw-2">&amp;</span>ty))
 <a href=#73 id=73 data-nosnippet>73</a>            .<span class="kw">await
 <a href=#74 id=74 data-nosnippet>74</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -83,7 +83,7 @@
 <a href=#83 id=83 data-nosnippet>83</a>        <span class="kw">let </span>components = <span class="self">self
 <a href=#84 id=84 data-nosnippet>84</a>            </span>.client
 <a href=#85 id=85 data-nosnippet>85</a>            .client
-<a href=#86 id=86 data-nosnippet>86</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#86 id=86 data-nosnippet>86</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#87 id=87 data-nosnippet>87</a>            .run_graphql(get_relation_type_components_query(<span class="kw-2">&amp;</span>ty))
 <a href=#88 id=88 data-nosnippet>88</a>            .<span class="kw">await
 <a href=#89 id=89 data-nosnippet>89</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -103,7 +103,7 @@
 <a href=#103 id=103 data-nosnippet>103</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#104 id=104 data-nosnippet>104</a>            </span>.client
 <a href=#105 id=105 data-nosnippet>105</a>            .client
-<a href=#106 id=106 data-nosnippet>106</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#106 id=106 data-nosnippet>106</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#107 id=107 data-nosnippet>107</a>            .run_graphql(create_relation_type_mutation(relation_type))
 <a href=#108 id=108 data-nosnippet>108</a>            .<span class="kw">await
 <a href=#109 id=109 data-nosnippet>109</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -120,7 +120,7 @@
 <a href=#120 id=120 data-nosnippet>120</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#121 id=121 data-nosnippet>121</a>            </span>.client
 <a href=#122 id=122 data-nosnippet>122</a>            .client
-<a href=#123 id=123 data-nosnippet>123</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#123 id=123 data-nosnippet>123</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#124 id=124 data-nosnippet>124</a>            .run_graphql(create_relation_type_with_variables(variables))
 <a href=#125 id=125 data-nosnippet>125</a>            .<span class="kw">await
 <a href=#126 id=126 data-nosnippet>126</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -135,7 +135,7 @@
 <a href=#135 id=135 data-nosnippet>135</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#136 id=136 data-nosnippet>136</a>            </span>.client
 <a href=#137 id=137 data-nosnippet>137</a>            .client
-<a href=#138 id=138 data-nosnippet>138</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#138 id=138 data-nosnippet>138</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#139 id=139 data-nosnippet>139</a>            .run_graphql(delete_relation_type_mutation(ty))
 <a href=#140 id=140 data-nosnippet>140</a>            .<span class="kw">await
 <a href=#141 id=141 data-nosnippet>141</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -148,7 +148,7 @@
 <a href=#148 id=148 data-nosnippet>148</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#149 id=149 data-nosnippet>149</a>            </span>.client
 <a href=#150 id=150 data-nosnippet>150</a>            .client
-<a href=#151 id=151 data-nosnippet>151</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#151 id=151 data-nosnippet>151</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#152 id=152 data-nosnippet>152</a>            .run_graphql(delete_relation_type_with_variables(variables))
 <a href=#153 id=153 data-nosnippet>153</a>            .<span class="kw">await
 <a href=#154 id=154 data-nosnippet>154</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -165,7 +165,7 @@
 <a href=#165 id=165 data-nosnippet>165</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#166 id=166 data-nosnippet>166</a>            </span>.client
 <a href=#167 id=167 data-nosnippet>167</a>            .client
-<a href=#168 id=168 data-nosnippet>168</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#168 id=168 data-nosnippet>168</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#169 id=169 data-nosnippet>169</a>            .run_graphql(add_property_mutation(ty, property_type))
 <a href=#170 id=170 data-nosnippet>170</a>            .<span class="kw">await
 <a href=#171 id=171 data-nosnippet>171</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -179,7 +179,7 @@
 <a href=#179 id=179 data-nosnippet>179</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#180 id=180 data-nosnippet>180</a>            </span>.client
 <a href=#181 id=181 data-nosnippet>181</a>            .client
-<a href=#182 id=182 data-nosnippet>182</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#182 id=182 data-nosnippet>182</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#183 id=183 data-nosnippet>183</a>            .run_graphql(add_property_with_variables(variables))
 <a href=#184 id=184 data-nosnippet>184</a>            .<span class="kw">await
 <a href=#185 id=185 data-nosnippet>185</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -193,7 +193,7 @@
 <a href=#193 id=193 data-nosnippet>193</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#194 id=194 data-nosnippet>194</a>            </span>.client
 <a href=#195 id=195 data-nosnippet>195</a>            .client
-<a href=#196 id=196 data-nosnippet>196</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#196 id=196 data-nosnippet>196</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#197 id=197 data-nosnippet>197</a>            .run_graphql(remove_property_mutation(ty, property_name))
 <a href=#198 id=198 data-nosnippet>198</a>            .<span class="kw">await
 <a href=#199 id=199 data-nosnippet>199</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -210,7 +210,7 @@
 <a href=#210 id=210 data-nosnippet>210</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#211 id=211 data-nosnippet>211</a>            </span>.client
 <a href=#212 id=212 data-nosnippet>212</a>            .client
-<a href=#213 id=213 data-nosnippet>213</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#213 id=213 data-nosnippet>213</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#214 id=214 data-nosnippet>214</a>            .run_graphql(remove_property_with_variables(variables))
 <a href=#215 id=215 data-nosnippet>215</a>            .<span class="kw">await
 <a href=#216 id=216 data-nosnippet>216</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -228,7 +228,7 @@
 <a href=#228 id=228 data-nosnippet>228</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#229 id=229 data-nosnippet>229</a>            </span>.client
 <a href=#230 id=230 data-nosnippet>230</a>            .client
-<a href=#231 id=231 data-nosnippet>231</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#231 id=231 data-nosnippet>231</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#232 id=232 data-nosnippet>232</a>            .run_graphql(add_extension_mutation(ty, extension))
 <a href=#233 id=233 data-nosnippet>233</a>            .<span class="kw">await
 <a href=#234 id=234 data-nosnippet>234</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -242,7 +242,7 @@
 <a href=#242 id=242 data-nosnippet>242</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#243 id=243 data-nosnippet>243</a>            </span>.client
 <a href=#244 id=244 data-nosnippet>244</a>            .client
-<a href=#245 id=245 data-nosnippet>245</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#245 id=245 data-nosnippet>245</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#246 id=246 data-nosnippet>246</a>            .run_graphql(add_extension_with_variables(variables))
 <a href=#247 id=247 data-nosnippet>247</a>            .<span class="kw">await
 <a href=#248 id=248 data-nosnippet>248</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -256,7 +256,7 @@
 <a href=#256 id=256 data-nosnippet>256</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#257 id=257 data-nosnippet>257</a>            </span>.client
 <a href=#258 id=258 data-nosnippet>258</a>            .client
-<a href=#259 id=259 data-nosnippet>259</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#259 id=259 data-nosnippet>259</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#260 id=260 data-nosnippet>260</a>            .run_graphql(remove_extension_mutation(ty, extension_ty))
 <a href=#261 id=261 data-nosnippet>261</a>            .<span class="kw">await
 <a href=#262 id=262 data-nosnippet>262</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -273,7 +273,7 @@
 <a href=#273 id=273 data-nosnippet>273</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#274 id=274 data-nosnippet>274</a>            </span>.client
 <a href=#275 id=275 data-nosnippet>275</a>            .client
-<a href=#276 id=276 data-nosnippet>276</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#276 id=276 data-nosnippet>276</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#277 id=277 data-nosnippet>277</a>            .run_graphql(remove_extension_with_variables(variables))
 <a href=#278 id=278 data-nosnippet>278</a>            .<span class="kw">await
 <a href=#279 id=279 data-nosnippet>279</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -287,7 +287,7 @@
 <a href=#287 id=287 data-nosnippet>287</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#288 id=288 data-nosnippet>288</a>            </span>.client
 <a href=#289 id=289 data-nosnippet>289</a>            .client
-<a href=#290 id=290 data-nosnippet>290</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#290 id=290 data-nosnippet>290</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#291 id=291 data-nosnippet>291</a>            .run_graphql(add_component_mutation(ty))
 <a href=#292 id=292 data-nosnippet>292</a>            .<span class="kw">await
 <a href=#293 id=293 data-nosnippet>293</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -304,7 +304,7 @@
 <a href=#304 id=304 data-nosnippet>304</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#305 id=305 data-nosnippet>305</a>            </span>.client
 <a href=#306 id=306 data-nosnippet>306</a>            .client
-<a href=#307 id=307 data-nosnippet>307</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#307 id=307 data-nosnippet>307</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#308 id=308 data-nosnippet>308</a>            .run_graphql(add_component_with_variables(variables))
 <a href=#309 id=309 data-nosnippet>309</a>            .<span class="kw">await
 <a href=#310 id=310 data-nosnippet>310</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -318,7 +318,7 @@
 <a href=#318 id=318 data-nosnippet>318</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#319 id=319 data-nosnippet>319</a>            </span>.client
 <a href=#320 id=320 data-nosnippet>320</a>            .client
-<a href=#321 id=321 data-nosnippet>321</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#321 id=321 data-nosnippet>321</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#322 id=322 data-nosnippet>322</a>            .run_graphql(remove_component_mutation(ty))
 <a href=#323 id=323 data-nosnippet>323</a>            .<span class="kw">await
 <a href=#324 id=324 data-nosnippet>324</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -335,7 +335,7 @@
 <a href=#335 id=335 data-nosnippet>335</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#336 id=336 data-nosnippet>336</a>            </span>.client
 <a href=#337 id=337 data-nosnippet>337</a>            .client
-<a href=#338 id=338 data-nosnippet>338</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#338 id=338 data-nosnippet>338</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#339 id=339 data-nosnippet>339</a>            .run_graphql(remove_component_with_variables(variables))
 <a href=#340 id=340 data-nosnippet>340</a>            .<span class="kw">await
 <a href=#341 id=341 data-nosnippet>341</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -349,7 +349,7 @@
 <a href=#349 id=349 data-nosnippet>349</a>        <span class="kw">let </span>relation_type = <span class="self">self
 <a href=#350 id=350 data-nosnippet>350</a>            </span>.client
 <a href=#351 id=351 data-nosnippet>351</a>            .client
-<a href=#352 id=352 data-nosnippet>352</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#352 id=352 data-nosnippet>352</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#353 id=353 data-nosnippet>353</a>            .run_graphql(update_description_mutation(ty, description))
 <a href=#354 id=354 data-nosnippet>354</a>            .<span class="kw">await
 <a href=#355 id=355 data-nosnippet>355</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?
@@ -366,7 +366,7 @@
 <a href=#366 id=366 data-nosnippet>366</a>        <span class="kw">let </span>component = <span class="self">self
 <a href=#367 id=367 data-nosnippet>367</a>            </span>.client
 <a href=#368 id=368 data-nosnippet>368</a>            .client
-<a href=#369 id=369 data-nosnippet>369</a>            .post(<span class="self">self</span>.client.url_graphql())
+<a href=#369 id=369 data-nosnippet>369</a>            .post(<span class="self">self</span>.client.url_reactive_graph())
 <a href=#370 id=370 data-nosnippet>370</a>            .run_graphql(update_description_with_variables(variables))
 <a href=#371 id=371 data-nosnippet>371</a>            .<span class="kw">await
 <a href=#372 id=372 data-nosnippet>372</a>            </span>.map_err(ReactiveGraphClientExecutionError::FailedToSendRequest)<span class="question-mark">?

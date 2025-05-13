@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["introspection_query"],"mod":["args","commands"]};
