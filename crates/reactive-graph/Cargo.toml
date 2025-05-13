@@ -75,6 +75,7 @@ log4rs = { workspace = true, features = ["console_appender", "file_appender", "t
 rustls-cert-gen = { workspace = true, default-features = false, features = ["aws_lc_rs"] }
 rcgen = { workspace = true, default-features = false, features = ["aws_lc_rs", "x509-parser"] }
 rustyline = { workspace = true }
+schemars = { workspace = true }
 self_update = { workspace = true, default-features = false, features = ["archive-tar", "archive-zip", "compression-flate2", "compression-zip-deflate", "rustls"] }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }

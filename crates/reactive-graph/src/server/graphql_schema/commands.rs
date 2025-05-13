@@ -1,7 +1,7 @@
 use clap::Subcommand;
 
 #[derive(Subcommand, Debug)]
-pub enum SchemaCommands {
+pub enum GraphqlSchemaCommands {
     /// Prints the GraphQL schema of the reactive graph.
     ReactiveGraphSchema,
     /// Prints the GraphQL schema of the dynamic graph.
