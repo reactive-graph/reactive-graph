@@ -3,14 +3,16 @@ pub mod commands;
 #[cfg(target_os = "linux")]
 pub mod daemon;
 
-pub mod schema;
+pub mod graphql_schema;
+pub mod json_schema;
 
 use std::time::Duration;
 
 use reactive_graph_runtime_impl::RuntimeBuilder;
 
 use crate::server::args::logging::init_logging;
-use crate::server::schema::print_graphql_schema_and_exit;
+use crate::server::graphql_schema::print_graphql_schema_and_exit;
+use crate::server::json_schema::print_json_schema_and_exit;
 use args::ServerArguments;
 
 #[tokio::main]
@@ -22,8 +24,11 @@ pub async fn server(args: ServerArguments) {
             commands::ServerCommands::Daemon(_) => {
                 // already handled.
             }
-            commands::ServerCommands::Schema(args) => {
+            commands::ServerCommands::GraphqlSchema(args) => {
                 print_graphql_schema_and_exit(&args.commands).await;
+            }
+            commands::ServerCommands::JsonSchema(args) => {
+                print_json_schema_and_exit(&args.commands).await;
             }
             _ => {}
         }

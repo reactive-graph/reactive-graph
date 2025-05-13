@@ -66,6 +66,7 @@ pub(crate) enum ClientCommands {
     FlowInstances(FlowInstancesArgs),
 
     // --- Introspection ---
+    /// Execute GraphQL introspection queries.
     #[non_exhaustive]
     Introspection(IntrospectionQueryArgs),
 }
