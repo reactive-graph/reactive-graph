@@ -1,0 +1,21 @@
+[package]
+name = "reactive-graph-utils-schema-generator"
+description = "Reactive Graph - Utils - Schema Generator"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+readme = "../../../README.md"
+
+[dependencies]
+anyhow = { workspace = true }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+workspace_root = { workspace = true }
+
+[lib]
+crate-type = ["lib"]
+
+[lints]
+workspace = true

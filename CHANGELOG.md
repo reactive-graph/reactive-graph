@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Server CLI: Print JSON schemas
 - GraphQL: Added entity instances to flow types
 - GraphQL: Sort fields and enums
+- GraphQL: Generate static schema SDL files during build
 - Dynamic Graph: Sort components, entity types, relation types and properties
 
 ### Changed

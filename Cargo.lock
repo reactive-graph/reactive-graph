@@ -1935,6 +1935,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "get_dir"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0f4f860e1edc7cb887dc8c0089e2e437fadb6ab1b2756664e4e3d3983913b6e0"
+
+[[package]]
 name = "getrandom"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4580,6 +4586,7 @@ dependencies = [
 name = "reactive-graph-client"
 version = "0.10.0"
 dependencies = [
+ "anyhow",
  "chrono",
  "cynic",
  "cynic-introspection",
@@ -4590,6 +4597,7 @@ dependencies = [
  "reactive-graph-runtime-api",
  "reactive-graph-runtime-impl",
  "reactive-graph-table-model",
+ "reactive-graph-utils-schema-generator",
  "reqwest",
  "serde",
  "serde_json",
@@ -5574,6 +5582,15 @@ dependencies = [
  "serde",
  "thiserror 2.0.12",
  "toml",
+]
+
+[[package]]
+name = "reactive-graph-utils-schema-generator"
+version = "0.10.0"
+dependencies = [
+ "anyhow",
+ "reactive-graph-runtime-impl",
+ "workspace_root",
 ]
 
 [[package]]
@@ -7383,6 +7400,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f42320e61fe2cfd34354ecb597f86f413484a798ba44a8ca1165c58d42da6c1"
 dependencies = [
  "bitflags 2.9.0",
+]
+
+[[package]]
+name = "workspace_root"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c57756851aca92c2bb0492ac586fcd2415c02033e49f414afc07bdeb2e0fba3a"
+dependencies = [
+ "get_dir",
 ]
 
 [[package]]
