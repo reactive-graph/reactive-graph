@@ -30,6 +30,10 @@ reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl" }
 reactive-graph-table-model = { version = "0.10.0", path = "../table-model" }
 tokio = { workspace = true, features = ["macros", "time", "rt", "rt-multi-thread", "test-util"] }
 
+[build-dependencies]
+anyhow = { workspace = true }
+reactive-graph-utils-schema-generator = { version = "0.10.0", path = "../utils/schema-generator" }
+
 [features]
 default = []
 integration-tests = []
