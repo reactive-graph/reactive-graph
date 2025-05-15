@@ -50,7 +50,7 @@ use uuid::Uuid;
 /// instances.
 ///
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[schemars(deny_unknown_fields)]
+#[schemars(deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/flow-instance.schema.json"))]
 pub struct FlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///

@@ -90,7 +90,7 @@ pub struct FlowTypeCreationError;
 /// entity instance is mandatory and used for input and outputs.
 ///
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[schemars(deny_unknown_fields)]
+#[schemars(deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/flow-type.schema.json"))]
 pub struct FlowType {
     /// The type definition of the entity type.
     #[serde(flatten)]

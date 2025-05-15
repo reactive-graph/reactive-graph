@@ -43,7 +43,7 @@ use crate::UpdatePropertyError;
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[schemars(deny_unknown_fields)]
+#[schemars(deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/component.schema.json"))]
 pub struct Component {
     /// The type definition of the component.
     #[serde(flatten)]

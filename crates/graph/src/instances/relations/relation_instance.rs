@@ -61,7 +61,7 @@ use reactive_graph_utils_test::r_string;
 /// In contrast to the relation type, the relation instance stores values/
 /// documents in its properties.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[schemars(deny_unknown_fields)]
+#[schemars(deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/relation-instance.schema.json"))]
 pub struct RelationInstance {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
