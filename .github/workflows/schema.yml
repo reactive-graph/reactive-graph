@@ -1,0 +1,30 @@
+name: Schema
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "schema/**/*.graphql"
+      - "schema/**/*.schema.json"
+      - ".github/workflows/schema.yml"
+
+env:
+  CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+
+jobs:
+  docs:
+    name: Publish Schema
+    runs-on: ubuntu-22.04
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./schema
+          destination_dir: schema
+          # keep_files: true
