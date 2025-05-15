@@ -1,0 +1,237 @@
+{
+  "$defs": {
+    "ComponentOrEntityTypeId": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "component": {
+              "$ref": "#/$defs/ComponentTypeId"
+            }
+          },
+          "required": [
+            "component"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "entity_type": {
+              "$ref": "#/$defs/EntityTypeId"
+            }
+          },
+          "required": [
+            "entity_type"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ComponentTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
+    "ComponentTypeIds": {
+      "items": {
+        "$ref": "#/$defs/ComponentTypeId"
+      },
+      "type": "array"
+    },
+    "EntityTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
+    "Extension": {
+      "$ref": "#/$defs/NamespacedType",
+      "description": "Extension on a type. The extension allows to extend information",
+      "properties": {
+        "description": {
+          "default": "",
+          "description": "Textual description of the extension.",
+          "type": "string"
+        },
+        "extension": {
+          "description": "The extension as JSON representation."
+        }
+      },
+      "required": [
+        "extension"
+      ],
+      "type": "object"
+    },
+    "Extensions": {
+      "description": "Extensions",
+      "items": {
+        "$ref": "#/$defs/Extension"
+      },
+      "type": "array"
+    },
+    "NamespacedType": {
+      "description": "Defines the namespace and the name of a type.",
+      "properties": {
+        "namespace": {
+          "description": "The namespace of the type.",
+          "type": "string"
+        },
+        "type_name": {
+          "description": "The name of the type.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "namespace",
+        "type_name"
+      ],
+      "type": "object"
+    },
+    "PropertyType": {
+      "additionalProperties": false,
+      "description": "Definition of a property. The definition contains\n the name of the property, the data type and the socket\n type.",
+      "properties": {
+        "data_type": {
+          "description": "The data type of the property",
+          "oneOf": [
+            {
+              "const": "null",
+              "description": "Represents a JSON null value.",
+              "type": "string"
+            },
+            {
+              "const": "bool",
+              "description": "Represents a JSON boolean.",
+              "type": "string"
+            },
+            {
+              "const": "number",
+              "description": "Represents a JSON number, whether integer or floating point.",
+              "type": "string"
+            },
+            {
+              "const": "string",
+              "description": "Represents a JSON string.",
+              "type": "string"
+            },
+            {
+              "const": "array",
+              "description": "Represents a JSON array.",
+              "type": "string"
+            },
+            {
+              "const": "object",
+              "description": "Represents a JSON object.",
+              "type": "string"
+            },
+            {
+              "const": "any",
+              "description": "Represents any type (relations).",
+              "type": "string"
+            }
+          ]
+        },
+        "description": {
+          "default": "",
+          "description": "The description of the property.",
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/Extensions",
+          "default": [],
+          "description": "Property specific extensions"
+        },
+        "mutability": {
+          "default": "mutable",
+          "description": "Specifies if the property is mutable.",
+          "oneOf": [
+            {
+              "const": "mutable",
+              "description": "The property is mutable.",
+              "type": "string"
+            },
+            {
+              "const": "immutable",
+              "description": "The property is immutable.",
+              "type": "string"
+            }
+          ]
+        },
+        "name": {
+          "description": "The name of the property",
+          "type": "string"
+        },
+        "socket_type": {
+          "default": "none",
+          "description": "Specifies the type of socket - either input socket or output socket or none",
+          "oneOf": [
+            {
+              "const": "none",
+              "description": "The property doesn't act as input or output socket.",
+              "type": "string"
+            },
+            {
+              "const": "input",
+              "description": "The property acts as input socket and accepts incoming connections.",
+              "type": "string"
+            },
+            {
+              "const": "output",
+              "description": "The property acts as output socket and accepts outgoing connections.",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "data_type"
+      ],
+      "type": "object"
+    },
+    "PropertyTypes": {
+      "description": "Property Types",
+      "items": {
+        "$ref": "#/$defs/PropertyType"
+      },
+      "type": "array"
+    }
+  },
+  "$id": "https://schema.reactive-graph.io/relation-type.schema.json",
+  "$ref": "#/$defs/NamespacedType",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A relation type defines the type of relation instance.\n\n The relation type defines the entity types of the outbound and inbound entity instances.\n Also, the relation type defines the properties of the relation instance.",
+  "properties": {
+    "components": {
+      "$ref": "#/$defs/ComponentTypeIds",
+      "default": [],
+      "description": "The names of the components of the relation type."
+    },
+    "description": {
+      "default": "",
+      "description": "Textual description of the relation type.",
+      "type": "string"
+    },
+    "extensions": {
+      "$ref": "#/$defs/Extensions",
+      "default": [],
+      "description": "Relation type specific extensions."
+    },
+    "inbound": {
+      "$ref": "#/$defs/ComponentOrEntityTypeId",
+      "description": "The inbound component or entity type."
+    },
+    "outbound": {
+      "$ref": "#/$defs/ComponentOrEntityTypeId",
+      "description": "The outbound component or entity type."
+    },
+    "properties": {
+      "$ref": "#/$defs/PropertyTypes",
+      "default": [],
+      "description": "The properties which are defined by the relation type."
+    }
+  },
+  "required": [
+    "outbound",
+    "inbound"
+  ],
+  "title": "RelationType",
+  "type": "object",
+  "unevaluatedProperties": false
+}
