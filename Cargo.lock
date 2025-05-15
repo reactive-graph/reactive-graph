@@ -5589,7 +5589,9 @@ name = "reactive-graph-utils-schema-generator"
 version = "0.10.0"
 dependencies = [
  "anyhow",
+ "reactive-graph-graph",
  "reactive-graph-runtime-impl",
+ "schemars",
  "workspace_root",
 ]
 

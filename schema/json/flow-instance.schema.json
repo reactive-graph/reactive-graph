@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "ComponentTypeId": {
+      "$ref": "#/$defs/NamespacedType"
+    },
+    "ComponentTypeIds": {
+      "items": {
+        "$ref": "#/$defs/ComponentTypeId"
+      },
+      "type": "array"
+    },
+    "EntityInstance": {
+      "$id": "https://schema.reactive-graph.io/entity-instance.schema.json",
+      "$ref": "#/$defs/NamespacedType",
+      "description": "Entity instances represents an typed object which contains properties.\n\n The entity type defines the properties (name, data type and socket type).\n\n In contrast to the entity type the entity instance stores values in its\n properties.",
+      "properties": {
+        "components": {
+          "$ref": "#/$defs/ComponentTypeIds",
+          "default": [],
+          "description": "The components of the entity instance."
+        },
+        "description": {
+          "default": "",
+          "description": "The description of the entity instance.",
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/Extensions",
+          "default": [],
+          "description": "Entity instance specific extensions."
+        },
+        "id": {
+          "description": "The unique identifier of the entity instance.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "name": {
+          "default": "",
+          "description": "The name of the entity instance.",
+          "type": "string"
+        },
+        "properties": {
+          "$ref": "#/$defs/PropertyInstances",
+          "default": {},
+          "description": "The properties of the entity instance.\n\n Each property is represented by its name (String) and it's value. The value is\n a representation of a JSON. Therefore, the value can be boolean, number, string,\n array or an object. For more information about the data types please look at\n <https://docs.serde.rs/serde_json/value/enum.Value.html>"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object",
+      "unevaluatedProperties": false
+    },
+    "EntityInstances": {
+      "description": "Entity Instances",
+      "items": {
+        "$ref": "#/$defs/EntityInstance"
+      },
+      "type": "array"
+    },
+    "Extension": {
+      "$ref": "#/$defs/NamespacedType",
+      "description": "Extension on a type. The extension allows to extend information",
+      "properties": {
+        "description": {
+          "default": "",
+          "description": "Textual description of the extension.",
+          "type": "string"
+        },
+        "extension": {
+          "description": "The extension as JSON representation."
+        }
+      },
+      "required": [
+        "extension"
+      ],
+      "type": "object"
+    },
+    "Extensions": {
+      "description": "Extensions",
+      "items": {
+        "$ref": "#/$defs/Extension"
+      },
+      "type": "array"
+    },
+    "NamespacedType": {
+      "description": "Defines the namespace and the name of a type.",
+      "properties": {
+        "namespace": {
+          "description": "The namespace of the type.",
+          "type": "string"
+        },
+        "type_name": {
+          "description": "The name of the type.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "namespace",
+        "type_name"
+      ],
+      "type": "object"
+    },
+    "PropertyInstances": {
+      "description": "Properties",
+      "type": "object"
+    },
+    "RelationInstance": {
+      "$id": "https://schema.reactive-graph.io/relation-instance.schema.json",
+      "$ref": "#/$defs/NamespacedType",
+      "description": "Relation instances are edges from an outbound entity instance to an\n inbound entity instance.\n\n The relation instance is of a relation type. The relation type defines\n the entity types of the outbound entity instance and the inbound entity\n instance. Furthermore, the relation type defines which properties\n (name, data type, socket type) a relation instance have to have.\n\n In contrast to the relation type, the relation instance stores values/\n documents in its properties.",
+      "properties": {
+        "components": {
+          "$ref": "#/$defs/ComponentTypeIds",
+          "default": [],
+          "description": "The components of the entity instance."
+        },
+        "description": {
+          "default": "",
+          "description": "Textual description of the relation instance.",
+          "type": "string"
+        },
+        "extensions": {
+          "$ref": "#/$defs/Extensions",
+          "default": [],
+          "description": "Relation instance specific extensions."
+        },
+        "inbound_id": {
+          "description": "The id of the inbound vertex.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "instance_id": {
+          "description": "The instance id.",
+          "type": "string"
+        },
+        "name": {
+          "default": "",
+          "description": "The name of the relation instance.",
+          "type": "string"
+        },
+        "outbound_id": {
+          "description": "The id of the outbound vertex.",
+          "format": "uuid",
+          "type": "string"
+        },
+        "properties": {
+          "$ref": "#/$defs/PropertyInstances",
+          "default": {},
+          "description": "The properties of then relation instance.\n\n Each property is represented by its name (String) and it's value. The value is\n a representation of a JSON. Therefore, the value can be boolean, number, string,\n array or an object. For more information about the data types please look at\n <https://docs.serde.rs/serde_json/value/enum.Value.html>"
+        }
+      },
+      "required": [
+        "outbound_id",
+        "instance_id",
+        "inbound_id"
+      ],
+      "type": "object",
+      "unevaluatedProperties": false
+    },
+    "RelationInstances": {
+      "description": "Relation Instances",
+      "items": {
+        "$ref": "#/$defs/RelationInstance"
+      },
+      "type": "array"
+    }
+  },
+  "$id": "https://schema.reactive-graph.io/flow-instance.schema.json",
+  "$ref": "#/$defs/NamespacedType",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A flow instance is a container for entity instances and relation instances.\n\n A flow instance is strictly associated with a wrapper entity instance. The properties\n of the wrapper entity instance are the properties of the flow.\n\n Additionally, flows can be nested -  from the perspective of the outer flow\n the inner flow acts like an entity instance. The wrapper entity instance of\n the inner flow is the interface which can be accessed by the outer flow.\n\n Entity instances and relation instances can be shared with multiple flows.\n\n It's even possible to connect entity instances from different flows with relation\n instances.",
+  "properties": {
+    "description": {
+      "default": "",
+      "description": "Textual description of the flow instance.",
+      "type": "string"
+    },
+    "entity_instances": {
+      "$ref": "#/$defs/EntityInstances",
+      "default": [],
+      "description": "The entity instances which are contained in this flow instance.\n\n It can't have a default because the wrapper entity instance must be\n present in the list of entities."
+    },
+    "id": {
+      "description": "The id of the flow corresponds to the id of the wrapper entity instance\n\n This means the vector of entity instances must contain an instance with\n the id of the flow.",
+      "format": "uuid",
+      "type": "string"
+    },
+    "name": {
+      "default": "",
+      "description": "The name of the flow instance.",
+      "type": "string"
+    },
+    "relation_instances": {
+      "$ref": "#/$defs/RelationInstances",
+      "default": [],
+      "description": "The relation instances which are contained in this flow instance.\n\n By default, no relation instances are contained in this flow instance."
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "FlowInstance",
+  "type": "object",
+  "unevaluatedProperties": false
+}

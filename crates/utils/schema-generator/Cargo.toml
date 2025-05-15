@@ -11,8 +11,11 @@ readme = "../../../README.md"
 
 [dependencies]
 anyhow = { workspace = true }
-reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
+schemars = { workspace = true }
 workspace_root = { workspace = true }
+
+reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
+reactive-graph-runtime-impl = { version = "0.10.0", path = "../../runtime/impl" }
 
 [lib]
 crate-type = ["lib"]
