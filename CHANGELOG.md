@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GraphQL: Sort fields and enums
 - GraphQL: Generate static schema SDL files during build
 - Dynamic Graph: Sort components, entity types, relation types and properties
+- JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas
+- JSON Schema: Provide an $id field when serializing types and instances
 
 ### Changed
 
@@ -33,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Infrastructure
 
 - CI: Synchronize labels from config file
+- CI: Publish graphql and json schemas to https://docs.reactive-graph.io/schema/
 
 ## [0.10.0-alpha-3] - 2025-04-13
 
