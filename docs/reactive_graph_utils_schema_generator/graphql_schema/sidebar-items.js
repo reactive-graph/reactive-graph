@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["GraphQLSchemaTypes"],"fn":["generate_graphql_schema","write_graphql_schema"]};

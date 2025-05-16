@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["JsonSchemaTypes"],"fn":["generate_json_schema","write_json_schema"]};
