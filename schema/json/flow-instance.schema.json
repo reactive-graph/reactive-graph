@@ -48,6 +48,7 @@
       "required": [
         "id"
       ],
+      "title": "EntityInstance",
       "type": "object",
       "unevaluatedProperties": false
     },
@@ -155,6 +156,7 @@
         "instance_id",
         "inbound_id"
       ],
+      "title": "RelationInstance",
       "type": "object",
       "unevaluatedProperties": false
     },
