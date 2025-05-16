@@ -1,5 +1,0 @@
-query CountComponents {
-  types {
-    countComponents
-  }
-}

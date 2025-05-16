@@ -1,7 +1,0 @@
-mutation {
-  types {
-    entities {
-      delete(name: "example")
-    }
-  }
-}
