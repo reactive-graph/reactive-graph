@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Infrastructure
 
 - CI: Synchronize labels from config file
-- CI: Publish graphql and json schemas to https://docs.reactive-graph.io/schema/
+- CI: Publish graphql and json schemas to https://schema.reactive-graph.io/schema/
 
 ## [0.10.0-alpha-3] - 2025-04-13
 
