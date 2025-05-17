@@ -79,3 +79,8 @@ i:graphql:
       - any-glob-to-any-file:
           - crates/graphql/**
           - crates/runtime/graphql/**
+          - schema/graphql/**
+i:jsonschema:
+  - changed-files:
+      - any-glob-to-any-file:
+          - schema/json/**
