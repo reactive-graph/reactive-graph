@@ -3,7 +3,7 @@
 <head>
   <!-- Book generated using mdBook -->
   <meta charset="UTF-8">
-  <title>GraphQL API - Reactive Graph</title>
+  <title>Command Reference Tooling - Reactive Graph</title>
 
 
   <!-- Custom HTML head -->
@@ -321,87 +321,327 @@
 
       <div id="content" class="content">
         <main>
-          <h1 id="graphql-api"><a class="header" href="#graphql-api">GraphQL API</a></h1>
-<p>GraphQL is the most important interface for interaction with the Reactive Graph Flow.</p>
-<h2 id="what-is-graphql"><a class="header" href="#what-is-graphql">What is GraphQL?</a></h2>
-<p>GraphQL stands for "Graph Query Language". It is a query language with which data present in graphs can be efficiently
-queried and selectively modified.</p>
-<h2 id="why-do-we-use-graphql"><a class="header" href="#why-do-we-use-graphql">Why do we use GraphQL?</a></h2>
-<p>As already described, <strong>Reactive Graph</strong> uses a graph to hold the highly interconnected data of the Entity Component System.
-A query language like GraphQL allows navigating on this graph. For example, it is possible to navigate from an entity instance
-to its entity type. It is best described by the three graphics that show the possibilities available through the GraphQL
-interface.</p>
-<p>GraphQL was chosen as the query language because it is independent of a specific programming language and because it can
-be used across technologies.</p>
-<p>GraphQL also supports subscribing to change to data. This is also the case, for example, in the reactive property
-instances. It is possible to subscribe to a property of an entity instance via GraphQL and get changes to this property
-in real time.</p>
-<p>Other advantages of GraphQL are type safety and the fact that semantics can be mapped better.</p>
-<h3 id="queries"><a class="header" href="#queries">Queries</a></h3>
-<p><img src="images/queries.png" alt="GraphQL Queries" /></p>
-<div id="admonition-graphql-schema-visualization" class="admonition admonish-tip" role="note" aria-labelledby="admonition-graphql-schema-visualization-title">
-<div class="admonition-title">
-<div id="admonition-graphql-schema-visualization-title">
-<p>GraphQL Schema Visualization</p>
-</div>
-<a class="admonition-anchor-link" href="#admonition-graphql-schema-visualization"></a>
-</div>
-<div>
-<p>Explore the GraphQL queries using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>:
-<a href="https://hostname:31415/graphql-schema-visualization/graph/query">https://hostname:31415/graphql-schema-visualization/graph/query</a></p>
-</div>
-</div>
-<h3 id="mutations"><a class="header" href="#mutations">Mutations</a></h3>
-<p><img src="images/mutations.png" alt="GraphQL Mutations" /></p>
-<div id="admonition-graphql-schema-visualization-1" class="admonition admonish-tip" role="note" aria-labelledby="admonition-graphql-schema-visualization-1-title">
-<div class="admonition-title">
-<div id="admonition-graphql-schema-visualization-1-title">
-<p>GraphQL Schema Visualization</p>
-</div>
-<a class="admonition-anchor-link" href="#admonition-graphql-schema-visualization-1"></a>
-</div>
-<div>
-<p>Explore the GraphQL mutations using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>
-<a href="https://hostname:31415/graphql-schema-visualization/graph/mutation">https://hostname:31415/graphql-schema-visualization/graph/mutation</a></p>
-</div>
-</div>
-<h3 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h3>
-<p><img src="images/subscriptions.png" alt="GraphQL Subscriptions" /></p>
-<div id="admonition-graphql-schema-visualization-2" class="admonition admonish-tip" role="note" aria-labelledby="admonition-graphql-schema-visualization-2-title">
-<div class="admonition-title">
-<div id="admonition-graphql-schema-visualization-2-title">
-<p>GraphQL Schema Visualization</p>
-</div>
-<a class="admonition-anchor-link" href="#admonition-graphql-schema-visualization-2"></a>
-</div>
-<div>
-<p>Explore the GraphQL subscriptions using the <a href="./Plugins_GraphQL_Schema_Visualization.html">Plugin GraphQL Schema Visualization</a>:
-<a href="https://hostname:31415/graphql-schema-visualization/graph/subscription">https://hostname:31415/graphql-schema-visualization/graph/subscription</a></p>
-</div>
-</div>
-<h2 id="graphql-endpoint"><a class="header" href="#graphql-endpoint">GraphQL Endpoint</a></h2>
-<p>The GraphQL endpoint can be reached at <code>http://hostname/31415/graphql</code> or <code>ws://hostname/31415/graphql</code>.</p>
-<p>The GraphQL schema is well documented.</p>
-<h3 id="schema-introspection"><a class="header" href="#schema-introspection">Schema Introspection</a></h3>
-<p>The GraphQL Server allows introspection and returns a GraphQL schema including documentation. With this it is possible
-to validate queries and mutations and some tools can use the schema to provide autocompletion for creating queries.</p>
-<h2 id="graphql-tools"><a class="header" href="#graphql-tools">GraphQL Tools</a></h2>
+          <h1 id="command-line-help-for-reactive-graph-tooling"><a class="header" href="#command-line-help-for-reactive-graph-tooling">Command-Line Help for <code>reactive-graph-tooling</code></a></h1>
+<p>This document contains the help content for the <code>reactive-graph-tooling</code> command-line program.</p>
+<p><strong>Command Overview:</strong></p>
 <ul>
-<li><a href="https://altair.sirmuel.design/">Altair</a></li>
-<li><a href="https://apis.guru/graphql-voyager/">GraphQL Voyager</a></li>
-<li><a href="https://addons.mozilla.org/de/firefox/addon/graphql-developer-tools/">Firefox Addon GraphQL Developer Tools</a></li>
+<li><a href="#reactive-graph-tooling"><code>reactive-graph-tooling</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-shell-completions"><code>reactive-graph-tooling shell-completions</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-shell-completions-print"><code>reactive-graph-tooling shell-completions print</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-shell-completions-install"><code>reactive-graph-tooling shell-completions install</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-man-pages"><code>reactive-graph-tooling man-pages</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-man-pages-print"><code>reactive-graph-tooling man-pages print</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-man-pages-install"><code>reactive-graph-tooling man-pages install</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-print-markdown-help"><code>reactive-graph-tooling print-markdown-help</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-info"><code>reactive-graph-tooling info</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances"><code>reactive-graph-tooling instances</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-config"><code>reactive-graph-tooling instances config</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-config-graphql"><code>reactive-graph-tooling instances config graphql</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-config-instance"><code>reactive-graph-tooling instances config instance</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-config-plugins"><code>reactive-graph-tooling instances config plugins</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-generate-certificate"><code>reactive-graph-tooling instances generate-certificate</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-init"><code>reactive-graph-tooling instances init</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-plugins"><code>reactive-graph-tooling instances plugins</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-plugins-install"><code>reactive-graph-tooling instances plugins install</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-plugins-uninstall"><code>reactive-graph-tooling instances plugins uninstall</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-repository"><code>reactive-graph-tooling instances repository</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-repository-init"><code>reactive-graph-tooling instances repository init</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-instances-repository-remove"><code>reactive-graph-tooling instances repository remove</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-update"><code>reactive-graph-tooling update</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-update-info"><code>reactive-graph-tooling update info</code>↴</a></li>
+<li><a href="#reactive-graph-tooling-update-list"><code>reactive-graph-tooling update list</code>↴</a></li>
 </ul>
+<h2 id="reactive-graph-tooling"><a class="header" href="#reactive-graph-tooling"><code>reactive-graph-tooling</code></a></h2>
+<p>Reactive Graph is a reactive runtime based on a graph database, empowering everyone to build reliable and efficient software.</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling [COMMAND]</code></p>
+<h6 id="subcommands"><a class="header" href="#subcommands"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>shell-completions</code> — Prints or installs Shell completions</li>
+<li><code>man-pages</code> — Prints or installs man pages</li>
+<li><code>print-markdown-help</code> — Prints the markdown help to stdout</li>
+<li><code>info</code> — Prints info about this binary</li>
+<li><code>instances</code> — Manage instances</li>
+<li><code>update</code> — Update the Reactive Graph binary</li>
+</ul>
+<h2 id="reactive-graph-tooling-shell-completions"><a class="header" href="#reactive-graph-tooling-shell-completions"><code>reactive-graph-tooling shell-completions</code></a></h2>
+<p>Prints or installs Shell completions</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling shell-completions &lt;COMMAND&gt;</code></p>
+<h6 id="subcommands-1"><a class="header" href="#subcommands-1"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>print</code> — Prints the shell completions to stdout</li>
+<li><code>install</code> — Installs the shell completions</li>
+</ul>
+<h2 id="reactive-graph-tooling-shell-completions-print"><a class="header" href="#reactive-graph-tooling-shell-completions-print"><code>reactive-graph-tooling shell-completions print</code></a></h2>
+<p>Prints the shell completions to stdout</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling shell-completions print &lt;SHELL&gt;</code></p>
+<h6 id="arguments"><a class="header" href="#arguments"><strong>Arguments:</strong></a></h6>
+<ul>
+<li>
+<p><code>&lt;SHELL&gt;</code> — The shell</p>
+<p>Possible values: <code>bash</code>, <code>elvish</code>, <code>fish</code>, <code>powershell</code>, <code>zsh</code></p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-shell-completions-install"><a class="header" href="#reactive-graph-tooling-shell-completions-install"><code>reactive-graph-tooling shell-completions install</code></a></h2>
+<p>Installs the shell completions</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling shell-completions install &lt;SHELL&gt;</code></p>
+<h6 id="arguments-1"><a class="header" href="#arguments-1"><strong>Arguments:</strong></a></h6>
+<ul>
+<li>
+<p><code>&lt;SHELL&gt;</code> — The shell</p>
+<p>Possible values: <code>bash</code>, <code>elvish</code>, <code>fish</code>, <code>powershell</code>, <code>zsh</code></p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-man-pages"><a class="header" href="#reactive-graph-tooling-man-pages"><code>reactive-graph-tooling man-pages</code></a></h2>
+<p>Prints or installs man pages</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling man-pages &lt;COMMAND&gt;</code></p>
+<h6 id="subcommands-2"><a class="header" href="#subcommands-2"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>print</code> — Prints the man pages to stdout</li>
+<li><code>install</code> — Installs the man pages</li>
+</ul>
+<h2 id="reactive-graph-tooling-man-pages-print"><a class="header" href="#reactive-graph-tooling-man-pages-print"><code>reactive-graph-tooling man-pages print</code></a></h2>
+<p>Prints the man pages to stdout</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling man-pages print</code></p>
+<h2 id="reactive-graph-tooling-man-pages-install"><a class="header" href="#reactive-graph-tooling-man-pages-install"><code>reactive-graph-tooling man-pages install</code></a></h2>
+<p>Installs the man pages</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling man-pages install</code></p>
+<h2 id="reactive-graph-tooling-print-markdown-help"><a class="header" href="#reactive-graph-tooling-print-markdown-help"><code>reactive-graph-tooling print-markdown-help</code></a></h2>
+<p>Prints the markdown help to stdout</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling print-markdown-help</code></p>
+<h2 id="reactive-graph-tooling-info"><a class="header" href="#reactive-graph-tooling-info"><code>reactive-graph-tooling info</code></a></h2>
+<p>Prints info about this binary</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling info [OPTIONS]</code></p>
+<h6 id="options"><a class="header" href="#options"><strong>Options:</strong></a></h6>
+<ul>
+<li>
+<p><code>--output-format &lt;OUTPUT_FORMAT&gt;</code> — The output format</p>
+<p>Possible values: <code>table</code>, <code>html-table</code>, <code>markdown-table</code>, <code>count</code>, <code>json</code>, <code>json5</code>, <code>toml</code></p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances"><a class="header" href="#reactive-graph-tooling-instances"><code>reactive-graph-tooling instances</code></a></h2>
+<p>Manage instances</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances [WORKING_DIRECTORY] &lt;COMMAND&gt;</code></p>
+<h6 id="subcommands-3"><a class="header" href="#subcommands-3"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>config</code> — Configures a local instance,</li>
+<li><code>generate-certificate</code> — Generates certificate of a local instance</li>
+<li><code>init</code> — Initialize the filesystem structure of a new local instance</li>
+<li><code>plugins</code> — Manage the plugins of a local instance</li>
+<li><code>repository</code> — Manage the repositories of a local instance</li>
+</ul>
+<h6 id="arguments-2"><a class="header" href="#arguments-2"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;WORKING_DIRECTORY&gt;</code> — The working directory of the instance. Defaults to the current directory</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-config"><a class="header" href="#reactive-graph-tooling-instances-config"><code>reactive-graph-tooling instances config</code></a></h2>
+<p>Configures a local instance,</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances config &lt;COMMAND&gt;</code></p>
+<h6 id="subcommands-4"><a class="header" href="#subcommands-4"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>graphql</code> — Configures the GraphQL server</li>
+<li><code>instance</code> — Configures the instance</li>
+<li><code>plugins</code> — Configures the instance</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-config-graphql"><a class="header" href="#reactive-graph-tooling-instances-config-graphql"><code>reactive-graph-tooling instances config graphql</code></a></h2>
+<p>Configures the GraphQL server</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances config graphql [OPTIONS]</code></p>
+<h6 id="options-1"><a class="header" href="#options-1"><strong>Options:</strong></a></h6>
+<ul>
+<li>
+<p><code>--hostname &lt;HOSTNAME&gt;</code> — The hostname to bind the GraphQL HTTP server</p>
+</li>
+<li>
+<p><code>--port &lt;PORT&gt;</code> — The port to bind the GraphQL HTTP server</p>
+</li>
+<li>
+<p><code>--secure &lt;SECURE&gt;</code> — If true, HTTPS is enabled</p>
+<p>Possible values: <code>true</code>, <code>false</code></p>
+</li>
+<li>
+<p><code>--ssl-certificate-path &lt;SSL_CERTIFICATE_PATH&gt;</code> — The location of the certificate</p>
+</li>
+<li>
+<p><code>--ssl-private-key-path &lt;SSL_PRIVATE_KEY_PATH&gt;</code> — The location of the private key</p>
+</li>
+<li>
+<p><code>--shutdown-timeout &lt;SHUTDOWN_TIMEOUT&gt;</code> — Timeout for graceful workers shutdown in seconds. After receiving a stop signal, workers have this much time to
+finish serving requests. Workers still alive after the timeout are force dropped. By default, shutdown timeout sets to 30 seconds</p>
+</li>
+<li>
+<p><code>-w</code>, <code>--workers &lt;WORKERS&gt;</code> — The number of workers to start. The default worker count is the number of physical CPU cores available</p>
+</li>
+<li>
+<p><code>-c</code>, <code>--default-context-path &lt;DEFAULT_CONTEXT_PATH&gt;</code> — The default context path which redirects the root context to a web resource provider</p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-config-instance"><a class="header" href="#reactive-graph-tooling-instances-config-instance"><code>reactive-graph-tooling instances config instance</code></a></h2>
+<p>Configures the instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances config instance [OPTIONS]</code></p>
+<h6 id="options-2"><a class="header" href="#options-2"><strong>Options:</strong></a></h6>
+<ul>
+<li><code>-n</code>, <code>--instance-name &lt;NAME&gt;</code> — The name of the instance</li>
+<li><code>-d</code>, <code>--instance-description &lt;DESCRIPTION&gt;</code> — The description of the instance</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-config-plugins"><a class="header" href="#reactive-graph-tooling-instances-config-plugins"><code>reactive-graph-tooling instances config plugins</code></a></h2>
+<p>Configures the instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances config plugins [OPTIONS]</code></p>
+<h6 id="options-3"><a class="header" href="#options-3"><strong>Options:</strong></a></h6>
+<ul>
+<li>
+<p><code>-x</code>, <code>--disable-all-plugins &lt;DISABLE_ALL_PLUGINS&gt;</code> — If true, all plugins will be disabled</p>
+<p>Possible values: <code>true</code>, <code>false</code></p>
+</li>
+<li>
+<p><code>-p</code>, <code>--disabled-plugins &lt;DISABLED_PLUGINS&gt;</code> — The list of plugins to disable</p>
+</li>
+<li>
+<p><code>-P</code>, <code>--enabled-plugins &lt;ENABLED_PLUGINS&gt;</code> — The list of plugins to enable</p>
+</li>
+<li>
+<p><code>--disable-hot-deploy &lt;DISABLE_HOT_DEPLOY&gt;</code> — If true, hot deployment will be disabled</p>
+<p>Possible values: <code>true</code>, <code>false</code></p>
+</li>
+<li>
+<p><code>--hot-deploy-location &lt;HOT_DEPLOY_LOCATION&gt;</code> — The folder which is watched for hot deployment</p>
+</li>
+<li>
+<p><code>--install-location &lt;INSTALL_LOCATION&gt;</code> — The folder which plugins are installed permanently</p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-generate-certificate"><a class="header" href="#reactive-graph-tooling-instances-generate-certificate"><code>reactive-graph-tooling instances generate-certificate</code></a></h2>
+<p>Generates certificate of a local instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances generate-certificate [COUNTRY_NAME] [ORGANIZATION_NAME] [COMMON_NAME]</code></p>
+<h6 id="arguments-3"><a class="header" href="#arguments-3"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;COUNTRY_NAME&gt;</code> — Country name</li>
+<li><code>&lt;ORGANIZATION_NAME&gt;</code> — Organization name</li>
+<li><code>&lt;COMMON_NAME&gt;</code> — Common name</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-init"><a class="header" href="#reactive-graph-tooling-instances-init"><code>reactive-graph-tooling instances init</code></a></h2>
+<p>Initialize the filesystem structure of a new local instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances init [OPTIONS] [COUNTRY_NAME] [ORGANIZATION_NAME] [COMMON_NAME]</code></p>
+<h6 id="arguments-4"><a class="header" href="#arguments-4"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;COUNTRY_NAME&gt;</code> — Country name</li>
+<li><code>&lt;ORGANIZATION_NAME&gt;</code> — Organization name</li>
+<li><code>&lt;COMMON_NAME&gt;</code> — Common name</li>
+</ul>
+<h6 id="options-4"><a class="header" href="#options-4"><strong>Options:</strong></a></h6>
+<ul>
+<li><code>--uid &lt;UID&gt;</code> — The numeric user id of the owner user</li>
+<li><code>--gid &lt;GID&gt;</code> — The numeric group id of the owner group</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-plugins"><a class="header" href="#reactive-graph-tooling-instances-plugins"><code>reactive-graph-tooling instances plugins</code></a></h2>
+<p>Manage the plugins of a local instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances plugins &lt;COMMAND&gt;</code></p>
+<h6 id="subcommands-5"><a class="header" href="#subcommands-5"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>install</code> — Installs a plugin</li>
+<li><code>uninstall</code> — Uninstalls a plugin</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-plugins-install"><a class="header" href="#reactive-graph-tooling-instances-plugins-install"><code>reactive-graph-tooling instances plugins install</code></a></h2>
+<p>Installs a plugin</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances plugins install &lt;PLUGIN_NAME&gt;</code></p>
+<h6 id="arguments-5"><a class="header" href="#arguments-5"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;PLUGIN_NAME&gt;</code> — The name of the plugin</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-plugins-uninstall"><a class="header" href="#reactive-graph-tooling-instances-plugins-uninstall"><code>reactive-graph-tooling instances plugins uninstall</code></a></h2>
+<p>Uninstalls a plugin</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances plugins uninstall &lt;PLUGIN_NAME&gt;</code></p>
+<h6 id="arguments-6"><a class="header" href="#arguments-6"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;PLUGIN_NAME&gt;</code> — The name of the plugin</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-repository"><a class="header" href="#reactive-graph-tooling-instances-repository"><code>reactive-graph-tooling instances repository</code></a></h2>
+<p>Manage the repositories of a local instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances repository &lt;COMMAND&gt;</code></p>
+<h6 id="subcommands-6"><a class="header" href="#subcommands-6"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>init</code> — Initializes a new local repository in a local instance</li>
+<li><code>remove</code> — Removes a local repository</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-repository-init"><a class="header" href="#reactive-graph-tooling-instances-repository-init"><code>reactive-graph-tooling instances repository init</code></a></h2>
+<p>Initializes a new local repository in a local instance</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances repository init [OPTIONS] &lt;LOCAL_NAME&gt; [URL]</code></p>
+<h6 id="arguments-7"><a class="header" href="#arguments-7"><strong>Arguments:</strong></a></h6>
+<ul>
+<li><code>&lt;LOCAL_NAME&gt;</code> — The local name of the repository</li>
+<li><code>&lt;URL&gt;</code> — The remote URL of the repository</li>
+</ul>
+<h6 id="options-5"><a class="header" href="#options-5"><strong>Options:</strong></a></h6>
+<ul>
+<li><code>--uid &lt;UID&gt;</code> — The numeric user id of the owner user</li>
+<li><code>--gid &lt;GID&gt;</code> — The numeric group id of the owner group</li>
+</ul>
+<h2 id="reactive-graph-tooling-instances-repository-remove"><a class="header" href="#reactive-graph-tooling-instances-repository-remove"><code>reactive-graph-tooling instances repository remove</code></a></h2>
+<p>Removes a local repository</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling instances repository remove &lt;LOCAL_NAME&gt; [FORCE]</code></p>
+<h6 id="arguments-8"><a class="header" href="#arguments-8"><strong>Arguments:</strong></a></h6>
+<ul>
+<li>
+<p><code>&lt;LOCAL_NAME&gt;</code> — The local name of the repository</p>
+</li>
+<li>
+<p><code>&lt;FORCE&gt;</code> — If true, the default repository will be deleted</p>
+<p>Possible values: <code>true</code>, <code>false</code></p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-update"><a class="header" href="#reactive-graph-tooling-update"><code>reactive-graph-tooling update</code></a></h2>
+<p>Update the Reactive Graph binary</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling update [OPTIONS] [COMMAND]</code></p>
+<h6 id="subcommands-7"><a class="header" href="#subcommands-7"><strong>Subcommands:</strong></a></h6>
+<ul>
+<li><code>info</code> — Shows information about the selected release</li>
+<li><code>list</code> — Lists the releases</li>
+</ul>
+<h6 id="options-6"><a class="header" href="#options-6"><strong>Options:</strong></a></h6>
+<ul>
+<li><code>-n</code>, <code>--nightly</code> — Updates to the nightly release</li>
+<li><code>-l</code>, <code>--latest</code> — Updates to the latest release. Currently, the latest release is the nightly release. This will change in the future</li>
+<li><code>-c</code>, <code>--current</code> — Updates to the current release</li>
+<li><code>-v</code>, <code>--version &lt;VERSION&gt;</code> — Updates to a specific version</li>
+<li><code>--hide-download-progress</code> — Hides the download progress</li>
+<li><code>--hide-output</code> — Hides the output</li>
+<li><code>-q</code>, <code>--quiet</code> — Hides the download progress and the output</li>
+<li><code>-y</code>, <code>--no-confirm</code> — Don't ask</li>
+</ul>
+<h2 id="reactive-graph-tooling-update-info"><a class="header" href="#reactive-graph-tooling-update-info"><code>reactive-graph-tooling update info</code></a></h2>
+<p>Shows information about the selected release</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling update info [OPTIONS]</code></p>
+<h6 id="options-7"><a class="header" href="#options-7"><strong>Options:</strong></a></h6>
+<ul>
+<li>
+<p><code>--output-format &lt;OUTPUT_FORMAT&gt;</code> — The output format</p>
+<p>Possible values: <code>table</code>, <code>html-table</code>, <code>markdown-table</code>, <code>count</code>, <code>json</code>, <code>json5</code>, <code>toml</code></p>
+</li>
+</ul>
+<h2 id="reactive-graph-tooling-update-list"><a class="header" href="#reactive-graph-tooling-update-list"><code>reactive-graph-tooling update list</code></a></h2>
+<p>Lists the releases</p>
+<p><strong>Usage:</strong> <code>reactive-graph-tooling update list [OPTIONS]</code></p>
+<h6 id="options-8"><a class="header" href="#options-8"><strong>Options:</strong></a></h6>
+<ul>
+<li>
+<p><code>--output-format &lt;OUTPUT_FORMAT&gt;</code> — The output format</p>
+<p>Possible values: <code>table</code>, <code>html-table</code>, <code>markdown-table</code>, <code>count</code>, <code>json</code>, <code>json5</code>, <code>toml</code></p>
+</li>
+</ul>
+<hr/>
+<p><small><i>
+This document was generated automatically by
+<a href="https://crates.io/crates/clap-markdown"><code>clap-markdown</code></a>.
+</i></small></p>
 
         </main>
 
         <nav class="nav-wrapper" aria-label="Page navigation">
           <!-- Mobile navigation buttons -->
-            <a rel="prev" href="Model_Flow_Instances.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter"
+            <a rel="prev" href="CLI_Reference_Server.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter"
                aria-keyshortcuts="Left">
               <i class="ti ti-arrow-left"></i>
             </a>
 
-            <a rel="next prefetch" href="GraphQL_API_Components.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter"
+            <a rel="next prefetch" href="Development.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter"
                aria-keyshortcuts="Right">
               <i class="ti ti-arrow-right"></i>
             </a>
@@ -412,12 +652,12 @@ to validate queries and mutations and some tools can use the schema to provide a
     </div>
 
     <nav class="nav-wide-wrapper" aria-label="Page navigation">
-        <a rel="prev" href="Model_Flow_Instances.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter"
+        <a rel="prev" href="CLI_Reference_Server.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter"
            aria-keyshortcuts="Left">
           <i class="ti ti-arrow-left"></i>
         </a>
 
-        <a rel="next prefetch" href="GraphQL_API_Components.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter"
+        <a rel="next prefetch" href="Development.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter"
            aria-keyshortcuts="Right">
           <i class="ti ti-arrow-right"></i>
         </a>
