@@ -1,0 +1,29 @@
+name: Command Reference
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "docs/cli/reference/**"
+      - ".github/workflows/command-reference.yml"
+
+env:
+  CARGO_TERM_COLOR: always
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
+
+jobs:
+  docs:
+    name: Publish Command Reference
+    runs-on: ubuntu-22.04
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - name: Deploy command reference to docs.reactive-graph.io
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/cli/reference
+          destination_dir: cli/reference
+          # keep_files: true
