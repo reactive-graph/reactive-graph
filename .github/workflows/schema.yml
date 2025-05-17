@@ -8,11 +8,6 @@ on:
       - "schema/**/*.schema.json"
       - ".github/workflows/schema.yml"
 
-env:
-  CARGO_TERM_COLOR: always
-  SCCACHE_GHA_ENABLED: "true"
-  RUSTC_WRAPPER: "sccache"
-
 jobs:
   docs:
     name: Publish Schema
