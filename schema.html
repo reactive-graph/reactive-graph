@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="https://design.reactive-graph.io/favicon/favicon.svg">
+  <link rel="icon" type="image/png" href="https://design.reactive-graph.io/favicon/favicon.png">
+  <link rel="stylesheet" href="https://design.reactive-graph.io/css/reactive-graph.css">
+  <title>docs.reactive-graph.io</title>
+</head>
+
+<body>
+<div class="container">
+  <section class="" style="padding-block: var(--size-4);">
+    <nav class="horizontal-menu square">
+      <ul>
+        <li><a href="https://github.com/reactive-graph/">github</a></li>
+        <li><a href="https://www.reactive-graph.io/">www</a></li>
+        <li style="background-color: var(--brand);"><a href="https://docs.reactive-graph.io/">docs</a></li>
+        <li><a href="https://std.reactive-graph.io/">std</a></li>
+        <li><a href="https://net.reactive-graph.io/">net</a></li>
+        <li><a href="https://sys.reactive-graph.io/">sys</a></li>
+        <li><a href="https://tooling.reactive-graph.io/">tooling</a></li>
+        <li><a href="https://design.reactive-graph.io/">design</a></li>
+      </ul>
+    </nav>
+  </section>
+  <hr class="surface-3">
+  <section>
+    <article class="rg-article">
+      <h1 class="rg-article-title">
+        <img src="https://design.reactive-graph.io/logo/circle/reactive-graph-circle-mexican-pink.svg" alt="Reactive Graph Logo" style="width: 75px; height: 75px; float: left;"/>
+        <span style="padding-left: 25px;">
+          docs.reactive-graph.io
+        </span>
+      </h1>
+      <hr class="surface-3">
+      <p class="rg-article-intro">
+        On this page you will find the documentation for Reactive Graph. Reactive Graph is a reactive runtime based on a graph database, empowering everyone to
+        build reliable and efficient software.
+      </p>
+      <hr class="surface-3">
+      <h3>
+        <a href="/schema" style="color: var(--malachite); font-size: var(--size-6)">&lt; GraphQL Schemas &gt;</a>
+      </h3>
+      <table style="margin-block: var(--size-4);">
+        <thead>
+        <tr>
+          <th>Schema</th>
+          <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><a href="/schema/graphql/reactive-graph-schema.graphql">Reactive Graph</a></td>
+          <td>Query and mutate the type system and the instance system.</td>
+        </tr>
+        <tr>
+          <td><a href="/schema/graphql/reactive-graph-plugin-schema.graphql">Plugin System</a></td>
+          <td>Start, stop and monitor plugins.</td>
+        </tr>
+        <tr>
+          <td><a href="/schema/graphql/reactive-graph-runtime-schema.graphql">Runtime</a></td>
+          <td>Manage the runtime, commands and remote instances.</td>
+        </tr>
+        </tbody>
+      </table>
+      <hr class="surface-3">
+      <h3>
+        <a href="/schema" style="color: var(--malachite); font-size: var(--size-6)">&lt; JSON Schemas &gt;</a>
+      </h3>
+      <table style="margin-block: var(--size-4);">
+        <thead>
+        <tr>
+          <th>Schema</th>
+          <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><a href="/schema/json/component.schema.json">Component</a></td>
+          <td>
+            The JSON schema of a component.
+            A component defines a set of properties to be applied to entity types and relation types.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/schema/json/entity-type.schema.json">Entity Type</a></td>
+          <td>
+            The JSON schema of an entity type.
+            Entity types defines the type of entity instance.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/schema/json/relation-type.schema.json">Relation Type</a></td>
+          <td>
+            The JSON schema of a relation type.
+            A relation type defines the type of relation instance.
+            The relation type defines the entity types of the outbound and inbound entity instances.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/schema/json/flow-type.schema.json">Flow Type</a></td>
+          <td>
+            The JSON schema of a flow type.
+            Flow types defines the type of flow instance like a template for flow instances.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/schema/json/entity-instance.schema.json">Entity Instance</a></td>
+          <td>
+            The JSON schema of an entity instance.
+            Entity instances represents a typed object which contains properties.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/schema/json/relation-instance.schema.json">Relation Instance</a></td>
+          <td>
+            The JSON schema of a relation instance.
+            Relation instances are edges from an outbound entity instance to an inbound entity instance.
+          </td>
+        </tr>
+        <tr>
+          <td><a href="/schema/json/flow-instance.schema.json">Flow Instance</a></td>
+          <td>
+            The JSON schema of a flow instances.
+            A flow instance is a container for entity instances and relation instances.
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+</div>
+</body>
+
+</html>
