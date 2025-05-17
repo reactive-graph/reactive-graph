@@ -49,7 +49,7 @@ jobs:
       # Note: closed-source code needs to provide a token,
       # but open source code does not.
       - name: Upload to codecov.io
-        uses: codecov/codecov-action@v5.4.2
+        uses: codecov/codecov-action@v5.4.3
         with:
           verbose: true
           fail_ci_if_error: true
