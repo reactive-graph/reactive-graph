@@ -20,11 +20,20 @@ jobs:
     steps:
       - name: VCS Checkout
         uses: actions/checkout@v4
-      - name: Deploy
+      - name: Deploy schemas to docs.reactive-graph.io
         uses: peaceiris/actions-gh-pages@v4
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./schema
+          destination_dir: schema
+          # keep_files: true
+      - name: Deploy schemas to schema.reactive-graph.io
+        uses: peaceiris/actions-gh-pages@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          deploy_key: ${{ secrets.DEPLOY_SCHEMA_KEY }}
+          external_repository: reactive-graph/schema
           publish_dir: ./schema
           destination_dir: schema
           # keep_files: true
