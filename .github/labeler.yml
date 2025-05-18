@@ -9,13 +9,15 @@ p:documentation:
           - book/**
           - docs/**
           - .github/workflows/docs.yml
+          - .github/workflows/command-reference.yml
+          - .github/workflows/schema.yml
 p:continuous-integration:
   - changed-files:
       - any-glob-to-any-file:
           - .github/workflows/**
           - .github/dependabot.yml
           - .github/labeler.yml
-          - .github/pr-labeler.yml
+          - .github/labels.yml
 p:distribution:
   - changed-files:
       - any-glob-to-any-file:
