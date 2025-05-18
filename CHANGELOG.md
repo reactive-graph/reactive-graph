@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dynamic Graph: Sort components, entity types, relation types and properties
 - JSON Schema: Include an unique JSON schema identifier ($id) in the JSON schemas
 - JSON Schema: Provide an $id field when serializing types and instances
+- JSON Schema: Type definitions and instance definitions can refer to the JSON schema using an $id field
 
 ### Changed
 
