@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["_count_entity_instances_arguments","_count_flow_instances_arguments","_count_relation_instances_arguments","_entities_arguments","_flows_arguments","_relations_arguments"],"struct":["__typename","countEntityInstances","countFlowInstances","countRelationInstances","entities","flows","relations"]};

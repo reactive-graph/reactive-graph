@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RelationType","RelationTypes"]};
+window.SIDEBAR_ITEMS = {"constant":["JSON_SCHEMA_ID_RELATION_TYPE"],"struct":["RelationType","RelationTypes"]};

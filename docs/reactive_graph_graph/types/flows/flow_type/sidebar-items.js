@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["FlowType","FlowTypeCreationError","FlowTypes"]};
+window.SIDEBAR_ITEMS = {"constant":["JSON_SCHEMA_ID_FLOW_TYPE"],"struct":["FlowType","FlowTypeCreationError","FlowTypes"]};

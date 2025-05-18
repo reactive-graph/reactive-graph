@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["EntityType","EntityTypes"]};
+window.SIDEBAR_ITEMS = {"constant":["JSON_SCHEMA_ID_ENTITY_TYPE"],"struct":["EntityType","EntityTypes"]};

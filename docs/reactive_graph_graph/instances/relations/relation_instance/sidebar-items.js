@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RelationInstance","RelationInstances"]};
+window.SIDEBAR_ITEMS = {"constant":["JSON_SCHEMA_ID_RELATION_INSTANCE"],"struct":["RelationInstance","RelationInstances"]};
