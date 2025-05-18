@@ -124,4 +124,10 @@
   description: "Resolution: This will not be worked on."
   color: "D8A094"
 
+# Action (prefix: a; color: #F95D05)
+
+- name: "a:approve-graphql-schema-breaking-change"
+  description: "Action: Approve a breaking change in the GraphQL schema."
+  color: "F95D05"
+
 #  aliases: ['first', 'second', 'third']
