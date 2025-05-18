@@ -35,6 +35,8 @@ use std::ops::DerefMut;
 use typed_builder::TypedBuilder;
 use uuid::Uuid;
 
+pub const JSON_SCHEMA_ID_FLOW_INSTANCE: &str = "https://schema.reactive-graph.io/schema/json/flow-instance.schema.json";
+
 /// A flow instance is a container for entity instances and relation instances.
 ///
 /// A flow instance is strictly associated with a wrapper entity instance. The properties
@@ -51,7 +53,12 @@ use uuid::Uuid;
 ///
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
 #[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/flow-instance.schema.json")]
-#[schemars(title = "FlowInstance", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/flow-instance.schema.json"))]
+#[schemars(
+    title = "FlowInstance",
+    deny_unknown_fields,
+    extend("$id" = JSON_SCHEMA_ID_FLOW_INSTANCE),
+    transform = add_json_schema_id_property
+)]
 pub struct FlowInstance {
     /// The id of the flow corresponds to the id of the wrapper entity instance
     ///
@@ -356,4 +363,8 @@ impl DefaultTest for FlowInstances {
         }
         flow_instances
     }
+}
+
+fn add_json_schema_id_property(schema: &mut Schema) {
+    crate::json_schema::add_json_schema_id_property(schema, JSON_SCHEMA_ID_FLOW_INSTANCE);
 }

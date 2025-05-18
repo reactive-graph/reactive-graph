@@ -40,11 +40,18 @@ use crate::TypeIdType;
 use crate::UpdateExtensionError;
 use crate::UpdatePropertyError;
 
+pub const JSON_SCHEMA_ID_COMPONENT: &str = "https://schema.reactive-graph.io/schema/json/component.schema.json";
+
 /// A component defines a set of properties to be applied to entity
 /// types and relation types.
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, JsonSchema, TypedBuilder)]
 #[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/component.schema.json")]
-#[schemars(title = "Component", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/component.schema.json"))]
+#[schemars(
+    title = "Component",
+    deny_unknown_fields,
+    extend("$id" = JSON_SCHEMA_ID_COMPONENT),
+    transform = add_json_schema_id_property
+)]
 pub struct Component {
     /// The type definition of the component.
     #[serde(flatten)]
@@ -447,6 +454,10 @@ impl DefaultTest for Components {
         }
         components
     }
+}
+
+fn add_json_schema_id_property(schema: &mut Schema) {
+    crate::json_schema::add_json_schema_id_property(schema, JSON_SCHEMA_ID_COMPONENT);
 }
 
 #[cfg(test)]

@@ -146,11 +146,16 @@
       "type": "object"
     }
   },
-  "$id": "https://schema.reactive-graph.io/component.schema.json",
+  "$id": "https://schema.reactive-graph.io/schema/json/component.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "A component defines a set of properties to be applied to entity\n types and relation types.",
   "properties": {
+    "$id": {
+      "default": "https://schema.reactive-graph.io/schema/json/component.schema.json",
+      "description": "The schema identifier",
+      "type": "string"
+    },
     "description": {
       "default": "",
       "description": "Textual description of the component.",
