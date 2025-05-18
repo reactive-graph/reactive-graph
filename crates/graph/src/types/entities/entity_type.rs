@@ -61,8 +61,8 @@ use reactive_graph_utils_test::r_string;
 
 /// Entity types defines the type of entity instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[serde(tag = "$id", rename = "https://schema.reactive-graph.io/entity-type.schema.json")]
-#[schemars(title = "EntityType", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/entity-type.schema.json"))]
+#[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/entity-type.schema.json")]
+#[schemars(title = "EntityType", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/entity-type.schema.json"))]
 pub struct EntityType {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
