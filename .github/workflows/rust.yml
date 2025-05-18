@@ -53,9 +53,31 @@ jobs:
         with:
           changelog: CHANGELOG.md
     if: github.actor != 'dependabot[bot]'
+  check_breaking_graphql_schema:
+    name: Check Breaking GraphQL Schema
+    runs-on: ubuntu-22.04
+    steps:
+      - name: VCS Checkout
+        uses: actions/checkout@v4
+      - uses: graphql-hive/graphql-inspector@master
+        with:
+          name: 'Check GraphQL Schema: Reactive Graph'
+          schema: main:schema/graphql/reactive-graph-schema.graphql
+          approve-label: a:approve-graphql-schema-breaking-change
+      - uses: graphql-hive/graphql-inspector@master
+        with:
+          name: 'Check GraphQL Schema: Reactive Graph Plugin'
+          schema: main:schema/graphql/reactive-graph-plugin-schema.graphql
+          approve-label: a:approve-graphql-schema-breaking-change
+      - uses: graphql-hive/graphql-inspector@master
+        with:
+          name: 'Check GraphQL Schema: Reactive Graph Runtime'
+          schema: main:schema/graphql/reactive-graph-runtime-schema.graphql
+          approve-label: a:approve-graphql-schema-breaking-change
+    if: github.actor != 'dependabot[bot]'
   lint:
     name: Lint
-    needs: [ formatting, check_changelog ]
+    needs: [ formatting, check_changelog, check_breaking_graphql_schema ]
     if: always() && (!contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled'))
     runs-on: ubuntu-22.04
     strategy:
