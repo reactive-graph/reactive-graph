@@ -59,8 +59,8 @@ use reactive_graph_utils_test::r_string;
 /// In contrast to the entity type the entity instance stores values in its
 /// properties.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
-#[serde(tag = "$id", rename = "https://schema.reactive-graph.io/entity-instance.schema.json")]
-#[schemars(title = "EntityInstance", rename = "EntityInstance", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/entity-instance.schema.json"))]
+#[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json")]
+#[schemars(title = "EntityInstance", rename = "EntityInstance", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json"))]
 pub struct EntityInstance {
     /// The type definition of the entity type.
     #[serde(flatten)]
