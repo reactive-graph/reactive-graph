@@ -80,6 +80,8 @@ use crate::VariablesContainer;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
+pub const JSON_SCHEMA_ID_FLOW_TYPE: &str = "https://schema.reactive-graph.io/schema/json/flow-type.schema.json";
+
 #[derive(Debug)]
 pub struct FlowTypeCreationError;
 
@@ -91,7 +93,12 @@ pub struct FlowTypeCreationError;
 ///
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
 #[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/flow-type.schema.json")]
-#[schemars(title = "FlowType", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/flow-type.schema.json"))]
+#[schemars(
+    title = "FlowType",
+    deny_unknown_fields,
+    extend("$id" = JSON_SCHEMA_ID_FLOW_TYPE),
+    transform = add_json_schema_id_property
+)]
 pub struct FlowType {
     /// The type definition of the entity type.
     #[serde(flatten)]
@@ -764,6 +771,10 @@ impl DefaultTest for FlowTypes {
         }
         flow_types
     }
+}
+
+fn add_json_schema_id_property(schema: &mut Schema) {
+    crate::json_schema::add_json_schema_id_property(schema, JSON_SCHEMA_ID_FLOW_TYPE);
 }
 
 #[cfg(test)]

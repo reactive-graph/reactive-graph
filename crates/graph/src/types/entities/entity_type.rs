@@ -59,10 +59,17 @@ use crate::extension::Extension;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
+pub const JSON_SCHEMA_ID_ENTITY_TYPE: &str = "https://schema.reactive-graph.io/schema/json/entity-type.schema.json";
+
 /// Entity types defines the type of entity instance.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
 #[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/entity-type.schema.json")]
-#[schemars(title = "EntityType", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/entity-type.schema.json"))]
+#[schemars(
+    title = "EntityType",
+    deny_unknown_fields,
+    extend("$id" = JSON_SCHEMA_ID_ENTITY_TYPE),
+    transform = add_json_schema_id_property
+)]
 pub struct EntityType {
     /// The type definition contains the namespace and the type name.
     #[serde(flatten)]
@@ -572,6 +579,10 @@ impl DefaultTest for EntityTypes {
         }
         entity_types
     }
+}
+
+fn add_json_schema_id_property(schema: &mut Schema) {
+    crate::json_schema::add_json_schema_id_property(schema, JSON_SCHEMA_ID_ENTITY_TYPE);
 }
 
 #[cfg(test)]

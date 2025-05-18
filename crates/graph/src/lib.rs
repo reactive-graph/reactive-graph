@@ -24,6 +24,8 @@ pub use instances::entities::entity_instance_tests;
 pub mod instances;
 pub mod types;
 
+pub(crate) mod json_schema;
+
 pub mod prelude {
     pub use crate::types::components::*;
     pub use crate::types::entities::*;

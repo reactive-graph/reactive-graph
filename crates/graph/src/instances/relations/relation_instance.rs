@@ -50,6 +50,8 @@ use crate::instances::named::NamedInstanceContainer;
 #[cfg(any(test, feature = "test"))]
 use reactive_graph_utils_test::r_string;
 
+pub const JSON_SCHEMA_ID_RELATION_INSTANCE: &str = "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json";
+
 /// Relation instances are edges from an outbound entity instance to an
 /// inbound entity instance.
 ///
@@ -62,7 +64,13 @@ use reactive_graph_utils_test::r_string;
 /// documents in its properties.
 #[derive(Clone, Debug, Eq, Hash, PartialEq, Serialize, Deserialize, JsonSchema, TypedBuilder)]
 #[serde(tag = "$id", rename = "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json")]
-#[schemars(title = "RelationInstance", rename = "RelationInstance", deny_unknown_fields, extend("$id" = "https://schema.reactive-graph.io/schema/json/relation-instance.schema.json"))]
+#[schemars(
+    title = "RelationInstance",
+    rename = "RelationInstance",
+    deny_unknown_fields,
+    extend("$id" = JSON_SCHEMA_ID_RELATION_INSTANCE),
+    transform = add_json_schema_id_property
+)]
 pub struct RelationInstance {
     /// The id of the outbound vertex.
     pub outbound_id: Uuid,
@@ -530,6 +538,10 @@ impl DefaultTest for RelationInstances {
         }
         relation_instances
     }
+}
+
+fn add_json_schema_id_property(schema: &mut Schema) {
+    crate::json_schema::add_json_schema_id_property(schema, JSON_SCHEMA_ID_RELATION_INSTANCE);
 }
 
 #[cfg(test)]
