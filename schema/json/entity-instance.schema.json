@@ -57,11 +57,16 @@
       "type": "object"
     }
   },
-  "$id": "https://schema.reactive-graph.io/entity-instance.schema.json",
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "Entity instances represents an typed object which contains properties.\n\n The entity type defines the properties (name, data type and socket type).\n\n In contrast to the entity type the entity instance stores values in its\n properties.",
   "properties": {
+    "$id": {
+      "default": "https://schema.reactive-graph.io/schema/json/entity-instance.schema.json",
+      "description": "The schema identifier",
+      "type": "string"
+    },
     "components": {
       "$ref": "#/$defs/ComponentTypeIds",
       "default": [],

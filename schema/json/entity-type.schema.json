@@ -162,11 +162,16 @@
       "type": "array"
     }
   },
-  "$id": "https://schema.reactive-graph.io/entity-type.schema.json",
+  "$id": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
   "$ref": "#/$defs/NamespacedType",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "description": "Entity types defines the type of entity instance.",
   "properties": {
+    "$id": {
+      "default": "https://schema.reactive-graph.io/schema/json/entity-type.schema.json",
+      "description": "The schema identifier",
+      "type": "string"
+    },
     "components": {
       "$ref": "#/$defs/ComponentTypeIds",
       "default": [],
