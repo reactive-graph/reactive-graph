@@ -4736,6 +4736,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "reactive-graph-dynamic-graph-json-schema"
+version = "0.10.0"
+dependencies = [
+ "actix-web",
+ "reactive-graph-graph",
+ "schemars",
+]
+
+[[package]]
 name = "reactive-graph-dynamic-graph-model"
 version = "0.10.0"
 dependencies = [
@@ -4906,6 +4915,26 @@ dependencies = [
  "springtime-di",
  "tokio",
  "uuid",
+]
+
+[[package]]
+name = "reactive-graph-instance-system-json-schema"
+version = "0.10.0"
+dependencies = [
+ "reactive-graph-graph",
+ "schemars",
+]
+
+[[package]]
+name = "reactive-graph-instance-system-rest"
+version = "0.10.0"
+dependencies = [
+ "actix-web",
+ "mime",
+ "reactive-graph-graph",
+ "reactive-graph-instance-system-api",
+ "reactive-graph-instance-system-json-schema",
+ "schemars",
 ]
 
 [[package]]
@@ -5455,6 +5484,7 @@ dependencies = [
  "reactive-graph-dynamic-graph-web",
  "reactive-graph-graphql-api",
  "reactive-graph-graphql-web",
+ "reactive-graph-instance-system-rest",
  "reactive-graph-lifecycle",
  "reactive-graph-plugin-api",
  "reactive-graph-plugin-graphql-api",
@@ -5464,7 +5494,6 @@ dependencies = [
  "reactive-graph-runtime-graphql-web",
  "reactive-graph-runtime-web-api",
  "reactive-graph-type-system-api",
- "reactive-graph-type-system-json-schema",
  "reactive-graph-type-system-rest",
  "rustls",
  "rustls-pemfile",
@@ -5559,7 +5588,6 @@ dependencies = [
 name = "reactive-graph-type-system-json-schema"
 version = "0.10.0"
 dependencies = [
- "actix-web",
  "reactive-graph-graph",
  "schemars",
 ]
@@ -5572,6 +5600,8 @@ dependencies = [
  "mime",
  "reactive-graph-graph",
  "reactive-graph-type-system-api",
+ "reactive-graph-type-system-json-schema",
+ "schemars",
 ]
 
 [[package]]

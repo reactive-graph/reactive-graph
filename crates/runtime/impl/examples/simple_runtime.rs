@@ -70,7 +70,7 @@ async fn main() -> Result<(), ()> {
             }
 
             // Ok, lets simulate a GraphQL query!
-            // For example we want to query for the entity type and the entity instance we just created:
+            // For example, we want to query for the entity type and the entity instance we just created:
             let query = r#"
 query {
   types {
