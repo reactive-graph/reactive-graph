@@ -211,14 +211,17 @@ impl GraphQLServerImpl {
                 .service(reactive_graph_type_system_rest::relations::get_relation_type)
                 .service(reactive_graph_type_system_rest::flows::get_flow_types)
                 .service(reactive_graph_type_system_rest::flows::get_flow_type)
-                // JSON Schema
-                .service(reactive_graph_type_system_json_schema::types::components::schema_components)
-                .service(reactive_graph_type_system_json_schema::types::entities::schema_entity_types)
-                .service(reactive_graph_type_system_json_schema::types::relations::schema_relation_types)
-                .service(reactive_graph_type_system_json_schema::types::flows::schema_flow_types)
-                .service(reactive_graph_type_system_json_schema::instances::entities::schema_entity_instances)
-                .service(reactive_graph_type_system_json_schema::instances::relations::schema_relation_instances)
-                .service(reactive_graph_type_system_json_schema::instances::flows::schema_flow_instances)
+                // Type System JSON Schema
+                .service(reactive_graph_type_system_rest::components::json_schema_components)
+                .service(reactive_graph_type_system_rest::entities::json_schema_entity_types)
+                .service(reactive_graph_type_system_rest::relations::json_schema_relation_types)
+                .service(reactive_graph_type_system_rest::flows::json_schema_flow_types)
+                // Instance System JSON Schema
+                .service(reactive_graph_instance_system_rest::entities::json_schema_entity_instances)
+                .service(reactive_graph_instance_system_rest::relations::json_schema_relation_instances)
+                .service(reactive_graph_instance_system_rest::flows::json_schema_flow_instances)
+                // Dynamic Graph JSON Schema
+                // .service(reactive_graph_dynamic_graph_json_schema::schema_)
                 // Web Resource API
                 .service(web::resource("/{web_resource_context_path}/{path:.*}").route(web::get().to(handle_web_resource)))
                 .service(web::resource("/{path:.*}").route(web::get().to(handle_root_web_resource)))

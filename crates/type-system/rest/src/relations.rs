@@ -5,7 +5,9 @@ use actix_web::get;
 use actix_web::web;
 use mime::APPLICATION_JSON;
 
+use crate::json_schema_response;
 use reactive_graph_type_system_api::RelationTypeManager;
+use reactive_graph_type_system_json_schema::relations::schema_relation_types;
 
 #[get("/types/relations")]
 pub async fn get_relation_types(relation_type_manager: web::Data<Arc<dyn RelationTypeManager + Send + Sync>>) -> HttpResponse {
@@ -26,4 +28,9 @@ pub async fn get_relation_type(
             .content_type(APPLICATION_JSON.to_string())
             .body(format!("Relation Type {}__{} not found", namespace, type_name)),
     }
+}
+
+#[get("/types/relations/schema")]
+pub async fn json_schema_relation_types() -> HttpResponse {
+    json_schema_response(schema_relation_types())
 }

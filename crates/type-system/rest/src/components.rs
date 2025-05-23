@@ -5,7 +5,9 @@ use actix_web::get;
 use actix_web::web;
 use mime::APPLICATION_JSON;
 
+use crate::json_schema_response;
 use reactive_graph_type_system_api::ComponentManager;
+use reactive_graph_type_system_json_schema::components::schema_components;
 
 #[get("/types/components")]
 pub async fn get_components(component_manager: web::Data<Arc<dyn ComponentManager + Send + Sync>>) -> HttpResponse {
@@ -21,4 +23,9 @@ pub async fn get_component(path: web::Path<(String, String)>, component_manager:
             .content_type(APPLICATION_JSON.to_string())
             .body(format!("Component {}__{} not found", namespace, type_name)),
     }
+}
+
+#[get("/types/components/schema")]
+pub async fn json_schema_components() -> HttpResponse {
+    json_schema_response(schema_components())
 }

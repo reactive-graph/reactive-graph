@@ -5,8 +5,10 @@ use actix_web::get;
 use actix_web::web;
 use mime::APPLICATION_JSON;
 
+use crate::json_schema_response;
 use reactive_graph_graph::FlowTypeId;
 use reactive_graph_type_system_api::FlowTypeManager;
+use reactive_graph_type_system_json_schema::flows::schema_flow_types;
 
 #[get("/types/flows")]
 pub async fn get_flow_types(flow_type_manager: web::Data<Arc<dyn FlowTypeManager + Send + Sync>>) -> HttpResponse {
@@ -23,4 +25,9 @@ pub async fn get_flow_type(path: web::Path<(String, String)>, flow_type_manager:
             .content_type(APPLICATION_JSON.to_string())
             .body(format!("Flow Type {} not found", &flow_ty)),
     }
+}
+
+#[get("/types/flows/schema")]
+pub async fn json_schema_flow_types() -> HttpResponse {
+    json_schema_response(schema_flow_types())
 }
