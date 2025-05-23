@@ -1,6 +1,6 @@
 [package]
-name = "reactive-graph-type-system-rest"
-description = "Reactive Graph - Type System - REST API"
+name = "reactive-graph-instance-system-rest"
+description = "Reactive Graph - Instance System - REST API"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true
@@ -15,8 +15,8 @@ mime = { workspace = true }
 schemars = { workspace = true, features = ["uuid1"] }
 
 reactive-graph-graph = { version = "0.10.0", path = "../../graph" }
-reactive-graph-type-system-api = { version = "0.10.0", path = "../api" }
-reactive-graph-type-system-json-schema = { version = "0.10.0", path = "../json-schema" }
+reactive-graph-instance-system-api = { version = "0.10.0", path = "../api" }
+reactive-graph-instance-system-json-schema = { version = "0.10.0", path = "../json-schema" }
 
 [lib]
 crate-type = ["lib"]

@@ -1,7 +1,6 @@
 use actix_web::HttpResponse;
 use schemars::Schema;
 
-pub mod components;
 pub mod entities;
 pub mod flows;
 pub mod relations;
