@@ -5,22 +5,29 @@
 <a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>actix_web::web;
 <a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>mime::APPLICATION_JSON;
 <a href=#7 id=7 data-nosnippet>7</a>
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>reactive_graph_graph::FlowTypeId;
-<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>reactive_graph_type_system_api::FlowTypeManager;
-<a href=#10 id=10 data-nosnippet>10</a>
-<a href=#11 id=11 data-nosnippet>11</a><span class="attr">#[get(<span class="string">"/types/flows"</span>)]
-<a href=#12 id=12 data-nosnippet>12</a></span><span class="kw">pub async fn </span>get_flow_types(flow_type_manager: web::Data&lt;Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;&gt;) -&gt; HttpResponse {
-<a href=#13 id=13 data-nosnippet>13</a>    HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(flow_type_manager.get_all())
-<a href=#14 id=14 data-nosnippet>14</a>}
-<a href=#15 id=15 data-nosnippet>15</a>
-<a href=#16 id=16 data-nosnippet>16</a><span class="attr">#[get(<span class="string">"/types/flows/{namespace}/{type_name}"</span>)]
-<a href=#17 id=17 data-nosnippet>17</a></span><span class="kw">pub async fn </span>get_flow_type(path: web::Path&lt;(String, String)&gt;, flow_type_manager: web::Data&lt;Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;&gt;) -&gt; HttpResponse {
-<a href=#18 id=18 data-nosnippet>18</a>    <span class="kw">let </span>(namespace, type_name) = path.into_inner();
-<a href=#19 id=19 data-nosnippet>19</a>    <span class="kw">let </span>flow_ty = FlowTypeId::new_from_type(namespace, type_name);
-<a href=#20 id=20 data-nosnippet>20</a>    <span class="kw">match </span>flow_type_manager.get(<span class="kw-2">&amp;</span>flow_ty) {
-<a href=#21 id=21 data-nosnippet>21</a>        <span class="prelude-val">Some</span>(flow_type) =&gt; HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(<span class="kw-2">&amp;</span>flow_type),
-<a href=#22 id=22 data-nosnippet>22</a>        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound()
-<a href=#23 id=23 data-nosnippet>23</a>            .content_type(APPLICATION_JSON.to_string())
-<a href=#24 id=24 data-nosnippet>24</a>            .body(<span class="macro">format!</span>(<span class="string">"Flow Type {} not found"</span>, <span class="kw-2">&amp;</span>flow_ty)),
-<a href=#25 id=25 data-nosnippet>25</a>    }
-<a href=#26 id=26 data-nosnippet>26</a>}</code></pre></div></section></main></body></html>
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span><span class="kw">crate</span>::json_schema_response;
+<a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>reactive_graph_graph::FlowTypeId;
+<a href=#10 id=10 data-nosnippet>10</a><span class="kw">use </span>reactive_graph_type_system_api::FlowTypeManager;
+<a href=#11 id=11 data-nosnippet>11</a><span class="kw">use </span>reactive_graph_type_system_json_schema::flows::schema_flow_types;
+<a href=#12 id=12 data-nosnippet>12</a>
+<a href=#13 id=13 data-nosnippet>13</a><span class="attr">#[get(<span class="string">"/types/flows"</span>)]
+<a href=#14 id=14 data-nosnippet>14</a></span><span class="kw">pub async fn </span>get_flow_types(flow_type_manager: web::Data&lt;Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;&gt;) -&gt; HttpResponse {
+<a href=#15 id=15 data-nosnippet>15</a>    HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(flow_type_manager.get_all())
+<a href=#16 id=16 data-nosnippet>16</a>}
+<a href=#17 id=17 data-nosnippet>17</a>
+<a href=#18 id=18 data-nosnippet>18</a><span class="attr">#[get(<span class="string">"/types/flows/{namespace}/{type_name}"</span>)]
+<a href=#19 id=19 data-nosnippet>19</a></span><span class="kw">pub async fn </span>get_flow_type(path: web::Path&lt;(String, String)&gt;, flow_type_manager: web::Data&lt;Arc&lt;<span class="kw">dyn </span>FlowTypeManager + Send + Sync&gt;&gt;) -&gt; HttpResponse {
+<a href=#20 id=20 data-nosnippet>20</a>    <span class="kw">let </span>(namespace, type_name) = path.into_inner();
+<a href=#21 id=21 data-nosnippet>21</a>    <span class="kw">let </span>flow_ty = FlowTypeId::new_from_type(namespace, type_name);
+<a href=#22 id=22 data-nosnippet>22</a>    <span class="kw">match </span>flow_type_manager.get(<span class="kw-2">&amp;</span>flow_ty) {
+<a href=#23 id=23 data-nosnippet>23</a>        <span class="prelude-val">Some</span>(flow_type) =&gt; HttpResponse::Ok().content_type(APPLICATION_JSON.to_string()).json(<span class="kw-2">&amp;</span>flow_type),
+<a href=#24 id=24 data-nosnippet>24</a>        <span class="prelude-val">None </span>=&gt; HttpResponse::NotFound()
+<a href=#25 id=25 data-nosnippet>25</a>            .content_type(APPLICATION_JSON.to_string())
+<a href=#26 id=26 data-nosnippet>26</a>            .body(<span class="macro">format!</span>(<span class="string">"Flow Type {} not found"</span>, <span class="kw-2">&amp;</span>flow_ty)),
+<a href=#27 id=27 data-nosnippet>27</a>    }
+<a href=#28 id=28 data-nosnippet>28</a>}
+<a href=#29 id=29 data-nosnippet>29</a>
+<a href=#30 id=30 data-nosnippet>30</a><span class="attr">#[get(<span class="string">"/types/flows/schema"</span>)]
+<a href=#31 id=31 data-nosnippet>31</a></span><span class="kw">pub async fn </span>json_schema_flow_types() -&gt; HttpResponse {
+<a href=#32 id=32 data-nosnippet>32</a>    json_schema_response(schema_flow_types())
+<a href=#33 id=33 data-nosnippet>33</a>}</code></pre></div></section></main></body></html>

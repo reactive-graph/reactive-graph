@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["set_property"],"struct":["MutationInstances","MutationRelationInstances","SetProperty"]};

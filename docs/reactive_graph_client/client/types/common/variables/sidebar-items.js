@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["type_id","update_description"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":["schema_flow_types"]};

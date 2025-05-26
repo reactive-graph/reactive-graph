@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":["json_schema_relation_instances"]};

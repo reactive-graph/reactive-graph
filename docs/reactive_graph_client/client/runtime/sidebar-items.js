@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["command","instance","remotes","shutdown"],"struct":["Runtime"]};

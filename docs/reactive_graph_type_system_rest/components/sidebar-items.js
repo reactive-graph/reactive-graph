@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["get_component","get_components"]};
+window.SIDEBAR_ITEMS = {"struct":["get_component","get_components","json_schema_components"]};

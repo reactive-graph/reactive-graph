@@ -1,11 +1,11 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/graphql/schema/src/query/json_schema/types.rs`."><title>types.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-916cea96.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="reactive_graph_graphql_schema" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (cbfdf0b01 2025-03-13)" data-channel="nightly" data-search-js="search-e7298875.js" data-settings-js="settings-d72f25bb.js" ><script src="../../../../static.files/storage-d8ac8691.js"></script><script defer src="../../../../static.files/src-script-b8d3f215.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-fb8c74a8.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">reactive_graph_graphql_schema/query/json_schema/</div>types.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap digits-2"><pre class="rust"><code><a href=#1 id=1 data-nosnippet>1</a><span class="kw">use </span>async_graphql::Context;
 <a href=#2 id=2 data-nosnippet>2</a><span class="kw">use </span>async_graphql::Object;
 <a href=#3 id=3 data-nosnippet>3</a><span class="kw">use </span>async_graphql::Result;
-<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>reactive_graph_graph::Component;
-<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>reactive_graph_graph::EntityType;
-<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>reactive_graph_graph::FlowType;
-<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>reactive_graph_graph::RelationType;
-<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>schemars::schema_for;
+<a href=#4 id=4 data-nosnippet>4</a><span class="kw">use </span>reactive_graph_type_system_json_schema;
+<a href=#5 id=5 data-nosnippet>5</a><span class="kw">use </span>reactive_graph_type_system_json_schema::schema_components;
+<a href=#6 id=6 data-nosnippet>6</a><span class="kw">use </span>reactive_graph_type_system_json_schema::schema_entity_types;
+<a href=#7 id=7 data-nosnippet>7</a><span class="kw">use </span>reactive_graph_type_system_json_schema::schema_flow_types;
+<a href=#8 id=8 data-nosnippet>8</a><span class="kw">use </span>reactive_graph_type_system_json_schema::schema_relation_types;
 <a href=#9 id=9 data-nosnippet>9</a><span class="kw">use </span>serde_json::Value;
 <a href=#10 id=10 data-nosnippet>10</a>
 <a href=#11 id=11 data-nosnippet>11</a><span class="attr">#[derive(Default)]
@@ -16,25 +16,21 @@
 <a href=#16 id=16 data-nosnippet>16</a></span><span class="kw">impl </span>JsonSchemaTypeSystem {
 <a href=#17 id=17 data-nosnippet>17</a>    <span class="doccomment">/// Returns the JSON schema for components.
 <a href=#18 id=18 data-nosnippet>18</a>    </span><span class="kw">async fn </span>components(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
-<a href=#19 id=19 data-nosnippet>19</a>        <span class="kw">let </span>schema = <span class="macro">schema_for!</span>(Component);
-<a href=#20 id=20 data-nosnippet>20</a>        <span class="prelude-val">Ok</span>(schema.to_value())
-<a href=#21 id=21 data-nosnippet>21</a>    }
-<a href=#22 id=22 data-nosnippet>22</a>
-<a href=#23 id=23 data-nosnippet>23</a>    <span class="doccomment">/// Returns the JSON schema for entity types.
-<a href=#24 id=24 data-nosnippet>24</a>    </span><span class="kw">async fn </span>entities(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
-<a href=#25 id=25 data-nosnippet>25</a>        <span class="kw">let </span>schema = <span class="macro">schema_for!</span>(EntityType);
-<a href=#26 id=26 data-nosnippet>26</a>        <span class="prelude-val">Ok</span>(schema.to_value())
-<a href=#27 id=27 data-nosnippet>27</a>    }
-<a href=#28 id=28 data-nosnippet>28</a>
-<a href=#29 id=29 data-nosnippet>29</a>    <span class="doccomment">/// Returns the JSON schema for relation types.
-<a href=#30 id=30 data-nosnippet>30</a>    </span><span class="kw">async fn </span>relations(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
-<a href=#31 id=31 data-nosnippet>31</a>        <span class="kw">let </span>schema = <span class="macro">schema_for!</span>(RelationType);
-<a href=#32 id=32 data-nosnippet>32</a>        <span class="prelude-val">Ok</span>(schema.to_value())
-<a href=#33 id=33 data-nosnippet>33</a>    }
-<a href=#34 id=34 data-nosnippet>34</a>
-<a href=#35 id=35 data-nosnippet>35</a>    <span class="doccomment">/// Returns the JSON schema for flow types.
-<a href=#36 id=36 data-nosnippet>36</a>    </span><span class="kw">async fn </span>flows(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
-<a href=#37 id=37 data-nosnippet>37</a>        <span class="kw">let </span>schema = <span class="macro">schema_for!</span>(FlowType);
-<a href=#38 id=38 data-nosnippet>38</a>        <span class="prelude-val">Ok</span>(schema.to_value())
-<a href=#39 id=39 data-nosnippet>39</a>    }
-<a href=#40 id=40 data-nosnippet>40</a>}</code></pre></div></section></main></body></html>
+<a href=#19 id=19 data-nosnippet>19</a>        <span class="prelude-val">Ok</span>(schema_components().to_value())
+<a href=#20 id=20 data-nosnippet>20</a>    }
+<a href=#21 id=21 data-nosnippet>21</a>
+<a href=#22 id=22 data-nosnippet>22</a>    <span class="doccomment">/// Returns the JSON schema for entity types.
+<a href=#23 id=23 data-nosnippet>23</a>    </span><span class="kw">async fn </span>entities(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
+<a href=#24 id=24 data-nosnippet>24</a>        <span class="prelude-val">Ok</span>(schema_entity_types().to_value())
+<a href=#25 id=25 data-nosnippet>25</a>    }
+<a href=#26 id=26 data-nosnippet>26</a>
+<a href=#27 id=27 data-nosnippet>27</a>    <span class="doccomment">/// Returns the JSON schema for relation types.
+<a href=#28 id=28 data-nosnippet>28</a>    </span><span class="kw">async fn </span>relations(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
+<a href=#29 id=29 data-nosnippet>29</a>        <span class="prelude-val">Ok</span>(schema_relation_types().to_value())
+<a href=#30 id=30 data-nosnippet>30</a>    }
+<a href=#31 id=31 data-nosnippet>31</a>
+<a href=#32 id=32 data-nosnippet>32</a>    <span class="doccomment">/// Returns the JSON schema for flow types.
+<a href=#33 id=33 data-nosnippet>33</a>    </span><span class="kw">async fn </span>flows(<span class="kw-2">&amp;</span><span class="self">self</span>, _context: <span class="kw-2">&amp;</span>Context&lt;<span class="lifetime">'_</span>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Value&gt; {
+<a href=#34 id=34 data-nosnippet>34</a>        <span class="prelude-val">Ok</span>(schema_flow_types().to_value())
+<a href=#35 id=35 data-nosnippet>35</a>    }
+<a href=#36 id=36 data-nosnippet>36</a>}</code></pre></div></section></main></body></html>

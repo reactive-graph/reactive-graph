@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["get_json_schema_for_relation_instances"],"struct":["JsonSchema","JsonSchemaInstanceSystem","JsonSchemaRelationInstances"]};

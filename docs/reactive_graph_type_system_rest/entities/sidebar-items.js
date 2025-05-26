@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["get_entity_type","get_entity_types"]};
+window.SIDEBAR_ITEMS = {"struct":["get_entity_type","get_entity_types","json_schema_entity_types"]};

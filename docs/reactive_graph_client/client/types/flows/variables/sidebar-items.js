@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["add_entity_instance","add_variable","create","remove_entity_instance"]};
