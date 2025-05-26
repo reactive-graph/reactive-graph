@@ -92,12 +92,14 @@ uuid = { workspace = true }
 reactive-graph-config-model = { version = "0.10.0", path = "../config/model" }
 reactive-graph-remotes-model = { version = "0.10.0", path = "../remotes/model" }
 reactive-graph-graph = { version = "0.10.0", path = "../graph" }
+reactive-graph-instance-system-json-schema = { version = "0.10.0", path = "../instance-system/json-schema" }
 reactive-graph-runtime-model = { version = "0.10.0", path = "../runtime/model" }
 reactive-graph-runtime-api = { version = "0.10.0", path = "../runtime/api", optional = true }
 reactive-graph-runtime-impl = { version = "0.10.0", path = "../runtime/impl", optional = true }
 reactive-graph-client = { version = "0.10.0", path = "../client", optional = true }
 reactive-graph-serde = { version = "0.10.0", path = "../serde" }
 reactive-graph-table-model = { version = "0.10.0", path = "../table-model", optional = true }
+reactive-graph-type-system-json-schema = { version = "0.10.0", path = "../type-system/json-schema" }
 
 [target.'cfg(target_os = "linux")'.dependencies]
 clap_mangen = { workspace = true }

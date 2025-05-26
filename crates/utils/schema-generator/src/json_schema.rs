@@ -1,14 +1,13 @@
 use anyhow::Result;
 use anyhow::anyhow;
-use reactive_graph_graph::Component;
-use reactive_graph_graph::EntityInstance;
-use reactive_graph_graph::EntityType;
-use reactive_graph_graph::FlowInstance;
-use reactive_graph_graph::FlowType;
-use reactive_graph_graph::RelationInstance;
-use reactive_graph_graph::RelationType;
-use schemars::_private::serde_json;
-use schemars::schema_for;
+use reactive_graph_instance_system_json_schema::schema_entity_instances;
+use reactive_graph_instance_system_json_schema::schema_flow_instances;
+use reactive_graph_instance_system_json_schema::schema_relation_instances;
+use reactive_graph_type_system_json_schema::schema_components;
+use reactive_graph_type_system_json_schema::schema_entity_types;
+use reactive_graph_type_system_json_schema::schema_flow_types;
+use reactive_graph_type_system_json_schema::schema_relation_types;
+use serde_json::to_string_pretty;
 use std::fs::write;
 use std::path::Path;
 use std::path::PathBuf;
@@ -43,15 +42,15 @@ impl JsonSchemaTypes {
 
 pub fn generate_json_schema(schema_type: &JsonSchemaTypes) -> String {
     let json_schema = match schema_type {
-        JsonSchemaTypes::Component => schema_for!(Component),
-        JsonSchemaTypes::EntityType => schema_for!(EntityType),
-        JsonSchemaTypes::RelationType => schema_for!(RelationType),
-        JsonSchemaTypes::FlowType => schema_for!(FlowType),
-        JsonSchemaTypes::EntityInstance => schema_for!(EntityInstance),
-        JsonSchemaTypes::RelationInstance => schema_for!(RelationInstance),
-        JsonSchemaTypes::FlowInstance => schema_for!(FlowInstance),
+        JsonSchemaTypes::Component => schema_components(),
+        JsonSchemaTypes::EntityType => schema_entity_types(),
+        JsonSchemaTypes::RelationType => schema_relation_types(),
+        JsonSchemaTypes::FlowType => schema_flow_types(),
+        JsonSchemaTypes::EntityInstance => schema_entity_instances(),
+        JsonSchemaTypes::RelationInstance => schema_relation_instances(),
+        JsonSchemaTypes::FlowInstance => schema_flow_instances(),
     };
-    match serde_json::to_string_pretty(&json_schema.clone().to_value()) {
+    match to_string_pretty(&json_schema.clone().to_value()) {
         Ok(json_schema) => json_schema,
         Err(_) => json_schema.to_value().to_string(),
     }
