@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configure lints on workspace level
 - Replaced lazy_static with LazyLock
 - CLI: Updated shell completions
+- JSON schema: Refactored REST services
 
 ### Fixed
 
