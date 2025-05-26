@@ -1,14 +1,13 @@
 use crate::server::json_schema::commands::InstancesCommands;
 use crate::server::json_schema::commands::JsonSchemaCommands;
 use crate::server::json_schema::commands::TypesCommands;
-use reactive_graph_graph::Component;
-use reactive_graph_graph::EntityInstance;
-use reactive_graph_graph::EntityType;
-use reactive_graph_graph::FlowInstance;
-use reactive_graph_graph::FlowType;
-use reactive_graph_graph::RelationInstance;
-use reactive_graph_graph::RelationType;
-use schemars::schema_for;
+use reactive_graph_instance_system_json_schema::schema_entity_instances;
+use reactive_graph_instance_system_json_schema::schema_flow_instances;
+use reactive_graph_instance_system_json_schema::schema_relation_instances;
+use reactive_graph_type_system_json_schema::schema_components;
+use reactive_graph_type_system_json_schema::schema_entity_types;
+use reactive_graph_type_system_json_schema::schema_flow_types;
+use reactive_graph_type_system_json_schema::schema_relation_types;
 use std::process::exit;
 
 pub mod args;
@@ -17,15 +16,15 @@ pub mod commands;
 pub async fn print_json_schema_and_exit(commands: &JsonSchemaCommands) {
     let json_schema = match commands {
         JsonSchemaCommands::Types(args) => match args.commands {
-            TypesCommands::Components => schema_for!(Component),
-            TypesCommands::Entities => schema_for!(EntityType),
-            TypesCommands::Relations => schema_for!(RelationType),
-            TypesCommands::Flows => schema_for!(FlowType),
+            TypesCommands::Components => schema_components(),
+            TypesCommands::Entities => schema_entity_types(),
+            TypesCommands::Relations => schema_relation_types(),
+            TypesCommands::Flows => schema_flow_types(),
         },
         JsonSchemaCommands::Instances(args) => match args.commands {
-            InstancesCommands::Entities => schema_for!(EntityInstance),
-            InstancesCommands::Relations => schema_for!(RelationInstance),
-            InstancesCommands::Flows => schema_for!(FlowInstance),
+            InstancesCommands::Entities => schema_entity_instances(),
+            InstancesCommands::Relations => schema_relation_instances(),
+            InstancesCommands::Flows => schema_flow_instances(),
         },
     };
     match serde_json::to_string_pretty(&json_schema.to_value()) {
