@@ -173,7 +173,7 @@ uuid = { version = "1.17", features = ["serde", "v4"] }
 vergen-gix = { version = "1.0" }
 walkdir = "2.5"
 wildmatch = "2.4"
-workspace_root = "0.1.1"
+workspace_root = "0.1.2"
 xdg = "3.0"
 
 [workspace.lints.rust]
